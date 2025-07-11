@@ -34,6 +34,9 @@ class Data {
       json['surahs'].forEach((v) {
         surahs!.add(Surahs.fromJson(v));
       });
+    } else if (json['number'] != null && json['ayahs'] != null) {
+      surahs = <Surahs>[];
+      surahs!.add(Surahs.fromJson(json));
     }
     edition =
         json['edition'] != null ? Edition.fromJson(json['edition']) : null;
@@ -126,7 +129,14 @@ class Ayahs {
     page = json['page'];
     ruku = json['ruku'];
     hizbQuarter = json['hizbQuarter'];
-    sajda = json['sajda'];
+    if (json['sajda'] is bool) {
+      sajda = json['sajda'];
+    } else if (json['sajda'] is Map) {
+      sajda = json['sajda']['recommended'] == true ||
+          json['sajda']['obligatory'] == true;
+    } else {
+      sajda = false;
+    }
   }
 
   Map<String, dynamic> toJson() {
