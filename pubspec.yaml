@@ -48,6 +48,7 @@ dependencies:
   flutter_svg: ^2.2.0
   share_plus: ^10.1.1
   another_flushbar: ^1.12.30
+  jiffy: ^6.4.3
 
 dev_dependencies:
   flutter_test:
