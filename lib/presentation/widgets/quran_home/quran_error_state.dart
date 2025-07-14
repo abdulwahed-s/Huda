@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class QuranErrorState extends StatelessWidget {
   final String message;
@@ -12,47 +13,49 @@ class QuranErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             Icons.error_outline,
-            size: 80,
+            size: 64.sp,
             color: Colors.red[400],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 12.h),
           Text(
             'Error Loading Quran',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 16.sp,
               color: Colors.red[600],
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 6.h),
           Text(
             message,
             style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
+              fontSize: 12.sp,
+              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 16.h),
           ElevatedButton.icon(
             onPressed: onRetry,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            icon: Icon(Icons.refresh, size: 16.sp),
+            label: Text('Retry', style: TextStyle(fontSize: 13.sp)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 103, 43, 93),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 12,
+              padding: EdgeInsets.symmetric(
+                horizontal: 20.w,
+                vertical: 10.h,
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(20.r),
               ),
             ),
           ),

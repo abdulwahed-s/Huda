@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/data/models/quran_model.dart';
 import 'revelation_type_badge.dart';
 
@@ -16,47 +17,55 @@ class SurahCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return AnimatedBuilder(
       animation: animationController,
       builder: (context, child) {
         return Transform.translate(
-          offset: Offset(0, 50 * (1 - animationController.value)),
+          offset: Offset(0, 40.h * (1 - animationController.value)),
           child: Opacity(
             opacity: animationController.value,
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
               child: Card(
-                elevation: 5,
+                elevation: isDarkMode ? 6 : 4,
+                color: isDarkMode ? Theme.of(context).cardColor : null,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(12.r),
                   onTap: onTap,
                   child: Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(16.r),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12.r),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
-                          Colors.white,
-                          Colors.grey[50]!,
-                        ],
+                        colors: isDarkMode
+                            ? [
+                                Theme.of(context).cardColor,
+                                Theme.of(context).cardColor.withOpacity(0.8),
+                              ]
+                            : [
+                                Colors.white,
+                                Colors.grey[50]!,
+                              ],
                       ),
                     ),
                     child: Row(
                       children: [
                         // Surah Number Circle
                         _buildSurahNumberCircle(),
-                        const SizedBox(width: 16),
+                        SizedBox(width: 12.w),
                         // Surah Details
                         Expanded(
-                          child: _buildSurahDetails(),
+                          child: _buildSurahDetails(context),
                         ),
                         // Ayahs Count and Revelation Badge
-                        _buildSurahInfo(),
+                        _buildSurahInfo(context),
                       ],
                     ),
                   ),
@@ -71,8 +80,8 @@ class SurahCard extends StatelessWidget {
 
   Widget _buildSurahNumberCircle() {
     return Container(
-      width: 50,
-      height: 50,
+      width: 42.w,
+      height: 42.h,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -86,25 +95,27 @@ class SurahCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: const Color.fromARGB(255, 103, 43, 93).withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            blurRadius: 6.r,
+            offset: Offset(0, 2.h),
           ),
         ],
       ),
       child: Center(
         child: Text(
           '${surah.number}',
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 14.sp,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildSurahDetails() {
+  Widget _buildSurahDetails(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -113,31 +124,32 @@ class SurahCard extends StatelessWidget {
             Expanded(
               child: Text(
                 surah.name ?? '',
-                style: const TextStyle(
-                  fontSize: 22,
+                style: TextStyle(
+                  fontSize: 18.sp,
                   fontFamily: 'uthmanic',
                   fontWeight: FontWeight.bold,
-                  fontFeatures: [FontFeature.enable('liga')],
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  fontFeatures: const [FontFeature.enable('liga')],
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 4.h),
         Text(
           surah.englishName ?? '',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w600,
-            color: Colors.grey[800],
+            color: isDarkMode ? Colors.grey[300] : Colors.grey[800],
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 2.h),
         Text(
           surah.englishNameTranslation ?? '',
           style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey[600],
+            fontSize: 12.sp,
+            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
             fontStyle: FontStyle.italic,
           ),
         ),
@@ -145,25 +157,27 @@ class SurahCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSurahInfo() {
+  Widget _buildSurahInfo(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       children: [
         // Revelation type badge
         RevelationTypeBadge(revelationType: surah.revelationType!),
-        const SizedBox(height: 6),
+        SizedBox(height: 4.h),
         Text(
           '${surah.numberOfAyahs}',
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: 14.sp,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 103, 43, 93),
+            color: const Color.fromARGB(255, 103, 43, 93),
           ),
         ),
         Text(
           'Ayahs',
           style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
+            fontSize: 10.sp,
+            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
           ),
         ),
       ],

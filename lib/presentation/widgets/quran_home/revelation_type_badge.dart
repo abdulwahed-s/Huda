@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class RevelationTypeBadge extends StatelessWidget {
@@ -14,19 +15,19 @@ class RevelationTypeBadge extends StatelessWidget {
     final isMeccan = revelationType == 'Meccan';
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: isMeccan
               ? [Colors.amber[300]!, Colors.orange[400]!]
               : [Colors.blue[300]!, Colors.indigo[400]!],
         ),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
             color: (isMeccan ? Colors.orange : Colors.blue).withOpacity(0.3),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+            blurRadius: 3.r,
+            offset: Offset(0, 1.h),
           ),
         ],
       ),
@@ -35,17 +36,17 @@ class RevelationTypeBadge extends StatelessWidget {
         children: [
           SvgPicture.asset(
             isMeccan ? 'assets/images/mecca.svg' : 'assets/images/madina.svg',
-            width: 12,
-            height: 12,
+            width: 10.w,
+            height: 10.h,
           ),
-          const SizedBox(width: 3),
+          SizedBox(width: 2.w),
           Text(
             revelationType,
-            style: const TextStyle(
-              fontSize: 9,
+            style: TextStyle(
+              fontSize: 8.sp,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              letterSpacing: 0.3,
+              letterSpacing: 0.2,
             ),
           ),
         ],
