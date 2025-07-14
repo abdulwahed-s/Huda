@@ -13,11 +13,11 @@ import 'package:huda/data/repository/translation_repository.dart';
 import 'package:huda/presentation/screens/surah_screen.dart';
 import 'package:huda/data/models/quran_model.dart';
 import 'package:huda/core/utils/text_utils.dart';
-import 'package:huda/presentation/widgets/quran_app_bar.dart';
-import 'package:huda/presentation/widgets/quran_loading_state.dart';
-import 'package:huda/presentation/widgets/quran_empty_state.dart';
-import 'package:huda/presentation/widgets/quran_error_state.dart';
-import 'package:huda/presentation/widgets/surah_list.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_app_bar.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_loading_state.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_empty_state.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_error_state.dart';
+import 'package:huda/presentation/widgets/quran_home/surah_list.dart';
 
 class HomeQuran extends StatefulWidget {
   const HomeQuran({super.key});
@@ -125,10 +125,15 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                const Color.fromARGB(255, 103, 43, 93).withOpacity(0.05),
-                Colors.white,
-              ],
+              colors: Theme.of(context).brightness == Brightness.dark
+                  ? [
+                      const Color.fromARGB(255, 103, 43, 93).withOpacity(0.1),
+                      Theme.of(context).scaffoldBackgroundColor,
+                    ]
+                  : [
+                      const Color.fromARGB(255, 103, 43, 93).withOpacity(0.05),
+                      Colors.white,
+                    ],
             ),
           ),
           child: SafeArea(
