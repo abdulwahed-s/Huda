@@ -62,6 +62,7 @@ dependencies:
   permission_handler: ^12.0.1
   workmanager: ^0.7.0
   flutter_foreground_task: ^9.1.0
+  screenshot: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +113,23 @@ flutter:
     - family: Ciguatera
       fonts:
         - asset: assets/fonts/Ciguatera.ttf
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Tajawal-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Tajawal-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Tajawal-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Tajawal-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Tajawal-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Tajawal-Black.ttf
+          weight: 900
+
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
