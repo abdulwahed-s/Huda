@@ -10,4 +10,9 @@ class AppRoute {
   static const String notification = '/notification';
   static const String athkar = '/athkar';
   static const String athkarDetail = '/athkarDetail';
+  static const String hadith = '/hadith';
+  static const String hadithChapters = '/hadithChapters';
+  static const String hadithDetails = '/hadithDetails';
+  static const String qiblah = '/qiblah';
+  static const String tasbih = '/tasbih';
 }
