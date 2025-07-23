@@ -49,6 +49,7 @@ class TasbihCubit extends Cubit<TasbihState> {
   void saveTasbih() {
     cacheHelper.saveData(key: 'tasbih_count', value: count);
     cacheHelper.saveData(key: 'tasbih_mode', value: mode);
+    cacheHelper.saveData(key: 'tasbih_note', value: note);
   }
 
   void toggleVibration() async {
