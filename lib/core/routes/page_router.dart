@@ -6,17 +6,27 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/athkar/athkar_cubit.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
+import 'package:huda/cubit/chapters/chapters_cubit.dart';
+import 'package:huda/cubit/hadith/hadith_cubit.dart';
+import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
+import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
 import 'package:huda/cubit/settings/settings_cubit.dart';
+import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
 import 'package:huda/presentation/screens/athkar.dart';
 import 'package:huda/presentation/screens/athkar_details.dart';
+import 'package:huda/presentation/screens/hadith.dart';
+import 'package:huda/presentation/screens/hadith_chapters.dart';
+import 'package:huda/presentation/screens/hadith_details.dart';
 import 'package:huda/presentation/screens/home.dart';
 import 'package:huda/presentation/screens/home_quran.dart';
 import 'package:huda/presentation/screens/notifications.dart';
 import 'package:huda/presentation/screens/prayer_times.dart';
+import 'package:huda/presentation/screens/qiblah.dart';
 import 'package:huda/presentation/screens/settings.dart';
+import 'package:huda/presentation/screens/tasbih.dart';
 import 'package:huda/presentation/screens/widget_management_screen.dart';
 
 class PageRouter {
@@ -170,6 +180,118 @@ class PageRouter {
               ),
             );
           },
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.hadith:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<HadithCubit>(
+            create: (context) => HadithCubit(),
+            child: Hadith(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.hadithChapters:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<ChaptersCubit>(
+            create: (context) => ChaptersCubit(),
+            child: HadithChapters(bookId: settings.arguments as String),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.hadithDetails:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) {
+            final args = settings.arguments as Map<String, String>;
+            return BlocProvider<HadithDetailsCubit>(
+              create: (context) => HadithDetailsCubit(),
+              child: HadithDetails(
+                chapterId: args['chapterId']!,
+                bookId: args['bookId']!,
+              ),
+            );
+          },
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.qiblah:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<QiblahCubit>(
+            create: (context) => QiblahCubit(),
+            child: QiblahScreen(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+
+      case AppRoute.tasbih:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<TasbihCubit>(
+            create: (context) => TasbihCubit(),
+            child: Tasbih(),
+          ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
             const end = Offset.zero;
