@@ -9,6 +9,7 @@ import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
 import 'package:huda/cubit/chapters/chapters_cubit.dart';
 import 'package:huda/cubit/hadith/hadith_cubit.dart';
 import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
+import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
@@ -20,6 +21,7 @@ import 'package:huda/presentation/screens/athkar_details.dart';
 import 'package:huda/presentation/screens/hadith.dart';
 import 'package:huda/presentation/screens/hadith_chapters.dart';
 import 'package:huda/presentation/screens/hadith_details.dart';
+import 'package:huda/presentation/screens/hijri_calendar.dart';
 import 'package:huda/presentation/screens/home.dart';
 import 'package:huda/presentation/screens/home_quran.dart';
 import 'package:huda/presentation/screens/notifications.dart';
@@ -291,6 +293,27 @@ class PageRouter {
           pageBuilder: (_, animation, __) => BlocProvider<TasbihCubit>(
             create: (context) => TasbihCubit(),
             child: Tasbih(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.hijriCalendar:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<HijriCalendarCubit>(
+            create: (context) => HijriCalendarCubit(),
+            child: HijriCalendarScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
