@@ -6,6 +6,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/athkar/athkar_cubit.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
+import 'package:huda/cubit/books/books_cubit.dart';
 import 'package:huda/cubit/chapters/chapters_cubit.dart';
 import 'package:huda/cubit/hadith/hadith_cubit.dart';
 import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
@@ -18,6 +19,7 @@ import 'package:huda/cubit/settings/settings_cubit.dart';
 import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
 import 'package:huda/presentation/screens/athkar.dart';
 import 'package:huda/presentation/screens/athkar_details.dart';
+import 'package:huda/presentation/screens/books.dart';
 import 'package:huda/presentation/screens/hadith.dart';
 import 'package:huda/presentation/screens/hadith_chapters.dart';
 import 'package:huda/presentation/screens/hadith_details.dart';
@@ -314,6 +316,27 @@ class PageRouter {
           pageBuilder: (_, animation, __) => BlocProvider<HijriCalendarCubit>(
             create: (context) => HijriCalendarCubit(),
             child: HijriCalendarScreen(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.books:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<BooksCubit>(
+            create: (context) => BooksCubit(),
+            child: BooksScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
