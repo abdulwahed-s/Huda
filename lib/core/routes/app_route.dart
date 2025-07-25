@@ -16,4 +16,5 @@ class AppRoute {
   static const String qiblah = '/qiblah';
   static const String tasbih = '/tasbih';
   static const String hijriCalendar = '/hijriCalendar';
+  static const String books = '/books';
 }
