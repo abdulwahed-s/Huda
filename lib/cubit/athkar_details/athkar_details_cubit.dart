@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:huda/core/connection/network_info.dart';
 import 'package:huda/data/api/athkar_services.dart';
 import 'package:huda/data/models/athkar_detail_model.dart';
 import 'package:huda/data/repository/athkar_repository.dart';
@@ -13,11 +14,15 @@ class AthkarDetailsCubit extends Cubit<AthkarDetailsState> {
 
   Future<void> loadAthkarDetail(String id) async {
     emit(AthkarDetailsLoading());
-    try {
-      final athkarDetail = await athkarRepository.getAthkarDetail(id);
-      emit(AthkarDetailsLoaded(athkarDetail));
-    } catch (e) {
-      emit(AthkarDetailsError(e.toString()));
+    if (await NetworkInfo.checkInternetConnectivity()) {
+      try {
+        final athkarDetail = await athkarRepository.getAthkarDetail(id);
+        emit(AthkarDetailsLoaded(athkarDetail));
+      } catch (e) {
+        emit(AthkarDetailsError(e.toString()));
+      }
+    } else {
+      emit(AthkarDetailsOffline());
     }
   }
 }
