@@ -74,6 +74,9 @@ dependencies:
   equatable: ^2.0.7
   flutter_colorpicker: ^1.1.0
   uuid: ^4.5.1
+  pdfrx: ^2.1.1
+  shimmer: ^3.0.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
@@ -118,6 +121,14 @@ flutter:
     - family: Amiri
       fonts:
         - asset: assets/fonts/Amiri-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Amiri-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Amiri-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Amiri-BoldItalic.ttf
+          style: italic
+          weight: 700
     - family: uthmanic
       fonts:
         - asset: assets/fonts/hafs-uthmanic-v14-full-org.ttf
