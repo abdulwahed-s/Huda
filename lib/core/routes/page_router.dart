@@ -6,7 +6,10 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/athkar/athkar_cubit.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
+import 'package:huda/cubit/book_detail/book_detail_cubit.dart';
+import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
 import 'package:huda/cubit/books/books_cubit.dart';
+import 'package:huda/cubit/books/languages_cubit.dart';
 import 'package:huda/cubit/chapters/chapters_cubit.dart';
 import 'package:huda/cubit/hadith/hadith_cubit.dart';
 import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
@@ -19,6 +22,7 @@ import 'package:huda/cubit/settings/settings_cubit.dart';
 import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
 import 'package:huda/presentation/screens/athkar.dart';
 import 'package:huda/presentation/screens/athkar_details.dart';
+import 'package:huda/presentation/screens/book_detail.dart';
 import 'package:huda/presentation/screens/books.dart';
 import 'package:huda/presentation/screens/hadith.dart';
 import 'package:huda/presentation/screens/hadith_chapters.dart';
@@ -27,6 +31,7 @@ import 'package:huda/presentation/screens/hijri_calendar.dart';
 import 'package:huda/presentation/screens/home.dart';
 import 'package:huda/presentation/screens/home_quran.dart';
 import 'package:huda/presentation/screens/notifications.dart';
+import 'package:huda/presentation/screens/pdf_view.dart';
 import 'package:huda/presentation/screens/prayer_times.dart';
 import 'package:huda/presentation/screens/qiblah.dart';
 import 'package:huda/presentation/screens/settings.dart';
@@ -334,9 +339,71 @@ class PageRouter {
       case AppRoute.books:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<BooksCubit>(
-            create: (context) => BooksCubit(),
+          pageBuilder: (_, animation, __) => MultiBlocProvider(
+            providers: [
+              BlocProvider<BooksCubit>(
+                create: (context) => BooksCubit(),
+              ),
+              BlocProvider<LanguagesCubit>(
+                create: (context) => LanguagesCubit(),
+              ),
+            ],
             child: BooksScreen(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.bookDetail:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) {
+            final args = settings.arguments as Map<String, String>;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<BookDetailCubit>(
+                  create: (context) => BookDetailCubit(),
+                ),
+                BlocProvider<BookLanguagesCubit>(
+                  create: (context) => BookLanguagesCubit(),
+                ),
+              ],
+              child: BookDetailScreen(
+                bookId: int.parse(args['bookId']!),
+                language: args['language']!,
+                title: args['title']!,
+              ),
+            );
+          },
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.pdfView:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => PdfView(
+            pdfUrl: settings.arguments as String,
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
