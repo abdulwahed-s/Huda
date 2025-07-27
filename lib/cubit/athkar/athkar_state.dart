@@ -18,3 +18,5 @@ final class AthkarError extends AthkarState {
 
   AthkarError(this.message);
 }
+
+final class AthkarOffline extends AthkarState {}
