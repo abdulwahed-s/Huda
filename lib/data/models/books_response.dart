@@ -53,27 +53,31 @@ class BookItem {
 
   factory BookItem.fromJson(Map<String, dynamic> json) {
     return BookItem(
-      id: json['id'],
-      sourceId: json['source_id'],
-      title: json['title'],
-      type: json['type'],
-      addDate: json['add_date'],
-      updateDate: json['update_date'],
+      id: json['id'] ?? 0,
+      sourceId: json['source_id'] ?? 0,
+      title: json['title'] ?? '',
+      type: json['type'] ?? '',
+      addDate: json['add_date'] ?? 0,
+      updateDate: json['update_date'] ?? 0,
       description: json['description'],
       fullDescription: json['full_description'],
-      sourceLanguage: json['source_language'],
-      translatedLanguage: json['translated_language'],
+      sourceLanguage: json['source_language'] ?? '',
+      translatedLanguage: json['translated_language'] ?? '',
       image: json['image'],
-      numAttachments: json['num_attachments'],
-      importanceLevel: json['importance_level'],
-      apiUrl: json['api_url'],
-      preparedBy: (json['prepared_by'] as List)
-          .map((e) => PreparedBy.fromJson(e))
-          .toList(),
-      attachments: (json['attachments'] as List)
-          .map((e) => Attachment.fromJson(e))
-          .toList(),
-      locales: json['locales'],
+      numAttachments: json['num_attachments'] ?? 0,
+      importanceLevel: json['importance_level'] ?? '',
+      apiUrl: json['api_url'] ?? '',
+      preparedBy: json['prepared_by'] != null
+          ? (json['prepared_by'] as List)
+              .map((e) => PreparedBy.fromJson(e))
+              .toList()
+          : <PreparedBy>[],
+      attachments: json['attachments'] != null
+          ? (json['attachments'] as List)
+              .map((e) => Attachment.fromJson(e))
+              .toList()
+          : <Attachment>[],
+      locales: json['locales'] ?? <dynamic>[],
     );
   }
 }
@@ -90,7 +94,7 @@ class PreparedBy {
   PreparedBy({
     required this.id,
     required this.sourceId,
-    required this.title,
+    this.title,
     required this.type,
     required this.kind,
     this.description,
@@ -99,13 +103,13 @@ class PreparedBy {
 
   factory PreparedBy.fromJson(Map<String, dynamic> json) {
     return PreparedBy(
-      id: json['id'],
-      sourceId: json['source_id'],
+      id: json['id'] ?? 0,
+      sourceId: json['source_id'] ?? 0,
       title: json['title'],
-      type: json['type'],
-      kind: json['kind'],
+      type: json['type'] ?? '',
+      kind: json['kind'] ?? '',
       description: json['description'],
-      apiUrl: json['api_url'],
+      apiUrl: json['api_url'] ?? '',
     );
   }
 }
@@ -127,11 +131,11 @@ class Attachment {
 
   factory Attachment.fromJson(Map<String, dynamic> json) {
     return Attachment(
-      order: json['order'],
-      size: json['size'],
-      extensionType: json['extension_type'],
-      description: json['description'],
-      url: json['url'],
+      order: json['order'] ?? 0,
+      size: json['size'] ?? '',
+      extensionType: json['extension_type'] ?? '',
+      description: json['description'] ?? '',
+      url: json['url'] ?? '',
     );
   }
 }
@@ -146,10 +150,10 @@ class Links {
   final int totalItems;
 
   Links({
-    required this.next,
-    required this.prev,
-    required this.first,
-    required this.last,
+    this.next,
+    this.prev,
+    this.first,
+    this.last,
     required this.currentPage,
     required this.pagesNumber,
     required this.totalItems,
@@ -161,9 +165,9 @@ class Links {
       prev: json['prev'],
       first: json['first'],
       last: json['last'],
-      currentPage: json['current_page'],
-      pagesNumber: json['pages_number'],
-      totalItems: json['total_items'],
+      currentPage: json['current_page'] ?? 1,
+      pagesNumber: json['pages_number'] ?? 1,
+      totalItems: json['total_items'] ?? 0,
     );
   }
 }
