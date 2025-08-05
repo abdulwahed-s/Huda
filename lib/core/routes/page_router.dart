@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/services/gemini_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/athkar/athkar_cubit.dart';
@@ -11,6 +12,8 @@ import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
 import 'package:huda/cubit/books/books_cubit.dart';
 import 'package:huda/cubit/books/languages_cubit.dart';
 import 'package:huda/cubit/chapters/chapters_cubit.dart';
+import 'package:huda/cubit/chat/chat_cubit.dart';
+import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
 import 'package:huda/cubit/hadith/hadith_cubit.dart';
 import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
 import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
@@ -27,9 +30,10 @@ import 'package:huda/presentation/screens/books.dart';
 import 'package:huda/presentation/screens/hadith.dart';
 import 'package:huda/presentation/screens/hadith_chapters.dart';
 import 'package:huda/presentation/screens/hadith_details.dart';
-import 'package:huda/presentation/screens/hijri_calendar.dart';
+import 'package:huda/presentation/screens/hijri_calendar_simple.dart';
 import 'package:huda/presentation/screens/home.dart';
 import 'package:huda/presentation/screens/home_quran.dart';
+import 'package:huda/presentation/screens/huda_ai.dart';
 import 'package:huda/presentation/screens/notifications.dart';
 import 'package:huda/presentation/screens/pdf_view.dart';
 import 'package:huda/presentation/screens/prayer_times.dart';
@@ -45,7 +49,7 @@ class PageRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider<HomeCubit>(
             create: (context) => HomeCubit(),
-            child: Home(),
+            child: const Home(),
           ),
         );
       case AppRoute.homeQuran:
@@ -53,7 +57,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<QuranCubit>(
             create: (context) => (QuranCubit()),
-            child: HomeQuran(),
+            child: const HomeQuran(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -75,7 +79,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<SettingsCubit>(
             create: (context) => SettingsCubit(),
-            child: Settings(), // Replace with your actual settings screen
+            child: const Settings(), // Replace with your actual settings screen
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -116,7 +120,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<PrayerTimesCubit>(
             create: (context) => PrayerTimesCubit(getIt<CacheHelper>()),
-            child: PrayerTimes(),
+            child: const PrayerTimes(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -138,7 +142,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<NotificationsCubit>(
             create: (context) => NotificationsCubit(),
-            child: Notifications(),
+            child: const Notifications(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -159,7 +163,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<AthkarCubit>(
             create: (context) => AthkarCubit(),
-            child: AthkarScreen(),
+            child: const AthkarScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -208,7 +212,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<HadithCubit>(
             create: (context) => HadithCubit(),
-            child: Hadith(),
+            child: const Hadith(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -227,10 +231,16 @@ class PageRouter {
       case AppRoute.hadithChapters:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<ChaptersCubit>(
-            create: (context) => ChaptersCubit(),
-            child: HadithChapters(bookId: settings.arguments as String),
-          ),
+          pageBuilder: (_, animation, __) {
+            final args = settings.arguments as Map<String, String>;
+            return BlocProvider<ChaptersCubit>(
+              create: (context) => ChaptersCubit(),
+              child: HadithChapters(
+                bookId: args['bookSlug']!,
+                bookName: args['bookName']!,
+              ),
+            );
+          },
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
             const end = Offset.zero;
@@ -255,6 +265,7 @@ class PageRouter {
               child: HadithDetails(
                 chapterId: args['chapterId']!,
                 bookId: args['bookId']!,
+                chapterName: args['chapterName']!,
               ),
             );
           },
@@ -277,7 +288,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<QiblahCubit>(
             create: (context) => QiblahCubit(),
-            child: QiblahScreen(),
+            child: const QiblahScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -299,7 +310,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<TasbihCubit>(
             create: (context) => TasbihCubit(),
-            child: Tasbih(),
+            child: const Tasbih(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -320,7 +331,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<HijriCalendarCubit>(
             create: (context) => HijriCalendarCubit(),
-            child: HijriCalendarScreen(),
+            child: const HijriCalendarScreenNew(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -348,7 +359,7 @@ class PageRouter {
                 create: (context) => LanguagesCubit(),
               ),
             ],
-            child: BooksScreen(),
+            child: const BooksScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -377,6 +388,9 @@ class PageRouter {
                 BlocProvider<BookLanguagesCubit>(
                   create: (context) => BookLanguagesCubit(),
                 ),
+                BlocProvider<DownloadManagerCubit>(
+                  create: (context) => DownloadManagerCubit(),
+                ),
               ],
               child: BookDetailScreen(
                 bookId: int.parse(args['bookId']!),
@@ -404,6 +418,27 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => PdfView(
             pdfUrl: settings.arguments as String,
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.hudaAI:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<ChatCubit>(
+            create: (context) => ChatCubit(GeminiService()),
+            child: const ChatScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
