@@ -20,4 +20,5 @@ class AppRoute {
   static const String bookDetail = '/bookDetail';
   static const String pdfView = '/pdfView';
   static const String hudaAI = '/hudaAI';
+  static const String islamicChecklist = '/islamicChecklist';
 }
