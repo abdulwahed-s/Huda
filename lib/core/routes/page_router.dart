@@ -24,6 +24,7 @@ import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
 import 'package:huda/cubit/settings/settings_cubit.dart';
 import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
+import 'package:huda/cubit/rating/rating_cubit.dart';
 import 'package:huda/presentation/screens/athkar.dart';
 import 'package:huda/presentation/screens/athkar_details.dart';
 import 'package:huda/presentation/screens/book_detail.dart';
@@ -42,6 +43,7 @@ import 'package:huda/presentation/screens/prayer_times.dart';
 import 'package:huda/presentation/screens/qiblah.dart';
 import 'package:huda/presentation/screens/settings.dart';
 import 'package:huda/presentation/screens/tasbih.dart';
+import 'package:huda/presentation/screens/feedback_screen.dart';
 import 'package:huda/presentation/screens/widget_management_screen.dart';
 
 class PageRouter {
@@ -81,7 +83,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<SettingsCubit>(
             create: (context) => SettingsCubit(),
-            child: const Settings(), // Replace with your actual settings screen
+            child: const Settings(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
@@ -462,6 +464,27 @@ class PageRouter {
           pageBuilder: (_, animation, __) => BlocProvider<ChecklistCubit>(
             create: (context) => ChecklistCubit(),
             child: const IslamicChecklistScreen(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.feedback:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<RatingCubit>(
+            create: (context) => RatingCubit(),
+            child: const FeedbackScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
