@@ -91,7 +91,11 @@ dependencies:
   firebase_storage: ^13.0.0
   path: ^1.9.1
   flutter_launcher_icons: ^0.14.4
+  rate_my_app: ^2.3.2
+  flutter_rating_bar: ^4.0.1
   flutter_native_splash: ^2.4.6
+  upgrader: ^11.4.0
+  scrollable_positioned_list: ^0.3.8
 
 dev_dependencies:
   flutter_test:
