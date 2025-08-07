@@ -50,7 +50,7 @@ dependencies:
   flutter_svg: ^2.2.0
   lottie: ^3.1.2
   newton_particles: ^0.2.2
-  share_plus: ^10.1.1
+  share_plus: ^11.0.0
   another_flushbar: ^1.12.30
   jiffy: ^6.4.3
   locale_names: ^1.1.1
@@ -64,7 +64,7 @@ dependencies:
   timezone: ^0.10.1
   flutter_timezone: ^4.1.1
   permission_handler: ^12.0.1
-  workmanager: ^0.7.0
+  workmanager: ^0.9.0+2
   flutter_foreground_task: ^9.1.0
   screenshot: ^3.0.0
   flutter_qiblah: ^3.1.0+1
@@ -106,7 +106,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 
 flutter_launcher_icons:
