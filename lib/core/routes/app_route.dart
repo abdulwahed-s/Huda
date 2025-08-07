@@ -21,4 +21,5 @@ class AppRoute {
   static const String pdfView = '/pdfView';
   static const String hudaAI = '/hudaAI';
   static const String islamicChecklist = '/islamicChecklist';
+  static const String feedback = '/feedback';
 }
