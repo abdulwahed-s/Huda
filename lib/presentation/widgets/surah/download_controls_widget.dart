@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/theme_extension.dart';
 
 class DownloadControlsWidget extends StatelessWidget {
   final bool canDownload;
@@ -24,43 +25,40 @@ class DownloadControlsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!canDownload) return const SizedBox.shrink();
+    // Only show download controls when online
+    if (!canDownload) {
+      return const SizedBox.shrink(); // Hide completely when offline
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Download Options',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 103, 43, 93),
-          ),
-        ),
-        const SizedBox(height: 12),
         Row(
           children: [
             // Download single ayah button
             Expanded(
               child: FutureBuilder<bool>(
+                key: ValueKey(
+                    'single_download_${DateTime.now().millisecondsSinceEpoch ~/ 1000}'), // Cache for 1 second
                 future: checkSingleDownloaded(),
                 builder: (context, snapshot) {
                   final singleDownloaded = snapshot.data ?? false;
 
                   return ElevatedButton.icon(
-                    onPressed: isDownloadingSingle ||
-                            isDownloadingAll ||
-                            singleDownloaded
-                        ? null
-                        : onDownloadSingle,
+                    onPressed: canDownload &&
+                            !isDownloadingSingle &&
+                            !isDownloadingAll &&
+                            !singleDownloaded
+                        ? onDownloadSingle
+                        : null,
                     icon: singleDownloaded
                         ? const Icon(Icons.check_circle, size: 18)
                         : isDownloadingSingle
                             ? const SizedBox(
                                 width: 16,
                                 height: 16,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 2, color: Colors.white),
                               )
                             : const Icon(Icons.download, size: 18),
                     label: Text(
@@ -71,18 +69,28 @@ class DownloadControlsWidget extends StatelessWidget {
                                   ? downloadProgressText
                                   : 'Downloading...'
                               : 'Download Ayah',
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w600),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: singleDownloaded
-                          ? Colors.green
-                          : const Color.fromARGB(255, 103, 43, 93),
+                      backgroundColor:
+                          singleDownloaded ? const Color(0xFF4CAF50) : null,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 8),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
+                      elevation: singleDownloaded ? 2 : 4,
+                    ).copyWith(
+                      backgroundColor: !singleDownloaded
+                          ? WidgetStateProperty.resolveWith<Color>((states) {
+                              if (states.contains(WidgetState.pressed)) {
+                                return context.primaryColor;
+                              }
+                              return context.primaryVariantColor;
+                            })
+                          : null,
                     ),
                   );
                 },
@@ -93,23 +101,27 @@ class DownloadControlsWidget extends StatelessWidget {
             // Download all surah button
             Expanded(
               child: FutureBuilder<bool>(
+                key: ValueKey(
+                    'all_download_${DateTime.now().millisecondsSinceEpoch ~/ 1000}'), // Cache for 1 second
                 future: checkAllDownloaded(),
                 builder: (context, snapshot) {
                   final allDownloaded = snapshot.data ?? false;
 
                   return ElevatedButton.icon(
-                    onPressed:
-                        isDownloadingSingle || isDownloadingAll || allDownloaded
-                            ? null
-                            : onDownloadAll,
+                    onPressed: canDownload &&
+                            !isDownloadingSingle &&
+                            !isDownloadingAll &&
+                            !allDownloaded
+                        ? onDownloadAll
+                        : null,
                     icon: allDownloaded
                         ? const Icon(Icons.check_circle, size: 18)
                         : isDownloadingAll
                             ? const SizedBox(
                                 width: 16,
                                 height: 16,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 2, color: Colors.white),
                               )
                             : const Icon(Icons.download_for_offline, size: 18),
                     label: Text(
@@ -120,18 +132,28 @@ class DownloadControlsWidget extends StatelessWidget {
                                   ? downloadProgressText
                                   : 'Downloading...'
                               : 'Download Surah',
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w600),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: allDownloaded
-                          ? Colors.green
-                          : const Color.fromARGB(255, 103, 43, 93),
+                      backgroundColor:
+                          allDownloaded ? const Color(0xFF4CAF50) : null,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 8),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
+                      elevation: allDownloaded ? 2 : 4,
+                    ).copyWith(
+                      backgroundColor: !allDownloaded
+                          ? WidgetStateProperty.resolveWith<Color>((states) {
+                              if (states.contains(WidgetState.pressed)) {
+                                return context.primaryColor;
+                              }
+                              return context.primaryLightColor;
+                            })
+                          : null,
                     ),
                   );
                 },
