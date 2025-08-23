@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
+import 'package:locale_names/locale_names.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class TranslationWidget extends StatelessWidget {
   final List<edition.Data> translationSources;
@@ -51,73 +55,189 @@ class TranslationWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Translation',
+        Text(
+          AppLocalizations.of(context)!.translation,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 14.sp,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 103, 43, 93),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? context.accentColor
+                : context.primaryColor,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 6.h),
 
         // Language filter for translations
         if (availableTranslationLanguages.length > 1)
           Column(
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[300]!),
-                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [
+                      context.primaryColor.withValues(alpha: 0.1),
+                      context.primaryColor.withValues(alpha: 0.1),
+                    ],
+                  ),
+                  border: Border.all(
+                    color: context.primaryColor.withValues(alpha: 0.3),
+                  ),
+                  borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: DropdownButton<String?>(
                   value: selectedTranslationLanguage,
-                  hint: const Text('Filter translation language'),
+                  hint: Text(
+                    AppLocalizations.of(context)!.filterTranslationLanguage,
+                    style: TextStyle(
+                      color: context.primaryColor.withValues(alpha: 0.7),
+                      fontSize: 12.sp,
+                    ),
+                  ),
                   isExpanded: true,
                   underline: const SizedBox.shrink(),
+                  dropdownColor: Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).cardColor
+                      : Colors.white,
+                  icon: Icon(
+                    Icons.keyboard_arrow_down,
+                    color: context.primaryColor,
+                    size: 18.sp,
+                  ),
                   items: [
-                    const DropdownMenuItem<String?>(
+                    DropdownMenuItem<String?>(
                       value: null,
-                      child: Text('All languages'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.translate,
+                              size: 20,
+                              color:
+                                  context.primaryColor.withValues(alpha: 0.7),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              AppLocalizations.of(context)!.allLanguages,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     ...availableTranslationLanguages.map((language) {
+                      Locale locale = Locale.fromSubtags(
+                        languageCode: language,
+                      );
                       return DropdownMenuItem<String?>(
                         value: language,
-                        child: Text(language),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.translate,
+                                size: 20,
+                                color:
+                                    context.primaryColor.withValues(alpha: 0.7),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                locale.nativeDisplayLanguage,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     }),
                   ],
                   onChanged: onTranslationLanguageSelected,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
             ],
           ),
 
         // Translation sources dropdown
         if (filteredSources.isNotEmpty)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[300]!),
-              borderRadius: BorderRadius.circular(8),
+              gradient: LinearGradient(
+                colors: [
+                  context.primaryColor.withValues(alpha: 0.1),
+                  context.primaryColor.withValues(alpha: 0.1),
+                ],
+              ),
+              border: Border.all(
+                color: context.primaryColor.withValues(alpha: 0.3),
+              ),
+              borderRadius: BorderRadius.circular(16),
             ),
             child: DropdownButton<String?>(
               value: selectedTranslationId,
-              hint: const Text('Select translation source'),
+              hint: Text(
+                AppLocalizations.of(context)!.selectTranslationSource,
+                style: TextStyle(
+                  color: context.primaryColor.withValues(alpha: 0.7),
+                  fontSize: 14,
+                ),
+              ),
               isExpanded: true,
               underline: const SizedBox.shrink(),
+              dropdownColor: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF1A1A1A)
+                  : Colors.white,
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                color: context.primaryColor,
+              ),
               items: [
-                const DropdownMenuItem<String?>(
+                DropdownMenuItem<String?>(
                   value: null,
-                  child: Text('None'),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.close,
+                          size: 20,
+                          color: Colors.grey.withValues(alpha: 0.7),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocalizations.of(context)!.none,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 ...filteredSources.map((source) {
                   return DropdownMenuItem<String?>(
                     value: source.identifier,
-                    child: Text('${source.name} (${source.language})'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.translate_rounded,
+                            size: 20,
+                            color: context.primaryColor.withValues(alpha: 0.7),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              '${source.name}',
+                              style: const TextStyle(fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 }),
               ],
@@ -129,9 +249,9 @@ class TranslationWidget extends StatelessWidget {
             ),
           )
         else
-          const Text(
-            'No translation sources available for selected language',
-            style: TextStyle(color: Colors.grey),
+          Text(
+            AppLocalizations.of(context)!.noTranslationAvailable,
+            style: const TextStyle(color: Colors.grey),
           ),
 
         const SizedBox(height: 12),
@@ -139,13 +259,12 @@ class TranslationWidget extends StatelessWidget {
         // Translation content
         if (selectedTranslationId != null) ...[
           if (isLoadingTranslation)
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Color.fromARGB(255, 103, 43, 93),
-                  ),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(context.accentColor),
                 ),
               ),
             )
@@ -154,18 +273,26 @@ class TranslationWidget extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.grey[50],
-                border: Border.all(color: Colors.grey[300]!),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? const Color(0xFF1A1A1A)
+                    : Colors.grey[50],
+                border: Border.all(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? context.accentColor.withValues(alpha: 0.2)
+                      : Colors.grey[300]!,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Translation:',
+                    '${AppLocalizations.of(context)!.translation}:',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? context.accentColor
+                          : Colors.grey[700],
                       fontSize: 12,
                     ),
                   ),
@@ -177,17 +304,20 @@ class TranslationWidget extends StatelessWidget {
                                 orElse: () => currentTranslation!
                                     .data!.surahs!.first.ayahs!.first)
                             .text ??
-                        'Translation not available',
-                    style: const TextStyle(
+                        AppLocalizations.of(context)!.translationNotAvailable,
+                    style: TextStyle(
                       fontSize: 14,
                       height: 1.5,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFFF8FAFC)
+                          : null,
                     ),
                   ),
                 ],
               ),
             ),
 
-          // Download options for translation
+          // Download options for translation - only show when online
           if (canDownload) ...[
             const SizedBox(height: 8),
             Row(
@@ -206,11 +336,12 @@ class TranslationWidget extends StatelessWidget {
                         final isDownloaded = surahDownloaded || allDownloaded;
 
                         return ElevatedButton.icon(
-                          onPressed: isDownloadingSurah ||
-                                  isDownloadingAll ||
-                                  isDownloaded
-                              ? null
-                              : onDownloadTranslation,
+                          onPressed: canDownload &&
+                                  !isDownloadingSurah &&
+                                  !isDownloadingAll &&
+                                  !isDownloaded
+                              ? onDownloadTranslation
+                              : null,
                           icon: isDownloaded
                               ? const Icon(Icons.check_circle, size: 16)
                               : isDownloadingSurah
@@ -218,28 +349,48 @@ class TranslationWidget extends StatelessWidget {
                                       width: 16,
                                       height: 16,
                                       child: CircularProgressIndicator(
-                                          strokeWidth: 2),
+                                          strokeWidth: 2, color: Colors.white),
                                     )
                                   : const Icon(Icons.download, size: 16),
                           label: Text(
                             isDownloaded
                                 ? allDownloaded
-                                    ? 'Included in All'
-                                    : 'Surah Downloaded'
+                                    ? AppLocalizations.of(context)!
+                                        .includedInAll
+                                    : AppLocalizations.of(context)!
+                                        .surahDownloaded
                                 : isDownloadingSurah
-                                    ? 'Downloading...'
-                                    : 'Download Surah',
-                            style: const TextStyle(fontSize: 12),
+                                    ? AppLocalizations.of(context)!.downloading
+                                    : AppLocalizations.of(context)!
+                                        .downloadSurah,
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w600),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                isDownloaded ? Colors.green : Colors.blue,
+                            backgroundColor: isDownloaded
+                                ? const Color(0xFF4CAF50)
+                                : canDownload
+                                    ? null
+                                    : Colors.grey,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                                horizontal: 12, vertical: 8),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(12),
                             ),
+                            elevation: isDownloaded ? 2 : 4,
+                          ).copyWith(
+                            backgroundColor: canDownload && !isDownloaded
+                                ? WidgetStateProperty.resolveWith<Color>(
+                                    (states) {
+                                    if (states
+                                        .contains(WidgetState.pressed)) {
+                                      return context.primaryColor;
+                                    }
+                                    return context.primaryColor
+                                        .withValues(alpha: 0.8);
+                                  })
+                                : null,
                           ),
                         );
                       },
@@ -256,11 +407,12 @@ class TranslationWidget extends StatelessWidget {
                         final allDownloaded = snapshot.data ?? false;
 
                         return ElevatedButton.icon(
-                          onPressed: isDownloadingSurah ||
-                                  isDownloadingAll ||
-                                  allDownloaded
-                              ? null
-                              : onDownloadFullTranslation,
+                          onPressed: canDownload &&
+                                  !isDownloadingSurah &&
+                                  !isDownloadingAll &&
+                                  !allDownloaded
+                              ? onDownloadFullTranslation
+                              : null,
                           icon: allDownloaded
                               ? const Icon(Icons.check_circle, size: 16)
                               : isDownloadingAll
@@ -268,27 +420,44 @@ class TranslationWidget extends StatelessWidget {
                                       width: 16,
                                       height: 16,
                                       child: CircularProgressIndicator(
-                                          strokeWidth: 2),
+                                          strokeWidth: 2, color: Colors.white),
                                     )
                                   : const Icon(Icons.download_for_offline,
                                       size: 16),
                           label: Text(
                             allDownloaded
-                                ? 'All Downloaded'
+                                ? AppLocalizations.of(context)!.allDownloaded
                                 : isDownloadingAll
-                                    ? 'Downloading...'
-                                    : 'Download All',
-                            style: const TextStyle(fontSize: 12),
+                                    ? AppLocalizations.of(context)!.downloading
+                                    : AppLocalizations.of(context)!.downloadAll,
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w600),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                allDownloaded ? Colors.green : Colors.indigo,
+                            backgroundColor: allDownloaded
+                                ? const Color(0xFF4CAF50)
+                                : canDownload
+                                    ? null
+                                    : Colors.grey,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                                horizontal: 12, vertical: 8),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(12),
                             ),
+                            elevation: allDownloaded ? 2 : 4,
+                          ).copyWith(
+                            backgroundColor: canDownload && !allDownloaded
+                                ? WidgetStateProperty.resolveWith<Color>(
+                                    (states) {
+                                    if (states
+                                        .contains(WidgetState.pressed)) {
+                                      return context.primaryColor;
+                                    }
+                                    return context.primaryColor
+                                        .withValues(alpha: 0.7);
+                                  })
+                                : null,
                           ),
                         );
                       },
