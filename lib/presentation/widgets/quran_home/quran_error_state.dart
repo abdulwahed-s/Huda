@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class QuranErrorState extends StatelessWidget {
   final String message;
@@ -46,7 +47,8 @@ class QuranErrorState extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onRetry,
             icon: Icon(Icons.refresh, size: 16.sp),
-            label: Text('Retry', style: TextStyle(fontSize: 13.sp)),
+            label: Text(AppLocalizations.of(context)!.retry,
+                style: TextStyle(fontSize: 13.sp)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 103, 43, 93),
               foregroundColor: Colors.white,
