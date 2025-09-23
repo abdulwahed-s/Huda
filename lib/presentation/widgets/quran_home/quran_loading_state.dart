@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/theme_extension.dart';
 
 class QuranLoadingState extends StatelessWidget {
   const QuranLoadingState({super.key});
@@ -11,8 +12,8 @@ class QuranLoadingState extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              Color.fromARGB(255, 103, 43, 93),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              context.primaryColor,
             ),
           ),
           SizedBox(height: 12.h),
@@ -24,7 +25,7 @@ class QuranLoadingState extends StatelessWidget {
                   .textTheme
                   .bodyMedium
                   ?.color
-                  ?.withOpacity(0.7),
+                  ?.withValues(alpha: 0.7),
             ),
           ),
         ],
