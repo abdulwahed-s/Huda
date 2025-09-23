@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class QuranSearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -21,14 +23,14 @@ class QuranSearchBar extends StatelessWidget {
       height: 42.h,
       decoration: BoxDecoration(
         color: isDarkMode
-            ? Theme.of(context).cardColor.withOpacity(0.9)
+            ? Theme.of(context).cardColor.withValues(alpha: 0.9)
             : Colors.white,
         borderRadius: BorderRadius.circular(21.r),
         boxShadow: [
           BoxShadow(
             color: isDarkMode
-                ? Colors.black.withOpacity(0.3)
-                : Colors.black.withOpacity(0.1),
+                ? Colors.black.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.1),
             blurRadius: 6.r,
             offset: Offset(0, 2.h),
           ),
@@ -42,14 +44,14 @@ class QuranSearchBar extends StatelessWidget {
           fontSize: 13.sp,
         ),
         decoration: InputDecoration(
-          hintText: 'Search Surahs...',
+          hintText: AppLocalizations.of(context)!.searchHint,
           hintStyle: TextStyle(
             color: isDarkMode ? Colors.grey[400] : Colors.grey[400],
             fontSize: 13.sp,
           ),
           prefixIcon: Icon(
             Icons.search,
-            color: const Color.fromARGB(255, 103, 43, 93).withOpacity(0.7),
+            color: context.accentColor.withValues(alpha: 0.7),
             size: 18.sp,
           ),
           suffixIcon: controller.text.isNotEmpty
