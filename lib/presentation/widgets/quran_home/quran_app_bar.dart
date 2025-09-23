@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/cubit/theme/theme_cubit.dart';
+import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'quran_search_bar.dart';
 
 class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -24,6 +24,7 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
+      automaticallyImplyLeading: false,
       toolbarHeight: 120.h,
       flexibleSpace: Container(
         decoration: BoxDecoration(
@@ -32,12 +33,12 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
             end: Alignment.bottomRight,
             colors: Theme.of(context).brightness == Brightness.dark
                 ? [
-                    const Color.fromARGB(255, 103, 43, 93).withOpacity(0.9),
-                    const Color.fromARGB(255, 103, 43, 93).withOpacity(0.7),
+                    context.primaryColor.withValues(alpha: 0.9),
+                    context.primaryColor.withValues(alpha: 0.7),
                   ]
                 : [
-                    const Color.fromARGB(255, 103, 43, 93),
-                    const Color.fromARGB(255, 103, 43, 93).withOpacity(0.8),
+                    context.primaryColor,
+                    context.primaryColor.withValues(alpha: 0.8),
                   ],
           ),
           borderRadius: BorderRadius.only(
@@ -46,7 +47,7 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 103, 43, 93).withOpacity(0.3),
+              color: context.primaryColor.withValues(alpha: 0.3),
               blurRadius: 12.r,
               offset: Offset(0, 4.h),
             ),
@@ -62,48 +63,60 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
                 SizedBox(
                   height: 36.h,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(6.r),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                      Material(
+                        borderRadius: BorderRadius.circular(8.r),
+                        color: Colors.white.withValues(alpha: 0.2),
+                        child: InkWell(
                           borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Icon(
-                          Icons.menu_book_rounded,
-                          color: Colors.white,
-                          size: 18.sp,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(6.r),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.white,
+                              size: 18.sp,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(width: 10.w),
                       Expanded(
-                        child: Text(
-                          'Quran Surahs',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      // Theme toggle button
-                      BlocBuilder<ThemeCubit, ThemeMode>(
-                        builder: (context, themeMode) {
-                          final isDark = themeMode == ThemeMode.dark ||
-                              (themeMode == ThemeMode.system &&
-                                  MediaQuery.of(context).platformBrightness ==
-                                      Brightness.dark);
-                          return IconButton(
-                            onPressed: () {
-                              context.read<ThemeCubit>().toggleTheme(!isDark);
-                            },
-                            icon: Icon(
-                              isDark ? Icons.light_mode : Icons.dark_mode,
-                              color: Colors.white,
-                              size: 20.sp,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(6.r),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Icon(
+                                Icons.menu_book_rounded,
+                                color: Colors.white,
+                                size: 18.sp,
+                              ),
                             ),
-                          );
-                        },
+                            SizedBox(width: 10.w),
+                            Expanded(
+                              child: Text(
+                                AppLocalizations.of(context)!.quranSurahs,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            // Theme toggle button
+                          ],
+                        ),
                       ),
                     ],
                   ),
