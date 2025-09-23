@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
-import 'package:huda/cubit/audio/audio_cubit.dart';
-import 'package:huda/cubit/tafsir/tafsir_cubit.dart';
-import 'package:huda/cubit/translation/translation_cubit.dart';
-import 'package:huda/data/api/audio_services.dart';
-import 'package:huda/data/api/tafsir_services.dart';
-import 'package:huda/data/api/translation_services.dart';
-import 'package:huda/data/repository/audio_repository.dart';
-import 'package:huda/data/repository/tafsir_repository.dart';
-import 'package:huda/data/repository/translation_repository.dart';
-import 'package:huda/presentation/screens/surah_screen.dart';
 import 'package:huda/data/models/quran_model.dart';
 import 'package:huda/core/utils/text_utils.dart';
+import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_app_bar.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_loading_state.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_empty_state.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_error_state.dart';
 import 'package:huda/presentation/widgets/quran_home/surah_list.dart';
+import 'package:huda/presentation/widgets/quran_home/search_result_list.dart';
+import 'package:huda/cubit/surah/surah_cubit.dart';
+import 'package:huda/data/models/search_result_model.dart';
 
 class HomeQuran extends StatefulWidget {
   const HomeQuran({super.key});
@@ -28,9 +26,13 @@ class HomeQuran extends StatefulWidget {
 
 class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
   late AnimationController _animationController;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<QuranModel> _filteredSurahs = [];
   List<QuranModel> _allSurahs = [];
+  List<SearchResult> _searchResults = [];
+  List<dynamic>? _cachedSurahData;
+  Timer? _searchDebounce;
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -39,21 +41,48 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
+    _loadCachedSurahData();
+  }
+
+  Future<void> _loadCachedSurahData() async {
+    try {
+      if (SurahCubit.isDataPreloaded) {
+        final String response =
+            await rootBundle.loadString('assets/json/surah_data_new.json');
+        _cachedSurahData = json.decode(response);
+      }
+    } catch (e) {
+      debugPrint('Failed to load cached surah data for search: $e');
+    }
   }
 
   @override
   void dispose() {
     _animationController.dispose();
     _searchController.dispose();
+    _searchDebounce?.cancel();
     super.dispose();
+  }
+
+  void _debouncedSearch(String query) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 300), () {
+      _filterSurahs(query);
+    });
   }
 
   void _filterSurahs(String query) {
     setState(() {
       if (query.isEmpty) {
         _filteredSurahs = List.from(_allSurahs);
+        _searchResults = [];
+        _isSearching = false;
       } else {
-        _filteredSurahs = _allSurahs.where((surah) {
+        _isSearching = true;
+        List<SearchResult> results = [];
+        List<AyahSearchResult> ayahResults = [];
+
+        List<QuranModel> matchingSurahs = _allSurahs.where((surah) {
           return surah.englishName!
                   .toLowerCase()
                   .contains(query.toLowerCase()) ||
@@ -64,47 +93,97 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
               TextUtils.removeDiacriticsAndNormalize(surah.name.toString())
                   .contains(TextUtils.removeDiacriticsAndNormalize(query));
         }).toList();
+
+        for (var surah in matchingSurahs) {
+          results.add(SearchResult.surah(surah));
+        }
+
+        if (_cachedSurahData != null) {
+          int maxAyahResults = 20;
+          int currentAyahCount = 0;
+
+          for (var surah in _allSurahs) {
+            if (currentAyahCount >= maxAyahResults) break;
+
+            bool alreadyMatched =
+                matchingSurahs.any((s) => s.number == surah.number);
+            if (alreadyMatched) continue;
+
+            try {
+              final surahData = _cachedSurahData!
+                  .firstWhere((s) => s['number'] == surah.number);
+
+              if (surahData['ayahs'] != null) {
+                final ayahs = surahData['ayahs'] as List;
+
+                for (var ayah in ayahs) {
+                  if (currentAyahCount >= maxAyahResults) break;
+
+                  final ayahText = ayah['text'] as String?;
+                  if (ayahText != null) {
+                    bool matches = false;
+
+                    if (TextUtils.removeDiacriticsAndNormalize(ayahText)
+                        .contains(
+                            TextUtils.removeDiacriticsAndNormalize(query))) {
+                      matches = true;
+                    } else if (ayahText
+                        .toLowerCase()
+                        .contains(query.toLowerCase())) {
+                      matches = true;
+                    }
+
+                    if (matches) {
+                      ayahResults.add(AyahSearchResult(
+                        surahNumber: surah.number!,
+                        surahName: surah.name!,
+                        surahEnglishName: surah.englishName!,
+                        ayahNumber: ayah['numberInSurah'] ?? 0,
+                        ayahText: ayahText,
+                        highlightedText: ayahText,
+                      ));
+                      currentAyahCount++;
+                    }
+                  }
+                }
+              }
+            } catch (e) {
+              debugPrint('Error searching in surah ${surah.number}: $e');
+            }
+          }
+        }
+
+        if (ayahResults.isNotEmpty) {
+          if (results.isNotEmpty) {
+            results.add(SearchResult.divider());
+          }
+          for (var ayahResult in ayahResults) {
+            results.add(SearchResult.ayah(ayahResult));
+          }
+        }
+
+        _searchResults = results;
+        _filteredSurahs = matchingSurahs;
       }
     });
   }
 
   void _navigateToSurah(QuranModel surah) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider<AudioRepository>(
-              create: (_) => AudioRepository(audioServices: AudioServices()),
-            ),
-            RepositoryProvider<TafsirRepository>(
-              create: (_) => TafsirRepository(tafsirServices: TafsirServices()),
-            ),
-            RepositoryProvider<TranslationRepository>(
-              create: (_) => TranslationRepository(
-                  translationServices: TranslationServices()),
-            ),
-          ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<AudioCubit>(
-                create: (context) =>
-                    AudioCubit(context.read<AudioRepository>()),
-              ),
-              BlocProvider<TafsirCubit>(
-                create: (context) =>
-                    TafsirCubit(context.read<TafsirRepository>()),
-              ),
-              BlocProvider<TranslationCubit>(
-                create: (context) =>
-                    TranslationCubit(context.read<TranslationRepository>()),
-              ),
-            ],
-            child: SurahScreen(surahInfo: surah),
-          ),
-        ),
-      ),
-    );
+    Navigator.pushNamed(context, AppRoute.surahScreen, arguments: {
+      'surahInfo': surah,
+      'shouldRestorePosition': false,
+    });
+  }
+
+  void _navigateToAyah(AyahSearchResult ayahResult) {
+    final surah =
+        _allSurahs.firstWhere((s) => s.number == ayahResult.surahNumber);
+
+    Navigator.pushNamed(context, AppRoute.surahScreen, arguments: {
+      'surahInfo': surah,
+      'shouldRestorePosition': false,
+      'scrollToAyah': ayahResult.ayahNumber,
+    });
   }
 
   @override
@@ -114,10 +193,14 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: QuranAppBar(
           searchController: _searchController,
-          onSearchChanged: _filterSurahs,
+          onSearchChanged: _debouncedSearch,
           onSearchClear: () {
             _searchController.clear();
             _filterSurahs('');
+            setState(() {
+              _isSearching = false;
+              _searchResults = [];
+            });
           },
         ),
         body: Container(
@@ -127,11 +210,11 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
               end: Alignment.bottomCenter,
               colors: Theme.of(context).brightness == Brightness.dark
                   ? [
-                      const Color.fromARGB(255, 103, 43, 93).withOpacity(0.1),
+                      context.primaryColor.withValues(alpha: 0.1),
                       Theme.of(context).scaffoldBackgroundColor,
                     ]
                   : [
-                      const Color.fromARGB(255, 103, 43, 93).withOpacity(0.05),
+                      context.primaryColor.withValues(alpha: 0.05),
                       Colors.white,
                     ],
             ),
@@ -148,13 +231,22 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
                     _animationController.forward();
                   }
 
-                  return _filteredSurahs.isEmpty
+                  return _isSearching && _searchResults.isEmpty
                       ? const QuranEmptyState()
-                      : SurahList(
-                          surahs: _filteredSurahs,
-                          animationController: _animationController,
-                          onSurahTap: _navigateToSurah,
-                        );
+                      : _isSearching
+                          ? SearchResultList(
+                              searchResults: _searchResults,
+                              animationController: _animationController,
+                              onSurahTap: _navigateToSurah,
+                              onAyahTap: _navigateToAyah,
+                            )
+                          : _filteredSurahs.isEmpty
+                              ? const QuranEmptyState()
+                              : SurahList(
+                                  surahs: _filteredSurahs,
+                                  animationController: _animationController,
+                                  onSurahTap: _navigateToSurah,
+                                );
                 } else if (state is QuranError) {
                   return QuranErrorState(
                     message: state.message,
