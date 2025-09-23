@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:huda/core/theme/theme_extension.dart';
 
 class AudioControlsWidget extends StatelessWidget {
   final AudioPlayer audioPlayer;
@@ -59,57 +61,91 @@ class AudioControlsWidget extends StatelessWidget {
                 onChangeEnd: (value) {
                   onUserSeekingChanged(false);
                 },
-                activeColor: const Color.fromARGB(255, 103, 43, 93),
-                inactiveColor: Colors.grey[300],
+                activeColor: context.primaryColor,
+                inactiveColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white.withValues(alpha: 0.3)
+                    : const Color(0xFFE0D7E0),
+                thumbColor: context.primaryColor,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 14.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       _formatDuration(currentPosition),
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 9.sp,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white.withValues(alpha: 0.7)
+                            : Colors.grey,
+                      ),
                     ),
                     Text(
                       _formatDuration(totalDuration),
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 9.sp,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white.withValues(alpha: 0.7)
+                            : Colors.grey,
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-        const SizedBox(height: 16),
+        SizedBox(height: 12.h),
         // Control buttons
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Previous button
-            IconButton(
-              onPressed: currentIndex > 0 ? onPrevious : null,
-              icon: Icon(
-                Icons.skip_previous,
+            Container(
+              decoration: BoxDecoration(
                 color: currentIndex > 0
-                    ? const Color.fromARGB(255, 103, 43, 93)
-                    : Colors.grey,
-                size: 32,
+                    ? context.primaryColor.withValues(alpha: 0.1)
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.grey.withValues(alpha: 0.1)),
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: IconButton(
+                onPressed: currentIndex > 0 ? onPrevious : null,
+                icon: Icon(
+                  Icons.skip_previous,
+                  color: currentIndex > 0
+                      ? context.primaryColor
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white.withValues(alpha: 0.5)
+                          : Colors.grey),
+                  size: 22.sp,
+                ),
               ),
             ),
             // Play/Pause button
             Container(
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                gradient: isPlayButtonEnabled
+                    ? LinearGradient(
+                        colors: [
+                          context.primaryColor,
+                          context.primaryColor.withValues(alpha: 0.8),
+                        ],
+                      )
+                    : null,
                 color: isPlayButtonEnabled
-                    ? const Color.fromARGB(255, 103, 43, 93)
-                    : Colors.grey,
+                    ? null
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white.withValues(alpha: 0.3)
+                        : Colors.grey),
+                shape: BoxShape.circle,
                 boxShadow: isPlayButtonEnabled
                     ? [
                         BoxShadow(
-                          color: const Color.fromARGB(255, 103, 43, 93)
-                              .withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 3),
+                          color: context.primaryColor.withValues(alpha: 0.3),
+                          blurRadius: 10.r,
+                          offset: Offset(0, 3.h),
                         ),
                       ]
                     : null,
@@ -119,19 +155,31 @@ class AudioControlsWidget extends StatelessWidget {
                 icon: Icon(
                   isPlaying ? Icons.pause : Icons.play_arrow,
                   color: Colors.white,
-                  size: 32,
+                  size: 28.sp,
                 ),
               ),
             ),
             // Next button
-            IconButton(
-              onPressed: currentIndex < totalAyahs - 1 ? onNext : null,
-              icon: Icon(
-                Icons.skip_next,
+            Container(
+              decoration: BoxDecoration(
                 color: currentIndex < totalAyahs - 1
-                    ? const Color.fromARGB(255, 103, 43, 93)
-                    : Colors.grey,
-                size: 32,
+                    ? context.primaryColor.withValues(alpha: 0.1)
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.grey.withValues(alpha: 0.1)),
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: IconButton(
+                onPressed: currentIndex < totalAyahs - 1 ? onNext : null,
+                icon: Icon(
+                  Icons.skip_next,
+                  color: currentIndex < totalAyahs - 1
+                      ? context.primaryColor
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white.withValues(alpha: 0.5)
+                          : Colors.grey),
+                  size: 22.sp,
+                ),
               ),
             ),
           ],
