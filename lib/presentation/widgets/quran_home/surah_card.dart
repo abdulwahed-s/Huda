@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/data/models/quran_model.dart';
+import '../../../../core/theme/theme_extension.dart';
 import 'revelation_type_badge.dart';
 
 class SurahCard extends StatelessWidget {
@@ -41,24 +42,11 @@ class SurahCard extends StatelessWidget {
                     padding: EdgeInsets.all(16.r),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.r),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: isDarkMode
-                            ? [
-                                Theme.of(context).cardColor,
-                                Theme.of(context).cardColor.withOpacity(0.8),
-                              ]
-                            : [
-                                Colors.white,
-                                Colors.grey[50]!,
-                              ],
-                      ),
                     ),
                     child: Row(
                       children: [
                         // Surah Number Circle
-                        _buildSurahNumberCircle(),
+                        _buildSurahNumberCircle(context),
                         SizedBox(width: 12.w),
                         // Surah Details
                         Expanded(
@@ -78,7 +66,7 @@ class SurahCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSurahNumberCircle() {
+  Widget _buildSurahNumberCircle(BuildContext context) {
     return Container(
       width: 42.w,
       height: 42.h,
@@ -87,14 +75,14 @@ class SurahCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color.fromARGB(255, 103, 43, 93).withOpacity(0.8),
-            const Color.fromARGB(255, 103, 43, 93),
+            context.primaryColor.withValues(alpha: 0.8),
+            context.primaryColor,
           ],
         ),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: const Color.fromARGB(255, 103, 43, 93).withOpacity(0.3),
+            color: context.primaryColor.withValues(alpha: 0.3),
             blurRadius: 6.r,
             offset: Offset(0, 2.h),
           ),
@@ -170,7 +158,7 @@ class SurahCard extends StatelessWidget {
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,
-            color: const Color.fromARGB(255, 103, 43, 93),
+            color: context.primaryColor,
           ),
         ),
         Text(
