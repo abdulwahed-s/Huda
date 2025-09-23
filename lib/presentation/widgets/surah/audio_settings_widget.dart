@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/theme_extension.dart';
 
 class AudioSettingsWidget extends StatelessWidget {
   final bool loopEnabled;
@@ -16,43 +17,139 @@ class AudioSettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Audio Settings',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 103, 43, 93),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? context.darkCardBackground
+            : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? context.accentColor.withValues(alpha: 0.2)
+              : context.primaryColor.withValues(alpha: 0.1),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.settings,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? context.accentColor
+                    : context.primaryColor,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Audio Settings',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? context.accentColor
+                      : context.primaryColor,
+                ),
+              ),
+            ],
           ),
-        ),
-        const SizedBox(height: 8),
+          const SizedBox(height: 16),
 
-        // Loop setting
-        Row(
-          children: [
-            Checkbox(
-              value: loopEnabled,
-              onChanged: onLoopChanged,
-              activeColor: const Color.fromARGB(255, 103, 43, 93),
+          // Loop setting
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: loopEnabled
+                  ? context.primaryColor.withValues(alpha: 0.1)
+                  : (Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF2A2A2A)
+                      : Colors.grey[50]),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: loopEnabled
+                    ? context.primaryColor.withValues(alpha: 0.3)
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF404040)
+                        : Colors.grey[200]!),
+              ),
             ),
-            const Text('Loop this ayah'),
-          ],
-        ),
+            child: Row(
+              children: [
+                Transform.scale(
+                  scale: 1.1,
+                  child: Checkbox(
+                    value: loopEnabled,
+                    onChanged: onLoopChanged,
+                    activeColor: context.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    'Loop this ayah',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-        // Autoplay setting
-        Row(
-          children: [
-            Checkbox(
-              value: autoplayEnabled,
-              onChanged: onAutoplayChanged,
-              activeColor: const Color.fromARGB(255, 103, 43, 93),
+          const SizedBox(height: 12),
+
+          // Autoplay setting
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: autoplayEnabled
+                  ? context.primaryColor.withValues(alpha: 0.1)
+                  : (Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF2A2A2A)
+                      : Colors.grey[50]),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: autoplayEnabled
+                    ? context.primaryColor.withValues(alpha: 0.3)
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF404040)
+                        : Colors.grey[200]!),
+              ),
             ),
-            const Text('Autoplay next ayah'),
-          ],
-        ),
-      ],
+            child: Row(
+              children: [
+                Transform.scale(
+                  scale: 1.1,
+                  child: Checkbox(
+                    value: autoplayEnabled,
+                    onChanged: onAutoplayChanged,
+                    activeColor: context.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    'Autoplay next ayah',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
