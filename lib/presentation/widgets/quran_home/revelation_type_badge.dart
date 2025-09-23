@@ -25,7 +25,8 @@ class RevelationTypeBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: (isMeccan ? Colors.orange : Colors.blue).withOpacity(0.3),
+            color:
+                (isMeccan ? Colors.orange : Colors.blue).withValues(alpha: 0.3),
             blurRadius: 3.r,
             offset: Offset(0, 1.h),
           ),
