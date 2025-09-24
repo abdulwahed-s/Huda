@@ -38,11 +38,13 @@ class _AyahNumberOrBookmarkWidgetState
 
   StreamSubscription<BookmarkChange>? _bookmarkChangesSubscription;
 
+  // Create a local BookmarksCubit if one isn't available in the context
   BookmarksCubit? _localBookmarksCubit;
   BookmarksCubit get _bookmarksCubit {
     try {
       return context.read<BookmarksCubit>();
     } catch (e) {
+      // If no cubit is found in context, create a local one
       _localBookmarksCubit ??= BookmarksCubit(
         bookmarkService: getIt<BookmarkService>(),
       );
@@ -65,9 +67,11 @@ class _AyahNumberOrBookmarkWidgetState
   }
 
   void _subscribeToBookmarkChanges() {
+    // Listen to global bookmark changes
     final bookmarkService = getIt<BookmarkService>();
     _bookmarkChangesSubscription =
         bookmarkService.bookmarkChanges.listen((change) {
+      // Only refresh if this change affects our ayah
       if (change.surahNumber == widget.surahNumber &&
           change.ayahNumber == widget.ayahNumber) {
         _checkBookmarkStatus();
@@ -127,11 +131,13 @@ class _AyahNumberOrBookmarkWidgetState
         });
       }
     } catch (e) {
+      // Handle error silently or log it
       debugPrint('Error checking bookmark status: $e');
     }
   }
 
   Widget _buildContent() {
+    // Priority: Star > Note > Bookmark > Number
     if (_hasStar) {
       return Icon(
         Icons.star,
@@ -151,6 +157,7 @@ class _AyahNumberOrBookmarkWidgetState
         color: _bookmarkColor ?? widget.textColor,
       );
     } else {
+      // Show ayah number
       return Text(
         '${widget.ayahNumber}',
         style: TextStyle(
@@ -168,8 +175,10 @@ class _AyahNumberOrBookmarkWidgetState
     Widget child = Center(child: _buildContent());
 
     try {
+      // Try to wrap with BlocListener if cubit is available in context
       return BlocListener<BookmarksCubit, BookmarksState>(
         listener: (context, state) {
+          // Refresh bookmark status when bookmark operations occur
           if (state is BookmarkOperationSuccess ||
               state is BookmarksLoaded ||
               state is BookmarkOperationFailure) {
@@ -179,6 +188,8 @@ class _AyahNumberOrBookmarkWidgetState
         child: child,
       );
     } catch (e) {
+      // If no cubit in context, return the child directly
+      // For local cubit, we need to listen manually using StreamBuilder
       if (_localBookmarksCubit != null) {
         return StreamBuilder<BookmarksState>(
           stream: _localBookmarksCubit!.stream,
@@ -188,6 +199,7 @@ class _AyahNumberOrBookmarkWidgetState
               if (state is BookmarkOperationSuccess ||
                   state is BookmarksLoaded ||
                   state is BookmarkOperationFailure) {
+                // Trigger refresh asynchronously to avoid setState during build
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   _checkBookmarkStatus();
                 });
