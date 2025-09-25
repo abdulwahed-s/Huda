@@ -28,13 +28,13 @@ import 'package:huda/presentation/widgets/surah/ayah_bottom_sheet_modal_tabbed.d
 import 'package:huda/presentation/widgets/surah/ayah_number_or_bookmark_widget.dart';
 
 // Import mixins
-import 'surah/mixins/audio_manager_mixin.dart';
-import 'surah/mixins/download_manager_mixin.dart';
-import 'surah/mixins/offline_cache_manager_mixin.dart';
-import 'surah/mixins/switch_handlers_mixin.dart';
-import 'surah/mixins/modal_manager_mixin.dart';
-import 'surah/mixins/state_validators_mixin.dart';
-import 'surah/mixins/reading_position_tracker_mixin.dart';
+import '../../core/mixins/surah/audio_manager_mixin.dart';
+import '../../core/mixins/surah/download_manager_mixin.dart';
+import '../../core/mixins/surah/offline_cache_manager_mixin.dart';
+import '../../core/mixins/surah/switch_handlers_mixin.dart';
+import '../../core/mixins/surah/modal_manager_mixin.dart';
+import '../../core/mixins/surah/state_validators_mixin.dart';
+import '../../core/mixins/surah/reading_position_tracker_mixin.dart';
 
 import 'package:huda/core/utils/ui_performance_utils.dart';
 
