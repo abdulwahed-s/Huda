@@ -24,7 +24,7 @@ class QuranModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['number'] = number;
     data['name'] = name;
     data['englishName'] = englishName;
