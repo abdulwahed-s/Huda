@@ -10,22 +10,26 @@ class ThemeState {
   final ThemeMode themeMode;
   final double textScaleFactor;
   final AppColorTheme colorTheme;
+  final String fontFamily;
 
   ThemeState({
     required this.themeMode,
     required this.textScaleFactor,
     required this.colorTheme,
+    required this.fontFamily,
   });
 
   ThemeState copyWith({
     ThemeMode? themeMode,
     double? textScaleFactor,
     AppColorTheme? colorTheme,
+    String? fontFamily, 
   }) {
     return ThemeState(
       themeMode: themeMode ?? this.themeMode,
       textScaleFactor: textScaleFactor ?? this.textScaleFactor,
       colorTheme: colorTheme ?? this.colorTheme,
+      fontFamily: fontFamily ?? this.fontFamily,
     );
   }
 }
@@ -34,6 +38,7 @@ class ThemeCubit extends Cubit<ThemeState> {
   static const _themeKey = 'theme_mode';
   static const _scaleKey = 'text_scale_factor';
   static const _colorThemeKey = 'color_theme';
+  static const _fontKey = 'font_family';
 
   bool isDark = false;
 
@@ -42,6 +47,7 @@ class ThemeCubit extends Cubit<ThemeState> {
           themeMode: ThemeMode.system,
           textScaleFactor: 1.0,
           colorTheme: AppColorTheme.purple,
+          fontFamily: 'Amiri',
         )) {
     _loadSettings();
   }
@@ -51,6 +57,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     final savedMode = prefs.getDataString(key: _themeKey);
     final savedScale = prefs.getData(key: _scaleKey) ?? 1.0;
     final savedColorTheme = prefs.getDataString(key: _colorThemeKey);
+    final savedFont = prefs.getDataString(key: _fontKey) ?? 'Amiri';
 
     ThemeMode themeMode;
     if (savedMode == 'light') {
@@ -77,6 +84,7 @@ class ThemeCubit extends Cubit<ThemeState> {
       themeMode: themeMode,
       textScaleFactor: savedScale,
       colorTheme: colorTheme,
+      fontFamily: savedFont, 
     ));
   }
 
@@ -120,5 +128,14 @@ class ThemeCubit extends Cubit<ThemeState> {
     await WidgetService.onThemeChanged();
     await WidgetService.markCompleteWidgetImageNeeded();
     await WidgetService.updateWidget();
+  }
+
+  Future<void> setFontFamily(String fontFamily) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_fontKey, fontFamily);
+    emit(state.copyWith(fontFamily: fontFamily));
+
+    await WidgetService.onThemeChanged();
+    await WidgetService.markCompleteWidgetImageNeeded();
   }
 }
