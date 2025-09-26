@@ -12,7 +12,6 @@ class TranslationRepository {
   Future<EditionModel> getTranslation() async {
     try {
       final response = await translationServices.getTranslation();
-      print(response);
       return EditionModel.fromJson(response);
     } on DioException catch (e) {
       throw getDioErrorMessage(e);
@@ -21,34 +20,24 @@ class TranslationRepository {
 
   Future<TafsirModel> getSurahTranslation(String identifier, int number) async {
     try {
-      final response = await translationServices.getSuraTranslation(identifier, number);
-      print(response);
+      final response =
+          await translationServices.getSuraTranslation(identifier, number);
       return TafsirModel.fromJson(response);
     } on DioException catch (e) {
-      print(e);
       throw getDioErrorMessage(e);
     }
   }
 
   Future<TafsirModel> getFullQuranTranslation(String identifier) async {
-    print(
-        "🔄 Repository: Starting getFullQuranTafsir for identifier: $identifier");
     try {
-      final response = await translationServices.getFullQuranTranslation(identifier);
-      print("✅ Repository: Received response from API service");
-      print(
-          "📊 Repository: Response data size: ${response.toString().length} characters");
+      final response =
+          await translationServices.getFullQuranTranslation(identifier);
+
       final tafsirModel = TafsirModel.fromJson(response);
-      print("✅ Repository: Successfully parsed TafsirModel");
       return tafsirModel;
     } on DioException catch (e) {
-      print("❌ Repository: DioException occurred: $e");
-      print("❌ Repository: DioException details: ${e.message}");
-      print("❌ Repository: DioException type: ${e.type}");
       throw getDioErrorMessage(e);
     } catch (e) {
-      print("❌ Repository: Unexpected error: $e");
-      print("❌ Repository: Error type: ${e.runtimeType}");
       rethrow;
     }
   }
