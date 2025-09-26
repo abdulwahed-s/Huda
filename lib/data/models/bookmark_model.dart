@@ -38,7 +38,7 @@ class BookmarkModel {
       'ayahText': ayahText,
       'surahName': surahName,
       'type': type.name,
-      'color': color?.value,
+      'color': color?.toARGB32(),
       'note': note,
       'ayahPosition': ayahPosition,
       'createdAt': createdAt.toIso8601String(),
@@ -152,7 +152,7 @@ class BookmarkColors {
       0xFFE91E63: 'Pink',
     };
 
-    return colorNames[color.value] ?? 'Custom';
+    return colorNames[color.toARGB32()] ?? 'Custom';
   }
 }
 
