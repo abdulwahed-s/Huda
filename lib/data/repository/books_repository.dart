@@ -8,9 +8,9 @@ class BooksRepository {
 
   BooksRepository({required this.booksServices});
 
-  Future<BooksResponse> getAllBooks(String lang, int page) async {
+  Future<BooksResponse> getAllBooks(String lang, int page,String respLang) async {
     try {
-      final response = await booksServices.getAllBooks(lang, page);
+      final response = await booksServices.getAllBooks(lang, page, respLang);
       return BooksResponse.fromJson(response);
     } on DioException catch (e) {
       throw getDioErrorMessage(e);
