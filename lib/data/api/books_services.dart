@@ -13,10 +13,10 @@ class BooksServices {
     dio = Dio(options);
   }
 
-  Future<Map<String, dynamic>> getAllBooks(String lang, int page) async {
+  Future<Map<String, dynamic>> getAllBooks(String lang, int page,String respLang) async {
     try {
       final Response response = await dio.get(
-        EndPoints.books(lang, page),
+        EndPoints.books(lang, page,respLang),
       );
 
       if (response.statusCode != 200) {

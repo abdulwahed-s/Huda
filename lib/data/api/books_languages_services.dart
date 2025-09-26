@@ -13,10 +13,10 @@ class BooksLanguagesServices {
     dio = Dio(options);
   }
 
-  Future<List<dynamic>> getBookLanguages(int bookId) async {
+  Future<List<dynamic>> getBookLanguages(int bookId,String respLang) async {
     try {
       final Response response = await dio.get(
-        EndPoints.bookLanguages(bookId),
+        EndPoints.bookLanguages(bookId,respLang),
       );
 
       if (response.statusCode != 200) {
