@@ -7,10 +7,8 @@ class TafsirServices {
   TafsirServices() {
     BaseOptions options = BaseOptions(
       baseUrl: EndPoints.baseUrl,
-      connectTimeout:
-          const Duration(seconds: 60), 
-      receiveTimeout: const Duration(
-          seconds: 120), 
+      connectTimeout: const Duration(seconds: 60),
+      receiveTimeout: const Duration(seconds: 120),
     );
     dio = Dio(options);
   }
@@ -52,49 +50,30 @@ class TafsirServices {
       if (response.data['code'] >= 400) {
         throw DioException(requestOptions: RequestOptions());
       }
-      print(response.data);
       return response.data;
     } on DioException catch (e) {
-      print(e);
       throw Exception(getDioErrorMessage(e));
     }
   }
 
   Future<Map<String, dynamic>> getFullQuranTafsir(String identifier) async {
-    print(
-        "🌐 API Service: Starting getFullQuranTafsir for identifier: $identifier");
-    print(
-        "🔗 API Service: Making request to: ${EndPoints.surahEdition(identifier)}");
     try {
       final Response response = await dio.get(
         EndPoints.surahEdition(identifier),
       );
-      print(
-          "✅ API Service: Received response with status code: ${response.statusCode}");
 
       if (response.statusCode != 200) {
-        print("❌ API Service: Bad status code: ${response.statusCode}");
         throw DioException(requestOptions: RequestOptions());
       }
 
       if (response.data['code'] >= 400) {
-        print(
-            "❌ API Service: API returned error code: ${response.data['code']}");
         throw DioException(requestOptions: RequestOptions());
       }
 
-      print("✅ API Service: Response data received successfully");
-      print(
-          "📊 API Service: Data size: ${response.data.toString().length} characters");
       return response.data;
     } on DioException catch (e) {
-      print("❌ API Service: DioException occurred: $e");
-      print("❌ API Service: DioException message: ${e.message}");
-      print("❌ API Service: DioException type: ${e.type}");
       throw Exception(getDioErrorMessage(e));
     } catch (e) {
-      print("❌ API Service: Unexpected error: $e");
-      print("❌ API Service: Error type: ${e.runtimeType}");
       throw Exception("Unexpected error: ${e.toString()}");
     }
   }
