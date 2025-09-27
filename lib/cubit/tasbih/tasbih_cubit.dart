@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
-import 'package:meta/meta.dart';
 import 'package:vibration/vibration.dart';
 
 part 'tasbih_state.dart';
@@ -11,15 +10,33 @@ class TasbihCubit extends Cubit<TasbihState> {
   TasbihCubit() : super(TasbihInitial());
   CacheHelper cacheHelper = getIt<CacheHelper>();
   int count = 0;
-  bool mode = true; // true for enabling vibration, false for disabling
+  bool mode = true;
   String? note;
   TextEditingController noteController = TextEditingController();
 
   void increment() async {
     count++;
-    toggleVibration();
-    saveTasbih();
+
+    if (count % 5 == 0) {
+      saveTasbih();
+    }
+
+    if (mode) {
+      Future.microtask(() async {
+        final hasVibrator = await Vibration.hasVibrator();
+        if (hasVibrator == true) {
+          Vibration.vibrate(duration: 50);
+        }
+      });
+    }
+
     emit(TasbihLoaded(count, mode, note));
+  }
+
+  @override
+  Future<void> close() {
+    saveTasbih();
+    return super.close();
   }
 
   void reset() {
