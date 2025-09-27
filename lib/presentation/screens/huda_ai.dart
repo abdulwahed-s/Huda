@@ -6,7 +6,6 @@ import 'package:huda/presentation/widgets/huda_ai/clipboard_snackbar.dart';
 import 'package:huda/presentation/widgets/huda_ai/loading_indicator.dart';
 import 'package:huda/presentation/widgets/huda_ai/message_input.dart';
 import 'package:huda/cubit/chat/chat_cubit.dart';
-import 'package:huda/cubit/chat/chat_state.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/presentation/widgets/huda_ai/message_list.dart';

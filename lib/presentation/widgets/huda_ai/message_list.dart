@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/chat/chat_cubit.dart';
-import 'package:huda/cubit/chat/chat_state.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/huda_ai/empty_state_widget.dart';
 import 'package:huda/presentation/widgets/huda_ai/message_bubble.dart';

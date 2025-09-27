@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/cubit/chat/chat_cubit.dart';
 import 'package:huda/core/theme/theme_extension.dart';
-import 'package:huda/cubit/chat/chat_state.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class MessageInput extends StatelessWidget {

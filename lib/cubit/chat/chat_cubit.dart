@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/services/gemini_service.dart';
-import 'package:huda/data/api/chat_message_model.dart';
-import 'chat_state.dart';
+import 'package:huda/data/models/chat_message_model.dart';
+part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final GeminiService _geminiService;

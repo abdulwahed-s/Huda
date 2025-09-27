@@ -1,4 +1,4 @@
-import '../../data/api/chat_message_model.dart';
+part of 'chat_cubit.dart';
 
 class ChatState {
   final List<ChatMessage> messages;
