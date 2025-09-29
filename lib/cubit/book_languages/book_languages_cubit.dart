@@ -12,12 +12,12 @@ class BookLanguagesCubit extends Cubit<BookLanguagesState> {
   BookLanguagesRepository bookLanguagesRepository =
       BookLanguagesRepository(booksLanguagesServices: BooksLanguagesServices());
 
-  Future<void> fetchBookLanguages(int bookId) async {
+  Future<void> fetchBookLanguages(int bookId,String respLang) async {
     if (await NetworkInfo.checkInternetConnectivity()) {
       emit(BookTranslationsLoading());
       try {
         final translations =
-            await bookLanguagesRepository.getBookLanguages(bookId);
+            await bookLanguagesRepository.getBookLanguages(bookId,respLang);
         emit(BookTranslationsLoaded(translations));
       } catch (e) {
         emit(BookTranslationsError(e.toString()));
