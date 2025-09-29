@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import '../../data/models/checklist_item.dart';
-import '../../data/repositories/checklist_repository.dart';
+import '../../data/repository/checklist_repository.dart';
 
 part 'checklist_state.dart';
 
