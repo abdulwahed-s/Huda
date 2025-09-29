@@ -17,6 +17,15 @@ final class BookDetailLoaded extends BookDetailState {
   const BookDetailLoaded(this.bookDetail);
 }
 
+final class BookDetailOfflineLoaded extends BookDetailState {
+  final OfflineBookModel offlineBook;
+
+  const BookDetailOfflineLoaded(this.offlineBook);
+
+  @override
+  List<Object> get props => [offlineBook];
+}
+
 final class BookDetailError extends BookDetailState {
   final String error;
 
