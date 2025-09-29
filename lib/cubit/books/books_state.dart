@@ -24,3 +24,16 @@ final class BooksError extends BooksState {
 }
 
 final class BooksOffline extends BooksState {}
+
+final class BooksOfflineLoading extends BooksState {}
+
+final class BooksOfflineLoaded extends BooksState {
+  final List<OfflineBookModel> offlineBooks;
+
+  const BooksOfflineLoaded(this.offlineBooks);
+
+  @override
+  List<Object> get props => [offlineBooks];
+}
+
+final class BooksOfflineEmpty extends BooksState {}
