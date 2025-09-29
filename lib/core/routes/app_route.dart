@@ -1,7 +1,8 @@
 class AppRoute {
+  static const String onboarding = '/onboarding';
   static const String home = '/';
   static const String homeQuran = '/homeQuran';
-  static const String surahDetails = '/surahDetails';
+  static const String surahScreen = '/surahScreen';
   static const String lastReadSurah = '/lastReadSurah';
   static const String settings = '/settings';
   static const String bookmarks = '/bookmarks';
@@ -22,4 +23,5 @@ class AppRoute {
   static const String hudaAI = '/hudaAI';
   static const String islamicChecklist = '/islamicChecklist';
   static const String feedback = '/feedback';
+  static const String zakatCalculator = '/zakatCalculator';
 }
