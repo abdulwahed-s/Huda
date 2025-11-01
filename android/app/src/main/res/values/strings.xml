@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Quran Verses Widget - Display inspiring verses that update automatically</string>
+    <string name="widget_description_large">Large Quran Verses Widget - Display inspiring verses with larger text</string>
+    <string name="widget_description_small">Small Quran Verses Widget - Compact display of inspiring verses</string>
+    <string name="app_name">Huda</string>
+</resources>
