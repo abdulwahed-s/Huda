@@ -121,6 +121,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.1"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      sha256: "3f5261cd3fb5f2a9ab4e2fc3fba84fd9fcaac8821f20a1d4e71f557521b22599"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   bloc:
     dependency: "direct main"
     description:
@@ -1294,10 +1302,10 @@ packages:
     dependency: "direct main"
     description:
       name: upgrader
-      sha256: "60293b391f4146ce1e381ed6198b6374559a4aadf885d313e94e6c7d454d03ca"
+      sha256: "6997d84f49120d6179f6d839a87f0d9595b50641d17e058d8e0fc5f4bdf673fe"
       url: "https://pub.dev"
     source: hosted
-    version: "11.4.0"
+    version: "11.5.1"
   url_launcher:
     dependency: "direct main"
     description:
