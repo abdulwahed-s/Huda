@@ -14,7 +14,7 @@ Future<void> bootstrap() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   // Initialize critical services and Firebase in parallel
   await Future.wait([
