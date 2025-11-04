@@ -52,3 +52,4 @@ android/app/google-services.json
 android/app/pepk.jar
 android/app/sign.zip
 android/app/upload_certificate.pem
+android/app/build/.last_build_id
