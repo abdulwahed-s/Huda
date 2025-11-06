@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <!-- Complete widget as image -->
+    <ImageView
+        android:id="@+id/widget_complete_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:contentDescription="Complete Huda widget with Uthmanic font"
+        android:background="@android:color/transparent" />
+
+    <!-- Fallback content when image is not available -->
+    <LinearLayout
+        android:id="@+id/widget_fallback_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="@drawable/widget_background_purple"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🕌 هُدى"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#8B5CF6"
+            android:gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/widget_quote"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.6"
+            android:textDirection="rtl"
+            android:typeface="serif" />
+
+        <TextView
+            android:id="@+id/widget_last_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="آخر تحديث: الآن"
+            android:textSize="10sp"
+            android:textColor="#666666"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</FrameLayout>
