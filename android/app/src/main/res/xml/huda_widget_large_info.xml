@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/huda_widget_large"
+    android:minWidth="320dp"
+    android:minHeight="180dp"
+    android:targetCellWidth="5"
+    android:targetCellHeight="3"
+    android:updatePeriodMillis="3600000"
+    android:description="@string/widget_description_large"
+    android:previewImage="@drawable/widget_preview_actual"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen" />

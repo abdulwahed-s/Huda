@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_container_small"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <!-- Complete small widget as image -->
+    <ImageView
+        android:id="@+id/widget_complete_image_small"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:contentDescription="Small Huda widget with Uthmanic font"
+        android:background="@android:color/transparent" />
+
+    <!-- Fallback content when image is not available -->
+    <LinearLayout
+        android:id="@+id/widget_fallback_content_small"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:gravity="center"
+        android:background="@drawable/widget_background_purple"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/widget_title_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="هُدى"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#8B5CF6"
+            android:gravity="center"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:id="@+id/widget_quote_small"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.4"
+            android:textDirection="rtl"
+            android:typeface="serif"
+            android:maxLines="3"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+</FrameLayout>
