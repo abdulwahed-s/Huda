@@ -1,73 +1,101 @@
 class HadithBooksModel {
-  int? status;
-  String? message;
-  List<Books>? books;
+  List<Data>? data;
+  int? total;
+  int? limit;
+  Null previous;
+  Null next;
 
-  HadithBooksModel({this.status, this.message, this.books});
+  HadithBooksModel(
+      {this.data, this.total, this.limit, this.previous, this.next});
 
   HadithBooksModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    if (json['books'] != null) {
-      books = <Books>[];
-      json['books'].forEach((v) {
-        books!.add(Books.fromJson(v));
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(Data.fromJson(v));
       });
     }
+    total = json['total'];
+    limit = json['limit'];
+    previous = json['previous'];
+    next = json['next'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
-    if (books != null) {
-      data['books'] = books!.map((v) => v.toJson()).toList();
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
+    data['total'] = total;
+    data['limit'] = limit;
+    data['previous'] = previous;
+    data['next'] = next;
     return data;
   }
 }
 
-class Books {
-  int? id;
-  String? bookName;
-  String? writerName;
-  String? aboutWriter;
-  String? writerDeath;
-  String? bookSlug;
-  String? hadithsCount;
-  String? chaptersCount;
+class Data {
+  String? name;
+  bool? hasBooks;
+  bool? hasChapters;
+  List<Collection>? collection;
+  int? totalHadith;
+  int? totalAvailableHadith;
 
-  Books(
-      {this.id,
-      this.bookName,
-      this.writerName,
-      this.aboutWriter,
-      this.writerDeath,
-      this.bookSlug,
-      this.hadithsCount,
-      this.chaptersCount});
+  Data(
+      {this.name,
+      this.hasBooks,
+      this.hasChapters,
+      this.collection,
+      this.totalHadith,
+      this.totalAvailableHadith});
 
-  Books.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    bookName = json['bookName'];
-    writerName = json['writerName'];
-    aboutWriter = json['aboutWriter'];
-    writerDeath = json['writerDeath'];
-    bookSlug = json['bookSlug'];
-    hadithsCount = json['hadiths_count'];
-    chaptersCount = json['chapters_count'];
+  Data.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    hasBooks = json['hasBooks'];
+    hasChapters = json['hasChapters'];
+    if (json['collection'] != null) {
+      collection = <Collection>[];
+      json['collection'].forEach((v) {
+        collection!.add(Collection.fromJson(v));
+      });
+    }
+    totalHadith = json['totalHadith'];
+    totalAvailableHadith = json['totalAvailableHadith'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['bookName'] = bookName;
-    data['writerName'] = writerName;
-    data['aboutWriter'] = aboutWriter;
-    data['writerDeath'] = writerDeath;
-    data['bookSlug'] = bookSlug;
-    data['hadiths_count'] = hadithsCount;
-    data['chapters_count'] = chaptersCount;
+    data['name'] = name;
+    data['hasBooks'] = hasBooks;
+    data['hasChapters'] = hasChapters;
+    if (collection != null) {
+      data['collection'] = collection!.map((v) => v.toJson()).toList();
+    }
+    data['totalHadith'] = totalHadith;
+    data['totalAvailableHadith'] = totalAvailableHadith;
+    return data;
+  }
+}
+
+class Collection {
+  String? lang;
+  String? title;
+  String? shortIntro;
+
+  Collection({this.lang, this.title, this.shortIntro});
+
+  Collection.fromJson(Map<String, dynamic> json) {
+    lang = json['lang'];
+    title = json['title'];
+    shortIntro = json['shortIntro'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['lang'] = lang;
+    data['title'] = title;
+    data['shortIntro'] = shortIntro;
     return data;
   }
 }
