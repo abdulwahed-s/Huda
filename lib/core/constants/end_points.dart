@@ -7,10 +7,10 @@ class EndPoints {
   static const arAthkar = "/ar/husn_ar.json";
   static const enAthkar = "/en/husn_en.json";
   static String athkarDetail(String id) => '/en/$id.json';
-  static const String hadithBaseUrl = 'https://hadithapi.com/api';
-  static const String hadithBooks = '/books';
-  static String bookChapter(String bookSlug) => 'https://hadithapi.com/api/$bookSlug/chapters';
-  static const String hadithDetail = '/hadiths';
+  static const String hadithBaseUrl = 'https://api.sunnah.com/v1';
+  static const String hadithBooks = '/collections';
+  static String bookChapter(String bookSlug) => '/$hadithBooks/$bookSlug/books';
+  static String hadithDetail(String bookName, String chapterNumber) => '$hadithBooks/$bookName/books/$chapterNumber/hadiths';
   static const String islamhouseBaseUrl = 'https://api3.islamhouse.com/v3/paV29H2gm56kvLPy';
   static String books(String lang,int page,String respLang) => '$islamhouseBaseUrl/main/books/$respLang/$lang/$page/25/json';
   static String bookDetail(String lang, int bookId) => '$islamhouseBaseUrl/main/get-item/$bookId/$lang/json';
