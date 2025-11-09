@@ -2476,4 +2476,10 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       'আপনার মতামতের জন্য ধন্যবাদ! আমরা উন্নতির জন্য কাজ করব।';
+
+  @override
+  String get noHadithsFound => 'কোনো হাদীস পাওয়া যায়নি';
+
+  @override
+  String get noHadithsFoundChapter => 'এই অধ্যায়ে বর্তমানে কোনো হাদিস নেই।';
 }

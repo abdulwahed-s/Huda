@@ -3018,6 +3018,8 @@
   "provideFeedback": "Please provide feedback for improvement",
   "thankYouRedirect": "Thank you! You'll be redirected to the store.",
   "thankYouFeedback": "Thank you for your feedback! We'll work on improvements."
+    ,"noHadithsFound" : "No Hadiths Found"
+    ,"noHadithsFoundChapter" : "This chapter doesn't contain any hadiths at the moment."
 
 
 }

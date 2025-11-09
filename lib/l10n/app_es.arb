@@ -784,6 +784,8 @@
     "provideFeedback": "Por favor proporciona comentarios para mejorar",
     "thankYouRedirect": "¡Gracias! Serás redirigido a la tienda.",
     "thankYouFeedback": "¡Gracias por tus comentarios! Trabajaremos en mejoras."
+    ,"noHadithsFound" : "No se encontraron hadices"
+    ,"noHadithsFoundChapter" : "Este capítulo no contiene ningún hadiz por el momento."
 
 
 

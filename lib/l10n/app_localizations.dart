@@ -4621,6 +4621,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thank you for your feedback! We\'ll work on improvements.'**
   String get thankYouFeedback;
+
+  /// No description provided for @noHadithsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Hadiths Found'**
+  String get noHadithsFound;
+
+  /// No description provided for @noHadithsFoundChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'This chapter doesn\'t contain any hadiths at the moment.'**
+  String get noHadithsFoundChapter;
 }
 
 class _AppLocalizationsDelegate

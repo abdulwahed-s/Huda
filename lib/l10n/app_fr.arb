@@ -772,7 +772,9 @@
     "provideFeedback": "Veuillez fournir des commentaires pour l'amélioration",
     "thankYouRedirect": "Merci ! Vous allez être redirigé vers la boutique.",
     "thankYouFeedback": "Merci pour vos commentaires ! Nous allons travailler sur des améliorations."
-  
+      ,"noHadithsFound" : "Aucun hadith trouvé"
+    ,"noHadithsFoundChapter" : "Ce chapitre ne contient aucun hadith pour le moment."
+
 
 
 

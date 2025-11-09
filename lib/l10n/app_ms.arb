@@ -851,6 +851,8 @@
     "provideFeedback": "Sila beri maklum balas untuk penambahbaikan",
     "thankYouRedirect": "Terima kasih! Anda akan diarahkan ke kedai.",
     "thankYouFeedback": "Terima kasih atas maklum balas anda! Kami akan berusaha untuk membuat penambahbaikan."
+      ,"noHadithsFound" : "Tiada hadis ditemui"
+    ,"noHadithsFoundChapter" : "Bab ini tidak mengandungi sebarang hadis pada masa ini."
 
 
 

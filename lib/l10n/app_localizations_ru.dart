@@ -2494,4 +2494,10 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       'Спасибо за ваш отзыв! Мы будем работать над улучшениями.';
+
+  @override
+  String get noHadithsFound => 'Хадисы не найдены';
+
+  @override
+  String get noHadithsFoundChapter => 'В этой главе сейчас нет хадисов.';
 }

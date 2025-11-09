@@ -764,6 +764,8 @@
     "provideFeedback": "Lütfen geliştirme için geri bildirim verin",
     "thankYouRedirect": "Teşekkürler! Mağazaya yönlendirileceksiniz.",
     "thankYouFeedback": "Geri bildiriminiz için teşekkürler! İyileştirmeler üzerinde çalışacağız."
+      ,"noHadithsFound" : "Hadis bulunamadı"
+    ,"noHadithsFoundChapter" : "Bu bölüm şu anda herhangi bir hadis içermiyor."
 
 
 

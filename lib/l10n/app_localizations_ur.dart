@@ -2464,4 +2464,11 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       'آپ کے فیڈبیک کا شکریہ! ہم بہتری پر کام کریں گے۔';
+
+  @override
+  String get noHadithsFound => 'کوئی حدیث نہیں ملی';
+
+  @override
+  String get noHadithsFoundChapter =>
+      'اس باب میں فی الحال کوئی حدیث موجود نہیں ہے۔';
 }

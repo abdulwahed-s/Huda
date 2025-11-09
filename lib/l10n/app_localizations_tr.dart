@@ -2467,4 +2467,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       'Geri bildiriminiz için teşekkürler! İyileştirmeler üzerinde çalışacağız.';
+
+  @override
+  String get noHadithsFound => 'Hadis bulunamadı';
+
+  @override
+  String get noHadithsFoundChapter =>
+      'Bu bölüm şu anda herhangi bir hadis içermiyor.';
 }

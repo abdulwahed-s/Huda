@@ -2430,4 +2430,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get thankYouFeedback => 'شكرًا لملاحظاتك! سنعمل على التحسين.';
+
+  @override
+  String get noHadithsFound => 'لا توجد أحاديث';
+
+  @override
+  String get noHadithsFoundChapter =>
+      'هذا الفصل لا يحتوي على أي أحاديث في الوقت الحالي.';
 }

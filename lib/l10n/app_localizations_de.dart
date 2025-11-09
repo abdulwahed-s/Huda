@@ -2517,4 +2517,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       'Danke für Ihr Feedback! Wir werden an Verbesserungen arbeiten.';
+
+  @override
+  String get noHadithsFound => 'Keine Hadithe gefunden';
+
+  @override
+  String get noHadithsFoundChapter =>
+      'Dit hoofdstuk bevat op dit moment geen hadiths.';
 }

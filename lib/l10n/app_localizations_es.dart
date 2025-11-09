@@ -2530,4 +2530,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       '¡Gracias por tus comentarios! Trabajaremos en mejoras.';
+
+  @override
+  String get noHadithsFound => 'No se encontraron hadices';
+
+  @override
+  String get noHadithsFoundChapter =>
+      'Este capítulo no contiene ningún hadiz por el momento.';
 }

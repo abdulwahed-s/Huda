@@ -2475,4 +2475,11 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       'Terima kasih atas maklum balas anda! Kami akan berusaha untuk membuat penambahbaikan.';
+
+  @override
+  String get noHadithsFound => 'Tiada hadis ditemui';
+
+  @override
+  String get noHadithsFoundChapter =>
+      'Bab ini tidak mengandungi sebarang hadis pada masa ini.';
 }
