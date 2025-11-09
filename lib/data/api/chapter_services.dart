@@ -7,27 +7,25 @@ class ChapterServices {
   late Dio dio;
   ChapterServices() {
     BaseOptions options = BaseOptions(
-      baseUrl: EndPoints.hadithBaseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-    );
+        baseUrl: EndPoints.hadithBaseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          "X-API-Key": apiKey,
+        });
     dio = Dio(options);
   }
 
-  Future<Map<String, dynamic>> getChaptersByBook(String bookId) async {
+  Future<Map<String, dynamic>> getChaptersByBook(String bookName) async {
     try {
       final Response response = await dio.get(
-        EndPoints.bookChapter(bookId),
+        EndPoints.bookChapter(bookName),
         queryParameters: {
-          'apiKey': apiKey,
+          'limit': 100,
         },
       );
 
       if (response.statusCode != 200) {
-        throw DioException(requestOptions: RequestOptions());
-      }
-
-      if (response.data['status'] >= 400) {
         throw DioException(requestOptions: RequestOptions());
       }
 
