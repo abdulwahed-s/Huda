@@ -340,9 +340,9 @@ class PageRouter {
             final args = settings.arguments as Map<String, String>;
             return BlocProvider<ChaptersCubit>(
               create: (context) =>
-                  ChaptersCubit()..fetchChaptersByBook(args['bookSlug']!),
+                  ChaptersCubit()..fetchChaptersByBook(args['bookName']!),
               child: HadithChapters(
-                bookId: args['bookSlug']!,
+                fullBookName: args['fullBookName']!,
                 bookName: args['bookName']!,
               ),
             );
@@ -368,10 +368,10 @@ class PageRouter {
             final args = settings.arguments as Map<String, String>;
             return BlocProvider<HadithDetailsCubit>(
               create: (context) => HadithDetailsCubit()
-                ..fetchHadithDetails(args['chapterId']!, args['bookId']!, 1),
+                ..fetchHadithDetails(args['chapterNumber']!, args['bookName']!, 1),
               child: HadithDetails(
-                chapterId: args['chapterId']!,
-                bookId: args['bookId']!,
+                chapterNumber: args['chapterNumber']!,
+                bookName: args['bookName']!,
                 chapterName: args['chapterName']!,
               ),
             );
