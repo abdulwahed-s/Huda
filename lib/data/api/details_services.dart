@@ -7,37 +7,36 @@ class DetailsServices {
   late Dio dio;
   DetailsServices() {
     BaseOptions options = BaseOptions(
-      baseUrl: EndPoints.hadithBaseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-    );
+        baseUrl: EndPoints.hadithBaseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          'X-API-Key': apiKey,
+        });
     dio = Dio(options);
   }
 
   Future<Map<String, dynamic>> getAllDetails(
-      String chapterId, String bookName, int pageNumber) async {
+      String chapterNumber, String bookName, int pageNumber) async {
     try {
       final Response response = await dio.get(
-        EndPoints.hadithDetail,
+        EndPoints.hadithDetail(bookName, chapterNumber),
         queryParameters: {
-          'apiKey': apiKey,
-          'chapter': chapterId,
-          'book': bookName,
-          'page' : pageNumber,
+          'page': pageNumber,
         },
       );
 
-      if (response.statusCode != 200) {
-        throw DioException(requestOptions: RequestOptions());
+      final data = response.data;
+
+      if (data is Map<String, dynamic> && data.containsKey('error')) {
+        throw Exception('Server Error');
       }
 
-      if (response.data['status'] >= 400) {
-        throw DioException(requestOptions: RequestOptions());
-      }
-
-      return response.data;
+      return data;
     } on DioException catch (e) {
       throw Exception(getDioErrorMessage(e));
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
     }
   }
 }
