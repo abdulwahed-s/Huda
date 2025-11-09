@@ -8,9 +8,9 @@ class ChapterRepository {
 
   ChapterRepository({required this.chapterServices});
 
-  Future<BookChaptersModel> getChaptersByBook(String bookId) async {
+  Future<BookChaptersModel> getChaptersByBook(String bookName) async {
     try {
-      final response = await chapterServices.getChaptersByBook(bookId);
+      final response = await chapterServices.getChaptersByBook(bookName);
       return BookChaptersModel.fromJson(response);
     } on DioException catch (e) {
       throw getDioErrorMessage(e);
