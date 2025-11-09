@@ -7,10 +7,12 @@ class HadithServices {
   late Dio dio;
   HadithServices() {
     BaseOptions options = BaseOptions(
-      baseUrl: EndPoints.hadithBaseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-    );
+        baseUrl: EndPoints.hadithBaseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          "X-API-Key": apiKey,
+        });
     dio = Dio(options);
   }
 
@@ -18,16 +20,9 @@ class HadithServices {
     try {
       final Response response = await dio.get(
         EndPoints.hadithBooks,
-        queryParameters: {
-          'apiKey': apiKey,
-        },
       );
 
       if (response.statusCode != 200) {
-        throw DioException(requestOptions: RequestOptions());
-      }
-
-      if (response.data['status'] >= 400) {
         throw DioException(requestOptions: RequestOptions());
       }
 
@@ -36,5 +31,4 @@ class HadithServices {
       throw Exception(getDioErrorMessage(e));
     }
   }
-
 }
