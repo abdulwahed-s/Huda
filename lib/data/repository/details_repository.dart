@@ -9,9 +9,10 @@ class DetailsRepository {
   DetailsRepository({required this.detailsServices});
 
   Future<HadithDetailsModel> getHadithDetails(
-      String chapterId, String bookId,int pageNumber) async {
+      String chapterNumber, String bookName, int pageNumber) async {
     try {
-      final response = await detailsServices.getAllDetails(chapterId, bookId,pageNumber);
+      final response = await detailsServices.getAllDetails(
+          chapterNumber, bookName, pageNumber);
       return HadithDetailsModel.fromJson(response);
     } on DioException catch (e) {
       throw getDioErrorMessage(e);
