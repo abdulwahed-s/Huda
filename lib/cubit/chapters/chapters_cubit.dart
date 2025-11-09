@@ -12,10 +12,10 @@ class ChaptersCubit extends Cubit<ChaptersState> {
   ChapterRepository chapterRepository =
       ChapterRepository(chapterServices: ChapterServices());
 
-  void fetchChaptersByBook(String bookId) async {
+  void fetchChaptersByBook(String bookName) async {
     emit(ChaptersLoading());
     try {
-      final bookChapters = await chapterRepository.getChaptersByBook(bookId);
+      final bookChapters = await chapterRepository.getChaptersByBook(bookName);
       emit(ChaptersLoaded(bookChapters));
     } catch (e) {
       emit(ChaptersError(e.toString()));
