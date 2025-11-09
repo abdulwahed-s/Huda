@@ -12,11 +12,12 @@ class HadithDetailsCubit extends Cubit<HadithDetailsState> {
   final DetailsRepository detailsRepository =
       DetailsRepository(detailsServices: DetailsServices());
 
-  Future<void> fetchHadithDetails(String chapterId, String bookId,int pageNumber) async {
+  Future<void> fetchHadithDetails(
+      String chapterNumber, String bookName, int pageNumber) async {
     emit(HadithDetailsLoading());
     try {
-      final hadithDetail =
-          await detailsRepository.getHadithDetails(chapterId, bookId,pageNumber);
+      final hadithDetail = await detailsRepository.getHadithDetails(
+          chapterNumber, bookName, pageNumber);
       emit(HadithDetailsLoaded(hadithDetail));
     } catch (e) {
       emit(HadithDetailsError(e.toString()));
