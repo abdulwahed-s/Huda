@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:huda/data/models/book_chapters_model.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/chapter_number_indicator.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/forward_arrow_icon.dart';
 
 class ChapterCard extends StatelessWidget {
-  final dynamic chapter;
+  final Data chapter;
   final bool isDark;
   final String currentLanguageCode;
   final VoidCallback onTap;
@@ -48,16 +49,14 @@ class ChapterCard extends StatelessWidget {
             child: Row(
               children: [
                 ChapterNumberIndicator(
-                  chapterNumber: chapter.chapterNumber!,
+                  chapterNumber: chapter.bookNumber!,
                 ),
                 const SizedBox(width: 16.0),
                 Expanded(
                   child: Text(
-                    currentLanguageCode == "ur"
-                        ? chapter.chapterUrdu!
-                        : currentLanguageCode == "ar"
-                            ? chapter.chapterArabic!
-                            : chapter.chapterEnglish!,
+                    currentLanguageCode == "ar"
+                        ? chapter.book![1].name!
+                        : chapter.book![0].name!,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
