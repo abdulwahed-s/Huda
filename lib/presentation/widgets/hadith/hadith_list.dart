@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/cubit/localization/localization_cubit.dart';
+import 'package:huda/data/models/hadith_books_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_book_card.dart';
 import 'package:huda/presentation/widgets/hadith/header_banner.dart';
 
 class HadithList extends StatelessWidget {
-  final dynamic hadithBooks;
+  final HadithBooksModel hadithBooks;
   final bool isDark;
   final BuildContext context;
 
@@ -19,6 +22,9 @@ class HadithList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentLanguageCode =
+        context.read<LocalizationCubit>().state.locale.languageCode;
+    int ind = currentLanguageCode == "ar" ? 1 : 0;
     return Column(
       children: [
         HeaderBanner(isDark: isDark),
@@ -26,22 +32,22 @@ class HadithList extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0.w),
             child: ListView.builder(
-              itemCount: hadithBooks.books!.length,
+              itemCount: hadithBooks.data!.length,
               itemBuilder: (context, index) {
-                final book = hadithBooks.books![index];
+                final book = hadithBooks.data![index];
                 return HadithBookCard(
                   book: book,
                   isDark: isDark,
                   context: context,
-                  onTap: int.parse(book.hadithsCount!) == 0
+                  onTap: book.totalAvailableHadith == 0
                       ? _showComingSoonSnackBar
                       : () {
                           Navigator.pushNamed(
                             context,
                             AppRoute.hadithChapters,
                             arguments: {
-                              'bookSlug': book.bookSlug!.toString(),
-                              'bookName': _bookName(book.bookName!),
+                              'bookName': book.name!,
+                              'fullBookName': book.collection![ind].title!,
                             },
                           );
                         },
@@ -52,31 +58,6 @@ class HadithList extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _bookName(String bookName) {
-    switch (bookName) {
-      case "Sahih Bukhari":
-        return AppLocalizations.of(context)!.bukhari;
-      case "Sahih Muslim":
-        return AppLocalizations.of(context)!.muslim;
-      case "Jami' Al-Tirmidhi":
-        return AppLocalizations.of(context)!.tirmidhi;
-      case "Sunan Abu Dawood":
-        return AppLocalizations.of(context)!.dawood;
-      case "Sunan Ibn-e-Majah":
-        return AppLocalizations.of(context)!.majah;
-      case "Sunan An-Nasa`i":
-        return AppLocalizations.of(context)!.nasa;
-      case "Mishkat Al-Masabih":
-        return AppLocalizations.of(context)!.masabih;
-      case "Musnad Ahmad":
-        return AppLocalizations.of(context)!.ahmad;
-      case "Al-Silsila Sahiha":
-        return AppLocalizations.of(context)!.sahiha;
-      default:
-        return bookName;
-    }
   }
 
   void _showComingSoonSnackBar() {
