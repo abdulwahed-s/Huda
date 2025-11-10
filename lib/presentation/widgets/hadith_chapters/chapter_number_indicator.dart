@@ -24,7 +24,7 @@ class ChapterNumberIndicator extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          chapterNumber,
+          chapterNumber == "introduction" ? "0" : chapterNumber,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
