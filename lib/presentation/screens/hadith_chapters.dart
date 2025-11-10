@@ -4,13 +4,13 @@ import 'package:huda/cubit/chapters/chapters_cubit.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/chapters_list.dart';
 
 class HadithChapters extends StatelessWidget {
-  final String bookId;
   final String bookName;
+  final String fullBookName;
 
   const HadithChapters({
     super.key,
-    required this.bookId,
     required this.bookName,
+    required this.fullBookName,
   });
 
   @override
@@ -23,7 +23,7 @@ class HadithChapters extends StatelessWidget {
         backgroundColor: isDark ? Colors.grey[850] : Colors.white,
         foregroundColor: isDark ? Colors.white : Colors.black87,
         title: Text(
-          bookName,
+          fullBookName,
           style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 20,
@@ -38,7 +38,8 @@ class HadithChapters extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ChaptersLoaded) {
             return ChaptersList(
-              chapters: state.bookChapters.chapters!,
+              bookName: bookName,
+              chapters: state.bookChapters.data!,
               isDark: isDark,
             );
           } else if (state is ChaptersError) {
