@@ -38,7 +38,8 @@ class HadithChaptersContent extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ChaptersLoaded) {
             return ChaptersList(
-              chapters: state.bookChapters.chapters!,
+              bookName: bookName,
+              chapters: state.bookChapters.data!,
               isDark: isDark,
             );
           } else if (state is ChaptersError) {
