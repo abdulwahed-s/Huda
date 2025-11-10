@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/cubit/localization/localization_cubit.dart';
+import 'package:huda/data/models/hadith_books_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/hadith/book_icon.dart';
 import 'package:huda/presentation/widgets/hadith/forward_button.dart';
 
 class HadithBookCard extends StatelessWidget {
-  final dynamic book;
+  final Data book;
   final bool isDark;
   final VoidCallback onTap;
   final BuildContext context;
 
-  const HadithBookCard({super.key, 
+  const HadithBookCard({
+    super.key,
     required this.book,
     required this.isDark,
     required this.onTap,
@@ -19,6 +23,9 @@ class HadithBookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentLanguageCode =
+        context.read<LocalizationCubit>().state.locale.languageCode;
+    int index = currentLanguageCode == "ar" ? 1 : 0;
     return Container(
       margin: EdgeInsets.only(bottom: 16.0.h),
       child: Material(
@@ -56,7 +63,7 @@ class HadithBookCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _bookName(book.bookName!),
+                        book.collection![index].title!,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18.sp,
@@ -69,7 +76,7 @@ class HadithBookCard extends StatelessWidget {
                       ),
                       SizedBox(height: 4.0.h),
                       Text(
-                        '${AppLocalizations.of(context)!.contains} ${book.hadithsCount} ${AppLocalizations.of(context)!.hadith}',
+                        '${AppLocalizations.of(context)!.contains} ${book.totalAvailableHadith} ${AppLocalizations.of(context)!.hadith}',
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontFamily: 'Amiri',
@@ -90,31 +97,4 @@ class HadithBookCard extends StatelessWidget {
       ),
     );
   }
-
-  String _bookName(String bookName) {
-    switch (bookName) {
-      case "Sahih Bukhari":
-        return AppLocalizations.of(context)!.bukhari;
-      case "Sahih Muslim":
-        return AppLocalizations.of(context)!.muslim;
-      case "Jami' Al-Tirmidhi":
-        return AppLocalizations.of(context)!.tirmidhi;
-      case "Sunan Abu Dawood":
-        return AppLocalizations.of(context)!.dawood;
-      case "Sunan Ibn-e-Majah":
-        return AppLocalizations.of(context)!.majah;
-      case "Sunan An-Nasa`i":
-        return AppLocalizations.of(context)!.nasa;
-      case "Mishkat Al-Masabih":
-        return AppLocalizations.of(context)!.masabih;
-      case "Musnad Ahmad":
-        return AppLocalizations.of(context)!.ahmad;
-      case "Al-Silsila Sahiha":
-        return AppLocalizations.of(context)!.sahiha;
-      default:
-        return bookName;
-    }
-  }
 }
-
-
