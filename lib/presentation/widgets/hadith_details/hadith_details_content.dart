@@ -5,15 +5,15 @@ import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
 import 'package:huda/presentation/widgets/hadith_details/loading_state.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_list.dart';
 
-class HadithDetailsContent extends StatelessWidget {
-  final String chapterId;
-  final String bookId;
+class HadithDetails extends StatelessWidget {
+  final String chapterNumber;
+  final String bookName;
   final String chapterName;
 
-  const HadithDetailsContent({
+  const HadithDetails({
     super.key,
-    required this.chapterId,
-    required this.bookId,
+    required this.chapterNumber,
+    required this.bookName,
     required this.chapterName,
   });
 
@@ -44,8 +44,8 @@ class HadithDetailsContent extends StatelessWidget {
             return HadithList(
               hadithDetail: state.hadithDetail,
               isDark: isDark,
-              chapterId: chapterId,
-              bookId: bookId,
+              chapterNumber: chapterNumber,
+              bookName: bookName,
               chapterName: chapterName,
             );
           } else if (state is HadithDetailsError) {
