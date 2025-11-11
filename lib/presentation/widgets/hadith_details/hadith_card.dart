@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
+import 'package:huda/data/models/hadith_details_model.dart';
 import 'package:huda/presentation/widgets/hadith_details/action_buttons_row.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_heading.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_status_badge.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_text.dart';
 
 class HadithCard extends StatelessWidget {
-  final dynamic hadith;
+  final Data hadith;
   final bool isDark;
   final String chapterName;
 
@@ -23,12 +24,14 @@ class HadithCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentLanguageCode =
         context.read<LocalizationCubit>().state.locale.languageCode;
+    int index = currentLanguageCode == "ar" ? 1 : 0;
 
     return Column(
       children: [
-        if (hadith.headingArabic != null)
+        if (hadith.hadith![0].chapterTitle != "" &&
+            hadith.hadith![0].chapterTitle != null)
           HadithHeading(
-            heading: _getHeadingText(hadith, currentLanguageCode),
+            heading: hadith.hadith![index].chapterTitle!,
             isDark: isDark,
           ),
         Container(
@@ -61,42 +64,22 @@ class HadithCard extends StatelessWidget {
                 context: context,
               ),
               HadithText(
-                text: _getHadithText(hadith, currentLanguageCode),
+                text: hadith.hadith![index].body ?? "",
                 isDark: isDark,
                 currentLanguageCode: currentLanguageCode,
               ),
-              HadithStatusBadge(
-                status: hadith.status!,
-                isDark: isDark,
-              ),
+              if (hadith.hadith?.isNotEmpty == true &&
+                  hadith.hadith![0].grades?.isNotEmpty == true &&
+                  hadith.hadith![0].grades![0].grade != null &&
+                  hadith.hadith![0].grades![0].grade!.isNotEmpty)
+                HadithStatusBadge(
+                  status: hadith.hadith![0].grades![0].grade!,
+                  isDark: isDark,
+                ),
             ],
           ),
         ),
       ],
     );
-  }
-
-  String _getHeadingText(dynamic hadith, String languageCode) {
-    return languageCode == "en" && hadith.headingEnglish != ""
-        ? hadith.headingEnglish!
-        : languageCode == "ar"
-            ? hadith.headingArabic!
-            : languageCode == "ur" && hadith.headingUrdu! != ""
-                ? hadith.headingUrdu!
-                : hadith.headingArabic != ""
-                    ? hadith.headingArabic!
-                    : '';
-  }
-
-  String _getHadithText(dynamic hadith, String languageCode) {
-    return languageCode == "en" && hadith.hadithEnglish != ""
-        ? hadith.hadithEnglish!
-        : languageCode == "ar"
-            ? hadith.hadithArabic!
-            : languageCode == "ur" && hadith.hadithUrdu != ""
-                ? hadith.hadithUrdu!
-                : hadith.hadithArabic != ""
-                    ? hadith.hadithArabic!
-                    : '';
   }
 }
