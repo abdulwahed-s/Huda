@@ -9,16 +9,16 @@ class NavigationButtons extends StatelessWidget {
   final int currentPage;
   final int lastPage;
   final bool isDark;
-  final String chapterId;
-  final String bookId;
+  final String chapterNumber;
+  final String bookName;
 
   const NavigationButtons({
     super.key,
     required this.currentPage,
     required this.lastPage,
     required this.isDark,
-    required this.chapterId,
-    required this.bookId,
+    required this.chapterNumber,
+    required this.bookName,
   });
 
   @override
@@ -33,7 +33,7 @@ class NavigationButtons extends StatelessWidget {
             onPressed: () {
               context
                   .read<HadithDetailsCubit>()
-                  .fetchHadithDetails(chapterId, bookId, currentPage - 1);
+                  .fetchHadithDetails(chapterNumber, bookName, currentPage - 1);
             },
             isDark: isDark,
           ),
@@ -47,7 +47,7 @@ class NavigationButtons extends StatelessWidget {
             onPressed: () {
               context
                   .read<HadithDetailsCubit>()
-                  .fetchHadithDetails(chapterId, bookId, currentPage + 1);
+                  .fetchHadithDetails(chapterNumber, bookName, currentPage + 1);
             },
             isDark: isDark,
           ),
