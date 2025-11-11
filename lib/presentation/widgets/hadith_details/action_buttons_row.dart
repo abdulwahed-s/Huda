@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
+import 'package:huda/data/models/hadith_details_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/hadith_details/action_button.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:html/parser.dart' as html_parser;
 
 class ActionButtonsRow extends StatelessWidget {
-  final dynamic hadith;
+  final Data hadith;
   final bool isDark;
   final String chapterName;
   final BuildContext context;
@@ -79,9 +81,41 @@ class ActionButtonsRow extends StatelessWidget {
     }
   }
 
+  String _cleanCustomTags(String html) {
+    String cleaned = html
+        .replaceAll('[prematn]', '')
+        .replaceAll('[/prematn]', '')
+        .replaceAll('[matn]', '')
+        .replaceAll('[/matn]', '');
+
+    cleaned = cleaned.replaceAllMapped(
+      RegExp(r'\[narrator[^\]]*\]'),
+      (match) => '',
+    );
+    cleaned = cleaned.replaceAll('[/narrator]', '');
+
+    return cleaned;
+  }
+
   String _formatHadithForSharing(String languageCode) {
-    final hadithText = _getHadithText(languageCode);
-    final status = _getTranslatedStatus(context, hadith.status ?? '');
+    final currentLanguageCode =
+        context.read<LocalizationCubit>().state.locale.languageCode;
+    int index = currentLanguageCode == "ar" ? 1 : 0;
+
+    final rawHadithHtml = hadith.hadith![index].body!;
+
+    final cleanedHtml = _cleanCustomTags(rawHadithHtml);
+
+    final document = html_parser.parse(cleanedHtml);
+    final hadithText = document.body?.text.trim() ?? '';
+
+    final status = _getTranslatedStatus(
+        context,
+        hadith.hadith?.isNotEmpty == true
+            ? hadith.hadith![0].grades?.isNotEmpty == true
+                ? hadith.hadith![0].grades![0].grade ?? ""
+                : ""
+            : "");
 
     if (languageCode == "ar") {
       return '''
@@ -117,18 +151,6 @@ $hadithText
 Shared from Huda App
 ''';
     }
-  }
-
-  String _getHadithText(String languageCode) {
-    return languageCode == "en" && hadith.hadithEnglish != ""
-        ? hadith.hadithEnglish!
-        : languageCode == "ar"
-            ? hadith.hadithArabic!
-            : languageCode == "ur" && hadith.hadithUrdu != ""
-                ? hadith.hadithUrdu!
-                : hadith.hadithArabic != ""
-                    ? hadith.hadithArabic!
-                    : '';
   }
 
   String _getTranslatedStatus(BuildContext context, String status) {
