@@ -7,16 +7,16 @@ class PaginationControls extends StatelessWidget {
   final int currentPage;
   final int lastPage;
   final bool isDark;
-  final String chapterId;
-  final String bookId;
+  final String chapterNumber;
+  final String bookName;
 
   const PaginationControls({
     super.key,
     required this.currentPage,
     required this.lastPage,
     required this.isDark,
-    required this.chapterId,
-    required this.bookId,
+    required this.chapterNumber,
+    required this.bookName,
   });
 
   @override
@@ -54,8 +54,8 @@ class PaginationControls extends StatelessWidget {
             currentPage: currentPage,
             lastPage: lastPage,
             isDark: isDark,
-            chapterId: chapterId,
-            bookId: bookId,
+            chapterNumber: chapterNumber,
+            bookName: bookName,
           ),
         ],
       ),
