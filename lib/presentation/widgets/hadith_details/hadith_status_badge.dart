@@ -14,30 +14,29 @@ class HadithStatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final normalizedStatus = status.trim().toLowerCase();
+
+    final color = _getStatusColor(normalizedStatus);
+    final translated = _getTranslatedStatus(context, normalizedStatus);
+
     return Padding(
-      padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w, bottom: 20.0.h),
+      padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
       child: Align(
         alignment: Alignment.centerRight,
         child: Container(
           decoration: BoxDecoration(
-            color: _getStatusColor(status).withValues(alpha: 0.15),
+            color: color.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(20.0),
-            border: Border.all(
-              color: _getStatusColor(status),
-              width: 1.5,
-            ),
+            border: Border.all(color: color, width: 1.5),
           ),
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.0.w,
-            vertical: 8.0.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Text(
-            _getTranslatedStatus(context, status),
+            translated,
             style: TextStyle(
-              fontSize: 14.0.sp,
+              fontSize: 14.sp,
               fontFamily: "Amiri",
               fontWeight: FontWeight.w600,
-              color: _getStatusColor(status),
+              color: color,
             ),
           ),
         ),
@@ -45,35 +44,58 @@ class HadithStatusBadge extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'Sahih':
-      case 'sahih':
-        return Colors.green[600]!;
-      case 'Da`eef':
-      case 'da`eef':
-        return Colors.red[600]!;
-      case 'Hasan':
-      case 'hasan':
-        return Colors.orange[600]!;
-      default:
-        return Colors.grey[600]!;
+  Color _getStatusColor(String normalizedStatus) {
+    if (normalizedStatus.contains('sahih')) {
+      return Colors.green[600]!;
+    } else if (normalizedStatus.contains('hasan')) {
+      return Colors.orange[600]!;
+    } else if (normalizedStatus.contains('da') ||
+        normalizedStatus.contains('dai') ||
+        normalizedStatus.contains('weak')) {
+      return Colors.red[600]!;
+    } else if (normalizedStatus.contains('mawdu') ||
+        normalizedStatus.contains('fabricated')) {
+      return Colors.red[800]!;
+    } else if (normalizedStatus.contains('shadh') ||
+        normalizedStatus.contains('munkar') ||
+        normalizedStatus.contains('gharib')) {
+      return Colors.blueGrey[600]!;
+    } else {
+      return Colors.grey[600]!;
     }
   }
 
-  String _getTranslatedStatus(BuildContext context, String status) {
-    switch (status) {
-      case 'Sahih':
-      case 'sahih':
-        return AppLocalizations.of(context)!.sahih;
-      case 'Da`eef':
-      case 'da`eef':
-        return AppLocalizations.of(context)!.daif;
-      case 'Hasan':
-      case 'hasan':
-        return AppLocalizations.of(context)!.hasan;
-      default:
-        return status;
+  String _getTranslatedStatus(BuildContext context, String normalizedStatus) {
+    final t = AppLocalizations.of(context)!;
+
+    if (normalizedStatus.contains('sahih') &&
+        normalizedStatus.contains('hasan')) {
+      return '${t.hasan} ${t.sahih}';
+    } else if (normalizedStatus.contains('sahih in chain')) {
+      return '${t.sahih} (${t.chain})';
+    } else if (normalizedStatus.contains('hasan in chain')) {
+      return '${t.hasan} (${t.chain})';
+    } else if (normalizedStatus.contains('da') &&
+        normalizedStatus.contains('chain')) {
+      return '${t.daif} (${t.chain})';
+    } else if (normalizedStatus.contains('sahih')) {
+      return t.sahih;
+    } else if (normalizedStatus.contains('hasan')) {
+      return t.hasan;
+    } else if (normalizedStatus.contains('da') ||
+        normalizedStatus.contains('weak')) {
+      return t.daif;
+    } else if (normalizedStatus.contains('mawdu') ||
+        normalizedStatus.contains('fabricated')) {
+      return t.mawdu;
+    } else if (normalizedStatus.contains('shadh')) {
+      return t.shadh;
+    } else if (normalizedStatus.contains('munkar')) {
+      return t.munkar;
+    } else if (normalizedStatus.contains('gharib')) {
+      return t.gharib;
+    } else {
+      return status;
     }
   }
 }
