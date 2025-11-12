@@ -97,6 +97,8 @@ dependencies:
   upgrader: ^11.5.1
   scrollable_positioned_list: ^0.3.8
   auto_size_text: ^3.0.0
+  flutter_html: ^3.0.0
+  html: ^0.15.6
 
 dev_dependencies:
   flutter_test:
