@@ -4,6 +4,7 @@ import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/data/models/book_chapters_model.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/chapter_card.dart';
+import 'package:huda/presentation/widgets/hadith_chapters/empty_state.dart';
 
 class ChaptersList extends StatelessWidget {
   final List<Data> chapters;
@@ -50,32 +51,34 @@ class ChaptersList extends StatelessWidget {
         }
       });
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView.builder(
-        itemCount: sortedChapters.length,
-        itemBuilder: (context, index) {
-          final chapter = sortedChapters[index];
-          return ChapterCard(
-            chapter: chapter,
-            isDark: isDark,
-            currentLanguageCode: currentLanguageCode,
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                AppRoute.hadithDetails,
-                arguments: {
-                  'chapterNumber': chapter.bookNumber!,
-                  'bookName': bookName,
-                  'chapterName': currentLanguageCode == "ar"
-                      ? chapter.book![1].name!.toString()
-                      : chapter.book![0].name.toString(),
-                },
-              );
-            },
+    return chapters.isEmpty
+        ? EmptyState(isDark: isDark)
+        : Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              itemCount: sortedChapters.length,
+              itemBuilder: (context, index) {
+                final chapter = sortedChapters[index];
+                return ChapterCard(
+                  chapter: chapter,
+                  isDark: isDark,
+                  currentLanguageCode: currentLanguageCode,
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoute.hadithDetails,
+                      arguments: {
+                        'chapterNumber': chapter.bookNumber!,
+                        'bookName': bookName,
+                        'chapterName': currentLanguageCode == "ar"
+                            ? chapter.book![1].name!.toString()
+                            : chapter.book![0].name.toString(),
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           );
-        },
-      ),
-    );
   }
 }
