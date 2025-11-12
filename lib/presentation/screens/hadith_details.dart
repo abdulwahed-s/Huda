@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
+import 'package:huda/presentation/widgets/hadith_details/error_state.dart';
 import 'package:huda/presentation/widgets/hadith_details/loading_state.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_list.dart';
 
 class HadithDetails extends StatelessWidget {
-  final String chapterId;
-  final String bookId;
+  final String chapterNumber;
+  final String bookName;
   final String chapterName;
 
   const HadithDetails({
     super.key,
-    required this.chapterId,
-    required this.bookId,
+    required this.chapterNumber,
+    required this.bookName,
     required this.chapterName,
   });
 
@@ -44,13 +45,12 @@ class HadithDetails extends StatelessWidget {
             return HadithList(
               hadithDetail: state.hadithDetail,
               isDark: isDark,
-              chapterId: chapterId,
-              bookId: bookId,
+              chapterNumber: chapterNumber,
+              bookName: bookName,
               chapterName: chapterName,
             );
           } else if (state is HadithDetailsError) {
-            return Center(
-                child: Text('Error loading hadith details: ${state.message}'));
+            return ErrorState(isDark: isDark);
           } else {
             return const SizedBox.shrink();
           }
