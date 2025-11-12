@@ -773,10 +773,16 @@
     "thankYouRedirect": "Danke! Sie werden zum Store weitergeleitet.",
     "thankYouFeedback": "Danke für Ihr Feedback! Wir werden an Verbesserungen arbeiten."
     ,"noHadithsFound" : "Keine Hadithe gefunden"
-    ,"noHadithsFoundChapter" : "Dit hoofdstuk bevat op dit moment geen hadiths."
+    ,"noHadithsFoundChapter" : "Dit hoofdstuk bevat op dit moment geen hadiths.",
+      "mawdu": "Vervalst (Mawdu')",
+  "shadh": "Onregelmatig (Shadh)",
+  "munkar": "Afgewezen (Munkar)",
+  "gharib": "Zeldzaam (Gharib)",
+  "chain": "in de keten"
 
 
-
+,  "noChapters": "Geen hoofdstukken beschikbaar",
+  "newContent": "Nieuwe inhoud wordt binnenkort toegevoegd.\nKom later terug voor updates."
 
 
 

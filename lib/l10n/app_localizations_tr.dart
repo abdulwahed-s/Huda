@@ -2474,4 +2474,26 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get noHadithsFoundChapter =>
       'Bu bölüm şu anda herhangi bir hadis içermiyor.';
+
+  @override
+  String get mawdu => 'Uydurma (Mawdu\')';
+
+  @override
+  String get shadh => 'Düzensiz (Shadh)';
+
+  @override
+  String get munkar => 'Reddedilmiş (Munkar)';
+
+  @override
+  String get gharib => 'Nadir (Gharib)';
+
+  @override
+  String get chain => 'senedde';
+
+  @override
+  String get noChapters => 'Hiç bölüm mevcut değil';
+
+  @override
+  String get newContent =>
+      'Yakında yeni içerik eklenecek.\nGüncellemeler için daha sonra tekrar kontrol edin.';
 }

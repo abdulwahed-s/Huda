@@ -3019,7 +3019,13 @@
   "thankYouRedirect": "Thank you! You'll be redirected to the store.",
   "thankYouFeedback": "Thank you for your feedback! We'll work on improvements."
     ,"noHadithsFound" : "No Hadiths Found"
-    ,"noHadithsFoundChapter" : "This chapter doesn't contain any hadiths at the moment."
-
+    ,"noHadithsFoundChapter" : "This chapter doesn't contain any hadiths at the moment.",
+      "mawdu": "Fabricated (Mawdu')",
+  "shadh": "Irregular (Shadh)",
+  "munkar": "Rejected (Munkar)",
+  "gharib": "Strange (Gharib)",
+  "chain": "in chain",
+    "noChapters": "No Chapters Available",
+  "newContent": "New content will be added soon.\nCheck back later for updates."
 
 }

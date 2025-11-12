@@ -2471,4 +2471,26 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get noHadithsFoundChapter =>
       'اس باب میں فی الحال کوئی حدیث موجود نہیں ہے۔';
+
+  @override
+  String get mawdu => 'موضوع (من گھڑت)';
+
+  @override
+  String get shadh => 'شاذ';
+
+  @override
+  String get munkar => 'منکر';
+
+  @override
+  String get gharib => 'غریب';
+
+  @override
+  String get chain => 'سند میں';
+
+  @override
+  String get noChapters => 'ابواب دستیاب نہیں ہیں';
+
+  @override
+  String get newContent =>
+      'نیا مواد جلد شامل کیا جائے گا۔\nتازہ کاری کے لیے بعد میں چیک کریں۔';
 }

@@ -2482,4 +2482,26 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get noHadithsFoundChapter =>
       'Bab ini tidak mengandungi sebarang hadis pada masa ini.';
+
+  @override
+  String get mawdu => 'Rekaan (Mawdu\')';
+
+  @override
+  String get shadh => 'Tidak teratur (Shadh)';
+
+  @override
+  String get munkar => 'Ditolak (Munkar)';
+
+  @override
+  String get gharib => 'Pelik (Gharib)';
+
+  @override
+  String get chain => 'dalam sanad';
+
+  @override
+  String get noChapters => 'Tiada bab tersedia';
+
+  @override
+  String get newContent =>
+      'Kandungan baharu akan ditambah tidak lama lagi.\nSila semak semula kemudian untuk kemas kini.';
 }

@@ -852,9 +852,14 @@
     "thankYouRedirect": "Terima kasih! Anda akan diarahkan ke kedai.",
     "thankYouFeedback": "Terima kasih atas maklum balas anda! Kami akan berusaha untuk membuat penambahbaikan."
       ,"noHadithsFound" : "Tiada hadis ditemui"
-    ,"noHadithsFoundChapter" : "Bab ini tidak mengandungi sebarang hadis pada masa ini."
-
-
+    ,"noHadithsFoundChapter" : "Bab ini tidak mengandungi sebarang hadis pada masa ini.",
+      "mawdu": "Rekaan (Mawdu')",
+  "shadh": "Tidak teratur (Shadh)",
+  "munkar": "Ditolak (Munkar)",
+  "gharib": "Pelik (Gharib)",
+  "chain": "dalam sanad"
+,"noChapters": "Tiada bab tersedia",
+  "newContent": "Kandungan baharu akan ditambah tidak lama lagi.\nSila semak semula kemudian untuk kemas kini."
 
 
 

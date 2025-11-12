@@ -2537,4 +2537,26 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get noHadithsFoundChapter =>
       'Este capítulo no contiene ningún hadiz por el momento.';
+
+  @override
+  String get mawdu => 'Fabricado (Mawdu\')';
+
+  @override
+  String get shadh => 'Irregular (Shadh)';
+
+  @override
+  String get munkar => 'Rechazado (Munkar)';
+
+  @override
+  String get gharib => 'Extraño (Gharib)';
+
+  @override
+  String get chain => 'en la cadena';
+
+  @override
+  String get noChapters => 'No hay capítulos disponibles';
+
+  @override
+  String get newContent =>
+      'Se agregará nuevo contenido pronto.\nVuelve más tarde para ver las actualizaciones.';
 }

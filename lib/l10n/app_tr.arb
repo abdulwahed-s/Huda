@@ -765,7 +765,15 @@
     "thankYouRedirect": "Teşekkürler! Mağazaya yönlendirileceksiniz.",
     "thankYouFeedback": "Geri bildiriminiz için teşekkürler! İyileştirmeler üzerinde çalışacağız."
       ,"noHadithsFound" : "Hadis bulunamadı"
-    ,"noHadithsFoundChapter" : "Bu bölüm şu anda herhangi bir hadis içermiyor."
+    ,"noHadithsFoundChapter" : "Bu bölüm şu anda herhangi bir hadis içermiyor.",
+      "mawdu": "Uydurma (Mawdu')",
+  "shadh": "Düzensiz (Shadh)",
+  "munkar": "Reddedilmiş (Munkar)",
+  "gharib": "Nadir (Gharib)",
+  "chain": "senedde",
+   "noChapters": "Hiç bölüm mevcut değil",
+  "newContent": "Yakında yeni içerik eklenecek.\nGüncellemeler için daha sonra tekrar kontrol edin."
+
 
 
 

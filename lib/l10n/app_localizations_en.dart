@@ -2479,4 +2479,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noHadithsFoundChapter =>
       'This chapter doesn\'t contain any hadiths at the moment.';
+
+  @override
+  String get mawdu => 'Fabricated (Mawdu\')';
+
+  @override
+  String get shadh => 'Irregular (Shadh)';
+
+  @override
+  String get munkar => 'Rejected (Munkar)';
+
+  @override
+  String get gharib => 'Strange (Gharib)';
+
+  @override
+  String get chain => 'in chain';
+
+  @override
+  String get noChapters => 'No Chapters Available';
+
+  @override
+  String get newContent =>
+      'New content will be added soon.\nCheck back later for updates.';
 }

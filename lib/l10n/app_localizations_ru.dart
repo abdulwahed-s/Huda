@@ -2500,4 +2500,26 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noHadithsFoundChapter => 'В этой главе сейчас нет хадисов.';
+
+  @override
+  String get mawdu => 'Подделанный (Мауду’)';
+
+  @override
+  String get shadh => 'Ненормальный (Шаз)';
+
+  @override
+  String get munkar => 'Отклонённый (Мункар)';
+
+  @override
+  String get gharib => 'Редкий (Гариб)';
+
+  @override
+  String get chain => 'в цепочке передатчиков';
+
+  @override
+  String get noChapters => 'Главы недоступны';
+
+  @override
+  String get newContent =>
+      'Новый контент скоро будет добавлен.\nПроверьте позже для обновлений.';
 }

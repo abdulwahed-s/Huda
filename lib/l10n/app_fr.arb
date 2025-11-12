@@ -773,7 +773,14 @@
     "thankYouRedirect": "Merci ! Vous allez être redirigé vers la boutique.",
     "thankYouFeedback": "Merci pour vos commentaires ! Nous allons travailler sur des améliorations."
       ,"noHadithsFound" : "Aucun hadith trouvé"
-    ,"noHadithsFoundChapter" : "Ce chapitre ne contient aucun hadith pour le moment."
+    ,"noHadithsFoundChapter" : "Ce chapitre ne contient aucun hadith pour le moment.",
+      "mawdu": "Inventé (Mawdu')",
+  "shadh": "Irrégulier (Shadh)",
+  "munkar": "Rejeté (Munkar)",
+  "gharib": "Étrange (Gharib)",
+  "chain": "dans la chaîne",
+    "noChapters": "Aucun chapitre disponible",
+  "newContent": "Nouveau contenu bientôt disponible.\nRevenez plus tard pour les mises à jour."
 
 
 

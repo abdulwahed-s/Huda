@@ -2524,4 +2524,26 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get noHadithsFoundChapter =>
       'Dit hoofdstuk bevat op dit moment geen hadiths.';
+
+  @override
+  String get mawdu => 'Vervalst (Mawdu\')';
+
+  @override
+  String get shadh => 'Onregelmatig (Shadh)';
+
+  @override
+  String get munkar => 'Afgewezen (Munkar)';
+
+  @override
+  String get gharib => 'Zeldzaam (Gharib)';
+
+  @override
+  String get chain => 'in de keten';
+
+  @override
+  String get noChapters => 'Geen hoofdstukken beschikbaar';
+
+  @override
+  String get newContent =>
+      'Nieuwe inhoud wordt binnenkort toegevoegd.\nKom later terug voor updates.';
 }

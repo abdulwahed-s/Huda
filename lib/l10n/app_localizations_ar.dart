@@ -2437,4 +2437,26 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noHadithsFoundChapter =>
       'هذا الفصل لا يحتوي على أي أحاديث في الوقت الحالي.';
+
+  @override
+  String get mawdu => 'موضوع (مختلق)';
+
+  @override
+  String get shadh => 'شاذّ';
+
+  @override
+  String get munkar => 'منكر';
+
+  @override
+  String get gharib => 'غريب';
+
+  @override
+  String get chain => 'في السند';
+
+  @override
+  String get noChapters => 'لا توجد فصول متاحة';
+
+  @override
+  String get newContent =>
+      'سيتم إضافة محتوى جديد قريبًا.\nيرجى العودة لاحقًا للتحديثات.';
 }

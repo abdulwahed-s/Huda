@@ -4633,6 +4633,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This chapter doesn\'t contain any hadiths at the moment.'**
   String get noHadithsFoundChapter;
+
+  /// No description provided for @mawdu.
+  ///
+  /// In en, this message translates to:
+  /// **'Fabricated (Mawdu\')'**
+  String get mawdu;
+
+  /// No description provided for @shadh.
+  ///
+  /// In en, this message translates to:
+  /// **'Irregular (Shadh)'**
+  String get shadh;
+
+  /// No description provided for @munkar.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected (Munkar)'**
+  String get munkar;
+
+  /// No description provided for @gharib.
+  ///
+  /// In en, this message translates to:
+  /// **'Strange (Gharib)'**
+  String get gharib;
+
+  /// No description provided for @chain.
+  ///
+  /// In en, this message translates to:
+  /// **'in chain'**
+  String get chain;
+
+  /// No description provided for @noChapters.
+  ///
+  /// In en, this message translates to:
+  /// **'No Chapters Available'**
+  String get noChapters;
+
+  /// No description provided for @newContent.
+  ///
+  /// In en, this message translates to:
+  /// **'New content will be added soon.\nCheck back later for updates.'**
+  String get newContent;
 }
 
 class _AppLocalizationsDelegate

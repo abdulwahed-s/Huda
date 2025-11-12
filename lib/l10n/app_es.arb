@@ -785,8 +785,14 @@
     "thankYouRedirect": "¡Gracias! Serás redirigido a la tienda.",
     "thankYouFeedback": "¡Gracias por tus comentarios! Trabajaremos en mejoras."
     ,"noHadithsFound" : "No se encontraron hadices"
-    ,"noHadithsFoundChapter" : "Este capítulo no contiene ningún hadiz por el momento."
-
+    ,"noHadithsFoundChapter" : "Este capítulo no contiene ningún hadiz por el momento.",
+      "mawdu": "Fabricado (Mawdu')",
+  "shadh": "Irregular (Shadh)",
+  "munkar": "Rechazado (Munkar)",
+  "gharib": "Extraño (Gharib)",
+  "chain": "en la cadena"
+,"noChapters": "No hay capítulos disponibles",
+  "newContent": "Se agregará nuevo contenido pronto.\nVuelve más tarde para ver las actualizaciones."
 
 
 }

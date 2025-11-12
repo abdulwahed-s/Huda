@@ -2482,4 +2482,26 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get noHadithsFoundChapter => 'এই অধ্যায়ে বর্তমানে কোনো হাদিস নেই।';
+
+  @override
+  String get mawdu => 'মনগড়া (মাওদু’)';
+
+  @override
+  String get shadh => 'অনিয়মিত (শায)';
+
+  @override
+  String get munkar => 'প্রত্যাখ্যাত (মুনকার)';
+
+  @override
+  String get gharib => 'অদ্ভুত (গারিব)';
+
+  @override
+  String get chain => 'সনদে';
+
+  @override
+  String get noChapters => 'কোনো অধ্যায় উপলব্ধ নেই';
+
+  @override
+  String get newContent =>
+      'শীঘ্রই নতুন বিষয়বস্তু যোগ করা হবে।\nআপডেটের জন্য পরে আবার দেখুন।';
 }
