@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class PageIndicator extends StatelessWidget {
   final int currentPage;
@@ -23,7 +24,7 @@ class PageIndicator extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Text(
-        'Page $currentPage of $lastPage',
+        '${AppLocalizations.of(context)!.page} $currentPage ${AppLocalizations.of(context)!.pageOf} $lastPage',
         style: TextStyle(
           fontSize: 14.sp,
           fontWeight: FontWeight.w600,
