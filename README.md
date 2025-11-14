@@ -3,7 +3,9 @@
   
 # Huda - Islamic Companion App
 
-
+[![Version](https://img.shields.io/github/v/release/abdulwahed-s/huda?include_prereleases&sort=semver)](https://github.com/abdulwahed-s/huda/releases/latest)
+[![Github Downloads](https://img.shields.io/github/downloads/abdulwahed-s/huda/total?logo=Github)](https://github.com/abdulwahed-s/huda/releases)
+[![Badge](https://img.shields.io/badge/May%20Allah%20accept%20[good%20deeds]%20from%20us%20and%20you-8A2BE2)]()
 
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
       alt='Get it on Google Play'
