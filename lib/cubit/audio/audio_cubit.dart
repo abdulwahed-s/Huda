@@ -121,7 +121,9 @@ class AudioCubit extends Cubit<AudioState> {
         _readersListCacheKey,
         jsonEncode(audiosReaders.toJson()),
       );
-    } catch (e) {}
+    } catch (e) {
+      // print the error if needed
+    }
   }
 
   Future<void> fetchSurahAudio(String identifier) async {
@@ -189,7 +191,9 @@ class AudioCubit extends Cubit<AudioState> {
         final currentState = state as AudioLoaded;
         emit(currentState.copyWith(currentSurahAudio: audio));
       }
-    } catch (e) {}
+    } catch (e) {
+      // print the error if needed
+    }
   }
 
   Future<void> clearAudioCache() async {
@@ -202,14 +206,18 @@ class AudioCubit extends Cubit<AudioState> {
           await _cacheHelper.removeData(key: key);
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      // print the error if needed
+    }
   }
 
   Future<void> clearReaderCache(String identifier) async {
     try {
       final cacheKey = '$_surahAudioCachePrefix$identifier';
       await _cacheHelper.removeData(key: cacheKey);
-    } catch (e) {}
+    } catch (e) {
+      // print the error if needed
+    }
   }
 
   bool get hasReadersCache {

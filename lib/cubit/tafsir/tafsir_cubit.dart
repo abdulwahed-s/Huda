@@ -112,7 +112,9 @@ class TafsirCubit extends Cubit<TafsirState> {
         _tafsirListCacheKey,
         jsonEncode(tafsirReaders.toJson()),
       );
-    } catch (e) {}
+    } catch (e) {
+      // print the error if needed
+    }
   }
 
   Future<void> fetchSurahTafsir(String identifier, int surahNumber) async {
@@ -297,7 +299,9 @@ class TafsirCubit extends Cubit<TafsirState> {
           );
           return extractedTafsir;
         }
-      } catch (e) {}
+      } catch (e) {
+        // print the error if needed
+      }
     }
 
     return null;

@@ -96,7 +96,9 @@ class TranslationCubit extends Cubit<TranslationState> {
       final translationReaders = await translationRepository.getTranslation();
       await _saveCacheWithTimestamp(
           _translationListCacheKey, jsonEncode(translationReaders.toJson()));
-    } catch (e) {}
+    } catch (e) {
+      // print the error if needed
+    }
   }
 
   Future<void> fetchSurahTranslation(String identifier, int surahNumber) async {

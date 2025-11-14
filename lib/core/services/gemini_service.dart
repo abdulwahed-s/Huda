@@ -168,10 +168,12 @@ class GeminiService {
                   }
                 }
               }
-            } catch (e) {}
+            } catch (e) {
+              // print the error if needed
+            }
           }
         } catch (e) {
-          // 
+          //
         }
       }
     } catch (e) {
