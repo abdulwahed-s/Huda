@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/zakat_calculator/zakat_calculator_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
@@ -37,63 +36,55 @@ class NisabTypeSelector extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: RadioListTile<NisabType>(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    AppLocalizations.of(context)!.gold,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: "Amiri",
+          RadioGroup<NisabType>(
+            groupValue: state.nisabType,
+            onChanged: (value) {
+              context.read<ZakatCalculatorCubit>().changeNisabType(value!);
+            },
+            child: Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<NisabType>(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      AppLocalizations.of(context)!.gold,
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: "Amiri",
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    AppLocalizations.of(context)!.goldGrams,
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      fontFamily: "Amiri",
+                    subtitle: Text(
+                      AppLocalizations.of(context)!.goldGrams,
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        fontFamily: "Amiri",
+                      ),
                     ),
+                    value: NisabType.gold,
                   ),
-                  value: NisabType.gold,
-                  groupValue: state.nisabType,
-                  activeColor: context.primaryColor,
-                  onChanged: (value) {
-                    context
-                        .read<ZakatCalculatorCubit>()
-                        .changeNisabType(value!);
-                  },
                 ),
-              ),
-              Expanded(
-                child: RadioListTile<NisabType>(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    AppLocalizations.of(context)!.silver,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: "Amiri",
+                Expanded(
+                  child: RadioListTile<NisabType>(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      AppLocalizations.of(context)!.silver,
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: "Amiri",
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    AppLocalizations.of(context)!.silverGrams,
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      fontFamily: "Amiri",
+                    subtitle: Text(
+                      AppLocalizations.of(context)!.silverGrams,
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        fontFamily: "Amiri",
+                      ),
                     ),
+                    value: NisabType.silver,
                   ),
-                  value: NisabType.silver,
-                  groupValue: state.nisabType,
-                  activeColor: context.primaryColor,
-                  onChanged: (value) {
-                    context
-                        .read<ZakatCalculatorCubit>()
-                        .changeNisabType(value!);
-                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
