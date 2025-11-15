@@ -44,7 +44,7 @@ class DropdownCard extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           DropdownButtonFormField<String>(
-            value: value,
+            initialValue: value,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),
