@@ -62,7 +62,7 @@ class InfoDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        Container(
+        SizedBox(
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () => Navigator.pop(context),
