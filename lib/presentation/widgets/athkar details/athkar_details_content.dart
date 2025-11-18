@@ -308,7 +308,7 @@ ${athkar.languageArabicTranslatedText ?? ''}
 ${"عدد التكرار: ${athkar.repeat}"}
 """;
 
-    await Share.share(shareText);
+    await SharePlus.instance.share(ShareParams(text: shareText,));
   }
 
   Future<void> _shareAsImage(int index) async {
