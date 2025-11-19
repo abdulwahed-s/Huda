@@ -331,7 +331,7 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                         ),
                         child: Text(
                           AppLocalizations.of(context)!.addItem,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: "Amiri",
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
