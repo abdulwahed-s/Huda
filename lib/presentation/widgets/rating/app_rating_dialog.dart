@@ -407,7 +407,7 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                   ? SizedBox(
                                       width: 20.w,
                                       height: 20.w,
-                                      child: CircularProgressIndicator(
+                                      child: const CircularProgressIndicator(
                                         strokeWidth: 2,
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
