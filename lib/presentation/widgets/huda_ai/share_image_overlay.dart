@@ -51,10 +51,10 @@ class ShareImageOverlay {
       final File file = File('${tempDir.path}/$fileName');
       await file.writeAsBytes(pngBytes);
 
-      await Share.shareXFiles(
-        [XFile(file.path)],
+      await SharePlus.instance.share(ShareParams(
+        files: [XFile(file.path)],
         text: appLocalizations.shareTextHudaAI,
-      );
+      ));
     } catch (e) {
       if (context.mounted) {
         scaffoldMessengerState.showSnackBar(
