@@ -88,14 +88,6 @@ Future<void> _initializeBackgroundServices() async {
 
   await Workmanager().initialize(
     callbackDispatcher,
-    isInDebugMode: kDebugMode,
   );
   tracker.markServiceReady('background');
-}
-
-// Legacy method for compatibility - can be removed once all references are updated
-@deprecated
-Future<void> initializeServices() async {
-  await initializeCriticalServices();
-  initializeNonCriticalServicesAsync(); // Fire and forget
 }
