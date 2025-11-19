@@ -308,7 +308,9 @@ ${athkar.languageArabicTranslatedText ?? ''}
 ${"عدد التكرار: ${athkar.repeat}"}
 """;
 
-    await SharePlus.instance.share(ShareParams(text: shareText,));
+    await SharePlus.instance.share(ShareParams(
+      text: shareText,
+    ));
   }
 
   Future<void> _shareAsImage(int index) async {
@@ -408,10 +410,10 @@ ${"عدد التكرار: ${athkar.repeat}"}
       final File file = File('${tempDir.path}/$fileName');
       await file.writeAsBytes(pngBytes);
 
-      await Share.shareXFiles(
-        [XFile(file.path)],
+      await SharePlus.instance.share(ShareParams(
+        files: [XFile(file.path)],
         text: 'مشاركة الأذكار - ${widget.title}',
-      );
+      ));
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

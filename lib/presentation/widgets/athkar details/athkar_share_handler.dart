@@ -66,7 +66,9 @@ ${athkar.translatedText ?? ''}
 ${"عدد التكرار: ${athkar.repeat}"}
 """;
 
-    await Share.share(shareText);
+    await SharePlus.instance.share(ShareParams(
+      text: shareText,
+    ));
   }
 
   Future<void> _shareAsImage(int index) async {
@@ -87,10 +89,10 @@ ${"عدد التكرار: ${athkar.repeat}"}
           title: title);
 
       final file = await _saveImageToTempFile(imageBytes, index);
-      await Share.shareXFiles(
-        [XFile(file.path)],
-        text: 'مشاركة الأذكار - ${state.athkarCategory.title}',
-      );
+
+      await SharePlus.instance.share(ShareParams(
+          files: [XFile(file.path)],
+          text: 'مشاركة الأذكار - ${state.athkarCategory.title}'));
     } catch (e) {
       _showShareErrorSnackbar(e.toString());
     } finally {

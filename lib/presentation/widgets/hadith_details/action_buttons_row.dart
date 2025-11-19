@@ -59,10 +59,8 @@ class ActionButtonsRow extends StatelessWidget {
       final currentLanguageCode =
           context.read<LocalizationCubit>().state.locale.languageCode;
       final formattedText = _formatHadithForSharing(currentLanguageCode);
-      await Share.share(
-        formattedText,
-        subject: chapterName,
-      );
+      await SharePlus.instance
+          .share(ShareParams(text: formattedText, subject: chapterName));
     } catch (e) {
       _showSnackBar(context, _getErrorMessage('share', e));
     }

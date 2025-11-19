@@ -65,15 +65,14 @@ class BookDetailController {
   void handleLanguageSelected(String? language) {
     selectedLanguage = language;
     refreshUI();
-    
+
     if (language == null) {
       context.read<BookDetailCubit>().fetchBookDetail(bookId, this.language);
     } else {
-      final translations = context
-          .read<BookLanguagesCubit>()
-          .state as BookTranslationsLoaded;
-      final translation = translations.translations
-          .firstWhere((t) => t.slang == language);
+      final translations =
+          context.read<BookLanguagesCubit>().state as BookTranslationsLoaded;
+      final translation =
+          translations.translations.firstWhere((t) => t.slang == language);
       context.read<BookDetailCubit>().fetchBookDetail(
             translation.id,
             translation.slang,
@@ -265,10 +264,10 @@ class BookDetailController {
     final message =
         'I found this amazing book "$title" - read it in Huda app! 📚\n\nDownload Huda app to explore more Islamic books and resources.';
 
-    Share.share(
-      message,
+    SharePlus.instance.share(ShareParams(
+      text: message,
       subject: 'Check out this book: $title',
-    );
+    ));
   }
 
   Future<void> shareAsPdf() async {
@@ -319,11 +318,11 @@ class BookDetailController {
 
         final file = File(pdfAttachment.localPath);
         if (await file.exists()) {
-          await Share.shareXFiles(
-            [XFile(pdfAttachment.localPath)],
+          await SharePlus.instance.share(ShareParams(
+            files: [XFile(pdfAttachment.localPath)],
             text: 'Check out this book: $title',
             subject: title,
-          );
+          ));
         } else {
           throw Exception('PDF file not found locally');
         }
@@ -366,11 +365,11 @@ class BookDetailController {
         Navigator.of(context).pop();
       }
 
-      await Share.shareXFiles(
-        [XFile(filePath)],
+      await SharePlus.instance.share(ShareParams(
+        files: [XFile(filePath)],
         text: 'Check out this book: $title',
         subject: title,
-      );
+      ));
 
       Future.delayed(const Duration(seconds: 30), () {
         try {
