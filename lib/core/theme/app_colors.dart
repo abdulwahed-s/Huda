@@ -166,8 +166,6 @@ class AppColors {
 
   static List<AppColorTheme> get availableThemes => AppColorTheme.values;
 
-  get primary => null;
-
   static String getThemeName(AppColorTheme theme, BuildContext context) {
     switch (theme) {
       case AppColorTheme.purple:
