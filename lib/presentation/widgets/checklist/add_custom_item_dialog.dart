@@ -174,7 +174,7 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                                   isDarkMode ? Colors.grey[700] : Colors.white,
                             ),
                             child: DropdownButtonFormField<ChecklistItemType>(
-                              value: _selectedType,
+                              initialValue: _selectedType,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.symmetric(
@@ -239,7 +239,7 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                                   isDarkMode ? Colors.grey[700] : Colors.white,
                             ),
                             child: DropdownButtonFormField<RepetitionFrequency>(
-                              value: _selectedFrequency,
+                              initialValue: _selectedFrequency,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.symmetric(
