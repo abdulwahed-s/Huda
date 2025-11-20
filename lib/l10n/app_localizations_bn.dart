@@ -2504,4 +2504,13 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get newContent =>
       'শীঘ্রই নতুন বিষয়বস্তু যোগ করা হবে।\nআপডেটের জন্য পরে আবার দেখুন।';
+
+  @override
+  String get meccan => 'মক্কীয়';
+
+  @override
+  String get medinan => 'মদিনীয়';
+
+  @override
+  String get ayahs => 'আয়াতসমূহ';
 }

@@ -2522,4 +2522,13 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get newContent =>
       'Новый контент скоро будет добавлен.\nПроверьте позже для обновлений.';
+
+  @override
+  String get meccan => 'Мекканский';
+
+  @override
+  String get medinan => 'Мединский';
+
+  @override
+  String get ayahs => 'Аяты';
 }

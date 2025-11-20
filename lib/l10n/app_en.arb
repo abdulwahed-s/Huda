@@ -3017,5 +3017,8 @@
     "gharib": "Strange (Gharib)",
     "chain": "in chain",
     "noChapters": "No Chapters Available",
-    "newContent": "New content will be added soon.\nCheck back later for updates."
+    "newContent": "New content will be added soon.\nCheck back later for updates.",
+    "meccan" : "Meccan",
+    "medinan" : "Medinan",
+    "ayahs" : "Ayahs"
 }

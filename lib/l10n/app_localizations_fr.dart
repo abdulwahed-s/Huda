@@ -2564,4 +2564,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get newContent =>
       'Nouveau contenu bientôt disponible.\nRevenez plus tard pour les mises à jour.';
+
+  @override
+  String get meccan => 'Mecquoise';
+
+  @override
+  String get medinan => 'Médinoise';
+
+  @override
+  String get ayahs => 'Versets';
 }

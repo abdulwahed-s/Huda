@@ -2459,4 +2459,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get newContent =>
       'سيتم إضافة محتوى جديد قريبًا.\nيرجى العودة لاحقًا للتحديثات.';
+
+  @override
+  String get meccan => 'مكية';
+
+  @override
+  String get medinan => 'مدنية';
+
+  @override
+  String get ayahs => 'آيات';
 }

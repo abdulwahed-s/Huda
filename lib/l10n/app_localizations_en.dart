@@ -2501,4 +2501,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newContent =>
       'New content will be added soon.\nCheck back later for updates.';
+
+  @override
+  String get meccan => 'Meccan';
+
+  @override
+  String get medinan => 'Medinan';
+
+  @override
+  String get ayahs => 'Ayahs';
 }

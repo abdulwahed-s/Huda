@@ -2504,4 +2504,13 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get newContent =>
       'Kandungan baharu akan ditambah tidak lama lagi.\nSila semak semula kemudian untuk kemas kini.';
+
+  @override
+  String get meccan => 'Mekah';
+
+  @override
+  String get medinan => 'Madinah';
+
+  @override
+  String get ayahs => 'Ayat';
 }

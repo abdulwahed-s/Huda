@@ -2546,4 +2546,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get newContent =>
       'Nieuwe inhoud wordt binnenkort toegevoegd.\nKom later terug voor updates.';
+
+  @override
+  String get meccan => 'Mekkens';
+
+  @override
+  String get medinan => 'Medineens';
+
+  @override
+  String get ayahs => 'Ayaat';
 }

@@ -2493,4 +2493,13 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get newContent =>
       'نیا مواد جلد شامل کیا جائے گا۔\nتازہ کاری کے لیے بعد میں چیک کریں۔';
+
+  @override
+  String get meccan => 'مکی';
+
+  @override
+  String get medinan => 'مدنی';
+
+  @override
+  String get ayahs => 'آیات';
 }

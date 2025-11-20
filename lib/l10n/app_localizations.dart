@@ -4675,6 +4675,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New content will be added soon.\nCheck back later for updates.'**
   String get newContent;
+
+  /// No description provided for @meccan.
+  ///
+  /// In en, this message translates to:
+  /// **'Meccan'**
+  String get meccan;
+
+  /// No description provided for @medinan.
+  ///
+  /// In en, this message translates to:
+  /// **'Medinan'**
+  String get medinan;
+
+  /// No description provided for @ayahs.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayahs'**
+  String get ayahs;
 }
 
 class _AppLocalizationsDelegate

@@ -761,5 +761,8 @@
     "gharib": "Nadir (Gharib)",
     "chain": "senedde",
     "noChapters": "Hiç bölüm mevcut değil",
-    "newContent": "Yakında yeni içerik eklenecek.\nGüncellemeler için daha sonra tekrar kontrol edin."
+    "newContent": "Yakında yeni içerik eklenecek.\nGüncellemeler için daha sonra tekrar kontrol edin.",
+    "meccan" : "Mekkî",
+    "medinan" : "Medînî",
+    "ayahs" : "Ayetler"
 }

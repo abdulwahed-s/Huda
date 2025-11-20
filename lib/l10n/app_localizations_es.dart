@@ -2559,4 +2559,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get newContent =>
       'Se agregará nuevo contenido pronto.\nVuelve más tarde para ver las actualizaciones.';
+
+  @override
+  String get meccan => 'Meca';
+
+  @override
+  String get medinan => 'Medinense';
+
+  @override
+  String get ayahs => 'Alejas';
 }

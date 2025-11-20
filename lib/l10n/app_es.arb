@@ -781,5 +781,8 @@
     "gharib": "Extraño (Gharib)",
     "chain": "en la cadena",
     "noChapters": "No hay capítulos disponibles",
-    "newContent": "Se agregará nuevo contenido pronto.\nVuelve más tarde para ver las actualizaciones."
+    "newContent": "Se agregará nuevo contenido pronto.\nVuelve más tarde para ver las actualizaciones.",
+    "meccan" : "Meca",
+    "medinan" : "Medinense",
+    "ayahs" : "Alejas"
 }

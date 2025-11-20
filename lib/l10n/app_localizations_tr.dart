@@ -2496,4 +2496,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get newContent =>
       'Yakında yeni içerik eklenecek.\nGüncellemeler için daha sonra tekrar kontrol edin.';
+
+  @override
+  String get meccan => 'Mekkî';
+
+  @override
+  String get medinan => 'Medînî';
+
+  @override
+  String get ayahs => 'Ayetler';
 }

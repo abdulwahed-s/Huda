@@ -769,5 +769,8 @@
     "gharib": "Étrange (Gharib)",
     "chain": "dans la chaîne",
     "noChapters": "Aucun chapitre disponible",
-    "newContent": "Nouveau contenu bientôt disponible.\nRevenez plus tard pour les mises à jour."
+    "newContent": "Nouveau contenu bientôt disponible.\nRevenez plus tard pour les mises à jour.",
+    "meccan" : "Mecquoise",
+    "medinan" : "Médinoise",
+    "ayahs" : "Versets"
 }
