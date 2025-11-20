@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class RevelationTypeBadge extends StatelessWidget {
   final String revelationType;
@@ -42,7 +43,9 @@ class RevelationTypeBadge extends StatelessWidget {
           ),
           SizedBox(width: 2.w),
           Text(
-            revelationType,
+            isMeccan
+                ? AppLocalizations.of(context)!.meccan
+                : AppLocalizations.of(context)!.medinan,
             style: TextStyle(
               fontSize: 8.sp,
               fontWeight: FontWeight.bold,
