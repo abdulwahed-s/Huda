@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/data/models/quran_model.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import '../../../../core/theme/theme_extension.dart';
 import 'revelation_type_badge.dart';
 
@@ -162,7 +163,7 @@ class SurahCard extends StatelessWidget {
           ),
         ),
         Text(
-          'Ayahs',
+          AppLocalizations.of(context)!.ayahs,
           style: TextStyle(
             fontSize: 10.sp,
             color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
