@@ -62,7 +62,9 @@ class ActionButtonsRow extends StatelessWidget {
       await SharePlus.instance
           .share(ShareParams(text: formattedText, subject: chapterName));
     } catch (e) {
-      _showSnackBar(context, _getErrorMessage('share', e));
+      if (context.mounted) {
+        _showSnackBar(context, _getErrorMessage('share', e));
+      }
     }
   }
 
@@ -73,9 +75,13 @@ class ActionButtonsRow extends StatelessWidget {
           context.read<LocalizationCubit>().state.locale.languageCode;
       final formattedText = _formatHadithForSharing(currentLanguageCode);
       await Clipboard.setData(ClipboardData(text: formattedText));
-      _showSnackBar(context, _getSuccessMessage('copy'));
+      if (context.mounted) {
+        _showSnackBar(context, _getSuccessMessage('copy'));
+      }
     } catch (e) {
-      _showSnackBar(context, _getErrorMessage('copy', e));
+      if (context.mounted) {
+        _showSnackBar(context, _getErrorMessage('copy', e));
+      }
     }
   }
 

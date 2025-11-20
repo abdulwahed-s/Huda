@@ -56,7 +56,9 @@ class PermissionDeniedState extends StatelessWidget {
                   ? () async {
                       await AppSettings.openAppSettings();
                       await Future.delayed(const Duration(seconds: 5));
-                      context.read<QiblahCubit>().loadQiblah();
+                      if (context.mounted) {
+                        context.read<QiblahCubit>().loadQiblah();
+                      }
                     }
                   : () => context.read<QiblahCubit>().loadQiblah(),
               icon: Icon(isPermanent ? Icons.settings : Icons.refresh),

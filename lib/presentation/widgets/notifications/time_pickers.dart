@@ -35,7 +35,9 @@ class TimePickers {
     if (picked != null) {
       final formatted =
           '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-      cubit.setContext(context);
+      if (context.mounted) {
+        cubit.setContext(context);
+      }
       cubit.setQuranReminderTime(formatted);
     }
   }
@@ -72,7 +74,9 @@ class TimePickers {
     if (picked != null) {
       final formatted =
           '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-      cubit.setContext(context);
+      if (context.mounted) {
+        cubit.setContext(context);
+      }
       cubit.setChecklistReminderTime(formatted);
     }
   }
@@ -109,7 +113,9 @@ class TimePickers {
     if (picked != null) {
       final formatted =
           '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-      cubit.setContext(context);
+      if (context.mounted) {
+        cubit.setContext(context);
+      }
       cubit.setKahfFridayTime(formatted);
     }
   }
@@ -167,7 +173,9 @@ class TimePickers {
                 if (picked != null) {
                   final formatted =
                       '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-                  cubit.setContext(context);
+                  if (context.mounted) {
+                    cubit.setContext(context);
+                  }
                   cubit.setMorningAthkarTime(formatted);
                   navigator.pop();
                 }
@@ -194,7 +202,9 @@ class TimePickers {
                 if (picked != null) {
                   final formatted =
                       '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-                  cubit.setContext(context);
+                  if (context.mounted) {
+                    cubit.setContext(context);
+                  }
                   cubit.setEveningAthkarTime(formatted);
                   navigator.pop();
                 }
