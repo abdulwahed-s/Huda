@@ -110,7 +110,7 @@ class BookDetailController {
     }
   }
 
-  void handleAttachmentTap(attachment) {
+  void handleAttachmentTap(dynamic attachment) {
     if (attachment.extensionType == 'PDF') {
       Navigator.pushNamed(
         context,
@@ -208,20 +208,24 @@ class BookDetailController {
       await _offlineBooksService.deleteBook(bookId);
       isBookDownloaded = false;
       refreshUI();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Book deleted successfully'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Book deleted successfully'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to delete book: $e'),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete book: $e'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
