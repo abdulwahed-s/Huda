@@ -107,7 +107,7 @@ class NotificationCard extends StatelessWidget {
                       child: Switch(
                         value: value,
                         onChanged: onChanged,
-                        activeColor: gradient.first,
+                        activeThumbColor: gradient.first,
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                     ),
