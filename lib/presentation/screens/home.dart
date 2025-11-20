@@ -166,6 +166,7 @@ class _HomeState extends State<Home>
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
+                // ignore: prefer_const_constructors
                 HomeAppBar(),
                 HomeContent(
                   animationController: _animationController,
