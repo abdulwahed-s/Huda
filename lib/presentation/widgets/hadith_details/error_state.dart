@@ -16,8 +16,9 @@ class ErrorState extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color:
-                    isDark ? Colors.red[900]?.withOpacity(0.2) : Colors.red[50],
+                color: isDark
+                    ? Colors.red[900]?.withValues(alpha: 0.2)
+                    : Colors.red[50],
                 shape: BoxShape.circle,
               ),
               child: Icon(
