@@ -216,9 +216,9 @@ flutter build linux --release
 
 | Home Screen | Quran Reader | Prayer Times |
 |-------------|-------------|-------------|
-| ![Home Screen](assets\images\github\home-screen.png) | ![Quran Reader](assets\images\github\quran-reader.png) | ![Prayer Times](assets\images\github\prayer-times.png) |
+| ![Home Screen](assets/images/github/home-screen.png) | ![Quran Reader](assets/images/github/quran-reader.png) | ![Prayer Times](assets/images/github/prayer-times.png) |
 | **Qiblah Compass** | **Islamic Reminder** | **Islamic Checklist** |
-| ![Qiblah Compass](assets\images\github\qiblah-compass.png) | ![Islamic Reminder](assets\images\github\reminder.png) | ![Islamic Checklist](assets\images\github\checklist.png) |
+| ![Qiblah Compass](assets/images/github/qiblah-compass.png) | ![Islamic Reminder](assets/images/github/reminder.png) | ![Islamic Checklist](assets/images/github/checklist.png) |
 
 ## 📄 License
 
