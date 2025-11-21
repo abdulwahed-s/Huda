@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/book_detail/download_button.dart';
 import 'package:huda/presentation/widgets/book_detail/primary_button.dart';
 
@@ -13,7 +14,7 @@ class ActionButtonsSection extends StatefulWidget {
   final int bookId;
   final VoidCallback onPrimaryAction;
   final VoidCallback onDownload;
-  final Function(bool, double) onDownloadStateChanged; 
+  final Function(bool, double) onDownloadStateChanged;
 
   const ActionButtonsSection({
     super.key,
@@ -24,7 +25,7 @@ class ActionButtonsSection extends StatefulWidget {
     required this.bookId,
     required this.onPrimaryAction,
     required this.onDownload,
-    required this.onDownloadStateChanged, 
+    required this.onDownloadStateChanged,
   });
 
   @override
@@ -72,8 +73,8 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                       : Icons.file_download_rounded,
                   label:
                       widget.bookDetail.attachments![0].extensionType == 'PDF'
-                          ? 'Read PDF'
-                          : 'Open File',
+                          ? AppLocalizations.of(context)!.readPdf
+                          : AppLocalizations.of(context)!.openFile,
                   onPressed: widget.onPrimaryAction,
                   isPrimary: true,
                 ),
@@ -88,10 +89,10 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                       ? null
                       : widget.onDownload,
                   label: widget.isBookDownloaded
-                      ? 'Downloaded'
+                      ? AppLocalizations.of(context)!.downloaded
                       : widget.isDownloading
                           ? '${(widget.downloadProgress * 100).toInt()}%'
-                          : 'Download',
+                          : AppLocalizations.of(context)!.download,
                 ),
               ),
             ],
