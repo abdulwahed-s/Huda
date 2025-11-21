@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/book_detail/language_chip.dart';
 import 'package:huda/presentation/widgets/book_detail/shimmer_loading.dart';
 
@@ -78,7 +79,7 @@ class LanguagesSection extends StatelessWidget {
               ),
               SizedBox(width: 8.w),
               Text(
-                'Other Languages',
+                AppLocalizations.of(context)!.otherLanguages,
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
