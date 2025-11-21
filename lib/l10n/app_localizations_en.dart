@@ -2510,4 +2510,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ayahs => 'Ayahs';
+
+  @override
+  String get downloaded => 'Downloaded';
 }

@@ -2513,4 +2513,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get ayahs => 'আয়াতসমূহ';
+
+  @override
+  String get downloaded => 'ডাউনলোডকৃত';
 }

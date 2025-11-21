@@ -2573,4 +2573,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get ayahs => 'Versets';
+
+  @override
+  String get downloaded => 'Téléchargé';
 }

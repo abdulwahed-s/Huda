@@ -2568,4 +2568,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get ayahs => 'Alejas';
+
+  @override
+  String get downloaded => 'Descargado';
 }

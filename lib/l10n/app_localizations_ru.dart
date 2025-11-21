@@ -2531,4 +2531,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get ayahs => 'Аяты';
+
+  @override
+  String get downloaded => 'Загруженный';
 }

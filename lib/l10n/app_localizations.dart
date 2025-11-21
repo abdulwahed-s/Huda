@@ -4693,6 +4693,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ayahs'**
   String get ayahs;
+
+  /// No description provided for @downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded'**
+  String get downloaded;
 }
 
 class _AppLocalizationsDelegate

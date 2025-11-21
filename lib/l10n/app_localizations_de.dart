@@ -2555,4 +2555,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get ayahs => 'Ayaat';
+
+  @override
+  String get downloaded => 'Gedownload';
 }

@@ -2505,4 +2505,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get ayahs => 'Ayetler';
+
+  @override
+  String get downloaded => 'İndirilmiş';
 }

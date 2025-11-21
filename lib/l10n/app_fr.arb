@@ -772,5 +772,6 @@
     "newContent": "Nouveau contenu bientôt disponible.\nRevenez plus tard pour les mises à jour.",
     "meccan" : "Mecquoise",
     "medinan" : "Médinoise",
-    "ayahs" : "Versets"
+    "ayahs" : "Versets",
+    "downloaded" : "Téléchargé" 
 }

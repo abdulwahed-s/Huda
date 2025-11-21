@@ -2468,4 +2468,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get ayahs => 'آيات';
+
+  @override
+  String get downloaded => 'مُنَزَّل';
 }

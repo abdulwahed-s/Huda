@@ -2502,4 +2502,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get ayahs => 'آیات';
+
+  @override
+  String get downloaded => 'منزل شدہ';
 }

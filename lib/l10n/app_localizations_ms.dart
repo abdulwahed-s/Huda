@@ -2513,4 +2513,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get ayahs => 'Ayat';
+
+  @override
+  String get downloaded => 'Dimuat turun';
 }
