@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/data/models/books_detail_model.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/book_detail/action_buttons_section.dart';
 import 'package:huda/presentation/widgets/book_detail/attachments_section.dart';
 import 'package:huda/presentation/widgets/book_detail/book_info_card.dart';
@@ -53,7 +54,7 @@ class BookLoadedState extends StatelessWidget {
             title: bookDetail.title ?? 'Untitled',
             description: bookDetail.description ?? 'No description available',
             preparedBy: bookDetail.preparedBy ?? [],
-            sectionTitle: 'Book Details',
+            sectionTitle: AppLocalizations.of(context)!.bookDetails,
           ),
           SizedBox(height: 24.h),
           AttachmentsSection(
