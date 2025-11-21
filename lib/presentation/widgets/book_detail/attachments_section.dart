@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/book_detail/attachment_item.dart';
 
 class AttachmentsSection extends StatelessWidget {
@@ -29,7 +30,7 @@ class AttachmentsSection extends StatelessWidget {
             ),
             SizedBox(width: 8.w),
             Text(
-              'Attachments',
+              AppLocalizations.of(context)!.attachments,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
