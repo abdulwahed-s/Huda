@@ -41,18 +41,6 @@ class TafsirWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          AppLocalizations.of(context)!.tafsirCommentary,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? context.accentColor
-                : context.primaryColor,
-          ),
-        ),
-        const SizedBox(height: 8),
-
         // Tafsir sources dropdown
         if (tafsirSources.isNotEmpty)
           Container(
@@ -288,8 +276,7 @@ class TafsirWidget extends StatelessWidget {
                             backgroundColor: canDownload && !isDownloaded
                                 ? WidgetStateProperty.resolveWith<Color>(
                                     (states) {
-                                    if (states
-                                        .contains(WidgetState.pressed)) {
+                                    if (states.contains(WidgetState.pressed)) {
                                       return context.primaryColor;
                                     }
                                     return context.primaryColor
@@ -354,8 +341,7 @@ class TafsirWidget extends StatelessWidget {
                             backgroundColor: canDownload && !allDownloaded
                                 ? WidgetStateProperty.resolveWith<Color>(
                                     (states) {
-                                    if (states
-                                        .contains(WidgetState.pressed)) {
+                                    if (states.contains(WidgetState.pressed)) {
                                       return context.primaryColor;
                                     }
                                     return const Color(0xFFA688A6);
