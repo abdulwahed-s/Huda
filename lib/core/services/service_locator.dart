@@ -20,6 +20,8 @@ void setupServiceLocator() {
   getIt.registerSingleton<PrayerCountdownService>(PrayerCountdownService());
   getIt.registerSingleton<PersistentPrayerCountdownService>(
       PersistentPrayerCountdownService());
-  getIt.registerSingleton<Upgrader>(
-      Upgrader(languageCode: PlatformDispatcher.instance.locale.languageCode));
+  getIt.registerSingleton<Upgrader>(Upgrader(
+    languageCode: PlatformDispatcher.instance.locale.languageCode,
+    durationUntilAlertAgain: const Duration(hours: 12),
+  ));
 }
