@@ -2534,4 +2534,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get downloaded => 'Загруженный';
+
+  @override
+  String get loopThisAyah => 'Повторять этот аят';
+
+  @override
+  String get autoplayNextAyah => 'Автовоспроизведение следующего аята';
 }

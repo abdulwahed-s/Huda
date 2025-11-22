@@ -2516,4 +2516,10 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get downloaded => 'Dimuat turun';
+
+  @override
+  String get loopThisAyah => 'Ulang ayat ini';
+
+  @override
+  String get autoplayNextAyah => 'Main ayat seterusnya secara automatik';
 }

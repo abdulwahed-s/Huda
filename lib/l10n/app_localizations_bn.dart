@@ -2516,4 +2516,10 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get downloaded => 'ডাউনলোডকৃত';
+
+  @override
+  String get loopThisAyah => 'এই আয়াতটি পুনরাবৃত্তি করুন';
+
+  @override
+  String get autoplayNextAyah => 'পরবর্তী আয়াত স্বয়ংক্রিয়ভাবে চালান';
 }

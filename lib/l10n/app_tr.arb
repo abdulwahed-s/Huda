@@ -765,5 +765,7 @@
     "meccan" : "Mekkî",
     "medinan" : "Medînî",
     "ayahs" : "Ayetler",
-    "downloaded" : "İndirilmiş"
+    "downloaded" : "İndirilmiş",
+    "loopThisAyah" : "Bu ayeti döngüye al",
+    "autoplayNextAyah" : "Sonraki ayeti otomatik oynat"
 }

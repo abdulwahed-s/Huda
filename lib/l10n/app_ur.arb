@@ -828,5 +828,7 @@
     "meccan" : "مکی",
     "medinan" : "مدنی",
     "ayahs" : "آیات",
-    "downloaded" : "منزل شدہ"
+    "downloaded" : "منزل شدہ",
+    "loopThisAyah" : "اس آیت کو دہراتے رہیں",
+    "autoplayNextAyah" : "اگلی آیت خودکار چلائیں"
 }

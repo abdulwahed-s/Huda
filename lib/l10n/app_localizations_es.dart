@@ -2571,4 +2571,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get downloaded => 'Descargado';
+
+  @override
+  String get loopThisAyah => 'Repetir esta aleya';
+
+  @override
+  String get autoplayNextAyah =>
+      'Reproducción automática de la siguiente aleya';
 }

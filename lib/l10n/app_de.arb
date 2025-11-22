@@ -773,5 +773,7 @@
     "meccan" : "Mekkens",
     "medinan" : "Medineens",
     "ayahs" : "Ayaat",
-    "downloaded" : "Gedownload"
+    "downloaded" : "Gedownload",
+    "loopThisAyah" : "Deze aya herhalen",
+    "autoplayNextAyah" : "Volgende aya automatisch afspelen"
 }

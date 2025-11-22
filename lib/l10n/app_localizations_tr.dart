@@ -2508,4 +2508,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get downloaded => 'İndirilmiş';
+
+  @override
+  String get loopThisAyah => 'Bu ayeti döngüye al';
+
+  @override
+  String get autoplayNextAyah => 'Sonraki ayeti otomatik oynat';
 }

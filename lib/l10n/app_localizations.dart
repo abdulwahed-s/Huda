@@ -4699,6 +4699,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Downloaded'**
   String get downloaded;
+
+  /// No description provided for @loopThisAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Loop this ayah'**
+  String get loopThisAyah;
+
+  /// No description provided for @autoplayNextAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Autoplay next ayah'**
+  String get autoplayNextAyah;
 }
 
 class _AppLocalizationsDelegate

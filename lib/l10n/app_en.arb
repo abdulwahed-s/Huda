@@ -3021,5 +3021,7 @@
     "meccan" : "Meccan",
     "medinan" : "Medinan",
     "ayahs" : "Ayahs",
-    "downloaded" : "Downloaded"
+    "downloaded" : "Downloaded",
+    "loopThisAyah" : "Loop this ayah",
+    "autoplayNextAyah" : "Autoplay next ayah"
 }

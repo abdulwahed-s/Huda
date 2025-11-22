@@ -2558,4 +2558,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get downloaded => 'Gedownload';
+
+  @override
+  String get loopThisAyah => 'Deze aya herhalen';
+
+  @override
+  String get autoplayNextAyah => 'Volgende aya automatisch afspelen';
 }

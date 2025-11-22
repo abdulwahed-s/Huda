@@ -2576,4 +2576,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get downloaded => 'Téléchargé';
+
+  @override
+  String get loopThisAyah => 'Répéter ce verset';
+
+  @override
+  String get autoplayNextAyah => 'Lecture automatique du verset suivant';
 }

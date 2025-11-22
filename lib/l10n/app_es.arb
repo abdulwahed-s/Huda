@@ -785,5 +785,7 @@
     "meccan" : "Meca",
     "medinan" : "Medinense",
     "ayahs" : "Alejas",
-    "downloaded" : "Descargado"
+    "downloaded" : "Descargado",
+    "loopThisAyah" : "Repetir esta aleya",
+    "autoplayNextAyah" : "Reproducción automática de la siguiente aleya"
 }

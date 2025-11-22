@@ -2471,4 +2471,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get downloaded => 'مُنَزَّل';
+
+  @override
+  String get loopThisAyah => 'تكرار هذه الآية';
+
+  @override
+  String get autoplayNextAyah => 'تشغيل الآية التالية تلقائيًا';
 }

@@ -852,5 +852,7 @@
     "meccan" : "Mekah",
     "medinan" : "Madinah",
     "ayahs" : "Ayat",
-    "downloaded" : "Dimuat turun"
+    "downloaded" : "Dimuat turun",
+    "loopThisAyah" : "Ulang ayat ini",
+    "autoplayNextAyah" : "Main ayat seterusnya secara automatik"
 }

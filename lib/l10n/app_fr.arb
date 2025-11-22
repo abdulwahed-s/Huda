@@ -773,5 +773,7 @@
     "meccan" : "Mecquoise",
     "medinan" : "Médinoise",
     "ayahs" : "Versets",
-    "downloaded" : "Téléchargé" 
+    "downloaded" : "Téléchargé",
+    "loopThisAyah" : "Répéter ce verset",
+    "autoplayNextAyah" : "Lecture automatique du verset suivant"
 }

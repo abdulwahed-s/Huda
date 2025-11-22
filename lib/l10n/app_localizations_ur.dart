@@ -2505,4 +2505,10 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get downloaded => 'منزل شدہ';
+
+  @override
+  String get loopThisAyah => 'اس آیت کو دہراتے رہیں';
+
+  @override
+  String get autoplayNextAyah => 'اگلی آیت خودکار چلائیں';
 }

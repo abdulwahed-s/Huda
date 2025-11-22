@@ -1434,5 +1434,7 @@
     "meccan" : "مكية",
     "medinan" : "مدنية",
     "ayahs" : "آيات",
-    "downloaded" : "مُنَزَّل"
+    "downloaded" : "مُنَزَّل",
+    "loopThisAyah" : "تكرار هذه الآية",
+    "autoplayNextAyah" : "تشغيل الآية التالية تلقائيًا"
 }

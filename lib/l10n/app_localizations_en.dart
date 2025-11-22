@@ -2513,4 +2513,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get downloaded => 'Downloaded';
+
+  @override
+  String get loopThisAyah => 'Loop this ayah';
+
+  @override
+  String get autoplayNextAyah => 'Autoplay next ayah';
 }
