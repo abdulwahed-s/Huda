@@ -69,6 +69,7 @@ class EmptyStateWidget extends StatelessWidget {
                 flex: 3,
                 child: _buildExampleQuestions(context),
               ),
+              SizedBox(height: 10.h)
             ],
           ),
         ),
