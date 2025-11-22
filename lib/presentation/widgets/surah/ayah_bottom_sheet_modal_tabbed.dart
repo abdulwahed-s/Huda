@@ -1210,7 +1210,7 @@ class _AyahBottomSheetModalTabbedState
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'Tafsir (Commentary)',
+                      AppLocalizations.of(context)!.tafsirCommentary,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
@@ -1296,7 +1296,7 @@ class _AyahBottomSheetModalTabbedState
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'Translation',
+                      AppLocalizations.of(context)!.translation,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
