@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme_extension.dart';
+import '../../../l10n/app_localizations.dart';
 
 class AudioSettingsWidget extends StatelessWidget {
   final bool loopEnabled;
@@ -33,30 +34,6 @@ class AudioSettingsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(
-                Icons.settings,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? context.accentColor
-                    : context.primaryColor,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Audio Settings',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? context.accentColor
-                      : context.primaryColor,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
           // Loop setting
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -89,10 +66,10 @@ class AudioSettingsWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Loop this ayah',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.loopThisAyah,
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -136,10 +113,10 @@ class AudioSettingsWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Autoplay next ayah',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.autoplayNextAyah,
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
