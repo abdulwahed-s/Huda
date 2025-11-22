@@ -55,18 +55,6 @@ class TranslationWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          AppLocalizations.of(context)!.translation,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? context.accentColor
-                : context.primaryColor,
-          ),
-        ),
-        SizedBox(height: 6.h),
-
         // Language filter for translations
         if (availableTranslationLanguages.length > 1)
           Column(
@@ -383,8 +371,7 @@ class TranslationWidget extends StatelessWidget {
                             backgroundColor: canDownload && !isDownloaded
                                 ? WidgetStateProperty.resolveWith<Color>(
                                     (states) {
-                                    if (states
-                                        .contains(WidgetState.pressed)) {
+                                    if (states.contains(WidgetState.pressed)) {
                                       return context.primaryColor;
                                     }
                                     return context.primaryColor
@@ -450,8 +437,7 @@ class TranslationWidget extends StatelessWidget {
                             backgroundColor: canDownload && !allDownloaded
                                 ? WidgetStateProperty.resolveWith<Color>(
                                     (states) {
-                                    if (states
-                                        .contains(WidgetState.pressed)) {
+                                    if (states.contains(WidgetState.pressed)) {
                                       return context.primaryColor;
                                     }
                                     return context.primaryColor
