@@ -17,6 +17,10 @@ import 'package:huda/presentation/widgets/surah/tafsir_widget.dart';
 import 'package:huda/presentation/widgets/surah/share_widget.dart';
 import 'package:huda/presentation/widgets/surah/bookmark_section_widget.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/cubit/memorization/memorization_cubit.dart';
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:huda/cubit/surah/surah_cubit.dart';
 
 class AyahBottomSheetModalTabbed extends StatefulWidget {
   final Ayahs ayah;
@@ -167,7 +171,7 @@ class _AyahBottomSheetModalTabbedState
   bool _isAyahInWidget = false;
   bool _isCheckingWidgetStatus = false;
   int _selectedTabIndex =
-      0; // Tab state: 0=Audio, 1=Tafsir, 2=Translation, 3=Bookmark, 4=Share, 5=Widget
+      0; // Tab state: 0=Audio, 1=Tafsir, 2=Translation, 3=Bookmark, 4=Share, 5=Widget, 6=Memorization
 
   @override
   void initState() {
@@ -460,6 +464,12 @@ class _AyahBottomSheetModalTabbedState
                           index: 5,
                           isSelected: _selectedTabIndex == 5,
                         ),
+                        _buildTabButton(
+                          icon: Icons.psychology_rounded,
+                          label: AppLocalizations.of(context)!.memorizationMode,
+                          index: 6,
+                          isSelected: _selectedTabIndex == 6,
+                        ),
                       ],
                     ),
                   ),
@@ -523,6 +533,7 @@ class _AyahBottomSheetModalTabbedState
                       ),
                     ),
                   ),
+                  SizedBox(height: 30.h),
                 ],
               ),
             ),
@@ -655,6 +666,25 @@ class _AyahBottomSheetModalTabbedState
               );
             },
             child: _buildWidgetTab(),
+          ),
+        );
+      case 6:
+        return Container(
+          key: const ValueKey('memorization_tab'),
+          child: TweenAnimationBuilder<double>(
+            duration: const Duration(milliseconds: 300),
+            tween: Tween<double>(begin: 0.0, end: 1.0),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, child) {
+              return Opacity(
+                opacity: value,
+                child: Transform.translate(
+                  offset: Offset(0, 20 * (1 - value)),
+                  child: child,
+                ),
+              );
+            },
+            child: _buildMemorizationTab(),
           ),
         );
       default:
@@ -1899,5 +1929,273 @@ class _AyahBottomSheetModalTabbedState
         );
       }
     }
+  }
+
+  Widget _buildMemorizationTab() {
+    return BlocBuilder<MemorizationCubit, MemorizationState>(
+      builder: (context, state) {
+        final isMemorizationMode =
+            state is MemorizationModeUpdated && state.isMemorizationMode;
+        final isListening =
+            state is MemorizationModeUpdated && state.isListening;
+
+        return Container(
+          padding: EdgeInsets.all(20.r),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF1A1A1A)
+                : Colors.white,
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? context.accentColor.withValues(alpha: 0.2)
+                  : context.primaryColor.withValues(alpha: 0.1),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.psychology_rounded,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? context.accentColor
+                        : context.primaryColor,
+                    size: 24.r,
+                  ),
+                  SizedBox(width: 10.w),
+                  Text(
+                    AppLocalizations.of(context)!.memorizationMode,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black87,
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.orange.withValues(alpha: 0.2)
+                          : Colors.orange.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(4.r),
+                      border: Border.all(
+                          color: Colors.orange.withValues(alpha: 0.5)),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.beta,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                AppLocalizations.of(context)!.memorizationDescription,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white70
+                      : Colors.black54,
+                  height: 1.5,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Container(
+                padding: EdgeInsets.all(8.r),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.blue.withValues(alpha: 0.1)
+                      : Colors.blue.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline_rounded,
+                        size: 16.sp, color: Colors.blue),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .speechRecognitionDisclaimer,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.blue.shade200
+                              : Colors.blue.shade800,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20.h),
+              SizedBox(
+                width: double.infinity,
+                child: !isMemorizationMode
+                    ? ElevatedButton.icon(
+                        onPressed: () {
+                          final surahCubit = context.read<SurahCubit>();
+                          if (surahCubit.state is SurahLoaded) {
+                            final surah =
+                                (surahCubit.state as SurahLoaded).surah;
+                            final ayahTexts =
+                                surah.ayahs!.map((a) => a.text ?? '').toList();
+                            context
+                                .read<MemorizationCubit>()
+                                .toggleMemorizationMode(
+                                  ayahTexts,
+                                  widget.surahNumber,
+                                );
+                          }
+                        },
+                        icon: Icon(
+                          Icons.play_arrow_rounded,
+                          size: 20.r,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          AppLocalizations.of(context)!.startMemorization,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? context.accentColor
+                                  : context.primaryColor,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 12.h,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                      )
+                    : ElevatedButton.icon(
+                        onPressed: () {
+                          context
+                              .read<MemorizationCubit>()
+                              .toggleMemorizationMode([], 0);
+                        },
+                        icon: Icon(
+                          Icons.stop_rounded,
+                          size: 20.r,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          AppLocalizations.of(context)!.stopMemorization,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 12.h,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                      ),
+              ),
+              if (isMemorizationMode) ...[
+                SizedBox(height: 20.h),
+                Container(
+                  padding: EdgeInsets.all(16.r),
+                  decoration: BoxDecoration(
+                    color: isListening
+                        ? Colors.red.withValues(alpha: 0.1)
+                        : (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white.withValues(alpha: 0.05)
+                            : Colors.grey.withValues(alpha: 0.1)),
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: isListening
+                          ? Colors.red.withValues(alpha: 0.5)
+                          : Colors.transparent,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      if (isListening)
+                        AvatarGlow(
+                          glowColor: Colors.red,
+                          duration: const Duration(milliseconds: 2000),
+                          repeat: true,
+                          child: Icon(
+                            Icons.mic,
+                            color: Colors.red,
+                            size: 24.r,
+                          ),
+                        )
+                      else
+                        Icon(
+                          Icons.mic_none,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white54
+                              : Colors.black45,
+                          size: 24.r,
+                        ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              isListening
+                                  ? AppLocalizations.of(context)!.listening
+                                  : AppLocalizations.of(context)!
+                                      .microphoneIdle,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: isListening
+                                    ? Colors.red
+                                    : (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black87),
+                              ),
+                            ),
+                            if (isListening)
+                              Text(
+                                AppLocalizations.of(context)!.reciteToReveal,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: isListening
+                                      ? Colors.red.withValues(alpha: 0.8)
+                                      : Colors.grey,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
+          ),
+        );
+      },
+    );
   }
 }
