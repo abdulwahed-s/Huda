@@ -94,11 +94,13 @@ dependencies:
   rate_my_app: ^2.3.2
   flutter_rating_bar: ^4.0.1
   flutter_native_splash: ^2.4.6
-  upgrader: ^11.5.1
+  upgrader: ^12.3.0
   scrollable_positioned_list: ^0.3.8
   auto_size_text: ^3.0.0
   flutter_html: ^3.0.0
   html: ^0.15.6
+  speech_to_text: ^7.3.0
+  avatar_glow: ^3.0.1
 
 dev_dependencies:
   flutter_test:
