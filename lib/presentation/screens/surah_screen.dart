@@ -26,6 +26,9 @@ import 'package:huda/presentation/widgets/surah/bismillah_widget.dart';
 import 'package:huda/presentation/widgets/surah/surah_loading_state_widget.dart';
 import 'package:huda/presentation/widgets/surah/ayah_bottom_sheet_modal_tabbed.dart';
 import 'package:huda/presentation/widgets/surah/ayah_number_or_bookmark_widget.dart';
+import 'package:huda/cubit/memorization/memorization_cubit.dart';
+import 'package:huda/presentation/widgets/surah/animated_listening_waves.dart';
+import 'package:huda/presentation/widgets/surah/memorization_completed_dialog.dart';
 
 // Import mixins
 import '../../core/mixins/surah/audio_manager_mixin.dart';
@@ -82,6 +85,9 @@ class SurahScreen extends StatelessWidget {
             create: (_) => BookmarksCubit(
               bookmarkService: getIt<BookmarkService>(),
             ),
+          ),
+          BlocProvider(
+            create: (_) => MemorizationCubit(),
           ),
         ],
         child: Scaffold(
@@ -188,6 +194,7 @@ class SurahScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+// Memorization Mode Toggle removed from here
                     ],
                   ),
                 ),
@@ -217,6 +224,29 @@ class SurahScreen extends StatelessWidget {
                   child: Text(AppLocalizations.of(context)!.unknownState),
                 );
               }
+            },
+          ),
+          floatingActionButton:
+              BlocBuilder<MemorizationCubit, MemorizationState>(
+            builder: (context, state) {
+              final isMemorizationMode =
+                  state is MemorizationModeUpdated && state.isMemorizationMode;
+
+              if (!isMemorizationMode) return const SizedBox.shrink();
+
+              return FloatingActionButton.extended(
+                onPressed: () {
+                  context
+                      .read<MemorizationCubit>()
+                      .toggleMemorizationMode([], 0);
+                },
+                backgroundColor: Colors.red,
+                icon: const Icon(Icons.stop_rounded, color: Colors.white),
+                label: Text(
+                  AppLocalizations.of(context)!.stopMemorization,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              );
             },
           ),
         ),
@@ -550,6 +580,22 @@ class _QuranPageViewState extends State<QuranPageView>
     return visibleItem.index + 1;
   }
 
+  String _getAyahText(Ayahs ayah) {
+    String ayahText = ayah.text ?? '';
+    final isFirstAyah = ayah.numberInSurah == 1;
+    final shouldShowBismillah =
+        isFirstAyah && widget.surah.number != 1 && widget.surah.number != 9;
+
+    // Remove Bismillah if it exists in the text and we're showing it separately
+    if (shouldShowBismillah) {
+      const bismillahText = 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
+      if (ayahText.trim().startsWith(bismillahText)) {
+        ayahText = ayahText.trim().replaceFirst(bismillahText, '').trim();
+      }
+    }
+    return ayahText;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
@@ -563,6 +609,16 @@ class _QuranPageViewState extends State<QuranPageView>
         ),
         BlocListener<TranslationCubit, TranslationState>(
           listener: _handleTranslationStateChanges,
+        ),
+        BlocListener<MemorizationCubit, MemorizationState>(
+          listener: (context, state) {
+            if (state is MemorizationCompleted) {
+              showDialog(
+                context: context,
+                builder: (context) => const MemorizationCompletedDialog(),
+              );
+            }
+          },
         ),
       ],
       child: Container(
@@ -638,349 +694,374 @@ class _QuranPageViewState extends State<QuranPageView>
                     final ayahIndex = index - bismillahOffset;
                     final ayah = widget.surah.ayahs![ayahIndex];
 
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: EdgeInsets.only(bottom: 10.h),
-                      decoration: BoxDecoration(
-                        color: playingAyahIndex == ayahIndex
-                            ? (Theme.of(context).brightness == Brightness.dark
-                                ? const Color(
-                                        0xFF2A1B3D) // Deep purple for playing card
-                                    .withValues(alpha: 0.6)
-                                : const Color(0xFFE8F5E8))
-                            : (Theme.of(context).brightness == Brightness.dark
-                                ? const Color(
-                                    0xFF1A1A1A) // Dark gray card background
-                                : Colors.white),
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: playingAyahIndex == ayahIndex
-                            ? Border.all(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? context.accentColor // Theme-aware accent
-                                    : context.primaryColor,
-                                width: 2,
-                              )
-                            : Border.all(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? const Color(
-                                        0xFF2A2A2A) // Subtle border for dark cards
-                                    : Colors.transparent,
-                                width: 1,
-                              ),
-                        boxShadow: [
-                          BoxShadow(
+                    return BlocBuilder<MemorizationCubit, MemorizationState>(
+                      builder: (context, memState) {
+                        final isMemorizationMode =
+                            memState is MemorizationModeUpdated &&
+                                memState.isMemorizationMode;
+                        final isHidden = isMemorizationMode &&
+                            memState.hiddenAyahIndices.contains(ayahIndex);
+                        final isListening = isMemorizationMode &&
+                            memState.isListening; // Global listening state
+
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: EdgeInsets.only(bottom: 10.h),
+                          decoration: BoxDecoration(
                             color: playingAyahIndex == ayahIndex
                                 ? (Theme.of(context).brightness ==
                                         Brightness.dark
-                                    ? context.accentColor // Theme-aware glow
-                                        .withValues(alpha: 0.3)
-                                    : context.primaryColor
-                                        .withValues(alpha: 0.15))
+                                    ? const Color(
+                                            0xFF2A1B3D) // Deep purple for playing card
+                                        .withValues(alpha: 0.6)
+                                    : const Color(0xFFE8F5E8))
                                 : (Theme.of(context).brightness ==
                                         Brightness.dark
-                                    ? const Color(0xFF0A0A0A)
-                                        .withValues(alpha: 0.5) // Dark shadow
-                                    : Colors.black.withValues(alpha: 0.05)),
-                            blurRadius:
-                                playingAyahIndex == ayahIndex ? 14.r : 6.r,
-                            offset: Offset(0, 2.h),
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => onAyahTap(ayahIndex),
-                          borderRadius: BorderRadius.circular(10.r),
-                          child: Padding(
-                            padding: EdgeInsets.all(14.r),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                // Playing indicator (if playing)
-                                if (playingAyahIndex == ayahIndex)
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 8.h),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 8.w,
-                                        vertical: 4.h,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? context
-                                                .accentColor // Theme-aware accent
-                                            : context.primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                            Icons.volume_up,
-                                            color: Colors.white,
-                                            size: 12.sp,
-                                          ),
-                                          SizedBox(width: 3.w),
-                                          Text(
-                                            'Playing',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10.sp,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    ? const Color(
+                                        0xFF1A1A1A) // Dark gray card background
+                                    : Colors.white),
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: playingAyahIndex == ayahIndex
+                                ? Border.all(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? context
+                                            .accentColor // Theme-aware accent
+                                        : context.primaryColor,
+                                    width: 2,
+                                  )
+                                : Border.all(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? const Color(
+                                            0xFF2A2A2A) // Subtle border for dark cards
+                                        : Colors.transparent,
+                                    width: 1,
                                   ),
-
-                                // Header with ayah number
-                                Row(
+                            boxShadow: [
+                              BoxShadow(
+                                color: playingAyahIndex == ayahIndex
+                                    ? (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? context
+                                            .accentColor // Theme-aware glow
+                                            .withValues(alpha: 0.3)
+                                        : context.primaryColor
+                                            .withValues(alpha: 0.15))
+                                    : (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? const Color(0xFF0A0A0A).withValues(
+                                            alpha: 0.5) // Dark shadow
+                                        : Colors.black.withValues(alpha: 0.05)),
+                                blurRadius:
+                                    playingAyahIndex == ayahIndex ? 14.r : 6.r,
+                                offset: Offset(0, 2.h),
+                              ),
+                            ],
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                if (isHidden) {
+                                  // Manually restart listening if needed
+                                  context
+                                      .read<MemorizationCubit>()
+                                      .startListening();
+                                } else {
+                                  onAyahTap(ayahIndex);
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: Padding(
+                                padding: EdgeInsets.all(14.r),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
-                                    // Decorative Islamic pattern ayah number
-                                    Container(
-                                      width: 36.w,
-                                      height: 36.h,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? const Color(
-                                                0xFF2A2A2A) // Dark gray circle
-                                            : Colors.white,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? context
-                                                  .accentColor // Theme-aware border
-                                                  .withValues(alpha: 0.6)
-                                              : context.primaryColor
-                                                  .withValues(alpha: 0.3),
-                                          width: 1.5,
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
+                                    // Playing indicator (if playing)
+                                    if (playingAyahIndex == ayahIndex)
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Container(
+                                          margin: EdgeInsets.only(bottom: 8.h),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8.w,
+                                            vertical: 4.h,
+                                          ),
+                                          decoration: BoxDecoration(
                                             color: Theme.of(context)
                                                         .brightness ==
                                                     Brightness.dark
                                                 ? context
-                                                    .accentColor // Theme-aware glow
-                                                    .withValues(alpha: 0.2)
-                                                : context.primaryColor
-                                                    .withValues(alpha: 0.1),
-                                            blurRadius: 4.r,
-                                            offset: Offset(0, 1.h),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          // Decorative Islamic pattern background
-                                          Center(
-                                            child: Container(
-                                              width: 30.w,
-                                              height: 30.h,
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                  colors: [
-                                                    context.primaryColor
-                                                        .withValues(alpha: 0.1),
-                                                    context.primaryVariantColor
-                                                        .withValues(alpha: 0.1),
-                                                  ],
-                                                ),
-                                                shape: BoxShape.circle,
-                                              ),
-                                            ),
-                                          ),
-                                          // Ayah number or bookmark icon
-                                          AyahNumberOrBookmarkWidget(
-                                            surahNumber: widget.surahNumber,
-                                            ayahNumber: ayah.numberInSurah ??
-                                                (index + 1),
-                                            size: 14.sp,
-                                            textColor: Theme.of(context)
-                                                        .brightness ==
-                                                    Brightness.dark
-                                                ? context
-                                                    .accentColor // Theme-aware number
+                                                    .accentColor // Theme-aware accent
                                                 : context.primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Amiri',
+                                            borderRadius:
+                                                BorderRadius.circular(8.r),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    SizedBox(width: 10.w),
-
-                                    // Decorative divider
-                                    Expanded(
-                                      child: Container(
-                                        height: 2,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              context.primaryColor
-                                                  .withValues(alpha: 0.3),
-                                              Colors.transparent,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.volume_up,
+                                                color: Colors.white,
+                                                size: 12.sp,
+                                              ),
+                                              SizedBox(width: 3.w),
+                                              Text(
+                                                'Playing',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
 
-                                SizedBox(height: 16.h),
-
-                                // Ayah text with proper RTL layout
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: Directionality(
-                                    textDirection: TextDirection.rtl,
-                                    child: Text(
-                                      (() {
-                                        String ayahText = ayah.text ?? '';
-                                        final isFirstAyah =
-                                            ayah.numberInSurah == 1;
-                                        final shouldShowBismillah =
-                                            isFirstAyah &&
-                                                widget.surah.number != 1 &&
-                                                widget.surah.number != 9;
-
-                                        // Remove Bismillah if it exists in the text and we're showing it separately
-                                        if (shouldShowBismillah) {
-                                          const bismillahText =
-                                              'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
-                                          if (ayahText
-                                              .trim()
-                                              .startsWith(bismillahText)) {
-                                            ayahText = ayahText
-                                                .trim()
-                                                .replaceFirst(bismillahText, '')
-                                                .trim();
-                                          }
-                                        }
-                                        return ayahText;
-                                      })(),
-                                      textAlign: TextAlign.right,
-                                      textDirection: TextDirection.rtl,
-                                      style: TextStyle(
-                                        fontFamily: getQuranFonts(),
-                                        fontSize: 20.sp,
-                                        color: playingAyahIndex == ayahIndex
-                                            ? (Theme.of(context).brightness ==
-                                                    Brightness.dark
-                                                ? const Color(
-                                                    0xFF10B981) // Bright green for playing
-                                                : const Color(0xFF2E7D32))
-                                            : (Theme.of(context).brightness ==
-                                                    Brightness.dark
-                                                ? const Color(
-                                                    0xFFF8FAFC) // Pure white for text
-                                                : const Color(0xFF2C3E50)),
-                                        height: 2.0,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 0.3,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                // Translation text (if selected)
-                                if (selectedTranslationId != null &&
-                                    currentTranslation != null)
-                                  Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.only(top: 12.h),
-                                    padding: EdgeInsets.all(12.r),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? const Color(
-                                                  0xFF1E293B) // Dark slate background
-                                              .withValues(alpha: 0.8)
-                                          : const Color(0xFFF8F9FA),
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      border: Border.all(
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? const Color(
-                                                    0xFF4C1D95) // Purple border
-                                                .withValues(alpha: 0.3)
-                                            : const Color(0xFF674B5D)
-                                                .withValues(alpha: 0.1),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    // Header with ayah number
+                                    Row(
                                       children: [
-                                        // Translation source label
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.translate,
-                                              size: 12.sp,
+                                        // Decorative Islamic pattern ayah number
+                                        Container(
+                                          width: 36.w,
+                                          height: 36.h,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                        .brightness ==
+                                                    Brightness.dark
+                                                ? const Color(
+                                                    0xFF2A2A2A) // Dark gray circle
+                                                : Colors.white,
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
                                               color: Theme.of(context)
                                                           .brightness ==
                                                       Brightness.dark
-                                                  ? context.accentColor
-                                                  : context.primaryColor,
+                                                  ? context
+                                                      .accentColor // Theme-aware border
+                                                      .withValues(alpha: 0.6)
+                                                  : context.primaryColor
+                                                      .withValues(alpha: 0.3),
+                                              width: 1.5,
                                             ),
-                                            SizedBox(width: 3.w),
-                                            Expanded(
-                                              child: Text(
-                                                _getTranslationSourceName(),
-                                                style: TextStyle(
-                                                  fontSize: 10.sp,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? context
+                                                        .accentColor // Theme-aware glow
+                                                        .withValues(alpha: 0.2)
+                                                    : context.primaryColor
+                                                        .withValues(alpha: 0.1),
+                                                blurRadius: 4.r,
+                                                offset: Offset(0, 1.h),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              // Decorative Islamic pattern background
+                                              Center(
+                                                child: Container(
+                                                  width: 30.w,
+                                                  height: 30.h,
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
+                                                      colors: [
+                                                        context.primaryColor
+                                                            .withValues(
+                                                                alpha: 0.1),
+                                                        context
+                                                            .primaryVariantColor
+                                                            .withValues(
+                                                                alpha: 0.1),
+                                                      ],
+                                                    ),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                ),
+                                              ),
+                                              // Ayah number or bookmark icon
+                                              AyahNumberOrBookmarkWidget(
+                                                surahNumber: widget.surahNumber,
+                                                ayahNumber:
+                                                    ayah.numberInSurah ??
+                                                        (index + 1),
+                                                size: 14.sp,
+                                                textColor: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? context
+                                                        .accentColor // Theme-aware number
+                                                    : context.primaryColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Amiri',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        SizedBox(width: 10.w),
+
+                                        // Decorative divider
+                                        Expanded(
+                                          child: Container(
+                                            height: 2,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  context.primaryColor
+                                                      .withValues(alpha: 0.3),
+                                                  Colors.transparent,
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    SizedBox(height: 16.h),
+
+                                    // Ayah text with proper RTL layout
+                                    if (isHidden)
+                                      AnimatedListeningWaves(
+                                        isListening: isListening,
+                                      )
+                                    else
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: Text(
+                                            _getAyahText(ayah),
+                                            textAlign: TextAlign.right,
+                                            textDirection: TextDirection.rtl,
+                                            style: TextStyle(
+                                              fontFamily: getQuranFonts(),
+                                              fontSize: 20.sp,
+                                              color: playingAyahIndex ==
+                                                      ayahIndex
+                                                  ? (Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? const Color(
+                                                          0xFF10B981) // Bright green for playing
+                                                      : const Color(0xFF2E7D32))
+                                                  : (Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? const Color(
+                                                          0xFFF8FAFC) // Pure white for text
+                                                      : const Color(
+                                                          0xFF2C3E50)),
+                                              height: 2.0,
+                                              fontWeight: FontWeight.w500,
+                                              letterSpacing: 0.3,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                    // Translation text (if selected)
+                                    if (selectedTranslationId != null &&
+                                        currentTranslation != null)
+                                      Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsets.only(top: 12.h),
+                                        padding: EdgeInsets.all(12.r),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? const Color(
+                                                      0xFF1E293B) // Dark slate background
+                                                  .withValues(alpha: 0.8)
+                                              : const Color(0xFFF8F9FA),
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                          border: Border.all(
+                                            color: Theme.of(context)
+                                                        .brightness ==
+                                                    Brightness.dark
+                                                ? const Color(
+                                                        0xFF4C1D95) // Purple border
+                                                    .withValues(alpha: 0.3)
+                                                : const Color(0xFF674B5D)
+                                                    .withValues(alpha: 0.1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Translation source label
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.translate,
+                                                  size: 12.sp,
                                                   color: Theme.of(context)
                                                               .brightness ==
                                                           Brightness.dark
                                                       ? context.accentColor
                                                       : context.primaryColor,
-                                                  fontWeight: FontWeight.w500,
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
+                                                SizedBox(width: 3.w),
+                                                Expanded(
+                                                  child: Text(
+                                                    _getTranslationSourceName(),
+                                                    style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      color: Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.dark
+                                                          ? context.accentColor
+                                                          : context
+                                                              .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 5.h),
+                                            // Translation text
+                                            Text(
+                                              _getTranslationTextForAyah(index),
+                                              style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? const Color(
+                                                            0xFFE2E8F0) // Light gray text
+                                                        .withValues(alpha: 0.9)
+                                                    : const Color(0xFF2C3E50),
+                                                height: 1.5,
+                                                fontWeight: FontWeight.w400,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 5.h),
-                                        // Translation text
-                                        Text(
-                                          _getTranslationTextForAyah(index),
-                                          style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: Theme.of(context)
-                                                        .brightness ==
-                                                    Brightness.dark
-                                                ? const Color(
-                                                        0xFFE2E8F0) // Light gray text
-                                                    .withValues(alpha: 0.9)
-                                                : const Color(0xFF2C3E50),
-                                            height: 1.5,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                              ],
+                                      ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     );
                   },
                 );
@@ -1440,6 +1521,8 @@ class _QuranPageViewState extends State<QuranPageView>
   void _showAyahBottomSheet(int index) async {
     final ayah = widget.surah.ayahs![index];
     final audioCubit = context.read<AudioCubit>();
+    final memorizationCubit = context.read<MemorizationCubit>();
+    final surahCubit = context.read<SurahCubit>();
     isBottomSheetOpen = true;
 
     // If in offline mode and cache not loaded, preload it first
@@ -1563,89 +1646,97 @@ class _QuranPageViewState extends State<QuranPageView>
                             _availableTranslationSources;
                       }
 
-                      return AyahBottomSheetModalTabbed(
-                        ayah: ayah,
-                        index: index,
-                        surahNumber: widget.surahNumber,
-                        totalAyahs: widget.surah.ayahs?.length ?? 0,
-                        surahName: widget.surah.name,
-                        surahEnglishName: widget.surah.englishName,
-                        audioPlayer: audioPlayer,
-                        playingAyahIndex: playingAyahIndex,
-                        currentPosition: currentPosition,
-                        totalDuration: totalDuration,
-                        isUserSeeking: isUserSeeking,
-                        selectedReaderId: selectedReaderId,
-                        selectedLanguage: selectedLanguage,
-                        availableReaders: availableReadersForModal,
-                        isLoadingAudio: isLoadingAudio,
-                        currentSurahAudio: currentSurahAudio,
-                        loopEnabled: loopEnabled,
-                        autoplayEnabled: autoplayEnabled,
-                        isOfflineMode: modalIsOfflineMode,
-                        offlineMessage: offlineMessage,
-                        isDownloadingSingle: isDownloadingSingleAyah,
-                        isDownloadingAll: isDownloadingAllAyahs,
-                        downloadProgressText: downloadProgressText,
-                        availableTafsirSources: availableTafsirForModal,
-                        selectedTafsirId: selectedTafsirId,
-                        currentTafsir: currentTafsir,
-                        isLoadingTafsir: isLoadingTafsir,
-                        availableTranslationSources:
-                            availableTranslationForModal,
-                        selectedTranslationId: selectedTranslationId,
-                        selectedTranslationLanguage:
-                            selectedTranslationLanguage,
-                        currentTranslation: currentTranslation,
-                        isLoadingTranslation: isLoadingTranslation,
-                        onPlayPause: playPauseAudio,
-                        onPrevious: (currentIndex) =>
-                            skipToPreviousAyah(currentIndex),
-                        onNext: (currentIndex) => skipToNextAyah(
-                            currentIndex, widget.surah.ayahs?.length ?? 0),
-                        onSeek: seekToPosition,
-                        onUserSeekingChanged: (seeking) =>
-                            setState(() => isUserSeeking = seeking),
-                        onReaderSelected: (readerId) =>
-                            switchReader(readerId, setModalState),
-                        onLanguageSelected: (language) =>
-                            switchLanguage(language, setModalState),
-                        onLoopChanged: (value) =>
-                            setModalState(() => loopEnabled = value ?? false),
-                        onAutoplayChanged: (value) => setModalState(
-                            () => autoplayEnabled = value ?? true),
-                        onDownloadSingle: () =>
-                            downloadSingleAyah(index, ayah, setModalState),
-                        onDownloadAll: () =>
-                            downloadAllSurahAyahs(setModalState),
-                        checkAllDownloaded: areAllAyahsDownloaded,
-                        checkSingleDownloaded: () =>
-                            isSingleAyahDownloaded(index),
-                        onTafsirSelected: (tafsirId) =>
-                            switchTafsir(tafsirId, setModalState),
-                        onTranslationSelected: (translationId) =>
-                            switchTranslation(translationId, setModalState),
-                        onTranslationLanguageSelected: (language) =>
-                            switchTranslationLanguage(language, setModalState),
-                        onDownloadTafsir: downloadSurahTafsir,
-                        onDownloadFullTafsir: downloadFullQuranTafsir,
-                        onDownloadTranslation: downloadSurahTranslation,
-                        onDownloadFullTranslation: downloadFullQuranTranslation,
-                        isDownloadingSurahTafsir: isDownloadingSurahTafsir,
-                        isDownloadingAllTafsir: isDownloadingAllTafsir,
-                        isDownloadingSurahTranslation:
-                            isDownloadingSurahTranslation,
-                        isDownloadingAllTranslation:
-                            isDownloadingAllTranslation,
-                        checkSurahTafsirDownloaded: isSurahTafsirDownloaded,
-                        checkAllTafsirDownloaded: isAllTafsirDownloaded,
-                        checkSurahTranslationDownloaded:
-                            isSurahTranslationDownloaded,
-                        checkAllTranslationDownloaded:
-                            isAllTranslationDownloaded,
-                        checkCurrentAyahPlayable: () =>
-                            isCurrentAyahPlayable(index),
-                        getCurrentScrollPosition: () => currentScrollPosition,
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider.value(value: memorizationCubit),
+                          BlocProvider.value(value: surahCubit),
+                        ],
+                        child: AyahBottomSheetModalTabbed(
+                          ayah: ayah,
+                          index: index,
+                          surahNumber: widget.surahNumber,
+                          totalAyahs: widget.surah.ayahs?.length ?? 0,
+                          surahName: widget.surah.name,
+                          surahEnglishName: widget.surah.englishName,
+                          audioPlayer: audioPlayer,
+                          playingAyahIndex: playingAyahIndex,
+                          currentPosition: currentPosition,
+                          totalDuration: totalDuration,
+                          isUserSeeking: isUserSeeking,
+                          selectedReaderId: selectedReaderId,
+                          selectedLanguage: selectedLanguage,
+                          availableReaders: availableReadersForModal,
+                          isLoadingAudio: isLoadingAudio,
+                          currentSurahAudio: currentSurahAudio,
+                          loopEnabled: loopEnabled,
+                          autoplayEnabled: autoplayEnabled,
+                          isOfflineMode: modalIsOfflineMode,
+                          offlineMessage: offlineMessage,
+                          isDownloadingSingle: isDownloadingSingleAyah,
+                          isDownloadingAll: isDownloadingAllAyahs,
+                          downloadProgressText: downloadProgressText,
+                          availableTafsirSources: availableTafsirForModal,
+                          selectedTafsirId: selectedTafsirId,
+                          currentTafsir: currentTafsir,
+                          isLoadingTafsir: isLoadingTafsir,
+                          availableTranslationSources:
+                              availableTranslationForModal,
+                          selectedTranslationId: selectedTranslationId,
+                          selectedTranslationLanguage:
+                              selectedTranslationLanguage,
+                          currentTranslation: currentTranslation,
+                          isLoadingTranslation: isLoadingTranslation,
+                          onPlayPause: playPauseAudio,
+                          onPrevious: (currentIndex) =>
+                              skipToPreviousAyah(currentIndex),
+                          onNext: (currentIndex) => skipToNextAyah(
+                              currentIndex, widget.surah.ayahs?.length ?? 0),
+                          onSeek: seekToPosition,
+                          onUserSeekingChanged: (seeking) =>
+                              setState(() => isUserSeeking = seeking),
+                          onReaderSelected: (readerId) =>
+                              switchReader(readerId, setModalState),
+                          onLanguageSelected: (language) =>
+                              switchLanguage(language, setModalState),
+                          onLoopChanged: (value) =>
+                              setModalState(() => loopEnabled = value ?? false),
+                          onAutoplayChanged: (value) => setModalState(
+                              () => autoplayEnabled = value ?? true),
+                          onDownloadSingle: () =>
+                              downloadSingleAyah(index, ayah, setModalState),
+                          onDownloadAll: () =>
+                              downloadAllSurahAyahs(setModalState),
+                          checkAllDownloaded: areAllAyahsDownloaded,
+                          checkSingleDownloaded: () =>
+                              isSingleAyahDownloaded(index),
+                          onTafsirSelected: (tafsirId) =>
+                              switchTafsir(tafsirId, setModalState),
+                          onTranslationSelected: (translationId) =>
+                              switchTranslation(translationId, setModalState),
+                          onTranslationLanguageSelected: (language) =>
+                              switchTranslationLanguage(
+                                  language, setModalState),
+                          onDownloadTafsir: downloadSurahTafsir,
+                          onDownloadFullTafsir: downloadFullQuranTafsir,
+                          onDownloadTranslation: downloadSurahTranslation,
+                          onDownloadFullTranslation:
+                              downloadFullQuranTranslation,
+                          isDownloadingSurahTafsir: isDownloadingSurahTafsir,
+                          isDownloadingAllTafsir: isDownloadingAllTafsir,
+                          isDownloadingSurahTranslation:
+                              isDownloadingSurahTranslation,
+                          isDownloadingAllTranslation:
+                              isDownloadingAllTranslation,
+                          checkSurahTafsirDownloaded: isSurahTafsirDownloaded,
+                          checkAllTafsirDownloaded: isAllTafsirDownloaded,
+                          checkSurahTranslationDownloaded:
+                              isSurahTranslationDownloaded,
+                          checkAllTranslationDownloaded:
+                              isAllTranslationDownloaded,
+                          checkCurrentAyahPlayable: () =>
+                              isCurrentAyahPlayable(index),
+                          getCurrentScrollPosition: () => currentScrollPosition,
+                        ),
                       );
                     },
                   );
