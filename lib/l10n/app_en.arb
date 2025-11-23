@@ -3059,5 +3059,9 @@
     "beta": "BETA",
     "@beta": {
         "description": "Beta label"
+    },
+    "surahMemorized": "You have successfully memorized this Surah.",
+    "@surahMemorized": {
+        "description": "Message when surah is memorized"
     }
 }

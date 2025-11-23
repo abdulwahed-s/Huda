@@ -908,5 +908,6 @@
     "beta": "বিটা",
     "@beta": {
         "description": "Beta label"
-    }
+    },
+    "surahMemorized": "আপনি সফলভাবে এই সূরা মুখস্থ করেছেন।"
 }

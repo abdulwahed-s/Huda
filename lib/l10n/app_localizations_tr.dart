@@ -2543,4 +2543,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get beta => 'BETA';
+
+  @override
+  String get surahMemorized => 'Bu Sureyi başarıyla ezberlediniz.';
 }

@@ -2506,4 +2506,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get beta => 'تجريبي';
+
+  @override
+  String get surahMemorized => 'لقد حفظت هذه السورة بنجاح.';
 }

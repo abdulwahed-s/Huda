@@ -2540,4 +2540,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get beta => 'بیٹا';
+
+  @override
+  String get surahMemorized => 'آپ نے کامیابی سے یہ سورت حفظ کر لی ہے۔';
 }

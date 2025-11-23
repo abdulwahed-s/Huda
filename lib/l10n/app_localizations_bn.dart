@@ -2551,4 +2551,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get beta => 'বিটা';
+
+  @override
+  String get surahMemorized => 'আপনি সফলভাবে এই সূরা মুখস্থ করেছেন।';
 }

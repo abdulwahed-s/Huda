@@ -4765,6 +4765,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'BETA'**
   String get beta;
+
+  /// Message when surah is memorized
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully memorized this Surah.'**
+  String get surahMemorized;
 }
 
 class _AppLocalizationsDelegate

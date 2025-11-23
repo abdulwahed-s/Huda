@@ -866,5 +866,6 @@
     "beta": "بیٹا",
     "@beta": {
         "description": "Beta label"
-    }
+    },
+    "surahMemorized": "آپ نے کامیابی سے یہ سورت حفظ کر لی ہے۔"
 }

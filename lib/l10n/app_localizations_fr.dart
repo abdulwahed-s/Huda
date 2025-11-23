@@ -2611,4 +2611,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get beta => 'BÊTA';
+
+  @override
+  String get surahMemorized => 'Vous avez mémorisé cette Sourate avec succès.';
 }

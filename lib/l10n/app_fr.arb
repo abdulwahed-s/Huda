@@ -811,5 +811,6 @@
     "beta": "BÊTA",
     "@beta": {
         "description": "Beta label"
-    }
+    },
+    "surahMemorized": "Vous avez mémorisé cette Sourate avec succès."
 }

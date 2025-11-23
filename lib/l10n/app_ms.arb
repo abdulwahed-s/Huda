@@ -890,5 +890,6 @@
     "beta": "BETA",
     "@beta": {
         "description": "Beta label"
-    }
+    },
+    "surahMemorized": "Anda telah berjaya menghafal Surah ini."
 }

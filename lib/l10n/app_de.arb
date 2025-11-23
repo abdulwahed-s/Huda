@@ -784,5 +784,6 @@
     "listening": "Zuhören...",
     "microphoneIdle": "Mikrofon im Leerlauf",
     "reciteToReveal": "Rezitiere die Ayah, um sie aufzudecken",
-    "beta": "BETA"
+    "beta": "BETA",
+    "surahMemorized": "Sie haben diese Sure erfolgreich auswendig gelernt."
 }

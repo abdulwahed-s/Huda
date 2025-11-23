@@ -1472,5 +1472,6 @@
     "beta": "تجريبي",
     "@beta": {
         "description": "Beta label"
-    }
+    },
+    "surahMemorized": "لقد حفظت هذه السورة بنجاح."
 }

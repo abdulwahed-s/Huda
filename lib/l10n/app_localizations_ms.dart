@@ -2551,4 +2551,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get beta => 'BETA';
+
+  @override
+  String get surahMemorized => 'Anda telah berjaya menghafal Surah ini.';
 }
