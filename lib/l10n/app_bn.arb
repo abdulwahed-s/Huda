@@ -872,5 +872,41 @@
     "ayahs" : "আয়াতসমূহ",
     "downloaded" : "ডাউনলোডকৃত",
     "loopThisAyah" : "এই আয়াতটি পুনরাবৃত্তি করুন",
-    "autoplayNextAyah" : "পরবর্তী আয়াত স্বয়ংক্রিয়ভাবে চালান"
+    "autoplayNextAyah" : "পরবর্তী আয়াত স্বয়ংক্রিয়ভাবে চালান",
+        "memorizationMode": "মুখস্থ মোড",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "আয়াত লুকিয়ে এবং তা পাঠ করে আপনার মুখস্থের পরীক্ষা করুন। অ্যাপটি আপনার পাঠ শুনবে এবং আপনি সঠিকভাবে পাঠ করলে আয়াতগুলি প্রকাশ করবে।",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "বক্তৃতা শনাক্তকরণের গুণমান আপনার ডিভাইসের ক্ষমতার উপর নির্ভর করে।",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "মুখস্থ শুরু করুন",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "মুখস্থ বন্ধ করুন",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "শুনছি...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "মাইক্রোফোন নিষ্ক্রিয়",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "প্রকাশ করতে আয়াত পাঠ করুন",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "বিটা",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

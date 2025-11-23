@@ -4711,6 +4711,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Autoplay next ayah'**
   String get autoplayNextAyah;
+
+  /// Title for memorization mode
+  ///
+  /// In en, this message translates to:
+  /// **'Memorization Mode'**
+  String get memorizationMode;
+
+  /// Description of memorization mode
+  ///
+  /// In en, this message translates to:
+  /// **'Test your memorization by hiding ayahs and reciting them. The app will listen to your recitation and reveal the ayahs as you recite correctly.'**
+  String get memorizationDescription;
+
+  /// Disclaimer about speech recognition
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition quality depends on your device capabilities.'**
+  String get speechRecognitionDisclaimer;
+
+  /// Button to start memorization
+  ///
+  /// In en, this message translates to:
+  /// **'Start Memorization'**
+  String get startMemorization;
+
+  /// Button to stop memorization
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Memorization'**
+  String get stopMemorization;
+
+  /// Status when app is listening
+  ///
+  /// In en, this message translates to:
+  /// **'Listening...'**
+  String get listening;
+
+  /// Status when microphone is idle
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone idle'**
+  String get microphoneIdle;
+
+  /// Instruction to recite
+  ///
+  /// In en, this message translates to:
+  /// **'Recite the ayah to reveal it'**
+  String get reciteToReveal;
+
+  /// Beta label
+  ///
+  /// In en, this message translates to:
+  /// **'BETA'**
+  String get beta;
 }
 
 class _AppLocalizationsDelegate

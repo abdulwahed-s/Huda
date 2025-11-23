@@ -2511,4 +2511,33 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'اگلی آیت خودکار چلائیں';
+
+  @override
+  String get memorizationMode => 'حفظ کا طریقہ';
+
+  @override
+  String get memorizationDescription =>
+      'آیات کو چھپا کر اور انہیں پڑھ کر اپنے حفظ کا امتحان لیں۔ ایپ آپ کی تلاوت سنے گی اور جب آپ صحیح پڑھیں گے تو آیات ظاہر کرے گی۔';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'تقریر کی شناخت کا معیار آپ کے ڈیوائس کی صلاحیتوں پر منحصر ہے۔';
+
+  @override
+  String get startMemorization => 'حفظ شروع کریں';
+
+  @override
+  String get stopMemorization => 'حفظ روکیں';
+
+  @override
+  String get listening => 'سن رہا ہے...';
+
+  @override
+  String get microphoneIdle => 'مائیکروفون بیکار';
+
+  @override
+  String get reciteToReveal => 'ظاہر کرنے کے لیے آیت کی تلاوت کریں';
+
+  @override
+  String get beta => 'بیٹا';
 }

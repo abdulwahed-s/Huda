@@ -2522,4 +2522,33 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'Main ayat seterusnya secara automatik';
+
+  @override
+  String get memorizationMode => 'Mod Menghafal';
+
+  @override
+  String get memorizationDescription =>
+      'Uji hafalan anda dengan menyembunyikan ayat dan membacanya. Aplikasi ini akan mendengar bacaan anda dan mendedahkan ayat apabila anda membaca dengan betul.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'Kualiti pengecaman suara bergantung pada keupayaan peranti anda.';
+
+  @override
+  String get startMemorization => 'Mula Menghafal';
+
+  @override
+  String get stopMemorization => 'Hentikan Menghafal';
+
+  @override
+  String get listening => 'Mendengar...';
+
+  @override
+  String get microphoneIdle => 'Mikrofon melahu';
+
+  @override
+  String get reciteToReveal => 'Bacakan ayat untuk mendedahkannya';
+
+  @override
+  String get beta => 'BETA';
 }

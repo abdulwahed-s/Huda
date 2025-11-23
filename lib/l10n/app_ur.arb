@@ -830,5 +830,41 @@
     "ayahs" : "آیات",
     "downloaded" : "منزل شدہ",
     "loopThisAyah" : "اس آیت کو دہراتے رہیں",
-    "autoplayNextAyah" : "اگلی آیت خودکار چلائیں"
+    "autoplayNextAyah" : "اگلی آیت خودکار چلائیں",
+        "memorizationMode": "حفظ کا طریقہ",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "آیات کو چھپا کر اور انہیں پڑھ کر اپنے حفظ کا امتحان لیں۔ ایپ آپ کی تلاوت سنے گی اور جب آپ صحیح پڑھیں گے تو آیات ظاہر کرے گی۔",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "تقریر کی شناخت کا معیار آپ کے ڈیوائس کی صلاحیتوں پر منحصر ہے۔",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "حفظ شروع کریں",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "حفظ روکیں",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "سن رہا ہے...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "مائیکروفون بیکار",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "ظاہر کرنے کے لیے آیت کی تلاوت کریں",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "بیٹا",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

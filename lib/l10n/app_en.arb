@@ -3023,5 +3023,41 @@
     "ayahs" : "Ayahs",
     "downloaded" : "Downloaded",
     "loopThisAyah" : "Loop this ayah",
-    "autoplayNextAyah" : "Autoplay next ayah"
+    "autoplayNextAyah" : "Autoplay next ayah",
+    "memorizationMode": "Memorization Mode",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "Test your memorization by hiding ayahs and reciting them. The app will listen to your recitation and reveal the ayahs as you recite correctly.",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "Speech recognition quality depends on your device capabilities.",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "Start Memorization",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "Stop Memorization",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "Listening...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "Microphone idle",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "Recite the ayah to reveal it",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "BETA",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

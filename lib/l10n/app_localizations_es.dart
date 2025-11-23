@@ -2578,4 +2578,33 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get autoplayNextAyah =>
       'Reproducción automática de la siguiente aleya';
+
+  @override
+  String get memorizationMode => 'Modo de Memorización';
+
+  @override
+  String get memorizationDescription =>
+      'Pon a prueba tu memorización ocultando las aleyas y recitándolas. La aplicación escuchará tu recitación y revelará las aleyas cuando recites correctamente.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'La calidad del reconocimiento de voz depende de las capacidades de tu dispositivo.';
+
+  @override
+  String get startMemorization => 'Iniciar Memorización';
+
+  @override
+  String get stopMemorization => 'Detener Memorización';
+
+  @override
+  String get listening => 'Escuchando...';
+
+  @override
+  String get microphoneIdle => 'Micrófono inactivo';
+
+  @override
+  String get reciteToReveal => 'Recita la aleya para revelarla';
+
+  @override
+  String get beta => 'BETA';
 }

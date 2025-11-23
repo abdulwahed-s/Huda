@@ -1436,5 +1436,41 @@
     "ayahs" : "آيات",
     "downloaded" : "مُنَزَّل",
     "loopThisAyah" : "تكرار هذه الآية",
-    "autoplayNextAyah" : "تشغيل الآية التالية تلقائيًا"
+    "autoplayNextAyah" : "تشغيل الآية التالية تلقائيًا",
+        "memorizationMode": "وضع الحفظ",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "اختبر حفظك عن طريق إخفاء الآيات وتلاوتها. سيستمع التطبيق إلى تلاوتك ويكشف الآيات عندما تتلو بشكل صحيح.",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "جودة التعرف على الكلام تعتمد على إمكانيات جهازك.",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "بدء الحفظ",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "إيقاف الحفظ",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "يستمع...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "الميكروفون خامل",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "اتلُ الآية للكشف عنها",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "تجريبي",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

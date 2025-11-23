@@ -2522,4 +2522,33 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'পরবর্তী আয়াত স্বয়ংক্রিয়ভাবে চালান';
+
+  @override
+  String get memorizationMode => 'মুখস্থ মোড';
+
+  @override
+  String get memorizationDescription =>
+      'আয়াত লুকিয়ে এবং তা পাঠ করে আপনার মুখস্থের পরীক্ষা করুন। অ্যাপটি আপনার পাঠ শুনবে এবং আপনি সঠিকভাবে পাঠ করলে আয়াতগুলি প্রকাশ করবে।';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'বক্তৃতা শনাক্তকরণের গুণমান আপনার ডিভাইসের ক্ষমতার উপর নির্ভর করে।';
+
+  @override
+  String get startMemorization => 'মুখস্থ শুরু করুন';
+
+  @override
+  String get stopMemorization => 'মুখস্থ বন্ধ করুন';
+
+  @override
+  String get listening => 'শুনছি...';
+
+  @override
+  String get microphoneIdle => 'মাইক্রোফোন নিষ্ক্রিয়';
+
+  @override
+  String get reciteToReveal => 'প্রকাশ করতে আয়াত পাঠ করুন';
+
+  @override
+  String get beta => 'বিটা';
 }

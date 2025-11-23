@@ -854,5 +854,41 @@
     "ayahs" : "Ayat",
     "downloaded" : "Dimuat turun",
     "loopThisAyah" : "Ulang ayat ini",
-    "autoplayNextAyah" : "Main ayat seterusnya secara automatik"
+    "autoplayNextAyah" : "Main ayat seterusnya secara automatik",
+        "memorizationMode": "Mod Menghafal",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "Uji hafalan anda dengan menyembunyikan ayat dan membacanya. Aplikasi ini akan mendengar bacaan anda dan mendedahkan ayat apabila anda membaca dengan betul.",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "Kualiti pengecaman suara bergantung pada keupayaan peranti anda.",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "Mula Menghafal",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "Hentikan Menghafal",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "Mendengar...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "Mikrofon melahu",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "Bacakan ayat untuk mendedahkannya",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "BETA",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

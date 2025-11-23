@@ -787,5 +787,41 @@
     "ayahs" : "Alejas",
     "downloaded" : "Descargado",
     "loopThisAyah" : "Repetir esta aleya",
-    "autoplayNextAyah" : "Reproducción automática de la siguiente aleya"
+    "autoplayNextAyah" : "Reproducción automática de la siguiente aleya",
+        "memorizationMode": "Modo de Memorización",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "Pon a prueba tu memorización ocultando las aleyas y recitándolas. La aplicación escuchará tu recitación y revelará las aleyas cuando recites correctamente.",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "La calidad del reconocimiento de voz depende de las capacidades de tu dispositivo.",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "Iniciar Memorización",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "Detener Memorización",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "Escuchando...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "Micrófono inactivo",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "Recita la aleya para revelarla",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "BETA",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

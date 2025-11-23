@@ -767,5 +767,41 @@
     "ayahs" : "Ayetler",
     "downloaded" : "İndirilmiş",
     "loopThisAyah" : "Bu ayeti döngüye al",
-    "autoplayNextAyah" : "Sonraki ayeti otomatik oynat"
+    "autoplayNextAyah" : "Sonraki ayeti otomatik oynat",
+        "memorizationMode": "Ezberleme Modu",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "Ayetleri gizleyip okuyarak ezberinizi test edin. Uygulama tilavetin dinleyecek ve doğru okuduğunuzda ayetleri gösterecektir.",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "Konuşma tanıma kalitesi cihazınızın yeteneklerine bağlıdır.",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "Ezberlemeyi Başlat",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "Ezberlemeyi Durdur",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "Dinliyor...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "Mikrofon boşta",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "Göstermek için ayeti okuyun",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "BETA",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

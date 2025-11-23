@@ -2477,4 +2477,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'تشغيل الآية التالية تلقائيًا';
+
+  @override
+  String get memorizationMode => 'وضع الحفظ';
+
+  @override
+  String get memorizationDescription =>
+      'اختبر حفظك عن طريق إخفاء الآيات وتلاوتها. سيستمع التطبيق إلى تلاوتك ويكشف الآيات عندما تتلو بشكل صحيح.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'جودة التعرف على الكلام تعتمد على إمكانيات جهازك.';
+
+  @override
+  String get startMemorization => 'بدء الحفظ';
+
+  @override
+  String get stopMemorization => 'إيقاف الحفظ';
+
+  @override
+  String get listening => 'يستمع...';
+
+  @override
+  String get microphoneIdle => 'الميكروفون خامل';
+
+  @override
+  String get reciteToReveal => 'اتلُ الآية للكشف عنها';
+
+  @override
+  String get beta => 'تجريبي';
 }

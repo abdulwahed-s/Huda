@@ -2582,4 +2582,33 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'Lecture automatique du verset suivant';
+
+  @override
+  String get memorizationMode => 'Mode de Mémorisation';
+
+  @override
+  String get memorizationDescription =>
+      'Testez votre mémorisation en cachant les versets et en les récitant. L\'application écoutera votre récitation et révélera les versets lorsque vous réciterez correctement.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'La qualité de la reconnaissance vocale dépend des capacités de votre appareil.';
+
+  @override
+  String get startMemorization => 'Démarrer la Mémorisation';
+
+  @override
+  String get stopMemorization => 'Arrêter la Mémorisation';
+
+  @override
+  String get listening => 'Écoute...';
+
+  @override
+  String get microphoneIdle => 'Microphone inactif';
+
+  @override
+  String get reciteToReveal => 'Récitez le verset pour le révéler';
+
+  @override
+  String get beta => 'BÊTA';
 }

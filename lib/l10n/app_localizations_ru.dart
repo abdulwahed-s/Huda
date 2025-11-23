@@ -2540,4 +2540,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'Автовоспроизведение следующего аята';
+
+  @override
+  String get memorizationMode => 'Режим заучивания';
+
+  @override
+  String get memorizationDescription =>
+      'Проверьте свою память, скрывая аяты и читая их наизусть. Приложение будет слушать ваше чтение и открывать аяты по мере правильного чтения.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'Качество распознавания речи зависит от возможностей вашего устройства.';
+
+  @override
+  String get startMemorization => 'Начать заучивание';
+
+  @override
+  String get stopMemorization => 'Остановить заучивание';
+
+  @override
+  String get listening => 'Слушаю...';
+
+  @override
+  String get microphoneIdle => 'Микрофон неактивен';
+
+  @override
+  String get reciteToReveal => 'Прочитайте аят, чтобы открыть его';
+
+  @override
+  String get beta => 'БЕТА';
 }

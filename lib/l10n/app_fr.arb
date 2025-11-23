@@ -775,5 +775,41 @@
     "ayahs" : "Versets",
     "downloaded" : "Téléchargé",
     "loopThisAyah" : "Répéter ce verset",
-    "autoplayNextAyah" : "Lecture automatique du verset suivant"
+    "autoplayNextAyah" : "Lecture automatique du verset suivant",
+        "memorizationMode": "Mode de Mémorisation",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "Testez votre mémorisation en cachant les versets et en les récitant. L'application écoutera votre récitation et révélera les versets lorsque vous réciterez correctement.",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "La qualité de la reconnaissance vocale dépend des capacités de votre appareil.",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "Démarrer la Mémorisation",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "Arrêter la Mémorisation",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "Écoute...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "Microphone inactif",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "Récitez le verset pour le révéler",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "BÊTA",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

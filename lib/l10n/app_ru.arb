@@ -767,5 +767,41 @@
     "ayahs" : "Аяты",
     "downloaded" : "Загруженный",
     "loopThisAyah" : "Повторять этот аят",
-    "autoplayNextAyah" : "Автовоспроизведение следующего аята"
+    "autoplayNextAyah" : "Автовоспроизведение следующего аята",
+        "memorizationMode": "Режим заучивания",
+    "@memorizationMode": {
+        "description": "Title for memorization mode"
+    },
+    "memorizationDescription": "Проверьте свою память, скрывая аяты и читая их наизусть. Приложение будет слушать ваше чтение и открывать аяты по мере правильного чтения.",
+    "@memorizationDescription": {
+        "description": "Description of memorization mode"
+    },
+    "speechRecognitionDisclaimer": "Качество распознавания речи зависит от возможностей вашего устройства.",
+    "@speechRecognitionDisclaimer": {
+        "description": "Disclaimer about speech recognition"
+    },
+    "startMemorization": "Начать заучивание",
+    "@startMemorization": {
+        "description": "Button to start memorization"
+    },
+    "stopMemorization": "Остановить заучивание",
+    "@stopMemorization": {
+        "description": "Button to stop memorization"
+    },
+    "listening": "Слушаю...",
+    "@listening": {
+        "description": "Status when app is listening"
+    },
+    "microphoneIdle": "Микрофон неактивен",
+    "@microphoneIdle": {
+        "description": "Status when microphone is idle"
+    },
+    "reciteToReveal": "Прочитайте аят, чтобы открыть его",
+    "@reciteToReveal": {
+        "description": "Instruction to recite"
+    },
+    "beta": "БЕТА",
+    "@beta": {
+        "description": "Beta label"
+    }
 }

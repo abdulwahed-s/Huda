@@ -2564,4 +2564,33 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'Volgende aya automatisch afspelen';
+
+  @override
+  String get memorizationMode => 'Auswendig lernen Modus';
+
+  @override
+  String get memorizationDescription =>
+      'Testen Sie Ihr Auswendiglernen, indem Sie Ayahs ausblenden und rezitieren. Die App hört Ihrer Rezitation zu und deckt die Ayahs auf, wenn Sie richtig rezitieren.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'Die Qualität der Spracherkennung hängt von den Fähigkeiten Ihres Geräts ab.';
+
+  @override
+  String get startMemorization => 'Auswendiglernen starten';
+
+  @override
+  String get stopMemorization => 'Auswendiglernen stoppen';
+
+  @override
+  String get listening => 'Zuhören...';
+
+  @override
+  String get microphoneIdle => 'Mikrofon im Leerlauf';
+
+  @override
+  String get reciteToReveal => 'Rezitiere die Ayah, um sie aufzudecken';
+
+  @override
+  String get beta => 'BETA';
 }

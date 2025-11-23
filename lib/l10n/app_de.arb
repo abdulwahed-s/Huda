@@ -775,5 +775,14 @@
     "ayahs" : "Ayaat",
     "downloaded" : "Gedownload",
     "loopThisAyah" : "Deze aya herhalen",
-    "autoplayNextAyah" : "Volgende aya automatisch afspelen"
+    "autoplayNextAyah" : "Volgende aya automatisch afspelen",
+    "memorizationMode": "Auswendig lernen Modus",
+    "memorizationDescription": "Testen Sie Ihr Auswendiglernen, indem Sie Ayahs ausblenden und rezitieren. Die App hört Ihrer Rezitation zu und deckt die Ayahs auf, wenn Sie richtig rezitieren.",
+    "speechRecognitionDisclaimer": "Die Qualität der Spracherkennung hängt von den Fähigkeiten Ihres Geräts ab.",
+    "startMemorization": "Auswendiglernen starten",
+    "stopMemorization": "Auswendiglernen stoppen",
+    "listening": "Zuhören...",
+    "microphoneIdle": "Mikrofon im Leerlauf",
+    "reciteToReveal": "Rezitiere die Ayah, um sie aufzudecken",
+    "beta": "BETA"
 }

@@ -2519,4 +2519,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'Autoplay next ayah';
+
+  @override
+  String get memorizationMode => 'Memorization Mode';
+
+  @override
+  String get memorizationDescription =>
+      'Test your memorization by hiding ayahs and reciting them. The app will listen to your recitation and reveal the ayahs as you recite correctly.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'Speech recognition quality depends on your device capabilities.';
+
+  @override
+  String get startMemorization => 'Start Memorization';
+
+  @override
+  String get stopMemorization => 'Stop Memorization';
+
+  @override
+  String get listening => 'Listening...';
+
+  @override
+  String get microphoneIdle => 'Microphone idle';
+
+  @override
+  String get reciteToReveal => 'Recite the ayah to reveal it';
+
+  @override
+  String get beta => 'BETA';
 }

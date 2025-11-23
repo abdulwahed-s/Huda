@@ -2514,4 +2514,33 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get autoplayNextAyah => 'Sonraki ayeti otomatik oynat';
+
+  @override
+  String get memorizationMode => 'Ezberleme Modu';
+
+  @override
+  String get memorizationDescription =>
+      'Ayetleri gizleyip okuyarak ezberinizi test edin. Uygulama tilavetin dinleyecek ve doğru okuduğunuzda ayetleri gösterecektir.';
+
+  @override
+  String get speechRecognitionDisclaimer =>
+      'Konuşma tanıma kalitesi cihazınızın yeteneklerine bağlıdır.';
+
+  @override
+  String get startMemorization => 'Ezberlemeyi Başlat';
+
+  @override
+  String get stopMemorization => 'Ezberlemeyi Durdur';
+
+  @override
+  String get listening => 'Dinliyor...';
+
+  @override
+  String get microphoneIdle => 'Mikrofon boşta';
+
+  @override
+  String get reciteToReveal => 'Göstermek için ayeti okuyun';
+
+  @override
+  String get beta => 'BETA';
 }
