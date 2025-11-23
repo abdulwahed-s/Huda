@@ -8,6 +8,7 @@ import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:huda/core/services/speech_service.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
@@ -24,4 +25,7 @@ void setupServiceLocator() {
     languageCode: PlatformDispatcher.instance.locale.languageCode,
     durationUntilAlertAgain: const Duration(hours: 12),
   ));
+
+  // Register SpeechService
+  getIt.registerSingleton<SpeechService>(SpeechService());
 }
