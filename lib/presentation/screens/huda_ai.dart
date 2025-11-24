@@ -9,7 +9,11 @@ import 'package:huda/cubit/chat/chat_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/presentation/widgets/huda_ai/message_list.dart';
+import 'package:huda/presentation/widgets/huda_ai/mode_switcher.dart';
 import 'package:huda/presentation/widgets/huda_ai/share_image_overlay.dart';
+import 'package:huda/presentation/widgets/huda_ai/counseling_view.dart';
+import 'package:huda/presentation/widgets/huda_ai/counseling_share_overlay.dart';
+import 'package:huda/data/models/counseling_response_model.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -55,6 +59,58 @@ class _ChatScreenState extends State<ChatScreen> {
     ClipboardSnackbar.showCopySnackbar(context, text, appLocalizations);
   }
 
+  void _copyCounselingToClipboard(
+    BuildContext context,
+    CounselingResponse response,
+    AppLocalizations appLocalizations,
+  ) {
+    final String formattedText = '''
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+◆ Guidance
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+${response.counselingText}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+◆ Quranic Wisdom
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+${response.ayah}
+${response.ayahTranslation.isNotEmpty ? '\n"${response.ayahTranslation}"' : ''}
+${response.ayahReference.isNotEmpty ? '\n— ${response.ayahReference}' : ''}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+◆ Duaa
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+${response.duaa}
+${response.duaaTranslation.isNotEmpty ? '\n"${response.duaaTranslation}"' : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+''';
+    ClipboardSnackbar.showCopySnackbar(
+        context, formattedText, appLocalizations);
+  }
+
+  Future<void> _shareCounselingAsImage(
+    BuildContext context,
+    CounselingResponse response,
+    AppLocalizations appLocalizations,
+  ) async {
+    setState(() => _isGeneratingImage = true);
+    await CounselingShareOverlay.shareAsImage(
+      context: context,
+      response: response,
+      appLocalizations: appLocalizations,
+      onError: (e) {
+        if (mounted) {
+          setState(() => _isGeneratingImage = false);
+        }
+      },
+      onComplete: () {
+        if (mounted) {
+          setState(() => _isGeneratingImage = false);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -72,18 +128,63 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                return ModeSwitcher(
+                  isCounselingMode: state.isCounselingMode,
+                  isDark: isDark,
+                  onModeChanged: () {
+                    context.read<ChatCubit>().toggleMode();
+                  },
+                );
+              },
+            ),
+          ),
           Expanded(
-            child: MessageList(
-              scrollController: _scrollController,
-              textEditingController: _controller, 
-              messageKeys: _messageKeys,
-              isDark: isDark,
-              isRTL: isRTL,
-              appLocalizations: appLocalizations,
-              onCopy: (text) =>
-                  _copyToClipboard(context, text, appLocalizations),
-              onShare: (text) => _shareAsImage(context, text, appLocalizations),
-              isGeneratingImage: _isGeneratingImage,
+            child: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                if (state.isCounselingMode) {
+                  return CounselingView(
+                    isDark: isDark,
+                    appLocalizations: appLocalizations,
+                    onCopy: () {
+                      if (state.counselingResponse != null) {
+                        _copyCounselingToClipboard(
+                          context,
+                          state.counselingResponse!,
+                          appLocalizations,
+                        );
+                      }
+                    },
+                    onShare: () {
+                      if (state.counselingResponse != null) {
+                        _shareCounselingAsImage(
+                          context,
+                          state.counselingResponse!,
+                          appLocalizations,
+                        );
+                      }
+                    },
+                    isGeneratingImage: _isGeneratingImage,
+                  );
+                }
+                return MessageList(
+                  scrollController: _scrollController,
+                  textEditingController: _controller,
+                  messageKeys: _messageKeys,
+                  isDark: isDark,
+                  isRTL: isRTL,
+                  appLocalizations: appLocalizations,
+                  onCopy: (text) =>
+                      _copyToClipboard(context, text, appLocalizations),
+                  onShare: (text) =>
+                      _shareAsImage(context, text, appLocalizations),
+                  isGeneratingImage: _isGeneratingImage,
+                );
+              },
             ),
           ),
           BlocBuilder<ChatCubit, ChatState>(
