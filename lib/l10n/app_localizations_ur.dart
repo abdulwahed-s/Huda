@@ -2543,4 +2543,59 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get surahMemorized => 'آپ نے کامیابی سے یہ سورت حفظ کر لی ہے۔';
+
+  @override
+  String get counseling => 'مشاورت';
+
+  @override
+  String get chat => 'چیٹ';
+
+  @override
+  String get counselingMode => 'مشاورت موڈ';
+
+  @override
+  String get counselingIntro =>
+      'اپنے جذبات کا اظہار کریں، اور ہدا کو اسلامی حکمت کے ساتھ آپ کی رہنمائی کرنے دیں۔';
+
+  @override
+  String get guidanceTitle => 'رہنمائی';
+
+  @override
+  String get guidanceSubtitle => 'ذاتی اسلامی رہنمائی';
+
+  @override
+  String get quranTitle => 'قرآن';
+
+  @override
+  String get quranSubtitle => 'متعلقہ قرآنی حکمت';
+
+  @override
+  String get duaaTitle => 'دعا';
+
+  @override
+  String get duaaSubtitle => 'دل کو چھو لینے والی دعائیں';
+
+  @override
+  String get tryExpressing => 'اظہار کرنے کی کوشش کریں:';
+
+  @override
+  String get exampleFeelAnxious => 'میں بے چین محسوس کر رہا ہوں';
+
+  @override
+  String get exampleFeelOverwhelmed => 'میں مغلوب محسوس کر رہا ہوں';
+
+  @override
+  String get exampleFeelingGrateful => 'میں شکر گزار محسوس کر رہا ہوں';
+
+  @override
+  String get exampleSeekingPeace => 'میں سکون کی تلاش میں ہوں';
+
+  @override
+  String get guidance => 'رہنمائی';
+
+  @override
+  String get quranicWisdom => 'قرآنی حکمت';
+
+  @override
+  String get duaa => 'دعا';
 }

@@ -4771,6 +4771,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have successfully memorized this Surah.'**
   String get surahMemorized;
+
+  /// No description provided for @counseling.
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling'**
+  String get counseling;
+
+  /// No description provided for @chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chat;
+
+  /// Title for counseling mode
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling Mode'**
+  String get counselingMode;
+
+  /// Introduction text for counseling mode
+  ///
+  /// In en, this message translates to:
+  /// **'Share your feelings, and let Huda guide you with Islamic wisdom.'**
+  String get counselingIntro;
+
+  /// Guidance card title
+  ///
+  /// In en, this message translates to:
+  /// **'Guidance'**
+  String get guidanceTitle;
+
+  /// Guidance card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Islamic guidance'**
+  String get guidanceSubtitle;
+
+  /// Quran card title
+  ///
+  /// In en, this message translates to:
+  /// **'Quran'**
+  String get quranTitle;
+
+  /// Quran card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Relevant Quranic wisdom'**
+  String get quranSubtitle;
+
+  /// Duaa card title
+  ///
+  /// In en, this message translates to:
+  /// **'Duaa'**
+  String get duaaTitle;
+
+  /// Duaa card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Heartfelt supplications'**
+  String get duaaSubtitle;
+
+  /// Text prompting users to try example questions
+  ///
+  /// In en, this message translates to:
+  /// **'Try expressing:'**
+  String get tryExpressing;
+
+  /// Example question for anxiety
+  ///
+  /// In en, this message translates to:
+  /// **'I feel anxious'**
+  String get exampleFeelAnxious;
+
+  /// Example question for overwhelmed
+  ///
+  /// In en, this message translates to:
+  /// **'I feel overwhelmed'**
+  String get exampleFeelOverwhelmed;
+
+  /// Example question for gratitude
+  ///
+  /// In en, this message translates to:
+  /// **'Feeling grateful'**
+  String get exampleFeelingGrateful;
+
+  /// Example question for seeking peace
+  ///
+  /// In en, this message translates to:
+  /// **'Seeking peace'**
+  String get exampleSeekingPeace;
+
+  /// Title for guidance section in counseling view
+  ///
+  /// In en, this message translates to:
+  /// **'Guidance'**
+  String get guidance;
+
+  /// Title for Quranic wisdom section in counseling view
+  ///
+  /// In en, this message translates to:
+  /// **'Quranic Wisdom'**
+  String get quranicWisdom;
+
+  /// Title for Duaa section in counseling view
+  ///
+  /// In en, this message translates to:
+  /// **'Duaa'**
+  String get duaa;
 }
 
 class _AppLocalizationsDelegate

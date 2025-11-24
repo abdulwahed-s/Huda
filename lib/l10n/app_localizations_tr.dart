@@ -2546,4 +2546,59 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get surahMemorized => 'Bu Sureyi başarıyla ezberlediniz.';
+
+  @override
+  String get counseling => 'Danışmanlık';
+
+  @override
+  String get chat => 'Sohbet';
+
+  @override
+  String get counselingMode => 'Danışmanlık Modu';
+
+  @override
+  String get counselingIntro =>
+      'Duygularınızı paylaşın ve Huda\'nın İslami bilgelikle size rehberlik etmesine izin verin.';
+
+  @override
+  String get guidanceTitle => 'Rehberlik';
+
+  @override
+  String get guidanceSubtitle => 'Kişisel İslami Rehberlik';
+
+  @override
+  String get quranTitle => 'Kuran';
+
+  @override
+  String get quranSubtitle => 'İlgili Kuran Hikmeti';
+
+  @override
+  String get duaaTitle => 'Dua';
+
+  @override
+  String get duaaSubtitle => 'Dokunaklı Dualar';
+
+  @override
+  String get tryExpressing => 'Şunu ifade etmeyi deneyin:';
+
+  @override
+  String get exampleFeelAnxious => 'Endişeli hissediyorum';
+
+  @override
+  String get exampleFeelOverwhelmed => 'Bunalmış hissediyorum';
+
+  @override
+  String get exampleFeelingGrateful => 'Minnettar hissediyorum';
+
+  @override
+  String get exampleSeekingPeace => 'Huzur arıyorum';
+
+  @override
+  String get guidance => 'Rehberlik';
+
+  @override
+  String get quranicWisdom => 'Kuran Hikmeti';
+
+  @override
+  String get duaa => 'Dua';
 }

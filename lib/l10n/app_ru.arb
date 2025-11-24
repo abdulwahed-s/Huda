@@ -804,5 +804,71 @@
     "@beta": {
         "description": "Beta label"
     },
-    "surahMemorized": "Вы успешно выучили эту Суру."
+    "surahMemorized": "Вы успешно выучили эту Суру.",
+    "counseling": "Консультация",
+    "chat": "Чат",
+    "counselingMode": "Режим консультации",
+    "@counselingMode": {
+        "description": "Title for counseling mode"
+    },
+    "counselingIntro": "Поделитесь своими чувствами, и пусть Huda направит вас с исламской мудростью.",
+    "@counselingIntro": {
+        "description": "Introduction text for counseling mode"
+    },
+    "guidanceTitle": "Наставление",
+    "@guidanceTitle": {
+        "description": "Guidance card title"
+    },
+    "guidanceSubtitle": "Личное исламское наставление",
+    "@guidanceSubtitle": {
+        "description": "Guidance card subtitle"
+    },
+    "quranTitle": "Коран",
+    "@quranTitle": {
+        "description": "Quran card title"
+    },
+    "quranSubtitle": "Актуальная мудрость Корана",
+    "@quranSubtitle": {
+        "description": "Quran card subtitle"
+    },
+    "duaaTitle": "Дуа",
+    "@duaaTitle": {
+        "description": "Duaa card title"
+    },
+    "duaaSubtitle": "Трогательные Дуа",
+    "@duaaSubtitle": {
+        "description": "Duaa card subtitle"
+    },
+    "tryExpressing": "Попробуйте выразить:",
+    "@tryExpressing": {
+        "description": "Text prompting users to try example questions"
+    },
+    "exampleFeelAnxious": "Я чувствую тревогу",
+    "@exampleFeelAnxious": {
+        "description": "Example question for anxiety"
+    },
+    "exampleFeelOverwhelmed": "Я чувствую себя перегруженным",
+    "@exampleFeelOverwhelmed": {
+        "description": "Example question for overwhelmed"
+    },
+    "exampleFeelingGrateful": "Я чувствую благодарность",
+    "@exampleFeelingGrateful": {
+        "description": "Example question for gratitude"
+    },
+    "exampleSeekingPeace": "Я ищу покоя",
+    "@exampleSeekingPeace": {
+        "description": "Example question for seeking peace"
+    },
+    "guidance": "Руководство",
+    "@guidance": {
+        "description": "Title for guidance section in counseling view"
+    },
+    "quranicWisdom": "Мудрость Корана",
+    "@quranicWisdom": {
+        "description": "Title for Quranic wisdom section in counseling view"
+    },
+    "duaa": "Дуа",
+    "@duaa": {
+        "description": "Title for Duaa section in counseling view"
+    }
 }

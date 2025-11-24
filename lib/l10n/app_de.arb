@@ -785,5 +785,71 @@
     "microphoneIdle": "Mikrofon im Leerlauf",
     "reciteToReveal": "Rezitiere die Ayah, um sie aufzudecken",
     "beta": "BETA",
-    "surahMemorized": "Sie haben diese Sure erfolgreich auswendig gelernt."
+    "surahMemorized": "Sie haben diese Sure erfolgreich auswendig gelernt.",
+    "counseling": "Beratung",
+    "chat": "Chat",
+    "counselingMode": "Beratungsmodus",
+    "@counselingMode": {
+        "description": "Title for counseling mode"
+    },
+    "counselingIntro": "Teilen Sie Ihre Gefühle und lassen Sie sich von Huda mit islamischer Weisheit leiten.",
+    "@counselingIntro": {
+        "description": "Introduction text for counseling mode"
+    },
+    "guidanceTitle": "Führung",
+    "@guidanceTitle": {
+        "description": "Guidance card title"
+    },
+    "guidanceSubtitle": "Persönliche islamische Führung",
+    "@guidanceSubtitle": {
+        "description": "Guidance card subtitle"
+    },
+    "quranTitle": "Koran",
+    "@quranTitle": {
+        "description": "Quran card title"
+    },
+    "quranSubtitle": "Relevante Koranweisheiten",
+    "@quranSubtitle": {
+        "description": "Quran card subtitle"
+    },
+    "duaaTitle": "Dua",
+    "@duaaTitle": {
+        "description": "Duaa card title"
+    },
+    "duaaSubtitle": "Herzergreifende Duas",
+    "@duaaSubtitle": {
+        "description": "Duaa card subtitle"
+    },
+    "tryExpressing": "Versuchen Sie auszudrücken:",
+    "@tryExpressing": {
+        "description": "Text prompting users to try example questions"
+    },
+    "exampleFeelAnxious": "Ich fühle mich ängstlich",
+    "@exampleFeelAnxious": {
+        "description": "Example question for anxiety"
+    },
+    "exampleFeelOverwhelmed": "Ich fühle mich überwältigt",
+    "@exampleFeelOverwhelmed": {
+        "description": "Example question for overwhelmed"
+    },
+    "exampleFeelingGrateful": "Ich fühle mich dankbar",
+    "@exampleFeelingGrateful": {
+        "description": "Example question for gratitude"
+    },
+    "exampleSeekingPeace": "Ich suche Frieden",
+    "@exampleSeekingPeace": {
+        "description": "Example question for seeking peace"
+    },
+    "guidance": "Beratung",
+    "@guidance": {
+        "description": "Title for guidance section in counseling view"
+    },
+    "quranicWisdom": "Koranische Weisheit",
+    "@quranicWisdom": {
+        "description": "Title for Quranic wisdom section in counseling view"
+    },
+    "duaa": "Dua",
+    "@duaa": {
+        "description": "Title for Duaa section in counseling view"
+    }
 }

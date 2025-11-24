@@ -1473,5 +1473,71 @@
     "@beta": {
         "description": "Beta label"
     },
-    "surahMemorized": "لقد حفظت هذه السورة بنجاح."
+    "surahMemorized": "لقد حفظت هذه السورة بنجاح.",
+    "counseling": "الاستشارة",
+    "chat": "دردشة",
+    "counselingMode": "وضع الاستشارة",
+    "@counselingMode": {
+        "description": "Title for counseling mode"
+    },
+    "counselingIntro": "شارك مشاعرك، ودع هدى ترشدك بالحكمة الإسلامية.",
+    "@counselingIntro": {
+        "description": "Introduction text for counseling mode"
+    },
+    "guidanceTitle": "توجيه",
+    "@guidanceTitle": {
+        "description": "Guidance card title"
+    },
+    "guidanceSubtitle": "توجيه إسلامي شخصي",
+    "@guidanceSubtitle": {
+        "description": "Guidance card subtitle"
+    },
+    "quranTitle": "القرآن",
+    "@quranTitle": {
+        "description": "Quran card title"
+    },
+    "quranSubtitle": "حكمة قرآنية ذات صلة",
+    "@quranSubtitle": {
+        "description": "Quran card subtitle"
+    },
+    "duaaTitle": "دعاء",
+    "@duaaTitle": {
+        "description": "Duaa card title"
+    },
+    "duaaSubtitle": "أدعية من القلب",
+    "@duaaSubtitle": {
+        "description": "Duaa card subtitle"
+    },
+    "tryExpressing": "جرب التعبير عن:",
+    "@tryExpressing": {
+        "description": "Text prompting users to try example questions"
+    },
+    "exampleFeelAnxious": "أشعر بالقلق",
+    "@exampleFeelAnxious": {
+        "description": "Example question for anxiety"
+    },
+    "exampleFeelOverwhelmed": "أشعر بالإرهاق",
+    "@exampleFeelOverwhelmed": {
+        "description": "Example question for overwhelmed"
+    },
+    "exampleFeelingGrateful": "أشعر بالامتنان",
+    "@exampleFeelingGrateful": {
+        "description": "Example question for gratitude"
+    },
+    "exampleSeekingPeace": "أبحث عن السلام",
+    "@exampleSeekingPeace": {
+        "description": "Example question for seeking peace"
+    },
+    "guidance": "إرشاد",
+    "@guidance": {
+        "description": "Title for guidance section in counseling view"
+    },
+    "quranicWisdom": "حكمة قرآنية",
+    "@quranicWisdom": {
+        "description": "Title for Quranic wisdom section in counseling view"
+    },
+    "duaa": "دعاء",
+    "@duaa": {
+        "description": "Title for Duaa section in counseling view"
+    }
 }

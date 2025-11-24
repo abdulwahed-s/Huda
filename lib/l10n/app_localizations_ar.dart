@@ -2509,4 +2509,58 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get surahMemorized => 'لقد حفظت هذه السورة بنجاح.';
+
+  @override
+  String get counseling => 'الاستشارة';
+
+  @override
+  String get chat => 'دردشة';
+
+  @override
+  String get counselingMode => 'وضع الاستشارة';
+
+  @override
+  String get counselingIntro => 'شارك مشاعرك، ودع هدى ترشدك بالحكمة الإسلامية.';
+
+  @override
+  String get guidanceTitle => 'توجيه';
+
+  @override
+  String get guidanceSubtitle => 'توجيه إسلامي شخصي';
+
+  @override
+  String get quranTitle => 'القرآن';
+
+  @override
+  String get quranSubtitle => 'حكمة قرآنية ذات صلة';
+
+  @override
+  String get duaaTitle => 'دعاء';
+
+  @override
+  String get duaaSubtitle => 'أدعية من القلب';
+
+  @override
+  String get tryExpressing => 'جرب التعبير عن:';
+
+  @override
+  String get exampleFeelAnxious => 'أشعر بالقلق';
+
+  @override
+  String get exampleFeelOverwhelmed => 'أشعر بالإرهاق';
+
+  @override
+  String get exampleFeelingGrateful => 'أشعر بالامتنان';
+
+  @override
+  String get exampleSeekingPeace => 'أبحث عن السلام';
+
+  @override
+  String get guidance => 'إرشاد';
+
+  @override
+  String get quranicWisdom => 'حكمة قرآنية';
+
+  @override
+  String get duaa => 'دعاء';
 }

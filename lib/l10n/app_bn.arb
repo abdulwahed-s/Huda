@@ -909,5 +909,71 @@
     "@beta": {
         "description": "Beta label"
     },
-    "surahMemorized": "আপনি সফলভাবে এই সূরা মুখস্থ করেছেন।"
+    "surahMemorized": "আপনি সফলভাবে এই সূরা মুখস্থ করেছেন।",
+    "counseling": "পরামর্শ",
+    "chat": "চ্যাট",
+    "counselingMode": "পরামর্শ মোড",
+    "@counselingMode": {
+        "description": "Title for counseling mode"
+    },
+    "counselingIntro": "আপনার অনুভূতি শেয়ার করুন, এবং হুদাকে ইসলামিক প্রজ্ঞার সাথে আপনাকে গাইড করতে দিন।",
+    "@counselingIntro": {
+        "description": "Introduction text for counseling mode"
+    },
+    "guidanceTitle": "নির্দেশনা",
+    "@guidanceTitle": {
+        "description": "Guidance card title"
+    },
+    "guidanceSubtitle": "ব্যক্তিগত ইসলামিক নির্দেশনা",
+    "@guidanceSubtitle": {
+        "description": "Guidance card subtitle"
+    },
+    "quranTitle": "কুরআন",
+    "@quranTitle": {
+        "description": "Quran card title"
+    },
+    "quranSubtitle": "প্রাসঙ্গিক কুরআনের প্রজ্ঞা",
+    "@quranSubtitle": {
+        "description": "Quran card subtitle"
+    },
+    "duaaTitle": "দোয়া",
+    "@duaaTitle": {
+        "description": "Duaa card title"
+    },
+    "duaaSubtitle": "হৃদয়গ্রাহী দোয়া",
+    "@duaaSubtitle": {
+        "description": "Duaa card subtitle"
+    },
+    "tryExpressing": "প্রকাশ করার চেষ্টা করুন:",
+    "@tryExpressing": {
+        "description": "Text prompting users to try example questions"
+    },
+    "exampleFeelAnxious": "আমি উদ্বিগ্ন বোধ করছি",
+    "@exampleFeelAnxious": {
+        "description": "Example question for anxiety"
+    },
+    "exampleFeelOverwhelmed": "আমি অভিভূত বোধ করছি",
+    "@exampleFeelOverwhelmed": {
+        "description": "Example question for overwhelmed"
+    },
+    "exampleFeelingGrateful": "কৃতজ্ঞ বোধ করছি",
+    "@exampleFeelingGrateful": {
+        "description": "Example question for gratitude"
+    },
+    "exampleSeekingPeace": "শান্তি খুঁজছি",
+    "@exampleSeekingPeace": {
+        "description": "Example question for seeking peace"
+    },
+    "guidance": "নির্দেশনা",
+    "@guidance": {
+        "description": "Title for guidance section in counseling view"
+    },
+    "quranicWisdom": "কুরআনিক জ্ঞান",
+    "@quranicWisdom": {
+        "description": "Title for Quranic wisdom section in counseling view"
+    },
+    "duaa": "দোয়া",
+    "@duaa": {
+        "description": "Title for Duaa section in counseling view"
+    }
 }

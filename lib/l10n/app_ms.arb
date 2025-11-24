@@ -891,5 +891,71 @@
     "@beta": {
         "description": "Beta label"
     },
-    "surahMemorized": "Anda telah berjaya menghafal Surah ini."
+    "surahMemorized": "Anda telah berjaya menghafal Surah ini.",
+    "counseling": "Kaunseling",
+    "chat": "Sembang",
+    "counselingMode": "Mod Kaunseling",
+    "@counselingMode": {
+        "description": "Title for counseling mode"
+    },
+    "counselingIntro": "Kongsi perasaan anda, dan biarkan Huda membimbing anda dengan hikmah Islam.",
+    "@counselingIntro": {
+        "description": "Introduction text for counseling mode"
+    },
+    "guidanceTitle": "Bimbingan",
+    "@guidanceTitle": {
+        "description": "Guidance card title"
+    },
+    "guidanceSubtitle": "Bimbingan Islam Peribadi",
+    "@guidanceSubtitle": {
+        "description": "Guidance card subtitle"
+    },
+    "quranTitle": "Al-Quran",
+    "@quranTitle": {
+        "description": "Quran card title"
+    },
+    "quranSubtitle": "Hikmah Al-Quran Berkaitan",
+    "@quranSubtitle": {
+        "description": "Quran card subtitle"
+    },
+    "duaaTitle": "Doa",
+    "@duaaTitle": {
+        "description": "Duaa card title"
+    },
+    "duaaSubtitle": "Doa Menyentuh Hati",
+    "@duaaSubtitle": {
+        "description": "Duaa card subtitle"
+    },
+    "tryExpressing": "Cuba luahkan:",
+    "@tryExpressing": {
+        "description": "Text prompting users to try example questions"
+    },
+    "exampleFeelAnxious": "Saya berasa cemas",
+    "@exampleFeelAnxious": {
+        "description": "Example question for anxiety"
+    },
+    "exampleFeelOverwhelmed": "Saya berasa terbeban",
+    "@exampleFeelOverwhelmed": {
+        "description": "Example question for overwhelmed"
+    },
+    "exampleFeelingGrateful": "Saya berasa bersyukur",
+    "@exampleFeelingGrateful": {
+        "description": "Example question for gratitude"
+    },
+    "exampleSeekingPeace": "Saya mencari ketenangan",
+    "@exampleSeekingPeace": {
+        "description": "Example question for seeking peace"
+    },
+    "guidance": "Bimbingan",
+    "@guidance": {
+        "description": "Title for guidance section in counseling view"
+    },
+    "quranicWisdom": "Hikmah Al-Quran",
+    "@quranicWisdom": {
+        "description": "Title for Quranic wisdom section in counseling view"
+    },
+    "duaa": "Doa",
+    "@duaa": {
+        "description": "Title for Duaa section in counseling view"
+    }
 }

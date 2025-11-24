@@ -2554,4 +2554,59 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get surahMemorized => 'Anda telah berjaya menghafal Surah ini.';
+
+  @override
+  String get counseling => 'Kaunseling';
+
+  @override
+  String get chat => 'Sembang';
+
+  @override
+  String get counselingMode => 'Mod Kaunseling';
+
+  @override
+  String get counselingIntro =>
+      'Kongsi perasaan anda, dan biarkan Huda membimbing anda dengan hikmah Islam.';
+
+  @override
+  String get guidanceTitle => 'Bimbingan';
+
+  @override
+  String get guidanceSubtitle => 'Bimbingan Islam Peribadi';
+
+  @override
+  String get quranTitle => 'Al-Quran';
+
+  @override
+  String get quranSubtitle => 'Hikmah Al-Quran Berkaitan';
+
+  @override
+  String get duaaTitle => 'Doa';
+
+  @override
+  String get duaaSubtitle => 'Doa Menyentuh Hati';
+
+  @override
+  String get tryExpressing => 'Cuba luahkan:';
+
+  @override
+  String get exampleFeelAnxious => 'Saya berasa cemas';
+
+  @override
+  String get exampleFeelOverwhelmed => 'Saya berasa terbeban';
+
+  @override
+  String get exampleFeelingGrateful => 'Saya berasa bersyukur';
+
+  @override
+  String get exampleSeekingPeace => 'Saya mencari ketenangan';
+
+  @override
+  String get guidance => 'Bimbingan';
+
+  @override
+  String get quranicWisdom => 'Hikmah Al-Quran';
+
+  @override
+  String get duaa => 'Doa';
 }

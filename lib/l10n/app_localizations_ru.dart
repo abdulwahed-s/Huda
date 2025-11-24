@@ -2572,4 +2572,59 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get surahMemorized => 'Вы успешно выучили эту Суру.';
+
+  @override
+  String get counseling => 'Консультация';
+
+  @override
+  String get chat => 'Чат';
+
+  @override
+  String get counselingMode => 'Режим консультации';
+
+  @override
+  String get counselingIntro =>
+      'Поделитесь своими чувствами, и пусть Huda направит вас с исламской мудростью.';
+
+  @override
+  String get guidanceTitle => 'Наставление';
+
+  @override
+  String get guidanceSubtitle => 'Личное исламское наставление';
+
+  @override
+  String get quranTitle => 'Коран';
+
+  @override
+  String get quranSubtitle => 'Актуальная мудрость Корана';
+
+  @override
+  String get duaaTitle => 'Дуа';
+
+  @override
+  String get duaaSubtitle => 'Трогательные Дуа';
+
+  @override
+  String get tryExpressing => 'Попробуйте выразить:';
+
+  @override
+  String get exampleFeelAnxious => 'Я чувствую тревогу';
+
+  @override
+  String get exampleFeelOverwhelmed => 'Я чувствую себя перегруженным';
+
+  @override
+  String get exampleFeelingGrateful => 'Я чувствую благодарность';
+
+  @override
+  String get exampleSeekingPeace => 'Я ищу покоя';
+
+  @override
+  String get guidance => 'Руководство';
+
+  @override
+  String get quranicWisdom => 'Мудрость Корана';
+
+  @override
+  String get duaa => 'Дуа';
 }

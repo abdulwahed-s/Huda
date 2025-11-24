@@ -804,5 +804,71 @@
     "@beta": {
         "description": "Beta label"
     },
-    "surahMemorized": "Bu Sureyi başarıyla ezberlediniz."
+    "surahMemorized": "Bu Sureyi başarıyla ezberlediniz.",
+    "counseling": "Danışmanlık",
+    "chat": "Sohbet",
+    "counselingMode": "Danışmanlık Modu",
+    "@counselingMode": {
+        "description": "Title for counseling mode"
+    },
+    "counselingIntro": "Duygularınızı paylaşın ve Huda'nın İslami bilgelikle size rehberlik etmesine izin verin.",
+    "@counselingIntro": {
+        "description": "Introduction text for counseling mode"
+    },
+    "guidanceTitle": "Rehberlik",
+    "@guidanceTitle": {
+        "description": "Guidance card title"
+    },
+    "guidanceSubtitle": "Kişisel İslami Rehberlik",
+    "@guidanceSubtitle": {
+        "description": "Guidance card subtitle"
+    },
+    "quranTitle": "Kuran",
+    "@quranTitle": {
+        "description": "Quran card title"
+    },
+    "quranSubtitle": "İlgili Kuran Hikmeti",
+    "@quranSubtitle": {
+        "description": "Quran card subtitle"
+    },
+    "duaaTitle": "Dua",
+    "@duaaTitle": {
+        "description": "Duaa card title"
+    },
+    "duaaSubtitle": "Dokunaklı Dualar",
+    "@duaaSubtitle": {
+        "description": "Duaa card subtitle"
+    },
+    "tryExpressing": "Şunu ifade etmeyi deneyin:",
+    "@tryExpressing": {
+        "description": "Text prompting users to try example questions"
+    },
+    "exampleFeelAnxious": "Endişeli hissediyorum",
+    "@exampleFeelAnxious": {
+        "description": "Example question for anxiety"
+    },
+    "exampleFeelOverwhelmed": "Bunalmış hissediyorum",
+    "@exampleFeelOverwhelmed": {
+        "description": "Example question for overwhelmed"
+    },
+    "exampleFeelingGrateful": "Minnettar hissediyorum",
+    "@exampleFeelingGrateful": {
+        "description": "Example question for gratitude"
+    },
+    "exampleSeekingPeace": "Huzur arıyorum",
+    "@exampleSeekingPeace": {
+        "description": "Example question for seeking peace"
+    },
+    "guidance": "Rehberlik",
+    "@guidance": {
+        "description": "Title for guidance section in counseling view"
+    },
+    "quranicWisdom": "Kuran Hikmeti",
+    "@quranicWisdom": {
+        "description": "Title for Quranic wisdom section in counseling view"
+    },
+    "duaa": "Dua",
+    "@duaa": {
+        "description": "Title for Duaa section in counseling view"
+    }
 }
