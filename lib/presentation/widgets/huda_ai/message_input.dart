@@ -112,7 +112,12 @@ class MessageInput extends StatelessWidget {
                 : () {
                     final text = controller.text.trim();
                     if (text.isNotEmpty) {
-                      context.read<ChatCubit>().sendMessage(text);
+                      final cubit = context.read<ChatCubit>();
+                      if (state.isCounselingMode) {
+                        cubit.sendCounselingRequest(text);
+                      } else {
+                        cubit.sendMessage(text);
+                      }
                       controller.clear();
                     }
                   },
