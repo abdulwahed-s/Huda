@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:huda/core/keys/hadith_key.dart';
 import 'package:huda/data/models/chat_message_model.dart';
+import 'package:huda/data/models/counseling_response_model.dart';
 
 class GeminiService {
   final Dio _dio = Dio();
@@ -188,6 +189,85 @@ class GeminiService {
         responseChunks.add(chunk);
       }
       return responseChunks.join('');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<CounselingResponse?> sendCounselingMessage(String userFeeling) async {
+    final counselingPrompt = """
+You are a compassionate Islamic counselor. A user has shared their feelings: "$userFeeling".
+Provide a response in the following JSON format ONLY:
+{
+  "counseling_text": "A comforting message based on Islamic teachings in the same language as the user's feeling",
+  "ayah": "Relevant Quranic Ayah in Arabic",
+  "ayah_translation": "Translation of the Ayah in the same language as the user's feeling. IMPORTANT: If the user's feeling is in Arabic, leave this field empty.",
+  "ayah_reference": "Surah Name: Verse Number",
+  "duaa": "A relevant Duaa in Arabic",
+  "duaa_translation": "Translation of the Duaa in the same language as the user's feeling. IMPORTANT: If the user's feeling is in Arabic, leave this field empty."
+}
+Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
+""";
+
+    final conversation = [
+      {
+        'role': 'user',
+        'parts': [
+          {'text': counselingPrompt}
+        ]
+      }
+    ];
+
+    try {
+      final response = await _dio.post(
+        _baseUrl.replaceFirst('streamGenerateContent', 'generateContent'),
+        data: {
+          'contents': conversation,
+          'generationConfig': {
+            'temperature': 0.7,
+            'topP': 0.8,
+            'topK': 40,
+            'maxOutputTokens': 4096,
+            'responseMimeType': 'application/json',
+          }
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': _apiKey
+          },
+        ),
+      );
+
+
+      if (response.data is Map<String, dynamic> &&
+          response.data['candidates'] != null &&
+          (response.data['candidates'] as List).isNotEmpty) {
+        final candidate = response.data['candidates'][0];
+        if (candidate['content'] != null &&
+            candidate['content']['parts'] != null &&
+            (candidate['content']['parts'] as List).isNotEmpty) {
+          final text = candidate['content']['parts'][0]['text'] as String?;
+          if (text != null) {
+            String cleanText =
+                text.replaceAll('```json', '').replaceAll('```', '').trim();
+            try {
+              final jsonResponse = json.decode(cleanText);
+              if (jsonResponse is Map<String, dynamic>) {
+                return CounselingResponse.fromJson(jsonResponse);
+              } else if (jsonResponse is List &&
+                  jsonResponse.isNotEmpty &&
+                  jsonResponse.first is Map<String, dynamic>) {
+                return CounselingResponse.fromJson(
+                    jsonResponse.first as Map<String, dynamic>);
+              }
+            } catch (e) {
+              // 
+            }
+          }
+        }
+      }
+      return null;
     } catch (e) {
       return null;
     }
