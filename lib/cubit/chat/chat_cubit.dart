@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/services/gemini_service.dart';
 import 'package:huda/data/models/chat_message_model.dart';
+import 'package:huda/data/models/counseling_response_model.dart';
 part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
@@ -59,5 +60,33 @@ class ChatCubit extends Cubit<ChatState> {
 
   void clearHistory() {
     emit(const ChatState());
+  }
+
+  void toggleMode() {
+    emit(state.copyWith(isCounselingMode: !state.isCounselingMode));
+  }
+
+  void sendCounselingRequest(String userFeeling) async {
+    emit(state.copyWith(isLoading: true));
+
+    try {
+      final response = await _geminiService.sendCounselingMessage(userFeeling);
+      if (response != null) {
+        emit(state.copyWith(
+          counselingResponse: response,
+          isLoading: false,
+        ));
+      } else {
+        emit(state.copyWith(
+          error: 'Failed to generate counseling response. Please try again.',
+          isLoading: false,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        error: 'An error occurred: $e',
+        isLoading: false,
+      ));
+    }
   }
 }
