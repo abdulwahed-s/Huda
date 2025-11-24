@@ -36,14 +36,14 @@ class EmptyStateWidget extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(0.w),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Container(
-                  padding: EdgeInsets.all(16.w),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.all(0.w),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
@@ -56,21 +56,15 @@ class EmptyStateWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Container(
+                Container(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
                   child: _buildHorizontalInfoCards(context),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: _buildExampleQuestions(context),
-              ),
-              SizedBox(height: 10.h)
-            ],
+                _buildExampleQuestions(context),
+                SizedBox(height: 10.h)
+              ],
+            ),
           ),
         ),
       ),
@@ -179,7 +173,7 @@ class EmptyStateWidget extends StatelessWidget {
     ];
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(height: 8.h),
         Text(
@@ -192,7 +186,8 @@ class EmptyStateWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.h),
-        Expanded(
+        SizedBox(
+          height: 120.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16.w),
