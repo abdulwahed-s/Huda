@@ -57,13 +57,27 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
   }
 
   Widget _buildCountdownContent(
-    BuildContext context, 
+    BuildContext context,
     NextPrayerCountdown countdown,
     bool isDark,
   ) {
-    final hours = countdown.duration.inHours.toString().padLeft(2, '0');
-    final minutes = (countdown.duration.inMinutes % 60).toString().padLeft(2, '0');
-    final seconds = (countdown.duration.inSeconds % 60).toString().padLeft(2, '0');
+    // Calculate time display
+    String hours, minutes, seconds, prefix;
+
+    if (countdown.isPastPrayer) {
+      // Show time that has passed since prayer
+      final totalSeconds = countdown.secondsPassed;
+      hours = (totalSeconds ~/ 3600).toString().padLeft(2, '0');
+      minutes = ((totalSeconds % 3600) ~/ 60).toString().padLeft(2, '0');
+      seconds = (totalSeconds % 60).toString().padLeft(2, '0');
+      prefix = '+';
+    } else {
+      // Show countdown to next prayer
+      hours = countdown.duration.inHours.toString().padLeft(2, '0');
+      minutes = (countdown.duration.inMinutes % 60).toString().padLeft(2, '0');
+      seconds = (countdown.duration.inSeconds % 60).toString().padLeft(2, '0');
+      prefix = '-';
+    }
 
     return Column(
       children: [
@@ -104,7 +118,7 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Text(
-            "$hours:$minutes:$seconds",
+            "$prefix $hours:$minutes:$seconds",
             style: TextStyle(
               fontSize: 26.sp,
               fontWeight: FontWeight.bold,
@@ -120,12 +134,18 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
   String _getLocalizedPrayerName(BuildContext context, String prayerName) {
     final localizations = AppLocalizations.of(context)!;
     switch (prayerName.toLowerCase()) {
-      case 'fajr': return localizations.fajr;
-      case 'dhuhr': return localizations.dhuhr;
-      case 'asr': return localizations.asr;
-      case 'maghrib': return localizations.maghrib;
-      case 'isha': return localizations.isha;
-      default: return prayerName;
+      case 'fajr':
+        return localizations.fajr;
+      case 'dhuhr':
+        return localizations.dhuhr;
+      case 'asr':
+        return localizations.asr;
+      case 'maghrib':
+        return localizations.maghrib;
+      case 'isha':
+        return localizations.isha;
+      default:
+        return prayerName;
     }
   }
 }
