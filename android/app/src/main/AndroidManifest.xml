@@ -63,6 +63,11 @@
                 android:value="Prayer countdown persistent notification that updates every second at user request" />
         </service>
 
+        <!-- Custom notification icon for foreground service -->
+        <meta-data
+            android:name="com.aw.huda.service.PRAYER_ICON"
+            android:resource="@drawable/ic_stat_name" />
+
         <!-- 🔧 FLUTTER_LOCAL_NOTIFICATIONS Service -->
         <service
             android:name="com.dexterous.flutterlocalnotifications.ForegroundService"
