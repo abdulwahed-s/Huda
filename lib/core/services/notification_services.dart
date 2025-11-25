@@ -4,6 +4,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:adhan/adhan.dart';
+import 'package:huda/presentation/screens/app.dart';
 
 class NotificationServices {
   final FlutterLocalNotificationsPlugin notificationPlugin =
@@ -53,7 +54,10 @@ class NotificationServices {
     isInitialized = true;
   }
 
-  static void _onNotificationResponse(NotificationResponse response) {}
+  static void _onNotificationResponse(NotificationResponse response) {
+    // When notification is tapped, navigate to Prayer Times page
+    App.navigatorKey.currentState?.pushNamed('/prayerTimes');
+  }
 
   Future<void> _createNotificationChannel() async {
     const AndroidNotificationChannel prayerChannel = AndroidNotificationChannel(
