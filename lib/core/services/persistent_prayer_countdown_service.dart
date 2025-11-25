@@ -1242,6 +1242,9 @@ class PersistentPrayerCountdownService {
         notificationTitle: 'Prayer Countdown',
         notificationText: 'Loading prayer times...',
         callback: startCallback,
+        notificationIcon: const NotificationIcon(
+          metaDataName: 'com.aw.huda.service.PRAYER_ICON',
+        ),
       );
 
       _isRunning = true;
