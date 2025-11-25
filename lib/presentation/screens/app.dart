@@ -18,6 +18,10 @@ import 'package:huda/l10n/app_localizations.dart';
 class App extends StatefulWidget {
   const App({super.key});
 
+  // Global navigator key for navigation from outside the widget tree
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   @override
   State<App> createState() => _AppState();
 }
@@ -63,6 +67,7 @@ class _AppState extends State<App> {
                   splitScreenMode: true,
                   builder: (_, __) {
                     return MaterialApp(
+                      navigatorKey: App.navigatorKey,
                       debugShowCheckedModeBanner: false,
                       initialRoute: _initialRoute,
                       themeMode: themeState.themeMode,
