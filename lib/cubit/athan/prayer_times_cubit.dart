@@ -14,8 +14,15 @@ part 'prayer_times_state.dart';
 class NextPrayerInfo {
   final String name;
   final DateTime time;
+  final bool isPastPrayer;
+  final int secondsPassed;
 
-  NextPrayerInfo({required this.name, required this.time});
+  NextPrayerInfo({
+    required this.name,
+    required this.time,
+    this.isPastPrayer = false,
+    this.secondsPassed = 0,
+  });
 }
 
 class PrayerTimesCubit extends Cubit<PrayerTimesState> {
@@ -285,17 +292,31 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       }
 
       try {
-        final nextPrayerInfo = await _getNextPrayerTime();
         final now = DateTime.now();
-        final duration = nextPrayerInfo.time.difference(now);
+        final currentPrayerInfo = await _getCurrentOrNextPrayerTime(now);
 
-        if (duration.isNegative) {
-          await Future.delayed(const Duration(seconds: 1));
-          continue;
+        if (currentPrayerInfo.isPastPrayer) {
+          // We're within 25 minutes after a prayer time
+          yield NextPrayerCountdown(
+            prayerName: currentPrayerInfo.name,
+            duration: Duration.zero,
+            isPastPrayer: true,
+            secondsPassed: currentPrayerInfo.secondsPassed,
+          );
+        } else {
+          // Normal countdown to next prayer
+          final duration = currentPrayerInfo.time.difference(now);
+
+          if (duration.isNegative) {
+            await Future.delayed(const Duration(seconds: 1));
+            continue;
+          }
+
+          yield NextPrayerCountdown(
+            prayerName: currentPrayerInfo.name,
+            duration: duration,
+          );
         }
-
-        yield NextPrayerCountdown(
-            prayerName: nextPrayerInfo.name, duration: duration);
       } catch (e) {
         debugPrint('Error in countdown stream: $e');
         yield const NextPrayerCountdown(
@@ -307,7 +328,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
   }
 
-  Future<NextPrayerInfo> _getNextPrayerTime() async {
+  Future<NextPrayerInfo> _getCurrentOrNextPrayerTime(DateTime now) async {
     if (state is! PrayerTimesLoaded) {
       throw Exception('Prayer times not loaded');
     }
@@ -330,7 +351,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final params = CalculationMethod.karachi.getParameters();
     params.madhab = Madhab.shafi;
 
-    final now = DateTime.now();
+    const gracePeriodMinutes = 25;
 
     final todayPrayerTimes =
         PrayerTimes(coordinates, DateComponents.from(now), params);
@@ -342,6 +363,24 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       (Prayer.isha, todayPrayerTimes.isha),
     ];
 
+    // Check if we're within the grace period after any prayer
+    for (final prayerInfo in todayPrayers) {
+      final prayerTime = prayerInfo.$2;
+      final secondsSincePrayer = now.difference(prayerTime).inSeconds;
+      final minutesSincePrayer = secondsSincePrayer ~/ 60;
+
+      if (secondsSincePrayer >= 0 && minutesSincePrayer < gracePeriodMinutes) {
+        // We're within the grace period after this prayer
+        return NextPrayerInfo(
+          name: _getLocalizedPrayerNameForCountdown(prayerInfo.$1),
+          time: prayerTime,
+          isPastPrayer: true,
+          secondsPassed: secondsSincePrayer,
+        );
+      }
+    }
+
+    // Not in grace period, find the next upcoming prayer
     for (final prayerInfo in todayPrayers) {
       if (prayerInfo.$2.isAfter(now)) {
         return NextPrayerInfo(
@@ -350,6 +389,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       }
     }
 
+    // All prayers for today have passed, return tomorrow's Fajr
     final tomorrow = now.add(const Duration(days: 1));
     final tomorrowPrayerTimes =
         PrayerTimes(coordinates, DateComponents.from(tomorrow), params);
