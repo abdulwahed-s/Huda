@@ -58,265 +58,355 @@ class _EventDialogState extends State<EventDialog> {
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (context, setState) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-          title: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(6.w),
-                decoration: BoxDecoration(
-                  color: _selectedColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Icon(
-                  widget.isEditMode ? Icons.edit_calendar : Icons.event_note,
-                  color: _selectedColor,
-                  size: 20.w,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth > 600;
+            final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r)),
+              title: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(isTablet ? 8 : 6.w),
+                    decoration: BoxDecoration(
+                      color: _selectedColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Icon(
+                      widget.isEditMode
+                          ? Icons.edit_calendar
+                          : Icons.event_note,
+                      color: _selectedColor,
+                      size: isTablet ? 24 : 20.w,
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Text(
+                    widget.isEditMode
+                        ? AppLocalizations.of(context)!.editEvent
+                        : AppLocalizations.of(context)!.addEvent,
+                    style: TextStyle(
+                      fontSize: isTablet ? 20 : 16.sp,
+                      fontFamily: "Amiri",
+                    ),
+                  ),
+                ],
+              ),
+              content: SizedBox(
+                width: isWide ? 600 : double.maxFinite,
+                child: SingleChildScrollView(
+                  child: isWide
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _buildTextFields(isTablet),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 24.w),
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _buildToggles(setState, isTablet),
+                                  if (!_isAllDay) ...[
+                                    SizedBox(height: 12.h),
+                                    _buildTimePickers(setState, isTablet),
+                                  ],
+                                  SizedBox(height: 12.h),
+                                  _buildColorPicker(setState, isTablet),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildTextFields(isTablet),
+                            SizedBox(height: 12.h),
+                            _buildToggles(setState, isTablet),
+                            if (!_isAllDay) ...[
+                              SizedBox(height: 6.h),
+                              _buildTimePickers(setState, isTablet),
+                            ],
+                            SizedBox(height: 12.h),
+                            _buildColorPicker(setState, isTablet),
+                          ],
+                        ),
                 ),
               ),
-              SizedBox(width: 10.w),
-              Text(
-                widget.isEditMode
-                    ? AppLocalizations.of(context)!.editEvent
-                    : AppLocalizations.of(context)!.addEvent,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalizations.of(context)!.cancel,
+                      style: TextStyle(
+                        fontSize: isTablet ? 14 : 12.sp,
+                        fontFamily: "Amiri",
+                      )),
+                ),
+                ElevatedButton(
+                  onPressed: _titleController.text.trim().isEmpty ||
+                          (!_isAllDay &&
+                              (_startTime == null || _endTime == null)) ||
+                          (!_isAllDay &&
+                              (_startTime != null &&
+                                  _startTime!.isAfter(_endTime!)))
+                      ? null
+                      : () {
+                          final event = HijriEvent(
+                            id: widget.oldEvent?.id ?? const Uuid().v4(),
+                            title: _titleController.text.trim(),
+                            description: _descController.text.trim(),
+                            startTime: _isAllDay ? null : _startTime,
+                            endTime: _isAllDay ? null : _endTime,
+                            isAllDay: _isAllDay,
+                            colorValue: colorToInt(_selectedColor),
+                            notify: _notify,
+                          );
+                          widget.onSave(event);
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _selectedColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    padding: isTablet
+                        ? const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12)
+                        : EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  ),
+                  child: Text(
+                    widget.isEditMode
+                        ? AppLocalizations.of(context)!.saveChanges
+                        : AppLocalizations.of(context)!.saveEvent,
+                    style: TextStyle(
+                      fontSize: isTablet ? 14 : 12.sp,
+                      fontFamily: "Amiri",
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildTextFields(bool isTablet) {
+    return Column(
+      children: [
+        TextField(
+          controller: _titleController,
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.eventTitle,
+            labelStyle: TextStyle(
+              fontSize: isTablet ? 14 : 12.sp,
+              fontFamily: "Amiri",
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            contentPadding: isTablet
+                ? const EdgeInsets.symmetric(vertical: 16, horizontal: 16)
+                : null,
+          ),
+          style: TextStyle(
+            fontSize: isTablet ? 14 : 12.sp,
+            fontFamily: "Amiri",
+          ),
+        ),
+        SizedBox(height: 12.h),
+        TextField(
+          controller: _descController,
+          maxLines: 3,
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.description,
+            labelStyle: TextStyle(
+              fontSize: isTablet ? 14 : 12.sp,
+              fontFamily: "Amiri",
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            contentPadding: isTablet
+                ? const EdgeInsets.symmetric(vertical: 16, horizontal: 16)
+                : null,
+          ),
+          style: TextStyle(
+            fontSize: isTablet ? 14 : 12.sp,
+            fontFamily: "Amiri",
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildToggles(StateSetter setState, bool isTablet) {
+    return Column(
+      children: [
+        SwitchListTile(
+          value: _notify,
+          title: Text(AppLocalizations.of(context)!.receiveNotification,
+              style: TextStyle(
+                fontSize: isTablet ? 14 : 12.sp,
+                fontFamily: "Amiri",
+              )),
+          subtitle: Text(AppLocalizations.of(context)!.getNotifiedAboutEvent,
+              style: TextStyle(
+                fontSize: isTablet ? 12 : 10.sp,
+                fontFamily: "Amiri",
+              )),
+          onChanged: (value) => setState(() => _notify = value),
+          contentPadding: EdgeInsets.zero,
+        ),
+        CheckboxListTile(
+          title: Text(AppLocalizations.of(context)!.allDayEvent,
+              style: TextStyle(
+                fontSize: isTablet ? 14 : 12.sp,
+                fontFamily: "Amiri",
+              )),
+          value: _isAllDay,
+          onChanged: (value) => setState(() => _isAllDay = value!),
+          contentPadding: EdgeInsets.zero,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTimePickers(StateSetter setState, bool isTablet) {
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: () async {
+              final picked = await showTimePicker(
+                context: context,
+                initialTime: _startTime ?? TimeOfDay.now(),
+              );
+              if (picked != null) {
+                setState(() => _startTime = picked);
+              }
+            },
+            icon: Icon(Icons.access_time, size: isTablet ? 20 : 16.w),
+            label: Text(
+                _startTime != null
+                    ? '${AppLocalizations.of(context)!.startPrefix}: ${_startTime!.format(context)}'
+                    : AppLocalizations.of(context)!.startTime,
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: isTablet ? 14 : 12.sp,
                   fontFamily: "Amiri",
+                )),
+            style: OutlinedButton.styleFrom(
+              padding: isTablet
+                  ? const EdgeInsets.symmetric(vertical: 12, horizontal: 16)
+                  : null,
+            ),
+          ),
+        ),
+        SizedBox(width: 6.w),
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: () async {
+              final picked = await showTimePicker(
+                context: context,
+                initialTime: _endTime ?? TimeOfDay.now(),
+              );
+              if (picked != null) {
+                setState(() => _endTime = picked);
+              }
+            },
+            icon: Icon(Icons.access_time_filled, size: isTablet ? 20 : 16.w),
+            label: Text(
+                _endTime != null
+                    ? '${AppLocalizations.of(context)!.endPrefix}: ${_endTime!.format(context)}'
+                    : AppLocalizations.of(context)!.endTime,
+                style: TextStyle(
+                  fontSize: isTablet ? 14 : 12.sp,
+                  fontFamily: "Amiri",
+                )),
+            style: OutlinedButton.styleFrom(
+              padding: isTablet
+                  ? const EdgeInsets.symmetric(vertical: 12, horizontal: 16)
+                  : null,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildColorPicker(StateSetter setState, bool isTablet) {
+    return Container(
+      padding: EdgeInsets.all(isTablet ? 16 : 12.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(10.r),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.eventColor,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: isTablet ? 16 : 12.sp,
+                  fontFamily: "Amiri",
+                ),
+              ),
+              const Spacer(),
+              Container(
+                width: isTablet ? 36 : 28.w,
+                height: isTablet ? 36 : 28.w,
+                decoration: BoxDecoration(
+                  color: _selectedColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: _selectedColor.withValues(alpha: 0.3),
+                      blurRadius: (6.r).clamp(0, double.infinity),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.eventTitle,
-                    labelStyle: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: "Amiri",
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
+          SizedBox(height: 10.h),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => ColorPickerDialog(
+                  initialColor: _selectedColor,
+                  onColorSelected: (color) {
+                    setState(() => _selectedColor = color);
+                  },
+                ),
+              ),
+              icon: Icon(Icons.palette, size: isTablet ? 20 : 16.w),
+              label: Text(AppLocalizations.of(context)!.chooseColor,
                   style: TextStyle(
-                    fontSize: 12.sp,
-                    fontFamily: "Amiri",
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                TextField(
-                  controller: _descController,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.description,
-                    labelStyle: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: "Amiri",
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontFamily: "Amiri",
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                SwitchListTile(
-                  value: _notify,
-                  title: Text(AppLocalizations.of(context)!.receiveNotification,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontFamily: "Amiri",
-                      )),
-                  subtitle:
-                      Text(AppLocalizations.of(context)!.getNotifiedAboutEvent,
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            fontFamily: "Amiri",
-                          )),
-                  onChanged: (value) => setState(() => _notify = value),
-                ),
-                CheckboxListTile(
-                  title: Text(AppLocalizations.of(context)!.allDayEvent,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontFamily: "Amiri",
-                      )),
-                  value: _isAllDay,
-                  onChanged: (value) => setState(() => _isAllDay = value!),
-                ),
-                if (!_isAllDay) ...[
-                  SizedBox(height: 6.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () async {
-                            final picked = await showTimePicker(
-                              context: context,
-                              initialTime: _startTime ?? TimeOfDay.now(),
-                            );
-                            if (picked != null) {
-                              setState(() => _startTime = picked);
-                            }
-                          },
-                          icon: Icon(Icons.access_time, size: 16.w),
-                          label: Text(
-                              _startTime != null
-                                  ? '${AppLocalizations.of(context)!.startPrefix}: ${_startTime!.format(context)}'
-                                  : AppLocalizations.of(context)!.startTime,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontFamily: "Amiri",
-                              )),
-                        ),
-                      ),
-                      SizedBox(width: 6.w),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () async {
-                            final picked = await showTimePicker(
-                              context: context,
-                              initialTime: _endTime ?? TimeOfDay.now(),
-                            );
-                            if (picked != null) {
-                              setState(() => _endTime = picked);
-                            }
-                          },
-                          icon: Icon(Icons.access_time_filled, size: 16.w),
-                          label: Text(
-                              _endTime != null
-                                  ? '${AppLocalizations.of(context)!.endPrefix}: ${_endTime!.format(context)}'
-                                  : AppLocalizations.of(context)!.endTime,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontFamily: "Amiri",
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-                SizedBox(height: 12.h),
-                Container(
-                  padding: EdgeInsets.all(12.w),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.eventColor,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp,
-                              fontFamily: "Amiri",
-                            ),
-                          ),
-                          const Spacer(),
-                          Container(
-                            width: 28.w,
-                            height: 28.w,
-                            decoration: BoxDecoration(
-                              color: _selectedColor,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: _selectedColor.withValues(alpha: 0.3),
-                                  blurRadius: (6.r).clamp(0, double.infinity),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10.h),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) => ColorPickerDialog(
-                              initialColor: _selectedColor,
-                              onColorSelected: (color) {
-                                setState(() => _selectedColor = color);
-                              },
-                            ),
-                          ),
-                          icon: Icon(Icons.palette, size: 16.w),
-                          label: Text(AppLocalizations.of(context)!.chooseColor,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontFamily: "Amiri",
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context)!.cancel,
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: isTablet ? 14 : 12.sp,
                     fontFamily: "Amiri",
                   )),
-            ),
-            ElevatedButton(
-              onPressed: _titleController.text.trim().isEmpty ||
-                      (!_isAllDay &&
-                          (_startTime == null || _endTime == null)) ||
-                      (!_isAllDay &&
-                          (_startTime != null &&
-                              _startTime!.isAfter(_endTime!)))
-                  ? null
-                  : () {
-                      final event = HijriEvent(
-                        id: widget.oldEvent?.id ?? const Uuid().v4(),
-                        title: _titleController.text.trim(),
-                        description: _descController.text.trim(),
-                        startTime: _isAllDay ? null : _startTime,
-                        endTime: _isAllDay ? null : _endTime,
-                        isAllDay: _isAllDay,
-                        colorValue: colorToInt(_selectedColor),
-                        notify: _notify,
-                      );
-                      widget.onSave(event);
-                    },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _selectedColor,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-              ),
-              child: Text(
-                widget.isEditMode
-                    ? AppLocalizations.of(context)!.saveChanges
-                    : AppLocalizations.of(context)!.saveEvent,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontFamily: "Amiri",
-                ),
+              style: OutlinedButton.styleFrom(
+                padding:
+                    isTablet ? const EdgeInsets.symmetric(vertical: 12) : null,
               ),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
     );
   }
 }
