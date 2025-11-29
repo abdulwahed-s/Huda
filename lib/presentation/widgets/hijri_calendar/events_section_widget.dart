@@ -24,10 +24,15 @@ class EventsSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Container(
-      constraints: BoxConstraints(maxHeight: 0.25.sh),
+      constraints: BoxConstraints(
+        maxHeight: isLandscape ? double.infinity : 0.25.sh,
+      ),
       child: events.isEmpty
-          ? _buildEmptyEventsPlaceholder()
+          ? _buildEmptyEventsPlaceholder(isLandscape)
           : ListView.builder(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
               itemCount: events.length,
@@ -36,9 +41,12 @@ class EventsSectionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyEventsPlaceholder() {
+  Widget _buildEmptyEventsPlaceholder(bool isLandscape) {
     return Container(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.symmetric(
+        horizontal: 24.w,
+        vertical: isLandscape ? 12.h : 24.w,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
