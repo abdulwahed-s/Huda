@@ -8,6 +8,7 @@ import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/data/models/countdown_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 
 part 'prayer_times_state.dart';
 
@@ -170,6 +171,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   Future<void> _schedulePrayerNotificationsRenewal(int daysAhead) async {
+    if (!PlatformUtils.isMobile) return;
     try {
       final workmanager = Workmanager();
 
