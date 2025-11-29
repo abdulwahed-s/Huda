@@ -20,9 +20,18 @@ class SelectedDateInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Container(
-      margin: EdgeInsets.all(16.w),
-      padding: EdgeInsets.all(20.w),
+      margin: EdgeInsets.symmetric(
+        horizontal: 16.w,
+        vertical: isLandscape ? 8.h : 16.w,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 20.w,
+        vertical: isLandscape ? 12.h : 20.w,
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
