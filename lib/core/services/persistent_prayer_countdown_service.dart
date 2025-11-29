@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:adhan/adhan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 
 // Localization helper for background isolate
 class PrayerCountdownLocalizations {
@@ -1161,6 +1162,7 @@ class PersistentPrayerCountdownService {
 
   /// Initialize the foreground service
   Future<void> initialize() async {
+    if (!PlatformUtils.isMobile) return;
     if (_isInitialized) return;
 
     // Initialize the foreground task with VISIBLE notification channel
@@ -1198,6 +1200,7 @@ class PersistentPrayerCountdownService {
 
   /// Check if the service should start based on saved user preference
   Future<void> startIfEnabled() async {
+    if (!PlatformUtils.isMobile) return;
     final shouldStart = await getSavedState();
     if (shouldStart) {
       debugPrint(
@@ -1210,6 +1213,7 @@ class PersistentPrayerCountdownService {
 
   /// Start the persistent countdown notification
   Future<void> startPersistentCountdown() async {
+    if (!PlatformUtils.isMobile) return;
     if (_isRunning) {
       debugPrint('Persistent countdown already running');
       return;
@@ -1287,6 +1291,7 @@ class PersistentPrayerCountdownService {
 
   /// Stop the persistent countdown notification
   Future<void> stopPersistentCountdown() async {
+    if (!PlatformUtils.isMobile) return;
     if (!_isRunning) return;
 
     try {
@@ -1306,6 +1311,7 @@ class PersistentPrayerCountdownService {
 
   /// Restart the service
   Future<void> restart() async {
+    if (!PlatformUtils.isMobile) return;
     if (_isRunning) {
       await stopPersistentCountdown();
       await Future.delayed(const Duration(milliseconds: 500));
@@ -1315,6 +1321,7 @@ class PersistentPrayerCountdownService {
 
   /// Dispose resources
   void dispose() {
+    if (!PlatformUtils.isMobile) return;
     stopPersistentCountdown();
   }
 }
