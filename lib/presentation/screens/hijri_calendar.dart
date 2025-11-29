@@ -108,8 +108,9 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(360, 690));
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
 
     return BlocProvider(
       create: (_) => HijriCalendarCubit(),
@@ -119,6 +120,7 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
               isDark ? context.darkGradientStart : context.lightSurface,
           appBar: CustomAppBar(
             isDark: isDark,
+            isTablet: isTablet,
             onTodayPressed: () {
               setState(() {
                 _focusedGregorian = DateTime.now();
@@ -133,48 +135,134 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                   ? state.events[_selectedHijri.toString()] ?? []
                   : [];
 
-              return ListView(
-                children: [
-                  CalendarHeaderWidget(
-                    animation: _headerAnimation,
-                    focusedHijri: _focusedHijri,
-                    onPreviousMonth: _goToPreviousHijriMonth,
-                    onNextMonth: _goToNextHijriMonth,
-                    isDark: isDark,
-                    context: context,
-                  ),
-                  CalendarGridWidget(
-                    focusedHijri: _focusedHijri,
-                    state: state,
-                    isDark: isDark,
-                    selectedHijri: _selectedHijri,
-                    onDateSelected: (hijriDate, gregorianDate) {
-                      setState(() {
-                        _selectedHijri = hijriDate;
-                        _focusedGregorian = gregorianDate;
-                      });
-                    },
-                    onAddEvent: (p0) => _showAddEventDialog(parentContext),
-                    context: context,
-                  ),
-                  if (_selectedHijri != null)
-                    SelectedDateInfoWidget(
-                      selectedHijri: _selectedHijri!,
-                      focusedGregorian: _focusedGregorian,
-                      isDark: isDark,
-                      context: context,
-                    ),
-                  EventsSectionWidget(
-                    events: events.cast<HijriEvent>(),
-                    parentContext: parentContext,
-                    isDark: isDark,
-                    onEditEvent: (event) => _showEditEventDialog(
-                        parentContext, _focusedGregorian, event),
-                    onDeleteEvent: (event) =>
-                        _showDeleteConfirmation(parentContext, event),
-                    context: context,
-                  ),
-                ],
+              return OrientationBuilder(
+                builder: (context, orientation) {
+                  final isLandscape = orientation == Orientation.landscape;
+
+                  if (isLandscape) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: SingleChildScrollView(
+                            padding: EdgeInsets.only(bottom: 20.h),
+                            child: Column(
+                              children: [
+                                CalendarHeaderWidget(
+                                  animation: _headerAnimation,
+                                  focusedHijri: _focusedHijri,
+                                  onPreviousMonth: _goToPreviousHijriMonth,
+                                  onNextMonth: _goToNextHijriMonth,
+                                  isDark: isDark,
+                                  context: context,
+                                ),
+                                CalendarGridWidget(
+                                  focusedHijri: _focusedHijri,
+                                  state: state,
+                                  isDark: isDark,
+                                  selectedHijri: _selectedHijri,
+                                  onDateSelected: (hijriDate, gregorianDate) {
+                                    setState(() {
+                                      _selectedHijri = hijriDate;
+                                      _focusedGregorian = gregorianDate;
+                                    });
+                                  },
+                                  onAddEvent: (p0) =>
+                                      _showAddEventDialog(parentContext),
+                                  context: context,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: isDark
+                                      ? Colors.white.withValues(alpha: 0.1)
+                                      : Colors.black.withValues(alpha: 0.05),
+                                ),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                if (_selectedHijri != null)
+                                  SelectedDateInfoWidget(
+                                    selectedHijri: _selectedHijri!,
+                                    focusedGregorian: _focusedGregorian,
+                                    isDark: isDark,
+                                    context: context,
+                                  ),
+                                Expanded(
+                                  child: EventsSectionWidget(
+                                    events: events.cast<HijriEvent>(),
+                                    parentContext: parentContext,
+                                    isDark: isDark,
+                                    onEditEvent: (event) =>
+                                        _showEditEventDialog(parentContext,
+                                            _focusedGregorian, event),
+                                    onDeleteEvent: (event) =>
+                                        _showDeleteConfirmation(
+                                            parentContext, event),
+                                    context: context,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return ListView(
+                    children: [
+                      CalendarHeaderWidget(
+                        animation: _headerAnimation,
+                        focusedHijri: _focusedHijri,
+                        onPreviousMonth: _goToPreviousHijriMonth,
+                        onNextMonth: _goToNextHijriMonth,
+                        isDark: isDark,
+                        context: context,
+                      ),
+                      CalendarGridWidget(
+                        focusedHijri: _focusedHijri,
+                        state: state,
+                        isDark: isDark,
+                        selectedHijri: _selectedHijri,
+                        onDateSelected: (hijriDate, gregorianDate) {
+                          setState(() {
+                            _selectedHijri = hijriDate;
+                            _focusedGregorian = gregorianDate;
+                          });
+                        },
+                        onAddEvent: (p0) => _showAddEventDialog(parentContext),
+                        context: context,
+                      ),
+                      if (_selectedHijri != null)
+                        SelectedDateInfoWidget(
+                          selectedHijri: _selectedHijri!,
+                          focusedGregorian: _focusedGregorian,
+                          isDark: isDark,
+                          context: context,
+                        ),
+                      EventsSectionWidget(
+                        events: events.cast<HijriEvent>(),
+                        parentContext: parentContext,
+                        isDark: isDark,
+                        onEditEvent: (event) => _showEditEventDialog(
+                            parentContext, _focusedGregorian, event),
+                        onDeleteEvent: (event) =>
+                            _showDeleteConfirmation(parentContext, event),
+                        context: context,
+                      ),
+                    ],
+                  );
+                },
               );
             },
           ),
