@@ -13,6 +13,7 @@ import 'package:huda/core/services/widget_service.dart';
 import 'package:huda/core/utils/performance_utils.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:workmanager/workmanager.dart';
 
 // Initialize only critical services that are absolutely needed for app startup
@@ -56,6 +57,8 @@ Future<void> initializeNonCriticalServicesAsync() async {
 }
 
 Future<void> _initializeWidgetServices() async {
+  if (!PlatformUtils.isMobile) return;
+
   final tracker = ServiceInitializationTracker();
   await WidgetService.initialize();
   await WidgetService.registerInteractivity();
@@ -70,8 +73,10 @@ Future<void> _initializeNotificationServices() async {
 
 Future<void> _initializePrayerServices() async {
   final tracker = ServiceInitializationTracker();
-  await getIt<PersistentPrayerCountdownService>().initialize();
-  await getIt<PersistentPrayerCountdownService>().startIfEnabled();
+  if (PlatformUtils.isMobile) {
+    await getIt<PersistentPrayerCountdownService>().initialize();
+    await getIt<PersistentPrayerCountdownService>().startIfEnabled();
+  }
   tracker.markServiceReady('prayer');
 }
 
@@ -86,8 +91,10 @@ Future<void> _initializeBackgroundServices() async {
   final tracker = ServiceInitializationTracker();
   AppLifecycleManager().initialize();
 
-  await Workmanager().initialize(
-    callbackDispatcher,
-  );
+  if (PlatformUtils.isMobile) {
+    await Workmanager().initialize(
+      callbackDispatcher,
+    );
+  }
   tracker.markServiceReady('background');
 }
