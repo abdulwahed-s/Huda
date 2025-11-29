@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:huda/core/theme/app_colors.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 
 class WidgetService {
   static const String _widgetName = 'HudaWidgetProvider';
@@ -49,12 +50,14 @@ class WidgetService {
 
   /// Initialize the widget service
   static Future<void> initialize() async {
+    if (!PlatformUtils.isMobile) return;
     await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
     await _updateWidget();
   }
 
   /// Update the widget with a new random quote
   static Future<void> updateWidget() async {
+    if (!PlatformUtils.isMobile) return;
     await _updateWidget();
 
     // Trigger immediate widget regeneration callback for content updates
@@ -66,12 +69,14 @@ class WidgetService {
 
   /// Register interactivity for the widget
   static Future<void> registerInteractivity() async {
+    if (!PlatformUtils.isMobile) return;
     await HomeWidget.registerInteractivityCallback(backgroundCallback);
   }
 
   /// Background callback for widget interactions
   @pragma('vm:entry-point')
   static Future<void> backgroundCallback(Uri? uri) async {
+    if (!PlatformUtils.isMobile) return;
     try {
       // Initialize the background isolate
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
@@ -86,6 +91,7 @@ class WidgetService {
 
   /// Internal method to update the widget
   static Future<void> _updateWidget() async {
+    if (!PlatformUtils.isMobile) return;
     try {
       // Ensure proper initialization
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
@@ -128,6 +134,7 @@ class WidgetService {
 
   /// Save generated image path
   static Future<void> saveGeneratedImagePath(String imagePath) async {
+    if (!PlatformUtils.isMobile) return;
     try {
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
       await HomeWidget.saveWidgetData<String>('textImagePath', imagePath);
@@ -144,6 +151,7 @@ class WidgetService {
 
   /// Check if image generation is needed
   static Future<bool> needsImageGeneration() async {
+    if (!PlatformUtils.isMobile) return false;
     try {
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
       final needsGeneration = await HomeWidget.getWidgetData<String>(
@@ -158,6 +166,7 @@ class WidgetService {
 
   /// Trigger image generation when theme changes
   static Future<void> onThemeChanged() async {
+    if (!PlatformUtils.isMobile) return;
     try {
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
       // Mark that new image needs to be generated with new theme
@@ -197,6 +206,7 @@ class WidgetService {
 
   /// Force widget update when system theme changes
   static Future<void> onSystemThemeChanged() async {
+    if (!PlatformUtils.isMobile) return;
     try {
       debugPrint('🌓 System theme changed - updating widget');
 
@@ -239,6 +249,7 @@ class WidgetService {
 
   /// Force update the widget immediately
   static Future<void> forceUpdateWidget() async {
+    if (!PlatformUtils.isMobile) return;
     await _updateWidget();
 
     // Trigger immediate widget regeneration callback
@@ -259,6 +270,7 @@ class WidgetService {
 
   /// Check if widget should be updated (every 2 hours - Android friendly)
   static Future<bool> shouldUpdateWidget() async {
+    if (!PlatformUtils.isMobile) return false;
     final lastUpdate = await getLastUpdateTime();
     if (lastUpdate == null) return true;
 
@@ -444,6 +456,7 @@ class WidgetService {
 
   /// Check and update widget if needed
   static Future<void> checkAndUpdate() async {
+    if (!PlatformUtils.isMobile) return;
     if (await shouldUpdateWidget()) {
       await updateWidget();
     }
@@ -451,6 +464,16 @@ class WidgetService {
 
   /// Get current widget data for image generation
   static Future<Map<String, dynamic>> getCurrentWidgetData() async {
+    if (!PlatformUtils.isMobile) {
+      return {
+        'ayah': 'إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا',
+        'surahName': '',
+        'verseNumber': '',
+        'themeName': 'purple',
+        'isDarkMode': false,
+        'timestamp': 'آخر تحديث: الآن',
+      };
+    }
     try {
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
 
@@ -503,6 +526,7 @@ class WidgetService {
 
   /// Check if complete widget image generation is needed
   static Future<bool> needsCompleteWidgetImage() async {
+    if (!PlatformUtils.isMobile) return false;
     try {
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
       final needsGeneration = await HomeWidget.getWidgetData<String>(
@@ -517,6 +541,7 @@ class WidgetService {
 
   /// Save the complete widget image path
   static Future<void> saveCompleteWidgetImagePath(String imagePath) async {
+    if (!PlatformUtils.isMobile) return;
     try {
       debugPrint('🔄 Saving complete widget image path: $imagePath');
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
@@ -538,6 +563,7 @@ class WidgetService {
 
   /// Mark that complete widget image needs regeneration
   static Future<void> markCompleteWidgetImageNeeded() async {
+    if (!PlatformUtils.isMobile) return;
     try {
       await HomeWidget.setAppGroupId('group.com.aw.huda.widget');
       await HomeWidget.saveWidgetData<String>(
@@ -572,6 +598,7 @@ class WidgetService {
 
   /// Android-optimized widget update with reduced frequency
   static Future<void> updateWidgetOptimized() async {
+    if (!PlatformUtils.isMobile) return;
     // Only update if enough time has passed or theme changed
     if (await shouldUpdateWidget() || await _hasThemeChanged()) {
       await _updateWidget();
@@ -604,6 +631,7 @@ class WidgetService {
 
   /// Set widget update strategy for Android optimization
   static Future<void> setOptimizationMode(bool enabled) async {
+    if (!PlatformUtils.isMobile) return;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('widget_optimization_enabled', enabled);
     debugPrint(enabled
