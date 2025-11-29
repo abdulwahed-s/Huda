@@ -1,6 +1,7 @@
 import 'package:workmanager/workmanager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 
 class WidgetBackgroundService {
   static const String _widgetUpdateTaskName = 'updateHomeWidget';
@@ -9,6 +10,7 @@ class WidgetBackgroundService {
 
   /// Initialize widget background updates with aggressive scheduling
   static Future<void> initialize() async {
+    if (!PlatformUtils.isMobile) return;
     final isEnabled = await isBackgroundUpdatesEnabled();
     if (isEnabled) {
       await scheduleAggressiveUpdates();
@@ -17,6 +19,7 @@ class WidgetBackgroundService {
 
   /// Schedule aggressive periodic widget updates with multiple fallbacks
   static Future<void> scheduleAggressiveUpdates() async {
+    if (!PlatformUtils.isMobile) return;
     try {
       // Cancel all existing widget tasks first
       await Workmanager().cancelAll();
@@ -73,7 +76,7 @@ class WidgetBackgroundService {
         initialDelay: const Duration(minutes: 1),
       );
 
-      debugPrint('� Aggressive widget background updates scheduled');
+      debugPrint(' Aggressive widget background updates scheduled');
       debugPrint('📅 Schedule: 30min, 1hr, 3hr intervals + immediate update');
 
       // Store scheduling time
@@ -85,6 +88,7 @@ class WidgetBackgroundService {
 
   /// Stop all widget background updates
   static Future<void> stopPeriodicUpdates() async {
+    if (!PlatformUtils.isMobile) return;
     try {
       await Workmanager().cancelAll();
       debugPrint('🛑 All widget background updates stopped');
@@ -95,6 +99,7 @@ class WidgetBackgroundService {
 
   /// Enable/disable background widget updates
   static Future<void> setBackgroundUpdatesEnabled(bool enabled) async {
+    if (!PlatformUtils.isMobile) return;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_isEnabledKey, enabled);
 
@@ -116,6 +121,7 @@ class WidgetBackgroundService {
 
   /// Force immediate widget update with reschedule
   static Future<void> forceUpdateNow() async {
+    if (!PlatformUtils.isMobile) return;
     try {
       // Immediate update
       await Workmanager().registerOneOffTask(
