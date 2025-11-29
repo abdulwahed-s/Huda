@@ -15,6 +15,8 @@ import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/cubit/rating/rating_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
+import 'package:huda/core/utils/responsive_utils.dart';
+
 class App extends StatefulWidget {
   const App({super.key});
 
@@ -62,7 +64,7 @@ class _AppState extends State<App> {
               return BetterFeedback(
                 themeMode: themeState.themeMode,
                 child: ScreenUtilInit(
-                  designSize: const Size(360, 690),
+                  designSize: ResponsiveUtils.getResponsiveDesignSize(context),
                   minTextAdapt: true,
                   splitScreenMode: true,
                   builder: (_, __) {
