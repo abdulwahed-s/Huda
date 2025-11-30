@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:huda/core/utils/responsive_utils.dart';
+
 class ContinueReadingCard extends StatelessWidget {
   final bool hasLastRead;
   final VoidCallback? onTap;
@@ -21,6 +23,19 @@ class ContinueReadingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final padding =
+        context.responsive(mobile: 20.w, tablet: 24.w, desktop: 32.w);
+    final iconPadding =
+        context.responsive(mobile: 12.w, tablet: 16.w, desktop: 20.w);
+    final mainIconSize =
+        context.responsive(mobile: 24.sp, tablet: 32.sp, desktop: 40.sp);
+    final titleSize =
+        context.responsive(mobile: 16.sp, tablet: 20.sp, desktop: 24.sp);
+    final subtitleSize =
+        context.responsive(mobile: 12.sp, tablet: 14.sp, desktop: 16.sp);
+    final arrowIconSize =
+        context.responsive(mobile: 20.sp, tablet: 24.sp, desktop: 28.sp);
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -28,7 +43,7 @@ class ContinueReadingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20.w),
+          padding: EdgeInsets.all(padding),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -54,7 +69,7 @@ class ContinueReadingCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(12.w),
+                padding: EdgeInsets.all(iconPadding),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(12.r),
@@ -62,7 +77,7 @@ class ContinueReadingCard extends StatelessWidget {
                 child: Icon(
                   hasLastRead ? Icons.menu_book : Icons.history,
                   color: Colors.white,
-                  size: 24.sp,
+                  size: mainIconSize,
                 ),
               ),
               SizedBox(width: 16.w),
@@ -73,7 +88,7 @@ class ContinueReadingCard extends StatelessWidget {
                     Text(
                       hasLastRead ? continueText : noActivityText,
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: titleSize,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontFamily: "Amiri",
@@ -83,7 +98,7 @@ class ContinueReadingCard extends StatelessWidget {
                     Text(
                       hasLastRead ? resumeText : noActivityDescription,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: subtitleSize,
                         color: Colors.white.withValues(alpha: 0.9),
                         fontFamily: "Amiri",
                       ),
@@ -106,7 +121,7 @@ class ContinueReadingCard extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.arrow_forward,
-                    size: 20.sp,
+                    size: arrowIconSize,
                   ),
                 )
             ],
