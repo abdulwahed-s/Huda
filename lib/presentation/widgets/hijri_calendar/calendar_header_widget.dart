@@ -24,6 +24,12 @@ class CalendarHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final margin = isLandscape ? 8.w : 16.w;
+    final horizontalPadding = isLandscape ? 12.w : 20.w;
+    final verticalPadding = isLandscape ? 12.h : 16.h;
+
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
@@ -33,8 +39,9 @@ class CalendarHeaderWidget extends StatelessWidget {
             opacity: animation.value,
             child: Container(
               width: double.infinity,
-              margin: EdgeInsets.all(16.w),
-              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
+              margin: EdgeInsets.all(margin),
+              padding: EdgeInsets.symmetric(
+                  vertical: verticalPadding, horizontal: horizontalPadding),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -51,7 +58,7 @@ class CalendarHeaderWidget extends StatelessWidget {
                           Colors.white.withValues(alpha: 0.8),
                         ],
                 ),
-                borderRadius: BorderRadius.circular(20.r),
+                borderRadius: BorderRadius.circular(isLandscape ? 16.r : 20.r),
                 border: Border.all(
                   color: isDark
                       ? Colors.white.withValues(alpha: 0.1)
@@ -77,31 +84,35 @@ class CalendarHeaderWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _getHijriMonthName(focusedHijri.hMonth),
-                            style: TextStyle(
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.w700,
-                              color: isDark ? Colors.white : Colors.black87,
-                              letterSpacing: 0.5,
-                              fontFamily: "Amiri",
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _getHijriMonthName(focusedHijri.hMonth),
+                              style: TextStyle(
+                                fontSize: isLandscape ? 18.sp : 22.sp,
+                                fontWeight: FontWeight.w700,
+                                color: isDark ? Colors.white : Colors.black87,
+                                letterSpacing: 0.5,
+                                fontFamily: "Amiri",
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          SizedBox(height: 2.h),
-                          Text(
-                            '${focusedHijri.hYear} هـ',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: isDark ? Colors.white70 : Colors.black54,
-                              fontFamily: "Amiri",
+                            SizedBox(height: 2.h),
+                            Text(
+                              '${focusedHijri.hYear} هـ',
+                              style: TextStyle(
+                                fontSize: isLandscape ? 14.sp : 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isDark ? Colors.white70 : Colors.black54,
+                                fontFamily: "Amiri",
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                      SizedBox(width: 8.w),
                       Row(
                         children: [
                           Container(
@@ -113,10 +124,12 @@ class CalendarHeaderWidget extends StatelessWidget {
                             ),
                             child: IconButton(
                               onPressed: onPreviousMonth,
+                              padding: EdgeInsets.all(isLandscape ? 8.w : 12.w),
+                              constraints: BoxConstraints(),
                               icon: Icon(
                                 Icons.chevron_left,
                                 color: isDark ? Colors.white : Colors.black87,
-                                size: 28.w,
+                                size: isLandscape ? 24.w : 28.w,
                               ),
                             ),
                           ),
@@ -130,10 +143,12 @@ class CalendarHeaderWidget extends StatelessWidget {
                             ),
                             child: IconButton(
                               onPressed: onNextMonth,
+                              padding: EdgeInsets.all(isLandscape ? 8.w : 12.w),
+                              constraints: BoxConstraints(),
                               icon: Icon(
                                 Icons.chevron_right,
                                 color: isDark ? Colors.white : Colors.black87,
-                                size: 28.w,
+                                size: isLandscape ? 24.w : 28.w,
                               ),
                             ),
                           ),
