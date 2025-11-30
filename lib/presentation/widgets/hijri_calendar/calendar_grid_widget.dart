@@ -28,11 +28,15 @@ class CalendarGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final horizontalMargin = isLandscape ? 8.w : 16.w;
+
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      margin: EdgeInsets.symmetric(horizontal: horizontalMargin),
       decoration: BoxDecoration(
         color: isDark ? context.darkTabBackground : Colors.white,
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: isDark
               ? Colors.white.withValues(alpha: 0.08)
@@ -56,7 +60,7 @@ class CalendarGridWidget extends StatelessWidget {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: BorderRadius.circular(16.r),
         child: Column(
           children: [
             _buildCalendarHeader(context),
@@ -68,8 +72,14 @@ class CalendarGridWidget extends StatelessWidget {
   }
 
   Widget _buildCalendarHeader(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final horizontalPadding = isLandscape ? 12.w : 20.w;
+    final verticalPadding = isLandscape ? 12.h : 16.h;
+
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+      padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding, vertical: verticalPadding),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -96,31 +106,36 @@ class CalendarGridWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${_getHijriMonthName(focusedHijri.hMonth)} ${focusedHijri.hYear} هـ',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  color: isDark ? Colors.white : Colors.black87,
-                  letterSpacing: 0.3,
-                  fontFamily: "Amiri",
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${_getHijriMonthName(focusedHijri.hMonth)} ${focusedHijri.hYear} هـ',
+                  style: TextStyle(
+                    fontSize: isLandscape ? 16.sp : 18.sp,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? Colors.white : Colors.black87,
+                    letterSpacing: 0.3,
+                    fontFamily: "Amiri",
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              SizedBox(height: 4.h),
-              Text(
-                '${_getGregorianMonthName(_getGregorianDateFromHijri(focusedHijri).month)} ${_getGregorianDateFromHijri(focusedHijri).year} م',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w500,
-                  color: isDark ? Colors.white60 : Colors.grey.shade600,
-                  fontFamily: "Amiri",
+                SizedBox(height: 4.h),
+                Text(
+                  '${_getGregorianMonthName(_getGregorianDateFromHijri(focusedHijri).month)} ${_getGregorianDateFromHijri(focusedHijri).year} م',
+                  style: TextStyle(
+                    fontSize: isLandscape ? 11.sp : 13.sp,
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white60 : Colors.grey.shade600,
+                    fontFamily: "Amiri",
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          SizedBox(width: 8.w),
           Container(
             padding: EdgeInsets.all(6.w),
             decoration: BoxDecoration(
@@ -132,7 +147,7 @@ class CalendarGridWidget extends StatelessWidget {
             child: Icon(
               Icons.calendar_month_rounded,
               color: isDark ? Colors.white70 : context.primaryColor,
-              size: 20.w,
+              size: isLandscape ? 18.w : 20.w,
             ),
           ),
         ],
@@ -266,8 +281,12 @@ class CalendarGridWidget extends StatelessWidget {
       weeks.add(Row(children: days.map((d) => Expanded(child: d)).toList()));
     }
 
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final gridPadding = isLandscape ? 6.w : 8.w;
+
     return Padding(
-      padding: EdgeInsets.all(8.w),
+      padding: EdgeInsets.all(gridPadding),
       child: Column(children: weeks),
     );
   }
