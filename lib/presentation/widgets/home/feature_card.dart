@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 
 class FeatureCard extends StatelessWidget {
   final String title;
@@ -24,6 +25,13 @@ class FeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconSize =
+        context.responsive(mobile: 32.sp, tablet: 50.sp, desktop: 64.sp);
+    final paddingSize =
+        context.responsive(mobile: 12.w, tablet: 20.w, desktop: 24.w);
+    final fontSize =
+        context.responsive(mobile: 12.sp, tablet: 16.sp, desktop: 20.sp);
+
     return TweenAnimationBuilder<double>(
       duration: Duration(milliseconds: 800 + (index * 100)),
       tween: Tween(begin: 0.0, end: 1.0),
@@ -76,10 +84,10 @@ class FeatureCard extends StatelessWidget {
                         Flexible(
                           flex: 0,
                           child: Container(
-                            padding: EdgeInsets.all(12.w),
+                            padding: EdgeInsets.all(paddingSize),
                             decoration: BoxDecoration(
-                              color: context.primaryColor
-                                  .withValues(alpha: 0.08),
+                              color:
+                                  context.primaryColor.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(12.r),
                               border: Border.all(
                                 color: context.primaryColor
@@ -88,8 +96,8 @@ class FeatureCard extends StatelessWidget {
                             ),
                             child: SvgPicture.asset(
                               svgAsset!,
-                              width: 32.sp,
-                              height: 32.sp,
+                              width: iconSize,
+                              height: iconSize,
                               colorFilter: ColorFilter.mode(
                                 isDarkMode
                                     ? context.primaryLightColor
@@ -103,10 +111,10 @@ class FeatureCard extends StatelessWidget {
                         Flexible(
                           flex: 0,
                           child: Container(
-                            padding: EdgeInsets.all(12.w),
+                            padding: EdgeInsets.all(paddingSize),
                             decoration: BoxDecoration(
-                              color: context.primaryColor
-                                  .withValues(alpha: 0.08),
+                              color:
+                                  context.primaryColor.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(12.r),
                               border: Border.all(
                                 color: context.primaryColor
@@ -115,7 +123,7 @@ class FeatureCard extends StatelessWidget {
                             ),
                             child: Icon(
                               icon,
-                              size: 32.sp,
+                              size: iconSize,
                               color: isDarkMode
                                   ? context.primaryLightColor
                                   : context.primaryColor,
@@ -129,10 +137,10 @@ class FeatureCard extends StatelessWidget {
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           minFontSize: 8,
-                          maxFontSize: 14,
+                          maxFontSize: 24,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 12.sp,
+                            fontSize: fontSize,
                             fontWeight: FontWeight.w600,
                             color: isDarkMode
                                 ? Colors.white
