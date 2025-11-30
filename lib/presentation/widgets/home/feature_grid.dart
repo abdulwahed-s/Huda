@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'feature_card.dart';
 
 class FeatureGrid extends StatelessWidget {
@@ -22,7 +23,7 @@ class FeatureGrid extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
+        crossAxisCount: context.responsive(mobile: 3, tablet: 4, desktop: 6),
         crossAxisSpacing: 16.w,
         mainAxisSpacing: 16.h,
         childAspectRatio: adjustedAspectRatio,
