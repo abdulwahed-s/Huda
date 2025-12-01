@@ -10,7 +10,8 @@ class ModeButton extends StatefulWidget {
   final Color primaryColor;
   final VoidCallback? onTap;
 
-  const ModeButton({super.key, 
+  const ModeButton({
+    super.key,
     this.icon,
     this.svgPath,
     required this.label,
