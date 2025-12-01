@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
 import 'package:wave_blob/wave_blob.dart';
 
 class AddButton extends StatefulWidget {
-  final void Function()? onPressed;
-  const AddButton({super.key, required this.onPressed});
+  const AddButton({super.key});
 
   @override
   State<AddButton> createState() => _AddButtonState();
@@ -69,7 +70,9 @@ class _AddButtonState extends State<AddButton>
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: widget.onPressed,
+            onTap: () {
+              context.read<TasbihCubit>().increment();
+            },
             borderRadius: BorderRadius.circular(12.r),
             child: Container(
               decoration: BoxDecoration(
