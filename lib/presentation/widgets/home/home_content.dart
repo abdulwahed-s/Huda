@@ -6,6 +6,7 @@ import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
 import 'package:huda/presentation/widgets/home/feature_grid.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 
 class HomeContent extends StatelessWidget {
   final AnimationController animationController;
@@ -146,6 +147,13 @@ class HomeContent extends StatelessWidget {
                               .noRecentActivityDescription,
                         );
                       },
+                    ),
+                    SizedBox(
+                      height: context.responsive(
+                        mobile: 16.h,
+                        tablet: 20.h,
+                        desktop: 24.h,
+                      ),
                     ),
                     FeatureGrid(
                       isDarkMode: isDarkMode,
