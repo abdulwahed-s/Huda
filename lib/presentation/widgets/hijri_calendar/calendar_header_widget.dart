@@ -125,7 +125,7 @@ class CalendarHeaderWidget extends StatelessWidget {
                             child: IconButton(
                               onPressed: onPreviousMonth,
                               padding: EdgeInsets.all(isLandscape ? 8.w : 12.w),
-                              constraints: BoxConstraints(),
+                              constraints: const BoxConstraints(),
                               icon: Icon(
                                 Icons.chevron_left,
                                 color: isDark ? Colors.white : Colors.black87,
@@ -144,7 +144,7 @@ class CalendarHeaderWidget extends StatelessWidget {
                             child: IconButton(
                               onPressed: onNextMonth,
                               padding: EdgeInsets.all(isLandscape ? 8.w : 12.w),
-                              constraints: BoxConstraints(),
+                              constraints: const BoxConstraints(),
                               icon: Icon(
                                 Icons.chevron_right,
                                 color: isDark ? Colors.white : Colors.black87,
