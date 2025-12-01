@@ -59,7 +59,16 @@ class Tasbih extends StatelessWidget {
                                   SizedBox(height: 20.h),
                                   Expanded(
                                     child: Center(
-                                      child: _buildAddButton(context),
+                                      child: SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          child: const AddButton()),
                                     ),
                                   ),
                                 ],
@@ -76,10 +85,10 @@ class Tasbih extends StatelessWidget {
                             SizedBox(height: 20.h),
                             _buildControls(context, state),
                             SizedBox(height: 20.h),
-                            Expanded(
+                            const Expanded(
                               flex: 2,
                               child: Center(
-                                child: _buildAddButton(context),
+                                child: AddButton(),
                               ),
                             ),
                             SizedBox(height: 20.h),
@@ -217,11 +226,5 @@ class Tasbih extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _buildAddButton(BuildContext context) {
-    return AddButton(onPressed: () {
-      context.read<TasbihCubit>().increment();
-    });
   }
 }
