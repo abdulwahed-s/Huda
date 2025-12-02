@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:huda/core/class/dio_errors.dart';
 import 'package:huda/core/constants/end_points.dart';
 import 'package:dio/dio.dart';
@@ -18,18 +19,42 @@ class ChapterServices {
 
   Future<Map<String, dynamic>> getChaptersByBook(String bookName) async {
     try {
-      final Response response = await dio.get(
-        EndPoints.bookChapter(bookName),
-        queryParameters: {
-          'limit': 100,
-        },
-      );
+      if (kIsWeb) {
+        final fullUrl =
+            '${EndPoints.hadithBaseUrl}${EndPoints.bookChapter(bookName)}?limit=100';
+        final proxyUrl =
+            'https://corsproxy.io/?${Uri.encodeComponent(fullUrl)}';
 
-      if (response.statusCode != 200) {
-        throw DioException(requestOptions: RequestOptions());
+        final Response response = await dio.get(
+          proxyUrl,
+          options: Options(
+            headers: {
+              "X-API-Key": apiKey,
+              "Origin": "http://localhost:8080",
+            },
+            extra: {'baseUrl': ''},
+          ),
+        );
+
+        if (response.statusCode != 200) {
+          throw DioException(requestOptions: RequestOptions());
+        }
+
+        return response.data;
+      } else {
+        final Response response = await dio.get(
+          EndPoints.bookChapter(bookName),
+          queryParameters: {
+            'limit': 100,
+          },
+        );
+
+        if (response.statusCode != 200) {
+          throw DioException(requestOptions: RequestOptions());
+        }
+
+        return response.data;
       }
-
-      return response.data;
     } on DioException catch (e) {
       throw Exception(getDioErrorMessage(e));
     }
