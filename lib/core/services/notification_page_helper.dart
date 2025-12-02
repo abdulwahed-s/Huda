@@ -6,6 +6,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'dart:math';
 
 class NotificationPageHelper {
@@ -313,7 +314,9 @@ class NotificationPageHelper {
     await _cancelAllRandomAthkar();
 
     if (!enable) {
-      await Workmanager().cancelByTag('athkar-renewal');
+      if (PlatformUtils.isMobile) {
+        await Workmanager().cancelByTag('athkar-renewal');
+      }
 
       await _clearSchedulingProgress();
       debugPrint(
@@ -361,7 +364,9 @@ class NotificationPageHelper {
 
   Future<void> _scheduleAthkarRenewal(int frequencyMinutes) async {
     try {
-      await Workmanager().cancelByTag('athkar-renewal');
+      if (PlatformUtils.isMobile) {
+        await Workmanager().cancelByTag('athkar-renewal');
+      }
 
       final totalCoverageDays =
           (_maxRandomAthkarNotifications * frequencyMinutes / (24 * 60))
@@ -371,16 +376,18 @@ class NotificationPageHelper {
       debugPrint(
           '📊 Actual coverage: $totalCoverageDays days, renewal in: $renewalDays days');
 
-      await Workmanager().registerOneOffTask(
-        'athkar-renewal-${DateTime.now().millisecondsSinceEpoch}',
-        _renewalTaskName,
-        initialDelay: Duration(days: renewalDays),
-        tag: 'athkar-renewal',
-        constraints: Constraints(
-          requiresBatteryNotLow: true,
-          networkType: NetworkType.notRequired,
-        ),
-      );
+      if (PlatformUtils.isMobile) {
+        await Workmanager().registerOneOffTask(
+          'athkar-renewal-${DateTime.now().millisecondsSinceEpoch}',
+          _renewalTaskName,
+          initialDelay: Duration(days: renewalDays),
+          tag: 'athkar-renewal',
+          constraints: Constraints(
+            requiresBatteryNotLow: true,
+            networkType: NetworkType.notRequired,
+          ),
+        );
+      }
 
       debugPrint(
           '🔄 Athkar renewal scheduled for $renewalDays days from now (before notifications run out)');
