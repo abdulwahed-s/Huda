@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
@@ -114,7 +115,18 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
         if (downloadedPath != null) {
           await audioPlayer.play(DeviceFileSource(downloadedPath));
         } else {
-          await audioPlayer.play(UrlSource(targetAyah!.audio!));
+          if (kIsWeb) {
+            final proxyUrl =
+                'https://api.allorigins.win/raw?url=${targetAyah!.audio!}';
+            await audioPlayer.play(
+              UrlSource(
+                proxyUrl,
+                mimeType: 'audio/mpeg',
+              ),
+            );
+          } else {
+            await audioPlayer.play(UrlSource(targetAyah!.audio!));
+          }
         }
 
         if (mounted) {
