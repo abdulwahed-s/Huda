@@ -114,7 +114,10 @@ class EmptyStateWidget extends StatelessWidget {
               const SizedBox(width: 32.0),
               Expanded(
                 flex: 3,
-                child: _buildHorizontalInfoCards(context, isTablet),
+                child: Container(
+                  margin: EdgeInsets.only(top: 70.w),
+                  child: _buildHorizontalInfoCards(context, isTablet),
+                ),
               ),
             ],
           ),
@@ -244,7 +247,7 @@ class EmptyStateWidget extends StatelessWidget {
 
     final titleSize = isTablet ? 18.0 : 15.sp;
     final spacing = isTablet ? 12.0 : 8.h;
-    final chipHeight = isTablet ? 140.0 : 120.h;
+    final chipHeight = isTablet ? 180.0 : 120.h;
     final chipWidth = isTablet ? 200.0 : 150.w;
     final chipSpacing = isTablet ? 12.0 : 8.w;
 
