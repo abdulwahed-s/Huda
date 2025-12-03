@@ -5,7 +5,7 @@ import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:io';
+import 'package:huda/core/utils/platform_utils.dart';
 
 part 'notifications_state.dart';
 
@@ -84,7 +84,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<bool> getIsBatteryOptimizationExempted() async {
-    if (!Platform.isAndroid) return true;
+    if (!PlatformUtils.isAndroid) return true;
 
     try {
       final status = await Permission.ignoreBatteryOptimizations.status;
@@ -319,7 +319,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<bool> requestBatteryOptimizationExemption() async {
-    if (!Platform.isAndroid) return true;
+    if (!PlatformUtils.isAndroid) return true;
 
     try {
       final status = await Permission.ignoreBatteryOptimizations.status;
