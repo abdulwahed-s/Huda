@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -85,6 +87,8 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
   }
 
   void _scheduleEventNotification(DateTime date, HijriEvent event) {
+    if (kIsWeb) return;
+
     final notifId = event.id.hashCode.abs();
 
     final dateTime = event.isAllDay
