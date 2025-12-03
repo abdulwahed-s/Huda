@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/theme/theme_extension.dart';
@@ -23,12 +24,12 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: isDark ? context.darkCardBackground : Colors.white,
       shadowColor: isDark ? Colors.black26 : Colors.grey.withValues(alpha: 0.1),
       surfaceTintColor: Colors.transparent,
-      toolbarHeight: 55.h,
+      toolbarHeight: kIsWeb ? 65.h : 55.h,
       title: Row(
         children: [
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            padding: EdgeInsets.all(10.w),
+            padding: kIsWeb ? const EdgeInsets.all(12) : EdgeInsets.all(10.w),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -54,7 +55,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Icon(
               Icons.auto_awesome,
               color: context.primaryColor,
-              size: 26.sp,
+              size: kIsWeb ? 32 : 26.sp,
             ),
           ),
           SizedBox(width: 16.w),
@@ -113,5 +114,5 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(55.h);
+  Size get preferredSize => Size.fromHeight(kIsWeb ? 65.h : 55.h);
 }
