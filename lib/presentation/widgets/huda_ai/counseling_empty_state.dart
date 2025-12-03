@@ -109,7 +109,10 @@ class CounselingEmptyState extends StatelessWidget {
               const SizedBox(width: 32.0),
               Expanded(
                 flex: 3,
-                child: _buildHorizontalInfoCards(context, isTablet),
+                child: Container(
+                  margin: EdgeInsets.only(top: 80.w),
+                  child: _buildHorizontalInfoCards(context, isTablet),
+                ),
               ),
             ],
           ),
