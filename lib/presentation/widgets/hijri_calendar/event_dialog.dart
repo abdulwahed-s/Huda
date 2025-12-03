@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/services/color_to_int.dart';
@@ -44,7 +45,7 @@ class _EventDialogState extends State<EventDialog> {
     _selectedColor = widget.oldEvent != null
         ? Color(widget.oldEvent!.colorValue)
         : Colors.blue;
-    _notify = widget.oldEvent?.notify ?? true;
+    _notify = kIsWeb ? false : (widget.oldEvent?.notify ?? true);
   }
 
   @override
@@ -253,21 +254,22 @@ class _EventDialogState extends State<EventDialog> {
   Widget _buildToggles(StateSetter setState, bool isTablet) {
     return Column(
       children: [
-        SwitchListTile(
-          value: _notify,
-          title: Text(AppLocalizations.of(context)!.receiveNotification,
-              style: TextStyle(
-                fontSize: isTablet ? 14 : 12.sp,
-                fontFamily: "Amiri",
-              )),
-          subtitle: Text(AppLocalizations.of(context)!.getNotifiedAboutEvent,
-              style: TextStyle(
-                fontSize: isTablet ? 12 : 10.sp,
-                fontFamily: "Amiri",
-              )),
-          onChanged: (value) => setState(() => _notify = value),
-          contentPadding: EdgeInsets.zero,
-        ),
+        if (!kIsWeb)
+          SwitchListTile(
+            value: _notify,
+            title: Text(AppLocalizations.of(context)!.receiveNotification,
+                style: TextStyle(
+                  fontSize: isTablet ? 14 : 12.sp,
+                  fontFamily: "Amiri",
+                )),
+            subtitle: Text(AppLocalizations.of(context)!.getNotifiedAboutEvent,
+                style: TextStyle(
+                  fontSize: isTablet ? 12 : 10.sp,
+                  fontFamily: "Amiri",
+                )),
+            onChanged: (value) => setState(() => _notify = value),
+            contentPadding: EdgeInsets.zero,
+          ),
         CheckboxListTile(
           title: Text(AppLocalizations.of(context)!.allDayEvent,
               style: TextStyle(
