@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/presentation/widgets/athkar/athkar_card.dart';
 import 'package:huda/presentation/widgets/athkar/empty_state.dart';
 import 'package:huda/presentation/widgets/athkar/results_count.dart';
@@ -39,6 +40,15 @@ class LoadedStateContent extends StatelessWidget {
           children: [
             // Statistics card
             if (searchQuery.isEmpty) StatsCard(totalCount: athkarList.length),
+
+            if (searchQuery.isEmpty)
+              SizedBox(
+                height: context.responsive(
+                  mobile: 16.h,
+                  tablet: 20.h,
+                  desktop: 24.h,
+                ),
+              ),
 
             // Results count
             if (searchQuery.isNotEmpty)
