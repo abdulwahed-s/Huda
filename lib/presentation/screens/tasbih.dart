@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -207,16 +208,17 @@ class Tasbih extends StatelessWidget {
             onPressed: () => showNoteDialog(context),
             color: context.accentColor,
           ),
-          ControlButton(
-            icon: state.mode ? Icons.vibration : Icons.phone_android,
-            label: state.mode
-                ? AppLocalizations.of(context)!.vibrate
-                : AppLocalizations.of(context)!.silent,
-            onPressed: () {
-              context.read<TasbihCubit>().changeMode(!state.mode);
-            },
-            color: state.mode ? context.primaryColor : Colors.grey,
-          ),
+          if (!kIsWeb)
+            ControlButton(
+              icon: state.mode ? Icons.vibration : Icons.phone_android,
+              label: state.mode
+                  ? AppLocalizations.of(context)!.vibrate
+                  : AppLocalizations.of(context)!.silent,
+              onPressed: () {
+                context.read<TasbihCubit>().changeMode(!state.mode);
+              },
+              color: state.mode ? context.primaryColor : Colors.grey,
+            ),
           ControlButton(
             icon: Icons.refresh_rounded,
             label: AppLocalizations.of(context)!.reset,
