@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
 import 'package:huda/presentation/widgets/home/feature_grid.dart';
@@ -71,16 +73,18 @@ class HomeContent extends StatelessWidget {
         icon: Icons.checklist,
         onTap: () => Navigator.pushNamed(context, AppRoute.islamicChecklist),
       ),
-      FeatureItem(
-        title: AppLocalizations.of(context)!.qiblahDirection,
-        svgAsset: 'assets/images/qiblahicon.svg',
-        onTap: () => Navigator.pushNamed(context, AppRoute.qiblah),
-      ),
-      FeatureItem(
-        title: AppLocalizations.of(context)!.notifications,
-        icon: Icons.notifications,
-        onTap: () => Navigator.pushNamed(context, AppRoute.notification),
-      ),
+      if (!kIsWeb)
+        FeatureItem(
+          title: AppLocalizations.of(context)!.qiblahDirection,
+          svgAsset: 'assets/images/qiblahicon.svg',
+          onTap: () => Navigator.pushNamed(context, AppRoute.qiblah),
+        ),
+      if (!kIsWeb)
+        FeatureItem(
+          title: AppLocalizations.of(context)!.notifications,
+          icon: Icons.notifications,
+          onTap: () => Navigator.pushNamed(context, AppRoute.notification),
+        ),
       FeatureItem(
         title: AppLocalizations.of(context)!.zakatCalculator,
         svgAsset: 'assets/images/zakat.svg',
@@ -101,11 +105,12 @@ class HomeContent extends StatelessWidget {
         icon: Icons.settings,
         onTap: () => Navigator.pushNamed(context, AppRoute.settings),
       ),
-      FeatureItem(
-        title: AppLocalizations.of(context)!.widgetManagement,
-        icon: Icons.widgets,
-        onTap: () => Navigator.pushNamed(context, AppRoute.widgetManagement),
-      ),
+      if (PlatformUtils.isMobile)
+        FeatureItem(
+          title: AppLocalizations.of(context)!.widgetManagement,
+          icon: Icons.widgets,
+          onTap: () => Navigator.pushNamed(context, AppRoute.widgetManagement),
+        ),
     ];
   }
 
