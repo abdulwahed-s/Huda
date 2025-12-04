@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/presentation/widgets/prayer_times/persistent_prayer_countdown_control_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/next_prayer_countdown_card_widget.dart';
@@ -37,7 +38,8 @@ class _PrayerTimesState extends State<PrayerTimes> {
 
   Future<void> _requestNotificationPermission() async {
     // Request exact alarm permission (Android 12+)
-    if (await Permission.scheduleExactAlarm.isDenied) {
+    if (PlatformUtils.isAndroid &&
+        await Permission.scheduleExactAlarm.isDenied) {
       await Permission.scheduleExactAlarm.request();
     }
 
@@ -138,7 +140,8 @@ class _PrayerTimesState extends State<PrayerTimes> {
             const RefreshLocationButtonWidget(),
 
 // Persistent Prayer Countdown Control Widget
-            const PersistentPrayerCountdownControlWidget(),
+            if (PlatformUtils.isMobile)
+              const PersistentPrayerCountdownControlWidget(),
           ],
         ),
       ),
