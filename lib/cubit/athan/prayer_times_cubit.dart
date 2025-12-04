@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/get_current_location.dart';
@@ -9,6 +10,7 @@ import 'package:huda/data/models/countdown_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/data/services/location_service.dart';
 
 part 'prayer_times_state.dart';
 
@@ -30,6 +32,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   final CacheHelper cacheHelper;
   static const _latKey = 'latitude';
   static const _lonKey = 'longitude';
+  final LocationService _locationService = LocationService();
 
   BuildContext? _context;
 
@@ -103,6 +106,12 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   Future<void> scheduleNotificationsForMultipleDays(
       NotificationServices notificationServices, int daysAhead) async {
+    // Skip notification scheduling on web platform
+    if (kIsWeb) {
+      debugPrint('⏭️ Skipping notification scheduling on web platform');
+      return;
+    }
+
     if (state is! PrayerTimesLoaded) return;
 
     final latString = cacheHelper.getDataString(key: _latKey);
@@ -230,7 +239,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       }
 
       final List<Placemark> placemarks =
-          await placemarkFromCoordinates(lat, lon);
+          await _locationService.getPlacemarks(lat, lon);
 
       final coordinates = Coordinates(lat, lon);
       final params = CalculationMethod.karachi.getParameters();
@@ -258,7 +267,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await cacheHelper.saveData(key: _lonKey, value: lon.toString());
 
       final List<Placemark> placemarks =
-          await placemarkFromCoordinates(lat, lon);
+          await _locationService.getPlacemarks(lat, lon);
 
       final coordinates = Coordinates(lat, lon);
       final params = CalculationMethod.karachi.getParameters();
