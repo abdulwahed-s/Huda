@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:huda/core/services/get_fonts.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/services/widget_service.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/models/surah_model.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/surah_audio_model.dart' as audio;
@@ -458,12 +459,13 @@ class _AyahBottomSheetModalTabbedState
                           index: 4,
                           isSelected: _selectedTabIndex == 4,
                         ),
-                        _buildTabButton(
-                          icon: Icons.widgets_rounded,
-                          label: AppLocalizations.of(context)!.widget,
-                          index: 5,
-                          isSelected: _selectedTabIndex == 5,
-                        ),
+                        if (PlatformUtils.isMobile)
+                          _buildTabButton(
+                            icon: Icons.widgets_rounded,
+                            label: AppLocalizations.of(context)!.widget,
+                            index: 5,
+                            isSelected: _selectedTabIndex == 5,
+                          ),
                         _buildTabButton(
                           icon: Icons.psychology_rounded,
                           label: AppLocalizations.of(context)!.memorizationMode,
