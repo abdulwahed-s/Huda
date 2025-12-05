@@ -82,12 +82,12 @@ dependencies:
   shimmer: ^3.0.0
   url_launcher: ^6.3.2
   flutter_markdown: ^0.7.7+1
-  firebase_core: ^4.0.0
+  firebase_core: ^4.2.1
   device_info_plus: ^11.5.0
   cloud_firestore: ^6.0.0
   restart_app: ^1.3.2
   feedback: ^3.2.0
-  firebase_storage: ^13.0.0
+  firebase_storage: ^13.0.4
   path: ^1.9.1
   flutter_launcher_icons: ^0.14.4
   rate_my_app: ^2.3.2
