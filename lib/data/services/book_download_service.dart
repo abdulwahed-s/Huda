@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:huda/data/models/offline_book_model.dart';
 import 'package:huda/data/models/books_detail_model.dart';
 import 'package:huda/data/services/offline_books_service.dart';
@@ -11,12 +12,17 @@ class BookDownloadService {
 
   Function(DownloadProgress)? onProgressUpdate;
 
+  static bool get isSupported => !kIsWeb;
+
   BookDownloadService() {
     _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(minutes: 10);
   }
 
   Future<void> downloadBook(BookDetailModel bookDetail, String language) async {
+    if (kIsWeb) {
+      throw UnsupportedError('Book downloads not supported on web');
+    }
     try {
       final offlineBook = await _createOfflineBookModel(bookDetail, language);
 
@@ -66,6 +72,7 @@ class BookDownloadService {
         _offlineBooksService.removeDownloadProgress(offlineBook.id);
       });
     } catch (e) {
+      print(e);
       await _updateProgress(
           bookDetail.id!, 'Download failed', 0.0, 0, 1, DownloadStatus.failed,
           error: e.toString());
@@ -202,7 +209,7 @@ class BookDownloadService {
 
       await _cleanupPartialDownload(bookId);
     } catch (e) {
-      // 
+      //
     }
   }
 
@@ -210,7 +217,7 @@ class BookDownloadService {
     try {
       await _offlineBooksService.deleteBook(bookId);
     } catch (e) {
-      // 
+      //
     }
   }
 
