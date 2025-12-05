@@ -117,7 +117,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
         } else {
           if (kIsWeb) {
             final proxyUrl =
-                'https://api.allorigins.win/raw?url=${targetAyah!.audio!}';
+                'https://corsproxy.io/?${Uri.encodeComponent(targetAyah!.audio!)}';
             await audioPlayer.play(
               UrlSource(
                 proxyUrl,
