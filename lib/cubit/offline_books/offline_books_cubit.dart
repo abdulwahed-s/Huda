@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:huda/data/models/offline_book_model.dart';
 import 'package:huda/data/services/offline_books_service.dart';
 
@@ -11,6 +12,11 @@ class OfflineBooksCubit extends Cubit<OfflineBooksState> {
   final OfflineBooksService _offlineBooksService = OfflineBooksService();
 
   Future<void> fetchOfflineBooks() async {
+    // Offline books not supported on web
+    if (kIsWeb) {
+      emit(OfflineBooksEmpty());
+      return;
+    }
     try {
       emit(OfflineBooksLoading());
       final books = await _offlineBooksService.getAllBooks();
