@@ -40,19 +40,27 @@ class PdfAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           leading: IconButton(
-            icon: AnimatedRotation(
-              turns: showLeftPane.value ? 0.5 : 0,
-              duration: const Duration(milliseconds: 300),
-              child: Icon(
-                showLeftPane.value ? Icons.menu_open : Icons.menu,
-                color: colorScheme.primary,
-              ),
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: colorScheme.onSurface,
+              size: 22.sp,
             ),
-            onPressed: () {
-              showLeftPane.value = !showLeftPane.value;
-            },
           ),
           actions: [
+            IconButton(
+              icon: AnimatedRotation(
+                turns: showLeftPane.value ? 0.5 : 0,
+                duration: const Duration(milliseconds: 300),
+                child: Icon(
+                  showLeftPane.value ? Icons.menu_open : Icons.menu,
+                  color: colorScheme.primary,
+                ),
+              ),
+              onPressed: () {
+                showLeftPane.value = !showLeftPane.value;
+              },
+            ),
             Container(
               margin: const EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
