@@ -52,7 +52,6 @@ class CalendarNotificationService {
           color: color,
           icon: 'ic_calendar_notification',
         ),
-        windows: WindowsNotificationDetails(),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.dateAndTime,
