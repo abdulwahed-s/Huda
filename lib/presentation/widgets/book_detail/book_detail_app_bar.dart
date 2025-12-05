@@ -20,13 +20,21 @@ class BookDetailAppBar extends StatelessWidget {
       floating: false,
       pinned: true,
       elevation: 0,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: true,
+      leading: IconButton(
+        onPressed: () => Navigator.pop(context),
+        icon: Icon(
+          Icons.arrow_back_ios_new,
+          color: isDark ? Colors.white : const Color(0xFF2C2C2C),
+          size: 22.sp,
+        ),
+      ),
       backgroundColor: isDark
           ? const Color(0xFF1A1A1A)
           : Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsets.only(left: 16.w, bottom: 16.h, right: 70.w),
+        titlePadding: EdgeInsets.only(left: 56.w, bottom: 16.h, right: 70.w),
         title: Text(
           title,
           style: TextStyle(
