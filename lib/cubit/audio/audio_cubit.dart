@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/connection/network_info.dart';
 import 'package:huda/core/services/service_locator.dart';
@@ -506,6 +507,9 @@ class AudioCubit extends Cubit<AudioState> {
     required String surahNumber,
     required String readerId,
   }) async {
+    // Downloads not supported on web
+    if (kIsWeb) return false;
+
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
       final audioDir = Directory(
