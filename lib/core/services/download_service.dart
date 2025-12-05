@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path_provider/path_provider.dart';
 import 'package:huda/core/services/service_locator.dart';
 
 class DownloadService {
   final Dio _dio = getIt<Dio>();
+
+  static bool get isSupported => !kIsWeb;
 
   Future<String?> downloadAudioFile({
     required String url,
@@ -13,6 +16,8 @@ class DownloadService {
     required String ayahNumber,
     Function(double)? onProgress,
   }) async {
+    if (kIsWeb) return null;
+
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
       final audioDir =
@@ -51,6 +56,8 @@ class DownloadService {
     required String ayahNumber,
     required String fileName,
   }) async {
+    if (kIsWeb) return false;
+
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
       final filePath =
@@ -67,6 +74,8 @@ class DownloadService {
     required String ayahNumber,
     required String fileName,
   }) async {
+    if (kIsWeb) return null;
+
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
       final filePath =
@@ -87,6 +96,8 @@ class DownloadService {
     required String ayahNumber,
     required String fileName,
   }) async {
+    if (kIsWeb) return false;
+
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
       final filePath =
@@ -104,6 +115,8 @@ class DownloadService {
   }
 
   Future<int> getSurahDownloadSize(String surahNumber) async {
+    if (kIsWeb) return 0;
+
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
       final audioDir =
