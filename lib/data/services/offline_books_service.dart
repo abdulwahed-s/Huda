@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/data/models/offline_book_model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,7 +9,12 @@ class OfflineBooksService {
   static const String _booksKey = 'offline_books';
   static const String _downloadProgressKey = 'download_progress';
 
+  static bool get isSupported => !kIsWeb;
+
   Future<Directory> _getBooksDirectory() async {
+    if (kIsWeb) {
+      throw UnsupportedError('Offline books not supported on web');
+    }
     final appDocDir = await getApplicationDocumentsDirectory();
     final booksDir = Directory('${appDocDir.path}/huda_books');
     if (!await booksDir.exists()) {
