@@ -21,7 +21,12 @@ class CalendarNotificationService {
     final locationName = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(locationName));
     const android = AndroidInitializationSettings('ic_calendar_notification');
-    const settings = InitializationSettings(android: android);
+    const windows = WindowsInitializationSettings(
+      appName: 'Huda',
+      appUserModelId: 'com.huda.app',
+      guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
+    );
+    const settings = InitializationSettings(android: android, windows: windows);
 
     await _plugin.initialize(settings);
   }
@@ -47,9 +52,19 @@ class CalendarNotificationService {
           color: color,
           icon: 'ic_calendar_notification',
         ),
+        windows: WindowsNotificationDetails(),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.dateAndTime,
+    );
+  }
+
+  Future<void> sendImmediateNotification() async {
+    await _plugin.show(
+      0,
+      "Immediate Notification",
+      "This shows immediately on Windows",
+      const NotificationDetails(windows: WindowsNotificationDetails()),
     );
   }
 

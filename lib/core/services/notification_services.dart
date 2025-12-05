@@ -38,10 +38,18 @@ class NotificationServices {
       requestSoundPermission: false,
     );
 
+    const WindowsInitializationSettings initializationSettingsWindows =
+        WindowsInitializationSettings(
+      appName: 'Huda',
+      appUserModelId: 'com.huda.app',
+      guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
+    );
+
     const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
+      windows: initializationSettingsWindows,
     );
 
     await notificationPlugin.initialize(

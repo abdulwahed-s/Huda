@@ -51,7 +51,13 @@ class NotificationPageHelper {
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
-    const settings = InitializationSettings(android: android, iOS: ios);
+    const windows = WindowsInitializationSettings(
+      appName: 'Huda',
+      appUserModelId: 'com.huda.app',
+      guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
+    );
+    const settings =
+        InitializationSettings(android: android, iOS: ios, windows: windows);
 
     final initialized = await _plugin.initialize(settings);
     debugPrint('🔧 Plugin initialized: $initialized');
