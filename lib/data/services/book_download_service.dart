@@ -72,7 +72,6 @@ class BookDownloadService {
         _offlineBooksService.removeDownloadProgress(offlineBook.id);
       });
     } catch (e) {
-      print(e);
       await _updateProgress(
           bookDetail.id!, 'Download failed', 0.0, 0, 1, DownloadStatus.failed,
           error: e.toString());
