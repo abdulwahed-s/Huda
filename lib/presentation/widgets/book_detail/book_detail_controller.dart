@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/routes/app_route.dart';
@@ -44,7 +45,7 @@ class BookDetailController {
   }
 
   void dispose() {
-    // Clean up any resources if needed
+    
   }
 
   void fetchInitialData() {
@@ -90,11 +91,16 @@ class BookDetailController {
   }
 
   Future<void> checkIfBookDownloaded() async {
+    
+    if (kIsWeb) {
+      isBookDownloaded = false;
+      return;
+    }
     try {
       isBookDownloaded = await _offlineBooksService.isBookDownloaded(bookId);
       refreshUI();
     } catch (e) {
-      // Handle error silently
+      // 
     }
   }
 
@@ -230,6 +236,16 @@ class BookDetailController {
   }
 
   Future<void> downloadBook(BookDetailLoaded state) async {
+    
+    if (kIsWeb) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Downloads are not available on web'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
     try {
       isDownloading = true;
       downloadProgress = 0.0;
@@ -339,6 +355,23 @@ class BookDetailController {
   }
 
   Future<void> sharePdfFromUrl(String url) async {
+    
+    if (kIsWeb) {
+      try {
+        await launchUrl(Uri.parse(url));
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to open PDF: ${e.toString()}'),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+      return;
+    }
     try {
       showDialog(
         context: context,
@@ -379,7 +412,7 @@ class BookDetailController {
         try {
           File(filePath).deleteSync();
         } catch (e) {
-          // Ignore cleanup errors
+          debugPrint('Error deleting PDF file: $e');
         }
       });
     } catch (e) {
