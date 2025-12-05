@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -1023,7 +1024,7 @@ class _AyahBottomSheetModalTabbedState
         ),
 
         // Audio download controls
-        if (widget.selectedReaderId != null)
+        if (widget.selectedReaderId != null && !kIsWeb)
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(20.r),
