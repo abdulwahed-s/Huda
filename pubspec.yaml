@@ -111,6 +111,16 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  msix: ^3.16.12
+
+msix_config:
+  display_name: Huda
+  publisher_display_name: CN=me
+  identity_name: com.aw.huda
+  msix_version: 1.0.0.0
+  logo_path: assets/images/app_icon_transparent.png
+  capabilities: internetClient, location, microphone, notifications
+  languages: en-US, ar-SA, tr-TR, fr-FR, es-ES, de-DE, ru-RU, ur-PK, ms-MY, bn-BD
 
 
 flutter_launcher_icons:
