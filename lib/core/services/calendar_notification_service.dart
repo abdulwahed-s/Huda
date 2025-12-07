@@ -23,7 +23,7 @@ class CalendarNotificationService {
     const android = AndroidInitializationSettings('ic_calendar_notification');
     const windows = WindowsInitializationSettings(
       appName: 'Huda',
-      appUserModelId: 'com.huda.app',
+      appUserModelId: 'com.aw.huda',
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
     const settings = InitializationSettings(android: android, windows: windows);

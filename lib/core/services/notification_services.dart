@@ -41,7 +41,7 @@ class NotificationServices {
     const WindowsInitializationSettings initializationSettingsWindows =
         WindowsInitializationSettings(
       appName: 'Huda',
-      appUserModelId: 'com.huda.app',
+      appUserModelId: 'com.aw.huda',
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
 
