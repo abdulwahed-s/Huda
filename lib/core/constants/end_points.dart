@@ -16,6 +16,6 @@ class EndPoints {
   static String bookDetail(String lang, int bookId) => '$islamhouseBaseUrl/main/get-item/$bookId/$lang/json';
   static String bookLanguages(int sourceId,String respLang) => '$islamhouseBaseUrl/main/get-item-translations/$sourceId/$respLang/json';
   static String allBooksLanguages(String lang) => '$islamhouseBaseUrl/main/get-available-languages/books/$lang/json';
-  static const String nominatimBaseUrl = 'https://nominatim.openstreetmap.org';
-  static String reverseGeocoding(double lat, double lon) => '/reverse?lat=$lat&lon=$lon&format=json';
+  static const String googleMapsBaseUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
+  static String googleMapsReverseGeocoding(double lat, double lon,String apiKey) => '$googleMapsBaseUrl?latlng=$lat,$lon&key=$apiKey';
 }
