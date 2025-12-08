@@ -75,6 +75,8 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   NotificationPageHelper get notificationHelper => _notificationHelper;
 
   Future<bool> getIsNotificationEnabled() async {
+    if (PlatformUtils.isDesktop) return true;
+
     PermissionStatus status = await Permission.notification.status;
     if (status.isGranted) {
       return true;
