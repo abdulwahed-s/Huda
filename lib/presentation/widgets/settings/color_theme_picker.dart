@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:flutter/foundation.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
@@ -53,7 +55,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isTablet = ResponsiveUtils.isTablet(context);
+        final isTablet = ResponsiveUtils.isTablet(context) ||
+            kIsWeb ||
+            PlatformUtils.isDesktop;
 
         final crossAxisCount = isTablet ? 6 : 4;
         final gridSpacing = isTablet ? 16.0 : 12.w;
