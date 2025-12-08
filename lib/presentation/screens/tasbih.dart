@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/tasbih/add_button.dart';
@@ -208,7 +208,7 @@ class Tasbih extends StatelessWidget {
             onPressed: () => showNoteDialog(context),
             color: context.accentColor,
           ),
-          if (!kIsWeb)
+          if (PlatformUtils.isMobile)
             ControlButton(
               icon: state.mode ? Icons.vibration : Icons.phone_android,
               label: state.mode
