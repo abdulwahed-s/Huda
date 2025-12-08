@@ -73,7 +73,7 @@ class HomeContent extends StatelessWidget {
         icon: Icons.checklist,
         onTap: () => Navigator.pushNamed(context, AppRoute.islamicChecklist),
       ),
-      if (!kIsWeb)
+      if (PlatformUtils.isMobile)
         FeatureItem(
           title: AppLocalizations.of(context)!.qiblahDirection,
           svgAsset: 'assets/images/qiblahicon.svg',
