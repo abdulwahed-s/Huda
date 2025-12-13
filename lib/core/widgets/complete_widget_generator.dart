@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/core/widgets/home_widget_renderer.dart';
 import 'package:huda/core/services/widget_service.dart';
 
@@ -127,7 +128,7 @@ class _CompleteWidgetGeneratorState extends State<CompleteWidgetGenerator>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed && PlatformUtils.isMobile) {
       debugPrint('📱 App resumed - checking for widget updates...');
 
       Future.delayed(const Duration(milliseconds: 500), () {
