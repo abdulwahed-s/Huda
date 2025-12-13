@@ -67,15 +67,11 @@ class _ModeButtonState extends State<ModeButton>
     final Color iconColor;
 
     if (widget.isSelected) {
-      // Selected state - always white on colored background
-      textColor = Colors.white;
-      iconColor = Colors.white;
+      textColor = widget.isDark ? const Color(0xFFEEEEEE) : Colors.white;
+      iconColor = widget.isDark ? const Color(0xFFCCCCCC) : Colors.white;
     } else {
-      // Unselected state - dark in light mode, light in dark mode
-      textColor =
-          widget.isDark ? const Color(0xFFB0B0B0) : const Color(0xFF424242);
-      iconColor =
-          widget.isDark ? const Color(0xFF9E9E9E) : const Color(0xFF616161);
+      textColor = widget.isDark ? Colors.white : Colors.black;
+      iconColor = widget.isDark ? Colors.white : Colors.black;
     }
 
     return MouseRegion(
