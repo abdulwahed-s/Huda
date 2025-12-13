@@ -42,7 +42,7 @@ class _ModeSwitcherState extends State<ModeSwitcher>
         curve: Curves.easeOutBack,
       ),
     );
-    if (widget.isCounselingMode) {
+    if (!widget.isCounselingMode) {
       _animationController.value = 1.0;
     }
   }
@@ -52,9 +52,9 @@ class _ModeSwitcherState extends State<ModeSwitcher>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.isCounselingMode != widget.isCounselingMode) {
       if (widget.isCounselingMode) {
-        _animationController.forward();
-      } else {
         _animationController.reverse();
+      } else {
+        _animationController.forward();
       }
     }
   }
