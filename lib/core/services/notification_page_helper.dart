@@ -53,7 +53,7 @@ class NotificationPageHelper {
     );
     const windows = WindowsInitializationSettings(
       appName: 'Huda',
-      appUserModelId: 'com.aw.huda',
+      appUserModelId: 'awr.Huda-IslamicCompanionApp',
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
     const settings =
