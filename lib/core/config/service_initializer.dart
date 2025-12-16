@@ -42,7 +42,8 @@ Future<void> initializeNonCriticalServicesAsync() async {
       // Initialize these services in parallel for maximum speed
       await Future.wait([
         _initializeWidgetServices(),
-        _initializeNotificationServices(),
+        //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
+        if (PlatformUtils.isMobile) _initializeNotificationServices(),
         _initializePrayerServices(),
         _initializeDataServices(),
         _initializeBackgroundServices(),
