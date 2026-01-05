@@ -7,4 +7,6 @@ class PlatformUtils {
       !kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux);
   static bool get isAndroid => !kIsWeb && Platform.isAndroid;
   static bool get isIOS => !kIsWeb && Platform.isIOS;
+  static bool get isMacOS => !kIsWeb && Platform.isMacOS;
+  static bool get isWindow => !kIsWeb && Platform.isWindows;
 }
