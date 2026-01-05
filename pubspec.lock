@@ -515,6 +515,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_macos_permissions:
+    dependency: "direct main"
+    description:
+      name: flutter_macos_permissions
+      sha256: "21b84145b3e9404ea0ec2854c684f95a76a8fe04578c4629d4e474c8eb678255"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   flutter_markdown:
     dependency: "direct main"
     description:

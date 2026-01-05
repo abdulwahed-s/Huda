@@ -100,6 +100,7 @@ dependencies:
   html: ^0.15.6
   speech_to_text: ^7.3.0
   avatar_glow: ^3.0.1
+  flutter_macos_permissions: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -126,34 +127,38 @@ msix_config:
 
 flutter_launcher_icons:
   # image_path: "assets/images/icon-128x128.png"
-  image_path_android: "assets/images/app_launcher_icon.png"
-  image_path_ios: "assets/images/app_launcher_icon.png"
+  image_path_android: "assets/images/huda_colored.png"
+  image_path_ios: "assets/images/huda_colored.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
-  adaptive_icon_background: "#FFFFFF" # or a path like "assets/icon/background.png"
-  adaptive_icon_foreground: "assets/images/app_icon_transparent.png"
+  adaptive_icon_background: "assets/images/back.png" # or a path like "assets/icon/background.png"
+  adaptive_icon_foreground: "assets/images/huda_center.png"
+  adaptive_icon_monochrome: "assets/images/huda_center.png"
+  adaptive_icon_foreground_inset: 20
   web:
     generate: true
-    image_path: "assets/images/app_launcher_icon.png"
-    background_color: "#0c1d2b"
-    theme_color: "#0c1d2b"
+    image_path: "assets/images/huda_center.png"
+    background_color: "#3a5c95"
+    theme_color: "#3a5c95"
   windows:
     generate: true
-    image_path: "assets/images/app_launcher_icon.png"
+    image_path: "assets/images/huda_center.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "assets/images/app_launcher_icon.png"
+    image_path: "assets/images/huda_center.png"
 
 flutter_native_splash:
   color: "#0c1d2b" # Background color
-  image: "assets/images/app_icon_transparent.png"
+  image: "assets/images/huda_splash.png"
   android: true
   ios: true
   web: false
   fullscreen: true
+  android_gravity: center
+  ios_content_mode: center
   android_12:
-    image: "assets/images/app_icon_transparent.png"
+    image: "assets/images/huda_splash.png"
     icon_background_color: "#0c1d2b"
 
 # For information on the generic Dart part of this file, see the
