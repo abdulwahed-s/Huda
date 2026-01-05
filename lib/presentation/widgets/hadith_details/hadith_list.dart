@@ -25,24 +25,28 @@ class HadithList extends StatelessWidget {
   Widget build(BuildContext context) {
     return hadithDetail.data!.isEmpty
         ? EmptyHadithState(isDark: isDark)
-        : Padding(
-            padding: EdgeInsets.all(16.0.w),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: hadithDetail.data!.length,
-                    itemBuilder: (context, index) {
-                      final hadith = hadithDetail.data![index];
-                      return HadithCard(
-                        hadith: hadith,
-                        isDark: isDark,
-                        chapterName: chapterName,
-                      );
-                    },
-                  ),
+        : Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                child: ListView.builder(
+                  padding: EdgeInsets.only(bottom: 120.h),
+                  itemCount: hadithDetail.data!.length,
+                  itemBuilder: (context, index) {
+                    final hadith = hadithDetail.data![index];
+                    return HadithCard(
+                      hadith: hadith,
+                      isDark: isDark,
+                      chapterName: chapterName,
+                    );
+                  },
                 ),
-                PaginationControls(
+              ),
+              Positioned(
+                left: 16.w,
+                right: 16.w,
+                bottom: 16.h,
+                child: PaginationControls(
                   currentPage: hadithDetail.previous == null
                       ? 1
                       : hadithDetail.previous! + 1,
@@ -53,8 +57,8 @@ class HadithList extends StatelessWidget {
                   chapterNumber: chapterNumber,
                   bookName: bookName,
                 ),
-              ],
-            ),
+              ),
+            ],
           );
   }
 }
