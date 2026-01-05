@@ -7,6 +7,7 @@ import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
 import 'dart:math';
 
 class NotificationPageHelper {
@@ -47,17 +48,26 @@ class NotificationPageHelper {
 
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const ios = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
     const windows = WindowsInitializationSettings(
       appName: 'Huda',
       appUserModelId: 'awr.Huda-IslamicCompanionApp',
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
-    const settings =
-        InitializationSettings(android: android, iOS: ios, windows: windows);
+    const macOS = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    const settings = InitializationSettings(
+      android: android,
+      iOS: ios,
+      macOS: macOS,
+      windows: windows,
+    );
 
     final initialized = await _plugin.initialize(settings);
     debugPrint('🔧 Plugin initialized: $initialized');
@@ -100,6 +110,65 @@ class NotificationPageHelper {
           debugPrint('❌ Failed to request notification permission: $e');
         }
       }
+    }
+
+    final macOSPlugin = _plugin.resolvePlatformSpecificImplementation<
+        MacOSFlutterLocalNotificationsPlugin>();
+
+    if (macOSPlugin != null) {
+      try {
+        await macOSPlugin.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+      } catch (e) {
+        debugPrint('Failed to request macOS notification permission: $e');
+      }
+    }
+
+    final iosPlugin = _plugin.resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin>();
+
+    if (iosPlugin != null) {
+      try {
+        await iosPlugin.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+      } catch (e) {
+        debugPrint('Failed to request iOS notification permission: $e');
+      }
+    }
+  }
+
+  Future<bool> checkIOSPermissionStatus() async {
+    final iosPlugin = _plugin.resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin>();
+
+    if (iosPlugin != null) {
+      try {
+        final result = await iosPlugin.checkPermissions();
+        final isGranted = result?.isEnabled ?? false;
+        return isGranted;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+  Future<bool> checkMacOSPermissionStatus() async {
+    if (!PlatformUtils.isMacOS) return false;
+
+    try {
+      final status = await FlutterMacosPermissions.notificationStatus();
+      final isGranted = status == 'authorized';
+      return isGranted;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -189,6 +258,12 @@ class NotificationPageHelper {
           color: Colors.green,
           icon: "ic_notification_islam",
         ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.timeSensitive,
+        ),
       ),
       matchDateTimeComponents: DateTimeComponents.time,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -232,6 +307,12 @@ class NotificationPageHelper {
             playSound: true,
             enableVibration: true,
             icon: 'ic_notification_jummah'),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.timeSensitive,
+        ),
       ),
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -320,7 +401,7 @@ class NotificationPageHelper {
     await _cancelAllRandomAthkar();
 
     if (!enable) {
-      if (PlatformUtils.isMobile) {
+      if (PlatformUtils.isAndroid) {
         await Workmanager().cancelByTag('athkar-renewal');
       }
 
@@ -370,7 +451,7 @@ class NotificationPageHelper {
 
   Future<void> _scheduleAthkarRenewal(int frequencyMinutes) async {
     try {
-      if (PlatformUtils.isMobile) {
+      if (PlatformUtils.isAndroid) {
         await Workmanager().cancelByTag('athkar-renewal');
       }
 
@@ -382,7 +463,7 @@ class NotificationPageHelper {
       debugPrint(
           '📊 Actual coverage: $totalCoverageDays days, renewal in: $renewalDays days');
 
-      if (PlatformUtils.isMobile) {
+      if (PlatformUtils.isAndroid) {
         await Workmanager().registerOneOffTask(
           'athkar-renewal-${DateTime.now().millisecondsSinceEpoch}',
           _renewalTaskName,
@@ -793,6 +874,12 @@ class NotificationPageHelper {
               color: Colors.green,
               icon: 'ic_notification_random',
             ),
+            iOS: DarwinNotificationDetails(
+              presentAlert: true,
+              presentBadge: true,
+              presentSound: true,
+              interruptionLevel: InterruptionLevel.active,
+            ),
           ),
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         );
@@ -877,6 +964,12 @@ class NotificationPageHelper {
                     color: Colors.green,
                     icon: 'ic_notification_random',
                   ),
+                  iOS: DarwinNotificationDetails(
+                    presentAlert: true,
+                    presentBadge: true,
+                    presentSound: true,
+                    interruptionLevel: InterruptionLevel.active,
+                  ),
                 ),
                 androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
               );
@@ -958,6 +1051,10 @@ class NotificationPageHelper {
   }
 
   Future<void> _scheduleRetryAttempt(int frequencyMinutes) async {
+    if (!PlatformUtils.isAndroid) {
+      debugPrint('⚠️ Workmanager retry not supported on this platform');
+      return;
+    }
     try {
       await Workmanager().registerOneOffTask(
         'athkar-retry-${DateTime.now().millisecondsSinceEpoch}',
