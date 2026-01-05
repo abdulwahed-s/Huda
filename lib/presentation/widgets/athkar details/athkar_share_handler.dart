@@ -66,8 +66,14 @@ ${athkar.translatedText ?? ''}
 ${"عدد التكرار: ${athkar.repeat}"}
 """;
 
+    final screenSize = MediaQuery.of(context).size;
     await SharePlus.instance.share(ShareParams(
       text: shareText,
+      sharePositionOrigin: Rect.fromCenter(
+        center: Offset(screenSize.width / 2, screenSize.height / 2),
+        width: 1,
+        height: 1,
+      ),
     ));
   }
 
@@ -90,9 +96,15 @@ ${"عدد التكرار: ${athkar.repeat}"}
 
       final file = await _saveImageToTempFile(imageBytes, index);
 
+      final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
           files: [XFile(file.path)],
-          text: 'مشاركة الأذكار - ${state.athkarCategory.title}'));
+          text: 'مشاركة الأذكار - ${state.athkarCategory.title}',
+          sharePositionOrigin: Rect.fromCenter(
+            center: Offset(screenSize.width / 2, screenSize.height / 2),
+            width: 1,
+            height: 1,
+          )));
     } catch (e) {
       _showShareErrorSnackbar(e.toString());
     } finally {

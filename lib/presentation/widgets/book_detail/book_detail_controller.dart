@@ -44,9 +44,7 @@ class BookDetailController {
     checkIfBookDownloaded();
   }
 
-  void dispose() {
-    
-  }
+  void dispose() {}
 
   void fetchInitialData() {
     context.read<BookDetailCubit>().fetchBookDetail(bookId, language);
@@ -91,7 +89,6 @@ class BookDetailController {
   }
 
   Future<void> checkIfBookDownloaded() async {
-    
     if (kIsWeb) {
       isBookDownloaded = false;
       return;
@@ -100,7 +97,7 @@ class BookDetailController {
       isBookDownloaded = await _offlineBooksService.isBookDownloaded(bookId);
       refreshUI();
     } catch (e) {
-      // 
+      //
     }
   }
 
@@ -236,7 +233,6 @@ class BookDetailController {
   }
 
   Future<void> downloadBook(BookDetailLoaded state) async {
-    
     if (kIsWeb) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -284,9 +280,15 @@ class BookDetailController {
     final message =
         'I found this amazing book "$title" - read it in Huda app! 📚\n\nDownload Huda app to explore more Islamic books and resources.';
 
+    final screenSize = MediaQuery.of(context).size;
     SharePlus.instance.share(ShareParams(
       text: message,
       subject: 'Check out this book: $title',
+      sharePositionOrigin: Rect.fromCenter(
+        center: Offset(screenSize.width / 2, screenSize.height / 2),
+        width: 1,
+        height: 1,
+      ),
     ));
   }
 
@@ -315,6 +317,7 @@ class BookDetailController {
         throw Exception('Book details not loaded');
       }
     } catch (e) {
+      print(e);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -338,10 +341,16 @@ class BookDetailController {
 
         final file = File(pdfAttachment.localPath);
         if (await file.exists()) {
+          final screenSize = MediaQuery.of(context).size;
           await SharePlus.instance.share(ShareParams(
             files: [XFile(pdfAttachment.localPath)],
             text: 'Check out this book: $title',
             subject: title,
+            sharePositionOrigin: Rect.fromCenter(
+              center: Offset(screenSize.width / 2, screenSize.height / 2),
+              width: 1,
+              height: 1,
+            ),
           ));
         } else {
           throw Exception('PDF file not found locally');
@@ -355,7 +364,6 @@ class BookDetailController {
   }
 
   Future<void> sharePdfFromUrl(String url) async {
-    
     if (kIsWeb) {
       try {
         await launchUrl(Uri.parse(url));
@@ -402,10 +410,16 @@ class BookDetailController {
         Navigator.of(context).pop();
       }
 
+      final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(filePath)],
         text: 'Check out this book: $title',
         subject: title,
+        sharePositionOrigin: Rect.fromCenter(
+          center: Offset(screenSize.width / 2, screenSize.height / 2),
+          width: 1,
+          height: 1,
+        ),
       ));
 
       Future.delayed(const Duration(seconds: 30), () {

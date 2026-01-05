@@ -51,9 +51,15 @@ class CounselingShareOverlay {
       final File file = File('${tempDir.path}/$fileName');
       await file.writeAsBytes(pngBytes);
 
+      final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],
         text: appLocalizations.shareTextHudaAI,
+        sharePositionOrigin: Rect.fromCenter(
+          center: Offset(screenSize.width / 2, screenSize.height / 2),
+          width: 1,
+          height: 1,
+        ),
       ));
     } catch (e) {
       if (context.mounted) {

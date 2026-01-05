@@ -588,13 +588,20 @@ class _ShareWidgetState extends State<ShareWidget> {
 
   void _shareText() async {
     try {
+      final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         text: _getShareText(),
         subject: widget.surahName != null
             ? AppLocalizations.of(context)!.ayahFromSurah(widget.surahName!)
             : AppLocalizations.of(context)!.ayahFromQuran,
+        sharePositionOrigin: Rect.fromCenter(
+          center: Offset(screenSize.width / 2, screenSize.height / 2),
+          width: 1,
+          height: 1,
+        ),
       ));
     } catch (e) {
+      print(e);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -633,11 +640,17 @@ class _ShareWidgetState extends State<ShareWidget> {
       await file.writeAsBytes(pngBytes);
 
       // Share the image
+      final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],
         text: widget.surahName != null
             ? appLocalizations.ayahFromSurah(widget.surahName!)
             : appLocalizations.ayahFromQuran,
+        sharePositionOrigin: Rect.fromCenter(
+          center: Offset(screenSize.width / 2, screenSize.height / 2),
+          width: 1,
+          height: 1,
+        ),
       ));
     } catch (e) {
       if (mounted) {
