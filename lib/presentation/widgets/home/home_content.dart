@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
 import 'package:huda/presentation/widgets/home/feature_grid.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/core/routes/app_route.dart';
-import 'package:huda/core/utils/responsive_utils.dart';
 
 class HomeContent extends StatelessWidget {
   final AnimationController animationController;
@@ -80,7 +80,7 @@ class HomeContent extends StatelessWidget {
           onTap: () => Navigator.pushNamed(context, AppRoute.qiblah),
         ),
       //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
-      if (!kIsWeb && !PlatformUtils.isDesktop)
+      if (!kIsWeb && !PlatformUtils.isWindow)
         FeatureItem(
           title: AppLocalizations.of(context)!.notifications,
           icon: Icons.notifications,

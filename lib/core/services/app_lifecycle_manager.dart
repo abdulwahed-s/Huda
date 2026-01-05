@@ -16,7 +16,7 @@ class AppLifecycleManager extends WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
-    if (state == AppLifecycleState.resumed && PlatformUtils.isMobile) {
+    if (state == AppLifecycleState.resumed && !PlatformUtils.isWindow) {
       _checkAndResumeScheduling();
     }
   }

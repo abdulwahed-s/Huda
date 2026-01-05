@@ -43,7 +43,7 @@ Future<void> initializeNonCriticalServicesAsync() async {
       await Future.wait([
         _initializeWidgetServices(),
         //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
-        if (PlatformUtils.isMobile) _initializeNotificationServices(),
+        if (!PlatformUtils.isWindow) _initializeNotificationServices(),
         _initializePrayerServices(),
         _initializeDataServices(),
         _initializeBackgroundServices(),
