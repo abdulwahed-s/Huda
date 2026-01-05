@@ -235,6 +235,7 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
             ),
           ),
           child: SafeArea(
+            bottom: false,
             child: BlocBuilder<QuranCubit, QuranState>(
               builder: (context, state) {
                 if (state is QuranLoading) {
