@@ -56,6 +56,7 @@ class LoadedStateContent extends StatelessWidget {
 
             // Athkar list
             ListView.separated(
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: filteredList.length,
