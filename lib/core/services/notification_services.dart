@@ -45,10 +45,18 @@ class NotificationServices {
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
 
+    const DarwinInitializationSettings initializationSettingsMacOS =
+        DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+
     const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
+      macOS: initializationSettingsMacOS,
       windows: initializationSettingsWindows,
     );
 
@@ -56,6 +64,19 @@ class NotificationServices {
       initializationSettings,
       onDidReceiveNotificationResponse: _onNotificationResponse,
     );
+
+    final iosPlugin = notificationPlugin.resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin>();
+    if (iosPlugin != null) {
+      debugPrint(
+          'Requesting iOS notification permissions on app startup...');
+      final result = await iosPlugin.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      debugPrint('iOS notification permission result: $result');
+    }
 
     await _createNotificationChannel();
 
