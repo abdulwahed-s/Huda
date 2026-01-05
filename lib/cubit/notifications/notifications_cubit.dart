@@ -75,12 +75,24 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   NotificationPageHelper get notificationHelper => _notificationHelper;
 
   Future<bool> getIsNotificationEnabled() async {
+    if (PlatformUtils.isMacOS) {
+      final macOSGranted =
+          await _notificationHelper.checkMacOSPermissionStatus();
+      return macOSGranted;
+    }
+
     if (PlatformUtils.isDesktop) return true;
+
+    if (PlatformUtils.isIOS) {
+      final iosGranted = await _notificationHelper.checkIOSPermissionStatus();
+      return iosGranted;
+    }
 
     PermissionStatus status = await Permission.notification.status;
     if (status.isGranted) {
       return true;
     } else {
+      debugPrint('📱 Android notification permission status: $status');
       return false;
     }
   }
