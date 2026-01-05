@@ -140,7 +140,8 @@ class _PrayerTimesState extends State<PrayerTimes> {
             const RefreshLocationButtonWidget(),
 
 // Persistent Prayer Countdown Control Widget
-            if (PlatformUtils.isMobile)
+//TODO add support for other platform later
+            if (PlatformUtils.isAndroid)
               const PersistentPrayerCountdownControlWidget(),
           ],
         ),
