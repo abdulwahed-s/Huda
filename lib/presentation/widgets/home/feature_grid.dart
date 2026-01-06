@@ -20,6 +20,7 @@ class FeatureGrid extends StatelessWidget {
         (0.65 / (textScaleFactor * 0.8)).clamp(0.45, 0.75);
 
     return GridView.builder(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
