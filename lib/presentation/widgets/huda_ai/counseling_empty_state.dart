@@ -30,27 +30,26 @@ class CounselingEmptyState extends StatelessWidget {
                 ],
         ),
       ),
-      child: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isTablet = constraints.maxWidth > 600;
-            final isLandscape = constraints.maxWidth > constraints.maxHeight;
-            final isTabletLandscape = isTablet && isLandscape;
-            final contentMaxWidth = isTablet ? 1000.0 : double.infinity;
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isTablet = constraints.maxWidth > 600;
+          final isLandscape = constraints.maxWidth > constraints.maxHeight;
+          final isTabletLandscape = isTablet && isLandscape;
+          final contentMaxWidth = isTablet ? 1000.0 : double.infinity;
 
-            return Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: contentMaxWidth),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: isTabletLandscape
-                      ? _buildLandscapeLayout(context, isTablet)
-                      : _buildPortraitLayout(context, isTablet),
-                ),
+          return Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: contentMaxWidth),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.zero,
+                child: isTabletLandscape
+                    ? _buildLandscapeLayout(context, isTablet)
+                    : _buildPortraitLayout(context, isTablet),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -75,7 +74,7 @@ class CounselingEmptyState extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(
             horizontal: isTablet ? 24.0 : 16.w,
-            vertical: isTablet ? 16.0 : 8.w,
+            vertical: isTablet ? 16.0 : 8.h,
           ),
           child: _buildHorizontalInfoCards(context, isTablet),
         ),
@@ -205,41 +204,44 @@ class CounselingEmptyState extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final spacing = isTablet ? 16.0 : 8.w;
 
-    return Row(
-      children: [
-        Expanded(
-          child: _buildInfoCard(
-            context,
-            icon: Icons.light_mode_outlined,
-            title: l10n.guidanceTitle,
-            subtitle: l10n.guidanceSubtitle,
-            color: const Color(0xFF00897B),
-            isTablet: isTablet,
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: _buildInfoCard(
+              context,
+              icon: Icons.light_mode_outlined,
+              title: l10n.guidanceTitle,
+              subtitle: l10n.guidanceSubtitle,
+              color: const Color(0xFF00897B),
+              isTablet: isTablet,
+            ),
           ),
-        ),
-        SizedBox(width: spacing),
-        Expanded(
-          child: _buildInfoCard(
-            context,
-            icon: Icons.menu_book_outlined,
-            title: l10n.quranTitle,
-            subtitle: l10n.quranSubtitle,
-            color: const Color(0xFF3949AB),
-            isTablet: isTablet,
+          SizedBox(width: spacing),
+          Expanded(
+            child: _buildInfoCard(
+              context,
+              icon: Icons.menu_book_outlined,
+              title: l10n.quranTitle,
+              subtitle: l10n.quranSubtitle,
+              color: const Color(0xFF3949AB),
+              isTablet: isTablet,
+            ),
           ),
-        ),
-        SizedBox(width: spacing),
-        Expanded(
-          child: _buildInfoCard(
-            context,
-            icon: Icons.favorite_outline,
-            title: l10n.duaaTitle,
-            subtitle: l10n.duaaSubtitle,
-            color: const Color(0xFFC2185B),
-            isTablet: isTablet,
+          SizedBox(width: spacing),
+          Expanded(
+            child: _buildInfoCard(
+              context,
+              icon: Icons.favorite_outline,
+              title: l10n.duaaTitle,
+              subtitle: l10n.duaaSubtitle,
+              color: const Color(0xFFC2185B),
+              isTablet: isTablet,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -273,7 +275,7 @@ class CounselingEmptyState extends StatelessWidget {
         ],
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             icon,
