@@ -17,8 +17,9 @@ class SurahList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
     return ListView.builder(
-      padding: EdgeInsets.only(bottom: 16.h),
+      padding: EdgeInsets.only(bottom: 16.h + bottomPadding),
       itemCount: surahs.length,
       itemBuilder: (context, index) {
         final surah = surahs[index];
