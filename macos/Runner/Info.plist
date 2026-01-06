@@ -28,5 +28,13 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.lifestyle</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Huda needs your location to calculate accurate prayer times for your area.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Huda uses speech recognition to allow voice input for searching and AI interactions.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Huda needs microphone access to enable voice input for searching and AI interactions.</string>
 </dict>
 </plist>
