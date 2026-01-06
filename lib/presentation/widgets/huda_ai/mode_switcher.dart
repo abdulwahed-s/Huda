@@ -114,13 +114,20 @@ class _ModeSwitcherState extends State<ModeSwitcher>
             AnimatedBuilder(
               animation: _slideAnimation,
               builder: (context, child) {
+                final isRtl = Directionality.of(context) == TextDirection.rtl;
+                final slideValue = _slideAnimation.value;
+                final halfWidth = (MediaQuery.of(context).size.width - 40) / 2;
+
+                final leftValue = isRtl
+                    ? slideValue * halfWidth
+                    : (1 - slideValue) * halfWidth;
+                final rightValue = isRtl
+                    ? (1 - slideValue) * halfWidth
+                    : slideValue * halfWidth;
+
                 return Positioned(
-                  left: (1 - _slideAnimation.value) *
-                      (MediaQuery.of(context).size.width - 40) /
-                      2,
-                  right: _slideAnimation.value *
-                      (MediaQuery.of(context).size.width - 40) /
-                      2,
+                  left: leftValue,
+                  right: rightValue,
                   top: 0,
                   bottom: 0,
                   child: Transform.scale(
