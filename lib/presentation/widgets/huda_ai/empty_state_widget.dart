@@ -35,27 +35,26 @@ class EmptyStateWidget extends StatelessWidget {
                 ],
         ),
       ),
-      child: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isTablet = constraints.maxWidth > 600;
-            final isLandscape = constraints.maxWidth > constraints.maxHeight;
-            final isTabletLandscape = isTablet && isLandscape;
-            final contentMaxWidth = isTablet ? 1000.0 : double.infinity;
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isTablet = constraints.maxWidth > 600;
+          final isLandscape = constraints.maxWidth > constraints.maxHeight;
+          final isTabletLandscape = isTablet && isLandscape;
+          final contentMaxWidth = isTablet ? 1000.0 : double.infinity;
 
-            return Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: contentMaxWidth),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: isTabletLandscape
-                      ? _buildLandscapeLayout(context, isTablet)
-                      : _buildPortraitLayout(context, isTablet),
-                ),
+          return Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: contentMaxWidth),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.zero,
+                child: isTabletLandscape
+                    ? _buildLandscapeLayout(context, isTablet)
+                    : _buildPortraitLayout(context, isTablet),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -80,7 +79,7 @@ class EmptyStateWidget extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(
             horizontal: isTablet ? 24.0 : 16.w,
-            vertical: isTablet ? 16.0 : 8.w,
+            vertical: isTablet ? 16.0 : 8.h,
           ),
           child: _buildHorizontalInfoCards(context, isTablet),
         ),
@@ -201,32 +200,35 @@ class EmptyStateWidget extends StatelessWidget {
   Widget _buildHorizontalInfoCards(BuildContext context, bool isTablet) {
     final spacing = isTablet ? 16.0 : 8.w;
 
-    return Row(
-      children: [
-        Expanded(
-          child: InfoCard(
-            context: context,
-            icon: Icons.info_outline,
-            title: appLocalizations.aiAssistantTitle,
-            subtitle: appLocalizations.aiAssistantSubtitle,
-            color: Colors.blue,
-            isDark: isDark,
-            isTablet: isTablet,
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: InfoCard(
+              context: context,
+              icon: Icons.info_outline,
+              title: appLocalizations.aiAssistantTitle,
+              subtitle: appLocalizations.aiAssistantSubtitle,
+              color: Colors.blue,
+              isDark: isDark,
+              isTablet: isTablet,
+            ),
           ),
-        ),
-        SizedBox(width: spacing),
-        Expanded(
-          child: InfoCard(
-            context: context,
-            icon: Icons.verified_outlined,
-            title: appLocalizations.verifySourcesTitle,
-            subtitle: appLocalizations.verifySourcesSubtitle,
-            color: Colors.orange,
-            isDark: isDark,
-            isTablet: isTablet,
+          SizedBox(width: spacing),
+          Expanded(
+            child: InfoCard(
+              context: context,
+              icon: Icons.verified_outlined,
+              title: appLocalizations.verifySourcesTitle,
+              subtitle: appLocalizations.verifySourcesSubtitle,
+              color: Colors.orange,
+              isDark: isDark,
+              isTablet: isTablet,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
