@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/images/app_icon_transparent.png" alt="Huda App Logo" width="120" height="120">
+  <img src="assets/images/huda.png" alt="Huda App Logo" width="120" height="120">
   
 # Huda - Islamic Companion App
 
