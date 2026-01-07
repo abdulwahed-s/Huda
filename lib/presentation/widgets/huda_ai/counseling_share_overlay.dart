@@ -51,6 +51,7 @@ class CounselingShareOverlay {
       final File file = File('${tempDir.path}/$fileName');
       await file.writeAsBytes(pngBytes);
 
+      if (!context.mounted) return;
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],

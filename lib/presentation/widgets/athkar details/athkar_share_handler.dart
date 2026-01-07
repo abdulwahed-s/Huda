@@ -96,6 +96,7 @@ ${"عدد التكرار: ${athkar.repeat}"}
 
       final file = await _saveImageToTempFile(imageBytes, index);
 
+      if (!context.mounted) return;
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
           files: [XFile(file.path)],

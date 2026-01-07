@@ -416,6 +416,7 @@ ${"عدد التكرار: ${athkar.repeat}"}
       final File file = File('${tempDir.path}/$fileName');
       await file.writeAsBytes(pngBytes);
 
+      if (!mounted) return;
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],

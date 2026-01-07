@@ -601,7 +601,6 @@ class _ShareWidgetState extends State<ShareWidget> {
         ),
       ));
     } catch (e) {
-      print(e);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -640,6 +639,7 @@ class _ShareWidgetState extends State<ShareWidget> {
       await file.writeAsBytes(pngBytes);
 
       // Share the image
+      if (!mounted) return;
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],

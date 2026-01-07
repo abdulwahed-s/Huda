@@ -317,7 +317,6 @@ class BookDetailController {
         throw Exception('Book details not loaded');
       }
     } catch (e) {
-      print(e);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -341,6 +340,7 @@ class BookDetailController {
 
         final file = File(pdfAttachment.localPath);
         if (await file.exists()) {
+          if (!context.mounted) return;
           final screenSize = MediaQuery.of(context).size;
           await SharePlus.instance.share(ShareParams(
             files: [XFile(pdfAttachment.localPath)],
@@ -410,6 +410,7 @@ class BookDetailController {
         Navigator.of(context).pop();
       }
 
+      if (!context.mounted) return;
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(filePath)],
