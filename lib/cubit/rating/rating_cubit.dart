@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 part 'rating_state.dart';
@@ -22,7 +25,7 @@ class RatingCubit extends Cubit<RatingState> {
       remindDays: 5,
       remindLaunches: 10,
       googlePlayIdentifier: 'com.aw.huda',
-      appStoreIdentifier: '1234567890',
+      appStoreIdentifier: '6757343816',
     );
   }
 
@@ -42,12 +45,14 @@ class RatingCubit extends Cubit<RatingState> {
     }
   }
 
+  static const String _microsoftStoreProductId = '9p68h8m1g92b';
+
   Future<void> handleRating(int rating, {String? comment}) async {
     emit(RatingSubmitting());
 
     try {
       if (rating >= 4) {
-        await _rateMyApp.launchStore();
+        await _launchStoreForRating();
         await _rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
         emit(RatingSubmitted(rating: rating, message: 'Redirected to store'));
       } else {
@@ -57,6 +62,24 @@ class RatingCubit extends Cubit<RatingState> {
       }
     } catch (e) {
       emit(RatingFailure(message: 'Failed to handle rating'));
+    }
+  }
+
+  Future<void> _launchStoreForRating() async {
+    if (Platform.isWindows) {
+      final storeUrl = Uri.parse(
+        'ms-windows-store://review/?ProductId=$_microsoftStoreProductId',
+      );
+      if (await canLaunchUrl(storeUrl)) {
+        await launchUrl(storeUrl);
+      } else {
+        final webUrl = Uri.parse(
+          'https://apps.microsoft.com/detail/$_microsoftStoreProductId',
+        );
+        await launchUrl(webUrl, mode: LaunchMode.externalApplication);
+      }
+    } else {
+      await _rateMyApp.launchStore();
     }
   }
 
