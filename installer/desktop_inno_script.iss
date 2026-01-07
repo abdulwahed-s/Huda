@@ -3,7 +3,7 @@
 ; Non-commercial use only
 
 #define MyAppName "Huda"
-#define MyAppVersion "1.3"
+#define MyAppVersion "1.4.2"
 #define MyAppPublisher "awr"
 #define MyAppExeName "huda.exe"
 
