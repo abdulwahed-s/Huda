@@ -6,9 +6,9 @@ import 'package:feedback/feedback.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/routes/page_router.dart';
+import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/app_theme.dart';
-import 'package:huda/core/widgets/complete_widget_generator.dart';
 import 'package:huda/cubit/theme/theme_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
@@ -101,17 +101,13 @@ class _AppState extends State<App> {
                       },
                       onGenerateRoute: PageRouter().generateRoute,
                       builder: (context, child) {
+                        QuickActionsService.updateLocalizedLabels(context);
                         return MediaQuery(
                           data: MediaQuery.of(context).copyWith(
                             textScaler:
                                 TextScaler.linear(themeState.textScaleFactor),
                           ),
-                          child: Stack(
-                            children: [
-                              child ?? const SizedBox.shrink(),
-                              const CompleteWidgetGenerator(),
-                            ],
-                          ),
+                          child: child ?? const SizedBox.shrink(),
                         );
                       },
                     );
