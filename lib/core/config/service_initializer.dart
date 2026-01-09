@@ -62,7 +62,6 @@ Future<void> _initializeWidgetServices() async {
 
   final tracker = ServiceInitializationTracker();
   await WidgetService.initialize();
-  await WidgetService.registerInteractivity();
   await WidgetBackgroundService.initialize();
   tracker.markServiceReady('widgets');
 }

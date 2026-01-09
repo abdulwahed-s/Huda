@@ -23,7 +23,7 @@ class ThemeState {
     ThemeMode? themeMode,
     double? textScaleFactor,
     AppColorTheme? colorTheme,
-    String? fontFamily, 
+    String? fontFamily,
   }) {
     return ThemeState(
       themeMode: themeMode ?? this.themeMode,
@@ -84,7 +84,7 @@ class ThemeCubit extends Cubit<ThemeState> {
       themeMode: themeMode,
       textScaleFactor: savedScale,
       colorTheme: colorTheme,
-      fontFamily: savedFont, 
+      fontFamily: savedFont,
     ));
   }
 
@@ -98,7 +98,6 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     // Notify widget service about theme change
     await WidgetService.onThemeChanged();
-    await WidgetService.markCompleteWidgetImageNeeded();
   }
 
   Future<void> useSystemTheme() async {
@@ -108,7 +107,6 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     // Notify widget service about theme change
     await WidgetService.onThemeChanged();
-    await WidgetService.markCompleteWidgetImageNeeded();
   }
 
   Future<void> setTextScaleFactor(double scale) async {
@@ -126,7 +124,6 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     // Update widget with new theme color and trigger image regeneration
     await WidgetService.onThemeChanged();
-    await WidgetService.markCompleteWidgetImageNeeded();
     await WidgetService.updateWidget();
   }
 
@@ -136,6 +133,5 @@ class ThemeCubit extends Cubit<ThemeState> {
     emit(state.copyWith(fontFamily: fontFamily));
 
     await WidgetService.onThemeChanged();
-    await WidgetService.markCompleteWidgetImageNeeded();
   }
 }
