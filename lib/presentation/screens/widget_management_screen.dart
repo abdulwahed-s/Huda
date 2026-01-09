@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/services/widget_service.dart';
 import 'package:huda/core/services/widget_background_service.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/widget_management/add_widget_section.dart';
 import 'package:huda/presentation/widgets/widget_management/custom_verses_section.dart';
 import 'package:huda/presentation/widgets/widget_management/force_update_section.dart';
 import 'package:huda/presentation/widgets/widget_management/header_section.dart';
@@ -259,6 +260,8 @@ class _WidgetManagementScreenState extends State<WidgetManagementScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeaderSection(isDark: isDark),
+            SizedBox(height: 20.h),
+            AddWidgetSection(isDark: isDark),
             SizedBox(height: 20.h),
             ForceUpdateSection(
               isUpdating: _isUpdating,
