@@ -1539,5 +1539,22 @@
     "duaa": "دعاء",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
-    }
+    },
+    "addWidgetToHomeScreen": "إضافة العنصر إلى الشاشة الرئيسية",
+    "addWidgetInstructions": "اضغط الزر أدناه لإضافة عنصر هُدى مباشرة إلى شاشتك الرئيسية. يعرض آيات قرآنية جميلة تتحدث تلقائياً.",
+    "addWidget": "إضافة العنصر",
+    "featureOnlyAvailableOnAndroid": "هذه الميزة متاحة فقط على أندرويد",
+    "pinWidgetNotSupported": "تثبيت العنصر غير مدعوم على هذا الجهاز",
+    "errorAddingWidget": "خطأ في إضافة العنصر",
+    "howToAddWidget": "كيفية إضافة العنصر",
+    "androidWidgetStep1": "اضغط مطولاً على مساحة فارغة في شاشتك الرئيسية",
+    "androidWidgetStep2": "اضغط على 'العناصر' من القائمة",
+    "androidWidgetStep3": "ابحث عن 'هُدى' في قائمة العناصر",
+    "androidWidgetStep4": "اسحب العنصر وأفلته في شاشتك الرئيسية",
+    "iosWidgetStep1": "اضغط مطولاً على مساحة فارغة في شاشتك الرئيسية",
+    "iosWidgetStep2": "اضغط على زر '+' في الزاوية العلوية اليسرى",
+    "iosWidgetStep3": "ابحث عن 'هُدى' في معرض العناصر",
+    "iosWidgetStep4": "اختر حجم العنصر واضغط على 'إضافة عنصر'",
+    "genericWidgetStep1": "اضغط مطولاً على شاشتك الرئيسية وابحث عن 'العناصر'",
+    "genericWidgetStep2": "ابحث عن عنصر 'هُدى' وأضفه إلى شاشتك الرئيسية"
 }

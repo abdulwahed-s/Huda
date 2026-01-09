@@ -2665,4 +2665,64 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get duaa => 'Dua';
+
+  @override
+  String get addWidgetToHomeScreen => 'Añadir widget a la pantalla de inicio';
+
+  @override
+  String get addWidgetInstructions =>
+      'Toca el botón de abajo para añadir el widget de Huda directamente a tu pantalla de inicio. Muestra hermosos versículos coránicos que se actualizan automáticamente.';
+
+  @override
+  String get addWidget => 'Añadir Widget';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'Esta función solo está disponible en Android';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'La fijación de widgets no es compatible con este dispositivo';
+
+  @override
+  String get errorAddingWidget => 'Error al añadir el widget';
+
+  @override
+  String get howToAddWidget => 'Cómo añadir el widget';
+
+  @override
+  String get androidWidgetStep1 =>
+      'Mantén presionada un área vacía de tu pantalla de inicio';
+
+  @override
+  String get androidWidgetStep2 => 'Toca \'Widgets\' en el menú';
+
+  @override
+  String get androidWidgetStep3 => 'Busca \'Huda\' en la lista de widgets';
+
+  @override
+  String get androidWidgetStep4 => 'Arrastra el widget a tu pantalla de inicio';
+
+  @override
+  String get iosWidgetStep1 =>
+      'Mantén presionada un área vacía de tu pantalla de inicio';
+
+  @override
+  String get iosWidgetStep2 =>
+      'Toca el botón \'+\' en la esquina superior izquierda';
+
+  @override
+  String get iosWidgetStep3 => 'Busca \'Huda\' en la galería de widgets';
+
+  @override
+  String get iosWidgetStep4 =>
+      'Selecciona un tamaño de widget y toca \'Añadir Widget\'';
+
+  @override
+  String get genericWidgetStep1 =>
+      'Mantén presionada tu pantalla de inicio y busca \'Widgets\'';
+
+  @override
+  String get genericWidgetStep2 =>
+      'Encuentra el widget \'Huda\' y añádelo a tu pantalla de inicio';
 }

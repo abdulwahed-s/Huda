@@ -2609,4 +2609,62 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get duaa => 'Doa';
+
+  @override
+  String get addWidgetToHomeScreen => 'Tambah widget ke skrin utama';
+
+  @override
+  String get addWidgetInstructions =>
+      'Ketik butang di bawah untuk menambah widget Huda terus ke skrin utama anda. Ia memaparkan ayat-ayat Al-Quran yang indah yang dikemas kini secara automatik.';
+
+  @override
+  String get addWidget => 'Tambah Widget';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'Ciri ini hanya tersedia pada Android';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'Penyematan widget tidak disokong pada peranti ini';
+
+  @override
+  String get errorAddingWidget => 'Ralat menambah widget';
+
+  @override
+  String get howToAddWidget => 'Cara menambah widget';
+
+  @override
+  String get androidWidgetStep1 =>
+      'Tekan lama pada kawasan kosong skrin utama anda';
+
+  @override
+  String get androidWidgetStep2 => 'Ketik \'Widget\' dari menu';
+
+  @override
+  String get androidWidgetStep3 => 'Cari \'Huda\' dalam senarai widget';
+
+  @override
+  String get androidWidgetStep4 => 'Seret widget ke skrin utama anda';
+
+  @override
+  String get iosWidgetStep1 =>
+      'Tekan lama pada kawasan kosong skrin utama anda';
+
+  @override
+  String get iosWidgetStep2 => 'Ketik butang \'+\' di penjuru kiri atas';
+
+  @override
+  String get iosWidgetStep3 => 'Cari \'Huda\' dalam galeri widget';
+
+  @override
+  String get iosWidgetStep4 => 'Pilih saiz widget dan ketik \'Tambah Widget\'';
+
+  @override
+  String get genericWidgetStep1 =>
+      'Tekan lama pada skrin utama anda dan cari \'Widget\'';
+
+  @override
+  String get genericWidgetStep2 =>
+      'Cari widget \'Huda\' dan tambahkannya ke skrin utama anda';
 }

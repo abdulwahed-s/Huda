@@ -890,5 +890,22 @@
     "duaa": "Dua",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
-    }
+    },
+    "addWidgetToHomeScreen": "Añadir widget a la pantalla de inicio",
+    "addWidgetInstructions": "Toca el botón de abajo para añadir el widget de Huda directamente a tu pantalla de inicio. Muestra hermosos versículos coránicos que se actualizan automáticamente.",
+    "addWidget": "Añadir Widget",
+    "featureOnlyAvailableOnAndroid": "Esta función solo está disponible en Android",
+    "pinWidgetNotSupported": "La fijación de widgets no es compatible con este dispositivo",
+    "errorAddingWidget": "Error al añadir el widget",
+    "howToAddWidget": "Cómo añadir el widget",
+    "androidWidgetStep1": "Mantén presionada un área vacía de tu pantalla de inicio",
+    "androidWidgetStep2": "Toca 'Widgets' en el menú",
+    "androidWidgetStep3": "Busca 'Huda' en la lista de widgets",
+    "androidWidgetStep4": "Arrastra el widget a tu pantalla de inicio",
+    "iosWidgetStep1": "Mantén presionada un área vacía de tu pantalla de inicio",
+    "iosWidgetStep2": "Toca el botón '+' en la esquina superior izquierda",
+    "iosWidgetStep3": "Busca 'Huda' en la galería de widgets",
+    "iosWidgetStep4": "Selecciona un tamaño de widget y toca 'Añadir Widget'",
+    "genericWidgetStep1": "Mantén presionada tu pantalla de inicio y busca 'Widgets'",
+    "genericWidgetStep2": "Encuentra el widget 'Huda' y añádelo a tu pantalla de inicio"
 }

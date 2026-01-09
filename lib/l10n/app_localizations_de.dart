@@ -2652,4 +2652,65 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get duaa => 'Dua';
+
+  @override
+  String get addWidgetToHomeScreen => 'Widget zum Startbildschirm hinzufügen';
+
+  @override
+  String get addWidgetInstructions =>
+      'Tippen Sie auf die Schaltfläche unten, um das Huda-Widget direkt zu Ihrem Startbildschirm hinzuzufügen. Es zeigt wunderschöne Koranverse an, die automatisch aktualisiert werden.';
+
+  @override
+  String get addWidget => 'Widget hinzufügen';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'Diese Funktion ist nur auf Android verfügbar';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'Widget-Anheften wird auf diesem Gerät nicht unterstützt';
+
+  @override
+  String get errorAddingWidget => 'Fehler beim Hinzufügen des Widgets';
+
+  @override
+  String get howToAddWidget => 'Wie man das Widget hinzufügt';
+
+  @override
+  String get androidWidgetStep1 =>
+      'Drücken Sie lange auf einen leeren Bereich Ihres Startbildschirms';
+
+  @override
+  String get androidWidgetStep2 => 'Tippen Sie im Menü auf \'Widgets\'';
+
+  @override
+  String get androidWidgetStep3 => 'Finden Sie \'Huda\' in der Widget-Liste';
+
+  @override
+  String get androidWidgetStep4 =>
+      'Ziehen Sie das Widget auf Ihren Startbildschirm';
+
+  @override
+  String get iosWidgetStep1 =>
+      'Drücken Sie lange auf einen leeren Bereich Ihres Startbildschirms';
+
+  @override
+  String get iosWidgetStep2 =>
+      'Tippen Sie auf die \'+\'-Schaltfläche in der oberen linken Ecke';
+
+  @override
+  String get iosWidgetStep3 => 'Suchen Sie nach \'Huda\' in der Widget-Galerie';
+
+  @override
+  String get iosWidgetStep4 =>
+      'Wählen Sie eine Widget-Größe und tippen Sie auf \'Widget hinzufügen\'';
+
+  @override
+  String get genericWidgetStep1 =>
+      'Drücken Sie lange auf Ihren Startbildschirm und suchen Sie nach \'Widgets\'';
+
+  @override
+  String get genericWidgetStep2 =>
+      'Finden Sie das \'Huda\'-Widget und fügen Sie es Ihrem Startbildschirm hinzu';
 }

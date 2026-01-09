@@ -4879,6 +4879,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Duaa'**
   String get duaa;
+
+  /// Title for add widget section
+  ///
+  /// In en, this message translates to:
+  /// **'Add Widget to Home Screen'**
+  String get addWidgetToHomeScreen;
+
+  /// Instructions for adding widget
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the button below to add the Huda widget directly to your home screen. This displays beautiful Quranic verses that update automatically.'**
+  String get addWidgetInstructions;
+
+  /// Add widget button text
+  ///
+  /// In en, this message translates to:
+  /// **'Add Widget'**
+  String get addWidget;
+
+  /// Message for non-Android platforms
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is only available on Android'**
+  String get featureOnlyAvailableOnAndroid;
+
+  /// Message when pin widget is not supported
+  ///
+  /// In en, this message translates to:
+  /// **'Pin widget is not supported on this device'**
+  String get pinWidgetNotSupported;
+
+  /// Error message for adding widget
+  ///
+  /// In en, this message translates to:
+  /// **'Error adding widget'**
+  String get errorAddingWidget;
+
+  /// Title for widget instructions section
+  ///
+  /// In en, this message translates to:
+  /// **'How to add the widget'**
+  String get howToAddWidget;
+
+  /// Android widget step 1
+  ///
+  /// In en, this message translates to:
+  /// **'Long press on an empty area of your home screen'**
+  String get androidWidgetStep1;
+
+  /// Android widget step 2
+  ///
+  /// In en, this message translates to:
+  /// **'Tap on \'Widgets\' from the menu'**
+  String get androidWidgetStep2;
+
+  /// Android widget step 3
+  ///
+  /// In en, this message translates to:
+  /// **'Find \'Huda\' in the widget list'**
+  String get androidWidgetStep3;
+
+  /// Android widget step 4
+  ///
+  /// In en, this message translates to:
+  /// **'Drag and drop the widget to your home screen'**
+  String get androidWidgetStep4;
+
+  /// iOS widget step 1
+  ///
+  /// In en, this message translates to:
+  /// **'Long press on an empty area of your home screen'**
+  String get iosWidgetStep1;
+
+  /// iOS widget step 2
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the \'+\' button in the top left corner'**
+  String get iosWidgetStep2;
+
+  /// iOS widget step 3
+  ///
+  /// In en, this message translates to:
+  /// **'Search for \'Huda\' in the widget gallery'**
+  String get iosWidgetStep3;
+
+  /// iOS widget step 4
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a widget size and tap \'Add Widget\''**
+  String get iosWidgetStep4;
+
+  /// Generic widget step 1
+  ///
+  /// In en, this message translates to:
+  /// **'Long press on your home screen and look for \'Widgets\''**
+  String get genericWidgetStep1;
+
+  /// Generic widget step 2
+  ///
+  /// In en, this message translates to:
+  /// **'Find \'Huda\' widget and add it to your home screen'**
+  String get genericWidgetStep2;
 }
 
 class _AppLocalizationsDelegate

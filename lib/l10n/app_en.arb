@@ -3129,5 +3129,73 @@
     "duaa": "Duaa",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
+    },
+    "addWidgetToHomeScreen": "Add Widget to Home Screen",
+    "@addWidgetToHomeScreen": {
+        "description": "Title for add widget section"
+    },
+    "addWidgetInstructions": "Tap the button below to add the Huda widget directly to your home screen. This displays beautiful Quranic verses that update automatically.",
+    "@addWidgetInstructions": {
+        "description": "Instructions for adding widget"
+    },
+    "addWidget": "Add Widget",
+    "@addWidget": {
+        "description": "Add widget button text"
+    },
+    "featureOnlyAvailableOnAndroid": "This feature is only available on Android",
+    "@featureOnlyAvailableOnAndroid": {
+        "description": "Message for non-Android platforms"
+    },
+    "pinWidgetNotSupported": "Pin widget is not supported on this device",
+    "@pinWidgetNotSupported": {
+        "description": "Message when pin widget is not supported"
+    },
+    "errorAddingWidget": "Error adding widget",
+    "@errorAddingWidget": {
+        "description": "Error message for adding widget"
+    },
+    "howToAddWidget": "How to add the widget",
+    "@howToAddWidget": {
+        "description": "Title for widget instructions section"
+    },
+    "androidWidgetStep1": "Long press on an empty area of your home screen",
+    "@androidWidgetStep1": {
+        "description": "Android widget step 1"
+    },
+    "androidWidgetStep2": "Tap on 'Widgets' from the menu",
+    "@androidWidgetStep2": {
+        "description": "Android widget step 2"
+    },
+    "androidWidgetStep3": "Find 'Huda' in the widget list",
+    "@androidWidgetStep3": {
+        "description": "Android widget step 3"
+    },
+    "androidWidgetStep4": "Drag and drop the widget to your home screen",
+    "@androidWidgetStep4": {
+        "description": "Android widget step 4"
+    },
+    "iosWidgetStep1": "Long press on an empty area of your home screen",
+    "@iosWidgetStep1": {
+        "description": "iOS widget step 1"
+    },
+    "iosWidgetStep2": "Tap the '+' button in the top left corner",
+    "@iosWidgetStep2": {
+        "description": "iOS widget step 2"
+    },
+    "iosWidgetStep3": "Search for 'Huda' in the widget gallery",
+    "@iosWidgetStep3": {
+        "description": "iOS widget step 3"
+    },
+    "iosWidgetStep4": "Choose a widget size and tap 'Add Widget'",
+    "@iosWidgetStep4": {
+        "description": "iOS widget step 4"
+    },
+    "genericWidgetStep1": "Long press on your home screen and look for 'Widgets'",
+    "@genericWidgetStep1": {
+        "description": "Generic widget step 1"
+    },
+    "genericWidgetStep2": "Find 'Huda' widget and add it to your home screen",
+    "@genericWidgetStep2": {
+        "description": "Generic widget step 2"
     }
 }

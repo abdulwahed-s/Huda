@@ -2627,4 +2627,63 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get duaa => 'Дуа';
+
+  @override
+  String get addWidgetToHomeScreen => 'Добавить виджет на главный экран';
+
+  @override
+  String get addWidgetInstructions =>
+      'Нажмите кнопку ниже, чтобы добавить виджет Huda прямо на главный экран. Он отображает прекрасные аяты Корана, которые автоматически обновляются.';
+
+  @override
+  String get addWidget => 'Добавить виджет';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'Эта функция доступна только на Android';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'Закрепление виджетов не поддерживается на этом устройстве';
+
+  @override
+  String get errorAddingWidget => 'Ошибка при добавлении виджета';
+
+  @override
+  String get howToAddWidget => 'Как добавить виджет';
+
+  @override
+  String get androidWidgetStep1 =>
+      'Нажмите и удерживайте пустую область на главном экране';
+
+  @override
+  String get androidWidgetStep2 => 'Нажмите \'Виджеты\' в меню';
+
+  @override
+  String get androidWidgetStep3 => 'Найдите \'Huda\' в списке виджетов';
+
+  @override
+  String get androidWidgetStep4 => 'Перетащите виджет на главный экран';
+
+  @override
+  String get iosWidgetStep1 =>
+      'Нажмите и удерживайте пустую область на главном экране';
+
+  @override
+  String get iosWidgetStep2 => 'Нажмите кнопку \'+\' в верхнем левом углу';
+
+  @override
+  String get iosWidgetStep3 => 'Найдите \'Huda\' в галерее виджетов';
+
+  @override
+  String get iosWidgetStep4 =>
+      'Выберите размер виджета и нажмите \'Добавить виджет\'';
+
+  @override
+  String get genericWidgetStep1 =>
+      'Нажмите и удерживайте главный экран и найдите \'Виджеты\'';
+
+  @override
+  String get genericWidgetStep2 =>
+      'Найдите виджет \'Huda\' и добавьте его на главный экран';
 }

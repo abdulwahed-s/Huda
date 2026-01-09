@@ -2609,4 +2609,62 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get duaa => 'দোয়া';
+
+  @override
+  String get addWidgetToHomeScreen => 'হোম স্ক্রিনে উইজেট যোগ করুন';
+
+  @override
+  String get addWidgetInstructions =>
+      'আপনার হোম স্ক্রিনে সরাসরি হুদা উইজেট যোগ করতে নিচের বোতামে ট্যাপ করুন। এটি সুন্দর কুরআনের আয়াত প্রদর্শন করে যা স্বয়ংক্রিয়ভাবে আপডেট হয়।';
+
+  @override
+  String get addWidget => 'উইজেট যোগ করুন';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'এই বৈশিষ্ট্যটি শুধুমাত্র অ্যান্ড্রয়েডে উপলব্ধ';
+
+  @override
+  String get pinWidgetNotSupported => 'এই ডিভাইসে উইজেট পিন করা সমর্থিত নয়';
+
+  @override
+  String get errorAddingWidget => 'উইজেট যোগ করতে ত্রুটি';
+
+  @override
+  String get howToAddWidget => 'কিভাবে উইজেট যোগ করবেন';
+
+  @override
+  String get androidWidgetStep1 =>
+      'আপনার হোম স্ক্রিনের একটি খালি জায়গায় দীর্ঘ প্রেস করুন';
+
+  @override
+  String get androidWidgetStep2 => 'মেনু থেকে \'উইজেট\' এ ট্যাপ করুন';
+
+  @override
+  String get androidWidgetStep3 => 'উইজেট তালিকায় \'হুদা\' খুঁজুন';
+
+  @override
+  String get androidWidgetStep4 => 'উইজেটটি আপনার হোম স্ক্রিনে টেনে আনুন';
+
+  @override
+  String get iosWidgetStep1 =>
+      'আপনার হোম স্ক্রিনের একটি খালি জায়গায় দীর্ঘ প্রেস করুন';
+
+  @override
+  String get iosWidgetStep2 => 'উপরের বাম কোণে \'+\' বোতামে ট্যাপ করুন';
+
+  @override
+  String get iosWidgetStep3 => 'উইজেট গ্যালারিতে \'হুদা\' অনুসন্ধান করুন';
+
+  @override
+  String get iosWidgetStep4 =>
+      'একটি উইজেট সাইজ নির্বাচন করুন এবং \'উইজেট যোগ করুন\' এ ট্যাপ করুন';
+
+  @override
+  String get genericWidgetStep1 =>
+      'আপনার হোম স্ক্রিনে দীর্ঘ প্রেস করুন এবং \'উইজেট\' খুঁজুন';
+
+  @override
+  String get genericWidgetStep2 =>
+      '\'হুদা\' উইজেট খুঁজুন এবং এটি আপনার হোম স্ক্রিনে যোগ করুন';
 }

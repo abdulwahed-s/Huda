@@ -2606,4 +2606,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get duaa => 'Duaa';
+
+  @override
+  String get addWidgetToHomeScreen => 'Add Widget to Home Screen';
+
+  @override
+  String get addWidgetInstructions =>
+      'Tap the button below to add the Huda widget directly to your home screen. This displays beautiful Quranic verses that update automatically.';
+
+  @override
+  String get addWidget => 'Add Widget';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'This feature is only available on Android';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'Pin widget is not supported on this device';
+
+  @override
+  String get errorAddingWidget => 'Error adding widget';
+
+  @override
+  String get howToAddWidget => 'How to add the widget';
+
+  @override
+  String get androidWidgetStep1 =>
+      'Long press on an empty area of your home screen';
+
+  @override
+  String get androidWidgetStep2 => 'Tap on \'Widgets\' from the menu';
+
+  @override
+  String get androidWidgetStep3 => 'Find \'Huda\' in the widget list';
+
+  @override
+  String get androidWidgetStep4 =>
+      'Drag and drop the widget to your home screen';
+
+  @override
+  String get iosWidgetStep1 =>
+      'Long press on an empty area of your home screen';
+
+  @override
+  String get iosWidgetStep2 => 'Tap the \'+\' button in the top left corner';
+
+  @override
+  String get iosWidgetStep3 => 'Search for \'Huda\' in the widget gallery';
+
+  @override
+  String get iosWidgetStep4 => 'Choose a widget size and tap \'Add Widget\'';
+
+  @override
+  String get genericWidgetStep1 =>
+      'Long press on your home screen and look for \'Widgets\'';
+
+  @override
+  String get genericWidgetStep2 =>
+      'Find \'Huda\' widget and add it to your home screen';
 }

@@ -933,5 +933,22 @@
     "duaa": "دعا",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
-    }
+    },
+    "addWidgetToHomeScreen": "ہوم اسکرین پر ویجیٹ شامل کریں",
+    "addWidgetInstructions": "ہدٰی ویجیٹ کو براہ راست اپنی ہوم اسکرین پر شامل کرنے کے لیے نیچے دیے گئے بٹن کو ٹیپ کریں۔ یہ خوبصورت قرآنی آیات دکھاتا ہے جو خود بخود اپ ڈیٹ ہوتی ہیں۔",
+    "addWidget": "ویجیٹ شامل کریں",
+    "featureOnlyAvailableOnAndroid": "یہ خصوصیت صرف اینڈرائیڈ پر دستیاب ہے",
+    "pinWidgetNotSupported": "اس ڈیوائس پر ویجیٹ پن کرنا تعاون یافتہ نہیں ہے",
+    "errorAddingWidget": "ویجیٹ شامل کرنے میں خرابی",
+    "howToAddWidget": "ویجیٹ کیسے شامل کریں",
+    "androidWidgetStep1": "اپنی ہوم اسکرین کے خالی جگہ پر دیر تک دبائیں",
+    "androidWidgetStep2": "مینو سے 'ویجیٹس' پر ٹیپ کریں",
+    "androidWidgetStep3": "ویجیٹس کی فہرست میں 'ہدٰی' تلاش کریں",
+    "androidWidgetStep4": "ویجیٹ کو اپنی ہوم اسکرین پر کھینچیں",
+    "iosWidgetStep1": "اپنی ہوم اسکرین کے خالی جگہ پر دیر تک دبائیں",
+    "iosWidgetStep2": "اوپر بائیں کونے میں '+' بٹن پر ٹیپ کریں",
+    "iosWidgetStep3": "ویجیٹ گیلری میں 'ہدٰی' تلاش کریں",
+    "iosWidgetStep4": "ویجیٹ کا سائز منتخب کریں اور 'ویجیٹ شامل کریں' پر ٹیپ کریں",
+    "genericWidgetStep1": "اپنی ہوم اسکرین پر دیر تک دبائیں اور 'ویجیٹس' تلاش کریں",
+    "genericWidgetStep2": "'ہدٰی' ویجیٹ تلاش کریں اور اسے اپنی ہوم اسکرین پر شامل کریں"
 }

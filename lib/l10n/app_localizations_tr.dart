@@ -2601,4 +2601,62 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get duaa => 'Dua';
+
+  @override
+  String get addWidgetToHomeScreen => 'Widget\'ı Ana Ekrana Ekle';
+
+  @override
+  String get addWidgetInstructions =>
+      'Huda widget\'ını doğrudan ana ekranınıza eklemek için aşağıdaki düğmeye dokunun. Otomatik olarak güncellenen güzel Kuran ayetlerini görüntüler.';
+
+  @override
+  String get addWidget => 'Widget Ekle';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'Bu özellik yalnızca Android\'de kullanılabilir';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'Widget sabitleme bu cihazda desteklenmiyor';
+
+  @override
+  String get errorAddingWidget => 'Widget eklenirken hata';
+
+  @override
+  String get howToAddWidget => 'Widget nasıl eklenir';
+
+  @override
+  String get androidWidgetStep1 => 'Ana ekranınızda boş bir alana uzun basın';
+
+  @override
+  String get androidWidgetStep2 => 'Menüden \'Widget\'lar\'a dokunun';
+
+  @override
+  String get androidWidgetStep3 => 'Widget listesinde \'Huda\'yı bulun';
+
+  @override
+  String get androidWidgetStep4 =>
+      'Widget\'ı ana ekranınıza sürükleyip bırakın';
+
+  @override
+  String get iosWidgetStep1 => 'Ana ekranınızda boş bir alana uzun basın';
+
+  @override
+  String get iosWidgetStep2 => 'Sol üst köşedeki \'+\' düğmesine dokunun';
+
+  @override
+  String get iosWidgetStep3 => 'Widget galerisinde \'Huda\'yı arayın';
+
+  @override
+  String get iosWidgetStep4 =>
+      'Bir widget boyutu seçin ve \'Widget Ekle\'ye dokunun';
+
+  @override
+  String get genericWidgetStep1 =>
+      'Ana ekranınıza uzun basın ve \'Widget\'lar\'ı arayın';
+
+  @override
+  String get genericWidgetStep2 =>
+      '\'Huda\' widget\'ını bulun ve ana ekranınıza ekleyin';
 }

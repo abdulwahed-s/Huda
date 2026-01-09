@@ -957,5 +957,22 @@
     "duaa": "Doa",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
-    }
+    },
+    "addWidgetToHomeScreen": "Tambah widget ke skrin utama",
+    "addWidgetInstructions": "Ketik butang di bawah untuk menambah widget Huda terus ke skrin utama anda. Ia memaparkan ayat-ayat Al-Quran yang indah yang dikemas kini secara automatik.",
+    "addWidget": "Tambah Widget",
+    "featureOnlyAvailableOnAndroid": "Ciri ini hanya tersedia pada Android",
+    "pinWidgetNotSupported": "Penyematan widget tidak disokong pada peranti ini",
+    "errorAddingWidget": "Ralat menambah widget",
+    "howToAddWidget": "Cara menambah widget",
+    "androidWidgetStep1": "Tekan lama pada kawasan kosong skrin utama anda",
+    "androidWidgetStep2": "Ketik 'Widget' dari menu",
+    "androidWidgetStep3": "Cari 'Huda' dalam senarai widget",
+    "androidWidgetStep4": "Seret widget ke skrin utama anda",
+    "iosWidgetStep1": "Tekan lama pada kawasan kosong skrin utama anda",
+    "iosWidgetStep2": "Ketik butang '+' di penjuru kiri atas",
+    "iosWidgetStep3": "Cari 'Huda' dalam galeri widget",
+    "iosWidgetStep4": "Pilih saiz widget dan ketik 'Tambah Widget'",
+    "genericWidgetStep1": "Tekan lama pada skrin utama anda dan cari 'Widget'",
+    "genericWidgetStep2": "Cari widget 'Huda' dan tambahkannya ke skrin utama anda"
 }

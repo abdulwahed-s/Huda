@@ -870,5 +870,22 @@
     "duaa": "Дуа",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
-    }
+    },
+    "addWidgetToHomeScreen": "Добавить виджет на главный экран",
+    "addWidgetInstructions": "Нажмите кнопку ниже, чтобы добавить виджет Huda прямо на главный экран. Он отображает прекрасные аяты Корана, которые автоматически обновляются.",
+    "addWidget": "Добавить виджет",
+    "featureOnlyAvailableOnAndroid": "Эта функция доступна только на Android",
+    "pinWidgetNotSupported": "Закрепление виджетов не поддерживается на этом устройстве",
+    "errorAddingWidget": "Ошибка при добавлении виджета",
+    "howToAddWidget": "Как добавить виджет",
+    "androidWidgetStep1": "Нажмите и удерживайте пустую область на главном экране",
+    "androidWidgetStep2": "Нажмите 'Виджеты' в меню",
+    "androidWidgetStep3": "Найдите 'Huda' в списке виджетов",
+    "androidWidgetStep4": "Перетащите виджет на главный экран",
+    "iosWidgetStep1": "Нажмите и удерживайте пустую область на главном экране",
+    "iosWidgetStep2": "Нажмите кнопку '+' в верхнем левом углу",
+    "iosWidgetStep3": "Найдите 'Huda' в галерее виджетов",
+    "iosWidgetStep4": "Выберите размер виджета и нажмите 'Добавить виджет'",
+    "genericWidgetStep1": "Нажмите и удерживайте главный экран и найдите 'Виджеты'",
+    "genericWidgetStep2": "Найдите виджет 'Huda' и добавьте его на главный экран"
 }

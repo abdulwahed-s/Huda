@@ -2563,4 +2563,60 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get duaa => 'دعاء';
+
+  @override
+  String get addWidgetToHomeScreen => 'إضافة العنصر إلى الشاشة الرئيسية';
+
+  @override
+  String get addWidgetInstructions =>
+      'اضغط الزر أدناه لإضافة عنصر هُدى مباشرة إلى شاشتك الرئيسية. يعرض آيات قرآنية جميلة تتحدث تلقائياً.';
+
+  @override
+  String get addWidget => 'إضافة العنصر';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'هذه الميزة متاحة فقط على أندرويد';
+
+  @override
+  String get pinWidgetNotSupported => 'تثبيت العنصر غير مدعوم على هذا الجهاز';
+
+  @override
+  String get errorAddingWidget => 'خطأ في إضافة العنصر';
+
+  @override
+  String get howToAddWidget => 'كيفية إضافة العنصر';
+
+  @override
+  String get androidWidgetStep1 =>
+      'اضغط مطولاً على مساحة فارغة في شاشتك الرئيسية';
+
+  @override
+  String get androidWidgetStep2 => 'اضغط على \'العناصر\' من القائمة';
+
+  @override
+  String get androidWidgetStep3 => 'ابحث عن \'هُدى\' في قائمة العناصر';
+
+  @override
+  String get androidWidgetStep4 => 'اسحب العنصر وأفلته في شاشتك الرئيسية';
+
+  @override
+  String get iosWidgetStep1 => 'اضغط مطولاً على مساحة فارغة في شاشتك الرئيسية';
+
+  @override
+  String get iosWidgetStep2 => 'اضغط على زر \'+\' في الزاوية العلوية اليسرى';
+
+  @override
+  String get iosWidgetStep3 => 'ابحث عن \'هُدى\' في معرض العناصر';
+
+  @override
+  String get iosWidgetStep4 => 'اختر حجم العنصر واضغط على \'إضافة عنصر\'';
+
+  @override
+  String get genericWidgetStep1 =>
+      'اضغط مطولاً على شاشتك الرئيسية وابحث عن \'العناصر\'';
+
+  @override
+  String get genericWidgetStep2 =>
+      'ابحث عن عنصر \'هُدى\' وأضفه إلى شاشتك الرئيسية';
 }

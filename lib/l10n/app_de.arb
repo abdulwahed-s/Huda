@@ -851,5 +851,22 @@
     "duaa": "Dua",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
-    }
+    },
+    "addWidgetToHomeScreen": "Widget zum Startbildschirm hinzufügen",
+    "addWidgetInstructions": "Tippen Sie auf die Schaltfläche unten, um das Huda-Widget direkt zu Ihrem Startbildschirm hinzuzufügen. Es zeigt wunderschöne Koranverse an, die automatisch aktualisiert werden.",
+    "addWidget": "Widget hinzufügen",
+    "featureOnlyAvailableOnAndroid": "Diese Funktion ist nur auf Android verfügbar",
+    "pinWidgetNotSupported": "Widget-Anheften wird auf diesem Gerät nicht unterstützt",
+    "errorAddingWidget": "Fehler beim Hinzufügen des Widgets",
+    "howToAddWidget": "Wie man das Widget hinzufügt",
+    "androidWidgetStep1": "Drücken Sie lange auf einen leeren Bereich Ihres Startbildschirms",
+    "androidWidgetStep2": "Tippen Sie im Menü auf 'Widgets'",
+    "androidWidgetStep3": "Finden Sie 'Huda' in der Widget-Liste",
+    "androidWidgetStep4": "Ziehen Sie das Widget auf Ihren Startbildschirm",
+    "iosWidgetStep1": "Drücken Sie lange auf einen leeren Bereich Ihres Startbildschirms",
+    "iosWidgetStep2": "Tippen Sie auf die '+'-Schaltfläche in der oberen linken Ecke",
+    "iosWidgetStep3": "Suchen Sie nach 'Huda' in der Widget-Galerie",
+    "iosWidgetStep4": "Wählen Sie eine Widget-Größe und tippen Sie auf 'Widget hinzufügen'",
+    "genericWidgetStep1": "Drücken Sie lange auf Ihren Startbildschirm und suchen Sie nach 'Widgets'",
+    "genericWidgetStep2": "Finden Sie das 'Huda'-Widget und fügen Sie es Ihrem Startbildschirm hinzu"
 }

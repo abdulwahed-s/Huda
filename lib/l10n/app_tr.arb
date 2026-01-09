@@ -870,5 +870,22 @@
     "duaa": "Dua",
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
-    }
+    },
+    "addWidgetToHomeScreen": "Widget'ı Ana Ekrana Ekle",
+    "addWidgetInstructions": "Huda widget'ını doğrudan ana ekranınıza eklemek için aşağıdaki düğmeye dokunun. Otomatik olarak güncellenen güzel Kuran ayetlerini görüntüler.",
+    "addWidget": "Widget Ekle",
+    "featureOnlyAvailableOnAndroid": "Bu özellik yalnızca Android'de kullanılabilir",
+    "pinWidgetNotSupported": "Widget sabitleme bu cihazda desteklenmiyor",
+    "errorAddingWidget": "Widget eklenirken hata",
+    "howToAddWidget": "Widget nasıl eklenir",
+    "androidWidgetStep1": "Ana ekranınızda boş bir alana uzun basın",
+    "androidWidgetStep2": "Menüden 'Widget'lar'a dokunun",
+    "androidWidgetStep3": "Widget listesinde 'Huda'yı bulun",
+    "androidWidgetStep4": "Widget'ı ana ekranınıza sürükleyip bırakın",
+    "iosWidgetStep1": "Ana ekranınızda boş bir alana uzun basın",
+    "iosWidgetStep2": "Sol üst köşedeki '+' düğmesine dokunun",
+    "iosWidgetStep3": "Widget galerisinde 'Huda'yı arayın",
+    "iosWidgetStep4": "Bir widget boyutu seçin ve 'Widget Ekle'ye dokunun",
+    "genericWidgetStep1": "Ana ekranınıza uzun basın ve 'Widget'lar'ı arayın",
+    "genericWidgetStep2": "'Huda' widget'ını bulun ve ana ekranınıza ekleyin"
 }

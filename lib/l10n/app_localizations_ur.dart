@@ -2598,4 +2598,62 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get duaa => 'دعا';
+
+  @override
+  String get addWidgetToHomeScreen => 'ہوم اسکرین پر ویجیٹ شامل کریں';
+
+  @override
+  String get addWidgetInstructions =>
+      'ہدٰی ویجیٹ کو براہ راست اپنی ہوم اسکرین پر شامل کرنے کے لیے نیچے دیے گئے بٹن کو ٹیپ کریں۔ یہ خوبصورت قرآنی آیات دکھاتا ہے جو خود بخود اپ ڈیٹ ہوتی ہیں۔';
+
+  @override
+  String get addWidget => 'ویجیٹ شامل کریں';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'یہ خصوصیت صرف اینڈرائیڈ پر دستیاب ہے';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'اس ڈیوائس پر ویجیٹ پن کرنا تعاون یافتہ نہیں ہے';
+
+  @override
+  String get errorAddingWidget => 'ویجیٹ شامل کرنے میں خرابی';
+
+  @override
+  String get howToAddWidget => 'ویجیٹ کیسے شامل کریں';
+
+  @override
+  String get androidWidgetStep1 =>
+      'اپنی ہوم اسکرین کے خالی جگہ پر دیر تک دبائیں';
+
+  @override
+  String get androidWidgetStep2 => 'مینو سے \'ویجیٹس\' پر ٹیپ کریں';
+
+  @override
+  String get androidWidgetStep3 => 'ویجیٹس کی فہرست میں \'ہدٰی\' تلاش کریں';
+
+  @override
+  String get androidWidgetStep4 => 'ویجیٹ کو اپنی ہوم اسکرین پر کھینچیں';
+
+  @override
+  String get iosWidgetStep1 => 'اپنی ہوم اسکرین کے خالی جگہ پر دیر تک دبائیں';
+
+  @override
+  String get iosWidgetStep2 => 'اوپر بائیں کونے میں \'+\' بٹن پر ٹیپ کریں';
+
+  @override
+  String get iosWidgetStep3 => 'ویجیٹ گیلری میں \'ہدٰی\' تلاش کریں';
+
+  @override
+  String get iosWidgetStep4 =>
+      'ویجیٹ کا سائز منتخب کریں اور \'ویجیٹ شامل کریں\' پر ٹیپ کریں';
+
+  @override
+  String get genericWidgetStep1 =>
+      'اپنی ہوم اسکرین پر دیر تک دبائیں اور \'ویجیٹس\' تلاش کریں';
+
+  @override
+  String get genericWidgetStep2 =>
+      '\'ہدٰی\' ویجیٹ تلاش کریں اور اسے اپنی ہوم اسکرین پر شامل کریں';
 }

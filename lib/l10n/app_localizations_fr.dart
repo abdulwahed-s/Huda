@@ -2669,4 +2669,66 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get duaa => 'Doua';
+
+  @override
+  String get addWidgetToHomeScreen => 'Ajouter un widget à l\'écran d\'accueil';
+
+  @override
+  String get addWidgetInstructions =>
+      'Appuyez sur le bouton ci-dessous pour ajouter le widget Huda directement à votre écran d\'accueil. Il affiche de beaux versets coraniques qui se mettent à jour automatiquement.';
+
+  @override
+  String get addWidget => 'Ajouter le Widget';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'Cette fonctionnalité n\'est disponible que sur Android';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'L\'épinglage de widgets n\'est pas pris en charge sur cet appareil';
+
+  @override
+  String get errorAddingWidget => 'Erreur lors de l\'ajout du widget';
+
+  @override
+  String get howToAddWidget => 'Comment ajouter le widget';
+
+  @override
+  String get androidWidgetStep1 =>
+      'Appuyez longuement sur une zone vide de votre écran d\'accueil';
+
+  @override
+  String get androidWidgetStep2 => 'Appuyez sur \'Widgets\' dans le menu';
+
+  @override
+  String get androidWidgetStep3 => 'Trouvez \'Huda\' dans la liste des widgets';
+
+  @override
+  String get androidWidgetStep4 =>
+      'Faites glisser le widget vers votre écran d\'accueil';
+
+  @override
+  String get iosWidgetStep1 =>
+      'Appuyez longuement sur une zone vide de votre écran d\'accueil';
+
+  @override
+  String get iosWidgetStep2 =>
+      'Appuyez sur le bouton \'+\' dans le coin supérieur gauche';
+
+  @override
+  String get iosWidgetStep3 =>
+      'Recherchez \'Huda\' dans la galerie des widgets';
+
+  @override
+  String get iosWidgetStep4 =>
+      'Sélectionnez une taille de widget et appuyez sur \'Ajouter le Widget\'';
+
+  @override
+  String get genericWidgetStep1 =>
+      'Appuyez longuement sur votre écran d\'accueil et cherchez \'Widgets\'';
+
+  @override
+  String get genericWidgetStep2 =>
+      'Trouvez le widget \'Huda\' et ajoutez-le à votre écran d\'accueil';
 }
