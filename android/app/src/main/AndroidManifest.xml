@@ -42,7 +42,7 @@
 
         <!-- Home Screen Widget Provider -->
         <receiver
-            android:name="com.aw.huda.HudaWidgetProvider"
+            android:name="com.aw.huda.widget.HudaGlanceWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
