@@ -1,4 +1,5 @@
 import WidgetKit
+import SwiftUI
 
 @main
 struct HudaWidgetBundle: WidgetBundle {
