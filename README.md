@@ -9,13 +9,24 @@
 
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
       alt='Get it on Google Play'
-      height="80">](https://play.google.com/store/apps/details?id=com.aw.huda)
+      height="80"
+      style="vertical-align: middle;">](https://play.google.com/store/apps/details?id=com.aw.huda)
 [<img src="assets\images\github\appgallery.png"
       alt="Get it at IzzyOnDroid"
-      height="80">](https://appgallery.huawei.com/app/C115050257?sharePrepath=ag&channelId=github&id=5522aff111f141d5a6acb26dca07ea6a&s=A18C3E4E69C7626366049CEE3F09F3E0246CB1DFBDB3D27FD30C12F48B5BB14F&detailType=0&v=&callType=AGDLINK&installType=0000&shareTo=qrcode)
+      height="80"
+      style="vertical-align: middle;">](https://appgallery.huawei.com/app/C115050257?sharePrepath=ag&channelId=github&id=5522aff111f141d5a6acb26dca07ea6a&s=A18C3E4E69C7626366049CEE3F09F3E0246CB1DFBDB3D27FD30C12F48B5BB14F&detailType=0&v=&callType=AGDLINK&installType=0000&shareTo=qrcode)
 [<img src="https://user-images.githubusercontent.com/69304392/148696068-0cfea65d-b18f-4685-82b5-329a330b1c0d.png"
       alt='Get it on GitHub'
-      height="80">](https://github.com/abdulwahed-s/huda/releases/latest)
+      height="80"
+      style="vertical-align: middle;">](https://github.com/abdulwahed-s/huda/releases/latest)
+[<img src="assets\images\github\microsoftStore.png"
+      alt='Get it on Microsoft Store'
+      height="60"
+      style="vertical-align: middle; margin-right: 10px;">](https://apps.microsoft.com/detail/9P68H8M1G92B)
+[<img src="assets\images\github\appstore.png"
+      alt='Get it on App Store'
+      height="60"
+      style="vertical-align: middle;">](https://apps.apple.com/us/app/huda-islamic-companion-app/id6757343816)
 
 </div>
 
