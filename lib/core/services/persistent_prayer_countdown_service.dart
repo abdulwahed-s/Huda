@@ -546,6 +546,38 @@ class PrayerCountdownLocalizations {
         return 'Error calculating prayer time';
     }
   }
+
+  /// Get localized post-prayer title showing elapsed time since athan
+  static Future<String> getPostPrayerTitle({
+    required String prayerName,
+    required String elapsedText,
+  }) async {
+    final language = await _getCurrentLanguage();
+    final localizedPrayer = await _getLocalizedPrayerName(prayerName, language);
+
+    switch (language) {
+      case 'ar':
+        return '$elapsedText من أذان $localizedPrayer'; // "since Fajr athan"
+      case 'fr':
+        return "$elapsedText depuis l'appel de $localizedPrayer"; // "since call to prayer"
+      case 'es':
+        return '$elapsedText desde el adhan de $localizedPrayer';
+      case 'de':
+        return '$elapsedText seit dem $localizedPrayer-Gebetsruf';
+      case 'ru':
+        return '$elapsedText после азана на $localizedPrayer';
+      case 'tr':
+        return '$localizedPrayer ezanından $elapsedText';
+      case 'ur':
+        return '$localizedPrayer کی اذان سے $elapsedText';
+      case 'ms':
+        return '$elapsedText sejak azan $localizedPrayer';
+      case 'bn':
+        return '$localizedPrayer আযানের $elapsedText পর';
+      default:
+        return '$elapsedText since $localizedPrayer athan';
+    }
+  }
 }
 
 @pragma('vm:entry-point')
@@ -563,6 +595,12 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   NextPrayerInfo? _lastValidPrayerInfo; // Cache last good result
   bool _hasShownError = false; // Track if error was already shown
   bool _isCalculatingTomorrowPrayers = false; // Track async calculation state
+
+  // Smart adaptive interval - track last minute update for battery optimization
+  DateTime? _lastMinuteUpdate;
+
+  // Post-prayer grace period (30 minutes) - show elapsed time since athan
+  static const Duration _postPrayerGracePeriod = Duration(minutes: 30);
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
@@ -807,6 +845,45 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     }
   }
 
+  // 🕐 Post-prayer elapsed time detection
+
+  /// Returns elapsed time info if within 30 min grace period, null otherwise
+  PostPrayerInfo? _getPostPrayerInfo() {
+    if (_prayerTimes == null) return null;
+
+    final now = DateTime.now();
+    final prayers = [
+      Prayer.fajr,
+      Prayer.dhuhr,
+      Prayer.asr,
+      Prayer.maghrib,
+      Prayer.isha,
+    ];
+
+    // Find the most recent prayer that has passed (check in reverse order)
+    for (final prayer in prayers.reversed) {
+      final prayerTime = _prayerTimes!.timeForPrayer(prayer);
+      if (prayerTime != null && prayerTime.isBefore(now)) {
+        final elapsed = now.difference(prayerTime);
+        if (elapsed <= _postPrayerGracePeriod) {
+          return PostPrayerInfo(
+            prayerName: _getPrayerDisplayName(prayer),
+            elapsedDuration: elapsed,
+          );
+        }
+        break; // Past grace period, show next prayer countdown
+      }
+    }
+    return null;
+  }
+
+  /// Format elapsed time as "+MM:SS" for post-prayer display
+  String _formatElapsedTime(Duration elapsed) {
+    final m = elapsed.inMinutes;
+    final s = elapsed.inSeconds.remainder(60);
+    return '+$m:${s.toString().padLeft(2, '0')}';
+  }
+
   // 🎨 Enhanced notification design helper methods
 
   String _getPrayerEmoji(String prayerName) {
@@ -856,17 +933,45 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     }
   }
 
+  /// Smart adaptive time formatting:
+  /// - More than 1 hour: "2h 34m" (minute-based)
+  /// - Less than 1 hour: "34:25" (second-based countdown)
   String _formatTimeWithUrgency(Duration duration) {
     final h = duration.inHours;
     final m = duration.inMinutes.remainder(60);
     final s = duration.inSeconds.remainder(60);
 
-    // Format as -H:MM:SS for all cases
+    // Smart adaptive display based on time remaining
     if (h > 0) {
-      return '-$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+      // More than 1 hour: show hours and minutes only (battery friendly)
+      return '${h}h ${m}m';
     } else {
-      return '-$m:${s.toString().padLeft(2, '0')}';
+      // Less than 1 hour: show minutes:seconds countdown
+      return '$m:${s.toString().padLeft(2, '0')}';
     }
+  }
+
+  /// Check if we should skip this update (for battery optimization)
+  /// Returns true if we should skip, false if we should update
+  bool _shouldSkipUpdate(Duration timeRemaining) {
+    // If less than 1 hour, always update (second-based mode)
+    if (timeRemaining.inMinutes < 60) {
+      _lastMinuteUpdate = null; // Reset minute tracking
+      return false;
+    }
+
+    // More than 1 hour: only update once per minute
+    final now = DateTime.now();
+    if (_lastMinuteUpdate != null) {
+      final secondsSinceLastUpdate =
+          now.difference(_lastMinuteUpdate!).inSeconds;
+      if (secondsSinceLastUpdate < 60) {
+        return true; // Skip this update
+      }
+    }
+
+    _lastMinuteUpdate = now;
+    return false; // Proceed with update
   }
 
   Future<String> _formatPrayerTime(DateTime prayerTime) async {
@@ -1006,6 +1111,51 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     return '$contextMessage • $atText $prayerTimeText • $nowText $currentTimeStr';
   }
 
+  /// Build subtitle for post-prayer notification
+  Future<String> _buildPostPrayerSubtitle(PostPrayerInfo postPrayerInfo) async {
+    final language = await PrayerCountdownLocalizations._getCurrentLanguage();
+
+    // Get localized "Time to pray" message
+    String message;
+    switch (language) {
+      case 'ar':
+        message = 'حان وقت الصلاة 🤲';
+        break;
+      case 'fr':
+        message = "C'est l'heure de prier 🤲";
+        break;
+      case 'es':
+        message = 'Es hora de rezar 🤲';
+        break;
+      case 'de':
+        message = 'Zeit zu beten 🤲';
+        break;
+      case 'ru':
+        message = 'Время молиться 🤲';
+        break;
+      case 'tr':
+        message = 'Namaz vakti 🤲';
+        break;
+      case 'ur':
+        message = 'نماز کا وقت 🤲';
+        break;
+      case 'ms':
+        message = 'Masa untuk solat 🤲';
+        break;
+      case 'bn':
+        message = 'নামাজের সময় 🤲';
+        break;
+      default:
+        message = 'Time to pray 🤲';
+    }
+
+    // Get current time for context
+    final now = DateTime.now();
+    final currentTimeStr = await _formatPrayerTime(now);
+
+    return '$message • $currentTimeStr';
+  }
+
   @override
   void onRepeatEvent(DateTime timestamp) {
     // This method is called based on the interval set in ForegroundTaskOptions
@@ -1014,6 +1164,33 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
   void _updateNotification() async {
     try {
+      // 🕐 Check if we're in post-prayer grace period (30 min after athan)
+      final postPrayerInfo = _getPostPrayerInfo();
+
+      if (postPrayerInfo != null) {
+        // Show elapsed time since athan
+        final prayerEmoji = _getPrayerEmoji(postPrayerInfo.prayerName);
+        final elapsedText = _formatElapsedTime(postPrayerInfo.elapsedDuration);
+
+        // Get localized post-prayer title
+        final title = await PrayerCountdownLocalizations.getPostPrayerTitle(
+          prayerName: postPrayerInfo.prayerName,
+          elapsedText: '$prayerEmoji $elapsedText',
+        );
+
+        // Simple subtitle for post-prayer mode
+        final subtitle = await _buildPostPrayerSubtitle(postPrayerInfo);
+
+        FlutterForegroundTask.updateService(
+          notificationTitle: title,
+          notificationText: subtitle,
+        );
+
+        _hasShownError = false;
+        return;
+      }
+
+      // Normal countdown mode - get next prayer
       final nextPrayer = _getNextPrayerTime();
 
       if (nextPrayer == null) {
@@ -1032,6 +1209,12 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         }
         // If we have a cached result, keep using it silently
         return;
+      }
+
+      // 🔋 Smart adaptive interval: Skip update if in minute-based mode and
+      // less than 60 seconds since last update (battery optimization)
+      if (_shouldSkipUpdate(nextPrayer.duration)) {
+        return; // Skip this update cycle
       }
 
       // Reset error flag when we have valid data
@@ -1137,6 +1320,17 @@ class UrgencyStyle {
   });
 }
 
+// Helper class for post-prayer elapsed time
+class PostPrayerInfo {
+  final String prayerName;
+  final Duration elapsedDuration;
+
+  const PostPrayerInfo({
+    required this.prayerName,
+    required this.elapsedDuration,
+  });
+}
+
 class PersistentPrayerCountdownService {
   static final PersistentPrayerCountdownService _instance =
       PersistentPrayerCountdownService._internal();
@@ -1185,11 +1379,13 @@ class PersistentPrayerCountdownService {
         playSound: false,
       ),
       foregroundTaskOptions: ForegroundTaskOptions(
-        eventAction:
-            ForegroundTaskEventAction.repeat(1000), // Update every second
+        eventAction: ForegroundTaskEventAction.repeat(
+            1000), // Base interval - smart logic handles actual updates
         autoRunOnBoot: false,
-        allowWakeLock: true,
-        allowWifiLock: true,
+        allowWakeLock:
+            false, // FIXED: Disabled to prevent excessive battery drain
+        allowWifiLock:
+            false, // FIXED: Disabled - not needed for prayer countdown
       ),
     );
 
@@ -1325,78 +1521,3 @@ class PersistentPrayerCountdownService {
     stopPersistentCountdown();
   }
 }
-
-/*
-  ✅ USAGE EXAMPLE:
-  
-  // 1. Initialize the service (usually in main.dart when app starts)
-  final persistentService = PersistentPrayerCountdownService();
-  await persistentService.initialize();
-  
-  // 2. Start only if the user previously enabled it
-  await persistentService.startIfEnabled();
-  
-  // 3. Manual control (in prayer times screen)
-  await persistentService.startPersistentCountdown(); // User clicks start
-  await persistentService.stopPersistentCountdown();  // User clicks stop
-  
-  ✅ KEY BENEFITS:
-  
-  ⚡ No more notification spam - flutter_foreground_task updates silently
-  🔒 Non-dismissible notification that stays in the notification panel
-  🕌 Real-time countdown to next prayer (updates every second)
-  🔄 Automatically handles day transitions (after Isha → next day's Fajr)
-  🎯 Works in background even when app is closed
-  🎨 Enhanced notification design with prayer-specific emojis and smart formatting
-  ⚠️ Urgency-based styling (different styles when prayer time is near)
-  📱 Rich contextual information (actual prayer time, current time, custom messages)
-  🏗️ Self-contained - calculates prayer times directly using SharedPreferences
-  💾 Remembers user preference - starts/stops based on user choice
-  
-  ✅ STATE MANAGEMENT:
-  
-  📱 App startup: Only starts if user previously enabled it (getSavedState)
-  🔄 User control: Start/stop buttons save preference and persist across app restarts
-  💾 SharedPreferences: Saves 'persistent_prayer_countdown_enabled' boolean
-  🎯 Default behavior: Service is OFF by default for new users
-  
-  ✅ ENHANCED NOTIFICATION FEATURES:
-  
-  🌅 Prayer-specific emojis (🌅 Fajr, ☀️ Dhuhr, 🌤️ Asr, 🌇 Maghrib, 🌙 Isha)
-  ⚡ Smart time formatting based on urgency (shows seconds only when critical)
-  🔥 Urgency indicators (🔥 < 5min, ⚡ < 15min, ⚠️ < 30min)
-  📝 Contextual messages for each prayer with Islamic reminders
-  🕐 Shows both countdown and actual prayer time
-  ⏰ Displays current time for easy reference
-  🎯 Adaptive formatting for different time ranges
-  
-  ✅ TECHNICAL DETAILS:
-  
-  🏗️ Uses flutter_foreground_task instead of flutter_local_notifications
-  🔄 Updates notification content via FlutterForegroundTask.updateService()
-  🧠 Self-contained prayer calculation using adhan package and SharedPreferences
-  ⏱️ Runs in separate isolate for true background operation
-  🎛️ Configurable update interval (currently 1 second)
-  
-  ✅ COMPARISON WITH OLD SERVICE:
-  
-  ❌ OLD: Used flutter_local_notifications with show() every second
-  ✅ NEW: Uses flutter_foreground_task with updateService() silently
-  
-  ❌ OLD: Notifications would re-pop and annoy user
-  ✅ NEW: Updates existing notification content without re-popping
-  
-  ❌ OLD: Required complex notification channel management
-  ✅ NEW: Foreground task handles notification lifecycle automatically
-  
-  ❌ OLD: Could be dismissed by user
-  ✅ NEW: Truly persistent and non-dismissible
-  
-  ❌ OLD: Always started automatically
-  ✅ NEW: Respects user preference and starts only when enabled
-  
-  📋 REQUIRED PERMISSIONS (AndroidManifest.xml):
-  - android.permission.FOREGROUND_SERVICE ✅
-  - android.permission.POST_NOTIFICATIONS ✅
-  - android.permission.FOREGROUND_SERVICE_DATA_SYNC ✅
-*/
