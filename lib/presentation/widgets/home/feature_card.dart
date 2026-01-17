@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
@@ -94,8 +95,8 @@ class FeatureCard extends StatelessWidget {
                                     .withValues(alpha: 0.12),
                               ),
                             ),
-                            child: SvgPicture.asset(
-                              svgAsset!,
+                            child: SvgPicture(
+                              AssetBytesLoader(svgAsset!),
                               width: iconSize,
                               height: iconSize,
                               colorFilter: ColorFilter.mode(

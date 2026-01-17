@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/chat/chat_cubit.dart';
@@ -135,8 +136,8 @@ class CounselingEmptyState extends StatelessWidget {
         color: colorScheme.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      child: SvgPicture.asset(
-        'assets/images/consulting.svg',
+      child: SvgPicture(
+        const AssetBytesLoader('assets/images/consulting.svg.vec'),
         width: iconSize,
         height: iconSize,
         colorFilter: ColorFilter.mode(

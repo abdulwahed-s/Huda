@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/presentation/widgets/qiblah/compass_ring.dart';
 import 'package:huda/presentation/widgets/qiblah/pulsing_effect.dart';
@@ -38,8 +39,8 @@ class Compass extends StatelessWidget {
             child: AnimatedScale(
               scale: isAligned ? 1.2 : 1.0,
               duration: const Duration(milliseconds: 300),
-              child: SvgPicture.asset(
-                'assets/images/maccaicon.svg',
+              child: SvgPicture(
+                const AssetBytesLoader('assets/images/maccaicon.svg.vec'),
                 width: 40.w,
                 height: 40.h,
                 colorFilter: ColorFilter.mode(
@@ -56,8 +57,8 @@ class Compass extends StatelessWidget {
           AnimatedScale(
             scale: isAligned ? 1.05 : 1.0,
             duration: const Duration(milliseconds: 300),
-            child: SvgPicture.asset(
-              'assets/images/frame.svg',
+            child: SvgPicture(
+              const AssetBytesLoader('assets/images/frame.svg.vec'),
               colorFilter: ColorFilter.mode(
                 isAligned
                     ? (isDark ? context.darkGradientEnd : context.primaryColor)

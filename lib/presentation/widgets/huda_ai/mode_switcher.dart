@@ -204,7 +204,7 @@ class _ModeSwitcherState extends State<ModeSwitcher>
                 ),
                 Expanded(
                   child: ModeButton(
-                    svgPath: 'assets/images/consulting.svg',
+                    svgPath: 'assets/images/consulting.svg.vec',
                     label: AppLocalizations.of(context)!.counseling,
                     isSelected: widget.isCounselingMode,
                     isDark: widget.isDark,

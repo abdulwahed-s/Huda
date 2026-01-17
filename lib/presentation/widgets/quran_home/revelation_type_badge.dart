@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class RevelationTypeBadge extends StatelessWidget {
@@ -36,8 +37,12 @@ class RevelationTypeBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            isMeccan ? 'assets/images/mecca.svg' : 'assets/images/madina.svg',
+          SvgPicture(
+            AssetBytesLoader(
+              isMeccan
+                  ? 'assets/images/mecca.svg.vec'
+                  : 'assets/images/madina.svg.vec',
+            ),
             width: 10.w,
             height: 10.h,
           ),

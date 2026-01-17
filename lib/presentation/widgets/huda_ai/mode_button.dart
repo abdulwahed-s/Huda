@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class ModeButton extends StatefulWidget {
   final IconData? icon;
@@ -105,8 +106,8 @@ class _ModeButtonState extends State<ModeButton>
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeOut,
                       child: widget.svgPath != null
-                          ? SvgPicture.asset(
-                              widget.svgPath!,
+                          ? SvgPicture(
+                              AssetBytesLoader(widget.svgPath!),
                               width: widget.isSelected ? 21 : 20,
                               height: widget.isSelected ? 21 : 20,
                               colorFilter: ColorFilter.mode(

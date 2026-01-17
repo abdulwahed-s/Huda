@@ -32,7 +32,7 @@ class HomeContent extends StatelessWidget {
     return [
       FeatureItem(
         title: AppLocalizations.of(context)!.quran,
-        svgAsset: 'assets/images/quranicon.svg',
+        svgAsset: 'assets/images/quranicon.svg.vec',
         onTap: () async {
           await Navigator.pushNamed(context, '/homeQuran');
           refreshHomeData();
@@ -40,27 +40,27 @@ class HomeContent extends StatelessWidget {
       ),
       FeatureItem(
         title: AppLocalizations.of(context)!.prayerTimes,
-        svgAsset: 'assets/images/prayertimeicon.svg',
+        svgAsset: 'assets/images/prayertimeicon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.prayerTimes),
       ),
       FeatureItem(
         title: AppLocalizations.of(context)!.hadith,
-        svgAsset: 'assets/images/hadithsicon.svg',
+        svgAsset: 'assets/images/hadithsicon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.hadith),
       ),
       FeatureItem(
         title: AppLocalizations.of(context)!.athkar,
-        svgAsset: 'assets/images/athkaricon.svg',
+        svgAsset: 'assets/images/athkaricon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.athkar),
       ),
       FeatureItem(
         title: AppLocalizations.of(context)!.hijriCalendar,
-        svgAsset: 'assets/images/hijricalendaricon.svg',
+        svgAsset: 'assets/images/hijricalendaricon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.hijriCalendar),
       ),
       FeatureItem(
         title: AppLocalizations.of(context)!.books,
-        svgAsset: 'assets/images/booksicon.svg',
+        svgAsset: 'assets/images/booksicon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.books),
       ),
       FeatureItem(
@@ -76,7 +76,7 @@ class HomeContent extends StatelessWidget {
       if (PlatformUtils.isMobile)
         FeatureItem(
           title: AppLocalizations.of(context)!.qiblahDirection,
-          svgAsset: 'assets/images/qiblahicon.svg',
+          svgAsset: 'assets/images/qiblahicon.svg.vec',
           onTap: () => Navigator.pushNamed(context, AppRoute.qiblah),
         ),
       //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
@@ -88,12 +88,12 @@ class HomeContent extends StatelessWidget {
         ),
       FeatureItem(
         title: AppLocalizations.of(context)!.zakatCalculator,
-        svgAsset: 'assets/images/zakat.svg',
+        svgAsset: 'assets/images/zakat.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.zakatCalculator),
       ),
       FeatureItem(
         title: AppLocalizations.of(context)!.tasbih,
-        svgAsset: 'assets/images/tasbihicon.svg',
+        svgAsset: 'assets/images/tasbihicon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.tasbih),
       ),
       FeatureItem(
