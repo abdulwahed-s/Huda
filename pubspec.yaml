@@ -114,6 +114,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
   msix: ^3.16.12
+  vector_graphics_compiler: ^1.1.19
 
 msix_config:
   display_name: Huda
