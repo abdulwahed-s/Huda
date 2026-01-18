@@ -111,6 +111,18 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- Quick Settings Tile Service -->
+        <service
+            android:name=".tile.HudaTileService"
+            android:label="@string/tile_label"
+            android:icon="@drawable/ic_launcher_monochrome"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
     </application>
 
     <!-- Queries -->
