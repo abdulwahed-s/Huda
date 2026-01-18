@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/images/huda.png" alt="Huda App Logo" width="120" height="120">
+  <img src="assets/dev/huda.png" alt="Huda App Logo" width="120" height="120">
   
 # Huda - Islamic Companion App
 
@@ -11,7 +11,7 @@
       alt='Get it on Google Play'
       height="80"
       style="vertical-align: middle;">](https://play.google.com/store/apps/details?id=com.aw.huda)
-[<img src="assets\images\github\appgallery.png"
+[<img src="assets\dev\github\appgallery.png"
       alt="Get it at IzzyOnDroid"
       height="80"
       style="vertical-align: middle;">](https://appgallery.huawei.com/app/C115050257?sharePrepath=ag&channelId=github&id=5522aff111f141d5a6acb26dca07ea6a&s=A18C3E4E69C7626366049CEE3F09F3E0246CB1DFBDB3D27FD30C12F48B5BB14F&detailType=0&v=&callType=AGDLINK&installType=0000&shareTo=qrcode)
@@ -19,11 +19,11 @@
       alt='Get it on GitHub'
       height="80"
       style="vertical-align: middle;">](https://github.com/abdulwahed-s/huda/releases/latest)
-[<img src="assets\images\github\microsoftStore.png"
+[<img src="assets\dev\github\microsoftStore.png"
       alt='Get it on Microsoft Store'
       height="60"
       style="vertical-align: middle; margin-right: 10px;">](https://apps.microsoft.com/detail/9P68H8M1G92B)
-[<img src="assets\images\github\appstore.png"
+[<img src="assets\dev\github\appstore.png"
       alt='Get it on App Store'
       height="60"
       style="vertical-align: middle;">](https://apps.apple.com/us/app/huda-islamic-companion-app/id6757343816)
