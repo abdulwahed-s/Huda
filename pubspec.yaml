@@ -100,6 +100,7 @@ dependencies:
   avatar_glow: ^3.0.1
   flutter_macos_permissions: ^2.0.7
   quick_actions: ^1.1.0
+  vector_graphics: ^1.1.19
 
 dev_dependencies:
   flutter_test:
