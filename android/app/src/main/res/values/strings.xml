@@ -4,4 +4,5 @@
     <string name="widget_description_large">Large Quran Verses Widget - Display inspiring verses with larger text</string>
     <string name="widget_description_small">Small Quran Verses Widget - Compact display of inspiring verses</string>
     <string name="app_name">Huda</string>
+    <string name="tile_label">@string/app_name</string>
 </resources>
