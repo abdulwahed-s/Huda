@@ -63,18 +63,23 @@ class _BooksScreenState extends State<BooksScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-      appBar: BooksAppBar(isDark: isDark),
-      body: BlocBuilder<BooksCubit, BooksState>(
-        builder: (context, state) {
-          return _buildContentForState(context, state, isDark);
-        },
-      ),
-      floatingActionButton: LanguageSelectionFab(
-        animation: _fabAnimation,
-        selectedLanguage: selectedLanguage,
-        onLanguageSelected: _handleLanguageChange,
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: Scaffold(
+        backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
+        appBar: BooksAppBar(isDark: isDark),
+        body: BlocBuilder<BooksCubit, BooksState>(
+          builder: (context, state) {
+            return _buildContentForState(context, state, isDark);
+          },
+        ),
+        floatingActionButton: LanguageSelectionFab(
+          animation: _fabAnimation,
+          selectedLanguage: selectedLanguage,
+          onLanguageSelected: _handleLanguageChange,
+        ),
       ),
     );
   }

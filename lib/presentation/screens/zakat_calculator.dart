@@ -95,50 +95,55 @@ class _ZakatCalculatorState extends State<ZakatCalculator>
                 ],
         ),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: ZakatCalculatorAppBar(
-          onBackPressed: () => Navigator.pop(context),
-          onHelpPressed: _showInfoDialog,
-          tabController: _tabController,
-        ),
-        body: BlocBuilder<ZakatCalculatorCubit, ZakatCalculatorState>(
-          builder: (context, state) {
-            if (state is ZakatCalculatorLoading) {
-              return const LoadingView();
-            }
+      child: SafeArea(
+        top: false,
+        left: false,
+        right: false,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: ZakatCalculatorAppBar(
+            onBackPressed: () => Navigator.pop(context),
+            onHelpPressed: _showInfoDialog,
+            tabController: _tabController,
+          ),
+          body: BlocBuilder<ZakatCalculatorCubit, ZakatCalculatorState>(
+            builder: (context, state) {
+              if (state is ZakatCalculatorLoading) {
+                return const LoadingView();
+              }
 
-            if (state is ZakatCalculatorError) {
-              return ErrorView(message: state.message);
-            }
+              if (state is ZakatCalculatorError) {
+                return ErrorView(message: state.message);
+              }
 
-            if (state is ZakatCalculatorLoaded) {
-              // Update controllers with current values
-              _updateControllers(state);
+              if (state is ZakatCalculatorLoaded) {
+                // Update controllers with current values
+                _updateControllers(state);
 
-              return TabBarView(
-                controller: _tabController,
-                children: [
-                  CalculateTab(
-                    controllers: _controllers,
-                    state: state,
-                    onResetAll: () {
-                      _resetAllFields();
-                      context.read<ZakatCalculatorCubit>().resetCalculation();
-                    },
-                  ),
-                  ResultsTab(state: state),
-                  SettingsTab(
-                    state: state,
-                    goldPriceController: _goldPriceController,
-                    silverPriceController: _silverPriceController,
-                  ),
-                ],
-              );
-            }
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    CalculateTab(
+                      controllers: _controllers,
+                      state: state,
+                      onResetAll: () {
+                        _resetAllFields();
+                        context.read<ZakatCalculatorCubit>().resetCalculation();
+                      },
+                    ),
+                    ResultsTab(state: state),
+                    SettingsTab(
+                      state: state,
+                      goldPriceController: _goldPriceController,
+                      silverPriceController: _silverPriceController,
+                    ),
+                  ],
+                );
+              }
 
-            return const SizedBox();
-          },
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );

@@ -160,23 +160,28 @@ class _HomeState extends State<Home>
         showReleaseNotes: true,
         showIgnore: false,
         upgrader: getIt<Upgrader>(),
-        child: Scaffold(
-          body: HomeBackground(
-            isDarkMode: isDarkMode,
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                // ignore: prefer_const_constructors
-                HomeAppBar(),
-                HomeContent(
-                  animationController: _animationController,
-                  fadeAnimation: _fadeAnimation,
-                  slideAnimation: _slideAnimation,
-                  refreshHomeData: _refreshHomeData,
-                  openLastReadSurah: _openLastReadSurah,
-                  isDarkMode: isDarkMode,
-                ),
-              ],
+        child: SafeArea(
+          top: false,
+          left: false,
+          right: false,
+          child: Scaffold(
+            body: HomeBackground(
+              isDarkMode: isDarkMode,
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  // ignore: prefer_const_constructors
+                  HomeAppBar(),
+                  HomeContent(
+                    animationController: _animationController,
+                    fadeAnimation: _fadeAnimation,
+                    slideAnimation: _slideAnimation,
+                    refreshHomeData: _refreshHomeData,
+                    openLastReadSurah: _openLastReadSurah,
+                    isDarkMode: isDarkMode,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

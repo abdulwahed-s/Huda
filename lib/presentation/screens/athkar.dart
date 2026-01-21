@@ -77,29 +77,34 @@ class _AthkarScreenState extends State<AthkarScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      backgroundColor:
-          isDark ? context.darkCardBackground : context.lightSurface,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBarContent(
-            isDark: isDark,
-            showSearch: _showSearch,
-            searchAnimationController: _searchAnimationController,
-            searchController: _searchController,
-            searchQuery: _searchQuery,
-            toggleSearch: _toggleSearch,
-            onSearchChanged: (value) {
-              setState(() {
-                _searchQuery = value.trim();
-              });
-            },
-          ),
-          AthkarBodyContent(
-            fadeAnimation: _fadeAnimation,
-            searchQuery: _searchQuery,
-          ),
-        ],
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: Scaffold(
+        backgroundColor:
+            isDark ? context.darkCardBackground : context.lightSurface,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBarContent(
+              isDark: isDark,
+              showSearch: _showSearch,
+              searchAnimationController: _searchAnimationController,
+              searchController: _searchController,
+              searchQuery: _searchQuery,
+              toggleSearch: _toggleSearch,
+              onSearchChanged: (value) {
+                setState(() {
+                  _searchQuery = value.trim();
+                });
+              },
+            ),
+            AthkarBodyContent(
+              fadeAnimation: _fadeAnimation,
+              searchQuery: _searchQuery,
+            ),
+          ],
+        ),
       ),
     );
   }

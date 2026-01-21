@@ -241,44 +241,49 @@ class _WidgetManagementScreenState extends State<WidgetManagementScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF121212) : const Color(0xFFF8F9FA),
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.homeScreenWidgetManagement,
-          style:
-              const TextStyle(fontWeight: FontWeight.w600, fontFamily: "Amiri"),
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: Scaffold(
+        backgroundColor:
+            isDark ? const Color(0xFF121212) : const Color(0xFFF8F9FA),
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context)!.homeScreenWidgetManagement,
+            style: const TextStyle(
+                fontWeight: FontWeight.w600, fontFamily: "Amiri"),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderSection(isDark: isDark),
-            SizedBox(height: 20.h),
-            AddWidgetSection(isDark: isDark),
-            SizedBox(height: 20.h),
-            ForceUpdateSection(
-              isUpdating: _isUpdating,
-              lastUpdateMessage: _lastUpdateMessage,
-              onForceUpdate: _forceUpdateWidget,
-              isDark: isDark,
-            ),
-            SizedBox(height: 20.h),
-            CustomVersesSection(
-              customVerses: _customVerses,
-              isLoadingVerses: _isLoadingVerses,
-              onRefresh: _loadCustomVerses,
-              onRemoveVerse: _removeCustomVerse,
-              onClearAll: _clearAllCustomVerses,
-              isDark: isDark,
-            ),
-          ],
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderSection(isDark: isDark),
+              SizedBox(height: 20.h),
+              AddWidgetSection(isDark: isDark),
+              SizedBox(height: 20.h),
+              ForceUpdateSection(
+                isUpdating: _isUpdating,
+                lastUpdateMessage: _lastUpdateMessage,
+                onForceUpdate: _forceUpdateWidget,
+                isDark: isDark,
+              ),
+              SizedBox(height: 20.h),
+              CustomVersesSection(
+                customVerses: _customVerses,
+                isLoadingVerses: _isLoadingVerses,
+                onRefresh: _loadCustomVerses,
+                onRemoveVerse: _removeCustomVerse,
+                onClearAll: _clearAllCustomVerses,
+                isDark: isDark,
+              ),
+            ],
+          ),
         ),
       ),
     );
