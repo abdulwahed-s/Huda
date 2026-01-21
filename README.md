@@ -227,9 +227,9 @@ flutter build linux --release
 
 | Home Screen | Quran Reader | Prayer Times |
 |-------------|-------------|-------------|
-| ![Home Screen](assets/images/github/home-screen.png) | ![Quran Reader](assets/images/github/quran-reader.png) | ![Prayer Times](assets/images/github/prayer-times.png) |
+| ![Home Screen](assets/dev/github/home-screen.png) | ![Quran Reader](assets/dev/github/quran-reader.png) | ![Prayer Times](assets/dev/github/prayer-times.png) |
 | **Qiblah Compass** | **Islamic Reminder** | **Islamic Checklist** |
-| ![Qiblah Compass](assets/images/github/qiblah-compass.png) | ![Islamic Reminder](assets/images/github/reminder.png) | ![Islamic Checklist](assets/images/github/checklist.png) |
+| ![Qiblah Compass](assets/dev/github/qiblah-compass.png) | ![Islamic Reminder](assets/dev/github/reminder.png) | ![Islamic Checklist](assets/dev/github/checklist.png) |
 
 ## 📄 License
 
@@ -291,13 +291,6 @@ We welcome contributions from the community! Here's how you can help improve Hud
 ### 🤲 Islamic Disclaimer
 *Huda app is designed to assist Muslims in their daily worship and learning. While we strive for accuracy in all Islamic content, users are encouraged to consult qualified Islamic scholars for religious guidance. The app's AI assistant provides responses based on established Islamic sources, but should not replace consultation with knowledgeable religious authorities for important religious matters.*
 
-### 🌟 Acknowledgments
-- **Quran Text**: Sourced from authentic Uthmanic script
-- **Prayer Time Calculations**: Based on established Islamic astronomical calculations
-- **Hadith Collections**: From authentic collections (Bukhari, Muslim, etc.)
-- **Islamic Scholars**: Thanks to the scholars who reviewed our content for authenticity
-- **Community**: Grateful to the Muslim developer community for feedback and contributions
-- **Open Source Libraries**: Thanks to all the amazing open-source Flutter packages that made this app possible
 
 ---
 
