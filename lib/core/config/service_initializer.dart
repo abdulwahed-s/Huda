@@ -16,14 +16,12 @@ import 'package:upgrader/upgrader.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:workmanager/workmanager.dart';
 
-// Initialize only critical services that are absolutely needed for app startup
 Future<void> initializeCriticalServices() async {
   await PerformanceUtils.timeAsyncOperation('Critical Services', () async {
     final tracker = ServiceInitializationTracker();
 
     setupServiceLocator();
 
-    // Initialize cache and basic notifications in parallel
     await Future.wait([
       getIt<CacheHelper>()
           .init()
@@ -35,21 +33,17 @@ Future<void> initializeCriticalServices() async {
   });
 }
 
-// Initialize non-critical services asynchronously after app starts
 Future<void> initializeNonCriticalServicesAsync() async {
   await PerformanceUtils.timeAsyncOperation('Non-Critical Services', () async {
     try {
-      // Initialize these services in parallel for maximum speed
       await Future.wait([
         _initializeWidgetServices(),
-        //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
-        if (!PlatformUtils.isWindow) _initializeNotificationServices(),
+        _initializeNotificationServices(),
         _initializePrayerServices(),
         _initializeDataServices(),
         _initializeBackgroundServices(),
       ]);
     } catch (e) {
-      // Log error but don't crash the app
       if (kDebugMode) {
         print('Non-critical service initialization error: $e');
       }
@@ -81,8 +75,7 @@ Future<void> _initializePrayerServices() async {
 }
 
 Future<void> _initializeDataServices() async {
-  // Load Surah data lazily - only when needed
-  await SurahCubit.preloadSurahData(); // Remove this to load on-demand
+  await SurahCubit.preloadSurahData();
   final upgrader = getIt<Upgrader>();
   await upgrader.initialize();
 }
