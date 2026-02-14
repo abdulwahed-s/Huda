@@ -79,8 +79,7 @@ class HomeContent extends StatelessWidget {
           svgAsset: 'assets/images/qiblahicon.svg.vec',
           onTap: () => Navigator.pushNamed(context, AppRoute.qiblah),
         ),
-      //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
-      if (!kIsWeb && !PlatformUtils.isWindow)
+      if (!kIsWeb)
         FeatureItem(
           title: AppLocalizations.of(context)!.notifications,
           icon: Icons.notifications,
