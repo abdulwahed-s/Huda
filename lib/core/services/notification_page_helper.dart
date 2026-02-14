@@ -1,14 +1,17 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/notification_isolate_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
-import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
-import 'dart:math';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:workmanager/workmanager.dart';
 
 class NotificationPageHelper {
   static final FlutterLocalNotificationsPlugin _plugin =
@@ -440,11 +443,18 @@ class NotificationPageHelper {
   }
 
   Future<void> _cancelAllRandomAthkar() async {
-    for (int i = _randomAthkarBaseId;
-        i < _randomAthkarBaseId + _maxRandomAthkarNotifications;
-        i++) {
-      await _plugin.cancel(i);
+    if (Platform.isWindows) {
+      await windowsCancelAllAndRescheduleFixed(_plugin);
+    } else {
+      final ids = List<int>.generate(
+        _maxRandomAthkarNotifications,
+        (i) => _randomAthkarBaseId + i,
+      );
+      for (final id in ids) {
+        await _plugin.cancel(id);
+      }
     }
+
     debugPrint(
         '🗑️ Cancelled up to $_maxRandomAthkarNotifications random athkar notifications');
   }
@@ -499,12 +509,16 @@ class NotificationPageHelper {
   }
 
   Future<void> cancelAll() async {
-    await cancel(_kahfNotificationId);
-    await cancel(_athkarMorningId);
-    await cancel(_athkarEveningId);
-    await cancel(_quranReminderId);
-    await cancel(_quranReminderId + 100);
-    await _cancelAllRandomAthkar();
+    if (Platform.isWindows) {
+      await _plugin.cancelAll();
+    } else {
+      await cancel(_kahfNotificationId);
+      await cancel(_athkarMorningId);
+      await cancel(_athkarEveningId);
+      await cancel(_quranReminderId);
+      await cancel(_quranReminderId + 100);
+      await _cancelAllRandomAthkar();
+    }
 
     debugPrint(
         '🔔 Cancelled all Islamic reminder notifications (preserving foreground services)');
@@ -887,6 +901,10 @@ class NotificationPageHelper {
         nextTime = nextTime.add(Duration(minutes: frequencyMinutes));
         notificationId++;
         scheduledCount++;
+
+        if (Platform.isWindows) {
+          await Future<void>.delayed(const Duration(milliseconds: 10));
+        }
       } catch (e) {
         if (e.toString().contains('Maximum limit of concurrent alarms')) {
           debugPrint(
