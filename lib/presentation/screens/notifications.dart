@@ -131,6 +131,9 @@ class _NotificationsState extends State<Notifications>
                                     context,
                                     state.checklistReminderTime,
                                     context.read<NotificationsCubit>()),
+                            pickSahurAlarmSettings: () =>
+                                TimePickers.pickSahurAlarmSettings(context,
+                                    state, context.read<NotificationsCubit>()),
                           );
                         }
                         return const LoadingState();
