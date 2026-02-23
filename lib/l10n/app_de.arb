@@ -868,5 +868,47 @@
     "iosWidgetStep3": "Suchen Sie nach 'Huda' in der Widget-Galerie",
     "iosWidgetStep4": "Wählen Sie eine Widget-Größe und tippen Sie auf 'Widget hinzufügen'",
     "genericWidgetStep1": "Drücken Sie lange auf Ihren Startbildschirm und suchen Sie nach 'Widgets'",
-    "genericWidgetStep2": "Finden Sie das 'Huda'-Widget und fügen Sie es Ihrem Startbildschirm hinzu"
+    "genericWidgetStep2": "Finden Sie das 'Huda'-Widget und fügen Sie es Ihrem Startbildschirm hinzu",
+    "sahurAlarmTitle": "Sahur-Wecker",
+    "@sahurAlarmTitle": {
+        "description": "Title for Sahur Alarm section"
+    },
+    "sahurAlarmDescription": "Wachen Sie vor dem Fajr-Gebet für Sahur auf.",
+    "@sahurAlarmDescription": {
+        "description": "Description for Sahur Alarm"
+    },
+    "exactTime": "Genaue Zeit",
+    "@exactTime": {
+        "description": "Exact time option for Sahur Alarm"
+    },
+    "minutesBeforeFajr": "Minuten vor Fajr",
+    "@minutesBeforeFajr": {
+        "description": "Minutes before Fajr option for Sahur alarm"
+    },
+    "sahurMinutesPlaceholder": "Minuten (z.B. 30)",
+    "@sahurMinutesPlaceholder": {
+        "description": "Placeholder for minutes input"
+    },
+    "atExactTime": "Um {time}",
+    "@atExactTime": {
+        "description": "Subtitle for exact time sahur alarm",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "minsBeforeFajr": "{minutes} Min. vor Fajr",
+    "@minsBeforeFajr": {
+        "description": "Subtitle for mins before fajr sahur alarm",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "sahurAlarmNotSet": "Nicht eingestellt",
+    "@sahurAlarmNotSet": {
+        "description": "Subtitle when Sahur alarm is disabled"
+    }
 }

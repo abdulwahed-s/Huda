@@ -2667,4 +2667,33 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       '\'হুদা\' উইজেট খুঁজুন এবং এটি আপনার হোম স্ক্রিনে যোগ করুন';
+
+  @override
+  String get sahurAlarmTitle => 'সাহুর অ্যালার্ম';
+
+  @override
+  String get sahurAlarmDescription =>
+      'ফজরের নামাজের আগে সাহুরের জন্য ঘুম থেকে উঠুন।';
+
+  @override
+  String get exactTime => 'সঠিক সময়';
+
+  @override
+  String get minutesBeforeFajr => 'ফজরের কতক্ষণ আগে';
+
+  @override
+  String get sahurMinutesPlaceholder => 'মিনিট (যেমন, ৩০)';
+
+  @override
+  String atExactTime(String time) {
+    return '$time টায়';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return 'ফজরের $minutes মিনিট আগে';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'সেট করা হয়নি';
 }

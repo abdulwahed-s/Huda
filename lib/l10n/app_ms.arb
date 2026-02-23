@@ -974,5 +974,47 @@
     "iosWidgetStep3": "Cari 'Huda' dalam galeri widget",
     "iosWidgetStep4": "Pilih saiz widget dan ketik 'Tambah Widget'",
     "genericWidgetStep1": "Tekan lama pada skrin utama anda dan cari 'Widget'",
-    "genericWidgetStep2": "Cari widget 'Huda' dan tambahkannya ke skrin utama anda"
+    "genericWidgetStep2": "Cari widget 'Huda' dan tambahkannya ke skrin utama anda",
+    "sahurAlarmTitle": "Penggera Sahur",
+    "@sahurAlarmTitle": {
+        "description": "Title for Sahur Alarm section"
+    },
+    "sahurAlarmDescription": "Bangun untuk bersahur sebelum solat Subuh.",
+    "@sahurAlarmDescription": {
+        "description": "Description for Sahur Alarm"
+    },
+    "exactTime": "Masa Tepat",
+    "@exactTime": {
+        "description": "Exact time option for Sahur Alarm"
+    },
+    "minutesBeforeFajr": "Minit sebelum Subuh",
+    "@minutesBeforeFajr": {
+        "description": "Minutes before Fajr option for Sahur alarm"
+    },
+    "sahurMinutesPlaceholder": "Minit (cth. 30)",
+    "@sahurMinutesPlaceholder": {
+        "description": "Placeholder for minutes input"
+    },
+    "atExactTime": "Pada {time}",
+    "@atExactTime": {
+        "description": "Subtitle for exact time sahur alarm",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "minsBeforeFajr": "{minutes} min sebelum Subuh",
+    "@minsBeforeFajr": {
+        "description": "Subtitle for mins before fajr sahur alarm",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "sahurAlarmNotSet": "Tidak Ditetapkan",
+    "@sahurAlarmNotSet": {
+        "description": "Subtitle when Sahur alarm is disabled"
+    }
 }

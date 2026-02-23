@@ -887,5 +887,47 @@
     "iosWidgetStep3": "Найдите 'Huda' в галерее виджетов",
     "iosWidgetStep4": "Выберите размер виджета и нажмите 'Добавить виджет'",
     "genericWidgetStep1": "Нажмите и удерживайте главный экран и найдите 'Виджеты'",
-    "genericWidgetStep2": "Найдите виджет 'Huda' и добавьте его на главный экран"
+    "genericWidgetStep2": "Найдите виджет 'Huda' и добавьте его на главный экран",
+    "sahurAlarmTitle": "Будильник на Сухур",
+    "@sahurAlarmTitle": {
+        "description": "Title for Sahur Alarm section"
+    },
+    "sahurAlarmDescription": "Просыпайтесь на Сухур до молитвы Фаджр.",
+    "@sahurAlarmDescription": {
+        "description": "Description for Sahur Alarm"
+    },
+    "exactTime": "Точное время",
+    "@exactTime": {
+        "description": "Exact time option for Sahur Alarm"
+    },
+    "minutesBeforeFajr": "Минут до Фаджра",
+    "@minutesBeforeFajr": {
+        "description": "Minutes before Fajr option for Sahur alarm"
+    },
+    "sahurMinutesPlaceholder": "Минуты (например, 30)",
+    "@sahurMinutesPlaceholder": {
+        "description": "Placeholder for minutes input"
+    },
+    "atExactTime": "В {time}",
+    "@atExactTime": {
+        "description": "Subtitle for exact time sahur alarm",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "minsBeforeFajr": "{minutes} мин до Фаджра",
+    "@minsBeforeFajr": {
+        "description": "Subtitle for mins before fajr sahur alarm",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "sahurAlarmNotSet": "Не установлено",
+    "@sahurAlarmNotSet": {
+        "description": "Subtitle when Sahur alarm is disabled"
+    }
 }

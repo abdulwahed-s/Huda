@@ -2731,4 +2731,33 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       'Trouvez le widget \'Huda\' et ajoutez-le à votre écran d\'accueil';
+
+  @override
+  String get sahurAlarmTitle => 'Alarme du Souhour';
+
+  @override
+  String get sahurAlarmDescription =>
+      'Réveillez-vous pour le Souhour avant la prière du Fajr.';
+
+  @override
+  String get exactTime => 'Heure exacte';
+
+  @override
+  String get minutesBeforeFajr => 'Minutes avant le Fajr';
+
+  @override
+  String get sahurMinutesPlaceholder => 'Minutes (ex., 30)';
+
+  @override
+  String atExactTime(String time) {
+    return 'À $time';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return '$minutes min avant le Fajr';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'Non défini';
 }

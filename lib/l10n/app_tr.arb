@@ -887,5 +887,47 @@
     "iosWidgetStep3": "Widget galerisinde 'Huda'yı arayın",
     "iosWidgetStep4": "Bir widget boyutu seçin ve 'Widget Ekle'ye dokunun",
     "genericWidgetStep1": "Ana ekranınıza uzun basın ve 'Widget'lar'ı arayın",
-    "genericWidgetStep2": "'Huda' widget'ını bulun ve ana ekranınıza ekleyin"
+        "genericWidgetStep2": "'Huda' widget'ını bulun ve ana ekranınıza ekleyin",
+    "sahurAlarmTitle": "Sahur Alarmı",
+    "@sahurAlarmTitle": {
+        "description": "Title for Sahur Alarm section"
+    },
+    "sahurAlarmDescription": "Sabah namazından önce sahur için uyanın.",
+    "@sahurAlarmDescription": {
+        "description": "Description for Sahur Alarm"
+    },
+    "exactTime": "Tam Zaman",
+    "@exactTime": {
+        "description": "Exact time option for Sahur Alarm"
+    },
+    "minutesBeforeFajr": "Sabah namazından kaç dakika önce",
+    "@minutesBeforeFajr": {
+        "description": "Minutes before Fajr option for Sahur alarm"
+    },
+    "sahurMinutesPlaceholder": "Dakika (örn. 30)",
+    "@sahurMinutesPlaceholder": {
+        "description": "Placeholder for minutes input"
+    },
+    "atExactTime": "{time} de",
+    "@atExactTime": {
+        "description": "Subtitle for exact time sahur alarm",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "minsBeforeFajr": "Sabah namazından {minutes} dk önce",
+    "@minsBeforeFajr": {
+        "description": "Subtitle for mins before fajr sahur alarm",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "sahurAlarmNotSet": "Ayarlanmadı",
+    "@sahurAlarmNotSet": {
+        "description": "Subtitle when Sahur alarm is disabled"
+    }
 }

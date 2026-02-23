@@ -2659,4 +2659,33 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       '\'Huda\' widget\'ını bulun ve ana ekranınıza ekleyin';
+
+  @override
+  String get sahurAlarmTitle => 'Sahur Alarmı';
+
+  @override
+  String get sahurAlarmDescription =>
+      'Sabah namazından önce sahur için uyanın.';
+
+  @override
+  String get exactTime => 'Tam Zaman';
+
+  @override
+  String get minutesBeforeFajr => 'Sabah namazından kaç dakika önce';
+
+  @override
+  String get sahurMinutesPlaceholder => 'Dakika (örn. 30)';
+
+  @override
+  String atExactTime(String time) {
+    return '$time de';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return 'Sabah namazından $minutes dk önce';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'Ayarlanmadı';
 }

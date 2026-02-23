@@ -2619,4 +2619,32 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       'ابحث عن عنصر \'هُدى\' وأضفه إلى شاشتك الرئيسية';
+
+  @override
+  String get sahurAlarmTitle => 'منبه السحور';
+
+  @override
+  String get sahurAlarmDescription => 'استيقظ للسحور قبل صلاة الفجر.';
+
+  @override
+  String get exactTime => 'وقت محدد';
+
+  @override
+  String get minutesBeforeFajr => 'دقائق قبل صلاة الفجر';
+
+  @override
+  String get sahurMinutesPlaceholder => 'الدقائق (مثال: 30)';
+
+  @override
+  String atExactTime(String time) {
+    return 'في $time';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return '$minutes دقيقة قبل الفجر';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'غير محدد';
 }

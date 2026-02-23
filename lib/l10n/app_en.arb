@@ -3197,5 +3197,47 @@
     "genericWidgetStep2": "Find 'Huda' widget and add it to your home screen",
     "@genericWidgetStep2": {
         "description": "Generic widget step 2"
+    },
+    "sahurAlarmTitle": "Sahur Alarm",
+    "@sahurAlarmTitle": {
+        "description": "Title for Sahur Alarm section"
+    },
+    "sahurAlarmDescription": "Wake up for Sahur before Fajr prayer.",
+    "@sahurAlarmDescription": {
+        "description": "Description for Sahur Alarm"
+    },
+    "exactTime": "Exact Time",
+    "@exactTime": {
+        "description": "Exact time option for Sahur Alarm"
+    },
+    "minutesBeforeFajr": "Minutes before Fajr",
+    "@minutesBeforeFajr": {
+        "description": "Minutes before Fajr option for Sahur alarm"
+    },
+    "sahurMinutesPlaceholder": "Minutes (e.g., 30)",
+    "@sahurMinutesPlaceholder": {
+        "description": "Placeholder for minutes input"
+    },
+    "atExactTime": "At {time}",
+    "@atExactTime": {
+        "description": "Subtitle for exact time sahur alarm",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "minsBeforeFajr": "{minutes} mins before Fajr",
+    "@minsBeforeFajr": {
+        "description": "Subtitle for mins before fajr sahur alarm",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "sahurAlarmNotSet": "Not Set",
+    "@sahurAlarmNotSet": {
+        "description": "Subtitle when Sahur alarm is disabled"
     }
 }
