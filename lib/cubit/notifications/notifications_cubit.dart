@@ -6,6 +6,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/core/services/sahur_alarm_helper.dart';
 
 part 'notifications_state.dart';
 
@@ -127,6 +128,11 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           cacheHelper.getData(key: 'morningAthkarTime') ?? '07:00',
       eveningAthkarTime:
           cacheHelper.getData(key: 'eveningAthkarTime') ?? '18:00',
+      sahurAlarmEnabled: cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false,
+      sahurAlarmType: cacheHelper.getData(key: 'sahurAlarmType') ?? 0,
+      sahurExactTime: cacheHelper.getData(key: 'sahurExactTime') ?? '04:00',
+      sahurMinutesBeforeFajr:
+          cacheHelper.getData(key: 'sahurMinutesBeforeFajr') ?? 30,
     ));
   }
 
@@ -196,6 +202,13 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           await _notificationHelper.scheduleChecklistReminder(false, null);
         }
         break;
+      case 'sahurAlarmEnabled':
+        if (value) {
+          await SahurAlarmHelper.updateSahurAlarmSchedule();
+        } else {
+          await SahurAlarmHelper.stopAlarm();
+        }
+        break;
     }
 
     loadPreferences();
@@ -217,9 +230,38 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           cacheHelper.getData(key: 'morningAthkarTime') ?? '07:00',
       eveningAthkarTime:
           cacheHelper.getData(key: 'eveningAthkarTime') ?? '18:00',
+      sahurAlarmEnabled: cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false,
+      sahurAlarmType: cacheHelper.getData(key: 'sahurAlarmType') ?? 0,
+      sahurExactTime: cacheHelper.getData(key: 'sahurExactTime') ?? '04:00',
+      sahurMinutesBeforeFajr:
+          cacheHelper.getData(key: 'sahurMinutesBeforeFajr') ?? 30,
     );
 
     emit(updated);
+  }
+
+  Future<void> setSahurAlarmType(int type) async {
+    await cacheHelper.saveData(key: 'sahurAlarmType', value: type);
+    await loadPreferences();
+    if (cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false) {
+      await SahurAlarmHelper.updateSahurAlarmSchedule();
+    }
+  }
+
+  Future<void> setSahurExactTime(String time) async {
+    await cacheHelper.saveData(key: 'sahurExactTime', value: time);
+    await loadPreferences();
+    if (cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false) {
+      await SahurAlarmHelper.updateSahurAlarmSchedule();
+    }
+  }
+
+  Future<void> setSahurMinutesBeforeFajr(int minutes) async {
+    await cacheHelper.saveData(key: 'sahurMinutesBeforeFajr', value: minutes);
+    await loadPreferences();
+    if (cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false) {
+      await SahurAlarmHelper.updateSahurAlarmSchedule();
+    }
   }
 
   Future<void> setQuranReminderTime(String time) async {
