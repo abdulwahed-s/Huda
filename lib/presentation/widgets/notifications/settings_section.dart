@@ -13,6 +13,7 @@ class SettingsSection extends StatelessWidget {
   final void Function() pickRandomAthkarFrequency;
   final void Function() pickQuranTime;
   final void Function() pickChecklistTime;
+  final void Function() pickSahurAlarmSettings;
 
   const SettingsSection({
     super.key,
@@ -23,6 +24,7 @@ class SettingsSection extends StatelessWidget {
     required this.pickRandomAthkarFrequency,
     required this.pickQuranTime,
     required this.pickChecklistTime,
+    required this.pickSahurAlarmSettings,
   });
 
   @override
@@ -99,6 +101,26 @@ class SettingsSection extends StatelessWidget {
               .read<NotificationsCubit>()
               .togglePreference('quranReminder', value),
           onSettingsTap: () => pickQuranTime(),
+        ),
+
+        // Sahur Alarm
+        NotificationCard(
+          title: AppLocalizations.of(context)!.sahurAlarmTitle,
+          subtitle: state.sahurAlarmEnabled
+              ? (state.sahurAlarmType == 0
+                  ? (AppLocalizations.of(context)!
+                      .atExactTime(state.sahurExactTime))
+                  : (AppLocalizations.of(context)!
+                      .minsBeforeFajr(state.sahurMinutesBeforeFajr)))
+              : (AppLocalizations.of(context)!.sahurAlarmNotSet),
+          description: AppLocalizations.of(context)!.sahurAlarmDescription,
+          icon: Icons.alarm,
+          gradient: [Colors.indigo.shade400, Colors.indigo.shade600],
+          value: state.sahurAlarmEnabled,
+          onChanged: (value) => context
+              .read<NotificationsCubit>()
+              .togglePreference('sahurAlarmEnabled', value),
+          onSettingsTap: () => pickSahurAlarmSettings(),
         ),
 
         // Daily Checklist Reminder
