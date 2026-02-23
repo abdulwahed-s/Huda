@@ -19,6 +19,11 @@ class NotificationPreferencesLoaded extends NotificationsState {
   final String morningAthkarTime;
   final String eveningAthkarTime;
 
+  final bool sahurAlarmEnabled;
+  final int sahurAlarmType; 
+  final String sahurExactTime;
+  final int sahurMinutesBeforeFajr;
+
   NotificationPreferencesLoaded({
     required this.kahfFriday,
     required this.randomAthkar,
@@ -31,5 +36,9 @@ class NotificationPreferencesLoaded extends NotificationsState {
     this.eveningAthkarTime = '18:00',
     this.checklistReminder = false,
     this.checklistReminderTime = '20:00',
+    this.sahurAlarmEnabled = false,
+    this.sahurAlarmType = 0,
+    this.sahurExactTime = '04:00',
+    this.sahurMinutesBeforeFajr = 30,
   });
 }
