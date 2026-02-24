@@ -5,4 +5,13 @@
     <string name="widget_description_small">Small Quran Verses Widget - Compact display of inspiring verses</string>
     <string name="app_name">Huda</string>
     <string name="tile_label">@string/app_name</string>
+
+    <string name="miqaat_lock_accessibility_label">Huda Miqaat Lock</string>
+    <string name="miqaat_lock_accessibility_description">Monitors app launches to help you stay focused during sacred times. This service detects when you open locked apps and shows a gentle reminder.</string>
+
+    <string name="miqaat_lock_title">Miqaat Lock</string>
+    <string name="miqaat_lock_message">This app is locked during your focus time.\nComplete your Miqaat goal to unlock.</string>
+    <string name="miqaat_lock_goal_info">📖  Spend %d minutes in Huda\nto unlock all apps for this time slot</string>
+    <string name="miqaat_lock_open_huda">Open Huda</string>
+    <string name="miqaat_lock_go_back">Go Back Home</string>
 </resources>
