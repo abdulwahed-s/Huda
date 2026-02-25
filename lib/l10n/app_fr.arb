@@ -895,8 +895,7 @@
     "iosWidgetStep3": "Recherchez 'Huda' dans la galerie des widgets",
     "iosWidgetStep4": "Sélectionnez une taille de widget et appuyez sur 'Ajouter le Widget'",
     "genericWidgetStep1": "Appuyez longuement sur votre écran d'accueil et cherchez 'Widgets'",
-    "genericWidgetStep2": "Trouvez le widget 'Huda' et ajoutez-le à votre écran d'accueil"
-        "genericWidgetStep2": "Trouvez le widget 'Huda' et ajoutez-le à votre écran d'accueil",
+    "genericWidgetStep2": "Trouvez le widget 'Huda' et ajoutez-le à votre écran d'accueil",
     "sahurAlarmTitle": "Alarme du Souhour",
     "@sahurAlarmTitle": {
         "description": "Title for Sahur Alarm section"
