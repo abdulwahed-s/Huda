@@ -6,9 +6,14 @@ import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/presentation/screens/app.dart';
 import 'package:huda/firebase_options.dart';
 import 'package:huda/presentation/screens/error.dart';
+import 'package:alarm/alarm.dart';
+import 'package:huda/core/services/sahur_alarm_helper.dart';
 
 Future<void> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Alarm.init();
+  SahurAlarmHelper.initListeners();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   // Initialize critical services and Firebase in parallel
