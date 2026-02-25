@@ -1564,5 +1564,204 @@
     "sahurMinutesPlaceholder": "الدقائق (مثال: 30)",
     "atExactTime": "في {time}",
     "minsBeforeFajr": "{minutes} دقيقة قبل الفجر",
-    "sahurAlarmNotSet": "غير محدد"
+    "sahurAlarmNotSet": "غير محدد",
+       "miqaatLock": "قفل ميقات",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "تفعيل قفل ميقات",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "قفل التطبيقات أثناء أوقات العبادة لتقليل المشتتات.",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "التطبيقات المقفلة",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "لم يتم تحديد تطبيقات",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "إضافة تطبيقات",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "الفترات الزمنية",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "لم يتم تكوين فترات زمنية",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "إضافة فترة زمنية",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "تعديل الفترة الزمنية",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "مدة الجلسة",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "كم تستمر كل جلسة فتح",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "selectDuration": "اختر المدة",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "مدة مخصصة",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "تأكيد",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "تحديد التطبيقات",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "البحث عن تطبيقات...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "جاري تحميل التطبيقات...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "لم يتم العثور على تطبيقات",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "تحديد تطبيقات iOS",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "بسبب قيود الخصوصية في iOS، تتم إدارة تحديد التطبيقات من خلال إعدادات مدة الاستخدام. مكّن الوصول إلى مدة الاستخدام لإدارة قيود التطبيقات.",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "التسمية (اختياري)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "مثال: وقت الفجر، ساعات العمل",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "النطاق الزمني",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "تكرار في",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "اتركه فارغاً للتكرار كل يوم",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "كل يوم",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "الاثنين",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "الثلاثاء",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "الأربعاء",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "الخميس",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "الجمعة",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "السبت",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "الأحد",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "الأذونات المطلوبة",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "امنح الأذونات التالية لتفعيل قفل ميقات",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "خدمة إمكانية الوصول",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "مطلوب لاكتشاف عمليات تشغيل التطبيقات",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "العرض فوق التطبيقات الأخرى",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "مطلوب لإظهار شاشة القفل",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "الوصول إلى مدة الاستخدام",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "مطلوب لإدارة قيود التطبيقات",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "التحقق من الأذونات",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "بدء الجلسة",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "الجلسة نشطة",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "الوقت المتبقي",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "التطبيق مقفل",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "هذا التطبيق مقفل خلال وقت تركيزك. ابدأ جلسة لفتحه مؤقتاً.",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "العودة إلى الصفحة الرئيسية",
+    "@goBackHome": {
+        "description": "Go back button"
+    }
 }

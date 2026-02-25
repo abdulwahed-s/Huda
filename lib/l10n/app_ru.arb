@@ -928,6 +928,207 @@
     },
     "sahurAlarmNotSet": "Не установлено",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"
+        "description": "Subtitle when Sahur alarm is disabled"},
+    "miqaatLock": "Блокировка Микаат",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "Включить блокировку Микаат",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "Блокируйте приложения во время богослужения, чтобы свести к минимуму отвлекающие факторы.",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "Заблокированные приложения",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "Приложения не выбраны",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "Добавить приложения",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "Временные интервалы",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "Временные интервалы не настроены",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "Добавить временной интервал",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "Изменить временной интервал",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "Продолжительность сеанса",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "Как долго длится каждый сеанс разблокировки",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "Выберите продолжительность",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "Своя продолжительность",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "Подтвердить",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "Выбрать приложения",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "Поиск приложений...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "Загрузка приложений...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "Приложения не найдены",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "Выбор приложений iOS",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "Из-за ограничений конфиденциальности iOS выбор приложений управляется через настройки Экранного времени. Включите доступ к Экранному времени для управления ограничениями.",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "Метка (необязательно)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "напр., Время Фаджра, Рабочие часы",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "Временной диапазон",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "Повторять",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "Оставьте пустым для ежедневного повторения",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "Каждый день",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "Понедельник",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "Вторник",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "Среда",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "Четверг",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "Пятница",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "Суббота",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "Воскресенье",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "Требуются разрешения",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "Предоставьте следующие разрешения для включения Блокировки Микаат",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "Служба специальных возможностей",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "Требуется для обнаружения запуска приложений",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "Отображение поверх других приложений",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "Требуется для отображения экрана блокировки",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "Доступ к Экранному времени",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "Требуется для управления ограничениями приложений",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "Проверить разрешения",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "Начать сеанс",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "Сеанс активен",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "Оставшееся время",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "Приложение заблокировано",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "Это приложение заблокировано во время вашего времени для концентрации. Начните сеанс для временной разблокировки.",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "Вернуться на главную",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

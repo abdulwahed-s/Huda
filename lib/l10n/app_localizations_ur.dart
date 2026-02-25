@@ -2684,4 +2684,158 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'سیٹ نہیں';
+
+  @override
+  String get miqaatLock => 'میقات لاک';
+
+  @override
+  String get enableMiqaatLock => 'میقات لاک کو فعال کریں';
+
+  @override
+  String get miqaatLockDescription =>
+      'توجہ ہٹنے کو کم کرنے کے لیے عبادت کے اوقات میں ایپس کو لاک کریں۔';
+
+  @override
+  String get lockedApps => 'لاک شدہ ایپس';
+
+  @override
+  String get noAppsSelected => 'کوئی ایپ منتخب نہیں کی گئی';
+
+  @override
+  String get addApps => 'ایپس شامل کریں';
+
+  @override
+  String get timeSlots => 'وقت کے سلاٹس';
+
+  @override
+  String get noTimeSlotsConfigured => 'کوئی وقت کا سلاٹ ترتیب نہیں دیا گیا';
+
+  @override
+  String get addTimeSlot => 'وقت کا سلاٹ شامل کریں';
+
+  @override
+  String get editTimeSlot => 'وقت کا سلاٹ تبدیل کریں';
+
+  @override
+  String get sessionDuration => 'سیشن کا دورانیہ';
+
+  @override
+  String get sessionDurationDescription => 'ہر ان لاک سیشن کتنا طویل ہوگا';
+
+  @override
+  String get selectDuration => 'دورانیہ منتخب کریں';
+
+  @override
+  String get customDuration => 'اپنی مرضی کا دورانیہ';
+
+  @override
+  String get confirm => 'تصدیق کریں';
+
+  @override
+  String get selectApps => 'ایپس منتخب کریں';
+
+  @override
+  String get searchApps => 'ایپس تلاش کریں...';
+
+  @override
+  String get loadingApps => 'ایپس لوڈ ہو رہی ہیں...';
+
+  @override
+  String get noAppsFound => 'کوئی ایپس نہیں ملیں';
+
+  @override
+  String get iosAppSelectionTitle => 'آئی او ایس ایپ کا انتخاب';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'آئی او ایس کی رازداری کی پابندیوں کی وجہ سے، ایپ کا انتخاب اسکرین ٹائم کی ترتیبات کے ذریعے منظم کیا جاتا ہے۔ ایپ کی پابندیوں کا انتظام کرنے کے لیے اسکرین ٹائم تک رسائی کو فعال کریں۔';
+
+  @override
+  String get label => 'لیبل (اختیاری)';
+
+  @override
+  String get labelHint => 'مثال، فجر کا وقت، کام کے اوقات';
+
+  @override
+  String get timeRange => 'وقت کا دورانیہ';
+
+  @override
+  String get repeatOn => 'ان دنوں پر دہرائیں';
+
+  @override
+  String get leaveEmptyForEveryday => 'ہر دن دہرانے کے لیے خالی چھوڑ دیں';
+
+  @override
+  String get everyday => 'ہر دن';
+
+  @override
+  String get monday => 'پیر';
+
+  @override
+  String get tuesday => 'منگل';
+
+  @override
+  String get wednesday => 'بدھ';
+
+  @override
+  String get thursday => 'جمعرات';
+
+  @override
+  String get friday => 'جمعہ';
+
+  @override
+  String get saturday => 'ہفتہ';
+
+  @override
+  String get sunday => 'اتوار';
+
+  @override
+  String get permissionsRequired => 'اجازتیں درکار ہیں';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'میقات لاک کو فعال کرنے کے لیے درج ذیل اجازتیں فراہم کریں';
+
+  @override
+  String get accessibilityService => 'قابل رسائی سروس';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'ایپ کے آغاز کی نشاندہی کرنے کے لیے ضروری ہے';
+
+  @override
+  String get overlayPermission => 'دیگر ایپس کے اوپر دکھائیں';
+
+  @override
+  String get overlayPermissionDescription =>
+      'لاک اسکرین دکھانے کے لیے ضروری ہے';
+
+  @override
+  String get screenTimeAccess => 'اسکرین ٹائم تک رسائی';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'ایپ کی پابندیوں کو منظم کرنے کے لیے ضروری ہے';
+
+  @override
+  String get checkPermissions => 'اجازتیں چیک کریں';
+
+  @override
+  String get startSession => 'سیشن شروع کریں';
+
+  @override
+  String get sessionActive => 'سیشن فعال ہے';
+
+  @override
+  String get remainingTime => 'باقی وقت';
+
+  @override
+  String get appLocked => 'ایپ لاک ہے';
+
+  @override
+  String get focusTimeMessage =>
+      'یہ ایپ آپ کے فوکس ٹائم کے دوران لاک کی گئی ہے۔ عارضی طور پر ان لاک کرنے کے لیے ایک سیشن شروع کریں۔';
+
+  @override
+  String get goBackHome => 'واپس ہوم پر جائیں';
 }

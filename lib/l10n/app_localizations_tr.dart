@@ -2688,4 +2688,159 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'Ayarlanmadı';
+
+  @override
+  String get miqaatLock => 'Mikat Kilidi';
+
+  @override
+  String get enableMiqaatLock => 'Mikat Kilidi\'ni Etkinleştir';
+
+  @override
+  String get miqaatLockDescription =>
+      'Dikkatinizin dağılmasını en aza indirmek için ibadet vakitlerinde uygulamaları kilitleyin.';
+
+  @override
+  String get lockedApps => 'Kilitli Uygulamalar';
+
+  @override
+  String get noAppsSelected => 'Uygulama seçilmedi';
+
+  @override
+  String get addApps => 'Uygulama Ekle';
+
+  @override
+  String get timeSlots => 'Zaman Dilimleri';
+
+  @override
+  String get noTimeSlotsConfigured => 'Zaman dilimi yapılandırılmadı';
+
+  @override
+  String get addTimeSlot => 'Zaman Dilimi Ekle';
+
+  @override
+  String get editTimeSlot => 'Zaman Dilimini Düzenle';
+
+  @override
+  String get sessionDuration => 'Oturum Süresi';
+
+  @override
+  String get sessionDurationDescription =>
+      'Her kilit açma oturumunun ne kadar süreceği';
+
+  @override
+  String get selectDuration => 'Süre Seç';
+
+  @override
+  String get customDuration => 'Özel Süre';
+
+  @override
+  String get confirm => 'Onayla';
+
+  @override
+  String get selectApps => 'Uygulamaları Seç';
+
+  @override
+  String get searchApps => 'Uygulama ara...';
+
+  @override
+  String get loadingApps => 'Uygulamalar yükleniyor...';
+
+  @override
+  String get noAppsFound => 'Uygulama bulunamadı';
+
+  @override
+  String get iosAppSelectionTitle => 'iOS Uygulama Seçimi';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'iOS gizlilik kısıtlamaları nedeniyle uygulama seçimi Ekran Süresi ayarları üzerinden yönetilir. Uygulama kısıtlamalarını yönetmek için Ekran Süresi erişimini etkinleştirin.';
+
+  @override
+  String get label => 'Etiket (isteğe bağlı)';
+
+  @override
+  String get labelHint => 'örn. Sabah Namazı, Çalışma Saatleri';
+
+  @override
+  String get timeRange => 'Zaman Aralığı';
+
+  @override
+  String get repeatOn => 'Tekrarla';
+
+  @override
+  String get leaveEmptyForEveryday => 'Her gün tekrarlamak için boş bırakın';
+
+  @override
+  String get everyday => 'Her gün';
+
+  @override
+  String get monday => 'Pazartesi';
+
+  @override
+  String get tuesday => 'Salı';
+
+  @override
+  String get wednesday => 'Çarşamba';
+
+  @override
+  String get thursday => 'Perşembe';
+
+  @override
+  String get friday => 'Cuma';
+
+  @override
+  String get saturday => 'Cumartesi';
+
+  @override
+  String get sunday => 'Pazar';
+
+  @override
+  String get permissionsRequired => 'İzinler Gerekiyor';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'Mikat Kilidi\'ni etkinleştirmek için aşağıdaki izinleri verin';
+
+  @override
+  String get accessibilityService => 'Erişilebilirlik Hizmeti';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'Uygulama başlatmalarını algılamak için gereklidir';
+
+  @override
+  String get overlayPermission => 'Diğer Uygulamaların Üzerinde Göster';
+
+  @override
+  String get overlayPermissionDescription =>
+      'Kilit ekranını göstermek için gereklidir';
+
+  @override
+  String get screenTimeAccess => 'Ekran Süresi Erişimi';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'Uygulama kısıtlamalarını yönetmek için gereklidir';
+
+  @override
+  String get checkPermissions => 'İzinleri Kontrol Et';
+
+  @override
+  String get startSession => 'Oturumu Başlat';
+
+  @override
+  String get sessionActive => 'Oturum Aktif';
+
+  @override
+  String get remainingTime => 'Kalan Süre';
+
+  @override
+  String get appLocked => 'Uygulama Kilitli';
+
+  @override
+  String get focusTimeMessage =>
+      'Bu uygulama odaklanma süreniz boyunca kilitlenmiştir. Geçici olarak kilidi açmak için bir oturum başlatın.';
+
+  @override
+  String get goBackHome => 'Ana Sayfaya Dön';
 }

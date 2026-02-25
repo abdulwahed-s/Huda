@@ -909,6 +909,207 @@
     },
     "sahurAlarmNotSet": "Nicht eingestellt",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"
+        "description": "Subtitle when Sahur alarm is disabled"},
+    "miqaatLock": "Miqaat-Sperre",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "Miqaat-Sperre aktivieren",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "Sperren Sie Apps während der Gebetszeiten, um Ablenkungen zu minimieren.",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "Gesperrte Apps",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "Keine Apps ausgewählt",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "Apps hinzufügen",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "Zeitfenster",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "Keine Zeitfenster konfiguriert",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "Zeitfenster hinzufügen",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "Zeitfenster bearbeiten",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "Sitzungsdauer",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "Wie lange jede Entsperrsitzung dauert",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "Dauer auswählen",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "Benutzerdefinierte Dauer",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "Bestätigen",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "Apps auswählen",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "Apps suchen...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "Apps werden geladen...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "Keine Apps gefunden",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "iOS-App-Auswahl",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "Aufgrund von iOS-Datenschutzrichtlinien wird die App-Auswahl über die Bildschirmzeit-Einstellungen verwaltet. Aktivieren Sie den Zugriff auf die Bildschirmzeit, um App-Einschränkungen zu verwalten.",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "Bezeichnung (optional)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "z.B. Fidschr-Zeit, Arbeitszeiten",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "Zeitraum",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "Wiederholen am",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "Leer lassen für tägliche Wiederholung",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "Jeden Tag",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "Montag",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "Dienstag",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "Mittwoch",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "Donnerstag",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "Freitag",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "Samstag",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "Sonntag",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "Berechtigungen erforderlich",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "Gewähren Sie die folgenden Berechtigungen, um die Miqaat-Sperre zu aktivieren",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "Bedienungshilfen",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "Erforderlich, um App-Starts zu erkennen",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "Über anderen Apps einblenden",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "Erforderlich, um den Sperrbildschirm anzuzeigen",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "Bildschirmzeit-Zugriff",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "Erforderlich zur Verwaltung von App-Einschränkungen",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "Berechtigungen prüfen",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "Sitzung starten",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "Sitzung aktiv",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "Verbleibende Zeit",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "App gesperrt",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "Diese App ist während Ihrer Fokuszeit gesperrt. Starten Sie eine Sitzung, um sie vorübergehend zu entsperren.",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "Zurück zum Startbildschirm",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

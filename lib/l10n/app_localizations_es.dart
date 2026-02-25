@@ -2754,4 +2754,161 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'No establecido';
+
+  @override
+  String get miqaatLock => 'Bloqueo Miqaat';
+
+  @override
+  String get enableMiqaatLock => 'Habilitar Bloqueo Miqaat';
+
+  @override
+  String get miqaatLockDescription =>
+      'Bloquea aplicaciones durante los momentos de adoración para minimizar las distracciones.';
+
+  @override
+  String get lockedApps => 'Aplicaciones bloqueadas';
+
+  @override
+  String get noAppsSelected => 'Ninguna aplicación seleccionada';
+
+  @override
+  String get addApps => 'Añadir aplicaciones';
+
+  @override
+  String get timeSlots => 'Intervalos de tiempo';
+
+  @override
+  String get noTimeSlotsConfigured =>
+      'No hay intervalos de tiempo configurados';
+
+  @override
+  String get addTimeSlot => 'Añadir intervalo de tiempo';
+
+  @override
+  String get editTimeSlot => 'Editar intervalo de tiempo';
+
+  @override
+  String get sessionDuration => 'Duración de la sesión';
+
+  @override
+  String get sessionDurationDescription =>
+      'Cuánto dura cada sesión de desbloqueo';
+
+  @override
+  String get selectDuration => 'Seleccionar duración';
+
+  @override
+  String get customDuration => 'Duración personalizada';
+
+  @override
+  String get confirm => 'Confirmar';
+
+  @override
+  String get selectApps => 'Seleccionar aplicaciones';
+
+  @override
+  String get searchApps => 'Buscar aplicaciones...';
+
+  @override
+  String get loadingApps => 'Cargando aplicaciones...';
+
+  @override
+  String get noAppsFound => 'No se encontraron aplicaciones';
+
+  @override
+  String get iosAppSelectionTitle => 'Selección de aplicación iOS';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'Debido a las restricciones de privacidad de iOS, la selección de aplicaciones se gestiona mediante los ajustes de Tiempo de uso. Habilite el acceso a Tiempo de uso para gestionar restricciones.';
+
+  @override
+  String get label => 'Etiqueta (opcional)';
+
+  @override
+  String get labelHint => 'ej., Hora de Fayr, Horas de trabajo';
+
+  @override
+  String get timeRange => 'Rango de tiempo';
+
+  @override
+  String get repeatOn => 'Repetir el';
+
+  @override
+  String get leaveEmptyForEveryday =>
+      'Déjelo vacío para repetir todos los días';
+
+  @override
+  String get everyday => 'Todos los días';
+
+  @override
+  String get monday => 'Lunes';
+
+  @override
+  String get tuesday => 'Martes';
+
+  @override
+  String get wednesday => 'Miércoles';
+
+  @override
+  String get thursday => 'Jueves';
+
+  @override
+  String get friday => 'Viernes';
+
+  @override
+  String get saturday => 'Sábado';
+
+  @override
+  String get sunday => 'Domingo';
+
+  @override
+  String get permissionsRequired => 'Permisos requeridos';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'Otorgue los siguientes permisos para habilitar el Bloqueo Miqaat';
+
+  @override
+  String get accessibilityService => 'Servicio de Accesibilidad';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'Requerido para detectar el inicio de aplicaciones';
+
+  @override
+  String get overlayPermission => 'Mostrar sobre otras aplicaciones';
+
+  @override
+  String get overlayPermissionDescription =>
+      'Requerido para mostrar la pantalla de bloqueo';
+
+  @override
+  String get screenTimeAccess => 'Acceso a Tiempo de uso';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'Requerido para gestionar las restricciones de aplicaciones';
+
+  @override
+  String get checkPermissions => 'Comprobar permisos';
+
+  @override
+  String get startSession => 'Iniciar sesión';
+
+  @override
+  String get sessionActive => 'Sesión activa';
+
+  @override
+  String get remainingTime => 'Tiempo restante';
+
+  @override
+  String get appLocked => 'Aplicación bloqueada';
+
+  @override
+  String get focusTimeMessage =>
+      'Esta aplicación está bloqueada durante tu tiempo de enfoque. Inicia una sesión para desbloquearla temporalmente.';
+
+  @override
+  String get goBackHome => 'Volver a Inicio';
 }

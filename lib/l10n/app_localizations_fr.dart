@@ -2760,4 +2760,160 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'Non défini';
+
+  @override
+  String get miqaatLock => 'Verrouillage Miqaat';
+
+  @override
+  String get enableMiqaatLock => 'Activer le Verrouillage Miqaat';
+
+  @override
+  String get miqaatLockDescription =>
+      'Verrouillez les applications pendant les heures de culte pour minimiser les distractions.';
+
+  @override
+  String get lockedApps => 'Applications verrouillées';
+
+  @override
+  String get noAppsSelected => 'Aucune application sélectionnée';
+
+  @override
+  String get addApps => 'Ajouter des applications';
+
+  @override
+  String get timeSlots => 'Créneaux horaires';
+
+  @override
+  String get noTimeSlotsConfigured => 'Aucun créneau horaire configuré';
+
+  @override
+  String get addTimeSlot => 'Ajouter un créneau horaire';
+
+  @override
+  String get editTimeSlot => 'Modifier le créneau horaire';
+
+  @override
+  String get sessionDuration => 'Durée de la session';
+
+  @override
+  String get sessionDurationDescription =>
+      'Combien de temps dure chaque session de déverrouillage';
+
+  @override
+  String get selectDuration => 'Sélectionner la durée';
+
+  @override
+  String get customDuration => 'Durée personnalisée';
+
+  @override
+  String get confirm => 'Confirmer';
+
+  @override
+  String get selectApps => 'Sélectionner des applications';
+
+  @override
+  String get searchApps => 'Rechercher des applications...';
+
+  @override
+  String get loadingApps => 'Chargement des applications...';
+
+  @override
+  String get noAppsFound => 'Aucune application trouvée';
+
+  @override
+  String get iosAppSelectionTitle => 'Sélection d\'application iOS';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'En raison des restrictions de confidentialité d\'iOS, la sélection d\'applications est gérée via les paramètres de Temps d\'écran. Activez l\'accès au Temps d\'écran pour gérer les restrictions.';
+
+  @override
+  String get label => 'Étiquette (facultatif)';
+
+  @override
+  String get labelHint => 'ex., Heure du Fajr, Heures de travail';
+
+  @override
+  String get timeRange => 'Plage horaire';
+
+  @override
+  String get repeatOn => 'Répéter le';
+
+  @override
+  String get leaveEmptyForEveryday =>
+      'Laissez vide pour répéter tous les jours';
+
+  @override
+  String get everyday => 'Tous les jours';
+
+  @override
+  String get monday => 'Lundi';
+
+  @override
+  String get tuesday => 'Mardi';
+
+  @override
+  String get wednesday => 'Mercredi';
+
+  @override
+  String get thursday => 'Jeudi';
+
+  @override
+  String get friday => 'Vendredi';
+
+  @override
+  String get saturday => 'Samedi';
+
+  @override
+  String get sunday => 'Dimanche';
+
+  @override
+  String get permissionsRequired => 'Autorisations requises';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'Accordez les autorisations suivantes pour activer le Verrouillage Miqaat';
+
+  @override
+  String get accessibilityService => 'Service d\'accessibilité';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'Requis pour détecter les lancements d\'applications';
+
+  @override
+  String get overlayPermission => 'Afficher sur les autres applications';
+
+  @override
+  String get overlayPermissionDescription =>
+      'Requis pour afficher l\'écran de verrouillage';
+
+  @override
+  String get screenTimeAccess => 'Accès au Temps d\'écran';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'Requis pour gérer les restrictions d\'applications';
+
+  @override
+  String get checkPermissions => 'Vérifier les autorisations';
+
+  @override
+  String get startSession => 'Démarrer la session';
+
+  @override
+  String get sessionActive => 'Session active';
+
+  @override
+  String get remainingTime => 'Temps restant';
+
+  @override
+  String get appLocked => 'Application verrouillée';
+
+  @override
+  String get focusTimeMessage =>
+      'Cette application est verrouillée pendant votre temps de concentration. Démarrez une session pour la déverrouiller temporairement.';
+
+  @override
+  String get goBackHome => 'Retour à l\'accueil';
 }

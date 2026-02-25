@@ -2696,4 +2696,158 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'সেট করা হয়নি';
+
+  @override
+  String get miqaatLock => 'মিক্বাত লক';
+
+  @override
+  String get enableMiqaatLock => 'মিক্বাত লক চালু করুন';
+
+  @override
+  String get miqaatLockDescription =>
+      'বিক্ষিপ্ততা কমানোর জন্য উপাসনার সময় অ্যাপগুলো লক করুন।';
+
+  @override
+  String get lockedApps => 'লক করা অ্যাপস';
+
+  @override
+  String get noAppsSelected => 'কোনো অ্যাপ নির্বাচন করা হয়নি';
+
+  @override
+  String get addApps => 'অ্যাপ যোগ করুন';
+
+  @override
+  String get timeSlots => 'স্লটের সময়';
+
+  @override
+  String get noTimeSlotsConfigured => 'কোনো স্লটের সময় কনফিগার করা হয়নি';
+
+  @override
+  String get addTimeSlot => 'সময়ের স্লট যোগ করুন';
+
+  @override
+  String get editTimeSlot => 'সময়ের স্লট সম্পাদনা করুন';
+
+  @override
+  String get sessionDuration => 'সেশনের সময়কাল';
+
+  @override
+  String get sessionDurationDescription =>
+      'প্রতিটি আনলক সেশন কতক্ষণ স্থায়ী হয়';
+
+  @override
+  String get selectDuration => 'সময়কাল নির্বাচন করুন';
+
+  @override
+  String get customDuration => 'কাস্টম সময়কাল';
+
+  @override
+  String get confirm => 'নিশ্চিত করুন';
+
+  @override
+  String get selectApps => 'অ্যাপ নির্বাচন করুন';
+
+  @override
+  String get searchApps => 'অ্যাপ খুঁজুন...';
+
+  @override
+  String get loadingApps => 'অ্যাপ লোড হচ্ছে...';
+
+  @override
+  String get noAppsFound => 'কোনো অ্যাপ পাওয়া যায়নি';
+
+  @override
+  String get iosAppSelectionTitle => 'iOS অ্যাপ নির্বাচন';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'iOS গোপনীয়তা সীমাবদ্ধতার কারণে, স্ক্রিন টাইম সেটিংসের মাধ্যমে অ্যাপ নির্বাচন পরিচালিত হয়। অ্যাপ সীমাবদ্ধতা পরিচালনা করতে স্ক্রিন টাইম অ্যাক্সেস চালু করুন।';
+
+  @override
+  String get label => 'লেবেল (ঐচ্ছিক)';
+
+  @override
+  String get labelHint => 'যেমন, ফজরের সময়, কাজের সময়';
+
+  @override
+  String get timeRange => 'সময়ের পরিসর';
+
+  @override
+  String get repeatOn => 'পুনরাবৃত্তি করুন';
+
+  @override
+  String get leaveEmptyForEveryday => 'প্রতিদিন পুনরাবৃত্তি করতে ফাঁকা রাখুন';
+
+  @override
+  String get everyday => 'প্রতিদিন';
+
+  @override
+  String get monday => 'সোমবার';
+
+  @override
+  String get tuesday => 'মঙ্গলবার';
+
+  @override
+  String get wednesday => 'বুধবার';
+
+  @override
+  String get thursday => 'বৃহস্পতিবার';
+
+  @override
+  String get friday => 'শুক্রবার';
+
+  @override
+  String get saturday => 'শনিবার';
+
+  @override
+  String get sunday => 'রবিবার';
+
+  @override
+  String get permissionsRequired => 'অনুমতি প্রয়োজন';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'মিক্বাত লক চালু করতে নিচের অনুমতিগুলো দিন';
+
+  @override
+  String get accessibilityService => 'অ্যাক্সেসিবিলিটি পরিষেবা';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'অ্যাপ চালু শনাক্ত করতে প্রয়োজন';
+
+  @override
+  String get overlayPermission => 'অন্যান্য অ্যাপের উপর প্রদর্শন করুন';
+
+  @override
+  String get overlayPermissionDescription => 'লক স্ক্রিন দেখাতে প্রয়োজন';
+
+  @override
+  String get screenTimeAccess => 'স্ক্রিন টাইম অ্যাক্সেস';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'অ্যাপের সীমাবদ্ধতা পরিচালনা করতে প্রয়োজন';
+
+  @override
+  String get checkPermissions => 'অনুমতি যাচাই করুন';
+
+  @override
+  String get startSession => 'সেশন শুরু করুন';
+
+  @override
+  String get sessionActive => 'সেশন সক্রিয়';
+
+  @override
+  String get remainingTime => 'অবশিষ্ট সময়';
+
+  @override
+  String get appLocked => 'অ্যাপ লক করা হয়েছে';
+
+  @override
+  String get focusTimeMessage =>
+      'আপনার মনোযোগের সময়ে এই অ্যাপটি লক করা হয়েছে। সাময়িকভাবে আনলক করতে একটি সেশন শুরু করুন।';
+
+  @override
+  String get goBackHome => 'হোমে ফিরে যান';
 }

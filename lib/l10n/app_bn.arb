@@ -1033,6 +1033,207 @@
     },
     "sahurAlarmNotSet": "সেট করা হয়নি",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"
+        "description": "Subtitle when Sahur alarm is disabled"},
+    "miqaatLock": "মিক্বাত লক",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "মিক্বাত লক চালু করুন",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "বিক্ষিপ্ততা কমানোর জন্য উপাসনার সময় অ্যাপগুলো লক করুন।",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "লক করা অ্যাপস",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "কোনো অ্যাপ নির্বাচন করা হয়নি",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "অ্যাপ যোগ করুন",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "স্লটের সময়",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "কোনো স্লটের সময় কনফিগার করা হয়নি",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "সময়ের স্লট যোগ করুন",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "সময়ের স্লট সম্পাদনা করুন",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "সেশনের সময়কাল",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "প্রতিটি আনলক সেশন কতক্ষণ স্থায়ী হয়",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "সময়কাল নির্বাচন করুন",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "কাস্টম সময়কাল",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "নিশ্চিত করুন",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "অ্যাপ নির্বাচন করুন",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "অ্যাপ খুঁজুন...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "অ্যাপ লোড হচ্ছে...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "কোনো অ্যাপ পাওয়া যায়নি",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "iOS অ্যাপ নির্বাচন",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "iOS গোপনীয়তা সীমাবদ্ধতার কারণে, স্ক্রিন টাইম সেটিংসের মাধ্যমে অ্যাপ নির্বাচন পরিচালিত হয়। অ্যাপ সীমাবদ্ধতা পরিচালনা করতে স্ক্রিন টাইম অ্যাক্সেস চালু করুন।",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "লেবেল (ঐচ্ছিক)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "যেমন, ফজরের সময়, কাজের সময়",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "সময়ের পরিসর",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "পুনরাবৃত্তি করুন",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "প্রতিদিন পুনরাবৃত্তি করতে ফাঁকা রাখুন",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "প্রতিদিন",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "সোমবার",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "মঙ্গলবার",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "বুধবার",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "বৃহস্পতিবার",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "শুক্রবার",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "শনিবার",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "রবিবার",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "অনুমতি প্রয়োজন",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "মিক্বাত লক চালু করতে নিচের অনুমতিগুলো দিন",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "অ্যাক্সেসিবিলিটি পরিষেবা",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "অ্যাপ চালু শনাক্ত করতে প্রয়োজন",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "অন্যান্য অ্যাপের উপর প্রদর্শন করুন",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "লক স্ক্রিন দেখাতে প্রয়োজন",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "স্ক্রিন টাইম অ্যাক্সেস",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "অ্যাপের সীমাবদ্ধতা পরিচালনা করতে প্রয়োজন",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "অনুমতি যাচাই করুন",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "সেশন শুরু করুন",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "সেশন সক্রিয়",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "অবশিষ্ট সময়",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "অ্যাপ লক করা হয়েছে",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "আপনার মনোযোগের সময়ে এই অ্যাপটি লক করা হয়েছে। সাময়িকভাবে আনলক করতে একটি সেশন শুরু করুন।",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "হোমে ফিরে যান",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

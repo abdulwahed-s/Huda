@@ -1016,5 +1016,207 @@
     "sahurAlarmNotSet": "Tidak Ditetapkan",
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"
+    },
+    "miqaatLock": "Kunci Miqaat",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "Dayakan Kunci Miqaat",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "Kunci aplikasi semasa waktu ibadah untuk meminimumkan gangguan.",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "Aplikasi Dikunci",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "Tiada aplikasi dipilih",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "Tambah Aplikasi",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "Slot Masa",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "Tiada slot masa dikonfigurasikan",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "Tambah Slot Masa",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "Edit Slot Masa",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "Tempoh Sesi",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "Berapa lama setiap sesi buka kunci bertahan",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "Pilih Tempoh",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "Tempoh Tersuai",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "Sahkan",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "Pilih Aplikasi",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "Cari aplikasi...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "Memuatkan aplikasi...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "Tiada aplikasi ditemui",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "Pemilihan Aplikasi iOS",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "Oleh kerana sekatan privasi iOS, pemilihan aplikasi diuruskan melalui tetapan Masa Skrin. Dayakan akses Masa Skrin untuk mengurus sekatan aplikasi.",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "Label (pilihan)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "cth., Waktu Subuh, Waktu Kerja",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "Julat Masa",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "Ulang Pada",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "Biarkan kosong untuk ulang setiap hari",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "Setiap hari",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "Isnin",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "Selasa",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "Rabu",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "Khamis",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "Jumaat",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "Sabtu",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "Ahad",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "Kebenaran Diperlukan",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "Beri kebenaran berikut untuk mendayakan Kunci Miqaat",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "Perkhidmatan Kebolehcapaian",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "Diperlukan untuk mengesan pelancaran aplikasi",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "Paparkan Atas Aplikasi Lain",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "Diperlukan untuk menunjukkan skrin kunci",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "Akses Masa Skrin",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "Diperlukan untuk mengurus sekatan aplikasi",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "Semak Kebenaran",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "Mula Sesi",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "Sesi Aktif",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "Masa Tinggal",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "Aplikasi Dikunci",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "Aplikasi ini dikunci semasa masa fokus anda. Mulakan sesi untuk membuka kunci buat sementara waktu.",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "Kembali ke Laman Utama",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

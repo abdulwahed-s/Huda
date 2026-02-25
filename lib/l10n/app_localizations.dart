@@ -1722,7 +1722,7 @@ abstract class AppLocalizations {
   /// **'No'**
   String get no;
 
-  /// Done button text
+  /// Done button
   ///
   /// In en, this message translates to:
   /// **'Done'**
@@ -2580,10 +2580,10 @@ abstract class AppLocalizations {
   /// **'Auto-renewal: Inactive'**
   String get autoRenewalInactive;
 
-  /// Minutes label
+  /// Minutes unit
   ///
   /// In en, this message translates to:
-  /// **'Minutes'**
+  /// **'minutes'**
   String get minutes;
 
   /// Minutes input example
@@ -5029,6 +5029,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not Set'**
   String get sahurAlarmNotSet;
+
+  /// Miqaat Lock feature title
+  ///
+  /// In en, this message translates to:
+  /// **'Miqaat Lock'**
+  String get miqaatLock;
+
+  /// Enable toggle label
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Miqaat Lock'**
+  String get enableMiqaatLock;
+
+  /// Feature description
+  ///
+  /// In en, this message translates to:
+  /// **'Lock apps during times of worship to minimize distractions.'**
+  String get miqaatLockDescription;
+
+  /// Locked apps section title
+  ///
+  /// In en, this message translates to:
+  /// **'Locked Apps'**
+  String get lockedApps;
+
+  /// Empty state message
+  ///
+  /// In en, this message translates to:
+  /// **'No apps selected'**
+  String get noAppsSelected;
+
+  /// Add apps button
+  ///
+  /// In en, this message translates to:
+  /// **'Add Apps'**
+  String get addApps;
+
+  /// Time slots section title
+  ///
+  /// In en, this message translates to:
+  /// **'Time Slots'**
+  String get timeSlots;
+
+  /// Empty state message
+  ///
+  /// In en, this message translates to:
+  /// **'No time slots configured'**
+  String get noTimeSlotsConfigured;
+
+  /// Add time slot button
+  ///
+  /// In en, this message translates to:
+  /// **'Add Time Slot'**
+  String get addTimeSlot;
+
+  /// Edit time slot dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Time Slot'**
+  String get editTimeSlot;
+
+  /// Session duration section title
+  ///
+  /// In en, this message translates to:
+  /// **'Session Duration'**
+  String get sessionDuration;
+
+  /// Session duration explanation
+  ///
+  /// In en, this message translates to:
+  /// **'How long each unlock session lasts'**
+  String get sessionDurationDescription;
+
+  /// Duration picker title
+  ///
+  /// In en, this message translates to:
+  /// **'Select Duration'**
+  String get selectDuration;
+
+  /// Custom duration option
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Duration'**
+  String get customDuration;
+
+  /// Confirm button
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// App selection dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Select Apps'**
+  String get selectApps;
+
+  /// Search apps placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search apps...'**
+  String get searchApps;
+
+  /// Loading apps message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading apps...'**
+  String get loadingApps;
+
+  /// No apps found message
+  ///
+  /// In en, this message translates to:
+  /// **'No apps found'**
+  String get noAppsFound;
+
+  /// iOS app selection title
+  ///
+  /// In en, this message translates to:
+  /// **'iOS App Selection'**
+  String get iosAppSelectionTitle;
+
+  /// iOS app selection explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Due to iOS privacy restrictions, app selection is managed through Screen Time settings. Enable Screen Time access to manage app restrictions.'**
+  String get iosAppSelectionDescription;
+
+  /// Label input label
+  ///
+  /// In en, this message translates to:
+  /// **'Label (optional)'**
+  String get label;
+
+  /// Label input hint
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Fajr Time, Work Hours'**
+  String get labelHint;
+
+  /// Time range section title
+  ///
+  /// In en, this message translates to:
+  /// **'Time Range'**
+  String get timeRange;
+
+  /// Weekday selection title
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat On'**
+  String get repeatOn;
+
+  /// Weekday selection hint
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty to repeat everyday'**
+  String get leaveEmptyForEveryday;
+
+  /// Everyday label
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday'**
+  String get everyday;
+
+  /// Monday
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get monday;
+
+  /// Tuesday
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get tuesday;
+
+  /// Wednesday
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get wednesday;
+
+  /// Thursday
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get thursday;
+
+  /// Friday
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get friday;
+
+  /// Saturday
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get saturday;
+
+  /// Sunday
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get sunday;
+
+  /// Permissions banner title
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions Required'**
+  String get permissionsRequired;
+
+  /// Permissions banner description
+  ///
+  /// In en, this message translates to:
+  /// **'Grant the following permissions to enable Miqaat Lock'**
+  String get permissionsRequiredDescription;
+
+  /// Accessibility permission title
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility Service'**
+  String get accessibilityService;
+
+  /// Accessibility permission description
+  ///
+  /// In en, this message translates to:
+  /// **'Required to detect app launches'**
+  String get accessibilityServiceDescription;
+
+  /// Overlay permission title
+  ///
+  /// In en, this message translates to:
+  /// **'Display Over Other Apps'**
+  String get overlayPermission;
+
+  /// Overlay permission description
+  ///
+  /// In en, this message translates to:
+  /// **'Required to show lock screen'**
+  String get overlayPermissionDescription;
+
+  /// iOS Screen Time permission title
+  ///
+  /// In en, this message translates to:
+  /// **'Screen Time Access'**
+  String get screenTimeAccess;
+
+  /// iOS Screen Time permission description
+  ///
+  /// In en, this message translates to:
+  /// **'Required to manage app restrictions'**
+  String get screenTimeAccessDescription;
+
+  /// Check permissions button
+  ///
+  /// In en, this message translates to:
+  /// **'Check Permissions'**
+  String get checkPermissions;
+
+  /// Start session button
+  ///
+  /// In en, this message translates to:
+  /// **'Start Session'**
+  String get startSession;
+
+  /// Active session indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Session Active'**
+  String get sessionActive;
+
+  /// Remaining time label
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Time'**
+  String get remainingTime;
+
+  /// Lock screen title
+  ///
+  /// In en, this message translates to:
+  /// **'App Locked'**
+  String get appLocked;
+
+  /// Lock screen message
+  ///
+  /// In en, this message translates to:
+  /// **'This app is locked during your focus time. Start a session to unlock temporarily.'**
+  String get focusTimeMessage;
+
+  /// Go back button
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back Home'**
+  String get goBackHome;
 }
 
 class _AppLocalizationsDelegate

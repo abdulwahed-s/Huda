@@ -2714,4 +2714,160 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'Не установлено';
+
+  @override
+  String get miqaatLock => 'Блокировка Микаат';
+
+  @override
+  String get enableMiqaatLock => 'Включить блокировку Микаат';
+
+  @override
+  String get miqaatLockDescription =>
+      'Блокируйте приложения во время богослужения, чтобы свести к минимуму отвлекающие факторы.';
+
+  @override
+  String get lockedApps => 'Заблокированные приложения';
+
+  @override
+  String get noAppsSelected => 'Приложения не выбраны';
+
+  @override
+  String get addApps => 'Добавить приложения';
+
+  @override
+  String get timeSlots => 'Временные интервалы';
+
+  @override
+  String get noTimeSlotsConfigured => 'Временные интервалы не настроены';
+
+  @override
+  String get addTimeSlot => 'Добавить временной интервал';
+
+  @override
+  String get editTimeSlot => 'Изменить временной интервал';
+
+  @override
+  String get sessionDuration => 'Продолжительность сеанса';
+
+  @override
+  String get sessionDurationDescription =>
+      'Как долго длится каждый сеанс разблокировки';
+
+  @override
+  String get selectDuration => 'Выберите продолжительность';
+
+  @override
+  String get customDuration => 'Своя продолжительность';
+
+  @override
+  String get confirm => 'Подтвердить';
+
+  @override
+  String get selectApps => 'Выбрать приложения';
+
+  @override
+  String get searchApps => 'Поиск приложений...';
+
+  @override
+  String get loadingApps => 'Загрузка приложений...';
+
+  @override
+  String get noAppsFound => 'Приложения не найдены';
+
+  @override
+  String get iosAppSelectionTitle => 'Выбор приложений iOS';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'Из-за ограничений конфиденциальности iOS выбор приложений управляется через настройки Экранного времени. Включите доступ к Экранному времени для управления ограничениями.';
+
+  @override
+  String get label => 'Метка (необязательно)';
+
+  @override
+  String get labelHint => 'напр., Время Фаджра, Рабочие часы';
+
+  @override
+  String get timeRange => 'Временной диапазон';
+
+  @override
+  String get repeatOn => 'Повторять';
+
+  @override
+  String get leaveEmptyForEveryday =>
+      'Оставьте пустым для ежедневного повторения';
+
+  @override
+  String get everyday => 'Каждый день';
+
+  @override
+  String get monday => 'Понедельник';
+
+  @override
+  String get tuesday => 'Вторник';
+
+  @override
+  String get wednesday => 'Среда';
+
+  @override
+  String get thursday => 'Четверг';
+
+  @override
+  String get friday => 'Пятница';
+
+  @override
+  String get saturday => 'Суббота';
+
+  @override
+  String get sunday => 'Воскресенье';
+
+  @override
+  String get permissionsRequired => 'Требуются разрешения';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'Предоставьте следующие разрешения для включения Блокировки Микаат';
+
+  @override
+  String get accessibilityService => 'Служба специальных возможностей';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'Требуется для обнаружения запуска приложений';
+
+  @override
+  String get overlayPermission => 'Отображение поверх других приложений';
+
+  @override
+  String get overlayPermissionDescription =>
+      'Требуется для отображения экрана блокировки';
+
+  @override
+  String get screenTimeAccess => 'Доступ к Экранному времени';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'Требуется для управления ограничениями приложений';
+
+  @override
+  String get checkPermissions => 'Проверить разрешения';
+
+  @override
+  String get startSession => 'Начать сеанс';
+
+  @override
+  String get sessionActive => 'Сеанс активен';
+
+  @override
+  String get remainingTime => 'Оставшееся время';
+
+  @override
+  String get appLocked => 'Приложение заблокировано';
+
+  @override
+  String get focusTimeMessage =>
+      'Это приложение заблокировано во время вашего времени для концентрации. Начните сеанс для временной разблокировки.';
+
+  @override
+  String get goBackHome => 'Вернуться на главную';
 }

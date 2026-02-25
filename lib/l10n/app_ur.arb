@@ -991,6 +991,207 @@
     },
     "sahurAlarmNotSet": "سیٹ نہیں",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"
+        "description": "Subtitle when Sahur alarm is disabled"},
+    "miqaatLock": "میقات لاک",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "میقات لاک کو فعال کریں",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "توجہ ہٹنے کو کم کرنے کے لیے عبادت کے اوقات میں ایپس کو لاک کریں۔",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "لاک شدہ ایپس",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "کوئی ایپ منتخب نہیں کی گئی",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "ایپس شامل کریں",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "وقت کے سلاٹس",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "کوئی وقت کا سلاٹ ترتیب نہیں دیا گیا",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "وقت کا سلاٹ شامل کریں",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "وقت کا سلاٹ تبدیل کریں",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "سیشن کا دورانیہ",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "ہر ان لاک سیشن کتنا طویل ہوگا",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "دورانیہ منتخب کریں",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "اپنی مرضی کا دورانیہ",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "تصدیق کریں",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "ایپس منتخب کریں",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "ایپس تلاش کریں...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "ایپس لوڈ ہو رہی ہیں...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "کوئی ایپس نہیں ملیں",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "آئی او ایس ایپ کا انتخاب",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "آئی او ایس کی رازداری کی پابندیوں کی وجہ سے، ایپ کا انتخاب اسکرین ٹائم کی ترتیبات کے ذریعے منظم کیا جاتا ہے۔ ایپ کی پابندیوں کا انتظام کرنے کے لیے اسکرین ٹائم تک رسائی کو فعال کریں۔",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "لیبل (اختیاری)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "مثال، فجر کا وقت، کام کے اوقات",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "وقت کا دورانیہ",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "ان دنوں پر دہرائیں",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "ہر دن دہرانے کے لیے خالی چھوڑ دیں",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "ہر دن",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "پیر",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "منگل",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "بدھ",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "جمعرات",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "جمعہ",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "ہفتہ",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "اتوار",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "اجازتیں درکار ہیں",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "میقات لاک کو فعال کرنے کے لیے درج ذیل اجازتیں فراہم کریں",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "قابل رسائی سروس",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "ایپ کے آغاز کی نشاندہی کرنے کے لیے ضروری ہے",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "دیگر ایپس کے اوپر دکھائیں",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "لاک اسکرین دکھانے کے لیے ضروری ہے",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "اسکرین ٹائم تک رسائی",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "ایپ کی پابندیوں کو منظم کرنے کے لیے ضروری ہے",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "اجازتیں چیک کریں",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "سیشن شروع کریں",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "سیشن فعال ہے",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "باقی وقت",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "ایپ لاک ہے",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "یہ ایپ آپ کے فوکس ٹائم کے دوران لاک کی گئی ہے۔ عارضی طور پر ان لاک کرنے کے لیے ایک سیشن شروع کریں۔",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "واپس ہوم پر جائیں",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

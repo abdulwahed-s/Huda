@@ -2647,4 +2647,156 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'غير محدد';
+
+  @override
+  String get miqaatLock => 'قفل ميقات';
+
+  @override
+  String get enableMiqaatLock => 'تفعيل قفل ميقات';
+
+  @override
+  String get miqaatLockDescription =>
+      'قفل التطبيقات أثناء أوقات العبادة لتقليل المشتتات.';
+
+  @override
+  String get lockedApps => 'التطبيقات المقفلة';
+
+  @override
+  String get noAppsSelected => 'لم يتم تحديد تطبيقات';
+
+  @override
+  String get addApps => 'إضافة تطبيقات';
+
+  @override
+  String get timeSlots => 'الفترات الزمنية';
+
+  @override
+  String get noTimeSlotsConfigured => 'لم يتم تكوين فترات زمنية';
+
+  @override
+  String get addTimeSlot => 'إضافة فترة زمنية';
+
+  @override
+  String get editTimeSlot => 'تعديل الفترة الزمنية';
+
+  @override
+  String get sessionDuration => 'مدة الجلسة';
+
+  @override
+  String get sessionDurationDescription => 'كم تستمر كل جلسة فتح';
+
+  @override
+  String get selectDuration => 'اختر المدة';
+
+  @override
+  String get customDuration => 'مدة مخصصة';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get selectApps => 'تحديد التطبيقات';
+
+  @override
+  String get searchApps => 'البحث عن تطبيقات...';
+
+  @override
+  String get loadingApps => 'جاري تحميل التطبيقات...';
+
+  @override
+  String get noAppsFound => 'لم يتم العثور على تطبيقات';
+
+  @override
+  String get iosAppSelectionTitle => 'تحديد تطبيقات iOS';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'بسبب قيود الخصوصية في iOS، تتم إدارة تحديد التطبيقات من خلال إعدادات مدة الاستخدام. مكّن الوصول إلى مدة الاستخدام لإدارة قيود التطبيقات.';
+
+  @override
+  String get label => 'التسمية (اختياري)';
+
+  @override
+  String get labelHint => 'مثال: وقت الفجر، ساعات العمل';
+
+  @override
+  String get timeRange => 'النطاق الزمني';
+
+  @override
+  String get repeatOn => 'تكرار في';
+
+  @override
+  String get leaveEmptyForEveryday => 'اتركه فارغاً للتكرار كل يوم';
+
+  @override
+  String get everyday => 'كل يوم';
+
+  @override
+  String get monday => 'الاثنين';
+
+  @override
+  String get tuesday => 'الثلاثاء';
+
+  @override
+  String get wednesday => 'الأربعاء';
+
+  @override
+  String get thursday => 'الخميس';
+
+  @override
+  String get friday => 'الجمعة';
+
+  @override
+  String get saturday => 'السبت';
+
+  @override
+  String get sunday => 'الأحد';
+
+  @override
+  String get permissionsRequired => 'الأذونات المطلوبة';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'امنح الأذونات التالية لتفعيل قفل ميقات';
+
+  @override
+  String get accessibilityService => 'خدمة إمكانية الوصول';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'مطلوب لاكتشاف عمليات تشغيل التطبيقات';
+
+  @override
+  String get overlayPermission => 'العرض فوق التطبيقات الأخرى';
+
+  @override
+  String get overlayPermissionDescription => 'مطلوب لإظهار شاشة القفل';
+
+  @override
+  String get screenTimeAccess => 'الوصول إلى مدة الاستخدام';
+
+  @override
+  String get screenTimeAccessDescription => 'مطلوب لإدارة قيود التطبيقات';
+
+  @override
+  String get checkPermissions => 'التحقق من الأذونات';
+
+  @override
+  String get startSession => 'بدء الجلسة';
+
+  @override
+  String get sessionActive => 'الجلسة نشطة';
+
+  @override
+  String get remainingTime => 'الوقت المتبقي';
+
+  @override
+  String get appLocked => 'التطبيق مقفل';
+
+  @override
+  String get focusTimeMessage =>
+      'هذا التطبيق مقفل خلال وقت تركيزك. ابدأ جلسة لفتحه مؤقتاً.';
+
+  @override
+  String get goBackHome => 'العودة إلى الصفحة الرئيسية';
 }

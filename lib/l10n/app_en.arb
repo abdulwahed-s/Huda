@@ -3239,5 +3239,209 @@
     "sahurAlarmNotSet": "Not Set",
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"
+    },
+    "miqaatLock": "Miqaat Lock",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "Enable Miqaat Lock",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "Lock apps during times of worship to minimize distractions.",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "Locked Apps",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "No apps selected",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "Add Apps",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "Time Slots",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "No time slots configured",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "Add Time Slot",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "Edit Time Slot",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "Session Duration",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "How long each unlock session lasts",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "minutes": "minutes",
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "Select Duration",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "Custom Duration",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "Confirm",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "done": "Done",
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "Select Apps",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "Search apps...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "Loading apps...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "No apps found",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "iOS App Selection",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "Due to iOS privacy restrictions, app selection is managed through Screen Time settings. Enable Screen Time access to manage app restrictions.",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "Label (optional)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "e.g., Fajr Time, Work Hours",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "Time Range",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "Repeat On",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "Leave empty to repeat everyday",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "Everyday",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "Monday",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "Tuesday",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "Wednesday",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "Thursday",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "Friday",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "Saturday",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "Sunday",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "Permissions Required",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "Grant the following permissions to enable Miqaat Lock",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "Accessibility Service",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "Required to detect app launches",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "Display Over Other Apps",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "Required to show lock screen",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "Screen Time Access",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "Required to manage app restrictions",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "Check Permissions",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "Start Session",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "Session Active",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "Remaining Time",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "App Locked",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "This app is locked during your focus time. Start a session to unlock temporarily.",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "Go Back Home",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

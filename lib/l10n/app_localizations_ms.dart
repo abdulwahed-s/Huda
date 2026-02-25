@@ -2696,4 +2696,159 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'Tidak Ditetapkan';
+
+  @override
+  String get miqaatLock => 'Kunci Miqaat';
+
+  @override
+  String get enableMiqaatLock => 'Dayakan Kunci Miqaat';
+
+  @override
+  String get miqaatLockDescription =>
+      'Kunci aplikasi semasa waktu ibadah untuk meminimumkan gangguan.';
+
+  @override
+  String get lockedApps => 'Aplikasi Dikunci';
+
+  @override
+  String get noAppsSelected => 'Tiada aplikasi dipilih';
+
+  @override
+  String get addApps => 'Tambah Aplikasi';
+
+  @override
+  String get timeSlots => 'Slot Masa';
+
+  @override
+  String get noTimeSlotsConfigured => 'Tiada slot masa dikonfigurasikan';
+
+  @override
+  String get addTimeSlot => 'Tambah Slot Masa';
+
+  @override
+  String get editTimeSlot => 'Edit Slot Masa';
+
+  @override
+  String get sessionDuration => 'Tempoh Sesi';
+
+  @override
+  String get sessionDurationDescription =>
+      'Berapa lama setiap sesi buka kunci bertahan';
+
+  @override
+  String get selectDuration => 'Pilih Tempoh';
+
+  @override
+  String get customDuration => 'Tempoh Tersuai';
+
+  @override
+  String get confirm => 'Sahkan';
+
+  @override
+  String get selectApps => 'Pilih Aplikasi';
+
+  @override
+  String get searchApps => 'Cari aplikasi...';
+
+  @override
+  String get loadingApps => 'Memuatkan aplikasi...';
+
+  @override
+  String get noAppsFound => 'Tiada aplikasi ditemui';
+
+  @override
+  String get iosAppSelectionTitle => 'Pemilihan Aplikasi iOS';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'Oleh kerana sekatan privasi iOS, pemilihan aplikasi diuruskan melalui tetapan Masa Skrin. Dayakan akses Masa Skrin untuk mengurus sekatan aplikasi.';
+
+  @override
+  String get label => 'Label (pilihan)';
+
+  @override
+  String get labelHint => 'cth., Waktu Subuh, Waktu Kerja';
+
+  @override
+  String get timeRange => 'Julat Masa';
+
+  @override
+  String get repeatOn => 'Ulang Pada';
+
+  @override
+  String get leaveEmptyForEveryday => 'Biarkan kosong untuk ulang setiap hari';
+
+  @override
+  String get everyday => 'Setiap hari';
+
+  @override
+  String get monday => 'Isnin';
+
+  @override
+  String get tuesday => 'Selasa';
+
+  @override
+  String get wednesday => 'Rabu';
+
+  @override
+  String get thursday => 'Khamis';
+
+  @override
+  String get friday => 'Jumaat';
+
+  @override
+  String get saturday => 'Sabtu';
+
+  @override
+  String get sunday => 'Ahad';
+
+  @override
+  String get permissionsRequired => 'Kebenaran Diperlukan';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'Beri kebenaran berikut untuk mendayakan Kunci Miqaat';
+
+  @override
+  String get accessibilityService => 'Perkhidmatan Kebolehcapaian';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'Diperlukan untuk mengesan pelancaran aplikasi';
+
+  @override
+  String get overlayPermission => 'Paparkan Atas Aplikasi Lain';
+
+  @override
+  String get overlayPermissionDescription =>
+      'Diperlukan untuk menunjukkan skrin kunci';
+
+  @override
+  String get screenTimeAccess => 'Akses Masa Skrin';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'Diperlukan untuk mengurus sekatan aplikasi';
+
+  @override
+  String get checkPermissions => 'Semak Kebenaran';
+
+  @override
+  String get startSession => 'Mula Sesi';
+
+  @override
+  String get sessionActive => 'Sesi Aktif';
+
+  @override
+  String get remainingTime => 'Masa Tinggal';
+
+  @override
+  String get appLocked => 'Aplikasi Dikunci';
+
+  @override
+  String get focusTimeMessage =>
+      'Aplikasi ini dikunci semasa masa fokus anda. Mulakan sesi untuk membuka kunci buat sementara waktu.';
+
+  @override
+  String get goBackHome => 'Kembali ke Laman Utama';
 }

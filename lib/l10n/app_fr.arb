@@ -936,6 +936,207 @@
     },
     "sahurAlarmNotSet": "Non défini",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"
+        "description": "Subtitle when Sahur alarm is disabled"},
+    "miqaatLock": "Verrouillage Miqaat",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "Activer le Verrouillage Miqaat",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "Verrouillez les applications pendant les heures de culte pour minimiser les distractions.",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "Applications verrouillées",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "Aucune application sélectionnée",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "Ajouter des applications",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "Créneaux horaires",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "Aucun créneau horaire configuré",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "Ajouter un créneau horaire",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "Modifier le créneau horaire",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "Durée de la session",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "Combien de temps dure chaque session de déverrouillage",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "Sélectionner la durée",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "Durée personnalisée",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "Confirmer",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "Sélectionner des applications",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "Rechercher des applications...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "Chargement des applications...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "Aucune application trouvée",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "Sélection d'application iOS",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "En raison des restrictions de confidentialité d'iOS, la sélection d'applications est gérée via les paramètres de Temps d'écran. Activez l'accès au Temps d'écran pour gérer les restrictions.",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "Étiquette (facultatif)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "ex., Heure du Fajr, Heures de travail",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "Plage horaire",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "Répéter le",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "Laissez vide pour répéter tous les jours",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "Tous les jours",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "Lundi",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "Mardi",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "Mercredi",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "Jeudi",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "Vendredi",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "Samedi",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "Dimanche",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "Autorisations requises",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "Accordez les autorisations suivantes pour activer le Verrouillage Miqaat",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "Service d'accessibilité",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "Requis pour détecter les lancements d'applications",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "Afficher sur les autres applications",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "Requis pour afficher l'écran de verrouillage",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "Accès au Temps d'écran",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "Requis pour gérer les restrictions d'applications",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "Vérifier les autorisations",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "Démarrer la session",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "Session active",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "Temps restant",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "Application verrouillée",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "Cette application est verrouillée pendant votre temps de concentration. Démarrez une session pour la déverrouiller temporairement.",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "Retour à l'accueil",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

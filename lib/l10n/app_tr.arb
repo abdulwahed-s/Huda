@@ -887,7 +887,7 @@
     "iosWidgetStep3": "Widget galerisinde 'Huda'yı arayın",
     "iosWidgetStep4": "Bir widget boyutu seçin ve 'Widget Ekle'ye dokunun",
     "genericWidgetStep1": "Ana ekranınıza uzun basın ve 'Widget'lar'ı arayın",
-        "genericWidgetStep2": "'Huda' widget'ını bulun ve ana ekranınıza ekleyin",
+    "genericWidgetStep2": "'Huda' widget'ını bulun ve ana ekranınıza ekleyin",
     "sahurAlarmTitle": "Sahur Alarmı",
     "@sahurAlarmTitle": {
         "description": "Title for Sahur Alarm section"
@@ -929,5 +929,207 @@
     "sahurAlarmNotSet": "Ayarlanmadı",
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"
+    },
+    "miqaatLock": "Mikat Kilidi",
+    "@miqaatLock": {
+        "description": "Miqaat Lock feature title"
+    },
+    "enableMiqaatLock": "Mikat Kilidi'ni Etkinleştir",
+    "@enableMiqaatLock": {
+        "description": "Enable toggle label"
+    },
+    "miqaatLockDescription": "Dikkatinizin dağılmasını en aza indirmek için ibadet vakitlerinde uygulamaları kilitleyin.",
+    "@miqaatLockDescription": {
+        "description": "Feature description"
+    },
+    "lockedApps": "Kilitli Uygulamalar",
+    "@lockedApps": {
+        "description": "Locked apps section title"
+    },
+    "noAppsSelected": "Uygulama seçilmedi",
+    "@noAppsSelected": {
+        "description": "Empty state message"
+    },
+    "addApps": "Uygulama Ekle",
+    "@addApps": {
+        "description": "Add apps button"
+    },
+    "timeSlots": "Zaman Dilimleri",
+    "@timeSlots": {
+        "description": "Time slots section title"
+    },
+    "noTimeSlotsConfigured": "Zaman dilimi yapılandırılmadı",
+    "@noTimeSlotsConfigured": {
+        "description": "Empty state message"
+    },
+    "addTimeSlot": "Zaman Dilimi Ekle",
+    "@addTimeSlot": {
+        "description": "Add time slot button"
+    },
+    "editTimeSlot": "Zaman Dilimini Düzenle",
+    "@editTimeSlot": {
+        "description": "Edit time slot dialog title"
+    },
+    "sessionDuration": "Oturum Süresi",
+    "@sessionDuration": {
+        "description": "Session duration section title"
+    },
+    "sessionDurationDescription": "Her kilit açma oturumunun ne kadar süreceği",
+    "@sessionDurationDescription": {
+        "description": "Session duration explanation"
+    },
+    "@minutes": {
+        "description": "Minutes unit"
+    },
+    "selectDuration": "Süre Seç",
+    "@selectDuration": {
+        "description": "Duration picker title"
+    },
+    "customDuration": "Özel Süre",
+    "@customDuration": {
+        "description": "Custom duration option"
+    },
+    "confirm": "Onayla",
+    "@confirm": {
+        "description": "Confirm button"
+    },
+    "@done": {
+        "description": "Done button"
+    },
+    "selectApps": "Uygulamaları Seç",
+    "@selectApps": {
+        "description": "App selection dialog title"
+    },
+    "searchApps": "Uygulama ara...",
+    "@searchApps": {
+        "description": "Search apps placeholder"
+    },
+    "loadingApps": "Uygulamalar yükleniyor...",
+    "@loadingApps": {
+        "description": "Loading apps message"
+    },
+    "noAppsFound": "Uygulama bulunamadı",
+    "@noAppsFound": {
+        "description": "No apps found message"
+    },
+    "iosAppSelectionTitle": "iOS Uygulama Seçimi",
+    "@iosAppSelectionTitle": {
+        "description": "iOS app selection title"
+    },
+    "iosAppSelectionDescription": "iOS gizlilik kısıtlamaları nedeniyle uygulama seçimi Ekran Süresi ayarları üzerinden yönetilir. Uygulama kısıtlamalarını yönetmek için Ekran Süresi erişimini etkinleştirin.",
+    "@iosAppSelectionDescription": {
+        "description": "iOS app selection explanation"
+    },
+    "label": "Etiket (isteğe bağlı)",
+    "@label": {
+        "description": "Label input label"
+    },
+    "labelHint": "örn. Sabah Namazı, Çalışma Saatleri",
+    "@labelHint": {
+        "description": "Label input hint"
+    },
+    "timeRange": "Zaman Aralığı",
+    "@timeRange": {
+        "description": "Time range section title"
+    },
+    "repeatOn": "Tekrarla",
+    "@repeatOn": {
+        "description": "Weekday selection title"
+    },
+    "leaveEmptyForEveryday": "Her gün tekrarlamak için boş bırakın",
+    "@leaveEmptyForEveryday": {
+        "description": "Weekday selection hint"
+    },
+    "everyday": "Her gün",
+    "@everyday": {
+        "description": "Everyday label"
+    },
+    "monday": "Pazartesi",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "Salı",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "Çarşamba",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "Perşembe",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "Cuma",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "Cumartesi",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "sunday": "Pazar",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "permissionsRequired": "İzinler Gerekiyor",
+    "@permissionsRequired": {
+        "description": "Permissions banner title"
+    },
+    "permissionsRequiredDescription": "Mikat Kilidi'ni etkinleştirmek için aşağıdaki izinleri verin",
+    "@permissionsRequiredDescription": {
+        "description": "Permissions banner description"
+    },
+    "accessibilityService": "Erişilebilirlik Hizmeti",
+    "@accessibilityService": {
+        "description": "Accessibility permission title"
+    },
+    "accessibilityServiceDescription": "Uygulama başlatmalarını algılamak için gereklidir",
+    "@accessibilityServiceDescription": {
+        "description": "Accessibility permission description"
+    },
+    "overlayPermission": "Diğer Uygulamaların Üzerinde Göster",
+    "@overlayPermission": {
+        "description": "Overlay permission title"
+    },
+    "overlayPermissionDescription": "Kilit ekranını göstermek için gereklidir",
+    "@overlayPermissionDescription": {
+        "description": "Overlay permission description"
+    },
+    "screenTimeAccess": "Ekran Süresi Erişimi",
+    "@screenTimeAccess": {
+        "description": "iOS Screen Time permission title"
+    },
+    "screenTimeAccessDescription": "Uygulama kısıtlamalarını yönetmek için gereklidir",
+    "@screenTimeAccessDescription": {
+        "description": "iOS Screen Time permission description"
+    },
+    "checkPermissions": "İzinleri Kontrol Et",
+    "@checkPermissions": {
+        "description": "Check permissions button"
+    },
+    "startSession": "Oturumu Başlat",
+    "@startSession": {
+        "description": "Start session button"
+    },
+    "sessionActive": "Oturum Aktif",
+    "@sessionActive": {
+        "description": "Active session indicator"
+    },
+    "remainingTime": "Kalan Süre",
+    "@remainingTime": {
+        "description": "Remaining time label"
+    },
+    "appLocked": "Uygulama Kilitli",
+    "@appLocked": {
+        "description": "Lock screen title"
+    },
+    "focusTimeMessage": "Bu uygulama odaklanma süreniz boyunca kilitlenmiştir. Geçici olarak kilidi açmak için bir oturum başlatın.",
+    "@focusTimeMessage": {
+        "description": "Lock screen message"
+    },
+    "goBackHome": "Ana Sayfaya Dön",
+    "@goBackHome": {
+        "description": "Go back button"
     }
 }

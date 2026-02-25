@@ -2742,4 +2742,159 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'Nicht eingestellt';
+
+  @override
+  String get miqaatLock => 'Miqaat-Sperre';
+
+  @override
+  String get enableMiqaatLock => 'Miqaat-Sperre aktivieren';
+
+  @override
+  String get miqaatLockDescription =>
+      'Sperren Sie Apps während der Gebetszeiten, um Ablenkungen zu minimieren.';
+
+  @override
+  String get lockedApps => 'Gesperrte Apps';
+
+  @override
+  String get noAppsSelected => 'Keine Apps ausgewählt';
+
+  @override
+  String get addApps => 'Apps hinzufügen';
+
+  @override
+  String get timeSlots => 'Zeitfenster';
+
+  @override
+  String get noTimeSlotsConfigured => 'Keine Zeitfenster konfiguriert';
+
+  @override
+  String get addTimeSlot => 'Zeitfenster hinzufügen';
+
+  @override
+  String get editTimeSlot => 'Zeitfenster bearbeiten';
+
+  @override
+  String get sessionDuration => 'Sitzungsdauer';
+
+  @override
+  String get sessionDurationDescription =>
+      'Wie lange jede Entsperrsitzung dauert';
+
+  @override
+  String get selectDuration => 'Dauer auswählen';
+
+  @override
+  String get customDuration => 'Benutzerdefinierte Dauer';
+
+  @override
+  String get confirm => 'Bestätigen';
+
+  @override
+  String get selectApps => 'Apps auswählen';
+
+  @override
+  String get searchApps => 'Apps suchen...';
+
+  @override
+  String get loadingApps => 'Apps werden geladen...';
+
+  @override
+  String get noAppsFound => 'Keine Apps gefunden';
+
+  @override
+  String get iosAppSelectionTitle => 'iOS-App-Auswahl';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'Aufgrund von iOS-Datenschutzrichtlinien wird die App-Auswahl über die Bildschirmzeit-Einstellungen verwaltet. Aktivieren Sie den Zugriff auf die Bildschirmzeit, um App-Einschränkungen zu verwalten.';
+
+  @override
+  String get label => 'Bezeichnung (optional)';
+
+  @override
+  String get labelHint => 'z.B. Fidschr-Zeit, Arbeitszeiten';
+
+  @override
+  String get timeRange => 'Zeitraum';
+
+  @override
+  String get repeatOn => 'Wiederholen am';
+
+  @override
+  String get leaveEmptyForEveryday => 'Leer lassen für tägliche Wiederholung';
+
+  @override
+  String get everyday => 'Jeden Tag';
+
+  @override
+  String get monday => 'Montag';
+
+  @override
+  String get tuesday => 'Dienstag';
+
+  @override
+  String get wednesday => 'Mittwoch';
+
+  @override
+  String get thursday => 'Donnerstag';
+
+  @override
+  String get friday => 'Freitag';
+
+  @override
+  String get saturday => 'Samstag';
+
+  @override
+  String get sunday => 'Sonntag';
+
+  @override
+  String get permissionsRequired => 'Berechtigungen erforderlich';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'Gewähren Sie die folgenden Berechtigungen, um die Miqaat-Sperre zu aktivieren';
+
+  @override
+  String get accessibilityService => 'Bedienungshilfen';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'Erforderlich, um App-Starts zu erkennen';
+
+  @override
+  String get overlayPermission => 'Über anderen Apps einblenden';
+
+  @override
+  String get overlayPermissionDescription =>
+      'Erforderlich, um den Sperrbildschirm anzuzeigen';
+
+  @override
+  String get screenTimeAccess => 'Bildschirmzeit-Zugriff';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'Erforderlich zur Verwaltung von App-Einschränkungen';
+
+  @override
+  String get checkPermissions => 'Berechtigungen prüfen';
+
+  @override
+  String get startSession => 'Sitzung starten';
+
+  @override
+  String get sessionActive => 'Sitzung aktiv';
+
+  @override
+  String get remainingTime => 'Verbleibende Zeit';
+
+  @override
+  String get appLocked => 'App gesperrt';
+
+  @override
+  String get focusTimeMessage =>
+      'Diese App ist während Ihrer Fokuszeit gesperrt. Starten Sie eine Sitzung, um sie vorübergehend zu entsperren.';
+
+  @override
+  String get goBackHome => 'Zurück zum Startbildschirm';
 }

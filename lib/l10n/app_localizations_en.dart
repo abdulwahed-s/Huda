@@ -1336,7 +1336,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoRenewalInactive => 'Auto-renewal: Inactive';
 
   @override
-  String get minutes => 'Minutes';
+  String get minutes => 'minutes';
 
   @override
   String get minutesExample => 'e.g., 30, 60, 120';
@@ -2693,4 +2693,157 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sahurAlarmNotSet => 'Not Set';
+
+  @override
+  String get miqaatLock => 'Miqaat Lock';
+
+  @override
+  String get enableMiqaatLock => 'Enable Miqaat Lock';
+
+  @override
+  String get miqaatLockDescription =>
+      'Lock apps during times of worship to minimize distractions.';
+
+  @override
+  String get lockedApps => 'Locked Apps';
+
+  @override
+  String get noAppsSelected => 'No apps selected';
+
+  @override
+  String get addApps => 'Add Apps';
+
+  @override
+  String get timeSlots => 'Time Slots';
+
+  @override
+  String get noTimeSlotsConfigured => 'No time slots configured';
+
+  @override
+  String get addTimeSlot => 'Add Time Slot';
+
+  @override
+  String get editTimeSlot => 'Edit Time Slot';
+
+  @override
+  String get sessionDuration => 'Session Duration';
+
+  @override
+  String get sessionDurationDescription => 'How long each unlock session lasts';
+
+  @override
+  String get selectDuration => 'Select Duration';
+
+  @override
+  String get customDuration => 'Custom Duration';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get selectApps => 'Select Apps';
+
+  @override
+  String get searchApps => 'Search apps...';
+
+  @override
+  String get loadingApps => 'Loading apps...';
+
+  @override
+  String get noAppsFound => 'No apps found';
+
+  @override
+  String get iosAppSelectionTitle => 'iOS App Selection';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'Due to iOS privacy restrictions, app selection is managed through Screen Time settings. Enable Screen Time access to manage app restrictions.';
+
+  @override
+  String get label => 'Label (optional)';
+
+  @override
+  String get labelHint => 'e.g., Fajr Time, Work Hours';
+
+  @override
+  String get timeRange => 'Time Range';
+
+  @override
+  String get repeatOn => 'Repeat On';
+
+  @override
+  String get leaveEmptyForEveryday => 'Leave empty to repeat everyday';
+
+  @override
+  String get everyday => 'Everyday';
+
+  @override
+  String get monday => 'Monday';
+
+  @override
+  String get tuesday => 'Tuesday';
+
+  @override
+  String get wednesday => 'Wednesday';
+
+  @override
+  String get thursday => 'Thursday';
+
+  @override
+  String get friday => 'Friday';
+
+  @override
+  String get saturday => 'Saturday';
+
+  @override
+  String get sunday => 'Sunday';
+
+  @override
+  String get permissionsRequired => 'Permissions Required';
+
+  @override
+  String get permissionsRequiredDescription =>
+      'Grant the following permissions to enable Miqaat Lock';
+
+  @override
+  String get accessibilityService => 'Accessibility Service';
+
+  @override
+  String get accessibilityServiceDescription =>
+      'Required to detect app launches';
+
+  @override
+  String get overlayPermission => 'Display Over Other Apps';
+
+  @override
+  String get overlayPermissionDescription => 'Required to show lock screen';
+
+  @override
+  String get screenTimeAccess => 'Screen Time Access';
+
+  @override
+  String get screenTimeAccessDescription =>
+      'Required to manage app restrictions';
+
+  @override
+  String get checkPermissions => 'Check Permissions';
+
+  @override
+  String get startSession => 'Start Session';
+
+  @override
+  String get sessionActive => 'Session Active';
+
+  @override
+  String get remainingTime => 'Remaining Time';
+
+  @override
+  String get appLocked => 'App Locked';
+
+  @override
+  String get focusTimeMessage =>
+      'This app is locked during your focus time. Start a session to unlock temporarily.';
+
+  @override
+  String get goBackHome => 'Go Back Home';
 }
