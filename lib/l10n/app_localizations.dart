@@ -4981,6 +4981,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find \'Huda\' widget and add it to your home screen'**
   String get genericWidgetStep2;
+
+  /// Title for Sahur Alarm section
+  ///
+  /// In en, this message translates to:
+  /// **'Sahur Alarm'**
+  String get sahurAlarmTitle;
+
+  /// Description for Sahur Alarm
+  ///
+  /// In en, this message translates to:
+  /// **'Wake up for Sahur before Fajr prayer.'**
+  String get sahurAlarmDescription;
+
+  /// Exact time option for Sahur Alarm
+  ///
+  /// In en, this message translates to:
+  /// **'Exact Time'**
+  String get exactTime;
+
+  /// Minutes before Fajr option for Sahur alarm
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes before Fajr'**
+  String get minutesBeforeFajr;
+
+  /// Placeholder for minutes input
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes (e.g., 30)'**
+  String get sahurMinutesPlaceholder;
+
+  /// Subtitle for exact time sahur alarm
+  ///
+  /// In en, this message translates to:
+  /// **'At {time}'**
+  String atExactTime(String time);
+
+  /// Subtitle for mins before fajr sahur alarm
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} mins before Fajr'**
+  String minsBeforeFajr(int minutes);
+
+  /// Subtitle when Sahur alarm is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Not Set'**
+  String get sahurAlarmNotSet;
 }
 
 class _AppLocalizationsDelegate

@@ -992,5 +992,47 @@
     "iosWidgetStep3": "উইজেট গ্যালারিতে 'হুদা' অনুসন্ধান করুন",
     "iosWidgetStep4": "একটি উইজেট সাইজ নির্বাচন করুন এবং 'উইজেট যোগ করুন' এ ট্যাপ করুন",
     "genericWidgetStep1": "আপনার হোম স্ক্রিনে দীর্ঘ প্রেস করুন এবং 'উইজেট' খুঁজুন",
-    "genericWidgetStep2": "'হুদা' উইজেট খুঁজুন এবং এটি আপনার হোম স্ক্রিনে যোগ করুন"
+    "genericWidgetStep2": "'হুদা' উইজেট খুঁজুন এবং এটি আপনার হোম স্ক্রিনে যোগ করুন",
+    "sahurAlarmTitle": "সাহুর অ্যালার্ম",
+    "@sahurAlarmTitle": {
+        "description": "Title for Sahur Alarm section"
+    },
+    "sahurAlarmDescription": "ফজরের নামাজের আগে সাহুরের জন্য ঘুম থেকে উঠুন।",
+    "@sahurAlarmDescription": {
+        "description": "Description for Sahur Alarm"
+    },
+    "exactTime": "সঠিক সময়",
+    "@exactTime": {
+        "description": "Exact time option for Sahur Alarm"
+    },
+    "minutesBeforeFajr": "ফজরের কতক্ষণ আগে",
+    "@minutesBeforeFajr": {
+        "description": "Minutes before Fajr option for Sahur alarm"
+    },
+    "sahurMinutesPlaceholder": "মিনিট (যেমন, ৩০)",
+    "@sahurMinutesPlaceholder": {
+        "description": "Placeholder for minutes input"
+    },
+    "atExactTime": "{time} টায়",
+    "@atExactTime": {
+        "description": "Subtitle for exact time sahur alarm",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "minsBeforeFajr": "ফজরের {minutes} মিনিট আগে",
+    "@minsBeforeFajr": {
+        "description": "Subtitle for mins before fajr sahur alarm",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "sahurAlarmNotSet": "সেট করা হয়নি",
+    "@sahurAlarmNotSet": {
+        "description": "Subtitle when Sahur alarm is disabled"
+    }
 }

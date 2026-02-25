@@ -950,5 +950,47 @@
     "iosWidgetStep3": "ویجیٹ گیلری میں 'ہدٰی' تلاش کریں",
     "iosWidgetStep4": "ویجیٹ کا سائز منتخب کریں اور 'ویجیٹ شامل کریں' پر ٹیپ کریں",
     "genericWidgetStep1": "اپنی ہوم اسکرین پر دیر تک دبائیں اور 'ویجیٹس' تلاش کریں",
-    "genericWidgetStep2": "'ہدٰی' ویجیٹ تلاش کریں اور اسے اپنی ہوم اسکرین پر شامل کریں"
+    "genericWidgetStep2": "'ہدٰی' ویجیٹ تلاش کریں اور اسے اپنی ہوم اسکرین پر شامل کریں",
+    "sahurAlarmTitle": "سحری کا الارم",
+    "@sahurAlarmTitle": {
+        "description": "Title for Sahur Alarm section"
+    },
+    "sahurAlarmDescription": "فجر کی نماز سے پہلے سحری کے لیے اٹھیں۔",
+    "@sahurAlarmDescription": {
+        "description": "Description for Sahur Alarm"
+    },
+    "exactTime": "صحیح وقت",
+    "@exactTime": {
+        "description": "Exact time option for Sahur Alarm"
+    },
+    "minutesBeforeFajr": "فجر سے پہلے منٹ",
+    "@minutesBeforeFajr": {
+        "description": "Minutes before Fajr option for Sahur alarm"
+    },
+    "sahurMinutesPlaceholder": "منٹ (جیسے، 30)",
+    "@sahurMinutesPlaceholder": {
+        "description": "Placeholder for minutes input"
+    },
+    "atExactTime": "{time} پر",
+    "@atExactTime": {
+        "description": "Subtitle for exact time sahur alarm",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "minsBeforeFajr": "فجر سے {minutes} منٹ پہلے",
+    "@minsBeforeFajr": {
+        "description": "Subtitle for mins before fajr sahur alarm",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "sahurAlarmNotSet": "سیٹ نہیں",
+    "@sahurAlarmNotSet": {
+        "description": "Subtitle when Sahur alarm is disabled"
+    }
 }

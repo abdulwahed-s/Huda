@@ -2665,4 +2665,32 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       'Find \'Huda\' widget and add it to your home screen';
+
+  @override
+  String get sahurAlarmTitle => 'Sahur Alarm';
+
+  @override
+  String get sahurAlarmDescription => 'Wake up for Sahur before Fajr prayer.';
+
+  @override
+  String get exactTime => 'Exact Time';
+
+  @override
+  String get minutesBeforeFajr => 'Minutes before Fajr';
+
+  @override
+  String get sahurMinutesPlaceholder => 'Minutes (e.g., 30)';
+
+  @override
+  String atExactTime(String time) {
+    return 'At $time';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return '$minutes mins before Fajr';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'Not Set';
 }

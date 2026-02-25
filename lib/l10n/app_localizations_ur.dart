@@ -2656,4 +2656,32 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       '\'ہدٰی\' ویجیٹ تلاش کریں اور اسے اپنی ہوم اسکرین پر شامل کریں';
+
+  @override
+  String get sahurAlarmTitle => 'سحری کا الارم';
+
+  @override
+  String get sahurAlarmDescription => 'فجر کی نماز سے پہلے سحری کے لیے اٹھیں۔';
+
+  @override
+  String get exactTime => 'صحیح وقت';
+
+  @override
+  String get minutesBeforeFajr => 'فجر سے پہلے منٹ';
+
+  @override
+  String get sahurMinutesPlaceholder => 'منٹ (جیسے، 30)';
+
+  @override
+  String atExactTime(String time) {
+    return '$time پر';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return 'فجر سے $minutes منٹ پہلے';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'سیٹ نہیں';
 }

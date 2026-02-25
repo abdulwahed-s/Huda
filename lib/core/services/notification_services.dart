@@ -1,10 +1,13 @@
+import 'dart:io';
+
+import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:huda/core/services/notification_isolate_helper.dart';
+import 'package:huda/presentation/screens/app.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:adhan/adhan.dart';
-import 'package:huda/presentation/screens/app.dart';
 
 class NotificationServices {
   final FlutterLocalNotificationsPlugin notificationPlugin =
@@ -68,8 +71,7 @@ class NotificationServices {
     final iosPlugin = notificationPlugin.resolvePlatformSpecificImplementation<
         IOSFlutterLocalNotificationsPlugin>();
     if (iosPlugin != null) {
-      debugPrint(
-          'Requesting iOS notification permissions on app startup...');
+      debugPrint('Requesting iOS notification permissions on app startup...');
       final result = await iosPlugin.requestPermissions(
         alert: true,
         badge: true,
@@ -84,7 +86,6 @@ class NotificationServices {
   }
 
   static void _onNotificationResponse(NotificationResponse response) {
-    // When notification is tapped, navigate to Prayer Times page
     App.navigatorKey.currentState?.pushNamed('/prayerTimes');
   }
 
@@ -295,24 +296,30 @@ class NotificationServices {
   }
 
   Future<void> cancelAllPrayerNotifications() async {
-    await notificationPlugin.cancel(_fajrId);
-    await notificationPlugin.cancel(_dhuhrId);
-    await notificationPlugin.cancel(_asrId);
-    await notificationPlugin.cancel(_maghribId);
-    await notificationPlugin.cancel(_ishaId);
-
-    for (int i = _prayerNotificationBaseId;
-        i <= _prayerNotificationBaseId + 10;
-        i++) {
-      await notificationPlugin.cancel(i);
-    }
-
-    for (int day = 0; day < 30; day++) {
-      await notificationPlugin.cancel(2100 + day);
-      await notificationPlugin.cancel(2200 + day);
-      await notificationPlugin.cancel(2300 + day);
-      await notificationPlugin.cancel(2400 + day);
-      await notificationPlugin.cancel(2500 + day);
+    if (Platform.isWindows) {
+      await windowsCancelAllAndRescheduleFixed(notificationPlugin);
+    } else {
+      final ids = <int>[
+        _fajrId,
+        _dhuhrId,
+        _asrId,
+        _maghribId,
+        _ishaId,
+        for (int i = _prayerNotificationBaseId;
+            i <= _prayerNotificationBaseId + 10;
+            i++)
+          i,
+        for (int day = 0; day < 30; day++) ...[
+          2100 + day,
+          2200 + day,
+          2300 + day,
+          2400 + day,
+          2500 + day,
+        ],
+      ];
+      for (final id in ids) {
+        await notificationPlugin.cancel(id);
+      }
     }
 
     debugPrint(

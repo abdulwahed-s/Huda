@@ -5,7 +5,7 @@ import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/action_button.dart';
 import 'package:huda/presentation/widgets/prayer_times/error_card.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
 
 class PrayerTimesLocationPermanentlyDeniedWidget extends StatelessWidget {
   const PrayerTimesLocationPermanentlyDeniedWidget({super.key});
@@ -19,7 +19,12 @@ class PrayerTimesLocationPermanentlyDeniedWidget extends StatelessWidget {
         ActionButton(
           text: AppLocalizations.of(context)!.openSettings,
           icon: Icons.settings,
-          onPressed: () => openAppSettings(),
+          onPressed: () async {
+            if (await Geolocator.openLocationSettings()) {
+              return;
+            }
+            await Geolocator.openAppSettings();
+          },
         ),
         SizedBox(width: 8.w),
         ActionButton(

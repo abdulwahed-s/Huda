@@ -1556,5 +1556,13 @@
     "iosWidgetStep3": "ابحث عن 'هُدى' في معرض العناصر",
     "iosWidgetStep4": "اختر حجم العنصر واضغط على 'إضافة عنصر'",
     "genericWidgetStep1": "اضغط مطولاً على شاشتك الرئيسية وابحث عن 'العناصر'",
-    "genericWidgetStep2": "ابحث عن عنصر 'هُدى' وأضفه إلى شاشتك الرئيسية"
+    "genericWidgetStep2": "ابحث عن عنصر 'هُدى' وأضفه إلى شاشتك الرئيسية",
+    "sahurAlarmTitle": "منبه السحور",
+    "sahurAlarmDescription": "استيقظ للسحور قبل صلاة الفجر.",
+    "exactTime": "وقت محدد",
+    "minutesBeforeFajr": "دقائق قبل صلاة الفجر",
+    "sahurMinutesPlaceholder": "الدقائق (مثال: 30)",
+    "atExactTime": "في {time}",
+    "minsBeforeFajr": "{minutes} دقيقة قبل الفجر",
+    "sahurAlarmNotSet": "غير محدد"
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/cache/cache_helper.dart';
-import 'package:huda/core/utils/platform_utils.dart';
 
 class AppLifecycleManager extends WidgetsBindingObserver {
   static final AppLifecycleManager _instance = AppLifecycleManager._internal();
@@ -15,8 +14,7 @@ class AppLifecycleManager extends WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    //TODO add full support for windows notifications due to platform specific issues(UI freeze issue #2730)
-    if (state == AppLifecycleState.resumed && !PlatformUtils.isWindow) {
+    if (state == AppLifecycleState.resumed) {
       _checkAndResumeScheduling();
     }
   }

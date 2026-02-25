@@ -2667,4 +2667,33 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       'Cari widget \'Huda\' dan tambahkannya ke skrin utama anda';
+
+  @override
+  String get sahurAlarmTitle => 'Penggera Sahur';
+
+  @override
+  String get sahurAlarmDescription =>
+      'Bangun untuk bersahur sebelum solat Subuh.';
+
+  @override
+  String get exactTime => 'Masa Tepat';
+
+  @override
+  String get minutesBeforeFajr => 'Minit sebelum Subuh';
+
+  @override
+  String get sahurMinutesPlaceholder => 'Minit (cth. 30)';
+
+  @override
+  String atExactTime(String time) {
+    return 'Pada $time';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return '$minutes min sebelum Subuh';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'Tidak Ditetapkan';
 }

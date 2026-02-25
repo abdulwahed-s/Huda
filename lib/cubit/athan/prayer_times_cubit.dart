@@ -11,6 +11,7 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/services/location_service.dart';
+import 'package:huda/core/errors/location_failures.dart';
 
 part 'prayer_times_state.dart';
 
@@ -279,13 +280,16 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       emit(PrayerTimesLoaded(prayerTimes, placemarks));
       await scheduleNotificationsForToday(NotificationServices());
     } catch (e) {
-      if (e.toString() == 'Exception: Location services are disabled.') {
+      if (e is LocationServiceDisabledFailure ||
+          e.toString() == 'Exception: Location services are disabled.') {
         emit(PrayerTimesLocationServiceDisabled());
-      } else if (e.toString() ==
-          'Exception: Location permissions are denied.') {
+      } else if (e is LocationPermissionDeniedFailure ||
+          e.toString() == 'Exception: Location permissions are denied.' ||
+          e.toString() == 'Exception: Location permissions are denied') {
         emit(PrayerTimesLocationDenied());
-      } else if (e.toString() ==
-          'Exception: Location permissions are permanently denied.') {
+      } else if (e is LocationPermissionPermanentlyDeniedFailure ||
+          e.toString() ==
+              'Exception: Location permissions are permanently denied.') {
         emit(PrayerTimesLocationPermanentlyDenied());
       } else {
         emit(PrayerTimesError(e.toString()));

@@ -2686,4 +2686,32 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get genericWidgetStep2 =>
       'Найдите виджет \'Huda\' и добавьте его на главный экран';
+
+  @override
+  String get sahurAlarmTitle => 'Будильник на Сухур';
+
+  @override
+  String get sahurAlarmDescription => 'Просыпайтесь на Сухур до молитвы Фаджр.';
+
+  @override
+  String get exactTime => 'Точное время';
+
+  @override
+  String get minutesBeforeFajr => 'Минут до Фаджра';
+
+  @override
+  String get sahurMinutesPlaceholder => 'Минуты (например, 30)';
+
+  @override
+  String atExactTime(String time) {
+    return 'В $time';
+  }
+
+  @override
+  String minsBeforeFajr(int minutes) {
+    return '$minutes мин до Фаджра';
+  }
+
+  @override
+  String get sahurAlarmNotSet => 'Не установлено';
 }

@@ -1,21 +1,22 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:huda/core/errors/location_failures.dart';
 
 Future<Position> getCurrentLocation() async {
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    throw Exception('Location services are disabled.');
+    throw const LocationServiceDisabledFailure();
   }
 
   LocationPermission permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      throw Exception('Location permissions are denied');
+      throw const LocationPermissionDeniedFailure();
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
-    throw Exception('Location permissions are permanently denied.');
+    throw const LocationPermissionPermanentlyDeniedFailure();
   }
 
   return await Geolocator.getCurrentPosition();
