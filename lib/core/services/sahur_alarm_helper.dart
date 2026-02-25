@@ -32,7 +32,7 @@ class SahurAlarmHelper {
     final alarmSettings = AlarmSettings(
       id: alarmId,
       dateTime: scheduledDateTime,
-      assetAudioPath: 'assets/audio/azan_sound.mp3',
+      assetAudioPath: null,
       loopAudio: true,
       vibrate: true,
       warningNotificationOnKill: true,
@@ -44,7 +44,7 @@ class SahurAlarmHelper {
       notificationSettings: NotificationSettings(
         title: title,
         body: body,
-        icon: 'assets/images/huda_center.png',
+        icon: 'huda_icon',
         iconColor: Colors.blue,
       ),
     );
