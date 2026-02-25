@@ -5,6 +5,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import com.aw.huda.widget.HudaGlanceWidget
 import com.aw.huda.widget.WidgetDataRepository
+import com.aw.huda.miqaat.MiqaatLockMethodHandler
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         
+        // Widget channel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "updateWidget" -> {
@@ -57,5 +59,11 @@ class MainActivity: FlutterActivity() {
                 }
             }
         }
+        
+        // Miqaat Lock channel
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            MiqaatLockMethodHandler.CHANNEL_NAME
+        ).setMethodCallHandler(MiqaatLockMethodHandler(this))
     }
 }
