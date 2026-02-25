@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">هُدَى</string>
+
+    <string name="miqaat_lock_title">قفل الميقات</string>
+    <string name="miqaat_lock_message">هذا التطبيق مقفل أثناء وقت تركيزك.\nأكمل هدف الميقات لفتحه.</string>
+    <string name="miqaat_lock_goal_info">📖  أَمْضِ %d دقائق في هُدَى\nلفتح جميع التطبيقات لهذه الفترة</string>
+    <string name="miqaat_lock_open_huda">افتح هُدَى</string>
+    <string name="miqaat_lock_go_back">العودة للرئيسية</string>
 </resources>

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Hüda</string>
+
+    <string name="miqaat_lock_title">Mikat Kilidi</string>
+    <string name="miqaat_lock_message">Bu uygulama odaklanma süreniz boyunca kilitli.\nKilidi açmak için Mikat hedefinizi tamamlayın.</string>
+    <string name="miqaat_lock_goal_info">📖  Hüda\'da %d dakika geçirin\nbu zaman dilimindeki tüm uygulamaların kilidini açmak için</string>
+    <string name="miqaat_lock_open_huda">Hüda\'yı Aç</string>
+    <string name="miqaat_lock_go_back">Ana Sayfaya Dön</string>
 </resources>

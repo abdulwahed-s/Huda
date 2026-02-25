@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Huda</string>
+
+    <string name="miqaat_lock_title">Kunci Miqaat</string>
+    <string name="miqaat_lock_message">Aplikasi ini dikunci semasa waktu fokus anda.\nSelesaikan matlamat Miqaat anda untuk membukanya.</string>
+    <string name="miqaat_lock_goal_info">📖  Luangkan %d minit di Huda\nuntuk membuka semua aplikasi untuk slot masa ini</string>
+    <string name="miqaat_lock_open_huda">Buka Huda</string>
+    <string name="miqaat_lock_go_back">Kembali ke Utama</string>
 </resources>

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Huda</string>
+
+    <string name="miqaat_lock_title">Bloqueo Miqaat</string>
+    <string name="miqaat_lock_message">Esta app está bloqueada durante tu tiempo de enfoque.\nCompleta tu objetivo Miqaat para desbloquearla.</string>
+    <string name="miqaat_lock_goal_info">📖  Pasa %d minutos en Huda\npara desbloquear todas las apps en este horario</string>
+    <string name="miqaat_lock_open_huda">Abrir Huda</string>
+    <string name="miqaat_lock_go_back">Volver al inicio</string>
 </resources>

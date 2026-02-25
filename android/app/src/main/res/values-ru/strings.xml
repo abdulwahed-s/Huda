@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Худа</string>
+
+    <string name="miqaat_lock_title">Блокировка Микаат</string>
+    <string name="miqaat_lock_message">Это приложение заблокировано во время фокусировки.\nВыполните цель Микаат, чтобы разблокировать.</string>
+    <string name="miqaat_lock_goal_info">📖  Проведите %d минут в Худа\nчтобы разблокировать все приложения для этого периода</string>
+    <string name="miqaat_lock_open_huda">Открыть Худа</string>
+    <string name="miqaat_lock_go_back">Вернуться на главную</string>
 </resources>
