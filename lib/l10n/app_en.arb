@@ -3443,5 +3443,172 @@
     "goBackHome": "Go Back Home",
     "@goBackHome": {
         "description": "Go back button"
+    },
+    "ramadanTracker": "Ramadan Qadhaa",
+    "@ramadanTracker": {
+        "description": "Ramadan page title"
+    },
+    "daysUntilRamadan": "{days} days until Ramadan",
+    "@daysUntilRamadan": {
+        "description": "Days remaining until Ramadan starts",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "ramadanDayLabel": "Ramadan {day}",
+    "@ramadanDayLabel": {
+        "description": "Ramadan day label e.g. Ramadan 3",
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+    "durationOfFasting": "Duration of fasting: {hours} hours and {minutes} minutes",
+    "@durationOfFasting": {
+        "description": "Fasting duration label",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            },
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "durationOfIftar": "Duration of iftar: {hours} hours and {minutes} minutes",
+    "@durationOfIftar": {
+        "description": "Iftar duration label",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            },
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "remainingForIftar": "remaining for Iftar Less than {hours} hours",
+    "@remainingForIftar": {
+        "description": "Remaining time for iftar",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "remainingForImsaak": "remaining for Imsaak Less than {hours} hours",
+    "@remainingForImsaak": {
+        "description": "Remaining time for imsaak",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "imsaakLabel": "Imsaak",
+    "@imsaakLabel": {
+        "description": "Imsaak label on progress bar"
+    },
+    "iftarLabel": "Iftar",
+    "@iftarLabel": {
+        "description": "Iftar label on progress bar"
+    },
+    "fastedStatus": "fasted",
+    "@fastedStatus": {
+        "description": "Fasted status label"
+    },
+    "missedStatus": "missed",
+    "@missedStatus": {
+        "description": "Missed fasting status label"
+    },
+    "qadhaaDays": "Qadhaa Days",
+    "@qadhaaDays": {
+        "description": "Qadhaa days section title"
+    },
+    "sunday": "Sunday",
+    "@sunday": {
+        "description": "Sunday day name"
+    },
+    "monday": "Monday",
+    "@monday": {
+        "description": "Monday day name"
+    },
+    "tuesday": "Tuesday",
+    "@tuesday": {
+        "description": "Tuesday day name"
+    },
+    "wednesday": "Wednesday",
+    "@wednesday": {
+        "description": "Wednesday day name"
+    },
+    "thursday": "Thursday",
+    "@thursday": {
+        "description": "Thursday day name"
+    },
+    "friday": "Friday",
+    "@friday": {
+        "description": "Friday day name"
+    },
+    "saturday": "Saturday",
+    "@saturday": {
+        "description": "Saturday day name"
+    },
+    "qadhaaInfoTitle": "About Qadaa (Making up missed fasts)",
+    "@qadhaaInfoTitle": {
+        "description": "Qadhaa info dialog title"
+    },
+    "qadhaaInfoQ1Title": "What is Qadaa?",
+    "@qadhaaInfoQ1Title": {},
+    "qadhaaInfoQ1Body": "Qadaa is fasting the days a Muslim broke their fast during Ramadan due to a valid Islamic excuse, such as illness, travel, menstruation, or postpartum bleeding. They must be made up before the start of the following Ramadan.",
+    "@qadhaaInfoQ1Body": {},
+    "qadhaaInfoQ2Title": "The Ruling on Qadaa",
+    "@qadhaaInfoQ2Title": {},
+    "qadhaaInfoQ2Body1": "Allah the Almighty said:",
+    "@qadhaaInfoQ2Body1": {},
+    "qadhaaInfoQ2Verse": "\"And whoever of you is ill or on a journey - then an equal number of other days.\" [Al-Baqarah: 184]",
+    "@qadhaaInfoQ2Verse": {},
+    "qadhaaInfoQ2Body2": "Therefore, it is obligatory for whoever broke their fast in Ramadan with an excuse to make up those days.",
+    "@qadhaaInfoQ2Body2": {},
+    "qadhaaInfoQ3Title": "When must Qadaa be done?",
+    "@qadhaaInfoQ3Title": {},
+    "qadhaaInfoQ3Body": "The missed days of Ramadan must be made up before the beginning of the next Ramadan. It is permissible to make them up at any time of the year, except on the days of the two Eids and the days of Tashreeq. It is best to hasten in making them up and not to delay.",
+    "@qadhaaInfoQ3Body": {},
+    "qadhaaInfoQ4Title": "How to use",
+    "@qadhaaInfoQ4Title": {},
+    "qadhaaInfoQ4Body1": "During Ramadan: Tap on the day you broke your fast to log it.",
+    "@qadhaaInfoQ4Body1": {},
+    "qadhaaInfoQ4Body2": "After Ramadan: Tap on the logged day to confirm you have made it up.",
+    "@qadhaaInfoQ4Body2": {},
+    "whatsNewTitle": "What's New",
+    "@whatsNewTitle": {
+        "description": "What's New dialog title"
+    },
+    "whatsNewVersion": "Version {version}",
+    "@whatsNewVersion": {
+        "description": "What's New version badge",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "whatsNewExploreButton": "Got it!",
+    "@whatsNewExploreButton": {
+        "description": "What's New dialog button"
+    },
+    "whatsNew153Feature1": "Ramadan fasting tracker with a daily qadhaa log",
+    "@whatsNew153Feature1": {
+        "description": "What's New v1.5.3 feature 1"
+    },
+    "whatsNew153Feature2": "Miqaat Lock to block distracting apps during prayer times",
+    "@whatsNew153Feature2": {
+        "description": "What's New v1.5.3 feature 2"
+    },
+    "whatsNew153Feature3": "Qadhaa tracker to log and make up missed fasting days",
+    "@whatsNew153Feature3": {
+        "description": "What's New v1.5.3 feature 3"
     }
 }

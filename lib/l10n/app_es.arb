@@ -1150,5 +1150,11 @@
     "goBackHome": "Volver a Inicio",
     "@goBackHome": {
         "description": "Go back button"
-    }
+    },
+    "whatsNewTitle": "Novedades",
+    "whatsNewVersion": "Versión {version}",
+    "whatsNewExploreButton": "¡Entendido!",
+    "whatsNew153Feature1": "Rastreador de ayuno de Ramadán con registro diario de qadhaa",
+    "whatsNew153Feature2": "Bloqueo Miqaat para bloquear aplicaciones distractoras durante los tiempos de oración",
+    "whatsNew153Feature3": "Rastreador de qadhaa para registrar y recuperar días de ayuno perdidos"
 }

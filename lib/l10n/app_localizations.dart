@@ -5192,43 +5192,43 @@ abstract class AppLocalizations {
   /// **'Everyday'**
   String get everyday;
 
-  /// Monday
+  /// Monday day name
   ///
   /// In en, this message translates to:
   /// **'Monday'**
   String get monday;
 
-  /// Tuesday
+  /// Tuesday day name
   ///
   /// In en, this message translates to:
   /// **'Tuesday'**
   String get tuesday;
 
-  /// Wednesday
+  /// Wednesday day name
   ///
   /// In en, this message translates to:
   /// **'Wednesday'**
   String get wednesday;
 
-  /// Thursday
+  /// Thursday day name
   ///
   /// In en, this message translates to:
   /// **'Thursday'**
   String get thursday;
 
-  /// Friday
+  /// Friday day name
   ///
   /// In en, this message translates to:
   /// **'Friday'**
   String get friday;
 
-  /// Saturday
+  /// Saturday day name
   ///
   /// In en, this message translates to:
   /// **'Saturday'**
   String get saturday;
 
-  /// Sunday
+  /// Sunday day name
   ///
   /// In en, this message translates to:
   /// **'Sunday'**
@@ -5323,6 +5323,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go Back Home'**
   String get goBackHome;
+
+  /// Ramadan page title
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Qadhaa'**
+  String get ramadanTracker;
+
+  /// Days remaining until Ramadan starts
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days until Ramadan'**
+  String daysUntilRamadan(int days);
+
+  /// Ramadan day label e.g. Ramadan 3
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan {day}'**
+  String ramadanDayLabel(int day);
+
+  /// Fasting duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Duration of fasting: {hours} hours and {minutes} minutes'**
+  String durationOfFasting(int hours, int minutes);
+
+  /// Iftar duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Duration of iftar: {hours} hours and {minutes} minutes'**
+  String durationOfIftar(int hours, int minutes);
+
+  /// Remaining time for iftar
+  ///
+  /// In en, this message translates to:
+  /// **'remaining for Iftar Less than {hours} hours'**
+  String remainingForIftar(int hours);
+
+  /// Remaining time for imsaak
+  ///
+  /// In en, this message translates to:
+  /// **'remaining for Imsaak Less than {hours} hours'**
+  String remainingForImsaak(int hours);
+
+  /// Imsaak label on progress bar
+  ///
+  /// In en, this message translates to:
+  /// **'Imsaak'**
+  String get imsaakLabel;
+
+  /// Iftar label on progress bar
+  ///
+  /// In en, this message translates to:
+  /// **'Iftar'**
+  String get iftarLabel;
+
+  /// Fasted status label
+  ///
+  /// In en, this message translates to:
+  /// **'fasted'**
+  String get fastedStatus;
+
+  /// Missed fasting status label
+  ///
+  /// In en, this message translates to:
+  /// **'missed'**
+  String get missedStatus;
+
+  /// Qadhaa days section title
+  ///
+  /// In en, this message translates to:
+  /// **'Qadhaa Days'**
+  String get qadhaaDays;
+
+  /// Qadhaa info dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'About Qadaa (Making up missed fasts)'**
+  String get qadhaaInfoTitle;
+
+  /// No description provided for @qadhaaInfoQ1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What is Qadaa?'**
+  String get qadhaaInfoQ1Title;
+
+  /// No description provided for @qadhaaInfoQ1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Qadaa is fasting the days a Muslim broke their fast during Ramadan due to a valid Islamic excuse, such as illness, travel, menstruation, or postpartum bleeding. They must be made up before the start of the following Ramadan.'**
+  String get qadhaaInfoQ1Body;
+
+  /// No description provided for @qadhaaInfoQ2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Ruling on Qadaa'**
+  String get qadhaaInfoQ2Title;
+
+  /// No description provided for @qadhaaInfoQ2Body1.
+  ///
+  /// In en, this message translates to:
+  /// **'Allah the Almighty said:'**
+  String get qadhaaInfoQ2Body1;
+
+  /// No description provided for @qadhaaInfoQ2Verse.
+  ///
+  /// In en, this message translates to:
+  /// **'\"And whoever of you is ill or on a journey - then an equal number of other days.\" [Al-Baqarah: 184]'**
+  String get qadhaaInfoQ2Verse;
+
+  /// No description provided for @qadhaaInfoQ2Body2.
+  ///
+  /// In en, this message translates to:
+  /// **'Therefore, it is obligatory for whoever broke their fast in Ramadan with an excuse to make up those days.'**
+  String get qadhaaInfoQ2Body2;
+
+  /// No description provided for @qadhaaInfoQ3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'When must Qadaa be done?'**
+  String get qadhaaInfoQ3Title;
+
+  /// No description provided for @qadhaaInfoQ3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The missed days of Ramadan must be made up before the beginning of the next Ramadan. It is permissible to make them up at any time of the year, except on the days of the two Eids and the days of Tashreeq. It is best to hasten in making them up and not to delay.'**
+  String get qadhaaInfoQ3Body;
+
+  /// No description provided for @qadhaaInfoQ4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use'**
+  String get qadhaaInfoQ4Title;
+
+  /// No description provided for @qadhaaInfoQ4Body1.
+  ///
+  /// In en, this message translates to:
+  /// **'During Ramadan: Tap on the day you broke your fast to log it.'**
+  String get qadhaaInfoQ4Body1;
+
+  /// No description provided for @qadhaaInfoQ4Body2.
+  ///
+  /// In en, this message translates to:
+  /// **'After Ramadan: Tap on the logged day to confirm you have made it up.'**
+  String get qadhaaInfoQ4Body2;
+
+  /// What's New dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get whatsNewTitle;
+
+  /// What's New version badge
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String whatsNewVersion(String version);
+
+  /// What's New dialog button
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get whatsNewExploreButton;
+
+  /// What's New v1.5.3 feature 1
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan fasting tracker with a daily qadhaa log'**
+  String get whatsNew153Feature1;
+
+  /// What's New v1.5.3 feature 2
+  ///
+  /// In en, this message translates to:
+  /// **'Miqaat Lock to block distracting apps during prayer times'**
+  String get whatsNew153Feature2;
+
+  /// What's New v1.5.3 feature 3
+  ///
+  /// In en, this message translates to:
+  /// **'Qadhaa tracker to log and make up missed fasting days'**
+  String get whatsNew153Feature3;
 }
 
 class _AppLocalizationsDelegate

@@ -1111,5 +1111,11 @@
     "goBackHome": "Zurück zum Startbildschirm",
     "@goBackHome": {
         "description": "Go back button"
-    }
+    },
+    "whatsNewTitle": "Was ist neu",
+    "whatsNewVersion": "Version {version}",
+    "whatsNewExploreButton": "Verstanden!",
+    "whatsNew153Feature1": "Ramadan-Fasten-Tracker mit täglichem Qadaa-Protokoll",
+    "whatsNew153Feature2": "Miqaat-Sperre zum Blockieren ablenkender Apps während der Gebetszeiten",
+    "whatsNew153Feature3": "Qadaa-Tracker zum Protokollieren und Nachholen versäumter Fastentage"
 }

@@ -2799,4 +2799,116 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get goBackHome => 'العودة إلى الصفحة الرئيسية';
+
+  @override
+  String get ramadanTracker => 'قضاء رمضان';
+
+  @override
+  String daysUntilRamadan(int days) {
+    return '$days يوم حتى رمضان';
+  }
+
+  @override
+  String ramadanDayLabel(int day) {
+    return 'رمضان $day';
+  }
+
+  @override
+  String durationOfFasting(int hours, int minutes) {
+    return 'مدة الصيام: $hours ساعة و$minutes دقيقة';
+  }
+
+  @override
+  String durationOfIftar(int hours, int minutes) {
+    return 'مدة الإفطار: $hours ساعة و$minutes دقيقة';
+  }
+
+  @override
+  String remainingForIftar(int hours) {
+    return 'متبقي للإفطار أقل من $hours ساعة';
+  }
+
+  @override
+  String remainingForImsaak(int hours) {
+    return 'متبقي للإمساك أقل من $hours ساعة';
+  }
+
+  @override
+  String get imsaakLabel => 'الإمساك';
+
+  @override
+  String get iftarLabel => 'الإفطار';
+
+  @override
+  String get fastedStatus => 'صام';
+
+  @override
+  String get missedStatus => 'أفطر';
+
+  @override
+  String get qadhaaDays => 'أيام القضاء';
+
+  @override
+  String get qadhaaInfoTitle => 'عن القضاء';
+
+  @override
+  String get qadhaaInfoQ1Title => 'ما هو القضاء؟';
+
+  @override
+  String get qadhaaInfoQ1Body =>
+      'القضاء هو صيام الأيام التي أفطرها المسلم في رمضان بعذر شرعي كالمرض أو السفر أو الحيض والنفاس، ويجب قضاؤها قبل دخول رمضان التالي.';
+
+  @override
+  String get qadhaaInfoQ2Title => 'حكم القضاء';
+
+  @override
+  String get qadhaaInfoQ2Body1 => 'قال الله تعالى:';
+
+  @override
+  String get qadhaaInfoQ2Verse =>
+      '﴿فَمَن كَانَ مِنكُم مَّرِيضًا أَوْ عَلَىٰ سَفَرٍ فَعِدَّةٌ مِّنْ أَيَّامٍ أُخَرَ﴾ البقرة ١٨٤';
+
+  @override
+  String get qadhaaInfoQ2Body2 =>
+      'فيجب على من أفطر في رمضان بعذر أن يقضي تلك الأيام.';
+
+  @override
+  String get qadhaaInfoQ3Title => 'متى يجب القضاء؟';
+
+  @override
+  String get qadhaaInfoQ3Body =>
+      'يجب قضاء أيام رمضان قبل دخول رمضان التالي، ويجوز القضاء في أي وقت من السنة ما عدا أيام العيدين وأيام التشريق. والأفضل المبادرة بالقضاء وعدم التأخير.';
+
+  @override
+  String get qadhaaInfoQ4Title => 'كيفية الاستخدام';
+
+  @override
+  String get qadhaaInfoQ4Body1 =>
+      'أثناء رمضان: اضغط على اليوم الذي أفطرت فيه لتسجيله';
+
+  @override
+  String get qadhaaInfoQ4Body2 =>
+      'بعد رمضان: اضغط على اليوم المسجل لتأكيد قضائه';
+
+  @override
+  String get whatsNewTitle => 'ما الجديد';
+
+  @override
+  String whatsNewVersion(String version) {
+    return 'الإصدار $version';
+  }
+
+  @override
+  String get whatsNewExploreButton => 'فهمت!';
+
+  @override
+  String get whatsNew153Feature1 => 'متتبع صيام رمضان مع سجل القضاء اليومي';
+
+  @override
+  String get whatsNew153Feature2 =>
+      'قفل الميقات لحظر التطبيقات المشتتة أثناء أوقات الصلاة';
+
+  @override
+  String get whatsNew153Feature3 =>
+      'متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة';
 }

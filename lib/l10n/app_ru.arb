@@ -1130,5 +1130,11 @@
     "goBackHome": "Вернуться на главную",
     "@goBackHome": {
         "description": "Go back button"
-    }
+    },
+    "whatsNewTitle": "Что нового",
+    "whatsNewVersion": "Версия {version}",
+    "whatsNewExploreButton": "Понятно!",
+    "whatsNew153Feature1": "Трекер поста Рамадана с ежедневным журналом каза",
+    "whatsNew153Feature2": "Блокировка Микаат для блокировки отвлекающих приложений во время молитвы",
+    "whatsNew153Feature3": "Трекер каза для записи и восполнения пропущенных дней поста"
 }

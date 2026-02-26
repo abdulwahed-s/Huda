@@ -1218,5 +1218,11 @@
     "goBackHome": "Kembali ke Laman Utama",
     "@goBackHome": {
         "description": "Go back button"
-    }
+    },
+    "whatsNewTitle": "Apa Yang Baharu",
+    "whatsNewVersion": "Versi {version}",
+    "whatsNewExploreButton": "Faham!",
+    "whatsNew153Feature1": "Penjejak puasa Ramadan dengan log qadha harian",
+    "whatsNew153Feature2": "Kunci Miqaat untuk menyekat apl yang mengganggu semasa waktu solat",
+    "whatsNew153Feature3": "Penjejak qadha untuk merekod dan mengganti hari puasa yang terlepas"
 }

@@ -1235,5 +1235,11 @@
     "goBackHome": "হোমে ফিরে যান",
     "@goBackHome": {
         "description": "Go back button"
-    }
+    },
+    "whatsNewTitle": "নতুন কী আছে",
+    "whatsNewVersion": "সংস্করণ {version}",
+    "whatsNewExploreButton": "বুঝেছি!",
+    "whatsNew153Feature1": "দৈনিক কাযা লগ সহ রমজান রোজা ট্র্যাকার",
+    "whatsNew153Feature2": "নামাজের সময় বিভ্রান্তিকর অ্যাপ ব্লক করতে মিকাত লক",
+    "whatsNew153Feature3": "ছুটে যাওয়া রোজার দিন লগ এবং কাযা করার ট্র্যাকার"
 }

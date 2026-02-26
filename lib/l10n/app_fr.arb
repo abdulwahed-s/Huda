@@ -1138,5 +1138,11 @@
     "goBackHome": "Retour à l'accueil",
     "@goBackHome": {
         "description": "Go back button"
-    }
+    },
+    "whatsNewTitle": "Nouveautés",
+    "whatsNewVersion": "Version {version}",
+    "whatsNewExploreButton": "Compris !",
+    "whatsNew153Feature1": "Suivi du jeûne du Ramadan avec journal quotidien de qadhaa",
+    "whatsNew153Feature2": "Verrou Miqaat pour bloquer les applications distrayantes pendant les heures de prière",
+    "whatsNew153Feature3": "Suivi de qadhaa pour enregistrer et rattraper les jours de jeûne manqués"
 }

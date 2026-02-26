@@ -1193,5 +1193,11 @@
     "goBackHome": "واپس ہوم پر جائیں",
     "@goBackHome": {
         "description": "Go back button"
-    }
+    },
+    "whatsNewTitle": "نیا کیا ہے",
+    "whatsNewVersion": "ورژن {version}",
+    "whatsNewExploreButton": "سمجھ گیا!",
+    "whatsNew153Feature1": "روزانہ قضاء لاگ کے ساتھ رمضان کے روزے کا ٹریکر",
+    "whatsNew153Feature2": "نماز کے اوقات میں پریشان کن ایپس بلاک کرنے کے لیے میقات لاک",
+    "whatsNew153Feature3": "چھوٹے ہوئے روزوں کے دن ریکارڈ اور قضاء کرنے کا ٹریکر"
 }

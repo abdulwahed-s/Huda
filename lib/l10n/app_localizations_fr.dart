@@ -2916,4 +2916,117 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get goBackHome => 'Retour à l\'accueil';
+
+  @override
+  String get ramadanTracker => 'Ramadan Qadhaa';
+
+  @override
+  String daysUntilRamadan(int days) {
+    return '$days days until Ramadan';
+  }
+
+  @override
+  String ramadanDayLabel(int day) {
+    return 'Ramadan $day';
+  }
+
+  @override
+  String durationOfFasting(int hours, int minutes) {
+    return 'Duration of fasting: $hours hours and $minutes minutes';
+  }
+
+  @override
+  String durationOfIftar(int hours, int minutes) {
+    return 'Duration of iftar: $hours hours and $minutes minutes';
+  }
+
+  @override
+  String remainingForIftar(int hours) {
+    return 'remaining for Iftar Less than $hours hours';
+  }
+
+  @override
+  String remainingForImsaak(int hours) {
+    return 'remaining for Imsaak Less than $hours hours';
+  }
+
+  @override
+  String get imsaakLabel => 'Imsaak';
+
+  @override
+  String get iftarLabel => 'Iftar';
+
+  @override
+  String get fastedStatus => 'fasted';
+
+  @override
+  String get missedStatus => 'missed';
+
+  @override
+  String get qadhaaDays => 'Qadhaa Days';
+
+  @override
+  String get qadhaaInfoTitle => 'About Qadaa (Making up missed fasts)';
+
+  @override
+  String get qadhaaInfoQ1Title => 'What is Qadaa?';
+
+  @override
+  String get qadhaaInfoQ1Body =>
+      'Qadaa is fasting the days a Muslim broke their fast during Ramadan due to a valid Islamic excuse, such as illness, travel, menstruation, or postpartum bleeding. They must be made up before the start of the following Ramadan.';
+
+  @override
+  String get qadhaaInfoQ2Title => 'The Ruling on Qadaa';
+
+  @override
+  String get qadhaaInfoQ2Body1 => 'Allah the Almighty said:';
+
+  @override
+  String get qadhaaInfoQ2Verse =>
+      '\"And whoever of you is ill or on a journey - then an equal number of other days.\" [Al-Baqarah: 184]';
+
+  @override
+  String get qadhaaInfoQ2Body2 =>
+      'Therefore, it is obligatory for whoever broke their fast in Ramadan with an excuse to make up those days.';
+
+  @override
+  String get qadhaaInfoQ3Title => 'When must Qadaa be done?';
+
+  @override
+  String get qadhaaInfoQ3Body =>
+      'The missed days of Ramadan must be made up before the beginning of the next Ramadan. It is permissible to make them up at any time of the year, except on the days of the two Eids and the days of Tashreeq. It is best to hasten in making them up and not to delay.';
+
+  @override
+  String get qadhaaInfoQ4Title => 'How to use';
+
+  @override
+  String get qadhaaInfoQ4Body1 =>
+      'During Ramadan: Tap on the day you broke your fast to log it.';
+
+  @override
+  String get qadhaaInfoQ4Body2 =>
+      'After Ramadan: Tap on the logged day to confirm you have made it up.';
+
+  @override
+  String get whatsNewTitle => 'Nouveautés';
+
+  @override
+  String whatsNewVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get whatsNewExploreButton => 'Compris !';
+
+  @override
+  String get whatsNew153Feature1 =>
+      'Suivi du jeûne du Ramadan avec journal quotidien de qadhaa';
+
+  @override
+  String get whatsNew153Feature2 =>
+      'Verrou Miqaat pour bloquer les applications distrayantes pendant les heures de prière';
+
+  @override
+  String get whatsNew153Feature3 =>
+      'Suivi de qadhaa pour enregistrer et rattraper les jours de jeûne manqués';
 }
