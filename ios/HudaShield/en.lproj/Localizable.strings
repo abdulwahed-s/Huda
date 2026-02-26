@@ -1,0 +1,7 @@
+"miqaat_lock_title" = "Miqaat Lock";
+"miqaat_lock_message" = "This app is locked during your focus time.\nComplete your Miqaat goal to unlock.";
+"miqaat_lock_goal_info" = "📖  Spend %d minutes in Huda\nto unlock all apps for this time slot";
+"miqaat_lock_goal_completed" = "🎉 Goal completed!\nOpen Huda to refresh your session.";
+"miqaat_lock_goal_remaining" = "⏳ %dm %ds remaining\nComplete your goal in Huda to unlock.";
+"miqaat_lock_goal_default" = "🕌 Complete your Miqaat goal\nin Huda to continue.";
+"miqaat_lock_open_huda" = "Go to Huda →";

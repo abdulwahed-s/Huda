@@ -1,0 +1,7 @@
+"miqaat_lock_title" = "Mikat Kilidi";
+"miqaat_lock_message" = "Bu uygulama odaklanma süreniz boyunca kilitli.\nKilidi açmak için Mikat hedefinizi tamamlayın.";
+"miqaat_lock_goal_info" = "📖  Hüda'da %d dakika geçirin\nbu zaman dilimindeki tüm uygulamaların kilidini açmak için";
+"miqaat_lock_goal_completed" = "🎉 Hedef tamamlandı!\nOturumunuzu yenilemek için Hüda'yı açın.";
+"miqaat_lock_goal_remaining" = "⏳ %d dk %d sn kaldı\nKilidi açmak için Hüda'da hedefinizi tamamlayın.";
+"miqaat_lock_goal_default" = "🕌 Devam etmek için\nHüda'da Mikat hedefinizi tamamlayın.";
+"miqaat_lock_open_huda" = "Hüda'yı Aç →";

@@ -1,0 +1,7 @@
+"miqaat_lock_title" = "Kunci Miqaat";
+"miqaat_lock_message" = "Aplikasi ini dikunci semasa waktu fokus anda.\nSelesaikan matlamat Miqaat anda untuk membukanya.";
+"miqaat_lock_goal_info" = "📖  Luangkan %d minit di Huda\nuntuk membuka semua aplikasi untuk slot masa ini";
+"miqaat_lock_goal_completed" = "🎉 Matlamat tercapai!\nBuka Huda untuk muat semula sesi anda.";
+"miqaat_lock_goal_remaining" = "⏳ %d min %d saat lagi\nSelesaikan matlamat anda di Huda untuk membuka kunci.";
+"miqaat_lock_goal_default" = "🕌 Selesaikan matlamat Miqaat anda\ndi Huda untuk meneruskan.";
+"miqaat_lock_open_huda" = "Buka Huda →";
