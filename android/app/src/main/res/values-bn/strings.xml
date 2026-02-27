@@ -4,7 +4,7 @@
 
     <string name="miqaat_lock_title">মিকাত লক</string>
     <string name="miqaat_lock_message">আপনার মনোযোগের সময় এই অ্যাপটি লক করা আছে।\nআনলক করতে আপনার মিকাত লক্ষ্য পূরণ করুন।</string>
-    <string name="miqaat_lock_goal_info">📖  হুদায় %d মিনিট কাটান\nএই সময়ের জন্য সমস্ত অ্যাপ আনলক করতে</string>
+    <string name="miqaat_lock_goal_info">হুদায় %d মিনিট কাটান\nএই সময়ের জন্য সমস্ত অ্যাপ আনলক করতে</string>
     <string name="miqaat_lock_open_huda">হুদা খুলুন</string>
     <string name="miqaat_lock_go_back">হোমে ফিরে যান</string>
 </resources>

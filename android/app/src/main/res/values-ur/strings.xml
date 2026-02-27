@@ -4,7 +4,7 @@
 
     <string name="miqaat_lock_title">میقات لاک</string>
     <string name="miqaat_lock_message">یہ ایپ آپ کے توجہ کے وقت میں لاک ہے۔\nان لاک کرنے کے لیے اپنا میقات ہدف مکمل کریں۔</string>
-    <string name="miqaat_lock_goal_info">📖  ہدٰی میں %d منٹ گزاریں\nاس وقت کی تمام ایپس کو ان لاک کرنے کے لیے</string>
+    <string name="miqaat_lock_goal_info">ہدٰی میں %d منٹ گزاریں\nاس وقت کی تمام ایپس کو ان لاک کرنے کے لیے</string>
     <string name="miqaat_lock_open_huda">ہدٰی کھولیں</string>
     <string name="miqaat_lock_go_back">ہوم پر واپس جائیں</string>
 </resources>

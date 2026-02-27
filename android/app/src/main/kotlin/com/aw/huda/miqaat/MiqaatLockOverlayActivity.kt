@@ -81,11 +81,11 @@ class MiqaatLockOverlayActivity : Activity() {
             cardBgColor = Color.argb(230, 28, 35, 51)
             textPrimary = Color.parseColor("#F0F6FC")
             textSecondary = Color.parseColor("#9CA3AF")
-            textAccent = Color.parseColor("#00C9A7")
+            textAccent = Color.parseColor("#243340")
             dividerColor = Color.parseColor("#2D3748")
             outlineColor = Color.parseColor("#4A5568")
-            iconBgColor = Color.argb(40, 0, 201, 167)
-            iconStrokeColor = Color.argb(60, 0, 201, 167)
+            iconBgColor = Color.argb(40, 36, 51, 64)
+            iconStrokeColor = Color.argb(60, 36, 51, 64)
         } else {
 
             bgGradientStart = Color.parseColor("#F5F7FA")
@@ -94,14 +94,14 @@ class MiqaatLockOverlayActivity : Activity() {
             cardBgColor = Color.argb(240, 255, 255, 255)
             textPrimary = Color.parseColor("#1A202C")
             textSecondary = Color.parseColor("#64748B")
-            textAccent = Color.parseColor("#009D84")
+            textAccent = Color.parseColor("#243340")
             dividerColor = Color.parseColor("#E2E8F0")
             outlineColor = Color.parseColor("#94A3B8")
-            iconBgColor = Color.argb(25, 0, 180, 150)
-            iconStrokeColor = Color.argb(50, 0, 180, 150)
+            iconBgColor = Color.argb(25, 36, 51, 64)
+            iconStrokeColor = Color.argb(50, 36, 51, 64)
         }
-        accentStart = Color.parseColor("#00C9A7")
-        accentEnd = Color.parseColor("#00BFA5")
+        accentStart = Color.parseColor("#243340")
+        accentEnd = Color.parseColor("#243340")
     }
 
 

@@ -4,7 +4,7 @@
 
     <string name="miqaat_lock_title">Verrou Miqaat</string>
     <string name="miqaat_lock_message">Cette application est verrouillée pendant votre temps de concentration.\nComplétez votre objectif Miqaat pour la déverrouiller.</string>
-    <string name="miqaat_lock_goal_info">📖  Passez %d minutes dans Houda\npour déverrouiller toutes les apps pour ce créneau</string>
+    <string name="miqaat_lock_goal_info">Passez %d minutes dans Houda\npour déverrouiller toutes les apps pour ce créneau</string>
     <string name="miqaat_lock_open_huda">Ouvrir Houda</string>
     <string name="miqaat_lock_go_back">Retour à l\'accueil</string>
 </resources>

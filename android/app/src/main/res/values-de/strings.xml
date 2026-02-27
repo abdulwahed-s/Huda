@@ -4,7 +4,7 @@
 
     <string name="miqaat_lock_title">Miqaat-Sperre</string>
     <string name="miqaat_lock_message">Diese App ist während deiner Fokuszeit gesperrt.\nSchließe dein Miqaat-Ziel ab, um sie zu entsperren.</string>
-    <string name="miqaat_lock_goal_info">📖  Verbringe %d Minuten in Huda\num alle Apps für diesen Zeitraum zu entsperren</string>
+    <string name="miqaat_lock_goal_info">Verbringe %d Minuten in Huda\num alle Apps für diesen Zeitraum zu entsperren</string>
     <string name="miqaat_lock_open_huda">Huda öffnen</string>
     <string name="miqaat_lock_go_back">Zurück zum Startbildschirm</string>
 </resources>

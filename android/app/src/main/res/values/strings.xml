@@ -11,7 +11,7 @@
 
     <string name="miqaat_lock_title">Miqaat Lock</string>
     <string name="miqaat_lock_message">This app is locked during your focus time.\nComplete your Miqaat goal to unlock.</string>
-    <string name="miqaat_lock_goal_info">📖  Spend %d minutes in Huda\nto unlock all apps for this time slot</string>
+    <string name="miqaat_lock_goal_info">Spend %d minutes in Huda\nto unlock all apps for this time slot</string>
     <string name="miqaat_lock_open_huda">Open Huda</string>
     <string name="miqaat_lock_go_back">Go Back Home</string>
 </resources>
