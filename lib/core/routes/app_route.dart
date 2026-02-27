@@ -24,4 +24,6 @@ class AppRoute {
   static const String islamicChecklist = '/islamicChecklist';
   static const String feedback = '/feedback';
   static const String zakatCalculator = '/zakatCalculator';
+  static const String miqaatLock = '/miqaatLock';
+  static const String ramadan = '/ramadan';
 }
