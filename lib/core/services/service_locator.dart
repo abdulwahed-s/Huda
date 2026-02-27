@@ -5,6 +5,8 @@ import 'package:huda/core/services/reading_position_service.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/core/services/prayer_countdown_service.dart';
 import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
+import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
+import 'package:huda/data/repository/miqaat_lock_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:upgrader/upgrader.dart';
@@ -28,4 +30,12 @@ void setupServiceLocator() {
 
   // Register SpeechService
   getIt.registerSingleton<SpeechService>(SpeechService());
+
+  getIt.registerSingletonAsync<MiqaatLockRepository>(
+    () => MiqaatLockRepository.create(),
+  );
+  getIt.registerSingletonWithDependencies<MiqaatLockCubit>(
+    () => MiqaatLockCubit(getIt<MiqaatLockRepository>())..loadSettings(),
+    dependsOn: [MiqaatLockRepository],
+  );
 }
