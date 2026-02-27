@@ -973,7 +973,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "Как долго длится каждый сеанс разблокировки",
+    "sessionDurationDescription": "Требуемое время в Huda (например, чтение Корана) для разблокировки ваших приложений",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1136,5 +1136,95 @@
     "whatsNewExploreButton": "Понятно!",
     "whatsNew153Feature1": "Трекер поста Рамадана с ежедневным журналом каза",
     "whatsNew153Feature2": "Блокировка Микаат для блокировки отвлекающих приложений во время молитвы",
-    "whatsNew153Feature3": "Трекер каза для записи и восполнения пропущенных дней поста"
+    "whatsNew153Feature3": "Трекер каза для записи и восполнения пропущенных дней поста",
+    "offlineMode": "Автономный режим",
+    "@offlineMode": {
+        "description": "Indicates that the app is currently in offline mode"
+    },
+    "showingDownloadedBooks": "Показано {count} загруженных книг",
+    "@showingDownloadedBooks": {
+        "description": "Shows the number of available downloaded books",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "bookDownloadedSuccessfully": "Книга успешно загружена!",
+    "@bookDownloadedSuccessfully": {
+        "description": "Message shown when a book is downloaded successfully"
+    },
+    "downloadFailed": "Ошибка загрузки: {error}",
+    "@downloadFailed": {
+        "description": "Message shown when a book download fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    }
+    ,
+    "iosTapToSelectApps": "Нажмите ниже, чтобы выбрать приложения с помощью Экранного времени",
+    "@iosTapToSelectApps": {
+        "description": "Instruction to select apps using Screen Time on iOS"
+    },
+    "iosAppsSelectedSuccessfully": "Приложения успешно выбраны",
+    "@iosAppsSelectedSuccessfully": {
+        "description": "Success message when apps are selected"
+    },
+    "iosAppSelectionError": "Ошибка: {error}",
+    "@iosAppSelectionError": {
+        "description": "Error message when app selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+    ,
+    "iosSelectAppsScreenTime": "Выбрать приложения (Экранное время)",
+    "@iosSelectAppsScreenTime": {
+        "description": "Button text to select apps using Screen Time on iOS"
+    },
+    "iosScreenTimeProtection": "Защита Экранного времени",
+    "@iosScreenTimeProtection": {
+        "description": "Title for Screen Time Protection on iOS"
+    },
+    "iosAppsAndCategoriesSelected": "Выбрано {appCount} прил. + {categoryCount} кат.",
+    "@iosAppsAndCategoriesSelected": {
+        "description": "Text showing number of apps and categories selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            },
+            "categoryCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "iosAppSelected": "Выбрано {appCount} приложение",
+    "@iosAppSelected": {
+        "description": "Text showing 1 app selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "iosAppsSelected": "Выбрано {appCount} приложения",
+    "@iosAppsSelected": {
+        "description": "Text showing multiple apps selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

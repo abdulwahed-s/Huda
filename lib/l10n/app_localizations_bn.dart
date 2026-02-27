@@ -2733,7 +2733,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get sessionDurationDescription =>
-      'প্রতিটি আনলক সেশন কতক্ষণ স্থায়ী হয়';
+      'আপনার অ্যাপগুলি আনলক করতে হুদা-এ (যেমন কুরআন পড়া) যে সময় ব্যয় করতে হবে';
 
   @override
   String get selectDuration => 'সময়কাল নির্বাচন করুন';
@@ -2962,4 +2962,54 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get whatsNew153Feature3 =>
       'ছুটে যাওয়া রোজার দিন লগ এবং কাযা করার ট্র্যাকার';
+
+  @override
+  String get offlineMode => 'অফলাইন মোড';
+
+  @override
+  String showingDownloadedBooks(int count) {
+    return 'ডাউনলোড করা $count বই দেখানো হচ্ছে';
+  }
+
+  @override
+  String get bookDownloadedSuccessfully => 'বই সফলভাবে ডাউনলোড হয়েছে!';
+
+  @override
+  String downloadFailed(String error) {
+    return 'ডাউনলোড ব্যর্থ হয়েছে: $error';
+  }
+
+  @override
+  String get iosTapToSelectApps =>
+      'স্ক্রিন টাইম ব্যবহার করে অ্যাপ নির্বাচন করতে নিচে ট্যাপ করুন';
+
+  @override
+  String get iosAppsSelectedSuccessfully =>
+      'অ্যাপগুলি সফলভাবে নির্বাচিত হয়েছে';
+
+  @override
+  String iosAppSelectionError(String error) {
+    return 'ত্রুটি: $error';
+  }
+
+  @override
+  String get iosSelectAppsScreenTime => 'অ্যাপ নির্বাচন করুন (স্ক্রিন টাইম)';
+
+  @override
+  String get iosScreenTimeProtection => 'স্ক্রিন টাইম সুরক্ষা';
+
+  @override
+  String iosAppsAndCategoriesSelected(int appCount, int categoryCount) {
+    return '$appCountটি অ্যাপ + $categoryCountটি ক্যাটাগরি নির্বাচিত';
+  }
+
+  @override
+  String iosAppSelected(int appCount) {
+    return '$appCountটি অ্যাপ নির্বাচিত';
+  }
+
+  @override
+  String iosAppsSelected(int appCount) {
+    return '$appCountটি অ্যাপ নির্বাচিত';
+  }
 }

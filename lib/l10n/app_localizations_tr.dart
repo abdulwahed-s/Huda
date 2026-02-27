@@ -2725,7 +2725,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get sessionDurationDescription =>
-      'Her kilit açma oturumunun ne kadar süreceği';
+      'Uygulamalarınızın kilidini açmak için Huda\'da (ör. Kuran okumak) geçirmeniz gereken süre';
 
   @override
   String get selectDuration => 'Süre Seç';
@@ -2956,4 +2956,53 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get whatsNew153Feature3 =>
       'Kaçırılan oruç günlerini kaydetmek ve telafi etmek için kaza takipçisi';
+
+  @override
+  String get offlineMode => 'Çevrimdışı Mod';
+
+  @override
+  String showingDownloadedBooks(int count) {
+    return 'İndirilen $count kitap gösteriliyor';
+  }
+
+  @override
+  String get bookDownloadedSuccessfully => 'Kitap başarıyla indirildi!';
+
+  @override
+  String downloadFailed(String error) {
+    return 'İndirme başarısız: $error';
+  }
+
+  @override
+  String get iosTapToSelectApps =>
+      'Ekran Süresi\'ni kullanarak uygulamaları seçmek için aşağıya dokunun';
+
+  @override
+  String get iosAppsSelectedSuccessfully => 'Uygulamalar başarıyla seçildi';
+
+  @override
+  String iosAppSelectionError(String error) {
+    return 'Hata: $error';
+  }
+
+  @override
+  String get iosSelectAppsScreenTime => 'Uygulamaları Seç (Ekran Süresi)';
+
+  @override
+  String get iosScreenTimeProtection => 'Ekran Süresi Koruması';
+
+  @override
+  String iosAppsAndCategoriesSelected(int appCount, int categoryCount) {
+    return '$appCount uygulama + $categoryCount kategori seçildi';
+  }
+
+  @override
+  String iosAppSelected(int appCount) {
+    return '$appCount uygulama seçildi';
+  }
+
+  @override
+  String iosAppsSelected(int appCount) {
+    return '$appCount uygulamalar seçildi';
+  }
 }

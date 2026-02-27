@@ -2733,7 +2733,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get sessionDurationDescription =>
-      'Berapa lama setiap sesi buka kunci bertahan';
+      'Masa yang diperlukan dalam Huda (cth. membaca Al-Quran) untuk membuka kunci aplikasi anda';
 
   @override
   String get selectDuration => 'Pilih Tempoh';
@@ -2964,4 +2964,53 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get whatsNew153Feature3 =>
       'Penjejak qadha untuk merekod dan mengganti hari puasa yang terlepas';
+
+  @override
+  String get offlineMode => 'Mod Luar Talian';
+
+  @override
+  String showingDownloadedBooks(int count) {
+    return 'Menunjukkan $count buku yang dimuat turun';
+  }
+
+  @override
+  String get bookDownloadedSuccessfully => 'Buku berjaya dimuat turun!';
+
+  @override
+  String downloadFailed(String error) {
+    return 'Muat turun gagal: $error';
+  }
+
+  @override
+  String get iosTapToSelectApps =>
+      'Ketik di bawah untuk memilih apl menggunakan Masa Skrin';
+
+  @override
+  String get iosAppsSelectedSuccessfully => 'Apl berjaya dipilih';
+
+  @override
+  String iosAppSelectionError(String error) {
+    return 'Ralat: $error';
+  }
+
+  @override
+  String get iosSelectAppsScreenTime => 'Pilih Apl (Masa Skrin)';
+
+  @override
+  String get iosScreenTimeProtection => 'Perlindungan Masa Skrin';
+
+  @override
+  String iosAppsAndCategoriesSelected(int appCount, int categoryCount) {
+    return '$appCount apl + $categoryCount kategori dipilih';
+  }
+
+  @override
+  String iosAppSelected(int appCount) {
+    return '$appCount apl dipilih';
+  }
+
+  @override
+  String iosAppsSelected(int appCount) {
+    return '$appCount apl dipilih';
+  }
 }

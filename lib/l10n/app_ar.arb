@@ -1565,11 +1565,11 @@
     "atExactTime": "في {time}",
     "minsBeforeFajr": "{minutes} دقيقة قبل الفجر",
     "sahurAlarmNotSet": "غير محدد",
-       "miqaatLock": "قفل ميقات",
+       "miqaatLock": "قفل الميقات",
     "@miqaatLock": {
         "description": "Miqaat Lock feature title"
     },
-    "enableMiqaatLock": "تفعيل قفل ميقات",
+    "enableMiqaatLock": "تفعيل قفل الميقات",
     "@enableMiqaatLock": {
         "description": "Enable toggle label"
     },
@@ -1609,7 +1609,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "كم تستمر كل جلسة فتح",
+    "sessionDurationDescription": "الوقت المطلوب قضاؤه في تطبيق هدى (مثل قراءة القرآن) لإلغاء قفل تطبيقاتك",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1773,8 +1773,8 @@
     "remainingForImsaak": "متبقي للإمساك أقل من {hours} ساعة",
     "imsaakLabel": "الإمساك",
     "iftarLabel": "الإفطار",
-    "fastedStatus": "صام",
-    "missedStatus": "أفطر",
+    "fastedStatus": "صمت",
+    "missedStatus": "أفطرت",
     "qadhaaDays": "أيام القضاء",
     "sunday": "الأحد",
     "monday": "الاثنين",
@@ -1800,5 +1800,95 @@
     "whatsNewExploreButton": "فهمت!",
     "whatsNew153Feature1": "متتبع صيام رمضان مع سجل القضاء اليومي",
     "whatsNew153Feature2": "قفل الميقات لحظر التطبيقات المشتتة أثناء أوقات الصلاة",
-    "whatsNew153Feature3": "متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة"
+    "whatsNew153Feature3": "متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة",
+    "offlineMode": "وضع عدم الاتصال",
+    "@offlineMode": {
+        "description": "Indicates that the app is currently in offline mode"
+    },
+    "showingDownloadedBooks": "عرض {count} من الكتب المحملة",
+    "@showingDownloadedBooks": {
+        "description": "Shows the number of available downloaded books",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "bookDownloadedSuccessfully": "تم تنزيل الكتاب بنجاح!",
+    "@bookDownloadedSuccessfully": {
+        "description": "Message shown when a book is downloaded successfully"
+    },
+    "downloadFailed": "فشل التنزيل: {error}",
+    "@downloadFailed": {
+        "description": "Message shown when a book download fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    }
+    ,
+    "iosTapToSelectApps": "اضغط أدناه لتحديد التطبيقات باستخدام مدة استخدام الجهاز",
+    "@iosTapToSelectApps": {
+        "description": "Instruction to select apps using Screen Time on iOS"
+    },
+    "iosAppsSelectedSuccessfully": "تم تحديد التطبيقات بنجاح",
+    "@iosAppsSelectedSuccessfully": {
+        "description": "Success message when apps are selected"
+    },
+    "iosAppSelectionError": "خطأ: {error}",
+    "@iosAppSelectionError": {
+        "description": "Error message when app selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+    ,
+    "iosSelectAppsScreenTime": "تحديد التطبيقات (مدة استخدام الجهاز)",
+    "@iosSelectAppsScreenTime": {
+        "description": "Button text to select apps using Screen Time on iOS"
+    },
+    "iosScreenTimeProtection": "حماية مدة استخدام الجهاز",
+    "@iosScreenTimeProtection": {
+        "description": "Title for Screen Time Protection on iOS"
+    },
+    "iosAppsAndCategoriesSelected": "{appCount} تطبيق + {categoryCount} فئة محددة",
+    "@iosAppsAndCategoriesSelected": {
+        "description": "Text showing number of apps and categories selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            },
+            "categoryCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "iosAppSelected": "{appCount} تطبيق محدد",
+    "@iosAppSelected": {
+        "description": "Text showing 1 app selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "iosAppsSelected": "{appCount} تطبيقات محددة",
+    "@iosAppsSelected": {
+        "description": "Text showing multiple apps selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

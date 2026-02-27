@@ -1061,7 +1061,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "Berapa lama setiap sesi buka kunci bertahan",
+    "sessionDurationDescription": "Masa yang diperlukan dalam Huda (cth. membaca Al-Quran) untuk membuka kunci aplikasi anda",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1224,5 +1224,95 @@
     "whatsNewExploreButton": "Faham!",
     "whatsNew153Feature1": "Penjejak puasa Ramadan dengan log qadha harian",
     "whatsNew153Feature2": "Kunci Miqaat untuk menyekat apl yang mengganggu semasa waktu solat",
-    "whatsNew153Feature3": "Penjejak qadha untuk merekod dan mengganti hari puasa yang terlepas"
+    "whatsNew153Feature3": "Penjejak qadha untuk merekod dan mengganti hari puasa yang terlepas",
+    "offlineMode": "Mod Luar Talian",
+    "@offlineMode": {
+        "description": "Indicates that the app is currently in offline mode"
+    },
+    "showingDownloadedBooks": "Menunjukkan {count} buku yang dimuat turun",
+    "@showingDownloadedBooks": {
+        "description": "Shows the number of available downloaded books",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "bookDownloadedSuccessfully": "Buku berjaya dimuat turun!",
+    "@bookDownloadedSuccessfully": {
+        "description": "Message shown when a book is downloaded successfully"
+    },
+    "downloadFailed": "Muat turun gagal: {error}",
+    "@downloadFailed": {
+        "description": "Message shown when a book download fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    }
+    ,
+    "iosTapToSelectApps": "Ketik di bawah untuk memilih apl menggunakan Masa Skrin",
+    "@iosTapToSelectApps": {
+        "description": "Instruction to select apps using Screen Time on iOS"
+    },
+    "iosAppsSelectedSuccessfully": "Apl berjaya dipilih",
+    "@iosAppsSelectedSuccessfully": {
+        "description": "Success message when apps are selected"
+    },
+    "iosAppSelectionError": "Ralat: {error}",
+    "@iosAppSelectionError": {
+        "description": "Error message when app selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+    ,
+    "iosSelectAppsScreenTime": "Pilih Apl (Masa Skrin)",
+    "@iosSelectAppsScreenTime": {
+        "description": "Button text to select apps using Screen Time on iOS"
+    },
+    "iosScreenTimeProtection": "Perlindungan Masa Skrin",
+    "@iosScreenTimeProtection": {
+        "description": "Title for Screen Time Protection on iOS"
+    },
+    "iosAppsAndCategoriesSelected": "{appCount} apl + {categoryCount} kategori dipilih",
+    "@iosAppsAndCategoriesSelected": {
+        "description": "Text showing number of apps and categories selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            },
+            "categoryCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "iosAppSelected": "{appCount} apl dipilih",
+    "@iosAppSelected": {
+        "description": "Text showing 1 app selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "iosAppsSelected": "{appCount} apl dipilih",
+    "@iosAppsSelected": {
+        "description": "Text showing multiple apps selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

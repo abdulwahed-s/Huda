@@ -981,7 +981,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "Combien de temps dure chaque session de déverrouillage",
+    "sessionDurationDescription": "Temps requis dans Huda (ex. lire le Coran) pour déverrouiller vos applications",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1144,5 +1144,95 @@
     "whatsNewExploreButton": "Compris !",
     "whatsNew153Feature1": "Suivi du jeûne du Ramadan avec journal quotidien de qadhaa",
     "whatsNew153Feature2": "Verrou Miqaat pour bloquer les applications distrayantes pendant les heures de prière",
-    "whatsNew153Feature3": "Suivi de qadhaa pour enregistrer et rattraper les jours de jeûne manqués"
+    "whatsNew153Feature3": "Suivi de qadhaa pour enregistrer et rattraper les jours de jeûne manqués",
+    "offlineMode": "Mode hors ligne",
+    "@offlineMode": {
+        "description": "Indicates that the app is currently in offline mode"
+    },
+    "showingDownloadedBooks": "Affichage de {count} livres téléchargés",
+    "@showingDownloadedBooks": {
+        "description": "Shows the number of available downloaded books",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "bookDownloadedSuccessfully": "Livre téléchargé avec succès !",
+    "@bookDownloadedSuccessfully": {
+        "description": "Message shown when a book is downloaded successfully"
+    },
+    "downloadFailed": "Échec du téléchargement : {error}",
+    "@downloadFailed": {
+        "description": "Message shown when a book download fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    }
+    ,
+    "iosTapToSelectApps": "Appuyez ci-dessous pour sélectionner des applications via Temps d'écran",
+    "@iosTapToSelectApps": {
+        "description": "Instruction to select apps using Screen Time on iOS"
+    },
+    "iosAppsSelectedSuccessfully": "Applications sélectionnées avec succès",
+    "@iosAppsSelectedSuccessfully": {
+        "description": "Success message when apps are selected"
+    },
+    "iosAppSelectionError": "Erreur : {error}",
+    "@iosAppSelectionError": {
+        "description": "Error message when app selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+    ,
+    "iosSelectAppsScreenTime": "Sélectionner des applications (Temps d'écran)",
+    "@iosSelectAppsScreenTime": {
+        "description": "Button text to select apps using Screen Time on iOS"
+    },
+    "iosScreenTimeProtection": "Protection Temps d'écran",
+    "@iosScreenTimeProtection": {
+        "description": "Title for Screen Time Protection on iOS"
+    },
+    "iosAppsAndCategoriesSelected": "{appCount} application(s) + {categoryCount} catégorie(s) sélectionnée(s)",
+    "@iosAppsAndCategoriesSelected": {
+        "description": "Text showing number of apps and categories selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            },
+            "categoryCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "iosAppSelected": "{appCount} application sélectionnée",
+    "@iosAppSelected": {
+        "description": "Text showing 1 app selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "iosAppsSelected": "{appCount} applications sélectionnées",
+    "@iosAppsSelected": {
+        "description": "Text showing multiple apps selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

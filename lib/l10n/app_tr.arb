@@ -974,7 +974,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "Her kilit açma oturumunun ne kadar süreceği",
+    "sessionDurationDescription": "Uygulamalarınızın kilidini açmak için Huda'da (ör. Kuran okumak) geçirmeniz gereken süre",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1137,5 +1137,95 @@
     "whatsNewExploreButton": "Anladım!",
     "whatsNew153Feature1": "Günlük kaza kaydı ile Ramazan oruç takipçisi",
     "whatsNew153Feature2": "Namaz vakitlerinde dikkat dağıtan uygulamaları engellemek için Miqaat Kilidi",
-    "whatsNew153Feature3": "Kaçırılan oruç günlerini kaydetmek ve telafi etmek için kaza takipçisi"
+    "whatsNew153Feature3": "Kaçırılan oruç günlerini kaydetmek ve telafi etmek için kaza takipçisi",
+    "offlineMode": "Çevrimdışı Mod",
+    "@offlineMode": {
+        "description": "Indicates that the app is currently in offline mode"
+    },
+    "showingDownloadedBooks": "İndirilen {count} kitap gösteriliyor",
+    "@showingDownloadedBooks": {
+        "description": "Shows the number of available downloaded books",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "bookDownloadedSuccessfully": "Kitap başarıyla indirildi!",
+    "@bookDownloadedSuccessfully": {
+        "description": "Message shown when a book is downloaded successfully"
+    },
+    "downloadFailed": "İndirme başarısız: {error}",
+    "@downloadFailed": {
+        "description": "Message shown when a book download fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    }
+    ,
+    "iosTapToSelectApps": "Ekran Süresi'ni kullanarak uygulamaları seçmek için aşağıya dokunun",
+    "@iosTapToSelectApps": {
+        "description": "Instruction to select apps using Screen Time on iOS"
+    },
+    "iosAppsSelectedSuccessfully": "Uygulamalar başarıyla seçildi",
+    "@iosAppsSelectedSuccessfully": {
+        "description": "Success message when apps are selected"
+    },
+    "iosAppSelectionError": "Hata: {error}",
+    "@iosAppSelectionError": {
+        "description": "Error message when app selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+    ,
+    "iosSelectAppsScreenTime": "Uygulamaları Seç (Ekran Süresi)",
+    "@iosSelectAppsScreenTime": {
+        "description": "Button text to select apps using Screen Time on iOS"
+    },
+    "iosScreenTimeProtection": "Ekran Süresi Koruması",
+    "@iosScreenTimeProtection": {
+        "description": "Title for Screen Time Protection on iOS"
+    },
+    "iosAppsAndCategoriesSelected": "{appCount} uygulama + {categoryCount} kategori seçildi",
+    "@iosAppsAndCategoriesSelected": {
+        "description": "Text showing number of apps and categories selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            },
+            "categoryCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "iosAppSelected": "{appCount} uygulama seçildi",
+    "@iosAppSelected": {
+        "description": "Text showing 1 app selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "iosAppsSelected": "{appCount} uygulamalar seçildi",
+    "@iosAppsSelected": {
+        "description": "Text showing multiple apps selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

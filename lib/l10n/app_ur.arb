@@ -1036,7 +1036,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "ہر ان لاک سیشن کتنا طویل ہوگا",
+    "sessionDurationDescription": "اپنی ایپس کو ان لاک کرنے کے لیے ہدیٰ میں (جیسے قرآن پڑھنا) درکار وقت",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1199,5 +1199,95 @@
     "whatsNewExploreButton": "سمجھ گیا!",
     "whatsNew153Feature1": "روزانہ قضاء لاگ کے ساتھ رمضان کے روزے کا ٹریکر",
     "whatsNew153Feature2": "نماز کے اوقات میں پریشان کن ایپس بلاک کرنے کے لیے میقات لاک",
-    "whatsNew153Feature3": "چھوٹے ہوئے روزوں کے دن ریکارڈ اور قضاء کرنے کا ٹریکر"
+    "whatsNew153Feature3": "چھوٹے ہوئے روزوں کے دن ریکارڈ اور قضاء کرنے کا ٹریکر",
+    "offlineMode": "آف لائن موڈ",
+    "@offlineMode": {
+        "description": "Indicates that the app is currently in offline mode"
+    },
+    "showingDownloadedBooks": "{count} ڈاؤن لوڈ کی گئی کتابیں دکھا رہا ہے",
+    "@showingDownloadedBooks": {
+        "description": "Shows the number of available downloaded books",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "bookDownloadedSuccessfully": "کتاب کامیابی سے ڈاؤن لوڈ ہو گئی!",
+    "@bookDownloadedSuccessfully": {
+        "description": "Message shown when a book is downloaded successfully"
+    },
+    "downloadFailed": "ڈاؤن لوڈ ناکام ہو گیا: {error}",
+    "@downloadFailed": {
+        "description": "Message shown when a book download fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    }
+    ,
+    "iosTapToSelectApps": "اسکرین ٹائم کا استعمال کرتے ہوئے ایپس منتخب کرنے کے لیے نیچے ٹیپ کریں",
+    "@iosTapToSelectApps": {
+        "description": "Instruction to select apps using Screen Time on iOS"
+    },
+    "iosAppsSelectedSuccessfully": "ایپس کامیابی کے ساتھ منتخب ہو گئیں",
+    "@iosAppsSelectedSuccessfully": {
+        "description": "Success message when apps are selected"
+    },
+    "iosAppSelectionError": "خرابی: {error}",
+    "@iosAppSelectionError": {
+        "description": "Error message when app selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+    ,
+    "iosSelectAppsScreenTime": "ایپس منتخب کریں (اسکرین ٹائم)",
+    "@iosSelectAppsScreenTime": {
+        "description": "Button text to select apps using Screen Time on iOS"
+    },
+    "iosScreenTimeProtection": "اسکرین ٹائم تحفظ",
+    "@iosScreenTimeProtection": {
+        "description": "Title for Screen Time Protection on iOS"
+    },
+    "iosAppsAndCategoriesSelected": "{appCount} ایپس + {categoryCount} زمرے منتخب کیے گئے",
+    "@iosAppsAndCategoriesSelected": {
+        "description": "Text showing number of apps and categories selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            },
+            "categoryCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "iosAppSelected": "{appCount} ایپ منتخب کی گئی",
+    "@iosAppSelected": {
+        "description": "Text showing 1 app selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "iosAppsSelected": "{appCount} ایپس منتخب کی گئیں",
+    "@iosAppsSelected": {
+        "description": "Text showing multiple apps selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

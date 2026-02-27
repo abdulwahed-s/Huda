@@ -5099,7 +5099,7 @@ abstract class AppLocalizations {
   /// Session duration explanation
   ///
   /// In en, this message translates to:
-  /// **'How long each unlock session lasts'**
+  /// **'Required time to spend in Huda (e.g., reading Quran) to unlock your apps.'**
   String get sessionDurationDescription;
 
   /// Duration picker title
@@ -5503,6 +5503,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Qadhaa tracker to log and make up missed fasting days'**
   String get whatsNew153Feature3;
+
+  /// Indicates that the app is currently in offline mode
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Mode'**
+  String get offlineMode;
+
+  /// Shows the number of available downloaded books
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {count} downloaded books'**
+  String showingDownloadedBooks(int count);
+
+  /// Message shown when a book is downloaded successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Book downloaded successfully!'**
+  String get bookDownloadedSuccessfully;
+
+  /// Message shown when a book download fails
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed: {error}'**
+  String downloadFailed(String error);
+
+  /// Instruction to select apps using Screen Time on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'Tap below to select apps using Screen Time'**
+  String get iosTapToSelectApps;
+
+  /// Success message when apps are selected
+  ///
+  /// In en, this message translates to:
+  /// **'Apps selected successfully'**
+  String get iosAppsSelectedSuccessfully;
+
+  /// Error message when app selection fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String iosAppSelectionError(String error);
+
+  /// Button text to select apps using Screen Time on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'Select Apps (Screen Time)'**
+  String get iosSelectAppsScreenTime;
+
+  /// Title for Screen Time Protection on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'Screen Time Protection'**
+  String get iosScreenTimeProtection;
+
+  /// Text showing number of apps and categories selected on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'{appCount} app(s) + {categoryCount} categor(ies) selected'**
+  String iosAppsAndCategoriesSelected(int appCount, int categoryCount);
+
+  /// Text showing 1 app selected on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'{appCount} app selected'**
+  String iosAppSelected(int appCount);
+
+  /// Text showing multiple apps selected on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'{appCount} apps selected'**
+  String iosAppsSelected(int appCount);
 }
 
 class _AppLocalizationsDelegate

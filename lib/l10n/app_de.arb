@@ -954,7 +954,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "Wie lange jede Entsperrsitzung dauert",
+    "sessionDurationDescription": "Die benötigte Zeit in Huda (z.B. Koran lesen), um Ihre Apps zu entsperren",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1117,5 +1117,95 @@
     "whatsNewExploreButton": "Verstanden!",
     "whatsNew153Feature1": "Ramadan-Fasten-Tracker mit täglichem Qadaa-Protokoll",
     "whatsNew153Feature2": "Miqaat-Sperre zum Blockieren ablenkender Apps während der Gebetszeiten",
-    "whatsNew153Feature3": "Qadaa-Tracker zum Protokollieren und Nachholen versäumter Fastentage"
+    "whatsNew153Feature3": "Qadaa-Tracker zum Protokollieren und Nachholen versäumter Fastentage",
+    "offlineMode": "Offline-Modus",
+    "@offlineMode": {
+        "description": "Indicates that the app is currently in offline mode"
+    },
+    "showingDownloadedBooks": "Zeige {count} heruntergeladene Bücher",
+    "@showingDownloadedBooks": {
+        "description": "Shows the number of available downloaded books",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "bookDownloadedSuccessfully": "Buch erfolgreich heruntergeladen!",
+    "@bookDownloadedSuccessfully": {
+        "description": "Message shown when a book is downloaded successfully"
+    },
+    "downloadFailed": "Download fehlgeschlagen: {error}",
+    "@downloadFailed": {
+        "description": "Message shown when a book download fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Network error"
+            }
+        }
+    }
+    ,
+    "iosTapToSelectApps": "Tippen Sie unten, um Apps über die Bildschirmzeit auszuwählen",
+    "@iosTapToSelectApps": {
+        "description": "Instruction to select apps using Screen Time on iOS"
+    },
+    "iosAppsSelectedSuccessfully": "Apps erfolgreich ausgewählt",
+    "@iosAppsSelectedSuccessfully": {
+        "description": "Success message when apps are selected"
+    },
+    "iosAppSelectionError": "Fehler: {error}",
+    "@iosAppSelectionError": {
+        "description": "Error message when app selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+    ,
+    "iosSelectAppsScreenTime": "Apps auswählen (Bildschirmzeit)",
+    "@iosSelectAppsScreenTime": {
+        "description": "Button text to select apps using Screen Time on iOS"
+    },
+    "iosScreenTimeProtection": "Bildschirmzeit-Schutz",
+    "@iosScreenTimeProtection": {
+        "description": "Title for Screen Time Protection on iOS"
+    },
+    "iosAppsAndCategoriesSelected": "{appCount} App(s) + {categoryCount} Kategorie(n) ausgewählt",
+    "@iosAppsAndCategoriesSelected": {
+        "description": "Text showing number of apps and categories selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            },
+            "categoryCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "iosAppSelected": "{appCount} App ausgewählt",
+    "@iosAppSelected": {
+        "description": "Text showing 1 app selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "iosAppsSelected": "{appCount} Apps ausgewählt",
+    "@iosAppsSelected": {
+        "description": "Text showing multiple apps selected on iOS",
+        "placeholders": {
+            "appCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

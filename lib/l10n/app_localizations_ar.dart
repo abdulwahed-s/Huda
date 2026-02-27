@@ -2649,10 +2649,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sahurAlarmNotSet => 'غير محدد';
 
   @override
-  String get miqaatLock => 'قفل ميقات';
+  String get miqaatLock => 'قفل الميقات';
 
   @override
-  String get enableMiqaatLock => 'تفعيل قفل ميقات';
+  String get enableMiqaatLock => 'تفعيل قفل الميقات';
 
   @override
   String get miqaatLockDescription =>
@@ -2683,7 +2683,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sessionDuration => 'مدة الجلسة';
 
   @override
-  String get sessionDurationDescription => 'كم تستمر كل جلسة فتح';
+  String get sessionDurationDescription =>
+      'الوقت المطلوب قضاؤه في تطبيق هدى (مثل قراءة القرآن) لإلغاء قفل تطبيقاتك';
 
   @override
   String get selectDuration => 'اختر المدة';
@@ -2840,10 +2841,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get iftarLabel => 'الإفطار';
 
   @override
-  String get fastedStatus => 'صام';
+  String get fastedStatus => 'صمت';
 
   @override
-  String get missedStatus => 'أفطر';
+  String get missedStatus => 'أفطرت';
 
   @override
   String get qadhaaDays => 'أيام القضاء';
@@ -2911,4 +2912,53 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get whatsNew153Feature3 =>
       'متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة';
+
+  @override
+  String get offlineMode => 'وضع عدم الاتصال';
+
+  @override
+  String showingDownloadedBooks(int count) {
+    return 'عرض $count من الكتب المحملة';
+  }
+
+  @override
+  String get bookDownloadedSuccessfully => 'تم تنزيل الكتاب بنجاح!';
+
+  @override
+  String downloadFailed(String error) {
+    return 'فشل التنزيل: $error';
+  }
+
+  @override
+  String get iosTapToSelectApps =>
+      'اضغط أدناه لتحديد التطبيقات باستخدام مدة استخدام الجهاز';
+
+  @override
+  String get iosAppsSelectedSuccessfully => 'تم تحديد التطبيقات بنجاح';
+
+  @override
+  String iosAppSelectionError(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get iosSelectAppsScreenTime => 'تحديد التطبيقات (مدة استخدام الجهاز)';
+
+  @override
+  String get iosScreenTimeProtection => 'حماية مدة استخدام الجهاز';
+
+  @override
+  String iosAppsAndCategoriesSelected(int appCount, int categoryCount) {
+    return '$appCount تطبيق + $categoryCount فئة محددة';
+  }
+
+  @override
+  String iosAppSelected(int appCount) {
+    return '$appCount تطبيق محدد';
+  }
+
+  @override
+  String iosAppsSelected(int appCount) {
+    return '$appCount تطبيقات محددة';
+  }
 }

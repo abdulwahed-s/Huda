@@ -2751,7 +2751,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sessionDurationDescription =>
-      'Как долго длится каждый сеанс разблокировки';
+      'Требуемое время в Huda (например, чтение Корана) для разблокировки ваших приложений';
 
   @override
   String get selectDuration => 'Выберите продолжительность';
@@ -2983,4 +2983,53 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get whatsNew153Feature3 =>
       'Трекер каза для записи и восполнения пропущенных дней поста';
+
+  @override
+  String get offlineMode => 'Автономный режим';
+
+  @override
+  String showingDownloadedBooks(int count) {
+    return 'Показано $count загруженных книг';
+  }
+
+  @override
+  String get bookDownloadedSuccessfully => 'Книга успешно загружена!';
+
+  @override
+  String downloadFailed(String error) {
+    return 'Ошибка загрузки: $error';
+  }
+
+  @override
+  String get iosTapToSelectApps =>
+      'Нажмите ниже, чтобы выбрать приложения с помощью Экранного времени';
+
+  @override
+  String get iosAppsSelectedSuccessfully => 'Приложения успешно выбраны';
+
+  @override
+  String iosAppSelectionError(String error) {
+    return 'Ошибка: $error';
+  }
+
+  @override
+  String get iosSelectAppsScreenTime => 'Выбрать приложения (Экранное время)';
+
+  @override
+  String get iosScreenTimeProtection => 'Защита Экранного времени';
+
+  @override
+  String iosAppsAndCategoriesSelected(int appCount, int categoryCount) {
+    return 'Выбрано $appCount прил. + $categoryCount кат.';
+  }
+
+  @override
+  String iosAppSelected(int appCount) {
+    return 'Выбрано $appCount приложение';
+  }
+
+  @override
+  String iosAppsSelected(int appCount) {
+    return 'Выбрано $appCount приложения';
+  }
 }

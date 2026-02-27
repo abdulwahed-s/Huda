@@ -2797,7 +2797,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get sessionDurationDescription =>
-      'Combien de temps dure chaque session de déverrouillage';
+      'Temps requis dans Huda (ex. lire le Coran) pour déverrouiller vos applications';
 
   @override
   String get selectDuration => 'Sélectionner la durée';
@@ -3029,4 +3029,55 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get whatsNew153Feature3 =>
       'Suivi de qadhaa pour enregistrer et rattraper les jours de jeûne manqués';
+
+  @override
+  String get offlineMode => 'Mode hors ligne';
+
+  @override
+  String showingDownloadedBooks(int count) {
+    return 'Affichage de $count livres téléchargés';
+  }
+
+  @override
+  String get bookDownloadedSuccessfully => 'Livre téléchargé avec succès !';
+
+  @override
+  String downloadFailed(String error) {
+    return 'Échec du téléchargement : $error';
+  }
+
+  @override
+  String get iosTapToSelectApps =>
+      'Appuyez ci-dessous pour sélectionner des applications via Temps d\'écran';
+
+  @override
+  String get iosAppsSelectedSuccessfully =>
+      'Applications sélectionnées avec succès';
+
+  @override
+  String iosAppSelectionError(String error) {
+    return 'Erreur : $error';
+  }
+
+  @override
+  String get iosSelectAppsScreenTime =>
+      'Sélectionner des applications (Temps d\'écran)';
+
+  @override
+  String get iosScreenTimeProtection => 'Protection Temps d\'écran';
+
+  @override
+  String iosAppsAndCategoriesSelected(int appCount, int categoryCount) {
+    return '$appCount application(s) + $categoryCount catégorie(s) sélectionnée(s)';
+  }
+
+  @override
+  String iosAppSelected(int appCount) {
+    return '$appCount application sélectionnée';
+  }
+
+  @override
+  String iosAppsSelected(int appCount) {
+    return '$appCount applications sélectionnées';
+  }
 }
