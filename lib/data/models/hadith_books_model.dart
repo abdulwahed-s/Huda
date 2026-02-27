@@ -52,8 +52,8 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    hasBooks = json['hasBooks'];
-    hasChapters = json['hasChapters'];
+    hasBooks = _parseBool(json['hasBooks']);
+    hasChapters = _parseBool(json['hasChapters']);
     if (json['collection'] != null) {
       collection = <Collection>[];
       json['collection'].forEach((v) {
@@ -62,6 +62,20 @@ class Data {
     }
     totalHadith = json['totalHadith'];
     totalAvailableHadith = json['totalAvailableHadith'];
+  }
+
+  static bool? _parseBool(dynamic value) {
+    if (value == null) return null;
+    if (value is bool) return value;
+    if (value is String) {
+      if (value.toLowerCase() == 'true' || value == '1') return true;
+      if (value.toLowerCase() == 'false' || value == '0') return false;
+    }
+    if (value is num) {
+      if (value == 1) return true;
+      if (value == 0) return false;
+    }
+    return null;
   }
 
   Map<String, dynamic> toJson() {
