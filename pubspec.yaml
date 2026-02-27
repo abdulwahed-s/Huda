@@ -102,6 +102,7 @@ dependencies:
   quick_actions: ^1.1.0
   vector_graphics: ^1.1.19
   alarm: ^5.2.1
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
