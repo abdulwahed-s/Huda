@@ -61,6 +61,9 @@ import 'package:huda/presentation/screens/onboarding_screen.dart';
 import 'package:huda/presentation/screens/feedback_screen.dart';
 import 'package:huda/presentation/screens/widget_management_screen.dart';
 import 'package:huda/presentation/screens/zakat_calculator.dart';
+import 'package:huda/presentation/screens/miqaat_lock_screen.dart';
+import 'package:huda/cubit/ramadan/ramadan_cubit.dart';
+import 'package:huda/presentation/screens/ramadan_screen.dart';
 
 class PageRouter {
   Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -368,7 +371,8 @@ class PageRouter {
             final args = settings.arguments as Map<String, String>;
             return BlocProvider<HadithDetailsCubit>(
               create: (context) => HadithDetailsCubit()
-                ..fetchHadithDetails(args['chapterNumber']!, args['bookName']!, 1),
+                ..fetchHadithDetails(
+                    args['chapterNumber']!, args['bookName']!, 1),
               child: HadithDetails(
                 chapterNumber: args['chapterNumber']!,
                 bookName: args['bookName']!,
@@ -609,6 +613,45 @@ class PageRouter {
           pageBuilder: (_, animation, __) => BlocProvider<ZakatCalculatorCubit>(
             create: (context) => ZakatCalculatorCubit(),
             child: const ZakatCalculator(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.miqaatLock:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => const MiqaatLockScreen(),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0); // Slide in from right
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      case AppRoute.ramadan:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => BlocProvider<RamadanCubit>(
+            create: (context) => RamadanCubit(getIt<CacheHelper>()),
+            child: const RamadanScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
