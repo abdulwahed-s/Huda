@@ -21,7 +21,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     
     private func makeShieldConfig() -> ShieldConfiguration {
         let progressInfo = readProgressInfo()
-        let accentColor = UIColor(red: 0.0, green: 0.78, blue: 0.65, alpha: 1.0) // teal/emerald
+        let accentColor = UIColor(red: 36.0/255.0, green: 51.0/255.0, blue: 64.0/255.0, alpha: 1.0) // #243340
         let titleColor = UIColor.label
         let subtitleColor = UIColor.secondaryLabel
         
@@ -57,9 +57,9 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         )
         
         return ShieldConfiguration(
-            backgroundBlurStyle: .systemUltraThinMaterial,
+            backgroundBlurStyle: .systemThickMaterial,
             backgroundColor: UIColor.systemBackground,
-            icon: UIImage(systemName: "moon.stars.fill"),
+            icon: createMosqueIcon(),
             title: title,
             subtitle: subtitle,
             primaryButtonLabel: primaryButton,
@@ -87,5 +87,54 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             goalMinutes: defaults.integer(forKey: "miqaat_goal_minutes"),
             isCompleted: defaults.bool(forKey: "miqaat_goal_completed")
         )
+    }
+
+    private func createMosqueIcon() -> UIImage? {
+        let size = CGSize(width: 88, height: 88)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        
+        return renderer.image { context in
+            let circleColor = UIColor { traitCollection in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor(red: 36.0/255.0, green: 51.0/255.0, blue: 64.0/255.0, alpha: 0.15)
+                } else {
+                    return UIColor(red: 36.0/255.0, green: 51.0/255.0, blue: 64.0/255.0, alpha: 0.10)
+                }
+            }
+            
+            let strokeColor = UIColor { traitCollection in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor(red: 36.0/255.0, green: 51.0/255.0, blue: 64.0/255.0, alpha: 0.25)
+                } else {
+                    return UIColor(red: 36.0/255.0, green: 51.0/255.0, blue: 64.0/255.0, alpha: 0.20)
+                }
+            }
+            
+            let rect = CGRect(origin: .zero, size: size)
+            let path = UIBezierPath(ovalIn: rect.insetBy(dx: 2, dy: 2))
+            
+            circleColor.setFill()
+            path.fill()
+            
+            strokeColor.setStroke()
+            path.lineWidth = 2
+            path.stroke()
+            
+            let emoji = "🕌" as NSString
+            let font = UIFont.systemFont(ofSize: 40)
+            let textAttributes: [NSAttributedString.Key: Any] = [
+                .font: font
+            ]
+            
+            let textSize = emoji.size(withAttributes: textAttributes)
+            let textRect = CGRect(
+                x: (size.width - textSize.width) / 2,
+                y: (size.height - textSize.height) / 2,
+                width: textSize.width,
+                height: textSize.height
+            )
+            
+            emoji.draw(in: textRect, withAttributes: textAttributes)
+        }
     }
 }
