@@ -7,28 +7,53 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1L10N0001000000000001 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1L10N0001000000000000 /* InfoPlist.strings */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		6876E1E3DA3E3917189E3347 /* HudaShieldAction.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BFBA588F551AB1BFD8BEFD90 /* HudaShieldAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		7747CAEB38878EAC58A0CCFF /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C282291A2F390CC600DE1448 /* ManagedSettings.framework */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		A4284F3CED208BDF319C55BE /* ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245133971C96B8916F5AF55F /* ShieldActionExtension.swift */; };
+		B4BE427B2ACAED4E1D18C346 /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C282291C2F390CC600DE1448 /* ManagedSettingsUI.framework */; };
 		C24FF2842F08C50400FAB435 /* huda_icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C24FF2832F08C50400FAB435 /* huda_icon.icon */; };
+		C282291B2F390CC600DE1448 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C282291A2F390CC600DE1448 /* ManagedSettings.framework */; };
+		C282291D2F390CC600DE1448 /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C282291C2F390CC600DE1448 /* ManagedSettingsUI.framework */; };
+		C28229252F390CC600DE1448 /* HudaShield.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C28229192F390CC600DE1448 /* HudaShield.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C2BE24772F0FC13600032FC8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BE24762F0FC13600032FC8 /* WidgetKit.framework */; };
 		C2BE24792F0FC13600032FC8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BE24782F0FC13600032FC8 /* SwiftUI.framework */; };
 		C2BE248A2F0FC13600032FC8 /* HudaWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C2BE24752F0FC13600032FC8 /* HudaWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C3FAMACT12345678901234 /* FamilyActivityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FAMACT12345678901235 /* FamilyActivityPickerView.swift */; };
+		C3MIQAAT12345678901234 /* MiqaatLockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3MIQAAT12345678901235 /* MiqaatLockManager.swift */; };
+		D11A71E84F4B33C4D8EE602D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B78399BFD158AB2AE9F8C896 /* Foundation.framework */; };
 		F10518D2B317888D2B856913 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9DF47DA5903473D97AC876 /* Pods_RunnerTests.framework */; };
 		FD527C23EC06AA8E6853406B /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0650D78A9677C8984A82F8AF /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		291004A8A2C47D90B8D7F4DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06BE312346649B997C2E5FB9;
+			remoteInfo = HudaShieldAction;
+		};
 		331C8085294A63A400263BE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
+		};
+		C28229232F390CC600DE1448 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C28229182F390CC600DE1448;
+			remoteInfo = HudaShield;
 		};
 		C2BE24882F0FC13600032FC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -57,6 +82,8 @@
 			dstSubfolderSpec = 13;
 			files = (
 				C2BE248A2F0FC13600032FC8 /* HudaWidgetExtension.appex in Embed Foundation Extensions */,
+				C28229252F390CC600DE1448 /* HudaShield.appex in Embed Foundation Extensions */,
+				6876E1E3DA3E3917189E3347 /* HudaShieldAction.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,15 +91,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A1L10N0001000000000EN1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000AR1 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000BN1 /* bn */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bn; path = bn.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000DE1 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000ES1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000FR1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000MS1 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000RU1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000TR1 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1L10N0001000000000UR1 /* ur */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ur; path = ur.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0650D78A9677C8984A82F8AF /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		245133971C96B8916F5AF55F /* ShieldActionExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShieldActionExtension.swift; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		538A654D891DB463D77E3A70 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7639391E0956FD26B262C4B9 /* HudaShieldAction.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = HudaShieldAction.entitlements; sourceTree = "<group>"; };
+		76F5C1567F673F5A7A766D9F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		8EC10C8E3D366ED1B667AFCF /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -82,20 +122,38 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B78399BFD158AB2AE9F8C896 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BD9DF47DA5903473D97AC876 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFBA588F551AB1BFD8BEFD90 /* HudaShieldAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HudaShieldAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C24FF2832F08C50400FAB435 /* huda_icon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = huda_icon.icon; sourceTree = "<group>"; };
+		C28229192F390CC600DE1448 /* HudaShield.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HudaShield.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C282291A2F390CC600DE1448 /* ManagedSettings.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettings.framework; path = System/Library/Frameworks/ManagedSettings.framework; sourceTree = SDKROOT; };
+		C282291C2F390CC600DE1448 /* ManagedSettingsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettingsUI.framework; path = System/Library/Frameworks/ManagedSettingsUI.framework; sourceTree = SDKROOT; };
 		C2BE24752F0FC13600032FC8 /* HudaWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HudaWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2BE24762F0FC13600032FC8 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C2BE24782F0FC13600032FC8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C2BE24912F0FC18500032FC8 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		C2BE24922F0FC1FC00032FC8 /* HudaWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HudaWidgetExtension.entitlements; sourceTree = "<group>"; };
+		C3FAMACT12345678901235 /* FamilyActivityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyActivityPickerView.swift; sourceTree = "<group>"; };
+		C3MIQAAT12345678901235 /* MiqaatLockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiqaatLockManager.swift; sourceTree = "<group>"; };
 		CB5F8B8DBB324D16D96CA66E /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		D1032790756AC16EA0881A06 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DA0DEVMON00000000000002 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
+		DA0DEVMON00000000000006 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
+		DA0DEVMON00000000000008 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = HudaDeviceMonitor/Info.plist; sourceTree = SOURCE_ROOT; };
+		DA0DEVMON00000000000009 /* HudaDeviceMonitor.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; name = HudaDeviceMonitor.entitlements; path = HudaDeviceMonitor/HudaDeviceMonitor.entitlements; sourceTree = SOURCE_ROOT; };
 		E8F920056622282DF91FA306 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		E9775525352A82D85379A19F /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C28229292F390CC600DE1448 /* Exceptions for "HudaShield" folder in "HudaShield" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C28229182F390CC600DE1448 /* HudaShield */;
+		};
 		C2BE248F2F0FC13600032FC8 /* Exceptions for "HudaWidget" folder in "HudaWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -106,6 +164,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		C282291E2F390CC600DE1448 /* HudaShield */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C28229292F390CC600DE1448 /* Exceptions for "HudaShield" folder in "HudaShield" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = HudaShield;
+			sourceTree = "<group>";
+		};
 		C2BE247A2F0FC13600032FC8 /* HudaWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -129,11 +199,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		30F958FAE6C58B90D6D3FECF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D11A71E84F4B33C4D8EE602D /* Foundation.framework in Frameworks */,
+				7747CAEB38878EAC58A0CCFF /* ManagedSettings.framework in Frameworks */,
+				B4BE427B2ACAED4E1D18C346 /* ManagedSettingsUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97C146EB1CF9000F007C117D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				FD527C23EC06AA8E6853406B /* Pods_Runner.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C28229162F390CC600DE1448 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C282291B2F390CC600DE1448 /* ManagedSettings.framework in Frameworks */,
+				C282291D2F390CC600DE1448 /* ManagedSettingsUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +238,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1117B5B475D3F1BA411E064F /* HudaShieldAction */ = {
+			isa = PBXGroup;
+			children = (
+				245133971C96B8916F5AF55F /* ShieldActionExtension.swift */,
+				76F5C1567F673F5A7A766D9F /* Info.plist */,
+				7639391E0956FD26B262C4B9 /* HudaShieldAction.entitlements */,
+			);
+			path = HudaShieldAction;
+			sourceTree = SOURCE_ROOT;
+		};
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,10 +287,13 @@
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				C2BE247A2F0FC13600032FC8 /* HudaWidget */,
+				C282291E2F390CC600DE1448 /* HudaShield */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				7C638AC898D5AC55E50C89CD /* Pods */,
 				E2C6DA781CBE08473F60C69A /* Frameworks */,
+				1117B5B475D3F1BA411E064F /* HudaShieldAction */,
+				DA0DEVMON0000000000000A /* HudaDeviceMonitor */,
 			);
 			sourceTree = "<group>";
 		};
@@ -201,6 +303,8 @@
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
 				C2BE24752F0FC13600032FC8 /* HudaWidgetExtension.appex */,
+				C28229192F390CC600DE1448 /* HudaShield.appex */,
+				BFBA588F551AB1BFD8BEFD90 /* HudaShieldAction.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -217,10 +321,31 @@
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
+				C3MIQAAT12345678901235 /* MiqaatLockManager.swift */,
+				C3FAMACT12345678901235 /* FamilyActivityPickerView.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
+				A1L10N0001000000000000 /* InfoPlist.strings */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
+		};
+		B803172763B989CD04A0B2CB /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B78399BFD158AB2AE9F8C896 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		DA0DEVMON0000000000000A /* HudaDeviceMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				DA0DEVMON00000000000002 /* DeviceActivityMonitorExtension.swift */,
+				DA0DEVMON00000000000008 /* Info.plist */,
+				DA0DEVMON00000000000009 /* HudaDeviceMonitor.entitlements */,
+			);
+			path = HudaDeviceMonitor;
+			sourceTree = SOURCE_ROOT;
 		};
 		E2C6DA781CBE08473F60C69A /* Frameworks */ = {
 			isa = PBXGroup;
@@ -229,6 +354,10 @@
 				BD9DF47DA5903473D97AC876 /* Pods_RunnerTests.framework */,
 				C2BE24762F0FC13600032FC8 /* WidgetKit.framework */,
 				C2BE24782F0FC13600032FC8 /* SwiftUI.framework */,
+				C282291A2F390CC600DE1448 /* ManagedSettings.framework */,
+				C282291C2F390CC600DE1448 /* ManagedSettingsUI.framework */,
+				DA0DEVMON00000000000006 /* DeviceActivity.framework */,
+				B803172763B989CD04A0B2CB /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -236,6 +365,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		06BE312346649B997C2E5FB9 /* HudaShieldAction */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61F1A0E6CD1AF91A9677C516 /* Build configuration list for PBXNativeTarget "HudaShieldAction" */;
+			buildPhases = (
+				1241930825CA2860A48F799A /* Sources */,
+				30F958FAE6C58B90D6D3FECF /* Frameworks */,
+				4EF3726849E8EFEC1BB31995 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HudaShieldAction;
+			productName = HudaShieldAction;
+			productReference = BFBA588F551AB1BFD8BEFD90 /* HudaShieldAction.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		331C8080294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */;
@@ -274,11 +420,33 @@
 			);
 			dependencies = (
 				C2BE24892F0FC13600032FC8 /* PBXTargetDependency */,
+				C28229242F390CC600DE1448 /* PBXTargetDependency */,
+				6343CBBC48899C672BEB022E /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C28229182F390CC600DE1448 /* HudaShield */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C282292A2F390CC600DE1448 /* Build configuration list for PBXNativeTarget "HudaShield" */;
+			buildPhases = (
+				C28229152F390CC600DE1448 /* Sources */,
+				C28229162F390CC600DE1448 /* Frameworks */,
+				C28229172F390CC600DE1448 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C282291E2F390CC600DE1448 /* HudaShield */,
+			);
+			name = HudaShield;
+			productName = HudaShield;
+			productReference = C28229192F390CC600DE1448 /* HudaShield.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		C2BE24742F0FC13600032FC8 /* HudaWidgetExtension */ = {
 			isa = PBXNativeTarget;
@@ -319,6 +487,9 @@
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 1100;
 					};
+					C28229182F390CC600DE1448 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 					C2BE24742F0FC13600032FC8 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -331,6 +502,15 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
+				bn,
+				de,
+				es,
+				fr,
+				ms,
+				ru,
+				tr,
+				ur,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -340,12 +520,21 @@
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
 				C2BE24742F0FC13600032FC8 /* HudaWidgetExtension */,
+				C28229182F390CC600DE1448 /* HudaShield */,
+				06BE312346649B997C2E5FB9 /* HudaShieldAction */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		331C807F294A63A400263BE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4EF3726849E8EFEC1BB31995 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,6 +550,14 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				C24FF2842F08C50400FAB435 /* huda_icon.icon in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				A1L10N0001000000000001 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C28229172F390CC600DE1448 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +683,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1241930825CA2860A48F799A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4284F3CED208BDF319C55BE /* ShieldActionExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		331C807D294A63A400263BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -499,7 +704,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				C3MIQAAT12345678901234 /* MiqaatLockManager.swift in Sources */,
+				C3FAMACT12345678901234 /* FamilyActivityPickerView.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C28229152F390CC600DE1448 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +731,17 @@
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
 			targetProxy = 331C8085294A63A400263BE5 /* PBXContainerItemProxy */;
+		};
+		6343CBBC48899C672BEB022E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HudaShieldAction;
+			target = 06BE312346649B997C2E5FB9 /* HudaShieldAction */;
+			targetProxy = 291004A8A2C47D90B8D7F4DE /* PBXContainerItemProxy */;
+		};
+		C28229242F390CC600DE1448 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C28229182F390CC600DE1448 /* HudaShield */;
+			targetProxy = C28229232F390CC600DE1448 /* PBXContainerItemProxy */;
 		};
 		C2BE24892F0FC13600032FC8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -542,9 +767,54 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		A1L10N0001000000000000 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1L10N0001000000000EN1 /* en */,
+				A1L10N0001000000000AR1 /* ar */,
+				A1L10N0001000000000BN1 /* bn */,
+				A1L10N0001000000000DE1 /* de */,
+				A1L10N0001000000000ES1 /* es */,
+				A1L10N0001000000000FR1 /* fr */,
+				A1L10N0001000000000MS1 /* ms */,
+				A1L10N0001000000000RU1 /* ru */,
+				A1L10N0001000000000TR1 /* tr */,
+				A1L10N0001000000000UR1 /* ur */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1B2CB9D32BF3FEDD343F7F01 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = HudaShieldAction/HudaShieldAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HudaShieldAction/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HudaShieldAction;
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettingsUI.shield-action";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaShieldAction;
+				PRODUCT_NAME = HudaShieldAction;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Profile;
+		};
 		249021D3217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -630,6 +900,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.RunnerTests;
@@ -648,6 +919,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.RunnerTests;
@@ -664,6 +936,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.RunnerTests;
@@ -672,6 +945,33 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
 			};
 			name = Profile;
+		};
+		7486483658FCDC944443326E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = HudaShieldAction/HudaShieldAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HudaShieldAction/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HudaShieldAction;
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettingsUI.shield-action";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaShieldAction;
+				PRODUCT_NAME = HudaShieldAction;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		97C147031CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -837,6 +1137,160 @@
 			};
 			name = Release;
 		};
+		AA628544BF82580BA78EB0F8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = HudaShieldAction/HudaShieldAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HudaShieldAction/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HudaShieldAction;
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettingsUI.shield-action";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaShieldAction;
+				PRODUCT_NAME = HudaShieldAction;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C28229262F390CC600DE1448 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = HudaShield/HudaShield.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HudaShield/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HudaShield;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaShield;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C28229272F390CC600DE1448 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = HudaShield/HudaShield.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HudaShield/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HudaShield;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaShield;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C28229282F390CC600DE1448 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = HudaShield/HudaShield.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HudaShield/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HudaShield;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaShield;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Profile;
+		};
 		C2BE248C2F0FC13600032FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -982,6 +1436,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		61F1A0E6CD1AF91A9677C516 /* Build configuration list for PBXNativeTarget "HudaShieldAction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA628544BF82580BA78EB0F8 /* Release */,
+				7486483658FCDC944443326E /* Debug */,
+				1B2CB9D32BF3FEDD343F7F01 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		97C146E91CF9000F007C117D /* Build configuration list for PBXProject "Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -998,6 +1462,16 @@
 				97C147061CF9000F007C117D /* Debug */,
 				97C147071CF9000F007C117D /* Release */,
 				249021D4217E4FDB00AE95B9 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C282292A2F390CC600DE1448 /* Build configuration list for PBXNativeTarget "HudaShield" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C28229262F390CC600DE1448 /* Debug */,
+				C28229272F390CC600DE1448 /* Release */,
+				C28229282F390CC600DE1448 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
