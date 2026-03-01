@@ -1,7 +1,7 @@
 "miqaat_lock_title" = "Verrou Miqaat";
 "miqaat_lock_message" = "Cette application est verrouillée pendant votre temps de concentration.\nComplétez votre objectif Miqaat pour la déverrouiller.";
-"miqaat_lock_goal_info" = "📖  Passez %d minutes dans Houda\npour déverrouiller toutes les apps pour ce créneau";
-"miqaat_lock_goal_completed" = "🎉 Objectif atteint !\nOuvrez Houda pour actualiser votre session.";
-"miqaat_lock_goal_remaining" = "⏳ %d min %d sec restantes\nComplétez votre objectif dans Houda pour déverrouiller.";
-"miqaat_lock_goal_default" = "🕌 Complétez votre objectif Miqaat\ndans Houda pour continuer.";
+"miqaat_lock_goal_info" = "Passez %d minutes dans Houda 📖\npour déverrouiller toutes les apps pour ce créneau";
+"miqaat_lock_goal_completed" = "Objectif atteint ! 🎉\nOuvrez Houda pour actualiser votre session.";
+"miqaat_lock_goal_remaining" = "%d min %d sec restantes ⏳\nComplétez votre objectif dans Houda pour déverrouiller.";
+"miqaat_lock_goal_default" = "Complétez votre objectif Miqaat 🕌\ndans Houda pour continuer.";
 "miqaat_lock_open_huda" = "Ouvrir Houda →";

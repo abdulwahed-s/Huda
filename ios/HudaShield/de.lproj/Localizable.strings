@@ -1,7 +1,7 @@
 "miqaat_lock_title" = "Miqaat-Sperre";
 "miqaat_lock_message" = "Diese App ist während deiner Fokuszeit gesperrt.\nSchließe dein Miqaat-Ziel ab, um sie zu entsperren.";
-"miqaat_lock_goal_info" = "📖  Verbringe %d Minuten in Huda\num alle Apps für diesen Zeitraum zu entsperren";
-"miqaat_lock_goal_completed" = "🎉 Ziel erreicht!\nÖffne Huda, um deine Sitzung zu aktualisieren.";
-"miqaat_lock_goal_remaining" = "⏳ %d Min %d Sek verbleibend\nSchließe dein Ziel in Huda ab, um zu entsperren.";
-"miqaat_lock_goal_default" = "🕌 Schließe dein Miqaat-Ziel\nin Huda ab, um fortzufahren.";
+"miqaat_lock_goal_info" = "Verbringe %d Minuten in Huda 📖\num alle Apps für diesen Zeitraum zu entsperren";
+"miqaat_lock_goal_completed" = "Ziel erreicht! 🎉\nÖffne Huda, um deine Sitzung zu aktualisieren.";
+"miqaat_lock_goal_remaining" = "%d Min %d Sek verbleibend ⏳\nSchließe dein Ziel in Huda ab, um zu entsperren.";
+"miqaat_lock_goal_default" = "Schließe dein Miqaat-Ziel 🕌\nin Huda ab, um fortzufahren.";
 "miqaat_lock_open_huda" = "Huda öffnen →";
