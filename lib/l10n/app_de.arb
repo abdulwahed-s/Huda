@@ -910,6 +910,12 @@
     "sahurAlarmNotSet": "Nicht eingestellt",
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"},
+    "sahurAlarmRinging": "Sahur-Wecker",
+    "stopAlarm": "Stoppen",
+    "sahurAlarmNotificationBody": "Zeit zum Aufwachen für Sahur",
+    "alarmKilledTitle": "Ihre Alarme klingeln möglicherweise nicht",
+    "alarmKilledBody": "Sie haben die App geschlossen. Bitte öffnen Sie sie erneut, damit Ihre Alarme neu geplant werden können.",
+    "snoozeAlarm": "Schlummern",
     "miqaatLock": "Miqaat-Sperre",
     "@miqaatLock": {
         "description": "Miqaat Lock feature title"
@@ -1205,6 +1211,28 @@
             "appCount": {
                 "type": "int",
                 "example": "5"
+            }
+        }
+    },
+    "noDownloadedBooks": "Keine heruntergeladenen Bücher",
+    "@noDownloadedBooks": {
+        "description": "Empty state title for downloaded books"
+    },
+    "downloadBooksWhenOnlineToAccessThemOffline": "Laden Sie Bücher herunter, wenn Sie online sind, um offline darauf zuzugreifen",
+    "@downloadBooksWhenOnlineToAccessThemOffline": {
+        "description": "Empty state subtitle for downloaded books"
+    },
+    "checkConnection": "Verbindung prüfen",
+    "@checkConnection": {
+        "description": "Button to check connection"
+    },
+    "filesCount": "Dateien ({count})",
+    "@filesCount": {
+        "description": "Number of files for offline book",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
             }
         }
     }

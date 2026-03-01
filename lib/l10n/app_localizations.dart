@@ -5030,6 +5030,42 @@ abstract class AppLocalizations {
   /// **'Not Set'**
   String get sahurAlarmNotSet;
 
+  /// Title shown on the alarm ring screen when Sahur alarm is ringing
+  ///
+  /// In en, this message translates to:
+  /// **'Sahur Alarm'**
+  String get sahurAlarmRinging;
+
+  /// Button label to stop the ringing alarm
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stopAlarm;
+
+  /// Body text of the notification when the Sahur alarm rings
+  ///
+  /// In en, this message translates to:
+  /// **'Time to wake up for Sahur'**
+  String get sahurAlarmNotificationBody;
+
+  /// Title for the system notification shown when the app is killed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your alarms may not ring'**
+  String get alarmKilledTitle;
+
+  /// Body for the system notification shown when the app is killed.
+  ///
+  /// In en, this message translates to:
+  /// **'You killed the app. Please reopen so your alarms can be rescheduled.'**
+  String get alarmKilledBody;
+
+  /// Button label to snooze the ringing alarm for 5 minutes
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze'**
+  String get snoozeAlarm;
+
   /// Miqaat Lock feature title
   ///
   /// In en, this message translates to:
@@ -5575,6 +5611,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{appCount} apps selected'**
   String iosAppsSelected(int appCount);
+
+  /// Empty state title for downloaded books
+  ///
+  /// In en, this message translates to:
+  /// **'No Downloaded Books'**
+  String get noDownloadedBooks;
+
+  /// Empty state subtitle for downloaded books
+  ///
+  /// In en, this message translates to:
+  /// **'Download books when online to access them offline'**
+  String get downloadBooksWhenOnlineToAccessThemOffline;
+
+  /// Button to check connection
+  ///
+  /// In en, this message translates to:
+  /// **'Check Connection'**
+  String get checkConnection;
+
+  /// Number of files for offline book
+  ///
+  /// In en, this message translates to:
+  /// **'Files ({count})'**
+  String filesCount(int count);
 }
 
 class _AppLocalizationsDelegate

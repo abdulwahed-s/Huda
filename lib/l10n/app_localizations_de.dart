@@ -2744,6 +2744,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sahurAlarmNotSet => 'Nicht eingestellt';
 
   @override
+  String get sahurAlarmRinging => 'Sahur-Wecker';
+
+  @override
+  String get stopAlarm => 'Stoppen';
+
+  @override
+  String get sahurAlarmNotificationBody => 'Zeit zum Aufwachen für Sahur';
+
+  @override
+  String get alarmKilledTitle => 'Ihre Alarme klingeln möglicherweise nicht';
+
+  @override
+  String get alarmKilledBody =>
+      'Sie haben die App geschlossen. Bitte öffnen Sie sie erneut, damit Ihre Alarme neu geplant werden können.';
+
+  @override
+  String get snoozeAlarm => 'Schlummern';
+
+  @override
   String get miqaatLock => 'Miqaat-Sperre';
 
   @override
@@ -3058,5 +3077,20 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String iosAppsSelected(int appCount) {
     return '$appCount Apps ausgewählt';
+  }
+
+  @override
+  String get noDownloadedBooks => 'Keine heruntergeladenen Bücher';
+
+  @override
+  String get downloadBooksWhenOnlineToAccessThemOffline =>
+      'Laden Sie Bücher herunter, wenn Sie online sind, um offline darauf zuzugreifen';
+
+  @override
+  String get checkConnection => 'Verbindung prüfen';
+
+  @override
+  String filesCount(int count) {
+    return 'Dateien ($count)';
   }
 }

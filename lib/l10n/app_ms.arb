@@ -1017,6 +1017,12 @@
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"
     },
+    "sahurAlarmRinging": "Penggera Sahur",
+    "stopAlarm": "Berhenti",
+    "sahurAlarmNotificationBody": "Masa untuk bangun bersahur",
+    "alarmKilledTitle": "Penggera anda mungkin tidak berbunyi",
+    "alarmKilledBody": "Anda telah mematikan aplikasi. Sila buka semula supaya penggera anda boleh dijadualkan semula.",
+    "snoozeAlarm": "Tunda",
     "miqaatLock": "Kunci Miqaat",
     "@miqaatLock": {
         "description": "Miqaat Lock feature title"
@@ -1312,6 +1318,28 @@
             "appCount": {
                 "type": "int",
                 "example": "5"
+            }
+        }
+    },
+    "noDownloadedBooks": "Tiada Buku Dimuat Turun",
+    "@noDownloadedBooks": {
+        "description": "Empty state title for downloaded books"
+    },
+    "downloadBooksWhenOnlineToAccessThemOffline": "Muat turun buku semasa dalam talian untuk mengaksesnya di luar talian",
+    "@downloadBooksWhenOnlineToAccessThemOffline": {
+        "description": "Empty state subtitle for downloaded books"
+    },
+    "checkConnection": "Semak Sambungan",
+    "@checkConnection": {
+        "description": "Button to check connection"
+    },
+    "filesCount": "Fail ({count})",
+    "@filesCount": {
+        "description": "Number of files for offline book",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
             }
         }
     }

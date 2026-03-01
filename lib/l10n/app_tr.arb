@@ -930,6 +930,12 @@
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"
     },
+    "sahurAlarmRinging": "Sahur Alarmı",
+    "stopAlarm": "Durdur",
+    "sahurAlarmNotificationBody": "Sahur için uyanma vakti",
+    "alarmKilledTitle": "Alarmlarınız çalmayabilir",
+    "alarmKilledBody": "Uygulamayı kapattınız. Alarmlarınızın yeniden planlanabilmesi için lütfen tekrar açın.",
+    "snoozeAlarm": "Ertele",
     "miqaatLock": "Mikat Kilidi",
     "@miqaatLock": {
         "description": "Miqaat Lock feature title"
@@ -1225,6 +1231,28 @@
             "appCount": {
                 "type": "int",
                 "example": "5"
+            }
+        }
+    },
+    "noDownloadedBooks": "İndirilmiş Kitap Yok",
+    "@noDownloadedBooks": {
+        "description": "Empty state title for downloaded books"
+    },
+    "downloadBooksWhenOnlineToAccessThemOffline": "Çevrimdışı erişmek için çevrimiçiyken kitapları indirin",
+    "@downloadBooksWhenOnlineToAccessThemOffline": {
+        "description": "Empty state subtitle for downloaded books"
+    },
+    "checkConnection": "Bağlantıyı Kontrol Et",
+    "@checkConnection": {
+        "description": "Button to check connection"
+    },
+    "filesCount": "Dosyalar ({count})",
+    "@filesCount": {
+        "description": "Number of files for offline book",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
             }
         }
     }

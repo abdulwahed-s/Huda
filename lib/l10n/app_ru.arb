@@ -929,6 +929,12 @@
     "sahurAlarmNotSet": "Не установлено",
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"},
+    "sahurAlarmRinging": "Будильник на Сухур",
+    "stopAlarm": "Остановить",
+    "sahurAlarmNotificationBody": "Пора просыпаться на Сухур",
+    "alarmKilledTitle": "Ваши будильники могут не сработать",
+    "alarmKilledBody": "Вы закрыли приложение. Пожалуйста, откройте его снова, чтобы ваши будильники могли быть перенесены.",
+    "snoozeAlarm": "Отложить",
     "miqaatLock": "Блокировка Микаат",
     "@miqaatLock": {
         "description": "Miqaat Lock feature title"
@@ -1224,6 +1230,28 @@
             "appCount": {
                 "type": "int",
                 "example": "5"
+            }
+        }
+    },
+    "noDownloadedBooks": "Нет скачанных книг",
+    "@noDownloadedBooks": {
+        "description": "Empty state title for downloaded books"
+    },
+    "downloadBooksWhenOnlineToAccessThemOffline": "Скачивайте книги, когда вы в сети, чтобы читать их офлайн",
+    "@downloadBooksWhenOnlineToAccessThemOffline": {
+        "description": "Empty state subtitle for downloaded books"
+    },
+    "checkConnection": "Проверить подключение",
+    "@checkConnection": {
+        "description": "Button to check connection"
+    },
+    "filesCount": "Файлы ({count})",
+    "@filesCount": {
+        "description": "Number of files for offline book",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
             }
         }
     }

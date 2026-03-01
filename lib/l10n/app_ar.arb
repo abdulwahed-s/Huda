@@ -1565,6 +1565,12 @@
     "atExactTime": "في {time}",
     "minsBeforeFajr": "{minutes} دقيقة قبل الفجر",
     "sahurAlarmNotSet": "غير محدد",
+    "sahurAlarmRinging": "منبه السحور",
+    "stopAlarm": "إيقاف",
+    "sahurAlarmNotificationBody": "حان وقت الاستيقاظ للسحور",
+    "alarmKilledTitle": "قد لا ترن منبهاتك",
+    "alarmKilledBody": "لقد أغلقت التطبيق. يرجى إعادة فتحه حتى نتمكن من إعادة جدولة منبهاتك.",
+    "snoozeAlarm": "تأجيل",
        "miqaatLock": "قفل الميقات",
     "@miqaatLock": {
         "description": "Miqaat Lock feature title"
@@ -1888,6 +1894,28 @@
             "appCount": {
                 "type": "int",
                 "example": "5"
+            }
+        }
+    },
+    "noDownloadedBooks": "لا توجد كتب محملة",
+    "@noDownloadedBooks": {
+        "description": "Empty state title for downloaded books"
+    },
+    "downloadBooksWhenOnlineToAccessThemOffline": "قم بتنزيل الكتب عند الاتصال بالإنترنت للوصول إليها دون اتصال",
+    "@downloadBooksWhenOnlineToAccessThemOffline": {
+        "description": "Empty state subtitle for downloaded books"
+    },
+    "checkConnection": "تحقق من الاتصال",
+    "@checkConnection": {
+        "description": "Button to check connection"
+    },
+    "filesCount": "الملفات ({count})",
+    "@filesCount": {
+        "description": "Number of files for offline book",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
             }
         }
     }

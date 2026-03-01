@@ -2698,6 +2698,25 @@ class AppLocalizationsMs extends AppLocalizations {
   String get sahurAlarmNotSet => 'Tidak Ditetapkan';
 
   @override
+  String get sahurAlarmRinging => 'Penggera Sahur';
+
+  @override
+  String get stopAlarm => 'Berhenti';
+
+  @override
+  String get sahurAlarmNotificationBody => 'Masa untuk bangun bersahur';
+
+  @override
+  String get alarmKilledTitle => 'Penggera anda mungkin tidak berbunyi';
+
+  @override
+  String get alarmKilledBody =>
+      'Anda telah mematikan aplikasi. Sila buka semula supaya penggera anda boleh dijadualkan semula.';
+
+  @override
+  String get snoozeAlarm => 'Tunda';
+
+  @override
   String get miqaatLock => 'Kunci Miqaat';
 
   @override
@@ -3012,5 +3031,20 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String iosAppsSelected(int appCount) {
     return '$appCount apl dipilih';
+  }
+
+  @override
+  String get noDownloadedBooks => 'Tiada Buku Dimuat Turun';
+
+  @override
+  String get downloadBooksWhenOnlineToAccessThemOffline =>
+      'Muat turun buku semasa dalam talian untuk mengaksesnya di luar talian';
+
+  @override
+  String get checkConnection => 'Semak Sambungan';
+
+  @override
+  String filesCount(int count) {
+    return 'Fail ($count)';
   }
 }

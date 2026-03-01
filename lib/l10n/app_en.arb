@@ -3240,6 +3240,30 @@
     "@sahurAlarmNotSet": {
         "description": "Subtitle when Sahur alarm is disabled"
     },
+    "sahurAlarmRinging": "Sahur Alarm",
+    "@sahurAlarmRinging": {
+        "description": "Title shown on the alarm ring screen when Sahur alarm is ringing"
+    },
+    "stopAlarm": "Stop",
+    "@stopAlarm": {
+        "description": "Button label to stop the ringing alarm"
+    },
+    "sahurAlarmNotificationBody": "Time to wake up for Sahur",
+    "@sahurAlarmNotificationBody": {
+        "description": "Body text of the notification when the Sahur alarm rings"
+    },
+    "alarmKilledTitle": "Your alarms may not ring",
+    "@alarmKilledTitle": {
+        "description": "Title for the system notification shown when the app is killed."
+    },
+    "alarmKilledBody": "You killed the app. Please reopen so your alarms can be rescheduled.",
+    "@alarmKilledBody": {
+        "description": "Body for the system notification shown when the app is killed."
+    },
+    "snoozeAlarm": "Snooze",
+    "@snoozeAlarm": {
+        "description": "Button label to snooze the ringing alarm for 5 minutes"
+    },
     "miqaatLock": "Miqaat Lock",
     "@miqaatLock": {
         "description": "Miqaat Lock feature title"
@@ -3698,6 +3722,28 @@
             "appCount": {
                 "type": "int",
                 "example": "5"
+            }
+        }
+    },
+    "noDownloadedBooks": "No Downloaded Books",
+    "@noDownloadedBooks": {
+        "description": "Empty state title for downloaded books"
+    },
+    "downloadBooksWhenOnlineToAccessThemOffline": "Download books when online to access them offline",
+    "@downloadBooksWhenOnlineToAccessThemOffline": {
+        "description": "Empty state subtitle for downloaded books"
+    },
+    "checkConnection": "Check Connection",
+    "@checkConnection": {
+        "description": "Button to check connection"
+    },
+    "filesCount": "Files ({count})",
+    "@filesCount": {
+        "description": "Number of files for offline book",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
             }
         }
     }

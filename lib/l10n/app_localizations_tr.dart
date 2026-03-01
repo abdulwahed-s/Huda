@@ -2690,6 +2690,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sahurAlarmNotSet => 'Ayarlanmadı';
 
   @override
+  String get sahurAlarmRinging => 'Sahur Alarmı';
+
+  @override
+  String get stopAlarm => 'Durdur';
+
+  @override
+  String get sahurAlarmNotificationBody => 'Sahur için uyanma vakti';
+
+  @override
+  String get alarmKilledTitle => 'Alarmlarınız çalmayabilir';
+
+  @override
+  String get alarmKilledBody =>
+      'Uygulamayı kapattınız. Alarmlarınızın yeniden planlanabilmesi için lütfen tekrar açın.';
+
+  @override
+  String get snoozeAlarm => 'Ertele';
+
+  @override
   String get miqaatLock => 'Mikat Kilidi';
 
   @override
@@ -3004,5 +3023,20 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String iosAppsSelected(int appCount) {
     return '$appCount uygulamalar seçildi';
+  }
+
+  @override
+  String get noDownloadedBooks => 'İndirilmiş Kitap Yok';
+
+  @override
+  String get downloadBooksWhenOnlineToAccessThemOffline =>
+      'Çevrimdışı erişmek için çevrimiçiyken kitapları indirin';
+
+  @override
+  String get checkConnection => 'Bağlantıyı Kontrol Et';
+
+  @override
+  String filesCount(int count) {
+    return 'Dosyalar ($count)';
   }
 }

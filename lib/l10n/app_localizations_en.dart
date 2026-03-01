@@ -2695,6 +2695,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sahurAlarmNotSet => 'Not Set';
 
   @override
+  String get sahurAlarmRinging => 'Sahur Alarm';
+
+  @override
+  String get stopAlarm => 'Stop';
+
+  @override
+  String get sahurAlarmNotificationBody => 'Time to wake up for Sahur';
+
+  @override
+  String get alarmKilledTitle => 'Your alarms may not ring';
+
+  @override
+  String get alarmKilledBody =>
+      'You killed the app. Please reopen so your alarms can be rescheduled.';
+
+  @override
+  String get snoozeAlarm => 'Snooze';
+
+  @override
   String get miqaatLock => 'Miqaat Lock';
 
   @override
@@ -3007,5 +3026,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String iosAppsSelected(int appCount) {
     return '$appCount apps selected';
+  }
+
+  @override
+  String get noDownloadedBooks => 'No Downloaded Books';
+
+  @override
+  String get downloadBooksWhenOnlineToAccessThemOffline =>
+      'Download books when online to access them offline';
+
+  @override
+  String get checkConnection => 'Check Connection';
+
+  @override
+  String filesCount(int count) {
+    return 'Files ($count)';
   }
 }

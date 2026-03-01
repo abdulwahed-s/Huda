@@ -2686,6 +2686,25 @@ class AppLocalizationsUr extends AppLocalizations {
   String get sahurAlarmNotSet => 'سیٹ نہیں';
 
   @override
+  String get sahurAlarmRinging => 'سحری کا الارم';
+
+  @override
+  String get stopAlarm => 'بند کریں';
+
+  @override
+  String get sahurAlarmNotificationBody => 'سحری کے لیے اٹھنے کا وقت';
+
+  @override
+  String get alarmKilledTitle => 'آپ کے الارم شاید نہ بجیں';
+
+  @override
+  String get alarmKilledBody =>
+      'آپ نے ایپ بند کر دی ہے۔ براہ کرم اسے دوبارہ کھولیں تاکہ آپ کے الارم دوبارہ شیڈول کیے جاسکیں۔';
+
+  @override
+  String get snoozeAlarm => 'بعد میں';
+
+  @override
   String get miqaatLock => 'میقات لاک';
 
   @override
@@ -3001,5 +3020,20 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String iosAppsSelected(int appCount) {
     return '$appCount ایپس منتخب کی گئیں';
+  }
+
+  @override
+  String get noDownloadedBooks => 'کوئی ڈاؤن لوڈ کی گئی کتابیں نہیں ہیں';
+
+  @override
+  String get downloadBooksWhenOnlineToAccessThemOffline =>
+      'آف لائن رسائی کے لیے آن لائن ہونے پر کتابیں ڈاؤن لوڈ کریں';
+
+  @override
+  String get checkConnection => 'کنکشن چیک کریں';
+
+  @override
+  String filesCount(int count) {
+    return 'فائلیں ($count)';
   }
 }

@@ -2716,6 +2716,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sahurAlarmNotSet => 'Не установлено';
 
   @override
+  String get sahurAlarmRinging => 'Будильник на Сухур';
+
+  @override
+  String get stopAlarm => 'Остановить';
+
+  @override
+  String get sahurAlarmNotificationBody => 'Пора просыпаться на Сухур';
+
+  @override
+  String get alarmKilledTitle => 'Ваши будильники могут не сработать';
+
+  @override
+  String get alarmKilledBody =>
+      'Вы закрыли приложение. Пожалуйста, откройте его снова, чтобы ваши будильники могли быть перенесены.';
+
+  @override
+  String get snoozeAlarm => 'Отложить';
+
+  @override
   String get miqaatLock => 'Блокировка Микаат';
 
   @override
@@ -3031,5 +3050,20 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String iosAppsSelected(int appCount) {
     return 'Выбрано $appCount приложения';
+  }
+
+  @override
+  String get noDownloadedBooks => 'Нет скачанных книг';
+
+  @override
+  String get downloadBooksWhenOnlineToAccessThemOffline =>
+      'Скачивайте книги, когда вы в сети, чтобы читать их офлайн';
+
+  @override
+  String get checkConnection => 'Проверить подключение';
+
+  @override
+  String filesCount(int count) {
+    return 'Файлы ($count)';
   }
 }
