@@ -20,7 +20,12 @@ class BookmarksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.fromLTRB(
+        16.w,
+        8.h,
+        16.w,
+        8.h + MediaQuery.paddingOf(context).bottom,
+      ),
       itemCount: bookmarks.length,
       itemBuilder: (context, index) {
         final bookmark = bookmarks[index];

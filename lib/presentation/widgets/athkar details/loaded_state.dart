@@ -45,7 +45,12 @@ class LoadedState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.fromLTRB(
+        16.w,
+        16.w,
+        16.w,
+        16.w + MediaQuery.paddingOf(context).bottom,
+      ),
       itemCount: athkarCategory.details.length,
       separatorBuilder: (context, index) => SizedBox(height: 20.h),
       itemBuilder: (context, index) {
