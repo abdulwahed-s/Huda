@@ -10,6 +10,7 @@ class ChecklistView extends StatelessWidget {
   final bool isToday;
   final Function(String, bool) onToggle;
   final Function(ChecklistItem) onDelete;
+  final double bottomPadding;
 
   const ChecklistView({
     super.key,
@@ -17,6 +18,7 @@ class ChecklistView extends StatelessWidget {
     required this.isToday,
     required this.onToggle,
     required this.onDelete,
+    this.bottomPadding = 0.0,
   });
 
   @override
@@ -31,13 +33,18 @@ class ChecklistView extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 14.w),
+            padding: EdgeInsets.only(
+              left: 14.w,
+              right: 14.w,
+              bottom: bottomPadding,
+            ),
             itemCount: state.dailyChecklist.items.length + 1,
             itemBuilder: (_, index) {
               if (index == 0) return SizedBox(height: 20.h);
 
               final item = state.dailyChecklist.items[index - 1];
-              final isCompleted = state.dailyChecklist.completedItems[item.id] ?? false;
+              final isCompleted =
+                  state.dailyChecklist.completedItems[item.id] ?? false;
 
               return ChecklistItemCard(
                 item: item,
