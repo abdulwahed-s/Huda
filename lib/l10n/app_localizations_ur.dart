@@ -2973,6 +2973,24 @@ class AppLocalizationsUr extends AppLocalizations {
       'چھوٹے ہوئے روزوں کے دن ریکارڈ اور قضاء کرنے کا ٹریکر';
 
   @override
+  String get whatsNew200Feature1 =>
+      'میقات لاک: اپنے مخصوص اوقات میں دھیان بھٹکانے والی ایپس کو بلاک کریں';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'رمضان صفحہ: چھوٹے ہوئے روزوں کا ریکارڈ اور قضاء کے لیے ٹریکر';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'سحری کا الارم: ایک مقررہ وقت کا انتخاب کریں، یا اسے فجر سے ٹھیک پہلے خود بخود بجنے دیں۔';
+
+  @override
+  String get whatsNew200Feature4 => 'یوزر انٹرفیس میں بہتری';
+
+  @override
+  String get whatsNew200Feature5 => 'بگ فکسز';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override

@@ -3045,6 +3045,24 @@ class AppLocalizationsEs extends AppLocalizations {
       'Rastreador de qadhaa para registrar y recuperar días de ayuno perdidos';
 
   @override
+  String get whatsNew200Feature1 =>
+      'Bloqueo Miqaat: Bloquea aplicaciones que distraen durante tus horarios personalizados';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'Página de Ramadán: Rastreador Qadhaa para registrar y recuperar días de ayuno perdidos';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'Alarma de Sahour: Elija una hora fija o haga que suene automáticamente justo antes de Fajr.';
+
+  @override
+  String get whatsNew200Feature4 => 'Mejoras en la interfaz de usuario';
+
+  @override
+  String get whatsNew200Feature5 => 'Corrección de errores';
+
+  @override
   String get offlineMode => 'Modo sin conexión';
 
   @override

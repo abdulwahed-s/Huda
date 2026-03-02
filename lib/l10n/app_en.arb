@@ -3635,6 +3635,26 @@
     "@whatsNew153Feature3": {
         "description": "What's New v1.5.3 feature 3"
     },
+    "whatsNew200Feature1": "Miqaat Lock: Block distracting apps during your custom time slots",
+    "@whatsNew200Feature1": {
+        "description": "What's new feature 1 for v2.0.0"
+    },
+    "whatsNew200Feature2": "Ramadan Page: Qadhaa tracker to log and make up missed fasting days",
+    "@whatsNew200Feature2": {
+        "description": "What's new feature 2 for v2.0.0"
+    },
+    "whatsNew200Feature3": "Sahur Alarm: Choose a fixed time, or have it automatically ring right before Fajr.",
+    "@whatsNew200Feature3": {
+        "description": "What's new feature 3 for v2.0.0"
+    },
+    "whatsNew200Feature4": "UI improvements",
+    "@whatsNew200Feature4": {
+        "description": "What's new feature 4 for v2.0.0"
+    },
+    "whatsNew200Feature5": "Bug fixes",
+    "@whatsNew200Feature5": {
+        "description": "What's new feature 5 for v2.0.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

@@ -1206,6 +1206,11 @@
     "whatsNew153Feature1": "روزانہ قضاء لاگ کے ساتھ رمضان کے روزے کا ٹریکر",
     "whatsNew153Feature2": "نماز کے اوقات میں پریشان کن ایپس بلاک کرنے کے لیے میقات لاک",
     "whatsNew153Feature3": "چھوٹے ہوئے روزوں کے دن ریکارڈ اور قضاء کرنے کا ٹریکر",
+    "whatsNew200Feature1": "میقات لاک: اپنے مخصوص اوقات میں دھیان بھٹکانے والی ایپس کو بلاک کریں",
+    "whatsNew200Feature2": "رمضان صفحہ: چھوٹے ہوئے روزوں کا ریکارڈ اور قضاء کے لیے ٹریکر",
+    "whatsNew200Feature3": "سحری کا الارم: ایک مقررہ وقت کا انتخاب کریں، یا اسے فجر سے ٹھیک پہلے خود بخود بجنے دیں۔",
+    "whatsNew200Feature4": "یوزر انٹرفیس میں بہتری",
+    "whatsNew200Feature5": "بگ فکسز",
     "offlineMode": "آف لائن موڈ",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

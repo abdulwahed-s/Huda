@@ -2933,6 +2933,24 @@ class AppLocalizationsAr extends AppLocalizations {
       'متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة';
 
   @override
+  String get whatsNew200Feature1 =>
+      'قفل الميقات: حظر التطبيقات المشتتة خلال أوقاتك المخصصة';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'صفحة رمضان: متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'منبه السحور: اختر وقتاً ثابتاً، أو دعه يرن تلقائياً قبل صلاة الفجر';
+
+  @override
+  String get whatsNew200Feature4 => 'تحسينات واجهة المستخدم';
+
+  @override
+  String get whatsNew200Feature5 => 'إصلاح الأخطاء';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override

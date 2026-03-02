@@ -1151,6 +1151,11 @@
     "whatsNew153Feature1": "Suivi du jeûne du Ramadan avec journal quotidien de qadhaa",
     "whatsNew153Feature2": "Verrou Miqaat pour bloquer les applications distrayantes pendant les heures de prière",
     "whatsNew153Feature3": "Suivi de qadhaa pour enregistrer et rattraper les jours de jeûne manqués",
+    "whatsNew200Feature1": "Verrouillage Miqaat : Bloquez les applications distrayantes pendant vos créneaux personnalisés",
+    "whatsNew200Feature2": "Page Ramadan : Suivi Qadhaa pour enregistrer et rattraper les jours de jeûne manqués",
+    "whatsNew200Feature3": "Alarme Sahour : Choisissez une heure fixe, ou laissez-la sonner automatiquement juste avant le Fajr.",
+    "whatsNew200Feature4": "Améliorations de l'interface utilisateur",
+    "whatsNew200Feature5": "Corrections de bugs",
     "offlineMode": "Mode hors ligne",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

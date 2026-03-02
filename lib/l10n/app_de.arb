@@ -1124,6 +1124,11 @@
     "whatsNew153Feature1": "Ramadan-Fasten-Tracker mit täglichem Qadaa-Protokoll",
     "whatsNew153Feature2": "Miqaat-Sperre zum Blockieren ablenkender Apps während der Gebetszeiten",
     "whatsNew153Feature3": "Qadaa-Tracker zum Protokollieren und Nachholen versäumter Fastentage",
+    "whatsNew200Feature1": "Miqaat-Sperre: Blockieren Sie ablenkende Apps während Ihrer benutzerdefinierten Zeiten",
+    "whatsNew200Feature2": "Ramadan-Seite: Qadaa-Tracker zum Protokollieren versäumter Fastentage",
+    "whatsNew200Feature3": "Sahur-Alarm: Wählen Sie eine feste Zeit oder lassen Sie den Alarm automatisch kurz vor Fajr klingeln.",
+    "whatsNew200Feature4": "UI-Verbesserungen",
+    "whatsNew200Feature5": "Fehlerbehebungen",
     "offlineMode": "Offline-Modus",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

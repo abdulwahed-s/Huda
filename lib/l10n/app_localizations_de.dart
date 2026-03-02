@@ -3031,6 +3031,24 @@ class AppLocalizationsDe extends AppLocalizations {
       'Qadaa-Tracker zum Protokollieren und Nachholen versäumter Fastentage';
 
   @override
+  String get whatsNew200Feature1 =>
+      'Miqaat-Sperre: Blockieren Sie ablenkende Apps während Ihrer benutzerdefinierten Zeiten';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'Ramadan-Seite: Qadaa-Tracker zum Protokollieren versäumter Fastentage';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'Sahur-Alarm: Wählen Sie eine feste Zeit oder lassen Sie den Alarm automatisch kurz vor Fajr klingeln.';
+
+  @override
+  String get whatsNew200Feature4 => 'UI-Verbesserungen';
+
+  @override
+  String get whatsNew200Feature5 => 'Fehlerbehebungen';
+
+  @override
   String get offlineMode => 'Offline-Modus';
 
   @override

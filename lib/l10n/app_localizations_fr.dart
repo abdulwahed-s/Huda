@@ -3051,6 +3051,24 @@ class AppLocalizationsFr extends AppLocalizations {
       'Suivi de qadhaa pour enregistrer et rattraper les jours de jeûne manqués';
 
   @override
+  String get whatsNew200Feature1 =>
+      'Verrouillage Miqaat : Bloquez les applications distrayantes pendant vos créneaux personnalisés';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'Page Ramadan : Suivi Qadhaa pour enregistrer et rattraper les jours de jeûne manqués';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'Alarme Sahour : Choisissez une heure fixe, ou laissez-la sonner automatiquement juste avant le Fajr.';
+
+  @override
+  String get whatsNew200Feature4 => 'Améliorations de l\'interface utilisateur';
+
+  @override
+  String get whatsNew200Feature5 => 'Corrections de bugs';
+
+  @override
   String get offlineMode => 'Mode hors ligne';
 
   @override

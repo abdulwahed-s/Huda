@@ -1248,6 +1248,11 @@
     "whatsNew153Feature1": "দৈনিক কাযা লগ সহ রমজান রোজা ট্র্যাকার",
     "whatsNew153Feature2": "নামাজের সময় বিভ্রান্তিকর অ্যাপ ব্লক করতে মিকাত লক",
     "whatsNew153Feature3": "ছুটে যাওয়া রোজার দিন লগ এবং কাযা করার ট্র্যাকার",
+    "whatsNew200Feature1": "মিকাত লক: আপনার কাস্টম সময়ের স্লটে বিভ্রান্তিকর অ্যাপগুলি ব্লক করুন",
+    "whatsNew200Feature2": "রমজান পাতা: ছুটে যাওয়া রোজা লগ ও পূরণ করার জন্য কাজা ট্র্যাকার",
+    "whatsNew200Feature3": "সাহরি অ্যালার্ম: একটি নির্দিষ্ট সময় চয়ন করুন বা এটি ফজরের ঠিক আগে স্বয়ংক্রিয়ভাবে বাজতে দিন।",
+    "whatsNew200Feature4": "ইউআই উন্নতি",
+    "whatsNew200Feature5": "বাগ ফিক্স",
     "offlineMode": "অফলাইন মোড",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

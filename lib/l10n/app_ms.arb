@@ -1231,6 +1231,11 @@
     "whatsNew153Feature1": "Penjejak puasa Ramadan dengan log qadha harian",
     "whatsNew153Feature2": "Kunci Miqaat untuk menyekat apl yang mengganggu semasa waktu solat",
     "whatsNew153Feature3": "Penjejak qadha untuk merekod dan mengganti hari puasa yang terlepas",
+    "whatsNew200Feature1": "Kunci Miqaat: Sekat aplikasi mengganggu semasa slot masa khas anda",
+    "whatsNew200Feature2": "Halaman Ramadan: Penjejak Qadhaa untuk merekod dan mengganti hari puasa",
+    "whatsNew200Feature3": "Penggera Sahur: Pilih waktu tetap, atau biarkan ia berbunyi secara automatik sebelum Subuh.",
+    "whatsNew200Feature4": "Peningkatan UI",
+    "whatsNew200Feature5": "Pembaikan pepijat",
     "offlineMode": "Mod Luar Talian",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

@@ -2985,6 +2985,24 @@ class AppLocalizationsMs extends AppLocalizations {
       'Penjejak qadha untuk merekod dan mengganti hari puasa yang terlepas';
 
   @override
+  String get whatsNew200Feature1 =>
+      'Kunci Miqaat: Sekat aplikasi mengganggu semasa slot masa khas anda';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'Halaman Ramadan: Penjejak Qadhaa untuk merekod dan mengganti hari puasa';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'Penggera Sahur: Pilih waktu tetap, atau biarkan ia berbunyi secara automatik sebelum Subuh.';
+
+  @override
+  String get whatsNew200Feature4 => 'Peningkatan UI';
+
+  @override
+  String get whatsNew200Feature5 => 'Pembaikan pepijat';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override

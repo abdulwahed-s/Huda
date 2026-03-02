@@ -5540,6 +5540,36 @@ abstract class AppLocalizations {
   /// **'Qadhaa tracker to log and make up missed fasting days'**
   String get whatsNew153Feature3;
 
+  /// What's new feature 1 for v2.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Miqaat Lock: Block distracting apps during your custom time slots'**
+  String get whatsNew200Feature1;
+
+  /// What's new feature 2 for v2.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Page: Qadhaa tracker to log and make up missed fasting days'**
+  String get whatsNew200Feature2;
+
+  /// What's new feature 3 for v2.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Sahur Alarm: Choose a fixed time, or have it automatically ring right before Fajr.'**
+  String get whatsNew200Feature3;
+
+  /// What's new feature 4 for v2.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'UI improvements'**
+  String get whatsNew200Feature4;
+
+  /// What's new feature 5 for v2.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Bug fixes'**
+  String get whatsNew200Feature5;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:

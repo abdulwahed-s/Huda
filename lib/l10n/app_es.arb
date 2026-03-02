@@ -1163,6 +1163,11 @@
     "whatsNew153Feature1": "Rastreador de ayuno de Ramadán con registro diario de qadhaa",
     "whatsNew153Feature2": "Bloqueo Miqaat para bloquear aplicaciones distractoras durante los tiempos de oración",
     "whatsNew153Feature3": "Rastreador de qadhaa para registrar y recuperar días de ayuno perdidos",
+    "whatsNew200Feature1": "Bloqueo Miqaat: Bloquea aplicaciones que distraen durante tus horarios personalizados",
+    "whatsNew200Feature2": "Página de Ramadán: Rastreador Qadhaa para registrar y recuperar días de ayuno perdidos",
+    "whatsNew200Feature3": "Alarma de Sahour: Elija una hora fija o haga que suene automáticamente justo antes de Fajr.",
+    "whatsNew200Feature4": "Mejoras en la interfaz de usuario",
+    "whatsNew200Feature5": "Corrección de errores",
     "offlineMode": "Modo sin conexión",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

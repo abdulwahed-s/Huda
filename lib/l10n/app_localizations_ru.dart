@@ -3004,6 +3004,24 @@ class AppLocalizationsRu extends AppLocalizations {
       'Трекер каза для записи и восполнения пропущенных дней поста';
 
   @override
+  String get whatsNew200Feature1 =>
+      'Блокировка Miqaat: блокируйте отвлекающие приложения в заданное время';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'Страница Рамадана: трекер Каза для записи пропущенных дней поста';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'Будильник Сухур: выберите фиксированное время или настройте автоматический звонок прямо перед Фаджром.';
+
+  @override
+  String get whatsNew200Feature4 => 'Улучшения интерфейса';
+
+  @override
+  String get whatsNew200Feature5 => 'Исправления ошибок';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override

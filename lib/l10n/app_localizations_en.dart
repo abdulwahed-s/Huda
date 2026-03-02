@@ -2981,6 +2981,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'Qadhaa tracker to log and make up missed fasting days';
 
   @override
+  String get whatsNew200Feature1 =>
+      'Miqaat Lock: Block distracting apps during your custom time slots';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'Ramadan Page: Qadhaa tracker to log and make up missed fasting days';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'Sahur Alarm: Choose a fixed time, or have it automatically ring right before Fajr.';
+
+  @override
+  String get whatsNew200Feature4 => 'UI improvements';
+
+  @override
+  String get whatsNew200Feature5 => 'Bug fixes';
+
+  @override
   String get offlineMode => 'Offline Mode';
 
   @override

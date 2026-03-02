@@ -2983,6 +2983,24 @@ class AppLocalizationsBn extends AppLocalizations {
       'ছুটে যাওয়া রোজার দিন লগ এবং কাযা করার ট্র্যাকার';
 
   @override
+  String get whatsNew200Feature1 =>
+      'মিকাত লক: আপনার কাস্টম সময়ের স্লটে বিভ্রান্তিকর অ্যাপগুলি ব্লক করুন';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'রমজান পাতা: ছুটে যাওয়া রোজা লগ ও পূরণ করার জন্য কাজা ট্র্যাকার';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'সাহরি অ্যালার্ম: একটি নির্দিষ্ট সময় চয়ন করুন বা এটি ফজরের ঠিক আগে স্বয়ংক্রিয়ভাবে বাজতে দিন।';
+
+  @override
+  String get whatsNew200Feature4 => 'ইউআই উন্নতি';
+
+  @override
+  String get whatsNew200Feature5 => 'বাগ ফিক্স';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override

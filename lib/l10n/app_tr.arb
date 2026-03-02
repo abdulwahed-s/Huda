@@ -1144,6 +1144,11 @@
     "whatsNew153Feature1": "Günlük kaza kaydı ile Ramazan oruç takipçisi",
     "whatsNew153Feature2": "Namaz vakitlerinde dikkat dağıtan uygulamaları engellemek için Miqaat Kilidi",
     "whatsNew153Feature3": "Kaçırılan oruç günlerini kaydetmek ve telafi etmek için kaza takipçisi",
+    "whatsNew200Feature1": "Miqaat Kilidi: Özel zaman dilimlerinizde dikkat dağıtıcı uygulamaları engelleyin",
+    "whatsNew200Feature2": "Ramazan Sayfası: Kaçırılan oruçları kaydetmek için Kaza takipçisi",
+    "whatsNew200Feature3": "Sahur Alarmı: Sabit bir saat seçin veya Sabah namazından hemen önce otomatik olarak çalmasını sağlayın.",
+    "whatsNew200Feature4": "Kullanıcı arayüzü iyileştirmeleri",
+    "whatsNew200Feature5": "Hata düzeltmeleri",
     "offlineMode": "Çevrimdışı Mod",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

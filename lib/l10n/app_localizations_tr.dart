@@ -2977,6 +2977,24 @@ class AppLocalizationsTr extends AppLocalizations {
       'Kaçırılan oruç günlerini kaydetmek ve telafi etmek için kaza takipçisi';
 
   @override
+  String get whatsNew200Feature1 =>
+      'Miqaat Kilidi: Özel zaman dilimlerinizde dikkat dağıtıcı uygulamaları engelleyin';
+
+  @override
+  String get whatsNew200Feature2 =>
+      'Ramazan Sayfası: Kaçırılan oruçları kaydetmek için Kaza takipçisi';
+
+  @override
+  String get whatsNew200Feature3 =>
+      'Sahur Alarmı: Sabit bir saat seçin veya Sabah namazından hemen önce otomatik olarak çalmasını sağlayın.';
+
+  @override
+  String get whatsNew200Feature4 => 'Kullanıcı arayüzü iyileştirmeleri';
+
+  @override
+  String get whatsNew200Feature5 => 'Hata düzeltmeleri';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override

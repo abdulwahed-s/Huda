@@ -1807,6 +1807,11 @@
     "whatsNew153Feature1": "متتبع صيام رمضان مع سجل القضاء اليومي",
     "whatsNew153Feature2": "قفل الميقات لحظر التطبيقات المشتتة أثناء أوقات الصلاة",
     "whatsNew153Feature3": "متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة",
+    "whatsNew200Feature1": "قفل الميقات: حظر التطبيقات المشتتة خلال أوقاتك المخصصة",
+    "whatsNew200Feature2": "صفحة رمضان: متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة",
+    "whatsNew200Feature3": "منبه السحور: اختر وقتاً ثابتاً، أو دعه يرن تلقائياً قبل صلاة الفجر",
+    "whatsNew200Feature4": "تحسينات واجهة المستخدم",
+    "whatsNew200Feature5": "إصلاح الأخطاء",
     "offlineMode": "وضع عدم الاتصال",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
