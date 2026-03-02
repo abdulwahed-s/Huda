@@ -2,6 +2,9 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/presentation/screens/app.dart';
+import 'package:huda/presentation/screens/sahur_alarm_ring_screen.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:adhan/adhan.dart';
 
 class SahurAlarmHelper {
@@ -46,6 +49,7 @@ class SahurAlarmHelper {
         body: body,
         icon: 'huda_icon',
         iconColor: Colors.blue,
+        stopButton: "Stop",
       ),
     );
 
@@ -62,6 +66,27 @@ class SahurAlarmHelper {
   static Future<void> updateSahurAlarmSchedule() async {
     final cacheHelper = getIt<CacheHelper>();
     final isEnabled = cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false;
+
+    String localizedTitle = 'Sahur Alarm';
+    String localizedBody = 'Time to wake up for Sahur';
+    String killTitle = 'Your alarms may not ring';
+    String killBody =
+        'You killed the app. Please reopen so your alarms can be rescheduled.';
+
+    try {
+      final context = App.navigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        final l10n = AppLocalizations.of(context);
+        if (l10n != null) {
+          localizedTitle = l10n.sahurAlarmRinging;
+          localizedBody = l10n.sahurAlarmNotificationBody;
+          killTitle = l10n.alarmKilledTitle;
+          killBody = l10n.alarmKilledBody;
+        }
+      }
+    } catch (_) {}
+
+    await Alarm.setWarningNotificationOnKill(killTitle, killBody);
 
     if (!isEnabled) {
       await stopAlarm();
@@ -123,23 +148,43 @@ class SahurAlarmHelper {
       }
 
       final alarmId = sahurAlarmId + i;
+
       await scheduleAlarm(
         alarmTime: alarmTime,
         scheduleDate: targetDate,
-        title: 'Sahur Alarm',
-        body: 'Time to wake up for Sahur',
+        title: localizedTitle,
+        body: localizedBody,
         alarmId: alarmId,
       );
     }
     debugPrint('⏰ Scheduled Sahur alarms for the next $_batchDays days.');
   }
 
+  static bool _isRingScreenShowing = false;
+
   static void initListeners() {
-    Alarm.ringStream.stream.listen((alarmSettings) async {
-      if (alarmSettings.id >= sahurAlarmId &&
-          alarmSettings.id < sahurAlarmId + _batchDays) {
-        await Future.delayed(const Duration(minutes: 5));
-        await updateSahurAlarmSchedule();
+    Alarm.ringing.listen((alarmSet) async {
+      for (final alarmSettings in alarmSet.alarms) {
+        if (alarmSettings.id >= sahurAlarmId &&
+            alarmSettings.id < sahurAlarmId + _batchDays) {
+          if (_isRingScreenShowing) continue;
+          _isRingScreenShowing = true;
+
+          final navigator = App.navigatorKey.currentState;
+          if (navigator != null) {
+            await navigator.push(
+              MaterialPageRoute<void>(
+                builder: (_) =>
+                    SahurAlarmRingScreen(alarmSettings: alarmSettings),
+              ),
+            );
+
+            _isRingScreenShowing = false;
+            await updateSahurAlarmSchedule();
+          } else {
+            _isRingScreenShowing = false;
+          }
+        }
       }
     });
   }
