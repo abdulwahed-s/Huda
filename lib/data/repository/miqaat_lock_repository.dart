@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:huda/data/models/miqaat_lock/miqaat_lock_settings.dart';
@@ -48,7 +49,7 @@ class MiqaatLockRepository {
         'goalDurationMinutes': settings.goalDurationMinutes,
       });
     } on PlatformException catch (e) {
-      print('Failed to sync settings to native: ${e.message}');
+      debugPrint('Failed to sync settings to native: ${e.message}');
     }
   }
 
@@ -138,7 +139,7 @@ class MiqaatLockRepository {
         'timeSlotId': timeSlotId,
       });
     } on PlatformException catch (e) {
-      print('Failed to notify native of slot completion: ${e.message}');
+      debugPrint('Failed to notify native of slot completion: ${e.message}');
     }
   }
 
@@ -166,7 +167,7 @@ class MiqaatLockRepository {
         'isCompleted': session.isGoalCompleted,
       });
     } on PlatformException catch (e) {
-      print('Failed to sync progress to native: ${e.message}');
+      debugPrint('Failed to sync progress to native: ${e.message}');
     }
   }
 
@@ -182,7 +183,7 @@ class MiqaatLockRepository {
           .map((app) => LockedApp.fromJson(Map<String, dynamic>.from(app)))
           .toList();
     } on PlatformException catch (e) {
-      print('Failed to get installed apps: ${e.message}');
+      debugPrint('Failed to get installed apps: ${e.message}');
       return [];
     }
   }
@@ -212,7 +213,7 @@ class MiqaatLockRepository {
     try {
       await _channel.invokeMethod('openAccessibilitySettings');
     } on PlatformException catch (e) {
-      print('Failed to open accessibility settings: ${e.message}');
+      debugPrint('Failed to open accessibility settings: ${e.message}');
     }
   }
 
@@ -228,7 +229,7 @@ class MiqaatLockRepository {
     try {
       await _channel.invokeMethod('requestOverlayPermission');
     } on PlatformException catch (e) {
-      print('Failed to request overlay permission: ${e.message}');
+      debugPrint('Failed to request overlay permission: ${e.message}');
     }
   }
 
