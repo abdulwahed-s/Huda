@@ -35,7 +35,12 @@ class LoadedStateContent extends StatelessWidget {
     return FadeTransition(
       opacity: fadeAnimation,
       child: Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.fromLTRB(
+          16.w,
+          16.w,
+          16.w,
+          16.w + MediaQuery.paddingOf(context).bottom,
+        ),
         child: Column(
           children: [
             // Statistics card
