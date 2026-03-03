@@ -17,7 +17,12 @@ class ResultsTab extends StatelessWidget {
     final calculation = state.calculation;
 
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.r),
+      padding: EdgeInsets.fromLTRB(
+        16.r,
+        16.r,
+        16.r,
+        16.r + MediaQuery.paddingOf(context).bottom,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
