@@ -5665,6 +5665,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Files ({count})'**
   String filesCount(int count);
+
+  /// Title for accessibility service dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility Service Required'**
+  String get accessibilityServiceRequiredDialogTitle;
+
+  /// Description for accessibility service dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Miqaat Lock requires the AccessibilityService API to detect app launches and display the lock screen.'**
+  String get accessibilityServiceRequiredDialogDesc;
+
+  /// Privacy text for accessibility service dialog
+  ///
+  /// In en, this message translates to:
+  /// **'We do not use this service to collect, store, or share any personal or sensitive user data.'**
+  String get accessibilityServiceRequiredDialogPrivacy;
+
+  /// Agree button text
+  ///
+  /// In en, this message translates to:
+  /// **'Agree'**
+  String get agree;
 }
 
 class _AppLocalizationsDelegate

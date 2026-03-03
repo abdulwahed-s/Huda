@@ -1322,5 +1322,9 @@
                 "example": "2"
             }
         }
-    }
+    },
+    "accessibilityServiceRequiredDialogTitle": "ایکسیسبلٹی سروس درکار ہے",
+    "accessibilityServiceRequiredDialogDesc": "میقات لاک کو ایپ لانچ کا پتہ لگانے اور لاک اسکرین دکھانے کے لیے ایکسیسیبلٹی سروس API درکار ہے۔",
+    "accessibilityServiceRequiredDialogPrivacy": "ہم اس سروس کو کسی بھی ذاتی یا حساس صارف کے ڈیٹا کو جمع کرنے، محفوظ کرنے یا شیئر کرنے کے لیے استعمال نہیں کرتے ہیں۔",
+    "agree": "متفق ہوں"
 }

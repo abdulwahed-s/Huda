@@ -1240,5 +1240,9 @@
                 "example": "2"
             }
         }
-    }
+    },
+    "accessibilityServiceRequiredDialogTitle": "Bedienungshilfen erforderlich",
+    "accessibilityServiceRequiredDialogDesc": "Miqaat Lock benötigt die Bedienungshilfen-API, um App-Starts zu erkennen und den Sperrbildschirm anzuzeigen.",
+    "accessibilityServiceRequiredDialogPrivacy": "Wir verwenden diesen Dienst nicht, um persönliche oder sensible Benutzerdaten zu sammeln, zu speichern oder weiterzugeben.",
+    "agree": "Zustimmen"
 }

@@ -3767,4 +3767,21 @@
             }
         }
     }
+,
+    "accessibilityServiceRequiredDialogTitle": "Accessibility Service Required",
+    "@accessibilityServiceRequiredDialogTitle": {
+        "description": "Title for accessibility service dialog"
+    },
+    "accessibilityServiceRequiredDialogDesc": "Miqaat Lock requires the AccessibilityService API to detect app launches and display the lock screen.",
+    "@accessibilityServiceRequiredDialogDesc": {
+        "description": "Description for accessibility service dialog"
+    },
+    "accessibilityServiceRequiredDialogPrivacy": "We do not use this service to collect, store, or share any personal or sensitive user data.",
+    "@accessibilityServiceRequiredDialogPrivacy": {
+        "description": "Privacy text for accessibility service dialog"
+    },
+    "agree": "Agree",
+    "@agree": {
+        "description": "Agree button text"
+    }
 }

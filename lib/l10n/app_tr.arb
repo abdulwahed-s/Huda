@@ -1261,4 +1261,9 @@
             }
         }
     }
+,
+    "accessibilityServiceRequiredDialogTitle": "Erişilebilirlik Hizmeti Gerekli",
+    "accessibilityServiceRequiredDialogDesc": "Miqaat Lock, uygulama başlatmalarını algılamak ve kilit ekranını görüntülemek için Erişilebilirlik Hizmeti API'sine ihtiyaç duyar.",
+    "accessibilityServiceRequiredDialogPrivacy": "Bu hizmeti herhangi bir kişisel veya hassas kullanıcı verisini toplamak, saklamak veya paylaşmak için kullanmıyoruz.",
+    "agree": "Kabul Et"
 }

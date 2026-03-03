@@ -1268,4 +1268,9 @@
             }
         }
     }
+    ,
+    "accessibilityServiceRequiredDialogTitle": "Service d'accessibilité requis",
+    "accessibilityServiceRequiredDialogDesc": "Miqaat Lock nécessite l'API du service d'accessibilité pour détecter les lancements d'applications et afficher l'écran de verrouillage.",
+    "accessibilityServiceRequiredDialogPrivacy": "Nous n'utilisons pas ce service pour collecter, stocker ou partager des données personnelles ou sensibles.",
+    "agree": "Accepter"
 }

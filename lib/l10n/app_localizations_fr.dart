@@ -3133,4 +3133,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String filesCount(int count) {
     return 'Fichiers ($count)';
   }
+
+  @override
+  String get accessibilityServiceRequiredDialogTitle =>
+      'Service d\'accessibilité requis';
+
+  @override
+  String get accessibilityServiceRequiredDialogDesc =>
+      'Miqaat Lock nécessite l\'API du service d\'accessibilité pour détecter les lancements d\'applications et afficher l\'écran de verrouillage.';
+
+  @override
+  String get accessibilityServiceRequiredDialogPrivacy =>
+      'Nous n\'utilisons pas ce service pour collecter, stocker ou partager des données personnelles ou sensibles.';
+
+  @override
+  String get agree => 'Accepter';
 }

@@ -3060,4 +3060,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String filesCount(int count) {
     return 'Files ($count)';
   }
+
+  @override
+  String get accessibilityServiceRequiredDialogTitle =>
+      'Accessibility Service Required';
+
+  @override
+  String get accessibilityServiceRequiredDialogDesc =>
+      'Miqaat Lock requires the AccessibilityService API to detect app launches and display the lock screen.';
+
+  @override
+  String get accessibilityServiceRequiredDialogPrivacy =>
+      'We do not use this service to collect, store, or share any personal or sensitive user data.';
+
+  @override
+  String get agree => 'Agree';
 }

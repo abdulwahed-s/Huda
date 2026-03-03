@@ -1348,4 +1348,9 @@
             }
         }
     }
+    ,
+    "accessibilityServiceRequiredDialogTitle": "Perkhidmatan Kebolehcapaian Diperlukan",
+    "accessibilityServiceRequiredDialogDesc": "Miqaat Lock memerlukan API Perkhidmatan Kebolehcapaian untuk mengesan pelancaran aplikasi dan memaparkan skrin kunci.",
+    "accessibilityServiceRequiredDialogPrivacy": "Kami tidak menggunakan perkhidmatan ini untuk mengumpul, menyimpan atau berkongsi sebarang data peribadi atau sensitif pengguna.",
+    "agree": "Setuju"
 }

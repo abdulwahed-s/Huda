@@ -1280,4 +1280,9 @@
             }
         }
     }
+    ,
+    "accessibilityServiceRequiredDialogTitle": "Servicio de accesibilidad requerido",
+    "accessibilityServiceRequiredDialogDesc": "Miqaat Lock requiere la API del servicio de accesibilidad para detectar inicios de aplicaciones y mostrar la pantalla de bloqueo.",
+    "accessibilityServiceRequiredDialogPrivacy": "No usamos este servicio para recopilar, almacenar o compartir ningún dato personal o confidencial del usuario.",
+    "agree": "Aceptar"
 }

@@ -1923,5 +1923,9 @@
                 "example": "2"
             }
         }
-    }
+    },
+"accessibilityServiceRequiredDialogTitle": "مطلوب خدمة إمكانية الوصول",
+"accessibilityServiceRequiredDialogDesc": "يتطلب قفل الميقات واجهة برمجة تطبيقات خدمة إمكانية الوصول (AccessibilityService) لاكتشاف تشغيل التطبيقات وعرض شاشة القفل.",
+"accessibilityServiceRequiredDialogPrivacy": "نحن لا نستخدم هذه الخدمة لجمع أو تخزين أو مشاركة أي بيانات شخصية أو حساسة للمستخدم.",
+"agree": "موافق"
 }

@@ -3013,4 +3013,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String filesCount(int count) {
     return 'الملفات ($count)';
   }
+
+  @override
+  String get accessibilityServiceRequiredDialogTitle =>
+      'مطلوب خدمة إمكانية الوصول';
+
+  @override
+  String get accessibilityServiceRequiredDialogDesc =>
+      'يتطلب قفل الميقات واجهة برمجة تطبيقات خدمة إمكانية الوصول (AccessibilityService) لاكتشاف تشغيل التطبيقات وعرض شاشة القفل.';
+
+  @override
+  String get accessibilityServiceRequiredDialogPrivacy =>
+      'نحن لا نستخدم هذه الخدمة لجمع أو تخزين أو مشاركة أي بيانات شخصية أو حساسة للمستخدم.';
+
+  @override
+  String get agree => 'موافق';
 }

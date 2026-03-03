@@ -3064,4 +3064,19 @@ class AppLocalizationsBn extends AppLocalizations {
   String filesCount(int count) {
     return 'ফাইল ($count)';
   }
+
+  @override
+  String get accessibilityServiceRequiredDialogTitle =>
+      'অ্যাক্সেসিবিলিটি সার্ভিস প্রয়োজন';
+
+  @override
+  String get accessibilityServiceRequiredDialogDesc =>
+      'অ্যাপ চালু হওয়া শনাক্ত করতে এবং লক স্ক্রিন দেখাতে মিকাত লকের অ্যাক্সেসিবিলিটি সার্ভিস API প্রয়োজন।';
+
+  @override
+  String get accessibilityServiceRequiredDialogPrivacy =>
+      'আমরা এই ব্যবহারকারীর কোনো ব্যক্তিগত বা সংবেদনশীল ডেটা সংগ্রহ, সঞ্চয় বা ভাগ করতে এই পরিষেবাটি ব্যবহার করি না।';
+
+  @override
+  String get agree => 'সম্মত';
 }

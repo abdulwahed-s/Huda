@@ -3065,4 +3065,19 @@ class AppLocalizationsMs extends AppLocalizations {
   String filesCount(int count) {
     return 'Fail ($count)';
   }
+
+  @override
+  String get accessibilityServiceRequiredDialogTitle =>
+      'Perkhidmatan Kebolehcapaian Diperlukan';
+
+  @override
+  String get accessibilityServiceRequiredDialogDesc =>
+      'Miqaat Lock memerlukan API Perkhidmatan Kebolehcapaian untuk mengesan pelancaran aplikasi dan memaparkan skrin kunci.';
+
+  @override
+  String get accessibilityServiceRequiredDialogPrivacy =>
+      'Kami tidak menggunakan perkhidmatan ini untuk mengumpul, menyimpan atau berkongsi sebarang data peribadi atau sensitif pengguna.';
+
+  @override
+  String get agree => 'Setuju';
 }

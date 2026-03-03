@@ -1260,4 +1260,9 @@
             }
         }
     }
+,
+    "accessibilityServiceRequiredDialogTitle": "Требуется служба специальных возможностей",
+    "accessibilityServiceRequiredDialogDesc": "Miqaat Lock требует API службы специальных возможностей для обнаружения запуска приложений и отображения экрана блокировки.",
+    "accessibilityServiceRequiredDialogPrivacy": "Мы не используем эту службу для сбора, хранения или передачи каких-либо личных или конфиденциальных данных пользователей.",
+    "agree": "Согласиться"
 }

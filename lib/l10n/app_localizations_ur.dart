@@ -3054,4 +3054,19 @@ class AppLocalizationsUr extends AppLocalizations {
   String filesCount(int count) {
     return 'فائلیں ($count)';
   }
+
+  @override
+  String get accessibilityServiceRequiredDialogTitle =>
+      'ایکسیسبلٹی سروس درکار ہے';
+
+  @override
+  String get accessibilityServiceRequiredDialogDesc =>
+      'میقات لاک کو ایپ لانچ کا پتہ لگانے اور لاک اسکرین دکھانے کے لیے ایکسیسیبلٹی سروس API درکار ہے۔';
+
+  @override
+  String get accessibilityServiceRequiredDialogPrivacy =>
+      'ہم اس سروس کو کسی بھی ذاتی یا حساس صارف کے ڈیٹا کو جمع کرنے، محفوظ کرنے یا شیئر کرنے کے لیے استعمال نہیں کرتے ہیں۔';
+
+  @override
+  String get agree => 'متفق ہوں';
 }

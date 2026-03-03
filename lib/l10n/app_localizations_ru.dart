@@ -3084,4 +3084,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String filesCount(int count) {
     return 'Файлы ($count)';
   }
+
+  @override
+  String get accessibilityServiceRequiredDialogTitle =>
+      'Требуется служба специальных возможностей';
+
+  @override
+  String get accessibilityServiceRequiredDialogDesc =>
+      'Miqaat Lock требует API службы специальных возможностей для обнаружения запуска приложений и отображения экрана блокировки.';
+
+  @override
+  String get accessibilityServiceRequiredDialogPrivacy =>
+      'Мы не используем эту службу для сбора, хранения или передачи каких-либо личных или конфиденциальных данных пользователей.';
+
+  @override
+  String get agree => 'Согласиться';
 }
