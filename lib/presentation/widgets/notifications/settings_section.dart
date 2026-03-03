@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/notifications/notification_card.dart';
@@ -104,24 +105,25 @@ class SettingsSection extends StatelessWidget {
         ),
 
         // Sahur Alarm
-        NotificationCard(
-          title: AppLocalizations.of(context)!.sahurAlarmTitle,
-          subtitle: state.sahurAlarmEnabled
-              ? (state.sahurAlarmType == 0
-                  ? (AppLocalizations.of(context)!
-                      .atExactTime(state.sahurExactTime))
-                  : (AppLocalizations.of(context)!
-                      .minsBeforeFajr(state.sahurMinutesBeforeFajr)))
-              : (AppLocalizations.of(context)!.sahurAlarmNotSet),
-          description: AppLocalizations.of(context)!.sahurAlarmDescription,
-          icon: Icons.alarm,
-          gradient: [Colors.indigo.shade400, Colors.indigo.shade600],
-          value: state.sahurAlarmEnabled,
-          onChanged: (value) => context
-              .read<NotificationsCubit>()
-              .togglePreference('sahurAlarmEnabled', value),
-          onSettingsTap: () => pickSahurAlarmSettings(),
-        ),
+        if (PlatformUtils.isMobile)
+          NotificationCard(
+            title: AppLocalizations.of(context)!.sahurAlarmTitle,
+            subtitle: state.sahurAlarmEnabled
+                ? (state.sahurAlarmType == 0
+                    ? (AppLocalizations.of(context)!
+                        .atExactTime(state.sahurExactTime))
+                    : (AppLocalizations.of(context)!
+                        .minsBeforeFajr(state.sahurMinutesBeforeFajr)))
+                : (AppLocalizations.of(context)!.sahurAlarmNotSet),
+            description: AppLocalizations.of(context)!.sahurAlarmDescription,
+            icon: Icons.alarm,
+            gradient: [Colors.indigo.shade400, Colors.indigo.shade600],
+            value: state.sahurAlarmEnabled,
+            onChanged: (value) => context
+                .read<NotificationsCubit>()
+                .togglePreference('sahurAlarmEnabled', value),
+            onSettingsTap: () => pickSahurAlarmSettings(),
+          ),
 
         // Daily Checklist Reminder
         NotificationCard(
