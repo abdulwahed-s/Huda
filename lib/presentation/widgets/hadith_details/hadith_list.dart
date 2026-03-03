@@ -30,7 +30,9 @@ class HadithList extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                 child: ListView.builder(
-                  padding: EdgeInsets.only(bottom: 120.h),
+                  padding: EdgeInsets.only(
+                    bottom: 150.h + MediaQuery.paddingOf(context).bottom,
+                  ),
                   itemCount: hadithDetail.data!.length,
                   itemBuilder: (context, index) {
                     final hadith = hadithDetail.data![index];
@@ -45,7 +47,7 @@ class HadithList extends StatelessWidget {
               Positioned(
                 left: 16.w,
                 right: 16.w,
-                bottom: 16.h,
+                bottom: 16.h + MediaQuery.paddingOf(context).bottom,
                 child: PaginationControls(
                   currentPage: hadithDetail.previous == null
                       ? 1
