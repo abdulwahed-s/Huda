@@ -398,7 +398,12 @@ class _QuranPageViewState extends State<QuranPageView>
                   itemPositionsListener: _itemPositionsListener,
                   itemCount: totalItems,
                   padding: EdgeInsets.fromLTRB(
-                      12.w, 8.h, 12.w, playingAyahIndex != null ? 120.h : 24.h),
+                    12.w,
+                    8.h,
+                    12.w,
+                    (playingAyahIndex != null ? 120.h : 24.h) +
+                        MediaQuery.paddingOf(context).bottom,
+                  ),
                   itemBuilder: (context, index) {
                     if (showBismillah && index == 0) {
                       return Container(
