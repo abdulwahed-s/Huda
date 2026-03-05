@@ -113,27 +113,22 @@ class _BookmarksPageState extends State<BookmarksPage>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: Scaffold(
-        backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-        appBar: BookmarksAppBar(
-          isDark: isDark,
-          searchController: _searchController,
-          onSearchChanged: (query) => setState(() => _searchQuery = query),
-          onOptionsPressed: _showOptionsMenu,
-          tabController: _tabController,
-        ),
-        body: BookmarksBody(
-          isDark: isDark,
-          searchQuery: _searchQuery,
-          currentFilter: _currentFilter,
-          tabController: _tabController,
-          onNavigateToAyah: _navigateToAyah,
-          onHandleBookmarkAction: _handleBookmarkAction,
-        ),
+    return Scaffold(
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
+      appBar: BookmarksAppBar(
+        isDark: isDark,
+        searchController: _searchController,
+        onSearchChanged: (query) => setState(() => _searchQuery = query),
+        onOptionsPressed: _showOptionsMenu,
+        tabController: _tabController,
+      ),
+      body: BookmarksBody(
+        isDark: isDark,
+        searchQuery: _searchQuery,
+        currentFilter: _currentFilter,
+        tabController: _tabController,
+        onNavigateToAyah: _navigateToAyah,
+        onHandleBookmarkAction: _handleBookmarkAction,
       ),
     );
   }
