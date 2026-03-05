@@ -51,105 +51,104 @@ class _PrayerTimesState extends State<PrayerTimes> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: Scaffold(
-        backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-        appBar: AppBar(
-          elevation: 0,
-          iconTheme: IconThemeData(
-            color: isDark ? Colors.white : Colors.black87,
-          ),
-          backgroundColor: Colors.transparent,
-          title: Text(AppLocalizations.of(context)!.prayerTimes,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Amiri",
-                color: isDark ? Colors.white : Colors.black87,
-              )),
-          centerTitle: true,
+    return Scaffold(
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
+      appBar: AppBar(
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: isDark ? Colors.white : Colors.black87,
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          child: Column(
-            children: [
-              // Location Card
-              Card(
-                elevation: 3,
-                margin: EdgeInsets.only(bottom: 12.h),
-                shape: RoundedRectangleBorder(
+        backgroundColor: Colors.transparent,
+        title: Text(AppLocalizations.of(context)!.prayerTimes,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Amiri",
+              color: isDark ? Colors.white : Colors.black87,
+            )),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          12.w,
+          6.h,
+          12.w,
+          6.h + MediaQuery.paddingOf(context).bottom,
+        ),
+        child: Column(
+          children: [
+            // Location Card
+            Card(
+              elevation: 3,
+              margin: EdgeInsets.only(bottom: 12.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        context.primaryColor.withValues(alpha: 0.1),
-                        context.primaryColor.withValues(alpha: 0.05),
-                      ],
-                    ),
-                  ),
-                  padding: EdgeInsets.all(16.w),
-                  child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
-                    builder: (context, state) {
-                      if (state is PrayerTimesLoading) {
-                        return const PrayerTimesLoadingWidget();
-                      } else if (state is PrayerTimesLoaded) {
-                        return PrayerTimesLoadedWidget(state: state);
-                      } else if (state is PrayerTimesLocationServiceDisabled) {
-                        return const PrayerTimesLocationServiceDisabledWidget();
-                      } else if (state is PrayerTimesLocationDenied) {
-                        return const PrayerTimesLocationDeniedWidget();
-                      } else if (state
-                          is PrayerTimesLocationPermanentlyDenied) {
-                        return const PrayerTimesLocationPermanentlyDeniedWidget();
-                      } else if (state is PrayerTimesError) {
-                        return PrayerTimesErrorWidget(state: state);
-                      }
-                      return const SizedBox.shrink();
-                    },
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      context.primaryColor.withValues(alpha: 0.1),
+                      context.primaryColor.withValues(alpha: 0.05),
+                    ],
                   ),
                 ),
+                padding: EdgeInsets.all(16.w),
+                child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+                  builder: (context, state) {
+                    if (state is PrayerTimesLoading) {
+                      return const PrayerTimesLoadingWidget();
+                    } else if (state is PrayerTimesLoaded) {
+                      return PrayerTimesLoadedWidget(state: state);
+                    } else if (state is PrayerTimesLocationServiceDisabled) {
+                      return const PrayerTimesLocationServiceDisabledWidget();
+                    } else if (state is PrayerTimesLocationDenied) {
+                      return const PrayerTimesLocationDeniedWidget();
+                    } else if (state is PrayerTimesLocationPermanentlyDenied) {
+                      return const PrayerTimesLocationPermanentlyDeniedWidget();
+                    } else if (state is PrayerTimesError) {
+                      return PrayerTimesErrorWidget(state: state);
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
               ),
+            ),
 
-              // Prayer Times Card
-              BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
-                builder: (context, state) {
-                  if (state is PrayerTimesLoaded) {
-                    return PrayerTimesCardWidget(state: state);
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
+            // Prayer Times Card
+            BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+              builder: (context, state) {
+                if (state is PrayerTimesLoaded) {
+                  return PrayerTimesCardWidget(state: state);
+                }
+                return const SizedBox.shrink();
+              },
+            ),
 
-              // Next Prayer Countdown Card
-              BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
-                builder: (context, state) {
-                  if (state is PrayerTimesLoaded) {
-                    return NextPrayerCountdownCardWidget(
-                      state: state,
-                      isDark: Theme.of(context).brightness == Brightness.dark,
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
+            // Next Prayer Countdown Card
+            BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+              builder: (context, state) {
+                if (state is PrayerTimesLoaded) {
+                  return NextPrayerCountdownCardWidget(
+                    state: state,
+                    isDark: Theme.of(context).brightness == Brightness.dark,
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
 
-              // Refresh Button
-              const RefreshLocationButtonWidget(),
+            // Refresh Button
+            const RefreshLocationButtonWidget(),
 
-              // Persistent Prayer Countdown Control Widget
-              //TODO add support for other platform later
-              if (PlatformUtils.isAndroid)
-                const PersistentPrayerCountdownControlWidget(),
-            ],
-          ),
+            // Persistent Prayer Countdown Control Widget
+            //TODO add support for other platform later
+            if (PlatformUtils.isAndroid)
+              const PersistentPrayerCountdownControlWidget(),
+          ],
         ),
       ),
     );
