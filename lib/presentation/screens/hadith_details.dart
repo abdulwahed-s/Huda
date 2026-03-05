@@ -21,45 +21,40 @@ class HadithDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: Scaffold(
-        backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: isDark ? Colors.grey[850] : Colors.white,
-          foregroundColor: isDark ? Colors.white : Colors.black87,
-          title: Text(
-            chapterName,
-            style: TextStyle(
-              fontFamily: "Amiri",
-              fontWeight: FontWeight.w600,
-              fontSize: 20.sp,
-            ),
+    return Scaffold(
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: isDark ? Colors.grey[850] : Colors.white,
+        foregroundColor: isDark ? Colors.white : Colors.black87,
+        title: Text(
+          chapterName,
+          style: TextStyle(
+            fontFamily: "Amiri",
+            fontWeight: FontWeight.w600,
+            fontSize: 20.sp,
           ),
-          centerTitle: true,
         ),
-        body: BlocBuilder<HadithDetailsCubit, HadithDetailsState>(
-          builder: (context, state) {
-            if (state is HadithDetailsLoading) {
-              return LoadingState(isDark: isDark);
-            } else if (state is HadithDetailsLoaded) {
-              return HadithList(
-                hadithDetail: state.hadithDetail,
-                isDark: isDark,
-                chapterNumber: chapterNumber,
-                bookName: bookName,
-                chapterName: chapterName,
-              );
-            } else if (state is HadithDetailsError) {
-              return ErrorState(isDark: isDark);
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
+        centerTitle: true,
+      ),
+      body: BlocBuilder<HadithDetailsCubit, HadithDetailsState>(
+        builder: (context, state) {
+          if (state is HadithDetailsLoading) {
+            return LoadingState(isDark: isDark);
+          } else if (state is HadithDetailsLoaded) {
+            return HadithList(
+              hadithDetail: state.hadithDetail,
+              isDark: isDark,
+              chapterNumber: chapterNumber,
+              bookName: bookName,
+              chapterName: chapterName,
+            );
+          } else if (state is HadithDetailsError) {
+            return ErrorState(isDark: isDark);
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }
