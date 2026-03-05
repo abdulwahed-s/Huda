@@ -158,123 +158,117 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
 
     return BlocProvider.value(
       value: _checklistCubit,
-      child: SafeArea(
-        top: false,
-        left: false,
-        right: false,
-        child: Scaffold(
-          backgroundColor:
-              isDark ? colors.darkCardBackground : colors.primaryExtraLight,
-          body: Stack(
-            children: [
-              Column(
-                children: [
-                  ChecklistAppBar(
-                    onTodayPressed: () {
-                      _checklistCubit.navigateToToday();
-                      _pageController.animateToPage(1000,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut);
-                    },
-                    isDark: isDark,
-                  ),
-                  Expanded(
-                    child: BlocBuilder<ChecklistCubit, ChecklistState>(
-                      builder: (context, state) {
-                        if (state is ChecklistLoading) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        if (state is ChecklistError) {
-                          return ChecklistErrorView(
-                            message: state.message,
-                            onRetry: _checklistCubit.loadChecklist,
-                          );
-                        }
-                        if (state is ChecklistLoaded) {
-                          return Column(
-                            children: [
-                              _buildHeader(state),
-                              Expanded(
-                                child: PageView.builder(
-                                  controller: _pageController,
-                                  physics: const BouncingScrollPhysics(),
-                                  onPageChanged: (index) {
-                                    final today = DateTime.now();
-                                    final targetDate =
-                                        today.add(Duration(days: index - 1000));
-                                    _checklistCubit.navigateToDate(targetDate);
-                                  },
-                                  itemBuilder: (_, __) {
-                                    return AnimatedSwitcher(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      child: ChecklistView(
-                                        state: state,
-                                        isToday: _isToday(state.currentDate),
-                                        onToggle: (id, value) => _checklistCubit
-                                            .toggleItemCompletion(id, value),
-                                        onDelete: _showDeleteConfirmation,
-                                      ),
-                                    );
-                                  },
-                                ),
+      child: Scaffold(
+        backgroundColor:
+            isDark ? colors.darkCardBackground : colors.primaryExtraLight,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                ChecklistAppBar(
+                  onTodayPressed: () {
+                    _checklistCubit.navigateToToday();
+                    _pageController.animateToPage(1000,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
+                  },
+                  isDark: isDark,
+                ),
+                Expanded(
+                  child: BlocBuilder<ChecklistCubit, ChecklistState>(
+                    builder: (context, state) {
+                      if (state is ChecklistLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (state is ChecklistError) {
+                        return ChecklistErrorView(
+                          message: state.message,
+                          onRetry: _checklistCubit.loadChecklist,
+                        );
+                      }
+                      if (state is ChecklistLoaded) {
+                        return Column(
+                          children: [
+                            _buildHeader(state),
+                            Expanded(
+                              child: PageView.builder(
+                                controller: _pageController,
+                                physics: const BouncingScrollPhysics(),
+                                onPageChanged: (index) {
+                                  final today = DateTime.now();
+                                  final targetDate =
+                                      today.add(Duration(days: index - 1000));
+                                  _checklistCubit.navigateToDate(targetDate);
+                                },
+                                itemBuilder: (_, __) {
+                                  return AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: ChecklistView(
+                                      bottomPadding:
+                                          MediaQuery.paddingOf(context).bottom +
+                                              25.h,
+                                      state: state,
+                                      isToday: _isToday(state.currentDate),
+                                      onToggle: (id, value) => _checklistCubit
+                                          .toggleItemCompletion(id, value),
+                                      onDelete: _showDeleteConfirmation,
+                                    ),
+                                  );
+                                },
                               ),
-                            ],
-                          );
-                        }
-                        return Center(
-                            child: Text(
-                                AppLocalizations.of(context)!.unknownState));
-                      },
-                    ),
+                            ),
+                          ],
+                        );
+                      }
+                      return Center(
+                          child:
+                              Text(AppLocalizations.of(context)!.unknownState));
+                    },
                   ),
-                ],
-              ),
-              BlocBuilder<ChecklistCubit, ChecklistState>(
-                builder: (context, state) {
-                  return CelebrationOverlay(
-                    isVisible: _showCelebration,
-                    streakCount:
-                        state is ChecklistLoaded ? state.streakCount : 0,
-                    onComplete: () => setState(() => _showCelebration = false),
-                  );
-                },
-              ),
-            ],
-          ),
-          floatingActionButton: BlocBuilder<ChecklistCubit, ChecklistState>(
-            builder: (context, state) {
-              final isToday =
-                  state is ChecklistLoaded && _isToday(state.currentDate);
-              final colors = context.appColors;
-              final isDark = Theme.of(context).brightness == Brightness.dark;
+                ),
+              ],
+            ),
+            BlocBuilder<ChecklistCubit, ChecklistState>(
+              builder: (context, state) {
+                return CelebrationOverlay(
+                  isVisible: _showCelebration,
+                  streakCount: state is ChecklistLoaded ? state.streakCount : 0,
+                  onComplete: () => setState(() => _showCelebration = false),
+                );
+              },
+            ),
+          ],
+        ),
+        floatingActionButton: BlocBuilder<ChecklistCubit, ChecklistState>(
+          builder: (context, state) {
+            final isToday =
+                state is ChecklistLoaded && _isToday(state.currentDate);
+            final colors = context.appColors;
+            final isDark = Theme.of(context).brightness == Brightness.dark;
 
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: isToday
-                    ? FloatingActionButton.extended(
-                        key: const ValueKey('add_button'),
-                        onPressed: _showAddCustomItemDialog,
-                        backgroundColor: colors.accent,
-                        foregroundColor:
-                            isDark ? colors.darkText : Colors.white,
-                        elevation: 8,
-                        icon: Icon(Icons.add, size: 20.sp),
-                        label: Text(
-                          AppLocalizations.of(context)!.addTask,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
-                            color: isDark ? colors.darkText : Colors.white,
-                            fontFamily: "Amiri",
-                          ),
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: isToday
+                  ? FloatingActionButton.extended(
+                      key: const ValueKey('add_button'),
+                      onPressed: _showAddCustomItemDialog,
+                      backgroundColor: colors.accent,
+                      foregroundColor: isDark ? colors.darkText : Colors.white,
+                      elevation: 8,
+                      icon: Icon(Icons.add, size: 20.sp),
+                      label: Text(
+                        AppLocalizations.of(context)!.addTask,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12.sp,
+                          color: isDark ? colors.darkText : Colors.white,
+                          fontFamily: "Amiri",
                         ),
-                      )
-                    : null,
-              );
-            },
-          ),
+                      ),
+                    )
+                  : null,
+            );
+          },
         ),
       ),
     );
