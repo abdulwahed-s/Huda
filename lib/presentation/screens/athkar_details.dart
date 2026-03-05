@@ -60,58 +60,53 @@ class _AthkarDetailsState extends State<AthkarDetails>
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false, 
-      child: Scaffold(
-        backgroundColor:
-            isDark ? const Color(0xFF0F0A1A) : const Color(0xFFFFFDF7),
-        appBar: AthkarDetailsAppBar(
-          title: widget.title,
-          colorScheme: colorScheme,
-        ),
-        body: BlocBuilder<AthkarDetailsCubit, AthkarDetailsState>(
-          builder: (context, state) {
-            if (state is AthkarDetailsLoading) {
-              return LoadingState(colorScheme: colorScheme);
-            } else if (state is AthkarDetailsLoaded) {
-              _initializeCounters(state);
+    return Scaffold(
+      backgroundColor:
+          isDark ? const Color(0xFF0F0A1A) : const Color(0xFFFFFDF7),
+      appBar: AthkarDetailsAppBar(
+        title: widget.title,
+        colorScheme: colorScheme,
+      ),
+      body: BlocBuilder<AthkarDetailsCubit, AthkarDetailsState>(
+        builder: (context, state) {
+          if (state is AthkarDetailsLoading) {
+            return LoadingState(colorScheme: colorScheme);
+          } else if (state is AthkarDetailsLoaded) {
+            _initializeCounters(state);
 
-              return LoadedState(
-                athkarCategory: state.athkarCategory,
-                repeatCounters: _repeatCounters!,
-                originalRepeatCounters: _originalRepeatCounters!,
-                athkarCardKeys: _athkarCardKeys,
-                isGeneratingImage: _shareHandler.isGeneratingImage,
-                playingIndex: _audioPlayer.playingIndex,
-                isPlaying: _audioPlayer.isPlaying,
-                audioDuration: _audioPlayer.audioDuration,
-                audioPosition: _audioPlayer.audioPosition,
-                colorScheme: colorScheme,
-                isDark: isDark,
-                title: widget.title,
-                onCounterTap: _handleCounterTap,
-                onResetCounter: _handleResetCounter,
-                onShare: _shareHandler.showShareOptions,
-                onPlayAudio: _audioPlayer.playAudio,
-                onSeek: _audioPlayer.seekAudio,
-              );
-            } else if (state is AthkarDetailsOffline) {
-              return OfflineState(
-                colorScheme: colorScheme,
-                onRetry: () => _retryLoading(),
-              );
-            } else if (state is AthkarDetailsError) {
-              return ErrorState(
-                message: state.message,
-                colorScheme: colorScheme,
-                onRetry: () => _retryLoading(),
-              );
-            }
-            return const SizedBox.shrink();
-          },
-        ),
+            return LoadedState(
+              athkarCategory: state.athkarCategory,
+              repeatCounters: _repeatCounters!,
+              originalRepeatCounters: _originalRepeatCounters!,
+              athkarCardKeys: _athkarCardKeys,
+              isGeneratingImage: _shareHandler.isGeneratingImage,
+              playingIndex: _audioPlayer.playingIndex,
+              isPlaying: _audioPlayer.isPlaying,
+              audioDuration: _audioPlayer.audioDuration,
+              audioPosition: _audioPlayer.audioPosition,
+              colorScheme: colorScheme,
+              isDark: isDark,
+              title: widget.title,
+              onCounterTap: _handleCounterTap,
+              onResetCounter: _handleResetCounter,
+              onShare: _shareHandler.showShareOptions,
+              onPlayAudio: _audioPlayer.playAudio,
+              onSeek: _audioPlayer.seekAudio,
+            );
+          } else if (state is AthkarDetailsOffline) {
+            return OfflineState(
+              colorScheme: colorScheme,
+              onRetry: () => _retryLoading(),
+            );
+          } else if (state is AthkarDetailsError) {
+            return ErrorState(
+              message: state.message,
+              colorScheme: colorScheme,
+              onRetry: () => _retryLoading(),
+            );
+          }
+          return const SizedBox.shrink();
+        },
       ),
     );
   }
