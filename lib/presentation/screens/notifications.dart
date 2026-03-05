@@ -63,87 +63,85 @@ class _NotificationsState extends State<Notifications>
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: Scaffold(
-        backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(
+    return Scaffold(
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(
+          color: isDark ? Colors.white : theme.primaryColor,
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.islamicNotifications,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+            fontFamily: 'Amiri',
             color: isDark ? Colors.white : theme.primaryColor,
           ),
-          title: Text(
-            AppLocalizations.of(context)!.islamicNotifications,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 18.sp,
-              fontFamily: 'Amiri',
-              color: isDark ? Colors.white : theme.primaryColor,
-            ),
-          ),
-          centerTitle: true,
         ),
-        body: FadeTransition(
-          opacity: _fadeAnimation,
-          child: CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: EdgeInsets.all(16.0.w),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                    StatusSection(
-                      isDark: isDark,
-                      requestNotificationPermission: () =>
-                          PermissionHandlers.requestNotificationPermission(
-                              context),
-                      requestBatteryOptimization: () =>
-                          PermissionHandlers.requestBatteryOptimization(
-                              context),
-                    ),
-                    SizedBox(height: 24.h),
-                    BlocBuilder<NotificationsCubit, NotificationsState>(
-                      builder: (context, state) {
-                        if (state is NotificationPreferencesLoaded) {
-                          return SettingsSection(
-                            state: state,
-                            isDark: isDark,
-                            pickKahfTime: () => TimePickers.pickKahfTime(
-                                context,
-                                state.kahfFridayTime,
-                                context.read<NotificationsCubit>()),
-                            pickAthkarTimes: () => TimePickers.pickAthkarTimes(
-                                context,
-                                state.morningAthkarTime,
-                                state.eveningAthkarTime,
-                                context.read<NotificationsCubit>()),
-                            pickRandomAthkarFrequency: () =>
-                                FrequencyDialog.show(
-                                    context, state.randomAthkarFrequency),
-                            pickQuranTime: () => TimePickers.pickQuranTime(
-                                context,
-                                state.quranReminderTime,
-                                context.read<NotificationsCubit>()),
-                            pickChecklistTime: () =>
-                                TimePickers.pickChecklistTime(
-                                    context,
-                                    state.checklistReminderTime,
-                                    context.read<NotificationsCubit>()),
-                            pickSahurAlarmSettings: () =>
-                                TimePickers.pickSahurAlarmSettings(context,
-                                    state, context.read<NotificationsCubit>()),
-                          );
-                        }
-                        return const LoadingState();
-                      },
-                    ),
-                  ]),
-                ),
+        centerTitle: true,
+      ),
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.fromLTRB(
+                16.0.w,
+                16.0.w,
+                16.0.w,
+                16.0.w + MediaQuery.paddingOf(context).bottom,
               ),
-            ],
-          ),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  StatusSection(
+                    isDark: isDark,
+                    requestNotificationPermission: () =>
+                        PermissionHandlers.requestNotificationPermission(
+                            context),
+                    requestBatteryOptimization: () =>
+                        PermissionHandlers.requestBatteryOptimization(context),
+                  ),
+                  SizedBox(height: 24.h),
+                  BlocBuilder<NotificationsCubit, NotificationsState>(
+                    builder: (context, state) {
+                      if (state is NotificationPreferencesLoaded) {
+                        return SettingsSection(
+                          state: state,
+                          isDark: isDark,
+                          pickKahfTime: () => TimePickers.pickKahfTime(
+                              context,
+                              state.kahfFridayTime,
+                              context.read<NotificationsCubit>()),
+                          pickAthkarTimes: () => TimePickers.pickAthkarTimes(
+                              context,
+                              state.morningAthkarTime,
+                              state.eveningAthkarTime,
+                              context.read<NotificationsCubit>()),
+                          pickRandomAthkarFrequency: () => FrequencyDialog.show(
+                              context, state.randomAthkarFrequency),
+                          pickQuranTime: () => TimePickers.pickQuranTime(
+                              context,
+                              state.quranReminderTime,
+                              context.read<NotificationsCubit>()),
+                          pickChecklistTime: () =>
+                              TimePickers.pickChecklistTime(
+                                  context,
+                                  state.checklistReminderTime,
+                                  context.read<NotificationsCubit>()),
+                          pickSahurAlarmSettings: () =>
+                              TimePickers.pickSahurAlarmSettings(context, state,
+                                  context.read<NotificationsCubit>()),
+                        );
+                      }
+                      return const LoadingState();
+                    },
+                  ),
+                ]),
+              ),
+            ),
+          ],
         ),
       ),
     );
