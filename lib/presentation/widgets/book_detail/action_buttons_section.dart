@@ -47,8 +47,9 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                 downloadState.bookId == widget.bookId) {
               widget.onDownloadStateChanged(false, 1.0);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Book downloaded successfully!'),
+                SnackBar(
+                  content: Text(
+                      AppLocalizations.of(context)!.bookDownloadedSuccessfully),
                   behavior: SnackBarBehavior.floating,
                 ),
               );
@@ -57,7 +58,8 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
               widget.onDownloadStateChanged(false, 0.0);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Download failed: ${downloadState.message}'),
+                  content: Text(AppLocalizations.of(context)!
+                      .downloadFailed(downloadState.message)),
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.red,
                 ),
