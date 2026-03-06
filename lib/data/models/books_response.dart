@@ -1,3 +1,9 @@
+int _toInt(dynamic value, [int fallback = 0]) {
+  if (value is int) return value;
+  if (value is String) return int.tryParse(value) ?? fallback;
+  return fallback;
+}
+
 class BooksResponse {
   final List<BookItem> data;
   final Links links;
@@ -53,18 +59,18 @@ class BookItem {
 
   factory BookItem.fromJson(Map<String, dynamic> json) {
     return BookItem(
-      id: json['id'] ?? 0,
-      sourceId: json['source_id'] ?? 0,
+      id: _toInt(json['id']),
+      sourceId: _toInt(json['source_id']),
       title: json['title'] ?? '',
       type: json['type'] ?? '',
-      addDate: json['add_date'] ?? 0,
-      updateDate: json['update_date'] ?? 0,
+      addDate: _toInt(json['add_date']),
+      updateDate: _toInt(json['update_date']),
       description: json['description'],
       fullDescription: json['full_description'],
       sourceLanguage: json['source_language'] ?? '',
       translatedLanguage: json['translated_language'] ?? '',
       image: json['image'],
-      numAttachments: json['num_attachments'] ?? 0,
+      numAttachments: _toInt(json['num_attachments']),
       importanceLevel: json['importance_level'] ?? '',
       apiUrl: json['api_url'] ?? '',
       preparedBy: json['prepared_by'] != null
@@ -103,8 +109,8 @@ class PreparedBy {
 
   factory PreparedBy.fromJson(Map<String, dynamic> json) {
     return PreparedBy(
-      id: json['id'] ?? 0,
-      sourceId: json['source_id'] ?? 0,
+      id: _toInt(json['id']),
+      sourceId: _toInt(json['source_id']),
       title: json['title'],
       type: json['type'] ?? '',
       kind: json['kind'] ?? '',
@@ -131,7 +137,7 @@ class Attachment {
 
   factory Attachment.fromJson(Map<String, dynamic> json) {
     return Attachment(
-      order: json['order'] ?? 0,
+      order: _toInt(json['order']),
       size: json['size'] ?? '',
       extensionType: json['extension_type'] ?? '',
       description: json['description'] ?? '',
@@ -165,9 +171,9 @@ class Links {
       prev: json['prev'],
       first: json['first'],
       last: json['last'],
-      currentPage: json['current_page'] ?? 1,
-      pagesNumber: json['pages_number'] ?? 1,
-      totalItems: json['total_items'] ?? 0,
+      currentPage: _toInt(json['current_page'], 1),
+      pagesNumber: _toInt(json['pages_number'], 1),
+      totalItems: _toInt(json['total_items']),
     );
   }
 }
