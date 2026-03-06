@@ -7,4 +7,5 @@
     android:description="@string/miqaat_lock_accessibility_description"
     android:notificationTimeout="100"
     android:packageNames=""
+    android:isAccessibilityTool="false"
     android:settingsActivity="" />
