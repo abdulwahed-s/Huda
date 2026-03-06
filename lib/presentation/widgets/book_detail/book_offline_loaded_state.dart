@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/offline_book_model.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/book_detail/offline_attachment_item.dart';
 import 'package:huda/presentation/widgets/book_detail/offline_book_info_card.dart';
 import 'package:huda/presentation/widgets/book_detail/primary_button.dart';
@@ -35,8 +36,8 @@ class BookOfflineLoadedState extends StatelessWidget {
                       ? Icons.picture_as_pdf_rounded
                       : Icons.file_download_rounded,
                   label: offlineBook.attachments.first.extensionType == 'PDF'
-                      ? 'Read PDF'
-                      : 'Open File',
+                      ? AppLocalizations.of(context)!.readPdf
+                      : AppLocalizations.of(context)!.openFile,
                   onPressed: onPrimaryAction,
                   isPrimary: true,
                 ),
@@ -45,7 +46,7 @@ class BookOfflineLoadedState extends StatelessWidget {
               Expanded(
                 child: PrimaryButton(
                   icon: Icons.delete_rounded,
-                  label: 'Delete',
+                  label: AppLocalizations.of(context)!.delete,
                   onPressed: onDelete,
                   isPrimary: false,
                 ),
@@ -68,7 +69,8 @@ class BookOfflineLoadedState extends StatelessWidget {
                     ),
                     SizedBox(width: 8.w),
                     Text(
-                      'Files (${offlineBook.attachments.length})',
+                      AppLocalizations.of(context)!
+                          .filesCount(offlineBook.attachments.length),
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
