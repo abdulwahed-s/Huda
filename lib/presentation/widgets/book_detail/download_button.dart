@@ -61,7 +61,7 @@ class DownloadButton extends StatelessWidget {
                   children: [
                     if (isDownloading)
                       SizedBox(
-                        width: 16.w,
+                        width: 16.h,
                         height: 16.h,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
