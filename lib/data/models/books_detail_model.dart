@@ -1,3 +1,9 @@
+int? _toIntOrNull(dynamic value) {
+  if (value is int) return value;
+  if (value is String) return int.tryParse(value);
+  return null;
+}
+
 class BookDetailModel {
   final int? id;
   final int? sourceId;
@@ -45,18 +51,18 @@ class BookDetailModel {
 
   factory BookDetailModel.fromJson(Map<String, dynamic> json) {
     return BookDetailModel(
-      id: json['id'],
-      sourceId: json['source_id'],
+      id: _toIntOrNull(json['id']),
+      sourceId: _toIntOrNull(json['source_id']),
       title: json['title'],
       description: json['description'],
       fullDescription: json['full_description'],
       type: json['type'],
-      addDate: json['add_date'],
-      updateDate: json['update_date'],
+      addDate: _toIntOrNull(json['add_date']),
+      updateDate: _toIntOrNull(json['update_date']),
       orginalItem: json['orginal_item'],
       translationLanguage: json['translation_language'],
       sourceLanguage: json['source_language'],
-      displayBoxMp4Default: json['display_box_mp4_default'],
+      displayBoxMp4Default: _toIntOrNull(json['display_box_mp4_default']),
       image: json['image'],
       locales: List<String>.from(json['locales']),
       localesTypes: (json['locales-types'] as Map<String, dynamic>).map(
@@ -64,7 +70,7 @@ class BookDetailModel {
       ),
       caseStatus: json['case'],
       importanceLevel: json['importance_level'],
-      hits: json['hits'],
+      hits: _toIntOrNull(json['hits']),
       preparedBy: (json['prepared_by'] as List)
           .map((e) => PreparedBy.fromJson(e))
           .toList(),
@@ -113,8 +119,8 @@ class PreparedBy {
 
   factory PreparedBy.fromJson(Map<String, dynamic> json) {
     return PreparedBy(
-      id: json['id'],
-      sourceId: json['source_id'],
+      id: _toIntOrNull(json['id']),
+      sourceId: _toIntOrNull(json['source_id']),
       title: json['title'],
       type: json['type'],
       kind: json['kind'],
@@ -141,7 +147,7 @@ class Attachment {
 
   factory Attachment.fromJson(Map<String, dynamic> json) {
     return Attachment(
-      order: json['order'],
+      order: _toIntOrNull(json['order']),
       size: json['size'],
       extensionType: json['extension_type'],
       description: json['description'],
