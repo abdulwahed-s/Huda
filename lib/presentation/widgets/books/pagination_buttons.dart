@@ -19,6 +19,8 @@ class PaginationButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -28,7 +30,9 @@ class PaginationButtons extends StatelessWidget {
             PaginationButton(
               context: context,
               label: AppLocalizations.of(context)!.first,
-              icon: Icons.keyboard_double_arrow_left_rounded,
+              icon: isRTL
+                  ? Icons.keyboard_double_arrow_right_rounded
+                  : Icons.keyboard_double_arrow_left_rounded,
               isEnabled: currentPage > 1,
               onPressed: () => onPageChanged(1),
               isDark: isDark,
@@ -61,7 +65,9 @@ class PaginationButtons extends StatelessWidget {
             PaginationButton(
               context: context,
               label: AppLocalizations.of(context)!.last,
-              icon: Icons.keyboard_double_arrow_right_rounded,
+              icon: isRTL
+                  ? Icons.keyboard_double_arrow_left_rounded
+                  : Icons.keyboard_double_arrow_right_rounded,
               isEnabled: currentPage < totalPages,
               onPressed: () => onPageChanged(totalPages),
               isDark: isDark,
