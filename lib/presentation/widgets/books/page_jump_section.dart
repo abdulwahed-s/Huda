@@ -26,6 +26,77 @@ class _PageJumpSectionState extends State<PageJumpSection> {
 
   @override
   Widget build(BuildContext context) {
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    List<Widget> rowChildren = [
+      Text(
+        AppLocalizations.of(context)!.jumpTo,
+        style: TextStyle(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+          color: widget.isDark ? Colors.white70 : Colors.grey.shade700,
+          fontFamily: 'Amiri',
+        ),
+      ),
+      SizedBox(width: 12.w),
+      SizedBox(
+        width: 80.w,
+        child: TextField(
+          controller: _pageController,
+          keyboardType: TextInputType.number,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Amiri',
+          ),
+          decoration: InputDecoration(
+            hintText: '${widget.currentPage}',
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(color: context.primaryColor),
+            ),
+          ),
+        ),
+      ),
+      SizedBox(width: 8.w),
+      ElevatedButton(
+        onPressed: () {
+          final pageNum = int.tryParse(_pageController.text);
+          if (pageNum != null && pageNum >= 1 && pageNum <= widget.totalPages) {
+            widget.onPageChanged(pageNum);
+            _pageController.clear();
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: context.primaryColor,
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.go,
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Amiri',
+          ),
+        ),
+      ),
+    ];
+
+    if (isRTL) {
+      rowChildren = rowChildren.reversed.toList();
+    }
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -40,72 +111,9 @@ class _PageJumpSectionState extends State<PageJumpSection> {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.jumpTo,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-              color: widget.isDark ? Colors.white70 : Colors.grey.shade700,
-              fontFamily: 'Amiri',
-            ),
-          ),
-          SizedBox(width: 12.w),
-          SizedBox(
-            width: 80.w,
-            child: TextField(
-              controller: _pageController,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Amiri',
-              ),
-              decoration: InputDecoration(
-                hintText: '${widget.currentPage}',
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(color: context.primaryColor),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(width: 8.w),
-          ElevatedButton(
-            onPressed: () {
-              final pageNum = int.tryParse(_pageController.text);
-              if (pageNum != null &&
-                  pageNum >= 1 &&
-                  pageNum <= widget.totalPages) {
-                widget.onPageChanged(pageNum);
-                _pageController.clear();
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.primaryColor,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
-            child: Text(
-              AppLocalizations.of(context)!.go,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Amiri',
-              ),
-            ),
-          ),
-        ],
+        textDirection: TextDirection
+            .ltr, 
+        children: rowChildren,
       ),
     );
   }
