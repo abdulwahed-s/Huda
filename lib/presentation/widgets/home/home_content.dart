@@ -58,6 +58,12 @@ class HomeContent extends StatelessWidget {
         svgAsset: 'assets/images/hijricalendaricon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.hijriCalendar),
       ),
+      if (PlatformUtils.isMobile)
+        FeatureItem(
+          title: AppLocalizations.of(context)!.miqaatLock,
+          svgAsset: 'assets/images/miqaatlock.svg.vec',
+          onTap: () => Navigator.pushNamed(context, AppRoute.miqaatLock),
+        ),
       FeatureItem(
         title: AppLocalizations.of(context)!.books,
         svgAsset: 'assets/images/booksicon.svg.vec',
@@ -85,6 +91,11 @@ class HomeContent extends StatelessWidget {
           icon: Icons.notifications,
           onTap: () => Navigator.pushNamed(context, AppRoute.notification),
         ),
+      FeatureItem(
+        title: AppLocalizations.of(context)!.ramadan,
+        svgAsset: 'assets/images/ramadan.svg.vec',
+        onTap: () => Navigator.pushNamed(context, AppRoute.ramadan),
+      ),
       FeatureItem(
         title: AppLocalizations.of(context)!.zakatCalculator,
         svgAsset: 'assets/images/zakat.svg.vec',
