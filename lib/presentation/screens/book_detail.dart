@@ -59,41 +59,37 @@ class _BookDetailScreenState extends State<BookDetailScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            BookDetailAppBar(
-              title: widget.title,
-              isDark: isDark,
-              onSharePressed: () => controller.showShareDialog(context),
-            ),
-            SliverToBoxAdapter(
-              child: FadeTransition(
-                opacity: animations.fadeAnimation,
-                child: SlideTransition(
-                  position: animations.slideAnimation,
-                  child: Column(
-                    children: [
-                      _buildBookDetailSection(),
-                      SizedBox(height: 24.h),
-                      LanguagesSection(
-                        selectedLanguage: controller.selectedLanguage,
-                        bookId: widget.bookId,
-                        currentLanguageCode: controller.currentLanguageCode,
-                        onLanguageSelected: controller.handleLanguageSelected,
-                      ),
-                      SizedBox(height: 32.h),
-                    ],
-                  ),
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          BookDetailAppBar(
+            title: widget.title,
+            isDark: isDark,
+            onSharePressed: () => controller.showShareDialog(context),
+          ),
+          SliverToBoxAdapter(
+            child: FadeTransition(
+              opacity: animations.fadeAnimation,
+              child: SlideTransition(
+                position: animations.slideAnimation,
+                child: Column(
+                  children: [
+                    _buildBookDetailSection(),
+                    SizedBox(height: 24.h),
+                    LanguagesSection(
+                      selectedLanguage: controller.selectedLanguage,
+                      bookId: widget.bookId,
+                      currentLanguageCode: controller.currentLanguageCode,
+                      onLanguageSelected: controller.handleLanguageSelected,
+                    ),
+                    SizedBox(
+                        height: 32.h + MediaQuery.paddingOf(context).bottom),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
