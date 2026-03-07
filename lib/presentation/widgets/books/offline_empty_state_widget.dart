@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class OfflineEmptyStateWidget extends StatelessWidget {
   final bool isDark;
@@ -42,7 +43,7 @@ class OfflineEmptyStateWidget extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'No Downloaded Books',
+              AppLocalizations.of(context)!.noDownloadedBooks,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -52,7 +53,8 @@ class OfflineEmptyStateWidget extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             Text(
-              'Download books when online to access them offline',
+              AppLocalizations.of(context)!
+                  .downloadBooksWhenOnlineToAccessThemOffline,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: isDark
@@ -84,7 +86,7 @@ class OfflineEmptyStateWidget extends StatelessWidget {
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        'Check Connection',
+                        AppLocalizations.of(context)!.checkConnection,
                         style: TextStyle(
                           color: context.primaryColor,
                           fontSize: 16.sp,
