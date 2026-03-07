@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class OfflineStatusWidget extends StatelessWidget {
   final int count;
@@ -39,7 +40,7 @@ class OfflineStatusWidget extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           Text(
-            'Offline Mode',
+            AppLocalizations.of(context)!.offlineMode,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
@@ -48,7 +49,7 @@ class OfflineStatusWidget extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            'Showing $count downloaded books',
+            AppLocalizations.of(context)!.showingDownloadedBooks(count),
             style: TextStyle(
               fontSize: 14.sp,
               color: isDark
