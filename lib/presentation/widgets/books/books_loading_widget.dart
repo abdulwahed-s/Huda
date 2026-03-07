@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BooksLoadingWidget extends StatelessWidget {
@@ -9,32 +10,30 @@ class BooksLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.w),
-      child: ListView.builder(
-        itemCount: 8,
-        itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
-            highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
-            child: Container(
-              margin: EdgeInsets.only(bottom: 16.h),
-              child: Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      sliver: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: context.responsive(mobile: 2, tablet: 3, desktop: 6),
+          crossAxisSpacing: 16.w,
+          mainAxisSpacing: 16.h,
+          childAspectRatio: 0.65,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return Shimmer.fromColors(
+              baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+              highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey[800] : Colors.white,
                   borderRadius: BorderRadius.circular(16.r),
                 ),
-                child: Container(
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+          childCount: 25,
+        ),
       ),
     );
   }
