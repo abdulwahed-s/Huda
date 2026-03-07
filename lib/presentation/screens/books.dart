@@ -63,57 +63,86 @@ class _BooksScreenState extends State<BooksScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: Scaffold(
-        backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-        appBar: BooksAppBar(isDark: isDark),
-        body: BlocBuilder<BooksCubit, BooksState>(
-          builder: (context, state) {
-            return _buildContentForState(context, state, isDark);
-          },
-        ),
-        floatingActionButton: LanguageSelectionFab(
-          animation: _fabAnimation,
-          selectedLanguage: selectedLanguage,
-          onLanguageSelected: _handleLanguageChange,
-        ),
+    return Scaffold(
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
+      body: BlocBuilder<BooksCubit, BooksState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            controller: _booksScrollController,
+            slivers: [
+              BooksAppBar(isDark: isDark),
+              ..._buildContentForState(context, state, isDark),
+            ],
+          );
+        },
+      ),
+      floatingActionButton: BlocBuilder<BooksCubit, BooksState>(
+        builder: (context, state) {
+          final isOffline = state is BooksOfflineLoaded ||
+              state is BooksOfflineEmpty ||
+              state is BooksOffline;
+
+          if (isOffline) return const SizedBox.shrink();
+
+          return LanguageSelectionFab(
+            animation: _fabAnimation,
+            selectedLanguage: selectedLanguage,
+            onLanguageSelected: _handleLanguageChange,
+          );
+        },
       ),
     );
   }
 
-  Widget _buildContentForState(
+  List<Widget> _buildContentForState(
       BuildContext context, BooksState state, bool isDark) {
     if (state is BooksLoading || state is BooksOfflineLoading) {
-      return BooksLoadingWidget(isDark: isDark);
+      return [BooksLoadingWidget(isDark: isDark)];
     } else if (state is BooksLoaded) {
-      return BooksLoadedWidget(
-        state: state,
-        isDark: isDark,
-        selectedLanguage: selectedLanguage,
-        onLanguageChanged: _handleLanguageChange,
-        scrollController: _booksScrollController,
-      );
+      return [
+        BooksLoadedWidget(
+          state: state,
+          isDark: isDark,
+          selectedLanguage: selectedLanguage,
+          onLanguageChanged: _handleLanguageChange,
+        )
+      ];
     } else if (state is BooksOfflineLoaded) {
-      return BooksOfflineWidget(
-        state: state,
-        isDark: isDark,
-        onRetry: _retryLoading,
-      );
+      return [
+        BooksOfflineWidget(
+          state: state,
+          isDark: isDark,
+          onRetry: _retryLoading,
+        )
+      ];
     } else if (state is BooksOfflineEmpty) {
-      return OfflineEmptyStateWidget(isDark: isDark, onRetry: _retryLoading);
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child:
+              OfflineEmptyStateWidget(isDark: isDark, onRetry: _retryLoading),
+        )
+      ];
     } else if (state is BooksOffline) {
-      return OfflineStateWidget(isDark: isDark, onRetry: _retryLoading);
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: OfflineStateWidget(isDark: isDark, onRetry: _retryLoading),
+        )
+      ];
     } else if (state is BooksError) {
-      return BooksErrorWidget(
-        message: state.message,
-        isDark: isDark,
-        onRetry: _retryLoading,
-      );
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: BooksErrorWidget(
+            message: state.message,
+            isDark: isDark,
+            onRetry: _retryLoading,
+          ),
+        )
+      ];
     }
-    return const SizedBox.shrink();
+    return [const SliverToBoxAdapter(child: SizedBox.shrink())];
   }
 
   void _handleLanguageChange(String? language) {
