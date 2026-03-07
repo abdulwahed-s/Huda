@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/cubit/books/books_cubit.dart';
 import 'package:huda/presentation/widgets/books/offline_book_card.dart';
 import 'package:huda/presentation/widgets/books/offline_status_widget.dart';
@@ -18,11 +19,18 @@ class BooksOfflineWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    return SliverMainAxisGroup(
       slivers: [
         SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          sliver: SliverList(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          sliver: SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount:
+                  context.responsive(mobile: 2, tablet: 3, desktop: 6),
+              crossAxisSpacing: 16.w,
+              mainAxisSpacing: 16.h,
+              childAspectRatio: 0.65,
+            ),
             delegate: SliverChildBuilderDelegate(
               (context, index) => OfflineBookCard(
                 book: state.offlineBooks[index],
@@ -33,10 +41,13 @@ class BooksOfflineWidget extends StatelessWidget {
           ),
         ),
         SliverToBoxAdapter(
-          child: OfflineStatusWidget(
-            count: state.offlineBooks.length,
-            isDark: isDark,
-            onRetry: onRetry,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 32.h),
+            child: OfflineStatusWidget(
+              count: state.offlineBooks.length,
+              isDark: isDark,
+              onRetry: onRetry,
+            ),
           ),
         ),
       ],
