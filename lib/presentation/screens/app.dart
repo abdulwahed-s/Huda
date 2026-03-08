@@ -13,6 +13,7 @@ import 'package:huda/cubit/theme/theme_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/cubit/rating/rating_cubit.dart';
+import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 import 'package:huda/core/utils/responsive_utils.dart';
@@ -56,6 +57,9 @@ class _AppState extends State<App> {
         BlocProvider(create: (_) => LocalizationCubit()),
         BlocProvider(create: (_) => NotificationsCubit()),
         BlocProvider(create: (_) => RatingCubit()),
+        BlocProvider<MiqaatLockCubit>.value(
+          value: getIt<MiqaatLockCubit>(),
+        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {
