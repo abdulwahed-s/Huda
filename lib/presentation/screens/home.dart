@@ -12,6 +12,7 @@ import 'package:huda/presentation/widgets/home/home_background.dart';
 import 'package:huda/presentation/widgets/home/home_content.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:huda/presentation/widgets/home/exit_confirmation_dialog.dart';
+import 'package:huda/core/services/whats_new_service.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -54,6 +55,12 @@ class _HomeState extends State<Home>
 
     context.read<HomeCubit>().loadHomeData();
     _animationController.forward();
+
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) {
+        WhatsNewService.checkAndShow(context);
+      }
+    });
 
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
@@ -160,19 +167,19 @@ class _HomeState extends State<Home>
         showReleaseNotes: true,
         showIgnore: false,
         upgrader: getIt<Upgrader>(),
-        child: SafeArea(
-          top: false,
-          left: false,
-          right: false,
-          child: Scaffold(
-            body: HomeBackground(
-              isDarkMode: isDarkMode,
-              child: CustomScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                slivers: [
-                  // ignore: prefer_const_constructors
-                  HomeAppBar(),
-                  HomeContent(
+        child: Scaffold(
+          body: HomeBackground(
+            isDarkMode: isDarkMode,
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                // ignore: prefer_const_constructors
+                HomeAppBar(),
+                SliverSafeArea(
+                  top: false,
+                  left: false,
+                  right: false,
+                  sliver: HomeContent(
                     animationController: _animationController,
                     fadeAnimation: _fadeAnimation,
                     slideAnimation: _slideAnimation,
@@ -180,8 +187,8 @@ class _HomeState extends State<Home>
                     openLastReadSurah: _openLastReadSurah,
                     isDarkMode: isDarkMode,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
