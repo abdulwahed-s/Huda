@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/data/models/onboarding_data.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_indicator.dart';
@@ -23,7 +24,12 @@ class OnboardingBottomControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(24.w, 20.h, 24.w, 16.h),
+      padding: EdgeInsets.fromLTRB(
+        context.responsive(mobile: 24.w, tablet: 24.0, desktop: 24.0),
+        context.responsive(mobile: 20.h, tablet: 20.0, desktop: 20.0),
+        context.responsive(mobile: 24.w, tablet: 24.0, desktop: 24.0),
+        context.responsive(mobile: 16.h, tablet: 16.0, desktop: 16.0),
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
@@ -39,7 +45,10 @@ class OnboardingBottomControls extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildPageIndicators(context),
-          SizedBox(height: 24.h),
+          SizedBox(
+            height:
+                context.responsive(mobile: 24.h, tablet: 24.0, desktop: 24.0),
+          ),
           _buildNavigationButtons(context),
         ],
       ),
@@ -84,7 +93,10 @@ class OnboardingBottomControls extends StatelessWidget {
         child: TextButton(
           onPressed: onPreviousPressed,
           style: TextButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 16.h),
+            padding: EdgeInsets.symmetric(
+              vertical:
+                  context.responsive(mobile: 16.h, tablet: 16.0, desktop: 16.0),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.r),
             ),
@@ -94,14 +106,16 @@ class OnboardingBottomControls extends StatelessWidget {
             children: [
               Icon(
                 Icons.arrow_back_ios_rounded,
-                size: 16.sp,
+                size: context.responsive(
+                    mobile: 16.sp, tablet: 18.0, desktop: 18.0),
                 color: onboardingPages[currentPage].primaryColor,
               ),
               SizedBox(width: 8.w),
               Text(
                 AppLocalizations.of(context)!.previous,
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: context.responsive(
+                      mobile: 16.sp, tablet: 18.0, desktop: 18.0),
                   color: onboardingPages[currentPage].primaryColor,
                   fontWeight: FontWeight.w600,
                 ),
@@ -139,7 +153,10 @@ class OnboardingBottomControls extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
-            padding: EdgeInsets.symmetric(vertical: 16.h),
+            padding: EdgeInsets.symmetric(
+              vertical:
+                  context.responsive(mobile: 16.h, tablet: 16.0, desktop: 16.0),
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.r),
             ),
@@ -152,7 +169,8 @@ class OnboardingBottomControls extends StatelessWidget {
                     ? AppLocalizations.of(context)!.getStarted
                     : AppLocalizations.of(context)!.next,
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: context.responsive(
+                      mobile: 16.sp, tablet: 18.0, desktop: 18.0),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
@@ -162,7 +180,8 @@ class OnboardingBottomControls extends StatelessWidget {
                 currentPage == totalPages - 1
                     ? Icons.rocket_launch_rounded
                     : Icons.arrow_forward_ios_rounded,
-                size: 16.sp,
+                size: context.responsive(
+                    mobile: 16.sp, tablet: 18.0, desktop: 18.0),
                 color: Colors.white,
               ),
             ],
