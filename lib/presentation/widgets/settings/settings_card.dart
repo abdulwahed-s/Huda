@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 
 class SettingsCard extends StatelessWidget {
   final Widget child;
@@ -14,7 +15,9 @@ class SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.all(
+        context.responsive(mobile: 24.w, tablet: 24.0, desktop: 24.0),
+      ),
       decoration: BoxDecoration(
         color: isDark ? context.darkCardBackground : Colors.white,
         borderRadius: BorderRadius.circular(20.r),
@@ -35,4 +38,3 @@ class SettingsCard extends StatelessWidget {
     );
   }
 }
-
