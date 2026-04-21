@@ -1,7 +1,10 @@
+import 'dart:io' show Platform;
+
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/core/services/rating_service.dart';
 import 'package:huda/core/services/send_feedback.dart';
 import 'package:huda/core/theme/theme_extension.dart';
@@ -38,14 +41,19 @@ class SupportCard extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(
+          context.responsive(mobile: 24.w, tablet: 24.0, desktop: 24.0),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(16.w),
+                  padding: EdgeInsets.all(
+                    context.responsive(
+                        mobile: 16.w, tablet: 16.0, desktop: 16.0),
+                  ),
                   decoration: BoxDecoration(
                     color: context.primaryColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(16.r),
@@ -53,10 +61,13 @@ class SupportCard extends StatelessWidget {
                   child: Icon(
                     Icons.support_agent_rounded,
                     color: context.primaryColor,
-                    size: 28.sp,
+                    size: context.responsive(
+                        mobile: 28.sp, tablet: 28.0, desktop: 28.0),
                   ),
                 ),
-                SizedBox(width: 16.w),
+                SizedBox(
+                    width: context.responsive(
+                        mobile: 16.w, tablet: 16.0, desktop: 16.0)),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +75,8 @@ class SupportCard extends StatelessWidget {
                       Text(
                         AppLocalizations.of(context)!.supportAndFeedback,
                         style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: context.responsive(
+                              mobile: 20.sp, tablet: 20.0, desktop: 20.0),
                           fontFamily: "Amiri",
                           fontWeight: FontWeight.w700,
                           color: isDark ? context.darkText : context.lightText,
@@ -74,7 +86,8 @@ class SupportCard extends StatelessWidget {
                       Text(
                         AppLocalizations.of(context)!.supportDescription,
                         style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: context.responsive(
+                              mobile: 14.sp, tablet: 14.0, desktop: 14.0),
                           fontFamily: "Amiri",
                           color: isDark
                               ? context.darkText.withValues(alpha: 0.7)
@@ -87,8 +100,6 @@ class SupportCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 24.h),
-
-            // Rate App Card
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -177,10 +188,7 @@ class SupportCard extends StatelessWidget {
                 ),
               ),
             ),
-
             SizedBox(height: 16.h),
-
-            // Detailed Feedback Card (navigates to feedback screen)
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -270,9 +278,7 @@ class SupportCard extends StatelessWidget {
                 ),
               ),
             ),
-
             SizedBox(height: 16.h),
-
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -298,9 +304,16 @@ class SupportCard extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(18.r),
                   onTap: () {
-                    BetterFeedback.of(context).show((UserFeedback feedback) {
-                      sendFeedbackToFirebase(feedback);
-                    });
+                    final bool isDesktop = Platform.isWindows ||
+                        Platform.isLinux ||
+                        Platform.isMacOS;
+                    if (isDesktop) {
+                      Navigator.of(context).pushNamed(AppRoute.feedback);
+                    } else {
+                      BetterFeedback.of(context).show((UserFeedback feedback) {
+                        sendFeedbackToFirebase(feedback);
+                      });
+                    }
                   },
                   child: Padding(
                     padding:
