@@ -5,6 +5,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_bottom_controls.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_page_content.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_pages.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_top_bar.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -86,38 +87,49 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              OnboardingTopBar(
-                currentPage: _currentPage,
-                totalPages: getOnboardingPages(context).length,
-                currentPageData: getOnboardingPages(context)[_currentPage],
-                onSkipPressed: _skipOnboarding,
-              ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
-                  },
-                  itemCount: getOnboardingPages(context).length,
-                  itemBuilder: (context, index) {
-                    return OnboardingPageContent(
-                      data: getOnboardingPages(context)[index],
-                    );
-                  },
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: context.responsive(
+                  mobile: double.infinity,
+                  tablet: 600.0,
+                  desktop: 600.0,
                 ),
               ),
-              OnboardingBottomControls(
-                currentPage: _currentPage,
-                totalPages: getOnboardingPages(context).length,
-                onboardingPages: getOnboardingPages(context),
-                onPreviousPressed: _previousPage,
-                onNextPressed: _nextPage,
+              child: Column(
+                children: [
+                  OnboardingTopBar(
+                    currentPage: _currentPage,
+                    totalPages: getOnboardingPages(context).length,
+                    currentPageData: getOnboardingPages(context)[_currentPage],
+                    onSkipPressed: _skipOnboarding,
+                  ),
+                  Expanded(
+                    child: PageView.builder(
+                      controller: _pageController,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _currentPage = index;
+                        });
+                      },
+                      itemCount: getOnboardingPages(context).length,
+                      itemBuilder: (context, index) {
+                        return OnboardingPageContent(
+                          data: getOnboardingPages(context)[index],
+                        );
+                      },
+                    ),
+                  ),
+                  OnboardingBottomControls(
+                    currentPage: _currentPage,
+                    totalPages: getOnboardingPages(context).length,
+                    onboardingPages: getOnboardingPages(context),
+                    onPreviousPressed: _previousPage,
+                    onNextPressed: _nextPage,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
