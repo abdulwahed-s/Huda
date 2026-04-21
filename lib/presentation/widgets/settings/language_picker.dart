@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
@@ -22,11 +23,12 @@ class LanguagePicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Header section with improved design
         Row(
           children: [
             Container(
-              padding: EdgeInsets.all(12.w),
+              padding: EdgeInsets.all(
+                context.responsive(mobile: 12.w, tablet: 14.0, desktop: 14.0),
+              ),
               decoration: BoxDecoration(
                 color: context.primaryColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12.r),
@@ -34,10 +36,13 @@ class LanguagePicker extends StatelessWidget {
               child: Icon(
                 Icons.language_outlined,
                 color: context.primaryColor,
-                size: 24.sp,
+                size: context.responsive(
+                    mobile: 24.sp, tablet: 26.0, desktop: 26.0),
               ),
             ),
-            SizedBox(width: 16.w),
+            SizedBox(
+                width: context.responsive(
+                    mobile: 16.w, tablet: 16.0, desktop: 16.0)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +50,8 @@ class LanguagePicker extends StatelessWidget {
                   Text(
                     l10n.language,
                     style: TextStyle(
-                      fontSize: 18.sp,
+                      fontSize: context.responsive(
+                          mobile: 18.sp, tablet: 20.0, desktop: 20.0),
                       fontWeight: FontWeight.w600,
                       fontFamily: "Amiri",
                       color: isDark ? context.darkText : context.lightText,
@@ -55,7 +61,8 @@ class LanguagePicker extends StatelessWidget {
                   Text(
                     _getLanguageDisplayName(selectedLocale.languageCode, l10n),
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: context.responsive(
+                          mobile: 14.sp, tablet: 15.0, desktop: 15.0),
                       fontFamily: "Amiri",
                       color: isDark
                           ? context.darkText.withValues(alpha: 0.7)
@@ -67,10 +74,16 @@ class LanguagePicker extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 24.h),
-        // Language dropdown with better design
+        SizedBox(
+            height:
+                context.responsive(mobile: 24.h, tablet: 24.0, desktop: 24.0)),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(
+            horizontal:
+                context.responsive(mobile: 16.w, tablet: 16.0, desktop: 16.0),
+            vertical:
+                context.responsive(mobile: 4.h, tablet: 4.0, desktop: 4.0),
+          ),
           decoration: BoxDecoration(
             color: isDark
                 ? context.darkCardBackground.withValues(alpha: 0.7)
@@ -96,14 +109,20 @@ class LanguagePicker extends StatelessWidget {
             icon: Icon(
               Icons.expand_more_rounded,
               color: context.primaryColor,
-              size: 24.sp,
+              size: context.responsive(
+                  mobile: 24.sp, tablet: 24.0, desktop: 24.0),
             ),
             items: LocalizationCubit.supportedLocales.map((locale) {
               final isCurrentSelected = selectedLocale == locale;
               return DropdownMenuItem<Locale>(
                 value: locale,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.responsive(
+                        mobile: 8.w, tablet: 10.0, desktop: 10.0),
+                    vertical: context.responsive(
+                        mobile: 8.h, tablet: 10.0, desktop: 10.0),
+                  ),
                   decoration: BoxDecoration(
                     color: isCurrentSelected
                         ? context.primaryColor.withValues(alpha: 0.1)
@@ -112,10 +131,11 @@ class LanguagePicker extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      // Language flag/badge
                       Container(
-                        width: 36.w,
-                        height: 24.h,
+                        width: context.responsive(
+                            mobile: 36.w, tablet: 36.0, desktop: 36.0),
+                        height: context.responsive(
+                            mobile: 24.h, tablet: 24.0, desktop: 24.0),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: _getLanguageGradient(locale.languageCode),
@@ -134,19 +154,23 @@ class LanguagePicker extends StatelessWidget {
                             locale.languageCode.toUpperCase(),
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 10.sp,
+                              fontSize: context.responsive(
+                                  mobile: 10.sp, tablet: 11.0, desktop: 11.0),
                               fontWeight: FontWeight.bold,
                               fontFamily: "Amiri",
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(width: 16.w),
+                      SizedBox(
+                          width: context.responsive(
+                              mobile: 16.w, tablet: 16.0, desktop: 16.0)),
                       Expanded(
                         child: Text(
                           _getLanguageDisplayName(locale.languageCode, l10n),
                           style: TextStyle(
-                            fontSize: 15.sp,
+                            fontSize: context.responsive(
+                                mobile: 15.sp, tablet: 16.0, desktop: 16.0),
                             fontFamily: "Amiri",
                             fontWeight: isCurrentSelected
                                 ? FontWeight.w600
@@ -158,7 +182,10 @@ class LanguagePicker extends StatelessWidget {
                       ),
                       if (isCurrentSelected)
                         Container(
-                          padding: EdgeInsets.all(4.w),
+                          padding: EdgeInsets.all(
+                            context.responsive(
+                                mobile: 4.w, tablet: 5.0, desktop: 5.0),
+                          ),
                           decoration: BoxDecoration(
                             color: context.primaryColor,
                             borderRadius: BorderRadius.circular(10.r),
@@ -166,7 +193,8 @@ class LanguagePicker extends StatelessWidget {
                           child: Icon(
                             Icons.check_rounded,
                             color: Colors.white,
-                            size: 16.sp,
+                            size: context.responsive(
+                                mobile: 16.sp, tablet: 16.0, desktop: 16.0),
                           ),
                         ),
                     ],
@@ -215,27 +243,27 @@ class LanguagePicker extends StatelessWidget {
   List<Color> _getLanguageGradient(String languageCode) {
     switch (languageCode) {
       case 'en':
-        return [const Color(0xFF1E40AF), const Color(0xFF1D4ED8)]; // Blue
+        return [const Color(0xFF1E40AF), const Color(0xFF1D4ED8)];
       case 'ar':
-        return [const Color(0xFF059669), const Color(0xFF047857)]; // Green
+        return [const Color(0xFF059669), const Color(0xFF047857)];
       case 'tr':
-        return [const Color(0xFFDC2626), const Color(0xFFB91C1C)]; // Red
+        return [const Color(0xFFDC2626), const Color(0xFFB91C1C)];
       case 'fr':
-        return [const Color(0xFF4338CA), const Color(0xFF3730A3)]; // Indigo
+        return [const Color(0xFF4338CA), const Color(0xFF3730A3)];
       case 'es':
-        return [const Color(0xFFEA580C), const Color(0xFFD97706)]; // Orange
+        return [const Color(0xFFEA580C), const Color(0xFFD97706)];
       case 'de':
-        return [const Color(0xFFD97706), const Color(0xFFB45309)]; // Amber
+        return [const Color(0xFFD97706), const Color(0xFFB45309)];
       case 'ru':
-        return [const Color(0xFF7C3AED), const Color(0xFF6D28D9)]; // Purple
+        return [const Color(0xFF7C3AED), const Color(0xFF6D28D9)];
       case 'ur':
-        return [const Color(0xFF0D9488), const Color(0xFF0F766E)]; // Teal
+        return [const Color(0xFF0D9488), const Color(0xFF0F766E)];
       case 'ms':
-        return [const Color(0xFFDB2777), const Color(0xFFBE185D)]; // Pink
+        return [const Color(0xFFDB2777), const Color(0xFFBE185D)];
       case 'bn':
-        return [const Color(0xFF059669), const Color(0xFF065F46)]; // Emerald
+        return [const Color(0xFF059669), const Color(0xFF065F46)];
       default:
-        return [const Color(0xFF6B7280), const Color(0xFF4B5563)]; // Gray
+        return [const Color(0xFF6B7280), const Color(0xFF4B5563)];
     }
   }
 }
