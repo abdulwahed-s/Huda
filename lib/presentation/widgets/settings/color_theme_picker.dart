@@ -55,11 +55,12 @@ class _ColorThemePickerState extends State<ColorThemePicker>
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isTablet = ResponsiveUtils.isTablet(context) ||
+        final isTablet = !ResponsiveUtils.isMobile(context) ||
             kIsWeb ||
             PlatformUtils.isDesktop;
 
-        final crossAxisCount = isTablet ? 6 : 4;
+        final availableWidth = constraints.maxWidth;
+        final crossAxisCount = availableWidth > 500 ? 6 : 4;
         final gridSpacing = isTablet ? 16.0 : 12.w;
         final maxWidth = isTablet ? 800.0 : double.infinity;
 
@@ -178,15 +179,15 @@ class _ColorThemePickerState extends State<ColorThemePicker>
     final isSelected = theme == widget.selectedTheme;
     final isHovered = theme == _hoveredTheme;
 
-    final borderRadius = isTablet ? 18.0 : 16.r;
-    final innerBorderRadius = isTablet ? 16.0 : 14.r;
+    final borderRadius = isTablet ? 20.0 : 16.r;
+    final innerBorderRadius = isTablet ? 18.0 : 14.r;
     final borderWidth =
         isSelected ? (isTablet ? 3.5 : 3.0) : (isTablet ? 2.5 : 2.0);
-    final checkSize = isTablet ? 32.0 : 24.w;
-    final checkIconSize = isTablet ? 20.0 : 16.sp;
-    final badgeFontSize = isTablet ? 10.0 : 8.sp;
-    final badgePadding = isTablet ? 6.0 : 4.w;
-    final badgeVerticalPadding = isTablet ? 3.0 : 2.h;
+    final checkSize = isTablet ? 36.0 : 24.w;
+    final checkIconSize = isTablet ? 22.0 : 16.sp;
+    final badgeFontSize = isTablet ? 13.0 : 8.sp;
+    final badgePadding = isTablet ? 10.0 : 4.w;
+    final badgeVerticalPadding = isTablet ? 5.0 : 2.h;
 
     return MouseRegion(
       onEnter: (_) {
@@ -267,9 +268,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                           ),
                         ),
                       Positioned(
-                        bottom: isTablet ? 6 : 4.h,
-                        left: isTablet ? 6 : 4.w,
-                        right: isTablet ? 6 : 4.w,
+                        bottom: isTablet ? 8 : 4.h,
+                        left: isTablet ? 8 : 4.w,
+                        right: isTablet ? 8 : 4.w,
                         child: Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: badgePadding,
