@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/data/models/onboarding_data.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
@@ -20,12 +21,19 @@ class OnboardingTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.all(
+        context.responsive(mobile: 20.w, tablet: 20.0, desktop: 20.0),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            padding: EdgeInsets.symmetric(
+              horizontal:
+                  context.responsive(mobile: 12.w, tablet: 14.0, desktop: 14.0),
+              vertical:
+                  context.responsive(mobile: 6.h, tablet: 8.0, desktop: 8.0),
+            ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -42,7 +50,8 @@ class OnboardingTopBar extends StatelessWidget {
             child: Text(
               '${currentPage + 1} / $totalPages',
               style: TextStyle(
-                fontSize: 13.sp,
+                fontSize: context.responsive(
+                    mobile: 13.sp, tablet: 15.0, desktop: 15.0),
                 color: currentPageData.primaryColor,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.5,
@@ -85,14 +94,20 @@ class OnboardingTopBar extends StatelessWidget {
           onTap: onSkipPressed,
           borderRadius: BorderRadius.circular(25.r),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(
+              horizontal:
+                  context.responsive(mobile: 18.w, tablet: 20.0, desktop: 20.0),
+              vertical:
+                  context.responsive(mobile: 10.h, tablet: 12.0, desktop: 12.0),
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   AppLocalizations.of(context)!.skip,
                   style: TextStyle(
-                    fontSize: 13.sp,
+                    fontSize: context.responsive(
+                        mobile: 13.sp, tablet: 15.0, desktop: 15.0),
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
@@ -104,7 +119,8 @@ class OnboardingTopBar extends StatelessWidget {
                 SizedBox(width: 4.w),
                 Icon(
                   Icons.arrow_forward_rounded,
-                  size: 14.sp,
+                  size: context.responsive(
+                      mobile: 14.sp, tablet: 16.0, desktop: 16.0),
                   color: Theme.of(context)
                       .colorScheme
                       .onSurface
