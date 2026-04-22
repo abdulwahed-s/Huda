@@ -8,7 +8,6 @@ class WidgetBackgroundService {
   static const String _isEnabledKey = 'widget_background_updates_enabled';
   static const String _lastUpdateKey = 'last_widget_update_time';
 
-  /// Initialize widget background updates with aggressive scheduling
   static Future<void> initialize() async {
     if (!PlatformUtils.isMobile) return;
     final isEnabled = await isBackgroundUpdatesEnabled();
@@ -17,19 +16,34 @@ class WidgetBackgroundService {
     }
   }
 
-  /// Schedule aggressive periodic widget updates with multiple fallbacks
+  static Future<void> _cancelWidgetTasks() async {
+    const taskNames = [
+      'frequent-widget-update',
+      'backup-widget-update',
+      'conservative-widget-update',
+      'immediate-widget-update',
+    ];
+    for (final name in taskNames) {
+      try {
+        await Workmanager().cancelByUniqueName(name);
+      } catch (e) {
+        debugPrint('⚠️ Could not cancel widget task $name: $e');
+      }
+    }
+  }
+
   static Future<void> scheduleAggressiveUpdates() async {
     if (!PlatformUtils.isMobile) return;
-    try {
-      // Cancel all existing widget tasks first
-      await Workmanager().cancelAll();
 
-      // Strategy 1: Frequent updates every 30 minutes
+    await _cancelWidgetTasks();
+
+    try {
       await Workmanager().registerPeriodicTask(
         'frequent-widget-update',
         _widgetUpdateTaskName,
         frequency: const Duration(minutes: 30),
         initialDelay: const Duration(minutes: 2),
+        existingWorkPolicy: ExistingPeriodicWorkPolicy.replace,
         constraints: Constraints(
           networkType: NetworkType.notRequired,
           requiresBatteryNotLow: false,
@@ -38,13 +52,17 @@ class WidgetBackgroundService {
           requiresStorageNotLow: false,
         ),
       );
+    } catch (e) {
+      debugPrint('❌ Error registering frequent-widget-update: $e');
+    }
 
-      // Strategy 2: Backup updates every 1 hour
+    try {
       await Workmanager().registerPeriodicTask(
         'backup-widget-update',
         _widgetUpdateTaskName,
         frequency: const Duration(hours: 1),
         initialDelay: const Duration(minutes: 35),
+        existingWorkPolicy: ExistingPeriodicWorkPolicy.replace,
         constraints: Constraints(
           networkType: NetworkType.notRequired,
           requiresBatteryNotLow: false,
@@ -53,13 +71,17 @@ class WidgetBackgroundService {
           requiresStorageNotLow: false,
         ),
       );
+    } catch (e) {
+      debugPrint('❌ Error registering backup-widget-update: $e');
+    }
 
-      // Strategy 3: Conservative fallback every 3 hours
+    try {
       await Workmanager().registerPeriodicTask(
         'conservative-widget-update',
         _widgetUpdateTaskName,
         frequency: const Duration(hours: 3),
         initialDelay: const Duration(hours: 1, minutes: 15),
+        existingWorkPolicy: ExistingPeriodicWorkPolicy.replace,
         constraints: Constraints(
           networkType: NetworkType.notRequired,
           requiresBatteryNotLow: false,
@@ -68,36 +90,33 @@ class WidgetBackgroundService {
           requiresStorageNotLow: false,
         ),
       );
+    } catch (e) {
+      debugPrint('❌ Error registering conservative-widget-update: $e');
+    }
 
-      // Strategy 4: Immediate one-off update
+    try {
       await Workmanager().registerOneOffTask(
         'immediate-widget-update',
         _widgetUpdateTaskName,
         initialDelay: const Duration(minutes: 1),
+        existingWorkPolicy: ExistingWorkPolicy.replace,
       );
-
-      debugPrint(' Aggressive widget background updates scheduled');
-      debugPrint('📅 Schedule: 30min, 1hr, 3hr intervals + immediate update');
-
-      // Store scheduling time
-      await _updateLastScheduleTime();
     } catch (e) {
-      debugPrint('❌ Error scheduling aggressive widget updates: $e');
+      debugPrint('❌ Error registering immediate-widget-update: $e');
     }
+
+    debugPrint('✅ Aggressive widget background updates scheduled');
+    debugPrint('📅 Schedule: 30min, 1hr, 3hr intervals + immediate update');
+
+    await _updateLastScheduleTime();
   }
 
-  /// Stop all widget background updates
   static Future<void> stopPeriodicUpdates() async {
     if (!PlatformUtils.isMobile) return;
-    try {
-      await Workmanager().cancelAll();
-      debugPrint('🛑 All widget background updates stopped');
-    } catch (e) {
-      debugPrint('❌ Error stopping widget updates: $e');
-    }
+    await _cancelWidgetTasks();
+    debugPrint('🛑 Widget background updates stopped');
   }
 
-  /// Enable/disable background widget updates
   static Future<void> setBackgroundUpdatesEnabled(bool enabled) async {
     if (!PlatformUtils.isMobile) return;
     final prefs = await SharedPreferences.getInstance();
@@ -113,24 +132,20 @@ class WidgetBackgroundService {
     }
   }
 
-  /// Check if background updates are enabled
   static Future<bool> isBackgroundUpdatesEnabled() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_isEnabledKey) ?? true; // Default to enabled
+    return prefs.getBool(_isEnabledKey) ?? true;
   }
 
-  /// Force immediate widget update with reschedule
   static Future<void> forceUpdateNow() async {
     if (!PlatformUtils.isMobile) return;
     try {
-      // Immediate update
       await Workmanager().registerOneOffTask(
         'force-update-${DateTime.now().millisecondsSinceEpoch}',
         _widgetUpdateTaskName,
         initialDelay: const Duration(seconds: 5),
       );
 
-      // Also reschedule all tasks to ensure continuity
       final isEnabled = await isBackgroundUpdatesEnabled();
       if (isEnabled) {
         await scheduleAggressiveUpdates();
@@ -143,7 +158,6 @@ class WidgetBackgroundService {
     }
   }
 
-  /// Update last schedule time for tracking
   static Future<void> _updateLastScheduleTime() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -154,7 +168,6 @@ class WidgetBackgroundService {
     }
   }
 
-  /// Update last update time for tracking
   static Future<void> updateLastUpdateTime() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -164,7 +177,6 @@ class WidgetBackgroundService {
     }
   }
 
-  /// Get last update time for debugging
   static Future<DateTime?> getLastUpdateTime() async {
     try {
       final prefs = await SharedPreferences.getInstance();
