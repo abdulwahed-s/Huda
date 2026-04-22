@@ -26,4 +26,6 @@ class AppRoute {
   static const String zakatCalculator = '/zakatCalculator';
   static const String miqaatLock = '/miqaatLock';
   static const String ramadan = '/ramadan';
+  static const String quranAudio = '/quranAudio';
+  static const String quranRadio = '/quranRadio';
 }
