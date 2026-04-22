@@ -64,6 +64,14 @@ import 'package:huda/presentation/screens/zakat_calculator.dart';
 import 'package:huda/presentation/screens/miqaat_lock_screen.dart';
 import 'package:huda/cubit/ramadan/ramadan_cubit.dart';
 import 'package:huda/presentation/screens/ramadan_screen.dart';
+import 'package:huda/cubit/quran_player/quran_player_cubit.dart';
+import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
+import 'package:huda/cubit/quran_player/download_progress_cubit.dart';
+import 'package:huda/presentation/screens/reciters_screen.dart';
+import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
+import 'package:huda/data/api/radio_services.dart';
+import 'package:huda/data/repository/radio_repository.dart';
+import 'package:huda/presentation/screens/quran_radio_screen.dart';
 
 class PageRouter {
   Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -666,6 +674,68 @@ class PageRouter {
               child: child,
             );
           },
+        );
+      case AppRoute.quranAudio:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) => MultiBlocProvider(
+            providers: [
+              BlocProvider<DownloadProgressCubit>(
+                create: (context) => DownloadProgressCubit(),
+              ),
+              BlocProvider<QuranPlayerCubit>(
+                create: (context) => QuranPlayerCubit(
+                  downloadProgressCubit: context.read<DownloadProgressCubit>(),
+                ),
+              ),
+              BlocProvider<PlayerBarCubit>(
+                create: (context) => PlayerBarCubit(),
+              ),
+            ],
+            child: const RecitersScreen(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 400),
+        );
+      case AppRoute.quranRadio:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, animation, __) =>
+              RepositoryProvider<RadioRepository>(
+            create: (_) => RadioRepository(radioServices: RadioServices()),
+            child: BlocProvider<QuranRadioCubit>(
+              create: (context) => QuranRadioCubit(
+                context.read<RadioRepository>(),
+              ),
+              child: const QuranRadioScreen(),
+            ),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 400),
         );
     }
     return null;
