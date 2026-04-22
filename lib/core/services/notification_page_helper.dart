@@ -22,6 +22,7 @@ class NotificationPageHelper {
   static const int _athkarEveningId = 1003;
   static const int _quranReminderId = 1004;
   static const int _checklistReminderId = 1005;
+  static const int _khatmaReminderId = 1006;
   static const int _randomAthkarBaseId = 1100;
 
   static const String _renewalTaskName = 'renewAthkarNotifications';
@@ -384,6 +385,21 @@ class NotificationPageHelper {
     }
   }
 
+  Future<void> scheduleKhatmaReminder(bool enable, TimeOfDay? time,
+      [String? title, String? body]) async {
+    if (enable && time != null) {
+      await scheduleDaily(
+        id: _khatmaReminderId,
+        title: title ?? '📖 Khatma Daily Reminder',
+        body: body ??
+            'Time to read your daily Quran wird and stay on track with your Khatma.',
+        time: time,
+      );
+    } else {
+      await cancel(_khatmaReminderId);
+    }
+  }
+
   Future<void> scheduleChecklistReminder(bool enable, TimeOfDay? time,
       [String? title, String? body]) async {
     if (enable && time != null) {
@@ -517,6 +533,7 @@ class NotificationPageHelper {
       await cancel(_athkarEveningId);
       await cancel(_quranReminderId);
       await cancel(_quranReminderId + 100);
+      await cancel(_khatmaReminderId);
       await _cancelAllRandomAthkar();
     }
 
@@ -535,7 +552,7 @@ class NotificationPageHelper {
 
     final filteredPending = allPending.where((notification) {
       return (notification.id >= _kahfNotificationId &&
-              notification.id <= _quranReminderId + 100) ||
+              notification.id <= _khatmaReminderId) ||
           (notification.id >= _randomAthkarBaseId &&
               notification.id <
                   _randomAthkarBaseId + _maxRandomAthkarNotifications);
