@@ -67,7 +67,6 @@ Future<bool> _handleWidgetUpdate() async {
     await WidgetBackgroundService.updateLastUpdateTime();
 
     debugPrint('✅ Widget updated successfully at ${DateTime.now()}');
-    return true;
   } catch (e) {
     debugPrint('❌ Error in background widget update: $e');
 
@@ -75,12 +74,12 @@ Future<bool> _handleWidgetUpdate() async {
       debugPrint('🔄 Attempting fallback widget update...');
       await WidgetService.updateWidget();
       debugPrint('✅ Fallback widget update successful');
-      return true;
     } catch (fallbackError) {
       debugPrint('❌ Fallback widget update also failed: $fallbackError');
-      return false;
     }
   }
+
+  return true;
 }
 
 Future<bool> _handlePrayerNotificationsRenewal() async {
