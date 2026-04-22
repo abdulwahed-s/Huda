@@ -64,6 +64,8 @@ class WidgetService {
       await prefs.setString(
           'themeMode', themeColorData['themeMode'] ?? 'light');
 
+      await Future.delayed(const Duration(milliseconds: 100));
+
       if (PlatformUtils.isIOS) {
         await HomeWidget.setAppGroupId('group.hudaHomeApp');
         await HomeWidget.saveWidgetData<String>('quote', quote);
@@ -77,8 +79,17 @@ class WidgetService {
 
       if (PlatformUtils.isAndroid) {
         try {
+          await HomeWidget.updateWidget(
+            qualifiedAndroidName: 'com.aw.huda.widget.HudaGlanceWidgetReceiver',
+          );
+          debugPrint('📱 Triggered widget update via broadcast');
+        } catch (e) {
+          debugPrint('HomeWidget broadcast failed: $e');
+        }
+
+        try {
           await _channel.invokeMethod('updateWidget');
-          debugPrint('📱 Triggered native widget update');
+          debugPrint('📱 Triggered native widget update via MethodChannel');
         } catch (e) {
           debugPrint(
               'MethodChannel not available (expected on older versions): $e');
@@ -105,8 +116,19 @@ class WidgetService {
 
       if (PlatformUtils.isAndroid) {
         try {
+          await HomeWidget.updateWidget(
+            qualifiedAndroidName: 'com.aw.huda.widget.HudaGlanceWidgetReceiver',
+          );
+          debugPrint(
+              '🎨 Theme changed - triggered widget update via broadcast');
+        } catch (e) {
+          debugPrint('HomeWidget broadcast failed: $e');
+        }
+
+        try {
           await _channel.invokeMethod('updateWidget');
-          debugPrint('🎨 Theme changed - triggered native widget update');
+          debugPrint(
+              '🎨 Theme changed - triggered native widget update via MethodChannel');
         } catch (e) {
           debugPrint('MethodChannel not available: $e');
         }
