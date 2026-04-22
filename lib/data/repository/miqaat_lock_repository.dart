@@ -48,8 +48,8 @@ class MiqaatLockRepository {
         'timeSlots': settings.timeSlots.map((slot) => slot.toJson()).toList(),
         'goalDurationMinutes': settings.goalDurationMinutes,
       });
-    } on PlatformException catch (e) {
-      debugPrint('Failed to sync settings to native: ${e.message}');
+    } on Exception catch (e) {
+      debugPrint('Failed to sync settings to native: $e');
     }
   }
 
@@ -138,8 +138,8 @@ class MiqaatLockRepository {
       await _channel.invokeMethod('completeTimeSlot', {
         'timeSlotId': timeSlotId,
       });
-    } on PlatformException catch (e) {
-      debugPrint('Failed to notify native of slot completion: ${e.message}');
+    } on Exception catch (e) {
+      debugPrint('Failed to notify native of slot completion: $e');
     }
   }
 
@@ -166,8 +166,8 @@ class MiqaatLockRepository {
         'timeSlotId': session.timeSlotId,
         'isCompleted': session.isGoalCompleted,
       });
-    } on PlatformException catch (e) {
-      debugPrint('Failed to sync progress to native: ${e.message}');
+    } on Exception catch (e) {
+      debugPrint('Failed to sync progress to native: $e');
     }
   }
 
@@ -182,8 +182,8 @@ class MiqaatLockRepository {
       return apps
           .map((app) => LockedApp.fromJson(Map<String, dynamic>.from(app)))
           .toList();
-    } on PlatformException catch (e) {
-      debugPrint('Failed to get installed apps: ${e.message}');
+    } on Exception catch (e) {
+      debugPrint('Failed to get installed apps: $e');
       return [];
     }
   }
@@ -192,7 +192,7 @@ class MiqaatLockRepository {
     try {
       final result = await _channel.invokeMethod('checkPermissions');
       return Map<String, bool>.from(result);
-    } on PlatformException {
+    } on Exception {
       return {
         'accessibility': false,
         'overlay': false,
@@ -204,7 +204,7 @@ class MiqaatLockRepository {
   Future<bool> isAccessibilityEnabled() async {
     try {
       return await _channel.invokeMethod('isAccessibilityEnabled') ?? false;
-    } on PlatformException {
+    } on Exception {
       return false;
     }
   }
@@ -212,15 +212,15 @@ class MiqaatLockRepository {
   Future<void> openAccessibilitySettings() async {
     try {
       await _channel.invokeMethod('openAccessibilitySettings');
-    } on PlatformException catch (e) {
-      debugPrint('Failed to open accessibility settings: ${e.message}');
+    } on Exception catch (e) {
+      debugPrint('Failed to open accessibility settings: $e');
     }
   }
 
   Future<bool> isOverlayPermissionGranted() async {
     try {
       return await _channel.invokeMethod('isOverlayPermissionGranted') ?? false;
-    } on PlatformException {
+    } on Exception {
       return false;
     }
   }
@@ -228,15 +228,15 @@ class MiqaatLockRepository {
   Future<void> requestOverlayPermission() async {
     try {
       await _channel.invokeMethod('requestOverlayPermission');
-    } on PlatformException catch (e) {
-      debugPrint('Failed to request overlay permission: ${e.message}');
+    } on Exception catch (e) {
+      debugPrint('Failed to request overlay permission: $e');
     }
   }
 
   Future<bool> isScreenTimeAuthorized() async {
     try {
       return await _channel.invokeMethod('isScreenTimeAuthorized') ?? false;
-    } on PlatformException {
+    } on Exception {
       return false;
     }
   }
@@ -245,7 +245,7 @@ class MiqaatLockRepository {
     try {
       return await _channel.invokeMethod('requestScreenTimeAuthorization') ??
           false;
-    } on PlatformException {
+    } on Exception {
       return false;
     }
   }
