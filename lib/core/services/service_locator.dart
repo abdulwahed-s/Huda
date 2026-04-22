@@ -11,6 +11,9 @@ import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:huda/core/services/speech_service.dart';
+import 'package:huda/core/services/surah_screen_settings_service.dart';
+import 'package:huda/core/services/khatma_service.dart';
+import 'package:huda/core/services/qcf_font_service.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
@@ -28,8 +31,23 @@ void setupServiceLocator() {
     durationUntilAlertAgain: const Duration(hours: 12),
   ));
 
-  // Register SpeechService
   getIt.registerSingleton<SpeechService>(SpeechService());
+
+  getIt.registerSingleton<SurahScreenSettingsService>(
+      SurahScreenSettingsService());
+
+  getIt.registerSingleton<KhatmaService>(
+      KhatmaService(cache: getIt<CacheHelper>()));
+
+  getIt.registerLazySingleton<QcfFontService>(
+      () => QcfFontService(
+          cache: getIt<CacheHelper>(), packType: FontPackType.qcf4),
+      instanceName: 'qcf4');
+
+  getIt.registerLazySingleton<QcfFontService>(
+      () => QcfFontService(
+          cache: getIt<CacheHelper>(), packType: FontPackType.tajweed),
+      instanceName: 'tajweed');
 
   getIt.registerSingletonAsync<MiqaatLockRepository>(
     () => MiqaatLockRepository.create(),
