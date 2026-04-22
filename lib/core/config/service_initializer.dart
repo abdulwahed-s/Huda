@@ -36,6 +36,12 @@ Future<void> initializeCriticalServices() async {
 Future<void> initializeNonCriticalServicesAsync() async {
   await PerformanceUtils.timeAsyncOperation('Non-Critical Services', () async {
     try {
+      if (PlatformUtils.isMobile) {
+        await Workmanager().initialize(
+          callbackDispatcher,
+        );
+      }
+
       await Future.wait([
         _initializeWidgetServices(),
         _initializeNotificationServices(),
@@ -83,11 +89,5 @@ Future<void> _initializeDataServices() async {
 Future<void> _initializeBackgroundServices() async {
   final tracker = ServiceInitializationTracker();
   AppLifecycleManager().initialize();
-
-  if (PlatformUtils.isMobile) {
-    await Workmanager().initialize(
-      callbackDispatcher,
-    );
-  }
   tracker.markServiceReady('background');
 }
