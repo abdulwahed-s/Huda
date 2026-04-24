@@ -33,7 +33,24 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   final CacheHelper cacheHelper;
   static const _latKey = 'latitude';
   static const _lonKey = 'longitude';
+  static const _fajrOffsetKey = 'prayer_offset_fajr';
+  static const _dhuhrOffsetKey = 'prayer_offset_dhuhr';
+  static const _asrOffsetKey = 'prayer_offset_asr';
+  static const _maghribOffsetKey = 'prayer_offset_maghrib';
+  static const _ishaOffsetKey = 'prayer_offset_isha';
+  static const _sunriseOffsetKey = 'prayer_offset_sunrise';
   final LocationService _locationService = LocationService();
+
+  Map<String, int> _prayerOffsets = {
+    'fajr': 0,
+    'sunrise': 0,
+    'dhuhr': 0,
+    'asr': 0,
+    'maghrib': 0,
+    'isha': 0,
+  };
+
+  Map<String, int> get prayerOffsets => Map.unmodifiable(_prayerOffsets);
 
   BuildContext? _context;
 
@@ -107,7 +124,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   Future<void> scheduleNotificationsForMultipleDays(
       NotificationServices notificationServices, int daysAhead) async {
-    // Skip notification scheduling on web platform
     if (kIsWeb) {
       debugPrint('⏭️ Skipping notification scheduling on web platform');
       return;
@@ -134,7 +150,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     await notificationServices.cancelAllPrayerNotifications();
 
     final coordinates = Coordinates(lat, lon);
-    final params = CalculationMethod.karachi.getParameters();
+    final params = CalculationMethod.umm_al_qura.getParameters();
     params.madhab = Madhab.shafi;
 
     final now = DateTime.now();
@@ -155,7 +171,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
       for (final prayerInfo in prayers) {
         final prayer = prayerInfo.$1;
-        final time = prayerInfo.$2;
+        final baseTime = prayerInfo.$2;
+        final offsetMinutes = _prayerOffsets[prayer.name.toLowerCase()] ?? 0;
+        final time = baseTime.add(Duration(minutes: offsetMinutes));
 
         if (time.isAfter(now)) {
           final localizedContent = _getLocalizedPrayerContent(prayer);
@@ -221,6 +239,38 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   PrayerTimesCubit(this.cacheHelper) : super(PrayerTimesInitial());
 
+  void _loadOffsets() {
+    _prayerOffsets = {
+      'fajr': (cacheHelper.getData(key: _fajrOffsetKey) as int?) ?? 0,
+      'sunrise': (cacheHelper.getData(key: _sunriseOffsetKey) as int?) ?? 0,
+      'dhuhr': (cacheHelper.getData(key: _dhuhrOffsetKey) as int?) ?? 0,
+      'asr': (cacheHelper.getData(key: _asrOffsetKey) as int?) ?? 0,
+      'maghrib': (cacheHelper.getData(key: _maghribOffsetKey) as int?) ?? 0,
+      'isha': (cacheHelper.getData(key: _ishaOffsetKey) as int?) ?? 0,
+    };
+  }
+
+  Future<void> savePrayerOffsets(Map<String, int> offsets) async {
+    await cacheHelper.saveData(
+        key: _fajrOffsetKey, value: offsets['fajr'] ?? 0);
+    await cacheHelper.saveData(
+        key: _dhuhrOffsetKey, value: offsets['dhuhr'] ?? 0);
+    await cacheHelper.saveData(key: _asrOffsetKey, value: offsets['asr'] ?? 0);
+    await cacheHelper.saveData(
+        key: _maghribOffsetKey, value: offsets['maghrib'] ?? 0);
+    await cacheHelper.saveData(
+        key: _ishaOffsetKey, value: offsets['isha'] ?? 0);
+    await cacheHelper.saveData(
+        key: _sunriseOffsetKey, value: offsets['sunrise'] ?? 0);
+    _prayerOffsets = Map.from(offsets);
+    if (state is PrayerTimesLoaded) {
+      final current = state as PrayerTimesLoaded;
+      emit(PrayerTimesLoaded(current.prayerTimes, current.placemarks,
+          offsets: _prayerOffsets));
+    }
+    await scheduleNotificationsForToday(NotificationServices());
+  }
+
   Future<void> loadPrayerTimes() async {
     emit(PrayerTimesLoading());
 
@@ -243,13 +293,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           await _locationService.getPlacemarks(lat, lon);
 
       final coordinates = Coordinates(lat, lon);
-      final params = CalculationMethod.karachi.getParameters();
+      final params = CalculationMethod.umm_al_qura.getParameters();
       params.madhab = Madhab.shafi;
 
       final date = DateComponents.from(DateTime.now());
       final prayerTimes = PrayerTimes(coordinates, date, params);
 
-      emit(PrayerTimesLoaded(prayerTimes, placemarks));
+      _loadOffsets();
+      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
       await scheduleNotificationsForToday(NotificationServices());
     } catch (e) {
       emit(PrayerTimesError(e.toString()));
@@ -271,13 +322,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           await _locationService.getPlacemarks(lat, lon);
 
       final coordinates = Coordinates(lat, lon);
-      final params = CalculationMethod.karachi.getParameters();
+      final params = CalculationMethod.umm_al_qura.getParameters();
       params.madhab = Madhab.shafi;
 
       final date = DateComponents.from(DateTime.now());
       final prayerTimes = PrayerTimes(coordinates, date, params);
 
-      emit(PrayerTimesLoaded(prayerTimes, placemarks));
+      _loadOffsets();
+      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
       await scheduleNotificationsForToday(NotificationServices());
     } catch (e) {
       if (e is LocationServiceDisabledFailure ||
@@ -311,7 +363,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         final currentPrayerInfo = await _getCurrentOrNextPrayerTime(now);
 
         if (currentPrayerInfo.isPastPrayer) {
-          // We're within 25 minutes after a prayer time
           yield NextPrayerCountdown(
             prayerName: currentPrayerInfo.name,
             duration: Duration.zero,
@@ -319,7 +370,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
             secondsPassed: currentPrayerInfo.secondsPassed,
           );
         } else {
-          // Normal countdown to next prayer
           final duration = currentPrayerInfo.time.difference(now);
 
           if (duration.isNegative) {
@@ -363,7 +413,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
 
     final coordinates = Coordinates(lat, lon);
-    final params = CalculationMethod.karachi.getParameters();
+    final params = CalculationMethod.umm_al_qura.getParameters();
     params.madhab = Madhab.shafi;
 
     const gracePeriodMinutes = 25;
@@ -371,21 +421,38 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final todayPrayerTimes =
         PrayerTimes(coordinates, DateComponents.from(now), params);
     final todayPrayers = [
-      (Prayer.fajr, todayPrayerTimes.fajr),
-      (Prayer.dhuhr, todayPrayerTimes.dhuhr),
-      (Prayer.asr, todayPrayerTimes.asr),
-      (Prayer.maghrib, todayPrayerTimes.maghrib),
-      (Prayer.isha, todayPrayerTimes.isha),
+      (
+        Prayer.fajr,
+        todayPrayerTimes.fajr
+            .add(Duration(minutes: _prayerOffsets['fajr'] ?? 0))
+      ),
+      (
+        Prayer.dhuhr,
+        todayPrayerTimes.dhuhr
+            .add(Duration(minutes: _prayerOffsets['dhuhr'] ?? 0))
+      ),
+      (
+        Prayer.asr,
+        todayPrayerTimes.asr.add(Duration(minutes: _prayerOffsets['asr'] ?? 0))
+      ),
+      (
+        Prayer.maghrib,
+        todayPrayerTimes.maghrib
+            .add(Duration(minutes: _prayerOffsets['maghrib'] ?? 0))
+      ),
+      (
+        Prayer.isha,
+        todayPrayerTimes.isha
+            .add(Duration(minutes: _prayerOffsets['isha'] ?? 0))
+      ),
     ];
 
-    // Check if we're within the grace period after any prayer
     for (final prayerInfo in todayPrayers) {
       final prayerTime = prayerInfo.$2;
       final secondsSincePrayer = now.difference(prayerTime).inSeconds;
       final minutesSincePrayer = secondsSincePrayer ~/ 60;
 
       if (secondsSincePrayer >= 0 && minutesSincePrayer < gracePeriodMinutes) {
-        // We're within the grace period after this prayer
         return NextPrayerInfo(
           name: _getLocalizedPrayerNameForCountdown(prayerInfo.$1),
           time: prayerTime,
@@ -395,7 +462,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       }
     }
 
-    // Not in grace period, find the next upcoming prayer
     for (final prayerInfo in todayPrayers) {
       if (prayerInfo.$2.isAfter(now)) {
         return NextPrayerInfo(
@@ -404,14 +470,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       }
     }
 
-    // All prayers for today have passed, return tomorrow's Fajr
     final tomorrow = now.add(const Duration(days: 1));
     final tomorrowPrayerTimes =
         PrayerTimes(coordinates, DateComponents.from(tomorrow), params);
 
     return NextPrayerInfo(
         name: _getLocalizedPrayerNameForCountdown(Prayer.fajr),
-        time: tomorrowPrayerTimes.fajr);
+        time: tomorrowPrayerTimes.fajr
+            .add(Duration(minutes: _prayerOffsets['fajr'] ?? 0)));
   }
 
   String _getPrayerDisplayName(Prayer prayer) {
