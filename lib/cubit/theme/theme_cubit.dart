@@ -96,7 +96,6 @@ class ThemeCubit extends Cubit<ThemeState> {
     await prefs.setString(_themeKey, useDark ? 'dark' : 'light');
     emit(state.copyWith(themeMode: mode));
 
-    // Notify widget service about theme change
     await WidgetService.onThemeChanged();
   }
 
@@ -105,7 +104,6 @@ class ThemeCubit extends Cubit<ThemeState> {
     await prefs.remove(_themeKey);
     emit(state.copyWith(themeMode: ThemeMode.system));
 
-    // Notify widget service about theme change
     await WidgetService.onThemeChanged();
   }
 
@@ -122,9 +120,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     emit(state.copyWith(colorTheme: colorTheme));
 
-    // Update widget with new theme color and trigger image regeneration
     await WidgetService.onThemeChanged();
-    await WidgetService.updateWidget();
   }
 
   Future<void> setFontFamily(String fontFamily) async {
