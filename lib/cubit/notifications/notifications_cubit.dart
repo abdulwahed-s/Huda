@@ -43,6 +43,9 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         'checklistBody':
             'Time to fill your daily Islamic checklist and track your spiritual progress.',
         'randomTitle': '🤲 Random Athkar',
+        'khatmaTitle': '📖 Khatma Daily Reminder',
+        'khatmaBody':
+            'Time to read your daily Quran wird and stay on track with your Khatma.',
       };
     }
 
@@ -70,6 +73,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           'Time to fill your daily Islamic checklist and track your spiritual progress.',
       'randomTitle':
           localizations?.notificationRandomAthkarTitle ?? '🤲 Random Athkar',
+      'khatmaTitle':
+          localizations?.notificationKhatmaTitle ?? '📖 Khatma Daily Reminder',
+      'khatmaBody': localizations?.notificationKhatmaBody ??
+          'Time to read your daily Quran wird and stay on track with your Khatma.',
     };
   }
 
