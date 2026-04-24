@@ -26,7 +26,7 @@ void callbackDispatcher() {
         if (lat == null || lon == null) return Future.value(true);
 
         final coordinates = Coordinates(lat, lon);
-        final params = CalculationMethod.karachi.getParameters();
+        final params = CalculationMethod.umm_al_qura.getParameters();
         params.madhab = Madhab.shafi;
 
         final notifications = NotificationServices();
@@ -37,7 +37,7 @@ void callbackDispatcher() {
         await _schedulePrayersForDate(coordinates, params, notifications,
             DateTime.now().add(const Duration(days: 1)), 100);
       } catch (e) {
-        // 
+        //
       }
     }
 

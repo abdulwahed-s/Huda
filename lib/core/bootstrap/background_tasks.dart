@@ -112,7 +112,7 @@ Future<bool> _handlePrayerNotificationsRenewal() async {
     await notificationServices.cancelAllPrayerNotifications();
 
     final coordinates = Coordinates(lat, lon);
-    final params = CalculationMethod.karachi.getParameters();
+    final params = CalculationMethod.umm_al_qura.getParameters();
     params.madhab = Madhab.shafi;
 
     final now = DateTime.now();

@@ -53,7 +53,7 @@ class RamadanCubit extends Cubit<RamadanState> {
       }
 
       final coordinates = Coordinates(lat, lon);
-      final params = CalculationMethod.karachi.getParameters();
+      final params = CalculationMethod.umm_al_qura.getParameters();
       params.madhab = Madhab.shafi;
       final date = DateComponents.from(now);
       final prayerTimes = PrayerTimes(coordinates, date, params);

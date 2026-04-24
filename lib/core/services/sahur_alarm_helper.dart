@@ -108,7 +108,7 @@ class SahurAlarmHelper {
         final lon = double.tryParse(lonString);
         if (lat != null && lon != null) {
           coordinates = Coordinates(lat, lon);
-          params = CalculationMethod.karachi.getParameters();
+          params = CalculationMethod.umm_al_qura.getParameters();
           params.madhab = Madhab.shafi;
         }
       }
