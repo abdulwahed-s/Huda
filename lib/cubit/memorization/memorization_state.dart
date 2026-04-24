@@ -12,6 +12,7 @@ class MemorizationInitial extends MemorizationState {}
 class MemorizationModeUpdated extends MemorizationState {
   final bool isMemorizationMode;
   final Set<int> hiddenAyahIndices;
+  final int surahNumber;
   final bool isListening;
   final int? listeningAyahIndex;
   final String recognizedText;
@@ -20,6 +21,7 @@ class MemorizationModeUpdated extends MemorizationState {
   const MemorizationModeUpdated({
     required this.isMemorizationMode,
     required this.hiddenAyahIndices,
+    this.surahNumber = 0,
     this.isListening = false,
     this.listeningAyahIndex,
     this.recognizedText = '',
@@ -30,6 +32,7 @@ class MemorizationModeUpdated extends MemorizationState {
   List<Object?> get props => [
         isMemorizationMode,
         hiddenAyahIndices,
+        surahNumber,
         isListening,
         listeningAyahIndex,
         recognizedText,
@@ -39,6 +42,7 @@ class MemorizationModeUpdated extends MemorizationState {
   MemorizationModeUpdated copyWith({
     bool? isMemorizationMode,
     Set<int>? hiddenAyahIndices,
+    int? surahNumber,
     bool? isListening,
     int? listeningAyahIndex,
     String? recognizedText,
@@ -47,6 +51,7 @@ class MemorizationModeUpdated extends MemorizationState {
     return MemorizationModeUpdated(
       isMemorizationMode: isMemorizationMode ?? this.isMemorizationMode,
       hiddenAyahIndices: hiddenAyahIndices ?? this.hiddenAyahIndices,
+      surahNumber: surahNumber ?? this.surahNumber,
       isListening: isListening ?? this.isListening,
       listeningAyahIndex: listeningAyahIndex ?? this.listeningAyahIndex,
       recognizedText: recognizedText ?? this.recognizedText,
