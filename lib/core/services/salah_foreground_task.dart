@@ -10,16 +10,14 @@ class SalahCountdownTaskHandler extends TaskHandler {
     try {
       await _initializePrayerTimes();
     } catch (e) {
-       // todo Add error handling here
+      // todo Add error handling here
     }
   }
 
   Future<void> _initializePrayerTimes() async {
     try {
-      
       final prefs = await SharedPreferences.getInstance();
 
-      
       final latStr = prefs.getString('latitude');
       final lonStr = prefs.getString('longitude');
 
@@ -28,14 +26,14 @@ class SalahCountdownTaskHandler extends TaskHandler {
         final lon = double.parse(lonStr);
 
         final coordinates = Coordinates(lat, lon);
-        final params = CalculationMethod.karachi.getParameters();
+        final params = CalculationMethod.umm_al_qura.getParameters();
         params.madhab = Madhab.shafi;
 
         final date = DateComponents.from(DateTime.now());
         _prayerTimes = PrayerTimes(coordinates, date, params);
       } else {}
     } catch (e) {
-       // todo Add error handling here
+      // todo Add error handling here
     }
   }
 
@@ -58,7 +56,6 @@ class SalahCountdownTaskHandler extends TaskHandler {
         final diff = nextTime.difference(now);
 
         if (diff.isNegative) {
-          
           _initializePrayerTimes();
           return;
         }
@@ -128,13 +125,11 @@ class SalahCountdownTaskHandler extends TaskHandler {
 }
 
 Future<void> startSalahCountdownService() async {
-  
   if (await FlutterForegroundTask.isRunningService) {
     return;
   }
 
   try {
-    
     await FlutterForegroundTask.startService(
       notificationTitle: 'Prayer Times',
       notificationText: 'Initializing countdown...',
