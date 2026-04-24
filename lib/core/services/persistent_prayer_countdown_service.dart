@@ -5,7 +5,6 @@ import 'package:adhan/adhan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 
-// Localization helper for background isolate
 class PrayerCountdownLocalizations {
   static const String _localeKey = 'locale';
 
@@ -547,7 +546,6 @@ class PrayerCountdownLocalizations {
     }
   }
 
-  /// Get localized post-prayer title showing elapsed time since athan
   static Future<String> getPostPrayerTitle({
     required String prayerName,
     required String elapsedText,
@@ -557,9 +555,9 @@ class PrayerCountdownLocalizations {
 
     switch (language) {
       case 'ar':
-        return '$elapsedText من أذان $localizedPrayer'; // "since Fajr athan"
+        return '$elapsedText من أذان $localizedPrayer';
       case 'fr':
-        return "$elapsedText depuis l'appel de $localizedPrayer"; // "since call to prayer"
+        return "$elapsedText depuis l'appel de $localizedPrayer";
       case 'es':
         return '$elapsedText desde el adhan de $localizedPrayer';
       case 'de':
@@ -582,7 +580,6 @@ class PrayerCountdownLocalizations {
 
 @pragma('vm:entry-point')
 void startCallback() {
-  // The setTaskHandler function must be called to handle the task in the background.
   FlutterForegroundTask.setTaskHandler(PrayerCountdownTaskHandler());
 }
 
@@ -590,78 +587,80 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   Timer? _updateTimer;
   PrayerTimes? _prayerTimes;
   DateTime? _lastCalculationDate;
-  Coordinates?
-      _cachedCoordinates; // Cache coordinates to avoid repeated async calls
-  NextPrayerInfo? _lastValidPrayerInfo; // Cache last good result
-  bool _hasShownError = false; // Track if error was already shown
-  bool _isCalculatingTomorrowPrayers = false; // Track async calculation state
+  Coordinates? _cachedCoordinates;
+  NextPrayerInfo? _lastValidPrayerInfo;
+  bool _hasShownError = false;
+  bool _isCalculatingTomorrowPrayers = false;
 
-  // Smart adaptive interval - track last minute update for battery optimization
+  Map<String, int> _prayerOffsets = {
+    'fajr': 0,
+    'dhuhr': 0,
+    'asr': 0,
+    'maghrib': 0,
+    'isha': 0,
+  };
+
   DateTime? _lastMinuteUpdate;
 
-  // Post-prayer grace period (30 minutes) - show elapsed time since athan
   static const Duration _postPrayerGracePeriod = Duration(minutes: 30);
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
     debugPrint('Prayer countdown foreground task started');
 
-    // Initialize prayer times
     await _initializePrayerTimes();
 
-    // Start a timer to update the notification every second
     _updateTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateNotification();
     });
 
-    // Initial update
     _updateNotification();
   }
 
   Future<void> _initializePrayerTimes() async {
     try {
-      // Use SharedPreferences directly since we're in a separate isolate
       final prefs = await SharedPreferences.getInstance();
 
-      // Get cached coordinates
       final latStr = prefs.getString('latitude');
       final lonStr = prefs.getString('longitude');
+
+      _prayerOffsets = {
+        'fajr': prefs.getInt('prayer_offset_fajr') ?? 0,
+        'dhuhr': prefs.getInt('prayer_offset_dhuhr') ?? 0,
+        'asr': prefs.getInt('prayer_offset_asr') ?? 0,
+        'maghrib': prefs.getInt('prayer_offset_maghrib') ?? 0,
+        'isha': prefs.getInt('prayer_offset_isha') ?? 0,
+      };
 
       if (latStr != null && lonStr != null) {
         final lat = double.parse(latStr);
         final lon = double.parse(lonStr);
 
-        // Cache coordinates for reuse
         _cachedCoordinates = Coordinates(lat, lon);
 
-        // Check if we have a cached calculation date from today
         final cachedDateStr = prefs.getString('last_prayer_calculation_date');
         final now = DateTime.now();
 
         if (cachedDateStr != null) {
           final cachedDate = DateTime.parse(cachedDateStr);
           if (_isSameDay(now, cachedDate)) {
-            // Use cached date - no need to recalculate today
             _lastCalculationDate = cachedDate;
           }
         }
 
-        // Only calculate if we don't have today's prayer times cached
         if (_lastCalculationDate == null ||
             !_isSameDay(now, _lastCalculationDate!)) {
-          final params = CalculationMethod.karachi.getParameters();
+          final params = CalculationMethod.umm_al_qura.getParameters();
           params.madhab = Madhab.shafi;
 
           final date = DateComponents.from(now);
           _prayerTimes = PrayerTimes(_cachedCoordinates!, date, params);
           _lastCalculationDate = now;
 
-          // Cache the calculation date
           await prefs.setString(
               'last_prayer_calculation_date', now.toIso8601String());
         } else {
-          // Recreate prayer times with cached date to avoid null issues
-          final params = CalculationMethod.karachi.getParameters();
+          final params = CalculationMethod.umm_al_qura.getParameters();
           params.madhab = Madhab.shafi;
 
           final date = DateComponents.from(_lastCalculationDate!);
@@ -681,13 +680,11 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
   NextPrayerInfo? _getNextPrayerTime() {
     if (_prayerTimes == null) {
-      // No prayer times available - return cached result if available
       return _lastValidPrayerInfo;
     }
 
     final now = DateTime.now();
 
-    // Check if we need to recalculate for a new day (only date components)
     if (_lastCalculationDate == null) {
       debugPrint('No calculation date - recalculating for first time');
       _recalculatePrayerTimesSync(now);
@@ -705,35 +702,33 @@ class PrayerCountdownTaskHandler extends TaskHandler {
       Prayer.isha,
     ];
 
-    // Find next prayer today
     for (final prayer in prayers) {
-      final prayerTime = _prayerTimes!.timeForPrayer(prayer);
-      if (prayerTime != null && prayerTime.isAfter(now)) {
+      final basePrayerTime = _prayerTimes!.timeForPrayer(prayer);
+      if (basePrayerTime == null) continue;
+      final offsetMinutes = _prayerOffsets[_getPrayerKey(prayer)] ?? 0;
+      final prayerTime = basePrayerTime.add(Duration(minutes: offsetMinutes));
+      if (prayerTime.isAfter(now)) {
         final duration = prayerTime.difference(now);
         final nextPrayerInfo = NextPrayerInfo(
           prayerName: _getPrayerDisplayName(prayer),
           duration: duration,
         );
 
-        // Cache this good result
         _lastValidPrayerInfo = nextPrayerInfo;
-        _hasShownError = false; // Reset error flag
+        _hasShownError = false;
         return nextPrayerInfo;
       }
     }
 
-    // No more prayers today - need tomorrow's Fajr
     if (!_isCalculatingTomorrowPrayers) {
       _isCalculatingTomorrowPrayers = true;
       _calculateTomorrowFajr(now);
     }
 
-    // Return cached result while calculating tomorrow's prayers
     return _lastValidPrayerInfo;
   }
 
   void _calculateTomorrowFajr(DateTime now) {
-    // This will be calculated asynchronously and used in next update
     SharedPreferences.getInstance().then((prefs) {
       final latStr = prefs.getString('latitude');
       final lonStr = prefs.getString('longitude');
@@ -745,7 +740,7 @@ class PrayerCountdownTaskHandler extends TaskHandler {
           double.parse(latStr),
           double.parse(lonStr),
         );
-        final params = CalculationMethod.karachi.getParameters();
+        final params = CalculationMethod.umm_al_qura.getParameters();
         params.madhab = Madhab.shafi;
 
         final tomorrowPrayerTimes =
@@ -753,19 +748,16 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         final tomorrowFajr = tomorrowPrayerTimes.timeForPrayer(Prayer.fajr);
 
         if (tomorrowFajr != null) {
-          // Store tomorrow's prayer times but keep today's calculation date
           _prayerTimes = tomorrowPrayerTimes;
-          // DON'T update _lastCalculationDate to tomorrow - keep it as today
-          // _lastCalculationDate = tomorrow; // REMOVED - this was causing the bug
 
-          // Calculate and cache tomorrow's Fajr countdown
-          final duration = tomorrowFajr.difference(now);
+          final adjustedFajr =
+              tomorrowFajr.add(Duration(minutes: _prayerOffsets['fajr'] ?? 0));
+          final duration = adjustedFajr.difference(now);
           _lastValidPrayerInfo = NextPrayerInfo(
             prayerName: 'Fajr',
             duration: duration,
           );
 
-          // Cache tomorrow's calculation date for when day actually changes
           prefs.setString(
               'last_prayer_calculation_date', tomorrow.toIso8601String());
 
@@ -773,7 +765,6 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         }
       }
 
-      // Reset calculation flag
       _isCalculatingTomorrowPrayers = false;
     }).catchError((error) {
       debugPrint('Error calculating tomorrow\'s Fajr: $error');
@@ -782,29 +773,25 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   }
 
   void _recalculatePrayerTimesSync(DateTime date) {
-    // Only recalculate if it's actually a new day
     if (_lastCalculationDate != null &&
         _isSameDay(date, _lastCalculationDate!)) {
       return;
     }
 
-    // Use cached coordinates if available
     if (_cachedCoordinates != null) {
       try {
-        final params = CalculationMethod.karachi.getParameters();
+        final params = CalculationMethod.umm_al_qura.getParameters();
         params.madhab = Madhab.shafi;
 
         final dateComponents = DateComponents.from(date);
         _prayerTimes = PrayerTimes(_cachedCoordinates!, dateComponents, params);
         _lastCalculationDate = date;
 
-        // Cache the calculation date in SharedPreferences
         SharedPreferences.getInstance().then((prefs) {
           prefs.setString(
               'last_prayer_calculation_date', date.toIso8601String());
         });
 
-        // Reset flags when we have new prayer times
         _isCalculatingTomorrowPrayers = false;
         _hasShownError = false;
 
@@ -845,9 +832,23 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     }
   }
 
-  // 🕐 Post-prayer elapsed time detection
+  String _getPrayerKey(Prayer prayer) {
+    switch (prayer) {
+      case Prayer.fajr:
+        return 'fajr';
+      case Prayer.dhuhr:
+        return 'dhuhr';
+      case Prayer.asr:
+        return 'asr';
+      case Prayer.maghrib:
+        return 'maghrib';
+      case Prayer.isha:
+        return 'isha';
+      default:
+        return '';
+    }
+  }
 
-  /// Returns elapsed time info if within 30 min grace period, null otherwise
   PostPrayerInfo? _getPostPrayerInfo() {
     if (_prayerTimes == null) return null;
 
@@ -860,10 +861,12 @@ class PrayerCountdownTaskHandler extends TaskHandler {
       Prayer.isha,
     ];
 
-    // Find the most recent prayer that has passed (check in reverse order)
     for (final prayer in prayers.reversed) {
-      final prayerTime = _prayerTimes!.timeForPrayer(prayer);
-      if (prayerTime != null && prayerTime.isBefore(now)) {
+      final basePrayerTime = _prayerTimes!.timeForPrayer(prayer);
+      if (basePrayerTime == null) continue;
+      final offsetMinutes = _prayerOffsets[_getPrayerKey(prayer)] ?? 0;
+      final prayerTime = basePrayerTime.add(Duration(minutes: offsetMinutes));
+      if (prayerTime.isBefore(now)) {
         final elapsed = now.difference(prayerTime);
         if (elapsed <= _postPrayerGracePeriod) {
           return PostPrayerInfo(
@@ -871,35 +874,32 @@ class PrayerCountdownTaskHandler extends TaskHandler {
             elapsedDuration: elapsed,
           );
         }
-        break; // Past grace period, show next prayer countdown
+        break;
       }
     }
     return null;
   }
 
-  /// Format elapsed time as "+MM:SS" for post-prayer display
   String _formatElapsedTime(Duration elapsed) {
     final m = elapsed.inMinutes;
     final s = elapsed.inSeconds.remainder(60);
     return '+$m:${s.toString().padLeft(2, '0')}';
   }
 
-  // 🎨 Enhanced notification design helper methods
-
   String _getPrayerEmoji(String prayerName) {
     switch (prayerName.toLowerCase()) {
       case 'fajr':
-        return '🌅'; // Dawn/Sunrise
+        return '🌅';
       case 'dhuhr':
-        return '☀️'; // Sun at noon
+        return '☀️';
       case 'asr':
-        return '🌤️'; // Afternoon sun
+        return '🌤️';
       case 'maghrib':
-        return '🌇'; // Sunset
+        return '🌇';
       case 'isha':
-        return '🌙'; // Night/Moon
+        return '🌙';
       default:
-        return '🕌'; // Mosque fallback
+        return '🕌';
     }
   }
 
@@ -933,45 +933,35 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     }
   }
 
-  /// Smart adaptive time formatting:
-  /// - More than 1 hour: "2h 34m" (minute-based)
-  /// - Less than 1 hour: "34:25" (second-based countdown)
   String _formatTimeWithUrgency(Duration duration) {
     final h = duration.inHours;
     final m = duration.inMinutes.remainder(60);
     final s = duration.inSeconds.remainder(60);
 
-    // Smart adaptive display based on time remaining
     if (h > 0) {
-      // More than 1 hour: show hours and minutes only (battery friendly)
       return '${h}h ${m}m';
     } else {
-      // Less than 1 hour: show minutes:seconds countdown
       return '$m:${s.toString().padLeft(2, '0')}';
     }
   }
 
-  /// Check if we should skip this update (for battery optimization)
-  /// Returns true if we should skip, false if we should update
   bool _shouldSkipUpdate(Duration timeRemaining) {
-    // If less than 1 hour, always update (second-based mode)
     if (timeRemaining.inMinutes < 60) {
-      _lastMinuteUpdate = null; // Reset minute tracking
+      _lastMinuteUpdate = null;
       return false;
     }
 
-    // More than 1 hour: only update once per minute
     final now = DateTime.now();
     if (_lastMinuteUpdate != null) {
       final secondsSinceLastUpdate =
           now.difference(_lastMinuteUpdate!).inSeconds;
       if (secondsSinceLastUpdate < 60) {
-        return true; // Skip this update
+        return true;
       }
     }
 
     _lastMinuteUpdate = now;
-    return false; // Proceed with update
+    return false;
   }
 
   Future<String> _formatPrayerTime(DateTime prayerTime) async {
@@ -979,16 +969,13 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     final hour = prayerTime.hour;
     final minute = prayerTime.minute;
 
-    // Convert to 12-hour format
     final hour12 = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
     final minuteStr = minute.toString().padLeft(2, '0');
 
     String amPm;
     switch (language) {
       case 'ar':
-        amPm = hour >= 12
-            ? 'م'
-            : 'ص'; // م for مساء (evening), ص for صباح (morning)
+        amPm = hour >= 12 ? 'م' : 'ص';
         break;
       case 'fr':
         amPm = hour >= 12 ? 'PM' : 'AM';
@@ -1027,7 +1014,6 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     final currentTimeStr = await _formatPrayerTime(now);
     final prayerTimeText = await prayerTimeTextFuture;
 
-    // Get localized "Now" text
     final language = await PrayerCountdownLocalizations._getCurrentLanguage();
     String nowText;
     switch (language) {
@@ -1062,7 +1048,6 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         nowText = 'Now';
     }
 
-    // Build contextual message based on urgency and prayer type
     String contextMessage;
 
     if (urgencyStyle.isUrgent) {
@@ -1074,7 +1059,6 @@ class PrayerCountdownTaskHandler extends TaskHandler {
               nextPrayer.prayerName);
     }
 
-    // Get localized "At" text
     String atText;
     switch (language) {
       case 'ar':
@@ -1111,11 +1095,9 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     return '$contextMessage • $atText $prayerTimeText • $nowText $currentTimeStr';
   }
 
-  /// Build subtitle for post-prayer notification
   Future<String> _buildPostPrayerSubtitle(PostPrayerInfo postPrayerInfo) async {
     final language = await PrayerCountdownLocalizations._getCurrentLanguage();
 
-    // Get localized "Time to pray" message
     String message;
     switch (language) {
       case 'ar':
@@ -1149,7 +1131,6 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         message = 'Time to pray 🤲';
     }
 
-    // Get current time for context
     final now = DateTime.now();
     final currentTimeStr = await _formatPrayerTime(now);
 
@@ -1158,27 +1139,22 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
   @override
   void onRepeatEvent(DateTime timestamp) {
-    // This method is called based on the interval set in ForegroundTaskOptions
     _updateNotification();
   }
 
   void _updateNotification() async {
     try {
-      // 🕐 Check if we're in post-prayer grace period (30 min after athan)
       final postPrayerInfo = _getPostPrayerInfo();
 
       if (postPrayerInfo != null) {
-        // Show elapsed time since athan
         final prayerEmoji = _getPrayerEmoji(postPrayerInfo.prayerName);
         final elapsedText = _formatElapsedTime(postPrayerInfo.elapsedDuration);
 
-        // Get localized post-prayer title
         final title = await PrayerCountdownLocalizations.getPostPrayerTitle(
           prayerName: postPrayerInfo.prayerName,
           elapsedText: '$prayerEmoji $elapsedText',
         );
 
-        // Simple subtitle for post-prayer mode
         final subtitle = await _buildPostPrayerSubtitle(postPrayerInfo);
 
         FlutterForegroundTask.updateService(
@@ -1190,11 +1166,9 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         return;
       }
 
-      // Normal countdown mode - get next prayer
       final nextPrayer = _getNextPrayerTime();
 
       if (nextPrayer == null) {
-        // Only show error if we haven't shown it before and it's a real error
         if (!_hasShownError && _lastValidPrayerInfo == null) {
           final loadingTitle =
               await PrayerCountdownLocalizations.getLoadingTitle();
@@ -1207,33 +1181,24 @@ class PrayerCountdownTaskHandler extends TaskHandler {
           );
           _hasShownError = true;
         }
-        // If we have a cached result, keep using it silently
+
         return;
       }
 
-      // 🔋 Smart adaptive interval: Skip update if in minute-based mode and
-      // less than 60 seconds since last update (battery optimization)
       if (_shouldSkipUpdate(nextPrayer.duration)) {
-        return; // Skip this update cycle
+        return;
       }
 
-      // Reset error flag when we have valid data
       _hasShownError = false;
 
-      // 🎨 Enhanced notification design
-
-      // Get prayer-specific emoji and styling
       final prayerEmoji = _getPrayerEmoji(nextPrayer.prayerName);
       final urgencyStyle = _getUrgencyStyle(nextPrayer.duration);
 
-      // Format time with smart display based on urgency
       final timeText = _formatTimeWithUrgency(nextPrayer.duration);
 
-      // Calculate actual prayer time
       final actualPrayerTime = DateTime.now().add(nextPrayer.duration);
       final prayerTimeTextFuture = _formatPrayerTime(actualPrayerTime);
 
-      // Get localized title
       final title = await PrayerCountdownLocalizations.getPrayerCountdownTitle(
         prefix: urgencyStyle.isUrgent ? urgencyStyle.prefix : prayerEmoji,
         prayerName: nextPrayer.prayerName,
@@ -1241,17 +1206,14 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         isUrgent: urgencyStyle.isUrgent,
       );
 
-      // Enhanced subtitle with contextual information
       final subtitle = await _buildEnhancedSubtitle(
           nextPrayer, prayerTimeTextFuture, urgencyStyle);
 
-      // Update the foreground notification with enhanced design
       FlutterForegroundTask.updateService(
         notificationTitle: title,
         notificationText: subtitle,
       );
     } catch (e) {
-      // Only show error if we haven't shown it before
       if (!_hasShownError) {
         final loadingTitle =
             await PrayerCountdownLocalizations.getLoadingTitle();
@@ -1274,14 +1236,12 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
   @override
   void onNotificationButtonPressed(String id) {
-    // Handle notification button press with enhanced functionality
     switch (id) {
       case 'stop':
         FlutterForegroundTask.stopService();
         debugPrint('Prayer countdown stopped by user');
         break;
       case 'open_app':
-        // This will be handled by the system - just log for debugging
         debugPrint('Open app button pressed');
         break;
       default:
@@ -1291,12 +1251,10 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
   @override
   void onNotificationPressed() {
-    // Handle notification press if needed
     debugPrint('Prayer countdown notification pressed');
   }
 }
 
-// Helper class for prayer information
 class NextPrayerInfo {
   final String prayerName;
   final Duration duration;
@@ -1307,7 +1265,6 @@ class NextPrayerInfo {
   });
 }
 
-// Helper class for urgency styling
 class UrgencyStyle {
   final bool isUrgent;
   final String prefix;
@@ -1320,7 +1277,6 @@ class UrgencyStyle {
   });
 }
 
-// Helper class for post-prayer elapsed time
 class PostPrayerInfo {
   final String prayerName;
   final Duration elapsedDuration;
@@ -1341,51 +1297,43 @@ class PersistentPrayerCountdownService {
   bool _isInitialized = false;
   static const String _stateKey = 'persistent_prayer_countdown_enabled';
 
-  /// Check if the service should be enabled based on saved state
   Future<bool> getSavedState() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_stateKey) ?? false; // Default to false (stopped)
+    return prefs.getBool(_stateKey) ?? false;
   }
 
-  /// Save the current service state
   Future<void> _saveState(bool isEnabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_stateKey, isEnabled);
     debugPrint('Prayer countdown service state saved: $isEnabled');
   }
 
-  /// Initialize the foreground service
   Future<void> initialize() async {
     if (!PlatformUtils.isMobile) return;
     if (_isInitialized) return;
 
-    // Initialize the foreground task with VISIBLE notification channel
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
         channelId: 'prayer_countdown_visible',
         channelName: 'Prayer Countdown',
         channelDescription: 'Persistent countdown to next prayer time',
-        channelImportance: NotificationChannelImportance
-            .DEFAULT, // DEFAULT = visible but no sound
-        priority: NotificationPriority.DEFAULT, // Make it clearly visible
+        channelImportance: NotificationChannelImportance.DEFAULT,
+        priority: NotificationPriority.DEFAULT,
         visibility: NotificationVisibility.VISIBILITY_PUBLIC,
-        onlyAlertOnce: true, // Prevent repeated alerts on updates
-        playSound: false, // Still no sound
-        enableVibration: false, // Still no vibration
-        showWhen: true, // Show timestamp for debugging
+        onlyAlertOnce: true,
+        playSound: false,
+        enableVibration: false,
+        showWhen: true,
       ),
       iosNotificationOptions: const IOSNotificationOptions(
         showNotification: true,
         playSound: false,
       ),
       foregroundTaskOptions: ForegroundTaskOptions(
-        eventAction: ForegroundTaskEventAction.repeat(
-            1000), // Base interval - smart logic handles actual updates
+        eventAction: ForegroundTaskEventAction.repeat(1000),
         autoRunOnBoot: false,
-        allowWakeLock:
-            false, // FIXED: Disabled to prevent excessive battery drain
-        allowWifiLock:
-            false, // FIXED: Disabled - not needed for prayer countdown
+        allowWakeLock: false,
+        allowWifiLock: false,
       ),
     );
 
@@ -1394,7 +1342,6 @@ class PersistentPrayerCountdownService {
         'Prayer countdown foreground service initialized with silent channel');
   }
 
-  /// Check if the service should start based on saved user preference
   Future<void> startIfEnabled() async {
     if (!PlatformUtils.isMobile) return;
     final shouldStart = await getSavedState();
@@ -1407,7 +1354,6 @@ class PersistentPrayerCountdownService {
     }
   }
 
-  /// Start the persistent countdown notification
   Future<void> startPersistentCountdown() async {
     if (!PlatformUtils.isMobile) return;
     if (_isRunning) {
@@ -1421,11 +1367,9 @@ class PersistentPrayerCountdownService {
 
     debugPrint('🕌 Starting persistent prayer countdown service...');
 
-    // Set test coordinates if none exist (for testing/debugging)
     await _ensureTestCoordinatesForDebug();
 
     try {
-      // Request notification permission only
       final NotificationPermission notificationPermissionStatus =
           await FlutterForegroundTask.checkNotificationPermission();
       if (notificationPermissionStatus != NotificationPermission.granted) {
@@ -1437,7 +1381,6 @@ class PersistentPrayerCountdownService {
         }
       }
 
-      // Start the foreground service with isolated notification handling
       await FlutterForegroundTask.startService(
         notificationTitle: 'Prayer Countdown',
         notificationText: 'Loading prayer times...',
@@ -1448,7 +1391,7 @@ class PersistentPrayerCountdownService {
       );
 
       _isRunning = true;
-      // Save the enabled state
+
       await _saveState(true);
       debugPrint('✅ Prayer countdown foreground service started successfully');
       debugPrint(
@@ -1461,7 +1404,6 @@ class PersistentPrayerCountdownService {
     }
   }
 
-  /// 🌍 Set test coordinates for debugging if none exist
   Future<void> _ensureTestCoordinatesForDebug() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -1469,9 +1411,8 @@ class PersistentPrayerCountdownService {
       final lonStr = prefs.getString('longitude');
 
       if (latStr == null || lonStr == null) {
-        // Set test coordinates for Karachi, Pakistan (since we use Karachi calculation method)
-        const testLat = 24.8607; // Karachi latitude
-        const testLon = 67.0011; // Karachi longitude
+        const testLat = 24.8607;
+        const testLon = 67.0011;
 
         await prefs.setString('latitude', testLat.toString());
         await prefs.setString('longitude', testLon.toString());
@@ -1485,7 +1426,6 @@ class PersistentPrayerCountdownService {
     }
   }
 
-  /// Stop the persistent countdown notification
   Future<void> stopPersistentCountdown() async {
     if (!PlatformUtils.isMobile) return;
     if (!_isRunning) return;
@@ -1493,7 +1433,7 @@ class PersistentPrayerCountdownService {
     try {
       await FlutterForegroundTask.stopService();
       _isRunning = false;
-      // Save the disabled state
+
       await _saveState(false);
       debugPrint('✅ Prayer countdown foreground service stopped');
       debugPrint('🛡️ Athkar notifications remain unaffected');
@@ -1502,10 +1442,8 @@ class PersistentPrayerCountdownService {
     }
   }
 
-  /// Check if the service is running
   bool get isRunning => _isRunning;
 
-  /// Restart the service
   Future<void> restart() async {
     if (!PlatformUtils.isMobile) return;
     if (_isRunning) {
@@ -1515,7 +1453,6 @@ class PersistentPrayerCountdownService {
     await startPersistentCountdown();
   }
 
-  /// Dispose resources
   void dispose() {
     if (!PlatformUtils.isMobile) return;
     stopPersistentCountdown();
