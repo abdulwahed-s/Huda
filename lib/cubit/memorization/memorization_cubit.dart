@@ -32,9 +32,10 @@ class MemorizationCubit extends Cubit<MemorizationState> {
       List<String> ayahTexts, int surahNumber) async {
     if (state is MemorizationModeUpdated &&
         (state as MemorizationModeUpdated).isMemorizationMode) {
-      emit(const MemorizationModeUpdated(
+      emit(MemorizationModeUpdated(
         isMemorizationMode: false,
-        hiddenAyahIndices: {},
+        hiddenAyahIndices: const {},
+        surahNumber: _surahNumber,
       ));
       await stopListening();
     } else {
@@ -46,6 +47,7 @@ class MemorizationCubit extends Cubit<MemorizationState> {
       emit(MemorizationModeUpdated(
         isMemorizationMode: true,
         hiddenAyahIndices: hiddenIndices,
+        surahNumber: _surahNumber,
       ));
 
       await startListening();
@@ -188,7 +190,7 @@ class MemorizationCubit extends Cubit<MemorizationState> {
         isFirstAyah && _surahNumber != 1 && _surahNumber != 9;
 
     if (shouldShowBismillah) {
-      const bismillahText = 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
+      const bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
       if (expectedText.trim().startsWith(bismillahText)) {
         expectedText =
             expectedText.trim().replaceFirst(bismillahText, '').trim();
