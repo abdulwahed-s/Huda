@@ -9,7 +9,9 @@ class PrayerTimesLoading extends PrayerTimesState {}
 class PrayerTimesLoaded extends PrayerTimesState {
   final PrayerTimes prayerTimes;
   final List<Placemark> placemarks;
-  PrayerTimesLoaded(this.prayerTimes, this.placemarks);
+  final Map<String, int> offsets;
+  PrayerTimesLoaded(this.prayerTimes, this.placemarks,
+      {this.offsets = const {}});
 }
 
 class PrayerTimesError extends PrayerTimesState {
