@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +23,6 @@ import 'package:huda/core/utils/responsive_utils.dart';
 class App extends StatefulWidget {
   const App({super.key});
 
-  // Global navigator key for navigation from outside the widget tree
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
@@ -65,58 +66,64 @@ class _AppState extends State<App> {
         builder: (context, themeState) {
           return BlocBuilder<LocalizationCubit, LocalizationState>(
             builder: (context, localizationState) {
-              return BetterFeedback(
-                themeMode: themeState.themeMode,
-                child: ScreenUtilInit(
-                  designSize: ResponsiveUtils.getResponsiveDesignSize(context),
-                  minTextAdapt: true,
-                  splitScreenMode: true,
-                  builder: (_, __) {
-                    return MaterialApp(
-                      navigatorKey: App.navigatorKey,
-                      debugShowCheckedModeBanner: false,
-                      initialRoute: _initialRoute,
-                      themeMode: themeState.themeMode,
-                      theme: AppThemeHelper.getLightTheme(
-                          themeState.colorTheme, themeState.fontFamily),
-                      darkTheme: AppThemeHelper.getDarkTheme(
-                        themeState.colorTheme,
-                        themeState.fontFamily,
-                      ),
-                      locale: localizationState.locale,
-                      localizationsDelegates: const [
-                        AppLocalizations.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                      ],
-                      supportedLocales: LocalizationCubit.supportedLocales,
-                      localeResolutionCallback: (locale, supportedLocales) {
-                        // If the current locale is null, try to find a matching supported locale
-                        if (locale != null) {
-                          for (var supportedLocale in supportedLocales) {
-                            if (supportedLocale.languageCode ==
-                                locale.languageCode) {
-                              return supportedLocale;
-                            }
+              final screenUtilChild = ScreenUtilInit(
+                designSize: ResponsiveUtils.getResponsiveDesignSize(context),
+                minTextAdapt: true,
+                splitScreenMode: true,
+                builder: (_, __) {
+                  return MaterialApp(
+                    navigatorKey: App.navigatorKey,
+                    debugShowCheckedModeBanner: false,
+                    initialRoute: _initialRoute,
+                    themeMode: themeState.themeMode,
+                    theme: AppThemeHelper.getLightTheme(
+                        themeState.colorTheme, themeState.fontFamily),
+                    darkTheme: AppThemeHelper.getDarkTheme(
+                      themeState.colorTheme,
+                      themeState.fontFamily,
+                    ),
+                    locale: localizationState.locale,
+                    localizationsDelegates: const [
+                      AppLocalizations.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    supportedLocales: LocalizationCubit.supportedLocales,
+                    localeResolutionCallback: (locale, supportedLocales) {
+                      if (locale != null) {
+                        for (var supportedLocale in supportedLocales) {
+                          if (supportedLocale.languageCode ==
+                              locale.languageCode) {
+                            return supportedLocale;
                           }
                         }
-                        return const Locale('en', '');
-                      },
-                      onGenerateRoute: PageRouter().generateRoute,
-                      builder: (context, child) {
-                        QuickActionsService.updateLocalizedLabels(context);
-                        return MediaQuery(
-                          data: MediaQuery.of(context).copyWith(
-                            textScaler:
-                                TextScaler.linear(themeState.textScaleFactor),
-                          ),
-                          child: child ?? const SizedBox.shrink(),
-                        );
-                      },
-                    );
-                  },
-                ),
+                      }
+                      return const Locale('en', '');
+                    },
+                    onGenerateRoute: PageRouter().generateRoute,
+                    builder: (context, child) {
+                      QuickActionsService.updateLocalizedLabels(context);
+                      return MediaQuery(
+                        data: MediaQuery.of(context).copyWith(
+                          textScaler:
+                              TextScaler.linear(themeState.textScaleFactor),
+                        ),
+                        child: child ?? const SizedBox.shrink(),
+                      );
+                    },
+                  );
+                },
+              );
+
+              final bool isDesktop =
+                  Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+
+              if (isDesktop) return screenUtilChild;
+
+              return BetterFeedback(
+                themeMode: themeState.themeMode,
+                child: screenUtilChild,
               );
             },
           );
