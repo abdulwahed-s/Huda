@@ -1824,7 +1824,7 @@ abstract class AppLocalizations {
   /// **'{count} results found'**
   String searchResultsFound(int count);
 
-  /// No search results found message
+  /// No results found message
   ///
   /// In en, this message translates to:
   /// **'No results found'**
@@ -3273,8 +3273,14 @@ abstract class AppLocalizations {
   /// No description provided for @quran.
   ///
   /// In en, this message translates to:
-  /// **'quran'**
+  /// **'Quran'**
   String get quran;
+
+  /// No description provided for @quranKit.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Kit'**
+  String get quranKit;
 
   /// No description provided for @homeTitle.
   ///
@@ -3905,6 +3911,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time to fill your daily Islamic checklist and track your spiritual progress.'**
   String get notificationChecklistBody;
+
+  /// Title for khatma daily wird notification
+  ///
+  /// In en, this message translates to:
+  /// **'📖 Khatma Daily Reminder'**
+  String get notificationKhatmaTitle;
+
+  /// Body text for khatma daily wird notification
+  ///
+  /// In en, this message translates to:
+  /// **'Time to read your daily Quran wird and stay on track with your Khatma.'**
+  String get notificationKhatmaBody;
 
   /// Title for random athkar notification
   ///
@@ -4676,13 +4694,13 @@ abstract class AppLocalizations {
   /// **'New content will be added soon.\nCheck back later for updates.'**
   String get newContent;
 
-  /// No description provided for @meccan.
+  /// Label for Meccan (Makkiyah) surahs
   ///
   /// In en, this message translates to:
   /// **'Meccan'**
   String get meccan;
 
-  /// No description provided for @medinan.
+  /// Label for Medinan (Madaniyah) surahs
   ///
   /// In en, this message translates to:
   /// **'Medinan'**
@@ -5689,6 +5707,708 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Agree'**
   String get agree;
+
+  /// Quran audio screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Audio'**
+  String get quranAudio;
+
+  /// Search reciters placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search reciters...'**
+  String get searchReciters;
+
+  /// Search surah placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search surah...'**
+  String get searchSurah;
+
+  /// Verses count label
+  ///
+  /// In en, this message translates to:
+  /// **'verses'**
+  String get verses;
+
+  /// Offline empty state title when no audio is downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'No downloaded content'**
+  String get noDownloadedContent;
+
+  /// Offline empty state description
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet to browse and download Quran recitations'**
+  String get connectToDownload;
+
+  /// Quran radio screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Radio'**
+  String get quranRadio;
+
+  /// Search hint for radio stations
+  ///
+  /// In en, this message translates to:
+  /// **'Search radio stations...'**
+  String get searchRadio;
+
+  /// Now playing label in radio player bar
+  ///
+  /// In en, this message translates to:
+  /// **'Now Playing'**
+  String get nowPlaying;
+
+  /// Title for the Khatma (Quran completion) page
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Khatma'**
+  String get khatmaTitle;
+
+  /// Description on the empty Khatma page
+  ///
+  /// In en, this message translates to:
+  /// **'Set your daily portion or duration to complete the Quran, and track your Khatma throughout the year.'**
+  String get khatmaDescription;
+
+  /// Button to start a new Khatma
+  ///
+  /// In en, this message translates to:
+  /// **'Start New Khatma'**
+  String get khatmaStartNew;
+
+  /// Title for the new Khatma step
+  ///
+  /// In en, this message translates to:
+  /// **'New Khatma'**
+  String get khatmaNewTitle;
+
+  /// Badge label for suggested program
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested'**
+  String get khatmaSuggested;
+
+  /// One month Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'One Month Khatma (29 days)'**
+  String get khatmaOneMonthProgram;
+
+  /// Subtitle for the one-month Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: ~21 pages'**
+  String get khatmaDailyWird21Pages;
+
+  /// Section label for other programs
+  ///
+  /// In en, this message translates to:
+  /// **'Other Programs'**
+  String get khatmaOtherPrograms;
+
+  /// Title for meaning-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma by Meaning'**
+  String get khatmaBySemanticTitle;
+
+  /// Subtitle for meaning-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Portions with complete meaning'**
+  String get khatmaBySemanticSubtitle;
+
+  /// Title for parts-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma by Juz and Rub\''**
+  String get khatmaByPartsTitle;
+
+  /// Subtitle for parts-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Portions by Juz and Ahzab'**
+  String get khatmaByPartsSubtitle;
+
+  /// Title for the program selection step
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma Program'**
+  String get khatmaProgramTitle;
+
+  /// Two-month Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'Two-Month Khatma (60 days)'**
+  String get khatmaTwoMonthsProgram;
+
+  /// One-week Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'One-Week Khatma (7 days)'**
+  String get khatmaOneWeekProgram;
+
+  /// Section label for monthly Khatma programs
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get khatmaMonthsSection;
+
+  /// 30-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'30-Day Khatma'**
+  String get khatma30DaysTitle;
+
+  /// Daily portion subtitle: one Juz
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: one Juz'**
+  String get khatmaDailyWirdJuz;
+
+  /// Section label for other Khatma programs
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get khatmaOtherSection;
+
+  /// 240-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'240-Day Khatma'**
+  String get khatma240DaysTitle;
+
+  /// Daily portion subtitle: one Rub'
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: one Rub\''**
+  String get khatmaDailyWirdRubu;
+
+  /// 120-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'120-Day Khatma'**
+  String get khatma120DaysTitle;
+
+  /// Daily portion subtitle: two Rub'
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: two Rub\''**
+  String get khatmaDailyWirdTwoRubu;
+
+  /// 80-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'80-Day Khatma'**
+  String get khatma80DaysTitle;
+
+  /// Daily portion subtitle: 3 Rub'
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: 3 Rub\''**
+  String get khatmaDailyWird3Rubu;
+
+  /// 60-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'60-Day Khatma'**
+  String get khatma60DaysTitle;
+
+  /// Daily portion subtitle: one Hizb
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: one Hizb'**
+  String get khatmaDailyWirdHizb;
+
+  /// 40-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'40-Day Khatma'**
+  String get khatma40DaysTitle;
+
+  /// Daily portion subtitle: 1.5 Hizb
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: 1.5 Hizb'**
+  String get khatmaDailyWirdHizbAndHalf;
+
+  /// 20-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'20-Day Khatma'**
+  String get khatma20DaysTitle;
+
+  /// Daily portion subtitle: 1.5 Juz
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: 1.5 Juz'**
+  String get khatmaDailyWirdJuzAndHalf;
+
+  /// 15-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'15-Day Khatma'**
+  String get khatma15DaysTitle;
+
+  /// Daily portion subtitle: two Juz
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: two Juz'**
+  String get khatmaDailyWirdTwoJuz;
+
+  /// 10-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'10-Day Khatma'**
+  String get khatma10DaysTitle;
+
+  /// Daily portion subtitle: 3 Juz
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: 3 Juz'**
+  String get khatmaDailyWird3Juz;
+
+  /// 6-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'6-Day Khatma'**
+  String get khatma6DaysTitle;
+
+  /// Daily portion subtitle: 5 Juz
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: 5 Juz'**
+  String get khatmaDailyWird5Juz;
+
+  /// 3-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'3-Day Khatma'**
+  String get khatma3DaysTitle;
+
+  /// Daily portion subtitle: 10 Juz
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: 10 Juz'**
+  String get khatmaDailyWird10Juz;
+
+  /// Title for start-from selection step
+  ///
+  /// In en, this message translates to:
+  /// **'Start Khatma From'**
+  String get khatmaStartFromTitle;
+
+  /// Option to start from the beginning of the Quran
+  ///
+  /// In en, this message translates to:
+  /// **'Beginning of the Quran'**
+  String get khatmaFromBeginning;
+
+  /// Subtitle for starting from the beginning
+  ///
+  /// In en, this message translates to:
+  /// **'Start from Al-Fatihah'**
+  String get khatmaFromBeginningSubtitle;
+
+  /// Option to start from a specific portion
+  ///
+  /// In en, this message translates to:
+  /// **'Specific Portion'**
+  String get khatmaSpecificWird;
+
+  /// Subtitle for starting from a specific portion
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a day from the portions list'**
+  String get khatmaSpecificWirdSubtitle;
+
+  /// Title for the active Khatma statistics page
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma Statistics'**
+  String get khatmaStatsTitle;
+
+  /// Progress indicator showing current day out of total days
+  ///
+  /// In en, this message translates to:
+  /// **'Day {current} of {total}'**
+  String khatmaDayOf(int current, int total);
+
+  /// Relative day label: tomorrow
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get khatmaTomorrow;
+
+  /// Relative day label: in two days
+  ///
+  /// In en, this message translates to:
+  /// **'In two days'**
+  String get khatmaInTwoDays;
+
+  /// Relative day label: in N days (3-10)
+  ///
+  /// In en, this message translates to:
+  /// **'In {count} days'**
+  String khatmaInDays(int count);
+
+  /// Relative day label: in N days (>10)
+  ///
+  /// In en, this message translates to:
+  /// **'In {count} days'**
+  String khatmaInManyDays(int count);
+
+  /// Relative day label: yesterday
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get khatmaYesterday;
+
+  /// Relative day label: two days ago
+  ///
+  /// In en, this message translates to:
+  /// **'Two days ago'**
+  String get khatmaTwoDaysAgo;
+
+  /// Relative day label: N days ago (3-10)
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String khatmaDaysAgo(int count);
+
+  /// Relative day label: N days ago (>10)
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String khatmaManyDaysAgo(int count);
+
+  /// Legend label for the Khatma ring
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma'**
+  String get khatmaLegendKhatma;
+
+  /// Status: wird completed for today
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get khatmaWirdCompleted;
+
+  /// Status: wird in progress for today
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get khatmaWirdInProgress;
+
+  /// Legend label for commitment ring
+  ///
+  /// In en, this message translates to:
+  /// **'Commitment'**
+  String get khatmaCommitment;
+
+  /// Stats label for days remaining
+  ///
+  /// In en, this message translates to:
+  /// **'Days Remaining'**
+  String get khatmaDaysRemaining;
+
+  /// Stats label for pages read
+  ///
+  /// In en, this message translates to:
+  /// **'Pages Read'**
+  String get khatmaPagesRead;
+
+  /// Stats label for pages remaining
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining (p.)'**
+  String get khatmaPagesRemaining;
+
+  /// Label for the daily wird of a specific day
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day} Portion'**
+  String khatmaDailyWirdOf(int day);
+
+  /// Start of today's wird: from surah and verse
+  ///
+  /// In en, this message translates to:
+  /// **'From {surah}: {verse}'**
+  String khatmaFromSurah(String surah, int verse);
+
+  /// End of today's wird: to surah and verse
+  ///
+  /// In en, this message translates to:
+  /// **'To {surah}: {verse}'**
+  String khatmaToSurah(String surah, int verse);
+
+  /// Button to mark today's wird as done
+  ///
+  /// In en, this message translates to:
+  /// **'I completed this portion'**
+  String get khatmaMarkDone;
+
+  /// Section label for daily reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Reminder'**
+  String get khatmaDailyReminderSection;
+
+  /// Title for the daily wird reminder tile
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Portion'**
+  String get khatmaDailyWirdTitle;
+
+  /// Title for the all wirds list
+  ///
+  /// In en, this message translates to:
+  /// **'All Portions'**
+  String get khatmaAllWirds;
+
+  /// Subtitle for the all wirds tile
+  ///
+  /// In en, this message translates to:
+  /// **'View all portions'**
+  String get khatmaViewAllWirds;
+
+  /// Title for delete Khatma option and dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Khatma'**
+  String get khatmaDeleteTitle;
+
+  /// Subtitle for delete Khatma option
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all progress data'**
+  String get khatmaDeleteSubtitle;
+
+  /// Congratulations message on Khatma completion
+  ///
+  /// In en, this message translates to:
+  /// **'May Allah bless you!'**
+  String get khatmaCongrats;
+
+  /// Completion message body
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully completed this Khatma'**
+  String get khatmaCompletedMsg;
+
+  /// Button to repeat the same Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat this Khatma'**
+  String get khatmaRepeat;
+
+  /// Confirmation dialog content for deleting Khatma
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete the current Khatma and erase all your progress data?'**
+  String get khatmaDeleteConfirmContent;
+
+  /// AM time indicator used in reminder time display
+  ///
+  /// In en, this message translates to:
+  /// **'AM'**
+  String get khatmaAmIndicator;
+
+  /// PM time indicator used in reminder time display
+  ///
+  /// In en, this message translates to:
+  /// **'PM'**
+  String get khatmaPmIndicator;
+
+  /// Daily portion subtitle with pages count
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: ~{pages} pages'**
+  String khatmaDailyWirdPages(int pages);
+
+  /// Label for the Surahs tab and section title
+  ///
+  /// In en, this message translates to:
+  /// **'Surahs'**
+  String get surahsLabel;
+
+  /// Subtitle showing total surah count
+  ///
+  /// In en, this message translates to:
+  /// **'114 Surahs'**
+  String get surahIndexSubtitle;
+
+  /// Placeholder text for the surah search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a surah...'**
+  String get searchSurahHint;
+
+  /// Empty state message when surah search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get surahNoResults;
+
+  /// Verse count label on each surah card
+  ///
+  /// In en, this message translates to:
+  /// **'{count} verses'**
+  String verseCountLabel(int count);
+
+  /// Tab bar label for the memorization (Hifz) tab
+  ///
+  /// In en, this message translates to:
+  /// **'Memorize'**
+  String get tabMemorization;
+
+  /// Reading mode: scrollable list
+  ///
+  /// In en, this message translates to:
+  /// **'Scroll List'**
+  String get readingModeScrollList;
+
+  /// Reading mode: mushaf page-by-page
+  ///
+  /// In en, this message translates to:
+  /// **'Mushaf layout'**
+  String get readingModeMushaf;
+
+  /// Reading mode: tajweed mushaf
+  ///
+  /// In en, this message translates to:
+  /// **'Mushaf Al-Tajweed layout'**
+  String get readingModeTajweed;
+
+  /// Mushaf flip direction: horizontal
+  ///
+  /// In en, this message translates to:
+  /// **'Horizontal Flip'**
+  String get mushafFlipHorizontal;
+
+  /// Mushaf flip direction: vertical
+  ///
+  /// In en, this message translates to:
+  /// **'Vertical Flip'**
+  String get mushafFlipVertical;
+
+  /// Mushaf display mode: single page
+  ///
+  /// In en, this message translates to:
+  /// **'Single Page'**
+  String get mushafDisplaySingle;
+
+  /// Mushaf display mode: double page
+  ///
+  /// In en, this message translates to:
+  /// **'Double Page'**
+  String get mushafDisplayDouble;
+
+  /// Mushaf display mode: zoomed
+  ///
+  /// In en, this message translates to:
+  /// **'Zoomed'**
+  String get mushafDisplayZoomed;
+
+  /// Mushaf page header surah label
+  ///
+  /// In en, this message translates to:
+  /// **'Surah {name}'**
+  String mushafSurahHeader(String name);
+
+  /// Mushaf page header juz label
+  ///
+  /// In en, this message translates to:
+  /// **'Juz {name}'**
+  String mushafJuzHeader(String name);
+
+  /// Error fallback label in mushaf view
+  ///
+  /// In en, this message translates to:
+  /// **'Page {number}'**
+  String mushafPageNumber(int number);
+
+  /// Settings section header for reading mode
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Mode'**
+  String get settingsReadingMode;
+
+  /// Settings section header for horizontal layout
+  ///
+  /// In en, this message translates to:
+  /// **'Horizontal Layout'**
+  String get settingsHorizontalLayout;
+
+  /// Settings section header for flip direction
+  ///
+  /// In en, this message translates to:
+  /// **'Flip Direction'**
+  String get settingsFlipDirection;
+
+  /// Settings section header for Quran font
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Font'**
+  String get settingsQuranFont;
+
+  /// Surah number badge in the app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Surah {number}'**
+  String surahNumberBadge(int number);
+
+  /// Font download progress: extracting state
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting…'**
+  String get fontExtractingLabel;
+
+  /// Font download progress: loading state
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get fontLoadingLabel;
+
+  /// Next surah navigation button label
+  ///
+  /// In en, this message translates to:
+  /// **'Next Surah'**
+  String get nextSurah;
+
+  /// Previous surah navigation button label
+  ///
+  /// In en, this message translates to:
+  /// **'Previous Surah'**
+  String get previousSurah;
+
+  /// Scroll to top navigation button label
+  ///
+  /// In en, this message translates to:
+  /// **'To Top'**
+  String get scrollToTop;
+
+  /// Message when no similar ayahs are found
+  ///
+  /// In en, this message translates to:
+  /// **'No similar ayahs found'**
+  String get noSimilarAyahsFound;
+
+  /// Header showing how many similar ayahs an ayah key has
+  ///
+  /// In en, this message translates to:
+  /// **'{ayahKey} has {count, plural, one{1 similar ayah} other{{count} similar ayahs}}'**
+  String similarAyahsCountLabel(String ayahKey, int count);
+
+  /// Match statistics for a similar ayah
+  ///
+  /// In en, this message translates to:
+  /// **'Matches {matchedWordsCount} words · {coverage}% coverage · Score: {score}'**
+  String similarAyahsMatchStats(int matchedWordsCount, int coverage, int score);
 }
 
 class _AppLocalizationsDelegate

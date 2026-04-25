@@ -1730,6 +1730,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get quran => 'Al-Quran';
 
   @override
+  String get quranKit => 'Kit Al-Quran';
+
+  @override
   String get homeTitle => 'Teman Islam anda';
 
   @override
@@ -2067,6 +2070,13 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get notificationChecklistBody =>
       'Masa untuk melengkapkan senarai semak Islam harian anda dan menjejaki kemajuan rohani.';
+
+  @override
+  String get notificationKhatmaTitle => '📖 Peringatan Harian Khatma';
+
+  @override
+  String get notificationKhatmaBody =>
+      'Masa untuk membaca wird harian Quran anda dan mengikuti jadual Khatma anda.';
 
   @override
   String get notificationRandomAthkarTitle => '🤲 Zikir Rawak';
@@ -2506,10 +2516,10 @@ class AppLocalizationsMs extends AppLocalizations {
       'Kandungan baharu akan ditambah tidak lama lagi.\nSila semak semula kemudian untuk kemas kini.';
 
   @override
-  String get meccan => 'Mekah';
+  String get meccan => 'Makkiyyah';
 
   @override
-  String get medinan => 'Madinah';
+  String get medinan => 'Madaniyyah';
 
   @override
   String get ayahs => 'Ayat';
@@ -3080,4 +3090,398 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get agree => 'Setuju';
+
+  @override
+  String get quranAudio => 'Quran Audio';
+
+  @override
+  String get searchReciters => 'Search reciters...';
+
+  @override
+  String get searchSurah => 'Search surah...';
+
+  @override
+  String get verses => 'verses';
+
+  @override
+  String get noDownloadedContent => 'No downloaded content';
+
+  @override
+  String get connectToDownload =>
+      'Connect to the internet to browse and download Quran recitations';
+
+  @override
+  String get quranRadio => 'Radio Al-Quran';
+
+  @override
+  String get searchRadio => 'Cari stesen radio...';
+
+  @override
+  String get nowPlaying => 'Sedang Dimainkan';
+
+  @override
+  String get khatmaTitle => 'Khatam Al-Quran';
+
+  @override
+  String get khatmaDescription =>
+      'Tetapkan bahagian harian atau tempoh untuk menamatkan Al-Quran, dan pantau khatam anda sepanjang tahun.';
+
+  @override
+  String get khatmaStartNew => 'Mulakan Khatam Baru';
+
+  @override
+  String get khatmaNewTitle => 'Khatam Baru';
+
+  @override
+  String get khatmaSuggested => 'Dicadangkan';
+
+  @override
+  String get khatmaOneMonthProgram => 'Khatam Sebulan (29 hari)';
+
+  @override
+  String get khatmaDailyWird21Pages => 'Bahagian harian: ~21 muka surat';
+
+  @override
+  String get khatmaOtherPrograms => 'Program Lain';
+
+  @override
+  String get khatmaBySemanticTitle => 'Khatam Mengikut Makna';
+
+  @override
+  String get khatmaBySemanticSubtitle =>
+      'Bahagian yang menjaga kesempurnaan makna';
+
+  @override
+  String get khatmaByPartsTitle => 'Khatam Mengikut Juzuk dan Rub\'';
+
+  @override
+  String get khatmaByPartsSubtitle => 'Bahagian mengikut Juzuk dan Ahzab';
+
+  @override
+  String get khatmaProgramTitle => 'Program Khatam';
+
+  @override
+  String get khatmaTwoMonthsProgram => 'Khatam Dua Bulan (60 hari)';
+
+  @override
+  String get khatmaOneWeekProgram => 'Khatam Seminggu (7 hari)';
+
+  @override
+  String get khatmaMonthsSection => 'Bulanan';
+
+  @override
+  String get khatma30DaysTitle => 'Khatam 30 Hari';
+
+  @override
+  String get khatmaDailyWirdJuz => 'Bahagian harian: satu juzuk';
+
+  @override
+  String get khatmaOtherSection => 'Lain-lain';
+
+  @override
+  String get khatma240DaysTitle => 'Khatam 240 Hari';
+
+  @override
+  String get khatmaDailyWirdRubu => 'Bahagian harian: satu rub\'';
+
+  @override
+  String get khatma120DaysTitle => 'Khatam 120 Hari';
+
+  @override
+  String get khatmaDailyWirdTwoRubu => 'Bahagian harian: dua rub\'';
+
+  @override
+  String get khatma80DaysTitle => 'Khatam 80 Hari';
+
+  @override
+  String get khatmaDailyWird3Rubu => 'Bahagian harian: 3 rub\'';
+
+  @override
+  String get khatma60DaysTitle => 'Khatam 60 Hari';
+
+  @override
+  String get khatmaDailyWirdHizb => 'Bahagian harian: satu hizb';
+
+  @override
+  String get khatma40DaysTitle => 'Khatam 40 Hari';
+
+  @override
+  String get khatmaDailyWirdHizbAndHalf => 'Bahagian harian: 1.5 hizb';
+
+  @override
+  String get khatma20DaysTitle => 'Khatam 20 Hari';
+
+  @override
+  String get khatmaDailyWirdJuzAndHalf => 'Bahagian harian: 1.5 juzuk';
+
+  @override
+  String get khatma15DaysTitle => 'Khatam 15 Hari';
+
+  @override
+  String get khatmaDailyWirdTwoJuz => 'Bahagian harian: dua juzuk';
+
+  @override
+  String get khatma10DaysTitle => 'Khatam 10 Hari';
+
+  @override
+  String get khatmaDailyWird3Juz => 'Bahagian harian: 3 juzuk';
+
+  @override
+  String get khatma6DaysTitle => 'Khatam 6 Hari';
+
+  @override
+  String get khatmaDailyWird5Juz => 'Bahagian harian: 5 juzuk';
+
+  @override
+  String get khatma3DaysTitle => 'Khatam 3 Hari';
+
+  @override
+  String get khatmaDailyWird10Juz => 'Bahagian harian: 10 juzuk';
+
+  @override
+  String get khatmaStartFromTitle => 'Mulakan Khatam Dari';
+
+  @override
+  String get khatmaFromBeginning => 'Permulaan Al-Quran';
+
+  @override
+  String get khatmaFromBeginningSubtitle => 'Mulai dari Al-Fatihah';
+
+  @override
+  String get khatmaSpecificWird => 'Bahagian Tertentu';
+
+  @override
+  String get khatmaSpecificWirdSubtitle => 'Pilih hari dari senarai bahagian';
+
+  @override
+  String get khatmaStatsTitle => 'Statistik Khatam';
+
+  @override
+  String khatmaDayOf(int current, int total) {
+    return 'Hari $current daripada $total';
+  }
+
+  @override
+  String get khatmaTomorrow => 'Esok';
+
+  @override
+  String get khatmaInTwoDays => 'Dalam dua hari';
+
+  @override
+  String khatmaInDays(int count) {
+    return 'Dalam $count hari';
+  }
+
+  @override
+  String khatmaInManyDays(int count) {
+    return 'Dalam $count hari';
+  }
+
+  @override
+  String get khatmaYesterday => 'Semalam';
+
+  @override
+  String get khatmaTwoDaysAgo => 'Dua hari lalu';
+
+  @override
+  String khatmaDaysAgo(int count) {
+    return '$count hari lalu';
+  }
+
+  @override
+  String khatmaManyDaysAgo(int count) {
+    return '$count hari lalu';
+  }
+
+  @override
+  String get khatmaLegendKhatma => 'Khatam';
+
+  @override
+  String get khatmaWirdCompleted => 'Selesai';
+
+  @override
+  String get khatmaWirdInProgress => 'Sedang berjalan';
+
+  @override
+  String get khatmaCommitment => 'Komitmen';
+
+  @override
+  String get khatmaDaysRemaining => 'Hari Berbaki';
+
+  @override
+  String get khatmaPagesRead => 'Muka Surat Dibaca';
+
+  @override
+  String get khatmaPagesRemaining => 'Berbaki (ms.)';
+
+  @override
+  String khatmaDailyWirdOf(int day) {
+    return 'Bahagian Hari $day';
+  }
+
+  @override
+  String khatmaFromSurah(String surah, int verse) {
+    return 'Dari $surah: $verse';
+  }
+
+  @override
+  String khatmaToSurah(String surah, int verse) {
+    return 'Ke $surah: $verse';
+  }
+
+  @override
+  String get khatmaMarkDone => 'Saya telah selesaikan bahagian ini';
+
+  @override
+  String get khatmaDailyReminderSection => 'Peringatan Harian';
+
+  @override
+  String get khatmaDailyWirdTitle => 'Bahagian Harian';
+
+  @override
+  String get khatmaAllWirds => 'Semua Bahagian';
+
+  @override
+  String get khatmaViewAllWirds => 'Lihat semua bahagian';
+
+  @override
+  String get khatmaDeleteTitle => 'Padam Khatam';
+
+  @override
+  String get khatmaDeleteSubtitle => 'Padamkan semua data kemajuan';
+
+  @override
+  String get khatmaCongrats => 'Semoga Allah memberkati anda!';
+
+  @override
+  String get khatmaCompletedMsg => 'Anda telah berjaya menamatkan khatam ini';
+
+  @override
+  String get khatmaRepeat => 'Ulang khatam ini';
+
+  @override
+  String get khatmaDeleteConfirmContent =>
+      'Adakah anda pasti mahu memadamkan khatam semasa dan menghapuskan semua data kemajuan anda?';
+
+  @override
+  String get khatmaAmIndicator => 'PG';
+
+  @override
+  String get khatmaPmIndicator => 'PTG';
+
+  @override
+  String khatmaDailyWirdPages(int pages) {
+    return 'Bahagian harian: ~$pages muka surat';
+  }
+
+  @override
+  String get surahsLabel => 'Surah';
+
+  @override
+  String get surahIndexSubtitle => '114 Surah';
+
+  @override
+  String get searchSurahHint => 'Cari surah...';
+
+  @override
+  String get surahNoResults => 'Tiada keputusan dijumpai';
+
+  @override
+  String verseCountLabel(int count) {
+    return '$count ayat';
+  }
+
+  @override
+  String get tabMemorization => 'Hafaz';
+
+  @override
+  String get readingModeScrollList => 'Senarai Tatal';
+
+  @override
+  String get readingModeMushaf => 'Tataletak Mushaf';
+
+  @override
+  String get readingModeTajweed => 'Tataletak Mushaf Al-Tajwid';
+
+  @override
+  String get mushafFlipHorizontal => 'Leret Mendatar';
+
+  @override
+  String get mushafFlipVertical => 'Leret Menegak';
+
+  @override
+  String get mushafDisplaySingle => 'Satu Halaman';
+
+  @override
+  String get mushafDisplayDouble => 'Dua Halaman';
+
+  @override
+  String get mushafDisplayZoomed => 'Zum Masuk';
+
+  @override
+  String mushafSurahHeader(String name) {
+    return 'Surah $name';
+  }
+
+  @override
+  String mushafJuzHeader(String name) {
+    return 'Juzuk $name';
+  }
+
+  @override
+  String mushafPageNumber(int number) {
+    return 'Halaman $number';
+  }
+
+  @override
+  String get settingsReadingMode => 'Mod Bacaan';
+
+  @override
+  String get settingsHorizontalLayout => 'Tataletak Mendatar';
+
+  @override
+  String get settingsFlipDirection => 'Arah Leret';
+
+  @override
+  String get settingsQuranFont => 'Fon Al-Quran';
+
+  @override
+  String surahNumberBadge(int number) {
+    return 'Surah $number';
+  }
+
+  @override
+  String get fontExtractingLabel => 'Mengekstrak…';
+
+  @override
+  String get fontLoadingLabel => 'Memuatkan…';
+
+  @override
+  String get nextSurah => 'Surah Berikutnya';
+
+  @override
+  String get previousSurah => 'Surah Sebelumnya';
+
+  @override
+  String get scrollToTop => 'Ke Atas';
+
+  @override
+  String get noSimilarAyahsFound => 'Tiada ayat serupa ditemui';
+
+  @override
+  String similarAyahsCountLabel(String ayahKey, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ayat serupa',
+      one: '1 ayat serupa',
+    );
+    return '$ayahKey mempunyai $_temp0';
+  }
+
+  @override
+  String similarAyahsMatchStats(
+      int matchedWordsCount, int coverage, int score) {
+    return 'Sepadan $matchedWordsCount perkataan · liputan $coverage% · Skor: $score';
+  }
 }

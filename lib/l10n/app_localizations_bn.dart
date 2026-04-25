@@ -1725,6 +1725,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get quran => 'কুরআন';
 
   @override
+  String get quranKit => 'কুরআন কিট';
+
+  @override
   String get homeTitle => 'আপনার ইসলামিক সঙ্গী';
 
   @override
@@ -2068,6 +2071,13 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get notificationChecklistBody =>
       'আপনার দৈনিক ইসলামিক চেকলিস্ট সম্পন্ন করার এবং আপনার আধ্যাত্মিক অগ্রগতি ট্র্যাক করার সময়।';
+
+  @override
+  String get notificationKhatmaTitle => '📖 Khatma Daily Reminder';
+
+  @override
+  String get notificationKhatmaBody =>
+      'Time to read your daily Quran wird and stay on track with your Khatma.';
 
   @override
   String get notificationRandomAthkarTitle => '🤲 র‌্যান্ডম জিকির';
@@ -2506,10 +2516,10 @@ class AppLocalizationsBn extends AppLocalizations {
       'শীঘ্রই নতুন বিষয়বস্তু যোগ করা হবে।\nআপডেটের জন্য পরে আবার দেখুন।';
 
   @override
-  String get meccan => 'মক্কীয়';
+  String get meccan => 'মক্কী';
 
   @override
-  String get medinan => 'মদিনীয়';
+  String get medinan => 'মাদানী';
 
   @override
   String get ayahs => 'আয়াতসমূহ';
@@ -3079,4 +3089,398 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get agree => 'সম্মত';
+
+  @override
+  String get quranAudio => 'Quran Audio';
+
+  @override
+  String get searchReciters => 'Search reciters...';
+
+  @override
+  String get searchSurah => 'Search surah...';
+
+  @override
+  String get verses => 'verses';
+
+  @override
+  String get noDownloadedContent => 'No downloaded content';
+
+  @override
+  String get connectToDownload =>
+      'Connect to the internet to browse and download Quran recitations';
+
+  @override
+  String get quranRadio => 'কুরআন রেডিও';
+
+  @override
+  String get searchRadio => 'রেডিও স্টেশন খুঁজুন...';
+
+  @override
+  String get nowPlaying => 'এখন চলছে';
+
+  @override
+  String get khatmaTitle => 'কুরআন খতম';
+
+  @override
+  String get khatmaDescription =>
+      'কুরআন সম্পূর্ণ করতে আপনার দৈনিক অংশ বা সময়কাল নির্ধারণ করুন এবং সারা বছর আপনার খতম অনুসরণ করুন।';
+
+  @override
+  String get khatmaStartNew => 'নতুন খতম শুরু করুন';
+
+  @override
+  String get khatmaNewTitle => 'নতুন খতম';
+
+  @override
+  String get khatmaSuggested => 'প্রস্তাবিত';
+
+  @override
+  String get khatmaOneMonthProgram => 'এক মাসের খতম (২৯ দিন)';
+
+  @override
+  String get khatmaDailyWird21Pages => 'দৈনিক অংশ: ~২১ পৃষ্ঠা';
+
+  @override
+  String get khatmaOtherPrograms => 'অন্যান্য প্রোগ্রাম';
+
+  @override
+  String get khatmaBySemanticTitle => 'অর্থ অনুযায়ী খতম';
+
+  @override
+  String get khatmaBySemanticSubtitle => 'অর্থের সম্পূর্ণতা রক্ষা করে অংশগুলো';
+
+  @override
+  String get khatmaByPartsTitle => 'জুয ও রুব\' অনুযায়ী খতম';
+
+  @override
+  String get khatmaByPartsSubtitle => 'জুয ও আহযাব অনুযায়ী অংশ';
+
+  @override
+  String get khatmaProgramTitle => 'খতমের প্রোগ্রাম';
+
+  @override
+  String get khatmaTwoMonthsProgram => 'দুই মাসের খতম (৬০ দিন)';
+
+  @override
+  String get khatmaOneWeekProgram => 'এক সপ্তাহের খতম (৭ দিন)';
+
+  @override
+  String get khatmaMonthsSection => 'মাসিক';
+
+  @override
+  String get khatma30DaysTitle => '৩০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWirdJuz => 'দৈনিক অংশ: একটি জুয';
+
+  @override
+  String get khatmaOtherSection => 'অন্যান্য';
+
+  @override
+  String get khatma240DaysTitle => '২৪০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWirdRubu => 'দৈনিক অংশ: একটি রুব\'';
+
+  @override
+  String get khatma120DaysTitle => '১২০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWirdTwoRubu => 'দৈনিক অংশ: দুটি রুব\'';
+
+  @override
+  String get khatma80DaysTitle => '৮০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWird3Rubu => 'দৈনিক অংশ: ৩টি রুব\'';
+
+  @override
+  String get khatma60DaysTitle => '৬০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWirdHizb => 'দৈনিক অংশ: একটি হিযব';
+
+  @override
+  String get khatma40DaysTitle => '৪০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWirdHizbAndHalf => 'দৈনিক অংশ: দেড় হিযব';
+
+  @override
+  String get khatma20DaysTitle => '২০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWirdJuzAndHalf => 'দৈনিক অংশ: দেড় জুয';
+
+  @override
+  String get khatma15DaysTitle => '১৫ দিনের খতম';
+
+  @override
+  String get khatmaDailyWirdTwoJuz => 'দৈনিক অংশ: দুটি জুয';
+
+  @override
+  String get khatma10DaysTitle => '১০ দিনের খতম';
+
+  @override
+  String get khatmaDailyWird3Juz => 'দৈনিক অংশ: ৩টি জুয';
+
+  @override
+  String get khatma6DaysTitle => '৬ দিনের খতম';
+
+  @override
+  String get khatmaDailyWird5Juz => 'দৈনিক অংশ: ৫টি জুয';
+
+  @override
+  String get khatma3DaysTitle => '৩ দিনের খতম';
+
+  @override
+  String get khatmaDailyWird10Juz => 'দৈনিক অংশ: ১০টি জুয';
+
+  @override
+  String get khatmaStartFromTitle => 'খতম শুরু করুন';
+
+  @override
+  String get khatmaFromBeginning => 'কুরআনের শুরু থেকে';
+
+  @override
+  String get khatmaFromBeginningSubtitle => 'আল-ফাতিহা থেকে শুরু করুন';
+
+  @override
+  String get khatmaSpecificWird => 'নির্দিষ্ট অংশ';
+
+  @override
+  String get khatmaSpecificWirdSubtitle =>
+      'অংশের তালিকা থেকে একটি দিন বেছে নিন';
+
+  @override
+  String get khatmaStatsTitle => 'খতমের পরিসংখ্যান';
+
+  @override
+  String khatmaDayOf(int current, int total) {
+    return '$total দিনের মধ্যে $current দিন';
+  }
+
+  @override
+  String get khatmaTomorrow => 'আগামীকাল';
+
+  @override
+  String get khatmaInTwoDays => 'দুই দিনের মধ্যে';
+
+  @override
+  String khatmaInDays(int count) {
+    return '$count দিনের মধ্যে';
+  }
+
+  @override
+  String khatmaInManyDays(int count) {
+    return '$count দিনের মধ্যে';
+  }
+
+  @override
+  String get khatmaYesterday => 'গতকাল';
+
+  @override
+  String get khatmaTwoDaysAgo => 'দুই দিন আগে';
+
+  @override
+  String khatmaDaysAgo(int count) {
+    return '$count দিন আগে';
+  }
+
+  @override
+  String khatmaManyDaysAgo(int count) {
+    return '$count দিন আগে';
+  }
+
+  @override
+  String get khatmaLegendKhatma => 'খতম';
+
+  @override
+  String get khatmaWirdCompleted => 'সম্পন্ন';
+
+  @override
+  String get khatmaWirdInProgress => 'চলছে';
+
+  @override
+  String get khatmaCommitment => 'প্রতিশ্রুতি';
+
+  @override
+  String get khatmaDaysRemaining => 'অবশিষ্ট দিন';
+
+  @override
+  String get khatmaPagesRead => 'পড়া পৃষ্ঠা';
+
+  @override
+  String get khatmaPagesRemaining => 'অবশিষ্ট (পৃ.)';
+
+  @override
+  String khatmaDailyWirdOf(int day) {
+    return '$day দিনের অংশ';
+  }
+
+  @override
+  String khatmaFromSurah(String surah, int verse) {
+    return '$surah: $verse থেকে';
+  }
+
+  @override
+  String khatmaToSurah(String surah, int verse) {
+    return '$surah: $verse পর্যন্ত';
+  }
+
+  @override
+  String get khatmaMarkDone => 'আমি এই অংশ সম্পন্ন করেছি';
+
+  @override
+  String get khatmaDailyReminderSection => 'দৈনিক অনুস্মারক';
+
+  @override
+  String get khatmaDailyWirdTitle => 'দৈনিক অংশ';
+
+  @override
+  String get khatmaAllWirds => 'সব অংশ';
+
+  @override
+  String get khatmaViewAllWirds => 'সব অংশ দেখুন';
+
+  @override
+  String get khatmaDeleteTitle => 'খতম মুছুন';
+
+  @override
+  String get khatmaDeleteSubtitle => 'সমস্ত অগ্রগতির ডেটা মুছুন';
+
+  @override
+  String get khatmaCongrats => 'আল্লাহ আপনাকে বরকত দিন!';
+
+  @override
+  String get khatmaCompletedMsg => 'আপনি সফলভাবে এই খতম সম্পন্ন করেছেন';
+
+  @override
+  String get khatmaRepeat => 'এই খতম পুনরাবৃত্তি করুন';
+
+  @override
+  String get khatmaDeleteConfirmContent =>
+      'আপনি কি বর্তমান খতম মুছে সমস্ত অগ্রগতির ডেটা মুছতে চান?';
+
+  @override
+  String get khatmaAmIndicator => 'AM';
+
+  @override
+  String get khatmaPmIndicator => 'PM';
+
+  @override
+  String khatmaDailyWirdPages(int pages) {
+    return 'দৈনিক অংশ: ~$pages পৃষ্ঠা';
+  }
+
+  @override
+  String get surahsLabel => 'সূরাসমূহ';
+
+  @override
+  String get surahIndexSubtitle => '১১৪ সূরা';
+
+  @override
+  String get searchSurahHint => 'সূরা খুঁজুন...';
+
+  @override
+  String get surahNoResults => 'কোনো ফলাফল পাওয়া যায়নি';
+
+  @override
+  String verseCountLabel(int count) {
+    return '$count আয়াত';
+  }
+
+  @override
+  String get tabMemorization => 'হিফয';
+
+  @override
+  String get readingModeScrollList => 'স্ক্রল তালিকা';
+
+  @override
+  String get readingModeMushaf => 'মুসহাফ লেআউট';
+
+  @override
+  String get readingModeTajweed => 'মুসহাফ আত-তাজবিদ লেআউট';
+
+  @override
+  String get mushafFlipHorizontal => 'অনুভূমিক ফ্লিপ';
+
+  @override
+  String get mushafFlipVertical => 'উল্লম্ব ফ্লিপ';
+
+  @override
+  String get mushafDisplaySingle => 'একক পৃষ্ঠা';
+
+  @override
+  String get mushafDisplayDouble => 'দ্বৈত পৃষ্ঠা';
+
+  @override
+  String get mushafDisplayZoomed => 'জুম করা';
+
+  @override
+  String mushafSurahHeader(String name) {
+    return 'সূরা $name';
+  }
+
+  @override
+  String mushafJuzHeader(String name) {
+    return 'জুয $name';
+  }
+
+  @override
+  String mushafPageNumber(int number) {
+    return 'পৃষ্ঠা $number';
+  }
+
+  @override
+  String get settingsReadingMode => 'পঠন মোড';
+
+  @override
+  String get settingsHorizontalLayout => 'অনুভূমিক লেআউট';
+
+  @override
+  String get settingsFlipDirection => 'ফ্লিপ দিকনির্দেশ';
+
+  @override
+  String get settingsQuranFont => 'কুরআন ফন্ট';
+
+  @override
+  String surahNumberBadge(int number) {
+    return 'সূরা $number';
+  }
+
+  @override
+  String get fontExtractingLabel => 'এক্সট্র্যাক্ট হচ্ছে…';
+
+  @override
+  String get fontLoadingLabel => 'লোড হচ্ছে…';
+
+  @override
+  String get nextSurah => 'পরবর্তী সূরা';
+
+  @override
+  String get previousSurah => 'পূর্ববর্তী সূরা';
+
+  @override
+  String get scrollToTop => 'উপরে যান';
+
+  @override
+  String get noSimilarAyahsFound => 'কোনো মিলসম্পন্ন আয়াত পাওয়া যায়নি';
+
+  @override
+  String similarAyahsCountLabel(String ayahKey, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countটি মিলসম্পন্ন আয়াত',
+      one: '১টি মিলসম্পন্ন আয়াত',
+    );
+    return '$ayahKey-এ $_temp0 রয়েছে';
+  }
+
+  @override
+  String similarAyahsMatchStats(
+      int matchedWordsCount, int coverage, int score) {
+    return '$matchedWordsCountটি শব্দ মিলেছে · কভারেজ $coverage% · স্কোর: $score';
+  }
 }

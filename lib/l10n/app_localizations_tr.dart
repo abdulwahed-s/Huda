@@ -1723,7 +1723,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get extraLarge => 'çok büyük';
 
   @override
-  String get quran => 'kuran';
+  String get quran => 'Kuran';
+
+  @override
+  String get quranKit => 'Kuran Seti';
 
   @override
   String get homeTitle => 'İslami Yoldaşınız';
@@ -2060,6 +2063,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get notificationChecklistBody =>
       'Günlük İslami kontrol listenizi tamamlama ve ruhani ilerlemenizi takip etme zamanı.';
+
+  @override
+  String get notificationKhatmaTitle => '📖 Günlük Hatim Hatırlatması';
+
+  @override
+  String get notificationKhatmaBody =>
+      'Günlük Kuran virdinizi okuma ve hatminizi takip etme zamanı.';
 
   @override
   String get notificationRandomAthkarTitle => '🤲 Rastgele Zikir';
@@ -2498,10 +2508,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Yakında yeni içerik eklenecek.\nGüncellemeler için daha sonra tekrar kontrol edin.';
 
   @override
-  String get meccan => 'Mekkî';
+  String get meccan => 'Mekki';
 
   @override
-  String get medinan => 'Medînî';
+  String get medinan => 'Medeni';
 
   @override
   String get ayahs => 'Ayetler';
@@ -3072,4 +3082,397 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get agree => 'Kabul Et';
+
+  @override
+  String get quranAudio => 'Quran Audio';
+
+  @override
+  String get searchReciters => 'Search reciters...';
+
+  @override
+  String get searchSurah => 'Search surah...';
+
+  @override
+  String get verses => 'verses';
+
+  @override
+  String get noDownloadedContent => 'No downloaded content';
+
+  @override
+  String get connectToDownload =>
+      'Connect to the internet to browse and download Quran recitations';
+
+  @override
+  String get quranRadio => 'Kur\'an Radyosu';
+
+  @override
+  String get searchRadio => 'Radyo istasyonlarını ara...';
+
+  @override
+  String get nowPlaying => 'Şimdi Çalıyor';
+
+  @override
+  String get khatmaTitle => 'Kuran Hatmi';
+
+  @override
+  String get khatmaDescription =>
+      'Kuran\'ı tamamlamak için günlük bölümünüzü veya sürenizi belirleyin ve hatminizi yıl boyunca takip edin.';
+
+  @override
+  String get khatmaStartNew => 'Yeni Hatim Başlat';
+
+  @override
+  String get khatmaNewTitle => 'Yeni Hatim';
+
+  @override
+  String get khatmaSuggested => 'Önerilen';
+
+  @override
+  String get khatmaOneMonthProgram => 'Bir Aylık Hatim (29 gün)';
+
+  @override
+  String get khatmaDailyWird21Pages => 'Günlük miktar: ~21 sayfa';
+
+  @override
+  String get khatmaOtherPrograms => 'Diğer Programlar';
+
+  @override
+  String get khatmaBySemanticTitle => 'Anlam Bazlı Hatim';
+
+  @override
+  String get khatmaBySemanticSubtitle => 'Anlam bütünlüğü gözetilen bölümler';
+
+  @override
+  String get khatmaByPartsTitle => 'Cüz ve Hizb Bazlı Hatim';
+
+  @override
+  String get khatmaByPartsSubtitle => 'Cüz ve Ahzab\'a göre bölümler';
+
+  @override
+  String get khatmaProgramTitle => 'Hatim Programı';
+
+  @override
+  String get khatmaTwoMonthsProgram => 'İki Aylık Hatim (60 gün)';
+
+  @override
+  String get khatmaOneWeekProgram => 'Bir Haftalık Hatim (7 gün)';
+
+  @override
+  String get khatmaMonthsSection => 'Aylık';
+
+  @override
+  String get khatma30DaysTitle => '30 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWirdJuz => 'Günlük miktar: bir cüz';
+
+  @override
+  String get khatmaOtherSection => 'Diğer';
+
+  @override
+  String get khatma240DaysTitle => '240 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWirdRubu => 'Günlük miktar: bir rub\'';
+
+  @override
+  String get khatma120DaysTitle => '120 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWirdTwoRubu => 'Günlük miktar: iki rub\'';
+
+  @override
+  String get khatma80DaysTitle => '80 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWird3Rubu => 'Günlük miktar: 3 rub\'';
+
+  @override
+  String get khatma60DaysTitle => '60 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWirdHizb => 'Günlük miktar: bir hizb';
+
+  @override
+  String get khatma40DaysTitle => '40 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWirdHizbAndHalf => 'Günlük miktar: 1,5 hizb';
+
+  @override
+  String get khatma20DaysTitle => '20 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWirdJuzAndHalf => 'Günlük miktar: 1,5 cüz';
+
+  @override
+  String get khatma15DaysTitle => '15 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWirdTwoJuz => 'Günlük miktar: iki cüz';
+
+  @override
+  String get khatma10DaysTitle => '10 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWird3Juz => 'Günlük miktar: 3 cüz';
+
+  @override
+  String get khatma6DaysTitle => '6 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWird5Juz => 'Günlük miktar: 5 cüz';
+
+  @override
+  String get khatma3DaysTitle => '3 Günlük Hatim';
+
+  @override
+  String get khatmaDailyWird10Juz => 'Günlük miktar: 10 cüz';
+
+  @override
+  String get khatmaStartFromTitle => 'Hatme Başlangıç Noktası';
+
+  @override
+  String get khatmaFromBeginning => 'Kuran\'ın Başından';
+
+  @override
+  String get khatmaFromBeginningSubtitle => 'Fatiha\'dan başla';
+
+  @override
+  String get khatmaSpecificWird => 'Belirli Bölüm';
+
+  @override
+  String get khatmaSpecificWirdSubtitle => 'Bölümler listesinden bir gün seçin';
+
+  @override
+  String get khatmaStatsTitle => 'Hatim İstatistikleri';
+
+  @override
+  String khatmaDayOf(int current, int total) {
+    return '$total günden $current. gün';
+  }
+
+  @override
+  String get khatmaTomorrow => 'Yarın';
+
+  @override
+  String get khatmaInTwoDays => 'İki gün sonra';
+
+  @override
+  String khatmaInDays(int count) {
+    return '$count gün sonra';
+  }
+
+  @override
+  String khatmaInManyDays(int count) {
+    return '$count gün sonra';
+  }
+
+  @override
+  String get khatmaYesterday => 'Dün';
+
+  @override
+  String get khatmaTwoDaysAgo => 'İki gün önce';
+
+  @override
+  String khatmaDaysAgo(int count) {
+    return '$count gün önce';
+  }
+
+  @override
+  String khatmaManyDaysAgo(int count) {
+    return '$count gün önce';
+  }
+
+  @override
+  String get khatmaLegendKhatma => 'Hatim';
+
+  @override
+  String get khatmaWirdCompleted => 'Tamamlandı';
+
+  @override
+  String get khatmaWirdInProgress => 'Devam ediyor';
+
+  @override
+  String get khatmaCommitment => 'Bağlılık';
+
+  @override
+  String get khatmaDaysRemaining => 'Kalan Günler';
+
+  @override
+  String get khatmaPagesRead => 'Okunan Sayfalar';
+
+  @override
+  String get khatmaPagesRemaining => 'Kalan (s.)';
+
+  @override
+  String khatmaDailyWirdOf(int day) {
+    return '$day. Gün Bölümü';
+  }
+
+  @override
+  String khatmaFromSurah(String surah, int verse) {
+    return '$surah: $verse\'den';
+  }
+
+  @override
+  String khatmaToSurah(String surah, int verse) {
+    return '$surah: $verse\'ye';
+  }
+
+  @override
+  String get khatmaMarkDone => 'Bu bölümü tamamladım';
+
+  @override
+  String get khatmaDailyReminderSection => 'Günlük Hatırlatıcı';
+
+  @override
+  String get khatmaDailyWirdTitle => 'Günlük Bölüm';
+
+  @override
+  String get khatmaAllWirds => 'Tüm Bölümler';
+
+  @override
+  String get khatmaViewAllWirds => 'Tüm bölümleri görüntüle';
+
+  @override
+  String get khatmaDeleteTitle => 'Hatmi Sil';
+
+  @override
+  String get khatmaDeleteSubtitle => 'Tüm ilerleme verilerini sil';
+
+  @override
+  String get khatmaCongrats => 'Allah sizi mübarek kılsın!';
+
+  @override
+  String get khatmaCompletedMsg => 'Bu hatmi başarıyla tamamladınız';
+
+  @override
+  String get khatmaRepeat => 'Bu hatmi tekrarla';
+
+  @override
+  String get khatmaDeleteConfirmContent =>
+      'Mevcut hatmi silmek ve tüm ilerleme verilerinizi silmek istediğinizden emin misiniz?';
+
+  @override
+  String get khatmaAmIndicator => 'ÖÖ';
+
+  @override
+  String get khatmaPmIndicator => 'ÖS';
+
+  @override
+  String khatmaDailyWirdPages(int pages) {
+    return 'Günlük miktar: ~$pages sayfa';
+  }
+
+  @override
+  String get surahsLabel => 'Sureler';
+
+  @override
+  String get surahIndexSubtitle => '114 Sure';
+
+  @override
+  String get searchSurahHint => 'Sure ara...';
+
+  @override
+  String get surahNoResults => 'Sonuç bulunamadı';
+
+  @override
+  String verseCountLabel(int count) {
+    return '$count ayet';
+  }
+
+  @override
+  String get tabMemorization => 'Hıfz';
+
+  @override
+  String get readingModeScrollList => 'Kaydırma Listesi';
+
+  @override
+  String get readingModeMushaf => 'Mushaf Düzeni';
+
+  @override
+  String get readingModeTajweed => 'Tecvid Mushafı Düzeni';
+
+  @override
+  String get mushafFlipHorizontal => 'Yatay Çevirme';
+
+  @override
+  String get mushafFlipVertical => 'Dikey Çevirme';
+
+  @override
+  String get mushafDisplaySingle => 'Tek Sayfa';
+
+  @override
+  String get mushafDisplayDouble => 'Çift Sayfa';
+
+  @override
+  String get mushafDisplayZoomed => 'Yakınlaştırılmış';
+
+  @override
+  String mushafSurahHeader(String name) {
+    return 'Sure $name';
+  }
+
+  @override
+  String mushafJuzHeader(String name) {
+    return 'Cüz $name';
+  }
+
+  @override
+  String mushafPageNumber(int number) {
+    return 'Sayfa $number';
+  }
+
+  @override
+  String get settingsReadingMode => 'Okuma Modu';
+
+  @override
+  String get settingsHorizontalLayout => 'Yatay Düzen';
+
+  @override
+  String get settingsFlipDirection => 'Çevirme Yönü';
+
+  @override
+  String get settingsQuranFont => 'Kuran Yazı Tipi';
+
+  @override
+  String surahNumberBadge(int number) {
+    return 'Sure $number';
+  }
+
+  @override
+  String get fontExtractingLabel => 'Ayıklanıyor…';
+
+  @override
+  String get fontLoadingLabel => 'Yükleniyor…';
+
+  @override
+  String get nextSurah => 'Sonraki Sure';
+
+  @override
+  String get previousSurah => 'Önceki Sure';
+
+  @override
+  String get scrollToTop => 'Yukarı';
+
+  @override
+  String get noSimilarAyahsFound => 'Benzer ayet bulunamadı';
+
+  @override
+  String similarAyahsCountLabel(String ayahKey, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count benzer ayet',
+      one: '1 benzer ayet',
+    );
+    return '$ayahKey için $_temp0';
+  }
+
+  @override
+  String similarAyahsMatchStats(
+      int matchedWordsCount, int coverage, int score) {
+    return '$matchedWordsCount kelime eşleşiyor · %$coverage kapsama · Puan: $score';
+  }
 }

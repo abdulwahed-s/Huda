@@ -1,4 +1,4 @@
-{
+﻿{
     "@@locale": "en",
     "appTitle": "Huda",
     "@appTitle": {
@@ -2499,7 +2499,8 @@
     "normal": "normal",
     "large": "large",
     "extraLarge": "extra large",
-    "quran": "quran",
+    "quran": "Quran",
+    "quranKit": "Quran Kit",
     "homeTitle": "Your Islamic Companion",
     "continueHome": "Continue Reading",
     "noRecentActivityHome": "No Recent Activity",
@@ -2648,6 +2649,14 @@
     "notificationChecklistBody": "Time to fill your daily Islamic checklist and track your spiritual progress.",
     "@notificationChecklistBody": {
         "description": "Body text for daily checklist notification"
+    },
+    "notificationKhatmaTitle": "📖 Khatma Daily Reminder",
+    "@notificationKhatmaTitle": {
+        "description": "Title for khatma daily wird notification"
+    },
+    "notificationKhatmaBody": "Time to read your daily Quran wird and stay on track with your Khatma.",
+    "@notificationKhatmaBody": {
+        "description": "Body text for khatma daily wird notification"
     },
     "notificationRandomAthkarTitle": "🤲 Random Athkar",
     "@notificationRandomAthkarTitle": {
@@ -3766,8 +3775,7 @@
                 "example": "2"
             }
         }
-    }
-,
+    },
     "accessibilityServiceRequiredDialogTitle": "Accessibility Service Required",
     "@accessibilityServiceRequiredDialogTitle": {
         "description": "Title for accessibility service dialog"
@@ -3783,5 +3791,569 @@
     "agree": "Agree",
     "@agree": {
         "description": "Agree button text"
+    },
+    "quranAudio": "Quran Audio",
+    "@quranAudio": {
+        "description": "Quran audio screen title"
+    },
+    "searchReciters": "Search reciters...",
+    "@searchReciters": {
+        "description": "Search reciters placeholder"
+    },
+    "searchSurah": "Search surah...",
+    "@searchSurah": {
+        "description": "Search surah placeholder"
+    },
+    "verses": "verses",
+    "@verses": {
+        "description": "Verses count label"
+    },
+    "noResultsFound": "No results found",
+    "@noResultsFound": {
+        "description": "No results found message"
+    },
+    "noDownloadedContent": "No downloaded content",
+    "@noDownloadedContent": {
+        "description": "Offline empty state title when no audio is downloaded"
+    },
+    "connectToDownload": "Connect to the internet to browse and download Quran recitations",
+    "@connectToDownload": {
+        "description": "Offline empty state description"
+    },
+    "quranRadio": "Quran Radio",
+    "@quranRadio": {
+        "description": "Quran radio screen title"
+    },
+    "searchRadio": "Search radio stations...",
+    "@searchRadio": {
+        "description": "Search hint for radio stations"
+    },
+    "nowPlaying": "Now Playing",
+    "@nowPlaying": {
+        "description": "Now playing label in radio player bar"
+    },
+    "khatmaTitle": "Quran Khatma",
+    "@khatmaTitle": {
+        "description": "Title for the Khatma (Quran completion) page"
+    },
+    "khatmaDescription": "Set your daily portion or duration to complete the Quran, and track your Khatma throughout the year.",
+    "@khatmaDescription": {
+        "description": "Description on the empty Khatma page"
+    },
+    "khatmaStartNew": "Start New Khatma",
+    "@khatmaStartNew": {
+        "description": "Button to start a new Khatma"
+    },
+    "khatmaNewTitle": "New Khatma",
+    "@khatmaNewTitle": {
+        "description": "Title for the new Khatma step"
+    },
+    "khatmaSuggested": "Suggested",
+    "@khatmaSuggested": {
+        "description": "Badge label for suggested program"
+    },
+    "khatmaOneMonthProgram": "One Month Khatma (29 days)",
+    "@khatmaOneMonthProgram": {
+        "description": "One month Khatma program title"
+    },
+    "khatmaDailyWird21Pages": "Daily portion: ~21 pages",
+    "@khatmaDailyWird21Pages": {
+        "description": "Subtitle for the one-month Khatma program"
+    },
+    "khatmaOtherPrograms": "Other Programs",
+    "@khatmaOtherPrograms": {
+        "description": "Section label for other programs"
+    },
+    "khatmaBySemanticTitle": "Khatma by Meaning",
+    "@khatmaBySemanticTitle": {
+        "description": "Title for meaning-based Khatma program"
+    },
+    "khatmaBySemanticSubtitle": "Portions with complete meaning",
+    "@khatmaBySemanticSubtitle": {
+        "description": "Subtitle for meaning-based Khatma program"
+    },
+    "khatmaByPartsTitle": "Khatma by Juz and Rub'",
+    "@khatmaByPartsTitle": {
+        "description": "Title for parts-based Khatma program"
+    },
+    "khatmaByPartsSubtitle": "Portions by Juz and Ahzab",
+    "@khatmaByPartsSubtitle": {
+        "description": "Subtitle for parts-based Khatma program"
+    },
+    "khatmaProgramTitle": "Khatma Program",
+    "@khatmaProgramTitle": {
+        "description": "Title for the program selection step"
+    },
+    "khatmaTwoMonthsProgram": "Two-Month Khatma (60 days)",
+    "@khatmaTwoMonthsProgram": {
+        "description": "Two-month Khatma program title"
+    },
+    "khatmaOneWeekProgram": "One-Week Khatma (7 days)",
+    "@khatmaOneWeekProgram": {
+        "description": "One-week Khatma program title"
+    },
+    "khatmaMonthsSection": "Monthly",
+    "@khatmaMonthsSection": {
+        "description": "Section label for monthly Khatma programs"
+    },
+    "khatma30DaysTitle": "30-Day Khatma",
+    "@khatma30DaysTitle": {
+        "description": "30-day Khatma program title"
+    },
+    "khatmaDailyWirdJuz": "Daily portion: one Juz",
+    "@khatmaDailyWirdJuz": {
+        "description": "Daily portion subtitle: one Juz"
+    },
+    "khatmaOtherSection": "Other",
+    "@khatmaOtherSection": {
+        "description": "Section label for other Khatma programs"
+    },
+    "khatma240DaysTitle": "240-Day Khatma",
+    "@khatma240DaysTitle": {
+        "description": "240-day Khatma program title"
+    },
+    "khatmaDailyWirdRubu": "Daily portion: one Rub'",
+    "@khatmaDailyWirdRubu": {
+        "description": "Daily portion subtitle: one Rub'"
+    },
+    "khatma120DaysTitle": "120-Day Khatma",
+    "@khatma120DaysTitle": {
+        "description": "120-day Khatma program title"
+    },
+    "khatmaDailyWirdTwoRubu": "Daily portion: two Rub'",
+    "@khatmaDailyWirdTwoRubu": {
+        "description": "Daily portion subtitle: two Rub'"
+    },
+    "khatma80DaysTitle": "80-Day Khatma",
+    "@khatma80DaysTitle": {
+        "description": "80-day Khatma program title"
+    },
+    "khatmaDailyWird3Rubu": "Daily portion: 3 Rub'",
+    "@khatmaDailyWird3Rubu": {
+        "description": "Daily portion subtitle: 3 Rub'"
+    },
+    "khatma60DaysTitle": "60-Day Khatma",
+    "@khatma60DaysTitle": {
+        "description": "60-day Khatma program title"
+    },
+    "khatmaDailyWirdHizb": "Daily portion: one Hizb",
+    "@khatmaDailyWirdHizb": {
+        "description": "Daily portion subtitle: one Hizb"
+    },
+    "khatma40DaysTitle": "40-Day Khatma",
+    "@khatma40DaysTitle": {
+        "description": "40-day Khatma program title"
+    },
+    "khatmaDailyWirdHizbAndHalf": "Daily portion: 1.5 Hizb",
+    "@khatmaDailyWirdHizbAndHalf": {
+        "description": "Daily portion subtitle: 1.5 Hizb"
+    },
+    "khatma20DaysTitle": "20-Day Khatma",
+    "@khatma20DaysTitle": {
+        "description": "20-day Khatma program title"
+    },
+    "khatmaDailyWirdJuzAndHalf": "Daily portion: 1.5 Juz",
+    "@khatmaDailyWirdJuzAndHalf": {
+        "description": "Daily portion subtitle: 1.5 Juz"
+    },
+    "khatma15DaysTitle": "15-Day Khatma",
+    "@khatma15DaysTitle": {
+        "description": "15-day Khatma program title"
+    },
+    "khatmaDailyWirdTwoJuz": "Daily portion: two Juz",
+    "@khatmaDailyWirdTwoJuz": {
+        "description": "Daily portion subtitle: two Juz"
+    },
+    "khatma10DaysTitle": "10-Day Khatma",
+    "@khatma10DaysTitle": {
+        "description": "10-day Khatma program title"
+    },
+    "khatmaDailyWird3Juz": "Daily portion: 3 Juz",
+    "@khatmaDailyWird3Juz": {
+        "description": "Daily portion subtitle: 3 Juz"
+    },
+    "khatma6DaysTitle": "6-Day Khatma",
+    "@khatma6DaysTitle": {
+        "description": "6-day Khatma program title"
+    },
+    "khatmaDailyWird5Juz": "Daily portion: 5 Juz",
+    "@khatmaDailyWird5Juz": {
+        "description": "Daily portion subtitle: 5 Juz"
+    },
+    "khatma3DaysTitle": "3-Day Khatma",
+    "@khatma3DaysTitle": {
+        "description": "3-day Khatma program title"
+    },
+    "khatmaDailyWird10Juz": "Daily portion: 10 Juz",
+    "@khatmaDailyWird10Juz": {
+        "description": "Daily portion subtitle: 10 Juz"
+    },
+    "khatmaStartFromTitle": "Start Khatma From",
+    "@khatmaStartFromTitle": {
+        "description": "Title for start-from selection step"
+    },
+    "khatmaFromBeginning": "Beginning of the Quran",
+    "@khatmaFromBeginning": {
+        "description": "Option to start from the beginning of the Quran"
+    },
+    "khatmaFromBeginningSubtitle": "Start from Al-Fatihah",
+    "@khatmaFromBeginningSubtitle": {
+        "description": "Subtitle for starting from the beginning"
+    },
+    "khatmaSpecificWird": "Specific Portion",
+    "@khatmaSpecificWird": {
+        "description": "Option to start from a specific portion"
+    },
+    "khatmaSpecificWirdSubtitle": "Choose a day from the portions list",
+    "@khatmaSpecificWirdSubtitle": {
+        "description": "Subtitle for starting from a specific portion"
+    },
+    "khatmaStatsTitle": "Khatma Statistics",
+    "@khatmaStatsTitle": {
+        "description": "Title for the active Khatma statistics page"
+    },
+    "khatmaDayOf": "Day {current} of {total}",
+    "@khatmaDayOf": {
+        "description": "Progress indicator showing current day out of total days",
+        "placeholders": {
+            "current": {"type": "int"},
+            "total": {"type": "int"}
+        }
+    },
+    "khatmaTomorrow": "Tomorrow",
+    "@khatmaTomorrow": {
+        "description": "Relative day label: tomorrow"
+    },
+    "khatmaInTwoDays": "In two days",
+    "@khatmaInTwoDays": {
+        "description": "Relative day label: in two days"
+    },
+    "khatmaInDays": "In {count} days",
+    "@khatmaInDays": {
+        "description": "Relative day label: in N days (3-10)",
+        "placeholders": {
+            "count": {"type": "int"}
+        }
+    },
+    "khatmaInManyDays": "In {count} days",
+    "@khatmaInManyDays": {
+        "description": "Relative day label: in N days (>10)",
+        "placeholders": {
+            "count": {"type": "int"}
+        }
+    },
+    "khatmaYesterday": "Yesterday",
+    "@khatmaYesterday": {
+        "description": "Relative day label: yesterday"
+    },
+    "khatmaTwoDaysAgo": "Two days ago",
+    "@khatmaTwoDaysAgo": {
+        "description": "Relative day label: two days ago"
+    },
+    "khatmaDaysAgo": "{count} days ago",
+    "@khatmaDaysAgo": {
+        "description": "Relative day label: N days ago (3-10)",
+        "placeholders": {
+            "count": {"type": "int"}
+        }
+    },
+    "khatmaManyDaysAgo": "{count} days ago",
+    "@khatmaManyDaysAgo": {
+        "description": "Relative day label: N days ago (>10)",
+        "placeholders": {
+            "count": {"type": "int"}
+        }
+    },
+    "khatmaLegendKhatma": "Khatma",
+    "@khatmaLegendKhatma": {
+        "description": "Legend label for the Khatma ring"
+    },
+    "khatmaWirdCompleted": "Completed",
+    "@khatmaWirdCompleted": {
+        "description": "Status: wird completed for today"
+    },
+    "khatmaWirdInProgress": "In Progress",
+    "@khatmaWirdInProgress": {
+        "description": "Status: wird in progress for today"
+    },
+    "khatmaCommitment": "Commitment",
+    "@khatmaCommitment": {
+        "description": "Legend label for commitment ring"
+    },
+    "khatmaDaysRemaining": "Days Remaining",
+    "@khatmaDaysRemaining": {
+        "description": "Stats label for days remaining"
+    },
+    "khatmaPagesRead": "Pages Read",
+    "@khatmaPagesRead": {
+        "description": "Stats label for pages read"
+    },
+    "khatmaPagesRemaining": "Remaining (p.)",
+    "@khatmaPagesRemaining": {
+        "description": "Stats label for pages remaining"
+    },
+    "khatmaDailyWirdOf": "Day {day} Portion",
+    "@khatmaDailyWirdOf": {
+        "description": "Label for the daily wird of a specific day",
+        "placeholders": {
+            "day": {"type": "int"}
+        }
+    },
+    "khatmaFromSurah": "From {surah}: {verse}",
+    "@khatmaFromSurah": {
+        "description": "Start of today's wird: from surah and verse",
+        "placeholders": {
+            "surah": {"type": "String"},
+            "verse": {"type": "int"}
+        }
+    },
+    "khatmaToSurah": "To {surah}: {verse}",
+    "@khatmaToSurah": {
+        "description": "End of today's wird: to surah and verse",
+        "placeholders": {
+            "surah": {"type": "String"},
+            "verse": {"type": "int"}
+        }
+    },
+    "khatmaMarkDone": "I completed this portion",
+    "@khatmaMarkDone": {
+        "description": "Button to mark today's wird as done"
+    },
+    "khatmaDailyReminderSection": "Daily Reminder",
+    "@khatmaDailyReminderSection": {
+        "description": "Section label for daily reminder"
+    },
+    "khatmaDailyWirdTitle": "Daily Portion",
+    "@khatmaDailyWirdTitle": {
+        "description": "Title for the daily wird reminder tile"
+    },
+    "khatmaAllWirds": "All Portions",
+    "@khatmaAllWirds": {
+        "description": "Title for the all wirds list"
+    },
+    "khatmaViewAllWirds": "View all portions",
+    "@khatmaViewAllWirds": {
+        "description": "Subtitle for the all wirds tile"
+    },
+    "khatmaDeleteTitle": "Delete Khatma",
+    "@khatmaDeleteTitle": {
+        "description": "Title for delete Khatma option and dialog"
+    },
+    "khatmaDeleteSubtitle": "Clear all progress data",
+    "@khatmaDeleteSubtitle": {
+        "description": "Subtitle for delete Khatma option"
+    },
+    "khatmaCongrats": "May Allah bless you!",
+    "@khatmaCongrats": {
+        "description": "Congratulations message on Khatma completion"
+    },
+    "khatmaCompletedMsg": "You have successfully completed this Khatma",
+    "@khatmaCompletedMsg": {
+        "description": "Completion message body"
+    },
+    "khatmaRepeat": "Repeat this Khatma",
+    "@khatmaRepeat": {
+        "description": "Button to repeat the same Khatma program"
+    },
+    "khatmaDeleteConfirmContent": "Are you sure you want to delete the current Khatma and erase all your progress data?",
+    "@khatmaDeleteConfirmContent": {
+        "description": "Confirmation dialog content for deleting Khatma"
+    },
+    "khatmaAmIndicator": "AM",
+    "@khatmaAmIndicator": {
+        "description": "AM time indicator used in reminder time display"
+    },
+    "khatmaPmIndicator": "PM",
+    "@khatmaPmIndicator": {
+        "description": "PM time indicator used in reminder time display"
+    },
+    "khatmaDailyWirdPages": "Daily portion: ~{pages} pages",
+    "@khatmaDailyWirdPages": {
+        "description": "Daily portion subtitle with pages count",
+        "placeholders": {
+            "pages": {"type": "int"}
+        }
+    },
+    "surahsLabel": "Surahs",
+    "@surahsLabel": {
+        "description": "Label for the Surahs tab and section title"
+    },
+    "surahIndexSubtitle": "114 Surahs",
+    "@surahIndexSubtitle": {
+        "description": "Subtitle showing total surah count"
+    },
+    "searchSurahHint": "Search for a surah...",
+    "@searchSurahHint": {
+        "description": "Placeholder text for the surah search field"
+    },
+    "surahNoResults": "No results found",
+    "@surahNoResults": {
+        "description": "Empty state message when surah search returns no results"
+    },
+    "meccan": "Meccan",
+    "@meccan": {
+        "description": "Label for Meccan (Makkiyah) surahs"
+    },
+    "medinan": "Medinan",
+    "@medinan": {
+        "description": "Label for Medinan (Madaniyah) surahs"
+    },
+    "verseCountLabel": "{count} verses",
+    "@verseCountLabel": {
+        "description": "Verse count label on each surah card",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "description": "Number of verses in the surah"
+            }
+        }
+    },
+    "tabMemorization": "Memorize",
+    "@tabMemorization": {
+        "description": "Tab bar label for the memorization (Hifz) tab"
+    },
+    "readingModeScrollList": "Scroll List",
+    "@readingModeScrollList": {
+        "description": "Reading mode: scrollable list"
+    },
+    "readingModeMushaf": "Mushaf layout",
+    "@readingModeMushaf": {
+        "description": "Reading mode: mushaf page-by-page"
+    },
+    "readingModeTajweed": "Mushaf Al-Tajweed layout",
+    "@readingModeTajweed": {
+        "description": "Reading mode: tajweed mushaf"
+    },
+    "mushafFlipHorizontal": "Horizontal Flip",
+    "@mushafFlipHorizontal": {
+        "description": "Mushaf flip direction: horizontal"
+    },
+    "mushafFlipVertical": "Vertical Flip",
+    "@mushafFlipVertical": {
+        "description": "Mushaf flip direction: vertical"
+    },
+    "mushafDisplaySingle": "Single Page",
+    "@mushafDisplaySingle": {
+        "description": "Mushaf display mode: single page"
+    },
+    "mushafDisplayDouble": "Double Page",
+    "@mushafDisplayDouble": {
+        "description": "Mushaf display mode: double page"
+    },
+    "mushafDisplayZoomed": "Zoomed",
+    "@mushafDisplayZoomed": {
+        "description": "Mushaf display mode: zoomed"
+    },
+    "mushafSurahHeader": "Surah {name}",
+    "@mushafSurahHeader": {
+        "description": "Mushaf page header surah label",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "description": "Arabic surah name"
+            }
+        }
+    },
+    "mushafJuzHeader": "Juz {name}",
+    "@mushafJuzHeader": {
+        "description": "Mushaf page header juz label",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "description": "Arabic juz name"
+            }
+        }
+    },
+    "mushafPageNumber": "Page {number}",
+    "@mushafPageNumber": {
+        "description": "Error fallback label in mushaf view",
+        "placeholders": {
+            "number": {
+                "type": "int",
+                "description": "Page number"
+            }
+        }
+    },
+    "settingsReadingMode": "Reading Mode",
+    "@settingsReadingMode": {
+        "description": "Settings section header for reading mode"
+    },
+    "settingsHorizontalLayout": "Horizontal Layout",
+    "@settingsHorizontalLayout": {
+        "description": "Settings section header for horizontal layout"
+    },
+    "settingsFlipDirection": "Flip Direction",
+    "@settingsFlipDirection": {
+        "description": "Settings section header for flip direction"
+    },
+    "settingsQuranFont": "Quran Font",
+    "@settingsQuranFont": {
+        "description": "Settings section header for Quran font"
+    },
+    "surahNumberBadge": "Surah {number}",
+    "@surahNumberBadge": {
+        "description": "Surah number badge in the app bar",
+        "placeholders": {
+            "number": {
+                "type": "int",
+                "description": "Surah number"
+            }
+        }
+    },
+    "fontExtractingLabel": "Extracting…",
+    "@fontExtractingLabel": {
+        "description": "Font download progress: extracting state"
+    },
+    "fontLoadingLabel": "Loading…",
+    "@fontLoadingLabel": {
+        "description": "Font download progress: loading state"
+    },
+    "nextSurah": "Next Surah",
+    "@nextSurah": {
+        "description": "Next surah navigation button label"
+    },
+    "previousSurah": "Previous Surah",
+    "@previousSurah": {
+        "description": "Previous surah navigation button label"
+    },
+    "scrollToTop": "To Top",
+    "@scrollToTop": {
+        "description": "Scroll to top navigation button label"
+    },
+    "noSimilarAyahsFound": "No similar ayahs found",
+    "@noSimilarAyahsFound": {
+        "description": "Message when no similar ayahs are found"
+    },
+    "similarAyahsCountLabel": "{ayahKey} has {count, plural, one{1 similar ayah} other{{count} similar ayahs}}",
+    "@similarAyahsCountLabel": {
+        "description": "Header showing how many similar ayahs an ayah key has",
+        "placeholders": {
+            "ayahKey": {
+                "type": "String",
+                "description": "The surah:ayah key"
+            },
+            "count": {
+                "type": "int",
+                "description": "Number of similar ayahs"
+            }
+        }
+    },
+    "similarAyahsMatchStats": "Matches {matchedWordsCount} words · {coverage}% coverage · Score: {score}",
+    "@similarAyahsMatchStats": {
+        "description": "Match statistics for a similar ayah",
+        "placeholders": {
+            "matchedWordsCount": {
+                "type": "int",
+                "description": "Number of matched words"
+            },
+            "coverage": {
+                "type": "int",
+                "description": "Coverage percentage"
+            },
+            "score": {
+                "type": "int",
+                "description": "Similarity score"
+            }
+        }
     }
 }

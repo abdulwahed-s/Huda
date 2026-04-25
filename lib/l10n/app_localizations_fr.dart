@@ -1758,7 +1758,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get extraLarge => 'très grand';
 
   @override
-  String get quran => 'coran';
+  String get quran => 'Coran';
+
+  @override
+  String get quranKit => 'Kit du Coran';
 
   @override
   String get homeTitle => 'Votre compagnon islamique';
@@ -2123,6 +2126,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get notificationChecklistBody =>
       'Il est temps de remplir votre liste de vérification islamique quotidienne et de suivre votre progrès spirituel.';
+
+  @override
+  String get notificationKhatmaTitle => '📖 Khatma Daily Reminder';
+
+  @override
+  String get notificationKhatmaBody =>
+      'Time to read your daily Quran wird and stay on track with your Khatma.';
 
   @override
   String get notificationRandomAthkarTitle => '🤲 Athkar aléatoire';
@@ -3148,4 +3158,399 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get agree => 'Accepter';
+
+  @override
+  String get quranAudio => 'Quran Audio';
+
+  @override
+  String get searchReciters => 'Search reciters...';
+
+  @override
+  String get searchSurah => 'Search surah...';
+
+  @override
+  String get verses => 'verses';
+
+  @override
+  String get noDownloadedContent => 'No downloaded content';
+
+  @override
+  String get connectToDownload =>
+      'Connect to the internet to browse and download Quran recitations';
+
+  @override
+  String get quranRadio => 'Radio Coran';
+
+  @override
+  String get searchRadio => 'Rechercher des stations radio...';
+
+  @override
+  String get nowPlaying => 'En cours de lecture';
+
+  @override
+  String get khatmaTitle => 'Khatma du Coran';
+
+  @override
+  String get khatmaDescription =>
+      'Définissez votre portion quotidienne ou la durée pour compléter le Coran, et suivez votre Khatma tout au long de l\'année.';
+
+  @override
+  String get khatmaStartNew => 'Commencer une nouvelle Khatma';
+
+  @override
+  String get khatmaNewTitle => 'Nouvelle Khatma';
+
+  @override
+  String get khatmaSuggested => 'Suggéré';
+
+  @override
+  String get khatmaOneMonthProgram => 'Khatma d\'un mois (29 jours)';
+
+  @override
+  String get khatmaDailyWird21Pages => 'Portion quotidienne : ~21 pages';
+
+  @override
+  String get khatmaOtherPrograms => 'Autres programmes';
+
+  @override
+  String get khatmaBySemanticTitle => 'Khatma par sens';
+
+  @override
+  String get khatmaBySemanticSubtitle => 'Portions respectant le sens complet';
+
+  @override
+  String get khatmaByPartsTitle => 'Khatma par Juz et Rub\'';
+
+  @override
+  String get khatmaByPartsSubtitle => 'Portions par Juz et Ahzab';
+
+  @override
+  String get khatmaProgramTitle => 'Programme de Khatma';
+
+  @override
+  String get khatmaTwoMonthsProgram => 'Khatma de deux mois (60 jours)';
+
+  @override
+  String get khatmaOneWeekProgram => 'Khatma d\'une semaine (7 jours)';
+
+  @override
+  String get khatmaMonthsSection => 'Mensuel';
+
+  @override
+  String get khatma30DaysTitle => 'Khatma de 30 jours';
+
+  @override
+  String get khatmaDailyWirdJuz => 'Portion quotidienne : un Juz';
+
+  @override
+  String get khatmaOtherSection => 'Autres';
+
+  @override
+  String get khatma240DaysTitle => 'Khatma de 240 jours';
+
+  @override
+  String get khatmaDailyWirdRubu => 'Portion quotidienne : un Rub\'';
+
+  @override
+  String get khatma120DaysTitle => 'Khatma de 120 jours';
+
+  @override
+  String get khatmaDailyWirdTwoRubu => 'Portion quotidienne : deux Rub\'';
+
+  @override
+  String get khatma80DaysTitle => 'Khatma de 80 jours';
+
+  @override
+  String get khatmaDailyWird3Rubu => 'Portion quotidienne : 3 Rub\'';
+
+  @override
+  String get khatma60DaysTitle => 'Khatma de 60 jours';
+
+  @override
+  String get khatmaDailyWirdHizb => 'Portion quotidienne : un Hizb';
+
+  @override
+  String get khatma40DaysTitle => 'Khatma de 40 jours';
+
+  @override
+  String get khatmaDailyWirdHizbAndHalf => 'Portion quotidienne : 1,5 Hizb';
+
+  @override
+  String get khatma20DaysTitle => 'Khatma de 20 jours';
+
+  @override
+  String get khatmaDailyWirdJuzAndHalf => 'Portion quotidienne : 1,5 Juz';
+
+  @override
+  String get khatma15DaysTitle => 'Khatma de 15 jours';
+
+  @override
+  String get khatmaDailyWirdTwoJuz => 'Portion quotidienne : deux Juz';
+
+  @override
+  String get khatma10DaysTitle => 'Khatma de 10 jours';
+
+  @override
+  String get khatmaDailyWird3Juz => 'Portion quotidienne : 3 Juz';
+
+  @override
+  String get khatma6DaysTitle => 'Khatma de 6 jours';
+
+  @override
+  String get khatmaDailyWird5Juz => 'Portion quotidienne : 5 Juz';
+
+  @override
+  String get khatma3DaysTitle => 'Khatma de 3 jours';
+
+  @override
+  String get khatmaDailyWird10Juz => 'Portion quotidienne : 10 Juz';
+
+  @override
+  String get khatmaStartFromTitle => 'Commencer la Khatma depuis';
+
+  @override
+  String get khatmaFromBeginning => 'Début du Coran';
+
+  @override
+  String get khatmaFromBeginningSubtitle => 'Commencer par Al-Fatiha';
+
+  @override
+  String get khatmaSpecificWird => 'Portion spécifique';
+
+  @override
+  String get khatmaSpecificWirdSubtitle =>
+      'Choisir un jour dans la liste des portions';
+
+  @override
+  String get khatmaStatsTitle => 'Statistiques de la Khatma';
+
+  @override
+  String khatmaDayOf(int current, int total) {
+    return 'Jour $current sur $total';
+  }
+
+  @override
+  String get khatmaTomorrow => 'Demain';
+
+  @override
+  String get khatmaInTwoDays => 'Dans deux jours';
+
+  @override
+  String khatmaInDays(int count) {
+    return 'Dans $count jours';
+  }
+
+  @override
+  String khatmaInManyDays(int count) {
+    return 'Dans $count jours';
+  }
+
+  @override
+  String get khatmaYesterday => 'Hier';
+
+  @override
+  String get khatmaTwoDaysAgo => 'Il y a deux jours';
+
+  @override
+  String khatmaDaysAgo(int count) {
+    return 'Il y a $count jours';
+  }
+
+  @override
+  String khatmaManyDaysAgo(int count) {
+    return 'Il y a $count jours';
+  }
+
+  @override
+  String get khatmaLegendKhatma => 'Khatma';
+
+  @override
+  String get khatmaWirdCompleted => 'Terminé';
+
+  @override
+  String get khatmaWirdInProgress => 'En cours';
+
+  @override
+  String get khatmaCommitment => 'Engagement';
+
+  @override
+  String get khatmaDaysRemaining => 'Jours restants';
+
+  @override
+  String get khatmaPagesRead => 'Pages lues';
+
+  @override
+  String get khatmaPagesRemaining => 'Restant (p.)';
+
+  @override
+  String khatmaDailyWirdOf(int day) {
+    return 'Portion jour $day';
+  }
+
+  @override
+  String khatmaFromSurah(String surah, int verse) {
+    return 'De $surah : $verse';
+  }
+
+  @override
+  String khatmaToSurah(String surah, int verse) {
+    return 'À $surah : $verse';
+  }
+
+  @override
+  String get khatmaMarkDone => 'J\'ai complété cette portion';
+
+  @override
+  String get khatmaDailyReminderSection => 'Rappel quotidien';
+
+  @override
+  String get khatmaDailyWirdTitle => 'Portion quotidienne';
+
+  @override
+  String get khatmaAllWirds => 'Toutes les portions';
+
+  @override
+  String get khatmaViewAllWirds => 'Voir toutes les portions';
+
+  @override
+  String get khatmaDeleteTitle => 'Supprimer la Khatma';
+
+  @override
+  String get khatmaDeleteSubtitle =>
+      'Effacer toutes les données de progression';
+
+  @override
+  String get khatmaCongrats => 'Qu\'Allah vous bénisse !';
+
+  @override
+  String get khatmaCompletedMsg => 'Vous avez terminé cette Khatma avec succès';
+
+  @override
+  String get khatmaRepeat => 'Répéter cette Khatma';
+
+  @override
+  String get khatmaDeleteConfirmContent =>
+      'Êtes-vous sûr de vouloir supprimer la Khatma actuelle et effacer toutes vos données de progression ?';
+
+  @override
+  String get khatmaAmIndicator => 'AM';
+
+  @override
+  String get khatmaPmIndicator => 'PM';
+
+  @override
+  String khatmaDailyWirdPages(int pages) {
+    return 'Portion quotidienne : ~$pages pages';
+  }
+
+  @override
+  String get surahsLabel => 'Sourates';
+
+  @override
+  String get surahIndexSubtitle => '114 Sourates';
+
+  @override
+  String get searchSurahHint => 'Rechercher une sourate...';
+
+  @override
+  String get surahNoResults => 'Aucun résultat trouvé';
+
+  @override
+  String verseCountLabel(int count) {
+    return '$count versets';
+  }
+
+  @override
+  String get tabMemorization => 'Mémorisation';
+
+  @override
+  String get readingModeScrollList => 'Liste défilante';
+
+  @override
+  String get readingModeMushaf => 'Disposition Mushaf';
+
+  @override
+  String get readingModeTajweed => 'Disposition Mushaf Al-Tajweed';
+
+  @override
+  String get mushafFlipHorizontal => 'Défilement horizontal';
+
+  @override
+  String get mushafFlipVertical => 'Défilement vertical';
+
+  @override
+  String get mushafDisplaySingle => 'Page unique';
+
+  @override
+  String get mushafDisplayDouble => 'Double page';
+
+  @override
+  String get mushafDisplayZoomed => 'Zoomé';
+
+  @override
+  String mushafSurahHeader(String name) {
+    return 'Sourate $name';
+  }
+
+  @override
+  String mushafJuzHeader(String name) {
+    return 'Juz $name';
+  }
+
+  @override
+  String mushafPageNumber(int number) {
+    return 'Page $number';
+  }
+
+  @override
+  String get settingsReadingMode => 'Mode de lecture';
+
+  @override
+  String get settingsHorizontalLayout => 'Disposition horizontale';
+
+  @override
+  String get settingsFlipDirection => 'Direction de défilement';
+
+  @override
+  String get settingsQuranFont => 'Police du Coran';
+
+  @override
+  String surahNumberBadge(int number) {
+    return 'Sourate $number';
+  }
+
+  @override
+  String get fontExtractingLabel => 'Extraction…';
+
+  @override
+  String get fontLoadingLabel => 'Chargement…';
+
+  @override
+  String get nextSurah => 'Sourate suivante';
+
+  @override
+  String get previousSurah => 'Sourate précédente';
+
+  @override
+  String get scrollToTop => 'Haut de page';
+
+  @override
+  String get noSimilarAyahsFound => 'Aucun verset similaire trouvé';
+
+  @override
+  String similarAyahsCountLabel(String ayahKey, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count versets similaires',
+      one: '1 verset similaire',
+    );
+    return '$ayahKey a $_temp0';
+  }
+
+  @override
+  String similarAyahsMatchStats(
+      int matchedWordsCount, int coverage, int score) {
+    return 'Correspond à $matchedWordsCount mots · couverture $coverage% · Score : $score';
+  }
 }
