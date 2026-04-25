@@ -7,6 +7,7 @@ import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
 import 'package:huda/presentation/widgets/home/feature_grid.dart';
+import 'package:huda/presentation/widgets/home/quran_feature_stack_card.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/core/routes/app_route.dart';
 
@@ -30,14 +31,6 @@ class HomeContent extends StatelessWidget {
 
   List<FeatureItem> _getFeatures(BuildContext context) {
     return [
-      FeatureItem(
-        title: AppLocalizations.of(context)!.quran,
-        svgAsset: 'assets/images/quranicon.svg.vec',
-        onTap: () async {
-          await Navigator.pushNamed(context, '/homeQuran');
-          refreshHomeData();
-        },
-      ),
       FeatureItem(
         title: AppLocalizations.of(context)!.prayerTimes,
         svgAsset: 'assets/images/prayertimeicon.svg.vec',
@@ -107,11 +100,6 @@ class HomeContent extends StatelessWidget {
         onTap: () => Navigator.pushNamed(context, AppRoute.tasbih),
       ),
       FeatureItem(
-        title: AppLocalizations.of(context)!.bookmarks,
-        icon: Icons.bookmark,
-        onTap: () => Navigator.pushNamed(context, AppRoute.bookmarks),
-      ),
-      FeatureItem(
         title: AppLocalizations.of(context)!.settings,
         icon: Icons.settings,
         onTap: () => Navigator.pushNamed(context, AppRoute.settings),
@@ -174,6 +162,25 @@ class HomeContent extends StatelessWidget {
                     FeatureGrid(
                       isDarkMode: isDarkMode,
                       features: _getFeatures(context),
+                      quranStackCard: QuranFeatureStackCard(
+                        isDarkMode: isDarkMode,
+                        index: 0,
+                        stackLabel: AppLocalizations.of(context)!.quranKit,
+                        quranLabel: AppLocalizations.of(context)!.quran,
+                        audioLabel: AppLocalizations.of(context)!.quranAudio,
+                        radioLabel: AppLocalizations.of(context)!.quranRadio,
+                        bookmarkLabel: AppLocalizations.of(context)!.bookmarks,
+                        onQuranTap: () async {
+                          await Navigator.pushNamed(context, '/homeQuran');
+                          refreshHomeData();
+                        },
+                        onAudioTap: () =>
+                            Navigator.pushNamed(context, AppRoute.quranAudio),
+                        onRadioTap: () =>
+                            Navigator.pushNamed(context, AppRoute.quranRadio),
+                        onBookmarkTap: () =>
+                            Navigator.pushNamed(context, AppRoute.bookmarks),
+                      ),
                     ),
                   ],
                 ),
