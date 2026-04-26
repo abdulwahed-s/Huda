@@ -1,7 +1,6 @@
 class TextUtils {
   static String removeDiacriticsAndNormalize(String input) {
-    final diacriticRegex =
-        RegExp(r'[\u064B-\u0652\u0653\u0654\u0655\u06D6-\u06ED\u0610-\u061A]');
+    final diacriticRegex = RegExp(r'[\u0610-\u061A\u064B-\u065F\u06D6-\u06ED]');
     String result = input.replaceAll(diacriticRegex, '');
 
     // Normalize Arabic letters
@@ -9,12 +8,18 @@ class TextUtils {
     result = result.replaceAll('أ', 'ا');
     result = result.replaceAll('إ', 'ا');
     result = result.replaceAll('آ', 'ا');
+    result = result.replaceAll('ؤ', 'و'); // Waw Hamza Above → Waw
+    result = result.replaceAll('ئ', 'ي'); // Ya Hamza Above → Ya
     result = result.replaceAll('ى', 'ي'); // Alif Maqsura → Ya
     result = result.replaceAll('ة', 'ه'); // Ta marbuta → Ha
     result = result.replaceAll('\u0640', ''); // Remove Tatweel (Kashida)
     result = result.replaceAll('ی', 'ي'); // Farsi Yeh → Arabic Yeh
     result = result.replaceAll('ك', 'ك'); // Normalize Kaf (keep as Arabic Kaf)
-    result = result.replaceAll('\u0670', 'ا'); // Superscript Alef → Alef
+    result = result.replaceAll(
+        '\u0670', ''); // Remove Superscript Alef (diacritical mark)
+
+    // Collapse runs of whitespace left by removed Quranic markers (e.g. ۖ ۞)
+    result = result.replaceAll(RegExp(r'\s+'), ' ').trim();
 
     return result;
   }
