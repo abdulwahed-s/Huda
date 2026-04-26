@@ -41,6 +41,11 @@ dependencies:
   bloc: ^9.0.0
   flutter_screenutil: ^5.9.3
   audioplayers: ^6.5.0
+  just_audio: ^0.9.42
+  just_audio_background: ^0.0.1-beta.13
+  just_audio_media_kit: ^2.1.0
+  media_kit_libs_windows_audio: ^1.0.9
+  audio_session: ^0.1.21
   dio: ^5.8.0+1
   connectivity_plus: ^6.1.4
   shared_preferences: ^2.5.3
@@ -54,7 +59,7 @@ dependencies:
   another_flushbar: ^1.12.30
   jiffy: ^6.4.3
   locale_names: ^1.1.1
-  home_widget: ^0.8.0
+  home_widget: ^0.9.1
   widgets_to_image: ^2.0.1
   geolocator: ^13.0.4
   adhan: ^2.0.0+1
@@ -85,10 +90,11 @@ dependencies:
   firebase_core: ^4.2.1
   device_info_plus: ^11.5.0
   cloud_firestore: ^6.0.0
-  restart_app: ^1.3.2
+  restart_app: ^1.7.3
   feedback: ^3.2.0
   firebase_storage: ^13.0.4
   path: ^1.9.1
+  archive: ^4.0.4
   rate_my_app: ^2.3.2
   flutter_rating_bar: ^4.0.1
   upgrader: ^12.3.0
@@ -103,6 +109,8 @@ dependencies:
   vector_graphics: ^1.1.19
   alarm: ^5.2.1
   package_info_plus: ^8.0.0
+  percent_indicator: ^4.2.5
+  wakelock_plus: ^1.3.3
 
 dev_dependencies:
   flutter_test:
@@ -197,6 +205,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: arsura
+      fonts:
+        - asset: assets/fonts/surah-name-v4.ttf
     - family: Amiri
       fonts:
         - asset: assets/fonts/Amiri-Regular.ttf
@@ -208,6 +219,9 @@ flutter:
         - asset: assets/fonts/Amiri-BoldItalic.ttf
           style: italic
           weight: 700
+    - family: IndoPak
+      fonts:
+        - asset: assets/fonts/Indopak.ttf
     - family: uthmanic
       fonts:
         - asset: assets/fonts/hafs-uthmanic-v14-full-org.ttf
