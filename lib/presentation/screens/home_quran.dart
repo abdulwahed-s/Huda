@@ -14,7 +14,6 @@ import 'package:huda/presentation/widgets/quran_home/quran_empty_state.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_error_state.dart';
 import 'package:huda/presentation/widgets/quran_home/surah_list.dart';
 import 'package:huda/presentation/widgets/quran_home/search_result_list.dart';
-import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:huda/data/models/search_result_model.dart';
 
 class HomeQuran extends StatefulWidget {
@@ -29,10 +28,10 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   List<QuranModel> _filteredSurahs = [];
   List<QuranModel> _allSurahs = [];
-  List<SearchResult> _searchResults = []; // New search results list
-  List<dynamic>? _cachedSurahData; // For storing full surah content with ayahs
+  List<SearchResult> _searchResults = [];
+  List<dynamic>? _cachedSurahData;
   Timer? _searchDebounce;
-  bool _isSearching = false; // Track if we're in search mode
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -44,18 +43,12 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
     _loadCachedSurahData();
   }
 
-  // Load the cached surah data for content search
   Future<void> _loadCachedSurahData() async {
     try {
-      // Try to get the preloaded data first
-      if (SurahCubit.isDataPreloaded) {
-        // Access the static cached data from SurahCubit
-        final String response =
-            await rootBundle.loadString('assets/json/surah_data_new.json');
-        _cachedSurahData = json.decode(response);
-      }
+      final String response =
+          await rootBundle.loadString('assets/json/surah_data.json');
+      _cachedSurahData = json.decode(response);
     } catch (e) {
-      // If loading fails, search will work without content search
       debugPrint('Failed to load cached surah data for search: $e');
     }
   }
@@ -68,7 +61,6 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  // Debounced search to improve performance
   void _debouncedSearch(String query) {
     _searchDebounce?.cancel();
     _searchDebounce = Timer(const Duration(milliseconds: 300), () {
@@ -87,7 +79,6 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
         List<SearchResult> results = [];
         List<AyahSearchResult> ayahResults = [];
 
-        // First, find surahs that match metadata (names, numbers)
         List<QuranModel> matchingSurahs = _allSurahs.where((surah) {
           return surah.englishName!
                   .toLowerCase()
@@ -100,20 +91,17 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
                   .contains(TextUtils.removeDiacriticsAndNormalize(query));
         }).toList();
 
-        // Add matching surahs to results
         for (var surah in matchingSurahs) {
           results.add(SearchResult.surah(surah));
         }
 
-        // Then, search within ayah content if cached data is available
         if (_cachedSurahData != null) {
-          int maxAyahResults = 20; // Limit ayah results to prevent overwhelming
+          int maxAyahResults = 20;
           int currentAyahCount = 0;
 
           for (var surah in _allSurahs) {
             if (currentAyahCount >= maxAyahResults) break;
 
-            // Skip if this surah already matches metadata
             bool alreadyMatched =
                 matchingSurahs.any((s) => s.number == surah.number);
             if (alreadyMatched) continue;
@@ -125,7 +113,6 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
               if (surahData['ayahs'] != null) {
                 final ayahs = surahData['ayahs'] as List;
 
-                // Search in ayah text
                 for (var ayah in ayahs) {
                   if (currentAyahCount >= maxAyahResults) break;
 
@@ -133,14 +120,11 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
                   if (ayahText != null) {
                     bool matches = false;
 
-                    // Search in original Arabic text
                     if (TextUtils.removeDiacriticsAndNormalize(ayahText)
                         .contains(
                             TextUtils.removeDiacriticsAndNormalize(query))) {
                       matches = true;
-                    }
-                    // Also search in the raw text (for exact matches)
-                    else if (ayahText
+                    } else if (ayahText
                         .toLowerCase()
                         .contains(query.toLowerCase())) {
                       matches = true;
@@ -166,7 +150,6 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
           }
         }
 
-        // Add divider and ayah results if any found
         if (ayahResults.isNotEmpty) {
           if (results.isNotEmpty) {
             results.add(SearchResult.divider());
@@ -177,7 +160,7 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
         }
 
         _searchResults = results;
-        _filteredSurahs = matchingSurahs; // For fallback compatibility
+        _filteredSurahs = matchingSurahs;
       }
     });
   }
@@ -190,7 +173,6 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
   }
 
   void _navigateToAyah(AyahSearchResult ayahResult) {
-    // Find the surah model for navigation
     final surah =
         _allSurahs.firstWhere((s) => s.number == ayahResult.surahNumber);
 
