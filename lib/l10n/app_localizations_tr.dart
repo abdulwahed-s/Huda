@@ -3005,6 +3005,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String get whatsNew200Feature5 => 'Hata düzeltmeleri';
 
   @override
+  String get whatsNew300Feature1 =>
+      'Benzer Ayetler: Kuran genelinde benzer tema ve anlamlara sahip ayetleri keşfedin';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'Hatim Takipçisi: Günlük hatırlatıcılarla Kuran okuma planınızı yapın ve takip edin';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'Mushaf Düzeni: Kuran\'ı geleneksel Mushaf sayfa düzeninde okuyun';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'Kuran Sesi: Çeşitli hafızlardan tilavetleri indirme desteğiyle dinleyin';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'Kuran Radyosu: Sürekli dinleme için canlı Kuran radyo istasyonları';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'Namaz Vakti Ayarı: Daha doğru bildirimler için namaz vakti ofsetlerini ince ayarlayın';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'UI/UX iyileştirmeleri, duyarlı tasarım ve geliştirilmiş deneyim';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override

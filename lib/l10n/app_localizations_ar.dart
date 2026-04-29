@@ -2961,6 +2961,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get whatsNew200Feature5 => 'إصلاح الأخطاء';
 
   @override
+  String get whatsNew300Feature1 =>
+      'الآيات المتشابهة: اكتشف الآيات ذات المواضيع والمعاني المتشابهة في القرآن';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'متتبع الختمة: خطط وتتبع قراءتك للقرآن مع تذكيرات يومية';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'عرض المصحف: اقرأ القرآن بتخطيط صفحة المصحف التقليدي';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'صوتيات القرآن: استمع إلى التلاوات من قراء متعددين مع إمكانية التحميل';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'إذاعة القرآن: محطات إذاعية مباشرة للقرآن الكريم';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'تعديل أوقات الصلاة: ضبط دقيق لأوقات الصلاة للحصول على إشعارات أكثر دقة';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'تحسينات في واجهة المستخدم والتصميم المتجاوب وتجربة استخدام محسّنة';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override

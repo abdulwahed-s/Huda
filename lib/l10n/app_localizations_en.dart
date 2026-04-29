@@ -3009,6 +3009,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsNew200Feature5 => 'Bug fixes';
 
   @override
+  String get whatsNew300Feature1 =>
+      'Similar Ayahs: Discover ayahs with similar themes and meanings across the Quran';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'Khatma Tracker: Plan and track your Quran reading with daily reminders';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'Mushaf Layout: Read the Quran in the traditional Mushaf page layout';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'Quran Audio: Listen to recitations from various reciters with download support';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'Quran Radio: Live Quran radio stations for continuous listening';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'Prayer Time Adjustment: Fine-tune prayer time offsets for more accurate notifications';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'UI/UX improvements, responsive design, and enhanced experience';
+
+  @override
   String get offlineMode => 'Offline Mode';
 
   @override

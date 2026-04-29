@@ -1152,6 +1152,13 @@
     "whatsNew200Feature3": "Sahur Alarmı: Sabit bir saat seçin veya Sabah namazından hemen önce otomatik olarak çalmasını sağlayın.",
     "whatsNew200Feature4": "Kullanıcı arayüzü iyileştirmeleri",
     "whatsNew200Feature5": "Hata düzeltmeleri",
+    "whatsNew300Feature1": "Benzer Ayetler: Kuran genelinde benzer tema ve anlamlara sahip ayetleri keşfedin",
+    "whatsNew300Feature2": "Hatim Takipçisi: Günlük hatırlatıcılarla Kuran okuma planınızı yapın ve takip edin",
+    "whatsNew300Feature3": "Mushaf Düzeni: Kuran'ı geleneksel Mushaf sayfa düzeninde okuyun",
+    "whatsNew300Feature4": "Kuran Sesi: Çeşitli hafızlardan tilavetleri indirme desteğiyle dinleyin",
+    "whatsNew300Feature5": "Kuran Radyosu: Sürekli dinleme için canlı Kuran radyo istasyonları",
+    "whatsNew300Feature6": "Namaz Vakti Ayarı: Daha doğru bildirimler için namaz vakti ofsetlerini ince ayarlayın",
+    "whatsNew300Feature7": "UI/UX iyileştirmeleri, duyarlı tasarım ve geliştirilmiş deneyim",
     "offlineMode": "Çevrimdışı Mod",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

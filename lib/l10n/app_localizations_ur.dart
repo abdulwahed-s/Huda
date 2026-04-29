@@ -3001,6 +3001,34 @@ class AppLocalizationsUr extends AppLocalizations {
   String get whatsNew200Feature5 => 'بگ فکسز';
 
   @override
+  String get whatsNew300Feature1 =>
+      'مشابہ آیات: قرآن میں ملتے جلتے موضوعات اور معانی والی آیات دریافت کریں';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'ختم ٹریکر: یومیہ یاد دہانیوں کے ساتھ اپنی قرآن پڑھنے کی منصوبہ بندی اور پیشرفت کا سراغ لگائیں';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'مصحف لے آؤٹ: قرآن کو روایتی مصحف صفحے کی ترتیب میں پڑھیں';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'قرآن آڈیو: مختلف قاریوں کی تلاوتیں ڈاؤن لوڈ کی سہولت کے ساتھ سنیں';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'قرآن ریڈیو: مسلسل سننے کے لیے لائیو قرآن ریڈیو اسٹیشنز';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'نماز کے اوقات کی ایڈجسٹمنٹ: زیادہ درست اطلاعات کے لیے نماز کے اوقات میں باریک تبدیلی کریں';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'یوزر انٹرفیس میں بہتری، ریسپانسو ڈیزائن اور بہتر تجربہ';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override

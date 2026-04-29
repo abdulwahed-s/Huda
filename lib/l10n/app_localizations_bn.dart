@@ -3011,6 +3011,34 @@ class AppLocalizationsBn extends AppLocalizations {
   String get whatsNew200Feature5 => 'বাগ ফিক্স';
 
   @override
+  String get whatsNew300Feature1 =>
+      'সাদৃশ্যপূর্ণ আয়াত: কুরআন জুড়ে একই থিম ও অর্থের আয়াতগুলি আবিষ্কার করুন';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'খতম ট্র্যাকার: দৈনিক রিমাইন্ডার সহ আপনার কুরআন পড়ার পরিকল্পনা ও ট্র্যাক করুন';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'মুসহাফ লেআউট: ঐতিহ্যবাহী মুসহাফ পৃষ্ঠার বিন্যাসে কুরআন পড়ুন';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'কুরআন অডিও: ডাউনলোড সুবিধাসহ বিভিন্ন ক্বারীদের তিলাওয়াত শুনুন';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'কুরআন রেডিও: ক্রমাগত শোনার জন্য লাইভ কুরআন রেডিও স্টেশন';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'নামাজের সময় সমন্বয়: আরও সঠিক বিজ্ঞপ্তির জন্য নামাজের সময় অফসেট সূক্ষ্মভাবে সামঞ্জস্য করুন';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'ইউআই/ইউএক্স উন্নতি, রেসপন্সিভ ডিজাইন এবং উন্নত অভিজ্ঞতা';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override

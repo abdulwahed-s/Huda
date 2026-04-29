@@ -3032,6 +3032,34 @@ class AppLocalizationsRu extends AppLocalizations {
   String get whatsNew200Feature5 => 'Исправления ошибок';
 
   @override
+  String get whatsNew300Feature1 =>
+      'Похожие аяты: Находите аяты со схожими темами и смыслами по всему Корану';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'Трекер Хатма: Планируйте и отслеживайте чтение Корана с ежедневными напоминаниями';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'Макет Мусхафа: Читайте Коран в традиционном макете страницы Мусхафа';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'Аудио Коран: Слушайте чтение различных чтецов с возможностью скачивания';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'Радио Коран: Прямые радиостанции Корана для непрерывного прослушивания';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'Настройка времени молитвы: Точная настройка смещений для более точных уведомлений';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'Улучшения UI/UX, адаптивный дизайн и улучшенный опыт';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override

@@ -1169,6 +1169,13 @@
     "whatsNew200Feature3": "Alarma de Sahour: Elija una hora fija o haga que suene automáticamente justo antes de Fajr.",
     "whatsNew200Feature4": "Mejoras en la interfaz de usuario",
     "whatsNew200Feature5": "Corrección de errores",
+    "whatsNew300Feature1": "Ayahs similares: Descubre ayahs con temas y significados similares en el Corán",
+    "whatsNew300Feature2": "Seguimiento de Khatma: Planifica y sigue tu lectura del Corán con recordatorios diarios",
+    "whatsNew300Feature3": "Diseño Mushaf: Lee el Corán en el diseño tradicional de página del Mushaf",
+    "whatsNew300Feature4": "Audio del Corán: Escucha recitaciones de varios recitadores con opción de descarga",
+    "whatsNew300Feature5": "Radio del Corán: Estaciones de radio coránicas en vivo",
+    "whatsNew300Feature6": "Ajuste de horarios de oración: Ajusta los tiempos de oración para notificaciones más precisas",
+    "whatsNew300Feature7": "Mejoras de UI/UX, diseño responsivo y experiencia mejorada",
     "offlineMode": "Modo sin conexión",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

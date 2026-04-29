@@ -3664,6 +3664,34 @@
     "@whatsNew200Feature5": {
         "description": "What's new feature 5 for v2.0.0"
     },
+    "whatsNew300Feature1": "Similar Ayahs: Discover ayahs with similar themes and meanings across the Quran",
+    "@whatsNew300Feature1": {
+        "description": "What's new feature 1 for v3.0.0"
+    },
+    "whatsNew300Feature2": "Khatma Tracker: Plan and track your Quran reading with daily reminders",
+    "@whatsNew300Feature2": {
+        "description": "What's new feature 2 for v3.0.0"
+    },
+    "whatsNew300Feature3": "Mushaf Layout: Read the Quran in the traditional Mushaf page layout",
+    "@whatsNew300Feature3": {
+        "description": "What's new feature 3 for v3.0.0"
+    },
+    "whatsNew300Feature4": "Quran Audio: Listen to recitations from various reciters with download support",
+    "@whatsNew300Feature4": {
+        "description": "What's new feature 4 for v3.0.0"
+    },
+    "whatsNew300Feature5": "Quran Radio: Live Quran radio stations for continuous listening",
+    "@whatsNew300Feature5": {
+        "description": "What's new feature 5 for v3.0.0"
+    },
+    "whatsNew300Feature6": "Prayer Time Adjustment: Fine-tune prayer time offsets for more accurate notifications",
+    "@whatsNew300Feature6": {
+        "description": "What's new feature 6 for v3.0.0"
+    },
+    "whatsNew300Feature7": "UI/UX improvements, responsive design, and enhanced experience",
+    "@whatsNew300Feature7": {
+        "description": "What's new feature 7 for v3.0.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

@@ -3073,6 +3073,34 @@ class AppLocalizationsEs extends AppLocalizations {
   String get whatsNew200Feature5 => 'Corrección de errores';
 
   @override
+  String get whatsNew300Feature1 =>
+      'Ayahs similares: Descubre ayahs con temas y significados similares en el Corán';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'Seguimiento de Khatma: Planifica y sigue tu lectura del Corán con recordatorios diarios';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'Diseño Mushaf: Lee el Corán en el diseño tradicional de página del Mushaf';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'Audio del Corán: Escucha recitaciones de varios recitadores con opción de descarga';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'Radio del Corán: Estaciones de radio coránicas en vivo';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'Ajuste de horarios de oración: Ajusta los tiempos de oración para notificaciones más precisas';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'Mejoras de UI/UX, diseño responsivo y experiencia mejorada';
+
+  @override
   String get offlineMode => 'Modo sin conexión';
 
   @override

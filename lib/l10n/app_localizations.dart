@@ -5588,6 +5588,48 @@ abstract class AppLocalizations {
   /// **'Bug fixes'**
   String get whatsNew200Feature5;
 
+  /// What's new feature 1 for v3.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Similar Ayahs: Discover ayahs with similar themes and meanings across the Quran'**
+  String get whatsNew300Feature1;
+
+  /// What's new feature 2 for v3.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma Tracker: Plan and track your Quran reading with daily reminders'**
+  String get whatsNew300Feature2;
+
+  /// What's new feature 3 for v3.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Mushaf Layout: Read the Quran in the traditional Mushaf page layout'**
+  String get whatsNew300Feature3;
+
+  /// What's new feature 4 for v3.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Audio: Listen to recitations from various reciters with download support'**
+  String get whatsNew300Feature4;
+
+  /// What's new feature 5 for v3.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Radio: Live Quran radio stations for continuous listening'**
+  String get whatsNew300Feature5;
+
+  /// What's new feature 6 for v3.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Time Adjustment: Fine-tune prayer time offsets for more accurate notifications'**
+  String get whatsNew300Feature6;
+
+  /// What's new feature 7 for v3.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'UI/UX improvements, responsive design, and enhanced experience'**
+  String get whatsNew300Feature7;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:

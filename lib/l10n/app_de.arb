@@ -1132,6 +1132,13 @@
     "whatsNew200Feature3": "Sahur-Alarm: Wählen Sie eine feste Zeit oder lassen Sie den Alarm automatisch kurz vor Fajr klingeln.",
     "whatsNew200Feature4": "UI-Verbesserungen",
     "whatsNew200Feature5": "Fehlerbehebungen",
+    "whatsNew300Feature1": "Ähnliche Ayahs: Entdecken Sie Ayahs mit ähnlichen Themen und Bedeutungen im Quran",
+    "whatsNew300Feature2": "Khatma-Tracker: Planen und verfolgen Sie Ihre Quran-Lesung mit täglichen Erinnerungen",
+    "whatsNew300Feature3": "Mushaf-Layout: Lesen Sie den Quran im traditionellen Mushaf-Seitenlayout",
+    "whatsNew300Feature4": "Quran-Audio: Hören Sie Rezitationen verschiedener Rezitatoren mit Download-Option",
+    "whatsNew300Feature5": "Quran-Radio: Live-Quran-Radiosender zum kontinuierlichen Hören",
+    "whatsNew300Feature6": "Gebetszeit-Anpassung: Feinabstimmung der Gebetszeit-Offsets für genauere Benachrichtigungen",
+    "whatsNew300Feature7": "UI/UX-Verbesserungen, responsives Design und verbesserte Erfahrung",
     "offlineMode": "Offline-Modus",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

@@ -1242,6 +1242,13 @@
     "whatsNew200Feature3": "Penggera Sahur: Pilih waktu tetap, atau biarkan ia berbunyi secara automatik sebelum Subuh.",
     "whatsNew200Feature4": "Peningkatan UI",
     "whatsNew200Feature5": "Pembaikan pepijat",
+    "whatsNew300Feature1": "Ayat Serupa: Temui ayat dengan tema dan makna serupa di seluruh al-Quran",
+    "whatsNew300Feature2": "Penjejak Khatam: Rancang dan jejak bacaan al-Quran anda dengan peringatan harian",
+    "whatsNew300Feature3": "Susun Atur Mushaf: Baca al-Quran dalam susun atur halaman Mushaf tradisional",
+    "whatsNew300Feature4": "Audio al-Quran: Dengar bacaan pelbagai qari dengan sokongan muat turun",
+    "whatsNew300Feature5": "Radio al-Quran: Stesen radio al-Quran langsung untuk pendengaran berterusan",
+    "whatsNew300Feature6": "Pelarasan Waktu Solat: Laraskan ofset waktu solat untuk pemberitahuan yang lebih tepat",
+    "whatsNew300Feature7": "Peningkatan UI/UX, reka bentuk responsif dan pengalaman yang lebih baik",
     "offlineMode": "Mod Luar Talian",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

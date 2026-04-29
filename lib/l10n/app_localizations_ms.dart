@@ -3013,6 +3013,34 @@ class AppLocalizationsMs extends AppLocalizations {
   String get whatsNew200Feature5 => 'Pembaikan pepijat';
 
   @override
+  String get whatsNew300Feature1 =>
+      'Ayat Serupa: Temui ayat dengan tema dan makna serupa di seluruh al-Quran';
+
+  @override
+  String get whatsNew300Feature2 =>
+      'Penjejak Khatam: Rancang dan jejak bacaan al-Quran anda dengan peringatan harian';
+
+  @override
+  String get whatsNew300Feature3 =>
+      'Susun Atur Mushaf: Baca al-Quran dalam susun atur halaman Mushaf tradisional';
+
+  @override
+  String get whatsNew300Feature4 =>
+      'Audio al-Quran: Dengar bacaan pelbagai qari dengan sokongan muat turun';
+
+  @override
+  String get whatsNew300Feature5 =>
+      'Radio al-Quran: Stesen radio al-Quran langsung untuk pendengaran berterusan';
+
+  @override
+  String get whatsNew300Feature6 =>
+      'Pelarasan Waktu Solat: Laraskan ofset waktu solat untuk pemberitahuan yang lebih tepat';
+
+  @override
+  String get whatsNew300Feature7 =>
+      'Peningkatan UI/UX, reka bentuk responsif dan pengalaman yang lebih baik';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override
