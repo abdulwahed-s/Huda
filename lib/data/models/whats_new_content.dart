@@ -77,6 +77,48 @@ class WhatsNewContent {
       ],
       buttonText: (context) => AppLocalizations.of(context)!.gotIt,
     ),
+    '3.0.0': WhatsNewContent(
+      version: '3.0.0',
+      title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
+      features: [
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew300Feature1,
+          icon: Icons.find_in_page_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew300Feature2,
+          icon: Icons.menu_book_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew300Feature3,
+          icon: Icons.auto_stories_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew300Feature4,
+          icon: Icons.headphones_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew300Feature5,
+          icon: Icons.radio_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew300Feature6,
+          icon: Icons.access_time_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew300Feature7,
+          icon: Icons.auto_awesome_outlined,
+        ),
+      ],
+      buttonText: (context) => AppLocalizations.of(context)!.gotIt,
+    ),
   };
 
   static WhatsNewContent? getForVersion(String version) {
