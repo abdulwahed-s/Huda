@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:huda/core/services/khatma_service.dart';
+import 'package:huda/core/services/service_locator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:huda/core/services/get_fonts.dart';
@@ -19,10 +23,9 @@ import 'package:huda/presentation/widgets/surah/tafsir_widget.dart';
 import 'package:huda/presentation/widgets/surah/share_widget.dart';
 import 'package:huda/presentation/widgets/surah/bookmark_section_widget.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:huda/cubit/memorization/memorization_cubit.dart';
-import 'package:avatar_glow/avatar_glow.dart';
-import 'package:huda/cubit/surah/surah_cubit.dart';
+import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/data/models/quran_model.dart';
+import 'package:huda/core/quran/quran.dart' as quran;
 
 class AyahBottomSheetModalTabbed extends StatefulWidget {
   final Ayahs ayah;
@@ -49,20 +52,17 @@ class AyahBottomSheetModalTabbed extends StatefulWidget {
   final bool isDownloadingAll;
   final String downloadProgressText;
 
-  // Tafsir related
   final List<edition.Data> availableTafsirSources;
   final String? selectedTafsirId;
   final tafsir.TafsirModel? currentTafsir;
   final bool isLoadingTafsir;
 
-  // Translation related
   final List<edition.Data> availableTranslationSources;
   final String? selectedTranslationId;
   final String? selectedTranslationLanguage;
   final tafsir.TafsirModel? currentTranslation;
   final bool isLoadingTranslation;
 
-  // Callbacks
   final Function(int) onPlayPause;
   final Function(int) onPrevious;
   final Function(int) onNext;
@@ -84,7 +84,6 @@ class AyahBottomSheetModalTabbed extends StatefulWidget {
   final VoidCallback? onDownloadTranslation;
   final VoidCallback? onDownloadFullTranslation;
 
-  // Download status callbacks
   final bool isDownloadingSurahTafsir;
   final bool isDownloadingAllTafsir;
   final bool isDownloadingSurahTranslation;
@@ -172,25 +171,42 @@ class _AyahBottomSheetModalTabbedState
   bool _isCurrentAyahPlayable = true;
   bool _isAyahInWidget = false;
   bool _isCheckingWidgetStatus = false;
-  int _selectedTabIndex =
-      0; // Tab state: 0=Audio, 1=Tafsir, 2=Translation, 3=Bookmark, 4=Share, 5=Widget, 6=Memorization
+  bool _isKhatmaEnd = false;
+  int _selectedTabIndex = 0;
+  Map<String, dynamic>? _matchingAyahsData;
+  bool _isLoadingMatchingAyahs = false;
 
   @override
   void initState() {
     super.initState();
     _checkAyahPlayability();
     _checkAyahWidgetStatus();
+    _checkKhatmaEndStatus();
   }
 
   @override
   void didUpdateWidget(AyahBottomSheetModalTabbed oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Check playability when offline mode, selected reader, or current surah audio changes
+
     if (oldWidget.isOfflineMode != widget.isOfflineMode ||
         oldWidget.selectedReaderId != widget.selectedReaderId ||
         oldWidget.currentSurahAudio != widget.currentSurahAudio) {
       _checkAyahPlayability();
     }
+  }
+
+  void _checkKhatmaEndStatus() {
+    try {
+      final khatmaService = getIt<KhatmaService>();
+      if (khatmaService.enabled && !khatmaService.isCompleted) {
+        final details = khatmaService.rangeDetailsForDay(
+            khatmaService.currentDayIndex, khatmaService.planDays);
+        if (widget.surahNumber == details.endSurah &&
+            widget.ayah.numberInSurah == details.endVerse) {
+          if (mounted) setState(() => _isKhatmaEnd = true);
+        }
+      }
+    } catch (_) {}
   }
 
   Future<void> _checkAyahPlayability() async {
@@ -202,7 +218,24 @@ class _AyahBottomSheetModalTabbedState
     }
   }
 
-  /// Check if current ayah is already in widget collection
+  Future<void> _loadMatchingAyahs() async {
+    if (_matchingAyahsData != null || _isLoadingMatchingAyahs) return;
+    if (mounted) setState(() => _isLoadingMatchingAyahs = true);
+    try {
+      final jsonString =
+          await rootBundle.loadString('assets/json/matching-ayah.json');
+      final data = json.decode(jsonString) as Map<String, dynamic>;
+      if (mounted) {
+        setState(() {
+          _matchingAyahsData = data;
+          _isLoadingMatchingAyahs = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _isLoadingMatchingAyahs = false);
+    }
+  }
+
   Future<void> _checkAyahWidgetStatus() async {
     if (_isCheckingWidgetStatus) return;
 
@@ -216,9 +249,8 @@ class _AyahBottomSheetModalTabbedState
       final shouldShowBismillah =
           isFirstAyah && widget.surahNumber != 1 && widget.surahNumber != 9;
 
-      // Remove Bismillah if it exists in the text and we're showing it separately
       if (shouldShowBismillah) {
-        const bismillahText = 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
+        const bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
         if (ayahText.trim().startsWith(bismillahText)) {
           ayahText = ayahText.trim().replaceFirst(bismillahText, '').trim();
         }
@@ -248,14 +280,12 @@ class _AyahBottomSheetModalTabbedState
     final isPlaying = widget.audioPlayer.state == PlayerState.playing &&
         widget.playingAyahIndex == widget.index;
 
-    // Filter readers by language
     final filteredReaders = widget.selectedLanguage != null
         ? widget.availableReaders
             .where((reader) => reader.language == widget.selectedLanguage)
             .toList()
         : widget.availableReaders;
 
-    // Get available languages
     final availableLanguages = widget.availableReaders
         .map((reader) =>
             reader.language ?? AppLocalizations.of(context)!.unknown)
@@ -263,10 +293,8 @@ class _AyahBottomSheetModalTabbedState
         .toList()
       ..sort();
 
-    // Filter tafsir sources by language (if needed)
     final filteredTafsirSources = widget.availableTafsirSources;
 
-    // Get available translation languages
     final availableTranslationLanguages = widget.availableTranslationSources
         .map((source) =>
             source.language ?? AppLocalizations.of(context)!.unknown)
@@ -280,13 +308,13 @@ class _AyahBottomSheetModalTabbedState
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
-            ? context.darkCardBackground // Dark background
+            ? context.darkCardBackground
             : context.lightSurface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).brightness == Brightness.dark
-                ? context.accentColor.withValues(alpha: 0.2) // Purple glow
+                ? context.accentColor.withValues(alpha: 0.2)
                 : Colors.black12,
             blurRadius: 18.r,
             offset: Offset(0, -4.h),
@@ -295,31 +323,27 @@ class _AyahBottomSheetModalTabbedState
       ),
       child: Column(
         children: [
-          // Modern handle bar
           Container(
             margin: EdgeInsets.only(top: 14.h, bottom: 20.h),
             width: 45.w,
             height: 4.h,
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? context.accentColor // Purple handle
+                  ? context.accentColor
                   : context.primaryColor.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2.r),
             ),
           ),
-
-          // Scrollable content
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Ayah text card
                   Container(
                     margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 14.h),
                     padding: EdgeInsets.all(20.r),
                     decoration: BoxDecoration(
                       color: Theme.of(context).brightness == Brightness.dark
-                          ? context.darkCardBackground // Dark card background
+                          ? context.darkCardBackground
                           : Colors.white,
                       borderRadius: BorderRadius.circular(14.r),
                       border: Border.all(
@@ -341,7 +365,6 @@ class _AyahBottomSheetModalTabbedState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Section title
                         Row(
                           children: [
                             Container(
@@ -372,7 +395,6 @@ class _AyahBottomSheetModalTabbedState
                           ],
                         ),
                         SizedBox(height: 12.h),
-                        // Ayah text
                         Directionality(
                           textDirection: TextDirection.rtl,
                           child: SizedBox(
@@ -386,10 +408,9 @@ class _AyahBottomSheetModalTabbedState
                                     widget.ayah.number != 1 &&
                                     widget.ayah.number != 9;
 
-                                // Remove Bismillah if it exists in the text and we're showing it separately
                                 if (shouldShowBismillah) {
                                   const bismillahText =
-                                      'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
+                                      'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
                                   if (ayahText
                                       .trim()
                                       .startsWith(bismillahText)) {
@@ -407,7 +428,7 @@ class _AyahBottomSheetModalTabbedState
                                 height: 2.0,
                                 color: Theme.of(context).brightness ==
                                         Brightness.dark
-                                    ? context.darkText // Bright white
+                                    ? context.darkText
                                     : context.lightText,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -418,8 +439,38 @@ class _AyahBottomSheetModalTabbedState
                       ],
                     ),
                   ),
-
-                  // Tab Navigation
+                  if (_isKhatmaEnd)
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 14.h),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF0A7A36),
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 14.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                          ),
+                          onPressed: () async {
+                            try {
+                              final khatmaService = getIt<KhatmaService>();
+                              await khatmaService.markTodayDone();
+                              if (mounted) Navigator.pop(context);
+                            } catch (_) {}
+                          },
+                          icon: const Icon(Icons.check_circle_rounded),
+                          label: Text(
+                            'أكملت هذا الورد',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   Container(
                     margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 14.h),
                     decoration: BoxDecoration(
@@ -468,16 +519,14 @@ class _AyahBottomSheetModalTabbedState
                             isSelected: _selectedTabIndex == 5,
                           ),
                         _buildTabButton(
-                          icon: Icons.psychology_rounded,
-                          label: AppLocalizations.of(context)!.memorizationMode,
+                          icon: Icons.compare_arrows_rounded,
+                          label: 'Similar',
                           index: 6,
                           isSelected: _selectedTabIndex == 6,
                         ),
                       ],
                     ),
                   ),
-
-                  // Tab Content
                   Container(
                     margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
                     child: AnimatedSwitcher(
@@ -486,7 +535,6 @@ class _AyahBottomSheetModalTabbedState
                       switchOutCurve: Curves.easeInCubic,
                       transitionBuilder:
                           (Widget child, Animation<double> animation) {
-                        // Create a smooth scale and fade transition
                         return FadeTransition(
                           opacity: Tween<double>(
                             begin: 0.0,
@@ -520,7 +568,6 @@ class _AyahBottomSheetModalTabbedState
                       },
                       layoutBuilder: (Widget? currentChild,
                           List<Widget> previousChildren) {
-                        // Custom layout to handle height changes smoothly
                         return AnimatedSize(
                           duration: const Duration(milliseconds: 350),
                           curve: Curves.easeOutCubic,
@@ -546,7 +593,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Get current tab content based on selected tab index
   Widget _getCurrentTabContent(
     bool isPlaying,
     List<edition.Data> filteredReaders,
@@ -554,7 +600,6 @@ class _AyahBottomSheetModalTabbedState
     List<edition.Data> filteredTafsirSources,
     List<String> availableTranslationLanguages,
   ) {
-    // Add a unique key for each tab to ensure proper AnimatedSwitcher behavior
     switch (_selectedTabIndex) {
       case 0:
         return Container(
@@ -673,7 +718,7 @@ class _AyahBottomSheetModalTabbedState
         );
       case 6:
         return Container(
-          key: const ValueKey('memorization_tab'),
+          key: const ValueKey('similar_ayahs_tab'),
           child: TweenAnimationBuilder<double>(
             duration: const Duration(milliseconds: 300),
             tween: Tween<double>(begin: 0.0, end: 1.0),
@@ -687,7 +732,7 @@ class _AyahBottomSheetModalTabbedState
                 ),
               );
             },
-            child: _buildMemorizationTab(),
+            child: _buildSimilarAyahsTab(),
           ),
         );
       default:
@@ -713,7 +758,6 @@ class _AyahBottomSheetModalTabbedState
     }
   }
 
-  // Tab button builder
   Widget _buildTabButton({
     required IconData icon,
     required String label,
@@ -727,9 +771,8 @@ class _AyahBottomSheetModalTabbedState
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            // Add haptic feedback for better UX
-            // HapticFeedback.lightImpact(); // Uncomment if you want haptic feedback
             setState(() => _selectedTabIndex = index);
+            if (index == 6) _loadMatchingAyahs();
           },
           borderRadius: BorderRadius.circular(10.r),
           child: AnimatedContainer(
@@ -781,13 +824,11 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Audio tab content
   Widget _buildAudioTab(bool isPlaying, List<edition.Data> filteredReaders,
       List<String> availableLanguages) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Audio controls section
         if (widget.selectedReaderId != null)
           Container(
             width: double.infinity,
@@ -817,7 +858,6 @@ class _AyahBottomSheetModalTabbedState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Section title
                 Row(
                   children: [
                     Container(
@@ -859,7 +899,6 @@ class _AyahBottomSheetModalTabbedState
                   ],
                 ),
                 const SizedBox(height: 16),
-                // Audio controls content
                 if (widget.isLoadingAudio ||
                     (widget.selectedReaderId != null &&
                         widget.currentSurahAudio == null))
@@ -937,8 +976,6 @@ class _AyahBottomSheetModalTabbedState
               ],
             ),
           ),
-
-        // Reader selection
         Container(
           width: double.infinity,
           padding: EdgeInsets.all(20.r),
@@ -967,7 +1004,6 @@ class _AyahBottomSheetModalTabbedState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Section title
               Row(
                 children: [
                   Container(
@@ -1008,7 +1044,6 @@ class _AyahBottomSheetModalTabbedState
                 ],
               ),
               const SizedBox(height: 16),
-              // Reader selection content
               ReaderSelectionWidget(
                 readers: filteredReaders,
                 selectedReaderId: widget.selectedReaderId,
@@ -1022,8 +1057,6 @@ class _AyahBottomSheetModalTabbedState
             ],
           ),
         ),
-
-        // Audio download controls
         if (widget.selectedReaderId != null && !kIsWeb)
           Container(
             width: double.infinity,
@@ -1053,7 +1086,6 @@ class _AyahBottomSheetModalTabbedState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Section title
                 Row(
                   children: [
                     Container(
@@ -1093,7 +1125,6 @@ class _AyahBottomSheetModalTabbedState
                   ],
                 ),
                 const SizedBox(height: 16),
-                // Download controls content
                 DownloadControlsWidget(
                   canDownload: widget.selectedReaderId != null &&
                       widget.currentSurahAudio != null &&
@@ -1110,8 +1141,6 @@ class _AyahBottomSheetModalTabbedState
               ],
             ),
           ),
-
-        // Audio settings
         Container(
           width: double.infinity,
           padding: EdgeInsets.all(20.r),
@@ -1139,7 +1168,6 @@ class _AyahBottomSheetModalTabbedState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Section title
               Row(
                 children: [
                   Container(
@@ -1178,7 +1206,6 @@ class _AyahBottomSheetModalTabbedState
                 ],
               ),
               const SizedBox(height: 16),
-              // Audio settings content
               AudioSettingsWidget(
                 loopEnabled: widget.loopEnabled,
                 autoplayEnabled: widget.autoplayEnabled,
@@ -1192,7 +1219,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Tafsir tab content
   Widget _buildTafsirTab(List<edition.Data> filteredTafsirSources) {
     return Container(
       width: double.infinity,
@@ -1221,7 +1247,6 @@ class _AyahBottomSheetModalTabbedState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section title
           Row(
             children: [
               Container(
@@ -1259,7 +1284,6 @@ class _AyahBottomSheetModalTabbedState
             ],
           ),
           const SizedBox(height: 16),
-          // Tafsir content
           TafsirWidget(
             tafsirSources: filteredTafsirSources,
             selectedTafsirId: widget.selectedTafsirId,
@@ -1280,7 +1304,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Translation tab content
   Widget _buildTranslationTab(List<String> availableTranslationLanguages) {
     return Container(
       width: double.infinity,
@@ -1307,7 +1330,6 @@ class _AyahBottomSheetModalTabbedState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section title
           Row(
             children: [
               Container(
@@ -1345,7 +1367,6 @@ class _AyahBottomSheetModalTabbedState
             ],
           ),
           const SizedBox(height: 16),
-          // Translation content
           TranslationWidget(
             translationSources: widget.availableTranslationSources,
             selectedTranslationId: widget.selectedTranslationId,
@@ -1369,7 +1390,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Share tab content
   Widget _buildShareTab() {
     return Container(
       width: double.infinity,
@@ -1404,7 +1424,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Bookmark tab content
   Widget _buildBookmarkTab() {
     return Container(
       width: double.infinity,
@@ -1437,9 +1456,7 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Widget tab content
   Widget _buildWidgetTab() {
-    // Check ayah status when building widget tab
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkAyahWidgetStatus();
     });
@@ -1468,7 +1485,6 @@ class _AyahBottomSheetModalTabbedState
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
           Row(
             children: [
               Container(
@@ -1513,11 +1529,7 @@ class _AyahBottomSheetModalTabbedState
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // Ayah Preview
-// Improved Ayah Preview Section
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
@@ -1554,7 +1566,6 @@ class _AyahBottomSheetModalTabbedState
             ),
             child: Column(
               children: [
-                // Preview Label
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -1588,10 +1599,7 @@ class _AyahBottomSheetModalTabbedState
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                // Ayah Text with improved styling
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(18),
@@ -1609,7 +1617,6 @@ class _AyahBottomSheetModalTabbedState
                   ),
                   child: Column(
                     children: [
-                      // Decorative top border
                       Container(
                         height: 3,
                         width: 60,
@@ -1623,10 +1630,7 @@ class _AyahBottomSheetModalTabbedState
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-
                       const SizedBox(height: 16),
-
-                      // Arabic Text
                       Directionality(
                         textDirection: TextDirection.rtl,
                         child: Text(
@@ -1637,10 +1641,9 @@ class _AyahBottomSheetModalTabbedState
                                 widget.surahNumber != 1 &&
                                 widget.surahNumber != 9;
 
-                            // Remove Bismillah if it exists in the text and we're showing it separately
                             if (shouldShowBismillah) {
                               const bismillahText =
-                                  'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
+                                  'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
                               if (ayahText.trim().startsWith(bismillahText)) {
                                 ayahText = ayahText
                                     .trim()
@@ -1671,10 +1674,7 @@ class _AyahBottomSheetModalTabbedState
                           textAlign: TextAlign.justify,
                         ),
                       ),
-
                       const SizedBox(height: 16),
-
-                      // Decorative bottom border
                       Container(
                         height: 3,
                         width: 60,
@@ -1691,10 +1691,7 @@ class _AyahBottomSheetModalTabbedState
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 12),
-
-                // Ayah Reference (if available)
                 if (widget.surahName != null ||
                     widget.ayah.numberInSurah != null)
                   Container(
@@ -1734,10 +1731,7 @@ class _AyahBottomSheetModalTabbedState
               ],
             ),
           ),
-
           const SizedBox(height: 24),
-
-          // Add to Widget Button
           SizedBox(
             width: double.infinity,
             height: 48,
@@ -1771,10 +1765,7 @@ class _AyahBottomSheetModalTabbedState
               ),
             ),
           ),
-
           const SizedBox(height: 16),
-
-          // Info Section
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -1813,7 +1804,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  // Add ayah to widget functionality
   Future<void> _addAyahToWidget() async {
     try {
       String ayahText = widget.ayah.text ?? '';
@@ -1821,12 +1811,10 @@ class _AyahBottomSheetModalTabbedState
           widget.surahName ?? AppLocalizations.of(context)!.unknownSurah;
       final ayahNumber = widget.ayah.numberInSurah ?? widget.index + 1;
 
-      // Apply Bismillah removal logic for first ayah (same as display logic)
       final isFirstAyah = ayahNumber == 1;
       final shouldShowBismillah =
           isFirstAyah && widget.surahNumber != 1 && widget.surahNumber != 9;
 
-      // Remove Bismillah if it exists in the text and we're showing it separately
       if (shouldShowBismillah) {
         const bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
         if (ayahText.trim().startsWith(bismillahText)) {
@@ -1841,13 +1829,10 @@ class _AyahBottomSheetModalTabbedState
       );
 
       if (success) {
-        // Force update the widget with new content
         await WidgetService.forceUpdateWidget();
 
-        // Update button state after successful addition
         _checkAyahWidgetStatus();
 
-        // Show success message
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -1873,13 +1858,11 @@ class _AyahBottomSheetModalTabbedState
           );
         }
       } else {
-        // Update state to reflect that ayah is already in widget
         setState(() {
           _isAyahInWidget = true;
           _isCheckingWidgetStatus = false;
         });
 
-        // Show error message (already exists)
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -1906,7 +1889,6 @@ class _AyahBottomSheetModalTabbedState
         }
       }
     } catch (e) {
-      // Show error message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -1934,271 +1916,306 @@ class _AyahBottomSheetModalTabbedState
     }
   }
 
-  Widget _buildMemorizationTab() {
-    return BlocBuilder<MemorizationCubit, MemorizationState>(
-      builder: (context, state) {
-        final isMemorizationMode =
-            state is MemorizationModeUpdated && state.isMemorizationMode;
-        final isListening =
-            state is MemorizationModeUpdated && state.isListening;
+  Widget _buildSimilarAyahsTab() {
+    final ayahKey = '${widget.surahNumber}:${widget.ayah.numberInSurah}';
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final highlightColor =
+        isDarkMode ? const Color(0xFF2ECC71) : const Color(0xFF1B8A4E);
 
-        return Container(
-          padding: EdgeInsets.all(20.r),
-          decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? const Color(0xFF1A1A1A)
-                : Colors.white,
-            borderRadius: BorderRadius.circular(14.r),
-            border: Border.all(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? context.accentColor.withValues(alpha: 0.2)
-                  : context.primaryColor.withValues(alpha: 0.1),
-              width: 1,
+    if (_isLoadingMatchingAyahs) {
+      return Container(
+        padding: EdgeInsets.all(40.r),
+        decoration: BoxDecoration(
+          color: isDarkMode ? const Color(0xFF1A1A1A) : Colors.white,
+          borderRadius: BorderRadius.circular(14.r),
+        ),
+        child: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              isDarkMode ? context.accentColor : context.primaryColor,
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.psychology_rounded,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? context.accentColor
-                        : context.primaryColor,
-                    size: 24.r,
-                  ),
-                  SizedBox(width: 10.w),
-                  Text(
-                    AppLocalizations.of(context)!.memorizationMode,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black87,
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.orange.withValues(alpha: 0.2)
-                          : Colors.orange.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(4.r),
-                      border: Border.all(
-                          color: Colors.orange.withValues(alpha: 0.5)),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.beta,
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
-                      ),
-                    ),
-                  ),
-                ],
+        ),
+      );
+    }
+
+    if (_matchingAyahsData == null) {
+      Future.microtask(_loadMatchingAyahs);
+      return Container(
+        padding: EdgeInsets.all(40.r),
+        decoration: BoxDecoration(
+          color: isDarkMode ? const Color(0xFF1A1A1A) : Colors.white,
+          borderRadius: BorderRadius.circular(14.r),
+        ),
+        child: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              isDarkMode ? context.accentColor : context.primaryColor,
+            ),
+          ),
+        ),
+      );
+    }
+
+    final matches = _matchingAyahsData![ayahKey] as List<dynamic>?;
+
+    if (matches == null || matches.isEmpty) {
+      return Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(32.r),
+        decoration: BoxDecoration(
+          color: isDarkMode ? const Color(0xFF1A1A1A) : Colors.white,
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(
+            color: isDarkMode
+                ? context.accentColor.withValues(alpha: 0.2)
+                : context.primaryColor.withValues(alpha: 0.1),
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              Icons.compare_arrows_rounded,
+              size: 48.r,
+              color: Colors.grey[400],
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              AppLocalizations.of(context)!.noSimilarAyahsFound,
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.grey[500],
               ),
-              SizedBox(height: 16.h),
-              Text(
-                AppLocalizations.of(context)!.memorizationDescription,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white70
-                      : Colors.black54,
-                  height: 1.5,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+          margin: EdgeInsets.only(bottom: 12.h),
+          decoration: BoxDecoration(
+            color: highlightColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(
+              color: highlightColor.withValues(alpha: 0.3),
+            ),
+          ),
+          child: Text(
+            AppLocalizations.of(context)!
+                .similarAyahsCountLabel(ayahKey, matches.length),
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: highlightColor,
+            ),
+          ),
+        ),
+        ...matches.map((match) {
+          final matchedKey = match['matched_ayah_key'] as String;
+          final parts = matchedKey.split(':');
+          final matchedSurahNum = int.parse(parts[0]);
+          final matchedAyahNum = int.parse(parts[1]);
+          final matchedWordsCount = match['matched_words_count'] as int;
+          final coverage = match['coverage'] as int;
+          final score = match['score'] as int;
+          final matchWords = match['match_words'] as List<dynamic>;
+
+          String verseText = '';
+          String surahNameAr = '';
+          String surahNameEn = '';
+          try {
+            verseText = quran.getVerse(matchedSurahNum, matchedAyahNum);
+            surahNameAr = quran.getSurahNameArabic(matchedSurahNum);
+            surahNameEn = quran.getSurahNameEnglish(matchedSurahNum);
+          } catch (_) {}
+
+          return Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(bottom: 12.h),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14.r),
+              boxShadow: [
+                BoxShadow(
+                  color: isDarkMode
+                      ? context.accentColor.withValues(alpha: 0.08)
+                      : context.primaryColor.withValues(alpha: 0.06),
+                  blurRadius: 12.r,
+                  offset: Offset(0, 4.h),
                 ),
-              ),
-              SizedBox(height: 12.h),
-              Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.blue.withValues(alpha: 0.1)
-                      : Colors.blue.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline_rounded,
-                        size: 16.sp, color: Colors.blue),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Text(
-                        AppLocalizations.of(context)!
-                            .speechRecognitionDisclaimer,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.blue.shade200
-                              : Colors.blue.shade800,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20.h),
-              SizedBox(
-                width: double.infinity,
-                child: !isMemorizationMode
-                    ? ElevatedButton.icon(
-                        onPressed: () {
-                          final surahCubit = context.read<SurahCubit>();
-                          if (surahCubit.state is SurahLoaded) {
-                            final surah =
-                                (surahCubit.state as SurahLoaded).surah;
-                            final ayahTexts =
-                                surah.ayahs!.map((a) => a.text ?? '').toList();
-                            context
-                                .read<MemorizationCubit>()
-                                .toggleMemorizationMode(
-                                  ayahTexts,
-                                  widget.surahNumber,
-                                );
-                          }
-                        },
-                        icon: Icon(
-                          Icons.play_arrow_rounded,
-                          size: 20.r,
-                          color: Colors.white,
-                        ),
-                        label: Text(
-                          AppLocalizations.of(context)!.startMemorization,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? context.accentColor
-                                  : context.primaryColor,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 12.h,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                        ),
-                      )
-                    : ElevatedButton.icon(
-                        onPressed: () {
-                          context
-                              .read<MemorizationCubit>()
-                              .toggleMemorizationMode([], 0);
-                        },
-                        icon: Icon(
-                          Icons.stop_rounded,
-                          size: 20.r,
-                          color: Colors.white,
-                        ),
-                        label: Text(
-                          AppLocalizations.of(context)!.stopMemorization,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 12.h,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                        ),
-                      ),
-              ),
-              if (isMemorizationMode) ...[
-                SizedBox(height: 20.h),
-                Container(
+              ],
+            ),
+            child: Material(
+              color: isDarkMode ? const Color(0xFF1A1A1A) : Colors.white,
+              borderRadius: BorderRadius.circular(14.r),
+              child: InkWell(
+                onTap: () {
+                  final surahInfo = QuranModel(
+                    number: matchedSurahNum,
+                    name: surahNameAr,
+                    englishName: surahNameEn,
+                    englishNameTranslation: surahNameEn,
+                    numberOfAyahs: quran.getVerseCount(matchedSurahNum),
+                    revelationType: quran.getPlaceOfRevelation(matchedSurahNum),
+                  );
+                  final nav = Navigator.of(context);
+                  nav.pop();
+                  nav.pushReplacementNamed(
+                    AppRoute.surahScreen,
+                    arguments: {
+                      'surahInfo': surahInfo,
+                      'scrollToAyah': matchedAyahNum,
+                      'shouldRestorePosition': false,
+                    },
+                  );
+                },
+                borderRadius: BorderRadius.circular(14.r),
+                child: Container(
                   padding: EdgeInsets.all(16.r),
                   decoration: BoxDecoration(
-                    color: isListening
-                        ? Colors.red.withValues(alpha: 0.1)
-                        : (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white.withValues(alpha: 0.05)
-                            : Colors.grey.withValues(alpha: 0.1)),
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(14.r),
                     border: Border.all(
-                      color: isListening
-                          ? Colors.red.withValues(alpha: 0.5)
-                          : Colors.transparent,
+                      color: isDarkMode
+                          ? context.accentColor.withValues(alpha: 0.2)
+                          : context.primaryColor.withValues(alpha: 0.1),
                     ),
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      if (isListening)
-                        AvatarGlow(
-                          glowColor: Colors.red,
-                          duration: const Duration(milliseconds: 2000),
-                          repeat: true,
-                          child: Icon(
-                            Icons.mic,
-                            color: Colors.red,
-                            size: 24.r,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            surahNameAr,
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color:
+                                  isDarkMode ? Colors.white70 : Colors.black54,
+                            ),
                           ),
-                        )
-                      else
-                        Icon(
-                          Icons.mic_none,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white54
-                              : Colors.black45,
-                          size: 24.r,
-                        ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              isListening
-                                  ? AppLocalizations.of(context)!.listening
-                                  : AppLocalizations.of(context)!
-                                      .microphoneIdle,
+                          SizedBox(width: 8.w),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 3.h),
+                            decoration: BoxDecoration(
+                              color: isDarkMode
+                                  ? context.accentColor.withValues(alpha: 0.2)
+                                  : context.primaryColor.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(6.r),
+                            ),
+                            child: Text(
+                              matchedKey,
                               style: TextStyle(
+                                fontSize: 11.sp,
                                 fontWeight: FontWeight.bold,
-                                color: isListening
-                                    ? Colors.red
-                                    : (Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black87),
+                                color: isDarkMode
+                                    ? context.accentColor
+                                    : context.primaryColor,
                               ),
                             ),
-                            if (isListening)
-                              Text(
-                                AppLocalizations.of(context)!.reciteToReveal,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: isListening
-                                      ? Colors.red.withValues(alpha: 0.8)
-                                      : Colors.grey,
-                                ),
-                              ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      if (verseText.isNotEmpty)
+                        Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: _buildHighlightedAyahText(
+                              verseText,
+                              matchWords,
+                              highlightColor,
+                              isDarkMode,
+                            ),
+                          ),
                         ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.auto_awesome_rounded,
+                            size: 12.r,
+                            color: Colors.grey[500],
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .similarAyahsMatchStats(
+                                      matchedWordsCount, coverage, score),
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 12.r,
+                            color: isDarkMode
+                                ? context.accentColor
+                                : context.primaryColor,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              ],
-            ],
-          ),
-        );
-      },
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildHighlightedAyahText(
+    String verse,
+    List<dynamic> matchWords,
+    Color highlightColor,
+    bool isDarkMode,
+  ) {
+    final words = verse.split(' ');
+    final Set<int> highlightedIndices = {};
+    for (final range in matchWords) {
+      if (range is! List || range.isEmpty) continue;
+      final start = (range[0] as int) - 1;
+      final end = range.length >= 2 ? (range[1] as int) - 1 : start;
+      for (int i = start; i <= end && i < words.length; i++) {
+        if (i >= 0) highlightedIndices.add(i);
+      }
+    }
+    final spans = <TextSpan>[];
+    for (int i = 0; i < words.length; i++) {
+      final isHighlighted = highlightedIndices.contains(i);
+      spans.add(TextSpan(
+        text: i < words.length - 1 ? '${words[i]} ' : words[i],
+        style: TextStyle(
+          color: isHighlighted
+              ? highlightColor
+              : (isDarkMode ? Colors.white : Colors.black87),
+          fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.w400,
+        ),
+      ));
+    }
+    return RichText(
+      textDirection: TextDirection.rtl,
+      textAlign: TextAlign.justify,
+      text: TextSpan(
+        style: TextStyle(
+          fontFamily: getQuranFonts(),
+          fontSize: 20.sp,
+          height: 2.0,
+        ),
+        children: spans,
+      ),
     );
   }
 }
