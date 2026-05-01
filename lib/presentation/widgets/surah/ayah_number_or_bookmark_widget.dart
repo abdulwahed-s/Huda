@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/bookmark/bookmarks_cubit.dart';
 import 'package:huda/data/models/bookmark_model.dart';
 import 'package:huda/core/services/bookmark_service.dart';
+import 'package:huda/core/services/khatma_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 
 class AyahNumberOrBookmarkWidget extends StatefulWidget {
@@ -34,17 +35,18 @@ class _AyahNumberOrBookmarkWidgetState
   bool _hasBookmark = false;
   bool _hasNote = false;
   bool _hasStar = false;
+  bool _isKhatmaStart = false;
+  bool _isKhatmaEnd = false;
   Color? _bookmarkColor;
 
   StreamSubscription<BookmarkChange>? _bookmarkChangesSubscription;
+  StreamSubscription<void>? _khatmaChangesSubscription;
 
-  // Create a local BookmarksCubit if one isn't available in the context
   BookmarksCubit? _localBookmarksCubit;
   BookmarksCubit get _bookmarksCubit {
     try {
       return context.read<BookmarksCubit>();
     } catch (e) {
-      // If no cubit is found in context, create a local one
       _localBookmarksCubit ??= BookmarksCubit(
         bookmarkService: getIt<BookmarkService>(),
       );
@@ -56,22 +58,32 @@ class _AyahNumberOrBookmarkWidgetState
   void initState() {
     super.initState();
     _checkBookmarkStatus();
+    _checkKhatmaStatus();
     _subscribeToBookmarkChanges();
+    _subscribeToKhatmaChanges();
   }
 
   @override
   void dispose() {
     _bookmarkChangesSubscription?.cancel();
+    _khatmaChangesSubscription?.cancel();
     _localBookmarksCubit?.close();
     super.dispose();
   }
 
+  void _subscribeToKhatmaChanges() {
+    try {
+      _khatmaChangesSubscription =
+          getIt<KhatmaService>().khatmaChanges.listen((_) {
+        _checkKhatmaStatus();
+      });
+    } catch (_) {}
+  }
+
   void _subscribeToBookmarkChanges() {
-    // Listen to global bookmark changes
     final bookmarkService = getIt<BookmarkService>();
     _bookmarkChangesSubscription =
         bookmarkService.bookmarkChanges.listen((change) {
-      // Only refresh if this change affects our ayah
       if (change.surahNumber == widget.surahNumber &&
           change.ayahNumber == widget.ayahNumber) {
         _checkBookmarkStatus();
@@ -85,6 +97,37 @@ class _AyahNumberOrBookmarkWidgetState
     if (oldWidget.surahNumber != widget.surahNumber ||
         oldWidget.ayahNumber != widget.ayahNumber) {
       _checkBookmarkStatus();
+      _checkKhatmaStatus();
+    }
+  }
+
+  void _checkKhatmaStatus() {
+    bool isStart = false;
+    bool isEnd = false;
+
+    try {
+      final khatmaService = getIt<KhatmaService>();
+      if (khatmaService.enabled && !khatmaService.isCompleted) {
+        final details = khatmaService.rangeDetailsForDay(
+            khatmaService.currentDayIndex, khatmaService.planDays);
+        if (widget.surahNumber == details.startSurah &&
+            widget.ayahNumber == details.startVerse) {
+          isStart = true;
+        }
+        if (widget.surahNumber == details.endSurah &&
+            widget.ayahNumber == details.endVerse) {
+          isEnd = true;
+        }
+      }
+    } catch (e) {
+      debugPrint('Error checking khatma status: $e');
+    }
+
+    if (mounted) {
+      setState(() {
+        _isKhatmaStart = isStart;
+        _isKhatmaEnd = isEnd;
+      });
     }
   }
 
@@ -131,13 +174,11 @@ class _AyahNumberOrBookmarkWidgetState
         });
       }
     } catch (e) {
-      // Handle error silently or log it
       debugPrint('Error checking bookmark status: $e');
     }
   }
 
   Widget _buildContent() {
-    // Priority: Star > Note > Bookmark > Number
     if (_hasStar) {
       return Icon(
         Icons.star,
@@ -156,8 +197,19 @@ class _AyahNumberOrBookmarkWidgetState
         size: widget.size,
         color: _bookmarkColor ?? widget.textColor,
       );
+    } else if (_isKhatmaStart) {
+      return Icon(
+        Icons.arrow_forward_rounded,
+        size: widget.size * 0.9,
+        color: const Color(0xFF4CAF50),
+      );
+    } else if (_isKhatmaEnd) {
+      return Icon(
+        Icons.check_circle_rounded,
+        size: widget.size * 0.9,
+        color: const Color(0xFFE53935),
+      );
     } else {
-      // Show ayah number
       return Text(
         '${widget.ayahNumber}',
         style: TextStyle(
@@ -175,10 +227,8 @@ class _AyahNumberOrBookmarkWidgetState
     Widget child = Center(child: _buildContent());
 
     try {
-      // Try to wrap with BlocListener if cubit is available in context
       return BlocListener<BookmarksCubit, BookmarksState>(
         listener: (context, state) {
-          // Refresh bookmark status when bookmark operations occur
           if (state is BookmarkOperationSuccess ||
               state is BookmarksLoaded ||
               state is BookmarkOperationFailure) {
@@ -188,8 +238,6 @@ class _AyahNumberOrBookmarkWidgetState
         child: child,
       );
     } catch (e) {
-      // If no cubit in context, return the child directly
-      // For local cubit, we need to listen manually using StreamBuilder
       if (_localBookmarksCubit != null) {
         return StreamBuilder<BookmarksState>(
           stream: _localBookmarksCubit!.stream,
@@ -199,7 +247,6 @@ class _AyahNumberOrBookmarkWidgetState
               if (state is BookmarkOperationSuccess ||
                   state is BookmarksLoaded ||
                   state is BookmarkOperationFailure) {
-                // Trigger refresh asynchronously to avoid setState during build
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   _checkBookmarkStatus();
                 });
