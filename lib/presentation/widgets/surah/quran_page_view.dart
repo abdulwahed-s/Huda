@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/services/get_fonts.dart';
+import 'package:huda/data/models/quran_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
@@ -23,6 +24,8 @@ import 'package:huda/presentation/widgets/surah/ayah_number_or_bookmark_widget.d
 import 'package:huda/cubit/memorization/memorization_cubit.dart';
 import 'package:huda/presentation/widgets/surah/animated_listening_waves.dart';
 import 'package:huda/presentation/widgets/surah/memorization_completed_dialog.dart';
+import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/quran/quran.dart' as quran;
 
 import '../../../core/mixins/surah/audio_manager_mixin.dart';
 import '../../../core/mixins/surah/download_manager_mixin.dart';
@@ -41,6 +44,8 @@ class QuranPageView extends StatefulWidget {
   final double? ayahPosition;
   final bool shouldRestorePosition;
   final bool isBookmarkVisit;
+  final Color? customBgColor;
+  final Color? customTextColor;
 
   const QuranPageView({
     super.key,
@@ -50,6 +55,8 @@ class QuranPageView extends StatefulWidget {
     this.ayahPosition,
     this.shouldRestorePosition = false,
     this.isBookmarkVisit = false,
+    this.customBgColor,
+    this.customTextColor,
   });
 
   @override
@@ -331,7 +338,7 @@ class _QuranPageViewState extends State<QuranPageView>
         isFirstAyah && widget.surah.number != 1 && widget.surah.number != 9;
 
     if (shouldShowBismillah) {
-      const bismillahText = 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
+      const bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
       if (ayahText.trim().startsWith(bismillahText)) {
         ayahText = ayahText.trim().replaceFirst(bismillahText, '').trim();
       }
@@ -365,23 +372,25 @@ class _QuranPageViewState extends State<QuranPageView>
         ),
       ],
       child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: Theme.of(context).brightness == Brightness.dark
-                ? [
-                    const Color(0xFF0A0A0A),
-                    const Color(0xFF1A1A1A),
-                    context.darkGradientStart,
-                  ]
-                : [
-                    const Color(0xFFFFFDF7),
-                    const Color(0xFFFFF9E6),
-                    const Color(0xFFFFF5D6),
-                  ],
-          ),
-        ),
+        decoration: widget.customBgColor != null
+            ? BoxDecoration(color: widget.customBgColor)
+            : BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: Theme.of(context).brightness == Brightness.dark
+                      ? [
+                          const Color(0xFF0A0A0A),
+                          const Color(0xFF1A1A1A),
+                          context.darkGradientStart,
+                        ]
+                      : [
+                          const Color(0xFFFFFDF7),
+                          const Color(0xFFFFF9E6),
+                          const Color(0xFFFFF5D6),
+                        ],
+                ),
+              ),
         child: Stack(
           children: [
             PageView.builder(
@@ -396,7 +405,7 @@ class _QuranPageViewState extends State<QuranPageView>
                 return ScrollablePositionedList.builder(
                   itemScrollController: _itemScrollController,
                   itemPositionsListener: _itemPositionsListener,
-                  itemCount: totalItems,
+                  itemCount: totalItems + 1,
                   padding: EdgeInsets.fromLTRB(
                     12.w,
                     8.h,
@@ -405,29 +414,50 @@ class _QuranPageViewState extends State<QuranPageView>
                         MediaQuery.paddingOf(context).bottom,
                   ),
                   itemBuilder: (context, index) {
+                    if (index == totalItems) {
+                      return _buildBottomNavigationRow(context);
+                    }
+
                     if (showBismillah && index == 0) {
                       return Container(
                         margin: EdgeInsets.fromLTRB(0, 8.h, 0, 8.h),
                         padding: EdgeInsets.symmetric(vertical: 20.h),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Theme.of(context).cardColor
-                              : Colors.white,
+                          color: widget.customBgColor != null
+                              ? (widget.customBgColor!.computeLuminance() > 0.5
+                                  ? Color.lerp(
+                                      widget.customBgColor, Colors.black, 0.04)!
+                                  : Color.lerp(widget.customBgColor,
+                                      Colors.white, 0.08)!)
+                              : (Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).cardColor
+                                  : Colors.white),
                           borderRadius: BorderRadius.circular(16.r),
+                          border: widget.customTextColor != null
+                              ? Border.all(
+                                  color: widget.customTextColor!
+                                      .withValues(alpha: 0.1),
+                                  width: 1,
+                                )
+                              : null,
                           boxShadow: [
                             BoxShadow(
-                              color: context.primaryColor.withValues(
-                                alpha: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? 0.2
-                                    : 0.1,
-                              ),
+                              color: widget.customBgColor != null
+                                  ? Colors.black.withValues(alpha: 0.08)
+                                  : context.primaryColor.withValues(
+                                      alpha: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? 0.2
+                                          : 0.1,
+                                    ),
                               blurRadius: 16.r,
                               offset: Offset(0, 6.h),
                             ),
                           ],
                         ),
-                        child: const BismillahWidget(),
+                        child: BismillahWidget(
+                          customTextColor: widget.customTextColor,
+                        ),
                       );
                     }
 
@@ -454,10 +484,18 @@ class _QuranPageViewState extends State<QuranPageView>
                                     ? const Color(0xFF2A1B3D)
                                         .withValues(alpha: 0.6)
                                     : const Color(0xFFE8F5E8))
-                                : (Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? const Color(0xFF1A1A1A)
-                                    : Colors.white),
+                                : (widget.customBgColor != null
+                                    ? (widget.customBgColor!
+                                                .computeLuminance() >
+                                            0.5
+                                        ? Color.lerp(widget.customBgColor,
+                                            Colors.black, 0.04)!
+                                        : Color.lerp(widget.customBgColor,
+                                            Colors.white, 0.08)!)
+                                    : (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? const Color(0xFF1A1A1A)
+                                        : Colors.white)),
                             borderRadius: BorderRadius.circular(10.r),
                             border: playingAyahIndex == ayahIndex
                                 ? Border.all(
@@ -468,10 +506,13 @@ class _QuranPageViewState extends State<QuranPageView>
                                     width: 2,
                                   )
                                 : Border.all(
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? const Color(0xFF2A2A2A)
-                                        : Colors.transparent,
+                                    color: widget.customTextColor != null
+                                        ? widget.customTextColor!
+                                            .withValues(alpha: 0.1)
+                                        : (Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? const Color(0xFF2A2A2A)
+                                            : Colors.transparent),
                                     width: 1,
                                   ),
                             boxShadow: [
@@ -483,11 +524,14 @@ class _QuranPageViewState extends State<QuranPageView>
                                             .withValues(alpha: 0.3)
                                         : context.primaryColor
                                             .withValues(alpha: 0.15))
-                                    : (Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? const Color(0xFF0A0A0A)
-                                            .withValues(alpha: 0.5)
-                                        : Colors.black.withValues(alpha: 0.05)),
+                                    : (widget.customBgColor != null
+                                        ? Colors.black.withValues(alpha: 0.08)
+                                        : (Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? const Color(0xFF0A0A0A)
+                                                .withValues(alpha: 0.5)
+                                            : Colors.black
+                                                .withValues(alpha: 0.05))),
                                 blurRadius:
                                     playingAyahIndex == ayahIndex ? 14.r : 6.r,
                                 offset: Offset(0, 2.h),
@@ -671,12 +715,14 @@ class _QuranPageViewState extends State<QuranPageView>
                                                           Brightness.dark
                                                       ? const Color(0xFF10B981)
                                                       : const Color(0xFF2E7D32))
-                                                  : (Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
-                                                      ? const Color(0xFFF8FAFC)
-                                                      : const Color(
-                                                          0xFF2C3E50)),
+                                                  : (widget.customTextColor ??
+                                                      (Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.dark
+                                                          ? const Color(
+                                                              0xFFF8FAFC)
+                                                          : const Color(
+                                                              0xFF2C3E50))),
                                               height: 2.0,
                                               fontWeight: FontWeight.w500,
                                               letterSpacing: 0.3,
@@ -1450,5 +1496,231 @@ class _QuranPageViewState extends State<QuranPageView>
         }
       });
     });
+  }
+
+  Widget _buildBottomNavigationRow(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final int currentSurahNumber = widget.surahNumber;
+    final int nextSurahNumber = currentSurahNumber + 1;
+    final int previousSurahNumber = currentSurahNumber - 1;
+
+    final String nextSurahName =
+        nextSurahNumber <= 114 ? quran.getSurahNameArabic(nextSurahNumber) : '';
+    final String previousSurahName = previousSurahNumber >= 1
+        ? quran.getSurahNameArabic(previousSurahNumber)
+        : '';
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    Color buttonBgColor = widget.customBgColor != null
+        ? (widget.customBgColor!.computeLuminance() > 0.5
+            ? Color.lerp(widget.customBgColor, Colors.black, 0.04)!
+            : Color.lerp(widget.customBgColor, Colors.white, 0.08)!)
+        : (isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5));
+
+    Color textColor =
+        widget.customTextColor ?? (isDark ? Colors.white : Colors.black87);
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 16.h),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 5,
+              child: nextSurahNumber <= 114
+                  ? _buildNavigationButton(
+                      context,
+                      title: nextSurahName,
+                      subtitle: l10n.nextSurah,
+                      icon: Icons.arrow_back_ios_new_rounded,
+                      isLeftButton: false,
+                      onTap: () {
+                        final nextSurah = QuranModel(
+                          number: nextSurahNumber,
+                          name: nextSurahName,
+                          englishName: quran.getSurahName(nextSurahNumber),
+                        );
+                        Navigator.pushReplacementNamed(
+                          context,
+                          AppRoute.surahScreen,
+                          arguments: {
+                            'surahInfo': nextSurah,
+                            'scrollToAyah': null,
+                            'shouldRestorePosition': false,
+                          },
+                        );
+                      },
+                      bgColor: buttonBgColor,
+                      textColor: textColor,
+                    )
+                  : const SizedBox.shrink(),
+            ),
+            SizedBox(width: 8.w),
+            Expanded(
+              flex: 3,
+              child: _buildNavigationButton(
+                context,
+                title: '',
+                subtitle: l10n.scrollToTop,
+                icon: Icons.keyboard_arrow_up_rounded,
+                isCenter: true,
+                onTap: () {
+                  _itemScrollController.scrollTo(
+                    index: 0,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                bgColor: buttonBgColor,
+                textColor: textColor,
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Expanded(
+              flex: 5,
+              child: previousSurahNumber >= 1
+                  ? _buildNavigationButton(
+                      context,
+                      title: previousSurahName,
+                      subtitle: l10n.previousSurah,
+                      icon: Icons.arrow_forward_ios_rounded,
+                      isLeftButton: true,
+                      onTap: () {
+                        final prevSurah = QuranModel(
+                          number: previousSurahNumber,
+                          name: previousSurahName,
+                          englishName: quran.getSurahName(previousSurahNumber),
+                        );
+                        Navigator.pushReplacementNamed(
+                          context,
+                          AppRoute.surahScreen,
+                          arguments: {
+                            'surahInfo': prevSurah,
+                            'scrollToAyah': null,
+                            'shouldRestorePosition': false,
+                          },
+                        );
+                      },
+                      bgColor: buttonBgColor,
+                      textColor: textColor,
+                    )
+                  : const SizedBox.shrink(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavigationButton(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required VoidCallback onTap,
+    required Color bgColor,
+    required Color textColor,
+    bool isCenter = false,
+    bool isLeftButton = false,
+  }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : Colors.black.withValues(alpha: 0.06);
+
+    return Material(
+      color: bgColor,
+      borderRadius: BorderRadius.circular(14.r),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14.r),
+        splashColor: textColor.withValues(alpha: 0.13),
+        highlightColor: textColor.withValues(alpha: 0.07),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 10.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(color: borderColor, width: 1),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isCenter) ...[
+                Container(
+                  width: 40.w,
+                  height: 40.w,
+                  decoration: BoxDecoration(
+                    color: textColor.withValues(alpha: 0.08),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: textColor.withValues(alpha: 0.65),
+                    size: 22.sp,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: textColor.withValues(alpha: 0.55),
+                    letterSpacing: 0.3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ] else ...[
+                Row(
+                  mainAxisAlignment: isLeftButton
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start,
+                  children: [
+                    if (!isLeftButton)
+                      Icon(icon,
+                          color: textColor.withValues(alpha: 0.4), size: 11.sp),
+                    if (!isLeftButton) SizedBox(width: 4.w),
+                    Flexible(
+                      child: Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: textColor.withValues(alpha: 0.5),
+                          letterSpacing: 0.2,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign:
+                            isLeftButton ? TextAlign.end : TextAlign.start,
+                      ),
+                    ),
+                    if (isLeftButton) SizedBox(width: 4.w),
+                    if (isLeftButton)
+                      Icon(icon,
+                          color: textColor.withValues(alpha: 0.4), size: 11.sp),
+                  ],
+                ),
+                SizedBox(height: 6.h),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'Amiri',
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    height: 1.3,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
