@@ -62,8 +62,6 @@ class _ShareWidgetState extends State<ShareWidget> {
           ),
         ),
         SizedBox(height: 14.h),
-
-        // Share options
         Container(
           padding: EdgeInsets.all(14.r),
           decoration: BoxDecoration(
@@ -79,7 +77,6 @@ class _ShareWidgetState extends State<ShareWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Share options header
               Row(
                 children: [
                   Icon(
@@ -103,8 +100,6 @@ class _ShareWidgetState extends State<ShareWidget> {
                 ],
               ),
               const SizedBox(height: 12),
-
-              // Include options
               if (widget.currentTranslation != null)
                 CheckboxListTile(
                   title: Text(
@@ -118,7 +113,6 @@ class _ShareWidgetState extends State<ShareWidget> {
                   contentPadding: EdgeInsets.zero,
                   activeColor: context.primaryColor,
                 ),
-
               if (widget.currentTafsir != null)
                 CheckboxListTile(
                   title: Text(
@@ -132,7 +126,6 @@ class _ShareWidgetState extends State<ShareWidget> {
                   contentPadding: EdgeInsets.zero,
                   activeColor: context.primaryColor,
                 ),
-
               CheckboxListTile(
                 title: Text(
                   AppLocalizations.of(context)!.includeReference,
@@ -145,13 +138,9 @@ class _ShareWidgetState extends State<ShareWidget> {
                 contentPadding: EdgeInsets.zero,
                 activeColor: context.primaryColor,
               ),
-
               const SizedBox(height: 16),
-
-              // Action buttons
               Row(
                 children: [
-                  // Copy text button
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: _copyToClipboard,
@@ -171,7 +160,6 @@ class _ShareWidgetState extends State<ShareWidget> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  // Share text button
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: _shareText,
@@ -193,7 +181,6 @@ class _ShareWidgetState extends State<ShareWidget> {
                 ],
               ),
               const SizedBox(height: 8),
-              // Share as image button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -229,10 +216,7 @@ class _ShareWidgetState extends State<ShareWidget> {
             ],
           ),
         ),
-
         const SizedBox(height: 16),
-
-        // Preview card for image generation
         Container(
           decoration: BoxDecoration(
             color: Theme.of(context).brightness == Brightness.dark
@@ -263,12 +247,12 @@ class _ShareWidgetState extends State<ShareWidget> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xFF2F2F2F) // Simple dark gray
-            : context.lightSurface, // Keep light mode simple
+            ? const Color(0xFF2F2F2F)
+            : context.lightSurface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).brightness == Brightness.dark
-              ? const Color(0xFF505050) // Subtle gray border
+              ? const Color(0xFF505050)
               : context.primaryColor.withValues(alpha: 0.1),
           width: 1,
         ),
@@ -276,7 +260,6 @@ class _ShareWidgetState extends State<ShareWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header with ayah number
           Row(
             children: [
               Container(
@@ -321,10 +304,7 @@ class _ShareWidgetState extends State<ShareWidget> {
               ),
             ],
           ),
-
           const SizedBox(height: 16),
-
-          // Arabic text
           Directionality(
             textDirection: TextDirection.rtl,
             child: Text(
@@ -335,10 +315,9 @@ class _ShareWidgetState extends State<ShareWidget> {
                     widget.ayah.number != 1 &&
                     widget.ayah.number != 9;
 
-                // Remove Bismillah if it exists in the text and we're showing it separately
                 if (shouldShowBismillah) {
                   const bismillahText =
-                      'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ';
+                      'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
                   if (ayahText.trim().startsWith(bismillahText)) {
                     ayahText =
                         ayahText.trim().replaceFirst(bismillahText, '').trim();
@@ -352,27 +331,25 @@ class _ShareWidgetState extends State<ShareWidget> {
                 fontFamily: getQuranFonts(),
                 fontSize: 22,
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? const Color(0xFFE0E0E0) // Softer white for readability
+                    ? const Color(0xFFE0E0E0)
                     : const Color(0xFF2C3E50),
                 height: 2.0,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
-
-          // Translation (if included)
           if (_includeTranslation && widget.currentTranslation != null) ...[
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? const Color(0xFF404040) // Simple darker gray
+                    ? const Color(0xFF404040)
                     : const Color(0xFFF8F9FA),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? const Color(0xFF606060) // Simple gray border
+                      ? const Color(0xFF606060)
                       : context.accentColor.withValues(alpha: 0.1),
                   width: 1,
                 ),
@@ -382,7 +359,7 @@ class _ShareWidgetState extends State<ShareWidget> {
                 style: TextStyle(
                   fontSize: 14,
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? const Color(0xFFD0D0D0) // Readable gray text
+                      ? const Color(0xFFD0D0D0)
                       : const Color(0xFF2C3E50),
                   height: 1.5,
                   fontStyle: FontStyle.italic,
@@ -390,20 +367,18 @@ class _ShareWidgetState extends State<ShareWidget> {
               ),
             ),
           ],
-
-          // Tafsir (if included)
           if (_includeTafsir && widget.currentTafsir != null) ...[
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? const Color(0xFF404040) // Simple darker gray
+                    ? const Color(0xFF404040)
                     : const Color(0xFFF0F8FF),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? const Color(0xFF606060) // Simple gray border
+                      ? const Color(0xFF606060)
                       : context.accentColor.withValues(alpha: 0.1),
                   width: 1,
                 ),
@@ -417,7 +392,7 @@ class _ShareWidgetState extends State<ShareWidget> {
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFFB0B0B0) // Simple gray label
+                          ? const Color(0xFFB0B0B0)
                           : context.accentColor,
                     ),
                   ),
@@ -430,7 +405,7 @@ class _ShareWidgetState extends State<ShareWidget> {
                       style: TextStyle(
                         fontSize: 13,
                         color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFFD0D0D0) // Readable gray text
+                            ? const Color(0xFFD0D0D0)
                             : const Color(0xFF2C3E50),
                         height: 1.5,
                       ),
@@ -440,8 +415,6 @@ class _ShareWidgetState extends State<ShareWidget> {
               ),
             ),
           ],
-
-          // Reference (if included)
           if (_includeReference) ...[
             const SizedBox(height: 16),
             Text(
@@ -450,14 +423,12 @@ class _ShareWidgetState extends State<ShareWidget> {
               style: TextStyle(
                 fontSize: 12,
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? const Color(0xFF888888) // Simple gray
+                    ? const Color(0xFF888888)
                     : context.accentColor.withValues(alpha: 0.8),
                 fontWeight: FontWeight.w500,
               ),
             ),
           ],
-
-          // App branding
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.hudaQuranApp,
@@ -465,7 +436,7 @@ class _ShareWidgetState extends State<ShareWidget> {
             style: TextStyle(
               fontSize: 10,
               color: Theme.of(context).brightness == Brightness.dark
-                  ? const Color(0xFF666666) // Simple darker gray
+                  ? const Color(0xFF666666)
                   : context.accentColor.withValues(alpha: 0.6),
               fontWeight: FontWeight.w400,
             ),
@@ -533,22 +504,18 @@ class _ShareWidgetState extends State<ShareWidget> {
   String _getShareText() {
     String text = '';
 
-    // Add Arabic text
     text += '${widget.ayah.text ?? ''}\n\n';
 
-    // Add translation if included
     if (_includeTranslation && widget.currentTranslation != null) {
       text +=
           '${AppLocalizations.of(context)!.translationLabel}\n${_getTranslationText()}\n\n';
     }
 
-    // Add tafsir if included
     if (_includeTafsir && widget.currentTafsir != null) {
       text +=
           '${AppLocalizations.of(context)!.tafsirLabel}\n${_getTafsirText()}\n\n';
     }
 
-    // Add reference if included
     if (_includeReference) {
       text += '— ${_getReference()}\n\n';
     }
@@ -622,7 +589,7 @@ class _ShareWidgetState extends State<ShareWidget> {
 
     try {
       final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-      // Capture the widget as image
+
       RenderRepaintBoundary boundary = _ayahCardKey.currentContext!
           .findRenderObject() as RenderRepaintBoundary;
 
@@ -631,14 +598,12 @@ class _ShareWidgetState extends State<ShareWidget> {
           await image.toByteData(format: ui.ImageByteFormat.png);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
 
-      // Save to temporary directory
       final Directory tempDir = await getTemporaryDirectory();
       final String fileName =
           'ayah_${widget.surahNumber}_${widget.ayah.numberInSurah}.png';
       final File file = File('${tempDir.path}/$fileName');
       await file.writeAsBytes(pngBytes);
 
-      // Share the image
       if (!mounted) return;
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
