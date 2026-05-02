@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:quran/quran.dart';
+import 'package:huda/core/quran/quran.dart';
 
 import 'package:huda/data/models/reciter_model.dart';
 import 'package:huda/cubit/quran_player/quran_player_state.dart';
@@ -103,7 +104,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
       audioPlayer.playbackEventStream.listen(
         (event) {},
         onError: (Object e, StackTrace stackTrace) {
-          print('A stream error occurred: $e');
+          debugPrint('A stream error occurred: $e');
         },
       );
       audioPlayer.setLoopMode(LoopMode.off);
@@ -114,7 +115,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
           initialIndex: initialIndex,
         );
       } catch (e) {
-        print("Error loading playlist: $e");
+        debugPrint("Error loading playlist: $e");
       }
 
       audioPlayer.play();
@@ -179,7 +180,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
     } catch (e) {
       downloadProgressCubit.removeSurahProgress(
           reciter.id, moshaf.id, suraNumber);
-      print('Download error: $e');
+      debugPrint('Download error: $e');
     }
   }
 
@@ -240,7 +241,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
         } catch (e) {
           downloadProgressCubit.removeSurahProgress(
               reciter.id, moshaf.id, suraNumber);
-          print('Error downloading surah $suraNumber: $e');
+          debugPrint('Error downloading surah $suraNumber: $e');
         }
         completed++;
         downloadProgressCubit.updateBatchProgress(
@@ -250,7 +251,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
       downloadProgressCubit.completeBatch(reciter.id, moshaf.id);
     } catch (e) {
       downloadProgressCubit.completeBatch(reciter.id, moshaf.id);
-      print('Download all error: $e');
+      debugPrint('Download all error: $e');
     }
   }
 
