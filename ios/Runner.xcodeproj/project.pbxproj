@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -799,7 +799,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = HudaShieldAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HudaShieldAction;
-				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettingsUI.shield-action";
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettings.shield-action-service";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -890,7 +890,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -971,7 +971,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = HudaShieldAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HudaShieldAction;
-				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettingsUI.shield-action";
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettings.shield-action-service";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1121,7 +1121,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1151,7 +1151,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1173,7 +1173,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = HudaShieldAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HudaShieldAction;
-				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettingsUI.shield-action";
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.ManagedSettings.shield-action-service";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
