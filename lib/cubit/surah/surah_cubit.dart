@@ -32,7 +32,7 @@ class SurahCubit extends Cubit<SurahState> {
       // Load and cache the data if not already cached
       if (_cachedSurahData == null) {
         final String response =
-            await rootBundle.loadString('assets/json/surah_data_new.json');
+            await rootBundle.loadString('assets/json/surah_data.json');
         _cachedSurahData = json.decode(response);
       }
 
@@ -45,12 +45,11 @@ class SurahCubit extends Cubit<SurahState> {
     }
   }
 
-  // Method to preload all surah data
   static Future<void> preloadSurahData() async {
     if (_cachedSurahData == null) {
       try {
         final String response =
-            await rootBundle.loadString('assets/json/surah_data_new.json');
+            await rootBundle.loadString('assets/json/surah_data.json');
         _cachedSurahData = json.decode(response);
       } catch (e) {
         //  Add error handling here if needed
