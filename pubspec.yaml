@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.0.0+32
+version: 3.0.0+33
 
 environment:
   sdk: ^3.6.2
@@ -132,7 +132,7 @@ msix_config:
   publisher_display_name: awr
   publisher: CN=2AC3245E-4735-457B-BD0F-07BCB9F018F5
   identity_name: awr.Huda-IslamicCompanionApp
-  msix_version: 1.0.4.0
+  msix_version: 3.0.0.0
   logo_path: assets/images/huda.png
   capabilities: internetClient, location, microphone, notifications
   languages: en-US, ar-SA, tr-TR, fr-FR, es-ES, de-DE, ru-RU, ur-PK, ms-MY, bn-BD
