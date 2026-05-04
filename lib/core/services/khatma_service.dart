@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:huda/core/cache/cache_helper.dart';
-import 'package:quran/quran.dart' as quran;
+import 'package:huda/core/quran/quran.dart' as quran;
 
 class KhatmaService {
   final CacheHelper _cache;
