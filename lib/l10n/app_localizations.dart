@@ -918,6 +918,36 @@ abstract class AppLocalizations {
   /// **'Note'**
   String get note;
 
+  /// Dhikr button label in Tasbih screen
+  ///
+  /// In en, this message translates to:
+  /// **'Dhikr'**
+  String get dhikr;
+
+  /// Minus button label in Tasbih screen
+  ///
+  /// In en, this message translates to:
+  /// **'Minus'**
+  String get minus;
+
+  /// Add Dhikr dialog title in Tasbih screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add Dhikr'**
+  String get addDhikr;
+
+  /// Empty state message in Tasbih screen
+  ///
+  /// In en, this message translates to:
+  /// **'No Dhikr yet'**
+  String get noDhikrYet;
+
+  /// Text field hint in Tasbih add dhikr dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your dhikr here...'**
+  String get enterDhikrHint;
+
   /// Vibrate mode text
   ///
   /// In en, this message translates to:
@@ -1056,10 +1086,10 @@ abstract class AppLocalizations {
   /// **'Available Widgets'**
   String get availableWidgets;
 
-  /// Next prayer widget title
+  /// Label above the next-prayer name
   ///
   /// In en, this message translates to:
-  /// **'Next Prayer'**
+  /// **'Next prayer'**
   String get nextPrayer;
 
   /// Hijri date widget title
@@ -3246,10 +3276,10 @@ abstract class AppLocalizations {
   /// **'I seek Allah’s forgiveness and turn to Him in repentance.'**
   String get sampleTextPreview;
 
-  /// No description provided for @small.
+  /// Small widget size
   ///
   /// In en, this message translates to:
-  /// **'small'**
+  /// **'Small'**
   String get small;
 
   /// No description provided for @normal.
@@ -3258,10 +3288,10 @@ abstract class AppLocalizations {
   /// **'normal'**
   String get normal;
 
-  /// No description provided for @large.
+  /// Large widget size
   ///
   /// In en, this message translates to:
-  /// **'large'**
+  /// **'Large'**
   String get large;
 
   /// No description provided for @extraLarge.
@@ -5630,6 +5660,30 @@ abstract class AppLocalizations {
   /// **'UI/UX improvements, responsive design, and enhanced experience'**
   String get whatsNew300Feature7;
 
+  /// What's new feature 1 for v3.1.0 — iOS variant (includes lock screen)
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Times Widget: Home screen & lock screen widget with a live countdown to your next prayer'**
+  String get whatsNew310Feature1iOS;
+
+  /// What's new feature 1 for v3.1.0 — Android variant
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Times Widget: Home screen widget with a live countdown to your next prayer'**
+  String get whatsNew310Feature1Android;
+
+  /// What's new feature 2 for v3.1.0
+  ///
+  /// In en, this message translates to:
+  /// **'UI/UX improvements'**
+  String get whatsNew310Feature2;
+
+  /// What's new feature 3 for v3.1.0
+  ///
+  /// In en, this message translates to:
+  /// **'Bug fixes'**
+  String get whatsNew310Feature3;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:
@@ -6451,6 +6505,342 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Matches {matchedWordsCount} words · {coverage}% coverage · Score: {score}'**
   String similarAyahsMatchStats(int matchedWordsCount, int coverage, int score);
+
+  /// Tab label for the Quran-verse widget
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Verse'**
+  String get quranVerseWidget;
+
+  /// Tab label for the prayer-times widget
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Times'**
+  String get prayerTimesWidget;
+
+  /// Header subtitle for the prayer-widget tab
+  ///
+  /// In en, this message translates to:
+  /// **'Stay on time for every prayer'**
+  String get prayerWidgetTagline;
+
+  /// Title of the section that adds the prayer widget to the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add Prayer Widget'**
+  String get addPrayerWidgetTitle;
+
+  /// Body of the prayer widget add section
+  ///
+  /// In en, this message translates to:
+  /// **'Pin the Huda Prayer widget to your home screen to see the next prayer with a live countdown. Calculations run on-device using your saved location.'**
+  String get addPrayerWidgetDescription;
+
+  /// Button text to add the prayer widget
+  ///
+  /// In en, this message translates to:
+  /// **'Add to home screen'**
+  String get addPrayerWidget;
+
+  /// Button text to open the prayer widget customization page
+  ///
+  /// In en, this message translates to:
+  /// **'Customize'**
+  String get customizePrayerWidget;
+
+  /// Title of the prayer widget customization screen
+  ///
+  /// In en, this message translates to:
+  /// **'Customize prayer widget'**
+  String get prayerWidgetCustomization;
+
+  /// Label above the in-app preview
+  ///
+  /// In en, this message translates to:
+  /// **'Live preview'**
+  String get prayerWidgetPreview;
+
+  /// Section title for design picker
+  ///
+  /// In en, this message translates to:
+  /// **'Design'**
+  String get design;
+
+  /// Name of the hero/big-countdown widget design
+  ///
+  /// In en, this message translates to:
+  /// **'Spotlight'**
+  String get designHero;
+
+  /// Description of the hero design
+  ///
+  /// In en, this message translates to:
+  /// **'Bold next-prayer focus with countdown timer, hero icon and a clean list of all prayers.'**
+  String get designHeroDescription;
+
+  /// Name of the compact design
+  ///
+  /// In en, this message translates to:
+  /// **'Almanac'**
+  String get designCompact;
+
+  /// Description of the compact design
+  ///
+  /// In en, this message translates to:
+  /// **'Classic cream card with date, day-of-week, full prayer grid and night times.'**
+  String get designCompactDescription;
+
+  /// Section title for widget size picker
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get size;
+
+  /// Medium widget size
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get medium;
+
+  /// Lock screen widget category
+  ///
+  /// In en, this message translates to:
+  /// **'Lock screen'**
+  String get lockScreen;
+
+  /// Section title for background customization
+  ///
+  /// In en, this message translates to:
+  /// **'Background'**
+  String get background;
+
+  /// Toggle for showing background fill
+  ///
+  /// In en, this message translates to:
+  /// **'Show background'**
+  String get enableBackground;
+
+  /// Custom background color picker label
+  ///
+  /// In en, this message translates to:
+  /// **'Background color'**
+  String get backgroundColor;
+
+  /// Toggle for translucent glass background
+  ///
+  /// In en, this message translates to:
+  /// **'Glass effect'**
+  String get glassify;
+
+  /// Toggle for rounded corners
+  ///
+  /// In en, this message translates to:
+  /// **'Rounded corners'**
+  String get rounded;
+
+  /// Section title for content customization
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get content;
+
+  /// Picker label for content/text color
+  ///
+  /// In en, this message translates to:
+  /// **'Content color'**
+  String get contentColor;
+
+  /// Slider label for content scaling
+  ///
+  /// In en, this message translates to:
+  /// **'Content size'**
+  String get contentSize;
+
+  /// Section title for region/locale customization
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get region;
+
+  /// Numerals selector label
+  ///
+  /// In en, this message translates to:
+  /// **'Numerals'**
+  String get numerals;
+
+  /// Automatic / follow system option
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get automatic;
+
+  /// Latin/Arabic-numeral option
+  ///
+  /// In en, this message translates to:
+  /// **'Latin (1, 2, 3)'**
+  String get latinNumerals;
+
+  /// Arabic-numeral option
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic (١, ٢, ٣)'**
+  String get arabicNumerals;
+
+  /// Section title for advanced settings
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get advanced;
+
+  /// Button text to reset prayer widget customization
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to defaults'**
+  String get resetWidgetCustomization;
+
+  /// Confirmation prompt for resetting customization
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all prayer widget customization to defaults?'**
+  String get resetWidgetCustomizationConfirm;
+
+  /// Hint shown when no custom color is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Follow app theme'**
+  String get followAppTheme;
+
+  /// Empty-state title shown when no coordinates are saved
+  ///
+  /// In en, this message translates to:
+  /// **'Set your location'**
+  String get prayerWidgetEmptyTitle;
+
+  /// Empty-state body
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda and grant location access so the widget can compute prayer times for you.'**
+  String get prayerWidgetEmptyBody;
+
+  /// Empty-state CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Open Prayer Times'**
+  String get prayerWidgetEmptyAction;
+
+  /// Label above the previous-prayer time
+  ///
+  /// In en, this message translates to:
+  /// **'Previous prayer'**
+  String get previousPrayer;
+
+  /// Label above the countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Time until next prayer'**
+  String get timeUntilNextPrayer;
+
+  /// Button to manually refresh the prayer widget
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh prayer widget'**
+  String get forcePrayerWidgetUpdate;
+
+  /// Snackbar text after a forced refresh
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer widget refreshed'**
+  String get prayerWidgetUpdated;
+
+  /// Loading indicator label during refresh
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshing…'**
+  String get prayerWidgetUpdating;
+
+  /// Section title for the pre-made visual theme gallery
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get widgetTheme;
+
+  /// Label for the auto/follow-app visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'App Theme'**
+  String get themeAuto;
+
+  /// Label for the Ocean visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Ocean'**
+  String get themeOcean;
+
+  /// Label for the Sunset visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset'**
+  String get themeSunset;
+
+  /// Label for the Forest visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Forest'**
+  String get themeForest;
+
+  /// Label for the Midnight visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight'**
+  String get themeMidnight;
+
+  /// Label for the Sandstone visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Sandstone'**
+  String get themeSandstone;
+
+  /// Label for the Rose visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Rose'**
+  String get themeRose;
+
+  /// Label for the Lavender visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Lavender'**
+  String get themeLavender;
+
+  /// Label for the Charcoal visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Charcoal'**
+  String get themeCharcoal;
+
+  /// Label for the Amber visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Amber'**
+  String get themeAmber;
+
+  /// Label for the Arctic visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Arctic'**
+  String get themeArctic;
+
+  /// Label for the Burgundy visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Burgundy'**
+  String get themeBurgundy;
+
+  /// Label for the Sage visual theme
+  ///
+  /// In en, this message translates to:
+  /// **'Sage'**
+  String get themeSage;
 }
 
 class _AppLocalizationsDelegate

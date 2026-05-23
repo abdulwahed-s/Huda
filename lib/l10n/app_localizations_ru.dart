@@ -420,6 +420,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get note => 'Заметка';
 
   @override
+  String get dhikr => 'Зикр';
+
+  @override
+  String get minus => 'Минус';
+
+  @override
+  String get addDhikr => 'Добавить Зикр';
+
+  @override
+  String get noDhikrYet => 'Зикр ещё не добавлен';
+
+  @override
+  String get enterDhikrHint => 'Введите ваш зикр здесь...';
+
+  @override
   String get vibrate => 'Вибрация';
 
   @override
@@ -3060,6 +3075,20 @@ class AppLocalizationsRu extends AppLocalizations {
       'Улучшения UI/UX, адаптивный дизайн и улучшенный опыт';
 
   @override
+  String get whatsNew310Feature1iOS =>
+      'Prayer Times Widget: Home screen & lock screen widget with a live countdown to your next prayer';
+
+  @override
+  String get whatsNew310Feature1Android =>
+      'Prayer Times Widget: Home screen widget with a live countdown to your next prayer';
+
+  @override
+  String get whatsNew310Feature2 => 'UI/UX improvements';
+
+  @override
+  String get whatsNew310Feature3 => 'Bug fixes';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override
@@ -3532,4 +3561,177 @@ class AppLocalizationsRu extends AppLocalizations {
       int matchedWordsCount, int coverage, int score) {
     return 'Совпадает $matchedWordsCount слов · охват $coverage% · Счёт: $score';
   }
+
+  @override
+  String get quranVerseWidget => 'Quran Verse';
+
+  @override
+  String get prayerTimesWidget => 'Prayer Times';
+
+  @override
+  String get prayerWidgetTagline => 'Stay on time for every prayer';
+
+  @override
+  String get addPrayerWidgetTitle => 'Add Prayer Widget';
+
+  @override
+  String get addPrayerWidgetDescription =>
+      'Pin the Huda Prayer widget to your home screen to see the next prayer with a live countdown. Calculations run on-device using your saved location.';
+
+  @override
+  String get addPrayerWidget => 'Add to home screen';
+
+  @override
+  String get customizePrayerWidget => 'Customize';
+
+  @override
+  String get prayerWidgetCustomization => 'Customize prayer widget';
+
+  @override
+  String get prayerWidgetPreview => 'Live preview';
+
+  @override
+  String get design => 'Design';
+
+  @override
+  String get designHero => 'Spotlight';
+
+  @override
+  String get designHeroDescription =>
+      'Bold next-prayer focus with countdown timer, hero icon and a clean list of all prayers.';
+
+  @override
+  String get designCompact => 'Almanac';
+
+  @override
+  String get designCompactDescription =>
+      'Classic cream card with date, day-of-week, full prayer grid and night times.';
+
+  @override
+  String get size => 'Size';
+
+  @override
+  String get medium => 'Medium';
+
+  @override
+  String get lockScreen => 'Lock screen';
+
+  @override
+  String get background => 'Background';
+
+  @override
+  String get enableBackground => 'Show background';
+
+  @override
+  String get backgroundColor => 'Background color';
+
+  @override
+  String get glassify => 'Glass effect';
+
+  @override
+  String get rounded => 'Rounded corners';
+
+  @override
+  String get content => 'Content';
+
+  @override
+  String get contentColor => 'Content color';
+
+  @override
+  String get contentSize => 'Content size';
+
+  @override
+  String get region => 'Region';
+
+  @override
+  String get numerals => 'Numerals';
+
+  @override
+  String get automatic => 'Automatic';
+
+  @override
+  String get latinNumerals => 'Latin (1, 2, 3)';
+
+  @override
+  String get arabicNumerals => 'Arabic (١, ٢, ٣)';
+
+  @override
+  String get advanced => 'Advanced';
+
+  @override
+  String get resetWidgetCustomization => 'Reset to defaults';
+
+  @override
+  String get resetWidgetCustomizationConfirm =>
+      'Reset all prayer widget customization to defaults?';
+
+  @override
+  String get followAppTheme => 'Follow app theme';
+
+  @override
+  String get prayerWidgetEmptyTitle => 'Set your location';
+
+  @override
+  String get prayerWidgetEmptyBody =>
+      'Open Huda and grant location access so the widget can compute prayer times for you.';
+
+  @override
+  String get prayerWidgetEmptyAction => 'Open Prayer Times';
+
+  @override
+  String get previousPrayer => 'Previous prayer';
+
+  @override
+  String get timeUntilNextPrayer => 'Time until next prayer';
+
+  @override
+  String get forcePrayerWidgetUpdate => 'Refresh prayer widget';
+
+  @override
+  String get prayerWidgetUpdated => 'Prayer widget refreshed';
+
+  @override
+  String get prayerWidgetUpdating => 'Refreshing…';
+
+  @override
+  String get widgetTheme => 'Theme';
+
+  @override
+  String get themeAuto => 'App Theme';
+
+  @override
+  String get themeOcean => 'Ocean';
+
+  @override
+  String get themeSunset => 'Sunset';
+
+  @override
+  String get themeForest => 'Forest';
+
+  @override
+  String get themeMidnight => 'Midnight';
+
+  @override
+  String get themeSandstone => 'Sandstone';
+
+  @override
+  String get themeRose => 'Rose';
+
+  @override
+  String get themeLavender => 'Lavender';
+
+  @override
+  String get themeCharcoal => 'Charcoal';
+
+  @override
+  String get themeAmber => 'Amber';
+
+  @override
+  String get themeArctic => 'Arctic';
+
+  @override
+  String get themeBurgundy => 'Burgundy';
+
+  @override
+  String get themeSage => 'Sage';
 }

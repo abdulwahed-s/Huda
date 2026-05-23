@@ -564,6 +564,26 @@
     "@note": {
         "description": "Note button text"
     },
+    "dhikr": "Dhikr",
+    "@dhikr": {
+        "description": "Dhikr button label in Tasbih screen"
+    },
+    "minus": "Minus",
+    "@minus": {
+        "description": "Minus button label in Tasbih screen"
+    },
+    "addDhikr": "Add Dhikr",
+    "@addDhikr": {
+        "description": "Add Dhikr dialog title in Tasbih screen"
+    },
+    "noDhikrYet": "No Dhikr yet",
+    "@noDhikrYet": {
+        "description": "Empty state message in Tasbih screen"
+    },
+    "enterDhikrHint": "Enter your dhikr here...",
+    "@enterDhikrHint": {
+        "description": "Text field hint in Tasbih add dhikr dialog"
+    },
     "vibrate": "Vibrate",
     "@vibrate": {
         "description": "Vibrate mode text"
@@ -3692,6 +3712,22 @@
     "@whatsNew300Feature7": {
         "description": "What's new feature 7 for v3.0.0"
     },
+    "whatsNew310Feature1iOS": "Prayer Times Widget: Home screen & lock screen widget with a live countdown to your next prayer",
+    "@whatsNew310Feature1iOS": {
+        "description": "What's new feature 1 for v3.1.0 — iOS variant (includes lock screen)"
+    },
+    "whatsNew310Feature1Android": "Prayer Times Widget: Home screen widget with a live countdown to your next prayer",
+    "@whatsNew310Feature1Android": {
+        "description": "What's new feature 1 for v3.1.0 — Android variant"
+    },
+    "whatsNew310Feature2": "UI/UX improvements",
+    "@whatsNew310Feature2": {
+        "description": "What's new feature 2 for v3.1.0"
+    },
+    "whatsNew310Feature3": "Bug fixes",
+    "@whatsNew310Feature3": {
+        "description": "What's new feature 3 for v3.1.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
@@ -4383,5 +4419,241 @@
                 "description": "Similarity score"
             }
         }
+    },
+    "quranVerseWidget": "Quran Verse",
+    "@quranVerseWidget": {
+        "description": "Tab label for the Quran-verse widget"
+    },
+    "prayerTimesWidget": "Prayer Times",
+    "@prayerTimesWidget": {
+        "description": "Tab label for the prayer-times widget"
+    },
+    "prayerWidgetTagline": "Stay on time for every prayer",
+    "@prayerWidgetTagline": {
+        "description": "Header subtitle for the prayer-widget tab"
+    },
+    "addPrayerWidgetTitle": "Add Prayer Widget",
+    "@addPrayerWidgetTitle": {
+        "description": "Title of the section that adds the prayer widget to the home screen"
+    },
+    "addPrayerWidgetDescription": "Pin the Huda Prayer widget to your home screen to see the next prayer with a live countdown. Calculations run on-device using your saved location.",
+    "@addPrayerWidgetDescription": {
+        "description": "Body of the prayer widget add section"
+    },
+    "addPrayerWidget": "Add to home screen",
+    "@addPrayerWidget": {
+        "description": "Button text to add the prayer widget"
+    },
+    "customizePrayerWidget": "Customize",
+    "@customizePrayerWidget": {
+        "description": "Button text to open the prayer widget customization page"
+    },
+    "prayerWidgetCustomization": "Customize prayer widget",
+    "@prayerWidgetCustomization": {
+        "description": "Title of the prayer widget customization screen"
+    },
+    "prayerWidgetPreview": "Live preview",
+    "@prayerWidgetPreview": {
+        "description": "Label above the in-app preview"
+    },
+    "design": "Design",
+    "@design": {
+        "description": "Section title for design picker"
+    },
+    "designHero": "Spotlight",
+    "@designHero": {
+        "description": "Name of the hero/big-countdown widget design"
+    },
+    "designHeroDescription": "Bold next-prayer focus with countdown timer, hero icon and a clean list of all prayers.",
+    "@designHeroDescription": {
+        "description": "Description of the hero design"
+    },
+    "designCompact": "Almanac",
+    "@designCompact": {
+        "description": "Name of the compact design"
+    },
+    "designCompactDescription": "Classic cream card with date, day-of-week, full prayer grid and night times.",
+    "@designCompactDescription": {
+        "description": "Description of the compact design"
+    },
+    "size": "Size",
+    "@size": {
+        "description": "Section title for widget size picker"
+    },
+    "small": "Small",
+    "@small": {
+        "description": "Small widget size"
+    },
+    "medium": "Medium",
+    "@medium": {
+        "description": "Medium widget size"
+    },
+    "large": "Large",
+    "@large": {
+        "description": "Large widget size"
+    },
+    "lockScreen": "Lock screen",
+    "@lockScreen": {
+        "description": "Lock screen widget category"
+    },
+    "background": "Background",
+    "@background": {
+        "description": "Section title for background customization"
+    },
+    "enableBackground": "Show background",
+    "@enableBackground": {
+        "description": "Toggle for showing background fill"
+    },
+    "backgroundColor": "Background color",
+    "@backgroundColor": {
+        "description": "Custom background color picker label"
+    },
+    "glassify": "Glass effect",
+    "@glassify": {
+        "description": "Toggle for translucent glass background"
+    },
+    "rounded": "Rounded corners",
+    "@rounded": {
+        "description": "Toggle for rounded corners"
+    },
+    "content": "Content",
+    "@content": {
+        "description": "Section title for content customization"
+    },
+    "contentColor": "Content color",
+    "@contentColor": {
+        "description": "Picker label for content/text color"
+    },
+    "contentSize": "Content size",
+    "@contentSize": {
+        "description": "Slider label for content scaling"
+    },
+    "region": "Region",
+    "@region": {
+        "description": "Section title for region/locale customization"
+    },
+    "numerals": "Numerals",
+    "@numerals": {
+        "description": "Numerals selector label"
+    },
+    "automatic": "Automatic",
+    "@automatic": {
+        "description": "Automatic / follow system option"
+    },
+    "latinNumerals": "Latin (1, 2, 3)",
+    "@latinNumerals": {
+        "description": "Latin/Arabic-numeral option"
+    },
+    "arabicNumerals": "Arabic (١, ٢, ٣)",
+    "@arabicNumerals": {
+        "description": "Arabic-numeral option"
+    },
+    "advanced": "Advanced",
+    "@advanced": {
+        "description": "Section title for advanced settings"
+    },
+    "resetWidgetCustomization": "Reset to defaults",
+    "@resetWidgetCustomization": {
+        "description": "Button text to reset prayer widget customization"
+    },
+    "resetWidgetCustomizationConfirm": "Reset all prayer widget customization to defaults?",
+    "@resetWidgetCustomizationConfirm": {
+        "description": "Confirmation prompt for resetting customization"
+    },
+    "followAppTheme": "Follow app theme",
+    "@followAppTheme": {
+        "description": "Hint shown when no custom color is selected"
+    },
+    "prayerWidgetEmptyTitle": "Set your location",
+    "@prayerWidgetEmptyTitle": {
+        "description": "Empty-state title shown when no coordinates are saved"
+    },
+    "prayerWidgetEmptyBody": "Open Huda and grant location access so the widget can compute prayer times for you.",
+    "@prayerWidgetEmptyBody": {
+        "description": "Empty-state body"
+    },
+    "prayerWidgetEmptyAction": "Open Prayer Times",
+    "@prayerWidgetEmptyAction": {
+        "description": "Empty-state CTA"
+    },
+    "nextPrayer": "Next prayer",
+    "@nextPrayer": {
+        "description": "Label above the next-prayer name"
+    },
+    "previousPrayer": "Previous prayer",
+    "@previousPrayer": {
+        "description": "Label above the previous-prayer time"
+    },
+    "timeUntilNextPrayer": "Time until next prayer",
+    "@timeUntilNextPrayer": {
+        "description": "Label above the countdown"
+    },
+    "forcePrayerWidgetUpdate": "Refresh prayer widget",
+    "@forcePrayerWidgetUpdate": {
+        "description": "Button to manually refresh the prayer widget"
+    },
+    "prayerWidgetUpdated": "Prayer widget refreshed",
+    "@prayerWidgetUpdated": {
+        "description": "Snackbar text after a forced refresh"
+    },
+    "prayerWidgetUpdating": "Refreshing…",
+    "@prayerWidgetUpdating": {
+        "description": "Loading indicator label during refresh"
+    },
+    "widgetTheme": "Theme",
+    "@widgetTheme": {
+        "description": "Section title for the pre-made visual theme gallery"
+    },
+    "themeAuto": "App Theme",
+    "@themeAuto": {
+        "description": "Label for the auto/follow-app visual theme"
+    },
+    "themeOcean": "Ocean",
+    "@themeOcean": {
+        "description": "Label for the Ocean visual theme"
+    },
+    "themeSunset": "Sunset",
+    "@themeSunset": {
+        "description": "Label for the Sunset visual theme"
+    },
+    "themeForest": "Forest",
+    "@themeForest": {
+        "description": "Label for the Forest visual theme"
+    },
+    "themeMidnight": "Midnight",
+    "@themeMidnight": {
+        "description": "Label for the Midnight visual theme"
+    },
+    "themeSandstone": "Sandstone",
+    "@themeSandstone": {
+        "description": "Label for the Sandstone visual theme"
+    },
+    "themeRose": "Rose",
+    "@themeRose": {
+        "description": "Label for the Rose visual theme"
+    },
+    "themeLavender": "Lavender",
+    "@themeLavender": {
+        "description": "Label for the Lavender visual theme"
+    },
+    "themeCharcoal": "Charcoal",
+    "@themeCharcoal": {
+        "description": "Label for the Charcoal visual theme"
+    },
+    "themeAmber": "Amber",
+    "@themeAmber": {
+        "description": "Label for the Amber visual theme"
+    },
+    "themeArctic": "Arctic",
+    "@themeArctic": {
+        "description": "Label for the Arctic visual theme"
+    },
+    "themeBurgundy": "Burgundy",
+    "@themeBurgundy": {
+        "description": "Label for the Burgundy visual theme"
+    },
+    "themeSage": "Sage",
+    "@themeSage": {
+        "description": "Label for the Sage visual theme"
     }
 }

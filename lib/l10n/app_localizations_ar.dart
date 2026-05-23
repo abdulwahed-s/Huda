@@ -415,6 +415,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get note => 'ملاحظة';
 
   @override
+  String get dhikr => 'ذكر';
+
+  @override
+  String get minus => 'ناقص';
+
+  @override
+  String get addDhikr => 'أضف ذكراً';
+
+  @override
+  String get noDhikrYet => 'لا يوجد ذكر بعد';
+
+  @override
+  String get enterDhikrHint => 'أدخل ذكرك هنا...';
+
+  @override
   String get vibrate => 'اهتزاز';
 
   @override
@@ -487,7 +502,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get availableWidgets => 'العناصر المتاحة';
 
   @override
-  String get nextPrayer => 'الصلاة التالية';
+  String get nextPrayer => 'الصلاة القادمة';
 
   @override
   String get hijriDate => 'التاريخ الهجري';
@@ -2989,6 +3004,20 @@ class AppLocalizationsAr extends AppLocalizations {
       'تحسينات في واجهة المستخدم والتصميم المتجاوب وتجربة استخدام محسّنة';
 
   @override
+  String get whatsNew310Feature1iOS =>
+      'ودجة أوقات الصلاة: ودجة على الشاشة الرئيسية وشاشة القفل مع عداد تنازلي مباشر حتى صلاتك القادمة';
+
+  @override
+  String get whatsNew310Feature1Android =>
+      'ودجة أوقات الصلاة: ودجة على الشاشة الرئيسية مع عداد تنازلي مباشر حتى صلاتك القادمة';
+
+  @override
+  String get whatsNew310Feature2 => 'تحسينات في واجهة المستخدم والتجربة';
+
+  @override
+  String get whatsNew310Feature3 => 'إصلاح الأخطاء';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override
@@ -3459,4 +3488,177 @@ class AppLocalizationsAr extends AppLocalizations {
       int matchedWordsCount, int coverage, int score) {
     return 'تطابق $matchedWordsCount كلمات · تغطية $coverage% · الدرجة: $score';
   }
+
+  @override
+  String get quranVerseWidget => 'آية قرآنية';
+
+  @override
+  String get prayerTimesWidget => 'أوقات الصلاة';
+
+  @override
+  String get prayerWidgetTagline => 'لا تفوّت موعد صلاة';
+
+  @override
+  String get addPrayerWidgetTitle => 'إضافة عنصر الصلاة';
+
+  @override
+  String get addPrayerWidgetDescription =>
+      'ثبّت عنصر هُدى للصلاة على الشاشة الرئيسية لمعرفة الصلاة القادمة مع عدّاد مباشر. تُحسب الأوقات على جهازك من موقعك المحفوظ.';
+
+  @override
+  String get addPrayerWidget => 'إضافة إلى الشاشة الرئيسية';
+
+  @override
+  String get customizePrayerWidget => 'تخصيص';
+
+  @override
+  String get prayerWidgetCustomization => 'تخصيص عنصر الصلاة';
+
+  @override
+  String get prayerWidgetPreview => 'معاينة مباشرة';
+
+  @override
+  String get design => 'التصميم';
+
+  @override
+  String get designHero => 'الواجهة المميزة';
+
+  @override
+  String get designHeroDescription =>
+      'تركيز جريء على الصلاة القادمة مع العدّاد وأيقونة وقائمة جميع الصلوات.';
+
+  @override
+  String get designCompact => 'التقويم';
+
+  @override
+  String get designCompactDescription =>
+      'بطاقة كلاسيكية بلون كريمي تعرض التاريخ واليوم وشبكة الصلوات وأوقات الليل.';
+
+  @override
+  String get size => 'الحجم';
+
+  @override
+  String get medium => 'متوسط';
+
+  @override
+  String get lockScreen => 'شاشة القفل';
+
+  @override
+  String get background => 'الخلفية';
+
+  @override
+  String get enableBackground => 'إظهار الخلفية';
+
+  @override
+  String get backgroundColor => 'لون الخلفية';
+
+  @override
+  String get glassify => 'تأثير زجاجي';
+
+  @override
+  String get rounded => 'زوايا دائرية';
+
+  @override
+  String get content => 'المحتوى';
+
+  @override
+  String get contentColor => 'لون المحتوى';
+
+  @override
+  String get contentSize => 'حجم المحتوى';
+
+  @override
+  String get region => 'المنطقة';
+
+  @override
+  String get numerals => 'الأرقام';
+
+  @override
+  String get automatic => 'تلقائي';
+
+  @override
+  String get latinNumerals => 'لاتينية (1، 2، 3)';
+
+  @override
+  String get arabicNumerals => 'عربية (١، ٢، ٣)';
+
+  @override
+  String get advanced => 'خيارات متقدمة';
+
+  @override
+  String get resetWidgetCustomization => 'إعادة الضبط الافتراضي';
+
+  @override
+  String get resetWidgetCustomizationConfirm =>
+      'إعادة كل تخصيصات عنصر الصلاة إلى الإعدادات الافتراضية؟';
+
+  @override
+  String get followAppTheme => 'اتباع مظهر التطبيق';
+
+  @override
+  String get prayerWidgetEmptyTitle => 'حدّد موقعك';
+
+  @override
+  String get prayerWidgetEmptyBody =>
+      'افتح هُدى وامنح إذن الموقع ليحسب العنصر مواعيد الصلاة لك.';
+
+  @override
+  String get prayerWidgetEmptyAction => 'فتح أوقات الصلاة';
+
+  @override
+  String get previousPrayer => 'الصلاة السابقة';
+
+  @override
+  String get timeUntilNextPrayer => 'الوقت المتبقي للصلاة';
+
+  @override
+  String get forcePrayerWidgetUpdate => 'تحديث عنصر الصلاة';
+
+  @override
+  String get prayerWidgetUpdated => 'تم تحديث عنصر الصلاة';
+
+  @override
+  String get prayerWidgetUpdating => 'جارٍ التحديث…';
+
+  @override
+  String get widgetTheme => 'المظهر';
+
+  @override
+  String get themeAuto => 'مظهر التطبيق';
+
+  @override
+  String get themeOcean => 'المحيط';
+
+  @override
+  String get themeSunset => 'الغروب';
+
+  @override
+  String get themeForest => 'الغابة';
+
+  @override
+  String get themeMidnight => 'منتصف الليل';
+
+  @override
+  String get themeSandstone => 'الحجر الرملي';
+
+  @override
+  String get themeRose => 'الوردي';
+
+  @override
+  String get themeLavender => 'اللافندر';
+
+  @override
+  String get themeCharcoal => 'الفحمي';
+
+  @override
+  String get themeAmber => 'الكهرماني';
+
+  @override
+  String get themeArctic => 'القطبي';
+
+  @override
+  String get themeBurgundy => 'العنّابي';
+
+  @override
+  String get themeSage => 'الميرمية';
 }
