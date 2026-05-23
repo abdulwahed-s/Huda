@@ -1,0 +1,229 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/services/widget_service.dart';
+import 'package:huda/core/services/widget_background_service.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/widget_management/add_widget_section.dart';
+import 'package:huda/presentation/widgets/widget_management/custom_verses_section.dart';
+import 'package:huda/presentation/widgets/widget_management/force_update_section.dart';
+import 'package:huda/presentation/widgets/widget_management/header_section.dart';
+import 'package:workmanager/workmanager.dart';
+
+class QuranVerseWidgetTab extends StatefulWidget {
+  const QuranVerseWidgetTab({super.key, required this.isDark});
+
+  final bool isDark;
+
+  @override
+  State<QuranVerseWidgetTab> createState() => _QuranVerseWidgetTabState();
+}
+
+class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
+  bool _isUpdating = false;
+  String? _lastUpdateMessage;
+  List<String> _customVerses = [];
+  bool _isLoadingVerses = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomVerses();
+    _initializeBackgroundUpdates();
+  }
+
+  Future<void> _loadCustomVerses() async {
+    setState(() => _isLoadingVerses = true);
+    try {
+      final verses = await WidgetService.getCustomVerses();
+      if (!mounted) return;
+      setState(() => _customVerses = verses);
+    } catch (e) {
+      debugPrint('Error loading custom verses: $e');
+    } finally {
+      if (mounted) setState(() => _isLoadingVerses = false);
+    }
+  }
+
+  Future<void> _initializeBackgroundUpdates() async {
+    try {
+      await WidgetBackgroundService.initialize();
+      await _scheduleAggressiveWidgetUpdates();
+    } catch (e) {
+      debugPrint('Error initializing background updates: $e');
+    }
+  }
+
+  Future<void> _scheduleAggressiveWidgetUpdates() async {
+    try {
+      await Workmanager().cancelAll();
+      await Workmanager().registerPeriodicTask(
+        'frequentWidgetUpdate',
+        'updateHomeWidget',
+        frequency: const Duration(minutes: 30),
+        initialDelay: const Duration(minutes: 5),
+        constraints: Constraints(
+          networkType: NetworkType.notRequired,
+          requiresBatteryNotLow: false,
+          requiresCharging: false,
+          requiresDeviceIdle: false,
+          requiresStorageNotLow: false,
+        ),
+      );
+      await Workmanager().registerPeriodicTask(
+        'backupWidgetUpdate',
+        'updateHomeWidget',
+        frequency: const Duration(hours: 1),
+        initialDelay: const Duration(minutes: 35),
+      );
+      await Workmanager().registerOneOffTask(
+        'immediateWidgetUpdate',
+        'updateHomeWidget',
+        initialDelay: const Duration(minutes: 1),
+      );
+      debugPrint('✅ All background widget update tasks scheduled');
+    } catch (e) {
+      debugPrint('❌ Error scheduling background updates: $e');
+    }
+  }
+
+  Future<void> _forceUpdateWidget() async {
+    setState(() {
+      _isUpdating = true;
+      _lastUpdateMessage = null;
+    });
+
+    try {
+      await WidgetService.forceUpdateWidget();
+      await WidgetBackgroundService.forceUpdateNow();
+      await _scheduleAggressiveWidgetUpdates();
+      if (!mounted) return;
+      setState(() => _lastUpdateMessage =
+          AppLocalizations.of(context)!.homeScreenWidgetUpdatedSuccessfully);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _lastUpdateMessage =
+          AppLocalizations.of(context)!.errorUpdatingWidget(e.toString()));
+    } finally {
+      if (mounted) {
+        setState(() => _isUpdating = false);
+        Future.delayed(const Duration(seconds: 5), () {
+          if (mounted) setState(() => _lastUpdateMessage = null);
+        });
+      }
+    }
+  }
+
+  Future<void> _removeCustomVerse(String verse, int index) async {
+    try {
+      final success = await WidgetService.removeCustomVerse(verse);
+      if (!success || !mounted) return;
+      setState(() => _customVerses.removeAt(index));
+      await WidgetService.forceUpdateWidget();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.verseRemovedFromWidget,
+            style: const TextStyle(fontFamily: 'Amiri'),
+          ),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('${AppLocalizations.of(context)!.errorRemovingVerse}: $e'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  Future<void> _clearAllCustomVerses() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(AppLocalizations.of(ctx)!.clearAllCustomVerses),
+        content:
+            Text(AppLocalizations.of(ctx)!.clearAllCustomVersesConfirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(AppLocalizations.of(ctx)!.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: Text(AppLocalizations.of(ctx)!.clearAll),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+    try {
+      await WidgetService.clearCustomVerses();
+      if (!mounted) return;
+      setState(() => _customVerses.clear());
+      await WidgetService.forceUpdateWidget();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.allCustomVersesCleared),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('${AppLocalizations.of(context)!.errorClearingVerses}: $e'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(
+        16.w,
+        16.w,
+        16.w,
+        16.w + MediaQuery.paddingOf(context).bottom,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          HeaderSection(isDark: widget.isDark),
+          SizedBox(height: 20.h),
+          AddWidgetSection(isDark: widget.isDark),
+          SizedBox(height: 20.h),
+          ForceUpdateSection(
+            isUpdating: _isUpdating,
+            lastUpdateMessage: _lastUpdateMessage,
+            onForceUpdate: _forceUpdateWidget,
+            isDark: widget.isDark,
+          ),
+          SizedBox(height: 20.h),
+          CustomVersesSection(
+            customVerses: _customVerses,
+            isLoadingVerses: _isLoadingVerses,
+            onRefresh: _loadCustomVerses,
+            onRemoveVerse: _removeCustomVerse,
+            onClearAll: _clearAllCustomVerses,
+            isDark: widget.isDark,
+          ),
+        ],
+      ),
+    );
+  }
+}
