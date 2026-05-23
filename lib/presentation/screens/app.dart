@@ -10,6 +10,7 @@ import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/routes/page_router.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/services/widget_deep_link_handler.dart';
 import 'package:huda/core/theme/app_theme.dart';
 import 'package:huda/cubit/theme/theme_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
@@ -37,6 +38,13 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     _determineInitialRoute();
+    WidgetDeepLinkHandler.start();
+  }
+
+  @override
+  void dispose() {
+    WidgetDeepLinkHandler.dispose();
+    super.dispose();
   }
 
   Future<void> _determineInitialRoute() async {
