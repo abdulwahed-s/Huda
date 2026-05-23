@@ -1,4 +1,5 @@
 import 'package:huda/core/services/notification_services.dart';
+import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:adhan/adhan.dart';
@@ -18,23 +19,18 @@ void callbackDispatcher() {
         final cacheHelper = CacheHelper();
         await cacheHelper.init();
 
-        final lat =
-            double.tryParse(cacheHelper.getDataString(key: 'latitude') ?? '');
-        final lon =
-            double.tryParse(cacheHelper.getDataString(key: 'longitude') ?? '');
+        final coordinates =
+            PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+        if (coordinates == null) return Future.value(true);
 
-        if (lat == null || lon == null) return Future.value(true);
-
-        final coordinates = Coordinates(lat, lon);
-        final params = CalculationMethod.umm_al_qura.getParameters();
-        params.madhab = Madhab.shafi;
+        final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
 
         final notifications = NotificationServices();
         await notifications.initialize();
 
         await _schedulePrayersForDate(
-            coordinates, params, notifications, DateTime.now(), 1);
-        await _schedulePrayersForDate(coordinates, params, notifications,
+            coordinates, offsets, notifications, DateTime.now(), 1);
+        await _schedulePrayersForDate(coordinates, offsets, notifications,
             DateTime.now().add(const Duration(days: 1)), 100);
       } catch (e) {
         //
@@ -47,23 +43,13 @@ void callbackDispatcher() {
 
 Future<void> _schedulePrayersForDate(
     Coordinates coordinates,
-    CalculationParameters params,
+    Map<String, int> offsets,
     NotificationServices notifications,
     DateTime date,
     int idOffset) async {
-  final prayerTimes = PrayerTimes(
-    coordinates,
-    DateComponents.from(date),
-    params,
-  );
-
-  final prayers = {
-    Prayer.fajr: prayerTimes.fajr,
-    Prayer.dhuhr: prayerTimes.dhuhr,
-    Prayer.asr: prayerTimes.asr,
-    Prayer.maghrib: prayerTimes.maghrib,
-    Prayer.isha: prayerTimes.isha,
-  };
+  final prayerTimes = PrayerTimesCalculator.compute(coordinates, date);
+  final prayers =
+      PrayerTimesCalculator.dailyAdjustedTimes(prayerTimes, offsets);
 
   int id = idOffset;
   for (final entry in prayers.entries) {

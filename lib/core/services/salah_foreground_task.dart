@@ -1,9 +1,11 @@
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:adhan/adhan.dart';
+import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SalahCountdownTaskHandler extends TaskHandler {
   PrayerTimes? _prayerTimes;
+  Map<String, int> _prayerOffsets = PrayerTimesCalculator.zeroOffsets();
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
@@ -17,21 +19,13 @@ class SalahCountdownTaskHandler extends TaskHandler {
   Future<void> _initializePrayerTimes() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      _prayerOffsets = PrayerTimesCalculator.offsetsFromPrefs(prefs);
 
-      final latStr = prefs.getString('latitude');
-      final lonStr = prefs.getString('longitude');
-
-      if (latStr != null && lonStr != null) {
-        final lat = double.parse(latStr);
-        final lon = double.parse(lonStr);
-
-        final coordinates = Coordinates(lat, lon);
-        final params = CalculationMethod.umm_al_qura.getParameters();
-        params.madhab = Madhab.shafi;
-
-        final date = DateComponents.from(DateTime.now());
-        _prayerTimes = PrayerTimes(coordinates, date, params);
-      } else {}
+      final coordinates = PrayerTimesCalculator.coordinatesFromPrefs(prefs);
+      if (coordinates != null) {
+        _prayerTimes =
+            PrayerTimesCalculator.compute(coordinates, DateTime.now());
+      }
     } catch (e) {
       // todo Add error handling here
     }
@@ -49,10 +43,20 @@ class SalahCountdownTaskHandler extends TaskHandler {
       }
 
       final now = DateTime.now();
-      final nextPrayer = _prayerTimes!.nextPrayer();
-      final nextTime = _prayerTimes!.timeForPrayer(nextPrayer);
+      final adjusted = PrayerTimesCalculator.dailyAdjustedTimes(
+          _prayerTimes!, _prayerOffsets);
 
-      if (nextTime != null) {
+      MapEntry<Prayer, DateTime>? nextEntry;
+      for (final entry in adjusted.entries) {
+        if (entry.value.isAfter(now)) {
+          nextEntry = entry;
+          break;
+        }
+      }
+
+      if (nextEntry != null) {
+        final nextPrayer = nextEntry.key;
+        final nextTime = nextEntry.value;
         final diff = nextTime.difference(now);
 
         if (diff.isNegative) {
@@ -72,9 +76,10 @@ class SalahCountdownTaskHandler extends TaskHandler {
           notificationText: 'At ${_formatTime(nextTime)}',
         );
       } else {
+        _initializePrayerTimes();
         FlutterForegroundTask.updateService(
           notificationTitle: 'Prayer Times',
-          notificationText: 'Error calculating next prayer',
+          notificationText: 'Calculating next prayer...',
         );
       }
     } catch (e) {

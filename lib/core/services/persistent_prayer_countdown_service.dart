@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:adhan/adhan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 
 class PrayerCountdownLocalizations {
@@ -592,13 +593,7 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   bool _hasShownError = false;
   bool _isCalculatingTomorrowPrayers = false;
 
-  Map<String, int> _prayerOffsets = {
-    'fajr': 0,
-    'dhuhr': 0,
-    'asr': 0,
-    'maghrib': 0,
-    'isha': 0,
-  };
+  Map<String, int> _prayerOffsets = PrayerTimesCalculator.zeroOffsets();
 
   DateTime? _lastMinuteUpdate;
 
@@ -621,23 +616,11 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      final latStr = prefs.getString('latitude');
-      final lonStr = prefs.getString('longitude');
+      _prayerOffsets = PrayerTimesCalculator.offsetsFromPrefs(prefs);
+      _cachedCoordinates =
+          PrayerTimesCalculator.coordinatesFromPrefs(prefs);
 
-      _prayerOffsets = {
-        'fajr': prefs.getInt('prayer_offset_fajr') ?? 0,
-        'dhuhr': prefs.getInt('prayer_offset_dhuhr') ?? 0,
-        'asr': prefs.getInt('prayer_offset_asr') ?? 0,
-        'maghrib': prefs.getInt('prayer_offset_maghrib') ?? 0,
-        'isha': prefs.getInt('prayer_offset_isha') ?? 0,
-      };
-
-      if (latStr != null && lonStr != null) {
-        final lat = double.parse(latStr);
-        final lon = double.parse(lonStr);
-
-        _cachedCoordinates = Coordinates(lat, lon);
-
+      if (_cachedCoordinates != null) {
         final cachedDateStr = prefs.getString('last_prayer_calculation_date');
         final now = DateTime.now();
 
@@ -650,21 +633,15 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
         if (_lastCalculationDate == null ||
             !_isSameDay(now, _lastCalculationDate!)) {
-          final params = CalculationMethod.umm_al_qura.getParameters();
-          params.madhab = Madhab.shafi;
-
-          final date = DateComponents.from(now);
-          _prayerTimes = PrayerTimes(_cachedCoordinates!, date, params);
+          _prayerTimes =
+              PrayerTimesCalculator.compute(_cachedCoordinates!, now);
           _lastCalculationDate = now;
 
           await prefs.setString(
               'last_prayer_calculation_date', now.toIso8601String());
         } else {
-          final params = CalculationMethod.umm_al_qura.getParameters();
-          params.madhab = Madhab.shafi;
-
-          final date = DateComponents.from(_lastCalculationDate!);
-          _prayerTimes = PrayerTimes(_cachedCoordinates!, date, params);
+          _prayerTimes = PrayerTimesCalculator.compute(
+              _cachedCoordinates!, _lastCalculationDate!);
         }
 
         debugPrint(
@@ -730,28 +707,18 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
   void _calculateTomorrowFajr(DateTime now) {
     SharedPreferences.getInstance().then((prefs) {
-      final latStr = prefs.getString('latitude');
-      final lonStr = prefs.getString('longitude');
+      final coordinates = PrayerTimesCalculator.coordinatesFromPrefs(prefs);
 
-      if (latStr != null && lonStr != null) {
+      if (coordinates != null) {
         final tomorrow = now.add(const Duration(days: 1));
-        final tomorrowDate = DateComponents.from(tomorrow);
-        final coordinates = Coordinates(
-          double.parse(latStr),
-          double.parse(lonStr),
-        );
-        final params = CalculationMethod.umm_al_qura.getParameters();
-        params.madhab = Madhab.shafi;
-
         final tomorrowPrayerTimes =
-            PrayerTimes(coordinates, tomorrowDate, params);
-        final tomorrowFajr = tomorrowPrayerTimes.timeForPrayer(Prayer.fajr);
+            PrayerTimesCalculator.compute(coordinates, tomorrow);
+        final adjustedFajr = PrayerTimesCalculator.adjustedTimeFor(
+            tomorrowPrayerTimes, Prayer.fajr, _prayerOffsets);
 
-        if (tomorrowFajr != null) {
+        if (adjustedFajr != null) {
           _prayerTimes = tomorrowPrayerTimes;
 
-          final adjustedFajr =
-              tomorrowFajr.add(Duration(minutes: _prayerOffsets['fajr'] ?? 0));
           final duration = adjustedFajr.difference(now);
           _lastValidPrayerInfo = NextPrayerInfo(
             prayerName: 'Fajr',
@@ -780,11 +747,8 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
     if (_cachedCoordinates != null) {
       try {
-        final params = CalculationMethod.umm_al_qura.getParameters();
-        params.madhab = Madhab.shafi;
-
-        final dateComponents = DateComponents.from(date);
-        _prayerTimes = PrayerTimes(_cachedCoordinates!, dateComponents, params);
+        _prayerTimes =
+            PrayerTimesCalculator.compute(_cachedCoordinates!, date);
         _lastCalculationDate = date;
 
         SharedPreferences.getInstance().then((prefs) {
@@ -1407,15 +1371,17 @@ class PersistentPrayerCountdownService {
   Future<void> _ensureTestCoordinatesForDebug() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final latStr = prefs.getString('latitude');
-      final lonStr = prefs.getString('longitude');
+      final latStr = prefs.getString(PrayerTimesCalculator.latKey);
+      final lonStr = prefs.getString(PrayerTimesCalculator.lonKey);
 
       if (latStr == null || lonStr == null) {
         const testLat = 24.8607;
         const testLon = 67.0011;
 
-        await prefs.setString('latitude', testLat.toString());
-        await prefs.setString('longitude', testLon.toString());
+        await prefs.setString(
+            PrayerTimesCalculator.latKey, testLat.toString());
+        await prefs.setString(
+            PrayerTimesCalculator.lonKey, testLon.toString());
 
         debugPrint('Set test coordinates for Karachi ($testLat, $testLon)');
         debugPrint(

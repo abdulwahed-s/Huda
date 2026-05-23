@@ -6,13 +6,14 @@ import 'package:adhan/adhan.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/get_current_location.dart';
+import 'package:huda/core/services/prayer_times_calculator.dart';
 
 part 'ramadan_state.dart';
 
 class RamadanCubit extends Cubit<RamadanState> {
   final CacheHelper cacheHelper;
-  static const _latKey = 'latitude';
-  static const _lonKey = 'longitude';
+  static const _latKey = PrayerTimesCalculator.latKey;
+  static const _lonKey = PrayerTimesCalculator.lonKey;
   static const _ramadanHijriMonth = 9;
 
   RamadanCubit(this.cacheHelper) : super(RamadanInitial());
@@ -53,10 +54,14 @@ class RamadanCubit extends Cubit<RamadanState> {
       }
 
       final coordinates = Coordinates(lat, lon);
-      final params = CalculationMethod.umm_al_qura.getParameters();
-      params.madhab = Madhab.shafi;
-      final date = DateComponents.from(now);
-      final prayerTimes = PrayerTimes(coordinates, date, params);
+      final prayerTimes = PrayerTimesCalculator.compute(coordinates, now);
+      final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
+      final fajrTime = PrayerTimesCalculator.adjustedTimeFor(
+              prayerTimes, Prayer.fajr, offsets) ??
+          prayerTimes.fajr;
+      final maghribTime = PrayerTimesCalculator.adjustedTimeFor(
+              prayerTimes, Prayer.maghrib, offsets) ??
+          prayerTimes.maghrib;
 
       final ramadanDays = _buildRamadanDays(ramadanHijriYear, now);
 
@@ -77,8 +82,8 @@ class RamadanCubit extends Cubit<RamadanState> {
         currentDay: currentDay,
         daysUntilRamadan: daysUntilRamadan,
         hijriYear: ramadanHijriYear,
-        fajrTime: prayerTimes.fajr,
-        maghribTime: prayerTimes.maghrib,
+        fajrTime: fajrTime,
+        maghribTime: maghribTime,
         qadhaaStatus: qadhaaStatus,
         ramadanDays: daysWithStatus,
         fastedCount: fastedCount,

@@ -1,6 +1,7 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/presentation/screens/app.dart';
 import 'package:huda/presentation/screens/sahur_alarm_ring_screen.dart';
@@ -96,22 +97,14 @@ class SahurAlarmHelper {
     final alarmType = cacheHelper.getData(key: 'sahurAlarmType') ?? 0;
 
     Coordinates? coordinates;
-    CalculationParameters? params;
+    int fajrOffsetMinutes = 0;
     int minutesBefore =
         cacheHelper.getData(key: 'sahurMinutesBeforeFajr') ?? 30;
 
     if (alarmType == 1) {
-      final latString = cacheHelper.getDataString(key: 'latitude');
-      final lonString = cacheHelper.getDataString(key: 'longitude');
-      if (latString != null && lonString != null) {
-        final lat = double.tryParse(latString);
-        final lon = double.tryParse(lonString);
-        if (lat != null && lon != null) {
-          coordinates = Coordinates(lat, lon);
-          params = CalculationMethod.umm_al_qura.getParameters();
-          params.madhab = Madhab.shafi;
-        }
-      }
+      coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+      final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
+      fajrOffsetMinutes = offsets['fajr'] ?? 0;
     }
 
     final now = DateTime.now();
@@ -127,12 +120,12 @@ class SahurAlarmHelper {
             TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
       } else {
         DateTime? nextFajrTime;
-        if (coordinates != null && params != null) {
+        if (coordinates != null) {
           try {
-            final dateComponents = DateComponents.from(targetDate);
             final prayerTimes =
-                PrayerTimes(coordinates, dateComponents, params);
-            nextFajrTime = prayerTimes.fajr;
+                PrayerTimesCalculator.compute(coordinates, targetDate);
+            nextFajrTime = prayerTimes.fajr
+                .add(Duration(minutes: fajrOffsetMinutes));
           } catch (e) {
             debugPrint('Error calculating Fajr time for $targetDate: $e');
           }

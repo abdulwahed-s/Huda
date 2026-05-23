@@ -2,6 +2,7 @@ import 'package:adhan/adhan.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/notification_services.dart';
+import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/widget_background_service.dart';
 import 'package:huda/core/services/widget_service.dart';
 import 'package:workmanager/workmanager.dart';
@@ -92,49 +93,31 @@ Future<bool> _handlePrayerNotificationsRenewal() async {
     final notificationServices = NotificationServices();
     await notificationServices.initialize();
 
-    final latString = cacheHelper.getDataString(key: 'latitude');
-    final lonString = cacheHelper.getDataString(key: 'longitude');
-
-    if (latString == null || lonString == null) {
-      debugPrint('❌ Location not available for prayer notifications renewal');
-      return false;
-    }
-
-    final lat = double.tryParse(latString);
-    final lon = double.tryParse(lonString);
-
-    if (lat == null || lon == null) {
+    final coordinates =
+        PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+    if (coordinates == null) {
       debugPrint(
-          '❌ Invalid location coordinates for prayer notifications renewal');
+          '❌ Location not available for prayer notifications renewal');
       return false;
     }
 
     await notificationServices.cancelAllPrayerNotifications();
 
-    final coordinates = Coordinates(lat, lon);
-    final params = CalculationMethod.umm_al_qura.getParameters();
-    params.madhab = Madhab.shafi;
-
+    final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
     final now = DateTime.now();
     int totalScheduled = 0;
 
     for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
       final targetDate = now.add(Duration(days: dayOffset));
-      final date = DateComponents.from(targetDate);
-      final prayerTimes = PrayerTimes(coordinates, date, params);
+      final prayerTimes =
+          PrayerTimesCalculator.compute(coordinates, targetDate);
+      final adjusted =
+          PrayerTimesCalculator.dailyAdjustedTimes(prayerTimes, offsets);
 
-      final prayers = [
-        (Prayer.fajr, prayerTimes.fajr, 'Fajr'),
-        (Prayer.dhuhr, prayerTimes.dhuhr, 'Dhuhr'),
-        (Prayer.asr, prayerTimes.asr, 'Asr'),
-        (Prayer.maghrib, prayerTimes.maghrib, 'Maghrib'),
-        (Prayer.isha, prayerTimes.isha, 'Isha'),
-      ];
-
-      for (final prayerInfo in prayers) {
-        final prayer = prayerInfo.$1;
-        final time = prayerInfo.$2;
-        final title = prayerInfo.$3;
+      for (final entry in adjusted.entries) {
+        final prayer = entry.key;
+        final time = entry.value;
+        final title = _prayerTitle(prayer);
 
         if (time.isAfter(now)) {
           await notificationServices.schedulePrayerNotificationWithDate(
@@ -156,5 +139,22 @@ Future<bool> _handlePrayerNotificationsRenewal() async {
   } catch (e) {
     debugPrint('❌ Error in background prayer notifications renewal: $e');
     return false;
+  }
+}
+
+String _prayerTitle(Prayer prayer) {
+  switch (prayer) {
+    case Prayer.fajr:
+      return 'Fajr';
+    case Prayer.dhuhr:
+      return 'Dhuhr';
+    case Prayer.asr:
+      return 'Asr';
+    case Prayer.maghrib:
+      return 'Maghrib';
+    case Prayer.isha:
+      return 'Isha';
+    default:
+      return prayer.name;
   }
 }
