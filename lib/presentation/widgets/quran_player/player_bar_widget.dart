@@ -118,9 +118,13 @@ class _MiniPlayer extends StatelessWidget {
                 },
               ),
               Container(
-                height: 62.h,
+                height: 62.h + MediaQuery.of(context).viewPadding.bottom,
                 color: theme.colorScheme.primaryContainer,
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                padding: EdgeInsets.only(
+                  left: 12.w,
+                  right: 12.w,
+                  bottom: MediaQuery.of(context).viewPadding.bottom,
+                ),
                 child: Directionality(
                   textDirection: TextDirection.ltr,
                   child: Row(
