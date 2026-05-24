@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:huda/core/config/service_initializer.dart';
+import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/presentation/screens/app.dart';
@@ -47,6 +48,8 @@ Future<void> bootstrap() async {
   getIt<QcfFontService>(instanceName: 'tajweed').init();
 
   setCustomErrorWidget();
+
+  await PrayerWidgetService.initialize();
 
   runApp(const App());
 
