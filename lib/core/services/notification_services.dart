@@ -131,6 +131,7 @@ class NotificationServices {
         presentAlert: true,
         presentBadge: true,
         presentSound: true,
+        sound: 'adhan.caf',
       ),
     );
   }
