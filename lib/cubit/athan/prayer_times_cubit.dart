@@ -12,6 +12,7 @@ import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/services/location_service.dart';
 import 'package:huda/core/errors/location_failures.dart';
+import 'package:huda/core/services/prayer_widget_service.dart';
 
 part 'prayer_times_state.dart';
 
@@ -268,6 +269,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       emit(PrayerTimesLoaded(current.prayerTimes, current.placemarks,
           offsets: _prayerOffsets));
     }
+    await PrayerWidgetService.pushSettings();
     await scheduleNotificationsForToday(NotificationServices());
   }
 
@@ -301,6 +303,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
       _loadOffsets();
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      await PrayerWidgetService.pushSettings();
       await scheduleNotificationsForToday(NotificationServices());
     } catch (e) {
       emit(PrayerTimesError(e.toString()));
@@ -330,6 +333,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
       _loadOffsets();
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      await PrayerWidgetService.pushSettings();
       await scheduleNotificationsForToday(NotificationServices());
     } catch (e) {
       if (e is LocationServiceDisabledFailure ||
