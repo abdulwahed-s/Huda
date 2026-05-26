@@ -61,6 +61,33 @@
                 android:resource="@xml/huda_widget_info" />
         </receiver>
 
+        <!-- Prayer Times Home Screen Widget -->
+        <receiver
+            android:name="com.aw.huda.widget.prayer.PrayerWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.aw.huda.widget.prayer.ACTION_PRAYER_WIDGET_UPDATE" />
+                <action android:name="com.aw.huda.widget.prayer.ACTION_PRAYER_WIDGET_MINUTE_TICK" />
+                <action android:name="es.antonborri.home_widget.action.BACKGROUND" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/prayer_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name="com.aw.huda.widget.prayer.PrayerWidgetSystemReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <!-- 🔧 FLUTTER_FOREGROUND_TASK Service -->
         <service
             android:name="com.pravera.flutter_foreground_task.service.ForegroundService"

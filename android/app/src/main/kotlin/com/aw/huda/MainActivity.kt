@@ -6,6 +6,9 @@ import io.flutter.plugin.common.MethodChannel
 import androidx.glance.appwidget.updateAll
 import com.aw.huda.widget.HudaGlanceWidget
 import com.aw.huda.widget.WidgetDataRepository
+import com.aw.huda.widget.prayer.PrayerWidgetReliabilityManager
+import com.aw.huda.widget.prayer.PrayerWidgetScheduler
+import com.aw.huda.widget.prayer.PrayerWidgetUpdater
 import com.aw.huda.miqaat.MiqaatLockMethodHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +40,23 @@ class MainActivity: AudioServiceActivity() {
                             println("❌ Failed to update widget: ${e.message}")
                             e.printStackTrace()
                             withContext(Dispatchers.Main) { result.error("UPDATE_ERROR", e.message, null) }
+                        }
+                    }
+                }
+                "updatePrayerWidget" -> {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            val appCtx = applicationContext
+                            PrayerWidgetUpdater.updateAll(appCtx)
+                            PrayerWidgetScheduler.scheduleNext(appCtx)
+                            PrayerWidgetReliabilityManager.start(appCtx)
+                            withContext(Dispatchers.Main) { result.success(true) }
+                        } catch (e: Exception) {
+                            println("❌ Failed to update prayer widget: ${e.message}")
+                            e.printStackTrace()
+                            withContext(Dispatchers.Main) {
+                                result.error("PRAYER_UPDATE_ERROR", e.message, null)
+                            }
                         }
                     }
                 }
