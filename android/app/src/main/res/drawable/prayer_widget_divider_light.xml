@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Thin horizontal divider — LIGHT mode variant.
+  Same as prayer_widget_divider but uses 15% black instead of
+  15% white so the line is visible on light backgrounds.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#26000000" />
+</shape>

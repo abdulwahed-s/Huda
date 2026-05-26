@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Default prayer widget background. Static gradient drawn once by the
+  launcher's resource loader; PrayerWidgetUpdater swaps to a custom
+  background drawable only when the user provides an explicit colour
+  override (via setInt + setBackgroundResource).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="135"
+        android:startColor="#7C3AED"
+        android:endColor="#4338CA"
+        android:type="linear" />
+    <corners android:radius="22dp" />
+</shape>

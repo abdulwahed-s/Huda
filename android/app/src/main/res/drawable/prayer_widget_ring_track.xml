@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Static ring decoration for the 1x1 lock-screen-analogue widget. iOS's
+  ProgressView ring sweeps in real time, but RemoteViews cannot drive a
+  custom Drawable subclass, so we render a decorative ring behind a
+  centered chronometer. Same visual identity, slightly less motion.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="ring"
+    android:thicknessRatio="10"
+    android:innerRadiusRatio="2.4"
+    android:useLevel="false">
+    <solid android:color="#66FFFFFF" />
+</shape>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hero `systemSmall` layout — REDESIGNED for premium minimal.
+  Focused next-prayer display + 3 upcoming prayers:
+    VStack(.leading), padding 10:
+      • "Next prayer" label (11sp secondary)
+      • Next prayer name (18sp bold primary) — prominent
+      • Next prayer time (24sp bold primary) — large
+      • Compact countdown ("1h 25m") (11sp secondary)
+      • Spacer
+      • 3 upcoming prayer rows (11sp, secondary, compact)
+
+  Background is rendered as a Bitmap onto `prayer_widget_background`.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/prayer_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/prayer_widget_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
+
+        <!-- "Next prayer" label -->
+        <TextView
+            android:id="@+id/prayer_widget_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:maxLines="1"
+            android:includeFontPadding="false"
+            android:ellipsize="end" />
+
+        <!-- Next prayer name — prominent -->
+        <TextView
+            android:id="@+id/prayer_widget_next_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/amiri_bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:layout_marginTop="0dp" />
+
+        <!-- Next prayer time — large -->
+        <TextView
+            android:id="@+id/prayer_widget_next_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/amiri_bold"
+            android:maxLines="1"
+            android:includeFontPadding="false"
+            android:layout_marginTop="-2dp" />
+
+        <!-- Compact countdown ("1h 25m") — styled to match prayer time -->
+        <TextView
+            android:id="@+id/prayer_widget_countdown_static"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/amiri_bold"
+            android:maxLines="1"
+            android:includeFontPadding="false"
+            android:layout_marginTop="-2dp" />
+
+        <!-- Spacer -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Divider between top section and upcoming prayers -->
+        <ImageView
+            android:id="@+id/prayer_widget_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.15"
+            android:contentDescription="@null" />
+
+        <!-- 3 upcoming prayer rows -->
+        <LinearLayout
+            android:id="@+id/prayer_widget_upcoming_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="2dp"
+            android:paddingVertical="1dp">
+            <TextView
+                android:id="@+id/prayer_widget_upcoming_1_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+            <TextView
+                android:id="@+id/prayer_widget_upcoming_1_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:fontFamily="@font/amiri_bold"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/prayer_widget_upcoming_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp"
+            android:paddingHorizontal="2dp"
+            android:paddingVertical="1dp">
+            <TextView
+                android:id="@+id/prayer_widget_upcoming_2_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+            <TextView
+                android:id="@+id/prayer_widget_upcoming_2_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:fontFamily="@font/amiri_bold"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/prayer_widget_upcoming_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp"
+            android:paddingHorizontal="2dp"
+            android:paddingVertical="1dp">
+            <TextView
+                android:id="@+id/prayer_widget_upcoming_3_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+            <TextView
+                android:id="@+id/prayer_widget_upcoming_3_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:fontFamily="@font/amiri_bold"
+                android:maxLines="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

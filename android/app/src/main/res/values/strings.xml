@@ -14,4 +14,7 @@
     <string name="miqaat_lock_goal_info">Spend %d minutes in Huda\nto unlock all apps for this time slot</string>
     <string name="miqaat_lock_open_huda">Open Huda</string>
     <string name="miqaat_lock_go_back">Go Back Home</string>
+
+    <string name="prayer_widget_description">Prayer times widget with countdown to the next prayer</string>
+    <string name="prayer_widget_empty_title">Set your location</string>
 </resources>

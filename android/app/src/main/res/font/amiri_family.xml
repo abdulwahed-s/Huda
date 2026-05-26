@@ -4,4 +4,8 @@
         android:fontStyle="normal"
         android:fontWeight="400"
         android:font="@font/amiri" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        android:font="@font/amiri_bold" />
 </font-family>

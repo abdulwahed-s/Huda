@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hero list-row highlight (next-prayer pill). Spec §6.4:
+    `RoundedRectangle(cornerRadius: 8).fill(primary.opacity(0.10))`
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFFFFFFF" />
+    <corners android:radius="10dp" />
+</shape>

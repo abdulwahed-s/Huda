@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Compact `systemLarge` hero pill. Spec §7.6:
+  - Container: rounded rectangle, corner radius 14dp (continuous),
+    fill `primary.opacity(0.08)` (8% white when light text on dark bg).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFFFFFFF" />
+    <corners android:radius="16dp" />
+</shape>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hero `systemLarge` inner card. Spec §6.3:
+  - Container: rounded rectangle, corner radius 16dp (continuous),
+    fill `resolvedTextColor` at 8% opacity.
+  We bake the alpha-on-white here. The Updater paints the foreground
+  text on top, so this just provides the soft pill backdrop.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFFFFFFF" />
+    <corners android:radius="18dp" />
+</shape>

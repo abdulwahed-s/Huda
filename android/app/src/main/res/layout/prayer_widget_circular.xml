@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Lock-screen circular analogue (1x1). Spec §8.3:
+  iOS uses a sweeping ProgressView ring; RemoteViews can't drive a custom
+  Drawable subclass, so this Android variant uses a static decorative
+  ring with the prayer name on top of a centered Chronometer.
+
+  Stack:
+    ImageView   — ring decoration
+    VStack:
+      • Prayer name (10sp .semibold, centered)
+      • Chronometer countdown (11sp .bold rounded mono)
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/prayer_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/prayer_widget_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/prayer_widget_ring"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/prayer_widget_ring_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:scaleType="centerInside"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/prayer_widget_next_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/prayer_widget_countdown_static"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/amiri_bold"
+            android:gravity="center"
+            android:maxLines="1"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/prayer_widget_countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/amiri_bold"
+            android:gravity="center"
+            android:maxLines="1" />
+    </LinearLayout>
+</FrameLayout>

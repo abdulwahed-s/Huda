@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Thin horizontal divider used by Compact medium / large layouts.
+  Spec: `Rectangle().fill(primary.opacity(0.15)).frame(height: 0.5)`.
+  Android can't render sub-1dp lines reliably so we use 1dp at 15%.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#26FFFFFF" />
+</shape>

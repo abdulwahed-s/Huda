@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hero `systemLarge` inner card — LIGHT mode variant.
+  Same as prayer_widget_inner_card but uses 8% black instead of
+  8% white so the card is visible on light backgrounds.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#1F000000" />
+    <corners android:radius="18dp" />
+</shape>

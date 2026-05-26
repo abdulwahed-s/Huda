@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hero list-row highlight (next-prayer pill) — LIGHT mode variant.
+  Same as prayer_widget_pill_highlight but uses 10% black instead of
+  10% white so the pill is visible on light backgrounds.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#2E000000" />
+    <corners android:radius="10dp" />
+</shape>

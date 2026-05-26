@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Themable rounded-rect background. PrayerWidgetUpdater calls
+  setColorFilter on the matching ImageView at runtime to apply the chosen
+  primary tint, replacing the placeholder color baked here.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="135"
+        android:startColor="#7C3AED"
+        android:endColor="#9333EA"
+        android:type="linear" />
+    <corners android:radius="22dp" />
+</shape>

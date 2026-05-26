@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Compact `systemLarge` layout. Spec §7.6:
+    VStack(.leading, spacing 8), padding (16, top:12, bottom:12):
+      • Header (VStack, .leading, spacing 2):
+          - ISO date         12sp .bold serif primary monospaced (centered)
+          - Day-of-week      56sp Latin / 30sp Arabic (clipped to 56dp
+                             height for Arabic to prevent ascender overdraw)
+                             tatweel count=2 for ar/ur
+      • Hero pill (rounded rect 14dp, fill primary 8%):
+          - Live countdown   22sp .regular serif primary monospaced
+          - Next prayer name + time  18sp .bold serif primary
+      • Prayer grid (2×3 of fajr, sunrise, dhuhr // asr, maghrib, isha)
+          Each cell: name 20sp .bold + time 20sp .bold (h:mm)
+          Next-prayer cell tinted highlight (#D04034); others primary.
+      • Divider (1dp, primary 15%)
+      • Sunnah row (no card backgrounds):
+          - "Last third" + h:mm time     15sp / 17sp .bold serif primary
+          - "Midnight"   + h:mm time     same
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/prayer_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/prayer_widget_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
+
+        <!-- Header (date + day-of-week) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/prayer_widget_iso_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/amiri_bold"
+                android:gravity="center"
+                android:maxLines="1" />
+            <TextView
+                android:id="@+id/prayer_widget_day_of_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="56sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/amiri_bold"
+                android:gravity="center"
+                android:maxLines="1"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <!-- Hero pill -->
+        <LinearLayout
+            android:id="@+id/prayer_widget_hero_pill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
+            android:background="@drawable/prayer_widget_hero_pill"
+            android:layout_marginTop="6dp">
+
+            <TextView
+                android:id="@+id/prayer_widget_countdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:fontFamily="@font/amiri_bold"
+                android:maxLines="1" />
+
+            <!-- Flex spacer pushing pill name/time to the trailing edge.
+                 Bare `<View>` is not in the RemoteViews inflation allow-list,
+                 so we use a zero-content FrameLayout instead. -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/prayer_widget_pill_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/amiri_bold"
+                android:maxLines="1"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/prayer_widget_pill_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/amiri_bold"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <!-- 2x3 prayer grid -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_fajr_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:maxLines="1" />
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_fajr_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:layout_marginTop="4dp"
+                        android:maxLines="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_sunrise_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:maxLines="1" />
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_sunrise_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:layout_marginTop="4dp"
+                        android:maxLines="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_dhuhr_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:maxLines="1" />
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_dhuhr_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:layout_marginTop="4dp"
+                        android:maxLines="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_asr_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:maxLines="1" />
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_asr_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:layout_marginTop="4dp"
+                        android:maxLines="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_maghrib_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:maxLines="1" />
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_maghrib_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:layout_marginTop="4dp"
+                        android:maxLines="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_isha_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:maxLines="1" />
+                    <TextView
+                        android:id="@+id/prayer_widget_grid_isha_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/amiri_bold"
+                        android:layout_marginTop="4dp"
+                        android:maxLines="1" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Divider. RemoteViews disallows bare `<View>`, so we use a
+             FrameLayout with the divider drawable as its background. -->
+        <FrameLayout
+            android:id="@+id/prayer_widget_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/prayer_widget_divider"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Sunnah row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/prayer_widget_sunnah_last_third_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/amiri_bold"
+                    android:maxLines="1" />
+                <TextView
+                    android:id="@+id/prayer_widget_sunnah_last_third_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/amiri_bold"
+                    android:layout_marginTop="4dp"
+                    android:maxLines="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/prayer_widget_sunnah_middle_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/amiri_bold"
+                    android:maxLines="1" />
+                <TextView
+                    android:id="@+id/prayer_widget_sunnah_middle_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/amiri_bold"
+                    android:layout_marginTop="4dp"
+                    android:maxLines="1" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

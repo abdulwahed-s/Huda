@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Provider metadata for the Huda Prayer widget.
+
+  - `targetCellWidth/Height` give the launcher a hint that we want the
+    medium 4x2 cell footprint by default; users can resize freely.
+  - `updatePeriodMillis="1800000"` (30 min) provides an Android-native
+    safety-net heartbeat. Primary updates still come from exact alarms
+    in PrayerWidgetScheduler; this catches cases where the alarm chain
+    is silently killed by Doze or OEM battery managers.
+  - `configure` is intentionally omitted — the widget pulls all settings
+    from the in-app customization screen (PrayerWidgetCustomizationScreen).
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="320dp"
+    android:minHeight="100dp"
+    android:targetCellWidth="5"
+    android:targetCellHeight="2"
+    android:minResizeWidth="36dp"
+    android:minResizeHeight="36dp"
+    android:maxResizeWidth="600dp"
+    android:maxResizeHeight="600dp"
+    android:updatePeriodMillis="1800000"
+    android:initialLayout="@layout/prayer_widget_hero_medium"
+    android:description="@string/prayer_widget_description"
+    android:previewImage="@drawable/prayer_preview"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen" />
