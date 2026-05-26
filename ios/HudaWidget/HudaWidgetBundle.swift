@@ -5,5 +5,6 @@ import SwiftUI
 struct HudaWidgetBundle: WidgetBundle {
     var body: some Widget {
         HudaWidget()
+        HudaPrayerWidget()
     }
 }
