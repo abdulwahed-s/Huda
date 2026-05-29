@@ -4,13 +4,17 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/services/audio_coordinator.dart';
+import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
 
 class AthkarAudioPlayer {
   final BuildContext context;
   final VoidCallback onStateChanged;
-  
-  AudioPlayer? _audioPlayer;
+
+  final AudioPlayer _audioPlayer = getIt<AudioPlayer>();
+  final AudioCoordinator _coordinator = getIt<AudioCoordinator>();
+
   int? playingIndex;
   bool isPlaying = false;
   Duration audioDuration = Duration.zero;
@@ -24,13 +28,16 @@ class AthkarAudioPlayer {
     required this.context,
     required this.onStateChanged,
   }) {
-    _initAudioPlayer();
-  }
+    _coordinator.register(AudioCoordinator.athkar, () {
+      playingIndex = null;
+      isPlaying = false;
+      audioPosition = Duration.zero;
+      onStateChanged();
+    });
 
-  void _initAudioPlayer() {
-    _audioPlayer = AudioPlayer();
     _playerStateSubscription =
-        _audioPlayer!.playerStateStream.listen((state) {
+        _audioPlayer.playerStateStream.listen((state) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       if (state.processingState == ProcessingState.completed) {
         _playNextAudio();
       }
@@ -42,14 +49,16 @@ class AthkarAudioPlayer {
       onStateChanged();
     });
 
-    _durationSubscription = _audioPlayer!.durationStream.listen((duration) {
+    _durationSubscription = _audioPlayer.durationStream.listen((duration) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       if (duration != null) {
         audioDuration = duration;
         onStateChanged();
       }
     });
 
-    _positionSubscription = _audioPlayer!.positionStream.listen((position) {
+    _positionSubscription = _audioPlayer.positionStream.listen((position) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       audioPosition = position;
       onStateChanged();
     });
@@ -89,20 +98,22 @@ class AthkarAudioPlayer {
     }
 
     try {
-      if (playingIndex == index) {
+      if (_coordinator.isOwner(AudioCoordinator.athkar) &&
+          playingIndex == index) {
         if (isPlaying) {
-          await _audioPlayer?.pause();
+          await _audioPlayer.pause();
         } else {
-          _audioPlayer?.play();
+          _audioPlayer.play();
         }
       } else {
-        await _audioPlayer?.setAudioSource(AudioSource.uri(
+        _coordinator.requestAudio(AudioCoordinator.athkar);
+        await _audioPlayer.setAudioSource(AudioSource.uri(
           Uri.parse(audioUrl),
           tag: MediaItem(id: audioUrl, title: 'Athkar'),
         ));
         playingIndex = index;
         onStateChanged();
-        _audioPlayer?.play();
+        _audioPlayer.play();
       }
     } catch (e) {
       _showAudioErrorSnackbar('فشل في تشغيل الصوت: ${e.toString()}');
@@ -110,9 +121,7 @@ class AthkarAudioPlayer {
   }
 
   Future<void> seekAudio(Duration position) async {
-    if (_audioPlayer != null) {
-      await _audioPlayer!.seek(position);
-    }
+    await _audioPlayer.seek(position);
   }
 
   void _showAudioErrorSnackbar(String message) {
@@ -125,9 +134,9 @@ class AthkarAudioPlayer {
   }
 
   void dispose() {
+    _coordinator.unregister(AudioCoordinator.athkar);
     _playerStateSubscription?.cancel();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
-    _audioPlayer?.dispose();
   }
 }

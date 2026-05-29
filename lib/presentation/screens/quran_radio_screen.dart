@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_audio/just_audio.dart';
 
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
@@ -14,7 +13,6 @@ import 'package:huda/presentation/widgets/quran_radio/radio_header_background.da
 import 'package:huda/presentation/widgets/quran_radio/radio_now_playing_bar.dart';
 import 'package:huda/presentation/widgets/quran_radio/radio_search_bar.dart';
 import 'package:huda/presentation/widgets/quran_radio/radio_station_card.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 
 class QuranRadioScreen extends StatefulWidget {
   const QuranRadioScreen({super.key});
@@ -25,12 +23,8 @@ class QuranRadioScreen extends StatefulWidget {
 
 class _QuranRadioScreenState extends State<QuranRadioScreen>
     with TickerProviderStateMixin {
-  final AudioPlayer _audioPlayer = AudioPlayer();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-  RadioStation? _currentStation;
-  bool _isPlaying = false;
-  bool _isBuffering = false;
 
   late AnimationController _pulseController;
   final ScrollController _scrollController = ScrollController();
@@ -45,16 +39,6 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
       duration: const Duration(milliseconds: 1000),
     )..repeat(reverse: true);
     _scrollController.addListener(_onScroll);
-
-    _audioPlayer.playerStateStream.listen((state) {
-      if (mounted) {
-        setState(() {
-          _isPlaying = state.playing;
-          _isBuffering = state.processingState == ProcessingState.buffering ||
-              state.processingState == ProcessingState.loading;
-        });
-      }
-    });
   }
 
   void _onScroll() {
@@ -79,50 +63,19 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
 
   Future<void> _playStation(RadioStation station) async {
     try {
-      if (_currentStation?.id == station.id) {
-        if (_isPlaying) {
-          await _audioPlayer.pause();
-        } else {
-          await _audioPlayer.play();
-        }
-        return;
-      }
-
       HapticFeedback.selectionClick();
-      setState(() {
-        _currentStation = station;
-        _isBuffering = true;
-      });
-      context.read<QuranRadioCubit>().setCurrentlyPlaying(station);
-
-      final audioSource = AudioSource.uri(
-        Uri.parse(station.url.toString()),
-        tag: MediaItem(
-          id: station.id.toString(),
-          title: station.name.toString(),
-          artUri: Uri.parse(
-              'https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?auto=compress&cs=tinysrgb&w=600'),
-        ),
-      );
-
-      await _audioPlayer.setAudioSource(audioSource);
-      await _audioPlayer.play();
+      await context.read<QuranRadioCubit>().playStation(station);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${AppLocalizations.of(context)!.error}: $e')),
         );
-        setState(() {
-          _currentStation = null;
-          _isBuffering = false;
-        });
       }
     }
   }
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
     _searchController.dispose();
     _pulseController.dispose();
     _scrollController.dispose();
@@ -140,6 +93,13 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
           isDark ? context.darkGradientStart : context.lightSurface,
       body: BlocBuilder<QuranRadioCubit, QuranRadioState>(
         builder: (context, state) {
+          final currentStation =
+              state is QuranRadioLoaded ? state.currentlyPlaying : null;
+          final isPlaying =
+              state is QuranRadioLoaded ? state.isPlaying : false;
+          final isBuffering =
+              state is QuranRadioLoaded ? state.isBuffering : false;
+
           return Stack(
             children: [
               CustomScrollView(
@@ -159,10 +119,12 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
                       },
                     ),
                   ),
-                  _buildBodySliver(state, theme, l10n),
+                  _buildBodySliver(
+                      state, theme, l10n, currentStation, isPlaying,
+                      isBuffering),
                   SliverToBoxAdapter(
                     child: SizedBox(
-                        height: _currentStation != null ? 110.h : 24.h),
+                        height: currentStation != null ? 110.h : 24.h),
                   ),
                 ],
               ),
@@ -180,24 +142,19 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
                         parent: animation, curve: Curves.easeOutCubic)),
                     child: FadeTransition(opacity: animation, child: child),
                   ),
-                  child: _currentStation != null
+                  child: currentStation != null
                       ? RadioNowPlayingBar(
                           key: const ValueKey('now_playing'),
-                          station: _currentStation!,
-                          isPlaying: _isPlaying,
-                          isBuffering: _isBuffering,
+                          station: currentStation,
+                          isPlaying: isPlaying,
+                          isBuffering: isBuffering,
                           pulseController: _pulseController,
                           nowPlayingLabel: l10n.nowPlaying,
-                          onPlayPause: () => _playStation(_currentStation!),
+                          onPlayPause: () => _playStation(currentStation),
                           onStop: () async {
-                            await _audioPlayer.stop();
-                            setState(() {
-                              _currentStation = null;
-                              _isPlaying = false;
-                            });
-                            context
+                            await context
                                 .read<QuranRadioCubit>()
-                                .setCurrentlyPlaying(null);
+                                .stopStation();
                           },
                         )
                       : const SizedBox.shrink(key: ValueKey('empty_player')),
@@ -243,7 +200,13 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
   }
 
   Widget _buildBodySliver(
-      QuranRadioState state, ThemeData theme, AppLocalizations l10n) {
+    QuranRadioState state,
+    ThemeData theme,
+    AppLocalizations l10n,
+    RadioStation? currentStation,
+    bool isPlaying,
+    bool isBuffering,
+  ) {
     if (state is QuranRadioLoading) {
       return SliverFillRemaining(
         child: Center(
@@ -284,9 +247,9 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
               final station = radios[index];
               return RadioStationCard(
                 station: station,
-                isActive: _currentStation?.id == station.id,
-                isPlaying: _isPlaying,
-                isBuffering: _isBuffering,
+                isActive: currentStation?.id == station.id,
+                isPlaying: isPlaying,
+                isBuffering: isBuffering,
                 pulseController: _pulseController,
                 onTap: () => _playStation(station),
                 index: index,

@@ -4,12 +4,15 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/services/audio_coordinator.dart';
+import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
 import 'package:huda/data/models/surah_audio_model.dart' as audio;
 import 'package:huda/data/models/surah_model.dart';
 
 mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
-  final AudioPlayer audioPlayer = AudioPlayer();
+  final AudioPlayer audioPlayer = getIt<AudioPlayer>();
+  final AudioCoordinator _audioCoordinator = getIt<AudioCoordinator>();
   int? playingAyahIndex;
   bool autoplayEnabled = true;
   bool loopEnabled = false;
@@ -35,7 +38,20 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   void safeModalSetState();
 
   void setupAudioListeners() {
+    _audioCoordinator.register(AudioCoordinator.surahAyah, () {
+      if (mounted) {
+        setState(() {
+          isAudioPlaying = false;
+          playingAyahIndex = null;
+          currentPosition = Duration.zero;
+          totalDuration = Duration.zero;
+        });
+        safeModalSetState();
+      }
+    });
+
     _playerStateSubscription = audioPlayer.playerStateStream.listen((state) {
+      if (!_audioCoordinator.isOwner(AudioCoordinator.surahAyah)) return;
       if (mounted) {
         setState(() => isAudioPlaying = state.playing);
         safeModalSetState();
@@ -46,6 +62,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
     });
 
     _positionSubscription = audioPlayer.positionStream.listen((position) {
+      if (!_audioCoordinator.isOwner(AudioCoordinator.surahAyah)) return;
       if (!isUserSeeking && mounted) {
         setState(() {
           currentPosition = position;
@@ -56,6 +73,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
     });
 
     _durationSubscription = audioPlayer.durationStream.listen((duration) {
+      if (!_audioCoordinator.isOwner(AudioCoordinator.surahAyah)) return;
       if (duration != null && mounted) {
         setState(() {
           totalDuration = duration;
@@ -120,6 +138,8 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
             'surah_${surah.number}_ayah_${ayahFromCurrentScreen.numberInSurah}';
         final mediaTitle =
             '${surah.name ?? 'Surah'} - Ayah ${ayahFromCurrentScreen.numberInSurah}';
+
+        _audioCoordinator.requestAudio(AudioCoordinator.surahAyah);
 
         if (downloadedPath != null) {
           await audioPlayer.setAudioSource(AudioSource.uri(
@@ -227,11 +247,10 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
+    _audioCoordinator.unregister(AudioCoordinator.surahAyah);
     _playerStateSubscription?.cancel();
     _positionSubscription?.cancel();
     _durationSubscription?.cancel();
-
-    audioPlayer.dispose();
     super.dispose();
   }
 }

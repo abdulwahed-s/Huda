@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/download_service.dart';
 import 'package:huda/core/services/reading_position_service.dart';
 import 'package:huda/core/services/bookmark_service.dart';
@@ -17,6 +19,8 @@ import 'package:huda/core/services/qcf_font_service.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
+  getIt.registerSingleton<AudioPlayer>(AudioPlayer());
+  getIt.registerSingleton<AudioCoordinator>(AudioCoordinator());
   getIt.registerSingleton<CacheHelper>(CacheHelper());
   getIt.registerSingleton<Dio>(Dio());
   getIt.registerSingleton<DownloadService>(DownloadService());

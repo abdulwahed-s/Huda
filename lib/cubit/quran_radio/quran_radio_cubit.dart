@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/connection/network_info.dart';
+import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/data/models/radio_station_model.dart';
 import 'package:huda/data/repository/radio_repository.dart';
@@ -12,6 +15,8 @@ part 'quran_radio_state.dart';
 class QuranRadioCubit extends Cubit<QuranRadioState> {
   final RadioRepository radioRepository;
   final CacheHelper _cacheHelper = getIt<CacheHelper>();
+  final AudioPlayer _audioPlayer = getIt<AudioPlayer>();
+  final AudioCoordinator _coordinator = getIt<AudioCoordinator>();
 
   static const String _radioCachePrefix = 'quran_radio_';
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
@@ -34,9 +39,40 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
     return _appToApiLangMap[appLangCode] ?? 'eng';
   }
 
-  QuranRadioCubit(this.radioRepository) : super(QuranRadioInitial());
+  QuranRadioCubit(this.radioRepository) : super(QuranRadioInitial()) {
+    _coordinator.register(AudioCoordinator.quranRadio, () {
+      if (state is QuranRadioLoaded) {
+        emit((state as QuranRadioLoaded).copyWith(
+          clearPlaying: true,
+          isPlaying: false,
+          isBuffering: false,
+        ));
+      }
+    });
+
+    _audioPlayer.playerStateStream.listen((playerState) {
+      if (!_coordinator.isOwner(AudioCoordinator.quranRadio)) return;
+      if (state is QuranRadioLoaded) {
+        final current = state as QuranRadioLoaded;
+        final isBuffering =
+            playerState.processingState == ProcessingState.buffering ||
+                playerState.processingState == ProcessingState.loading;
+        emit(current.copyWith(
+          isPlaying: playerState.playing,
+          isBuffering: isBuffering,
+        ));
+      }
+    });
+  }
 
   Future<void> fetchRadios(String appLangCode) async {
+    final previousStation =
+        state is QuranRadioLoaded ? (state as QuranRadioLoaded).currentlyPlaying : null;
+    final wasPlaying =
+        state is QuranRadioLoaded ? (state as QuranRadioLoaded).isPlaying : false;
+    final wasBuffering =
+        state is QuranRadioLoaded ? (state as QuranRadioLoaded).isBuffering : false;
+
     emit(QuranRadioLoading());
     final apiLang = mapLanguage(appLangCode);
     final cacheKey = '$_radioCachePrefix$apiLang';
@@ -48,7 +84,12 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
         final Map<String, dynamic> jsonData = jsonDecode(cachedData);
         final radioModel = RadioStationModel.fromJson(jsonData);
 
-        emit(QuranRadioLoaded(radios: radioModel.radios ?? []));
+        emit(QuranRadioLoaded(
+          radios: radioModel.radios ?? [],
+          currentlyPlaying: previousStation,
+          isPlaying: wasPlaying,
+          isBuffering: wasBuffering,
+        ));
 
         if (await NetworkInfo.checkInternetConnectivity()) {
           _updateCache(apiLang);
@@ -62,12 +103,22 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
             jsonEncode(radioModel.toJson()),
           );
 
-          emit(QuranRadioLoaded(radios: radioModel.radios ?? []));
+          emit(QuranRadioLoaded(
+            radios: radioModel.radios ?? [],
+            currentlyPlaying: previousStation,
+            isPlaying: wasPlaying,
+            isBuffering: wasBuffering,
+          ));
         } else {
           if (cachedData != null) {
             final Map<String, dynamic> jsonData = jsonDecode(cachedData);
             final radioModel = RadioStationModel.fromJson(jsonData);
-            emit(QuranRadioLoaded(radios: radioModel.radios ?? []));
+            emit(QuranRadioLoaded(
+              radios: radioModel.radios ?? [],
+              currentlyPlaying: previousStation,
+              isPlaying: wasPlaying,
+              isBuffering: wasBuffering,
+            ));
           } else {
             emit(QuranRadioError('No internet connection'));
           }
@@ -75,6 +126,65 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
       }
     } catch (e) {
       emit(QuranRadioError(e.toString()));
+    }
+  }
+
+  Future<void> playStation(RadioStation station) async {
+    if (state is! QuranRadioLoaded) return;
+    final current = state as QuranRadioLoaded;
+
+    if (_coordinator.isOwner(AudioCoordinator.quranRadio) &&
+        current.currentlyPlaying?.id == station.id) {
+      if (current.isPlaying) {
+        await _audioPlayer.pause();
+      } else {
+        await _audioPlayer.play();
+      }
+      return;
+    }
+
+    _coordinator.requestAudio(AudioCoordinator.quranRadio);
+
+    emit(current.copyWith(
+      currentlyPlaying: station,
+      isBuffering: true,
+      isPlaying: false,
+    ));
+
+    final audioSource = AudioSource.uri(
+      Uri.parse(station.url.toString()),
+      tag: MediaItem(
+        id: station.id.toString(),
+        title: station.name.toString(),
+        artUri: Uri.parse(
+            'https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?auto=compress&cs=tinysrgb&w=600'),
+      ),
+    );
+
+    await _audioPlayer.setAudioSource(audioSource);
+    await _audioPlayer.play();
+  }
+
+  Future<void> stopStation() async {
+    await _audioPlayer.stop();
+    _coordinator.release(AudioCoordinator.quranRadio);
+    if (state is QuranRadioLoaded) {
+      emit((state as QuranRadioLoaded).copyWith(
+        clearPlaying: true,
+        isPlaying: false,
+        isBuffering: false,
+      ));
+    }
+  }
+
+  void setCurrentlyPlaying(RadioStation? station) {
+    if (state is QuranRadioLoaded) {
+      final currentState = state as QuranRadioLoaded;
+      if (station == null) {
+        emit(currentState.copyWith(clearPlaying: true));
+      } else {
+        emit(currentState.copyWith(currentlyPlaying: station));
+      }
     }
   }
 
@@ -88,17 +198,6 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
       );
     } catch (e) {
       // Silent update failure
-    }
-  }
-
-  void setCurrentlyPlaying(RadioStation? station) {
-    if (state is QuranRadioLoaded) {
-      final currentState = state as QuranRadioLoaded;
-      if (station == null) {
-        emit(currentState.copyWith(clearPlaying: true));
-      } else {
-        emit(currentState.copyWith(currentlyPlaying: station));
-      }
     }
   }
 
@@ -122,5 +221,11 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
       key: timestampKey,
       value: DateTime.now().millisecondsSinceEpoch,
     );
+  }
+
+  @override
+  Future<void> close() {
+    _coordinator.unregister(AudioCoordinator.quranRadio);
+    return super.close();
   }
 }

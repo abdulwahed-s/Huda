@@ -1,6 +1,8 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/material.dart';
+import 'package:huda/core/services/audio_coordinator.dart';
+import 'package:huda/core/services/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +47,8 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
   bool _isGeneratingImage = false;
   final Map<int, GlobalKey> _athkarCardKeys = {};
 
-  AudioPlayer? _audioPlayer;
+  late final AudioPlayer _audioPlayer;
+  late final AudioCoordinator _coordinator;
   int? _playingIndex;
   bool _isPlaying = false;
   Duration _audioDuration = Duration.zero;
@@ -62,9 +65,22 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
   }
 
   void _initAudioPlayer() {
-    _audioPlayer = AudioPlayer();
+    _audioPlayer = getIt<AudioPlayer>();
+    _coordinator = getIt<AudioCoordinator>();
+
+    _coordinator.register(AudioCoordinator.athkar, () {
+      if (mounted) {
+        setState(() {
+          _playingIndex = null;
+          _isPlaying = false;
+          _audioPosition = Duration.zero;
+        });
+      }
+    });
+
     _playerStateSubscription =
-        _audioPlayer!.playerStateStream.listen((state) {
+        _audioPlayer.playerStateStream.listen((state) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       if (state.processingState == ProcessingState.completed) {
         _playNextAudio();
       }
@@ -78,14 +94,16 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
         });
       }
     });
-    _durationSubscription = _audioPlayer!.durationStream.listen((duration) {
+    _durationSubscription = _audioPlayer.durationStream.listen((duration) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       if (duration != null && mounted) {
         setState(() {
           _audioDuration = duration;
         });
       }
     });
-    _positionSubscription = _audioPlayer!.positionStream.listen((position) {
+    _positionSubscription = _audioPlayer.positionStream.listen((position) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       if (mounted) {
         setState(() {
           _audioPosition = position;
@@ -123,10 +141,10 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
 
   @override
   void dispose() {
+    _coordinator.unregister(AudioCoordinator.athkar);
     _playerStateSubscription?.cancel();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
-    _audioPlayer?.dispose();
     super.dispose();
   }
 
@@ -239,14 +257,16 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
     }
 
     try {
-      if (_playingIndex == index) {
+      if (_coordinator.isOwner(AudioCoordinator.athkar) &&
+          _playingIndex == index) {
         if (_isPlaying) {
-          await _audioPlayer?.pause();
+          await _audioPlayer.pause();
         } else {
-          _audioPlayer?.play();
+          _audioPlayer.play();
         }
       } else {
-        await _audioPlayer?.setAudioSource(AudioSource.uri(
+        _coordinator.requestAudio(AudioCoordinator.athkar);
+        await _audioPlayer.setAudioSource(AudioSource.uri(
           Uri.parse(audioUrl),
           tag: MediaItem(id: audioUrl, title: 'Athkar'),
         ));
@@ -255,10 +275,9 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
             _playingIndex = index;
           });
         }
-        _audioPlayer?.play();
+        _audioPlayer.play();
       }
     } catch (e) {
-      print(e);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -274,9 +293,7 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
   }
 
   Future<void> _seekAudio(Duration position) async {
-    if (_audioPlayer != null) {
-      await _audioPlayer!.seek(position);
-    }
+    await _audioPlayer.seek(position);
   }
 
   void _showShareOptions(int index) {

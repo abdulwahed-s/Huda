@@ -9,17 +9,26 @@ import 'package:audio_session/audio_session.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:huda/core/quran/quran.dart';
+import 'package:huda/core/services/audio_coordinator.dart';
+import 'package:huda/core/services/service_locator.dart';
 
 import 'package:huda/data/models/reciter_model.dart';
 import 'package:huda/cubit/quran_player/quran_player_state.dart';
 import 'package:huda/cubit/quran_player/download_progress_cubit.dart';
 
 class QuranPlayerCubit extends Cubit<QuranPlayerState> {
-  final AudioPlayer audioPlayer = AudioPlayer();
+  final AudioPlayer audioPlayer = getIt<AudioPlayer>();
+  final AudioCoordinator _coordinator = getIt<AudioCoordinator>();
   final DownloadProgressCubit downloadProgressCubit;
 
   QuranPlayerCubit({required this.downloadProgressCubit})
-      : super(QuranPlayerInitial());
+      : super(QuranPlayerInitial()) {
+    _coordinator.register(AudioCoordinator.quranPlayer, () {
+      if (state is QuranPlayerPlaying || state is QuranPlayerLoading) {
+        emit(QuranPlayerInitial());
+      }
+    });
+  }
 
   Future<Directory> get _downloadDir async {
     final dir = await getApplicationDocumentsDirectory();
@@ -42,6 +51,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
     required List jsonData,
   }) async {
     try {
+      _coordinator.requestAudio(AudioCoordinator.quranPlayer);
       audioPlayer.stop();
       emit(QuranPlayerLoading(
         reciterId: reciter.id,
@@ -269,7 +279,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
 
   void closePlayer() {
     audioPlayer.stop();
-    audioPlayer.dispose();
+    _coordinator.release(AudioCoordinator.quranPlayer);
     emit(QuranPlayerInitial());
   }
 
@@ -292,7 +302,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
 
   @override
   Future<void> close() {
-    audioPlayer.dispose();
+    _coordinator.unregister(AudioCoordinator.quranPlayer);
     return super.close();
   }
 }

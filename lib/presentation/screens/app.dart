@@ -17,6 +17,12 @@ import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/cubit/rating/rating_cubit.dart';
 import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
+import 'package:huda/cubit/quran_player/quran_player_cubit.dart';
+import 'package:huda/cubit/quran_player/download_progress_cubit.dart';
+import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
+import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
+import 'package:huda/data/api/radio_services.dart';
+import 'package:huda/data/repository/radio_repository.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 import 'package:huda/core/utils/responsive_utils.dart';
@@ -68,6 +74,18 @@ class _AppState extends State<App> {
         BlocProvider(create: (_) => RatingCubit()),
         BlocProvider<MiqaatLockCubit>.value(
           value: getIt<MiqaatLockCubit>(),
+        ),
+        BlocProvider(create: (_) => DownloadProgressCubit()),
+        BlocProvider(
+          create: (context) => QuranPlayerCubit(
+            downloadProgressCubit: context.read<DownloadProgressCubit>(),
+          ),
+        ),
+        BlocProvider(create: (_) => PlayerBarCubit()),
+        BlocProvider(
+          create: (_) => QuranRadioCubit(
+            RadioRepository(radioServices: RadioServices()),
+          ),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

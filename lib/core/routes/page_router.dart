@@ -69,8 +69,6 @@ import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
 import 'package:huda/cubit/quran_player/download_progress_cubit.dart';
 import 'package:huda/presentation/screens/reciters_screen.dart';
 import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
-import 'package:huda/data/api/radio_services.dart';
-import 'package:huda/data/repository/radio_repository.dart';
 import 'package:huda/presentation/screens/quran_radio_screen.dart';
 
 class PageRouter {
@@ -678,19 +676,11 @@ class PageRouter {
       case AppRoute.quranAudio:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => MultiBlocProvider(
+          pageBuilder: (context, animation, __) => MultiBlocProvider(
             providers: [
-              BlocProvider<DownloadProgressCubit>(
-                create: (context) => DownloadProgressCubit(),
-              ),
-              BlocProvider<QuranPlayerCubit>(
-                create: (context) => QuranPlayerCubit(
-                  downloadProgressCubit: context.read<DownloadProgressCubit>(),
-                ),
-              ),
-              BlocProvider<PlayerBarCubit>(
-                create: (context) => PlayerBarCubit(),
-              ),
+              BlocProvider.value(value: context.read<DownloadProgressCubit>()),
+              BlocProvider.value(value: context.read<QuranPlayerCubit>()),
+              BlocProvider.value(value: context.read<PlayerBarCubit>()),
             ],
             child: const RecitersScreen(),
           ),
@@ -712,15 +702,9 @@ class PageRouter {
       case AppRoute.quranRadio:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) =>
-              RepositoryProvider<RadioRepository>(
-            create: (_) => RadioRepository(radioServices: RadioServices()),
-            child: BlocProvider<QuranRadioCubit>(
-              create: (context) => QuranRadioCubit(
-                context.read<RadioRepository>(),
-              ),
-              child: const QuranRadioScreen(),
-            ),
+          pageBuilder: (context, animation, __) => BlocProvider.value(
+            value: context.read<QuranRadioCubit>(),
+            child: const QuranRadioScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0);
