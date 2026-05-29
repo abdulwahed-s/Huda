@@ -22,14 +22,14 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
 
         coreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = "11"
     }
 
     buildFeatures {
@@ -65,18 +65,18 @@ flutter {
 
 configurations.all {
     resolutionStrategy {
-        force "androidx.glance:glance-appwidget:1.1.0"
-        force "androidx.glance:glance-material3:1.1.0"
+        force "androidx.glance:glance-appwidget:1.1.1"
+        force "androidx.glance:glance-material3:1.1.1"
     }
 }
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
-    
+
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.0.0"))
-    
-    implementation("androidx.glance:glance-appwidget:1.1.0")
-    implementation("androidx.glance:glance-material3:1.1.0")
+
+    implementation("androidx.glance:glance-appwidget:1.1.1")
+    implementation("androidx.glance:glance-material3:1.1.1")
     
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     
