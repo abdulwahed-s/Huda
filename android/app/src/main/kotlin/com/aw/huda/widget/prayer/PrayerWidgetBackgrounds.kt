@@ -12,14 +12,17 @@ import android.util.TypedValue
 import kotlin.math.max
 
 internal object PrayerWidgetBackgrounds {
-    private const val BITMAP_W = 600
-    private const val BITMAP_H = 600
 
-    fun render(context: Context, theme: PrayerWidgetTheme): Bitmap? {
+    fun render(
+        context: Context,
+        theme: PrayerWidgetTheme,
+        widthPx: Int = 600,
+        heightPx: Int = 600,
+    ): Bitmap? {
         if (theme.isTransparent) return null
 
-        val w = BITMAP_W
-        val h = BITMAP_H
+        val w = widthPx.coerceAtLeast(1)
+        val h = heightPx.coerceAtLeast(1)
         val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 

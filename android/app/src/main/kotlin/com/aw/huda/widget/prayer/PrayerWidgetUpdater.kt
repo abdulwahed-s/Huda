@@ -58,11 +58,17 @@ internal object PrayerWidgetUpdater {
 
             val (wDp, hDp) = resolveWidgetSizeDp(context, opts)
             val family = classifySize(wDp.toFloat(), hDp.toFloat())
-            Log.d(TAG, "[$widgetId] ${wDp}x${hDp} -> $family")
+            Log.d(TAG, "[$widgetId] size=${wDp}x${hDp}dp family=$family " +
+                "minW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)} " +
+                "maxW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)} " +
+                "minH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)} " +
+                "maxH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)} " +
+                "density=${context.resources.displayMetrics.density}")
 
+            val theme = if (snapshot.hasCoordinates) PrayerWidgetTheme.resolve(context, snapshot) else null
             val views = buildForFamily(context, snapshot, family)
 
-            val finalViews = renderToBitmap(context, views, wDp, hDp, family)
+            val finalViews = renderToBitmap(context, views, wDp, hDp, family, theme)
 
             manager.updateAppWidget(widgetId, finalViews)
         } catch (e: Exception) {
@@ -74,14 +80,37 @@ internal object PrayerWidgetUpdater {
         context: Context,
         opts: android.os.Bundle,
     ): Pair<Int, Int> {
+        val portrait = context.resources.configuration.orientation ==
+            android.content.res.Configuration.ORIENTATION_PORTRAIT
+
+        // Per Android docs, the four MIN/MAX bundle keys map to orientations:
+        //   MIN_WIDTH  = portrait width  (phone is narrower in portrait → smaller width)
+        //   MAX_WIDTH  = landscape width (phone is wider in landscape → larger width)
+        //   MIN_HEIGHT = landscape height (widget is shorter in landscape → smaller height)
+        //   MAX_HEIGHT = portrait height (widget is taller in portrait → larger height)
+        //
+        // These values are reliably set by ALL launchers including Samsung One UI.
+        // OPTION_APPWIDGET_SIZES (Android 12+) is NOT used as primary because Samsung
+        // One UI 5.x populates it with stale landscape dimensions after the user resizes
+        // the widget, causing the bitmap to be rendered at the wrong size and then
+        // distorted by fitXY to fit the actual (different) widget area.
+        val w = opts.getInt(
+            if (portrait) AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH
+            else AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH,
+        )
+        val h = opts.getInt(
+            if (portrait) AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT
+            else AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,
+        )
+        if (w > 0 && h > 0) return Pair(w, h)
+
+        // Fallback: OPTION_APPWIDGET_SIZES on Android 12+ (stock / Pixel launchers)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             @Suppress("DEPRECATION")
             val sizes = opts.getParcelableArrayList<SizeF>(
-                AppWidgetManager.OPTION_APPWIDGET_SIZES
+                AppWidgetManager.OPTION_APPWIDGET_SIZES,
             )
             if (!sizes.isNullOrEmpty()) {
-                val portrait = context.resources.configuration.orientation ==
-                    android.content.res.Configuration.ORIENTATION_PORTRAIT
                 val best = if (portrait) {
                     sizes.maxByOrNull { it.height }
                 } else {
@@ -91,6 +120,7 @@ internal object PrayerWidgetUpdater {
             }
         }
 
+        // Last resort: larger of each pair (pre-Android 12 or no data at all)
         return Pair(
             maxOf(
                 opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH),
@@ -104,17 +134,17 @@ internal object PrayerWidgetUpdater {
     }
 
     private fun classifySize(w: Float, h: Float): WidgetFamily {
+        // Samsung One UI rows are ~127-157dp tall vs stock ~90dp.
+        // 1-row Samsung reports h ≈ 116-127dp → threshold must be > 127dp; 150dp is safe.
+        // 2-row Samsung reports h ≈ 234-254dp → well above 150dp, won't be RECTANGULAR.
+        // LARGE: 340dp ensures LARGE only fires on 3-row Samsung (≈471dp) or 4-row stock (≈360dp),
+        // not on 2-row Samsung (≈314dp) which should use the horizontal MEDIUM layout.
         return when {
             w <= 0 || h <= 0 -> WidgetFamily.MEDIUM
-
             w < 120 -> WidgetFamily.CIRCULAR
-
-            h < 110 -> WidgetFamily.RECTANGULAR
-
-            w >= 240 && h >= 240 -> WidgetFamily.LARGE
-
+            h < 150 -> WidgetFamily.RECTANGULAR
+            w >= 340 && h >= 340 -> WidgetFamily.LARGE
             w >= 240 -> WidgetFamily.MEDIUM
-
             else -> WidgetFamily.SMALL
         }
     }
@@ -1212,6 +1242,7 @@ internal object PrayerWidgetUpdater {
         widthDp: Int,
         heightDp: Int,
         family: WidgetFamily,
+        theme: PrayerWidgetTheme? = null,
     ): RemoteViews {
         val density = context.resources.displayMetrics.density
         val widthPx = (widthDp * density).toInt()
@@ -1224,35 +1255,23 @@ internal object PrayerWidgetUpdater {
             val view = remoteViews.apply(context, parent)
             parent.addView(view)
 
+            // Re-render background at actual widget pixel dimensions so corner radii
+            // are not distorted when the widget aspect ratio differs from 1:1.
+            if (theme != null) {
+                val bgView = view.findViewById<android.widget.ImageView>(R.id.prayer_widget_background)
+                if (bgView != null && bgView.visibility == View.VISIBLE) {
+                    val correctedBg = PrayerWidgetBackgrounds.render(context, theme, widthPx, heightPx)
+                    if (correctedBg != null) bgView.setImageBitmap(correctedBg)
+                }
+            }
+
             applyFontRecursive(parent, amiriTypeface)
 
             val wSpec = View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY)
 
-            val bmpH: Int
-            if (family == WidgetFamily.CIRCULAR) {
-                bmpH = heightPx
-            } else {
-                parent.measure(
-                    wSpec,
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                )
-
-                var contentH = parent.measuredHeight
-                val widgetRoot = parent.getChildAt(0)
-                if (widgetRoot is ViewGroup) {
-                    var maxChildH = 0
-                    for (i in 0 until widgetRoot.childCount) {
-                        val child = widgetRoot.getChildAt(i)
-                        if (child !is android.widget.ImageView) {
-                            maxChildH = maxOf(maxChildH, child.measuredHeight)
-                        }
-                    }
-                    if (maxChildH > 0) contentH = maxChildH
-                }
-
-                val maxBmpH = (heightPx * 1.3f).toInt()
-                bmpH = contentH.coerceIn(heightPx, maxBmpH)
-            }
+            // Render at the exact widget height. Allowing overflow then squishing via
+            // fitXY caused vertical compression artifacts; clipping is a better tradeoff.
+            val bmpH = heightPx
 
             parent.measure(
                 wSpec,
