@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,10 +20,11 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   Duration currentPosition = Duration.zero;
   Duration totalDuration = Duration.zero;
   bool isUserSeeking = false;
+  bool isAudioPlaying = false;
 
-  StreamSubscription? _playerCompleteSubscription;
+  StreamSubscription? _playerStateSubscription;
   StreamSubscription<Duration>? _positionSubscription;
-  StreamSubscription<Duration>? _durationSubscription;
+  StreamSubscription<Duration?>? _durationSubscription;
 
   SurahModel get surah;
   int get surahNumber;
@@ -33,11 +35,17 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   void safeModalSetState();
 
   void setupAudioListeners() {
-    _playerCompleteSubscription = audioPlayer.onPlayerComplete.listen((event) {
-      playNextAyah();
+    _playerStateSubscription = audioPlayer.playerStateStream.listen((state) {
+      if (mounted) {
+        setState(() => isAudioPlaying = state.playing);
+        safeModalSetState();
+      }
+      if (state.processingState == ProcessingState.completed) {
+        playNextAyah();
+      }
     });
 
-    _positionSubscription = audioPlayer.onPositionChanged.listen((position) {
+    _positionSubscription = audioPlayer.positionStream.listen((position) {
       if (!isUserSeeking && mounted) {
         setState(() {
           currentPosition = position;
@@ -47,8 +55,8 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
       }
     });
 
-    _durationSubscription = audioPlayer.onDurationChanged.listen((duration) {
-      if (mounted) {
+    _durationSubscription = audioPlayer.durationStream.listen((duration) {
+      if (duration != null && mounted) {
         setState(() {
           totalDuration = duration;
         });
@@ -60,20 +68,17 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
 
   Future<void> playPauseAudio(int index) async {
     final isPlaying =
-        audioPlayer.state == PlayerState.playing && playingAyahIndex == index;
+        isAudioPlaying && playingAyahIndex == index;
 
     if (isPlaying) {
       await audioPlayer.pause();
     } else {
       if (currentSurahAudio != null) {
         if (playingAyahIndex == index &&
-            audioPlayer.state == PlayerState.paused) {
-          await audioPlayer.resume();
+            !isAudioPlaying) {
+          audioPlayer.play();
         } else {
           await playAyahAudio(index);
-        }
-        if (mounted) {
-          setState(() => playingAyahIndex = index);
         }
       }
     }
@@ -97,7 +102,6 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
       );
 
       if (targetAyah?.audio != null && selectedReaderId != null) {
-        await audioPlayer.stop();
         if (mounted) {
           setState(() {
             currentPosition = Duration.zero;
@@ -112,26 +116,38 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
           readerId: selectedReaderId!,
         );
 
+        final mediaId =
+            'surah_${surah.number}_ayah_${ayahFromCurrentScreen.numberInSurah}';
+        final mediaTitle =
+            '${surah.name ?? 'Surah'} - Ayah ${ayahFromCurrentScreen.numberInSurah}';
+
         if (downloadedPath != null) {
-          await audioPlayer.play(DeviceFileSource(downloadedPath));
+          await audioPlayer.setAudioSource(AudioSource.uri(
+            Uri.file(downloadedPath),
+            tag: MediaItem(id: mediaId, title: mediaTitle),
+          ));
         } else {
           if (kIsWeb) {
             final proxyUrl =
                 'https://corsproxy.io/?${Uri.encodeComponent(targetAyah!.audio!)}';
-            await audioPlayer.play(
-              UrlSource(
-                proxyUrl,
-                mimeType: 'audio/mpeg',
-              ),
-            );
+            await audioPlayer.setAudioSource(AudioSource.uri(
+              Uri.parse(proxyUrl),
+              tag: MediaItem(id: mediaId, title: mediaTitle),
+            ));
           } else {
-            await audioPlayer.play(UrlSource(targetAyah!.audio!));
+            await audioPlayer.setAudioSource(AudioSource.uri(
+              Uri.parse(targetAyah!.audio!),
+              tag: MediaItem(id: mediaId, title: mediaTitle),
+            ));
           }
         }
 
         if (mounted) {
           setState(() => playingAyahIndex = index);
         }
+        // Don't await play() — just_audio_background blocks until completion on Android.
+        // UI state (isAudioPlaying) is driven by playerStateStream listener instead.
+        audioPlayer.play();
       }
     }
   }
@@ -154,9 +170,6 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
         }
 
         await playAyahAudio(nextIndex);
-        if (mounted) {
-          setState(() => playingAyahIndex = nextIndex);
-        }
 
         if (wasBottomSheetOpen) {
           Future.delayed(const Duration(milliseconds: 100), () {
@@ -190,7 +203,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   }
 
   void switchReader(String newReaderId, StateSetter? setModalState) {
-    if (audioPlayer.state == PlayerState.playing) {
+    if (isAudioPlaying) {
       audioPlayer.stop();
     }
 
@@ -214,7 +227,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    _playerCompleteSubscription?.cancel();
+    _playerStateSubscription?.cancel();
     _positionSubscription?.cancel();
     _durationSubscription?.cancel();
 

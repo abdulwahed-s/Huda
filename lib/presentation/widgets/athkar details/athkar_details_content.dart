@@ -1,4 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
@@ -51,7 +52,7 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
   Duration _audioPosition = Duration.zero;
 
   StreamSubscription<PlayerState>? _playerStateSubscription;
-  StreamSubscription<Duration>? _durationSubscription;
+  StreamSubscription<Duration?>? _durationSubscription;
   StreamSubscription<Duration>? _positionSubscription;
 
   @override
@@ -63,27 +64,28 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
   void _initAudioPlayer() {
     _audioPlayer = AudioPlayer();
     _playerStateSubscription =
-        _audioPlayer!.onPlayerStateChanged.listen((state) {
-      if (state == PlayerState.completed) {
+        _audioPlayer!.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
         _playNextAudio();
       }
       if (mounted) {
         setState(() {
-          _isPlaying = state == PlayerState.playing;
-          if (state == PlayerState.completed || state == PlayerState.stopped) {
+          _isPlaying = state.playing;
+          if (state.processingState == ProcessingState.completed ||
+              state.processingState == ProcessingState.idle) {
             _audioPosition = Duration.zero;
           }
         });
       }
     });
-    _durationSubscription = _audioPlayer!.onDurationChanged.listen((duration) {
-      if (mounted) {
+    _durationSubscription = _audioPlayer!.durationStream.listen((duration) {
+      if (duration != null && mounted) {
         setState(() {
           _audioDuration = duration;
         });
       }
     });
-    _positionSubscription = _audioPlayer!.onPositionChanged.listen((position) {
+    _positionSubscription = _audioPlayer!.positionStream.listen((position) {
       if (mounted) {
         setState(() {
           _audioPosition = position;
@@ -241,20 +243,22 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
         if (_isPlaying) {
           await _audioPlayer?.pause();
         } else {
-          await _audioPlayer?.resume();
+          _audioPlayer?.play();
         }
       } else {
-        await _audioPlayer?.stop();
-        await _audioPlayer?.release();
-        await _audioPlayer?.setSource(UrlSource(audioUrl));
-        await _audioPlayer?.resume();
+        await _audioPlayer?.setAudioSource(AudioSource.uri(
+          Uri.parse(audioUrl),
+          tag: MediaItem(id: audioUrl, title: 'Athkar'),
+        ));
         if (mounted) {
           setState(() {
             _playingIndex = index;
           });
         }
+        _audioPlayer?.play();
       }
     } catch (e) {
+      print(e);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -916,7 +915,7 @@ class _QuranPageViewState extends State<QuranPageView>
                               child: IconButton(
                                 onPressed: () => _togglePlayPause(),
                                 icon: Icon(
-                                  audioPlayer.state == PlayerState.playing
+                                  isAudioPlaying
                                       ? Icons.pause
                                       : Icons.play_arrow,
                                   color: colors.primary,
@@ -999,7 +998,7 @@ class _QuranPageViewState extends State<QuranPageView>
   }
 
   void _togglePlayPause() {
-    if (audioPlayer.state == PlayerState.playing) {
+    if (isAudioPlaying) {
       audioPlayer.pause();
     } else if (playingAyahIndex != null) {
       playAyahAudio(playingAyahIndex!);
@@ -1033,7 +1032,7 @@ class _QuranPageViewState extends State<QuranPageView>
 
   @override
   void stopAudioIfPlaying() {
-    if (audioPlayer.state == PlayerState.playing) {
+    if (isAudioPlaying) {
       audioPlayer.stop();
     }
   }

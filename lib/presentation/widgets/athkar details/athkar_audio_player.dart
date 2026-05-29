@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
@@ -16,7 +17,7 @@ class AthkarAudioPlayer {
   Duration audioPosition = Duration.zero;
 
   StreamSubscription<PlayerState>? _playerStateSubscription;
-  StreamSubscription<Duration>? _durationSubscription;
+  StreamSubscription<Duration?>? _durationSubscription;
   StreamSubscription<Duration>? _positionSubscription;
 
   AthkarAudioPlayer({
@@ -29,23 +30,26 @@ class AthkarAudioPlayer {
   void _initAudioPlayer() {
     _audioPlayer = AudioPlayer();
     _playerStateSubscription =
-        _audioPlayer!.onPlayerStateChanged.listen((state) {
-      if (state == PlayerState.completed) {
+        _audioPlayer!.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
         _playNextAudio();
       }
-      isPlaying = state == PlayerState.playing;
-      if (state == PlayerState.completed || state == PlayerState.stopped) {
+      isPlaying = state.playing;
+      if (state.processingState == ProcessingState.completed ||
+          state.processingState == ProcessingState.idle) {
         audioPosition = Duration.zero;
       }
       onStateChanged();
     });
-    
-    _durationSubscription = _audioPlayer!.onDurationChanged.listen((duration) {
-      audioDuration = duration;
-      onStateChanged();
+
+    _durationSubscription = _audioPlayer!.durationStream.listen((duration) {
+      if (duration != null) {
+        audioDuration = duration;
+        onStateChanged();
+      }
     });
-    
-    _positionSubscription = _audioPlayer!.onPositionChanged.listen((position) {
+
+    _positionSubscription = _audioPlayer!.positionStream.listen((position) {
       audioPosition = position;
       onStateChanged();
     });
@@ -89,15 +93,16 @@ class AthkarAudioPlayer {
         if (isPlaying) {
           await _audioPlayer?.pause();
         } else {
-          await _audioPlayer?.resume();
+          _audioPlayer?.play();
         }
       } else {
-        await _audioPlayer?.stop();
-        await _audioPlayer?.release();
-        await _audioPlayer?.setSource(UrlSource(audioUrl));
-        await _audioPlayer?.resume();
+        await _audioPlayer?.setAudioSource(AudioSource.uri(
+          Uri.parse(audioUrl),
+          tag: MediaItem(id: audioUrl, title: 'Athkar'),
+        ));
         playingIndex = index;
         onStateChanged();
+        _audioPlayer?.play();
       }
     } catch (e) {
       _showAudioErrorSnackbar('فشل في تشغيل الصوت: ${e.toString()}');

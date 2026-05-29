@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/services/khatma_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:huda/core/services/get_fonts.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/services/widget_service.dart';
@@ -277,7 +277,7 @@ class _AyahBottomSheetModalTabbedState
 
   @override
   Widget build(BuildContext context) {
-    final isPlaying = widget.audioPlayer.state == PlayerState.playing &&
+    final isPlaying = widget.audioPlayer.playing &&
         widget.playingAyahIndex == widget.index;
 
     final filteredReaders = widget.selectedLanguage != null
