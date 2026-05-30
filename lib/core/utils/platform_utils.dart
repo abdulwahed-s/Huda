@@ -9,4 +9,5 @@ class PlatformUtils {
   static bool get isIOS => !kIsWeb && Platform.isIOS;
   static bool get isMacOS => !kIsWeb && Platform.isMacOS;
   static bool get isWindow => !kIsWeb && Platform.isWindows;
+  static bool get isLinux => !kIsWeb && Platform.isLinux;
 }

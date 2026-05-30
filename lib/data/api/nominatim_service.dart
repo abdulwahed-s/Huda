@@ -23,4 +23,14 @@ class NominatimService {
       throw getDioErrorMessage(e);
     }
   }
+
+  Future<PlacemarkModel> searchLocation(String address) async {
+    try {
+      final response = await dio
+          .get(EndPoints.googleMapsForwardGeocoding(address, googleMapsApiKey));
+      return PlacemarkModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw getDioErrorMessage(e);
+    }
+  }
 }

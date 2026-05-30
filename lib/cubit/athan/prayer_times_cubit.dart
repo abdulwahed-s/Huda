@@ -310,6 +310,30 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
   }
 
+  Future<void> setManualLocation(double lat, double lon) async {
+    emit(PrayerTimesLoading());
+
+    try {
+      await cacheHelper.saveData(key: _latKey, value: lat.toString());
+      await cacheHelper.saveData(key: _lonKey, value: lon.toString());
+
+      final List<Placemark> placemarks =
+          await _locationService.getPlacemarks(lat, lon);
+
+      final coordinates = Coordinates(lat, lon);
+      final params = CalculationMethod.karachi.getParameters();
+      params.madhab = Madhab.shafi;
+
+      final date = DateComponents.from(DateTime.now());
+      final prayerTimes = PrayerTimes(coordinates, date, params);
+
+      emit(PrayerTimesLoaded(prayerTimes, placemarks));
+      await scheduleNotificationsForToday(NotificationServices());
+    } catch (e) {
+      emit(PrayerTimesError(e.toString()));
+    }
+  }
+
   Future<void> refreshLocationAndPrayerTimes() async {
     emit(PrayerTimesLoading());
 

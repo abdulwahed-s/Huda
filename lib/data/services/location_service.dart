@@ -110,4 +110,38 @@ class LocationService {
 
     return map;
   }
+
+  Future<List<Map<String, dynamic>>> searchCity(String query) async {
+  try {
+    final placemarkModel = await _nominatimService.searchLocation(query);
+
+    if (placemarkModel.results == null || placemarkModel.results!.isEmpty) {
+      return [];
+    }
+
+    return placemarkModel.results!.map((result) {
+      final components = result.addressComponents ?? [];
+      final addressMap = _parseAddressComponents(components);
+
+      String name = result.formattedAddress ?? '';
+      if (name.isEmpty) {
+        final parts = [
+          addressMap['locality'],
+          addressMap['administrative_area_level_1'],
+          addressMap['country']
+        ].where((part) => part != null && part.isNotEmpty).toList();
+        name = parts.join(', ');
+      }
+
+      return {
+        'name': name,
+        'lat': result.geometry?.location?.lat ?? 0.0,
+        'lon': result.geometry?.location?.lng ?? 0.0,
+      };
+    }).toList();
+  } catch (e) {
+    throw Exception('Failed to search location: $e');
+  }
+}
+
 }
