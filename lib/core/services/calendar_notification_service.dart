@@ -26,7 +26,10 @@ class CalendarNotificationService {
       appUserModelId: 'awr.Huda-IslamicCompanionApp',
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
-    const settings = InitializationSettings(android: android, windows: windows);
+
+    const linux = LinuxInitializationSettings(defaultActionName: 'Open notification');
+
+    const settings = InitializationSettings(android: android, windows: windows,linux: linux);
 
     await _plugin.initialize(settings);
   }

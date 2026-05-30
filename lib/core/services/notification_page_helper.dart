@@ -66,11 +66,15 @@ class NotificationPageHelper {
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
+
+    const linux = LinuxInitializationSettings(defaultActionName: 'Open notification');
+
     const settings = InitializationSettings(
       android: android,
       iOS: ios,
       macOS: macOS,
       windows: windows,
+      linux: linux
     );
 
     final initialized = await _plugin.initialize(settings);
