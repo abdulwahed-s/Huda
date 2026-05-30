@@ -48,6 +48,14 @@ static void my_application_activate(GApplication* application) {
   }
 
   gtk_window_set_default_size(window, 1280, 720);
+
+  // Set the window icon (works for both debug and release modes).
+  if (g_file_test("assets", G_FILE_TEST_IS_DIR)) {
+    gtk_window_set_icon_from_file(window, "assets/dev/huda_center.png", NULL);
+  } else {
+    gtk_window_set_icon_from_file(window, "data/flutter_assets/assets/dev/huda_center.png", NULL);
+  }
+
   gtk_widget_show(GTK_WIDGET(window));
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();

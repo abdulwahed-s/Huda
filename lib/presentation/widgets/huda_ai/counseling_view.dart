@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/chat/chat_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/huda_ai/counseling_skeleton.dart';
@@ -127,12 +128,13 @@ class _CounselingViewState extends State<CounselingView>
             onPressed: widget.onCopy,
           ),
           SizedBox(width: 8.w),
-          CounselingActionButton(
-            icon: widget.isGeneratingImage
-                ? Icons.hourglass_empty
-                : Icons.share_outlined,
-            onPressed: widget.isGeneratingImage ? null : widget.onShare,
-          ),
+          if (!PlatformUtils.isLinux)
+            CounselingActionButton(
+              icon: widget.isGeneratingImage
+                  ? Icons.hourglass_empty
+                  : Icons.share_outlined,
+              onPressed: widget.isGeneratingImage ? null : widget.onShare,
+            ),
         ],
       ),
     );

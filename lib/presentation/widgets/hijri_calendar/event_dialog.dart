@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/services/color_to_int.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/models/hijri_event.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/color_picker_dialog.dart';
@@ -254,7 +255,7 @@ class _EventDialogState extends State<EventDialog> {
   Widget _buildToggles(StateSetter setState, bool isTablet) {
     return Column(
       children: [
-        if (!kIsWeb)
+        if (!kIsWeb && !PlatformUtils.isLinux)
           SwitchListTile(
             value: _notify,
             title: Text(AppLocalizations.of(context)!.receiveNotification,

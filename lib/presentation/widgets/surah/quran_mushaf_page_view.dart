@@ -10,6 +10,7 @@ import 'package:huda/core/utils/hizb_calculator.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/data/models/bookmark_model.dart';
 import 'package:huda/core/services/khatma_service.dart';
+import 'package:huda/core/services/qcf_font_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 
 enum QuranReadingMode {
@@ -279,6 +280,37 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
             widget.mode.isMushaf;
     _pageController = PageController(
         initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode));
+    _requestFontsForPage(_currentPage);
+  }
+
+  QcfFontService? _getFontService() {
+    if (!widget.mode.isMushaf) return null;
+    try {
+      final instanceName =
+          _useTajweedFonts ? 'tajweed' : 'qcf4';
+      return getIt<QcfFontService>(instanceName: instanceName);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void _requestFontsForPage(int pageNumber) {
+    final fontService = _getFontService();
+    if (fontService == null || !fontService.areFontsReady) return;
+
+    const bufferSize = 3;
+    final pages = <int>[pageNumber, 1];
+    for (int d = 1; d <= bufferSize; d++) {
+      if (pageNumber - d >= 1) pages.add(pageNumber - d);
+      if (pageNumber + d <= quran.totalPagesCount) pages.add(pageNumber + d);
+    }
+    if (_currentIsDoubleMode) {
+      final paired = pageNumber % 2 == 1 ? pageNumber + 1 : pageNumber - 1;
+      if (paired >= 1 && paired <= quran.totalPagesCount && !pages.contains(paired)) {
+        pages.add(paired);
+      }
+    }
+    fontService.ensurePagesLoaded(pages);
   }
 
   @override
@@ -340,6 +372,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
                     (spreadIndex * 2 + 1).clamp(1, quran.totalPagesCount);
                 setState(() => _currentPage = rightPage);
                 widget.onPageChanged?.call(rightPage);
+                _requestFontsForPage(rightPage);
               },
               itemBuilder: (context, spreadIndex) {
                 final rightPage = spreadIndex * 2 + 1;
@@ -418,6 +451,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
             onPageChanged: (index) {
               setState(() => _currentPage = index + 1);
               widget.onPageChanged?.call(index + 1);
+              _requestFontsForPage(index + 1);
             },
             itemBuilder: (context, index) {
               return _QuranMushafPage(
@@ -482,12 +516,15 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
   List<BookmarkModel> _bookmarks = [];
   StreamSubscription<BookmarkChange>? _bookmarkSub;
   StreamSubscription<void>? _khatmaSub;
+  StreamSubscription<int>? _fontSub;
+  bool _fontLoaded = false;
 
   int get pageNumber => widget.pageNumber;
 
   @override
   void initState() {
     super.initState();
+    _checkFont();
     _loadBookmarks();
     try {
       _bookmarkSub = getIt<BookmarkService>()
@@ -501,6 +538,35 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     } catch (_) {}
   }
 
+  void _checkFont() {
+    final fontService = _getFontService();
+    if (fontService == null || !fontService.areFontsReady) {
+      _fontLoaded = true;
+      return;
+    }
+    if (fontService.isPageFontLoaded(pageNumber)) {
+      _fontLoaded = true;
+      return;
+    }
+    fontService.ensurePagesLoaded([pageNumber, 1]);
+    _fontSub = fontService.pageFontLoadedStream.listen((loadedPage) {
+      if (loadedPage == pageNumber && mounted) {
+        setState(() => _fontLoaded = true);
+        _fontSub?.cancel();
+        _fontSub = null;
+      }
+    });
+  }
+
+  QcfFontService? _getFontService() {
+    try {
+      final instanceName = widget.useTajweedFonts ? 'tajweed' : 'qcf4';
+      return getIt<QcfFontService>(instanceName: instanceName);
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> _loadBookmarks() async {
     try {
       final bookmarks = await getIt<BookmarkService>().getAllBookmarks();
@@ -510,6 +576,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
   @override
   void dispose() {
+    _fontSub?.cancel();
     _bookmarkSub?.cancel();
     _khatmaSub?.cancel();
     for (final r in _verseRecognizers.values) {
@@ -533,6 +600,10 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    if (!_fontLoaded) {
+      return _buildFontLoadingPlaceholder(isDark);
+    }
 
     List pageContent;
     try {
@@ -720,6 +791,16 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final fontSize = _verseFontSize(context, pageNumber);
     final lineHeight = _pageLineHeight(pageNumber);
 
+    // Reused for every tajweed-dark span (Bismillah + verses) to avoid
+    // allocating a new Paint per verse.
+    final Paint tajweedAdaptivePaint = Paint()
+      ..colorFilter = const ColorFilter.matrix(<double>[
+        0.3, 0, 0, 0, 180,
+        0, 0.3, 0, 0, 180,
+        0, 0, 0.3, 0, 180,
+        0, 0, 0, 1, 0,
+      ]);
+
     final List<InlineSpan> spans = [];
 
     for (final section in pageContent) {
@@ -734,13 +815,16 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
           ));
 
           if (pageNumber != 1 && pageNumber != 187) {
+            final Paint? bismillahPaint =
+                (isDark && widget.useTajweedFonts) ? tajweedAdaptivePaint : null;
             spans.add(
               TextSpan(
                 text: " ﱁ  ﱂﱃﱄ\n",
                 style: TextStyle(
-                  fontFamily: 'QCF_P001',
+                  fontFamily: '${fontPrefix}001',
                   fontSize: 24.0,
-                  color: textColor,
+                  color: bismillahPaint == null ? textColor : null,
+                  foreground: bismillahPaint,
                 ),
               ),
             );
@@ -844,29 +928,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
         final Paint? tajweedDarkPaint =
             (!isHidden && isDark && widget.useTajweedFonts)
-                ? (Paint()
-                  ..colorFilter = const ColorFilter.matrix(<double>[
-                    0.3,
-                    0,
-                    0,
-                    0,
-                    180,
-                    0,
-                    0.3,
-                    0,
-                    0,
-                    180,
-                    0,
-                    0,
-                    0.3,
-                    0,
-                    180,
-                    0,
-                    0,
-                    0,
-                    1,
-                    0,
-                  ]))
+                ? tajweedAdaptivePaint
                 : null;
 
         spans.add(TextSpan(
@@ -947,6 +1009,21 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFontLoadingPlaceholder(bool isDark) {
+    return Container(
+      color: _bgColor(isDark),
+      alignment: Alignment.center,
+      child: Text(
+        _convertToArabicNumber(pageNumber.toString()),
+        style: TextStyle(
+          fontFamily: 'Amiri',
+          fontSize: 18,
+          color: _textColor(isDark).withValues(alpha: 0.4),
+        ),
       ),
     );
   }

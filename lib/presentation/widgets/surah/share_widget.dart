@@ -181,38 +181,39 @@ class _ShareWidgetState extends State<ShareWidget> {
                 ],
               ),
               const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _isGeneratingImage ? null : _shareAsImage,
-                  icon: _isGeneratingImage
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
+              if (!Platform.isLinux)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _isGeneratingImage ? null : _shareAsImage,
+                    icon: _isGeneratingImage
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
                             ),
+                          )
+                        : const Icon(
+                            Icons.image_rounded,
+                            size: 18,
                           ),
-                        )
-                      : const Icon(
-                          Icons.image_rounded,
-                          size: 18,
-                        ),
-                  label: Text(_isGeneratingImage
-                      ? AppLocalizations.of(context)!.generating
-                      : AppLocalizations.of(context)!.shareAsImage),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.primaryLightColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    label: Text(_isGeneratingImage
+                        ? AppLocalizations.of(context)!.generating
+                        : AppLocalizations.of(context)!.shareAsImage),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.primaryLightColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

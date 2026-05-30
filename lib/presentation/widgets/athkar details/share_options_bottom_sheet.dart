@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/athkar%20details/share_option.dart';
 
@@ -59,17 +60,18 @@ class ShareOptionsBottomSheet extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 16.w),
-              Expanded(
-                child: ShareOption(
-                  icon: Icons.image,
-                  title: isGeneratingImage
-                      ? AppLocalizations.of(context)!.generatingImage
-                      : AppLocalizations.of(context)!.shareAsImage,
-                  isLoading: isGeneratingImage,
-                  onTap: onShareImage,
-                  colorScheme: colorScheme,
+             if (!PlatformUtils.isLinux)
+                Expanded(
+                  child: ShareOption(
+                    icon: Icons.image,
+                    title: isGeneratingImage
+                        ? AppLocalizations.of(context)!.generatingImage
+                        : AppLocalizations.of(context)!.shareAsImage,
+                    isLoading: isGeneratingImage,
+                    onTap: onShareImage,
+                    colorScheme: colorScheme,
+                  ),
                 ),
-              ),
             ],
           ),
           SizedBox(height: 16.h),

@@ -78,7 +78,7 @@ class HomeContent extends StatelessWidget {
           svgAsset: 'assets/images/qiblahicon.svg.vec',
           onTap: () => Navigator.pushNamed(context, AppRoute.qiblah),
         ),
-      if (!kIsWeb)
+      if (!kIsWeb && !PlatformUtils.isLinux)
         FeatureItem(
           title: AppLocalizations.of(context)!.notifications,
           icon: Icons.notifications,

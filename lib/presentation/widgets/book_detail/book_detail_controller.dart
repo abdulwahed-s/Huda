@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/book_detail/book_detail_cubit.dart';
 import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
 import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
@@ -458,11 +459,12 @@ class ShareDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            leading: const Icon(Icons.picture_as_pdf),
-            title: const Text('Share as PDF'),
-            onTap: onShareAsPdf,
-          ),
+          if (!PlatformUtils.isLinux)
+            ListTile(
+              leading: const Icon(Icons.picture_as_pdf),
+              title: const Text('Share as PDF'),
+              onTap: onShareAsPdf,
+            ),
           const Divider(height: 1),
           ListTile(
             leading: const Icon(Icons.message),

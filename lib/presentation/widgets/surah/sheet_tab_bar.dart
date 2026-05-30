@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 
 class SurahSheetTabBar extends StatelessWidget {
   final bool isDark;
@@ -82,6 +83,7 @@ class SurahSheetTabBar extends StatelessWidget {
                 icon: Icon(Icons.tune_rounded, size: 20.sp),
                 text: settingsLabel,
               ),
+              if (!PlatformUtils.isLinux)
               Tab(
                 icon: Icon(Icons.psychology_rounded, size: 20.sp),
                 text: memorizationLabel,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/models/chat_message_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/theme/theme_extension.dart';
@@ -125,12 +126,10 @@ class MessageBubble extends StatelessWidget {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20.r),
           topRight: Radius.circular(20.r),
-          bottomLeft: Radius.circular(isUser
-              ? (isRTL ? 4.r : 20.r)
-              : (isRTL ? 20.r : 4.r)),
-          bottomRight: Radius.circular(isUser
-              ? (isRTL ? 20.r : 4.r)
-              : (isRTL ? 4.r : 20.r)),
+          bottomLeft: Radius.circular(
+              isUser ? (isRTL ? 4.r : 20.r) : (isRTL ? 20.r : 4.r)),
+          bottomRight: Radius.circular(
+              isUser ? (isRTL ? 20.r : 4.r) : (isRTL ? 4.r : 20.r)),
         ),
         boxShadow: [
           BoxShadow(
@@ -144,8 +143,11 @@ class MessageBubble extends StatelessWidget {
           ? Text(
               message.text,
               style: TextStyle(
-                color:
-                    isUser ? Colors.white : isDark ? Colors.white : Colors.black87,
+                color: isUser
+                    ? Colors.white
+                    : isDark
+                        ? Colors.white
+                        : Colors.black87,
                 fontSize: 14.sp,
                 height: 1.5,
                 fontFamily: 'Amiri',
@@ -212,10 +214,13 @@ class MessageBubble extends StatelessWidget {
           onPressed: onCopy,
         ),
         SizedBox(width: 8.w),
-        ActionButton(
-          icon: isGeneratingImage ? Icons.hourglass_empty : Icons.share_outlined,
-          onPressed: isGeneratingImage ? null : onShare,
-        ),
+        if (!PlatformUtils.isLinux)
+          ActionButton(
+            icon: isGeneratingImage
+                ? Icons.hourglass_empty
+                : Icons.share_outlined,
+            onPressed: isGeneratingImage ? null : onShare,
+          ),
       ],
     );
   }

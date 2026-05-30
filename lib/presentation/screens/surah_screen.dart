@@ -11,6 +11,7 @@ import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/bookmark_service.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/core/services/get_fonts.dart';
 import 'package:huda/core/services/qcf_font_service.dart';
 import 'package:huda/core/services/reading_position_service.dart';
@@ -80,6 +81,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     _loadSavedMode();
     _loadCustomisation();
     _currentMushafPage = _initialMushafPage();
+    _preloadFontsForInitialPage(_currentMushafPage);
 
     if (!widget.isBookmarkVisit && !widget.shouldRestorePosition) {
       getIt<ReadingPositionService>().saveReadingPosition(
@@ -110,6 +112,19 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     );
     WakelockPlus.disable();
     super.dispose();
+  }
+
+  void _preloadFontsForInitialPage(int pageNumber) {
+    if (!_readingMode.isMushaf) return;
+    final instanceName =
+        _readingMode == QuranReadingMode.tajweed ? 'tajweed' : 'qcf4';
+    try {
+      final fontService =
+          getIt<QcfFontService>(instanceName: instanceName);
+      if (fontService.areFontsReady) {
+        fontService.ensurePagesLoaded([pageNumber, 1]);
+      }
+    } catch (_) {}
   }
 
   int _initialMushafPage() {
@@ -232,7 +247,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
           child: Directionality(
             textDirection: TextDirection.rtl,
             child: DefaultTabController(
-              length: 4,
+              length: PlatformUtils.isLinux ? 3 : 4,
               initialIndex: initialTab,
               child: StatefulBuilder(
                 builder: (sheetCtx, setSheetState) {
@@ -303,12 +318,13 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
                                   setQuranFonts(family);
                                 },
                               ),
-                              MemorizationTabContent(
-                                isDark: isDark,
-                                accent: accent,
-                                onStart: () => _startMemorization(sheetCtx),
-                                onStop: () => _stopMemorization(sheetCtx),
-                              ),
+                              if (!PlatformUtils.isLinux)
+                                MemorizationTabContent(
+                                  isDark: isDark,
+                                  accent: accent,
+                                  onStart: () => _startMemorization(sheetCtx),
+                                  onStop: () => _stopMemorization(sheetCtx),
+                                ),
                             ],
                           ),
                         ),
