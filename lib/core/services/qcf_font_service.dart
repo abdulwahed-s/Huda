@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, debugPrint, compute;
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/keys/hadith_key.dart';
 
 enum FontPackType {
   qcf4,
@@ -22,12 +23,12 @@ enum FontPackType {
     }
   }
 
-  String get storagePath {
+  List<String> get storageParts {
     switch (this) {
       case FontPackType.qcf4:
-        return 'fonts/qcf4.zip';
+        return ['qcf4_01.zip', 'qcf4_02.zip'];
       case FontPackType.tajweed:
-        return 'fonts/tajweed.zip';
+        return ['tajweed_01.zip', 'tajweed_02.zip'];
     }
   }
 
@@ -57,6 +58,9 @@ enum FontPackType {
         return '~65 MB';
     }
   }
+
+  String _supabasePublicUrl(String filename) =>
+      '$supabaseUrl/storage/v1/object/public/Quran/$filename';
 }
 
 enum QcfFontStatus { idle, downloading, extracting, loading, ready, error }
@@ -106,6 +110,15 @@ class QcfFontService {
   QcfFontDownloadState _currentState = const QcfFontDownloadState.idle();
   QcfFontDownloadState get currentState => _currentState;
 
+  final Set<int> _loadedPages = {};
+  final Set<int> _loadingPages = {};
+  final Map<int, String> _pageFileIndex = {};
+
+  final _pageFontLoadedController = StreamController<int>.broadcast();
+  Stream<int> get pageFontLoadedStream => _pageFontLoadedController.stream;
+
+  bool isPageFontLoaded(int pageNumber) => _loadedPages.contains(pageNumber);
+
   QcfFontService(
       {required CacheHelper cache, this.packType = FontPackType.qcf4})
       : _cache = cache;
@@ -116,8 +129,6 @@ class QcfFontService {
     final downloaded = _cache.getData(key: packType.cacheKey) as bool? ?? false;
     if (!downloaded) return;
 
-    _emit(const QcfFontDownloadState.loading());
-
     final fontsDir = await _fontsDirectory();
     if (!fontsDir.existsSync()) {
       await _cache.saveData(key: packType.cacheKey, value: false);
@@ -125,19 +136,14 @@ class QcfFontService {
       return;
     }
 
-    final fontFiles = fontsDir
-        .listSync()
-        .whereType<File>()
-        .where((f) => f.path.endsWith('.ttf'))
-        .toList();
+    _buildPageFileIndex(fontsDir);
 
-    if (fontFiles.isEmpty) {
+    if (_pageFileIndex.isEmpty) {
       await _cache.saveData(key: packType.cacheKey, value: false);
       _emit(const QcfFontDownloadState.idle());
       return;
     }
 
-    await _loadFontsFromDisk(fontsDir);
     _fontsReady = true;
     _emit(const QcfFontDownloadState.ready());
   }
@@ -154,19 +160,33 @@ class QcfFontService {
       _emit(const QcfFontDownloadState.downloading(0));
 
       final tempDir = await getTemporaryDirectory();
-      final zipFile = File('${tempDir.path}/${packType.zipFileName}');
+      final part1File = File('${tempDir.path}/${packType.name}_01.zip');
+      final part2File = File('${tempDir.path}/${packType.name}_02.zip');
 
-      final ref = FirebaseStorage.instance.ref(packType.storagePath);
-      final downloadTask = ref.writeToFile(zipFile);
+      final dio = Dio();
 
-      downloadTask.snapshotEvents.listen((event) {
-        if (event.totalBytes > 0) {
-          final progress = event.bytesTransferred / event.totalBytes;
-          _emit(QcfFontDownloadState.downloading(progress.clamp(0.0, 1.0)));
-        }
-      });
+      await dio.download(
+        packType._supabasePublicUrl(packType.storageParts[0]),
+        part1File.path,
+        onReceiveProgress: (received, total) {
+          if (total > 0) {
+            _emit(QcfFontDownloadState.downloading(
+                (received / total * 0.5).clamp(0.0, 0.5)));
+          }
+        },
+      );
 
-      await downloadTask;
+      await dio.download(
+        packType._supabasePublicUrl(packType.storageParts[1]),
+        part2File.path,
+        onReceiveProgress: (received, total) {
+          if (total > 0) {
+            _emit(QcfFontDownloadState.downloading(
+                (0.5 + received / total * 0.5).clamp(0.5, 1.0)));
+          }
+        },
+      );
+
       _emit(const QcfFontDownloadState.downloading(1.0));
 
       _emit(const QcfFontDownloadState.extracting());
@@ -176,12 +196,13 @@ class QcfFontService {
       }
       fontsDir.createSync(recursive: true);
 
-      await compute(_extractZip, _ExtractArgs(zipFile.path, fontsDir.path));
+      await compute(_extractZip, _ExtractArgs(part1File.path, fontsDir.path));
+      if (part1File.existsSync()) part1File.deleteSync();
 
-      if (zipFile.existsSync()) zipFile.deleteSync();
+      await compute(_extractZip, _ExtractArgs(part2File.path, fontsDir.path));
+      if (part2File.existsSync()) part2File.deleteSync();
 
-      _emit(const QcfFontDownloadState.loading());
-      await _loadFontsFromDisk(fontsDir);
+      _buildPageFileIndex(fontsDir);
 
       await _cache.saveData(key: packType.cacheKey, value: true);
       _fontsReady = true;
@@ -197,29 +218,74 @@ class QcfFontService {
     return Directory('${appSupport.path}/${packType.fontDirName}');
   }
 
-  Future<void> _loadFontsFromDisk(Directory fontsDir) async {
+  Future<void> ensurePagesLoaded(List<int> pageNumbers) async {
+    final toLoad = pageNumbers
+        .where((p) =>
+            !_loadedPages.contains(p) &&
+            !_loadingPages.contains(p) &&
+            _pageFileIndex.containsKey(p))
+        .toList();
+
+    if (toLoad.isEmpty) return;
+
+    const batchSize = 5;
+    for (int i = 0; i < toLoad.length; i += batchSize) {
+      final end = (i + batchSize).clamp(0, toLoad.length);
+      await Future.wait(toLoad.sublist(i, end).map(_loadSingleFont));
+    }
+  }
+
+  Future<void> _loadSingleFont(int pageNumber) async {
+    if (_loadedPages.contains(pageNumber) ||
+        _loadingPages.contains(pageNumber)) {
+      return;
+    }
+    _loadingPages.add(pageNumber);
+
+    final filePath = _pageFileIndex[pageNumber];
+    if (filePath == null) {
+      _loadingPages.remove(pageNumber);
+      return;
+    }
+
+    try {
+      final file = File(filePath);
+      final bytes = await file.readAsBytes();
+      final byteData = ByteData.view(bytes.buffer);
+      final loader = FontLoader(_familyNameForPage(pageNumber));
+      loader.addFont(Future.value(byteData));
+      await loader.load();
+
+      _loadingPages.remove(pageNumber);
+      _loadedPages.add(pageNumber);
+      _pageFontLoadedController.add(pageNumber);
+    } catch (e) {
+      _loadingPages.remove(pageNumber);
+      debugPrint(
+          'QcfFontService(${packType.name}): failed to load font for page $pageNumber: $e');
+    }
+  }
+
+  void _buildPageFileIndex(Directory fontsDir) {
+    _pageFileIndex.clear();
     final fontFiles = fontsDir
         .listSync()
         .whereType<File>()
         .where((f) => f.path.endsWith('.ttf'))
-        .toList()
-      ..sort((a, b) => a.path.compareTo(b.path));
+        .toList();
 
     for (final file in fontFiles) {
       final familyName = _familyNameFromFile(file);
       if (familyName == null) continue;
-
-      try {
-        final bytes = await file.readAsBytes();
-        final byteData = ByteData.view(bytes.buffer);
-        final loader = FontLoader(familyName);
-        loader.addFont(Future.value(byteData));
-        await loader.load();
-      } catch (e) {
-        debugPrint(
-            'QcfFontService(${packType.name}): failed to load font $familyName: $e');
-      }
+      final pageNum = int.tryParse(familyName.substring(5));
+      if (pageNum == null) continue;
+      _pageFileIndex[pageNum] = file.path;
     }
+  }
+
+  String _familyNameForPage(int pageNumber) {
+    final padded = pageNumber.toString().padLeft(3, '0');
+    return packType == FontPackType.qcf4 ? 'QCF_P$padded' : 'QCF_T$padded';
   }
 
   String? _familyNameFromFile(File file) {
@@ -248,6 +314,7 @@ class QcfFontService {
 
   void dispose() {
     _stateController.close();
+    _pageFontLoadedController.close();
   }
 }
 
