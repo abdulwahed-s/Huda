@@ -1,9 +1,8 @@
 // error_cubit.dart
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:uuid/uuid.dart';
 
 part 'error_state.dart';
 
@@ -26,37 +25,41 @@ class ErrorCubit extends Cubit<ErrorState> {
         manufacturer = androidInfo.manufacturer;
       } catch (_) {}
 
-      final docId = const Uuid().v4();
+      final result = await Supabase.instance.client
+          .from('error_reports')
+          .insert({
+            'error': error,
+            'user_message': '',
+            'device': {
+              'model': model,
+              'version': version,
+              'manufacturer': manufacturer,
+            },
+          })
+          .select('id')
+          .single();
 
-      await FirebaseFirestore.instance.collection('app_errors').doc(docId).set({
-        'error': error,
-        'userMessage': '',
-        'timestamp': FieldValue.serverTimestamp(),
-        'device': {
-          'model': model,
-          'version': version,
-          'manufacturer': manufacturer,
-        },
-      });
-
+      final docId = result['id'] as String;
       emit(ErrorLoaded(docId: docId));
     } catch (e) {
       emit(ErrorFailure(message: 'Failed to send error'));
     }
   }
 
-  Future<void> submitFeedback(String message) async {
+  Future<void> submitFeedback(String message, {String? contactEmail}) async {
     final currentState = state;
     if (currentState is ErrorLoaded) {
       emit(ErrorSubmitting());
       try {
-        await FirebaseFirestore.instance
-            .collection('app_errors')
-            .doc(currentState.docId)
+        await Supabase.instance.client
+            .from('error_reports')
             .update({
-          'userMessage': message,
-          'userMessageTimestamp': FieldValue.serverTimestamp(),
-        });
+              'user_message': message,
+              if (contactEmail != null && contactEmail.isNotEmpty)
+                'contact_email': contactEmail,
+              'updated_at': DateTime.now().toIso8601String(),
+            })
+            .eq('id', currentState.docId);
         emit(ErrorSubmitted());
       } catch (e) {
         emit(ErrorFailure(message: 'Failed to submit feedback'));

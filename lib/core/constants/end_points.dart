@@ -18,4 +18,5 @@ class EndPoints {
   static String allBooksLanguages(String lang) => '$islamhouseBaseUrl/main/get-available-languages/books/$lang/json';
   static const String googleMapsBaseUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
   static String googleMapsReverseGeocoding(double lat, double lon,String apiKey) => '$googleMapsBaseUrl?latlng=$lat,$lon&key=$apiKey';
+  static String googleMapsForwardGeocoding(String address, String apiKey) => '$googleMapsBaseUrl?address=$address&key=$apiKey';
 }

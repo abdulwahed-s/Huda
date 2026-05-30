@@ -1,26 +1,32 @@
 import 'dart:typed_data';
 
 import 'package:feedback/feedback.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> sendFeedbackToFirebase(UserFeedback feedback) async {
-  final screenshotUrl = await uploadScreenshot(feedback.screenshot);
+  final screenshotPath = await uploadScreenshot(feedback.screenshot);
+  final contactEmail = feedback.extra?['email'] as String?;
 
-  await FirebaseFirestore.instance.collection('app_feedback').add({
+  await Supabase.instance.client.from('app_feedback').insert({
+    'type': 'screenshot',
     'text': feedback.text,
-    'screenshot_url': screenshotUrl,
-    'timestamp': FieldValue.serverTimestamp(),
+    'screenshot_url': screenshotPath,
     'device': feedback.extra,
+    if (contactEmail != null && contactEmail.isNotEmpty)
+      'contact_email': contactEmail,
   });
 }
 
 Future<String> uploadScreenshot(Uint8List screenshotBytes) async {
-  final storageRef = FirebaseStorage.instance
-      .ref()
-      .child('feedback_screenshots')
-      .child('${DateTime.now().millisecondsSinceEpoch}.png');
+  final path = '${DateTime.now().millisecondsSinceEpoch}.png';
 
-  await storageRef.putData(screenshotBytes);
-  return await storageRef.getDownloadURL();
+  await Supabase.instance.client.storage
+      .from('feedback-screenshots')
+      .uploadBinary(
+        path,
+        screenshotBytes,
+        fileOptions: const FileOptions(contentType: 'image/png'),
+      );
+
+  return 'feedback-screenshots/$path';
 }
