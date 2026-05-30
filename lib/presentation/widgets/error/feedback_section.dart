@@ -31,6 +31,7 @@ class FeedbackSection extends StatefulWidget {
 
 class _FeedbackSectionState extends State<FeedbackSection> {
   final TextEditingController _messageController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   void _submitFeedback() {
@@ -61,14 +62,20 @@ class _FeedbackSectionState extends State<FeedbackSection> {
     }
 
     HapticFeedback.mediumImpact();
-    context.read<ErrorCubit>().submitFeedback(message);
+    final email = _emailController.text.trim();
+    context.read<ErrorCubit>().submitFeedback(
+          message,
+          contactEmail: email.isNotEmpty ? email : null,
+        );
     _messageController.clear();
+    _emailController.clear();
     _focusNode.unfocus();
   }
 
   @override
   void dispose() {
     _messageController.dispose();
+    _emailController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -226,6 +233,60 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                               color: widget.subtitleColor,
                               fontFamily: "Amiri",
                             ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: widget.shadowColor,
+                              blurRadius: 4.r,
+                              offset: Offset(0, 2.h),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: widget.textColor,
+                            fontFamily: "Amiri",
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Email (optional — for a reply)',
+                            hintStyle: TextStyle(
+                              fontSize: 14.sp,
+                              color: widget.subtitleColor,
+                              fontFamily: "Amiri",
+                            ),
+                            prefixIcon: Icon(
+                              Icons.mail_outline_rounded,
+                              color: widget.subtitleColor,
+                              size: 18.sp,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: BorderSide(color: widget.borderColor),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: BorderSide(color: widget.borderColor),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: BorderSide(
+                                color: context.primaryColor,
+                                width: 2,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: widget.errorCodeBg,
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 14.h),
                           ),
                         ),
                       ),

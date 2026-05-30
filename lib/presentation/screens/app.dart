@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:feedback/feedback.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/presentation/widgets/feedback/screenshot_feedback_widget.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/routes/page_router.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
@@ -149,6 +150,11 @@ class _AppState extends State<App> {
 
               return BetterFeedback(
                 themeMode: themeState.themeMode,
+                feedbackBuilder: (context, onSubmit, scrollController) =>
+                    ScreenshotFeedbackWidget(
+                  onSubmit: onSubmit,
+                  scrollController: scrollController,
+                ),
                 child: screenUtilChild,
               );
             },

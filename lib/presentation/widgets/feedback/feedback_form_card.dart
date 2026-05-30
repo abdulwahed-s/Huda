@@ -6,6 +6,7 @@ import 'package:huda/l10n/app_localizations.dart';
 class FeedbackFormCard extends StatelessWidget {
   final Animation<Offset> slideAnimation;
   final TextEditingController feedbackController;
+  final TextEditingController emailController;
   final FocusNode focusNode;
   final bool isSubmitting;
   final VoidCallback submitFeedback;
@@ -20,6 +21,7 @@ class FeedbackFormCard extends StatelessWidget {
     super.key,
     required this.slideAnimation,
     required this.feedbackController,
+    required this.emailController,
     required this.focusNode,
     required this.isSubmitting,
     required this.submitFeedback,
@@ -108,6 +110,42 @@ class FeedbackFormCard extends StatelessWidget {
                 fontFamily: "Amiri",
                 color: textColor,
                 height: 1.4,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            TextField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: 'Email (optional — for a reply)',
+                hintStyle: TextStyle(
+                  color: subtitleColor,
+                  fontFamily: "Amiri",
+                ),
+                prefixIcon: Icon(
+                  Icons.mail_outline_rounded,
+                  color: subtitleColor,
+                  size: 20.sp,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(color: borderColor, width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(color: borderColor, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(color: context.primaryColor, width: 2),
+                ),
+                filled: true,
+                fillColor: isDark ? Colors.grey.shade900 : Colors.grey.shade50,
+              ),
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontFamily: "Amiri",
+                color: textColor,
               ),
             ),
             SizedBox(height: 24.h),

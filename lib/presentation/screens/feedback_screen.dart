@@ -19,6 +19,7 @@ class FeedbackScreen extends StatefulWidget {
 class _FeedbackScreenState extends State<FeedbackScreen>
     with TickerProviderStateMixin {
   final TextEditingController _feedbackController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   late AnimationController _animationController;
   late AnimationController _slideController;
@@ -62,6 +63,7 @@ class _FeedbackScreenState extends State<FeedbackScreen>
     _animationController.dispose();
     _slideController.dispose();
     _feedbackController.dispose();
+    _emailController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -98,7 +100,11 @@ class _FeedbackScreenState extends State<FeedbackScreen>
     }
 
     HapticFeedback.mediumImpact();
-    context.read<RatingCubit>().submitDetailedFeedback(feedback);
+    final email = _emailController.text.trim();
+    context.read<RatingCubit>().submitDetailedFeedback(
+          feedback,
+          contactEmail: email.isNotEmpty ? email : null,
+        );
   }
 
   @override
@@ -219,6 +225,7 @@ class _FeedbackScreenState extends State<FeedbackScreen>
                         FeedbackFormCard(
                           slideAnimation: _slideAnimation,
                           feedbackController: _feedbackController,
+                          emailController: _emailController,
                           focusNode: _focusNode,
                           isSubmitting: isSubmitting,
                           submitFeedback: _submitFeedback,

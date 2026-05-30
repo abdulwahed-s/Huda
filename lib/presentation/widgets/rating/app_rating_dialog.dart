@@ -18,6 +18,7 @@ class _AppRatingDialogState extends State<AppRatingDialog>
     with TickerProviderStateMixin {
   double _rating = 0;
   final TextEditingController _feedbackController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   bool _showFeedbackField = false;
   late AnimationController _animationController;
   late AnimationController _starAnimationController;
@@ -62,6 +63,7 @@ class _AppRatingDialogState extends State<AppRatingDialog>
     _animationController.dispose();
     _starAnimationController.dispose();
     _feedbackController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -136,9 +138,11 @@ class _AppRatingDialogState extends State<AppRatingDialog>
     }
 
     HapticFeedback.mediumImpact();
+    final email = _emailController.text.trim();
     context.read<RatingCubit>().handleRating(
           _rating.toInt(),
           comment: _feedbackController.text.trim(),
+          contactEmail: email.isNotEmpty ? email : null,
         );
   }
 
@@ -345,6 +349,57 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                           ? Colors.grey.shade500
                                           : Colors.grey.shade600,
                                       fontFamily: "Amiri",
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide(
+                                        color: isDark
+                                            ? Colors.grey.shade700
+                                            : Colors.grey.shade300,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide(
+                                        color: context.primaryColor,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    filled: true,
+                                    fillColor: isDark
+                                        ? Colors.grey.shade900
+                                        : Colors.grey.shade50,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w,
+                                      vertical: 8.h,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontFamily: "Amiri",
+                                    color: isDark
+                                        ? context.darkText
+                                        : const Color(0xFF1E293B),
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                TextField(
+                                  controller: _emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    hintText: 'Email (optional — for a reply)',
+                                    hintStyle: TextStyle(
+                                      color: isDark
+                                          ? Colors.grey.shade500
+                                          : Colors.grey.shade600,
+                                      fontFamily: "Amiri",
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.mail_outline_rounded,
+                                      color: isDark
+                                          ? Colors.grey.shade500
+                                          : Colors.grey.shade600,
+                                      size: 18.sp,
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12.r),
