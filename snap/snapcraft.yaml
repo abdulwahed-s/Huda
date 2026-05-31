@@ -1,0 +1,59 @@
+name: huda
+version: '3.2.0'
+title: Huda - Islamic Companion App
+summary: Quran, Prayer Times, Qibla, Hijri Calendar & more
+description: |
+  Huda is a comprehensive Islamic companion app featuring:
+  • Quran recitation with multiple reciters and translations
+  • Accurate prayer times with Adhan
+  • Qibla direction finder
+  • Hijri/Gregorian calendar
+  • Tasbeeh counter and more
+
+  Available in Arabic, English, Turkish, French, Spanish, German,
+  Russian, Urdu, Malay, and Bengali.
+
+contact: abdulwahedaldaghir0@gmail.com
+license: MIT
+
+confinement: strict
+base: core24
+grade: stable
+
+slots:
+  dbus-huda:
+    interface: dbus
+    bus: session
+    name: com.aw.huda
+  mpris:
+    interface: mpris
+    name: huda
+
+apps:
+  huda:
+    command: huda
+    extensions: [gnome]
+    plugs:
+      - network
+      - network-status
+      - audio-playback
+      - home
+    slots:
+      - dbus-huda
+      - mpris
+
+parts:
+  huda:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart
+    stage-packages:
+      - libmpv2
+    override-prime: |
+      craftctl default
+      # Debian's update-alternatives is not available inside the snap,
+      # so libblas3/liblapack3 end up in subdirectories without the
+      # top-level symlinks the dynamic linker expects.
+      cd usr/lib/x86_64-linux-gnu
+      [ -d blas ]   && ln -sf blas/libblas.so.3 libblas.so.3
+      [ -d lapack ] && ln -sf lapack/liblapack.so.3 liblapack.so.3

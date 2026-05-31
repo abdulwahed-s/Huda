@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Huda
+GenericName=Islamic Companion App
+Comment=Quran, Prayer Times, Qibla and more
+Exec=huda
+Icon=${SNAP}/meta/gui/huda.png
+Terminal=false
+Type=Application
+Categories=Education;
+StartupNotify=true
