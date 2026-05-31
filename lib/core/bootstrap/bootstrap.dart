@@ -16,6 +16,20 @@ import 'package:alarm/alarm.dart';
 import 'package:huda/core/services/sahur_alarm_helper.dart';
 
 String? _findLinuxLibmpv() {
+  final snap = Platform.environment['SNAP'];
+  if (snap != null) {
+    for (final path in [
+      '$snap/usr/lib/x86_64-linux-gnu/libmpv.so.2',
+      '$snap/usr/lib/aarch64-linux-gnu/libmpv.so.2',
+    ]) {
+      if (File(path).existsSync()) return path;
+    }
+    final arch = Platform.environment['SNAP_ARCH'] ?? 'amd64';
+    return arch == 'arm64'
+        ? '/usr/lib/aarch64-linux-gnu/libmpv.so.2'
+        : '/usr/lib/x86_64-linux-gnu/libmpv.so.2';
+  }
+  
   for (final path in [
     '/usr/lib/x86_64-linux-gnu/libmpv.so.2',
     '/usr/lib/x86_64-linux-gnu/libmpv.so',
