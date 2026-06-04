@@ -3,8 +3,9 @@
 ; Non-commercial use only
 
 #define MyAppName "Huda"
-#define MyAppVersion "1.4.2"
+#define MyAppVersion "2.2.0"
 #define MyAppPublisher "awr"
+#define MyAppURL "https://awrs.me/en/projects/huda-islamic-companion-app"
 #define MyAppExeName "huda.exe"
 
 [Setup]
@@ -49,15 +50,17 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\audioplayers_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\app_links_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\connectivity_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\flutter_local_notifications_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\flutter_timezone_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\geolocator_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\libmpv-2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\media_kit_libs_windows_audio_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\pdfium.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\pdfrx.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\permission_handler_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\restart_app_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\share_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\speech_to_text_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\url_launcher_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
