@@ -1,0 +1,521 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Build only — skip store uploads'
+        type: boolean
+        default: false
+
+env:
+  FLUTTER_VERSION: '3.6.2'
+
+permissions:
+  contents: write
+
+jobs:
+  # ──────────────────────────────────────────────────────────
+  # Android — AAB → Google Play, APK → artifact
+  # ──────────────────────────────────────────────────────────
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Decode Android keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=keystore.jks
+          EOF
+
+      - name: Build AAB
+        run: flutter build appbundle --release
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload to Google Play
+        if: ${{ !inputs.dry_run }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.aw.huda
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: production
+          status: completed
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+  # ──────────────────────────────────────────────────────────
+  # iOS — IPA → App Store
+  # ──────────────────────────────────────────────────────────
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - run: flutter pub get
+
+      - name: Install CocoaPods
+        run: cd ios && pod install --repo-update
+
+      - name: Import certificates & provisioning profiles
+        env:
+          DISTRIBUTION_CERT_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERT_BASE64 }}
+          DISTRIBUTION_CERT_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERT_PASSWORD }}
+          IOS_PROFILES: |
+            ${{ secrets.IOS_RUNNER_PROFILE_BASE64 }}
+            ${{ secrets.IOS_SHIELD_PROFILE_BASE64 }}
+            ${{ secrets.IOS_SHIELD_ACTION_PROFILE_BASE64 }}
+            ${{ secrets.IOS_WIDGET_PROFILE_BASE64 }}
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          echo "$DISTRIBUTION_CERT_BASE64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security import "$RUNNER_TEMP/cert.p12" \
+            -P "$DISTRIBUTION_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: \
+            -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            echo "$line" | base64 --decode > "$RUNNER_TEMP/temp.mobileprovision"
+            UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin \
+              <<< "$(security cms -D -i "$RUNNER_TEMP/temp.mobileprovision")")
+            cp "$RUNNER_TEMP/temp.mobileprovision" \
+              ~/Library/MobileDevice/Provisioning\ Profiles/"$UUID".mobileprovision
+          done <<< "$IOS_PROFILES"
+
+      - name: Create ExportOptions.plist
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          PROFILE_RUNNER: ${{ secrets.IOS_RUNNER_PROFILE_NAME }}
+          PROFILE_SHIELD: ${{ secrets.IOS_SHIELD_PROFILE_NAME }}
+          PROFILE_SHIELD_ACTION: ${{ secrets.IOS_SHIELD_ACTION_PROFILE_NAME }}
+          PROFILE_WIDGET: ${{ secrets.IOS_WIDGET_PROFILE_NAME }}
+        run: |
+          cat > ios/ExportOptions-CI.plist <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+            "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.aw.huda</key>
+              <string>${PROFILE_RUNNER}</string>
+              <key>com.aw.huda.HudaShield</key>
+              <string>${PROFILE_SHIELD}</string>
+              <key>com.aw.huda.HudaShieldAction</key>
+              <string>${PROFILE_SHIELD_ACTION}</string>
+              <key>com.aw.huda.HudaWidget</key>
+              <string>${PROFILE_WIDGET}</string>
+            </dict>
+          </dict>
+          </plist>
+          PLIST
+
+      - name: Disable automatic signing for CI
+        run: |
+          cd ios
+          bundle exec fastlane run update_code_signing_settings \
+            use_automatic_signing:false \
+            path:Runner.xcodeproj \
+            team_id:"${{ secrets.APPLE_TEAM_ID }}" \
+            code_sign_identity:"Apple Distribution"
+
+      - name: Build IPA
+        run: flutter build ipa --release --export-options-plist=ios/ExportOptions-CI.plist
+
+      - name: Upload to App Store
+        if: ${{ !inputs.dry_run }}
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+        run: cd ios && bundle exec fastlane deploy
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa
+          path: build/ios/ipa/*.ipa
+
+      - name: Cleanup keychain
+        if: always()
+        run: security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" 2>/dev/null || true
+
+  # ──────────────────────────────────────────────────────────
+  # macOS — pkg → App Store
+  # ──────────────────────────────────────────────────────────
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - run: flutter pub get
+
+      - name: Install CocoaPods
+        run: cd macos && pod install --repo-update
+
+      - name: Import certificates
+        env:
+          DISTRIBUTION_CERT_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERT_BASE64 }}
+          DISTRIBUTION_CERT_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERT_PASSWORD }}
+          INSTALLER_CERT_BASE64: ${{ secrets.MACOS_INSTALLER_CERT_BASE64 }}
+          INSTALLER_CERT_PASSWORD: ${{ secrets.MACOS_INSTALLER_CERT_PASSWORD }}
+          MACOS_PROFILE_BASE64: ${{ secrets.MACOS_PROFILE_BASE64 }}
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          echo "$DISTRIBUTION_CERT_BASE64" | base64 --decode > "$RUNNER_TEMP/dist.p12"
+          security import "$RUNNER_TEMP/dist.p12" \
+            -P "$DISTRIBUTION_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+
+          echo "$INSTALLER_CERT_BASE64" | base64 --decode > "$RUNNER_TEMP/installer.p12"
+          security import "$RUNNER_TEMP/installer.p12" \
+            -P "$INSTALLER_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+
+          security set-key-partition-list -S apple-tool:,apple: \
+            -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+          if [ -n "$MACOS_PROFILE_BASE64" ]; then
+            mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+            echo "$MACOS_PROFILE_BASE64" | base64 --decode > "$RUNNER_TEMP/macos.provisionprofile"
+            UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin \
+              <<< "$(security cms -D -i "$RUNNER_TEMP/macos.provisionprofile")")
+            cp "$RUNNER_TEMP/macos.provisionprofile" \
+              ~/Library/MobileDevice/Provisioning\ Profiles/"$UUID".provisionprofile
+          fi
+
+      - name: Build macOS app
+        run: |
+          cd macos
+          bundle exec fastlane run update_code_signing_settings \
+            use_automatic_signing:false \
+            path:Runner.xcodeproj \
+            team_id:"${{ secrets.APPLE_TEAM_ID }}" \
+            code_sign_identity:"Apple Distribution"
+          cd ..
+          flutter build macos --release
+
+      - name: Create installer pkg
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/huda.app"
+          if [ ! -d "$APP_PATH" ]; then
+            APP_PATH=$(find build/macos/Build/Products/Release -name "*.app" -maxdepth 1 | head -1)
+          fi
+          echo "Packaging: $APP_PATH"
+
+          productbuild \
+            --sign "${{ secrets.MACOS_INSTALLER_IDENTITY }}" \
+            --component "$APP_PATH" /Applications \
+            build/macos/Huda-macOS.pkg
+
+      - name: Upload to App Store
+        if: ${{ !inputs.dry_run }}
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+        run: cd macos && bundle exec fastlane deploy
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-pkg
+          path: build/macos/Huda-macOS.pkg
+
+      - name: Cleanup keychain
+        if: always()
+        run: security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" 2>/dev/null || true
+
+  # ──────────────────────────────────────────────────────────
+  # Windows — MSIX → Microsoft Store
+  # ──────────────────────────────────────────────────────────
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Sync MSIX version from pubspec
+        shell: pwsh
+        run: |
+          $content = Get-Content pubspec.yaml -Raw
+          if ($content -match 'version:\s+(\d+\.\d+\.\d+)') {
+            $version = $Matches[1] + ".0"
+            $content = $content -replace 'msix_version:\s+\S+', "msix_version: $version"
+            Set-Content pubspec.yaml $content
+            Write-Host "MSIX version set to $version"
+          }
+
+      - name: Build Windows
+        run: flutter build windows --release
+
+      - name: Create MSIX
+        run: dart run msix:create
+
+      - name: Setup Microsoft Store CLI
+        if: ${{ !inputs.dry_run }}
+        uses: microsoft/microsoft-store-apppublisher@v1.3
+
+      - name: Upload to Microsoft Store
+        if: ${{ !inputs.dry_run }}
+        shell: pwsh
+        run: |
+          msstore reconfigure `
+            --tenantId "${{ secrets.AZURE_AD_TENANT_ID }}" `
+            --clientId "${{ secrets.AZURE_AD_CLIENT_ID }}" `
+            --clientSecret "${{ secrets.AZURE_AD_CLIENT_SECRET }}" `
+            --sellerId "${{ secrets.MS_STORE_SELLER_ID }}"
+
+          $msix = Get-ChildItem -Path build -Recurse -Filter "*.msix" | Select-Object -First 1
+          msstore publish "$($msix.FullName)" -v
+
+      - name: Upload MSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msix
+          path: build/**/*.msix
+
+  # ──────────────────────────────────────────────────────────
+  # Linux — snap → Snapcraft Store
+  # ──────────────────────────────────────────────────────────
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync snap version from pubspec
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}' | cut -d'+' -f1)
+          sed -i "s/^version:.*/version: '$VERSION'/" snap/snapcraft.yaml
+          echo "Snap version set to $VERSION"
+
+      - uses: snapcore/action-build@v1
+        id: snapcraft
+
+      - name: Upload to Snapcraft Store
+        if: ${{ !inputs.dry_run }}
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          release: stable
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-snap
+          path: ${{ steps.snapcraft.outputs.snap }}
+
+  # ──────────────────────────────────────────────────────────
+  # Huawei AppGallery — APK upload via Publishing API (JWT)
+  # ──────────────────────────────────────────────────────────
+  upload-appgallery:
+    needs: build-android
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-apk
+
+      - name: Upload to AppGallery
+        env:
+          HUAWEI_API_KEY_JSON: ${{ secrets.HUAWEI_API_KEY_JSON }}
+          HUAWEI_APP_ID: ${{ secrets.HUAWEI_APP_ID }}
+        run: |
+          set -euo pipefail
+          pip install PyJWT cryptography requests
+
+          python3 << 'PYEOF'
+          import json, os, time, sys
+          import jwt
+          import requests
+
+          key_json = json.loads(os.environ["HUAWEI_API_KEY_JSON"])
+          app_id = os.environ["HUAWEI_APP_ID"]
+
+          # 1. Create JWT signed with PS256
+          now = int(time.time())
+          headers = {"kid": key_json["key_id"], "typ": "JWT", "alg": "PS256"}
+          payload = {
+              "iss": key_json["sub_account"],
+              "aud": key_json["token_uri"],
+              "iat": now,
+              "exp": now + 3600,
+          }
+          signed_jwt = jwt.encode(payload, key_json["private_key"], algorithm="PS256", headers=headers)
+
+          # 2. Exchange JWT for access token
+          token_resp = requests.post(key_json["token_uri"], data={
+              "grant_type": "client_credentials",
+              "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+              "client_assertion": signed_jwt,
+          })
+          token_resp.raise_for_status()
+          access_token = token_resp.json()["access_token"]
+          print("✓ Obtained access token")
+
+          auth_headers = {
+              "Authorization": f"Bearer {access_token}",
+              "Content-Type": "application/json",
+          }
+
+          BASE = "https://connect-api.cloud.huawei.com/api/publish/v2"
+
+          # 3. Get upload URL
+          upload_meta = requests.get(
+              f"{BASE}/upload-url?appId={app_id}&suffix=apk&releaseType=1",
+              headers=auth_headers,
+          ).json()
+          upload_url = upload_meta["uploadUrl"]
+          auth_code = upload_meta["authCode"]
+          print(f"✓ Got upload URL")
+
+          # 4. Upload APK
+          with open("app-release.apk", "rb") as f:
+              upload_resp = requests.post(upload_url, data={
+                  "authCode": auth_code,
+                  "fileCount": "1",
+              }, files={"file": ("app-release.apk", f, "application/vnd.android.package-archive")})
+          upload_result = upload_resp.json()
+          file_dest_url = upload_result["result"]["UploadFileRsp"]["fileInfoList"][0]["fileDestUlr"]
+          print("✓ APK uploaded")
+
+          # 5. Update app file info
+          resp = requests.put(f"{BASE}/app-file-info?appId={app_id}", headers=auth_headers, json={
+              "fileType": 5,
+              "files": [{"fileName": "app-release.apk", "fileDestUrl": file_dest_url}],
+          })
+          resp.raise_for_status()
+          print("✓ App file info updated")
+
+          # 6. Submit for review
+          resp = requests.post(f"{BASE}/app-submit?appId={app_id}", headers=auth_headers)
+          resp.raise_for_status()
+          print("✓ Submitted to AppGallery for review")
+          PYEOF
+
+  # ──────────────────────────────────────────────────────────
+  # GitHub Release — collect all artifacts
+  # ──────────────────────────────────────────────────────────
+  create-release:
+    needs: [build-android, build-ios, build-macos, build-windows, build-linux]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          VERSION=${GITHUB_REF_NAME#v}
+
+          [ -f release-artifacts/android-apk/app-release.apk ] && \
+            cp release-artifacts/android-apk/app-release.apk "release-assets/Huda-${VERSION}-android.apk"
+
+          find release-artifacts/windows-msix -name "*.msix" -exec \
+            cp {} "release-assets/Huda-${VERSION}-windows.msix" \; 2>/dev/null || true
+
+          [ -f release-artifacts/macos-pkg/Huda-macOS.pkg ] && \
+            cp release-artifacts/macos-pkg/Huda-macOS.pkg "release-assets/Huda-${VERSION}-macOS.pkg"
+
+          find release-artifacts/linux-snap -name "*.snap" -exec \
+            cp {} "release-assets/Huda-${VERSION}-linux.snap" \; 2>/dev/null || true
+
+          find release-artifacts/ios-ipa -name "*.ipa" -exec \
+            cp {} "release-assets/Huda-${VERSION}-ios.ipa" \; 2>/dev/null || true
+
+          echo "Release assets:"
+          ls -lh release-assets/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release-assets/*
+          fail_on_unmatched_files: false

@@ -56,3 +56,10 @@ android/app/build/.last_build_id
 
 
 ios/build
+ios/ExportOptions-CI.plist
+
+# CI/CD artifacts
+android/key.properties
+android/app/keystore.jks
+*.p12
+Gemfile.lock
