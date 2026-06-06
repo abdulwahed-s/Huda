@@ -38,6 +38,11 @@ jobs:
 
       - run: flutter pub get
 
+      - name: Create API keys file
+        run: |
+          mkdir -p lib/core/keys
+          echo "${{ secrets.DART_KEYS_FILE }}" | base64 --decode > lib/core/keys/hadith_key.dart
+
       - name: Decode Android keystore
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
 
@@ -91,10 +96,15 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
           bundler-cache: true
 
       - run: flutter pub get
+
+      - name: Create API keys file
+        run: |
+          mkdir -p lib/core/keys
+          echo "${{ secrets.DART_KEYS_FILE }}" | base64 --decode > lib/core/keys/hadith_key.dart
 
       - name: Install CocoaPods
         run: cd ios && pod install --repo-update
@@ -216,10 +226,15 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
           bundler-cache: true
 
       - run: flutter pub get
+
+      - name: Create API keys file
+        run: |
+          mkdir -p lib/core/keys
+          echo "${{ secrets.DART_KEYS_FILE }}" | base64 --decode > lib/core/keys/hadith_key.dart
 
       - name: Install CocoaPods
         run: cd macos && pod install --repo-update
@@ -315,6 +330,12 @@ jobs:
           cache: true
 
       - run: flutter pub get
+
+      - name: Create API keys file
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path lib/core/keys | Out-Null
+          [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.DART_KEYS_FILE }}")) | Set-Content lib/core/keys/hadith_key.dart
 
       - name: Sync MSIX version from pubspec
         shell: pwsh
