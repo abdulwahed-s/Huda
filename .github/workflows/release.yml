@@ -183,13 +183,29 @@ jobs:
           PLIST
 
       - name: Disable automatic signing for CI
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          PROFILE_RUNNER: ${{ secrets.IOS_RUNNER_PROFILE_NAME }}
+          PROFILE_SHIELD: ${{ secrets.IOS_SHIELD_PROFILE_NAME }}
+          PROFILE_SHIELD_ACTION: ${{ secrets.IOS_SHIELD_ACTION_PROFILE_NAME }}
+          PROFILE_WIDGET: ${{ secrets.IOS_WIDGET_PROFILE_NAME }}
         run: |
           cd ios
-          bundle exec fastlane run update_code_signing_settings \
-            use_automatic_signing:false \
-            path:Runner.xcodeproj \
-            team_id:"${{ secrets.APPLE_TEAM_ID }}" \
-            code_sign_identity:"Apple Distribution"
+          for target_profile in \
+            "Runner:${PROFILE_RUNNER}" \
+            "HudaShield:${PROFILE_SHIELD}" \
+            "HudaShieldAction:${PROFILE_SHIELD_ACTION}" \
+            "HudaWidgetExtension:${PROFILE_WIDGET}"; do
+            TARGET="${target_profile%%:*}"
+            PROFILE="${target_profile#*:}"
+            bundle exec fastlane run update_code_signing_settings \
+              use_automatic_signing:false \
+              path:Runner.xcodeproj \
+              team_id:"${APPLE_TEAM_ID}" \
+              code_sign_identity:"Apple Distribution" \
+              targets:"[\"${TARGET}\"]" \
+              profile_name:"${PROFILE}"
+          done
 
       - name: Build IPA
         run: flutter build ipa --release --export-options-plist=ios/ExportOptions-CI.plist
@@ -384,6 +400,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Create API keys file
+        run: |
+          mkdir -p lib/core/keys
+          echo "${{ secrets.DART_KEYS_FILE }}" | base64 --decode > lib/core/keys/hadith_key.dart
 
       - name: Sync snap version from pubspec
         run: |
