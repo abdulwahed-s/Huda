@@ -3068,6 +3068,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get whatsNew310Feature3 => 'Bug fixes';
 
   @override
+  String get whatsNew330Feature1 =>
+      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+
+  @override
+  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override
@@ -3713,4 +3720,177 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get themeSage => 'Sage';
+
+  @override
+  String get eventRamadan => 'রমজান মোবারক';
+
+  @override
+  String get eventLastTenRamadan => 'শেষ দশ রাত';
+
+  @override
+  String get eventEidAlFitr => 'ঈদুল ফিতর মোবারক';
+
+  @override
+  String get eventEidAlAdha => 'ঈদুল আযহা মোবারক';
+
+  @override
+  String get eventDayOfArafah => 'আরাফার দিন';
+
+  @override
+  String get eventFirstTenDhulHijjah => 'বরকতময় দশ দিন';
+
+  @override
+  String get eventAshura => 'আশুরার দিন';
+
+  @override
+  String get eventDaysTashreeq => 'তাশরীকের দিনসমূহ';
+
+  @override
+  String get eventRamadanSubtitle => 'রোজা, নামাজ ও চিন্তার মাস';
+
+  @override
+  String get eventLastTenRamadanSubtitle =>
+      'এই বরকতময় রাতগুলোতে লাইলাতুল কদর খুঁজুন';
+
+  @override
+  String get eventEidAlFitrSubtitle =>
+      'আনন্দ ও কৃতজ্ঞতার সাথে রমজানের সমাপ্তি উদযাপন করুন';
+
+  @override
+  String get eventEidAlAdhaSubtitle => 'কুরবানির উৎসব — ভক্তি ও উদারতার দিন';
+
+  @override
+  String get eventDayOfArafahSubtitle =>
+      'সূর্য যে দিনে উদিত হয়েছে তার মধ্যে শ্রেষ্ঠ দিন';
+
+  @override
+  String get eventFirstTenDhulHijjahSubtitle =>
+      'সৎকর্মের জন্য আল্লাহর কাছে সবচেয়ে প্রিয় দিনগুলো';
+
+  @override
+  String get eventAshuraSubtitle => 'রোজা ও আল্লাহর রহমত স্মরণের দিন';
+
+  @override
+  String get eventDaysTashreeqSubtitle =>
+      'খাওয়া, পান করা ও আল্লাহকে স্মরণ করার দিনসমূহ';
+
+  @override
+  String get eventRamadanArabic =>
+      'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ';
+
+  @override
+  String get eventRamadanTranslation =>
+      'রমজান মাস, যে মাসে কুরআন নাযিল করা হয়েছে মানুষের জন্য পথপ্রদর্শক এবং হেদায়াত ও সত্য-মিথ্যার পার্থক্যকারীর সুস্পষ্ট প্রমাণ হিসেবে।';
+
+  @override
+  String get eventRamadanSource => 'কুরআন ২:১৮৫';
+
+  @override
+  String get eventLastTenRamadanArabic =>
+      'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ';
+
+  @override
+  String get eventLastTenRamadanTranslation =>
+      'নিশ্চয়ই আমি এটি কদরের রাতে নাযিল করেছি। আপনি কি জানেন কদরের রাত কী? কদরের রাত হাজার মাসের চেয়ে উত্তম।';
+
+  @override
+  String get eventLastTenRamadanSource => 'কুরআন ৯৭:১-৩';
+
+  @override
+  String get eventEidAlFitrArabic =>
+      'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ';
+
+  @override
+  String get eventEidAlFitrTranslation =>
+      'রোজাদারের দুটি আনন্দ রয়েছে: একটি ইফতারের সময় এবং একটি তার রবের সাথে সাক্ষাতের সময়।';
+
+  @override
+  String get eventEidAlFitrSource => 'বুখারী ও মুসলিম';
+
+  @override
+  String get eventEidAlAdhaArabic =>
+      'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ';
+
+  @override
+  String get eventEidAlAdhaTranslation =>
+      'আল্লাহর কাছে সেগুলোর গোশত ও রক্ত পৌঁছে না, বরং তাঁর কাছে পৌঁছে তোমাদের তাকওয়া।';
+
+  @override
+  String get eventEidAlAdhaSource => 'কুরআন ২২:৩৭';
+
+  @override
+  String get eventDayOfArafahArabic =>
+      'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ';
+
+  @override
+  String get eventDayOfArafahTranslation =>
+      'আরাফার দিনের রোজা, আমি আল্লাহর কাছে আশা করি যে এটি পূর্ববর্তী ও পরবর্তী বছরের গুনাহ মুছে দেবে।';
+
+  @override
+  String get eventDayOfArafahSource => 'সহীহ মুসলিম';
+
+  @override
+  String get eventFirstTenDhulHijjahArabic =>
+      'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ';
+
+  @override
+  String get eventFirstTenDhulHijjahTranslation =>
+      'এমন কোনো দিন নেই যেগুলোতে সৎকর্ম আল্লাহর কাছে এই দিনগুলোর চেয়ে বেশি প্রিয়।';
+
+  @override
+  String get eventFirstTenDhulHijjahSource => 'সহীহ আল-বুখারী';
+
+  @override
+  String get eventAshuraArabic =>
+      'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ';
+
+  @override
+  String get eventAshuraTranslation =>
+      'আশুরার দিনের রোজা, আমি আল্লাহর কাছে আশা করি যে এটি পূর্ববর্তী বছরের গুনাহ মুছে দেবে।';
+
+  @override
+  String get eventAshuraSource => 'সহীহ মুসলিম';
+
+  @override
+  String get eventDaysTashreeqArabic =>
+      'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ';
+
+  @override
+  String get eventDaysTashreeqTranslation =>
+      'এবং নির্দিষ্ট দিনসমূহে আল্লাহকে স্মরণ করো।';
+
+  @override
+  String get eventDaysTashreeqSource => 'কুরআন ২:২০৩';
+
+  @override
+  String get eventRamadanGuidance =>
+      'ভোর থেকে সূর্যাস্ত পর্যন্ত রোজা রাখুন, রাতে তারাবীহ নামাজ পড়ুন, প্রচুর কুরআন তিলাওয়াত করুন, দান-সদকা করুন, বেশি বেশি দোয়া ও ইস্তেগফার করুন।';
+
+  @override
+  String get eventLastTenRamadanGuidance =>
+      'বিশেষ করে বেজোড় রাতগুলোতে লাইলাতুল কদর সন্ধান করুন। রাতের নামাজ বাড়ান এবং সম্ভব হলে ইতিকাফ করুন। বেশি করে পড়ুন: আল্লাহুম্মা ইন্নাকা আফুউউন তুহিব্বুল আফওয়া ফা\'ফু আন্নি।';
+
+  @override
+  String get eventEidAlFitrGuidance =>
+      'ঈদের নামাজের আগে ফিতরা আদায় করুন, জামাতে ঈদের নামাজ পড়ুন, তাকবীর বলুন, সবচেয়ে ভালো পোশাক পরুন এবং পরিবার ও প্রতিবেশীদের মধ্যে আনন্দ ছড়িয়ে দিন।';
+
+  @override
+  String get eventEidAlAdhaGuidance =>
+      'ঈদের নামাজ পড়ুন, নামাজের পর কুরবানী করুন এবং প্রতিটি ফরজ নামাজের পর তাকবীর বলুন। গোশত পরিবার, প্রতিবেশী ও অভাবীদের মধ্যে বিতরণ করুন।';
+
+  @override
+  String get eventDayOfArafahGuidance =>
+      'হজ্জ পালনরত না হলে এই বরকতময় দিনে রোজা রাখুন। প্রচুর দোয়া করুন, কারণ এই দিনে আল্লাহ সবচেয়ে বেশি মানুষকে জাহান্নাম থেকে মুক্তি দেন। যিকির বাড়ান এবং লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকা লাহ পড়ুন।';
+
+  @override
+  String get eventFirstTenDhulHijjahGuidance =>
+      'প্রথম নয় দিন রোজা রাখুন, বিশেষ করে আরাফার দিন। সৎকর্ম বাড়ান এবং এই দিনগুলোতে প্রচুর তাকবীর, তাহলীল ও তাহমীদ পড়ুন।';
+
+  @override
+  String get eventAshuraGuidance =>
+      'মহররমের ১০ তারিখে রোজা রাখুন এবং সুন্নাহ অনুসরণে ৯ তারিখও যোগ করুন। মনে রাখুন, নবী (সা.) আল্লাহর কৃতজ্ঞতায় এই দিনে রোজা রেখেছিলেন কারণ আল্লাহ মূসাকে ফেরাউন থেকে রক্ষা করেছিলেন।';
+
+  @override
+  String get eventDaysTashreeqGuidance =>
+      'আল্লাহকে বেশি করে স্মরণ করুন এবং প্রতিটি ফরজ নামাজের পর তাকবীর বলুন। এগুলো খাওয়া, পানীয় ও কৃতজ্ঞতার দিন। কুরবানী দিতে অক্ষম হাজী ব্যতীত এই দিনগুলোতে রোজা নিষিদ্ধ।';
 }

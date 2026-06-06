@@ -5684,6 +5684,18 @@ abstract class AppLocalizations {
   /// **'Bug fixes'**
   String get whatsNew310Feature3;
 
+  /// What's new feature 1 for v3.3.0
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress'**
+  String get whatsNew330Feature1;
+
+  /// What's new feature 2 for v3.3.0
+  ///
+  /// In en, this message translates to:
+  /// **'Bug fixes and improvements'**
+  String get whatsNew330Feature2;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:
@@ -6841,6 +6853,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sage'**
   String get themeSage;
+
+  /// Title for the Ramadan special event card
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Mubarak'**
+  String get eventRamadan;
+
+  /// Title for the last ten nights of Ramadan event card
+  ///
+  /// In en, this message translates to:
+  /// **'The Last Ten Nights'**
+  String get eventLastTenRamadan;
+
+  /// Title for the Eid al-Fitr event card
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Fitr Mubarak'**
+  String get eventEidAlFitr;
+
+  /// Title for the Eid al-Adha event card
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Adha Mubarak'**
+  String get eventEidAlAdha;
+
+  /// Title for the Day of Arafah event card
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Arafah'**
+  String get eventDayOfArafah;
+
+  /// Title for the first ten days of Dhul Hijjah event card
+  ///
+  /// In en, this message translates to:
+  /// **'Blessed Ten Days'**
+  String get eventFirstTenDhulHijjah;
+
+  /// Title for the Day of Ashura event card
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Ashura'**
+  String get eventAshura;
+
+  /// Title for the Days of Tashreeq event card
+  ///
+  /// In en, this message translates to:
+  /// **'Days of Tashreeq'**
+  String get eventDaysTashreeq;
+
+  /// Subtitle for the Ramadan event card
+  ///
+  /// In en, this message translates to:
+  /// **'The month of fasting, prayer, and reflection'**
+  String get eventRamadanSubtitle;
+
+  /// Subtitle for the last ten nights of Ramadan event card
+  ///
+  /// In en, this message translates to:
+  /// **'Seek Laylat al-Qadr in these blessed nights'**
+  String get eventLastTenRamadanSubtitle;
+
+  /// Subtitle for the Eid al-Fitr event card
+  ///
+  /// In en, this message translates to:
+  /// **'Celebrate the completion of Ramadan with joy and gratitude'**
+  String get eventEidAlFitrSubtitle;
+
+  /// Subtitle for the Eid al-Adha event card
+  ///
+  /// In en, this message translates to:
+  /// **'The Festival of Sacrifice — a day of devotion and generosity'**
+  String get eventEidAlAdhaSubtitle;
+
+  /// Subtitle for the Day of Arafah event card
+  ///
+  /// In en, this message translates to:
+  /// **'The best day upon which the sun has risen'**
+  String get eventDayOfArafahSubtitle;
+
+  /// Subtitle for the first ten days of Dhul Hijjah event card
+  ///
+  /// In en, this message translates to:
+  /// **'The most beloved days to Allah for righteous deeds'**
+  String get eventFirstTenDhulHijjahSubtitle;
+
+  /// Subtitle for the Day of Ashura event card
+  ///
+  /// In en, this message translates to:
+  /// **'A day of fasting and remembrance of Allah\'s mercy'**
+  String get eventAshuraSubtitle;
+
+  /// Subtitle for the Days of Tashreeq event card
+  ///
+  /// In en, this message translates to:
+  /// **'Days of eating, drinking, and remembrance of Allah'**
+  String get eventDaysTashreeqSubtitle;
+
+  /// Arabic text of Quran 2:185 for Ramadan dialog
+  ///
+  /// In en, this message translates to:
+  /// **'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ'**
+  String get eventRamadanArabic;
+
+  /// Translation of Quran 2:185
+  ///
+  /// In en, this message translates to:
+  /// **'The month of Ramadan in which the Quran was revealed, a guidance for the people and clear proofs of guidance and criterion.'**
+  String get eventRamadanTranslation;
+
+  /// Source reference for Ramadan ayah
+  ///
+  /// In en, this message translates to:
+  /// **'Quran 2:185'**
+  String get eventRamadanSource;
+
+  /// Arabic text of Quran 97:1-3 for Last Ten Nights dialog
+  ///
+  /// In en, this message translates to:
+  /// **'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ'**
+  String get eventLastTenRamadanArabic;
+
+  /// Translation of Quran 97:1-3
+  ///
+  /// In en, this message translates to:
+  /// **'Indeed, We sent it down during the Night of Decree. And what can make you know what is the Night of Decree? The Night of Decree is better than a thousand months.'**
+  String get eventLastTenRamadanTranslation;
+
+  /// Source reference for Last Ten Nights ayah
+  ///
+  /// In en, this message translates to:
+  /// **'Quran 97:1-3'**
+  String get eventLastTenRamadanSource;
+
+  /// Arabic text of hadith for Eid al-Fitr dialog
+  ///
+  /// In en, this message translates to:
+  /// **'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ'**
+  String get eventEidAlFitrArabic;
+
+  /// Translation of Eid al-Fitr hadith
+  ///
+  /// In en, this message translates to:
+  /// **'The fasting person has two moments of joy: one when breaking the fast, and one when meeting his Lord.'**
+  String get eventEidAlFitrTranslation;
+
+  /// Source reference for Eid al-Fitr hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Bukhari & Muslim'**
+  String get eventEidAlFitrSource;
+
+  /// Arabic text of Quran 22:37 for Eid al-Adha dialog
+  ///
+  /// In en, this message translates to:
+  /// **'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ'**
+  String get eventEidAlAdhaArabic;
+
+  /// Translation of Quran 22:37
+  ///
+  /// In en, this message translates to:
+  /// **'Their meat will not reach Allah, nor will their blood, but what reaches Him is piety from you.'**
+  String get eventEidAlAdhaTranslation;
+
+  /// Source reference for Eid al-Adha ayah
+  ///
+  /// In en, this message translates to:
+  /// **'Quran 22:37'**
+  String get eventEidAlAdhaSource;
+
+  /// Arabic text of hadith for Day of Arafah dialog
+  ///
+  /// In en, this message translates to:
+  /// **'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ'**
+  String get eventDayOfArafahArabic;
+
+  /// Translation of Day of Arafah hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting on the Day of Arafah, I hope from Allah that it will expiate the sins of the year before and the year after.'**
+  String get eventDayOfArafahTranslation;
+
+  /// Source reference for Day of Arafah hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Sahih Muslim'**
+  String get eventDayOfArafahSource;
+
+  /// Arabic text of hadith for First Ten Dhul Hijjah dialog
+  ///
+  /// In en, this message translates to:
+  /// **'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ'**
+  String get eventFirstTenDhulHijjahArabic;
+
+  /// Translation of First Ten Dhul Hijjah hadith
+  ///
+  /// In en, this message translates to:
+  /// **'There are no days in which righteous deeds are more beloved to Allah than these days.'**
+  String get eventFirstTenDhulHijjahTranslation;
+
+  /// Source reference for First Ten Dhul Hijjah hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Sahih al-Bukhari'**
+  String get eventFirstTenDhulHijjahSource;
+
+  /// Arabic text of hadith for Ashura dialog
+  ///
+  /// In en, this message translates to:
+  /// **'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ'**
+  String get eventAshuraArabic;
+
+  /// Translation of Ashura hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting on the Day of Ashura, I hope from Allah that it will expiate the sins of the year before it.'**
+  String get eventAshuraTranslation;
+
+  /// Source reference for Ashura hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Sahih Muslim'**
+  String get eventAshuraSource;
+
+  /// Arabic text of Quran 2:203 for Days of Tashreeq dialog
+  ///
+  /// In en, this message translates to:
+  /// **'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ'**
+  String get eventDaysTashreeqArabic;
+
+  /// Translation of Quran 2:203
+  ///
+  /// In en, this message translates to:
+  /// **'And remember Allah during the appointed days.'**
+  String get eventDaysTashreeqTranslation;
+
+  /// Source reference for Days of Tashreeq ayah
+  ///
+  /// In en, this message translates to:
+  /// **'Quran 2:203'**
+  String get eventDaysTashreeqSource;
+
+  /// Guidance text for Ramadan dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Fast from dawn to sunset, pray Tarawih at night, recite the Quran abundantly, give charity, increase in supplication, and seek forgiveness from Allah.'**
+  String get eventRamadanGuidance;
+
+  /// Guidance text for Last Ten Ramadan dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Seek Laylat al-Qadr especially on the odd nights. Increase your night prayers and perform I\'tikaf if possible. Recite often: Allahumma innaka \'Afuwwun tuhibbul-\'afwa fa\'fu \'anni.'**
+  String get eventLastTenRamadanGuidance;
+
+  /// Guidance text for Eid al-Fitr dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Zakat al-Fitr before the Eid prayer. Perform the Eid prayer in congregation, recite the Takbir, wear your best clothes, and spread joy among family and neighbors.'**
+  String get eventEidAlFitrGuidance;
+
+  /// Guidance text for Eid al-Adha dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Perform the Eid prayer, offer the Udhiyah sacrifice after it, and recite the Takbir after every obligatory prayer. Share the meat with family, neighbors, and those in need.'**
+  String get eventEidAlAdhaGuidance;
+
+  /// Guidance text for Day of Arafah dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Fast this blessed day if you are not performing Hajj. Make abundant supplication, for it is the day Allah frees the most people from the Fire. Increase in Dhikr and recite La ilaha illAllah wahdahu la sharika lah.'**
+  String get eventDayOfArafahGuidance;
+
+  /// Guidance text for First Ten Dhul Hijjah dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Fast the first nine days, especially the Day of Arafah. Increase in righteous deeds, and recite the Takbir, Tahlil, and Tahmid abundantly throughout these days.'**
+  String get eventFirstTenDhulHijjahGuidance;
+
+  /// Guidance text for Ashura dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Fast on the 10th of Muharram, and add the 9th alongside it to follow the Sunnah. Remember that the Prophet fasted this day in gratitude to Allah for saving Musa from Pharaoh.'**
+  String get eventAshuraGuidance;
+
+  /// Guidance text for Days of Tashreeq dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Remember Allah abundantly and recite the Takbir after every obligatory prayer. These are days of eating, drinking, and gratitude. Fasting is not permitted on these days except for the pilgrim who cannot afford the sacrifice.'**
+  String get eventDaysTashreeqGuidance;
 }
 
 class _AppLocalizationsDelegate

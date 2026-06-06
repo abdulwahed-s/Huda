@@ -3058,6 +3058,13 @@ class AppLocalizationsUr extends AppLocalizations {
   String get whatsNew310Feature3 => 'Bug fixes';
 
   @override
+  String get whatsNew330Feature1 =>
+      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+
+  @override
+  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override
@@ -3703,4 +3710,176 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get themeSage => 'Sage';
+
+  @override
+  String get eventRamadan => 'رمضان مبارک';
+
+  @override
+  String get eventLastTenRamadan => 'آخری دس راتیں';
+
+  @override
+  String get eventEidAlFitr => 'عید الفطر مبارک';
+
+  @override
+  String get eventEidAlAdha => 'عید الاضحیٰ مبارک';
+
+  @override
+  String get eventDayOfArafah => 'یوم عرفہ';
+
+  @override
+  String get eventFirstTenDhulHijjah => 'ذوالحجہ کے مبارک دس دن';
+
+  @override
+  String get eventAshura => 'یوم عاشوراء';
+
+  @override
+  String get eventDaysTashreeq => 'ایام تشریق';
+
+  @override
+  String get eventRamadanSubtitle => 'روزے، نماز اور غور و فکر کا مہینہ';
+
+  @override
+  String get eventLastTenRamadanSubtitle =>
+      'ان مبارک راتوں میں لیلۃ القدر تلاش کریں';
+
+  @override
+  String get eventEidAlFitrSubtitle =>
+      'رمضان کی تکمیل کو خوشی اور شکر گزاری سے منائیں';
+
+  @override
+  String get eventEidAlAdhaSubtitle =>
+      'قربانی کا تہوار — عقیدت اور سخاوت کا دن';
+
+  @override
+  String get eventDayOfArafahSubtitle => 'سب سے بہترین دن جس پر سورج طلوع ہوا';
+
+  @override
+  String get eventFirstTenDhulHijjahSubtitle =>
+      'نیک اعمال کے لیے اللہ کو سب سے محبوب دن';
+
+  @override
+  String get eventAshuraSubtitle => 'روزے اور اللہ کی رحمت کی یاد کا دن';
+
+  @override
+  String get eventDaysTashreeqSubtitle => 'کھانے پینے اور اللہ کے ذکر کے دن';
+
+  @override
+  String get eventRamadanArabic =>
+      'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ';
+
+  @override
+  String get eventRamadanTranslation =>
+      'رمضان کا مہینہ جس میں قرآن نازل کیا گیا لوگوں کے لیے ہدایت اور ہدایت اور فرقان کی واضح دلیلوں کے ساتھ۔';
+
+  @override
+  String get eventRamadanSource => 'قرآن ٢:١٨٥';
+
+  @override
+  String get eventLastTenRamadanArabic =>
+      'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ';
+
+  @override
+  String get eventLastTenRamadanTranslation =>
+      'بے شک ہم نے اسے شبِ قدر میں نازل کیا۔ اور آپ کو کیا معلوم شبِ قدر کیا ہے؟ شبِ قدر ہزار مہینوں سے بہتر ہے۔';
+
+  @override
+  String get eventLastTenRamadanSource => 'قرآن ٩٧:١-٣';
+
+  @override
+  String get eventEidAlFitrArabic =>
+      'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ';
+
+  @override
+  String get eventEidAlFitrTranslation =>
+      'روزہ دار کے لیے دو خوشیاں ہیں: ایک افطار کے وقت اور ایک اپنے رب سے ملاقات کے وقت۔';
+
+  @override
+  String get eventEidAlFitrSource => 'بخاری و مسلم';
+
+  @override
+  String get eventEidAlAdhaArabic =>
+      'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ';
+
+  @override
+  String get eventEidAlAdhaTranslation =>
+      'اللہ کو نہ ان کا گوشت پہنچتا ہے اور نہ ان کا خون، لیکن اسے تمہاری تقویٰ پہنچتی ہے۔';
+
+  @override
+  String get eventEidAlAdhaSource => 'قرآن ٢٢:٣٧';
+
+  @override
+  String get eventDayOfArafahArabic =>
+      'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ';
+
+  @override
+  String get eventDayOfArafahTranslation =>
+      'یومِ عرفہ کا روزہ، میں اللہ سے امید رکھتا ہوں کہ یہ پچھلے اور اگلے سال کے گناہوں کا کفارہ بنے گا۔';
+
+  @override
+  String get eventDayOfArafahSource => 'صحیح مسلم';
+
+  @override
+  String get eventFirstTenDhulHijjahArabic =>
+      'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ';
+
+  @override
+  String get eventFirstTenDhulHijjahTranslation =>
+      'کوئی دن ایسے نہیں جن میں نیک عمل اللہ کو ان دنوں سے زیادہ محبوب ہو۔';
+
+  @override
+  String get eventFirstTenDhulHijjahSource => 'صحیح البخاری';
+
+  @override
+  String get eventAshuraArabic =>
+      'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ';
+
+  @override
+  String get eventAshuraTranslation =>
+      'یومِ عاشوراء کا روزہ، میں اللہ سے امید رکھتا ہوں کہ یہ پچھلے سال کے گناہوں کا کفارہ بنے گا۔';
+
+  @override
+  String get eventAshuraSource => 'صحیح مسلم';
+
+  @override
+  String get eventDaysTashreeqArabic =>
+      'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ';
+
+  @override
+  String get eventDaysTashreeqTranslation =>
+      'اور گنتی کے دنوں میں اللہ کو یاد کرو۔';
+
+  @override
+  String get eventDaysTashreeqSource => 'قرآن ٢:٢٠٣';
+
+  @override
+  String get eventRamadanGuidance =>
+      'فجر سے غروب آفتاب تک روزہ رکھیں، رات کو تراویح پڑھیں، قرآن کی کثرت سے تلاوت کریں، صدقہ دیں، دعاؤں اور استغفار میں اضافہ کریں۔';
+
+  @override
+  String get eventLastTenRamadanGuidance =>
+      'لیلۃ القدر کو خاص طور پر طاق راتوں میں تلاش کریں۔ رات کی نمازوں میں اضافہ کریں اور ہو سکے تو اعتکاف کریں۔ کثرت سے پڑھیں: اللهم إنك عفوٌّ تحب العفو فاعفُ عنّي۔';
+
+  @override
+  String get eventEidAlFitrGuidance =>
+      'نماز عید سے پہلے زکوۃ الفطر ادا کریں، باجماعت نماز عید پڑھیں، تکبیر کہیں، بہترین لباس پہنیں اور خاندان و پڑوسیوں میں خوشی پھیلائیں۔';
+
+  @override
+  String get eventEidAlAdhaGuidance =>
+      'نماز عید پڑھیں، نماز کے بعد قربانی کریں اور ہر فرض نماز کے بعد تکبیر کہیں۔ گوشت خاندان، پڑوسیوں اور ضرورت مندوں میں تقسیم کریں۔';
+
+  @override
+  String get eventDayOfArafahGuidance =>
+      'اگر حج نہیں کر رہے تو اس مبارک دن کا روزہ رکھیں۔ کثرت سے دعا کریں کیونکہ یہ وہ دن ہے جب اللہ سب سے زیادہ لوگوں کو آگ سے آزاد کرتا ہے۔ ذکر میں اضافہ کریں اور لا إله إلا الله وحده لا شريك له پڑھیں۔';
+
+  @override
+  String get eventFirstTenDhulHijjahGuidance =>
+      'پہلے نو دن روزہ رکھیں خاص طور پر یومِ عرفہ کا۔ نیک اعمال میں اضافہ کریں اور ان دنوں میں کثرت سے تکبیر، تہلیل اور تحمید کہیں۔';
+
+  @override
+  String get eventAshuraGuidance =>
+      'محرم کی دسویں تاریخ کو روزہ رکھیں اور سنت کی پیروی میں نویں کا بھی اضافہ کریں۔ یاد رکھیں کہ نبی کریم صلی اللہ علیہ وسلم نے یہ روزہ اللہ کا شکر ادا کرنے کے لیے رکھا تھا کہ اللہ نے موسیٰ کو فرعون سے نجات دی۔';
+
+  @override
+  String get eventDaysTashreeqGuidance =>
+      'اللہ کا کثرت سے ذکر کریں اور ہر فرض نماز کے بعد تکبیر کہیں۔ یہ کھانے، پینے اور شکر کے دن ہیں۔ ان دنوں میں روزہ جائز نہیں سوائے اس حاجی کے جو قربانی کی استطاعت نہ رکھتا ہو۔';
 }

@@ -3018,6 +3018,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get whatsNew310Feature3 => 'إصلاح الأخطاء';
 
   @override
+  String get whatsNew330Feature1 =>
+      'متابعة القراءة في مكان جديد: اضغط على بطاقة القرآن في الشاشة الرئيسية لتوسيعها والعثور على تقدم قراءتك';
+
+  @override
+  String get whatsNew330Feature2 => 'إصلاح الأخطاء والتحسينات';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override
@@ -3661,4 +3668,173 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get themeSage => 'الميرمية';
+
+  @override
+  String get eventRamadan => 'رمضان مبارك';
+
+  @override
+  String get eventLastTenRamadan => 'العشر الأواخر';
+
+  @override
+  String get eventEidAlFitr => 'عيد الفطر مبارك';
+
+  @override
+  String get eventEidAlAdha => 'عيد الأضحى مبارك';
+
+  @override
+  String get eventDayOfArafah => 'يوم عرفة';
+
+  @override
+  String get eventFirstTenDhulHijjah => 'عشر ذي الحجة المباركة';
+
+  @override
+  String get eventAshura => 'يوم عاشوراء';
+
+  @override
+  String get eventDaysTashreeq => 'أيام التشريق';
+
+  @override
+  String get eventRamadanSubtitle => 'شهر الصيام والقيام والتأمل';
+
+  @override
+  String get eventLastTenRamadanSubtitle =>
+      'تحرّوا ليلة القدر في هذه الليالي المباركة';
+
+  @override
+  String get eventEidAlFitrSubtitle => 'احتفلوا بإتمام رمضان بفرح وامتنان';
+
+  @override
+  String get eventEidAlAdhaSubtitle => 'عيد الأضحى — يوم التقرب والإحسان';
+
+  @override
+  String get eventDayOfArafahSubtitle => 'خير يوم طلعت عليه الشمس';
+
+  @override
+  String get eventFirstTenDhulHijjahSubtitle =>
+      'أحب الأيام إلى الله للعمل الصالح';
+
+  @override
+  String get eventAshuraSubtitle => 'يوم صيام وذكر لرحمة الله';
+
+  @override
+  String get eventDaysTashreeqSubtitle => 'أيام أكل وشرب وذكر لله';
+
+  @override
+  String get eventRamadanArabic =>
+      'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ';
+
+  @override
+  String get eventRamadanTranslation =>
+      'شهر رمضان الذي أُنزل فيه القرآن هدى للناس وبيّنات من الهدى والفرقان';
+
+  @override
+  String get eventRamadanSource => 'القرآن ٢:١٨٥';
+
+  @override
+  String get eventLastTenRamadanArabic =>
+      'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ';
+
+  @override
+  String get eventLastTenRamadanTranslation =>
+      'إنّا أنزلناه في ليلة القدر. وما أدراك ما ليلة القدر. ليلة القدر خير من ألف شهر';
+
+  @override
+  String get eventLastTenRamadanSource => 'القرآن ٩٧:١-٣';
+
+  @override
+  String get eventEidAlFitrArabic =>
+      'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ';
+
+  @override
+  String get eventEidAlFitrTranslation =>
+      'للصائم فرحتان: فرحة عند فطره، وفرحة عند لقاء ربه';
+
+  @override
+  String get eventEidAlFitrSource => 'البخاري ومسلم';
+
+  @override
+  String get eventEidAlAdhaArabic =>
+      'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ';
+
+  @override
+  String get eventEidAlAdhaTranslation =>
+      'لن ينال الله لحومها ولا دماؤها ولكن يناله التقوى منكم';
+
+  @override
+  String get eventEidAlAdhaSource => 'القرآن ٢٢:٣٧';
+
+  @override
+  String get eventDayOfArafahArabic =>
+      'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ';
+
+  @override
+  String get eventDayOfArafahTranslation =>
+      'صيام يوم عرفة أحتسب على الله أن يكفّر السنة التي قبله والسنة التي بعده';
+
+  @override
+  String get eventDayOfArafahSource => 'صحيح مسلم';
+
+  @override
+  String get eventFirstTenDhulHijjahArabic =>
+      'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ';
+
+  @override
+  String get eventFirstTenDhulHijjahTranslation =>
+      'ما من أيام العمل الصالح فيهنّ أحبّ إلى الله من هذه الأيام';
+
+  @override
+  String get eventFirstTenDhulHijjahSource => 'صحيح البخاري';
+
+  @override
+  String get eventAshuraArabic =>
+      'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ';
+
+  @override
+  String get eventAshuraTranslation =>
+      'صيام يوم عاشوراء أحتسب على الله أن يكفّر السنة التي قبله';
+
+  @override
+  String get eventAshuraSource => 'صحيح مسلم';
+
+  @override
+  String get eventDaysTashreeqArabic =>
+      'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ';
+
+  @override
+  String get eventDaysTashreeqTranslation => 'واذكروا الله في أيام معدودات';
+
+  @override
+  String get eventDaysTashreeqSource => 'القرآن ٢:٢٠٣';
+
+  @override
+  String get eventRamadanGuidance =>
+      'صوموا من الفجر إلى المغرب، وصلّوا التراويح، وأكثروا من تلاوة القرآن، وتصدّقوا، وأكثروا من الدعاء والاستغفار.';
+
+  @override
+  String get eventLastTenRamadanGuidance =>
+      'تحرّوا ليلة القدر في الليالي الوتر. أكثروا من قيام الليل واعتكفوا إن استطعتم. وردّدوا: اللهم إنك عفوٌّ تحب العفو فاعفُ عنّي.';
+
+  @override
+  String get eventEidAlFitrGuidance =>
+      'أخرجوا زكاة الفطر قبل صلاة العيد، وصلّوا صلاة العيد جماعة، وكبّروا، والبسوا أحسن ثيابكم، وأدخلوا السرور على الأهل والجيران.';
+
+  @override
+  String get eventEidAlAdhaGuidance =>
+      'صلّوا صلاة العيد، واذبحوا الأضحية بعدها، وكبّروا دبر كل صلاة مكتوبة، ووزّعوا اللحم على الأهل والجيران والمحتاجين.';
+
+  @override
+  String get eventDayOfArafahGuidance =>
+      'صوموا هذا اليوم المبارك إن لم تكونوا حُجّاجاً. أكثروا من الدعاء، فهو اليوم الذي يُعتق الله فيه أكثر عباده من النار. وأكثروا من الذكر وقولوا: لا إله إلا الله وحده لا شريك له.';
+
+  @override
+  String get eventFirstTenDhulHijjahGuidance =>
+      'صوموا الأيام التسعة الأولى وخاصة يوم عرفة. أكثروا من الأعمال الصالحة، وردّدوا التكبير والتهليل والتحميد في هذه الأيام.';
+
+  @override
+  String get eventAshuraGuidance =>
+      'صوموا العاشر من محرّم، وأضيفوا التاسع اتباعاً للسنة. وتذكّروا أن النبي صلى الله عليه وسلم صامه شكراً لله على نجاة موسى من فرعون.';
+
+  @override
+  String get eventDaysTashreeqGuidance =>
+      'أكثروا من ذكر الله وكبّروا دبر كل صلاة مكتوبة. إنها أيام أكل وشرب وشكر. ولا يجوز صيامها إلا للحاج الذي لم يجد الهدي.';
 }

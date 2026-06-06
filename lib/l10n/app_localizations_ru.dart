@@ -3089,6 +3089,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get whatsNew310Feature3 => 'Bug fixes';
 
   @override
+  String get whatsNew330Feature1 =>
+      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+
+  @override
+  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override
@@ -3734,4 +3741,177 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get themeSage => 'Sage';
+
+  @override
+  String get eventRamadan => 'Рамадан Мубарак';
+
+  @override
+  String get eventLastTenRamadan => 'Последние десять ночей';
+
+  @override
+  String get eventEidAlFitr => 'Ид аль-Фитр Мубарак';
+
+  @override
+  String get eventEidAlAdha => 'Ид аль-Адха Мубарак';
+
+  @override
+  String get eventDayOfArafah => 'День Арафат';
+
+  @override
+  String get eventFirstTenDhulHijjah => 'Благословенные десять дней';
+
+  @override
+  String get eventAshura => 'День Ашура';
+
+  @override
+  String get eventDaysTashreeq => 'Дни Ташрик';
+
+  @override
+  String get eventRamadanSubtitle => 'Месяц поста, молитвы и размышлений';
+
+  @override
+  String get eventLastTenRamadanSubtitle =>
+      'Ищите Лейлат аль-Кадр в эти благословенные ночи';
+
+  @override
+  String get eventEidAlFitrSubtitle =>
+      'Отпразднуйте завершение Рамадана с радостью и благодарностью';
+
+  @override
+  String get eventEidAlAdhaSubtitle =>
+      'Праздник жертвоприношения — день преданности и щедрости';
+
+  @override
+  String get eventDayOfArafahSubtitle =>
+      'Лучший день, над которым взошло солнце';
+
+  @override
+  String get eventFirstTenDhulHijjahSubtitle =>
+      'Самые любимые Аллахом дни для праведных дел';
+
+  @override
+  String get eventAshuraSubtitle => 'День поста и поминания милости Аллаха';
+
+  @override
+  String get eventDaysTashreeqSubtitle => 'Дни еды, питья и поминания Аллаха';
+
+  @override
+  String get eventRamadanArabic =>
+      'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ';
+
+  @override
+  String get eventRamadanTranslation =>
+      'Месяц Рамадан, в который был ниспослан Коран как руководство для людей и ясные доказательства руководства и различения.';
+
+  @override
+  String get eventRamadanSource => 'Коран 2:185';
+
+  @override
+  String get eventLastTenRamadanArabic =>
+      'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ';
+
+  @override
+  String get eventLastTenRamadanTranslation =>
+      'Поистине, Мы ниспослали его в Ночь предопределения. Откуда тебе знать, что такое Ночь предопределения? Ночь предопределения лучше тысячи месяцев.';
+
+  @override
+  String get eventLastTenRamadanSource => 'Коран 97:1-3';
+
+  @override
+  String get eventEidAlFitrArabic =>
+      'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ';
+
+  @override
+  String get eventEidAlFitrTranslation =>
+      'У постящегося две радости: радость при разговении и радость при встрече со своим Господом.';
+
+  @override
+  String get eventEidAlFitrSource => 'Бухари и Муслим';
+
+  @override
+  String get eventEidAlAdhaArabic =>
+      'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ';
+
+  @override
+  String get eventEidAlAdhaTranslation =>
+      'Ни их мясо, ни их кровь не достигнут Аллаха, но Его достигнет ваша богобоязненность.';
+
+  @override
+  String get eventEidAlAdhaSource => 'Коран 22:37';
+
+  @override
+  String get eventDayOfArafahArabic =>
+      'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ';
+
+  @override
+  String get eventDayOfArafahTranslation =>
+      'Пост в день Арафа, я надеюсь от Аллаха, что он искупит грехи предыдущего и последующего года.';
+
+  @override
+  String get eventDayOfArafahSource => 'Сахих Муслим';
+
+  @override
+  String get eventFirstTenDhulHijjahArabic =>
+      'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ';
+
+  @override
+  String get eventFirstTenDhulHijjahTranslation =>
+      'Нет дней, в которые праведные дела были бы более любимы Аллахом, чем в эти дни.';
+
+  @override
+  String get eventFirstTenDhulHijjahSource => 'Сахих аль-Бухари';
+
+  @override
+  String get eventAshuraArabic =>
+      'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ';
+
+  @override
+  String get eventAshuraTranslation =>
+      'Пост в день Ашура, я надеюсь от Аллаха, что он искупит грехи предыдущего года.';
+
+  @override
+  String get eventAshuraSource => 'Сахих Муслим';
+
+  @override
+  String get eventDaysTashreeqArabic =>
+      'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ';
+
+  @override
+  String get eventDaysTashreeqTranslation =>
+      'И поминайте Аллаха в считанные дни.';
+
+  @override
+  String get eventDaysTashreeqSource => 'Коран 2:203';
+
+  @override
+  String get eventRamadanGuidance =>
+      'Соблюдайте пост от рассвета до заката, совершайте молитву Таравих ночью, читайте Коран, давайте милостыню, увеличивайте мольбы и просите прощения у Аллаха.';
+
+  @override
+  String get eventLastTenRamadanGuidance =>
+      'Ищите ночь Предопределения особенно в нечетные ночи. Увеличивайте ночные молитвы и совершайте итикаф если возможно. Чаще повторяйте: Аллахумма иннакя Афуввун тухиббуль-афва фа\'фу анни.';
+
+  @override
+  String get eventEidAlFitrGuidance =>
+      'Выплатите закят аль-фитр до праздничной молитвы. Совершите праздничную молитву совместно, произносите такбир, наденьте лучшую одежду и разделите радость с семьей и соседями.';
+
+  @override
+  String get eventEidAlAdhaGuidance =>
+      'Совершите праздничную молитву, принесите жертву после молитвы и произносите такбир после каждой обязательной молитвы. Разделите мясо с семьей, соседями и нуждающимися.';
+
+  @override
+  String get eventDayOfArafahGuidance =>
+      'Соблюдайте пост в этот благословенный день если вы не совершаете хадж. Усердно молитесь, ибо в этот день Аллах освобождает от Огня больше всего людей. Увеличивайте поминание Аллаха и произносите Ля иляха иллаЛлах вахдаху ля шарика лях.';
+
+  @override
+  String get eventFirstTenDhulHijjahGuidance =>
+      'Соблюдайте пост первые девять дней, особенно в день Арафа. Увеличивайте благие дела и обильно произносите такбир, тахлиль и тахмид в эти дни.';
+
+  @override
+  String get eventAshuraGuidance =>
+      'Соблюдайте пост 10-го Мухаррама и добавьте 9-й день следуя Сунне. Помните, что Пророк постился в этот день из благодарности Аллаху за спасение Мусы от Фараона.';
+
+  @override
+  String get eventDaysTashreeqGuidance =>
+      'Обильно поминайте Аллаха и произносите такбир после каждой обязательной молитвы. Это дни еды, питья и благодарности. Пост в эти дни запрещен кроме паломника, который не может принести жертву.';
 }

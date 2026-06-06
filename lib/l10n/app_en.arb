@@ -3728,6 +3728,14 @@
     "@whatsNew310Feature3": {
         "description": "What's new feature 3 for v3.1.0"
     },
+    "whatsNew330Feature1": "Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress",
+    "@whatsNew330Feature1": {
+        "description": "What's new feature 1 for v3.3.0"
+    },
+    "whatsNew330Feature2": "Bug fixes and improvements",
+    "@whatsNew330Feature2": {
+        "description": "What's new feature 2 for v3.3.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
@@ -4655,5 +4663,198 @@
     "themeSage": "Sage",
     "@themeSage": {
         "description": "Label for the Sage visual theme"
+    },
+
+    "eventRamadan": "Ramadan Mubarak",
+    "@eventRamadan": {
+        "description": "Title for the Ramadan special event card"
+    },
+    "eventLastTenRamadan": "The Last Ten Nights",
+    "@eventLastTenRamadan": {
+        "description": "Title for the last ten nights of Ramadan event card"
+    },
+    "eventEidAlFitr": "Eid al-Fitr Mubarak",
+    "@eventEidAlFitr": {
+        "description": "Title for the Eid al-Fitr event card"
+    },
+    "eventEidAlAdha": "Eid al-Adha Mubarak",
+    "@eventEidAlAdha": {
+        "description": "Title for the Eid al-Adha event card"
+    },
+    "eventDayOfArafah": "Day of Arafah",
+    "@eventDayOfArafah": {
+        "description": "Title for the Day of Arafah event card"
+    },
+    "eventFirstTenDhulHijjah": "Blessed Ten Days",
+    "@eventFirstTenDhulHijjah": {
+        "description": "Title for the first ten days of Dhul Hijjah event card"
+    },
+    "eventAshura": "Day of Ashura",
+    "@eventAshura": {
+        "description": "Title for the Day of Ashura event card"
+    },
+    "eventDaysTashreeq": "Days of Tashreeq",
+    "@eventDaysTashreeq": {
+        "description": "Title for the Days of Tashreeq event card"
+    },
+    "eventRamadanSubtitle": "The month of fasting, prayer, and reflection",
+    "@eventRamadanSubtitle": {
+        "description": "Subtitle for the Ramadan event card"
+    },
+    "eventLastTenRamadanSubtitle": "Seek Laylat al-Qadr in these blessed nights",
+    "@eventLastTenRamadanSubtitle": {
+        "description": "Subtitle for the last ten nights of Ramadan event card"
+    },
+    "eventEidAlFitrSubtitle": "Celebrate the completion of Ramadan with joy and gratitude",
+    "@eventEidAlFitrSubtitle": {
+        "description": "Subtitle for the Eid al-Fitr event card"
+    },
+    "eventEidAlAdhaSubtitle": "The Festival of Sacrifice — a day of devotion and generosity",
+    "@eventEidAlAdhaSubtitle": {
+        "description": "Subtitle for the Eid al-Adha event card"
+    },
+    "eventDayOfArafahSubtitle": "The best day upon which the sun has risen",
+    "@eventDayOfArafahSubtitle": {
+        "description": "Subtitle for the Day of Arafah event card"
+    },
+    "eventFirstTenDhulHijjahSubtitle": "The most beloved days to Allah for righteous deeds",
+    "@eventFirstTenDhulHijjahSubtitle": {
+        "description": "Subtitle for the first ten days of Dhul Hijjah event card"
+    },
+    "eventAshuraSubtitle": "A day of fasting and remembrance of Allah's mercy",
+    "@eventAshuraSubtitle": {
+        "description": "Subtitle for the Day of Ashura event card"
+    },
+    "eventDaysTashreeqSubtitle": "Days of eating, drinking, and remembrance of Allah",
+    "@eventDaysTashreeqSubtitle": {
+        "description": "Subtitle for the Days of Tashreeq event card"
+    },
+    "eventRamadanArabic": "شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ",
+    "@eventRamadanArabic": {
+        "description": "Arabic text of Quran 2:185 for Ramadan dialog"
+    },
+    "eventRamadanTranslation": "The month of Ramadan in which the Quran was revealed, a guidance for the people and clear proofs of guidance and criterion.",
+    "@eventRamadanTranslation": {
+        "description": "Translation of Quran 2:185"
+    },
+    "eventRamadanSource": "Quran 2:185",
+    "@eventRamadanSource": {
+        "description": "Source reference for Ramadan ayah"
+    },
+    "eventLastTenRamadanArabic": "إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ",
+    "@eventLastTenRamadanArabic": {
+        "description": "Arabic text of Quran 97:1-3 for Last Ten Nights dialog"
+    },
+    "eventLastTenRamadanTranslation": "Indeed, We sent it down during the Night of Decree. And what can make you know what is the Night of Decree? The Night of Decree is better than a thousand months.",
+    "@eventLastTenRamadanTranslation": {
+        "description": "Translation of Quran 97:1-3"
+    },
+    "eventLastTenRamadanSource": "Quran 97:1-3",
+    "@eventLastTenRamadanSource": {
+        "description": "Source reference for Last Ten Nights ayah"
+    },
+    "eventEidAlFitrArabic": "لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ",
+    "@eventEidAlFitrArabic": {
+        "description": "Arabic text of hadith for Eid al-Fitr dialog"
+    },
+    "eventEidAlFitrTranslation": "The fasting person has two moments of joy: one when breaking the fast, and one when meeting his Lord.",
+    "@eventEidAlFitrTranslation": {
+        "description": "Translation of Eid al-Fitr hadith"
+    },
+    "eventEidAlFitrSource": "Bukhari & Muslim",
+    "@eventEidAlFitrSource": {
+        "description": "Source reference for Eid al-Fitr hadith"
+    },
+    "eventEidAlAdhaArabic": "لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ",
+    "@eventEidAlAdhaArabic": {
+        "description": "Arabic text of Quran 22:37 for Eid al-Adha dialog"
+    },
+    "eventEidAlAdhaTranslation": "Their meat will not reach Allah, nor will their blood, but what reaches Him is piety from you.",
+    "@eventEidAlAdhaTranslation": {
+        "description": "Translation of Quran 22:37"
+    },
+    "eventEidAlAdhaSource": "Quran 22:37",
+    "@eventEidAlAdhaSource": {
+        "description": "Source reference for Eid al-Adha ayah"
+    },
+    "eventDayOfArafahArabic": "صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ",
+    "@eventDayOfArafahArabic": {
+        "description": "Arabic text of hadith for Day of Arafah dialog"
+    },
+    "eventDayOfArafahTranslation": "Fasting on the Day of Arafah, I hope from Allah that it will expiate the sins of the year before and the year after.",
+    "@eventDayOfArafahTranslation": {
+        "description": "Translation of Day of Arafah hadith"
+    },
+    "eventDayOfArafahSource": "Sahih Muslim",
+    "@eventDayOfArafahSource": {
+        "description": "Source reference for Day of Arafah hadith"
+    },
+    "eventFirstTenDhulHijjahArabic": "مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ",
+    "@eventFirstTenDhulHijjahArabic": {
+        "description": "Arabic text of hadith for First Ten Dhul Hijjah dialog"
+    },
+    "eventFirstTenDhulHijjahTranslation": "There are no days in which righteous deeds are more beloved to Allah than these days.",
+    "@eventFirstTenDhulHijjahTranslation": {
+        "description": "Translation of First Ten Dhul Hijjah hadith"
+    },
+    "eventFirstTenDhulHijjahSource": "Sahih al-Bukhari",
+    "@eventFirstTenDhulHijjahSource": {
+        "description": "Source reference for First Ten Dhul Hijjah hadith"
+    },
+    "eventAshuraArabic": "صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ",
+    "@eventAshuraArabic": {
+        "description": "Arabic text of hadith for Ashura dialog"
+    },
+    "eventAshuraTranslation": "Fasting on the Day of Ashura, I hope from Allah that it will expiate the sins of the year before it.",
+    "@eventAshuraTranslation": {
+        "description": "Translation of Ashura hadith"
+    },
+    "eventAshuraSource": "Sahih Muslim",
+    "@eventAshuraSource": {
+        "description": "Source reference for Ashura hadith"
+    },
+    "eventDaysTashreeqArabic": "وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ",
+    "@eventDaysTashreeqArabic": {
+        "description": "Arabic text of Quran 2:203 for Days of Tashreeq dialog"
+    },
+    "eventDaysTashreeqTranslation": "And remember Allah during the appointed days.",
+    "@eventDaysTashreeqTranslation": {
+        "description": "Translation of Quran 2:203"
+    },
+    "eventDaysTashreeqSource": "Quran 2:203",
+    "@eventDaysTashreeqSource": {
+        "description": "Source reference for Days of Tashreeq ayah"
+    },
+    "eventRamadanGuidance": "Fast from dawn to sunset, pray Tarawih at night, recite the Quran abundantly, give charity, increase in supplication, and seek forgiveness from Allah.",
+    "@eventRamadanGuidance": {
+        "description": "Guidance text for Ramadan dialog"
+    },
+    "eventLastTenRamadanGuidance": "Seek Laylat al-Qadr especially on the odd nights. Increase your night prayers and perform I'tikaf if possible. Recite often: Allahumma innaka 'Afuwwun tuhibbul-'afwa fa'fu 'anni.",
+    "@eventLastTenRamadanGuidance": {
+        "description": "Guidance text for Last Ten Ramadan dialog"
+    },
+    "eventEidAlFitrGuidance": "Pay Zakat al-Fitr before the Eid prayer. Perform the Eid prayer in congregation, recite the Takbir, wear your best clothes, and spread joy among family and neighbors.",
+    "@eventEidAlFitrGuidance": {
+        "description": "Guidance text for Eid al-Fitr dialog"
+    },
+    "eventEidAlAdhaGuidance": "Perform the Eid prayer, offer the Udhiyah sacrifice after it, and recite the Takbir after every obligatory prayer. Share the meat with family, neighbors, and those in need.",
+    "@eventEidAlAdhaGuidance": {
+        "description": "Guidance text for Eid al-Adha dialog"
+    },
+    "eventDayOfArafahGuidance": "Fast this blessed day if you are not performing Hajj. Make abundant supplication, for it is the day Allah frees the most people from the Fire. Increase in Dhikr and recite La ilaha illAllah wahdahu la sharika lah.",
+    "@eventDayOfArafahGuidance": {
+        "description": "Guidance text for Day of Arafah dialog"
+    },
+    "eventFirstTenDhulHijjahGuidance": "Fast the first nine days, especially the Day of Arafah. Increase in righteous deeds, and recite the Takbir, Tahlil, and Tahmid abundantly throughout these days.",
+    "@eventFirstTenDhulHijjahGuidance": {
+        "description": "Guidance text for First Ten Dhul Hijjah dialog"
+    },
+    "eventAshuraGuidance": "Fast on the 10th of Muharram, and add the 9th alongside it to follow the Sunnah. Remember that the Prophet fasted this day in gratitude to Allah for saving Musa from Pharaoh.",
+    "@eventAshuraGuidance": {
+        "description": "Guidance text for Ashura dialog"
+    },
+    "eventDaysTashreeqGuidance": "Remember Allah abundantly and recite the Takbir after every obligatory prayer. These are days of eating, drinking, and gratitude. Fasting is not permitted on these days except for the pilgrim who cannot afford the sacrifice.",
+    "@eventDaysTashreeqGuidance": {
+        "description": "Guidance text for Days of Tashreeq dialog"
     }
 }

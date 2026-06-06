@@ -3062,6 +3062,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get whatsNew310Feature3 => 'Bug fixes';
 
   @override
+  String get whatsNew330Feature1 =>
+      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+
+  @override
+  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override
@@ -3705,4 +3712,176 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get themeSage => 'Sage';
+
+  @override
+  String get eventRamadan => 'Ramazan Mubarek';
+
+  @override
+  String get eventLastTenRamadan => 'Son On Gece';
+
+  @override
+  String get eventEidAlFitr => 'Ramazan Bayraminiz Mubarek';
+
+  @override
+  String get eventEidAlAdha => 'Kurban Bayraminiz Mubarek';
+
+  @override
+  String get eventDayOfArafah => 'Arefe Gunu';
+
+  @override
+  String get eventFirstTenDhulHijjah => 'Mubarek On Gun';
+
+  @override
+  String get eventAshura => 'Asure Gunu';
+
+  @override
+  String get eventDaysTashreeq => 'Tesrik Gunleri';
+
+  @override
+  String get eventRamadanSubtitle => 'Oruc, namaz ve tefekkur ayi';
+
+  @override
+  String get eventLastTenRamadanSubtitle =>
+      'Bu mubarek gecelerde Kadir Gecesi\'ni arayin';
+
+  @override
+  String get eventEidAlFitrSubtitle =>
+      'Ramazan\'in tamamlanmasini sevinc ve sukranla kutlayin';
+
+  @override
+  String get eventEidAlAdhaSubtitle =>
+      'Kurban Bayrami — adanmislik ve comertlik gunu';
+
+  @override
+  String get eventDayOfArafahSubtitle =>
+      'Gunesin uzerine dogdugu en hayirli gun';
+
+  @override
+  String get eventFirstTenDhulHijjahSubtitle =>
+      'Salih ameller icin Allah\'a en sevimli gunler';
+
+  @override
+  String get eventAshuraSubtitle => 'Oruc ve Allah\'in rahmetini anma gunu';
+
+  @override
+  String get eventDaysTashreeqSubtitle => 'Yeme, icme ve Allah\'i anma gunleri';
+
+  @override
+  String get eventRamadanArabic =>
+      'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ';
+
+  @override
+  String get eventRamadanTranslation =>
+      'Ramazan ayi, insanlara yol gosteren, dogru yolun ve hak ile batilin ayirt edicisinin acik delilleri olarak Kur\'an\'in indirilmis oldugu aydir.';
+
+  @override
+  String get eventRamadanSource => 'Kur\'an 2:185';
+
+  @override
+  String get eventLastTenRamadanArabic =>
+      'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ';
+
+  @override
+  String get eventLastTenRamadanTranslation =>
+      'Biz onu Kadir gecesinde indirdik. Kadir gecesinin ne oldugunu sen bilir misin? Kadir gecesi bin aydan daha hayirlidir.';
+
+  @override
+  String get eventLastTenRamadanSource => 'Kur\'an 97:1-3';
+
+  @override
+  String get eventEidAlFitrArabic =>
+      'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ';
+
+  @override
+  String get eventEidAlFitrTranslation =>
+      'Oruc tutanin iki sevinci vardir: birisi iftar ettigindeki, digeri ise Rabbine kavustugundaki sevincidir.';
+
+  @override
+  String get eventEidAlFitrSource => 'Buhari ve Muslim';
+
+  @override
+  String get eventEidAlAdhaArabic =>
+      'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ';
+
+  @override
+  String get eventEidAlAdhaTranslation =>
+      'Onlarin ne etleri ne de kanlari Allah\'a ulasir; fakat O\'na sizin takvaniz ulasir.';
+
+  @override
+  String get eventEidAlAdhaSource => 'Kur\'an 22:37';
+
+  @override
+  String get eventDayOfArafahArabic =>
+      'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ';
+
+  @override
+  String get eventDayOfArafahTranslation =>
+      'Arefe gunu oruc tutmayi, Allah\'tan onceki ve sonraki yilin gunahlarini kefaret olarak silmesini umarim.';
+
+  @override
+  String get eventDayOfArafahSource => 'Sahih Muslim';
+
+  @override
+  String get eventFirstTenDhulHijjahArabic =>
+      'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ';
+
+  @override
+  String get eventFirstTenDhulHijjahTranslation =>
+      'Icerisinde yapilan salih amellerin Allah\'a bu gunlerdekinden daha sevimli oldugu gunler yoktur.';
+
+  @override
+  String get eventFirstTenDhulHijjahSource => 'Sahih Buhari';
+
+  @override
+  String get eventAshuraArabic =>
+      'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ';
+
+  @override
+  String get eventAshuraTranslation =>
+      'Asure gunu oruc tutmayi, Allah\'tan onceki yilin gunahlarini kefaret olarak silmesini umarim.';
+
+  @override
+  String get eventAshuraSource => 'Sahih Muslim';
+
+  @override
+  String get eventDaysTashreeqArabic =>
+      'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ';
+
+  @override
+  String get eventDaysTashreeqTranslation => 'Sayili gunlerde Allah\'i anin.';
+
+  @override
+  String get eventDaysTashreeqSource => 'Kur\'an 2:203';
+
+  @override
+  String get eventRamadanGuidance =>
+      'Imsak\'tan iftara kadar oruc tutun, geceleri Teravih namazi kilin, Kur\'an\'i bol bol okuyun, sadaka verin, duayi ve istigfari artirin.';
+
+  @override
+  String get eventLastTenRamadanGuidance =>
+      'Kadir Gecesi\'ni ozellikle tek gecelerde arayin. Gece namazlarini artirin ve mumkunse itikafa girin. Su duayi cokca okuyun: Allahumme inneke Afuvvun tuhibbul-afve fa\'fu anni.';
+
+  @override
+  String get eventEidAlFitrGuidance =>
+      'Bayram namazindan once fitir sadakasi verin, cemaatle bayram namazi kilin, tekbir getirin, en guzel elbiselerinizi giyin ve aile ile komsu arasinda sevinc yayin.';
+
+  @override
+  String get eventEidAlAdhaGuidance =>
+      'Bayram namazi kilin, namazdan sonra kurbaninizi kesin, her farz namazin ardindan tekbir getirin. Eti aile, komsu ve ihtiyac sahipleriyle paylasin.';
+
+  @override
+  String get eventDayOfArafahGuidance =>
+      'Hacci degilseniz bu mubarek gunde oruc tutun. Bol bol dua edin, cunku Allah bu gunde en cok kisi atesten azat eder. Zikri artirin ve La ilahe illallah vahdehu la serike leh okuyun.';
+
+  @override
+  String get eventFirstTenDhulHijjahGuidance =>
+      'Ilk dokuz gun oruc tutun, ozellikle Arefe gunu. Salih amelleri artirin, bu gunler boyunca tekbir, tehlil ve tahmidi bol bol soyleyin.';
+
+  @override
+  String get eventAshuraGuidance =>
+      'Muharrem\'in 10\'unda oruc tutun ve Sunnete uyarak 9\'unu da ekleyin. Peygamber Efendimiz\'in bu gunu, Allah\'in Musa\'yi Firavun\'dan kurtarmasina sukur olarak oructutugunu hatirlaysin.';
+
+  @override
+  String get eventDaysTashreeqGuidance =>
+      'Allah\'i bol bol anin ve her farz namazin ardindan tekbir getirin. Bunlar yeme, icme ve sukur gunleridir. Kurban kesemeyen haccilar disinda bu gunlerde oruc tutulmaz.';
 }

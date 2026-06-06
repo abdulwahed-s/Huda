@@ -3116,6 +3116,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get whatsNew310Feature3 => 'Bug fixes';
 
   @override
+  String get whatsNew330Feature1 =>
+      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+
+  @override
+  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+
+  @override
   String get offlineMode => 'Offline-Modus';
 
   @override
@@ -3762,4 +3769,180 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get themeSage => 'Sage';
+
+  @override
+  String get eventRamadan => 'Ramadan Mubarak';
+
+  @override
+  String get eventLastTenRamadan => 'Die letzten zehn Nachte';
+
+  @override
+  String get eventEidAlFitr => 'Eid al-Fitr Mubarak';
+
+  @override
+  String get eventEidAlAdha => 'Eid al-Adha Mubarak';
+
+  @override
+  String get eventDayOfArafah => 'Tag von Arafah';
+
+  @override
+  String get eventFirstTenDhulHijjah => 'Die gesegneten zehn Tage';
+
+  @override
+  String get eventAshura => 'Tag von Aschura';
+
+  @override
+  String get eventDaysTashreeq => 'Tage von Taschreeq';
+
+  @override
+  String get eventRamadanSubtitle =>
+      'Der Monat des Fastens, des Gebets und der Besinnung';
+
+  @override
+  String get eventLastTenRamadanSubtitle =>
+      'Suche Laylat al-Qadr in diesen gesegneten Nachten';
+
+  @override
+  String get eventEidAlFitrSubtitle =>
+      'Feiere den Abschluss des Ramadan mit Freude und Dankbarkeit';
+
+  @override
+  String get eventEidAlAdhaSubtitle =>
+      'Das Opferfest — ein Tag der Hingabe und Grosszugigkeit';
+
+  @override
+  String get eventDayOfArafahSubtitle =>
+      'Der beste Tag, an dem die Sonne aufgegangen ist';
+
+  @override
+  String get eventFirstTenDhulHijjahSubtitle =>
+      'Die bei Allah beliebtesten Tage fur gute Taten';
+
+  @override
+  String get eventAshuraSubtitle =>
+      'Ein Tag des Fastens und des Gedenkens an Allahs Barmherzigkeit';
+
+  @override
+  String get eventDaysTashreeqSubtitle =>
+      'Tage des Essens, Trinkens und des Gedenkens an Allah';
+
+  @override
+  String get eventRamadanArabic =>
+      'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ';
+
+  @override
+  String get eventRamadanTranslation =>
+      'Der Monat Ramadan, in dem der Quran herabgesandt wurde als Rechtleitung fur die Menschen und als klare Beweise der Rechtleitung und der Unterscheidung.';
+
+  @override
+  String get eventRamadanSource => 'Quran 2:185';
+
+  @override
+  String get eventLastTenRamadanArabic =>
+      'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ';
+
+  @override
+  String get eventLastTenRamadanTranslation =>
+      'Wir haben ihn in der Nacht der Bestimmung herabgesandt. Und was lasst dich wissen, was die Nacht der Bestimmung ist? Die Nacht der Bestimmung ist besser als tausend Monate.';
+
+  @override
+  String get eventLastTenRamadanSource => 'Quran 97:1-3';
+
+  @override
+  String get eventEidAlFitrArabic =>
+      'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ';
+
+  @override
+  String get eventEidAlFitrTranslation =>
+      'Der Fastende hat zwei Freuden: eine Freude beim Fastenbrechen und eine Freude bei der Begegnung mit seinem Herrn.';
+
+  @override
+  String get eventEidAlFitrSource => 'Bukhari und Muslim';
+
+  @override
+  String get eventEidAlAdhaArabic =>
+      'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ';
+
+  @override
+  String get eventEidAlAdhaTranslation =>
+      'Weder ihr Fleisch noch ihr Blut erreicht Allah, aber die Gottesfurcht von euch erreicht Ihn.';
+
+  @override
+  String get eventEidAlAdhaSource => 'Quran 22:37';
+
+  @override
+  String get eventDayOfArafahArabic =>
+      'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ';
+
+  @override
+  String get eventDayOfArafahTranslation =>
+      'Das Fasten am Tag von Arafah, ich erhoffe von Allah, dass es die Sunden des vorherigen und des folgenden Jahres suhnt.';
+
+  @override
+  String get eventDayOfArafahSource => 'Sahih Muslim';
+
+  @override
+  String get eventFirstTenDhulHijjahArabic =>
+      'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ';
+
+  @override
+  String get eventFirstTenDhulHijjahTranslation =>
+      'Es gibt keine Tage, an denen die rechtschaffenen Taten Allah lieber sind als an diesen Tagen.';
+
+  @override
+  String get eventFirstTenDhulHijjahSource => 'Sahih al-Bukhari';
+
+  @override
+  String get eventAshuraArabic =>
+      'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ';
+
+  @override
+  String get eventAshuraTranslation =>
+      'Das Fasten am Tag von Aschura, ich erhoffe von Allah, dass es die Sunden des vorherigen Jahres suhnt.';
+
+  @override
+  String get eventAshuraSource => 'Sahih Muslim';
+
+  @override
+  String get eventDaysTashreeqArabic =>
+      'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ';
+
+  @override
+  String get eventDaysTashreeqTranslation =>
+      'Und gedenkt Allahs an den gezahlten Tagen.';
+
+  @override
+  String get eventDaysTashreeqSource => 'Quran 2:203';
+
+  @override
+  String get eventRamadanGuidance =>
+      'Fastet von der Morgendammerung bis zum Sonnenuntergang, betet Tarawih in der Nacht, rezitiert den Quran reichlich, gebt Almosen, vermehrt die Bittgebete und bittet Allah um Vergebung.';
+
+  @override
+  String get eventLastTenRamadanGuidance =>
+      'Sucht Laylat al-Qadr besonders in den ungeraden Nachten. Vermehrt die Nachtgebete und macht I\'tikaf wenn moglich. Rezitiert oft: Allahumma innaka \'Afuwwun tuhibbul-\'afwa fa\'fu \'anni.';
+
+  @override
+  String get eventEidAlFitrGuidance =>
+      'Zahlt die Zakat al-Fitr vor dem Eid-Gebet. Verrichtet das Eid-Gebet in der Gemeinschaft, sprecht den Takbir, tragt eure besten Kleider und verbreitet Freude unter Familie und Nachbarn.';
+
+  @override
+  String get eventEidAlAdhaGuidance =>
+      'Verrichtet das Eid-Gebet, bringt das Udhiyah-Opfer nach dem Gebet dar und sprecht den Takbir nach jedem Pflichtgebet. Teilt das Fleisch mit Familie, Nachbarn und Bedurftigen.';
+
+  @override
+  String get eventDayOfArafahGuidance =>
+      'Fastet an diesem gesegneten Tag, wenn ihr nicht die Hadsch vollzieht. Macht reichlich Bittgebete, denn es ist der Tag, an dem Allah die meisten Menschen vom Feuer befreit. Vermehrt den Dhikr und rezitiert La ilaha illAllah wahdahu la sharika lah.';
+
+  @override
+  String get eventFirstTenDhulHijjahGuidance =>
+      'Fastet die ersten neun Tage, besonders den Tag von Arafah. Vermehrt die guten Taten und sprecht reichlich den Takbir, Tahlil und Tahmid wahrend dieser Tage.';
+
+  @override
+  String get eventAshuraGuidance =>
+      'Fastet am 10. Muharram und fugt den 9. hinzu, um der Sunnah zu folgen. Erinnert euch, dass der Prophet diesen Tag aus Dankbarkeit gegenuber Allah fastete, weil Er Musa vor dem Pharao rettete.';
+
+  @override
+  String get eventDaysTashreeqGuidance =>
+      'Gedenkt Allahs reichlich und sprecht den Takbir nach jedem Pflichtgebet. Es sind Tage des Essens, Trinkens und der Dankbarkeit. Das Fasten ist an diesen Tagen verboten, ausser fur den Pilger, der kein Opfer bringen kann.';
 }

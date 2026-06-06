@@ -3070,6 +3070,13 @@ class AppLocalizationsMs extends AppLocalizations {
   String get whatsNew310Feature3 => 'Bug fixes';
 
   @override
+  String get whatsNew330Feature1 =>
+      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+
+  @override
+  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override
@@ -3714,4 +3721,178 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get themeSage => 'Sage';
+
+  @override
+  String get eventRamadan => 'Ramadan Mubarak';
+
+  @override
+  String get eventLastTenRamadan => 'Sepuluh Malam Terakhir';
+
+  @override
+  String get eventEidAlFitr => 'Selamat Hari Raya Aidilfitri';
+
+  @override
+  String get eventEidAlAdha => 'Selamat Hari Raya Aidiladha';
+
+  @override
+  String get eventDayOfArafah => 'Hari Arafah';
+
+  @override
+  String get eventFirstTenDhulHijjah => 'Sepuluh Hari Yang Diberkati';
+
+  @override
+  String get eventAshura => 'Hari Asyura';
+
+  @override
+  String get eventDaysTashreeq => 'Hari-hari Tasyrik';
+
+  @override
+  String get eventRamadanSubtitle => 'Bulan puasa, solat, dan muhasabah diri';
+
+  @override
+  String get eventLastTenRamadanSubtitle =>
+      'Carilah Lailatul Qadr pada malam-malam yang diberkati ini';
+
+  @override
+  String get eventEidAlFitrSubtitle =>
+      'Raikan kemenangan Ramadan dengan kegembiraan dan kesyukuran';
+
+  @override
+  String get eventEidAlAdhaSubtitle =>
+      'Hari raya korban — hari pengabdian dan kemurahan hati';
+
+  @override
+  String get eventDayOfArafahSubtitle =>
+      'Hari terbaik yang pernah matahari terbit di atasnya';
+
+  @override
+  String get eventFirstTenDhulHijjahSubtitle =>
+      'Hari-hari yang paling dicintai Allah untuk amalan soleh';
+
+  @override
+  String get eventAshuraSubtitle => 'Hari berpuasa dan mengingati rahmat Allah';
+
+  @override
+  String get eventDaysTashreeqSubtitle =>
+      'Hari-hari makan, minum, dan mengingati Allah';
+
+  @override
+  String get eventRamadanArabic =>
+      'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ';
+
+  @override
+  String get eventRamadanTranslation =>
+      'Bulan Ramadan yang diturunkan padanya al-Quran sebagai petunjuk bagi manusia dan bukti-bukti yang jelas dari petunjuk dan pembeza.';
+
+  @override
+  String get eventRamadanSource => 'al-Quran 2:185';
+
+  @override
+  String get eventLastTenRamadanArabic =>
+      'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ · وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ · لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ';
+
+  @override
+  String get eventLastTenRamadanTranslation =>
+      'Sesungguhnya Kami telah menurunkannya pada malam Lailatul Qadar. Dan apakah yang membuatmu tahu apakah malam Lailatul Qadar itu? Malam Lailatul Qadar lebih baik daripada seribu bulan.';
+
+  @override
+  String get eventLastTenRamadanSource => 'al-Quran 97:1-3';
+
+  @override
+  String get eventEidAlFitrArabic =>
+      'لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِندَ فِطْرِهِ، وَفَرْحَةٌ عِندَ لِقَاءِ رَبِّهِ';
+
+  @override
+  String get eventEidAlFitrTranslation =>
+      'Orang yang berpuasa mempunyai dua kegembiraan: kegembiraan ketika berbuka puasa dan kegembiraan ketika bertemu Tuhannya.';
+
+  @override
+  String get eventEidAlFitrSource => 'Bukhari dan Muslim';
+
+  @override
+  String get eventEidAlAdhaArabic =>
+      'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ';
+
+  @override
+  String get eventEidAlAdhaTranslation =>
+      'Daging dan darahnya tidak akan sampai kepada Allah, tetapi yang sampai kepada-Nya ialah ketakwaan daripada kamu.';
+
+  @override
+  String get eventEidAlAdhaSource => 'al-Quran 22:37';
+
+  @override
+  String get eventDayOfArafahArabic =>
+      'صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ';
+
+  @override
+  String get eventDayOfArafahTranslation =>
+      'Puasa hari Arafah, aku berharap kepada Allah agar ia menghapuskan dosa-dosa tahun sebelum dan tahun selepasnya.';
+
+  @override
+  String get eventDayOfArafahSource => 'Sahih Muslim';
+
+  @override
+  String get eventFirstTenDhulHijjahArabic =>
+      'مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَذِهِ الأَيَّامِ';
+
+  @override
+  String get eventFirstTenDhulHijjahTranslation =>
+      'Tiada hari-hari yang amalan soleh padanya lebih dicintai Allah daripada hari-hari ini.';
+
+  @override
+  String get eventFirstTenDhulHijjahSource => 'Sahih al-Bukhari';
+
+  @override
+  String get eventAshuraArabic =>
+      'صِيَامُ يَوْمِ عَاشُورَاءَ أَحْتَسِبُ عَلَى اللَّهِ أَن يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ';
+
+  @override
+  String get eventAshuraTranslation =>
+      'Puasa hari Asyura, aku berharap kepada Allah agar ia menghapuskan dosa-dosa tahun sebelumnya.';
+
+  @override
+  String get eventAshuraSource => 'Sahih Muslim';
+
+  @override
+  String get eventDaysTashreeqArabic =>
+      'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ';
+
+  @override
+  String get eventDaysTashreeqTranslation =>
+      'Dan ingatlah Allah pada hari-hari yang ditentukan.';
+
+  @override
+  String get eventDaysTashreeqSource => 'al-Quran 2:203';
+
+  @override
+  String get eventRamadanGuidance =>
+      'Berpuasa dari subuh hingga maghrib, solat Tarawih pada waktu malam, baca al-Quran dengan banyak, bersedekah, perbanyakkan doa dan mohon keampunan daripada Allah.';
+
+  @override
+  String get eventLastTenRamadanGuidance =>
+      'Cari Lailatul Qadar terutamanya pada malam ganjil. Perbanyakkan solat malam dan lakukan iktikaf jika mampu. Selalu baca: Allahumma innaka \'Afuwwun tuhibbul-\'afwa fa\'fu \'anni.';
+
+  @override
+  String get eventEidAlFitrGuidance =>
+      'Bayar zakat fitrah sebelum solat Hari Raya, tunaikan solat Hari Raya secara berjemaah, bertakbir, pakai pakaian terbaik dan sebarkan kegembiraan kepada keluarga dan jiran.';
+
+  @override
+  String get eventEidAlAdhaGuidance =>
+      'Tunaikan solat Hari Raya, lakukan korban selepas solat dan bertakbir selepas setiap solat fardhu. Agihkan daging kepada keluarga, jiran dan golongan yang memerlukan.';
+
+  @override
+  String get eventDayOfArafahGuidance =>
+      'Berpuasa pada hari yang diberkati ini jika anda bukan jemaah haji. Perbanyakkan doa kerana ia adalah hari di mana Allah membebaskan paling ramai hamba dari api neraka. Perbanyakkan zikir dan baca La ilaha illAllah wahdahu la sharika lah.';
+
+  @override
+  String get eventFirstTenDhulHijjahGuidance =>
+      'Berpuasa pada sembilan hari pertama terutamanya hari Arafah. Perbanyakkan amalan soleh dan banyakkan takbir, tahlil dan tahmid sepanjang hari-hari ini.';
+
+  @override
+  String get eventAshuraGuidance =>
+      'Berpuasa pada 10 Muharram dan tambahkan 9 Muharram untuk mengikut Sunnah. Ingatlah bahawa Nabi berpuasa pada hari ini sebagai kesyukuran kepada Allah kerana menyelamatkan Musa daripada Firaun.';
+
+  @override
+  String get eventDaysTashreeqGuidance =>
+      'Ingatlah Allah dengan banyak dan bertakbir selepas setiap solat fardhu. Ini adalah hari-hari makan, minum dan bersyukur. Berpuasa tidak dibenarkan pada hari-hari ini kecuali bagi jemaah haji yang tidak mampu berkurban.';
 }
