@@ -5,10 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
 import 'package:huda/presentation/widgets/home/feature_grid.dart';
 import 'package:huda/presentation/widgets/home/quran_feature_stack_card.dart';
-import 'package:huda/cubit/home/home_cubit.dart';
+import 'package:huda/presentation/widgets/home/special_event_card.dart';
+import 'package:huda/presentation/widgets/home/special_event_dialog.dart';
+import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
 import 'package:huda/core/routes/app_route.dart';
 
 class HomeContent extends StatelessWidget {
@@ -128,40 +129,35 @@ class HomeContent extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BlocBuilder<HomeCubit, HomeState>(
-                      builder: (context, homeState) {
-                        final HomeLoaded? loaded =
-                            homeState is HomeLoaded ? homeState : null;
-                        final bool hasLastRead =
-                            loaded?.hasLastReadPosition ?? false;
-                        final VoidCallback? onTap = hasLastRead
-                            ? () => openLastReadSurah(loaded!.lastReadSummary!)
-                            : null;
-
-                        return ContinueReadingCard(
-                          hasLastRead: hasLastRead,
-                          onTap: onTap,
-                          continueText:
-                              AppLocalizations.of(context)!.continueHome,
-                          noActivityText: AppLocalizations.of(context)!
-                              .noRecentActivityHome,
-                          resumeText:
-                              AppLocalizations.of(context)!.resumeReading,
-                          noActivityDescription: AppLocalizations.of(context)!
-                              .noRecentActivityDescription,
+                    BlocBuilder<IslamicEventCubit, IslamicEventState>(
+                      builder: (context, eventState) {
+                        if (eventState is! IslamicEventActive) {
+                          return const SizedBox.shrink();
+                        }
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: context.responsive(
+                              mobile: 16.h,
+                              tablet: 20.h,
+                              desktop: 24.h,
+                            ),
+                          ),
+                          child: SpecialEventCard(
+                            event: eventState.event,
+                            isDarkMode: isDarkMode,
+                            onTap: () => showSpecialEventDialog(
+                              context,
+                              eventState.event.eventKey,
+                              isDarkMode,
+                            ),
+                          ),
                         );
                       },
-                    ),
-                    SizedBox(
-                      height: context.responsive(
-                        mobile: 16.h,
-                        tablet: 20.h,
-                        desktop: 24.h,
-                      ),
                     ),
                     FeatureGrid(
                       isDarkMode: isDarkMode,
                       features: _getFeatures(context),
+                      openLastReadSurah: openLastReadSurah,
                       quranStackCard: QuranFeatureStackCard(
                         isDarkMode: isDarkMode,
                         index: 0,

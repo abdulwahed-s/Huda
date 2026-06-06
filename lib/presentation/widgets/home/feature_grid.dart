@@ -8,12 +8,14 @@ class FeatureGrid extends StatefulWidget {
   final bool isDarkMode;
   final List<FeatureItem> features;
   final QuranFeatureStackCard? quranStackCard;
+  final Function(Map<String, dynamic>)? openLastReadSurah;
 
   const FeatureGrid({
     super.key,
     required this.isDarkMode,
     required this.features,
     this.quranStackCard,
+    this.openLastReadSurah,
   });
 
   @override
@@ -109,6 +111,7 @@ class _FeatureGridState extends State<FeatureGrid> {
                     onAudioTap: src.onAudioTap,
                     onRadioTap: src.onRadioTap,
                     onBookmarkTap: src.onBookmarkTap,
+                    openLastReadSurah: widget.openLastReadSurah,
                   ),
                 )
               : const SizedBox.shrink(),

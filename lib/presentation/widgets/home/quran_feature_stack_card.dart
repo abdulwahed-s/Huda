@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
+import 'package:huda/cubit/home/home_cubit.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
 
 class _QuranSubItem {
   final String title;
@@ -268,6 +272,7 @@ class QuranExpandedSubGrid extends StatefulWidget {
   final bool isDarkMode;
   final String quranLabel, audioLabel, radioLabel, bookmarkLabel;
   final VoidCallback onQuranTap, onAudioTap, onRadioTap, onBookmarkTap;
+  final Function(Map<String, dynamic>)? openLastReadSurah;
 
   const QuranExpandedSubGrid({
     super.key,
@@ -280,6 +285,7 @@ class QuranExpandedSubGrid extends StatefulWidget {
     required this.onAudioTap,
     required this.onRadioTap,
     required this.onBookmarkTap,
+    this.openLastReadSurah,
   });
 
   @override
@@ -315,11 +321,11 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 450));
+        vsync: this, duration: const Duration(milliseconds: 550));
     _scaleAnims = [];
     _opacityAnims = [];
-    for (int i = 0; i < 4; i++) {
-      final s = (i * 60 / 450).clamp(0.0, 1.0);
+    for (int i = 0; i < 5; i++) {
+      final s = (i * 50 / 550).clamp(0.0, 1.0);
       _scaleAnims.add(Tween(begin: 0.85, end: 1.0).animate(
         CurvedAnimation(
             parent: _controller,
@@ -354,16 +360,49 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
       builder: (context, _) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Transform.scale(
+            scale: _scaleAnims[0].value,
+            child: Opacity(
+              opacity: _opacityAnims[0].value.clamp(0.0, 1.0),
+              child: BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, homeState) {
+                  final HomeLoaded? loaded =
+                      homeState is HomeLoaded ? homeState : null;
+                  final bool hasLastRead =
+                      loaded?.hasLastReadPosition ?? false;
+                  final VoidCallback? onTap =
+                      hasLastRead && widget.openLastReadSurah != null
+                          ? () => widget
+                              .openLastReadSurah!(loaded!.lastReadSummary!)
+                          : null;
+
+                  return ContinueReadingCard(
+                    hasLastRead: hasLastRead,
+                    onTap: onTap,
+                    continueText:
+                        AppLocalizations.of(context)!.continueHome,
+                    noActivityText:
+                        AppLocalizations.of(context)!.noRecentActivityHome,
+                    resumeText:
+                        AppLocalizations.of(context)!.resumeReading,
+                    noActivityDescription: AppLocalizations.of(context)!
+                        .noRecentActivityDescription,
+                  );
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 16.h),
           Row(children: [
-            Expanded(child: _animCard(context, items[0], 0, iconSize, pad, fs)),
+            Expanded(child: _animCard(context, items[0], 1, iconSize, pad, fs)),
             SizedBox(width: 16.w),
-            Expanded(child: _animCard(context, items[1], 1, iconSize, pad, fs)),
+            Expanded(child: _animCard(context, items[1], 2, iconSize, pad, fs)),
           ]),
           SizedBox(height: 16.h),
           Row(children: [
-            Expanded(child: _animCard(context, items[2], 2, iconSize, pad, fs)),
+            Expanded(child: _animCard(context, items[2], 3, iconSize, pad, fs)),
             SizedBox(width: 16.w),
-            Expanded(child: _animCard(context, items[3], 3, iconSize, pad, fs)),
+            Expanded(child: _animCard(context, items[3], 4, iconSize, pad, fs)),
           ]),
         ],
       ),

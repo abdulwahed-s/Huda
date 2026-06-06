@@ -22,6 +22,8 @@ import 'package:huda/cubit/hadith/hadith_cubit.dart';
 import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
 import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
+import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
+import 'package:huda/core/services/islamic_event_service.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
@@ -80,8 +82,15 @@ class PageRouter {
         );
       case AppRoute.home:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider<HomeCubit>(
-            create: (context) => HomeCubit(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<HomeCubit>(create: (_) => HomeCubit()),
+              BlocProvider<IslamicEventCubit>(
+                create: (_) => IslamicEventCubit(
+                  service: getIt<IslamicEventService>(),
+                ),
+              ),
+            ],
             child: const Home(),
           ),
         );
