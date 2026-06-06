@@ -27,6 +27,10 @@
       alt='Get it on App Store'
       height="60"
       style="vertical-align: middle;">](https://apps.apple.com/us/app/huda-islamic-companion-app/id6757343816)
+[<img src="assets\dev\github\snapstore.png"
+      alt='Get it on App Store'
+      height="60"
+      style="vertical-align: middle;">](https://snapcraft.io/huda)
 
 </div>
 
