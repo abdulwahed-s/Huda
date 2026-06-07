@@ -160,7 +160,8 @@ jobs:
             -allowProvisioningUpdates \
             -authenticationKeyPath ~/.private_keys/AuthKey_${ASC_KEY_ID}.p8 \
             -authenticationKeyID "$ASC_KEY_ID" \
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon
 
       - name: Export IPA
         run: |
