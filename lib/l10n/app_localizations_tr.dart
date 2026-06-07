@@ -3063,10 +3063,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get whatsNew330Feature1 =>
-      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+      'Okumaya Devam Et taşındı: Ana ekrandaki Kuran kartına dokunarak genişletin ve okuma ilerlemenizi bulun';
 
   @override
-  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+  String get whatsNew330Feature2 => 'Hata düzeltmeleri ve iyileştirmeler';
 
   @override
   String get offlineMode => 'Çevrimdışı Mod';

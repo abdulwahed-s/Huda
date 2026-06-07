@@ -3137,10 +3137,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get whatsNew330Feature1 =>
-      'Continue Reading relocated: Tap the Quran card on the home screen to expand it and find your reading progress';
+      'Continuer la lecture déplacé : Appuyez sur la carte du Coran sur l\'écran d\'accueil pour la développer et retrouver votre avancement de lecture';
 
   @override
-  String get whatsNew330Feature2 => 'Bug fixes and improvements';
+  String get whatsNew330Feature2 => 'Corrections de bugs et améliorations';
 
   @override
   String get offlineMode => 'Mode hors ligne';
