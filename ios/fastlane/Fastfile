@@ -1,6 +1,60 @@
 default_platform(:ios)
 
 platform :ios do
+  lane :install_profiles do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY_P8"],
+      is_key_content_base64: true
+    )
+
+    bundle_ids = [
+      "com.aw.huda",
+      "com.aw.huda.HudaShield",
+      "com.aw.huda.HudaShieldAction",
+      "com.aw.huda.HudaWidget"
+    ]
+
+    mapping = {}
+    bundle_ids.each do |app_id|
+      get_provisioning_profile(
+        api_key: api_key,
+        app_identifier: app_id
+      )
+      mapping[app_id] = lane_context[SharedValues::SIGH_NAME]
+    end
+
+    profiles_xml = mapping.map { |k, v| "<key>#{k}</key>\n      <string>#{v}</string>" }.join("\n      ")
+
+    plist_content = <<~PLIST
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>method</key>
+        <string>app-store-connect</string>
+        <key>teamID</key>
+        <string>#{ENV['APPLE_TEAM_ID']}</string>
+        <key>signingStyle</key>
+        <string>manual</string>
+        <key>signingCertificate</key>
+        <string>Apple Distribution</string>
+        <key>uploadSymbols</key>
+        <true/>
+        <key>provisioningProfiles</key>
+        <dict>
+          #{profiles_xml}
+        </dict>
+      </dict>
+      </plist>
+    PLIST
+
+    File.write("#{ENV['RUNNER_TEMP']}/ExportOptions.plist", plist_content)
+    UI.success("ExportOptions.plist written with #{mapping.length} profiles")
+    mapping.each { |k, v| UI.message("  #{k} → #{v}") }
+  end
+
   lane :deploy do
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
