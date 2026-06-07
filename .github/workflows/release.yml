@@ -83,9 +83,15 @@ jobs:
 
   # ──────────────────────────────────────────────────────────
   # iOS — IPA → App Store
+  # Uses xcodebuild with -allowProvisioningUpdates so Xcode
+  # manages profiles automatically via App Store Connect API.
+  # No provisioning profile secrets needed.
   # ──────────────────────────────────────────────────────────
   build-ios:
     runs-on: macos-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -109,49 +115,49 @@ jobs:
       - name: Install CocoaPods
         run: cd ios && pod install --repo-update
 
-      - name: Import certificates & provisioning profiles
+      - name: Import distribution certificate
         env:
-          DISTRIBUTION_CERT_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERT_BASE64 }}
-          DISTRIBUTION_CERT_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERT_PASSWORD }}
-          IOS_PROFILES: |
-            ${{ secrets.IOS_RUNNER_PROFILE_BASE64 }}
-            ${{ secrets.IOS_SHIELD_PROFILE_BASE64 }}
-            ${{ secrets.IOS_SHIELD_ACTION_PROFILE_BASE64 }}
-            ${{ secrets.IOS_WIDGET_PROFILE_BASE64 }}
+          CERT_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERT_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERT_PASSWORD }}
         run: |
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> $GITHUB_ENV
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 
-          echo "$DISTRIBUTION_CERT_BASE64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          echo "$CERT_BASE64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
           security import "$RUNNER_TEMP/cert.p12" \
-            -P "$DISTRIBUTION_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+            -P "$CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
           security set-key-partition-list -S apple-tool:,apple: \
             -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security list-keychain -d user -s "$KEYCHAIN_PATH"
 
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          while IFS= read -r line; do
-            [ -z "$line" ] && continue
-            echo "$line" | base64 --decode > "$RUNNER_TEMP/temp.mobileprovision"
-            UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin \
-              <<< "$(security cms -D -i "$RUNNER_TEMP/temp.mobileprovision")")
-            cp "$RUNNER_TEMP/temp.mobileprovision" \
-              ~/Library/MobileDevice/Provisioning\ Profiles/"$UUID".mobileprovision
-          done <<< "$IOS_PROFILES"
-
-      - name: Create ExportOptions.plist
-        env:
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          PROFILE_RUNNER: ${{ secrets.IOS_RUNNER_PROFILE_NAME }}
-          PROFILE_SHIELD: ${{ secrets.IOS_SHIELD_PROFILE_NAME }}
-          PROFILE_SHIELD_ACTION: ${{ secrets.IOS_SHIELD_ACTION_PROFILE_NAME }}
-          PROFILE_WIDGET: ${{ secrets.IOS_WIDGET_PROFILE_NAME }}
+      - name: Setup App Store Connect API key
         run: |
-          cat > ios/ExportOptions-CI.plist <<PLIST
+          mkdir -p ~/.private_keys
+          echo "${{ secrets.APP_STORE_CONNECT_KEY_P8 }}" | base64 --decode \
+            > ~/.private_keys/AuthKey_${ASC_KEY_ID}.p8
+
+      - name: Archive iOS app
+        run: |
+          cd ios
+          xcodebuild archive \
+            -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release \
+            -archivePath $RUNNER_TEMP/Runner.xcarchive \
+            -destination "generic/platform=iOS" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/.private_keys/AuthKey_${ASC_KEY_ID}.p8 \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+
+      - name: Export IPA
+        run: |
+          cat > $RUNNER_TEMP/ExportOptions.plist <<'PLIST'
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
             "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -160,55 +166,23 @@ jobs:
             <key>method</key>
             <string>app-store</string>
             <key>teamID</key>
-            <string>${APPLE_TEAM_ID}</string>
+            <string>${{ secrets.APPLE_TEAM_ID }}</string>
             <key>signingStyle</key>
-            <string>manual</string>
-            <key>uploadBitcode</key>
-            <false/>
+            <string>automatic</string>
             <key>uploadSymbols</key>
             <true/>
-            <key>provisioningProfiles</key>
-            <dict>
-              <key>com.aw.huda</key>
-              <string>${PROFILE_RUNNER}</string>
-              <key>com.aw.huda.HudaShield</key>
-              <string>${PROFILE_SHIELD}</string>
-              <key>com.aw.huda.HudaShieldAction</key>
-              <string>${PROFILE_SHIELD_ACTION}</string>
-              <key>com.aw.huda.HudaWidget</key>
-              <string>${PROFILE_WIDGET}</string>
-            </dict>
           </dict>
           </plist>
           PLIST
 
-      - name: Disable automatic signing for CI
-        env:
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          PROFILE_RUNNER: ${{ secrets.IOS_RUNNER_PROFILE_NAME }}
-          PROFILE_SHIELD: ${{ secrets.IOS_SHIELD_PROFILE_NAME }}
-          PROFILE_SHIELD_ACTION: ${{ secrets.IOS_SHIELD_ACTION_PROFILE_NAME }}
-          PROFILE_WIDGET: ${{ secrets.IOS_WIDGET_PROFILE_NAME }}
-        run: |
-          cd ios
-          for target_profile in \
-            "Runner:${PROFILE_RUNNER}" \
-            "HudaShield:${PROFILE_SHIELD}" \
-            "HudaShieldAction:${PROFILE_SHIELD_ACTION}" \
-            "HudaWidgetExtension:${PROFILE_WIDGET}"; do
-            TARGET="${target_profile%%:*}"
-            PROFILE="${target_profile#*:}"
-            bundle exec fastlane run update_code_signing_settings \
-              use_automatic_signing:false \
-              path:Runner.xcodeproj \
-              team_id:"${APPLE_TEAM_ID}" \
-              code_sign_identity:"Apple Distribution" \
-              targets:"[\"${TARGET}\"]" \
-              profile_name:"${PROFILE}"
-          done
-
-      - name: Build IPA
-        run: flutter build ipa --release --export-options-plist=ios/ExportOptions-CI.plist
+          xcodebuild -exportArchive \
+            -archivePath $RUNNER_TEMP/Runner.xcarchive \
+            -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist \
+            -exportPath build/ios/ipa \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/.private_keys/AuthKey_${ASC_KEY_ID}.p8 \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
 
       - name: Upload to App Store
         if: ${{ !inputs.dry_run }}
@@ -225,7 +199,7 @@ jobs:
 
       - name: Cleanup keychain
         if: always()
-        run: security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" 2>/dev/null || true
+        run: security delete-keychain "$KEYCHAIN_PATH" 2>/dev/null || true
 
   # ──────────────────────────────────────────────────────────
   # macOS — pkg → App Store
@@ -368,7 +342,7 @@ jobs:
         run: flutter build windows --release
 
       - name: Create MSIX
-        run: dart run msix:create
+        run: dart run msix:create --store
 
       - name: Setup Microsoft Store CLI
         if: ${{ !inputs.dry_run }}
