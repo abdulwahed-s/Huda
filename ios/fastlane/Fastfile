@@ -66,7 +66,6 @@ platform :ios do
     upload_to_app_store(
       api_key: api_key,
       ipa: Dir["../build/ios/ipa/*.ipa"].first,
-      skip_metadata: true,
       skip_screenshots: true,
       force: true,
       precheck_include_in_app_purchases: false

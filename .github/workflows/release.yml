@@ -70,6 +70,7 @@ jobs:
           releaseFiles: build/app/outputs/bundle/release/app-release.aab
           track: production
           status: completed
+          whatsNewDirectory: distribution/whatsnew
 
       - uses: actions/upload-artifact@v4
         with:
@@ -405,6 +406,8 @@ jobs:
     if: ${{ !inputs.dry_run }}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           name: android-apk
@@ -480,6 +483,38 @@ jobs:
           resp.raise_for_status()
           print("✓ App file info updated")
 
+          # 5.5. Set localised release notes
+          import glob
+
+          LOCALE_MAP = {
+              "whatsnew-en-US": "en_US",
+              "whatsnew-ar":    "ar",
+              "whatsnew-de-DE": "de_DE",
+              "whatsnew-es-ES": "es_ES",
+              "whatsnew-fr-FR": "fr_FR",
+              "whatsnew-bn-BD": "bn_BD",
+              "whatsnew-ms":    "ms_MY",
+              "whatsnew-ru-RU": "ru_RU",
+              "whatsnew-tr-TR": "tr_TR",
+              "whatsnew-ur":    "ur",
+          }
+
+          for filepath in sorted(glob.glob("distribution/whatsnew/whatsnew-*")):
+              filename = os.path.basename(filepath)
+              lang = LOCALE_MAP.get(filename)
+              if not lang:
+                  continue
+              text = open(filepath, encoding="utf-8").read().strip()
+              resp = requests.put(
+                  f"{BASE}/new-features?appId={app_id}&lang={lang}",
+                  headers=auth_headers,
+                  json={"newFeatures": text},
+              )
+              if resp.ok:
+                  print(f"✓ Release notes [{lang}]")
+              else:
+                  print(f"⚠ Release notes [{lang}]: {resp.status_code} {resp.text}")
+
           # 6. Submit for review
           resp = requests.post(f"{BASE}/app-submit?appId={app_id}", headers=auth_headers)
           resp.raise_for_status()
@@ -491,7 +526,7 @@ jobs:
   # ──────────────────────────────────────────────────────────
   create-release:
     needs: [build-android, build-ios, build-macos, build-windows, build-linux]
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
