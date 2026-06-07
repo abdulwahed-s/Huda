@@ -262,6 +262,8 @@ jobs:
 
       - name: Build macOS app
         run: |
+          sed -i '' 's/ASSETCATALOG_COMPILER_APPICON_NAME = huda_icon/ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon/g' \
+            macos/Runner.xcodeproj/project.pbxproj
           cd macos
           bundle exec fastlane run update_code_signing_settings \
             use_automatic_signing:false \
@@ -341,18 +343,17 @@ jobs:
 
       - name: Setup Microsoft Store CLI
         if: ${{ !inputs.dry_run }}
-        uses: microsoft/microsoft-store-apppublisher@v1.3
+        uses: microsoft/setup-msstore-cli@v1
 
       - name: Upload to Microsoft Store
         if: ${{ !inputs.dry_run }}
         shell: pwsh
+        env:
+          PARTNER_CENTER_SELLER_ID: ${{ secrets.MS_STORE_SELLER_ID }}
+          PARTNER_CENTER_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+          PARTNER_CENTER_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          PARTNER_CENTER_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
         run: |
-          msstore reconfigure `
-            --tenantId "${{ secrets.AZURE_AD_TENANT_ID }}" `
-            --clientId "${{ secrets.AZURE_AD_CLIENT_ID }}" `
-            --clientSecret "${{ secrets.AZURE_AD_CLIENT_SECRET }}" `
-            --sellerId "${{ secrets.MS_STORE_SELLER_ID }}"
-
           $msix = Get-ChildItem -Path build -Recurse -Filter "*.msix" | Select-Object -First 1
           msstore publish "$($msix.FullName)" -v
 
