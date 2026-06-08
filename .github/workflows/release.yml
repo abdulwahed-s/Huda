@@ -356,7 +356,7 @@ jobs:
             --sellerId "${{ secrets.MS_STORE_SELLER_ID }}"
 
           $msix = Get-ChildItem -Path build -Recurse -Filter "*.msix" | Select-Object -First 1
-          msstore publish "$($msix.FullName)" -v
+          msstore publish "$($msix.FullName)" --appId "${{ secrets.MS_STORE_APP_ID }}" -v
 
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@v4
