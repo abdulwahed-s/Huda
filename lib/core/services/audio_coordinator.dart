@@ -5,6 +5,7 @@ class AudioCoordinator {
   static const String quranRadio = 'quranRadio';
   static const String surahAyah = 'surahAyah';
   static const String athkar = 'athkar';
+  static const String audiobook = 'audiobook';
 
   String? _currentOwner;
   final Map<String, VoidCallback> _preemptCallbacks = {};
