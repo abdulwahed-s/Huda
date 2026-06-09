@@ -4,7 +4,13 @@ import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/download_service.dart';
 import 'package:huda/core/services/reading_position_service.dart';
+import 'package:huda/core/services/audio_progress_service.dart';
+import 'package:huda/core/services/book_progress_service.dart';
+import 'package:huda/core/services/quran_audio_progress_service.dart';
+import 'package:huda/core/services/quran_radio_progress_service.dart';
 import 'package:huda/core/services/bookmark_service.dart';
+import 'package:huda/data/services/offline_audiobooks_service.dart';
+import 'package:huda/data/services/audiobook_download_service.dart';
 import 'package:huda/core/services/prayer_countdown_service.dart';
 import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
@@ -26,6 +32,12 @@ void setupServiceLocator() {
   getIt.registerSingleton<Dio>(Dio());
   getIt.registerSingleton<DownloadService>(DownloadService());
   getIt.registerSingleton<ReadingPositionService>(ReadingPositionService());
+  getIt.registerSingleton<AudioProgressService>(AudioProgressService());
+  getIt.registerSingleton<BookProgressService>(BookProgressService());
+  getIt.registerSingleton<QuranAudioProgressService>(QuranAudioProgressService());
+  getIt.registerSingleton<QuranRadioProgressService>(QuranRadioProgressService());
+  getIt.registerSingleton<OfflineAudiobooksService>(OfflineAudiobooksService());
+  getIt.registerSingleton<AudiobookDownloadService>(AudiobookDownloadService());
   getIt.registerSingleton<BookmarkService>(
       BookmarkService(cacheHelper: getIt<CacheHelper>()));
   getIt.registerSingleton<PrayerCountdownService>(PrayerCountdownService());
