@@ -774,6 +774,18 @@ abstract class AppLocalizations {
   /// **'Read More'**
   String get readMore;
 
+  /// Read less button text
+  ///
+  /// In en, this message translates to:
+  /// **'Read Less'**
+  String get readLess;
+
+  /// Section header for audio description
+  ///
+  /// In en, this message translates to:
+  /// **'About this Audio'**
+  String get aboutThisAudio;
+
   /// Page label
   ///
   /// In en, this message translates to:
@@ -7141,6 +7153,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remember Allah abundantly and recite the Takbir after every obligatory prayer. These are days of eating, drinking, and gratitude. Fasting is not permitted on these days except for the pilgrim who cannot afford the sacrifice.'**
   String get eventDaysTashreeqGuidance;
+
+  /// No description provided for @audios.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get audios;
+
+  /// No description provided for @audiobooks.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Audios'**
+  String get audiobooks;
+
+  /// No description provided for @audiobook.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Audio'**
+  String get audiobook;
+
+  /// No description provided for @chapters.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapters'**
+  String get chapters;
+
+  /// chapter
+  ///
+  /// In en, this message translates to:
+  /// **'Chapter {number}'**
+  String chapter(int number);
+
+  /// No description provided for @narratedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Narrated by'**
+  String get narratedBy;
+
+  /// No description provided for @continueListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Listening'**
+  String get continueListening;
+
+  /// No description provided for @continueBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Reading'**
+  String get continueBook;
+
+  /// resumePage
+  ///
+  /// In en, this message translates to:
+  /// **'Page {number}'**
+  String resumePage(int number);
+
+  /// resumeChapter
+  ///
+  /// In en, this message translates to:
+  /// **'Resume Chapter {number}'**
+  String resumeChapter(int number);
+
+  /// No description provided for @continueRadio.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Radio'**
+  String get continueRadio;
+
+  /// resumeReciter
+  ///
+  /// In en, this message translates to:
+  /// **'Resume {reciterName}'**
+  String resumeReciter(String reciterName);
+
+  /// No description provided for @noReciterActivityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Start listening to Quran audio to see your progress'**
+  String get noReciterActivityDescription;
+
+  /// No description provided for @noRadioActivityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen to Quran radio to see your progress'**
+  String get noRadioActivityDescription;
+
+  /// No description provided for @playbackSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback Speed'**
+  String get playbackSpeed;
+
+  /// No description provided for @sleepTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep Timer'**
+  String get sleepTimer;
+
+  /// No description provided for @endOfChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'End of Chapter'**
+  String get endOfChapter;
+
+  /// sleepTimerMinutes
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String sleepTimerMinutes(int minutes);
+
+  /// No description provided for @downloadAudiobook.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Islamic Audio'**
+  String get downloadAudiobook;
+
+  /// No description provided for @audiobookDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded'**
+  String get audiobookDownloaded;
+
+  /// No description provided for @play.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get play;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @noOfflineAudiobooks.
+  ///
+  /// In en, this message translates to:
+  /// **'No downloaded Islamic audios'**
+  String get noOfflineAudiobooks;
+
+  /// chapterProgress
+  ///
+  /// In en, this message translates to:
+  /// **'Chapter {current} of {total}'**
+  String chapterProgress(int current, int total);
+
+  /// Label on audio card showing the language of the audio content
+  ///
+  /// In en, this message translates to:
+  /// **'In {language}'**
+  String audioInLanguage(String language);
 }
 
 class _AppLocalizationsDelegate

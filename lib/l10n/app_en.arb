@@ -1,4 +1,4 @@
-﻿{
+{
     "@@locale": "en",
     "appTitle": "Huda",
     "@appTitle": {
@@ -6,7 +6,7 @@
     },
     "settings": "Settings",
     "@settings": {
-        "description": "Settings page title"
+        "description": "Settings tab title"
     },
     "theme": "Theme",
     "@theme": {
@@ -86,7 +86,7 @@
     },
     "islamicNotifications": "Islamic Notifications",
     "@islamicNotifications": {
-        "description": "Islamic notifications screen title"
+        "description": "Title for Islamic notifications screen"
     },
     "hadith": "Hadith",
     "@hadith": {
@@ -106,7 +106,7 @@
     },
     "bookmarks": "Bookmarks",
     "@bookmarks": {
-        "description": "Bookmarks screen title"
+        "description": "Bookmarks tab label"
     },
     "homeScreenWidgetManagement": "Home Screen Widget Management",
     "@homeScreenWidgetManagement": {
@@ -114,15 +114,15 @@
     },
     "loading": "Loading...",
     "@loading": {
-        "description": "Loading indicator text"
+        "description": "Loading text"
     },
     "retry": "Retry",
     "@retry": {
-        "description": "Retry button text"
+        "description": "Retry button label"
     },
     "tryAgain": "Try Again",
     "@tryAgain": {
-        "description": "Try again button text"
+        "description": "Retry button text"
     },
     "cancel": "Cancel",
     "@cancel": {
@@ -146,7 +146,7 @@
     },
     "refresh": "Refresh",
     "@refresh": {
-        "description": "Refresh button text"
+        "description": "Refresh button label"
     },
     "continueButton": "Continue",
     "@continue": {
@@ -154,23 +154,23 @@
     },
     "start": "Start",
     "@start": {
-        "description": "Start button text"
+        "description": "Start button label"
     },
     "stop": "Stop",
     "@stop": {
-        "description": "Stop button text"
+        "description": "Stop button label"
     },
     "restart": "Restart",
     "@restart": {
-        "description": "Restart button text"
+        "description": "Restart button label"
     },
     "copyText": "Copy Text",
     "@copyText": {
-        "description": "Copy text button label"
+        "description": "Button label for copying text"
     },
     "shareText": "Share Text",
     "@shareText": {
-        "description": "Share text button label"
+        "description": "Button label for sharing text"
     },
     "refreshLocation": "Refresh Location",
     "@refreshLocation": {
@@ -178,15 +178,15 @@
     },
     "autoUpdateWhenAppClosed": "Auto-update when app is closed",
     "@autoUpdateWhenAppClosed": {
-        "description": "Auto-update setting title"
+        "description": "Auto-update setting description"
     },
     "backgroundUpdatesDisabled": "Background updates disabled.",
     "@backgroundUpdatesDisabled": {
-        "description": "Background updates disabled message"
+        "description": "Background updates status message"
     },
     "clearAllCustomVerses": "Clear All Custom Verses",
     "@clearAllCustomVerses": {
-        "description": "Clear all custom verses button text"
+        "description": "Clear custom verses button text"
     },
     "clearAllBookmarks": "Clear All Bookmarks",
     "@clearAllBookmarks": {
@@ -194,11 +194,11 @@
     },
     "verseRemovedFromWidget": "Verse removed from widget",
     "@verseRemovedFromWidget": {
-        "description": "Verse removed notification"
+        "description": "Success message for verse removal"
     },
     "allCustomVersesCleared": "All custom verses cleared",
     "@allCustomVersesCleared": {
-        "description": "All custom verses cleared notification"
+        "description": "Success message for clearing all verses"
     },
     "downloadFeatureComingSoon": "Download feature coming soon!",
     "@downloadFeatureComingSoon": {
@@ -234,23 +234,11 @@
     },
     "unknownState": "Unknown state",
     "@unknownState": {
-        "description": "Unknown state message"
-    },
-    "edit": "Edit",
-    "@edit": {
-        "description": "Edit button text"
-    },
-    "delete": "Delete",
-    "@delete": {
-        "description": "Delete button text"
+        "description": "Unknown state error message"
     },
     "deleteEvent": "Delete Event",
     "@deleteEvent": {
         "description": "Delete event dialog title"
-    },
-    "cancel": "Cancel",
-    "@cancel": {
-        "description": "Cancel button text"
     },
     "addEvent": "Add Event",
     "@addEvent": {
@@ -278,7 +266,7 @@
     },
     "hijriCalendar": "Hijri Calendar",
     "@hijriCalendar": {
-        "description": "Hijri calendar title"
+        "description": "Hijri Calendar screen title"
     },
     "selectedDate": "Selected Date",
     "@selectedDate": {
@@ -442,7 +430,7 @@
     },
     "all": "All",
     "@all": {
-        "description": "All languages option"
+        "description": "All tab label"
     },
     "filtered": "Filtered",
     "@filtered": {
@@ -451,6 +439,14 @@
     "readMore": "Read More",
     "@readMore": {
         "description": "Read more button text"
+    },
+    "readLess": "Read Less",
+    "@readLess": {
+        "description": "Read less button text"
+    },
+    "aboutThisAudio": "About this Audio",
+    "@aboutThisAudio": {
+        "description": "Section header for audio description"
     },
     "page": "Page",
     "@page": {
@@ -470,7 +466,7 @@
     },
     "next": "Next",
     "@next": {
-        "description": "Next page button"
+        "description": "Next button text"
     },
     "last": "Last",
     "@last": {
@@ -536,22 +532,6 @@
     "@isha": {
         "description": "Isha prayer name"
     },
-    "loading": "Loading...",
-    "@loading": {
-        "description": "Loading text"
-    },
-    "refreshLocation": "Refresh Location",
-    "@refreshLocation": {
-        "description": "Refresh location button text"
-    },
-    "clear": "Clear",
-    "@clear": {
-        "description": "Clear button text"
-    },
-    "save": "Save",
-    "@save": {
-        "description": "Save button text"
-    },
     "resetCounter": "Reset Counter",
     "@resetCounter": {
         "description": "Reset counter dialog title"
@@ -562,7 +542,7 @@
     },
     "note": "Note",
     "@note": {
-        "description": "Note button text"
+        "description": "Note type label and dialog field label"
     },
     "dhikr": "Dhikr",
     "@dhikr": {
@@ -592,14 +572,6 @@
     "@silent": {
         "description": "Silent mode text"
     },
-    "reset": "Reset",
-    "@reset": {
-        "description": "Reset button text"
-    },
-    "qiblahDirection": "Qiblah Direction",
-    "@qiblahDirection": {
-        "description": "Qiblah direction screen title"
-    },
     "findingQiblahDirection": "Finding Qiblah Direction...",
     "@findingQiblahDirection": {
         "description": "Loading message for qiblah direction"
@@ -615,10 +587,6 @@
     "openSettings": "Open Settings",
     "@openSettings": {
         "description": "Open settings button text"
-    },
-    "retry": "Retry",
-    "@retry": {
-        "description": "Retry button text"
     },
     "alignedWithQiblah": "Aligned with Qiblah",
     "@alignedWithQiblah": {
@@ -653,81 +621,21 @@
     "@retryArabic": {
         "description": "Retry button text"
     },
-    "homeScreenWidgetManagement": "Home Screen Widget Management",
-    "@homeScreenWidgetManagement": {
-        "description": "Widget management screen title"
-    },
-    "autoUpdateWhenAppClosed": "Auto-update when app is closed",
-    "@autoUpdateWhenAppClosed": {
-        "description": "Auto-update setting description"
-    },
-    "backgroundUpdatesDisabled": "Background updates disabled.",
-    "@backgroundUpdatesDisabled": {
-        "description": "Background updates status message"
-    },
-    "clearAllCustomVerses": "Clear All Custom Verses",
-    "@clearAllCustomVerses": {
-        "description": "Clear custom verses button text"
-    },
-    "verseRemovedFromWidget": "Verse removed from widget",
-    "@verseRemovedFromWidget": {
-        "description": "Success message for verse removal"
-    },
     "errorRemovingVerse": "Error removing verse",
     "@errorRemovingVerse": {
-        "description": "Error message for verse removal"
+        "description": "Error message when verse removal fails"
     },
     "clearAll": "Clear All",
     "@clearAll": {
-        "description": "Clear all button text"
-    },
-    "allCustomVersesCleared": "All custom verses cleared",
-    "@allCustomVersesCleared": {
-        "description": "Success message for clearing all verses"
+        "description": "Clear all confirmation button"
     },
     "errorClearingVerses": "Error clearing verses",
     "@errorClearingVerses": {
         "description": "Error message for clearing verses"
     },
-    "start": "Start",
-    "@start": {
-        "description": "Start button text"
-    },
-    "stop": "Stop",
-    "@stop": {
-        "description": "Stop button text"
-    },
-    "restart": "Restart",
-    "@restart": {
-        "description": "Restart button text"
-    },
-    "copyText": "Copy Text",
-    "@copyText": {
-        "description": "Copy text button"
-    },
-    "shareText": "Share Text",
-    "@shareText": {
-        "description": "Share text button"
-    },
-    "hadith": "Hadith",
-    "@hadith": {
-        "description": "Hadith screen title"
-    },
-    "hadithDetails": "Hadith Details",
-    "@hadithDetails": {
-        "description": "Hadith details screen title"
-    },
-    "islamicNotifications": "Islamic Notifications",
-    "@islamicNotifications": {
-        "description": "Islamic notifications screen title"
-    },
     "testNow": "Test Now",
     "@testNow": {
-        "description": "Test notification button"
-    },
-    "go": "Go",
-    "@go": {
-        "description": "Go button text"
+        "description": "Test now button label"
     },
     "continueReading": "Continue",
     "@continueReading": {
@@ -753,9 +661,9 @@
     "@availableWidgets": {
         "description": "Available widgets section title"
     },
-    "nextPrayer": "Next Prayer",
+    "nextPrayer": "Next prayer",
     "@nextPrayer": {
-        "description": "Next prayer widget title"
+        "description": "Label above the next-prayer name"
     },
     "hijriDate": "Hijri Date",
     "@hijriDate": {
@@ -874,10 +782,6 @@
     "@clearAllCustomVersesConfirmation": {
         "description": "Confirmation message for clearing all custom verses"
     },
-    "errorRemovingVerse": "Error removing verse",
-    "@errorRemovingVerse": {
-        "description": "Error message when verse removal fails"
-    },
     "chatError": "Sorry, I encountered an error. Please try again.",
     "@chatError": {
         "description": "Chat error message"
@@ -920,18 +824,6 @@
             }
         }
     },
-    "unknownState": "Unknown state",
-    "@unknownState": {
-        "description": "Unknown state error message"
-    },
-    "copyText": "Copy Text",
-    "@copyText": {
-        "description": "Button label for copying text"
-    },
-    "shareText": "Share Text",
-    "@shareText": {
-        "description": "Button label for sharing text"
-    },
     "failedShareText": "Failed to share text",
     "@failedShareText": {
         "description": "Error message when text sharing fails"
@@ -939,18 +831,6 @@
     "failedShareImage": "Failed to share image",
     "@failedShareImage": {
         "description": "Error message when image sharing fails"
-    },
-    "start": "Start",
-    "@start": {
-        "description": "Start button label"
-    },
-    "stop": "Stop",
-    "@stop": {
-        "description": "Stop button label"
-    },
-    "restart": "Restart",
-    "@restart": {
-        "description": "Restart button label"
     },
     "prayerCountdownStarted": "Prayer countdown service started",
     "@prayerCountdownStarted": {
@@ -994,17 +874,13 @@
             }
         }
     },
-    "islamicNotifications": "Islamic Notifications",
-    "@islamicNotifications": {
-        "description": "Title for Islamic notifications screen"
-    },
     "islamicReminders": "Islamic Reminders",
     "@islamicReminders": {
         "description": "Section header for Islamic reminders"
     },
     "suratAlKahf": "Surat Al-Kahf",
     "@suratAlKahf": {
-        "description": "Surat Al-Kahf notification title"
+        "description": "Surat Al-Kahf title"
     },
     "everyFridayAt": "Every Friday at {time}",
     "@everyFridayAt": {
@@ -1038,13 +914,13 @@
     "@randomAthkar": {
         "description": "Random athkar notification title"
     },
-    "everyMinutes": "Every {frequency} minutes",
+    "everyMinutes": "Every {minutes} minutes",
     "@everyMinutes": {
-        "description": "Frequency display for random athkar",
+        "description": "Frequency in minutes",
         "placeholders": {
-            "frequency": {
+            "minutes": {
                 "type": "String",
-                "description": "Frequency in minutes"
+                "description": "Minutes"
             }
         }
     },
@@ -1061,10 +937,6 @@
                 "description": "Time for the notification"
             }
         }
-    },
-    "testNow": "Test Now",
-    "@testNow": {
-        "description": "Test now button label"
     },
     "debug": "Debug",
     "@debug": {
@@ -1098,17 +970,9 @@
     "@howOftenReceiveAthkar": {
         "description": "Question in athkar frequency dialog"
     },
-    "cancel": "Cancel",
-    "@cancel": {
-        "description": "Cancel button label"
-    },
-    "save": "Save",
-    "@save": {
-        "description": "Save button label"
-    },
     "testNotificationScheduled": "Test notification scheduled for 10 seconds from now!",
     "@testNotificationScheduled": {
-        "description": "Success message for test notification"
+        "description": "Test notification message"
     },
     "checkConsoleDebugInfo": "Check console for debug info",
     "@checkConsoleDebugInfo": {
@@ -1148,22 +1012,6 @@
     "@tapToEnableNotifications": {
         "description": "Instruction to enable notifications"
     },
-    "retry": "Retry",
-    "@retry": {
-        "description": "Retry button label"
-    },
-    "refresh": "Refresh",
-    "@refresh": {
-        "description": "Refresh button label"
-    },
-    "clearAllBookmarks": "Clear All Bookmarks",
-    "@clearAllBookmarks": {
-        "description": "Clear all bookmarks action"
-    },
-    "clearAll": "Clear All",
-    "@clearAll": {
-        "description": "Clear all confirmation button"
-    },
     "notifications": "Notifications",
     "@notifications": {
         "description": "Notifications screen title"
@@ -1171,10 +1019,6 @@
     "home": "Home",
     "@home": {
         "description": "Home screen title"
-    },
-    "hijriCalendar": "Hijri Calendar",
-    "@hijriCalendar": {
-        "description": "Hijri Calendar screen title"
     },
     "booksScreen": "Books",
     "@booksScreen": {
@@ -1300,7 +1144,7 @@
     "@deleteBookmark": {
         "description": "Delete bookmark dialog title"
     },
-    "deleteBookmarkConfirmation": "Are you sure you want to delete this bookmark?",
+    "deleteBookmarkConfirmation": "Are you sure you want to delete this bookmark? This action cannot be undone.",
     "@deleteBookmarkConfirmation": {
         "description": "Delete bookmark confirmation message"
     },
@@ -1342,7 +1186,7 @@
     },
     "done": "Done",
     "@done": {
-        "description": "Done button text"
+        "description": "Done button"
     },
     "close": "Close",
     "@close": {
@@ -1351,10 +1195,6 @@
     "back": "Back",
     "@back": {
         "description": "Back button text"
-    },
-    "next": "Next",
-    "@next": {
-        "description": "Next button text"
     },
     "previous": "Previous",
     "@previous": {
@@ -1419,7 +1259,7 @@
     },
     "noResultsFound": "No results found",
     "@noResultsFound": {
-        "description": "No search results found message"
+        "description": "No results found message"
     },
     "tryDifferentSearch": "Try different search terms",
     "@tryDifferentSearch": {
@@ -1503,7 +1343,7 @@
     },
     "generatedByHudaAI": "Generated by Huda AI - Islamic Assistant",
     "@generatedByHudaAI": {
-        "description": "Share message footer"
+        "description": "Attribution in shared content"
     },
     "verifyWithSources": "Please verify with authentic Islamic sources.",
     "@verifyWithSources": {
@@ -1512,10 +1352,6 @@
     "shareQAFromHuda": "Islamic Q&A from Huda AI",
     "@shareQAFromHuda": {
         "description": "Header for shared Q&A content"
-    },
-    "generatedByHudaAI": "Generated by Huda AI - Islamic Assistant",
-    "@generatedByHudaAI": {
-        "description": "Attribution in shared content"
     },
     "islamicKnowledgeSubject": "Islamic Knowledge from Huda AI",
     "@islamicKnowledgeSubject": {
@@ -1531,15 +1367,11 @@
     },
     "bookmark": "Bookmark",
     "@bookmark": {
-        "description": "Bookmark action label"
-    },
-    "note": "Note",
-    "@note": {
-        "description": "Note action label"
+        "description": "Bookmark type label"
     },
     "star": "Star",
     "@star": {
-        "description": "Star action label"
+        "description": "Star type label"
     },
     "bookmarkColor": "Bookmark Color",
     "@bookmarkColor": {
@@ -1549,13 +1381,9 @@
     "@yourNote": {
         "description": "Note section title"
     },
-    "edit": "Edit",
-    "@edit": {
-        "description": "Edit button text"
-    },
     "editNote": "Edit Note",
     "@editNote": {
-        "description": "Edit note dialog title"
+        "description": "Edit note button and dialog title"
     },
     "addNote": "Add Note",
     "@addNote": {
@@ -1577,21 +1405,9 @@
     "@noteHint": {
         "description": "Placeholder text for note input"
     },
-    "cancel": "Cancel",
-    "@cancel": {
-        "description": "Cancel button text"
-    },
-    "remove": "Remove",
-    "@remove": {
-        "description": "Remove button text"
-    },
     "update": "Update",
     "@update": {
         "description": "Update button text"
-    },
-    "save": "Save",
-    "@save": {
-        "description": "Save button text"
     },
     "shareCopy": "Share & Copy",
     "@shareCopy": {
@@ -1639,7 +1455,7 @@
     },
     "unknownSurah": "Unknown Surah",
     "@unknownSurah": {
-        "description": "Unknown surah fallback"
+        "description": "Unknown surah name"
     },
     "translationLabel": "Translation:",
     "@translationLabel": {
@@ -1672,7 +1488,7 @@
     },
     "unknown": "Unknown",
     "@unknown": {
-        "description": "Unknown fallback text"
+        "description": "Unknown location text"
     },
     "ayahNumber": "Ayah {number}",
     "@ayahNumber": {
@@ -1727,10 +1543,6 @@
     "@noTafsirAvailable": {
         "description": "No tafsir sources message"
     },
-    "tafsirNotAvailable": "Tafsir not available",
-    "@tafsirNotAvailable": {
-        "description": "Tafsir not available message"
-    },
     "translation": "Translation",
     "@translation": {
         "description": "Translation section title"
@@ -1746,14 +1558,6 @@
     "filterTranslationLanguage": "Filter translation language",
     "@filterTranslationLanguage": {
         "description": "Translation language filter hint"
-    },
-    "translationNotAvailable": "Translation not available",
-    "@translationNotAvailable": {
-        "description": "Translation not available message"
-    },
-    "unknownSurah": "Unknown Surah",
-    "@unknownSurah": {
-        "description": "Unknown surah name"
     },
     "addToHomeWidget": "Add to Home Widget",
     "@addToHomeWidget": {
@@ -1774,10 +1578,6 @@
     "tafsir": "Tafsir",
     "@tafsir": {
         "description": "Tafsir tab label"
-    },
-    "bookmark": "Bookmark",
-    "@bookmark": {
-        "description": "Bookmark tab label"
     },
     "share": "Share",
     "@share": {
@@ -1835,10 +1635,6 @@
     "@downloadAll": {
         "description": "Download all button"
     },
-    "unknown": "Unknown",
-    "@unknown": {
-        "description": "Unknown value placeholder"
-    },
     "checking": "Checking...",
     "@checking": {
         "description": "Checking status message"
@@ -1879,10 +1675,6 @@
     "@noDescriptionAvailable": {
         "description": "Default text when book description is missing"
     },
-    "unknown": "Unknown",
-    "@unknown": {
-        "description": "Default text for unknown information"
-    },
     "attachments": "Attachments",
     "@attachments": {
         "description": "Attachments section title"
@@ -1898,10 +1690,6 @@
     "youreOffline": "You're Offline",
     "@youreOffline": {
         "description": "Offline status message"
-    },
-    "tryAgain": "Try Again",
-    "@tryAgain": {
-        "description": "Retry button text"
     },
     "theSelectedLanguageNotAvailable": "The selected language is not available",
     "@theSelectedLanguageNotAvailable": {
@@ -1938,10 +1726,6 @@
                 "description": "Error details"
             }
         }
-    },
-    "suratAlKahf": "Surat Al-Kahf",
-    "@suratAlKahf": {
-        "description": "Surat Al-Kahf title"
     },
     "everyFridayAtTime": "Every Friday at {time}",
     "@everyFridayAtTime": {
@@ -1982,16 +1766,6 @@
     "randomAthkarTitle": "Random Athkar",
     "@randomAthkarTitle": {
         "description": "Random athkar title"
-    },
-    "everyMinutes": "Every {minutes} minutes",
-    "@everyMinutes": {
-        "description": "Frequency in minutes",
-        "placeholders": {
-            "minutes": {
-                "type": "String",
-                "description": "Minutes"
-            }
-        }
     },
     "periodicRemindersAthkar": "Periodic reminders with random Athkar throughout the day.",
     "@periodicRemindersAthkar": {
@@ -2045,9 +1819,9 @@
     "@autoRenewalInactive": {
         "description": "Auto renewal inactive status"
     },
-    "minutes": "Minutes",
+    "minutes": "minutes",
     "@minutes": {
-        "description": "Minutes label"
+        "description": "Minutes unit"
     },
     "minutesExample": "e.g., 30, 60, 120",
     "@minutesExample": {
@@ -2092,10 +1866,6 @@
     "selectEveningAthkarTime": "Select Evening Athkar Time",
     "@selectEveningAthkarTime": {
         "description": "Evening athkar time picker title"
-    },
-    "testNotificationScheduled": "Test notification scheduled for 10 seconds from now!",
-    "@testNotificationScheduled": {
-        "description": "Test notification message"
     },
     "notificationTimesCustomizable": "All notification times are fully customizable. Tap the settings button next to each notification type to set your preferred time.",
     "@notificationTimesCustomizable": {
@@ -2219,14 +1989,6 @@
     "@bookmarkUpdated": {
         "description": "Bookmark updated success message"
     },
-    "all": "All",
-    "@all": {
-        "description": "All tab label"
-    },
-    "bookmarks": "Bookmarks",
-    "@bookmarks": {
-        "description": "Bookmarks tab label"
-    },
     "notes": "Notes",
     "@notes": {
         "description": "Notes tab label"
@@ -2267,18 +2029,6 @@
     "@browseQuran": {
         "description": "Browse Quran button text"
     },
-    "bookmark": "Bookmark",
-    "@bookmark": {
-        "description": "Bookmark type label"
-    },
-    "note": "Note",
-    "@note": {
-        "description": "Note type label and dialog field label"
-    },
-    "star": "Star",
-    "@star": {
-        "description": "Star type label"
-    },
     "goToVerse": "Go to Verse",
     "@goToVerse": {
         "description": "Navigate to verse button text"
@@ -2286,26 +2036,6 @@
     "navigateToVerseQuestion": "Navigate to this verse in the Quran reader?",
     "@navigateToVerseQuestion": {
         "description": "Navigate to verse confirmation question"
-    },
-    "editNote": "Edit Note",
-    "@editNote": {
-        "description": "Edit note button and dialog title"
-    },
-    "saveChanges": "Save Changes",
-    "@saveChanges": {
-        "description": "Save changes button text"
-    },
-    "deleteBookmark": "Delete Bookmark",
-    "@deleteBookmark": {
-        "description": "Delete bookmark dialog title"
-    },
-    "deleteBookmarkConfirmation": "Are you sure you want to delete this bookmark? This action cannot be undone.",
-    "@deleteBookmarkConfirmation": {
-        "description": "Delete bookmark confirmation message"
-    },
-    "delete": "Delete",
-    "@delete": {
-        "description": "Delete button text"
     },
     "total": "Total",
     "@total": {
@@ -2318,10 +2048,6 @@
     "location": "Location",
     "@location": {
         "description": "Location label for prayer times"
-    },
-    "unknown": "Unknown",
-    "@unknown": {
-        "description": "Unknown location text"
     },
     "nextPrayerCountdown": "Next: {prayerName} in {time}",
     "@nextPrayerCountdown": {
@@ -2515,9 +2241,9 @@
     "bookmarksSavedVerses": "saved verses",
     "adjustTextSizeForBetterReadability": "Adjust text size for better readability",
     "sampleTextPreview": "I seek Allah’s forgiveness and turn to Him in repentance.",
-    "small": "small",
+    "small": "Small",
     "normal": "normal",
-    "large": "large",
+    "large": "Large",
     "extraLarge": "extra large",
     "quran": "Quran",
     "quranKit": "Quran Kit",
@@ -2582,11 +2308,8 @@
     "frequencyEvery5Days": "Every 5 days",
     "frequencyEvery6Days": "Every 6 days",
     "frequencyWeekly": "Weekly",
-    "cancel": "Cancel",
     "morningAthkar": "Morning Athkar",
     "nightAthkar": "Night Athkar",
-    "retry": "Retry",
-    "unknownState": "Unknown state",
     "addCustomItem": "Add Custom Item",
     "itemTitle": "Item Title",
     "enterItemTitle": "Enter item title...",
@@ -2623,13 +2346,11 @@
         }
     },
     "checklistReminderDescription": "Get reminded to complete your daily Islamic checklist tasks",
-    "selectChecklistReminderTime": "Select checklist reminder time",
+    "selectChecklistReminderTime": "Select time for checklist reminder",
     "status": "Status",
     "optimize": "Optimize",
     "loadingPreferences": "Loading preferences...",
     "enableNotificationsSettings": "Please enable notifications in system settings",
-    "settings": "Settings",
-    "selectChecklistReminderTime": "Select time for checklist reminder",
     "notificationKahfTitle": "🕌 Surat Al-Kahf Reminder",
     "@notificationKahfTitle": {
         "description": "Title for Kahf Friday notification"
@@ -2912,10 +2633,6 @@
     "@zakatDescription": {
         "description": "Full Zakat description in info dialog"
     },
-    "close": "Close",
-    "@close": {
-        "description": "Close button text"
-    },
     "cashAndBankBalances": "Cash & Bank Balances",
     "@cashAndBankBalances": {
         "description": "Cash and bank balances asset category"
@@ -2976,10 +2693,6 @@
     "@hintAmount": {
         "description": "Hint text for amount input fields"
     },
-    "settings": "Settings",
-    "@settings": {
-        "description": "Settings tab title"
-    },
     "feedbackAppBarTitle": "Send Feedback",
     "feedbackEmptyWarning": "Please enter your feedback before sending",
     "feedbackSuccessMessage": "Thank you! Your feedback has been sent.",
@@ -3023,7 +2736,6 @@
     "skip": "skip",
     "getStarted": "Get Started",
     "shareAsText": "Share as Text",
-    "shareAsImage": "Share as Image",
     "shareDhikr": "Share Dhikr",
     "generatingImage": "Generating image...",
     "locationServicesDisabled": "Location services are disabled. Please enable them in your device settings.",
@@ -3047,12 +2759,12 @@
     "chain": "in chain",
     "noChapters": "No Chapters Available",
     "newContent": "New content will be added soon.\nCheck back later for updates.",
-    "meccan" : "Meccan",
-    "medinan" : "Medinan",
-    "ayahs" : "Ayahs",
-    "downloaded" : "Downloaded",
-    "loopThisAyah" : "Loop this ayah",
-    "autoplayNextAyah" : "Autoplay next ayah",
+    "meccan": "Meccan",
+    "medinan": "Medinan",
+    "ayahs": "Ayahs",
+    "downloaded": "Downloaded",
+    "loopThisAyah": "Loop this ayah",
+    "autoplayNextAyah": "Autoplay next ayah",
     "memorizationMode": "Memorization Mode",
     "@memorizationMode": {
         "description": "Title for memorization mode"
@@ -3146,7 +2858,7 @@
     "exampleSeekingPeace": "Seeking peace",
     "@exampleSeekingPeace": {
         "description": "Example question for seeking peace"
-    },    
+    },
     "guidance": "Guidance",
     "@guidance": {
         "description": "Title for guidance section in counseling view"
@@ -3341,10 +3053,6 @@
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
-    "minutes": "minutes",
-    "@minutes": {
-        "description": "Minutes unit"
-    },
     "selectDuration": "Select Duration",
     "@selectDuration": {
         "description": "Duration picker title"
@@ -3356,10 +3064,6 @@
     "confirm": "Confirm",
     "@confirm": {
         "description": "Confirm button"
-    },
-    "done": "Done",
-    "@done": {
-        "description": "Done button"
     },
     "selectApps": "Select Apps",
     "@selectApps": {
@@ -3411,31 +3115,31 @@
     },
     "monday": "Monday",
     "@monday": {
-        "description": "Monday"
+        "description": "Monday day name"
     },
     "tuesday": "Tuesday",
     "@tuesday": {
-        "description": "Tuesday"
+        "description": "Tuesday day name"
     },
     "wednesday": "Wednesday",
     "@wednesday": {
-        "description": "Wednesday"
+        "description": "Wednesday day name"
     },
     "thursday": "Thursday",
     "@thursday": {
-        "description": "Thursday"
+        "description": "Thursday day name"
     },
     "friday": "Friday",
     "@friday": {
-        "description": "Friday"
+        "description": "Friday day name"
     },
     "saturday": "Saturday",
     "@saturday": {
-        "description": "Saturday"
+        "description": "Saturday day name"
     },
     "sunday": "Sunday",
     "@sunday": {
-        "description": "Sunday"
+        "description": "Sunday day name"
     },
     "permissionsRequired": "Permissions Required",
     "@permissionsRequired": {
@@ -3580,34 +3284,6 @@
     "qadhaaDays": "Qadhaa Days",
     "@qadhaaDays": {
         "description": "Qadhaa days section title"
-    },
-    "sunday": "Sunday",
-    "@sunday": {
-        "description": "Sunday day name"
-    },
-    "monday": "Monday",
-    "@monday": {
-        "description": "Monday day name"
-    },
-    "tuesday": "Tuesday",
-    "@tuesday": {
-        "description": "Tuesday day name"
-    },
-    "wednesday": "Wednesday",
-    "@wednesday": {
-        "description": "Wednesday day name"
-    },
-    "thursday": "Thursday",
-    "@thursday": {
-        "description": "Thursday day name"
-    },
-    "friday": "Friday",
-    "@friday": {
-        "description": "Friday day name"
-    },
-    "saturday": "Saturday",
-    "@saturday": {
-        "description": "Saturday day name"
     },
     "qadhaaInfoTitle": "About Qadaa (Making up missed fasts)",
     "@qadhaaInfoTitle": {
@@ -3763,8 +3439,7 @@
                 "example": "Network error"
             }
         }
-    }
-    ,
+    },
     "iosTapToSelectApps": "Tap below to select apps using Screen Time",
     "@iosTapToSelectApps": {
         "description": "Instruction to select apps using Screen Time on iOS"
@@ -3782,8 +3457,7 @@
                 "example": "Permission denied"
             }
         }
-    }
-    ,
+    },
     "iosSelectAppsScreenTime": "Select Apps (Screen Time)",
     "@iosSelectAppsScreenTime": {
         "description": "Button text to select apps using Screen Time on iOS"
@@ -3879,10 +3553,6 @@
     "verses": "verses",
     "@verses": {
         "description": "Verses count label"
-    },
-    "noResultsFound": "No results found",
-    "@noResultsFound": {
-        "description": "No results found message"
     },
     "noDownloadedContent": "No downloaded content",
     "@noDownloadedContent": {
@@ -4088,8 +3758,12 @@
     "@khatmaDayOf": {
         "description": "Progress indicator showing current day out of total days",
         "placeholders": {
-            "current": {"type": "int"},
-            "total": {"type": "int"}
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "khatmaTomorrow": "Tomorrow",
@@ -4104,14 +3778,18 @@
     "@khatmaInDays": {
         "description": "Relative day label: in N days (3-10)",
         "placeholders": {
-            "count": {"type": "int"}
+            "count": {
+                "type": "int"
+            }
         }
     },
     "khatmaInManyDays": "In {count} days",
     "@khatmaInManyDays": {
         "description": "Relative day label: in N days (>10)",
         "placeholders": {
-            "count": {"type": "int"}
+            "count": {
+                "type": "int"
+            }
         }
     },
     "khatmaYesterday": "Yesterday",
@@ -4126,14 +3804,18 @@
     "@khatmaDaysAgo": {
         "description": "Relative day label: N days ago (3-10)",
         "placeholders": {
-            "count": {"type": "int"}
+            "count": {
+                "type": "int"
+            }
         }
     },
     "khatmaManyDaysAgo": "{count} days ago",
     "@khatmaManyDaysAgo": {
         "description": "Relative day label: N days ago (>10)",
         "placeholders": {
-            "count": {"type": "int"}
+            "count": {
+                "type": "int"
+            }
         }
     },
     "khatmaLegendKhatma": "Khatma",
@@ -4168,23 +3850,33 @@
     "@khatmaDailyWirdOf": {
         "description": "Label for the daily wird of a specific day",
         "placeholders": {
-            "day": {"type": "int"}
+            "day": {
+                "type": "int"
+            }
         }
     },
     "khatmaFromSurah": "From {surah}: {verse}",
     "@khatmaFromSurah": {
         "description": "Start of today's wird: from surah and verse",
         "placeholders": {
-            "surah": {"type": "String"},
-            "verse": {"type": "int"}
+            "surah": {
+                "type": "String"
+            },
+            "verse": {
+                "type": "int"
+            }
         }
     },
     "khatmaToSurah": "To {surah}: {verse}",
     "@khatmaToSurah": {
         "description": "End of today's wird: to surah and verse",
         "placeholders": {
-            "surah": {"type": "String"},
-            "verse": {"type": "int"}
+            "surah": {
+                "type": "String"
+            },
+            "verse": {
+                "type": "int"
+            }
         }
     },
     "khatmaMarkDone": "I completed this portion",
@@ -4243,7 +3935,9 @@
     "@khatmaDailyWirdPages": {
         "description": "Daily portion subtitle with pages count",
         "placeholders": {
-            "pages": {"type": "int"}
+            "pages": {
+                "type": "int"
+            }
         }
     },
     "surahsLabel": "Surahs",
@@ -4262,11 +3956,9 @@
     "@surahNoResults": {
         "description": "Empty state message when surah search returns no results"
     },
-    "meccan": "Meccan",
     "@meccan": {
         "description": "Label for Meccan (Makkiyah) surahs"
     },
-    "medinan": "Medinan",
     "@medinan": {
         "description": "Label for Medinan (Madaniyah) surahs"
     },
@@ -4488,7 +4180,6 @@
     "@size": {
         "description": "Section title for widget size picker"
     },
-    "small": "Small",
     "@small": {
         "description": "Small widget size"
     },
@@ -4496,7 +4187,6 @@
     "@medium": {
         "description": "Medium widget size"
     },
-    "large": "Large",
     "@large": {
         "description": "Large widget size"
     },
@@ -4584,10 +4274,6 @@
     "@prayerWidgetEmptyAction": {
         "description": "Empty-state CTA"
     },
-    "nextPrayer": "Next prayer",
-    "@nextPrayer": {
-        "description": "Label above the next-prayer name"
-    },
     "previousPrayer": "Previous prayer",
     "@previousPrayer": {
         "description": "Label above the previous-prayer time"
@@ -4664,7 +4350,6 @@
     "@themeSage": {
         "description": "Label for the Sage visual theme"
     },
-
     "eventRamadan": "Ramadan Mubarak",
     "@eventRamadan": {
         "description": "Title for the Ramadan special event card"
@@ -4856,5 +4541,89 @@
     "eventDaysTashreeqGuidance": "Remember Allah abundantly and recite the Takbir after every obligatory prayer. These are days of eating, drinking, and gratitude. Fasting is not permitted on these days except for the pilgrim who cannot afford the sacrifice.",
     "@eventDaysTashreeqGuidance": {
         "description": "Guidance text for Days of Tashreeq dialog"
+    },
+    "audios": "Audio",
+    "audiobooks": "Islamic Audios",
+    "audiobook": "Islamic Audio",
+    "chapters": "Chapters",
+    "chapter": "Chapter {number}",
+    "@chapter": {
+        "description": "chapter",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "narratedBy": "Narrated by",
+    "continueListening": "Continue Listening",
+    "continueBook": "Continue Reading",
+    "resumePage": "Page {number}",
+    "@resumePage": {
+        "description": "resumePage",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "resumeChapter": "Resume Chapter {number}",
+    "@resumeChapter": {
+        "description": "resumeChapter",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "continueRadio": "Continue Radio",
+    "resumeReciter": "Resume {reciterName}",
+    "@resumeReciter": {
+        "description": "resumeReciter",
+        "placeholders": {
+            "reciterName": {
+                "type": "String"
+            }
+        }
+    },
+    "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
+    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "playbackSpeed": "Playback Speed",
+    "sleepTimer": "Sleep Timer",
+    "endOfChapter": "End of Chapter",
+    "sleepTimerMinutes": "{minutes} min",
+    "@sleepTimerMinutes": {
+        "description": "sleepTimerMinutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "downloadAudiobook": "Download Islamic Audio",
+    "audiobookDownloaded": "Downloaded",
+    "play": "Play",
+    "pause": "Pause",
+    "noOfflineAudiobooks": "No downloaded Islamic audios",
+    "chapterProgress": "Chapter {current} of {total}",
+    "@chapterProgress": {
+        "description": "chapterProgress",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "audioInLanguage": "In {language}",
+    "@audioInLanguage": {
+        "description": "Label on audio card showing the language of the audio content",
+        "placeholders": {
+            "language": {
+                "type": "String"
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿{
+{
     "@@locale": "fr",
     "appTitle": "Huda",
     "settings": "Paramètres",
@@ -45,7 +45,7 @@
     "shareText": "Partager le texte",
     "refreshLocation": "Actualiser la localisation",
     "autoUpdateWhenAppClosed": "Mise à jour automatique quand l'app est fermée",
-    "backgroundUpdatesDisabled": "Mises à jour en arrière-plan désactivées.",
+    "backgroundUpdatesDisabled": "Mises à jour en arrière-plan désactivées",
     "clearAllCustomVerses": "Effacer tous les versets personnalisés",
     "clearAllBookmarks": "Effacer tous les signets",
     "verseRemovedFromWidget": "Verset retiré du widget",
@@ -110,6 +110,8 @@
     "all": "Tous",
     "filtered": "Filtrés",
     "readMore": "Lire plus",
+    "readLess": "Lire moins",
+    "aboutThisAudio": "À propos de cet audio",
     "page": "Page",
     "pageOf": "de",
     "first": "Première",
@@ -211,7 +213,7 @@
     "morningEveningAthkar": "Athkar du matin et du soir",
     "dailyAthkarTimes": "{morningTime} et {eveningTime} quotidiennement",
     "randomAthkar": "Athkar aléatoire",
-    "everyMinutes": "Toutes les {frequency} minutes",
+    "everyMinutes": "Toutes les {minutes} minutes",
     "quranReadingReminder": "Rappel de lecture du Coran",
     "dailyAt": "Quotidiennement à {time}",
     "debug": "Déboguer",
@@ -332,7 +334,7 @@
     "includeTafsir": "Inclure le tafsir",
     "includeReference": "Inclure la référence",
     "generating": "Génération...",
-    "shareAsImage": "Partager comme image",
+    "shareAsImage": "Partager en image",
     "tafsirLabel": "Tafsir:",
     "hudaQuranApp": "Huda - App Coran",
     "translationNotAvailable": "Traduction non disponible",
@@ -406,7 +408,6 @@
     "dailyTimesSchedule": "{morningTime} et {eveningTime} quotidiennement",
     "dailyRemindersAthkar": "Rappels quotidiens pour le souvenir d'Allah matin et soir.",
     "randomAthkarTitle": "Athkar aléatoire",
-    "everyMinutes": "Toutes les {minutes} minutes",
     "periodicRemindersAthkar": "Rappels périodiques avec des Athkar aléatoires tout au long de la journée.",
     "quranReadingReminderTitle": "Rappel de lecture du Coran",
     "dailyAtTime": "Quotidiennement à {time}",
@@ -568,12 +569,9 @@
     "addCustomItem": "Ajouter un élément personnalisé",
     "addItem": "Ajouter un élément",
     "addTask": "Ajouter une tâche",
-    "allCustomVersesCleared": "Tous les versets personnalisés effacés",
     "asrPrayer": "Prière d'Asr",
     "athkarMasaa": "Athkar du soir",
     "athkarSabah": "Athkar du matin",
-    "autoUpdateWhenAppClosed": "Mise à jour automatique quand l'app est fermée",
-    "backgroundUpdatesDisabled": "Mises à jour en arrière-plan désactivées",
     "backToToday": "Retour à aujourd'hui",
     "checklistReminderDescription": "Rappel quotidien pour accomplir vos tâches islamiques",
     "completedPercentage": "Pourcentage accompli",
@@ -634,7 +632,6 @@
     "repetitionFrequency": "Fréquence de répétition",
     "selectChecklistReminderTime": "Sélectionner l'heure du rappel de liste de vérification",
     "status": "État",
-    "verseRemovedFromWidget": "Verset retiré du widget",
     "notificationKahfTitle": "🕌 Rappel Sourate Al-Kahf",
     "notificationKahfBody": "Aujourd'hui c'est vendredi ! N'oubliez pas de lire la Sourate Al-Kahf pour les bénédictions et la protection.",
     "notificationMorningAthkarTitle": "🌅 Athkar du matin",
@@ -692,7 +689,6 @@
     "silverGrams": "612,36 grammes",
     "aboutZakat": "À Propos de la Zakat",
     "zakatDescription": "La Zakat est l'un des cinq piliers de l'Islam et constitue une aumône obligatoire. Elle est calculée à 2,5% de la richesse qualifiée qui a été détenue pendant au moins une année lunaire (hawl).\\n\\nLe Nisab est le seuil minimum de richesse qui rend la Zakat obligatoire. Il peut être calculé sur la base de:\\n• Or: 87,48 grammes (20 mithqal)\\n• Argent: 612,36 grammes (200 dirhams)\\n\\nCe calculateur vous aide à déterminer si votre richesse atteint le seuil nisab et calcule le montant exact de Zakat due.",
-    "close": "Fermer",
     "cashAndBankBalances": "Liquidités et Soldes Bancaires",
     "goldAssets": "Or",
     "silverAssets": "Argent",
@@ -708,7 +704,6 @@
     "receivablesDescription": "Argent qui vous est dû et que vous comptez recevoir",
     "debtsDescription": "Dettes de cartes de crédit, prêts, factures dues dans l'année",
     "hintAmount": "0,00",
-    "settings": "Paramètres",
     "feedbackAppBarTitle": "Envoyer des commentaires",
     "feedbackEmptyWarning": "Veuillez saisir vos commentaires avant d’envoyer",
     "feedbackSuccessMessage": "Merci ! Vos commentaires ont été envoyés.",
@@ -752,7 +747,6 @@
     "skip": "passer",
     "getStarted": "Commencer",
     "shareAsText": "Partager en texte",
-    "shareAsImage": "Partager en image",
     "shareDhikr": "Partager le dhikr",
     "generatingImage": "Génération de l’image...",
     "locationServicesDisabled": "Les services de localisation sont désactivés. Veuillez les activer dans les paramètres de votre appareil.",
@@ -776,13 +770,13 @@
     "chain": "dans la chaîne",
     "noChapters": "Aucun chapitre disponible",
     "newContent": "Nouveau contenu bientôt disponible.\nRevenez plus tard pour les mises à jour.",
-    "meccan" : "Mecquoise",
-    "medinan" : "Médinoise",
-    "ayahs" : "Versets",
-    "downloaded" : "Téléchargé",
-    "loopThisAyah" : "Répéter ce verset",
-    "autoplayNextAyah" : "Lecture automatique du verset suivant",
-        "memorizationMode": "Mode de Mémorisation",
+    "meccan": "Mecquoise",
+    "medinan": "Médinoise",
+    "ayahs": "Versets",
+    "downloaded": "Téléchargé",
+    "loopThisAyah": "Répéter ce verset",
+    "autoplayNextAyah": "Lecture automatique du verset suivant",
+    "memorizationMode": "Mode de Mémorisation",
     "@memorizationMode": {
         "description": "Title for memorization mode"
     },
@@ -818,7 +812,7 @@
     "@beta": {
         "description": "Beta label"
     },
-    "surahMemorized": "Vous avez mémorisé cette Sourate avec succès.",   
+    "surahMemorized": "Vous avez mémorisé cette Sourate avec succès.",
     "counseling": "Conseil",
     "chat": "Discuter",
     "counselingMode": "Mode Conseil",
@@ -942,7 +936,8 @@
     },
     "sahurAlarmNotSet": "Non défini",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"},
+        "description": "Subtitle when Sahur alarm is disabled"
+    },
     "sahurAlarmRinging": "Alarme du Souhour",
     "stopAlarm": "Arrêter",
     "sahurAlarmNotificationBody": "Il est temps de se réveiller pour le Souhour",
@@ -1196,8 +1191,7 @@
                 "example": "Network error"
             }
         }
-    }
-    ,
+    },
     "iosTapToSelectApps": "Appuyez ci-dessous pour sélectionner des applications via Temps d'écran",
     "@iosTapToSelectApps": {
         "description": "Instruction to select apps using Screen Time on iOS"
@@ -1215,8 +1209,7 @@
                 "example": "Permission denied"
             }
         }
-    }
-    ,
+    },
     "iosSelectAppsScreenTime": "Sélectionner des applications (Temps d'écran)",
     "@iosSelectAppsScreenTime": {
         "description": "Button text to select apps using Screen Time on iOS"
@@ -1280,8 +1273,7 @@
                 "example": "2"
             }
         }
-    }
-    ,
+    },
     "accessibilityServiceRequiredDialogTitle": "Service d'accessibilité requis",
     "accessibilityServiceRequiredDialogDesc": "Miqaat Lock nécessite l'API du service d'accessibilité pour détecter les lancements d'applications et afficher l'écran de verrouillage.",
     "accessibilityServiceRequiredDialogPrivacy": "Nous n'utilisons pas ce service pour collecter, stocker ou partager des données personnelles ou sensibles.",
@@ -1371,8 +1363,6 @@
     "surahIndexSubtitle": "114 Sourates",
     "searchSurahHint": "Rechercher une sourate...",
     "surahNoResults": "Aucun résultat trouvé",
-    "meccan": "Mecquoise",
-    "medinan": "Médinoise",
     "verseCountLabel": "{count} versets",
     "tabMemorization": "Mémorisation",
     "readingModeScrollList": "Liste défilante",
@@ -1448,5 +1438,38 @@
     "eventAshuraGuidance": "Jeunez le 10 Mouharram et ajoutez le 9e jour pour suivre la Sunnah. Rappelez-vous que le Prophete jeunait ce jour par gratitude envers Allah pour avoir sauve Moussa de Pharaon.",
     "eventDaysTashreeqGuidance": "Rappelez-vous Allah abondamment et recitez le Takbir apres chaque priere obligatoire. Ce sont des jours pour manger, boire et remercier. Le jeune y est interdit sauf pour le pelerin qui ne peut offrir de sacrifice.",
     "whatsNew330Feature1": "Continuer la lecture déplacé : Appuyez sur la carte du Coran sur l'écran d'accueil pour la développer et retrouver votre avancement de lecture",
-    "whatsNew330Feature2": "Corrections de bugs et améliorations"
+    "whatsNew330Feature2": "Corrections de bugs et améliorations",
+    "audios": "Audio",
+    "audiobooks": "Audios islamiques",
+    "audiobook": "Audio islamique",
+    "chapters": "Chapitres",
+    "chapter": "Chapitre {number}",
+    "narratedBy": "Narré par",
+    "continueListening": "Continuer l'écoute",
+    "continueBook": "Continuer la lecture",
+    "resumePage": "Page {number}",
+    "resumeChapter": "Reprendre le chapitre {number}",
+    "continueRadio": "Continue Radio",
+    "resumeReciter": "Resume {reciterName}",
+    "@resumeReciter": {
+        "description": "resumeReciter",
+        "placeholders": {
+            "reciterName": {
+                "type": "String"
+            }
+        }
+    },
+    "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
+    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "playbackSpeed": "Vitesse de lecture",
+    "sleepTimer": "Minuteur de veille",
+    "endOfChapter": "Fin du chapitre",
+    "sleepTimerMinutes": "{minutes} min",
+    "downloadAudiobook": "Télécharger l'audio islamique",
+    "audiobookDownloaded": "Téléchargé",
+    "play": "Lire",
+    "pause": "Pause",
+    "noOfflineAudiobooks": "Aucun audio islamique téléchargé",
+    "chapterProgress": "Chapitre {current} sur {total}",
+    "audioInLanguage": "En {language}"
 }

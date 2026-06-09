@@ -350,6 +350,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get readMore => 'Leer más';
 
   @override
+  String get readLess => 'Leer menos';
+
+  @override
+  String get aboutThisAudio => 'Sobre este audio';
+
+  @override
   String get page => 'Página';
 
   @override
@@ -3959,4 +3965,95 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'Recordad a Allah abundantemente y recitad el Takbir tras cada oracion obligatoria. Son dias de comer, beber y agradecer. El ayuno esta prohibido estos dias excepto para el peregrino que no puede ofrecer sacrificio.';
+
+  @override
+  String get audios => 'Audio';
+
+  @override
+  String get audiobooks => 'Audios islámicos';
+
+  @override
+  String get audiobook => 'Audio islámico';
+
+  @override
+  String get chapters => 'Capítulos';
+
+  @override
+  String chapter(int number) {
+    return 'Capítulo $number';
+  }
+
+  @override
+  String get narratedBy => 'Narrado por';
+
+  @override
+  String get continueListening => 'Continuar escuchando';
+
+  @override
+  String get continueBook => 'Continuar leyendo';
+
+  @override
+  String resumePage(int number) {
+    return 'Página $number';
+  }
+
+  @override
+  String resumeChapter(int number) {
+    return 'Reanudar capítulo $number';
+  }
+
+  @override
+  String get continueRadio => 'Continue Radio';
+
+  @override
+  String resumeReciter(String reciterName) {
+    return 'Resume $reciterName';
+  }
+
+  @override
+  String get noReciterActivityDescription =>
+      'Start listening to Quran audio to see your progress';
+
+  @override
+  String get noRadioActivityDescription =>
+      'Listen to Quran radio to see your progress';
+
+  @override
+  String get playbackSpeed => 'Velocidad de reproducción';
+
+  @override
+  String get sleepTimer => 'Temporizador';
+
+  @override
+  String get endOfChapter => 'Fin del capítulo';
+
+  @override
+  String sleepTimerMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get downloadAudiobook => 'Descargar audio islámico';
+
+  @override
+  String get audiobookDownloaded => 'Descargado';
+
+  @override
+  String get play => 'Reproducir';
+
+  @override
+  String get pause => 'Pausar';
+
+  @override
+  String get noOfflineAudiobooks => 'No hay audios islámicos descargados';
+
+  @override
+  String chapterProgress(int current, int total) {
+    return 'Capítulo $current de $total';
+  }
+
+  @override
+  String audioInLanguage(String language) {
+    return 'En $language';
+  }
 }

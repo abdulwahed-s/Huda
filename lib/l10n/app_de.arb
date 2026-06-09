@@ -1,4 +1,4 @@
-﻿{
+{
     "@@locale": "de",
     "appTitle": "Huda",
     "settings": "Einstellungen",
@@ -44,7 +44,7 @@
     "shareText": "Text teilen",
     "refreshLocation": "Standort aktualisieren",
     "autoUpdateWhenAppClosed": "Automatisches Update bei geschlossener App",
-    "backgroundUpdatesDisabled": "Hintergrund-Updates deaktiviert.",
+    "backgroundUpdatesDisabled": "Hintergrund-Updates deaktiviert",
     "clearAllCustomVerses": "Alle benutzerdefinierten Verse löschen",
     "clearAllBookmarks": "Alle Lesezeichen löschen",
     "verseRemovedFromWidget": "Vers aus Widget entfernt",
@@ -109,6 +109,8 @@
     "all": "Alle",
     "filtered": "Gefiltert",
     "readMore": "Mehr lesen",
+    "readLess": "Weniger lesen",
+    "aboutThisAudio": "Über diesen Audio",
     "page": "Seite",
     "pageOf": "von",
     "first": "Erste",
@@ -210,7 +212,7 @@
     "morningEveningAthkar": "Morgen- und Abend-Athkar",
     "dailyAthkarTimes": "{morningTime} und {eveningTime} täglich",
     "randomAthkar": "Zufällige Athkar",
-    "everyMinutes": "Alle {frequency} Minuten",
+    "everyMinutes": "Alle {minutes} Minuten",
     "quranReadingReminder": "Koran-Leseerinnerung",
     "dailyAt": "Täglich um {time}",
     "debug": "Debuggen",
@@ -405,7 +407,6 @@
     "dailyTimesSchedule": "{morningTime} und {eveningTime} täglich",
     "dailyRemindersAthkar": "Tägliche Erinnerungen für das Gedenken an Allah morgens und abends.",
     "randomAthkarTitle": "Zufällige Athkar",
-    "everyMinutes": "Alle {minutes} Minuten",
     "periodicRemindersAthkar": "Periodische Erinnerungen mit zufälligen Athkar den ganzen Tag über.",
     "quranReadingReminderTitle": "Koran-Leseerinnerung",
     "dailyAtTime": "Täglich um {time}",
@@ -567,12 +568,9 @@
     "addCustomItem": "Benutzerdefiniertes Element hinzufügen",
     "addItem": "Element hinzufügen",
     "addTask": "Aufgabe hinzufügen",
-    "allCustomVersesCleared": "Alle benutzerdefinierten Verse gelöscht",
     "asrPrayer": "Asr-Gebet",
     "athkarMasaa": "Abend-Athkar",
     "athkarSabah": "Morgen-Athkar",
-    "autoUpdateWhenAppClosed": "Automatisches Update bei geschlossener App",
-    "backgroundUpdatesDisabled": "Hintergrund-Updates deaktiviert",
     "backToToday": "Zurück zu heute",
     "checklistReminderDescription": "Tägliche Erinnerung zur Erfüllung Ihrer islamischen Aufgaben",
     "completedPercentage": "Abgeschlossener Prozentsatz",
@@ -634,7 +632,6 @@
     "selectChecklistReminderTime": "Checklisten-Erinnerungszeit auswählen",
     "status": "Status",
     "urdu": "اردو",
-    "verseRemovedFromWidget": "Vers aus Widget entfernt",
     "notificationKahfTitle": "🕌 Sura Al-Kahf Erinnerung",
     "notificationKahfBody": "Heute ist Freitag! Vergiss nicht, die Sura Al-Kahf zu lesen für Segen und Schutz.",
     "notificationMorningAthkarTitle": "🌅 Morgen-Athkar",
@@ -694,7 +691,6 @@
     "silverGrams": "612,36 Gramm",
     "aboutZakat": "Über Zakat",
     "zakatDescription": "Zakat ist eine der fünf Säulen des Islam und eine obligatorische Wohltätigkeit. Sie wird mit 2,5% des qualifizierten Vermögens berechnet, das mindestens ein Mondjahr (hawl) lang gehalten wurde.\\n\\nNisab ist die Mindestgrenze des Vermögens, die Zakat obligatorisch macht. Es kann basierend auf folgenden Grundlagen berechnet werden:\\n• Gold: 87,48 Gramm (20 Mithqal)\\n• Silber: 612,36 Gramm (200 Dirham)\\n\\nDieser Rechner hilft Ihnen zu bestimmen, ob Ihr Vermögen die Nisab-Schwelle erreicht und berechnet den genauen Betrag der fälligen Zakat.",
-    "close": "Schließen",
     "cashAndBankBalances": "Bargeld und Bankguthaben",
     "goldAssets": "Gold",
     "silverAssets": "Silber",
@@ -710,7 +706,6 @@
     "receivablesDescription": "Ihnen geschuldetes Geld, das Sie zu erhalten erwarten",
     "debtsDescription": "Kreditkartenschulden, Darlehen, innerhalb des Jahres fällige Rechnungen",
     "hintAmount": "0,00",
-    "settings": "Einstellungen",
     "feedbackAppBarTitle": "Feedback senden",
     "feedbackEmptyWarning": "Bitte geben Sie Ihr Feedback ein, bevor Sie es absenden",
     "feedbackSuccessMessage": "Danke! Ihr Feedback wurde gesendet.",
@@ -754,7 +749,6 @@
     "skip": "überspringen",
     "getStarted": "Loslegen",
     "shareAsText": "Als Text teilen",
-    "shareAsImage": "Als Bild teilen",
     "shareDhikr": "Dhikr teilen",
     "generatingImage": "Bild wird erstellt...",
     "locationServicesDisabled": "Die Standortdienste sind deaktiviert. Bitte aktivieren Sie sie in den Geräteeinstellungen.",
@@ -778,12 +772,12 @@
     "chain": "in de keten",
     "noChapters": "Geen hoofdstukken beschikbaar",
     "newContent": "Nieuwe inhoud wordt binnenkort toegevoegd.\nKom later terug voor updates.",
-    "meccan" : "Mekkens",
-    "medinan" : "Medineens",
-    "ayahs" : "Ayaat",
-    "downloaded" : "Gedownload",
-    "loopThisAyah" : "Deze aya herhalen",
-    "autoplayNextAyah" : "Volgende aya automatisch afspelen",
+    "meccan": "Mekkanisch",
+    "medinan": "Medinensisch",
+    "ayahs": "Ayaat",
+    "downloaded": "Gedownload",
+    "loopThisAyah": "Deze aya herhalen",
+    "autoplayNextAyah": "Volgende aya automatisch afspelen",
     "memorizationMode": "Auswendig lernen Modus",
     "memorizationDescription": "Testen Sie Ihr Auswendiglernen, indem Sie Ayahs ausblenden und rezitieren. Die App hört Ihrer Rezitation zu und deckt die Ayahs auf, wenn Sie richtig rezitieren.",
     "speechRecognitionDisclaimer": "Die Qualität der Spracherkennung hängt von den Fähigkeiten Ihres Geräts ab.",
@@ -917,7 +911,8 @@
     },
     "sahurAlarmNotSet": "Nicht eingestellt",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"},
+        "description": "Subtitle when Sahur alarm is disabled"
+    },
     "sahurAlarmRinging": "Sahur-Wecker",
     "stopAlarm": "Stoppen",
     "sahurAlarmNotificationBody": "Zeit zum Aufwachen für Sahur",
@@ -1171,8 +1166,7 @@
                 "example": "Network error"
             }
         }
-    }
-    ,
+    },
     "iosTapToSelectApps": "Tippen Sie unten, um Apps über die Bildschirmzeit auszuwählen",
     "@iosTapToSelectApps": {
         "description": "Instruction to select apps using Screen Time on iOS"
@@ -1190,8 +1184,7 @@
                 "example": "Permission denied"
             }
         }
-    }
-    ,
+    },
     "iosSelectAppsScreenTime": "Apps auswählen (Bildschirmzeit)",
     "@iosSelectAppsScreenTime": {
         "description": "Button text to select apps using Screen Time on iOS"
@@ -1345,8 +1338,6 @@
     "surahIndexSubtitle": "114 Suren",
     "searchSurahHint": "Sure suchen...",
     "surahNoResults": "Keine Ergebnisse gefunden",
-    "meccan": "Mekkanisch",
-    "medinan": "Medinensisch",
     "verseCountLabel": "{count} Verse",
     "tabMemorization": "Hifz",
     "readingModeScrollList": "Scroll-Liste",
@@ -1422,5 +1413,38 @@
     "eventAshuraGuidance": "Fastet am 10. Muharram und fugt den 9. hinzu, um der Sunnah zu folgen. Erinnert euch, dass der Prophet diesen Tag aus Dankbarkeit gegenuber Allah fastete, weil Er Musa vor dem Pharao rettete.",
     "eventDaysTashreeqGuidance": "Gedenkt Allahs reichlich und sprecht den Takbir nach jedem Pflichtgebet. Es sind Tage des Essens, Trinkens und der Dankbarkeit. Das Fasten ist an diesen Tagen verboten, ausser fur den Pilger, der kein Opfer bringen kann.",
     "whatsNew330Feature1": "Weiterlesen verschoben: Tippe auf die Koran-Karte auf dem Startbildschirm, um sie zu erweitern und deinen Lesefortschritt zu finden",
-    "whatsNew330Feature2": "Fehlerbehebungen und Verbesserungen"
+    "whatsNew330Feature2": "Fehlerbehebungen und Verbesserungen",
+    "audios": "Audio",
+    "audiobooks": "Islamische Audios",
+    "audiobook": "Islamisches Audio",
+    "chapters": "Kapitel",
+    "chapter": "Kapitel {number}",
+    "narratedBy": "Gesprochen von",
+    "continueListening": "Weiter anhören",
+    "continueBook": "Weiter lesen",
+    "resumePage": "Seite {number}",
+    "resumeChapter": "Kapitel {number} fortsetzen",
+    "continueRadio": "Continue Radio",
+    "resumeReciter": "Resume {reciterName}",
+    "@resumeReciter": {
+        "description": "resumeReciter",
+        "placeholders": {
+            "reciterName": {
+                "type": "String"
+            }
+        }
+    },
+    "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
+    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "playbackSpeed": "Wiedergabegeschwindigkeit",
+    "sleepTimer": "Sleep-Timer",
+    "endOfChapter": "Ende des Kapitels",
+    "sleepTimerMinutes": "{minutes} Min.",
+    "downloadAudiobook": "Islamisches Audio herunterladen",
+    "audiobookDownloaded": "Heruntergeladen",
+    "play": "Abspielen",
+    "pause": "Pausieren",
+    "noOfflineAudiobooks": "Keine heruntergeladenen islamischen Audios",
+    "chapterProgress": "Kapitel {current} von {total}",
+    "audioInLanguage": "Auf {language}"
 }

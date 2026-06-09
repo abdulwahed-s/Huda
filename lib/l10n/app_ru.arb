@@ -110,6 +110,8 @@
     "all": "Все",
     "filtered": "Отфильтрованные",
     "readMore": "Читать далее",
+    "readLess": "Свернуть",
+    "aboutThisAudio": "Об этом аудио",
     "page": "Страница",
     "pageOf": "из",
     "first": "Первая",
@@ -211,7 +213,7 @@
     "morningEveningAthkar": "Утренние и вечерние Азкар",
     "dailyAthkarTimes": "{morningTime} и {eveningTime} ежедневно",
     "randomAthkar": "Случайные Азкар",
-    "everyMinutes": "Каждые {frequency} минут",
+    "everyMinutes": "Каждые {minutes} минут",
     "quranReadingReminder": "Напоминание о чтении Корана",
     "dailyAt": "Ежедневно в {time}",
     "debug": "Отладка",
@@ -332,7 +334,7 @@
     "includeTafsir": "Включить тафсир",
     "includeReference": "Включить ссылку",
     "generating": "Генерация...",
-    "shareAsImage": "Поделиться как изображение",
+    "shareAsImage": "Поделиться как изображением",
     "tafsirLabel": "Тафсир:",
     "hudaQuranApp": "Huda - Приложение Корана",
     "translationNotAvailable": "Перевод недоступен",
@@ -406,7 +408,6 @@
     "dailyTimesSchedule": "{morningTime} и {eveningTime} ежедневно",
     "dailyRemindersAthkar": "Ежедневные напоминания о поминании Аллаха утром и вечером.",
     "randomAthkarTitle": "Случайные Азкар",
-    "everyMinutes": "Каждые {minutes} минут",
     "periodicRemindersAthkar": "Периодические напоминания со случайными Азкар в течение дня.",
     "quranReadingReminderTitle": "Напоминание о чтении Корана",
     "dailyAtTime": "Ежедневно в {time}",
@@ -686,7 +687,6 @@
     "silverGrams": "612,36 грамм",
     "aboutZakat": "О Закяте",
     "zakatDescription": "Закят является одним из пяти столпов Ислама и обязательной милостыней. Он рассчитывается как 2,5% от квалифицированного богатства, которое находилось в собственности не менее одного лунного года (хауль).\\n\\nНисаб - это минимальный порог богатства, который делает Закят обязательным. Он может быть рассчитан на основе:\\n• Золото: 87,48 грамм (20 мискаль)\\n• Серебро: 612,36 грамм (200 дирхамов)\\n\\nЭтот калькулятор поможет вам определить, достигает ли ваше богатство порога нисаба и рассчитать точную сумму причитающегося Закята.",
-    "close": "Закрыть",
     "cashAndBankBalances": "Наличные и Банковские Остатки",
     "goldAssets": "Золото",
     "silverAssets": "Серебро",
@@ -702,7 +702,6 @@
     "receivablesDescription": "Деньги, которые вам должны и которые вы ожидаете получить",
     "debtsDescription": "Долги по кредитным картам, кредиты, счета к оплате в течение года",
     "hintAmount": "0,00",
-    "settings": "Настройки",
     "feedbackAppBarTitle": "Отправить отзыв",
     "feedbackEmptyWarning": "Пожалуйста, введите свой отзыв перед отправкой",
     "feedbackSuccessMessage": "Спасибо! Ваш отзыв был отправлен.",
@@ -746,7 +745,6 @@
     "skip": "пропустить",
     "getStarted": "Начать",
     "shareAsText": "Поделиться как текстом",
-    "shareAsImage": "Поделиться как изображением",
     "shareDhikr": "Поделиться зикром",
     "generatingImage": "Создание изображения...",
     "locationServicesDisabled": "Службы геолокации отключены. Пожалуйста, включите их в настройках устройства.",
@@ -770,13 +768,13 @@
     "chain": "в цепочке передатчиков",
     "noChapters": "Главы недоступны",
     "newContent": "Новый контент скоро будет добавлен.\nПроверьте позже для обновлений.",
-    "meccan" : "Мекканский",
-    "medinan" : "Мединский",
-    "ayahs" : "Аяты",
-    "downloaded" : "Загруженный",
-    "loopThisAyah" : "Повторять этот аят",
-    "autoplayNextAyah" : "Автовоспроизведение следующего аята",
-        "memorizationMode": "Режим заучивания",
+    "meccan": "Мекканская",
+    "medinan": "Мединская",
+    "ayahs": "Аяты",
+    "downloaded": "Загруженный",
+    "loopThisAyah": "Повторять этот аят",
+    "autoplayNextAyah": "Автовоспроизведение следующего аята",
+    "memorizationMode": "Режим заучивания",
     "@memorizationMode": {
         "description": "Title for memorization mode"
     },
@@ -936,7 +934,8 @@
     },
     "sahurAlarmNotSet": "Не установлено",
     "@sahurAlarmNotSet": {
-        "description": "Subtitle when Sahur alarm is disabled"},
+        "description": "Subtitle when Sahur alarm is disabled"
+    },
     "sahurAlarmRinging": "Будильник на Сухур",
     "stopAlarm": "Остановить",
     "sahurAlarmNotificationBody": "Пора просыпаться на Сухур",
@@ -1190,8 +1189,7 @@
                 "example": "Network error"
             }
         }
-    }
-    ,
+    },
     "iosTapToSelectApps": "Нажмите ниже, чтобы выбрать приложения с помощью Экранного времени",
     "@iosTapToSelectApps": {
         "description": "Instruction to select apps using Screen Time on iOS"
@@ -1209,8 +1207,7 @@
                 "example": "Permission denied"
             }
         }
-    }
-    ,
+    },
     "iosSelectAppsScreenTime": "Выбрать приложения (Экранное время)",
     "@iosSelectAppsScreenTime": {
         "description": "Button text to select apps using Screen Time on iOS"
@@ -1364,8 +1361,6 @@
     "surahIndexSubtitle": "114 Сур",
     "searchSurahHint": "Поиск суры...",
     "surahNoResults": "Результаты не найдены",
-    "meccan": "Мекканская",
-    "medinan": "Мединская",
     "verseCountLabel": "{count} аят",
     "tabMemorization": "Хифз",
     "readingModeScrollList": "Прокрутка списка",
@@ -1441,5 +1436,38 @@
     "eventAshuraGuidance": "Соблюдайте пост 10-го Мухаррама и добавьте 9-й день следуя Сунне. Помните, что Пророк постился в этот день из благодарности Аллаху за спасение Мусы от Фараона.",
     "eventDaysTashreeqGuidance": "Обильно поминайте Аллаха и произносите такбир после каждой обязательной молитвы. Это дни еды, питья и благодарности. Пост в эти дни запрещен кроме паломника, который не может принести жертву.",
     "whatsNew330Feature1": "«Продолжить чтение» перемещено: нажмите на карточку Корана на главном экране, чтобы развернуть её и найти свой прогресс чтения",
-    "whatsNew330Feature2": "Исправления ошибок и улучшения"
+    "whatsNew330Feature2": "Исправления ошибок и улучшения",
+    "audios": "Аудио",
+    "audiobooks": "Исламские аудио",
+    "audiobook": "Исламское аудио",
+    "chapters": "Главы",
+    "chapter": "Глава {number}",
+    "narratedBy": "Читает",
+    "continueListening": "Продолжить прослушивание",
+    "continueBook": "Продолжить чтение",
+    "resumePage": "Страница {number}",
+    "resumeChapter": "Продолжить главу {number}",
+    "continueRadio": "Continue Radio",
+    "resumeReciter": "Resume {reciterName}",
+    "@resumeReciter": {
+        "description": "resumeReciter",
+        "placeholders": {
+            "reciterName": {
+                "type": "String"
+            }
+        }
+    },
+    "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
+    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "playbackSpeed": "Скорость воспроизведения",
+    "sleepTimer": "Таймер сна",
+    "endOfChapter": "Конец главы",
+    "sleepTimerMinutes": "{minutes} мин",
+    "downloadAudiobook": "Скачать исламское аудио",
+    "audiobookDownloaded": "Загружено",
+    "play": "Воспроизвести",
+    "pause": "Пауза",
+    "noOfflineAudiobooks": "Нет загруженных исламских аудио",
+    "chapterProgress": "Глава {current} из {total}",
+    "audioInLanguage": "На {language}"
 }

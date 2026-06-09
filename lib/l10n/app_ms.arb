@@ -203,6 +203,8 @@
     "all": "Semua",
     "filtered": "Ditapis",
     "readMore": "Baca lagi",
+    "readLess": "Baca Kurang",
+    "aboutThisAudio": "Tentang Audio Ini",
     "page": "Halaman",
     "pageOf": "daripada",
     "first": "Pertama",
@@ -304,7 +306,7 @@
     "morningEveningAthkar": "Zikir Pagi dan Petang",
     "dailyAthkarTimes": "{morningTime} dan {eveningTime} setiap hari",
     "randomAthkar": "Zikir Rawak",
-    "everyMinutes": "Setiap {frequency} minit",
+    "everyMinutes": "Setiap {minutes} minit",
     "quranReadingReminder": "Peringatan Membaca Al-Quran",
     "dailyAt": "Setiap hari pada {time}",
     "debug": "Nyahpepijat",
@@ -498,7 +500,6 @@
     "dailyTimesSchedule": "{morningTime} dan {eveningTime} setiap hari",
     "dailyRemindersAthkar": "Peringatan harian untuk mengingati Allah pada pagi dan petang.",
     "randomAthkarTitle": "Zikir Rawak",
-    "everyMinutes": "Setiap {minutes} minit",
     "periodicRemindersAthkar": "Peringatan berkala dengan zikir rawak sepanjang hari.",
     "quranReadingReminderTitle": "Peringatan Membaca Al-Quran",
     "dailyAtTime": "Setiap hari pada {time}",
@@ -776,7 +777,6 @@
     "silverGrams": "612.36 gram",
     "aboutZakat": "Tentang Zakat",
     "zakatDescription": "Zakat adalah salah satu dari lima rukun Islam dan merupakan sedekah wajib. Ia dikira sebagai 2.5% daripada kekayaan yang layak yang telah dipegang selama sekurang-kurangnya satu tahun qamariah (haul).\\n\\nNisab adalah ambang minimum kekayaan yang menjadikan Zakat wajib. Ia boleh dikira berdasarkan:\\n• Emas: 87.48 gram (20 mithqal)\\n• Perak: 612.36 gram (200 dirham)\\n\\nKalkulator ini membantu anda menentukan sama ada kekayaan anda mencapai ambang nisab dan mengira jumlah tepat Zakat yang wajib.",
-    "close": "Tutup",
     "cashAndBankBalances": "Tunai dan Baki Bank",
     "goldAssets": "Emas",
     "silverAssets": "Perak",
@@ -792,7 +792,6 @@
     "receivablesDescription": "Wang yang berhutang kepada anda dan dijangka diterima",
     "debtsDescription": "Hutang kad kredit, pinjaman, bil yang perlu dibayar dalam tahun ini",
     "hintAmount": "0.00",
-    "settings": "Tetapan",
     "feedbackAppBarTitle": "Hantar Maklum Balas",
     "feedbackEmptyWarning": "Sila masukkan maklum balas anda sebelum menghantar",
     "feedbackSuccessMessage": "Terima kasih! Maklum balas anda telah dihantar.",
@@ -836,7 +835,6 @@
     "skip": "langkau",
     "getStarted": "Mula",
     "shareAsText": "Kongsi sebagai teks",
-    "shareAsImage": "Kongsi sebagai imej",
     "shareDhikr": "Kongsi zikir",
     "generatingImage": "Imej sedang dijana...",
     "locationServicesDisabled": "Perkhidmatan lokasi dilumpuhkan. Sila aktifkannya dalam tetapan peranti anda..",
@@ -860,13 +858,13 @@
     "chain": "dalam sanad",
     "noChapters": "Tiada bab tersedia",
     "newContent": "Kandungan baharu akan ditambah tidak lama lagi.\nSila semak semula kemudian untuk kemas kini.",
-    "meccan" : "Mekah",
-    "medinan" : "Madinah",
-    "ayahs" : "Ayat",
-    "downloaded" : "Dimuat turun",
-    "loopThisAyah" : "Ulang ayat ini",
-    "autoplayNextAyah" : "Main ayat seterusnya secara automatik",
-        "memorizationMode": "Mod Menghafal",
+    "meccan": "Makkiyyah",
+    "medinan": "Madaniyyah",
+    "ayahs": "Ayat",
+    "downloaded": "Dimuat turun",
+    "loopThisAyah": "Ulang ayat ini",
+    "autoplayNextAyah": "Main ayat seterusnya secara automatik",
+    "memorizationMode": "Mod Menghafal",
     "@memorizationMode": {
         "description": "Title for memorization mode"
     },
@@ -1281,8 +1279,7 @@
                 "example": "Network error"
             }
         }
-    }
-    ,
+    },
     "iosTapToSelectApps": "Ketik di bawah untuk memilih apl menggunakan Masa Skrin",
     "@iosTapToSelectApps": {
         "description": "Instruction to select apps using Screen Time on iOS"
@@ -1300,8 +1297,7 @@
                 "example": "Permission denied"
             }
         }
-    }
-    ,
+    },
     "iosSelectAppsScreenTime": "Pilih Apl (Masa Skrin)",
     "@iosSelectAppsScreenTime": {
         "description": "Button text to select apps using Screen Time on iOS"
@@ -1365,8 +1361,7 @@
                 "example": "2"
             }
         }
-    }
-    ,
+    },
     "accessibilityServiceRequiredDialogTitle": "Perkhidmatan Kebolehcapaian Diperlukan",
     "accessibilityServiceRequiredDialogDesc": "Miqaat Lock memerlukan API Perkhidmatan Kebolehcapaian untuk mengesan pelancaran aplikasi dan memaparkan skrin kunci.",
     "accessibilityServiceRequiredDialogPrivacy": "Kami tidak menggunakan perkhidmatan ini untuk mengumpul, menyimpan atau berkongsi sebarang data peribadi atau sensitif pengguna.",
@@ -1456,8 +1451,6 @@
     "surahIndexSubtitle": "114 Surah",
     "searchSurahHint": "Cari surah...",
     "surahNoResults": "Tiada keputusan dijumpai",
-    "meccan": "Makkiyyah",
-    "medinan": "Madaniyyah",
     "verseCountLabel": "{count} ayat",
     "tabMemorization": "Hafaz",
     "readingModeScrollList": "Senarai Tatal",
@@ -1533,5 +1526,38 @@
     "eventAshuraGuidance": "Berpuasa pada 10 Muharram dan tambahkan 9 Muharram untuk mengikut Sunnah. Ingatlah bahawa Nabi berpuasa pada hari ini sebagai kesyukuran kepada Allah kerana menyelamatkan Musa daripada Firaun.",
     "eventDaysTashreeqGuidance": "Ingatlah Allah dengan banyak dan bertakbir selepas setiap solat fardhu. Ini adalah hari-hari makan, minum dan bersyukur. Berpuasa tidak dibenarkan pada hari-hari ini kecuali bagi jemaah haji yang tidak mampu berkurban.",
     "whatsNew330Feature1": "Teruskan Membaca dipindahkan: Ketik kad Al-Quran pada skrin utama untuk memperluasnya dan mencari kemajuan bacaan anda",
-    "whatsNew330Feature2": "Pembaikan pepijat dan penambahbaikan"
+    "whatsNew330Feature2": "Pembaikan pepijat dan penambahbaikan",
+    "audios": "Audio",
+    "audiobooks": "Audio Islamik",
+    "audiobook": "Audio Islamik",
+    "chapters": "Bab",
+    "chapter": "Bab {number}",
+    "narratedBy": "Dibacakan oleh",
+    "continueListening": "Teruskan Mendengar",
+    "continueBook": "Teruskan Membaca",
+    "resumePage": "Halaman {number}",
+    "resumeChapter": "Sambung Bab {number}",
+    "continueRadio": "Continue Radio",
+    "resumeReciter": "Resume {reciterName}",
+    "@resumeReciter": {
+        "description": "resumeReciter",
+        "placeholders": {
+            "reciterName": {
+                "type": "String"
+            }
+        }
+    },
+    "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
+    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "playbackSpeed": "Kelajuan Main Semula",
+    "sleepTimer": "Pemasa Tidur",
+    "endOfChapter": "Akhir Bab",
+    "sleepTimerMinutes": "{minutes} min",
+    "downloadAudiobook": "Muat Turun Audio Islamik",
+    "audiobookDownloaded": "Dimuat turun",
+    "play": "Main",
+    "pause": "Jeda",
+    "noOfflineAudiobooks": "Tiada audio Islamik dimuat turun",
+    "chapterProgress": "Bab {current} daripada {total}",
+    "audioInLanguage": "Dalam {language}"
 }

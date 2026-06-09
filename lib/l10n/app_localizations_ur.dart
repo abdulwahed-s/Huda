@@ -343,6 +343,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get readMore => 'مزید پڑھیں';
 
   @override
+  String get readLess => 'کم پڑھیں';
+
+  @override
+  String get aboutThisAudio => 'اس آڈیو کے بارے میں';
+
+  @override
   String get page => 'صفحہ';
 
   @override
@@ -3882,4 +3888,95 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'اللہ کا کثرت سے ذکر کریں اور ہر فرض نماز کے بعد تکبیر کہیں۔ یہ کھانے، پینے اور شکر کے دن ہیں۔ ان دنوں میں روزہ جائز نہیں سوائے اس حاجی کے جو قربانی کی استطاعت نہ رکھتا ہو۔';
+
+  @override
+  String get audios => 'آڈیو';
+
+  @override
+  String get audiobooks => 'اسلامی آڈیوز';
+
+  @override
+  String get audiobook => 'اسلامی آڈیو';
+
+  @override
+  String get chapters => 'ابواب';
+
+  @override
+  String chapter(int number) {
+    return 'باب $number';
+  }
+
+  @override
+  String get narratedBy => 'آواز';
+
+  @override
+  String get continueListening => 'سننا جاری رکھیں';
+
+  @override
+  String get continueBook => 'پڑھنا جاری رکھیں';
+
+  @override
+  String resumePage(int number) {
+    return 'صفحہ $number';
+  }
+
+  @override
+  String resumeChapter(int number) {
+    return 'باب $number دوبارہ شروع کریں';
+  }
+
+  @override
+  String get continueRadio => 'Continue Radio';
+
+  @override
+  String resumeReciter(String reciterName) {
+    return 'Resume $reciterName';
+  }
+
+  @override
+  String get noReciterActivityDescription =>
+      'Start listening to Quran audio to see your progress';
+
+  @override
+  String get noRadioActivityDescription =>
+      'Listen to Quran radio to see your progress';
+
+  @override
+  String get playbackSpeed => 'پلے بیک کی رفتار';
+
+  @override
+  String get sleepTimer => 'سلیپ ٹائمر';
+
+  @override
+  String get endOfChapter => 'باب کا اختتام';
+
+  @override
+  String sleepTimerMinutes(int minutes) {
+    return '$minutes منٹ';
+  }
+
+  @override
+  String get downloadAudiobook => 'اسلامی آڈیو ڈاؤن لوڈ کریں';
+
+  @override
+  String get audiobookDownloaded => 'ڈاؤن لوڈ ہو گئی';
+
+  @override
+  String get play => 'چلائیں';
+
+  @override
+  String get pause => 'وقفہ';
+
+  @override
+  String get noOfflineAudiobooks => 'کوئی ڈاؤن لوڈ شدہ اسلامی آڈیو نہیں';
+
+  @override
+  String chapterProgress(int current, int total) {
+    return 'باب $current از $total';
+  }
+
+  @override
+  String audioInLanguage(String language) {
+    return '$language میں';
+  }
 }

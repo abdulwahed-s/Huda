@@ -1,4 +1,4 @@
-﻿{
+{
     "@@locale": "tr",
     "appTitle": "Huda",
     "settings": "Ayarlar",
@@ -143,6 +143,8 @@
     "all": "Tümü",
     "filtered": "Filtrelenmiş",
     "readMore": "Devamını Oku",
+    "readLess": "Daha Az Göster",
+    "aboutThisAudio": "Bu Ses Hakkında",
     "page": "Sayfa",
     "pageOf": "of",
     "first": "İlk",
@@ -289,7 +291,7 @@
     "includeTafsir": "Tefsiri Dahil Et",
     "includeReference": "Referansı Dahil Et",
     "generating": "Oluşturuluyor...",
-    "shareAsImage": "Resim Olarak Paylaş",
+    "shareAsImage": "Görüntü olarak paylaş",
     "tafsirLabel": "Tefsir:",
     "hudaQuranApp": "Huda - Kuran Uygulaması",
     "translationNotAvailable": "Çeviri mevcut değil",
@@ -364,7 +366,7 @@
     "dailyTimesSchedule": "Günlük {morningTime} ve {eveningTime}",
     "dailyRemindersAthkar": "Allah'ı sabah ve akşam anmak için günlük hatırlatmalar.",
     "randomAthkarTitle": "Rastgele Zikirler",
-    "everyMinutes": "Her {minutes} dakikada",
+    "everyMinutes": "Her {frequency} dakikada",
     "periodicRemindersAthkar": "Gün boyunca rastgele zikirlerle periyodik hatırlatmalar.",
     "quranReadingReminderTitle": "Kuran Okuma Hatırlatması",
     "dailyAtTime": "Günlük {time}'da",
@@ -543,7 +545,6 @@
     "morningEveningAthkar": "Sabah ve Akşam Zikirleri",
     "dailyAthkarTimes": "Günlük {morningTime} ve {eveningTime}",
     "randomAthkar": "Rastgele Zikirler",
-    "everyMinutes": "Her {frequency} dakikada",
     "quranReadingReminder": "Kuran Okuma Hatırlatması",
     "dailyAt": "Günlük {time}'da",
     "debug": "Hata Ayıkla",
@@ -686,7 +687,6 @@
     "silverGrams": "612.36 gram",
     "aboutZakat": "Zekat Hakkında",
     "zakatDescription": "Zekat İslam'ın beş rüknünden biridir ve zorunlu bir sadakadır. En az bir kamerî yıl (havl) boyunca elde tutulan nitelikli servetin %2.5'i olarak hesaplanır.\\n\\nNisab, zekatı gerekli kılan minimum servet eşiğidir. Şu esaslara göre hesaplanabilir:\\n• Altın: 87.48 gram (20 miskal)\\n• Gümüş: 612.36 gram (200 dirhem)\\n\\nBu hesaplayıcı, servetinizin nisab eşiğine ulaşıp ulaşmadığını belirlemenize ve gerekli zekat miktarının tam hesabını yapmanıza yardımcı olur.",
-    "close": "Kapat",
     "cashAndBankBalances": "Nakit ve Banka Bakiyeleri",
     "goldAssets": "Altın",
     "silverAssets": "Gümüş",
@@ -702,7 +702,6 @@
     "receivablesDescription": "Size borçlu olunan ve almayı beklediğiniz para",
     "debtsDescription": "Kredi kartı borçları, krediler, yıl içinde ödenecek faturalar",
     "hintAmount": "0.00",
-    "settings": "Ayarlar",
     "feedbackAppBarTitle": "Geri Bildirim Gönder",
     "feedbackEmptyWarning": "Lütfen göndermeden önce geri bildiriminizi girin",
     "feedbackSuccessMessage": "Teşekkürler! Geri bildiriminiz gönderildi.",
@@ -746,7 +745,6 @@
     "skip": "atla",
     "getStarted": "Başlayın",
     "shareAsText": "Metin olarak paylaş",
-    "shareAsImage": "Görüntü olarak paylaş",
     "shareDhikr": "Zikri paylaş",
     "generatingImage": "Görüntü oluşturuluyor...",
     "locationServicesDisabled": "Konum servisleri devre dışı. Lütfen cihaz ayarlarından etkinleştirin.",
@@ -770,13 +768,13 @@
     "chain": "senedde",
     "noChapters": "Hiç bölüm mevcut değil",
     "newContent": "Yakında yeni içerik eklenecek.\nGüncellemeler için daha sonra tekrar kontrol edin.",
-    "meccan" : "Mekkî",
-    "medinan" : "Medînî",
-    "ayahs" : "Ayetler",
-    "downloaded" : "İndirilmiş",
-    "loopThisAyah" : "Bu ayeti döngüye al",
-    "autoplayNextAyah" : "Sonraki ayeti otomatik oynat",
-        "memorizationMode": "Ezberleme Modu",
+    "meccan": "Mekki",
+    "medinan": "Medeni",
+    "ayahs": "Ayetler",
+    "downloaded": "İndirilmiş",
+    "loopThisAyah": "Bu ayeti döngüye al",
+    "autoplayNextAyah": "Sonraki ayeti otomatik oynat",
+    "memorizationMode": "Ezberleme Modu",
     "@memorizationMode": {
         "description": "Title for memorization mode"
     },
@@ -1191,8 +1189,7 @@
                 "example": "Network error"
             }
         }
-    }
-    ,
+    },
     "iosTapToSelectApps": "Ekran Süresi'ni kullanarak uygulamaları seçmek için aşağıya dokunun",
     "@iosTapToSelectApps": {
         "description": "Instruction to select apps using Screen Time on iOS"
@@ -1210,8 +1207,7 @@
                 "example": "Permission denied"
             }
         }
-    }
-    ,
+    },
     "iosSelectAppsScreenTime": "Uygulamaları Seç (Ekran Süresi)",
     "@iosSelectAppsScreenTime": {
         "description": "Button text to select apps using Screen Time on iOS"
@@ -1275,8 +1271,7 @@
                 "example": "2"
             }
         }
-    }
-,
+    },
     "accessibilityServiceRequiredDialogTitle": "Erişilebilirlik Hizmeti Gerekli",
     "accessibilityServiceRequiredDialogDesc": "Miqaat Lock, uygulama başlatmalarını algılamak ve kilit ekranını görüntülemek için Erişilebilirlik Hizmeti API'sine ihtiyaç duyar.",
     "accessibilityServiceRequiredDialogPrivacy": "Bu hizmeti herhangi bir kişisel veya hassas kullanıcı verisini toplamak, saklamak veya paylaşmak için kullanmıyoruz.",
@@ -1366,8 +1361,6 @@
     "surahIndexSubtitle": "114 Sure",
     "searchSurahHint": "Sure ara...",
     "surahNoResults": "Sonuç bulunamadı",
-    "meccan": "Mekki",
-    "medinan": "Medeni",
     "verseCountLabel": "{count} ayet",
     "tabMemorization": "Hıfz",
     "readingModeScrollList": "Kaydırma Listesi",
@@ -1443,5 +1436,38 @@
     "eventAshuraGuidance": "Muharrem'in 10'unda oruc tutun ve Sunnete uyarak 9'unu da ekleyin. Peygamber Efendimiz'in bu gunu, Allah'in Musa'yi Firavun'dan kurtarmasina sukur olarak oructutugunu hatirlaysin.",
     "eventDaysTashreeqGuidance": "Allah'i bol bol anin ve her farz namazin ardindan tekbir getirin. Bunlar yeme, icme ve sukur gunleridir. Kurban kesemeyen haccilar disinda bu gunlerde oruc tutulmaz.",
     "whatsNew330Feature1": "Okumaya Devam Et taşındı: Ana ekrandaki Kuran kartına dokunarak genişletin ve okuma ilerlemenizi bulun",
-    "whatsNew330Feature2": "Hata düzeltmeleri ve iyileştirmeler"
+    "whatsNew330Feature2": "Hata düzeltmeleri ve iyileştirmeler",
+    "audios": "Sesli",
+    "audiobooks": "İslami Sesler",
+    "audiobook": "İslami Ses",
+    "chapters": "Bölümler",
+    "chapter": "Bölüm {number}",
+    "narratedBy": "Seslendiren",
+    "continueListening": "Dinlemeye Devam Et",
+    "continueBook": "Okumaya Devam Et",
+    "resumePage": "Sayfa {number}",
+    "resumeChapter": "Bölüm {number}'e Devam Et",
+    "continueRadio": "Continue Radio",
+    "resumeReciter": "Resume {reciterName}",
+    "@resumeReciter": {
+        "description": "resumeReciter",
+        "placeholders": {
+            "reciterName": {
+                "type": "String"
+            }
+        }
+    },
+    "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
+    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "playbackSpeed": "Oynatma Hızı",
+    "sleepTimer": "Uyku Zamanlayıcısı",
+    "endOfChapter": "Bölüm Sonu",
+    "sleepTimerMinutes": "{minutes} dk",
+    "downloadAudiobook": "İslami Sesi İndir",
+    "audiobookDownloaded": "İndirildi",
+    "play": "Oynat",
+    "pause": "Duraklat",
+    "noOfflineAudiobooks": "İndirilen İslami ses yok",
+    "chapterProgress": "Bölüm {current} / {total}",
+    "audioInLanguage": "{language} dilinde"
 }
