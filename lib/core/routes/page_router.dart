@@ -14,6 +14,16 @@ import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
 import 'package:huda/cubit/bookmark/bookmarks_cubit.dart';
 import 'package:huda/cubit/books/books_cubit.dart';
 import 'package:huda/cubit/books/languages_cubit.dart';
+import 'package:huda/cubit/audios/audios_cubit.dart';
+import 'package:huda/cubit/audios/audio_languages_cubit.dart';
+import 'package:huda/cubit/audio_detail/audio_detail_cubit.dart';
+import 'package:huda/cubit/audiobook_download/audiobook_download_cubit.dart';
+import 'package:huda/cubit/audiobook_player/audiobook_player_cubit.dart';
+import 'package:huda/cubit/audiobook_player/audiobook_bar_cubit.dart';
+import 'package:huda/data/services/audiobook_download_service.dart';
+import 'package:huda/data/services/offline_audiobooks_service.dart';
+import 'package:huda/presentation/screens/audios.dart';
+import 'package:huda/presentation/screens/audio_detail.dart';
 import 'package:huda/cubit/chapters/chapters_cubit.dart';
 import 'package:huda/cubit/chat/chat_cubit.dart';
 import 'package:huda/cubit/checklist/checklist_cubit.dart';
@@ -539,11 +549,73 @@ class PageRouter {
             );
           },
         );
+      case AppRoute.audios:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, animation, __) => MultiBlocProvider(
+            providers: [
+              BlocProvider<AudiosCubit>(create: (_) => AudiosCubit()),
+              BlocProvider<AudioLanguagesCubit>(
+                  create: (_) => AudioLanguagesCubit()),
+              BlocProvider.value(value: context.read<AudiobookPlayerCubit>()),
+              BlocProvider.value(value: context.read<AudiobookBarCubit>()),
+            ],
+            child: const AudiosScreen(),
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            return SlideTransition(
+                position: animation.drive(tween), child: child);
+          },
+        );
+      case AppRoute.audioDetail:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, animation, __) {
+            final args = settings.arguments as Map<String, dynamic>;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<AudioDetailCubit>(
+                    create: (_) => AudioDetailCubit()),
+                BlocProvider<AudiobookDownloadCubit>(
+                  create: (_) => AudiobookDownloadCubit(
+                    downloadService: getIt<AudiobookDownloadService>(),
+                    offlineService: getIt<OfflineAudiobooksService>(),
+                  ),
+                ),
+                BlocProvider.value(value: context.read<AudiobookPlayerCubit>()),
+                BlocProvider.value(value: context.read<AudiobookBarCubit>()),
+              ],
+              child: AudioDetailScreen(
+                audioId: int.parse(args['audioId'].toString()),
+                language: args['language'].toString(),
+                title: args['title'].toString(),
+              ),
+            );
+          },
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            return SlideTransition(
+                position: animation.drive(tween), child: child);
+          },
+        );
       case AppRoute.pdfView:
+        final args = settings.arguments as Map<String, dynamic>;
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (_, animation, __) => PdfView(
-            pdfUrl: settings.arguments as String,
+            pdfUrl: args['url'] as String,
+            bookId: args['bookId'] as int?,
+            bookTitle: args['bookTitle'] as String?,
+            language: args['language'] as String?,
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0); // Slide in from right
