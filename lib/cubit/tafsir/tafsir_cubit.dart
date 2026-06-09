@@ -17,6 +17,9 @@ class TafsirCubit extends Cubit<TafsirState> {
   static const String _tafsirListCacheKey = 'tafsir_list';
   static const String _surahTafsirCachePrefix = 'surah_tafsir_';
 
+  List<edition.Data> _lastKnownSources = [];
+  List<edition.Data> get lastKnownSources => _lastKnownSources;
+
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
   static const int _cacheExpirationHours = 24;
 
@@ -66,10 +69,12 @@ class TafsirCubit extends Cubit<TafsirState> {
         final isConnected = await NetworkInfo.checkInternetConnectivity();
 
         if (isConnected) {
+          _lastKnownSources = tafsirReaders.data ?? [];
           emit(TafsirLoaded(tafsirReaders));
 
           _updateTafsirCache();
         } else {
+          _lastKnownSources = tafsirReaders.data ?? [];
           emit(TafsirOffline(tafsirReaders));
         }
       } else {
@@ -81,11 +86,13 @@ class TafsirCubit extends Cubit<TafsirState> {
             _tafsirListCacheKey,
             jsonEncode(tafsirReaders.toJson()),
           );
+          _lastKnownSources = tafsirReaders.data ?? [];
           emit(TafsirLoaded(tafsirReaders));
         } else {
           if (cachedData != null) {
             final Map<String, dynamic> decodedData = jsonDecode(cachedData);
             final tafsirReaders = edition.EditionModel.fromJson(decodedData);
+            _lastKnownSources = tafsirReaders.data ?? [];
             emit(TafsirOffline(tafsirReaders));
           } else {
             emit(TafsirError(
@@ -98,6 +105,7 @@ class TafsirCubit extends Cubit<TafsirState> {
       if (cachedData != null) {
         final Map<String, dynamic> decodedData = jsonDecode(cachedData);
         final tafsirReaders = edition.EditionModel.fromJson(decodedData);
+        _lastKnownSources = tafsirReaders.data ?? [];
         emit(TafsirLoaded(tafsirReaders));
       } else {
         emit(TafsirError(e.toString()));
