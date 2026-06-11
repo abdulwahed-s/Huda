@@ -26,6 +26,12 @@ class AudioCubit extends Cubit<AudioState> {
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
   static const int _cacheExpirationHours = 24;
 
+  // Persists the reader list across state transitions (e.g. AudioLoaded →
+  // SurahAudioLoaded) so widgets can always retrieve it regardless of the
+  // current state.
+  List<edition.Data> _lastKnownReaders = [];
+  List<edition.Data> get lastKnownReaders => _lastKnownReaders;
+
   Future<bool> isOffline() async {
     return !(await NetworkInfo.checkInternetConnectivity());
   }
@@ -44,6 +50,7 @@ class AudioCubit extends Cubit<AudioState> {
         final isOnline = await NetworkInfo.checkInternetConnectivity();
 
         if (isOnline) {
+          _lastKnownReaders = audiosReaders.data ?? [];
           emit(AudioLoaded(surahAudioModel: audiosReaders));
           _updateReadersCache();
         } else {
@@ -52,6 +59,7 @@ class AudioCubit extends Cubit<AudioState> {
                 await getDownloadedReadersForSurah(surahNumber);
 
             if (downloadedReaderIds.isNotEmpty) {
+              _lastKnownReaders = audiosReaders.data ?? [];
               emit(AudioOfflineWithDownloads(
                 surahAudioModel: audiosReaders,
                 downloadedReaderIds: downloadedReaderIds,
@@ -61,6 +69,7 @@ class AudioCubit extends Cubit<AudioState> {
               emit(ReaderOffline());
             }
           } else {
+            _lastKnownReaders = audiosReaders.data ?? [];
             emit(AudioLoaded(surahAudioModel: audiosReaders));
           }
         }
@@ -73,6 +82,7 @@ class AudioCubit extends Cubit<AudioState> {
             jsonEncode(audiosReaders.toJson()),
           );
 
+          _lastKnownReaders = audiosReaders.data ?? [];
           emit(AudioLoaded(surahAudioModel: audiosReaders));
         } else {
           if (cachedData != null) {
@@ -84,6 +94,7 @@ class AudioCubit extends Cubit<AudioState> {
                   await getDownloadedReadersForSurah(surahNumber);
 
               if (downloadedReaderIds.isNotEmpty) {
+                _lastKnownReaders = audiosReaders.data ?? [];
                 emit(AudioOfflineWithDownloads(
                   surahAudioModel: audiosReaders,
                   downloadedReaderIds: downloadedReaderIds,
@@ -93,6 +104,7 @@ class AudioCubit extends Cubit<AudioState> {
                 emit(ReaderOffline());
               }
             } else {
+              _lastKnownReaders = audiosReaders.data ?? [];
               emit(AudioLoaded(surahAudioModel: audiosReaders));
             }
           } else {

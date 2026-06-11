@@ -203,6 +203,7 @@ class _QuranPageViewState extends State<QuranPageView>
     super.initState();
     setupAudioListeners();
     checkOfflineStatus();
+    _syncSourcesFromCubits();
 
     _itemScrollController = ItemScrollController();
     _itemPositionsListener = ItemPositionsListener.create();
@@ -236,6 +237,27 @@ class _QuranPageViewState extends State<QuranPageView>
             '🔄 Skipping initial position - will restore saved position');
       }
     });
+  }
+
+  // Sync source lists from cubits' lastKnown* getters immediately in initState.
+  // BlocListeners only fire on *new* emissions; if the cubits were already
+  // loaded (e.g. returning from Mushaf mode), sources would otherwise be empty
+  // until the next state change.
+  void _syncSourcesFromCubits() {
+    final tafsirSources = context.read<TafsirCubit>().lastKnownSources;
+    final translationSources =
+        context.read<TranslationCubit>().lastKnownSources;
+    final audioReaders = context.read<AudioCubit>().lastKnownReaders;
+
+    if (_availableTafsirSources.isEmpty && tafsirSources.isNotEmpty) {
+      _availableTafsirSources = tafsirSources;
+    }
+    if (_availableTranslationSources.isEmpty && translationSources.isNotEmpty) {
+      _availableTranslationSources = translationSources;
+    }
+    if (_availableReaders.isEmpty && audioReaders.isNotEmpty) {
+      _availableReaders = audioReaders;
+    }
   }
 
   @override

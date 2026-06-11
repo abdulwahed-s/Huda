@@ -20,6 +20,12 @@ class TranslationCubit extends Cubit<TranslationState> {
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
   static const int _cacheExpirationHours = 24;
 
+  // Persists the source list across state transitions (e.g. TranslationLoaded →
+  // SurahTranslationLoaded) so widgets can always retrieve it regardless of
+  // the current state.
+  List<edition.Data> _lastKnownSources = [];
+  List<edition.Data> get lastKnownSources => _lastKnownSources;
+
   bool? _cachedConnectivityResult;
   DateTime? _lastConnectivityCheck;
   static const int _connectivityCacheSeconds = 10;
@@ -65,8 +71,10 @@ class TranslationCubit extends Cubit<TranslationState> {
             edition.EditionModel.fromJson(jsonDecode(cachedData));
 
         if (await isOffline()) {
+          _lastKnownSources = translationReaders.data ?? [];
           emit(TranslationOffline(translationReaders));
         } else {
+          _lastKnownSources = translationReaders.data ?? [];
           emit(TranslationLoaded(translationReaders));
 
           _updateTranslationCache();
@@ -75,6 +83,7 @@ class TranslationCubit extends Cubit<TranslationState> {
         final translationReaders = await translationRepository.getTranslation();
         await _saveCacheWithTimestamp(
             _translationListCacheKey, jsonEncode(translationReaders.toJson()));
+        _lastKnownSources = translationReaders.data ?? [];
         emit(TranslationLoaded(translationReaders));
       }
     } catch (e) {
@@ -83,6 +92,7 @@ class TranslationCubit extends Cubit<TranslationState> {
       if (cachedData != null) {
         final translationReaders =
             edition.EditionModel.fromJson(jsonDecode(cachedData));
+        _lastKnownSources = translationReaders.data ?? [];
         emit(TranslationOffline(translationReaders));
       } else {
         emit(TranslationError(

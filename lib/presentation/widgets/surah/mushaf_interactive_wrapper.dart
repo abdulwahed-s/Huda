@@ -163,26 +163,27 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
 
   void _initSourcesFromCurrentCubitState() {
     if (!mounted) return;
-    final tafsirState = context.read<TafsirCubit>().state;
-    if (_availableTafsirSources.isEmpty) {
-      if (tafsirState is TafsirLoaded) {
-        setState(
-            () => _availableTafsirSources = tafsirState.tafsirModel.data ?? []);
-      } else if (tafsirState is TafsirOffline) {
-        setState(
-            () => _availableTafsirSources = tafsirState.tafsirModel.data ?? []);
+
+    // Use lastKnown* getters which persist across state transitions
+    // (e.g. TafsirLoaded → SurahTafsirLoaded) so we never see empty sources
+    // after a mode switch even when the cubit is mid-way through loading.
+    final tafsirSources = context.read<TafsirCubit>().lastKnownSources;
+    final translationSources =
+        context.read<TranslationCubit>().lastKnownSources;
+    final audioReaders = context.read<AudioCubit>().lastKnownReaders;
+
+    setState(() {
+      if (_availableTafsirSources.isEmpty && tafsirSources.isNotEmpty) {
+        _availableTafsirSources = tafsirSources;
       }
-    }
-    final translationState = context.read<TranslationCubit>().state;
-    if (_availableTranslationSources.isEmpty) {
-      if (translationState is TranslationLoaded) {
-        setState(() => _availableTranslationSources =
-            translationState.translationModel.data ?? []);
-      } else if (translationState is TranslationOffline) {
-        setState(() => _availableTranslationSources =
-            translationState.translationModel.data ?? []);
+      if (_availableTranslationSources.isEmpty &&
+          translationSources.isNotEmpty) {
+        _availableTranslationSources = translationSources;
       }
-    }
+      if (_availableReaders.isEmpty && audioReaders.isNotEmpty) {
+        _availableReaders = audioReaders;
+      }
+    });
   }
 
   bool _appBarVisible = false;
@@ -810,10 +811,31 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                         setModalState(() => autoplayEnabled = value ?? true),
                     checkAllDownloaded: () async => false,
                     checkSingleDownloaded: () async => false,
-                    onTafsirSelected: (tafsirId) =>
-                        switchTafsir(tafsirId, setModalState),
-                    onTranslationSelected: (translationId) =>
-                        switchTranslation(translationId, setModalState),
+                    // Use surahNum (the tapped ayah's surah), not
+                    // widget.surahNumber (the navigation surah), so that
+                    // cross-surah ayahs in double-page mode fetch the correct
+                    // tafsir/translation content.
+                    onTafsirSelected: (tafsirId) {
+                      setState(() {
+                        selectedTafsirId = tafsirId;
+                        isLoadingTafsir = true;
+                      });
+                      setModalState(() {});
+                      context
+                          .read<TafsirCubit>()
+                          .fetchSurahTafsirWithCacheCheck(tafsirId, surahNum);
+                    },
+                    onTranslationSelected: (translationId) {
+                      setState(() {
+                        selectedTranslationId = translationId;
+                        isLoadingTranslation = true;
+                      });
+                      setModalState(() {});
+                      context
+                          .read<TranslationCubit>()
+                          .fetchSurahTranslationWithCacheCheck(
+                              translationId, surahNum);
+                    },
                     onTranslationLanguageSelected: (language) =>
                         switchTranslationLanguage(language, setModalState),
                     isDownloadingSurahTafsir: isDownloadingSurahTafsir,
