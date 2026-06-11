@@ -20,12 +20,16 @@ class ReciterSurahsScreen extends StatefulWidget {
   final Reciter reciter;
   final Moshaf moshaf;
   final List jsonData;
+  final int? initialSurahIndex;
+  final int initialPositionMs;
 
   const ReciterSurahsScreen({
     super.key,
     required this.reciter,
     required this.moshaf,
     required this.jsonData,
+    this.initialSurahIndex,
+    this.initialPositionMs = 0,
   });
 
   @override
@@ -53,6 +57,7 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
       vsync: this,
     )..forward();
     _scrollController.addListener(_onScroll);
+    _autoPlayIfNeeded();
   }
 
   void _onScroll() {
@@ -78,6 +83,25 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
   Future<void> _loadDownloadDir() async {
     final path = await context.read<QuranPlayerCubit>().getDownloadDirPath();
     if (mounted) setState(() => _downloadDirPath = path);
+  }
+
+  void _autoPlayIfNeeded() {
+    final index = widget.initialSurahIndex;
+    if (index == null || index < 0) return;
+
+    final numbers = widget.moshaf.surahList.toString().split(',');
+    if (index >= numbers.length) return;
+
+    final surahNumber = int.parse(numbers[index]);
+    context.read<QuranPlayerCubit>().startPlaying(
+          moshaf: widget.moshaf,
+          reciter: widget.reciter,
+          suraNumber: surahNumber,
+          initialIndex: index,
+          jsonData: widget.jsonData,
+          initialPositionMs: widget.initialPositionMs,
+        );
+    context.read<PlayerBarCubit>().show();
   }
 
   void _buildSurahList() {

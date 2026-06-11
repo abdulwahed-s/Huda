@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -10,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:huda/core/quran/quran.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
+import 'package:huda/core/services/quran_audio_progress_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 
 import 'package:huda/data/models/reciter_model.dart';
@@ -21,10 +23,20 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
   final AudioCoordinator _coordinator = getIt<AudioCoordinator>();
   final DownloadProgressCubit downloadProgressCubit;
 
+  Reciter? _currentReciter;
+  Moshaf? _currentMoshaf;
+  List? _currentJsonData;
+  StreamSubscription<int?>? _indexSub;
+  StreamSubscription<Duration>? _positionSub;
+  int _lastSavedSurahIndex = -1;
+  DateTime _lastSaveTime = DateTime.now();
+
   QuranPlayerCubit({required this.downloadProgressCubit})
       : super(QuranPlayerInitial()) {
     _coordinator.register(AudioCoordinator.quranPlayer, () {
       if (state is QuranPlayerPlaying || state is QuranPlayerLoading) {
+        _saveCurrentPosition();
+        _cancelTracking();
         emit(QuranPlayerInitial());
       }
     });
@@ -49,10 +61,12 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
     required int suraNumber,
     required int initialIndex,
     required List jsonData,
+    int initialPositionMs = 0,
   }) async {
     try {
       _coordinator.requestAudio(AudioCoordinator.quranPlayer);
       audioPlayer.stop();
+      _cancelTracking();
       emit(QuranPlayerLoading(
         reciterId: reciter.id,
         moshafId: moshaf.id,
@@ -130,6 +144,10 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
 
       audioPlayer.play();
 
+      if (initialPositionMs > 0) {
+        await audioPlayer.seek(Duration(milliseconds: initialPositionMs));
+      }
+
       emit(QuranPlayerPlaying(
         moshaf: moshaf,
         reciter: reciter,
@@ -140,9 +158,55 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
         surahNumbers: surahNumbers,
         playList: playList,
       ));
+
+      _currentReciter = reciter;
+      _currentMoshaf = moshaf;
+      _currentJsonData = jsonData;
+      _lastSavedSurahIndex = initialIndex;
+      _lastSaveTime = DateTime.now();
+      _startTracking();
+
+      _saveCurrentPosition();
     } catch (e) {
       emit(QuranPlayerError(e.toString()));
     }
+  }
+
+  void _startTracking() {
+    _indexSub = audioPlayer.currentIndexStream.listen((index) {
+      if (index != null && index != _lastSavedSurahIndex) {
+        _saveCurrentPosition();
+        _lastSavedSurahIndex = index;
+      }
+    });
+
+    _positionSub = audioPlayer.positionStream.listen((position) {
+      if (DateTime.now().difference(_lastSaveTime).inSeconds >= 5) {
+        _saveCurrentPosition();
+        _lastSaveTime = DateTime.now();
+      }
+    });
+  }
+
+  void _cancelTracking() {
+    _indexSub?.cancel();
+    _indexSub = null;
+    _positionSub?.cancel();
+    _positionSub = null;
+  }
+
+  void _saveCurrentPosition() {
+    if (_currentReciter == null || _currentMoshaf == null) return;
+    final index = audioPlayer.currentIndex ?? _lastSavedSurahIndex;
+    if (index < 0) return;
+    final position = audioPlayer.position;
+    getIt<QuranAudioProgressService>().savePosition(
+      reciter: _currentReciter!,
+      moshaf: _currentMoshaf!,
+      jsonData: _currentJsonData!,
+      surahIndex: index,
+      positionMs: position.inMilliseconds,
+    );
   }
 
   Future<void> downloadSurah({
@@ -278,12 +342,15 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
   }
 
   void closePlayer() {
+    _saveCurrentPosition();
+    _cancelTracking();
     audioPlayer.stop();
     _coordinator.release(AudioCoordinator.quranPlayer);
     emit(QuranPlayerInitial());
   }
 
   void pausePlayer() {
+    _saveCurrentPosition();
     audioPlayer.pause();
   }
 
@@ -302,6 +369,7 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
 
   @override
   Future<void> close() {
+    _cancelTracking();
     _coordinator.unregister(AudioCoordinator.quranPlayer);
     return super.close();
   }
