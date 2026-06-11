@@ -63,7 +63,7 @@ platform :ios do
       is_key_content_base64: true
     )
 
-    version = `grep '^version:' ../pubspec.yaml`.strip.split(' ').last.split('+').first
+    version = `grep '^version:' ../../pubspec.yaml`.strip.split(' ').last.split('+').first
 
     upload_to_app_store(
       api_key: api_key,
