@@ -9,6 +9,8 @@ class FeatureGrid extends StatefulWidget {
   final List<FeatureItem> features;
   final QuranFeatureStackCard? quranStackCard;
   final Function(Map<String, dynamic>)? openLastReadSurah;
+  final Function(dynamic)? openLastReciterAudio;
+  final Function(dynamic)? openLastRadioStation;
 
   const FeatureGrid({
     super.key,
@@ -16,6 +18,8 @@ class FeatureGrid extends StatefulWidget {
     required this.features,
     this.quranStackCard,
     this.openLastReadSurah,
+    this.openLastReciterAudio,
+    this.openLastRadioStation,
   });
 
   @override
@@ -78,6 +82,8 @@ class _FeatureGridState extends State<FeatureGrid> {
             onBookmarkTap: src.onBookmarkTap,
             onExpandChanged: (expanded) =>
                 setState(() => _quranExpanded = expanded),
+            openLastReciterAudio: widget.openLastReciterAudio,
+            openLastRadioStation: widget.openLastRadioStation,
           ),
         ),
       ];
@@ -112,6 +118,8 @@ class _FeatureGridState extends State<FeatureGrid> {
                     onRadioTap: src.onRadioTap,
                     onBookmarkTap: src.onBookmarkTap,
                     openLastReadSurah: widget.openLastReadSurah,
+                    openLastReciterAudio: widget.openLastReciterAudio,
+                    openLastRadioStation: widget.openLastRadioStation,
                   ),
                 )
               : const SizedBox.shrink(),

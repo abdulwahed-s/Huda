@@ -21,6 +21,10 @@ import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
 import 'package:huda/cubit/quran_player/quran_player_cubit.dart';
 import 'package:huda/cubit/quran_player/download_progress_cubit.dart';
 import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
+import 'package:huda/cubit/audiobook_player/audiobook_player_cubit.dart';
+import 'package:huda/cubit/audiobook_player/audiobook_bar_cubit.dart';
+import 'package:huda/core/services/audio_progress_service.dart';
+import 'package:huda/data/services/offline_audiobooks_service.dart';
 import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
 import 'package:huda/data/api/radio_services.dart';
 import 'package:huda/data/repository/radio_repository.dart';
@@ -83,6 +87,13 @@ class _AppState extends State<App> {
           ),
         ),
         BlocProvider(create: (_) => PlayerBarCubit()),
+        BlocProvider(create: (_) => AudiobookBarCubit()),
+        BlocProvider(
+          create: (_) => AudiobookPlayerCubit(
+            progressService: getIt<AudioProgressService>(),
+            offlineService: getIt<OfflineAudiobooksService>(),
+          ),
+        ),
         BlocProvider(
           create: (_) => QuranRadioCubit(
             RadioRepository(radioServices: RadioServices()),
