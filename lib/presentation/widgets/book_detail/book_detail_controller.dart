@@ -107,7 +107,12 @@ class BookDetailController {
       Navigator.pushNamed(
         context,
         AppRoute.pdfView,
-        arguments: state.bookDetail.attachments![0].url,
+        arguments: {
+          'url': state.bookDetail.attachments![0].url,
+          'bookId': bookId,
+          'bookTitle': title,
+          'language': selectedLanguage ?? language,
+        },
       );
     } else {
       _launchUrl(state.bookDetail.attachments![0].url!);
@@ -119,7 +124,12 @@ class BookDetailController {
       Navigator.pushNamed(
         context,
         AppRoute.pdfView,
-        arguments: attachment.url,
+        arguments: {
+          'url': attachment.url,
+          'bookId': bookId,
+          'bookTitle': title,
+          'language': selectedLanguage ?? language,
+        },
       );
     } else {
       _launchUrl(attachment.url!);
@@ -150,12 +160,17 @@ class BookDetailController {
       Navigator.pushNamed(
         context,
         AppRoute.pdfView,
-        arguments: attachment.localPath,
+        arguments: {
+          'url': attachment.localPath,
+          'bookId': bookId,
+          'bookTitle': title,
+          'language': selectedLanguage ?? language,
+        },
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Opening files not yet supported'),
+          content: Text('Opening files not yet available'),
           behavior: SnackBarBehavior.floating,
         ),
       );

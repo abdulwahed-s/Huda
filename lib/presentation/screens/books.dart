@@ -36,7 +36,8 @@ class _BooksScreenState extends State<BooksScreen>
   void _loadInitialData() {
     final languageCode =
         context.read<LocalizationCubit>().state.locale.languageCode;
-    context.read<BooksCubit>().fetchBooks('showall', 1, languageCode);
+    selectedLanguage = languageCode;
+    context.read<BooksCubit>().fetchBooks(languageCode, 1, languageCode);
     context.read<LanguagesCubit>().fetchLanguages(languageCode);
   }
 
@@ -65,7 +66,17 @@ class _BooksScreenState extends State<BooksScreen>
 
     return Scaffold(
       backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-      body: BlocBuilder<BooksCubit, BooksState>(
+      body: BlocConsumer<BooksCubit, BooksState>(
+        listener: (context, state) {
+          if (state is BooksLoaded &&
+              state.booksResponse.data.isEmpty &&
+              selectedLanguage != null) {
+            final languageCode =
+                context.read<LocalizationCubit>().state.locale.languageCode;
+            setState(() => selectedLanguage = null);
+            context.read<BooksCubit>().fetchBooks('showall', 1, languageCode);
+          }
+        },
         builder: (context, state) {
           return CustomScrollView(
             controller: _booksScrollController,

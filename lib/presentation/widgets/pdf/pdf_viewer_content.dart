@@ -14,6 +14,8 @@ class PdfViewerContent extends StatelessWidget {
   final bool isDark;
   final ColorScheme colorScheme;
   final ValueChanged<PdfTextSelection> onTextSelectionChange;
+  final VoidCallback? onViewerReady;
+  final ValueChanged<int?>? onPageChanged;
 
   const PdfViewerContent({
     super.key,
@@ -27,6 +29,8 @@ class PdfViewerContent extends StatelessWidget {
     required this.isDark,
     required this.colorScheme,
     required this.onTextSelectionChange,
+    this.onViewerReady,
+    this.onPageChanged,
   });
 
   @override
@@ -164,7 +168,9 @@ class PdfViewerContent extends StatelessWidget {
       onViewerReady: (document, controller) async {
         // outline and text searcher should be handled by parent
         controller.requestFocus();
+        onViewerReady?.call();
       },
+      onPageChanged: onPageChanged,
     );
   }
 }

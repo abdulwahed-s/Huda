@@ -5,11 +5,13 @@ import 'package:huda/l10n/app_localizations.dart';
 
 class SelectedLanguageChip extends StatelessWidget {
   final String language;
+  final String? languageName;
   final VoidCallback onClear;
 
   const SelectedLanguageChip({
     super.key,
     required this.language,
+    this.languageName,
     required this.onClear,
   });
 
@@ -22,7 +24,7 @@ class SelectedLanguageChip extends StatelessWidget {
           children: [
             Chip(
               label: Text(
-                '${AppLocalizations.of(context)!.filtered}: ${language.toUpperCase()}',
+                '${AppLocalizations.of(context)!.filtered}: ${languageName ?? language.toUpperCase()}',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,

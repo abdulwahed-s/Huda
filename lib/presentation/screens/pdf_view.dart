@@ -1,16 +1,29 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:huda/core/services/book_progress_service.dart';
+import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/presentation/widgets/pdf/marker.dart';
 import 'package:huda/presentation/widgets/pdf/pdf_dialogs.dart';
 import 'package:huda/presentation/widgets/pdf/pdf_floating_buttons.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'dart:math';
 import 'package:huda/presentation/widgets/pdf/pdf_app_bar.dart';
 import 'package:huda/presentation/widgets/pdf/pdf_sidebar.dart';
 import 'package:huda/presentation/widgets/pdf/pdf_viewer_content.dart';
 
 class PdfView extends StatefulWidget {
   final String pdfUrl;
-  const PdfView({super.key, required this.pdfUrl});
+  final int? bookId;
+  final String? bookTitle;
+  final String? language;
+
+  const PdfView({
+    super.key,
+    required this.pdfUrl,
+    this.bookId,
+    this.bookTitle,
+    this.language,
+  });
 
   @override
   State<PdfView> createState() => _PdfViewState();
@@ -30,6 +43,9 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
 
   final Map<int, List<Marker>> _markers = {};
   List<PdfPageTextRange>? textSelections;
+  int _lastSavedPage = 0;
+  bool _readyForSaving = false;
+  Timer? _progressDebounce;
 
   int _layoutTypeIndex = 0;
   bool get isHorizontalLayout => _layoutTypeIndex == 1;
@@ -75,6 +91,7 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _progressDebounce?.cancel();
     _fabAnimationController.dispose();
     super.dispose();
   }
@@ -98,6 +115,42 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
     } catch (e) {
       debugPrint(widget.pdfUrl);
       debugPrint('Error loading document: $e');
+    }
+  }
+
+  void _handlePageChanged(int? page) {
+    if (!_readyForSaving) return;
+    if (page == null || page == _lastSavedPage) return;
+    _lastSavedPage = page;
+    _progressDebounce?.cancel();
+    _progressDebounce = Timer(const Duration(seconds: 2), () {
+      if (widget.bookId != null && mounted) {
+        getIt<BookProgressService>().savePosition(
+          widget.bookId!,
+          page,
+          totalPages: _pdfViewerController.pageCount,
+          title: widget.bookTitle,
+          language: widget.language,
+        );
+      }
+    });
+  }
+
+  void _onViewerReady() {
+    _readyForSaving = true;
+    final currentPage = _pdfViewerController.pageNumber ?? 1;
+    if (widget.bookId == null) {
+      _lastSavedPage = currentPage;
+      return;
+    }
+    final progress =
+        getIt<BookProgressService>().getProgress(widget.bookId!);
+    if (progress != null && progress.pageNumber > 1 &&
+        progress.pageNumber != currentPage) {
+      _pdfViewerController.goToPage(pageNumber: progress.pageNumber);
+      _lastSavedPage = progress.pageNumber;
+    } else {
+      _lastSavedPage = currentPage;
     }
   }
 
@@ -169,6 +222,8 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
                 isDark: isDark,
                 colorScheme: colorScheme,
                 onTextSelectionChange: _handleTextSelectionChange,
+                onViewerReady: _onViewerReady,
+                onPageChanged: _handlePageChanged,
               ),
             ],
           ),
