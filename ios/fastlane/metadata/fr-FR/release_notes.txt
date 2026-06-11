@@ -1,3 +1,7 @@
-Continuer la lecture déplacé : Appuyez sur la carte du Coran sur l'écran d'accueil pour la développer et retrouver votre avancement de lecture
+Audios : Parcourez et écoutez tous types d'audios islamiques avec téléchargement hors ligne et minuterie de sommeil
+
+Suivi récitateur & radio : Votre dernier récitateur écouté et station de radio sont maintenant sauvegardés — reprenez-les depuis l'écran d'accueil
+
+Progression du livre : Votre dernier livre lu est maintenant enregistré — continuez là où vous vous étiez arrêté depuis la page des livres
 
 Corrections de bugs et améliorations

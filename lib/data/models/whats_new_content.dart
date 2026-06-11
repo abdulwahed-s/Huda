@@ -165,6 +165,33 @@ class WhatsNewContent {
       ],
       buttonText: (context) => AppLocalizations.of(context)!.gotIt,
     ),
+    '3.4.0': WhatsNewContent(
+      version: '3.4.0',
+      title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
+      features: [
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew340Feature1,
+          icon: Icons.headphones_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew340Feature2,
+          icon: Icons.play_circle_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew340Feature3,
+          icon: Icons.menu_book_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
+              AppLocalizations.of(context)!.whatsNew340Feature4,
+          icon: Icons.bug_report_outlined,
+        ),
+      ],
+      buttonText: (context) => AppLocalizations.of(context)!.gotIt,
+    ),
   };
 
   static WhatsNewContent? getForVersion(String version) {
