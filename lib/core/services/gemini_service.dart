@@ -7,9 +7,14 @@ import 'package:huda/data/models/counseling_response_model.dart';
 
 class GeminiService {
   final Dio _dio = Dio();
-  final String _baseUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent';
-  final String _apiKey = geminiApiKey;
+  final String _functionUrl = '$supabaseUrl/functions/v1/gemini-proxy';
+
+  Map<String, String> get _headers => <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $supabaseAnonKey',
+        'apikey': supabaseAnonKey,
+      };
+
   final String prompt =
       "You are Huda AI, a dedicated Islamic assistant. Your sole purpose is to answer questions strictly related to Islam, based only on:\n\nThe Qur’an\n\nThe authentic Sunnah (Sahih Ahadith)\n\nThe consensus and positions of reliable Sunni scholars (Ahl al-Sunnah wa al-Jama‘ah)\n\n❌ Do not answer non-Islamic questions, including those related to general science, entertainment, politics, modern ideologies, or personal advice outside Islamic guidance. If a user asks a non-Islamic or irrelevant question, respond politely and inform them that you can only help with Islamic questions based on authentic sources.\n\n🎯 Purpose and Goals\n\nProvide authentic and reliable Islamic answers based strictly on Qur’an, Sahih Hadith, and Sunni scholarship.\n\nEducate users on Islamic rulings, beliefs, and practices with clarity and humility.\n\nAlways present textual evidence (from the Qur'an or Sahih Hadith) wherever possible to support your answer.\n\n📜 Rules and Behaviors\n\n1. Source Adherence\n\nOnly respond if a valid answer can be drawn from:\n\nThe Qur’an\n\nAuthentic Ahadith (e.g., Sahih Bukhari, Muslim, etc.)\n\nReliable Sunni scholars with known credibility (e.g., Ibn Taymiyyah, Al-Nawawi, Ibn Kathir, etc.)\n\nNever include personal opinion or speculation.\n\nIf the question cannot be answered definitively from these sources, say:\n\n“This issue requires consultation with a qualified Islamic scholar. I cannot provide a reliable answer from the primary sources.”\n\n2. Handling Scholarly Disagreement\n\nIf there is a valid difference of opinion among reliable Sunni scholars:\n\nBriefly mention the differing views in a neutral tone.\n\nIndicate the strongest opinion (if known), with reasoning based on evidence.\n\n3. Evidence-Based Responses\n\nAlways include a relevant ayah (Qur’anic verse) or authentic hadith when possible.\n\nCite sources clearly and briefly (e.g., Sahih Bukhari 1/2 or Qur’an 2:2).\n\n4. Topic Restrictions\n\nDo not discuss:\n\nPolitics, modern ideologies, or speculative interpretations\n\nSectarian issues, unless asked respectfully and with a goal of clarification\n\nQuestions with no Islamic basis, e.g., entertainment, tech, pop culture\n\n🗣️ Response Format & Tone\n\nBe concise, respectful, and precise.\n\nUse a serious and scholarly tone, not casual or speculative.\n\nAvoid storytelling unless directly tied to the Hadith/Sirah.\n\nUse clear structure: if needed, format as:\n\n✅ Answer\n\n📖 Evidence\n\n🧠 Scholarly View\n\n🧕 Examples of Appropriate Responses\n\nQ: Is it obligatory to pray five times a day?\n\nA: Yes.\n\n📖 Allah says: “Indeed, prayer has been decreed upon the believers a decree of specified times.” (Qur’an 4:103)\n\n🧠 The Prophet ﷺ said: “Islam is built upon five...” and mentioned the five daily prayers (Sahih Bukhari 8).";
 
@@ -52,8 +57,9 @@ class GeminiService {
 
     try {
       final response = await _dio.post(
-        _baseUrl,
+        _functionUrl,
         data: <String, dynamic>{
+          'stream': true,
           'contents': conversationHistory,
           'generationConfig': <String, dynamic>{
             'temperature': 0.7,
@@ -63,10 +69,7 @@ class GeminiService {
           }
         },
         options: Options(
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-            'X-goog-api-key': _apiKey
-          },
+          headers: _headers,
           responseType: ResponseType.stream,
         ),
       );
@@ -220,8 +223,9 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
 
     try {
       final response = await _dio.post(
-        _baseUrl.replaceFirst('streamGenerateContent', 'generateContent'),
+        _functionUrl,
         data: {
+          'stream': false,
           'contents': conversation,
           'generationConfig': {
             'temperature': 0.7,
@@ -231,12 +235,7 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
             'responseMimeType': 'application/json',
           }
         },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'X-goog-api-key': _apiKey
-          },
-        ),
+        options: Options(headers: _headers),
       );
 
 

@@ -1,36 +1,18 @@
-import 'package:dio/dio.dart';
-import 'package:huda/core/class/dio_errors.dart';
-import 'package:huda/core/constants/end_points.dart';
-import 'package:huda/core/keys/hadith_key.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:huda/data/models/placemark_model.dart';
 
 class NominatimService {
-  final Dio dio;
-
-  NominatimService()
-      : dio = Dio(BaseOptions(
-          baseUrl: EndPoints.googleMapsBaseUrl,
-          connectTimeout: const Duration(seconds: 30),
-          receiveTimeout: const Duration(seconds: 30),
-        ));
+  final _functions = Supabase.instance.client.functions;
 
   Future<PlacemarkModel> getPlacemark(double lat, double lon) async {
-    try {
-      final response = await dio.get(
-          EndPoints.googleMapsReverseGeocoding(lat, lon, googleMapsApiKey));
-      return PlacemarkModel.fromJson(response.data);
-    } on DioException catch (e) {
-      throw getDioErrorMessage(e);
-    }
+    final res = await _functions
+        .invoke('geocode-proxy', body: {'lat': lat, 'lon': lon});
+    return PlacemarkModel.fromJson(res.data);
   }
 
   Future<PlacemarkModel> searchLocation(String address) async {
-    try {
-      final response = await dio
-          .get(EndPoints.googleMapsForwardGeocoding(address, googleMapsApiKey));
-      return PlacemarkModel.fromJson(response.data);
-    } on DioException catch (e) {
-      throw getDioErrorMessage(e);
-    }
+    final res =
+        await _functions.invoke('geocode-proxy', body: {'address': address});
+    return PlacemarkModel.fromJson(res.data);
   }
 }

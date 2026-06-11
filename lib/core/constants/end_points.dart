@@ -19,7 +19,4 @@ class EndPoints {
   static String audios(String lang, int page, String respLang) => '$islamhouseBaseUrl/main/audios/$respLang/$lang/$page/25/json';
   static String audioDetail(String lang, int audioId) => '$islamhouseBaseUrl/main/get-item/$audioId/$lang/json';
   static String allAudiosLanguages(String lang) => '$islamhouseBaseUrl/main/get-available-languages/audios/$lang/json';
-  static const String googleMapsBaseUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
-  static String googleMapsReverseGeocoding(double lat, double lon,String apiKey) => '$googleMapsBaseUrl?latlng=$lat,$lon&key=$apiKey';
-  static String googleMapsForwardGeocoding(String address, String apiKey) => '$googleMapsBaseUrl?address=$address&key=$apiKey';
 }
