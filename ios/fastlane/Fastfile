@@ -63,10 +63,12 @@ platform :ios do
       is_key_content_base64: true
     )
 
+    version = `grep '^version:' ../pubspec.yaml`.strip.split(' ').last.split('+').first
+
     upload_to_app_store(
       api_key: api_key,
       ipa: Dir["../build/ios/ipa/*.ipa"].first,
-      skip_metadata: true,
+      app_version: version,
       skip_screenshots: true,
       force: true,
       precheck_include_in_app_purchases: false
