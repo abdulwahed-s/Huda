@@ -1,14 +1,15 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:bloc/bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/connection/network_info.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
+import 'package:huda/core/services/quran_radio_progress_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/data/models/radio_station_model.dart';
 import 'package:huda/data/repository/radio_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'quran_radio_state.dart';
 
@@ -20,6 +21,8 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
 
   static const String _radioCachePrefix = 'quran_radio_';
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
+  static RadioStation? pendingAutoPlay;
+
   static const int _cacheExpirationHours = 24;
 
   static const Map<String, String> _appToApiLangMap = {
@@ -41,6 +44,7 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
 
   QuranRadioCubit(this.radioRepository) : super(QuranRadioInitial()) {
     _coordinator.register(AudioCoordinator.quranRadio, () {
+      saveCurrentStation();
       if (state is QuranRadioLoaded) {
         emit((state as QuranRadioLoaded).copyWith(
           clearPlaying: true,
@@ -90,6 +94,7 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
           isPlaying: wasPlaying,
           isBuffering: wasBuffering,
         ));
+        _tryAutoPlay();
 
         if (await NetworkInfo.checkInternetConnectivity()) {
           _updateCache(apiLang);
@@ -109,6 +114,7 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
             isPlaying: wasPlaying,
             isBuffering: wasBuffering,
           ));
+          _tryAutoPlay();
         } else {
           if (cachedData != null) {
             final Map<String, dynamic> jsonData = jsonDecode(cachedData);
@@ -119,6 +125,7 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
               isPlaying: wasPlaying,
               isBuffering: wasBuffering,
             ));
+            _tryAutoPlay();
           } else {
             emit(QuranRadioError('No internet connection'));
           }
@@ -151,21 +158,52 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
       isPlaying: false,
     ));
 
-    final audioSource = AudioSource.uri(
-      Uri.parse(station.url.toString()),
-      tag: MediaItem(
-        id: station.id.toString(),
-        title: station.name.toString(),
-        artUri: Uri.parse(
-            'https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?auto=compress&cs=tinysrgb&w=600'),
-      ),
+    // Save immediately when station is selected, before attempting playback
+    await getIt<QuranRadioProgressService>().saveStation(
+      stationId: station.id,
+      stationName: station.name?.toString() ?? '',
+      stationUrl: station.url?.toString() ?? '',
     );
 
-    await _audioPlayer.setAudioSource(audioSource);
-    await _audioPlayer.play();
+    try {
+      final audioSource = AudioSource.uri(
+        Uri.parse(station.url.toString()),
+        tag: MediaItem(
+          id: station.id.toString(),
+          title: station.name.toString(),
+          artUri: Uri.parse(
+              'https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?auto=compress&cs=tinysrgb&w=600'),
+        ),
+      );
+
+      await _audioPlayer.setAudioSource(audioSource);
+      await _audioPlayer.play();
+    } catch (e) {
+      debugPrint('playStation error: $e');
+    }
+  }
+
+  Future<void> saveCurrentStation() async {
+    if (state is! QuranRadioLoaded) return;
+    final station = (state as QuranRadioLoaded).currentlyPlaying;
+    if (station == null) return;
+    await getIt<QuranRadioProgressService>().saveStation(
+      stationId: station.id,
+      stationName: station.name?.toString() ?? '',
+      stationUrl: station.url?.toString() ?? '',
+    );
+  }
+
+  void _tryAutoPlay() {
+    if (pendingAutoPlay != null && state is QuranRadioLoaded) {
+      final station = pendingAutoPlay!;
+      pendingAutoPlay = null;
+      playStation(station);
+    }
   }
 
   Future<void> stopStation() async {
+    await saveCurrentStation();
     await _audioPlayer.stop();
     _coordinator.release(AudioCoordinator.quranRadio);
     if (state is QuranRadioLoaded) {
@@ -225,6 +263,7 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
 
   @override
   Future<void> close() {
+    saveCurrentStation();
     _coordinator.unregister(AudioCoordinator.quranRadio);
     return super.close();
   }

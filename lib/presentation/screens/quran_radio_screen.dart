@@ -76,6 +76,7 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
 
   @override
   void dispose() {
+    context.read<QuranRadioCubit>().saveCurrentStation();
     _searchController.dispose();
     _pulseController.dispose();
     _scrollController.dispose();
