@@ -1,6 +1,7 @@
 package com.aw.huda.widget
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -9,7 +10,8 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
-import androidx.glance.action.actionStartActivity
+import androidx.glance.LocalContext
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
@@ -65,12 +67,17 @@ class HudaGlanceWidget : GlanceAppWidget() {
         quoteBitmap: android.graphics.Bitmap,
         themeColors: WidgetThemeColors.ThemeColors
     ) {
+        val context = LocalContext.current
+        val launchIntent = (context.packageManager.getLaunchIntentForPackage(context.packageName)
+            ?: Intent(context, MainActivity::class.java)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
         Box(
             modifier = GlanceModifier
                 .fillMaxSize()
                 .cornerRadius(20.dp)
                 .background(Color(themeColors.borderColor))
-                .clickable(actionStartActivity<MainActivity>())
+                .clickable(actionStartActivity(launchIntent))
                 .padding(2.dp),
             contentAlignment = Alignment.Center
         ) {

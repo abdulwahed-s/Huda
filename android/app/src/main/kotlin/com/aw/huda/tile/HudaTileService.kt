@@ -19,9 +19,9 @@ class HudaTileService : TileService() {
     override fun onClick() {
         super.onClick()
         
-        val intent = Intent(this, MainActivity::class.java).apply {
+        val intent = (packageManager.getLaunchIntentForPackage(packageName)
+            ?: Intent(this, MainActivity::class.java)).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
