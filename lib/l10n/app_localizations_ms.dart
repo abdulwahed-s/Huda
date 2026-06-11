@@ -3083,6 +3083,21 @@ class AppLocalizationsMs extends AppLocalizations {
   String get whatsNew330Feature2 => 'Pembaikan pepijat dan penambahbaikan';
 
   @override
+  String get whatsNew340Feature1 =>
+      'Audio: Semak imbas dan dengar semua jenis audio Islam dengan muat turun luar talian dan sokongan pemasa tidur';
+
+  @override
+  String get whatsNew340Feature2 =>
+      'Penjejakan Pembaca & Radio: Pembaca dan stesen radio terakhir anda kini disimpan — sambung semula dari skrin utama';
+
+  @override
+  String get whatsNew340Feature3 =>
+      'Kemajuan Buku: Buku terakhir yang anda baca kini direkod — teruskan dari tempat anda berhenti dari skrin utama';
+
+  @override
+  String get whatsNew340Feature4 => 'Pembaikan pepijat dan penambahbaikan';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override
@@ -3939,7 +3954,7 @@ class AppLocalizationsMs extends AppLocalizations {
   }
 
   @override
-  String get continueRadio => 'Continue Radio';
+  String get continueRadio => 'Teruskan Radio';
 
   @override
   String resumeReciter(String reciterName) {
@@ -3952,7 +3967,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get noRadioActivityDescription =>
-      'Listen to Quran radio to see your progress';
+      'Dengar radio al-Quran untuk melihat kemajuan anda';
 
   @override
   String get playbackSpeed => 'Kelajuan Main Semula';

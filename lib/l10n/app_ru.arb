@@ -1437,6 +1437,10 @@
     "eventDaysTashreeqGuidance": "Обильно поминайте Аллаха и произносите такбир после каждой обязательной молитвы. Это дни еды, питья и благодарности. Пост в эти дни запрещен кроме паломника, который не может принести жертву.",
     "whatsNew330Feature1": "«Продолжить чтение» перемещено: нажмите на карточку Корана на главном экране, чтобы развернуть её и найти свой прогресс чтения",
     "whatsNew330Feature2": "Исправления ошибок и улучшения",
+    "whatsNew340Feature1": "Аудио: просматривайте и слушайте все виды исламского аудиоконтента с поддержкой офлайн-загрузки и таймера сна",
+    "whatsNew340Feature2": "Отслеживание чтеца и радио: последний прослушанный чтец и радиостанция теперь сохраняются — возобновите их с главного экрана",
+    "whatsNew340Feature3": "Прогресс чтения книги: последняя читаемая книга теперь сохраняется — продолжайте с того места, где остановились, со страницы книг",
+    "whatsNew340Feature4": "Исправления ошибок и улучшения",
     "audios": "Аудио",
     "audiobooks": "Исламские аудио",
     "audiobook": "Исламское аудио",
@@ -1447,7 +1451,7 @@
     "continueBook": "Продолжить чтение",
     "resumePage": "Страница {number}",
     "resumeChapter": "Продолжить главу {number}",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "Продолжить радио",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -1458,7 +1462,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "Слушайте радио Корана, чтобы увидеть свой прогресс",
     "playbackSpeed": "Скорость воспроизведения",
     "sleepTimer": "Таймер сна",
     "endOfChapter": "Конец главы",

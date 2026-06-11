@@ -1453,6 +1453,10 @@
     "eventDaysTashreeqGuidance": "اللہ کا کثرت سے ذکر کریں اور ہر فرض نماز کے بعد تکبیر کہیں۔ یہ کھانے، پینے اور شکر کے دن ہیں۔ ان دنوں میں روزہ جائز نہیں سوائے اس حاجی کے جو قربانی کی استطاعت نہ رکھتا ہو۔",
     "whatsNew330Feature1": "پڑھنا جاری رکھیں منتقل ہو گیا: ہوم اسکرین پر قرآن کارڈ پر ٹیپ کریں، اسے پھیلائیں اور اپنی پڑھائی کی پیشرفت تلاش کریں",
     "whatsNew330Feature2": "بگ فکس اور بہتری",
+    "whatsNew340Feature1": "آڈیوز: آف لائن ڈاؤن لوڈ اور سلیپ ٹائمر سپورٹ کے ساتھ ہر قسم کے اسلامی آڈیو براؤز کریں اور سنیں",
+    "whatsNew340Feature2": "قاری اور ریڈیو ٹریکنگ: آپ کا آخری سنا ہوا قاری اور ریڈیو اسٹیشن اب محفوظ ہوتا ہے — ہوم اسکرین سے دوبارہ شروع کریں",
+    "whatsNew340Feature3": "کتاب کی پیشرفت: آپ کی آخری پڑھی گئی کتاب اب محفوظ ہوتی ہے — کتابوں کے صفحے سے جہاں چھوڑا تھا وہاں سے جاری رکھیں",
+    "whatsNew340Feature4": "بگ فکس اور بہتری",
     "audios": "آڈیو",
     "audiobooks": "اسلامی آڈیوز",
     "audiobook": "اسلامی آڈیو",
@@ -1463,7 +1467,7 @@
     "continueBook": "پڑھنا جاری رکھیں",
     "resumePage": "صفحہ {number}",
     "resumeChapter": "باب {number} دوبارہ شروع کریں",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "ریڈیو جاری رکھیں",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -1474,7 +1478,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "اپنی پیشرفت دیکھنے کے لیے قرآن ریڈیو سنیں",
     "playbackSpeed": "پلے بیک کی رفتار",
     "sleepTimer": "سلیپ ٹائمر",
     "endOfChapter": "باب کا اختتام",

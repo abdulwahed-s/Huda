@@ -1439,6 +1439,10 @@
     "eventDaysTashreeqGuidance": "Rappelez-vous Allah abondamment et recitez le Takbir apres chaque priere obligatoire. Ce sont des jours pour manger, boire et remercier. Le jeune y est interdit sauf pour le pelerin qui ne peut offrir de sacrifice.",
     "whatsNew330Feature1": "Continuer la lecture déplacé : Appuyez sur la carte du Coran sur l'écran d'accueil pour la développer et retrouver votre avancement de lecture",
     "whatsNew330Feature2": "Corrections de bugs et améliorations",
+    "whatsNew340Feature1": "Audios : Parcourez et écoutez tous types d'audios islamiques avec téléchargement hors ligne et minuterie de sommeil",
+    "whatsNew340Feature2": "Suivi récitateur & radio : Votre dernier récitateur écouté et station de radio sont maintenant sauvegardés — reprenez-les depuis l'écran d'accueil",
+    "whatsNew340Feature3": "Progression du livre : Votre dernier livre lu est maintenant enregistré — continuez là où vous vous étiez arrêté depuis la page des livres",
+    "whatsNew340Feature4": "Corrections de bugs et améliorations",
     "audios": "Audio",
     "audiobooks": "Audios islamiques",
     "audiobook": "Audio islamique",
@@ -1449,7 +1453,7 @@
     "continueBook": "Continuer la lecture",
     "resumePage": "Page {number}",
     "resumeChapter": "Reprendre le chapitre {number}",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "Continuer la radio",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -1460,7 +1464,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "Écoutez la radio du Coran pour voir vos progrès",
     "playbackSpeed": "Vitesse de lecture",
     "sleepTimer": "Minuteur de veille",
     "endOfChapter": "Fin du chapitre",

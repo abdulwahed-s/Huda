@@ -3031,6 +3031,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get whatsNew330Feature2 => 'إصلاح الأخطاء والتحسينات';
 
   @override
+  String get whatsNew340Feature1 =>
+      'المقاطع الصوتية: تصفح جميع أنواع المحتوى الإسلامي الصوتي مع دعم التحميل للاستماع بدون اتصال ومؤقت النوم';
+
+  @override
+  String get whatsNew340Feature2 =>
+      'تتبع القارئ والراديو: آخر قارئ استمعت إليه وآخر محطة راديو محفوظان الآن — استأنفهما من الشاشة الرئيسية';
+
+  @override
+  String get whatsNew340Feature3 =>
+      'تقدم الكتاب: آخر كتاب قرأته محفوظ الآن — تابع من حيث توقفت مباشرةً من الشاشة الرئيسية';
+
+  @override
+  String get whatsNew340Feature4 => 'إصلاح الأخطاء والتحسينات';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override
@@ -3881,7 +3896,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get continueRadio => 'Continue Radio';
+  String get continueRadio => 'متابعة الراديو';
 
   @override
   String resumeReciter(String reciterName) {
@@ -3894,7 +3909,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noRadioActivityDescription =>
-      'Listen to Quran radio to see your progress';
+      'استمع إلى راديو القرآن لمتابعة تقدمك';
 
   @override
   String get playbackSpeed => 'سرعة التشغيل';

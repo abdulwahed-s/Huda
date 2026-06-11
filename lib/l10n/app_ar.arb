@@ -1700,6 +1700,10 @@
     "whatsNew310Feature3": "إصلاح الأخطاء",
     "whatsNew330Feature1": "متابعة القراءة في مكان جديد: اضغط على بطاقة القرآن في الشاشة الرئيسية لتوسيعها والعثور على تقدم قراءتك",
     "whatsNew330Feature2": "إصلاح الأخطاء والتحسينات",
+    "whatsNew340Feature1": "المقاطع الصوتية: تصفح جميع أنواع المحتوى الإسلامي الصوتي مع دعم التحميل للاستماع بدون اتصال ومؤقت النوم",
+    "whatsNew340Feature2": "تتبع القارئ والراديو: آخر قارئ استمعت إليه وآخر محطة راديو محفوظان الآن — استأنفهما من الشاشة الرئيسية",
+    "whatsNew340Feature3": "تقدم الكتاب: آخر كتاب قرأته محفوظ الآن — تابع من حيث توقفت من صفحة الكتب",
+    "whatsNew340Feature4": "إصلاح الأخطاء والتحسينات",
     "offlineMode": "وضع عدم الاتصال",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
@@ -2045,7 +2049,7 @@
     "continueBook": "متابعة القراءة",
     "resumePage": "صفحة {number}",
     "resumeChapter": "متابعة الجزء {number}",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "متابعة الراديو",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -2056,7 +2060,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "استمع إلى راديو القرآن لمتابعة تقدمك",
     "playbackSpeed": "سرعة التشغيل",
     "sleepTimer": "مؤقت النوم",
     "endOfChapter": "نهاية الجزء",

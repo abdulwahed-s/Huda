@@ -3071,6 +3071,21 @@ class AppLocalizationsUr extends AppLocalizations {
   String get whatsNew330Feature2 => 'بگ فکس اور بہتری';
 
   @override
+  String get whatsNew340Feature1 =>
+      'آڈیوز: آف لائن ڈاؤن لوڈ اور سلیپ ٹائمر سپورٹ کے ساتھ ہر قسم کے اسلامی آڈیو براؤز کریں اور سنیں';
+
+  @override
+  String get whatsNew340Feature2 =>
+      'قاری اور ریڈیو ٹریکنگ: آپ کا آخری سنا ہوا قاری اور ریڈیو اسٹیشن اب محفوظ ہوتا ہے — ہوم اسکرین سے دوبارہ شروع کریں';
+
+  @override
+  String get whatsNew340Feature3 =>
+      'کتاب کی پیشرفت: آپ کی آخری پڑھی گئی کتاب اب محفوظ ہوتی ہے — ہوم اسکرین سے جہاں چھوڑا تھا وہاں سے جاری رکھیں';
+
+  @override
+  String get whatsNew340Feature4 => 'بگ فکس اور بہتری';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override
@@ -3926,7 +3941,7 @@ class AppLocalizationsUr extends AppLocalizations {
   }
 
   @override
-  String get continueRadio => 'Continue Radio';
+  String get continueRadio => 'ریڈیو جاری رکھیں';
 
   @override
   String resumeReciter(String reciterName) {
@@ -3939,7 +3954,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get noRadioActivityDescription =>
-      'Listen to Quran radio to see your progress';
+      'اپنی پیشرفت دیکھنے کے لیے قرآن ریڈیو سنیں';
 
   @override
   String get playbackSpeed => 'پلے بیک کی رفتار';

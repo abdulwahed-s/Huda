@@ -1451,6 +1451,10 @@
     "eventDaysTashreeqGuidance": "Recordad a Allah abundantemente y recitad el Takbir tras cada oracion obligatoria. Son dias de comer, beber y agradecer. El ayuno esta prohibido estos dias excepto para el peregrino que no puede ofrecer sacrificio.",
     "whatsNew330Feature1": "Continuar leyendo reubicado: Toca la tarjeta del Corán en la pantalla de inicio para expandirla y encontrar tu progreso de lectura",
     "whatsNew330Feature2": "Correcciones de errores y mejoras",
+    "whatsNew340Feature1": "Audios: Explora y escucha todo tipo de audios islámicos con descarga sin conexión y temporizador de sueño",
+    "whatsNew340Feature2": "Seguimiento de recitador y radio: Tu último recitador y estación de radio se guardan ahora — reanudarlos desde la pantalla de inicio",
+    "whatsNew340Feature3": "Progreso del libro: Tu último libro leído ahora se guarda — continúa desde donde lo dejaste desde la página de libros",
+    "whatsNew340Feature4": "Correcciones de errores y mejoras",
     "audios": "Audio",
     "audiobooks": "Audios islámicos",
     "audiobook": "Audio islámico",
@@ -1461,7 +1465,7 @@
     "continueBook": "Continuar leyendo",
     "resumePage": "Página {number}",
     "resumeChapter": "Reanudar capítulo {number}",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "Continuar Radio",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -1472,7 +1476,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "Escucha la radio del Corán para ver tu progreso",
     "playbackSpeed": "Velocidad de reproducción",
     "sleepTimer": "Temporizador",
     "endOfChapter": "Fin del capítulo",

@@ -1527,6 +1527,10 @@
     "eventDaysTashreeqGuidance": "Ingatlah Allah dengan banyak dan bertakbir selepas setiap solat fardhu. Ini adalah hari-hari makan, minum dan bersyukur. Berpuasa tidak dibenarkan pada hari-hari ini kecuali bagi jemaah haji yang tidak mampu berkurban.",
     "whatsNew330Feature1": "Teruskan Membaca dipindahkan: Ketik kad Al-Quran pada skrin utama untuk memperluasnya dan mencari kemajuan bacaan anda",
     "whatsNew330Feature2": "Pembaikan pepijat dan penambahbaikan",
+    "whatsNew340Feature1": "Audio: Semak imbas dan dengar semua jenis audio Islam dengan muat turun luar talian dan sokongan pemasa tidur",
+    "whatsNew340Feature2": "Penjejakan Pembaca & Radio: Pembaca dan stesen radio terakhir anda kini disimpan — sambung semula dari skrin utama",
+    "whatsNew340Feature3": "Kemajuan Buku: Buku terakhir yang anda baca kini direkod — teruskan dari tempat anda berhenti dari halaman buku",
+    "whatsNew340Feature4": "Pembaikan pepijat dan penambahbaikan",
     "audios": "Audio",
     "audiobooks": "Audio Islamik",
     "audiobook": "Audio Islamik",
@@ -1537,7 +1541,7 @@
     "continueBook": "Teruskan Membaca",
     "resumePage": "Halaman {number}",
     "resumeChapter": "Sambung Bab {number}",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "Teruskan Radio",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -1548,7 +1552,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "Dengar radio al-Quran untuk melihat kemajuan anda",
     "playbackSpeed": "Kelajuan Main Semula",
     "sleepTimer": "Pemasa Tidur",
     "endOfChapter": "Akhir Bab",

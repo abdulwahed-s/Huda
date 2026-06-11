@@ -3079,6 +3079,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsNew330Feature2 => 'Bug fixes and improvements';
 
   @override
+  String get whatsNew340Feature1 =>
+      'Audios: Browse and listen to all types of Islamic audios with offline download and sleep timer support';
+
+  @override
+  String get whatsNew340Feature2 =>
+      'Reciter & Radio Tracking: Your last played reciter and radio station are now saved — resume them from the home screen';
+
+  @override
+  String get whatsNew340Feature3 =>
+      'Book Progress: Your last read book is now tracked — continue from where you left off from the home screen';
+
+  @override
+  String get whatsNew340Feature4 => 'Bug fixes and improvements';
+
+  @override
   String get offlineMode => 'Offline Mode';
 
   @override

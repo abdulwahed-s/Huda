@@ -1414,6 +1414,10 @@
     "eventDaysTashreeqGuidance": "Gedenkt Allahs reichlich und sprecht den Takbir nach jedem Pflichtgebet. Es sind Tage des Essens, Trinkens und der Dankbarkeit. Das Fasten ist an diesen Tagen verboten, ausser fur den Pilger, der kein Opfer bringen kann.",
     "whatsNew330Feature1": "Weiterlesen verschoben: Tippe auf die Koran-Karte auf dem Startbildschirm, um sie zu erweitern und deinen Lesefortschritt zu finden",
     "whatsNew330Feature2": "Fehlerbehebungen und Verbesserungen",
+    "whatsNew340Feature1": "Audios: Alle Arten islamischer Audios mit Offline-Download und Schlaf-Timer durchsuchen und hören",
+    "whatsNew340Feature2": "Rezitator & Radio-Tracking: Dein zuletzt gespielter Rezitator und deine Radiostation werden jetzt gespeichert — setze sie von der Startseite fort",
+    "whatsNew340Feature3": "Buchfortschritt: Dein zuletzt gelesenes Buch wird jetzt gespeichert — mache von der Bücher-Seite weiter, wo du aufgehört hast",
+    "whatsNew340Feature4": "Fehlerbehebungen und Verbesserungen",
     "audios": "Audio",
     "audiobooks": "Islamische Audios",
     "audiobook": "Islamisches Audio",
@@ -1424,7 +1428,7 @@
     "continueBook": "Weiter lesen",
     "resumePage": "Seite {number}",
     "resumeChapter": "Kapitel {number} fortsetzen",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "Radio fortsetzen",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -1435,7 +1439,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "Hören Sie Koran-Radio, um Ihren Fortschritt zu sehen",
     "playbackSpeed": "Wiedergabegeschwindigkeit",
     "sleepTimer": "Sleep-Timer",
     "endOfChapter": "Ende des Kapitels",

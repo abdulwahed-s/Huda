@@ -3075,6 +3075,21 @@ class AppLocalizationsTr extends AppLocalizations {
   String get whatsNew330Feature2 => 'Hata düzeltmeleri ve iyileştirmeler';
 
   @override
+  String get whatsNew340Feature1 =>
+      'Sesler: Çevrimdışı indirme ve uyku zamanlayıcısı desteğiyle her türlü İslami sese göz atın ve dinleyin';
+
+  @override
+  String get whatsNew340Feature2 =>
+      'Okuyucu & Radyo Takibi: Son dinlediğiniz okuyucu ve radyo istasyonu artık kaydediliyor — ana ekrandan devam edin';
+
+  @override
+  String get whatsNew340Feature3 =>
+      'Kitap İlerlemesi: Son okuduğunuz kitap artık kaydediliyor — ana ekrandan kaldığınız yerden devam edin';
+
+  @override
+  String get whatsNew340Feature4 => 'Hata düzeltmeleri ve iyileştirmeler';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override
@@ -3928,7 +3943,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get continueRadio => 'Continue Radio';
+  String get continueRadio => 'Radyoya Devam Et';
 
   @override
   String resumeReciter(String reciterName) {
@@ -3941,7 +3956,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noRadioActivityDescription =>
-      'Listen to Quran radio to see your progress';
+      'İlerlemenizi görmek için Kuran radyosunu dinleyin';
 
   @override
   String get playbackSpeed => 'Oynatma Hızı';

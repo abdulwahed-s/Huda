@@ -3102,6 +3102,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get whatsNew330Feature2 => 'Исправления ошибок и улучшения';
 
   @override
+  String get whatsNew340Feature1 =>
+      'Аудио: просматривайте и слушайте все виды исламского аудиоконтента с поддержкой офлайн-загрузки и таймера сна';
+
+  @override
+  String get whatsNew340Feature2 =>
+      'Отслеживание чтеца и радио: последний прослушанный чтец и радиостанция теперь сохраняются — возобновите их с главного экрана';
+
+  @override
+  String get whatsNew340Feature3 =>
+      'Прогресс чтения книги: последняя читаемая книга теперь сохраняется — продолжайте с того места, где остановились, прямо с главного экрана';
+
+  @override
+  String get whatsNew340Feature4 => 'Исправления ошибок и улучшения';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override
@@ -3958,7 +3973,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get continueRadio => 'Continue Radio';
+  String get continueRadio => 'Продолжить радио';
 
   @override
   String resumeReciter(String reciterName) {
@@ -3971,7 +3986,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noRadioActivityDescription =>
-      'Listen to Quran radio to see your progress';
+      'Слушайте радио Корана, чтобы увидеть свой прогресс';
 
   @override
   String get playbackSpeed => 'Скорость воспроизведения';

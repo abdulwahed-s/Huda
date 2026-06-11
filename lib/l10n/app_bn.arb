@@ -1541,6 +1541,10 @@
     "eventDaysTashreeqGuidance": "আল্লাহকে বেশি করে স্মরণ করুন এবং প্রতিটি ফরজ নামাজের পর তাকবীর বলুন। এগুলো খাওয়া, পানীয় ও কৃতজ্ঞতার দিন। কুরবানী দিতে অক্ষম হাজী ব্যতীত এই দিনগুলোতে রোজা নিষিদ্ধ।",
     "whatsNew330Feature1": "পড়া চালিয়ে যান স্থানান্তরিত হয়েছে: হোম স্ক্রিনে কুরআন কার্ডে ট্যাপ করুন, এটি প্রসারিত করুন এবং আপনার পড়ার অগ্রগতি খুঁজে নিন",
     "whatsNew330Feature2": "বাগ সংশোধন এবং উন্নতি",
+    "whatsNew340Feature1": "অডিও: অফলাইন ডাউনলোড ও স্লিপ টাইমার সহ সব ধরনের ইসলামিক অডিও ব্রাউজ করুন এবং শুনুন",
+    "whatsNew340Feature2": "রেসাইটার ও রেডিও ট্র্যাকিং: আপনার শেষ শোনা রেসাইটার ও রেডিও স্টেশন এখন সেভ হচ্ছে — হোম স্ক্রিন থেকে চালু করুন",
+    "whatsNew340Feature3": "বইয়ের অগ্রগতি: আপনার শেষ পড়া বই এখন ট্র্যাক হচ্ছে — বইয়ের পেজ থেকে যেখানে ছেড়েছিলেন সেখান থেকে চালিয়ে যান",
+    "whatsNew340Feature4": "বাগ সংশোধন এবং উন্নতি",
     "audios": "অডিও",
     "audiobooks": "ইসলামিক অডিও",
     "audiobook": "ইসলামিক অডিও",
@@ -1551,7 +1555,7 @@
     "continueBook": "পড়া চালিয়ে যান",
     "resumePage": "পৃষ্ঠা {number}",
     "resumeChapter": "অধ্যায় {number} পুনরায় শুরু করুন",
-    "continueRadio": "Continue Radio",
+    "continueRadio": "রেডিও চালিয়ে যান",
     "resumeReciter": "Resume {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
@@ -1562,7 +1566,7 @@
         }
     },
     "noReciterActivityDescription": "Start listening to Quran audio to see your progress",
-    "noRadioActivityDescription": "Listen to Quran radio to see your progress",
+    "noRadioActivityDescription": "আপনার অগ্রগতি দেখতে কোরআন রেডিও শুনুন",
     "playbackSpeed": "প্লেব্যাক গতি",
     "sleepTimer": "স্লিপ টাইমার",
     "endOfChapter": "অধ্যায়ের শেষ",

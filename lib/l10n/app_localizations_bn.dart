@@ -3081,6 +3081,21 @@ class AppLocalizationsBn extends AppLocalizations {
   String get whatsNew330Feature2 => 'বাগ সংশোধন এবং উন্নতি';
 
   @override
+  String get whatsNew340Feature1 =>
+      'অডিও: অফলাইন ডাউনলোড ও স্লিপ টাইমার সহ সব ধরনের ইসলামিক অডিও ব্রাউজ করুন এবং শুনুন';
+
+  @override
+  String get whatsNew340Feature2 =>
+      'রেসাইটার ও রেডিও ট্র্যাকিং: আপনার শেষ শোনা রেসাইটার ও রেডিও স্টেশন এখন সেভ হচ্ছে — হোম স্ক্রিন থেকে চালু করুন';
+
+  @override
+  String get whatsNew340Feature3 =>
+      'বইয়ের অগ্রগতি: আপনার শেষ পড়া বই এখন ট্র্যাক হচ্ছে — হোম স্ক্রিন থেকে যেখানে ছেড়েছিলেন সেখান থেকে চালিয়ে যান';
+
+  @override
+  String get whatsNew340Feature4 => 'বাগ সংশোধন এবং উন্নতি';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override
@@ -3937,7 +3952,7 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
-  String get continueRadio => 'Continue Radio';
+  String get continueRadio => 'রেডিও চালিয়ে যান';
 
   @override
   String resumeReciter(String reciterName) {
@@ -3950,7 +3965,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get noRadioActivityDescription =>
-      'Listen to Quran radio to see your progress';
+      'আপনার অগ্রগতি দেখতে কোরআন রেডিও শুনুন';
 
   @override
   String get playbackSpeed => 'প্লেব্যাক গতি';
