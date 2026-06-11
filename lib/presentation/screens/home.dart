@@ -1,12 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/services/quran_audio_progress_service.dart';
+import 'package:huda/core/services/quran_radio_progress_service.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
+import 'package:huda/cubit/quran_player/quran_player_cubit.dart';
+import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
+import 'package:huda/cubit/quran_player/download_progress_cubit.dart';
+import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
 import 'package:huda/core/services/rating_service.dart';
+import 'package:huda/data/models/reciter_model.dart';
+import 'package:huda/data/models/radio_station_model.dart';
+import 'package:huda/presentation/screens/reciter_surahs_screen.dart';
 import 'package:huda/presentation/widgets/home/home_app_bar.dart';
 import 'package:huda/presentation/widgets/home/home_background.dart';
 import 'package:huda/presentation/widgets/home/home_content.dart';
@@ -106,6 +117,102 @@ class _HomeState extends State<Home>
         false;
   }
 
+  Future<void> _openLastReciterAudio(QuranAudioProgress progress) async {
+    final reciter = Reciter(
+      id: progress.reciterId,
+      name: progress.reciterName,
+      letter: progress.reciterLetter,
+      moshaf: [
+        Moshaf(
+          id: progress.moshafId,
+          name: progress.moshafName,
+          server: progress.moshafServer,
+          surahTotal: progress.moshafSurahTotal,
+          moshafType: progress.moshafType,
+          surahList: progress.moshafSurahList,
+        ),
+      ],
+    );
+
+    try {
+      final jsonData = jsonDecode(progress.jsonData) as List;
+
+      if (mounted) {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: context.read<QuranPlayerCubit>()),
+                BlocProvider.value(value: context.read<PlayerBarCubit>()),
+                BlocProvider.value(
+                    value: context.read<DownloadProgressCubit>()),
+              ],
+              child: ReciterSurahsScreen(
+                reciter: reciter,
+                moshaf: reciter.moshaf.first,
+                jsonData: jsonData,
+                initialSurahIndex: progress.surahIndex,
+                initialPositionMs: progress.positionMs,
+              ),
+            ),
+          ),
+        );
+
+        if (mounted) {
+          _refreshHomeData();
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening reciter: $e'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _openLastRadioStation(RadioStationProgress progress) async {
+    try {
+      final station = RadioStation(
+        id: progress.stationId,
+        name: progress.stationName,
+        url: progress.stationUrl,
+        recentDate: DateTime.now().toIso8601String(),
+      );
+
+      if (mounted) {
+        QuranRadioCubit.pendingAutoPlay = station;
+        await Navigator.pushNamed(context, AppRoute.quranRadio);
+
+        if (mounted) {
+          await context.read<QuranRadioCubit>().saveCurrentStation();
+          _refreshHomeData();
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening radio: $e'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _openLastReadSurah(Map<String, dynamic> lastReadSummary) async {
     final surahNumber = lastReadSummary['surahNumber'] as int;
 
@@ -185,6 +292,8 @@ class _HomeState extends State<Home>
                     slideAnimation: _slideAnimation,
                     refreshHomeData: _refreshHomeData,
                     openLastReadSurah: _openLastReadSurah,
+                    openLastReciterAudio: (progress) => _openLastReciterAudio(progress as QuranAudioProgress),
+                    openLastRadioStation: (progress) => _openLastRadioStation(progress as RadioStationProgress),
                     isDarkMode: isDarkMode,
                   ),
                 ),

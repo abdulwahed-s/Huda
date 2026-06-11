@@ -10,6 +10,7 @@ import 'package:huda/presentation/widgets/home/quran_feature_stack_card.dart';
 import 'package:huda/presentation/widgets/home/special_event_card.dart';
 import 'package:huda/presentation/widgets/home/special_event_dialog.dart';
 import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
+import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
 import 'package:huda/core/routes/app_route.dart';
 
 class HomeContent extends StatelessWidget {
@@ -18,6 +19,8 @@ class HomeContent extends StatelessWidget {
   final Animation<Offset> slideAnimation;
   final VoidCallback refreshHomeData;
   final Function(Map<String, dynamic>) openLastReadSurah;
+  final Function(dynamic) openLastReciterAudio;
+  final Function(dynamic) openLastRadioStation;
   final bool isDarkMode;
 
   const HomeContent({
@@ -27,6 +30,8 @@ class HomeContent extends StatelessWidget {
     required this.slideAnimation,
     required this.refreshHomeData,
     required this.openLastReadSurah,
+    required this.openLastReciterAudio,
+    required this.openLastRadioStation,
     required this.isDarkMode,
   });
 
@@ -62,6 +67,12 @@ class HomeContent extends StatelessWidget {
         title: AppLocalizations.of(context)!.books,
         svgAsset: 'assets/images/booksicon.svg.vec',
         onTap: () => Navigator.pushNamed(context, AppRoute.books),
+      ),
+      FeatureItem(
+        title: AppLocalizations.of(context)!.audios,
+        icon: Icons.headphones_rounded,
+        svgAsset: "assets/images/audio.svg.vec",
+        onTap: () => Navigator.pushNamed(context, AppRoute.audios),
       ),
       FeatureItem(
         title: AppLocalizations.of(context)!.hudaAI,
@@ -158,6 +169,8 @@ class HomeContent extends StatelessWidget {
                       isDarkMode: isDarkMode,
                       features: _getFeatures(context),
                       openLastReadSurah: openLastReadSurah,
+                      openLastReciterAudio: openLastReciterAudio,
+                      openLastRadioStation: openLastRadioStation,
                       quranStackCard: QuranFeatureStackCard(
                         isDarkMode: isDarkMode,
                         index: 0,
@@ -172,10 +185,17 @@ class HomeContent extends StatelessWidget {
                         },
                         onAudioTap: () =>
                             Navigator.pushNamed(context, AppRoute.quranAudio),
-                        onRadioTap: () =>
-                            Navigator.pushNamed(context, AppRoute.quranRadio),
+                        onRadioTap: () async {
+                          await Navigator.pushNamed(context, AppRoute.quranRadio);
+                          if (context.mounted) {
+                            await context.read<QuranRadioCubit>().saveCurrentStation();
+                          }
+                          refreshHomeData();
+                        },
                         onBookmarkTap: () =>
                             Navigator.pushNamed(context, AppRoute.bookmarks),
+                        openLastReciterAudio: openLastReciterAudio,
+                        openLastRadioStation: openLastRadioStation,
                       ),
                     ),
                   ],

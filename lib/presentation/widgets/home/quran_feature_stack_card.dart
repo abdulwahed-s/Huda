@@ -10,6 +10,8 @@ import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
+import 'package:huda/presentation/widgets/home/continue_reciter_card.dart';
+import 'package:huda/presentation/widgets/home/continue_radio_card.dart';
 
 class _QuranSubItem {
   final String title;
@@ -38,6 +40,8 @@ class QuranFeatureStackCard extends StatefulWidget {
   final VoidCallback onRadioTap;
   final VoidCallback onBookmarkTap;
   final ValueChanged<bool>? onExpandChanged;
+  final Function(dynamic)? openLastReciterAudio;
+  final Function(dynamic)? openLastRadioStation;
 
   const QuranFeatureStackCard({
     super.key,
@@ -53,6 +57,8 @@ class QuranFeatureStackCard extends StatefulWidget {
     required this.onRadioTap,
     required this.onBookmarkTap,
     this.onExpandChanged,
+    this.openLastReciterAudio,
+    this.openLastRadioStation,
   });
 
   @override
@@ -273,6 +279,8 @@ class QuranExpandedSubGrid extends StatefulWidget {
   final String quranLabel, audioLabel, radioLabel, bookmarkLabel;
   final VoidCallback onQuranTap, onAudioTap, onRadioTap, onBookmarkTap;
   final Function(Map<String, dynamic>)? openLastReadSurah;
+  final Function(dynamic)? openLastReciterAudio;
+  final Function(dynamic)? openLastRadioStation;
 
   const QuranExpandedSubGrid({
     super.key,
@@ -286,6 +294,8 @@ class QuranExpandedSubGrid extends StatefulWidget {
     required this.onRadioTap,
     required this.onBookmarkTap,
     this.openLastReadSurah,
+    this.openLastReciterAudio,
+    this.openLastRadioStation,
   });
 
   @override
@@ -354,57 +364,138 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
         context.responsive(mobile: 32.sp, tablet: 50.sp, desktop: 64.sp);
     final pad = context.responsive(mobile: 12.w, tablet: 20.w, desktop: 24.w);
     final fs = context.responsive(mobile: 12.sp, tablet: 16.sp, desktop: 20.sp);
+    final l10n = AppLocalizations.of(context)!;
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, _) => Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Transform.scale(
-            scale: _scaleAnims[0].value,
-            child: Opacity(
-              opacity: _opacityAnims[0].value.clamp(0.0, 1.0),
-              child: BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, homeState) {
-                  final HomeLoaded? loaded =
-                      homeState is HomeLoaded ? homeState : null;
-                  final bool hasLastRead =
-                      loaded?.hasLastReadPosition ?? false;
-                  final VoidCallback? onTap =
-                      hasLastRead && widget.openLastReadSurah != null
-                          ? () => widget
-                              .openLastReadSurah!(loaded!.lastReadSummary!)
-                          : null;
+          children: [
+            _buildContinueRow(l10n),
+            SizedBox(height: 16.h),
+            Row(children: [
+              Expanded(child: _animCard(context, items[0], 1, iconSize, pad, fs)),
+              SizedBox(width: 16.w),
+              Expanded(child: _animCard(context, items[1], 2, iconSize, pad, fs)),
+            ]),
+            SizedBox(height: 16.h),
+            Row(children: [
+              Expanded(child: _animCard(context, items[2], 3, iconSize, pad, fs)),
+              SizedBox(width: 16.w),
+              Expanded(child: _animCard(context, items[3], 4, iconSize, pad, fs)),
+            ]),
+          ],
+      ),
+    );
+  }
 
-                  return ContinueReadingCard(
-                    hasLastRead: hasLastRead,
-                    onTap: onTap,
-                    continueText:
-                        AppLocalizations.of(context)!.continueHome,
-                    noActivityText:
-                        AppLocalizations.of(context)!.noRecentActivityHome,
-                    resumeText:
-                        AppLocalizations.of(context)!.resumeReading,
-                    noActivityDescription: AppLocalizations.of(context)!
-                        .noRecentActivityDescription,
-                  );
-                },
-              ),
+  Widget _buildContinueRow(AppLocalizations l10n) {
+    final primary = context.primaryColor;
+    final primaryDark = context.primaryDarkColor;
+    final primaryVariant = context.primaryVariantColor;
+    final primarySurface = context.primarySurfaceColor;
+
+    final readingActive = [primary, primaryDark];
+    final reciterActive = [primaryVariant, primaryDark];
+    final radioActive = [primarySurface, primaryDark];
+
+    const readingInactive = [Color(0xFFCBD5E1), Color(0xFF94A3B8)];
+    const reciterInactive = [Color(0xFFD4D4D4), Color(0xFFA3A3A3)];
+    const radioInactive = [Color(0xFFD6D3D1), Color(0xFFA8A29E)];
+
+    return Transform.scale(
+      scale: _scaleAnims[0].value,
+      child: Opacity(
+        opacity: _opacityAnims[0].value.clamp(0.0, 1.0),
+        child: Row(children: [
+          Expanded(
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, homeState) {
+                final HomeLoaded? loaded =
+                    homeState is HomeLoaded ? homeState : null;
+                final bool hasLastRead =
+                    loaded?.hasLastReadPosition ?? false;
+                final VoidCallback? onTap =
+                    hasLastRead && widget.openLastReadSurah != null
+                        ? () => widget
+                            .openLastReadSurah!(loaded!.lastReadSummary!)
+                        : null;
+
+                return ContinueReadingCard(
+                  hasLastRead: hasLastRead,
+                  onTap: onTap,
+                  continueText: l10n.continueHome,
+                  noActivityText: l10n.noRecentActivityHome,
+                  resumeText: l10n.resumeReading,
+                  noActivityDescription: l10n.noRecentActivityDescription,
+                  activeGradient: readingActive,
+                  inactiveGradient: readingInactive,
+                );
+              },
             ),
           ),
-          SizedBox(height: 16.h),
-          Row(children: [
-            Expanded(child: _animCard(context, items[0], 1, iconSize, pad, fs)),
-            SizedBox(width: 16.w),
-            Expanded(child: _animCard(context, items[1], 2, iconSize, pad, fs)),
-          ]),
-          SizedBox(height: 16.h),
-          Row(children: [
-            Expanded(child: _animCard(context, items[2], 3, iconSize, pad, fs)),
-            SizedBox(width: 16.w),
-            Expanded(child: _animCard(context, items[3], 4, iconSize, pad, fs)),
-          ]),
-        ],
+          SizedBox(width: 12.w),
+          Expanded(
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, homeState) {
+                final HomeLoaded? loaded =
+                    homeState is HomeLoaded ? homeState : null;
+                final hasLastAudio =
+                    loaded?.hasLastQuranAudio ?? false;
+                final quranAudio = loaded?.lastQuranAudio;
+                final VoidCallback? onTap =
+                    hasLastAudio && widget.openLastReciterAudio != null
+                        ? () => widget.openLastReciterAudio!(quranAudio)
+                        : null;
+
+                return ContinueReciterCard(
+                  hasLastPlayed: hasLastAudio,
+                  onTap: onTap,
+                  continueText: l10n.continueListening,
+                  noActivityText: l10n.noRecentActivityHome,
+                  resumeText: hasLastAudio
+                      ? l10n.resumeReciter(quranAudio!.reciterName)
+                      : '',
+                  noActivityDescription:
+                      l10n.noReciterActivityDescription,
+                  activeGradient: reciterActive,
+                  inactiveGradient: reciterInactive,
+                );
+              },
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, homeState) {
+                final HomeLoaded? loaded =
+                    homeState is HomeLoaded ? homeState : null;
+                final hasLastStation =
+                    loaded?.hasLastRadioStation ?? false;
+                final radioStation = loaded?.lastRadioStation;
+                final VoidCallback? onTap =
+                    hasLastStation && widget.openLastRadioStation != null
+                        ? () =>
+                            widget.openLastRadioStation!(radioStation)
+                        : null;
+
+                return ContinueRadioCard(
+                  hasLastStation: hasLastStation,
+                  onTap: onTap,
+                  continueText: l10n.continueRadio,
+                  noActivityText: l10n.noRecentActivityHome,
+                  resumeText: hasLastStation
+                      ? radioStation!.stationName
+                      : '',
+                  noActivityDescription:
+                      l10n.noRadioActivityDescription,
+                  activeGradient: radioActive,
+                  inactiveGradient: radioInactive,
+                );
+              },
+            ),
+          ),
+        ]),
       ),
     );
   }
