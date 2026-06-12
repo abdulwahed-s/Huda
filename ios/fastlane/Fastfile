@@ -65,9 +65,14 @@ platform :ios do
 
     version = `grep '^version:' ../../pubspec.yaml`.strip.split(' ').last.split('+').first
 
+    ipa_dir = ENV["IPA_DIR"] || "../../build/ios/ipa"
+    ipa_path = Dir[File.join(ipa_dir, "*.ipa")].first
+    UI.user_error!("No IPA found in #{ipa_dir}") unless ipa_path
+    UI.message("Uploading IPA: #{ipa_path}")
+
     upload_to_app_store(
       api_key: api_key,
-      ipa: Dir["../build/ios/ipa/*.ipa"].first,
+      ipa: ipa_path,
       app_version: version,
       skip_screenshots: true,
       force: true,

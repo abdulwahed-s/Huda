@@ -1,6 +1,32 @@
 default_platform(:mac)
 
 platform :mac do
+  # Downloads (or creates) the Mac App Store provisioning profile and writes
+  # manual-signing settings into the Xcode project so the built .app embeds a
+  # provisioning profile (required by App Store / TestFlight — fixes ITMS-90889).
+  lane :prepare_signing do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY_P8"],
+      is_key_content_base64: true
+    )
+
+    get_provisioning_profile(
+      api_key: api_key,
+      app_identifier: "com.aw.huda",
+      platform: "macos"
+    )
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Runner.xcodeproj",
+      team_id: ENV["APPLE_TEAM_ID"],
+      code_sign_identity: "Apple Distribution",
+      profile_name: lane_context[SharedValues::SIGH_NAME]
+    )
+  end
+
   lane :deploy do
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
@@ -9,9 +35,13 @@ platform :mac do
       is_key_content_base64: true
     )
 
+    pkg_path = ENV["PKG_PATH"] || "../../build/macos/Huda-macOS.pkg"
+    UI.user_error!("No pkg found at #{pkg_path}") unless File.exist?(pkg_path)
+    UI.message("Uploading pkg: #{pkg_path}")
+
     upload_to_app_store(
       api_key: api_key,
-      pkg: "../build/macos/Huda-macOS.pkg",
+      pkg: pkg_path,
       skip_metadata: true,
       skip_screenshots: true,
       force: true,

@@ -197,6 +197,7 @@ jobs:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+          IPA_DIR: ${{ github.workspace }}/build/ios/ipa
         run: cd ios && bundle exec fastlane deploy
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -277,15 +278,14 @@ jobs:
       - name: Build macOS app
         env:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
         run: |
           sed -i '' 's/ASSETCATALOG_COMPILER_APPICON_NAME = huda_icon/ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon/g' \
             macos/Runner.xcodeproj/project.pbxproj
           cd macos
-          bundle exec fastlane run update_code_signing_settings \
-            use_automatic_signing:false \
-            path:Runner.xcodeproj \
-            team_id:"$APPLE_TEAM_ID" \
-            code_sign_identity:"Apple Distribution"
+          bundle exec fastlane prepare_signing
           cd ..
           flutter build macos --release
 
@@ -310,6 +310,7 @@ jobs:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+          PKG_PATH: ${{ github.workspace }}/build/macos/Huda-macOS.pkg
         run: cd macos && bundle exec fastlane deploy
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
