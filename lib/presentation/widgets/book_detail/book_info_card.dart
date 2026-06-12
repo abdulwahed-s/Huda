@@ -52,7 +52,6 @@ class BookInfoCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Amiri',
                   color: context.primaryColor,
                 ),
               ),
@@ -64,7 +63,6 @@ class BookInfoCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Amiri',
               height: 1.4,
             ),
           ),
@@ -73,7 +71,6 @@ class BookInfoCard extends StatelessWidget {
             description,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: 'Amiri',
               height: 1.5,
               color: Colors.grey[600],
             ),
@@ -103,7 +100,6 @@ class BookInfoCard extends StatelessWidget {
                         preparedBy.title ?? "Unknown",
                         style: TextStyle(
                           fontSize: 14.sp,
-                          fontFamily: 'Amiri',
                           fontWeight: FontWeight.w500,
                         ),
                       ),

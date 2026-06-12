@@ -97,7 +97,6 @@ class BookmarksListWithStats extends StatelessWidget {
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
-                              fontFamily: 'Amiri',
                             ),
                           ),
                           Text(
@@ -106,7 +105,6 @@ class BookmarksListWithStats extends StatelessWidget {
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.white.withValues(alpha: 0.9),
-                              fontFamily: 'Amiri',
                             ),
                           ),
                         ],

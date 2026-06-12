@@ -68,7 +68,6 @@ class StatusCard extends StatelessWidget {
                           color: color,
                           fontWeight: FontWeight.bold,
                           fontSize: 14.sp,
-                          fontFamily: 'Amiri',
                         ),
                       ),
                       SizedBox(height: 3.h),
@@ -76,7 +75,6 @@ class StatusCard extends StatelessWidget {
                         subtitle,
                         style: TextStyle(
                           fontSize: 11.sp,
-                          fontFamily: 'Amiri',
                           color: Colors.grey[600],
                         ),
                       ),
@@ -97,7 +95,6 @@ class StatusCard extends StatelessWidget {
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: 10.sp,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ),

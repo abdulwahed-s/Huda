@@ -152,8 +152,7 @@ class _SpeechDisclaimer extends StatelessWidget {
               message,
               style: TextStyle(
                 fontSize: 12.sp,
-                color:
-                    isDark ? Colors.blue.shade200 : Colors.blue.shade800,
+                color: isDark ? Colors.blue.shade200 : Colors.blue.shade800,
               ),
             ),
           ),
@@ -191,8 +190,7 @@ class _MemorizationActionButton extends StatelessWidget {
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        padding:
-            EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),

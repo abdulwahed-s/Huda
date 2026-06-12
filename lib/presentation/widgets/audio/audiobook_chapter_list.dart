@@ -26,7 +26,6 @@ class _AudiobookChapterListState extends State<AudiobookChapterList> {
   final ScrollController _scrollCtrl = ScrollController();
   int _prevIndex = -1;
 
-  
   static const double _itemH = 68.0;
 
   @override
@@ -38,8 +37,8 @@ class _AudiobookChapterListState extends State<AudiobookChapterList> {
   void _scrollToIndex(int index) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || !_scrollCtrl.hasClients) return;
-      final target = (index * _itemH)
-          .clamp(0.0, _scrollCtrl.position.maxScrollExtent);
+      final target =
+          (index * _itemH).clamp(0.0, _scrollCtrl.position.maxScrollExtent);
       _scrollCtrl.animateTo(
         target,
         duration: const Duration(milliseconds: 350),
@@ -62,7 +61,6 @@ class _AudiobookChapterListState extends State<AudiobookChapterList> {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Amiri',
               color: isDark ? context.darkText : context.lightText,
             ),
           ),
@@ -160,10 +158,8 @@ class _AudiobookChapterListState extends State<AudiobookChapterList> {
                   duration: const Duration(milliseconds: 300),
                   style: TextStyle(
                     fontSize: 13.sp,
-                    fontWeight:
-                        isCurrent ? FontWeight.bold : FontWeight.w500,
+                    fontWeight: isCurrent ? FontWeight.bold : FontWeight.w500,
                     color: isCurrent ? primaryColor : textColor,
-                    fontFamily: 'Amiri',
                   ),
                   child: Text(
                     track.description.isNotEmpty

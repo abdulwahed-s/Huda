@@ -18,8 +18,7 @@ class LoadingView extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: CircularProgressIndicator(
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(context.primaryColor),
+              valueColor: AlwaysStoppedAnimation<Color>(context.primaryColor),
               strokeWidth: 3,
             ),
           ),
@@ -30,7 +29,6 @@ class LoadingView extends StatelessWidget {
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: context.primaryColor,
-              fontFamily: "Amiri",
             ),
           ),
         ],

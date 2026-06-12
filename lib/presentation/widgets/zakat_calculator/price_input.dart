@@ -41,7 +41,6 @@ class PriceInput extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              fontFamily: "Amiri",
             ),
           ),
           SizedBox(height: 12.h),
@@ -57,7 +56,6 @@ class PriceInput extends StatelessWidget {
               prefixStyle: TextStyle(
                 color: context.primaryColor,
                 fontWeight: FontWeight.w500,
-                fontFamily: "Amiri",
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),

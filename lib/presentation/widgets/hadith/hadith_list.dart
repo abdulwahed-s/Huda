@@ -75,7 +75,6 @@ class HadithList extends StatelessWidget {
               AppLocalizations.of(context)!.comingSoon,
               style: TextStyle(
                 fontSize: 16.sp,
-                fontFamily: 'Amiri',
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
               ),

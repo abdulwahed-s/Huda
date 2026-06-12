@@ -45,7 +45,6 @@ class TasbihDhikrItem extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontSize: 15.sp,
                   height: 1.4,
                   color: isDark

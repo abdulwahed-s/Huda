@@ -68,7 +68,6 @@ class NavigateConfirmationDialog extends StatelessWidget {
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w500,
                     color: isDark ? Colors.grey[300] : Colors.grey[700],
-                    fontFamily: 'Amiri',
                   ),
                 ),
               ],
@@ -100,7 +99,6 @@ class NavigateConfirmationDialog extends StatelessWidget {
             AppLocalizations.of(context)!.goToVerse,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: 'Amiri',
             ),
           ),
         ),
@@ -108,4 +106,3 @@ class NavigateConfirmationDialog extends StatelessWidget {
     );
   }
 }
-

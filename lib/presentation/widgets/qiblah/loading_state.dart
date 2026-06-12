@@ -22,7 +22,6 @@ class LoadingState extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.findingQiblahDirection,
             style: TextStyle(
-              fontFamily: "Amiri",
               fontSize: 16.sp,
               fontWeight: FontWeight.w500,
               color: isDark ? Colors.white70 : Colors.black87,
@@ -33,4 +32,3 @@ class LoadingState extends StatelessWidget {
     );
   }
 }
-

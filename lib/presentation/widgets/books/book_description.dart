@@ -18,7 +18,6 @@ class BookDescription extends StatelessWidget {
       description,
       style: TextStyle(
         fontSize: 14.sp,
-        fontFamily: 'Amiri',
         color: isDark
             ? context.darkText.withValues(alpha: 0.8)
             : context.lightText.withValues(alpha: 0.7),

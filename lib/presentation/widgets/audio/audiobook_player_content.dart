@@ -11,9 +11,6 @@ import 'package:huda/presentation/widgets/audio/audiobook_scrubber.dart';
 import 'package:huda/presentation/widgets/audio/audiobook_title.dart';
 import 'package:huda/presentation/widgets/audio/audiobook_top_bar.dart';
 
-
-
-
 class AudiobookPlayerContent extends StatefulWidget {
   final AudiobookPlayerPlaying state;
   final bool isDark;

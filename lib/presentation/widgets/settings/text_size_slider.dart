@@ -23,7 +23,6 @@ class TextSizeSlider extends StatelessWidget {
               l10n.small,
               style: TextStyle(
                 fontSize: 12.sp,
-                fontFamily: "Amiri",
                 fontWeight: FontWeight.w500,
                 color: isDark
                     ? context.darkText.withValues(alpha: 0.8)
@@ -43,7 +42,6 @@ class TextSizeSlider extends StatelessWidget {
                 '${(scale * 100).round()}%',
                 style: TextStyle(
                   fontSize: 13.sp,
-                  fontFamily: "Amiri",
                   fontWeight: FontWeight.w700,
                   color: context.primaryColor,
                 ),
@@ -53,7 +51,6 @@ class TextSizeSlider extends StatelessWidget {
               l10n.large,
               style: TextStyle(
                 fontSize: 12.sp,
-                fontFamily: "Amiri",
                 fontWeight: FontWeight.w500,
                 color: isDark
                     ? context.darkText.withValues(alpha: 0.8)
@@ -87,4 +84,3 @@ class TextSizeSlider extends StatelessWidget {
     );
   }
 }
-

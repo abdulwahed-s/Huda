@@ -39,7 +39,6 @@ class ProgressIndicatorWidget extends StatelessWidget {
                   color: isDark ? colors.darkText : Colors.white,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
-                  fontFamily: "Amiri",
                 ),
               ),
               Text(
@@ -48,7 +47,6 @@ class ProgressIndicatorWidget extends StatelessWidget {
                   color: isDark ? colors.darkText : Colors.white,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: "Amiri",
                 ),
               ),
             ],
@@ -71,7 +69,6 @@ class ProgressIndicatorWidget extends StatelessWidget {
               color: isDark ? colors.darkText : Colors.white,
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
-              fontFamily: "Amiri",
             ),
           ),
         ],

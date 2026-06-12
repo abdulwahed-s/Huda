@@ -55,7 +55,6 @@ class LoadingIndicator extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color:
                         !isDark ? Theme.of(context).primaryColor : Colors.white,
-                    fontFamily: 'Amiri',
                     fontSize: 14.sp,
                   ),
                 ),
@@ -67,7 +66,6 @@ class LoadingIndicator extends StatelessWidget {
                     color: isDark
                         ? context.darkText.withValues(alpha: 0.6)
                         : context.lightText.withValues(alpha: 0.6),
-                    fontFamily: 'Amiri',
                   ),
                 ),
               ],

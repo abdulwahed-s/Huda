@@ -72,7 +72,6 @@ class NotificationCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Amiri',
                             ),
                           ),
                           SizedBox(height: 3.h),
@@ -80,7 +79,6 @@ class NotificationCard extends StatelessWidget {
                             subtitle,
                             style: TextStyle(
                               fontSize: 11.sp,
-                              fontFamily: 'Amiri',
                               color:
                                   isDark ? Colors.grey[400] : Colors.grey[600],
                             ),
@@ -133,7 +131,6 @@ class NotificationCard extends StatelessWidget {
                           description,
                           style: TextStyle(
                             fontSize: 10.sp,
-                            fontFamily: 'Amiri',
                             color: Colors.grey[700],
                           ),
                         ),

@@ -25,7 +25,6 @@ class HadithContent extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 20.sp,
-            fontFamily: 'Amiri',
           ),
         ),
         centerTitle: true,
@@ -51,4 +50,3 @@ class HadithContent extends StatelessWidget {
     );
   }
 }
-

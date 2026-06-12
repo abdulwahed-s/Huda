@@ -70,7 +70,6 @@ class InfoCard extends StatelessWidget {
                 fontSize: titleSize,
                 fontWeight: FontWeight.w600,
                 color: isDark ? Colors.white : Colors.black87,
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -86,7 +85,6 @@ class InfoCard extends StatelessWidget {
                 color: isDark
                     ? Colors.white.withValues(alpha: 0.7)
                     : Colors.black.withValues(alpha: 0.6),
-                fontFamily: 'Amiri',
                 height: 1.3,
               ),
               textAlign: TextAlign.center,

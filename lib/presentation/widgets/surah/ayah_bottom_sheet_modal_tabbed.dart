@@ -277,8 +277,8 @@ class _AyahBottomSheetModalTabbedState
 
   @override
   Widget build(BuildContext context) {
-    final isPlaying = widget.audioPlayer.playing &&
-        widget.playingAyahIndex == widget.index;
+    final isPlaying =
+        widget.audioPlayer.playing && widget.playingAyahIndex == widget.index;
 
     final filteredReaders = widget.selectedLanguage != null
         ? widget.availableReaders

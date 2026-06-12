@@ -141,7 +141,9 @@ class LockedAppsSection extends StatelessWidget {
                       categoryCount > 0
                           ? l10n.iosAppsAndCategoriesSelected(
                               appCount, categoryCount)
-                          : (appCount == 1 ? l10n.iosAppSelected(1) : l10n.iosAppsSelected(appCount)),
+                          : (appCount == 1
+                              ? l10n.iosAppSelected(1)
+                              : l10n.iosAppsSelected(appCount)),
                       style: TextStyle(
                         color: theme.hintColor,
                         fontSize: 12.sp,

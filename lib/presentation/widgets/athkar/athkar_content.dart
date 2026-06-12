@@ -101,4 +101,3 @@ class _AthkarContentState extends State<AthkarContent>
     );
   }
 }
-

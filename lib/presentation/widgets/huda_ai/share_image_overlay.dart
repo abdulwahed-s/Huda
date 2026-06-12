@@ -68,7 +68,7 @@ class ShareImageOverlay {
           SnackBar(
             content: Text(
               '${appLocalizations.error}: ${e.toString()}',
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
             backgroundColor: colorScheme.error,
             duration: const Duration(seconds: 2),
@@ -166,7 +166,6 @@ class ShareImageOverlay {
               const Text(
                 'Huda AI',
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -179,7 +178,6 @@ class ShareImageOverlay {
           Text(
             appLocalizations.islamicAssistant,
             style: const TextStyle(
-              fontFamily: 'Amiri',
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Colors.white,
@@ -217,49 +215,42 @@ class ShareImageOverlay {
         physics: const NeverScrollableScrollPhysics(),
         styleSheet: MarkdownStyleSheet(
           p: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 16,
             height: 1.8,
             color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,
             fontWeight: FontWeight.w500,
           ),
           h1: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 20,
             height: 1.6,
             color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,
             fontWeight: FontWeight.bold,
           ),
           h2: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 18,
             height: 1.6,
             color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,
             fontWeight: FontWeight.bold,
           ),
           h3: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 16,
             height: 1.6,
             color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,
             fontWeight: FontWeight.bold,
           ),
           strong: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 16,
             height: 1.8,
             color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,
             fontWeight: FontWeight.bold,
           ),
           em: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 16,
             height: 1.8,
             color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,
             fontStyle: FontStyle.italic,
           ),
           listBullet: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 16,
             height: 1.8,
             color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,
@@ -273,7 +264,6 @@ class ShareImageOverlay {
             backgroundColor: Colors.grey.withAlpha(25),
           ),
           blockquote: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 16,
             height: 1.8,
             color: (isDark ? const Color(0xFF1A1A2E) : colorScheme.primary)
@@ -307,7 +297,6 @@ class ShareImageOverlay {
             child: Text(
               appLocalizations.aiGeneratedDisclaimer,
               style: const TextStyle(
-                fontFamily: 'Amiri',
                 fontSize: 10,
                 color: Colors.white,
                 fontWeight: FontWeight.w400,

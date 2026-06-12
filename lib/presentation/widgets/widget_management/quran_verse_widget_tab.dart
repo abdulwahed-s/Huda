@@ -124,7 +124,7 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
         SnackBar(
           content: Text(
             AppLocalizations.of(context)!.verseRemovedFromWidget,
-            style: const TextStyle(fontFamily: 'Amiri'),
+            style: const TextStyle(),
           ),
           backgroundColor: Colors.green,
           behavior: SnackBarBehavior.floating,

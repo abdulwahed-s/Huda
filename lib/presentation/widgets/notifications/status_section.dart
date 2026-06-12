@@ -28,7 +28,6 @@ class StatusSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Amiri',
             color: isDark ? Colors.white : Theme.of(context).primaryColor,
           ),
         ),
@@ -61,8 +60,7 @@ class StatusSection extends StatelessWidget {
             );
           },
         ),
-        if (PlatformUtils.isAndroid)
-        SizedBox(height: 8.h),
+        if (PlatformUtils.isAndroid) SizedBox(height: 8.h),
 
         // Battery Optimization Status
         if (PlatformUtils.isAndroid)

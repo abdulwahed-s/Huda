@@ -23,7 +23,6 @@ class WidgetManagementScreen extends StatelessWidget {
             l10n.homeScreenWidgetManagement,
             style: const TextStyle(
               fontWeight: FontWeight.w600,
-              fontFamily: 'Amiri',
             ),
           ),
           backgroundColor: primary,
@@ -39,7 +38,6 @@ class WidgetManagementScreen extends StatelessWidget {
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.white70,
                 labelStyle: TextStyle(
-                  fontFamily: 'Amiri',
                   fontWeight: FontWeight.w700,
                   fontSize: 14.sp,
                 ),

@@ -8,10 +8,6 @@ import 'package:huda/cubit/audiobook_player/audiobook_player_cubit.dart';
 import 'package:huda/cubit/audiobook_player/audiobook_player_state.dart';
 import 'package:huda/presentation/screens/audiobook_now_playing_screen.dart';
 
-
-
-
-
 class AudiobookPlayerBar extends StatelessWidget {
   const AudiobookPlayerBar({super.key});
 
@@ -100,9 +96,10 @@ class _MiniPill extends StatelessWidget {
                         stream: player.currentIndexStream,
                         builder: (context, snap) {
                           final idx = snap.data ?? 0;
-                          final chapter = (idx >= 0 && idx < state.tracks.length)
-                              ? state.tracks[idx].description
-                              : state.title;
+                          final chapter =
+                              (idx >= 0 && idx < state.tracks.length)
+                                  ? state.tracks[idx].description
+                                  : state.title;
                           return Text(
                             chapter.isNotEmpty ? chapter : state.title,
                             maxLines: 1,
@@ -110,7 +107,6 @@ class _MiniPill extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Amiri',
                               color:
                                   isDark ? context.darkText : context.lightText,
                             ),
@@ -186,9 +182,7 @@ class _MiniPill extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     iconSize: 26.sp,
                     icon: Icon(
-                      playing
-                          ? Icons.pause_rounded
-                          : Icons.play_arrow_rounded,
+                      playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
                       color: context.primaryColor,
                     ),
                     onPressed: () {

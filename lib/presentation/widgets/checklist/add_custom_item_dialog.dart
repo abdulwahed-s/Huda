@@ -25,8 +25,7 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Dialog(
-      backgroundColor:
-          isDarkMode ? Colors.grey[900] : null, 
+      backgroundColor: isDarkMode ? Colors.grey[900] : null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -68,7 +67,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          fontFamily: "Amiri",
                           color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
@@ -99,7 +97,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                             AppLocalizations.of(context)!.itemTitle,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Amiri",
                               fontSize: 16,
                               color: isDarkMode ? Colors.white : Colors.black,
                             ),
@@ -111,7 +108,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                               hintText:
                                   AppLocalizations.of(context)!.enterItemTitle,
                               hintStyle: TextStyle(
-                                fontFamily: "Amiri",
                                 color: Colors.grey.shade500,
                               ),
                               border: OutlineInputBorder(
@@ -140,7 +136,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                               ),
                             ),
                             style: TextStyle(
-                              fontFamily: "Amiri",
                               color: isDarkMode ? Colors.white : Colors.black,
                             ),
                             onChanged: (value) => setState(() {}),
@@ -157,7 +152,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                             AppLocalizations.of(context)!.itemType,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Amiri",
                               fontSize: 16,
                               color: isDarkMode ? Colors.white : Colors.black,
                             ),
@@ -190,7 +184,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                                   child: Text(
                                     _getTypeDisplayName(type),
                                     style: TextStyle(
-                                      fontFamily: "Amiri",
                                       color: isDarkMode
                                           ? Colors.white
                                           : Colors.black,
@@ -222,7 +215,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                             AppLocalizations.of(context)!.repetitionFrequency,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Amiri",
                               fontSize: 16,
                               color: isDarkMode ? Colors.white : Colors.black,
                             ),
@@ -256,7 +248,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                                   child: Text(
                                     _getFrequencyDisplayName(frequency),
                                     style: TextStyle(
-                                      fontFamily: "Amiri",
                                       color: isDarkMode
                                           ? Colors.white
                                           : Colors.black,
@@ -301,7 +292,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                         child: Text(
                           AppLocalizations.of(context)!.cancel,
                           style: TextStyle(
-                            fontFamily: "Amiri",
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: isDarkMode ? Colors.white : Colors.black,
@@ -332,7 +322,6 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                         child: Text(
                           AppLocalizations.of(context)!.addItem,
                           style: const TextStyle(
-                            fontFamily: "Amiri",
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

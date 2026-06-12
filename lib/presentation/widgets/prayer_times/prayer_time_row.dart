@@ -31,7 +31,6 @@ class PrayerTimeRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
-                fontFamily: "Amiri",
                 color: Colors.white,
               ),
             ),
@@ -41,7 +40,6 @@ class PrayerTimeRow extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
-              fontFamily: "Amiri",
               color: Colors.white,
             ),
           ),

@@ -75,7 +75,6 @@ class SurahIndexGridTile extends StatelessWidget {
                   Text(
                     arabicName,
                     style: TextStyle(
-                      fontFamily: 'Amiri',
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w700,
                       color: isSelected

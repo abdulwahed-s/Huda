@@ -11,7 +11,7 @@ class LanguageDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
@@ -22,7 +22,6 @@ class LanguageDisplay extends StatelessWidget {
         locale.defaultDisplayLanguage,
         style: TextStyle(
           fontSize: 13.sp,
-          fontFamily: 'Amiri',
           color: isDark
               ? context.darkText.withValues(alpha: 0.8)
               : context.lightText.withValues(alpha: 0.7),

@@ -94,7 +94,6 @@ class DownloadButton extends StatelessWidget {
                                 : context.primaryColor.withValues(alpha: 0.5),
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ],

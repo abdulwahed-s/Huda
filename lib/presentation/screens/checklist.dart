@@ -262,7 +262,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
                           fontWeight: FontWeight.w600,
                           fontSize: 12.sp,
                           color: isDark ? colors.darkText : Colors.white,
-                          fontFamily: "Amiri",
                         ),
                       ),
                     )

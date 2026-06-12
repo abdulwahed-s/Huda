@@ -63,7 +63,6 @@ class HadithHeading extends StatelessWidget {
         style: TextStyle(
           fontSize: 18.0.sp,
           fontWeight: FontWeight.bold,
-          fontFamily: "Amiri",
           color: context.primaryColor,
         ),
       ),

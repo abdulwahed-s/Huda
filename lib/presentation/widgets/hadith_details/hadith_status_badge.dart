@@ -34,7 +34,6 @@ class HadithStatusBadge extends StatelessWidget {
             translated,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: "Amiri",
               fontWeight: FontWeight.w600,
               color: color,
             ),

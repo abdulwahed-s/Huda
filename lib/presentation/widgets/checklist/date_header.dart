@@ -82,7 +82,6 @@ class DateHeader extends StatelessWidget {
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                             color: isDark ? colors.darkText : Colors.white,
-                            fontFamily: "Amiri",
                             shadows: const [
                               Shadow(
                                 color: Colors.black26,
@@ -102,7 +101,6 @@ class DateHeader extends StatelessWidget {
                                 ? colors.darkText.withValues(alpha: 0.8)
                                 : Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontFamily: "Amiri",
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -115,7 +113,6 @@ class DateHeader extends StatelessWidget {
                               color: isDark
                                   ? colors.darkText.withValues(alpha: 0.6)
                                   : Colors.white70,
-                              fontFamily: "Amiri",
                             ),
                             textAlign: TextAlign.center,
                           ),

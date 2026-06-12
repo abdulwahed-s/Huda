@@ -67,7 +67,6 @@ class _PrayerTimesState extends State<PrayerTimes> {
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: "Amiri",
                 color: isDark ? Colors.white : Colors.black87,
               )),
           centerTitle: true,

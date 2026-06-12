@@ -35,7 +35,6 @@ class HomeAppBar extends StatelessWidget {
               fontSize: 28.sp,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontFamily: "Amiri",
             ),
           ),
           titlePadding: EdgeInsets.only(

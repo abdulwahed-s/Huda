@@ -148,7 +148,7 @@ class TimePickers {
             SizedBox(width: 10.w),
             Text(
               AppLocalizations.of(context)!.athkarTimes,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
           ],
         ),
@@ -219,7 +219,7 @@ class TimePickers {
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(
               AppLocalizations.of(context)!.done,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
           ),
         ],
@@ -239,7 +239,7 @@ class TimePickers {
     int minutesBefore = state.sahurMinutesBeforeFajr.clamp(10, 150);
 
     final primaryColor = Theme.of(context).colorScheme.primary;
-    const fontStyle = TextStyle(fontFamily: 'Amiri');
+    const fontStyle = TextStyle();
 
     showDialog(
       context: context,

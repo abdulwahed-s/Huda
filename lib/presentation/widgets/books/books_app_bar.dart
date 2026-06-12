@@ -30,7 +30,6 @@ class BooksAppBar extends StatelessWidget {
           style: TextStyle(
             fontSize: 24.sp,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Amiri',
             color: isDark ? context.darkText : context.lightText,
           ),
         ),

@@ -41,7 +41,6 @@ class ShareOptionsBottomSheet extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.shareDhikr,
             style: TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: colorScheme.onSurface,
@@ -60,7 +59,7 @@ class ShareOptionsBottomSheet extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 16.w),
-             if (!PlatformUtils.isLinux)
+              if (!PlatformUtils.isLinux)
                 Expanded(
                   child: ShareOption(
                     icon: Icons.image,

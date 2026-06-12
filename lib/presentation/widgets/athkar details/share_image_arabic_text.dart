@@ -30,7 +30,6 @@ class ShareImageArabicText extends StatelessWidget {
       child: Text(
         arabicText,
         style: TextStyle(
-          fontFamily: 'Tajawal',
           fontSize: 20,
           height: 2.2,
           color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,

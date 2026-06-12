@@ -7,7 +7,7 @@ import 'package:huda/presentation/widgets/prayer_times/error_card.dart';
 
 class PrayerTimesErrorWidget extends StatelessWidget {
   final PrayerTimesError state;
-  
+
   const PrayerTimesErrorWidget({
     super.key,
     required this.state,
@@ -21,9 +21,8 @@ class PrayerTimesErrorWidget extends StatelessWidget {
         ActionButton(
           text: "Try Again",
           icon: Icons.refresh,
-          onPressed: () => context
-              .read<PrayerTimesCubit>()
-              .refreshLocationAndPrayerTimes(),
+          onPressed: () =>
+              context.read<PrayerTimesCubit>().refreshLocationAndPrayerTimes(),
         ),
       ],
     );

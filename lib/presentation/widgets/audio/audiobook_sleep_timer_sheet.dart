@@ -42,7 +42,6 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Amiri',
               color: isDark ? context.darkText : context.lightText,
             ),
           ),
@@ -50,7 +49,6 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
           ValueListenableBuilder<Duration?>(
             valueListenable: cubit.sleepRemaining,
             builder: (context, remaining, _) {
-              
               final selectedMinutes = cubit.initialSleepDuration?.inMinutes;
               final eocActive = remaining != null && remaining.isNegative;
 
@@ -91,7 +89,8 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
           SizedBox(height: 12.h),
           Divider(
             height: 1,
-            color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
+            color:
+                (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
           ),
           SizedBox(height: 4.h),
           _buildCancelRow(context, isDark),
@@ -148,8 +147,7 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
                     maxLines: 2,
                     style: TextStyle(
                       fontSize: 11.sp,
-                      fontWeight:
-                          isActive ? FontWeight.bold : FontWeight.w500,
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
                       color: isActive
                           ? primaryColor
                           : (isDark ? context.darkText : context.lightText),

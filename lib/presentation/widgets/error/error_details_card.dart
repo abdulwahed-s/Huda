@@ -11,7 +11,7 @@ class ErrorDetailsCard extends StatefulWidget {
   final Color errorCodeBg;
   final Color errorCodeText;
   final Color textColor;
-  
+
   const ErrorDetailsCard({
     required this.errorMessage,
     required this.isDark,
@@ -33,7 +33,7 @@ class _ErrorDetailsCardState extends State<ErrorDetailsCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       decoration: BoxDecoration(
         color: widget.isDark ? context.darkCardBackground : Colors.white,
@@ -75,7 +75,6 @@ class _ErrorDetailsCardState extends State<ErrorDetailsCard> {
                           color: widget.textColor,
                           fontWeight: FontWeight.w700,
                           fontSize: 17.sp,
-                          fontFamily: "Amiri",
                         ),
                       ),
                     ],
@@ -127,7 +126,6 @@ class _ErrorDetailsCardState extends State<ErrorDetailsCard> {
                                   Text(
                                     'Error Stack Trace',
                                     style: TextStyle(
-                                      fontFamily: "Amiri",
                                       color: widget.errorCodeText,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w600,

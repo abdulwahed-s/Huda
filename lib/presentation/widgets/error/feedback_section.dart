@@ -13,7 +13,7 @@ class FeedbackSection extends StatefulWidget {
   final Color borderColor;
   final Color shadowColor;
   final Color errorCodeBg;
-  
+
   const FeedbackSection({
     required this.isDark,
     required this.cardColor,
@@ -47,14 +47,14 @@ class _FeedbackSectionState extends State<FeedbackSection> {
               Text('Please enter a message before sending',
                   style: TextStyle(
                     fontSize: 14.sp,
-                    fontFamily: "Amiri",
                     fontWeight: FontWeight.w500,
                   )),
             ],
           ),
           backgroundColor: Colors.orange.shade600,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
           margin: EdgeInsets.all(16.w),
         ),
       );
@@ -83,7 +83,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return BlocConsumer<ErrorCubit, ErrorState>(
       listener: (context, state) {
         if (state is ErrorFailure) {
@@ -98,7 +98,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                     child: Text(state.message,
                         style: TextStyle(
                           fontSize: 14.sp,
-                          fontFamily: "Amiri",
                           fontWeight: FontWeight.w500,
                         )),
                   ),
@@ -148,7 +147,8 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                           Container(
                             padding: EdgeInsets.all(8.w),
                             decoration: BoxDecoration(
-                              color: context.primaryColor.withValues(alpha: 0.1),
+                              color:
+                                  context.primaryColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Icon(
@@ -164,7 +164,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                               color: context.primaryColor,
                               fontWeight: FontWeight.w700,
                               fontSize: 18.sp,
-                              fontFamily: "Amiri",
                             ),
                           ),
                         ],
@@ -175,7 +174,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: widget.subtitleColor,
                           fontSize: 14.sp,
-                          fontFamily: "Amiri",
                           height: 1.4,
                         ),
                       ),
@@ -199,7 +197,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: widget.textColor,
-                            fontFamily: "Amiri",
                             height: 1.4,
                           ),
                           decoration: InputDecoration(
@@ -207,7 +204,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
                               color: widget.subtitleColor,
-                              fontFamily: "Amiri",
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.r),
@@ -231,7 +227,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             counterStyle: TextStyle(
                               fontSize: 12.sp,
                               color: widget.subtitleColor,
-                              fontFamily: "Amiri",
                             ),
                           ),
                         ),
@@ -254,14 +249,12 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: widget.textColor,
-                            fontFamily: "Amiri",
                           ),
                           decoration: InputDecoration(
                             hintText: 'Email (optional — for a reply)',
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
                               color: widget.subtitleColor,
-                              fontFamily: "Amiri",
                             ),
                             prefixIcon: Icon(
                               Icons.mail_outline_rounded,
@@ -303,8 +296,8 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             elevation: 4,
-                            shadowColor: context.primaryColor
-                                .withValues(alpha: 0.3),
+                            shadowColor:
+                                context.primaryColor.withValues(alpha: 0.3),
                             disabledBackgroundColor: widget.subtitleColor,
                           ),
                           child: isSubmitting
@@ -316,8 +309,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                       height: 20.h,
                                       child: const CircularProgressIndicator(
                                         strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            Colors.white),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
                                       ),
                                     ),
                                     SizedBox(width: 12.w),
@@ -326,7 +320,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
-                                        fontFamily: "Amiri",
                                       ),
                                     ),
                                   ],
@@ -341,7 +334,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
-                                        fontFamily: "Amiri",
                                       ),
                                     ),
                                   ],
@@ -392,7 +384,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                 color: Colors.green.shade800,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16.sp,
-                                fontFamily: "Amiri",
                               ),
                             ),
                             SizedBox(height: 4.h),
@@ -401,7 +392,6 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: Colors.green.shade700,
                                 fontSize: 14.sp,
-                                fontFamily: "Amiri",
                                 height: 1.3,
                               ),
                             ),

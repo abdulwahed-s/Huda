@@ -56,7 +56,6 @@ class StatsCard extends StatelessWidget {
                   AppLocalizations.of(context)!.athkarCollection,
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontFamily: 'Tajawal',
                     fontWeight: FontWeight.bold,
                     color: isDark ? context.darkText : context.lightText,
                   ),
@@ -67,7 +66,6 @@ class StatsCard extends StatelessWidget {
                       .selectedAthkarGroups(totalCount),
                   style: TextStyle(
                     fontSize: 12.sp,
-                    fontFamily: 'Tajawal',
                     color: Colors.grey.shade600,
                   ),
                 ),

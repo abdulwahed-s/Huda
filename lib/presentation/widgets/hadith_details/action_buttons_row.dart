@@ -228,7 +228,6 @@ Shared from Huda App
               child: Text(
                 message,
                 style: TextStyle(
-                  fontFamily: "Amiri",
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                 ),

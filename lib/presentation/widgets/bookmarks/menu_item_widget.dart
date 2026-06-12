@@ -36,7 +36,6 @@ class MenuItemWidget extends StatelessWidget {
               fontSize: 14.sp,
               color: isDark ? Colors.white : Colors.black87,
               fontWeight: FontWeight.w500,
-              fontFamily: 'Amiri',
             ),
           ),
         ],
@@ -44,4 +43,3 @@ class MenuItemWidget extends StatelessWidget {
     );
   }
 }
-

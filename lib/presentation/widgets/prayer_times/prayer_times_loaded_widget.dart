@@ -30,7 +30,6 @@ class PrayerTimesLoadedWidget extends StatelessWidget {
                 AppLocalizations.of(context)!.location,
                 style: TextStyle(
                   fontSize: 12.sp,
-                  fontFamily: "Amiri",
                   color: Colors.grey[600],
                   fontWeight: FontWeight.w500,
                 ),
@@ -43,7 +42,6 @@ class PrayerTimesLoadedWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: "Amiri",
                   color: Theme.of(context).brightness == Brightness.dark
                       ? Colors.white
                       : Colors.black87,

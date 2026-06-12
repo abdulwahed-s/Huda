@@ -292,8 +292,10 @@ class _HomeState extends State<Home>
                     slideAnimation: _slideAnimation,
                     refreshHomeData: _refreshHomeData,
                     openLastReadSurah: _openLastReadSurah,
-                    openLastReciterAudio: (progress) => _openLastReciterAudio(progress as QuranAudioProgress),
-                    openLastRadioStation: (progress) => _openLastRadioStation(progress as RadioStationProgress),
+                    openLastReciterAudio: (progress) =>
+                        _openLastReciterAudio(progress as QuranAudioProgress),
+                    openLastRadioStation: (progress) =>
+                        _openLastRadioStation(progress as RadioStationProgress),
                     isDarkMode: isDarkMode,
                   ),
                 ),

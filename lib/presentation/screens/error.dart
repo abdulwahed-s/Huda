@@ -106,7 +106,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
             Text('Error details copied to clipboard',
                 style: TextStyle(
                   fontSize: 14.sp,
-                  fontFamily: "Amiri",
                   fontWeight: FontWeight.w500,
                 )),
           ],

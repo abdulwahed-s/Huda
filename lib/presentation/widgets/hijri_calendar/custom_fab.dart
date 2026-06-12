@@ -31,7 +31,6 @@ class CustomFAB extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
                 fontSize: 12.sp,
-                fontFamily: "Amiri",
               ),
             ),
           ),

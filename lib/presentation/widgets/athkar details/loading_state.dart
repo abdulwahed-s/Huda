@@ -21,7 +21,6 @@ class LoadingState extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.loading,
             style: TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 16.sp,
               color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),

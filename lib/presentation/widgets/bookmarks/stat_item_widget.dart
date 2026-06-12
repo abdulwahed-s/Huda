@@ -51,7 +51,6 @@ class StatItemWidget extends StatelessWidget {
               fontSize: 26.sp,
               fontWeight: FontWeight.w800,
               color: Colors.white,
-              fontFamily: 'Amiri',
               shadows: [
                 Shadow(
                   color: Colors.black.withValues(alpha: 0.3),
@@ -69,7 +68,6 @@ class StatItemWidget extends StatelessWidget {
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
                 color: Colors.white.withValues(alpha: 0.95),
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.center,
             ),
@@ -79,4 +77,3 @@ class StatItemWidget extends StatelessWidget {
     );
   }
 }
-

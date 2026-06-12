@@ -45,7 +45,6 @@ class ThemeToggleSection extends StatelessWidget {
                     fontSize: context.responsive(
                         mobile: 18.sp, tablet: 20.0, desktop: 20.0),
                     fontWeight: FontWeight.w600,
-                    fontFamily: "Amiri",
                     color: isDark ? context.darkText : context.lightText,
                   ),
                 ),

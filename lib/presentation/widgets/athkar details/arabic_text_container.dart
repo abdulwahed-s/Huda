@@ -25,7 +25,6 @@ class ArabicTextContainer extends StatelessWidget {
       child: Text(
         arabicText,
         style: TextStyle(
-          fontFamily: 'Tajawal',
           fontSize: 18.sp,
           height: 2.0,
           color: colorScheme.onSurface,

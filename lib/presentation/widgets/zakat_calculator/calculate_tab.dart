@@ -164,7 +164,6 @@ class CalculateTab extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600,
-                    fontFamily: "Amiri",
                   ),
                 ),
                 style: ElevatedButton.styleFrom(

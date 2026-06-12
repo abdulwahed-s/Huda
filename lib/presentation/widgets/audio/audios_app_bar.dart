@@ -33,7 +33,6 @@ class AudiosAppBar extends StatelessWidget {
           style: TextStyle(
             fontSize: 24.sp,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Amiri',
             color: isDark ? context.darkText : context.lightText,
           ),
         ),
@@ -52,7 +51,6 @@ class AudiosAppBar extends StatelessWidget {
                 ),
               ),
             ),
-            
             Positioned.directional(
               textDirection: Directionality.of(context),
               end: -20.w,
@@ -77,7 +75,6 @@ class AudiosAppBar extends StatelessWidget {
                 color: primary.withValues(alpha: 0.06),
               ),
             ),
-            
             Positioned(
               left: 0,
               right: 0,

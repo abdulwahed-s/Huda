@@ -22,7 +22,6 @@ class LoadingState extends StatelessWidget {
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 14.sp,
-              fontFamily: 'Amiri',
             ),
           ),
         ],
@@ -30,4 +29,3 @@ class LoadingState extends StatelessWidget {
     );
   }
 }
-

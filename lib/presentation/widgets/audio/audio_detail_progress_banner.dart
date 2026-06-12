@@ -4,9 +4,6 @@ import 'package:huda/core/services/audio_progress_service.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
-
 class AudioDetailProgressBanner extends StatelessWidget {
   final AudiobookProgress progress;
   final bool isDark;

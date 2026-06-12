@@ -91,7 +91,6 @@ class _EventDialogState extends State<EventDialog> {
                         : AppLocalizations.of(context)!.addEvent,
                     style: TextStyle(
                       fontSize: isTablet ? 20 : 16.sp,
-                      fontFamily: "Amiri",
                     ),
                   ),
                 ],
@@ -150,7 +149,6 @@ class _EventDialogState extends State<EventDialog> {
                   child: Text(AppLocalizations.of(context)!.cancel,
                       style: TextStyle(
                         fontSize: isTablet ? 14 : 12.sp,
-                        fontFamily: "Amiri",
                       )),
                 ),
                 ElevatedButton(
@@ -191,7 +189,6 @@ class _EventDialogState extends State<EventDialog> {
                         : AppLocalizations.of(context)!.saveEvent,
                     style: TextStyle(
                       fontSize: isTablet ? 14 : 12.sp,
-                      fontFamily: "Amiri",
                     ),
                   ),
                 ),
@@ -212,7 +209,6 @@ class _EventDialogState extends State<EventDialog> {
             labelText: AppLocalizations.of(context)!.eventTitle,
             labelStyle: TextStyle(
               fontSize: isTablet ? 14 : 12.sp,
-              fontFamily: "Amiri",
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
@@ -223,7 +219,6 @@ class _EventDialogState extends State<EventDialog> {
           ),
           style: TextStyle(
             fontSize: isTablet ? 14 : 12.sp,
-            fontFamily: "Amiri",
           ),
         ),
         SizedBox(height: 12.h),
@@ -234,7 +229,6 @@ class _EventDialogState extends State<EventDialog> {
             labelText: AppLocalizations.of(context)!.description,
             labelStyle: TextStyle(
               fontSize: isTablet ? 14 : 12.sp,
-              fontFamily: "Amiri",
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
@@ -245,7 +239,6 @@ class _EventDialogState extends State<EventDialog> {
           ),
           style: TextStyle(
             fontSize: isTablet ? 14 : 12.sp,
-            fontFamily: "Amiri",
           ),
         ),
       ],
@@ -261,12 +254,10 @@ class _EventDialogState extends State<EventDialog> {
             title: Text(AppLocalizations.of(context)!.receiveNotification,
                 style: TextStyle(
                   fontSize: isTablet ? 14 : 12.sp,
-                  fontFamily: "Amiri",
                 )),
             subtitle: Text(AppLocalizations.of(context)!.getNotifiedAboutEvent,
                 style: TextStyle(
                   fontSize: isTablet ? 12 : 10.sp,
-                  fontFamily: "Amiri",
                 )),
             onChanged: (value) => setState(() => _notify = value),
             contentPadding: EdgeInsets.zero,
@@ -275,7 +266,6 @@ class _EventDialogState extends State<EventDialog> {
           title: Text(AppLocalizations.of(context)!.allDayEvent,
               style: TextStyle(
                 fontSize: isTablet ? 14 : 12.sp,
-                fontFamily: "Amiri",
               )),
           value: _isAllDay,
           onChanged: (value) => setState(() => _isAllDay = value!),
@@ -306,7 +296,6 @@ class _EventDialogState extends State<EventDialog> {
                     : AppLocalizations.of(context)!.startTime,
                 style: TextStyle(
                   fontSize: isTablet ? 14 : 12.sp,
-                  fontFamily: "Amiri",
                 )),
             style: OutlinedButton.styleFrom(
               padding: isTablet
@@ -334,7 +323,6 @@ class _EventDialogState extends State<EventDialog> {
                     : AppLocalizations.of(context)!.endTime,
                 style: TextStyle(
                   fontSize: isTablet ? 14 : 12.sp,
-                  fontFamily: "Amiri",
                 )),
             style: OutlinedButton.styleFrom(
               padding: isTablet
@@ -363,7 +351,6 @@ class _EventDialogState extends State<EventDialog> {
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: isTablet ? 16 : 12.sp,
-                  fontFamily: "Amiri",
                 ),
               ),
               const Spacer(),
@@ -400,7 +387,6 @@ class _EventDialogState extends State<EventDialog> {
               label: Text(AppLocalizations.of(context)!.chooseColor,
                   style: TextStyle(
                     fontSize: isTablet ? 14 : 12.sp,
-                    fontFamily: "Amiri",
                   )),
               style: OutlinedButton.styleFrom(
                 padding:

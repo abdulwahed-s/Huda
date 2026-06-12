@@ -48,7 +48,6 @@ class ErrorView extends StatelessWidget {
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.red,
-                fontFamily: "Amiri",
               ),
             ),
             SizedBox(height: 12.h),
@@ -57,7 +56,6 @@ class ErrorView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey[600],
-                fontFamily: "Amiri",
               ),
               textAlign: TextAlign.center,
             ),
@@ -71,8 +69,7 @@ class ErrorView extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: context.primaryColor,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(
-                    horizontal: 24.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),

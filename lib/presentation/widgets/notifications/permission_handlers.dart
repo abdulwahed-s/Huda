@@ -57,7 +57,6 @@ class PermissionHandlers {
                 child: Text(
                   message,
                   style: TextStyle(
-                    fontFamily: 'Amiri',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,

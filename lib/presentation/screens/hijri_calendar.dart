@@ -282,7 +282,6 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
                       fontSize: 12.sp,
-                      fontFamily: "Amiri",
                     ),
                   ),
                 ),

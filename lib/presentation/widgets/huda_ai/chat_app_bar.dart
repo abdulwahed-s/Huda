@@ -69,7 +69,6 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
-                    fontFamily: 'Amiri',
                     color: isDark ? context.darkText : context.lightText,
                     letterSpacing: 0.5,
                     height: 1.2,
@@ -84,7 +83,6 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: isDark
                         ? context.darkText.withValues(alpha: 0.7)
                         : context.lightText.withValues(alpha: 0.6),
-                    fontFamily: 'Amiri',
                     letterSpacing: 0.3,
                     height: 1.1,
                   ),

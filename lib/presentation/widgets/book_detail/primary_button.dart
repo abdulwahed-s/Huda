@@ -56,7 +56,6 @@ class PrimaryButton extends StatelessWidget {
                   color: isPrimary ? Colors.white : context.primaryColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 14.sp,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ],

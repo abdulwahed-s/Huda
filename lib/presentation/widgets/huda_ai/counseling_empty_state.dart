@@ -159,7 +159,6 @@ class CounselingEmptyState extends StatelessWidget {
         fontSize: fontSize,
         fontWeight: FontWeight.bold,
         color: colorScheme.primary,
-        fontFamily: 'Amiri',
       ),
       textAlign: TextAlign.center,
     );
@@ -195,7 +194,6 @@ class CounselingEmptyState extends StatelessWidget {
               ? Colors.white.withValues(alpha: 0.7)
               : Colors.black87.withValues(alpha: 0.6),
           height: 1.4,
-          fontFamily: 'Amiri',
         ),
       ),
     );
@@ -338,7 +336,6 @@ class CounselingEmptyState extends StatelessWidget {
             fontSize: titleSize,
             fontWeight: FontWeight.w600,
             color: isDark ? Colors.white : Colors.black87,
-            fontFamily: 'Amiri',
           ),
         ),
         SizedBox(height: spacing),

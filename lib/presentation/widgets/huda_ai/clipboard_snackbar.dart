@@ -19,7 +19,7 @@ class ClipboardSnackbar {
             SizedBox(width: 8.w),
             Text(
               appLocalizations.messageCopied,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
           ],
         ),

@@ -77,7 +77,6 @@ class SupportCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsive(
                               mobile: 20.sp, tablet: 20.0, desktop: 20.0),
-                          fontFamily: "Amiri",
                           fontWeight: FontWeight.w700,
                           color: isDark ? context.darkText : context.lightText,
                         ),
@@ -88,7 +87,6 @@ class SupportCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsive(
                               mobile: 14.sp, tablet: 14.0, desktop: 14.0),
-                          fontFamily: "Amiri",
                           color: isDark
                               ? context.darkText.withValues(alpha: 0.7)
                               : context.lightText.withValues(alpha: 0.7),
@@ -155,14 +153,12 @@ class SupportCard extends StatelessWidget {
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
-                                  fontFamily: "Amiri",
                                 ),
                               ),
                               Text(
                                 AppLocalizations.of(context)!
                                     .rateAppDescription,
                                 style: TextStyle(
-                                  fontFamily: "Amiri",
                                   fontSize: 13.sp,
                                   color: Colors.white.withValues(alpha: 0.85),
                                 ),
@@ -245,14 +241,12 @@ class SupportCard extends StatelessWidget {
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
-                                  fontFamily: "Amiri",
                                 ),
                               ),
                               Text(
                                 AppLocalizations.of(context)!
                                     .detailedFeedbackSubtitle,
                                 style: TextStyle(
-                                  fontFamily: "Amiri",
                                   fontSize: 13.sp,
                                   color: Colors.white.withValues(alpha: 0.85),
                                 ),
@@ -343,13 +337,11 @@ class SupportCard extends StatelessWidget {
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
-                                  fontFamily: "Amiri",
                                 ),
                               ),
                               Text(
                                 AppLocalizations.of(context)!.issueDescription,
                                 style: TextStyle(
-                                  fontFamily: "Amiri",
                                   fontSize: 13.sp,
                                   color: Colors.white.withValues(alpha: 0.85),
                                 ),

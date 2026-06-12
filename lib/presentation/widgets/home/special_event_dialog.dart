@@ -65,8 +65,7 @@ class _EventDialogContentState extends State<_EventDialogContent>
     final palette = EventPalette.forEvent(widget.eventKey, widget.isDarkMode);
     final l10n = AppLocalizations.of(context)!;
     final content = _DialogEventContent.forEvent(widget.eventKey, l10n);
-    final isArabic =
-        Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
     final maxWidth = context.responsive(
       mobile: MediaQuery.of(context).size.width * 0.9,
       tablet: 480.0,
@@ -139,8 +138,8 @@ class _EventDialogContentState extends State<_EventDialogContent>
                           desktop: 40.w,
                         ),
                       ),
-                      child: _buildBody(
-                          context, palette, content, l10n, isArabic),
+                      child:
+                          _buildBody(context, palette, content, l10n, isArabic),
                     ),
                   ],
                 );
@@ -235,7 +234,6 @@ class _EventDialogContentState extends State<_EventDialogContent>
             fontSize: titleSize,
             fontWeight: FontWeight.bold,
             color: palette.text,
-            fontFamily: "Amiri",
             height: 1.3,
             letterSpacing: 0.3,
           ),
@@ -247,7 +245,6 @@ class _EventDialogContentState extends State<_EventDialogContent>
           style: TextStyle(
             fontSize: translationSize,
             color: palette.subtitle,
-            fontFamily: "Amiri",
             height: 1.4,
           ),
         ),
@@ -262,7 +259,6 @@ class _EventDialogContentState extends State<_EventDialogContent>
             style: TextStyle(
               fontSize: arabicSize,
               color: palette.accent,
-              fontFamily: "Amiri",
               height: 1.8,
               letterSpacing: 0.5,
             ),
@@ -275,7 +271,6 @@ class _EventDialogContentState extends State<_EventDialogContent>
             style: TextStyle(
               fontSize: arabicSize,
               color: palette.accent,
-              fontFamily: "Amiri",
               height: 1.8,
               letterSpacing: 0.5,
             ),
@@ -303,7 +298,6 @@ class _EventDialogContentState extends State<_EventDialogContent>
             style: TextStyle(
               fontSize: translationSize,
               color: palette.subtitle,
-              fontFamily: "Amiri",
               fontStyle: FontStyle.italic,
               height: 1.6,
             ),
@@ -342,7 +336,6 @@ class _EventDialogContentState extends State<_EventDialogContent>
           style: TextStyle(
             fontSize: guidanceSize,
             color: palette.text.withValues(alpha: 0.85),
-            fontFamily: "Amiri",
             height: 1.7,
           ),
         ),
@@ -393,8 +386,7 @@ class _DialogEventContent {
     required this.guidance,
   });
 
-  static _DialogEventContent forEvent(
-      String eventKey, AppLocalizations l10n) {
+  static _DialogEventContent forEvent(String eventKey, AppLocalizations l10n) {
     return switch (eventKey) {
       'ramadan' => _DialogEventContent(
           arabicText: l10n.eventRamadanArabic,

@@ -44,8 +44,7 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
     final subtitleColor =
         isDark ? Colors.grey.shade400 : const Color(0xFF64748B);
     final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
-    final fillColor =
-        isDark ? Colors.grey.shade900 : Colors.grey.shade50;
+    final fillColor = isDark ? Colors.grey.shade900 : Colors.grey.shade50;
 
     return Column(
       children: [
@@ -60,7 +59,6 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                   color: textColor,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
-                  fontFamily: 'Amiri',
                 ),
               ),
               SizedBox(height: 8.h),
@@ -71,13 +69,11 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: textColor,
-                  fontFamily: 'Amiri',
                 ),
                 decoration: InputDecoration(
                   hintText: 'Describe the issue or feedback...',
                   hintStyle: TextStyle(
                     color: subtitleColor,
-                    fontFamily: 'Amiri',
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
@@ -94,8 +90,9 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                   ),
                   filled: true,
                   fillColor: fillColor,
-                  counterStyle:
-                      TextStyle(color: subtitleColor, fontFamily: 'Amiri'),
+                  counterStyle: TextStyle(
+                    color: subtitleColor,
+                  ),
                 ),
               ),
               SizedBox(height: 12.h),
@@ -105,13 +102,11 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: textColor,
-                  fontFamily: 'Amiri',
                 ),
                 decoration: InputDecoration(
                   hintText: 'Email (optional — for a reply)',
                   hintStyle: TextStyle(
                     color: subtitleColor,
-                    fontFamily: 'Amiri',
                   ),
                   prefixIcon: Icon(
                     Icons.mail_outline_rounded,
@@ -133,8 +128,8 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                   ),
                   filled: true,
                   fillColor: fillColor,
-                  contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16.w, vertical: 14.h),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                 ),
               ),
             ],
@@ -154,7 +149,6 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600,
-                    fontFamily: 'Amiri',
                   ),
                 ),
                 style: ElevatedButton.styleFrom(

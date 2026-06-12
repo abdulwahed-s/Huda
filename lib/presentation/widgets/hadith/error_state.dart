@@ -27,7 +27,6 @@ class ErrorState extends StatelessWidget {
             'Error loading hadith books',
             style: TextStyle(
               fontSize: 18.sp,
-              fontFamily: 'Amiri',
               color:
                   isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
             ),
@@ -38,7 +37,6 @@ class ErrorState extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: 'Amiri',
               color: Colors.red[400],
             ),
           ),

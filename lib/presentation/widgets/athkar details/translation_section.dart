@@ -44,7 +44,6 @@ class TranslationSection extends StatelessWidget {
               Text(
                 AppLocalizations.of(context)!.translation,
                 style: TextStyle(
-                  fontFamily: 'Tajawal',
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                   color: colorScheme.primary,
@@ -56,7 +55,6 @@ class TranslationSection extends StatelessWidget {
           Text(
             translatedText,
             style: TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 15.sp,
               height: 1.6,
               color: colorScheme.onSurface.withValues(alpha: 0.8),

@@ -55,7 +55,6 @@ class ForceUpdateSection extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ],
@@ -67,7 +66,6 @@ class ForceUpdateSection extends StatelessWidget {
               fontSize: 13.sp,
               color: Colors.grey[600],
               height: 1.4,
-              fontFamily: 'Amiri',
             ),
           ),
           SizedBox(height: 16.h),
@@ -105,7 +103,6 @@ class ForceUpdateSection extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            fontFamily: 'Amiri',
                           ),
                         ),
                       ],
@@ -120,7 +117,6 @@ class ForceUpdateSection extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            fontFamily: 'Amiri',
                           ),
                         ),
                       ],
@@ -159,7 +155,6 @@ class ForceUpdateSection extends StatelessWidget {
                         color: Colors.green.shade800,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ),

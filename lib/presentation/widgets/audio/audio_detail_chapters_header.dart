@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
 class AudioDetailChaptersHeader extends StatelessWidget {
   final int count;
   final bool isDark;
@@ -33,7 +31,6 @@ class AudioDetailChaptersHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Amiri',
             color: isDark ? context.darkText : context.lightText,
           ),
         ),

@@ -64,7 +64,6 @@ class QiblahContentState extends State<QiblahContent>
         title: Text(
           AppLocalizations.of(context)!.qiblahDirection,
           style: TextStyle(
-            fontFamily: "Amiri",
             color: isDark ? Colors.white : Colors.black87,
           ),
         ),

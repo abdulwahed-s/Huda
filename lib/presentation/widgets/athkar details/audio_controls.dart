@@ -73,7 +73,6 @@ class AudioControls extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context)!.audio,
                       style: TextStyle(
-                        fontFamily: 'Tajawal',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                         color: colorScheme.primary,
@@ -85,7 +84,6 @@ class AudioControls extends StatelessWidget {
                             ? AppLocalizations.of(context)!.playing
                             : AppLocalizations.of(context)!.stopped,
                         style: TextStyle(
-                          fontFamily: 'Tajawal',
                           fontSize: 12.sp,
                           color: colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
@@ -126,7 +124,6 @@ class AudioControls extends StatelessWidget {
                   Text(
                     _formatDuration(audioPosition),
                     style: TextStyle(
-                      fontFamily: 'Tajawal',
                       fontSize: 12.sp,
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
@@ -134,7 +131,6 @@ class AudioControls extends StatelessWidget {
                   Text(
                     _formatDuration(audioDuration),
                     style: TextStyle(
-                      fontFamily: 'Tajawal',
                       fontSize: 12.sp,
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),

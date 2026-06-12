@@ -105,8 +105,8 @@ class _TasbihDhikrDialogState extends State<TasbihDhikrDialog> {
                     child: ListView.builder(
                       controller: _scrollController,
                       shrinkWrap: true,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 8.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                       itemCount: notes.length,
                       itemBuilder: (_, index) => TasbihDhikrItem(
                         text: notes[index].text,
@@ -220,7 +220,6 @@ class _DialogHeader extends StatelessWidget {
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: primaryColor,
-                    fontFamily: 'Amiri',
                   ),
                 ),
                 if (noteCount > 0)
@@ -274,7 +273,6 @@ class _EmptyDhikrState extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               color: isDark ? Colors.white38 : Colors.black38,
-              fontFamily: 'Amiri',
             ),
           ),
         ],
@@ -312,7 +310,6 @@ class _InputRow extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.enterDhikrHint,
                 hintStyle: TextStyle(
-                  fontFamily: 'Amiri',
                   fontSize: 14.sp,
                   color: isDark ? Colors.white38 : Colors.black38,
                 ),
@@ -334,7 +331,7 @@ class _InputRow extends StatelessWidget {
                 ),
                 isDense: true,
               ),
-              style: TextStyle(fontFamily: 'Amiri', fontSize: 15.sp),
+              style: TextStyle(fontSize: 15.sp),
               minLines: 1,
               maxLines: 2,
               textInputAction: TextInputAction.done,

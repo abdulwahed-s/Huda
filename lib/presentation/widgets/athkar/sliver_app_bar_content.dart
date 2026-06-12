@@ -40,7 +40,6 @@ class SliverAppBarContent extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.sp,
-                  fontFamily: 'Tajawal',
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -144,7 +143,6 @@ class SliverAppBarContent extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.sp,
-                        fontFamily: 'Tajawal',
                       ),
                       decoration: InputDecoration(
                         hintText:
@@ -152,7 +150,6 @@ class SliverAppBarContent extends StatelessWidget {
                         hintStyle: TextStyle(
                           color: Colors.white.withValues(alpha: 0.7),
                           fontSize: 14.sp,
-                          fontFamily: 'Tajawal',
                         ),
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(

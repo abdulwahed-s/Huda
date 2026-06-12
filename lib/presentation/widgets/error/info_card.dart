@@ -5,7 +5,7 @@ import 'package:huda/core/theme/theme_extension.dart';
 class InfoCard extends StatelessWidget {
   final bool isDark;
   final Color textColor;
-  
+
   const InfoCard({
     required this.isDark,
     required this.textColor,
@@ -15,7 +15,7 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
@@ -52,7 +52,6 @@ class InfoCard extends StatelessWidget {
                     color: isDark ? Colors.white : context.primaryColor,
                     fontWeight: FontWeight.w600,
                     fontSize: 14.sp,
-                    fontFamily: "Amiri",
                   ),
                 ),
                 SizedBox(height: 4.h),
@@ -61,7 +60,6 @@ class InfoCard extends StatelessWidget {
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: textColor.withValues(alpha: 0.8),
                     fontSize: 13.sp,
-                    fontFamily: "Amiri",
                     height: 1.4,
                   ),
                 ),

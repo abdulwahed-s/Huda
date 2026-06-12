@@ -35,8 +35,7 @@ class AthkarAudioPlayer {
       onStateChanged();
     });
 
-    _playerStateSubscription =
-        _audioPlayer.playerStateStream.listen((state) {
+    _playerStateSubscription = _audioPlayer.playerStateStream.listen((state) {
       if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       if (state.processingState == ProcessingState.completed) {
         _playNextAudio();
@@ -127,7 +126,7 @@ class AthkarAudioPlayer {
   void _showAudioErrorSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(fontFamily: 'Tajawal')),
+        content: Text(message, style: const TextStyle()),
         backgroundColor: Theme.of(context).colorScheme.error,
       ),
     );

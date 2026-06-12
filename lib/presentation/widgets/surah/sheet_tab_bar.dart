@@ -84,10 +84,10 @@ class SurahSheetTabBar extends StatelessWidget {
                 text: settingsLabel,
               ),
               if (!PlatformUtils.isLinux)
-              Tab(
-                icon: Icon(Icons.psychology_rounded, size: 20.sp),
-                text: memorizationLabel,
-              ),
+                Tab(
+                  icon: Icon(Icons.psychology_rounded, size: 20.sp),
+                  text: memorizationLabel,
+                ),
             ],
           ),
         ),

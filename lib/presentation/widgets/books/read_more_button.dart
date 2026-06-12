@@ -22,7 +22,6 @@ class ReadMoreButton extends StatelessWidget {
             fontSize: 13.sp,
             fontWeight: FontWeight.w600,
             color: context.primaryColor,
-            fontFamily: 'Amiri',
           ),
         ),
       ],

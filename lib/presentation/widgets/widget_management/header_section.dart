@@ -51,7 +51,6 @@ class HeaderSection extends StatelessWidget {
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontFamily: 'Amiri',
             ),
           ),
           SizedBox(height: 6.h),
@@ -61,7 +60,6 @@ class HeaderSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               color: Colors.white70,
-              fontFamily: 'Amiri',
             ),
           ),
         ],

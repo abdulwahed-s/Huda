@@ -15,8 +15,7 @@ class KhatmaCard extends StatelessWidget {
         color: isDark ? const Color(0xFF1E1E1E) : const Color(0xFFFFF9F2),
         borderRadius: BorderRadius.circular(18.r),
         border: Border.all(
-          color:
-              isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.06),
+          color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.06),
         ),
         boxShadow: isDark
             ? []

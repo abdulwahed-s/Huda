@@ -26,7 +26,6 @@ class ShareImageTranslation extends StatelessWidget {
       child: Text(
         translatedText,
         style: TextStyle(
-          fontFamily: 'Tajawal',
           fontSize: 16,
           height: 1.8,
           color: isDark ? const Color(0xFF1A1A2E) : colorScheme.primary,

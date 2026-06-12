@@ -52,7 +52,6 @@ class ErrorStateWidget extends StatelessWidget {
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: isDark ? context.darkText : context.lightText,
-                fontFamily: 'Amiri',
               ),
             ),
             SizedBox(height: 8.h),
@@ -63,7 +62,6 @@ class ErrorStateWidget extends StatelessWidget {
                 color: isDark
                     ? context.darkText.withValues(alpha: 0.7)
                     : context.lightText.withValues(alpha: 0.7),
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.center,
             ),

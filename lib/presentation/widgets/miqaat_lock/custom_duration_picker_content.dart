@@ -42,7 +42,6 @@ class CustomDurationPickerContent extends StatelessWidget {
             Text(
               l10n.customDuration,
               style: TextStyle(
-                fontFamily: 'Amiri',
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
               ),

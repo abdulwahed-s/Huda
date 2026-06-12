@@ -25,7 +25,6 @@ class ThemeModeDescription extends StatelessWidget {
               : AppLocalizations.of(context)!.lightmode,
           style: TextStyle(
             fontSize: 14.sp,
-            fontFamily: "Amiri",
             color: isDark
                 ? context.darkText.withValues(alpha: 0.7)
                 : context.lightText.withValues(alpha: 0.7),
@@ -35,4 +34,3 @@ class ThemeModeDescription extends StatelessWidget {
     );
   }
 }
-

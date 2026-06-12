@@ -82,8 +82,7 @@ class SurahCard extends StatelessWidget {
             boxShadow: isPlaying
                 ? [
                     BoxShadow(
-                      color:
-                          theme.colorScheme.primary.withValues(alpha: 0.08),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.08),
                       blurRadius: 10,
                       offset: const Offset(0, 3),
                     ),
@@ -96,8 +95,7 @@ class SurahCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.r),
               onTap: onPlay,
               child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
                 child: Row(
                   children: [
                     SurahCardNumberBadge(

@@ -14,18 +14,18 @@ class ClearAllConfirmationDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         AppLocalizations.of(context)!.clearAllBookmarks,
-        style: const TextStyle(fontFamily: 'Amiri'),
+        style: const TextStyle(),
       ),
       content: Text(
         AppLocalizations.of(context)!.clearAllBookmarksConfirmation,
-        style: const TextStyle(fontFamily: 'Amiri'),
+        style: const TextStyle(),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
             AppLocalizations.of(context)!.cancel,
-            style: const TextStyle(fontFamily: 'Amiri'),
+            style: const TextStyle(),
           ),
         ),
         TextButton(
@@ -33,7 +33,7 @@ class ClearAllConfirmationDialog extends StatelessWidget {
           style: TextButton.styleFrom(foregroundColor: Colors.red),
           child: Text(
             AppLocalizations.of(context)!.clearAll,
-            style: const TextStyle(fontFamily: 'Amiri'),
+            style: const TextStyle(),
           ),
         ),
       ],

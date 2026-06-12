@@ -4,8 +4,6 @@ import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/audio_detail_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
 class AudioDetailTrackTile extends StatefulWidget {
   final int index;
   final AudioTrack track;
@@ -86,7 +84,6 @@ class _AudioDetailTrackTileState extends State<AudioDetailTrackTile>
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
-                          fontFamily: 'Amiri',
                           color: widget.isDark
                               ? context.darkText
                               : context.lightText,

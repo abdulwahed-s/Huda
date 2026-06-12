@@ -43,7 +43,6 @@ class HeaderBanner extends StatelessWidget {
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
               color: context.primaryColor,
-              fontFamily: 'Amiri',
             ),
           ),
           SizedBox(height: 8.0.h),
@@ -55,7 +54,6 @@ class HeaderBanner extends StatelessWidget {
               color: isDark
                   ? Colors.white.withValues(alpha: 0.7)
                   : Colors.grey[600],
-              fontFamily: 'Amiri',
               height: 1.4,
             ),
           ),
@@ -64,4 +62,3 @@ class HeaderBanner extends StatelessWidget {
     );
   }
 }
-

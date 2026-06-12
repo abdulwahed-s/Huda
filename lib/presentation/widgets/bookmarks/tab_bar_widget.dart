@@ -35,12 +35,10 @@ class TabBarWidget extends StatelessWidget {
         labelStyle: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 14.sp,
-          fontFamily: 'Amiri',
         ),
         unselectedLabelStyle: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 14.sp,
-          fontFamily: 'Amiri',
         ),
         indicator: BoxDecoration(
           color: appColors.primary,
@@ -90,4 +88,3 @@ class TabBarWidget extends StatelessWidget {
     );
   }
 }
-

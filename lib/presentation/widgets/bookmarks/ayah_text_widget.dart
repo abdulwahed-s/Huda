@@ -34,7 +34,7 @@ class AyahTextWidget extends StatelessWidget {
         child: Text(
           ayahText,
           style: TextStyle(
-            fontFamily: getQuranFonts() ,
+            fontFamily: getQuranFonts(),
             fontSize: 20.sp,
             height: 2.0,
             color: isDark ? appColors.darkText : appColors.lightText,

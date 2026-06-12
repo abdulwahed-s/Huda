@@ -82,7 +82,6 @@ class _FeedbackScreenState extends State<FeedbackScreen>
                 AppLocalizations.of(context)!.feedbackEmptyWarning,
                 style: TextStyle(
                   fontSize: 14.sp,
-                  fontFamily: "Amiri",
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -139,7 +138,6 @@ class _FeedbackScreenState extends State<FeedbackScreen>
             color: textColor,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            fontFamily: "Amiri",
           ),
         ),
       ),
@@ -162,7 +160,6 @@ class _FeedbackScreenState extends State<FeedbackScreen>
                           l10n.feedbackSuccessMessage,
                           style: TextStyle(
                             fontSize: 14.sp,
-                            fontFamily: "Amiri",
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -189,7 +186,6 @@ class _FeedbackScreenState extends State<FeedbackScreen>
                             state.message,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              fontFamily: "Amiri",
                               fontWeight: FontWeight.w500,
                             ),
                           ),

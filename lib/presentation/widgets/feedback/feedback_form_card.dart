@@ -61,7 +61,6 @@ class FeedbackFormCard extends StatelessWidget {
               style: theme.textTheme.titleLarge?.copyWith(
                 color: textColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: "Amiri",
               ),
             ),
             SizedBox(height: 8.h),
@@ -69,7 +68,6 @@ class FeedbackFormCard extends StatelessWidget {
               l10n.feedbackFormSubtitle,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: subtitleColor,
-                fontFamily: "Amiri",
               ),
             ),
             SizedBox(height: 20.h),
@@ -82,7 +80,6 @@ class FeedbackFormCard extends StatelessWidget {
                 hintText: l10n.feedbackHintText,
                 hintStyle: TextStyle(
                   color: subtitleColor,
-                  fontFamily: "Amiri",
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
@@ -102,12 +99,10 @@ class FeedbackFormCard extends StatelessWidget {
                 fillColor: isDark ? Colors.grey.shade900 : Colors.grey.shade50,
                 counterStyle: TextStyle(
                   color: subtitleColor,
-                  fontFamily: "Amiri",
                 ),
               ),
               style: TextStyle(
                 fontSize: 16.sp,
-                fontFamily: "Amiri",
                 color: textColor,
                 height: 1.4,
               ),
@@ -120,7 +115,6 @@ class FeedbackFormCard extends StatelessWidget {
                 hintText: 'Email (optional — for a reply)',
                 hintStyle: TextStyle(
                   color: subtitleColor,
-                  fontFamily: "Amiri",
                 ),
                 prefixIcon: Icon(
                   Icons.mail_outline_rounded,
@@ -144,7 +138,6 @@ class FeedbackFormCard extends StatelessWidget {
               ),
               style: TextStyle(
                 fontSize: 14.sp,
-                fontFamily: "Amiri",
                 color: textColor,
               ),
             ),
@@ -172,8 +165,8 @@ class FeedbackFormCard extends StatelessWidget {
                             height: 20.w,
                             child: const CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           ),
                           SizedBox(width: 12.w),
@@ -182,7 +175,6 @@ class FeedbackFormCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Amiri",
                             ),
                           ),
                         ],
@@ -197,7 +189,6 @@ class FeedbackFormCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Amiri",
                             ),
                           ),
                         ],

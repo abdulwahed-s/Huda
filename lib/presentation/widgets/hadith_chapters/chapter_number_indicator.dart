@@ -29,7 +29,6 @@ class ChapterNumberIndicator extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: context.primaryColor,
-            fontFamily: "Amiri",
           ),
         ),
       ),

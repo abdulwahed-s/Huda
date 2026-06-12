@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/presentation/widgets/settings/color_theme_selection_section.dart';
+import 'package:huda/presentation/widgets/settings/font_selection_section.dart';
 import 'package:huda/presentation/widgets/settings/language_selection_section.dart';
 import 'package:huda/presentation/widgets/settings/support_card.dart';
 import 'package:huda/presentation/widgets/settings/text_size_section.dart';
@@ -50,6 +51,10 @@ class SettingsBody extends StatelessWidget {
                     height: context.responsive(
                         mobile: 24.h, tablet: 24.0, desktop: 24.0)),
                 const ColorThemeSelectionSection(),
+                SizedBox(
+                    height: context.responsive(
+                        mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                const FontSelectionSection(),
                 SizedBox(
                     height: context.responsive(
                         mobile: 24.h, tablet: 24.0, desktop: 24.0)),

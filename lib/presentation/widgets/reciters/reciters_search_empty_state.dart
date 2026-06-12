@@ -20,8 +20,7 @@ class RecitersSearchEmptyState extends StatelessWidget {
           SizedBox(height: 12.h),
           Text(
             l10n.noResultsFound,
-            style: TextStyle(
-                fontSize: 16.sp, color: theme.colorScheme.outline),
+            style: TextStyle(fontSize: 16.sp, color: theme.colorScheme.outline),
           ),
         ],
       ),

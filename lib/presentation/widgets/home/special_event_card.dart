@@ -34,7 +34,11 @@ class EventPalette {
     return switch (eventKey) {
       'ramadan' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF0D0D30), Color(0xFF1A1A50), Color(0xFF141445)],
+              gradient: [
+                Color(0xFF0D0D30),
+                Color(0xFF1A1A50),
+                Color(0xFF141445)
+              ],
               accent: Color(0xFFD4AF37),
               glow: Color(0xFFE8D5A0),
               text: Color(0xFFF5F0E8),
@@ -45,7 +49,11 @@ class EventPalette {
               icon: Icons.nightlight_round,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF8F4EC), Color(0xFFF0E8D8), Color(0xFFF5F0E8)],
+              gradient: [
+                Color(0xFFF8F4EC),
+                Color(0xFFF0E8D8),
+                Color(0xFFF5F0E8)
+              ],
               accent: Color(0xFF8B7532),
               glow: Color(0xFFD4AF37),
               text: Color(0xFF1A1A50),
@@ -57,7 +65,11 @@ class EventPalette {
             ),
       'last_ten_ramadan' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF080825), Color(0xFF151545), Color(0xFF0E0E3A)],
+              gradient: [
+                Color(0xFF080825),
+                Color(0xFF151545),
+                Color(0xFF0E0E3A)
+              ],
               accent: Color(0xFFE8C84C),
               glow: Color(0xFFF0DCA0),
               text: Color(0xFFF5F0E8),
@@ -68,7 +80,11 @@ class EventPalette {
               icon: Icons.nights_stay,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF5F2EA), Color(0xFFEDE4D0), Color(0xFFF2EDE2)],
+              gradient: [
+                Color(0xFFF5F2EA),
+                Color(0xFFEDE4D0),
+                Color(0xFFF2EDE2)
+              ],
               accent: Color(0xFF7A6528),
               glow: Color(0xFFD4AF37),
               text: Color(0xFF151545),
@@ -80,7 +96,11 @@ class EventPalette {
             ),
       'eid_al_fitr' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF0D2818), Color(0xFF1A4428), Color(0xFF143520)],
+              gradient: [
+                Color(0xFF0D2818),
+                Color(0xFF1A4428),
+                Color(0xFF143520)
+              ],
               accent: Color(0xFFFFD700),
               glow: Color(0xFFB8E4B8),
               text: Color(0xFFF0FAF0),
@@ -91,7 +111,11 @@ class EventPalette {
               icon: Icons.auto_awesome,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF0F7F0), Color(0xFFE4F0E4), Color(0xFFF0F7F0)],
+              gradient: [
+                Color(0xFFF0F7F0),
+                Color(0xFFE4F0E4),
+                Color(0xFFF0F7F0)
+              ],
               accent: Color(0xFF2E7D32),
               glow: Color(0xFF4CAF50),
               text: Color(0xFF1B5E20),
@@ -103,7 +127,11 @@ class EventPalette {
             ),
       'eid_al_adha' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF250D18), Color(0xFF4A1A30), Color(0xFF3A1425)],
+              gradient: [
+                Color(0xFF250D18),
+                Color(0xFF4A1A30),
+                Color(0xFF3A1425)
+              ],
               accent: Color(0xFFE8B923),
               glow: Color(0xFFF0D080),
               text: Color(0xFFF5EEF0),
@@ -114,7 +142,11 @@ class EventPalette {
               icon: Icons.mosque,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF8F0F2), Color(0xFFF0E4E8), Color(0xFFF5EEF0)],
+              gradient: [
+                Color(0xFFF8F0F2),
+                Color(0xFFF0E4E8),
+                Color(0xFFF5EEF0)
+              ],
               accent: Color(0xFF8B3A50),
               glow: Color(0xFFD4AF37),
               text: Color(0xFF4A1A30),
@@ -126,7 +158,11 @@ class EventPalette {
             ),
       'day_of_arafah' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF2A1A0D), Color(0xFF4A3018), Color(0xFF3A2512)],
+              gradient: [
+                Color(0xFF2A1A0D),
+                Color(0xFF4A3018),
+                Color(0xFF3A2512)
+              ],
               accent: Color(0xFFF4C430),
               glow: Color(0xFFF8E090),
               text: Color(0xFFF8F0E8),
@@ -137,7 +173,11 @@ class EventPalette {
               icon: Icons.terrain,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF8F2E8), Color(0xFFF0E4D0), Color(0xFFF5EEE2)],
+              gradient: [
+                Color(0xFFF8F2E8),
+                Color(0xFFF0E4D0),
+                Color(0xFFF5EEE2)
+              ],
               accent: Color(0xFF8B6520),
               glow: Color(0xFFD4A020),
               text: Color(0xFF3A2510),
@@ -149,7 +189,11 @@ class EventPalette {
             ),
       'first_ten_dhul_hijjah' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF2A1F0D), Color(0xFF4A3A18), Color(0xFF3A2E12)],
+              gradient: [
+                Color(0xFF2A1F0D),
+                Color(0xFF4A3A18),
+                Color(0xFF3A2E12)
+              ],
               accent: Color(0xFFFFB74D),
               glow: Color(0xFFFFD89B),
               text: Color(0xFFF8F4E8),
@@ -160,7 +204,11 @@ class EventPalette {
               icon: Icons.wb_sunny_outlined,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF8F4E8), Color(0xFFF0E8D0), Color(0xFFF5F0E2)],
+              gradient: [
+                Color(0xFFF8F4E8),
+                Color(0xFFF0E8D0),
+                Color(0xFFF5F0E2)
+              ],
               accent: Color(0xFF8B6B20),
               glow: Color(0xFFD4A830),
               text: Color(0xFF3A2E10),
@@ -172,7 +220,11 @@ class EventPalette {
             ),
       'ashura' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF0D1A25), Color(0xFF1A3045), Color(0xFF14253A)],
+              gradient: [
+                Color(0xFF0D1A25),
+                Color(0xFF1A3045),
+                Color(0xFF14253A)
+              ],
               accent: Color(0xFF85C1E9),
               glow: Color(0xFFB0D8F0),
               text: Color(0xFFF0F5F8),
@@ -183,7 +235,11 @@ class EventPalette {
               icon: Icons.brightness_7,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF0F5F8), Color(0xFFE0ECF4), Color(0xFFF0F5F8)],
+              gradient: [
+                Color(0xFFF0F5F8),
+                Color(0xFFE0ECF4),
+                Color(0xFFF0F5F8)
+              ],
               accent: Color(0xFF1A5276),
               glow: Color(0xFF2980B9),
               text: Color(0xFF0D2A3A),
@@ -195,7 +251,11 @@ class EventPalette {
             ),
       'days_of_tashreeq' => dark
           ? const EventPalette(
-              gradient: [Color(0xFF0D2218), Color(0xFF1A3E30), Color(0xFF143225)],
+              gradient: [
+                Color(0xFF0D2218),
+                Color(0xFF1A3E30),
+                Color(0xFF143225)
+              ],
               accent: Color(0xFFD4A853),
               glow: Color(0xFFE8D090),
               text: Color(0xFFF0F5F0),
@@ -206,7 +266,11 @@ class EventPalette {
               icon: Icons.celebration,
             )
           : const EventPalette(
-              gradient: [Color(0xFFF2F7F2), Color(0xFFE4F0E4), Color(0xFFF2F7F2)],
+              gradient: [
+                Color(0xFFF2F7F2),
+                Color(0xFFE4F0E4),
+                Color(0xFFF2F7F2)
+              ],
               accent: Color(0xFF3A6B2A),
               glow: Color(0xFF5A9A4A),
               text: Color(0xFF1A3A12),
@@ -413,7 +477,6 @@ class _SpecialEventCardState extends State<SpecialEventCard>
                   fontSize: titleSize,
                   fontWeight: FontWeight.bold,
                   color: palette.text,
-                  fontFamily: "Amiri",
                   height: 1.3,
                   letterSpacing: 0.2,
                 ),
@@ -426,7 +489,6 @@ class _SpecialEventCardState extends State<SpecialEventCard>
                 style: TextStyle(
                   fontSize: subtitleSize,
                   color: palette.subtitle,
-                  fontFamily: "Amiri",
                   height: 1.4,
                 ),
               ),

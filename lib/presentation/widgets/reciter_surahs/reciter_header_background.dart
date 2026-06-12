@@ -81,11 +81,12 @@ class ReciterHeaderBackground extends StatelessWidget {
                     width: 66.r,
                     height: 66.r,
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.18),
+                      color:
+                          theme.colorScheme.onPrimary.withValues(alpha: 0.18),
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: theme.colorScheme.onPrimary
-                            .withValues(alpha: 0.35),
+                        color:
+                            theme.colorScheme.onPrimary.withValues(alpha: 0.35),
                         width: 2,
                       ),
                     ),

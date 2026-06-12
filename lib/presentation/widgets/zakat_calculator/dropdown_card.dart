@@ -39,7 +39,6 @@ class DropdownCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              fontFamily: "Amiri",
             ),
           ),
           SizedBox(height: 12.h),
@@ -69,4 +68,3 @@ class DropdownCard extends StatelessWidget {
     );
   }
 }
-

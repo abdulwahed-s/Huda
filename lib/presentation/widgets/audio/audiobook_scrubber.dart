@@ -44,13 +44,13 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
               stream: widget.player.bufferedPositionStream,
               builder: (context, bufSnap) {
                 final buffered = bufSnap.data ?? Duration.zero;
-                final bufferedMs =
-                    buffered.inMilliseconds.toDouble().clamp(0.0, maxMs > 0 ? maxMs : 0.0);
+                final bufferedMs = buffered.inMilliseconds
+                    .toDouble()
+                    .clamp(0.0, maxMs > 0 ? maxMs : 0.0);
 
                 return Stack(
                   alignment: Alignment.center,
                   children: [
-                    
                     if (maxMs > 0)
                       LayoutBuilder(
                         builder: (ctx, constraints) {
@@ -68,8 +68,7 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
                                 height: 6.h,
                                 width: trackWidth * bufferedFraction,
                                 decoration: BoxDecoration(
-                                  color:
-                                      primaryColor.withValues(alpha: 0.25),
+                                  color: primaryColor.withValues(alpha: 0.25),
                                   borderRadius: BorderRadius.circular(3.r),
                                 ),
                               ),
@@ -103,8 +102,8 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
                             : null,
                         onChangeEnd: maxMs > 0
                             ? (v) {
-                                widget.onSeek(
-                                    Duration(milliseconds: v.round()));
+                                widget
+                                    .onSeek(Duration(milliseconds: v.round()));
                                 setState(() => _dragValue = null);
                               }
                             : null,

@@ -33,7 +33,6 @@ class BismillahWidget extends StatelessWidget {
           Text(
             '\u{FDFD}',
             style: TextStyle(
-              fontFamily: 'Amiri',
               fontSize: 28.sp,
               color: customTextColor ??
                   (Theme.of(context).brightness == Brightness.dark

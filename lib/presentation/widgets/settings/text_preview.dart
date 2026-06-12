@@ -31,7 +31,6 @@ class TextPreview extends StatelessWidget {
         style: TextStyle(
           fontSize: 16.sp * scale,
           height: 1.5,
-          fontFamily: "Amiri",
           color: isDark ? context.darkText : context.lightText,
         ),
         textAlign: TextAlign.center,
@@ -39,4 +38,3 @@ class TextPreview extends StatelessWidget {
     );
   }
 }
-

@@ -91,7 +91,6 @@ class _PersistentPrayerCountdownControlWidgetState
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                             color: isDark ? Colors.white : Colors.black87,
-                            fontFamily: "Amiri",
                           ),
                         ),
                         SizedBox(height: 1.h),
@@ -102,7 +101,6 @@ class _PersistentPrayerCountdownControlWidgetState
                             fontSize: 10.sp,
                             color: Colors.grey[600],
                             fontStyle: FontStyle.italic,
-                            fontFamily: "Amiri",
                           ),
                         ),
                       ],
@@ -179,7 +177,6 @@ class _PersistentPrayerCountdownControlWidgetState
                             color: _countdownService.isRunning
                                 ? Colors.green
                                 : Colors.red,
-                            fontFamily: "Amiri",
                           ),
                         ),
                         SizedBox(height: 1.h),
@@ -192,7 +189,6 @@ class _PersistentPrayerCountdownControlWidgetState
                           style: TextStyle(
                             fontSize: 10.sp,
                             color: Colors.grey[600],
-                            fontFamily: "Amiri",
                           ),
                         ),
                       ],
@@ -216,7 +212,6 @@ class _PersistentPrayerCountdownControlWidgetState
                         color: _countdownService.isRunning
                             ? Colors.green
                             : Colors.red,
-                        fontFamily: "Amiri",
                       ),
                     ),
                   ),
@@ -252,7 +247,6 @@ class _PersistentPrayerCountdownControlWidgetState
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[600],
-                          fontFamily: "Amiri",
                         ),
                       ),
                     ],
@@ -341,7 +335,6 @@ class _PersistentPrayerCountdownControlWidgetState
                             fontSize: 11.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue[700],
-                            fontFamily: "Amiri",
                           ),
                         ),
                         SizedBox(height: 3.h),
@@ -352,7 +345,6 @@ class _PersistentPrayerCountdownControlWidgetState
                             fontSize: 10.sp,
                             color: Colors.blue[600],
                             height: 1.3,
-                            fontFamily: "Amiri",
                           ),
                         ),
                       ],
@@ -382,7 +374,6 @@ class _PersistentPrayerCountdownControlWidgetState
         style: TextStyle(
           fontSize: 11.sp,
           fontWeight: FontWeight.bold,
-          fontFamily: "Amiri",
         ),
       ),
       style: ElevatedButton.styleFrom(
@@ -481,7 +472,6 @@ class _PersistentPrayerCountdownControlWidgetState
                           fontSize: 13.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontFamily: "Amiri",
                         ),
                       ),
                       SizedBox(height: 2.h),
@@ -490,7 +480,6 @@ class _PersistentPrayerCountdownControlWidgetState
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.white.withValues(alpha: 0.9),
-                          fontFamily: "Amiri",
                         ),
                       ),
                     ],

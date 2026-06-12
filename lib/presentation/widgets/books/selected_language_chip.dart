@@ -32,7 +32,8 @@ class SelectedLanguageChip extends StatelessWidget {
                 ),
               ),
               backgroundColor: context.primaryColor,
-              deleteIcon: const Icon(Icons.close, color: Colors.white, size: 18),
+              deleteIcon:
+                  const Icon(Icons.close, color: Colors.white, size: 18),
               onDeleted: onClear,
             ),
           ],

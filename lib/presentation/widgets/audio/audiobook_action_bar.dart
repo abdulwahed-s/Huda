@@ -101,7 +101,6 @@ class AudiobookActionBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Amiri',
                 color: isDark ? context.darkText : context.lightText,
               ),
             ),
@@ -142,9 +141,8 @@ class AudiobookActionBar extends StatelessWidget {
                           '${s}x',
                           style: TextStyle(
                             fontSize: 15.sp,
-                            fontWeight: selected
-                                ? FontWeight.bold
-                                : FontWeight.w500,
+                            fontWeight:
+                                selected ? FontWeight.bold : FontWeight.w500,
                             color: selected
                                 ? primaryColor
                                 : (isDark

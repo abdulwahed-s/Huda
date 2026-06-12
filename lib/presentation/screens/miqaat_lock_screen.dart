@@ -83,7 +83,6 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
         title: Text(
           l10n.miqaatLock,
           style: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -233,8 +232,6 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
     );
   }
 
-
-
   void _showCustomDurationPicker(
       BuildContext blocContext, int currentDuration) {
     final cubit = blocContext.read<MiqaatLockCubit>();
@@ -264,7 +261,8 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
               builder: (innerContext, setState) {
                 return CustomDurationPickerContent(
                   selectedDuration: selectedDuration,
-                  onChanged: (value) => setState(() => selectedDuration = value),
+                  onChanged: (value) =>
+                      setState(() => selectedDuration = value),
                   onCancel: () => Navigator.pop(dialogContext),
                   onConfirm: () {
                     cubit.setGoalDuration(selectedDuration);

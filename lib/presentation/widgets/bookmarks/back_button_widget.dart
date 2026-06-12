@@ -40,4 +40,3 @@ class BackButtonWidget extends StatelessWidget {
     );
   }
 }
-

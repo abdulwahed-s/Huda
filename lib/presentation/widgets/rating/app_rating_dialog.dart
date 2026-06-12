@@ -93,7 +93,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                 AppLocalizations.of(context)!.pleaseSelectRating,
                 style: TextStyle(
                   fontSize: 14.sp,
-                  fontFamily: "Amiri",
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -121,7 +120,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                 AppLocalizations.of(context)!.provideFeedback,
                 style: TextStyle(
                   fontSize: 14.sp,
-                  fontFamily: "Amiri",
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -184,7 +182,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                       message,
                       style: TextStyle(
                         fontSize: 14.sp,
-                        fontFamily: "Amiri",
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -212,7 +209,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                       state.message,
                       style: TextStyle(
                         fontSize: 14.sp,
-                        fontFamily: "Amiri",
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -270,7 +266,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                     AppLocalizations.of(context)!.rateAppTitle,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      fontFamily: "Amiri",
                       color:
                           isDark ? context.darkText : const Color(0xFF1E293B),
                     ),
@@ -283,7 +278,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                       color: isDark
                           ? Colors.grey.shade400
                           : const Color(0xFF64748B),
-                      fontFamily: "Amiri",
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -333,7 +327,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                     color: isDark
                                         ? context.darkText
                                         : const Color(0xFF1E293B),
-                                    fontFamily: "Amiri",
                                   ),
                                 ),
                                 SizedBox(height: 8.h),
@@ -348,7 +341,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                       color: isDark
                                           ? Colors.grey.shade500
                                           : Colors.grey.shade600,
-                                      fontFamily: "Amiri",
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12.r),
@@ -376,7 +368,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                   ),
                                   style: TextStyle(
                                     fontSize: 14.sp,
-                                    fontFamily: "Amiri",
                                     color: isDark
                                         ? context.darkText
                                         : const Color(0xFF1E293B),
@@ -392,7 +383,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                       color: isDark
                                           ? Colors.grey.shade500
                                           : Colors.grey.shade600,
-                                      fontFamily: "Amiri",
                                     ),
                                     prefixIcon: Icon(
                                       Icons.mail_outline_rounded,
@@ -427,7 +417,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                   ),
                                   style: TextStyle(
                                     fontSize: 14.sp,
-                                    fontFamily: "Amiri",
                                     color: isDark
                                         ? context.darkText
                                         : const Color(0xFF1E293B),
@@ -474,7 +463,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
-                                        fontFamily: "Amiri",
                                       ),
                                     ),
                             ),
@@ -492,7 +480,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                       color: isDark
                                           ? Colors.grey.shade400
                                           : Colors.grey.shade600,
-                                      fontFamily: "Amiri",
                                     ),
                                   ),
                                 ),
@@ -507,7 +494,6 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                       color: isDark
                                           ? Colors.grey.shade400
                                           : Colors.grey.shade600,
-                                      fontFamily: "Amiri",
                                     ),
                                   ),
                                 ),

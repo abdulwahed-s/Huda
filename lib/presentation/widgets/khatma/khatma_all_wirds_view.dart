@@ -112,9 +112,7 @@ class _WirdDayTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: isCurrent
             ? accent.withValues(alpha: isDark ? 0.15 : 0.08)
-            : (isDark
-                ? const Color(0xFF1E1E1E)
-                : const Color(0xFFFFF9F2)),
+            : (isDark ? const Color(0xFF1E1E1E) : const Color(0xFFFFF9F2)),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: isCurrent
@@ -125,13 +123,11 @@ class _WirdDayTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
+        contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
         leading: Container(
           width: 34.r,
           height: 34.r,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: badgeColor),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: badgeColor),
           child: Center(child: badgeChild),
         ),
         title: Text(
@@ -139,9 +135,8 @@ class _WirdDayTile extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.w900,
             fontSize: 13.sp,
-            color: isCurrent
-                ? accent
-                : (isDark ? Colors.white : Colors.black87),
+            color:
+                isCurrent ? accent : (isDark ? Colors.white : Colors.black87),
           ),
         ),
         subtitle: Text(

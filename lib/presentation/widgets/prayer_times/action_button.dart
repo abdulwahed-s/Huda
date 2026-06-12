@@ -24,7 +24,6 @@ class ActionButton extends StatelessWidget {
           style: TextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w600,
-            fontFamily: "Amiri",
           ),
         ),
         style: ElevatedButton.styleFrom(

@@ -25,7 +25,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
             AppLocalizations.of(context)!.deleteEvent,
             style: TextStyle(
               fontSize: 16.sp,
-              fontFamily: "Amiri",
             ),
           ),
         ],
@@ -40,7 +39,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(
               fontSize: 12.sp,
-              fontFamily: "Amiri",
             ),
           ),
         ),
@@ -52,7 +50,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontSize: 12.sp,
-              fontFamily: "Amiri",
             ),
           ),
         ),

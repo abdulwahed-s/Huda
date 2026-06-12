@@ -63,7 +63,6 @@ class PageIndicator extends StatelessWidget {
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
                       color: context.primaryColor,
-                      fontFamily: 'Amiri',
                     ),
                   ),
                 ],

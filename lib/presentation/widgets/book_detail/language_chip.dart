@@ -78,7 +78,6 @@ class LanguageChip extends StatelessWidget {
                     color: isSelected
                         ? context.primaryColor
                         : context.primaryColor.withValues(alpha: 0.8),
-                    fontFamily: 'Amiri',
                   ),
                 ),
                 SizedBox(width: 6.w),

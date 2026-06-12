@@ -38,7 +38,6 @@ class BookDetailAppBar extends StatelessWidget {
         title: Text(
           title,
           style: TextStyle(
-            fontFamily: 'Amiri',
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: isDark ? Colors.white : const Color(0xFF2C2C2C),

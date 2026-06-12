@@ -56,7 +56,6 @@ class PrayerTimesCardWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 17.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: "Amiri",
                       color: Colors.white,
                     ),
                   ),

@@ -25,7 +25,6 @@ class ShareDialog extends StatelessWidget {
           const Text(
             'Share Book',
             style: TextStyle(
-              fontFamily: 'Amiri',
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -33,7 +32,7 @@ class ShareDialog extends StatelessWidget {
       ),
       content: Text(
         'How would you like to share "$title"?',
-        style: const TextStyle(fontFamily: 'Amiri'),
+        style: const TextStyle(),
       ),
       actions: [
         Column(
@@ -85,7 +84,6 @@ class ShareDialog extends StatelessWidget {
                 style: TextStyle(
                   color: context.primaryColor,
                   fontWeight: FontWeight.w500,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ],

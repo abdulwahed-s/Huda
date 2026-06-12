@@ -27,7 +27,6 @@ class OfflineState extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.noInternetConnection,
             style: TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               color: colorScheme.onSurface.withValues(alpha: 0.7),
@@ -39,7 +38,6 @@ class OfflineState extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: colorScheme.primary,
               textStyle: TextStyle(
-                fontFamily: 'Tajawal',
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
               ),

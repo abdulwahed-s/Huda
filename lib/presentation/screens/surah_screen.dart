@@ -119,8 +119,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     final instanceName =
         _readingMode == QuranReadingMode.tajweed ? 'tajweed' : 'qcf4';
     try {
-      final fontService =
-          getIt<QcfFontService>(instanceName: instanceName);
+      final fontService = getIt<QcfFontService>(instanceName: instanceName);
       if (fontService.areFontsReady) {
         fontService.ensurePagesLoaded([pageNumber, 1]);
       }

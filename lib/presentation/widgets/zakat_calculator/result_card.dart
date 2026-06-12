@@ -84,7 +84,6 @@ class ResultCard extends StatelessWidget {
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey[600],
-                    fontFamily: "Amiri",
                     letterSpacing: 0.3,
                   ),
                 ),
@@ -94,7 +93,6 @@ class ResultCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: "Amiri",
                     color: color,
                   ),
                 ),

@@ -42,7 +42,6 @@ class ResetButton extends StatelessWidget {
           AppLocalizations.of(context)!.reset,
           style: TextStyle(
             fontSize: 13.sp,
-            fontFamily: "Amiri",
             fontWeight: FontWeight.w600,
             color: scale != 1.0
                 ? context.primaryColor
@@ -53,4 +52,3 @@ class ResetButton extends StatelessWidget {
     );
   }
 }
-

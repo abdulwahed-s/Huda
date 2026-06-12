@@ -62,7 +62,6 @@ class ContinueListeningCard extends StatelessWidget {
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontFamily: 'Amiri',
                         ),
                       ),
                       SizedBox(height: 4.h),
@@ -73,7 +72,6 @@ class ContinueListeningCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: Colors.white.withValues(alpha: 0.95),
-                          fontFamily: 'Amiri',
                         ),
                       ),
                       SizedBox(height: 2.h),

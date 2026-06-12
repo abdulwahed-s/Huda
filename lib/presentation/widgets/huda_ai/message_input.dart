@@ -57,7 +57,6 @@ class MessageInput extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: isDark ? context.darkText : context.lightText,
-                          fontFamily: 'Amiri',
                         ),
                         decoration: InputDecoration(
                           hintText:

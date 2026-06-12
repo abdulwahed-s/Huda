@@ -64,7 +64,6 @@ class EditNoteDialog extends StatelessWidget {
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                           color: isDark ? Colors.white : Colors.black87,
-                          fontFamily: 'Amiri',
                         ),
                       ),
                       SizedBox(height: 4.h),
@@ -73,7 +72,6 @@ class EditNoteDialog extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: isDark ? Colors.grey[400] : Colors.grey[600],
-                          fontFamily: 'Amiri',
                         ),
                       ),
                     ],
@@ -88,7 +86,6 @@ class EditNoteDialog extends StatelessWidget {
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: isDark ? Colors.white : Colors.black87,
-                fontFamily: 'Amiri',
               ),
             ),
             SizedBox(height: 8.h),
@@ -107,7 +104,6 @@ class EditNoteDialog extends StatelessWidget {
                   hintText: AppLocalizations.of(context)!.enterNotesHint,
                   hintStyle: TextStyle(
                     color: isDark ? Colors.grey[500] : Colors.grey[500],
-                    fontFamily: 'Amiri',
                   ),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(16.w),
@@ -115,7 +111,6 @@ class EditNoteDialog extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: isDark ? Colors.white : Colors.black87,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ),
@@ -136,7 +131,6 @@ class EditNoteDialog extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ),
@@ -159,7 +153,6 @@ class EditNoteDialog extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ),
@@ -172,4 +165,3 @@ class EditNoteDialog extends StatelessWidget {
     );
   }
 }
-

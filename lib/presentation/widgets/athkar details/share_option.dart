@@ -61,7 +61,6 @@ class ShareOption extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontFamily: 'Tajawal',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: colorScheme.primary,

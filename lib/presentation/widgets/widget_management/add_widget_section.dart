@@ -102,7 +102,6 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ],
@@ -147,7 +146,6 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
             fontSize: 13.sp,
             color: Colors.grey[600],
             height: 1.4,
-            fontFamily: 'Amiri',
           ),
         ),
         SizedBox(height: 16.h),
@@ -174,7 +172,6 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    fontFamily: 'Amiri',
                   ),
                 ),
               ],
@@ -254,7 +251,6 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
-                  fontFamily: 'Amiri',
                   color: widget.isDark ? Colors.white : Colors.black87,
                 ),
               ),
@@ -297,7 +293,6 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
                         color:
                             widget.isDark ? Colors.grey[300] : Colors.grey[700],
                         height: 1.4,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ),

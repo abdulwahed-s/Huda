@@ -76,7 +76,6 @@ class CustomVersesSection extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Amiri',
                 ),
               ),
               const Spacer(),
@@ -111,7 +110,6 @@ class CustomVersesSection extends StatelessWidget {
                   fontSize: 11.sp,
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w600,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ),
@@ -128,7 +126,6 @@ class CustomVersesSection extends StatelessWidget {
                     AppLocalizations.of(context)!.loadingVerses,
                     style: TextStyle(
                       color: Colors.grey[600],
-                      fontFamily: 'Amiri',
                     ),
                   ),
                 ],
@@ -158,7 +155,6 @@ class CustomVersesSection extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      fontFamily: 'Amiri',
                       color: Colors.grey[600],
                     ),
                   ),
@@ -170,7 +166,6 @@ class CustomVersesSection extends StatelessWidget {
                       fontSize: 12.sp,
                       color: Colors.grey[500],
                       height: 1.4,
-                      fontFamily: 'Amiri',
                     ),
                   ),
                 ],
@@ -195,7 +190,8 @@ class CustomVersesSection extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        color:
+                            Theme.of(context).colorScheme.primary.withAlpha(26),
                       ),
                     ),
                     child: Column(
@@ -216,7 +212,6 @@ class CustomVersesSection extends StatelessWidget {
                                         fontSize: 16.sp,
                                         height: 1.8,
                                         fontWeight: FontWeight.w500,
-                                        fontFamily: 'Amiri',
                                       ),
                                     ),
                                   ),
@@ -232,7 +227,8 @@ class CustomVersesSection extends StatelessWidget {
                                             .colorScheme
                                             .primary
                                             .withAlpha(26),
-                                        borderRadius: BorderRadius.circular(10.r),
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
                                       ),
                                       child: Text(
                                         _extractReference(verse),
@@ -242,7 +238,6 @@ class CustomVersesSection extends StatelessWidget {
                                               .colorScheme
                                               .primary,
                                           fontWeight: FontWeight.w600,
-                                          fontFamily: 'Amiri',
                                         ),
                                       ),
                                     ),
@@ -282,7 +277,6 @@ class CustomVersesSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'Amiri',
                         ),
                       ),
                       style: OutlinedButton.styleFrom(

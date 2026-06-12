@@ -17,8 +17,9 @@ class OfflineAudioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final author =
-        audiobook.preparedBy.isNotEmpty ? (audiobook.preparedBy.first.title ?? '') : '';
+    final author = audiobook.preparedBy.isNotEmpty
+        ? (audiobook.preparedBy.first.title ?? '')
+        : '';
 
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
@@ -84,7 +85,6 @@ class OfflineAudioCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Amiri',
                           color: isDark ? context.darkText : context.lightText,
                           height: 1.3,
                         ),
@@ -97,8 +97,9 @@ class OfflineAudioCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: (isDark ? context.darkText : context.lightText)
-                                .withValues(alpha: 0.65),
+                            color:
+                                (isDark ? context.darkText : context.lightText)
+                                    .withValues(alpha: 0.65),
                           ),
                         ),
                       ],

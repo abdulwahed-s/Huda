@@ -36,7 +36,6 @@ class NavigationButton extends StatelessWidget {
         label,
         style: TextStyle(
           fontSize: 16.sp,
-          fontFamily: "Amiri",
           fontWeight: FontWeight.w600,
         ),
       ),

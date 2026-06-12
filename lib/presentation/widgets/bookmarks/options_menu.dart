@@ -23,7 +23,7 @@ class OptionsMenu extends StatelessWidget {
             leading: const Icon(Icons.refresh),
             title: Text(
               AppLocalizations.of(context)!.refresh,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
             onTap: onRefresh,
           ),
@@ -33,7 +33,6 @@ class OptionsMenu extends StatelessWidget {
               AppLocalizations.of(context)!.clearAllBookmarks,
               style: const TextStyle(
                 color: Colors.red,
-                fontFamily: 'Amiri',
               ),
             ),
             onTap: onClearAll,
@@ -43,4 +42,3 @@ class OptionsMenu extends StatelessWidget {
     );
   }
 }
-

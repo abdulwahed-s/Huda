@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
-
-
 class AudioDetailSkeletonLoader extends StatelessWidget {
   final bool isDark;
   const AudioDetailSkeletonLoader({super.key, required this.isDark});
@@ -65,8 +63,8 @@ class AudioDetailSkeletonLoader extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                          child: _shimmerBar(double.infinity, 52.h,
-                              radius: 16.r)),
+                          child:
+                              _shimmerBar(double.infinity, 52.h, radius: 16.r)),
                       SizedBox(width: 12.w),
                       _shimmerBar(52.w, 52.h, radius: 16.r),
                     ],

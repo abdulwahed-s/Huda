@@ -29,7 +29,6 @@ class ErrorCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
-                  fontFamily: "Amiri",
                   color: Colors.red,
                 ),
               ),

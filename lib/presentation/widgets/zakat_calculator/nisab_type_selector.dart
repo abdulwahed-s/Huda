@@ -32,7 +32,6 @@ class NisabTypeSelector extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              fontFamily: "Amiri",
             ),
           ),
           SizedBox(height: 12.h),
@@ -50,14 +49,12 @@ class NisabTypeSelector extends StatelessWidget {
                       AppLocalizations.of(context)!.gold,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        fontFamily: "Amiri",
                       ),
                     ),
                     subtitle: Text(
                       AppLocalizations.of(context)!.goldGrams,
                       style: TextStyle(
                         fontSize: 11.sp,
-                        fontFamily: "Amiri",
                       ),
                     ),
                     value: NisabType.gold,
@@ -70,14 +67,12 @@ class NisabTypeSelector extends StatelessWidget {
                       AppLocalizations.of(context)!.silver,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        fontFamily: "Amiri",
                       ),
                     ),
                     subtitle: Text(
                       AppLocalizations.of(context)!.silverGrams,
                       style: TextStyle(
                         fontSize: 11.sp,
-                        fontFamily: "Amiri",
                       ),
                     ),
                     value: NisabType.silver,

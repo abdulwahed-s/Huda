@@ -17,7 +17,6 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         AppLocalizations.of(context)!.settings,
         style: TextStyle(
-          fontFamily: "Amiri",
           fontWeight: FontWeight.w600,
           fontSize: 22.sp,
           color: isDark ? context.darkText : context.lightText,
@@ -30,5 +29,3 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
-
-

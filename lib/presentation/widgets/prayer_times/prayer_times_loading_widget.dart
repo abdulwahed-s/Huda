@@ -19,7 +19,6 @@ class PrayerTimesLoadingWidget extends StatelessWidget {
             AppLocalizations.of(context)!.loading,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: "Amiri",
               color: Colors.grey[600],
             ),
           ),

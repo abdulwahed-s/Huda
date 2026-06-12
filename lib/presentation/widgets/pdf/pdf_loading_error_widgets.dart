@@ -37,11 +37,11 @@ class PdfLoadingWidget extends StatelessWidget {
               width: 60,
               height: 60,
               child: CircularProgressIndicator(
-                value: totalBytes != null ? bytesDownloaded / totalBytes! : null,
+                value:
+                    totalBytes != null ? bytesDownloaded / totalBytes! : null,
                 strokeWidth: 4,
                 backgroundColor: colorScheme.outline.withValues(alpha: 0.2),
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
               ),
             ),
             const SizedBox(height: 16),

@@ -25,7 +25,6 @@ class ResultsCount extends StatelessWidget {
         AppLocalizations.of(context)!.searchResultsFound(count),
         style: TextStyle(
           fontSize: 12.sp,
-          fontFamily: 'Tajawal',
           color: context.primaryColor,
           fontWeight: FontWeight.w500,
         ),

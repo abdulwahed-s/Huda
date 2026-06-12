@@ -76,7 +76,6 @@ class _NotificationsState extends State<Notifications>
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 18.sp,
-            fontFamily: 'Amiri',
             color: isDark ? Colors.white : theme.primaryColor,
           ),
         ),

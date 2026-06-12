@@ -286,8 +286,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
   QcfFontService? _getFontService() {
     if (!widget.mode.isMushaf) return null;
     try {
-      final instanceName =
-          _useTajweedFonts ? 'tajweed' : 'qcf4';
+      final instanceName = _useTajweedFonts ? 'tajweed' : 'qcf4';
       return getIt<QcfFontService>(instanceName: instanceName);
     } catch (_) {
       return null;
@@ -306,7 +305,9 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
     }
     if (_currentIsDoubleMode) {
       final paired = pageNumber % 2 == 1 ? pageNumber + 1 : pageNumber - 1;
-      if (paired >= 1 && paired <= quran.totalPagesCount && !pages.contains(paired)) {
+      if (paired >= 1 &&
+          paired <= quran.totalPagesCount &&
+          !pages.contains(paired)) {
         pages.add(paired);
       }
     }
@@ -795,10 +796,26 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     // allocating a new Paint per verse.
     final Paint tajweedAdaptivePaint = Paint()
       ..colorFilter = const ColorFilter.matrix(<double>[
-        0.3, 0, 0, 0, 180,
-        0, 0.3, 0, 0, 180,
-        0, 0, 0.3, 0, 180,
-        0, 0, 0, 1, 0,
+        0.3,
+        0,
+        0,
+        0,
+        180,
+        0,
+        0.3,
+        0,
+        0,
+        180,
+        0,
+        0,
+        0.3,
+        0,
+        180,
+        0,
+        0,
+        0,
+        1,
+        0,
       ]);
 
     final List<InlineSpan> spans = [];
@@ -815,8 +832,9 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
           ));
 
           if (pageNumber != 1 && pageNumber != 187) {
-            final Paint? bismillahPaint =
-                (isDark && widget.useTajweedFonts) ? tajweedAdaptivePaint : null;
+            final Paint? bismillahPaint = (isDark && widget.useTajweedFonts)
+                ? tajweedAdaptivePaint
+                : null;
             spans.add(
               TextSpan(
                 text: " ﱁ  ﱂﱃﱄ\n",

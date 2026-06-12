@@ -22,7 +22,6 @@ class Tasbih extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.tasbih),
         titleTextStyle: TextStyle(
           fontSize: 20.sp,
-          fontFamily: 'Tajawal',
           color: isDark ? Colors.white : Colors.black,
         ),
         centerTitle: true,

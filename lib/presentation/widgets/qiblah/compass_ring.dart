@@ -43,7 +43,6 @@ class CompassRing extends StatelessWidget {
                   child: Text(
                     ['N', 'E', 'S', 'W'][index],
                     style: TextStyle(
-                      fontFamily: "Amiri",
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: isDark ? Colors.white : Colors.black87,

@@ -40,14 +40,12 @@ class SearchBarWidget extends StatelessWidget {
         style: TextStyle(
           color: isDark ? appColors.darkText : appColors.lightText,
           fontSize: 16.sp,
-          fontFamily: 'Amiri',
         ),
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context)!.searchBookmarksHint,
           hintStyle: TextStyle(
             color: isDark ? Colors.grey[500] : Colors.grey[600],
             fontSize: 16.sp,
-            fontFamily: 'Amiri',
           ),
           prefixIcon: Container(
             padding: EdgeInsets.all(12.w),

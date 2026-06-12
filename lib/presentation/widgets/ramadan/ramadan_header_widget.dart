@@ -68,7 +68,6 @@ class RamadanHeaderWidget extends StatelessWidget {
               fontSize: 22.sp,
               fontWeight: FontWeight.bold,
               color: isDark ? Colors.white : Colors.black87,
-              fontFamily: "Amiri",
             ),
             textAlign: TextAlign.center,
           ),

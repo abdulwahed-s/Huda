@@ -76,4 +76,3 @@ class BookmarkMenu extends StatelessWidget {
     );
   }
 }
-

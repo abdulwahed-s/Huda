@@ -48,8 +48,6 @@ class _ShimmerRow extends StatelessWidget {
   }
 }
 
-
-
 class _ShimmerCassetteCard extends StatelessWidget {
   final bool isDark;
   const _ShimmerCassetteCard({required this.isDark});
@@ -68,7 +66,6 @@ class _ShimmerCassetteCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -77,7 +74,6 @@ class _ShimmerCassetteCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 4.h),
-          
           Container(
             decoration: BoxDecoration(
               color: soft,
@@ -86,27 +82,24 @@ class _ShimmerCassetteCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                
                 Container(
                   height: 14.h,
                   decoration: BoxDecoration(
                     color: fill,
-                    borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(4.r)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(4.r)),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(8.w, 6.h, 8.w, 8.h),
                   child: Column(
                     children: [
-                      
                       _rect(double.infinity, 10.h, fill),
                       SizedBox(height: 4.h),
                       _rect(double.infinity, 10.h, fill),
                       SizedBox(height: 4.h),
                       _rect(60.w, 10.h, fill),
                       SizedBox(height: 6.h),
-                      
                       _rect(80.w, 8.h, fill),
                     ],
                   ),
@@ -115,7 +108,6 @@ class _ShimmerCassetteCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 6.h),
-          
           Container(
             height: 62.h,
             decoration: BoxDecoration(
@@ -124,18 +116,15 @@ class _ShimmerCassetteCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 6.h),
-          
           Container(
             height: 14.h,
             margin: EdgeInsets.symmetric(horizontal: 18.w),
             decoration: BoxDecoration(
               color: fill,
-              borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(5.r)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(5.r)),
             ),
           ),
           SizedBox(height: 4.h),
-          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

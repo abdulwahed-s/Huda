@@ -5,9 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
-
 class AudioDetailHeroHeader extends StatelessWidget {
   final String? artUrl;
   final String title;
@@ -30,7 +27,6 @@ class AudioDetailHeroHeader extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        
         if (hasArt)
           ImageFiltered(
             imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
@@ -44,8 +40,6 @@ class AudioDetailHeroHeader extends StatelessWidget {
           )
         else
           _solidBg(context),
-
-        
         Positioned.fill(
           child: DecoratedBox(
             decoration: BoxDecoration(
@@ -61,15 +55,12 @@ class AudioDetailHeroHeader extends StatelessWidget {
             ),
           ),
         ),
-
-        
         SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                
                 Container(
                   width: 130.w,
                   height: 130.w,
@@ -105,8 +96,6 @@ class AudioDetailHeroHeader extends StatelessWidget {
                       : null,
                 ),
                 SizedBox(height: 16.h),
-
-                
                 Text(
                   title,
                   maxLines: 2,
@@ -115,7 +104,6 @@ class AudioDetailHeroHeader extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Amiri',
                     color: Colors.white,
                     shadows: [
                       Shadow(
@@ -125,7 +113,6 @@ class AudioDetailHeroHeader extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 if (author.isNotEmpty) ...[
                   SizedBox(height: 6.h),
                   Text(
@@ -140,7 +127,6 @@ class AudioDetailHeroHeader extends StatelessWidget {
                     ),
                   ),
                 ],
-
                 SizedBox(height: 10.h),
                 _ChapterCountPill(count: chapterCount),
                 SizedBox(height: 20.h),

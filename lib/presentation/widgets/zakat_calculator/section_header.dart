@@ -62,7 +62,6 @@ class SectionHeader extends StatelessWidget {
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: context.primaryColor,
-                fontFamily: "Amiri",
                 letterSpacing: 0.3,
               ),
             ),

@@ -61,7 +61,6 @@ class AssetBreakdown extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
-                          fontFamily: "Amiri",
                         ),
                       ),
                       Text(
@@ -69,7 +68,6 @@ class AssetBreakdown extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 11.sp,
                           color: Colors.grey[600],
-                          fontFamily: "Amiri",
                         ),
                       ),
                     ],
@@ -81,7 +79,6 @@ class AssetBreakdown extends StatelessWidget {
                     fontSize: 13.sp,
                     fontWeight: FontWeight.bold,
                     color: _getAssetColor(category),
-                    fontFamily: "Amiri",
                   ),
                 ),
               ],

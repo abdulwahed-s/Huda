@@ -50,7 +50,6 @@ class ControlButton extends StatelessWidget {
             fontSize: 14.sp,
             color: color,
             fontWeight: FontWeight.w500,
-            fontFamily: 'Tajawal',
           ),
         ),
       ],

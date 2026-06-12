@@ -138,7 +138,6 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
                             color: Colors.redAccent,
-                            fontFamily: "Amiri",
                             shadows: [
                               Shadow(
                                 blurRadius: 6,
@@ -155,7 +154,6 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.amber.shade400,
-                            fontFamily: "Amiri",
                             shadows: [
                               Shadow(
                                 blurRadius: 6,

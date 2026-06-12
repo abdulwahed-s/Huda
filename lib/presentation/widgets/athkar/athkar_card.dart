@@ -59,7 +59,6 @@ class AthkarCard extends StatelessWidget {
                   item.titleAr,
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontFamily: 'Tajawal',
                     fontWeight: FontWeight.bold,
                     color: isDark ? context.darkText : context.lightText,
                     height: 1.5,
@@ -89,7 +88,6 @@ class AthkarCard extends StatelessWidget {
                 item.titleEn,
                 style: TextStyle(
                   fontSize: 13.sp,
-                  fontFamily: 'Tajawal',
                   color: isDark ? Colors.white : Colors.black,
                   height: 1.4,
                 ),
@@ -116,7 +114,6 @@ class AthkarCard extends StatelessWidget {
                       AppLocalizations.of(context)!.clickForDetails,
                       style: TextStyle(
                         fontSize: 10.sp,
-                        fontFamily: 'Tajawal',
                         color: context.primaryColor,
                         fontWeight: FontWeight.w500,
                       ),

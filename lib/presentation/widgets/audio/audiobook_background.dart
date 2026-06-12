@@ -3,10 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 
-
-
-
-
 class AudiobookBackground extends StatelessWidget {
   final String? artUrl;
   final bool isDark;
@@ -37,8 +33,7 @@ class AudiobookBackground extends StatelessWidget {
                 .withValues(alpha: isDark ? 0.62 : 0.72),
           ),
           Container(
-            color:
-                context.primaryColor.withValues(alpha: isDark ? 0.14 : 0.07),
+            color: context.primaryColor.withValues(alpha: isDark ? 0.14 : 0.07),
           ),
         ],
       );

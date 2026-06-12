@@ -83,7 +83,6 @@ class LanguagesSection extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Amiri',
                   color: context.primaryColor,
                 ),
               ),

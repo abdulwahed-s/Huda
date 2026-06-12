@@ -103,7 +103,6 @@ class ContinueReadingCard extends StatelessWidget {
                           fontSize: titleSize,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontFamily: "Amiri",
                         ),
                       ),
                       SizedBox(height: 4.h),
@@ -115,7 +114,6 @@ class ContinueReadingCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: subtitleSize,
                           color: Colors.white.withValues(alpha: 0.9),
-                          fontFamily: "Amiri",
                         ),
                       ),
                     ],

@@ -16,7 +16,7 @@ class LanguageSearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: isDark ? context.darkTabBackground : const Color(0xFFF1F5F9),

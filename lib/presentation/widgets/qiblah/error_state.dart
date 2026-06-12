@@ -29,7 +29,6 @@ class ErrorState extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.somethingWentWrong,
               style: TextStyle(
-                fontFamily: "Amiri",
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : Colors.black87,
@@ -40,7 +39,6 @@ class ErrorState extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: "Amiri",
                 fontSize: 14.sp,
                 color: isDark ? Colors.white70 : Colors.black54,
               ),

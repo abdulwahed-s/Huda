@@ -66,7 +66,6 @@ class _LanguageSelectionSheetState extends State<LanguageSelectionSheet> {
                     fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
                     color: isDark ? context.darkText : context.lightText,
-                    fontFamily: 'Amiri',
                   ),
                 ),
                 SizedBox(height: 16.h),

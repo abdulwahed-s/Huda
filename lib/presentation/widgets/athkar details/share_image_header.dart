@@ -26,7 +26,6 @@ class ShareImageHeader extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.appTitle,
             style: const TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -37,7 +36,6 @@ class ShareImageHeader extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: Colors.white,

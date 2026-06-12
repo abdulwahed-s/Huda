@@ -23,7 +23,6 @@ class LoadingState extends StatelessWidget {
             AppLocalizations.of(context)!.loadingAthkar,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: 'Tajawal',
               color: Theme.of(context).textTheme.bodyMedium?.color,
             ),
           ),

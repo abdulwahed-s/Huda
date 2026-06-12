@@ -48,8 +48,7 @@ class QuranFontOptionTile extends StatelessWidget {
                 ]
               : [
                   BoxShadow(
-                    color: Colors.black
-                        .withValues(alpha: isDark ? 0.0 : 0.03),
+                    color: Colors.black.withValues(alpha: isDark ? 0.0 : 0.03),
                     blurRadius: 4,
                     offset: const Offset(0, 1),
                   ),
@@ -75,8 +74,7 @@ class QuranFontOptionTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? accent.withValues(alpha: 0.12)
@@ -98,8 +96,7 @@ class QuranFontOptionTile extends StatelessWidget {
                 ),
                 if (isSelected) ...[
                   SizedBox(height: 4.h),
-                  Icon(Icons.check_circle_rounded,
-                      color: accent, size: 18.sp),
+                  Icon(Icons.check_circle_rounded, color: accent, size: 18.sp),
                 ],
               ],
             ),

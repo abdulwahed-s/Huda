@@ -44,7 +44,6 @@ class OfflineState extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18.sp,
-                fontFamily: 'Tajawal',
                 fontWeight: FontWeight.w600,
                 color: Colors.grey.shade800,
                 height: 1.3,
@@ -62,7 +61,6 @@ class OfflineState extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: Colors.grey.shade600,
-                  fontFamily: 'Tajawal',
                   height: 1.4,
                 ),
               ),
@@ -83,7 +81,6 @@ class OfflineState extends StatelessWidget {
                   AppLocalizations.of(context)!.retryArabic,
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontFamily: 'Tajawal',
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -108,4 +105,3 @@ class OfflineState extends StatelessWidget {
     );
   }
 }
-

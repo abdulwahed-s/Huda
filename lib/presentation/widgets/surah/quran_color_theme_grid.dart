@@ -37,8 +37,7 @@ class QuranColorThemeGrid extends StatelessWidget {
           final pair = presets[index];
           final bg = pair[0];
           final text = pair[1];
-          final isSelected =
-              selectedBgColor == bg && selectedTextColor == text;
+          final isSelected = selectedBgColor == bg && selectedTextColor == text;
           return GestureDetector(
             onTap: () => onSelect(bg, text),
             child: AnimatedContainer(

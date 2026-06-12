@@ -50,7 +50,6 @@ class EmptyStateWidget extends StatelessWidget {
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w700,
                 color: isDark ? appColors.darkText : appColors.lightText,
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.center,
             ),
@@ -63,7 +62,6 @@ class EmptyStateWidget extends StatelessWidget {
                   fontSize: 16.sp,
                   color: isDark ? Colors.grey[400] : Colors.grey[600],
                   height: 1.5,
-                  fontFamily: 'Amiri',
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -94,7 +92,6 @@ class EmptyStateWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
-                    fontFamily: 'Amiri',
                   ),
                 ),
                 style: ElevatedButton.styleFrom(

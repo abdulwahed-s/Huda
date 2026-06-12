@@ -62,7 +62,6 @@ class SurahScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Text(
                       surahName,
                       style: TextStyle(
-                        fontFamily: 'Amiri',
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

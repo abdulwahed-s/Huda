@@ -37,7 +37,6 @@ class OfflineStateCard extends StatelessWidget {
                 color: Colors.orange,
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Amiri',
               ),
             ),
             SizedBox(height: 8.h),
@@ -46,7 +45,6 @@ class OfflineStateCard extends StatelessWidget {
               style: TextStyle(
                 color: Colors.orange.withValues(alpha: 0.8),
                 fontSize: 14.sp,
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.center,
             ),
@@ -57,7 +55,6 @@ class OfflineStateCard extends StatelessWidget {
               label: const Text(
                 'Try Again',
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontWeight: FontWeight.w500,
                 ),
               ),

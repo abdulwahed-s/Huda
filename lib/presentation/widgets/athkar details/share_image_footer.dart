@@ -40,7 +40,6 @@ class ShareImageFooter extends StatelessWidget {
               Text(
                 '$repeatCount',
                 style: TextStyle(
-                  fontFamily: 'Tajawal',
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: colorScheme.primary,

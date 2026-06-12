@@ -53,7 +53,6 @@ class LanguagePicker extends StatelessWidget {
                       fontSize: context.responsive(
                           mobile: 18.sp, tablet: 20.0, desktop: 20.0),
                       fontWeight: FontWeight.w600,
-                      fontFamily: "Amiri",
                       color: isDark ? context.darkText : context.lightText,
                     ),
                   ),
@@ -63,7 +62,6 @@ class LanguagePicker extends StatelessWidget {
                     style: TextStyle(
                       fontSize: context.responsive(
                           mobile: 14.sp, tablet: 15.0, desktop: 15.0),
-                      fontFamily: "Amiri",
                       color: isDark
                           ? context.darkText.withValues(alpha: 0.7)
                           : context.lightText.withValues(alpha: 0.7),
@@ -157,7 +155,6 @@ class LanguagePicker extends StatelessWidget {
                               fontSize: context.responsive(
                                   mobile: 10.sp, tablet: 11.0, desktop: 11.0),
                               fontWeight: FontWeight.bold,
-                              fontFamily: "Amiri",
                             ),
                           ),
                         ),
@@ -171,7 +168,6 @@ class LanguagePicker extends StatelessWidget {
                           style: TextStyle(
                             fontSize: context.responsive(
                                 mobile: 15.sp, tablet: 16.0, desktop: 16.0),
-                            fontFamily: "Amiri",
                             fontWeight: isCurrentSelected
                                 ? FontWeight.w600
                                 : FontWeight.w500,

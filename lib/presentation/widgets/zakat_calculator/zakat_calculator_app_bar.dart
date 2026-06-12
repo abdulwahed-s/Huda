@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 
-class ZakatCalculatorAppBar extends StatelessWidget implements PreferredSizeWidget {
+class ZakatCalculatorAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final VoidCallback onBackPressed;
   final VoidCallback onHelpPressed;
   final TabController tabController;
@@ -24,7 +25,6 @@ class ZakatCalculatorAppBar extends StatelessWidget implements PreferredSizeWidg
           color: Colors.white,
           fontWeight: FontWeight.w600,
           fontSize: 20.sp,
-          fontFamily: "Amiri",
           letterSpacing: 0.3,
           shadows: [
             Shadow(
@@ -95,8 +95,8 @@ class ZakatCalculatorAppBar extends StatelessWidget implements PreferredSizeWidg
           child: TabBar(
             controller: tabController,
             splashFactory: NoSplash.splashFactory,
-            overlayColor: WidgetStateProperty.all(
-                Colors.white.withValues(alpha: 0.1)),
+            overlayColor:
+                WidgetStateProperty.all(Colors.white.withValues(alpha: 0.1)),
             indicatorColor: Colors.white,
             indicatorWeight: 3,
             indicatorSize: TabBarIndicatorSize.label,
@@ -113,13 +113,11 @@ class ZakatCalculatorAppBar extends StatelessWidget implements PreferredSizeWidg
             labelStyle: TextStyle(
               fontSize: 15.sp,
               fontWeight: FontWeight.w600,
-              fontFamily: "Amiri",
               letterSpacing: 0.4,
             ),
             unselectedLabelStyle: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
-              fontFamily: "Amiri",
               letterSpacing: 0.3,
             ),
             labelPadding:

@@ -104,7 +104,6 @@ class ReciterCard extends StatelessWidget {
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontFamily: 'Amiri',
                         ),
                       ),
                     ),
@@ -119,7 +118,6 @@ class ReciterCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w700,
-                            fontFamily: 'Amiri',
                             color: theme.colorScheme.onSurface,
                           ),
                           maxLines: 1,

@@ -35,7 +35,6 @@ class AttachmentItem extends StatelessWidget {
         style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 14.sp,
-          fontFamily: 'Amiri',
         ),
       ),
       subtitle: Text(

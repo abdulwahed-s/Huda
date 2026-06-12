@@ -156,7 +156,6 @@ class EmptyStateWidget extends StatelessWidget {
         fontSize: fontSize,
         fontWeight: FontWeight.bold,
         color: context.primaryColor,
-        fontFamily: 'Amiri',
       ),
       textAlign: TextAlign.center,
     );
@@ -191,7 +190,6 @@ class EmptyStateWidget extends StatelessWidget {
               ? context.darkText.withValues(alpha: 0.7)
               : context.lightText.withValues(alpha: 0.6),
           height: 1.4,
-          fontFamily: 'Amiri',
         ),
       ),
     );
@@ -263,7 +261,6 @@ class EmptyStateWidget extends StatelessWidget {
             fontSize: titleSize,
             fontWeight: FontWeight.w600,
             color: isDark ? Colors.white : Colors.black87,
-            fontFamily: 'Amiri',
           ),
         ),
         SizedBox(height: spacing),

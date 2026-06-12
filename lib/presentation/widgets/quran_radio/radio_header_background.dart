@@ -88,7 +88,6 @@ class RadioHeaderBackground extends StatelessWidget {
                       fontSize: 26.sp,
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onPrimary,
-                      fontFamily: 'Amiri',
                     ),
                   ),
                   SizedBox(height: 8.h),

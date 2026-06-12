@@ -27,7 +27,7 @@ class FrequencyDialog {
             SizedBox(width: 10.w),
             Text(
               AppLocalizations.of(context)!.athkarFrequency,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
           ],
         ),
@@ -38,7 +38,6 @@ class FrequencyDialog {
               AppLocalizations.of(context)!.howOftenReceiveAthkar,
               style: TextStyle(
                 color: Colors.grey[600],
-                fontFamily: 'Amiri',
               ),
             ),
             SizedBox(height: 16.h),
@@ -73,7 +72,6 @@ class FrequencyDialog {
                       style: TextStyle(
                         fontSize: 10.sp,
                         fontStyle: FontStyle.italic,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ),
@@ -87,7 +85,7 @@ class FrequencyDialog {
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(
               AppLocalizations.of(context)!.cancel,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
           ),
           ElevatedButton(
@@ -103,7 +101,7 @@ class FrequencyDialog {
                   SnackBar(
                     content: Text(
                       AppLocalizations.of(context)!.validNumberMinutes,
-                      style: const TextStyle(fontFamily: 'Amiri'),
+                      style: const TextStyle(),
                     ),
                     behavior: SnackBarBehavior.floating,
                   ),
@@ -117,7 +115,7 @@ class FrequencyDialog {
             ),
             child: Text(
               AppLocalizations.of(context)!.save,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
           ),
         ],

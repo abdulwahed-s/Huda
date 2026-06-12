@@ -23,9 +23,14 @@ class ChecklistErrorView extends StatelessWidget {
         children: [
           Icon(Icons.error_outline, size: 48.sp, color: colors.accent),
           SizedBox(height: 12.h),
-          Text('Error: $message', style: TextStyle(fontSize: 14.sp, fontFamily: "Amiri")),
+          Text('Error: $message',
+              style: TextStyle(
+                fontSize: 14.sp,
+              )),
           SizedBox(height: 12.h),
-          ElevatedButton(onPressed: onRetry, child: Text(AppLocalizations.of(context)!.retry)),
+          ElevatedButton(
+              onPressed: onRetry,
+              child: Text(AppLocalizations.of(context)!.retry)),
         ],
       ),
     );

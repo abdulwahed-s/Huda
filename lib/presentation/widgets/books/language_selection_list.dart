@@ -50,7 +50,6 @@ class LanguageSelectionList extends StatelessWidget {
                                 color: isDark
                                     ? context.darkText
                                     : context.lightText,
-                                fontFamily: 'Amiri',
                               ),
                             ),
                           ),

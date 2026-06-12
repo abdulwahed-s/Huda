@@ -23,7 +23,6 @@ class ErrorStateWidget extends StatelessWidget {
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: Colors.red,
-              fontFamily: 'Amiri',
             ),
           ),
           SizedBox(height: 8.h),
@@ -32,7 +31,6 @@ class ErrorStateWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               color: Colors.grey[600],
-              fontFamily: 'Amiri',
             ),
             textAlign: TextAlign.center,
           ),
@@ -41,7 +39,7 @@ class ErrorStateWidget extends StatelessWidget {
             onPressed: () => context.read<BookmarksCubit>().loadBookmarks(),
             child: Text(
               AppLocalizations.of(context)!.retry,
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
           ),
         ],

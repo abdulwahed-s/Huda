@@ -36,7 +36,6 @@ class Instructions extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 14.sp,
-          fontFamily: "Amiri",
           fontWeight: isAligned ? FontWeight.w600 : FontWeight.w500,
           color: isAligned
               ? (isDark ? context.darkGradientEnd : context.primaryColor)

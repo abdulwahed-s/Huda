@@ -62,9 +62,7 @@ class _AudiobookControlsState extends State<AudiobookControls>
               child: IconButton(
                 iconSize: 30.sp,
                 icon: Icon(
-                  isRtl
-                      ? Icons.skip_next_rounded
-                      : Icons.skip_previous_rounded,
+                  isRtl ? Icons.skip_next_rounded : Icons.skip_previous_rounded,
                   color: secondaryColor,
                 ),
                 onPressed: enabled ? widget.cubit.previousChapter : null,
@@ -95,9 +93,7 @@ class _AudiobookControlsState extends State<AudiobookControls>
               child: IconButton(
                 iconSize: 30.sp,
                 icon: Icon(
-                  isRtl
-                      ? Icons.skip_previous_rounded
-                      : Icons.skip_next_rounded,
+                  isRtl ? Icons.skip_previous_rounded : Icons.skip_next_rounded,
                   color: secondaryColor,
                 ),
                 onPressed: enabled ? widget.cubit.nextChapter : null,

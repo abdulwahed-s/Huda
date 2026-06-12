@@ -53,7 +53,6 @@ class StatusIndicator extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              fontFamily: "Amiri",
               color: isAligned
                   ? (isDark ? context.darkGradientEnd : context.primaryColor)
                   : (isDark ? Colors.white70 : Colors.black54),

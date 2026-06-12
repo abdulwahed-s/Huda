@@ -5,11 +5,6 @@ import 'package:huda/data/models/audio_detail_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/audio/audio_detail_track_tile.dart';
 
-
-
-
-
-
 class AudioDetailTrackList extends StatelessWidget {
   final List<AudioTrack> tracks;
   final bool isDark;

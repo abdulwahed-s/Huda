@@ -36,7 +36,6 @@ class InfoCard extends StatelessWidget {
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                   color: context.primaryColor,
-                  fontFamily: "Amiri",
                 ),
               ),
             ],
@@ -47,7 +46,6 @@ class InfoCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.sp,
               height: 1.4,
-              fontFamily: "Amiri",
             ),
           ),
         ],

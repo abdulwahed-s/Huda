@@ -96,8 +96,7 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
         builder: (context, state) {
           final currentStation =
               state is QuranRadioLoaded ? state.currentlyPlaying : null;
-          final isPlaying =
-              state is QuranRadioLoaded ? state.isPlaying : false;
+          final isPlaying = state is QuranRadioLoaded ? state.isPlaying : false;
           final isBuffering =
               state is QuranRadioLoaded ? state.isBuffering : false;
 
@@ -120,12 +119,11 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
                       },
                     ),
                   ),
-                  _buildBodySliver(
-                      state, theme, l10n, currentStation, isPlaying,
-                      isBuffering),
+                  _buildBodySliver(state, theme, l10n, currentStation,
+                      isPlaying, isBuffering),
                   SliverToBoxAdapter(
-                    child: SizedBox(
-                        height: currentStation != null ? 110.h : 24.h),
+                    child:
+                        SizedBox(height: currentStation != null ? 110.h : 24.h),
                   ),
                 ],
               ),
@@ -153,9 +151,7 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
                           nowPlayingLabel: l10n.nowPlaying,
                           onPlayPause: () => _playStation(currentStation),
                           onStop: () async {
-                            await context
-                                .read<QuranRadioCubit>()
-                                .stopStation();
+                            await context.read<QuranRadioCubit>().stopStation();
                           },
                         )
                       : const SizedBox.shrink(key: ValueKey('empty_player')),

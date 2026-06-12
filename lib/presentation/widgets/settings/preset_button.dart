@@ -53,7 +53,6 @@ class PresetButton extends StatelessWidget {
             fontSize: 12.sp,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
             color: isSelected ? Colors.white : context.primaryColor,
-            fontFamily: "Amiri",
           ),
         ),
       ),

@@ -5,9 +5,6 @@ import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/audio_detail_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
-
 class AudiobookTitle extends StatelessWidget {
   final AudioPlayer player;
   final String title;
@@ -52,7 +49,6 @@ class AudiobookTitle extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Amiri',
                         color: textColor,
                         height: 1.3,
                       ),

@@ -4,10 +4,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
-
-
 class AudiobookArtwork extends StatefulWidget {
   final AudioPlayer player;
   final String? artUrl;
@@ -87,7 +83,7 @@ class _AudiobookArtworkState extends State<AudiobookArtwork>
                   AnimatedBuilder(
                     animation: _breathScale,
                     builder: (_, child) {
-                      final t = (_breathScale.value - 1.0) / 0.03; 
+                      final t = (_breathScale.value - 1.0) / 0.03;
                       return Container(
                         width: 240.w,
                         height: 240.w,

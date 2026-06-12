@@ -164,7 +164,6 @@ class OfflineBookCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Amiri',
                               color: Colors.white,
                               height: 1.4,
                             ),

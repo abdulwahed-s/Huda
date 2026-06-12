@@ -14,12 +14,12 @@ class BookCard extends StatelessWidget {
 
   Color _getBookColor() {
     final colors = [
-      const Color(0xFF1E3A8A), 
-      const Color(0xFF064E3B), 
-      const Color(0xFF4C1D95), 
-      const Color(0xFF7F1D1D), 
-      const Color(0xFF78350F), 
-      const Color(0xFF0F172A), 
+      const Color(0xFF1E3A8A),
+      const Color(0xFF064E3B),
+      const Color(0xFF4C1D95),
+      const Color(0xFF7F1D1D),
+      const Color(0xFF78350F),
+      const Color(0xFF0F172A),
     ];
     int hash = book.title.toString().hashCode.abs();
     return colors[hash % colors.length];
@@ -148,7 +148,6 @@ class BookCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Amiri',
                               color: Colors.white,
                               height: 1.4,
                             ),

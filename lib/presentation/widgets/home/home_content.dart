@@ -186,9 +186,12 @@ class HomeContent extends StatelessWidget {
                         onAudioTap: () =>
                             Navigator.pushNamed(context, AppRoute.quranAudio),
                         onRadioTap: () async {
-                          await Navigator.pushNamed(context, AppRoute.quranRadio);
+                          await Navigator.pushNamed(
+                              context, AppRoute.quranRadio);
                           if (context.mounted) {
-                            await context.read<QuranRadioCubit>().saveCurrentStation();
+                            await context
+                                .read<QuranRadioCubit>()
+                                .saveCurrentStation();
                           }
                           refreshHomeData();
                         },

@@ -143,9 +143,9 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
       _lastSavedPage = currentPage;
       return;
     }
-    final progress =
-        getIt<BookProgressService>().getProgress(widget.bookId!);
-    if (progress != null && progress.pageNumber > 1 &&
+    final progress = getIt<BookProgressService>().getProgress(widget.bookId!);
+    if (progress != null &&
+        progress.pageNumber > 1 &&
         progress.pageNumber != currentPage) {
       _pdfViewerController.goToPage(pageNumber: progress.pageNumber);
       _lastSavedPage = progress.pageNumber;

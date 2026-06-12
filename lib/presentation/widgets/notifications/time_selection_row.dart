@@ -36,7 +36,6 @@ class TimeSelectionRow extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
-                    fontFamily: 'Amiri',
                   ),
                 ),
                 const Spacer(),
@@ -45,7 +44,6 @@ class TimeSelectionRow extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Amiri',
                     color: Theme.of(context).primaryColor,
                   ),
                 ),

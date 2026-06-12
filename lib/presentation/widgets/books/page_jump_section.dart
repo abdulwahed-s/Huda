@@ -35,7 +35,6 @@ class _PageJumpSectionState extends State<PageJumpSection> {
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           color: widget.isDark ? Colors.white70 : Colors.grey.shade700,
-          fontFamily: 'Amiri',
         ),
       ),
       SizedBox(width: 12.w),
@@ -48,7 +47,6 @@ class _PageJumpSectionState extends State<PageJumpSection> {
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            fontFamily: 'Amiri',
           ),
           decoration: InputDecoration(
             hintText: '${widget.currentPage}',
@@ -87,7 +85,6 @@ class _PageJumpSectionState extends State<PageJumpSection> {
           style: TextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w600,
-            fontFamily: 'Amiri',
           ),
         ),
       ),
@@ -111,8 +108,7 @@ class _PageJumpSectionState extends State<PageJumpSection> {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        textDirection: TextDirection
-            .ltr, 
+        textDirection: TextDirection.ltr,
         children: rowChildren,
       ),
     );

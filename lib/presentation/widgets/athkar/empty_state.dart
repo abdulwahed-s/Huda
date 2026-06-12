@@ -22,7 +22,6 @@ class EmptyState extends StatelessWidget {
             AppLocalizations.of(context)!.noResultsFound,
             style: TextStyle(
               fontSize: 16.sp,
-              fontFamily: 'Tajawal',
               fontWeight: FontWeight.bold,
             ),
           ),

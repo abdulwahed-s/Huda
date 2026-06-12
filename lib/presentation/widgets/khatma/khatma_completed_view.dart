@@ -77,8 +77,7 @@ class KhatmaCompletedView extends StatelessWidget {
               icon: Icon(Icons.add_circle_outline_rounded, size: 20.sp),
               label: Text(
                 l10n.khatmaStartNew,
-                style:
-                    TextStyle(fontWeight: FontWeight.w900, fontSize: 14.sp),
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14.sp),
               ),
             ),
           ),
@@ -150,8 +149,7 @@ class _CelebrationCard extends StatelessWidget {
         padding: EdgeInsets.all(22.r),
         child: Column(
           children: [
-            Icon(Icons.emoji_events_rounded,
-                size: 52.sp, color: Colors.white),
+            Icon(Icons.emoji_events_rounded, size: 52.sp, color: Colors.white),
             SizedBox(height: 10.h),
             Text(
               l10n.khatmaCongrats,

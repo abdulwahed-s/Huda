@@ -29,7 +29,6 @@ class ErrorState extends StatelessWidget {
             AppLocalizations.of(context)!.athkarLoadingError,
             style: TextStyle(
               fontSize: 16.sp,
-              fontFamily: 'Tajawal',
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -33,7 +33,6 @@ class InfoDialog extends StatelessWidget {
             child: Text(
               AppLocalizations.of(context)!.aboutZakat,
               style: TextStyle(
-                fontFamily: "Amiri",
                 color: context.primaryColor,
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -56,7 +55,6 @@ class InfoDialog extends StatelessWidget {
               fontSize: 15.sp,
               height: 1.6,
               color: Colors.grey[700],
-              fontFamily: "Amiri",
             ),
           ),
         ),
@@ -78,7 +76,6 @@ class InfoDialog extends StatelessWidget {
             child: Text(
               AppLocalizations.of(context)!.close,
               style: TextStyle(
-                fontFamily: "Amiri",
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
               ),

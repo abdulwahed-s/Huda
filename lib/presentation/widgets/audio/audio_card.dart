@@ -34,9 +34,8 @@ class AudioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final author = audio.preparedBy.isNotEmpty
-        ? (audio.preparedBy.first.title ?? '')
-        : '';
+    final author =
+        audio.preparedBy.isNotEmpty ? (audio.preparedBy.first.title ?? '') : '';
     final cassetteColor = _getCassetteColor();
 
     return Container(
@@ -172,8 +171,7 @@ class _LabelSticker extends StatelessWidget {
         }
       }
     }
-    final isArabicUi =
-        Localizations.localeOf(context).languageCode == 'ar';
+    final isArabicUi = Localizations.localeOf(context).languageCode == 'ar';
     if (isArabicUi && name.length > 1) {
       if (!name.startsWith('ال')) name = 'ال$name';
       if (!name.endsWith('ة')) name = '$nameة';
@@ -204,14 +202,12 @@ class _LabelSticker extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            
             Positioned.fill(
               child: CustomPaint(painter: _RuledLinesPainter()),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                
                 Container(
                   height: 14.h,
                   decoration: BoxDecoration(
@@ -247,7 +243,6 @@ class _LabelSticker extends StatelessWidget {
                     ),
                   ),
                 ),
-                
                 Padding(
                   padding: EdgeInsets.fromLTRB(8.w, 6.h, 8.w, 8.h),
                   child: Column(
@@ -258,7 +253,6 @@ class _LabelSticker extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Amiri',
                           color: const Color(0xFF2D2D2D),
                           height: 1.3,
                         ),

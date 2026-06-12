@@ -90,7 +90,6 @@ class RecitersHeaderBackground extends StatelessWidget {
                       fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onPrimary,
-                      fontFamily: 'Amiri',
                     ),
                   ),
                   SizedBox(height: 8.h),

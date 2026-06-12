@@ -215,7 +215,7 @@ ${"عدد التكرار: ${athkar.repeat}"}
       SnackBar(
         content: Text(
           'فشل في مشاركة الصورة: $error',
-          style: const TextStyle(fontFamily: 'Tajawal'),
+          style: const TextStyle(),
         ),
         backgroundColor: Theme.of(context).colorScheme.error,
         duration: const Duration(seconds: 2),

@@ -109,9 +109,6 @@ class AudiosLoadedWidget extends StatelessWidget {
   }
 }
 
-
-
-
 class _MasonryGrid extends StatelessWidget {
   final List<AudioItem> items;
   final int columns;
@@ -125,7 +122,6 @@ class _MasonryGrid extends StatelessWidget {
     required this.spacing,
   });
 
-  
   List<List<AudioItem>> _distribute() {
     final cols = List.generate(columns, (_) => <AudioItem>[]);
     for (int i = 0; i < items.length; i++) {

@@ -105,7 +105,6 @@ class MessageBubble extends StatelessWidget {
           fontWeight: FontWeight.bold,
           color: isDark ? context.darkText : context.lightText,
           fontSize: 16.sp,
-          fontFamily: 'Amiri',
         ),
       ),
     );
@@ -150,7 +149,6 @@ class MessageBubble extends StatelessWidget {
                         : Colors.black87,
                 fontSize: 14.sp,
                 height: 1.5,
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.start,
             )
@@ -163,7 +161,6 @@ class MessageBubble extends StatelessWidget {
                 p: TextStyle(
                   fontSize: 14.sp,
                   height: 1.5,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ),
@@ -197,7 +194,6 @@ class MessageBubble extends StatelessWidget {
                 fontSize: 12.sp,
                 color: Colors.orange[700],
                 fontWeight: FontWeight.w500,
-                fontFamily: 'Amiri',
               ),
             ),
           ),

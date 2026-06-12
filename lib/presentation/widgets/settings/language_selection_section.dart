@@ -23,4 +23,3 @@ class LanguageSelectionSection extends StatelessWidget {
     );
   }
 }
-

@@ -68,7 +68,7 @@ class CounselingShareOverlay {
           SnackBar(
             content: Text(
               '${appLocalizations.error}: ${e.toString()}',
-              style: const TextStyle(fontFamily: 'Amiri'),
+              style: const TextStyle(),
             ),
             backgroundColor: colorScheme.error,
             duration: const Duration(seconds: 2),
@@ -177,7 +177,6 @@ class CounselingShareOverlay {
               const Text(
                 'Huda AI',
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -190,7 +189,6 @@ class CounselingShareOverlay {
           const Text(
             'Counseling Mode',
             style: TextStyle(
-              fontFamily: 'Amiri',
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Colors.white,
@@ -281,7 +279,6 @@ class CounselingShareOverlay {
               Text(
                 title,
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: gradientColors[0],
@@ -304,7 +301,6 @@ class CounselingShareOverlay {
           Text(
             content,
             style: const TextStyle(
-              fontFamily: 'Amiri',
               fontSize: 14,
               height: 1.8,
               color: Color(0xFF1A1A2E),
@@ -326,7 +322,6 @@ class CounselingShareOverlay {
               child: Text(
                 '"$subContent"',
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontSize: 13,
                   height: 1.7,
                   color: gradientColors[0],
@@ -357,7 +352,6 @@ class CounselingShareOverlay {
                 child: Text(
                   footer,
                   style: TextStyle(
-                    fontFamily: 'Amiri',
                     fontSize: 11,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w600,
@@ -394,7 +388,6 @@ class CounselingShareOverlay {
             child: Text(
               appLocalizations.aiGeneratedDisclaimer,
               style: const TextStyle(
-                fontFamily: 'Amiri',
                 fontSize: 10,
                 color: Colors.white,
                 fontWeight: FontWeight.w400,

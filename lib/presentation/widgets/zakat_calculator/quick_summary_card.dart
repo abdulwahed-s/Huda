@@ -63,7 +63,6 @@ class QuickSummaryCard extends StatelessWidget {
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: context.primaryColor,
-                  fontFamily: "Amiri",
                 ),
               ),
             ],
@@ -86,7 +85,6 @@ class QuickSummaryCard extends StatelessWidget {
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.grey[700],
-                        fontFamily: "Amiri",
                       ),
                     ),
                     Text(
@@ -97,7 +95,6 @@ class QuickSummaryCard extends StatelessWidget {
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.green[700],
-                        fontFamily: "Amiri",
                       ),
                     ),
                   ],
@@ -117,7 +114,6 @@ class QuickSummaryCard extends StatelessWidget {
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.grey[800],
-                        fontFamily: "Amiri",
                       ),
                     ),
                     Container(
@@ -145,7 +141,6 @@ class QuickSummaryCard extends StatelessWidget {
                           color: calculation.isZakatDue
                               ? Colors.green[700]
                               : Colors.grey[600],
-                          fontFamily: "Amiri",
                         ),
                       ),
                     ),

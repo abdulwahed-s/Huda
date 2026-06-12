@@ -32,7 +32,6 @@ class TitleWidget extends StatelessWidget {
             fontSize: 22.sp,
             fontWeight: FontWeight.w700,
             color: isDark ? appColors.darkText : appColors.lightText,
-            fontFamily: 'Amiri',
           ),
         ),
       ],

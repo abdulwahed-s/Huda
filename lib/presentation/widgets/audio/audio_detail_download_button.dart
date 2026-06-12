@@ -6,9 +6,6 @@ import 'package:huda/cubit/audiobook_download/audiobook_download_cubit.dart';
 import 'package:huda/data/models/audio_detail_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
-
 class AudioDetailDownloadButton extends StatefulWidget {
   final int audioId;
   final AudioDetailModel? detail;
@@ -147,7 +144,6 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
         title: Text(
           AppLocalizations.of(context)!.delete,
           style: TextStyle(
-            fontFamily: 'Amiri',
             fontSize: 16.sp,
             color: isDark ? Colors.white : Colors.black87,
           ),
@@ -156,7 +152,8 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
           AppLocalizations.of(context)!.deleteConfirmation,
           style: TextStyle(
             fontSize: 13.sp,
-            color: isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
+            color:
+                isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
           ),
         ),
         actions: [

@@ -53,7 +53,6 @@ class ChecklistAppBar extends StatelessWidget {
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: isDark ? colors.darkText : Colors.white,
-                    fontFamily: "Amiri",
                   ),
                 ),
               ),

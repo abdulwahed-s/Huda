@@ -22,10 +22,7 @@ class ExitConfirmationDialog extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: [
               Theme.of(context).colorScheme.surface,
-              Theme.of(context)
-                  .colorScheme
-                  .surface
-                  .withValues(alpha: 0.95),
+              Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
             ],
           ),
         ),
@@ -55,7 +52,6 @@ class ExitConfirmationDialog extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: "Amiri",
                 color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
@@ -68,7 +64,6 @@ class ExitConfirmationDialog extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
-                fontFamily: "Amiri",
                 color: Theme.of(context)
                     .colorScheme
                     .onSurface
@@ -101,7 +96,6 @@ class ExitConfirmationDialog extends StatelessWidget {
                       AppLocalizations.of(context)!.cancel,
                       style: TextStyle(
                         fontSize: 16.sp,
-                        fontFamily: "Amiri",
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context)
                             .colorScheme
@@ -137,7 +131,6 @@ class ExitConfirmationDialog extends StatelessWidget {
                       AppLocalizations.of(context)!.yes,
                       style: TextStyle(
                         fontSize: 16.sp,
-                        fontFamily: "Amiri",
                         fontWeight: FontWeight.w600,
                       ),
                     ),

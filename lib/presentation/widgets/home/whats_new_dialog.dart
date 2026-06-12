@@ -197,7 +197,6 @@ class _WhatsNewDialogState extends State<WhatsNewDialog>
                   fontSize: context.responsive(
                       mobile: 24.sp, tablet: 28.0, desktop: 30.0),
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Amiri',
                   color: Theme.of(context).colorScheme.onSurface,
                   height: 1.2,
                 ),
@@ -330,7 +329,6 @@ class _WhatsNewDialogState extends State<WhatsNewDialog>
                   fontSize: context.responsive(
                       mobile: 15.sp, tablet: 16.0, desktop: 17.0),
                   fontWeight: FontWeight.w500,
-                  fontFamily: 'Amiri',
                   color: Theme.of(context).colorScheme.onSurface,
                   height: 1.4,
                 ),
@@ -385,7 +383,6 @@ class _WhatsNewDialogState extends State<WhatsNewDialog>
                   fontSize: context.responsive(
                       mobile: 16.sp, tablet: 18.0, desktop: 18.0),
                   fontWeight: FontWeight.w600,
-                  fontFamily: 'Amiri',
                   letterSpacing: 0.3,
                 ),
               ),

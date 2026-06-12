@@ -67,7 +67,6 @@ class HadithBookCard extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18.sp,
-                          fontFamily: 'Amiri',
                           color: isDark
                               ? Colors.white.withValues(alpha: 0.9)
                               : Colors.black87,
@@ -79,7 +78,6 @@ class HadithBookCard extends StatelessWidget {
                         '${AppLocalizations.of(context)!.contains} ${book.totalAvailableHadith} ${AppLocalizations.of(context)!.hadith}',
                         style: TextStyle(
                           fontSize: 14.sp,
-                          fontFamily: 'Amiri',
                           color: isDark
                               ? Colors.white.withValues(alpha: 0.6)
                               : Colors.grey[600],

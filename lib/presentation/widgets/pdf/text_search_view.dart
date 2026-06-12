@@ -254,4 +254,3 @@ class _TextSearchViewState extends State<TextSearchView> {
     if (mounted) setState(() {});
   }
 }
-

@@ -106,7 +106,6 @@ class AyahSearchResultWidget extends StatelessWidget {
         fontSize: 16.sp,
         height: 1.8,
         color: Theme.of(context).colorScheme.onSurface,
-        fontFamily: 'Amiri',
         fontWeight: FontWeight.w500,
       ),
     );

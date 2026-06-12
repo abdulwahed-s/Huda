@@ -78,8 +78,7 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
       }
     });
 
-    _playerStateSubscription =
-        _audioPlayer.playerStateStream.listen((state) {
+    _playerStateSubscription = _audioPlayer.playerStateStream.listen((state) {
       if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
       if (state.processingState == ProcessingState.completed) {
         _playNextAudio();
@@ -164,7 +163,6 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
         title: Text(
           widget.title,
           style: TextStyle(
-            fontFamily: 'Tajawal',
             fontSize: 22.sp,
             fontWeight: FontWeight.w600,
             color: colorScheme.primary,
@@ -244,7 +242,7 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
         SnackBar(
           content: const Text(
             'رابط الصوت غير متوفر',
-            style: TextStyle(fontFamily: 'Tajawal'),
+            style: TextStyle(),
           ),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
@@ -283,7 +281,7 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
           SnackBar(
             content: Text(
               'فشل في تشغيل الصوت: ${e.toString()}',
-              style: const TextStyle(fontFamily: 'Tajawal'),
+              style: const TextStyle(),
             ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
@@ -454,7 +452,7 @@ ${"عدد التكرار: ${athkar.repeat}"}
           SnackBar(
             content: Text(
               'فشل في مشاركة الصورة: ${e.toString()}',
-              style: const TextStyle(fontFamily: 'Tajawal'),
+              style: const TextStyle(),
             ),
             backgroundColor: Theme.of(context).colorScheme.error,
             duration: const Duration(seconds: 2),

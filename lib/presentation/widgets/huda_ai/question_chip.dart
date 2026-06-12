@@ -63,7 +63,6 @@ class QuestionChip extends StatelessWidget {
                     color: isDark ? context.darkText : context.lightText,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
-                    fontFamily: 'Amiri',
                   ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,

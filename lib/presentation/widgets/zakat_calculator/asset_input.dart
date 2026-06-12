@@ -72,7 +72,6 @@ class AssetInput extends StatelessWidget {
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).textTheme.bodyLarge?.color,
-                        fontFamily: "Amiri",
                       ),
                     ),
                     SizedBox(height: 2.h),
@@ -81,7 +80,6 @@ class AssetInput extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11.sp,
                         color: Colors.grey[600],
-                        fontFamily: "Amiri",
                       ),
                     ),
                   ],
@@ -99,14 +97,12 @@ class AssetInput extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              fontFamily: "Amiri",
             ),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.hintAmount,
               hintStyle: TextStyle(
                 color: Colors.grey[400],
                 fontSize: 15.sp,
-                fontFamily: "Amiri",
               ),
               prefixIcon: Container(
                 margin: EdgeInsets.only(left: 12.w, right: 8.w),
@@ -121,7 +117,6 @@ class AssetInput extends StatelessWidget {
                     color: _getAssetColor(category),
                     fontWeight: FontWeight.w600,
                     fontSize: 14.sp,
-                    fontFamily: "Amiri",
                   ),
                 ),
               ),
@@ -238,4 +233,3 @@ class AssetInput extends StatelessWidget {
     }
   }
 }
-

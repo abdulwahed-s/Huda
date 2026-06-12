@@ -5,7 +5,7 @@ import 'package:huda/core/theme/theme_extension.dart';
 class ErrorHeader extends StatelessWidget {
   final Animation<double> pulseAnimation;
   final String errorSummary;
-  
+
   const ErrorHeader({
     required this.pulseAnimation,
     required this.errorSummary,
@@ -15,7 +15,7 @@ class ErrorHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: EdgeInsets.all(28.w),
       decoration: BoxDecoration(
@@ -62,7 +62,6 @@ class ErrorHeader extends StatelessWidget {
               color: Colors.white,
               fontWeight: FontWeight.w800,
               fontSize: 24.sp,
-              fontFamily: "Amiri",
               letterSpacing: 0.5,
             ),
             textAlign: TextAlign.center,
@@ -73,7 +72,6 @@ class ErrorHeader extends StatelessWidget {
             style: theme.textTheme.bodyMedium?.copyWith(
               color: Colors.white.withValues(alpha: 0.9),
               fontSize: 16.sp,
-              fontFamily: "Amiri",
               height: 1.4,
             ),
             textAlign: TextAlign.center,
@@ -90,7 +88,6 @@ class ErrorHeader extends StatelessWidget {
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.9),
                 fontSize: 12.sp,
-                fontFamily: "Amiri",
                 fontWeight: FontWeight.w500,
               ),
               maxLines: 1,

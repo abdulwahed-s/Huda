@@ -62,7 +62,6 @@ class EventsSectionWidget extends StatelessWidget {
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
               color: isDark ? Colors.white70 : Colors.grey.shade600,
-              fontFamily: "Amiri",
             ),
           ),
           SizedBox(height: 6.h),
@@ -71,7 +70,6 @@ class EventsSectionWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.sp,
               color: Colors.grey[500],
-              fontFamily: "Amiri",
             ),
           ),
         ],
@@ -114,7 +112,6 @@ class EventsSectionWidget extends StatelessWidget {
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w600,
                                 color: isDark ? Colors.white : Colors.black87,
-                                fontFamily: "Amiri",
                               ),
                             ),
                           ),
@@ -169,7 +166,6 @@ class EventsSectionWidget extends StatelessWidget {
                             fontSize: 11.sp,
                             color:
                                 isDark ? Colors.white70 : Colors.grey.shade600,
-                            fontFamily: "Amiri",
                           ),
                         ),
                       ],
@@ -194,7 +190,6 @@ class EventsSectionWidget extends StatelessWidget {
                                 color: isDark
                                     ? Colors.white54
                                     : Colors.grey.shade500,
-                                fontFamily: "Amiri",
                               ),
                             ),
                           ],

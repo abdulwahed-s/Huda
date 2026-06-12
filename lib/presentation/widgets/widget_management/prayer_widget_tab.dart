@@ -175,7 +175,6 @@ class _PrayerWidgetTabState extends State<PrayerWidgetTab> {
                     Text(
                       l10n.prayerWidgetCustomization,
                       style: TextStyle(
-                        fontFamily: 'Amiri',
                         fontWeight: FontWeight.w800,
                         fontSize: 17.sp,
                       ),
@@ -425,7 +424,6 @@ class _PrayerHeaderCard extends StatelessWidget {
                 Text(
                   l10n.prayerTimesWidget,
                   style: TextStyle(
-                    fontFamily: 'Amiri',
                     fontWeight: FontWeight.w800,
                     fontSize: 18.sp,
                   ),
@@ -493,7 +491,6 @@ class _AddCard extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 15.sp,
-                  fontFamily: 'Amiri',
                 ),
               ),
             ],
@@ -633,7 +630,6 @@ class _SectionShell extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              fontFamily: 'Amiri',
               fontWeight: FontWeight.w700,
               fontSize: 15.sp,
               color: isDark ? Colors.white : Colors.black87,
@@ -695,7 +691,6 @@ class _DesignTile extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 14.sp,
-                      fontFamily: 'Amiri',
                     ),
                   ),
                   SizedBox(height: 2.h),
@@ -771,7 +766,6 @@ class _ThemeCard extends StatelessWidget {
               Text(
                 'Aa',
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontWeight: FontWeight.w800,
                   fontSize: 22.sp,
                   color: fgColor,

@@ -57,7 +57,6 @@ class DurationPickerSheet extends StatelessWidget {
                   Text(
                     l10n.selectDuration,
                     style: TextStyle(
-                      fontFamily: 'Amiri',
                       fontWeight: FontWeight.bold,
                       fontSize: 20.sp,
                     ),

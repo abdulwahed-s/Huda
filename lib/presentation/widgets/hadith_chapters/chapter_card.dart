@@ -63,7 +63,6 @@ class ChapterCard extends StatelessWidget {
                       color: isDark
                           ? Colors.white.withValues(alpha: 0.87)
                           : Colors.black87,
-                      fontFamily: "Amiri",
                       height: 1.4,
                     ),
                     textAlign: currentLanguageCode == "ar" ||

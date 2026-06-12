@@ -3,9 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:huda/presentation/widgets/audio/audiobook_top_bar.dart';
 
-
-
-
 class AudiobookLoadingSkeleton extends StatelessWidget {
   final bool isDark;
 

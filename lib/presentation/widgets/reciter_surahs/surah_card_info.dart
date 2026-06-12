@@ -60,8 +60,7 @@ class SurahCardInfo extends StatelessWidget {
                   child: LinearProgressIndicator(
                     value: progress,
                     minHeight: 3.h,
-                    backgroundColor:
-                        theme.colorScheme.surfaceContainerHighest,
+                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
                     valueColor:
                         AlwaysStoppedAnimation(theme.colorScheme.primary),
                   ),

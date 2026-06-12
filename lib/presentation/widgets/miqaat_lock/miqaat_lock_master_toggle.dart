@@ -58,7 +58,6 @@ class MasterToggleSection extends StatelessWidget {
                   Text(
                     l10n.enableMiqaatLock,
                     style: TextStyle(
-                      fontFamily: 'Amiri',
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
                     ),
@@ -74,7 +73,7 @@ class MasterToggleSection extends StatelessWidget {
                     ),
                     child: Text(
                       isEnabled ? l10n.active : l10n.miqaatLockDescription,
-                      style: const TextStyle(fontFamily: 'Amiri'),
+                      style: const TextStyle(),
                     ),
                   ),
                 ],

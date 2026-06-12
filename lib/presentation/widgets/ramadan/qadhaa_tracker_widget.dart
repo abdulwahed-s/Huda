@@ -141,7 +141,6 @@ class QadhaaTrackerWidget extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 15.sp,
                                   fontWeight: FontWeight.w600,
-                                  fontFamily: "Amiri",
                                   color: isDark
                                       ? Colors.amber.shade400
                                       : Colors.orange.shade800,

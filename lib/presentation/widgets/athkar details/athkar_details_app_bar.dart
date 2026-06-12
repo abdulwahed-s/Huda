@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AthkarDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
+class AthkarDetailsAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final String title;
   final ColorScheme colorScheme;
 
@@ -21,7 +22,6 @@ class AthkarDetailsAppBar extends StatelessWidget implements PreferredSizeWidget
       title: Text(
         title,
         style: TextStyle(
-          fontFamily: 'Tajawal',
           fontSize: 22.sp,
           fontWeight: FontWeight.w600,
           color: colorScheme.primary,

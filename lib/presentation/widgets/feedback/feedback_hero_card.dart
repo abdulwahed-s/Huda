@@ -69,7 +69,6 @@ class FeedbackHeroCard extends StatelessWidget {
               style: theme.textTheme.headlineSmall?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontFamily: "Amiri",
                 letterSpacing: 0.5,
               ),
               textAlign: TextAlign.center,
@@ -80,7 +79,6 @@ class FeedbackHeroCard extends StatelessWidget {
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.9),
                 height: 1.4,
-                fontFamily: "Amiri",
               ),
               textAlign: TextAlign.center,
             ),

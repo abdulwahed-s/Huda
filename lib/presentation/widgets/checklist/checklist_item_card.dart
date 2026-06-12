@@ -124,7 +124,6 @@ class ChecklistItemCard extends StatelessWidget {
                     : (isDark ? Colors.grey[100] : Colors.grey[800]),
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
-                fontFamily: "Amiri",
               ),
             ),
             subtitle: Padding(
@@ -145,7 +144,6 @@ class ChecklistItemCard extends StatelessWidget {
                         color: itemColor,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
-                        fontFamily: "Amiri",
                       ),
                     ),
                   ),
@@ -158,7 +156,6 @@ class ChecklistItemCard extends StatelessWidget {
                           fontSize: 9.sp,
                           color: Colors.grey[500],
                           fontStyle: FontStyle.italic,
-                          fontFamily: "Amiri",
                         ),
                       ),
                     ),

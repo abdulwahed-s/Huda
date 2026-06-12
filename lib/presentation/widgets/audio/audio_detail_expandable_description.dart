@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-
-
 class AudioDetailExpandableDescription extends StatefulWidget {
   final String text;
   final bool isDark;
@@ -46,7 +44,6 @@ class _AudioDetailExpandableDescriptionState
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Amiri',
                 color: widget.isDark ? context.darkText : context.lightText,
               ),
             ),
@@ -88,6 +85,5 @@ class _AudioDetailExpandableDescriptionState
         height: 1.65,
         color: (widget.isDark ? context.darkText : context.lightText)
             .withValues(alpha: 0.75),
-        fontFamily: 'Amiri',
       );
 }

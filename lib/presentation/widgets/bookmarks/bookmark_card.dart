@@ -121,7 +121,6 @@ class BookmarkCard extends StatelessWidget {
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w700,
                                   color: displayColor,
-                                  fontFamily: 'Amiri',
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -178,7 +177,6 @@ class BookmarkCard extends StatelessWidget {
                                   fontSize: 11.sp,
                                   color: appColors.primary,
                                   fontWeight: FontWeight.w600,
-                                  fontFamily: 'Amiri',
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -247,4 +245,3 @@ class BookmarkCard extends StatelessWidget {
     }
   }
 }
-

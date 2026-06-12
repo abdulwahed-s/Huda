@@ -86,7 +86,6 @@ class PermissionSetupWidget extends StatelessWidget {
                       Text(
                         l10n.permissionsRequired,
                         style: TextStyle(
-                          fontFamily: 'Amiri',
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
                           color:
@@ -239,7 +238,6 @@ class PermissionSetupWidget extends StatelessWidget {
                 l10n.accessibilityServiceRequiredDialogTitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: 'Amiri',
                   fontWeight: FontWeight.bold,
                   fontSize: 18.sp,
                   color: isDark ? Colors.white : const Color(0xFF78350F),

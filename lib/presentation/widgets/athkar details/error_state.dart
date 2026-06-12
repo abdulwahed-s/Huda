@@ -28,7 +28,6 @@ class ErrorState extends StatelessWidget {
           Text(
             'حدث خطأ',
             style: TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               color: colorScheme.error,
@@ -38,7 +37,6 @@ class ErrorState extends StatelessWidget {
           Text(
             message,
             style: TextStyle(
-              fontFamily: 'Tajawal',
               fontSize: 14.sp,
               color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
@@ -50,7 +48,6 @@ class ErrorState extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: colorScheme.primary,
               textStyle: TextStyle(
-                fontFamily: 'Tajawal',
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
               ),

@@ -33,7 +33,6 @@ class ColorPickerDialog extends StatelessWidget {
           Text(AppLocalizations.of(context)!.pickColor,
               style: TextStyle(
                 fontSize: 16.sp,
-                fontFamily: "Amiri",
               )),
         ],
       ),
@@ -51,7 +50,6 @@ class ColorPickerDialog extends StatelessWidget {
           child: Text(AppLocalizations.of(context)!.cancel,
               style: TextStyle(
                 fontSize: 12.sp,
-                fontFamily: "Amiri",
               )),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -66,7 +64,6 @@ class ColorPickerDialog extends StatelessWidget {
           child: Text(AppLocalizations.of(context)!.select,
               style: TextStyle(
                 fontSize: 12.sp,
-                fontFamily: "Amiri",
               )),
           onPressed: () {
             onColorSelected(tempColor);

@@ -260,7 +260,6 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
                       color: widget.isDarkMode
                           ? Colors.white
                           : Colors.black.withValues(alpha: 0.85),
-                      fontFamily: "Amiri",
                       height: 1.2,
                     ),
                   ),
@@ -370,21 +369,21 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
       animation: _controller,
       builder: (context, _) => Column(
         mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildContinueRow(l10n),
-            SizedBox(height: 16.h),
-            Row(children: [
-              Expanded(child: _animCard(context, items[0], 1, iconSize, pad, fs)),
-              SizedBox(width: 16.w),
-              Expanded(child: _animCard(context, items[1], 2, iconSize, pad, fs)),
-            ]),
-            SizedBox(height: 16.h),
-            Row(children: [
-              Expanded(child: _animCard(context, items[2], 3, iconSize, pad, fs)),
-              SizedBox(width: 16.w),
-              Expanded(child: _animCard(context, items[3], 4, iconSize, pad, fs)),
-            ]),
-          ],
+        children: [
+          _buildContinueRow(l10n),
+          SizedBox(height: 16.h),
+          Row(children: [
+            Expanded(child: _animCard(context, items[0], 1, iconSize, pad, fs)),
+            SizedBox(width: 16.w),
+            Expanded(child: _animCard(context, items[1], 2, iconSize, pad, fs)),
+          ]),
+          SizedBox(height: 16.h),
+          Row(children: [
+            Expanded(child: _animCard(context, items[2], 3, iconSize, pad, fs)),
+            SizedBox(width: 16.w),
+            Expanded(child: _animCard(context, items[3], 4, iconSize, pad, fs)),
+          ]),
+        ],
       ),
     );
   }
@@ -413,13 +412,11 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
               builder: (context, homeState) {
                 final HomeLoaded? loaded =
                     homeState is HomeLoaded ? homeState : null;
-                final bool hasLastRead =
-                    loaded?.hasLastReadPosition ?? false;
-                final VoidCallback? onTap =
-                    hasLastRead && widget.openLastReadSurah != null
-                        ? () => widget
-                            .openLastReadSurah!(loaded!.lastReadSummary!)
-                        : null;
+                final bool hasLastRead = loaded?.hasLastReadPosition ?? false;
+                final VoidCallback? onTap = hasLastRead &&
+                        widget.openLastReadSurah != null
+                    ? () => widget.openLastReadSurah!(loaded!.lastReadSummary!)
+                    : null;
 
                 return ContinueReadingCard(
                   hasLastRead: hasLastRead,
@@ -440,8 +437,7 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
               builder: (context, homeState) {
                 final HomeLoaded? loaded =
                     homeState is HomeLoaded ? homeState : null;
-                final hasLastAudio =
-                    loaded?.hasLastQuranAudio ?? false;
+                final hasLastAudio = loaded?.hasLastQuranAudio ?? false;
                 final quranAudio = loaded?.lastQuranAudio;
                 final VoidCallback? onTap =
                     hasLastAudio && widget.openLastReciterAudio != null
@@ -456,8 +452,7 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
                   resumeText: hasLastAudio
                       ? l10n.resumeReciter(quranAudio!.reciterName)
                       : '',
-                  noActivityDescription:
-                      l10n.noReciterActivityDescription,
+                  noActivityDescription: l10n.noReciterActivityDescription,
                   activeGradient: reciterActive,
                   inactiveGradient: reciterInactive,
                 );
@@ -470,13 +465,11 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
               builder: (context, homeState) {
                 final HomeLoaded? loaded =
                     homeState is HomeLoaded ? homeState : null;
-                final hasLastStation =
-                    loaded?.hasLastRadioStation ?? false;
+                final hasLastStation = loaded?.hasLastRadioStation ?? false;
                 final radioStation = loaded?.lastRadioStation;
                 final VoidCallback? onTap =
                     hasLastStation && widget.openLastRadioStation != null
-                        ? () =>
-                            widget.openLastRadioStation!(radioStation)
+                        ? () => widget.openLastRadioStation!(radioStation)
                         : null;
 
                 return ContinueRadioCard(
@@ -484,11 +477,8 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
                   onTap: onTap,
                   continueText: l10n.continueRadio,
                   noActivityText: l10n.noRecentActivityHome,
-                  resumeText: hasLastStation
-                      ? radioStation!.stationName
-                      : '',
-                  noActivityDescription:
-                      l10n.noRadioActivityDescription,
+                  resumeText: hasLastStation ? radioStation!.stationName : '',
+                  noActivityDescription: l10n.noRadioActivityDescription,
                   activeGradient: radioActive,
                   inactiveGradient: radioInactive,
                 );
@@ -586,7 +576,6 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
                         color: widget.isDarkMode
                             ? Colors.white
                             : Colors.black.withValues(alpha: 0.85),
-                        fontFamily: "Amiri",
                         height: 1.2)),
               ],
             ),

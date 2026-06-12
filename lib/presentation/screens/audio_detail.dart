@@ -196,7 +196,7 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
           widget.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontFamily: 'Amiri'),
+          style: const TextStyle(),
         ),
       ),
       body: child,
@@ -253,9 +253,8 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 24.h),
-                    _buildActionRow(
-                        context, isDark, tracks, title, author, artUrl, detail,
-                        progress),
+                    _buildActionRow(context, isDark, tracks, title, author,
+                        artUrl, detail, progress),
                     if (progress != null) ...[
                       SizedBox(height: 16.h),
                       AudioDetailProgressBanner(
@@ -336,7 +335,13 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
             builder: (context, snap) {
               final isPlaying = snap.data?.playing ?? false;
               return _actionRowContent(
-                context, isDark, tracks, title, author, artUrl, detail,
+                context,
+                isDark,
+                tracks,
+                title,
+                author,
+                artUrl,
+                detail,
                 progress,
                 isThisAudioActive: true,
                 isCurrentlyPlaying: isPlaying,
@@ -348,7 +353,14 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
         }
 
         return _actionRowContent(
-          context, isDark, tracks, title, author, artUrl, detail, progress,
+          context,
+          isDark,
+          tracks,
+          title,
+          author,
+          artUrl,
+          detail,
+          progress,
           isThisAudioActive: false,
           isCurrentlyPlaying: false,
           onPause: null,
@@ -442,9 +454,8 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
                     isDark: isDark,
                     currentIndex: currentIdx,
                     isPlaying: isPlaying,
-                    onTrackTap: (idx) => _onTrackTap(
-                        context, idx, currentIdx, isPlaying, tracks, title,
-                        author, artUrl),
+                    onTrackTap: (idx) => _onTrackTap(context, idx, currentIdx,
+                        isPlaying, tracks, title, author, artUrl),
                   );
                 },
               );

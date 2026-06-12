@@ -30,16 +30,22 @@ class DeleteConfirmationDialog extends StatelessWidget {
           SizedBox(width: 10.w),
           Text(
             AppLocalizations.of(context)!.deleteTask,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, fontFamily: "Amiri"),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
       content: Container(
         padding: EdgeInsets.all(12.w),
-        decoration: BoxDecoration(color: Colors.grey[50], borderRadius: BorderRadius.circular(10.r)),
+        decoration: BoxDecoration(
+            color: Colors.grey[50], borderRadius: BorderRadius.circular(10.r)),
         child: Text(
           '${AppLocalizations.of(context)!.deleteTaskConfirmation} "${item.title}"؟',
-          style: TextStyle(fontSize: 14.sp, fontFamily: "Amiri"),
+          style: TextStyle(
+            fontSize: 14.sp,
+          ),
         ),
       ),
       actions: [
@@ -47,11 +53,16 @@ class DeleteConfirmationDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
           style: TextButton.styleFrom(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r)),
           ),
           child: Text(
             AppLocalizations.of(context)!.cancel,
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600, fontSize: 12.sp, fontFamily: "Amiri"),
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w600,
+              fontSize: 12.sp,
+            ),
           ),
         ),
         ElevatedButton(
@@ -63,11 +74,15 @@ class DeleteConfirmationDialog extends StatelessWidget {
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r)),
           ),
           child: Text(
             AppLocalizations.of(context)!.delete,
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp, fontFamily: "Amiri"),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12.sp,
+            ),
           ),
         ),
       ],

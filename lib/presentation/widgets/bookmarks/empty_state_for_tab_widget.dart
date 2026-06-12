@@ -54,7 +54,6 @@ class EmptyStateForTabWidget extends StatelessWidget {
                 fontSize: 22.sp,
                 fontWeight: FontWeight.w700,
                 color: isDark ? appColors.darkText : appColors.lightText,
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.center,
             ),
@@ -67,7 +66,6 @@ class EmptyStateForTabWidget extends StatelessWidget {
                   fontSize: 15.sp,
                   color: isDark ? Colors.grey[400] : Colors.grey[600],
                   height: 1.4,
-                  fontFamily: 'Amiri',
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -98,7 +96,6 @@ class EmptyStateForTabWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w500,
-                        fontFamily: 'Amiri',
                         color:
                             isDark ? appColors.darkText : appColors.lightText,
                       ),

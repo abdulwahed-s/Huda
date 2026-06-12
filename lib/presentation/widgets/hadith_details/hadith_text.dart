@@ -37,7 +37,6 @@ class HadithText extends StatelessWidget {
       style: {
         "*": Style(
           fontSize: FontSize(16.0.sp),
-          fontFamily: "Amiri",
           lineHeight: LineHeight.number(1.6),
           color: isDark ? Colors.white.withValues(alpha: 0.87) : Colors.black87,
           textAlign:

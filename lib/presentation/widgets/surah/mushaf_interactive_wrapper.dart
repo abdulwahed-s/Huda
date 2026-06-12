@@ -352,9 +352,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                           child: IconButton(
                             onPressed: () => _togglePlayPause(),
                             icon: Icon(
-                              isAudioPlaying
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
+                              isAudioPlaying ? Icons.pause : Icons.play_arrow,
                               color: colors.primary,
                               size: 20.sp,
                             ),

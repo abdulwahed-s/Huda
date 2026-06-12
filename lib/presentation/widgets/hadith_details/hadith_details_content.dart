@@ -29,7 +29,6 @@ class HadithDetails extends StatelessWidget {
         title: Text(
           chapterName,
           style: TextStyle(
-            fontFamily: "Amiri",
             fontWeight: FontWeight.w600,
             fontSize: 20.sp,
           ),

@@ -64,7 +64,6 @@ class NoteWidget extends StatelessWidget {
                         fontSize: 12.sp,
                         color: displayColor,
                         fontWeight: FontWeight.w600,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -77,7 +76,6 @@ class NoteWidget extends StatelessWidget {
                             : appColors.lightText,
                         height: 1.4,
                         fontStyle: FontStyle.italic,
-                        fontFamily: 'Amiri',
                       ),
                     ),
                   ],
@@ -90,4 +88,3 @@ class NoteWidget extends StatelessWidget {
     );
   }
 }
-

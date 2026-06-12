@@ -25,7 +25,6 @@ class Hadith extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 20.sp,
-            fontFamily: 'Amiri',
           ),
         ),
         centerTitle: true,

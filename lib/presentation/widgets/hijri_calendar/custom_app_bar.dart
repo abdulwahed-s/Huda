@@ -42,7 +42,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.white,
               fontSize: isTablet ? 24 : 16.sp,
               fontWeight: FontWeight.w600,
-              fontFamily: "Amiri",
             ),
           ),
         ],

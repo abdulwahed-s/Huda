@@ -95,7 +95,6 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                             style: TextStyle(
                               fontSize: isTablet ? 22 : 18.sp,
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Amiri",
                               color:
                                   isDark ? context.darkText : context.lightText,
                             ),
@@ -105,7 +104,6 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                             AppLocalizations.of(context)!.themeDescription,
                             style: TextStyle(
                               fontSize: isTablet ? 16 : 14.sp,
-                              fontFamily: "Amiri",
                               color: isDark
                                   ? context.darkText.withValues(alpha: 0.7)
                                   : context.lightText.withValues(alpha: 0.7),
@@ -155,7 +153,6 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                           AppLocalizations.of(context)!.themeInfo,
                           style: TextStyle(
                             fontSize: isTablet ? 15 : 12.sp,
-                            fontFamily: "Amiri",
                             color: isDark
                                 ? context.darkText.withValues(alpha: 0.7)
                                 : context.lightText.withValues(alpha: 0.7),
@@ -287,7 +284,6 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                               color: Colors.white,
                               fontSize: badgeFontSize,
                               fontWeight: FontWeight.w600,
-                              fontFamily: "Amiri",
                             ),
                             textAlign: TextAlign.center,
                             maxLines: 1,

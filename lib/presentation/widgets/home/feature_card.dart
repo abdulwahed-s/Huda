@@ -146,7 +146,6 @@ class FeatureCard extends StatelessWidget {
                             color: isDarkMode
                                 ? Colors.white
                                 : Colors.black.withValues(alpha: 0.85),
-                            fontFamily: "Amiri",
                             height: 1.2,
                           ),
                         ),

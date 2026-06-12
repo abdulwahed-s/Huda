@@ -38,7 +38,6 @@ class SettingsSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Amiri',
             color: isDark ? Colors.white : Theme.of(context).primaryColor,
           ),
         ),

@@ -32,7 +32,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: isDark ? Colors.white : Colors.black87,
-              fontFamily: 'Amiri',
             ),
           ),
         ],
@@ -42,7 +41,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
         style: TextStyle(
           fontSize: 14.sp,
           color: isDark ? Colors.grey[300] : Colors.grey[700],
-          fontFamily: 'Amiri',
         ),
       ),
       actions: [
@@ -53,7 +51,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               color: isDark ? Colors.grey[400] : Colors.grey[600],
-              fontFamily: 'Amiri',
             ),
           ),
         ),
@@ -70,7 +67,6 @@ class DeleteConfirmationDialog extends StatelessWidget {
             AppLocalizations.of(context)!.delete,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: 'Amiri',
             ),
           ),
         ),
@@ -78,4 +74,3 @@ class DeleteConfirmationDialog extends StatelessWidget {
     );
   }
 }
-

@@ -34,7 +34,6 @@ class TextSizeHeader extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
-                  fontFamily: "Amiri",
                   color: isDark ? context.darkText : context.lightText,
                 ),
               ),
@@ -44,7 +43,6 @@ class TextSizeHeader extends StatelessWidget {
                     .adjustTextSizeForBetterReadability,
                 style: TextStyle(
                   fontSize: 14.sp,
-                  fontFamily: "Amiri",
                   color: isDark
                       ? context.darkText.withValues(alpha: 0.7)
                       : context.lightText.withValues(alpha: 0.7),
@@ -57,4 +55,3 @@ class TextSizeHeader extends StatelessWidget {
     );
   }
 }
-

@@ -64,7 +64,6 @@ class SurahIndexHeader extends StatelessWidget {
                   Text(
                     currentSurahArabicName!,
                     style: TextStyle(
-                      fontFamily: 'Amiri',
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w700,
                       color: accent,

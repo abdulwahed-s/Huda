@@ -34,7 +34,6 @@ class ErrorStateCard extends StatelessWidget {
                 color: Colors.red,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                fontFamily: 'Amiri',
               ),
               textAlign: TextAlign.center,
             ),

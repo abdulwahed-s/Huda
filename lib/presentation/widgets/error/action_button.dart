@@ -54,7 +54,6 @@ class ActionButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
-                  fontFamily: "Amiri",
                 ),
               ),
             if (!isPrimary) SizedBox(width: 6.w),
@@ -64,7 +63,6 @@ class ActionButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w600,
-                  fontFamily: "Amiri",
                 ),
               ),
           ],

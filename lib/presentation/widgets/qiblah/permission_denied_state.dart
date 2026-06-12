@@ -34,7 +34,6 @@ class PermissionDeniedState extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.locationPermissionRequired,
               style: TextStyle(
-                fontFamily: "Amiri",
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : Colors.black87,
@@ -45,7 +44,6 @@ class PermissionDeniedState extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: "Amiri",
                 fontSize: 14.sp,
                 color: isDark ? Colors.white70 : Colors.black54,
               ),
@@ -66,9 +64,7 @@ class PermissionDeniedState extends StatelessWidget {
                 isPermanent
                     ? AppLocalizations.of(context)!.openSettings
                     : AppLocalizations.of(context)!.retry,
-                style: const TextStyle(
-                  fontFamily: "Amiri",
-                ),
+                style: const TextStyle(),
               ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),

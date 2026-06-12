@@ -53,9 +53,12 @@ class TasbihCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24.r),
         child: Stack(
           children: [
-            _CardDecorativeCircle(top: -50.h, right: -50.w, size: 180.w, opacity: 0.06),
-            _CardDecorativeCircle(bottom: -30.h, left: -30.w, size: 140.w, opacity: 0.05),
-            _CardDecorativeCircle(top: 20.h, left: 20.w, size: 60.w, opacity: 0.04),
+            _CardDecorativeCircle(
+                top: -50.h, right: -50.w, size: 180.w, opacity: 0.06),
+            _CardDecorativeCircle(
+                bottom: -30.h, left: -30.w, size: 140.w, opacity: 0.05),
+            _CardDecorativeCircle(
+                top: 20.h, left: 20.w, size: 60.w, opacity: 0.04),
             Positioned(
               bottom: 0,
               left: 0,

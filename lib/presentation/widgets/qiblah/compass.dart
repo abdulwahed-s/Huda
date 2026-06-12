@@ -102,7 +102,6 @@ class Compass extends StatelessWidget {
                 '${qiblahDirection.qiblah.toStringAsFixed(1)}°',
                 style: TextStyle(
                   fontSize: 16.sp,
-                  fontFamily: "Amiri",
                   fontWeight: FontWeight.bold,
                   color: isDark ? Colors.white : Colors.black87,
                 ),

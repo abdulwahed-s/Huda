@@ -111,7 +111,6 @@ class _SahurAlarmRingScreenState extends State<SahurAlarmRingScreen>
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Amiri',
                     color: isDark ? Colors.white : theme.primaryColor,
                   ),
                 ),

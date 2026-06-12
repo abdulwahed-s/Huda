@@ -49,7 +49,6 @@ class CounterBadge extends StatelessWidget {
               child: Text(
                 repeatCount.toString(),
                 style: TextStyle(
-                  fontFamily: 'Tajawal',
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

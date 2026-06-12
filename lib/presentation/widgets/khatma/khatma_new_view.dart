@@ -123,8 +123,8 @@ class _RecommendedCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.star_rounded,
-                    color: Colors.white, size: 26.sp),
+                child:
+                    Icon(Icons.star_rounded, color: Colors.white, size: 26.sp),
               ),
               SizedBox(width: 14.w),
               Expanded(
@@ -132,8 +132,8 @@ class _RecommendedCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 8.w, vertical: 2.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.25),
                         borderRadius: BorderRadius.circular(20.r),

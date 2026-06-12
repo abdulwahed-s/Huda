@@ -26,7 +26,6 @@ class OfflineState extends StatelessWidget {
             'Error loading hadith books',
             style: TextStyle(
               fontSize: 18.sp,
-              fontFamily: 'Amiri',
               color:
                   isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
             ),
@@ -37,7 +36,6 @@ class OfflineState extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14.sp,
-              fontFamily: 'Amiri',
               color: Colors.red[400],
             ),
           ),
@@ -64,7 +62,6 @@ class OfflineState extends StatelessWidget {
               AppLocalizations.of(context)!.tryAgain,
               style: TextStyle(
                 fontSize: 16.sp,
-                fontFamily: 'Amiri',
                 fontWeight: FontWeight.w500,
               ),
             ),

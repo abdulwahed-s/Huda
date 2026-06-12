@@ -94,7 +94,6 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: "Amiri",
                 color: context.primaryColor,
               ),
             ),
@@ -106,7 +105,6 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            fontFamily: "Amiri",
             color: isDark ? Colors.white : Colors.black87,
           ),
         ),

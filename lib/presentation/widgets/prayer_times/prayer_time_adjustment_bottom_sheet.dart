@@ -272,7 +272,6 @@ class _PrayerTimeAdjustmentBottomSheetState
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Amiri',
                               color: Colors.white,
                             ),
                           ),
@@ -281,7 +280,6 @@ class _PrayerTimeAdjustmentBottomSheetState
                             _localized('adjustSubtitle'),
                             style: TextStyle(
                               fontSize: 11.sp,
-                              fontFamily: 'Amiri',
                               color: Colors.white.withValues(alpha: 0.65),
                             ),
                           ),
@@ -373,7 +371,6 @@ class _PrayerTimeAdjustmentBottomSheetState
                                 entry.name,
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  fontFamily: 'Amiri',
                                   fontWeight: FontWeight.w600,
                                   color: isDark
                                       ? colors.darkText
@@ -400,7 +397,6 @@ class _PrayerTimeAdjustmentBottomSheetState
                             style: TextStyle(
                               fontSize: 17.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Amiri',
                               color: hasOffset
                                   ? colors.accent
                                   : (isDark ? Colors.white38 : Colors.black26),
@@ -451,7 +447,6 @@ class _PrayerTimeAdjustmentBottomSheetState
                         style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Amiri',
                           color: Colors.white,
                         ),
                       ),
@@ -483,7 +478,6 @@ class _PrayerTimeAdjustmentBottomSheetState
                         style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Amiri',
                           color: isDark
                               ? colors.darkText.withValues(alpha: 0.6)
                               : colors.primary,
