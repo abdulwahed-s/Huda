@@ -1020,6 +1020,18 @@ abstract class AppLocalizations {
   /// **'Rotate your device until the arrow points toward Mecca'**
   String get rotateDeviceInstruction;
 
+  /// Title shown when compass accuracy is low
+  ///
+  /// In en, this message translates to:
+  /// **'Compass needs calibration'**
+  String get calibrateCompass;
+
+  /// Instruction to calibrate the compass via figure-8 motion
+  ///
+  /// In en, this message translates to:
+  /// **'Move your phone in a figure-8 motion to improve accuracy'**
+  String get calibrateCompassInstruction;
+
   /// Athkar collection title
   ///
   /// In en, this message translates to:
@@ -1163,6 +1175,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No internet connection. No offline content available.'**
   String get noInternetOfflineUnavailable;
+
+  /// Audio tab: offline and no audio downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. No offline audio available.'**
+  String get offlineAudioUnavailable;
+
+  /// Tafsir tab: offline and no tafsir downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. No offline tafsir available.'**
+  String get offlineTafsirUnavailable;
+
+  /// Translation tab: offline and no translation downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. No offline translation available.'**
+  String get offlineTranslationUnavailable;
 
   /// Loading athkar message
   ///
@@ -5732,6 +5762,18 @@ abstract class AppLocalizations {
   /// **'Bug fixes and improvements'**
   String get whatsNew340Feature4;
 
+  /// What's new feature 1 for v3.5.0
+  ///
+  /// In en, this message translates to:
+  /// **'Custom App Font: Change the app font from settings to suit your preference'**
+  String get whatsNew350Feature1;
+
+  /// What's new feature 2 for v3.5.0
+  ///
+  /// In en, this message translates to:
+  /// **'Bug fixes and performance improvements'**
+  String get whatsNew350Feature2;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:
@@ -6499,6 +6541,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quran Font'**
   String get settingsQuranFont;
+
+  /// Settings section header for the app-wide UI font
+  ///
+  /// In en, this message translates to:
+  /// **'App Font'**
+  String get settingsAppFont;
+
+  /// Settings subtitle describing the app-wide UI font picker
+  ///
+  /// In en, this message translates to:
+  /// **'Font used across the app interface'**
+  String get settingsAppFontDescription;
+
+  /// App font option that uses the device's default font
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get settingsSystemFont;
+
+  /// Subtitle for the system default font option
+  ///
+  /// In en, this message translates to:
+  /// **'Uses your device\'s default font'**
+  String get settingsSystemFontDescription;
 
   /// Surah number badge in the app bar
   ///
@@ -7327,6 +7393,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In {language}'**
   String audioInLanguage(String language);
+
+  /// AI chat error shown when there is no internet connection
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Please check your network and try again.'**
+  String get chatErrorNoConnection;
+
+  /// AI chat error shown when the user is rate limited (too many requests)
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests right now. Please wait a moment and try again.'**
+  String get chatErrorRateLimit;
+
+  /// AI chat error shown when the server is unavailable or returns an error
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re having trouble reaching the server. Please try again in a moment.'**
+  String get chatErrorServer;
+
+  /// AI chat error shown when a request is blocked by content safety policies
+  ///
+  /// In en, this message translates to:
+  /// **'This request couldn\'t be completed due to content safety guidelines. Please rephrase and try again.'**
+  String get chatErrorSafety;
+
+  /// Generic AI chat error shown for unexpected failures
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get chatErrorGeneric;
 }
 
 class _AppLocalizationsDelegate

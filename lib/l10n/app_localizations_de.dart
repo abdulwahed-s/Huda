@@ -474,6 +474,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Drehen Sie Ihr Gerät, bis der Pfeil nach Mekka zeigt';
 
   @override
+  String get calibrateCompass => 'Kompass muss kalibriert werden';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'Bewegen Sie Ihr Telefon in einer Acht, um die Genauigkeit zu verbessern';
+
+  @override
   String get athkarCollection => 'Athkar-Sammlung';
 
   @override
@@ -550,6 +557,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'Keine Internetverbindung. Offline-Inhalte nicht verfügbar.';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'Keine Internetverbindung. Kein Offline-Audio verfügbar.';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'Keine Internetverbindung. Kein Offline-Tafsir verfügbar.';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'Keine Internetverbindung. Keine Offline-Übersetzung verfügbar.';
 
   @override
   String get loadingAthkar => 'Lade Athkar...';
@@ -3144,6 +3163,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get whatsNew340Feature4 => 'Fehlerbehebungen und Verbesserungen';
 
   @override
+  String get whatsNew350Feature1 =>
+      'App-Schriftart: Ändere die App-Schriftart in den Einstellungen nach deinen Wünschen';
+
+  @override
+  String get whatsNew350Feature2 =>
+      'Fehlerbehebungen und Leistungsverbesserungen';
+
+  @override
   String get offlineMode => 'Offline-Modus';
 
   @override
@@ -3577,6 +3604,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'Koran-Schriftart';
+
+  @override
+  String get settingsAppFont => 'App-Schriftart';
+
+  @override
+  String get settingsAppFontDescription => 'Schriftart für die App-Oberfläche';
+
+  @override
+  String get settingsSystemFont => 'Systemstandard';
+
+  @override
+  String get settingsSystemFontDescription =>
+      'Verwendet die Standardschriftart deines Geräts';
 
   @override
   String surahNumberBadge(int number) {
@@ -4058,4 +4098,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String audioInLanguage(String language) {
     return 'Auf $language';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'Keine Internetverbindung. Bitte überprüfe dein Netzwerk und versuche es erneut.';
+
+  @override
+  String get chatErrorRateLimit =>
+      'Zu viele Anfragen im Moment. Bitte warte einen Augenblick und versuche es erneut.';
+
+  @override
+  String get chatErrorServer =>
+      'Wir haben Probleme, den Server zu erreichen. Bitte versuche es in Kürze erneut.';
+
+  @override
+  String get chatErrorSafety =>
+      'Diese Anfrage konnte aufgrund der Richtlinien zur Inhaltssicherheit nicht abgeschlossen werden. Bitte formuliere sie um und versuche es erneut.';
+
+  @override
+  String get chatErrorGeneric =>
+      'Etwas ist schiefgelaufen. Bitte versuche es erneut.';
 }

@@ -604,6 +604,14 @@
     "@rotateDeviceInstruction": {
         "description": "Instruction for aligning with qiblah"
     },
+    "calibrateCompass": "Compass needs calibration",
+    "@calibrateCompass": {
+        "description": "Title shown when compass accuracy is low"
+    },
+    "calibrateCompassInstruction": "Move your phone in a figure-8 motion to improve accuracy",
+    "@calibrateCompassInstruction": {
+        "description": "Instruction to calibrate the compass via figure-8 motion"
+    },
     "athkarCollection": "Athkar Collection",
     "@athkarCollection": {
         "description": "Athkar collection title"
@@ -709,6 +717,18 @@
     "noInternetOfflineUnavailable": "No internet connection. No offline content available.",
     "@noInternetOfflineUnavailable": {
         "description": "No internet and no offline content message"
+    },
+    "offlineAudioUnavailable": "No internet connection. No offline audio available.",
+    "@offlineAudioUnavailable": {
+        "description": "Audio tab: offline and no audio downloaded"
+    },
+    "offlineTafsirUnavailable": "No internet connection. No offline tafsir available.",
+    "@offlineTafsirUnavailable": {
+        "description": "Tafsir tab: offline and no tafsir downloaded"
+    },
+    "offlineTranslationUnavailable": "No internet connection. No offline translation available.",
+    "@offlineTranslationUnavailable": {
+        "description": "Translation tab: offline and no translation downloaded"
     },
     "loadingAthkar": "Loading Athkar...",
     "@loadingAthkar": {
@@ -3428,6 +3448,14 @@
     "@whatsNew340Feature4": {
         "description": "What's new feature 4 for v3.4.0"
     },
+    "whatsNew350Feature1": "Custom App Font: Change the app font from settings to suit your preference",
+    "@whatsNew350Feature1": {
+        "description": "What's new feature 1 for v3.5.0"
+    },
+    "whatsNew350Feature2": "Bug fixes and performance improvements",
+    "@whatsNew350Feature2": {
+        "description": "What's new feature 2 for v3.5.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
@@ -4070,6 +4098,22 @@
     "@settingsQuranFont": {
         "description": "Settings section header for Quran font"
     },
+    "settingsAppFont": "App Font",
+    "@settingsAppFont": {
+        "description": "Settings section header for the app-wide UI font"
+    },
+    "settingsAppFontDescription": "Font used across the app interface",
+    "@settingsAppFontDescription": {
+        "description": "Settings subtitle describing the app-wide UI font picker"
+    },
+    "settingsSystemFont": "System Default",
+    "@settingsSystemFont": {
+        "description": "App font option that uses the device's default font"
+    },
+    "settingsSystemFontDescription": "Uses your device's default font",
+    "@settingsSystemFontDescription": {
+        "description": "Subtitle for the system default font option"
+    },
     "surahNumberBadge": "Surah {number}",
     "@surahNumberBadge": {
         "description": "Surah number badge in the app bar",
@@ -4641,5 +4685,25 @@
                 "type": "String"
             }
         }
+    },
+    "chatErrorNoConnection": "No internet connection. Please check your network and try again.",
+    "@chatErrorNoConnection": {
+        "description": "AI chat error shown when there is no internet connection"
+    },
+    "chatErrorRateLimit": "Too many requests right now. Please wait a moment and try again.",
+    "@chatErrorRateLimit": {
+        "description": "AI chat error shown when the user is rate limited (too many requests)"
+    },
+    "chatErrorServer": "We're having trouble reaching the server. Please try again in a moment.",
+    "@chatErrorServer": {
+        "description": "AI chat error shown when the server is unavailable or returns an error"
+    },
+    "chatErrorSafety": "This request couldn't be completed due to content safety guidelines. Please rephrase and try again.",
+    "@chatErrorSafety": {
+        "description": "AI chat error shown when a request is blocked by content safety policies"
+    },
+    "chatErrorGeneric": "Something went wrong. Please try again.",
+    "@chatErrorGeneric": {
+        "description": "Generic AI chat error shown for unexpected failures"
     }
 }

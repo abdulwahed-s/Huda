@@ -467,6 +467,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'قم بتدوير جهازك حتى يشير السهم نحو مكة';
 
   @override
+  String get calibrateCompass => 'تحتاج البوصلة إلى معايرة';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'حرّك هاتفك على شكل الرقم ٨ لتحسين الدقة';
+
+  @override
   String get athkarCollection => 'مجموعة الأذكار';
 
   @override
@@ -543,6 +550,18 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'لا يوجد اتصال بالإنترنت. لا يوجد محتوى غير متصل متاح.';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'لا يوجد اتصال بالإنترنت. لا يوجد صوت محفوظ للاستخدام دون اتصال.';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'لا يوجد اتصال بالإنترنت. لا يوجد تفسير محفوظ للاستخدام دون اتصال.';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'لا يوجد اتصال بالإنترنت. لا توجد ترجمة محفوظة للاستخدام دون اتصال.';
 
   @override
   String get loadingAthkar => 'جاري تحميل الأذكار...';
@@ -3046,6 +3065,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get whatsNew340Feature4 => 'إصلاح الأخطاء والتحسينات';
 
   @override
+  String get whatsNew350Feature1 =>
+      'خط التطبيق: يمكنك الآن تغيير خط التطبيق من الإعدادات';
+
+  @override
+  String get whatsNew350Feature2 => 'إصلاح الأخطاء وتحسين الأداء';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override
@@ -3476,6 +3502,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'خط القرآن';
+
+  @override
+  String get settingsAppFont => 'خط التطبيق';
+
+  @override
+  String get settingsAppFontDescription => 'الخط المستخدم في واجهة التطبيق';
+
+  @override
+  String get settingsSystemFont => 'الخط الافتراضي للنظام';
+
+  @override
+  String get settingsSystemFontDescription => 'يستخدم الخط الافتراضي لجهازك';
 
   @override
   String surahNumberBadge(int number) {
@@ -3949,4 +3987,23 @@ class AppLocalizationsAr extends AppLocalizations {
   String audioInLanguage(String language) {
     return 'باللغة $language';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'لا يوجد اتصال بالإنترنت. يرجى التحقق من شبكتك والمحاولة مرة أخرى.';
+
+  @override
+  String get chatErrorRateLimit =>
+      'هناك عدد كبير من الطلبات حاليًا. يرجى الانتظار قليلًا والمحاولة مرة أخرى.';
+
+  @override
+  String get chatErrorServer =>
+      'نواجه صعوبة في الوصول إلى الخادم. يرجى المحاولة مرة أخرى بعد قليل.';
+
+  @override
+  String get chatErrorSafety =>
+      'تعذّر إكمال هذا الطلب وفقًا لإرشادات سلامة المحتوى. يرجى إعادة الصياغة والمحاولة مرة أخرى.';
+
+  @override
+  String get chatErrorGeneric => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
 }

@@ -154,6 +154,8 @@
     "findingDirection": "جاري البحث عن الاتجاه...",
     "perfectQiblahAlignment": "🕋 ممتاز! أنت متجه نحو القبلة",
     "rotateDeviceInstruction": "قم بتدوير جهازك حتى يشير السهم نحو مكة",
+    "calibrateCompass": "تحتاج البوصلة إلى معايرة",
+    "calibrateCompassInstruction": "حرّك هاتفك على شكل الرقم ٨ لتحسين الدقة",
     "athkarCollection": "مجموعة الأذكار",
     "selectedAthkarGroups": "{count} مجموعة من الأذكار المختارة",
     "retryArabic": "إعادة المحاولة",
@@ -178,6 +180,9 @@
     "pleaseCheckConnection": "يرجى التحقق من الاتصال والمحاولة مرة أخرى.",
     "cannotLoadOffline": "لا يمكن تحميل {section} أثناء عدم الاتصال.\nيرجى التحقق من اتصال الإنترنت.",
     "noInternetOfflineUnavailable": "لا يوجد اتصال بالإنترنت. لا يوجد محتوى غير متصل متاح.",
+    "offlineAudioUnavailable": "لا يوجد اتصال بالإنترنت. لا يوجد صوت محفوظ للاستخدام دون اتصال.",
+    "offlineTafsirUnavailable": "لا يوجد اتصال بالإنترنت. لا يوجد تفسير محفوظ للاستخدام دون اتصال.",
+    "offlineTranslationUnavailable": "لا يوجد اتصال بالإنترنت. لا توجد ترجمة محفوظة للاستخدام دون اتصال.",
     "loadingAthkar": "جاري تحميل الأذكار...",
     "pressForDetails": "اضغط للتفاصيل",
     "connectionTimedOut": "انتهت مهلة الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.",
@@ -1704,6 +1709,8 @@
     "whatsNew340Feature2": "تتبع القارئ والراديو: آخر قارئ استمعت إليه وآخر محطة راديو محفوظان الآن — استأنفهما من الشاشة الرئيسية",
     "whatsNew340Feature3": "تقدم الكتاب: آخر كتاب قرأته محفوظ الآن — تابع من حيث توقفت من صفحة الكتب",
     "whatsNew340Feature4": "إصلاح الأخطاء والتحسينات",
+    "whatsNew350Feature1": "خط التطبيق: يمكنك الآن تغيير خط التطبيق من الإعدادات",
+    "whatsNew350Feature2": "إصلاح الأخطاء وتحسين الأداء",
     "offlineMode": "وضع عدم الاتصال",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
@@ -1926,6 +1933,10 @@
     "settingsHorizontalLayout": "تخطيط أفقي",
     "settingsFlipDirection": "اتجاه التقليب",
     "settingsQuranFont": "خط القرآن",
+    "settingsAppFont": "خط التطبيق",
+    "settingsAppFontDescription": "الخط المستخدم في واجهة التطبيق",
+    "settingsSystemFont": "الخط الافتراضي للنظام",
+    "settingsSystemFontDescription": "يستخدم الخط الافتراضي لجهازك",
     "surahNumberBadge": "سورة {number}",
     "fontExtractingLabel": "جارٍ الاستخراج...",
     "fontLoadingLabel": "جارٍ التحميل...",
@@ -2071,5 +2082,10 @@
     "pause": "إيقاف مؤقت",
     "noOfflineAudiobooks": "لا توجد صوتيات إسلامية محمّلة",
     "chapterProgress": "الجزء {current} من {total}",
-    "audioInLanguage": "باللغة {language}"
+    "audioInLanguage": "باللغة {language}",
+    "chatErrorNoConnection": "لا يوجد اتصال بالإنترنت. يرجى التحقق من شبكتك والمحاولة مرة أخرى.",
+    "chatErrorRateLimit": "هناك عدد كبير من الطلبات حاليًا. يرجى الانتظار قليلًا والمحاولة مرة أخرى.",
+    "chatErrorServer": "نواجه صعوبة في الوصول إلى الخادم. يرجى المحاولة مرة أخرى بعد قليل.",
+    "chatErrorSafety": "تعذّر إكمال هذا الطلب وفقًا لإرشادات سلامة المحتوى. يرجى إعادة الصياغة والمحاولة مرة أخرى.",
+    "chatErrorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
 }

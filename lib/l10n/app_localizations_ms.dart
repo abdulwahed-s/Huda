@@ -474,6 +474,13 @@ class AppLocalizationsMs extends AppLocalizations {
       'Putar peranti anda sehingga anak panah menunjuk ke Mekah';
 
   @override
+  String get calibrateCompass => 'Kompas perlu ditentukur';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'Gerakkan telefon anda dalam bentuk angka 8 untuk meningkatkan ketepatan';
+
+  @override
   String get athkarCollection => 'Koleksi Zikir';
 
   @override
@@ -550,6 +557,18 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'Tiada sambungan internet. Kandungan luar talian tidak tersedia.';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'Tiada sambungan internet. Tiada audio luar talian tersedia.';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'Tiada sambungan internet. Tiada tafsir luar talian tersedia.';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'Tiada sambungan internet. Tiada terjemahan luar talian tersedia.';
 
   @override
   String get loadingAthkar => 'Memuatkan Zikir...';
@@ -3099,6 +3118,14 @@ class AppLocalizationsMs extends AppLocalizations {
   String get whatsNew340Feature4 => 'Pembaikan pepijat dan penambahbaikan';
 
   @override
+  String get whatsNew350Feature1 =>
+      'Fon Apl: Tukar fon aplikasi mengikut pilihan anda dari tetapan';
+
+  @override
+  String get whatsNew350Feature2 =>
+      'Pembaikan pepijat dan penambahbaikan prestasi';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override
@@ -3530,6 +3557,20 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'Fon Al-Quran';
+
+  @override
+  String get settingsAppFont => 'Fon Aplikasi';
+
+  @override
+  String get settingsAppFontDescription =>
+      'Fon yang digunakan di seluruh antara muka aplikasi';
+
+  @override
+  String get settingsSystemFont => 'Lalai Sistem';
+
+  @override
+  String get settingsSystemFontDescription =>
+      'Menggunakan fon lalai peranti anda';
 
   @override
   String surahNumberBadge(int number) {
@@ -4008,4 +4049,23 @@ class AppLocalizationsMs extends AppLocalizations {
   String audioInLanguage(String language) {
     return 'Dalam $language';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'Tiada sambungan internet. Sila semak rangkaian anda dan cuba lagi.';
+
+  @override
+  String get chatErrorRateLimit =>
+      'Terlalu banyak permintaan buat masa ini. Sila tunggu sebentar dan cuba lagi.';
+
+  @override
+  String get chatErrorServer =>
+      'Kami menghadapi masalah untuk menghubungi pelayan. Sila cuba lagi sebentar lagi.';
+
+  @override
+  String get chatErrorSafety =>
+      'Permintaan ini tidak dapat diselesaikan kerana garis panduan keselamatan kandungan. Sila ubah suai dan cuba lagi.';
+
+  @override
+  String get chatErrorGeneric => 'Sesuatu tidak kena. Sila cuba lagi.';
 }

@@ -471,6 +471,13 @@ class AppLocalizationsTr extends AppLocalizations {
       'Ok Mekke\'yi gösterene kadar cihazınızı çevirin';
 
   @override
+  String get calibrateCompass => 'Pusulanın kalibre edilmesi gerekiyor';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'Doğruluğu artırmak için telefonunuzu sekiz şeklinde hareket ettirin';
+
+  @override
   String get athkarCollection => 'Zikir Koleksiyonu';
 
   @override
@@ -547,6 +554,18 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'İnternet bağlantısı yok. Çevrimdışı içerik mevcut değil.';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'İnternet bağlantısı yok. Çevrimdışı ses mevcut değil.';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'İnternet bağlantısı yok. Çevrimdışı tefsir mevcut değil.';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'İnternet bağlantısı yok. Çevrimdışı meal mevcut değil.';
 
   @override
   String get loadingAthkar => 'Zikirler yükleniyor...';
@@ -3092,6 +3111,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get whatsNew340Feature4 => 'Hata düzeltmeleri ve iyileştirmeler';
 
   @override
+  String get whatsNew350Feature1 =>
+      'Uygulama Yazı Tipi: Ayarlardan uygulama yazı tipini tercihlerinize göre değiştirin';
+
+  @override
+  String get whatsNew350Feature2 =>
+      'Hata düzeltmeleri ve performans iyileştirmeleri';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override
@@ -3522,6 +3549,20 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'Kuran Yazı Tipi';
+
+  @override
+  String get settingsAppFont => 'Uygulama Yazı Tipi';
+
+  @override
+  String get settingsAppFontDescription =>
+      'Uygulama arayüzünde kullanılan yazı tipi';
+
+  @override
+  String get settingsSystemFont => 'Sistem Varsayılanı';
+
+  @override
+  String get settingsSystemFontDescription =>
+      'Cihazınızın varsayılan yazı tipini kullanır';
 
   @override
   String surahNumberBadge(int number) {
@@ -3998,4 +4039,24 @@ class AppLocalizationsTr extends AppLocalizations {
   String audioInLanguage(String language) {
     return '$language dilinde';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'İnternet bağlantısı yok. Lütfen ağınızı kontrol edip tekrar deneyin.';
+
+  @override
+  String get chatErrorRateLimit =>
+      'Şu anda çok fazla istek var. Lütfen biraz bekleyip tekrar deneyin.';
+
+  @override
+  String get chatErrorServer =>
+      'Sunucuya ulaşmakta sorun yaşıyoruz. Lütfen birazdan tekrar deneyin.';
+
+  @override
+  String get chatErrorSafety =>
+      'İçerik güvenliği kuralları nedeniyle bu istek tamamlanamadı. Lütfen yeniden ifade edip tekrar deneyin.';
+
+  @override
+  String get chatErrorGeneric =>
+      'Bir şeyler ters gitti. Lütfen tekrar deneyin.';
 }

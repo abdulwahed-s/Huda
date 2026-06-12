@@ -470,6 +470,13 @@ class AppLocalizationsBn extends AppLocalizations {
       'তীরটি মক্কার দিকে না নির্দেশ করা পর্যন্ত আপনার ডিভাইস ঘুরান';
 
   @override
+  String get calibrateCompass => 'কম্পাস ক্যালিব্রেশন প্রয়োজন';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'নির্ভুলতা বাড়াতে আপনার ফোনটি ৮-আকৃতিতে নাড়ান';
+
+  @override
   String get athkarCollection => 'জিকিরের সংগ্রহ';
 
   @override
@@ -546,6 +553,18 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'কোন ইন্টারনেট সংযোগ নেই। অফলাইন বিষয়বস্তু উপলব্ধ নেই।';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'ইন্টারনেট সংযোগ নেই। অফলাইনে কোনো অডিও উপলব্ধ নেই।';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'ইন্টারনেট সংযোগ নেই। অফলাইনে কোনো তাফসির উপলব্ধ নেই।';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'ইন্টারনেট সংযোগ নেই। অফলাইনে কোনো অনুবাদ উপলব্ধ নেই।';
 
   @override
   String get loadingAthkar => 'জিকির লোড হচ্ছে...';
@@ -3096,6 +3115,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get whatsNew340Feature4 => 'বাগ সংশোধন এবং উন্নতি';
 
   @override
+  String get whatsNew350Feature1 =>
+      'অ্যাপ ফন্ট: সেটিংস থেকে আপনার পছন্দমতো অ্যাপের ফন্ট পরিবর্তন করুন';
+
+  @override
+  String get whatsNew350Feature2 => 'বাগ সংশোধন এবং পারফরম্যান্স উন্নতি';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override
@@ -3528,6 +3554,19 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'কুরআন ফন্ট';
+
+  @override
+  String get settingsAppFont => 'অ্যাপ ফন্ট';
+
+  @override
+  String get settingsAppFontDescription => 'অ্যাপ ইন্টারফেসে ব্যবহৃত ফন্ট';
+
+  @override
+  String get settingsSystemFont => 'সিস্টেম ডিফল্ট';
+
+  @override
+  String get settingsSystemFontDescription =>
+      'আপনার ডিভাইসের ডিফল্ট ফন্ট ব্যবহার করে';
 
   @override
   String surahNumberBadge(int number) {
@@ -4005,4 +4044,24 @@ class AppLocalizationsBn extends AppLocalizations {
   String audioInLanguage(String language) {
     return '$language ভাষায়';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'ইন্টারনেট সংযোগ নেই। অনুগ্রহ করে আপনার নেটওয়ার্ক পরীক্ষা করে আবার চেষ্টা করুন।';
+
+  @override
+  String get chatErrorRateLimit =>
+      'এই মুহূর্তে অনেক বেশি অনুরোধ। অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করে আবার চেষ্টা করুন।';
+
+  @override
+  String get chatErrorServer =>
+      'সার্ভারে পৌঁছাতে সমস্যা হচ্ছে। অনুগ্রহ করে কিছুক্ষণ পরে আবার চেষ্টা করুন।';
+
+  @override
+  String get chatErrorSafety =>
+      'কনটেন্ট নিরাপত্তা নির্দেশিকার কারণে এই অনুরোধটি সম্পূর্ণ করা যায়নি। অনুগ্রহ করে অন্যভাবে লিখে আবার চেষ্টা করুন।';
+
+  @override
+  String get chatErrorGeneric =>
+      'কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
 }

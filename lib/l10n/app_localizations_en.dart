@@ -469,6 +469,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Rotate your device until the arrow points toward Mecca';
 
   @override
+  String get calibrateCompass => 'Compass needs calibration';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'Move your phone in a figure-8 motion to improve accuracy';
+
+  @override
   String get athkarCollection => 'Athkar Collection';
 
   @override
@@ -545,6 +552,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'No internet connection. No offline content available.';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'No internet connection. No offline audio available.';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'No internet connection. No offline tafsir available.';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'No internet connection. No offline translation available.';
 
   @override
   String get loadingAthkar => 'Loading Athkar...';
@@ -3094,6 +3113,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsNew340Feature4 => 'Bug fixes and improvements';
 
   @override
+  String get whatsNew350Feature1 =>
+      'Custom App Font: Change the app font from settings to suit your preference';
+
+  @override
+  String get whatsNew350Feature2 => 'Bug fixes and performance improvements';
+
+  @override
   String get offlineMode => 'Offline Mode';
 
   @override
@@ -3525,6 +3551,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'Quran Font';
+
+  @override
+  String get settingsAppFont => 'App Font';
+
+  @override
+  String get settingsAppFontDescription => 'Font used across the app interface';
+
+  @override
+  String get settingsSystemFont => 'System Default';
+
+  @override
+  String get settingsSystemFontDescription =>
+      'Uses your device\'s default font';
 
   @override
   String surahNumberBadge(int number) {
@@ -4005,4 +4044,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String audioInLanguage(String language) {
     return 'In $language';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'No internet connection. Please check your network and try again.';
+
+  @override
+  String get chatErrorRateLimit =>
+      'Too many requests right now. Please wait a moment and try again.';
+
+  @override
+  String get chatErrorServer =>
+      'We\'re having trouble reaching the server. Please try again in a moment.';
+
+  @override
+  String get chatErrorSafety =>
+      'This request couldn\'t be completed due to content safety guidelines. Please rephrase and try again.';
+
+  @override
+  String get chatErrorGeneric => 'Something went wrong. Please try again.';
 }

@@ -469,6 +469,13 @@ class AppLocalizationsUr extends AppLocalizations {
       'اپنے آلے کو اس وقت تک گھمائیں جب تک تیر مکہ کی طرف اشارہ نہ کرے';
 
   @override
+  String get calibrateCompass => 'قطب نما کی کیلبریشن درکار ہے';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'درستگی بہتر بنانے کے لیے اپنے فون کو 8 کی شکل میں حرکت دیں';
+
+  @override
   String get athkarCollection => 'اذکار مجموعہ';
 
   @override
@@ -545,6 +552,18 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'انٹرنیٹ کنکشن نہیں۔ آف لائن مواد دستیاب نہیں۔';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'انٹرنیٹ کنکشن نہیں ہے۔ آف لائن آڈیو دستیاب نہیں ہے۔';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'انٹرنیٹ کنکشن نہیں ہے۔ آف لائن تفسیر دستیاب نہیں ہے۔';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'انٹرنیٹ کنکشن نہیں ہے۔ آف لائن ترجمہ دستیاب نہیں ہے۔';
 
   @override
   String get loadingAthkar => 'اذکار لوڈ ہو رہے ہیں...';
@@ -3086,6 +3105,13 @@ class AppLocalizationsUr extends AppLocalizations {
   String get whatsNew340Feature4 => 'بگ فکس اور بہتری';
 
   @override
+  String get whatsNew350Feature1 =>
+      'ایپ فونٹ: ترتیبات سے اپنی پسند کے مطابق ایپ کا فونٹ تبدیل کریں';
+
+  @override
+  String get whatsNew350Feature2 => 'بگ فکس اور کارکردگی میں بہتری';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override
@@ -3518,6 +3544,20 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'قرآن خط';
+
+  @override
+  String get settingsAppFont => 'ایپ فونٹ';
+
+  @override
+  String get settingsAppFontDescription =>
+      'ایپ کے انٹرفیس میں استعمال ہونے والا فونٹ';
+
+  @override
+  String get settingsSystemFont => 'سسٹم ڈیفالٹ';
+
+  @override
+  String get settingsSystemFontDescription =>
+      'آپ کے آلے کا ڈیفالٹ فونٹ استعمال کرتا ہے';
 
   @override
   String surahNumberBadge(int number) {
@@ -3994,4 +4034,23 @@ class AppLocalizationsUr extends AppLocalizations {
   String audioInLanguage(String language) {
     return '$language میں';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'انٹرنیٹ کنکشن نہیں ہے۔ براہ کرم اپنا نیٹ ورک چیک کریں اور دوبارہ کوشش کریں۔';
+
+  @override
+  String get chatErrorRateLimit =>
+      'اس وقت بہت زیادہ درخواستیں ہیں۔ براہ کرم تھوڑا انتظار کریں اور دوبارہ کوشش کریں۔';
+
+  @override
+  String get chatErrorServer =>
+      'سرور تک پہنچنے میں دشواری ہو رہی ہے۔ براہ کرم تھوڑی دیر بعد دوبارہ کوشش کریں۔';
+
+  @override
+  String get chatErrorSafety =>
+      'مواد کی حفاظت کے ضوابط کی وجہ سے یہ درخواست مکمل نہیں ہو سکی۔ براہ کرم الفاظ بدل کر دوبارہ کوشش کریں۔';
+
+  @override
+  String get chatErrorGeneric => 'کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔';
 }

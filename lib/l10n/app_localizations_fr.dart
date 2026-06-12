@@ -475,6 +475,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Tournez votre appareil jusqu\'à ce que la flèche pointe vers La Mecque';
 
   @override
+  String get calibrateCompass => 'La boussole doit être calibrée';
+
+  @override
+  String get calibrateCompassInstruction =>
+      'Déplacez votre téléphone en forme de huit pour améliorer la précision';
+
+  @override
   String get athkarCollection => 'Collection d\'Athkar';
 
   @override
@@ -551,6 +558,18 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get noInternetOfflineUnavailable =>
       'Aucune connexion Internet. Contenu hors ligne indisponible.';
+
+  @override
+  String get offlineAudioUnavailable =>
+      'Pas de connexion Internet. Aucun audio hors ligne disponible.';
+
+  @override
+  String get offlineTafsirUnavailable =>
+      'Pas de connexion Internet. Aucun tafsir hors ligne disponible.';
+
+  @override
+  String get offlineTranslationUnavailable =>
+      'Pas de connexion Internet. Aucune traduction hors ligne disponible.';
 
   @override
   String get loadingAthkar => 'Chargement des Athkar...';
@@ -3165,6 +3184,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get whatsNew340Feature4 => 'Corrections de bugs et améliorations';
 
   @override
+  String get whatsNew350Feature1 =>
+      'Police de l\'application : Changez la police de l\'application depuis les paramètres';
+
+  @override
+  String get whatsNew350Feature2 =>
+      'Corrections de bugs et améliorations des performances';
+
+  @override
   String get offlineMode => 'Mode hors ligne';
 
   @override
@@ -3599,6 +3626,20 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsQuranFont => 'Police du Coran';
+
+  @override
+  String get settingsAppFont => 'Police de l\'application';
+
+  @override
+  String get settingsAppFontDescription =>
+      'Police utilisée dans l\'interface de l\'application';
+
+  @override
+  String get settingsSystemFont => 'Valeur par défaut du système';
+
+  @override
+  String get settingsSystemFontDescription =>
+      'Utilise la police par défaut de votre appareil';
 
   @override
   String surahNumberBadge(int number) {
@@ -4079,4 +4120,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String audioInLanguage(String language) {
     return 'En $language';
   }
+
+  @override
+  String get chatErrorNoConnection =>
+      'Pas de connexion Internet. Veuillez vérifier votre réseau et réessayer.';
+
+  @override
+  String get chatErrorRateLimit =>
+      'Trop de requêtes pour le moment. Veuillez patienter un instant et réessayer.';
+
+  @override
+  String get chatErrorServer =>
+      'Nous rencontrons des difficultés pour joindre le serveur. Veuillez réessayer dans un instant.';
+
+  @override
+  String get chatErrorSafety =>
+      'Cette demande n\'a pas pu être traitée en raison des règles de sécurité du contenu. Veuillez la reformuler et réessayer.';
+
+  @override
+  String get chatErrorGeneric =>
+      'Une erreur s\'est produite. Veuillez réessayer.';
 }
