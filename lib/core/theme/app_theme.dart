@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huda/core/theme/app_colors.dart';
+import 'package:huda/core/theme/app_fonts.dart';
 
 class AppThemeHelper {
   static ThemeData getLightTheme(AppColorTheme colorTheme, String fontFamily) {
@@ -59,7 +60,7 @@ class AppThemeHelper {
           return Colors.grey;
         }),
       ),
-      fontFamily: fontFamily,
+      fontFamily: AppFonts.resolve(fontFamily),
     );
   }
 
@@ -120,7 +121,7 @@ class AppThemeHelper {
           return Colors.grey;
         }),
       ),
-      fontFamily: fontFamily,
+      fontFamily: AppFonts.resolve(fontFamily),
     );
   }
 }
