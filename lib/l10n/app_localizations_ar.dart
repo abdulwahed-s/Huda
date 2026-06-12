@@ -3040,7 +3040,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get whatsNew340Feature3 =>
-      'تقدم الكتاب: آخر كتاب قرأته محفوظ الآن — تابع من حيث توقفت مباشرةً من الشاشة الرئيسية';
+      'تقدم الكتاب: آخر كتاب قرأته محفوظ الآن — تابع من حيث توقفت من صفحة الكتب';
 
   @override
   String get whatsNew340Feature4 => 'إصلاح الأخطاء والتحسينات';
@@ -3905,7 +3905,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noReciterActivityDescription =>
-      'Start listening to Quran audio to see your progress';
+      'ابدأ بالاستماع إلى تلاوات القرآن لرؤية تقدمك';
 
   @override
   String get noRadioActivityDescription =>

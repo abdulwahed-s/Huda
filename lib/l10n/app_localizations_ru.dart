@@ -1847,10 +1847,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get feedbackDescription => 'Поделитесь своими мыслями с нами';
 
   @override
-  String get rateOurApp => 'Rate Our App';
+  String get rateOurApp => 'Оцените наше приложение';
 
   @override
-  String get rateAppDescription => 'Help others discover this app';
+  String get rateAppDescription =>
+      'Помогите другим открыть для себя это приложение';
 
   @override
   String get batteryOptimizationExemptionGranted =>
@@ -2922,94 +2923,94 @@ class AppLocalizationsRu extends AppLocalizations {
   String get goBackHome => 'Вернуться на главную';
 
   @override
-  String get ramadanTracker => 'Ramadan Qadhaa';
+  String get ramadanTracker => 'Када Рамадана';
 
   @override
   String daysUntilRamadan(int days) {
-    return '$days days until Ramadan';
+    return '$days дней до Рамадана';
   }
 
   @override
   String ramadanDayLabel(int day) {
-    return 'Ramadan $day';
+    return 'Рамадан $day';
   }
 
   @override
   String durationOfFasting(int hours, int minutes) {
-    return 'Duration of fasting: $hours hours and $minutes minutes';
+    return 'Продолжительность поста: $hours часов и $minutes минут';
   }
 
   @override
   String durationOfIftar(int hours, int minutes) {
-    return 'Duration of iftar: $hours hours and $minutes minutes';
+    return 'Продолжительность ифтара: $hours часов и $minutes минут';
   }
 
   @override
   String remainingForIftar(int hours) {
-    return 'remaining for Iftar Less than $hours hours';
+    return 'до ифтара осталось менее $hours часов';
   }
 
   @override
   String remainingForImsaak(int hours) {
-    return 'remaining for Imsaak Less than $hours hours';
+    return 'до имсака осталось менее $hours часов';
   }
 
   @override
-  String get imsaakLabel => 'Imsaak';
+  String get imsaakLabel => 'Имсак';
 
   @override
-  String get iftarLabel => 'Iftar';
+  String get iftarLabel => 'Ифтар';
 
   @override
-  String get fastedStatus => 'fasted';
+  String get fastedStatus => 'постился';
 
   @override
-  String get missedStatus => 'missed';
+  String get missedStatus => 'пропущено';
 
   @override
-  String get qadhaaDays => 'Qadhaa Days';
+  String get qadhaaDays => 'Дни када';
 
   @override
-  String get qadhaaInfoTitle => 'About Qadaa (Making up missed fasts)';
+  String get qadhaaInfoTitle => 'О када (восполнение пропущенных постов)';
 
   @override
-  String get qadhaaInfoQ1Title => 'What is Qadaa?';
+  String get qadhaaInfoQ1Title => 'Что такое када?';
 
   @override
   String get qadhaaInfoQ1Body =>
-      'Qadaa is fasting the days a Muslim broke their fast during Ramadan due to a valid Islamic excuse, such as illness, travel, menstruation, or postpartum bleeding. They must be made up before the start of the following Ramadan.';
+      'Када — это пост в дни, когда мусульманин прервал свой пост во время Рамадана по уважительной исламской причине, такой как болезнь, путешествие, менструация или послеродовое кровотечение. Их необходимо восполнить до начала следующего Рамадана.';
 
   @override
-  String get qadhaaInfoQ2Title => 'The Ruling on Qadaa';
+  String get qadhaaInfoQ2Title => 'Положение о када';
 
   @override
-  String get qadhaaInfoQ2Body1 => 'Allah the Almighty said:';
+  String get qadhaaInfoQ2Body1 => 'Всевышний Аллах сказал:';
 
   @override
   String get qadhaaInfoQ2Verse =>
-      '\"And whoever of you is ill or on a journey - then an equal number of other days.\" [Al-Baqarah: 184]';
+      '«А если кто из вас болен или находится в пути, то пусть постится столько же дней в другое время». [Аль-Бакара: 184]';
 
   @override
   String get qadhaaInfoQ2Body2 =>
-      'Therefore, it is obligatory for whoever broke their fast in Ramadan with an excuse to make up those days.';
+      'Поэтому каждый, кто прервал пост в Рамадан по уважительной причине, обязан восполнить эти дни.';
 
   @override
-  String get qadhaaInfoQ3Title => 'When must Qadaa be done?';
+  String get qadhaaInfoQ3Title => 'Когда нужно совершать када?';
 
   @override
   String get qadhaaInfoQ3Body =>
-      'The missed days of Ramadan must be made up before the beginning of the next Ramadan. It is permissible to make them up at any time of the year, except on the days of the two Eids and the days of Tashreeq. It is best to hasten in making them up and not to delay.';
+      'Пропущенные дни Рамадана необходимо восполнить до начала следующего Рамадана. Их разрешается восполнять в любое время года, кроме дней двух праздников Ид и дней ат-Ташрик. Лучше поспешить с восполнением и не откладывать.';
 
   @override
-  String get qadhaaInfoQ4Title => 'How to use';
+  String get qadhaaInfoQ4Title => 'Как пользоваться';
 
   @override
   String get qadhaaInfoQ4Body1 =>
-      'During Ramadan: Tap on the day you broke your fast to log it.';
+      'Во время Рамадана: нажмите на день, когда вы прервали пост, чтобы отметить его.';
 
   @override
   String get qadhaaInfoQ4Body2 =>
-      'After Ramadan: Tap on the logged day to confirm you have made it up.';
+      'После Рамадана: нажмите на отмеченный день, чтобы подтвердить, что вы его восполнили.';
 
   @override
   String get whatsNewTitle => 'Что нового';
@@ -3082,17 +3083,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get whatsNew310Feature1iOS =>
-      'Prayer Times Widget: Home screen & lock screen widget with a live countdown to your next prayer';
+      'Виджет времени молитв: виджет на главном экране и экране блокировки с обратным отсчётом до следующей молитвы в реальном времени';
 
   @override
   String get whatsNew310Feature1Android =>
-      'Prayer Times Widget: Home screen widget with a live countdown to your next prayer';
+      'Виджет времени молитв: виджет на главном экране с обратным отсчётом до следующей молитвы в реальном времени';
 
   @override
-  String get whatsNew310Feature2 => 'UI/UX improvements';
+  String get whatsNew310Feature2 => 'Улучшения UI/UX';
 
   @override
-  String get whatsNew310Feature3 => 'Bug fixes';
+  String get whatsNew310Feature3 => 'Исправление ошибок';
 
   @override
   String get whatsNew330Feature1 =>
@@ -3111,7 +3112,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get whatsNew340Feature3 =>
-      'Прогресс чтения книги: последняя читаемая книга теперь сохраняется — продолжайте с того места, где остановились, прямо с главного экрана';
+      'Прогресс чтения книги: последняя читаемая книга теперь сохраняется — продолжайте с того места, где остановились, со страницы книг';
 
   @override
   String get whatsNew340Feature4 => 'Исправления ошибок и улучшения';
@@ -3196,23 +3197,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get agree => 'Согласиться';
 
   @override
-  String get quranAudio => 'Quran Audio';
+  String get quranAudio => 'Аудио Корана';
 
   @override
-  String get searchReciters => 'Search reciters...';
+  String get searchReciters => 'Поиск чтецов...';
 
   @override
-  String get searchSurah => 'Search surah...';
+  String get searchSurah => 'Поиск суры...';
 
   @override
-  String get verses => 'verses';
+  String get verses => 'аяты';
 
   @override
-  String get noDownloadedContent => 'No downloaded content';
+  String get noDownloadedContent => 'Нет загруженного контента';
 
   @override
   String get connectToDownload =>
-      'Connect to the internet to browse and download Quran recitations';
+      'Подключитесь к интернету, чтобы просматривать и загружать чтения Корана';
 
   @override
   String get quranRadio => 'Радио Коран';
@@ -3591,177 +3592,177 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get quranVerseWidget => 'Quran Verse';
+  String get quranVerseWidget => 'Аят Корана';
 
   @override
-  String get prayerTimesWidget => 'Prayer Times';
+  String get prayerTimesWidget => 'Время молитв';
 
   @override
-  String get prayerWidgetTagline => 'Stay on time for every prayer';
+  String get prayerWidgetTagline => 'Не опаздывайте ни на одну молитву';
 
   @override
-  String get addPrayerWidgetTitle => 'Add Prayer Widget';
+  String get addPrayerWidgetTitle => 'Добавить виджет молитв';
 
   @override
   String get addPrayerWidgetDescription =>
-      'Pin the Huda Prayer widget to your home screen to see the next prayer with a live countdown. Calculations run on-device using your saved location.';
+      'Закрепите виджет молитв Huda на главном экране, чтобы видеть следующую молитву с обратным отсчётом в реальном времени. Расчёты выполняются на устройстве с использованием сохранённого местоположения.';
 
   @override
-  String get addPrayerWidget => 'Add to home screen';
+  String get addPrayerWidget => 'Добавить на главный экран';
 
   @override
-  String get customizePrayerWidget => 'Customize';
+  String get customizePrayerWidget => 'Настроить';
 
   @override
-  String get prayerWidgetCustomization => 'Customize prayer widget';
+  String get prayerWidgetCustomization => 'Настроить виджет молитв';
 
   @override
-  String get prayerWidgetPreview => 'Live preview';
+  String get prayerWidgetPreview => 'Предпросмотр в реальном времени';
 
   @override
-  String get design => 'Design';
+  String get design => 'Дизайн';
 
   @override
-  String get designHero => 'Spotlight';
+  String get designHero => 'В центре внимания';
 
   @override
   String get designHeroDescription =>
-      'Bold next-prayer focus with countdown timer, hero icon and a clean list of all prayers.';
+      'Яркий акцент на следующей молитве с таймером обратного отсчёта, главным значком и аккуратным списком всех молитв.';
 
   @override
-  String get designCompact => 'Almanac';
+  String get designCompact => 'Альманах';
 
   @override
   String get designCompactDescription =>
-      'Classic cream card with date, day-of-week, full prayer grid and night times.';
+      'Классическая кремовая карточка с датой, днём недели, полной сеткой молитв и ночным временем.';
 
   @override
-  String get size => 'Size';
+  String get size => 'Размер';
 
   @override
-  String get medium => 'Medium';
+  String get medium => 'Средний';
 
   @override
-  String get lockScreen => 'Lock screen';
+  String get lockScreen => 'Экран блокировки';
 
   @override
-  String get background => 'Background';
+  String get background => 'Фон';
 
   @override
-  String get enableBackground => 'Show background';
+  String get enableBackground => 'Показать фон';
 
   @override
-  String get backgroundColor => 'Background color';
+  String get backgroundColor => 'Цвет фона';
 
   @override
-  String get glassify => 'Glass effect';
+  String get glassify => 'Эффект стекла';
 
   @override
-  String get rounded => 'Rounded corners';
+  String get rounded => 'Закруглённые углы';
 
   @override
-  String get content => 'Content';
+  String get content => 'Содержимое';
 
   @override
-  String get contentColor => 'Content color';
+  String get contentColor => 'Цвет содержимого';
 
   @override
-  String get contentSize => 'Content size';
+  String get contentSize => 'Размер содержимого';
 
   @override
-  String get region => 'Region';
+  String get region => 'Регион';
 
   @override
-  String get numerals => 'Numerals';
+  String get numerals => 'Цифры';
 
   @override
-  String get automatic => 'Automatic';
+  String get automatic => 'Автоматически';
 
   @override
-  String get latinNumerals => 'Latin (1, 2, 3)';
+  String get latinNumerals => 'Латинские (1, 2, 3)';
 
   @override
-  String get arabicNumerals => 'Arabic (١, ٢, ٣)';
+  String get arabicNumerals => 'Арабские (١, ٢, ٣)';
 
   @override
-  String get advanced => 'Advanced';
+  String get advanced => 'Дополнительно';
 
   @override
-  String get resetWidgetCustomization => 'Reset to defaults';
+  String get resetWidgetCustomization => 'Сбросить до значений по умолчанию';
 
   @override
   String get resetWidgetCustomizationConfirm =>
-      'Reset all prayer widget customization to defaults?';
+      'Сбросить все настройки виджета молитв до значений по умолчанию?';
 
   @override
-  String get followAppTheme => 'Follow app theme';
+  String get followAppTheme => 'Следовать теме приложения';
 
   @override
-  String get prayerWidgetEmptyTitle => 'Set your location';
+  String get prayerWidgetEmptyTitle => 'Укажите своё местоположение';
 
   @override
   String get prayerWidgetEmptyBody =>
-      'Open Huda and grant location access so the widget can compute prayer times for you.';
+      'Откройте Huda и предоставьте доступ к местоположению, чтобы виджет мог рассчитать для вас время молитв.';
 
   @override
-  String get prayerWidgetEmptyAction => 'Open Prayer Times';
+  String get prayerWidgetEmptyAction => 'Открыть время молитв';
 
   @override
-  String get previousPrayer => 'Previous prayer';
+  String get previousPrayer => 'Предыдущая молитва';
 
   @override
-  String get timeUntilNextPrayer => 'Time until next prayer';
+  String get timeUntilNextPrayer => 'Время до следующей молитвы';
 
   @override
-  String get forcePrayerWidgetUpdate => 'Refresh prayer widget';
+  String get forcePrayerWidgetUpdate => 'Обновить виджет молитв';
 
   @override
-  String get prayerWidgetUpdated => 'Prayer widget refreshed';
+  String get prayerWidgetUpdated => 'Виджет молитв обновлён';
 
   @override
-  String get prayerWidgetUpdating => 'Refreshing…';
+  String get prayerWidgetUpdating => 'Обновление…';
 
   @override
-  String get widgetTheme => 'Theme';
+  String get widgetTheme => 'Тема';
 
   @override
-  String get themeAuto => 'App Theme';
+  String get themeAuto => 'Тема приложения';
 
   @override
-  String get themeOcean => 'Ocean';
+  String get themeOcean => 'Океан';
 
   @override
-  String get themeSunset => 'Sunset';
+  String get themeSunset => 'Закат';
 
   @override
-  String get themeForest => 'Forest';
+  String get themeForest => 'Лес';
 
   @override
-  String get themeMidnight => 'Midnight';
+  String get themeMidnight => 'Полночь';
 
   @override
-  String get themeSandstone => 'Sandstone';
+  String get themeSandstone => 'Песчаник';
 
   @override
-  String get themeRose => 'Rose';
+  String get themeRose => 'Роза';
 
   @override
-  String get themeLavender => 'Lavender';
+  String get themeLavender => 'Лаванда';
 
   @override
-  String get themeCharcoal => 'Charcoal';
+  String get themeCharcoal => 'Уголь';
 
   @override
-  String get themeAmber => 'Amber';
+  String get themeAmber => 'Янтарь';
 
   @override
-  String get themeArctic => 'Arctic';
+  String get themeArctic => 'Арктика';
 
   @override
-  String get themeBurgundy => 'Burgundy';
+  String get themeBurgundy => 'Бордовый';
 
   @override
-  String get themeSage => 'Sage';
+  String get themeSage => 'Шалфей';
 
   @override
   String get eventRamadan => 'Рамадан Мубарак';
@@ -3982,7 +3983,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noReciterActivityDescription =>
-      'Start listening to Quran audio to see your progress';
+      'Начните слушать аудио Корана, чтобы видеть свой прогресс';
 
   @override
   String get noRadioActivityDescription =>

@@ -3088,7 +3088,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whatsNew340Feature3 =>
-      'Book Progress: Your last read book is now tracked — continue from where you left off from the home screen';
+      'Book Progress: Your last read book is now tracked — continue from where you left off from the books page';
 
   @override
   String get whatsNew340Feature4 => 'Bug fixes and improvements';

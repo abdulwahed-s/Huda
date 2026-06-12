@@ -5723,7 +5723,7 @@ abstract class AppLocalizations {
   /// What's new feature 3 for v3.4.0
   ///
   /// In en, this message translates to:
-  /// **'Book Progress: Your last read book is now tracked — continue from where you left off from the home screen'**
+  /// **'Book Progress: Your last read book is now tracked — continue from where you left off from the books page'**
   String get whatsNew340Feature3;
 
   /// What's new feature 4 for v3.4.0
