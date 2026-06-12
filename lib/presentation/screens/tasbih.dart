@@ -74,39 +74,33 @@ class _TasbihBody extends StatelessWidget {
           onReset: () => showTasbihResetDialog(context),
         );
 
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 16.w,
-            right: 16.w,
-            bottom: MediaQuery.paddingOf(context).bottom,
-          ),
-          child: isLandscape
-              ? Row(
+        final content = isLandscape
+            ? ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 880,
+                  maxHeight: 540,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(flex: 1, child: card),
-                    SizedBox(width: 20.w),
+                    Expanded(child: card),
+                    SizedBox(width: 24.w),
                     Expanded(
-                      flex: 1,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const Expanded(child: Center(child: AddButton())),
+                          SizedBox(height: 16.h),
                           controls,
-                          SizedBox(height: 20.h),
-                          Expanded(
-                            child: Center(
-                              child: SizedBox(
-                                height: MediaQuery.of(context).size.width / 3,
-                                width: MediaQuery.of(context).size.width / 3,
-                                child: const AddButton(),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
                   ],
-                )
-              : Column(
+                ),
+              )
+            : ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 520),
+                child: Column(
                   children: [
                     Expanded(flex: 3, child: card),
                     SizedBox(height: 20.h),
@@ -116,6 +110,15 @@ class _TasbihBody extends StatelessWidget {
                     SizedBox(height: 20.h),
                   ],
                 ),
+              );
+
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16.w,
+            right: 16.w,
+            bottom: MediaQuery.paddingOf(context).bottom,
+          ),
+          child: Center(child: content),
         );
       },
     );
