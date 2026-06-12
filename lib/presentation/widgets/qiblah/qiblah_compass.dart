@@ -1,8 +1,12 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_compass_v2/flutter_compass_v2.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/utils/compass_accuracy.dart';
+import 'package:huda/presentation/widgets/qiblah/calibration_banner.dart';
 import 'package:huda/presentation/widgets/qiblah/compass.dart';
 import 'package:huda/presentation/widgets/qiblah/instructions.dart';
 import 'package:huda/presentation/widgets/qiblah/loading_state.dart';
@@ -38,6 +42,52 @@ class QiblahCompass extends StatefulWidget {
 }
 
 class QiblahCompassState extends State<QiblahCompass> {
+  static const _showDelay = Duration(milliseconds: 1800);
+  static const _hideDelay = Duration(milliseconds: 1000);
+
+  StreamSubscription<CompassEvent>? _accuracySub;
+  Timer? _showTimer;
+  Timer? _hideTimer;
+  bool _showCalibration = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _accuracySub = FlutterCompass.events?.listen((event) {
+      _handleAccuracy(CompassAccuracy.fromEvent(event));
+    });
+  }
+
+  @override
+  void dispose() {
+    _accuracySub?.cancel();
+    _showTimer?.cancel();
+    _hideTimer?.cancel();
+    super.dispose();
+  }
+
+  void _handleAccuracy(CompassAccuracy accuracy) {
+    if (accuracy.needsCalibration) {
+      _hideTimer?.cancel();
+      _hideTimer = null;
+      if (!_showCalibration && _showTimer == null) {
+        _showTimer = Timer(_showDelay, () {
+          _showTimer = null;
+          if (mounted) setState(() => _showCalibration = true);
+        });
+      }
+    } else {
+      _showTimer?.cancel();
+      _showTimer = null;
+      if (_showCalibration && _hideTimer == null) {
+        _hideTimer = Timer(_hideDelay, () {
+          _hideTimer = null;
+          if (mounted) setState(() => _showCalibration = false);
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QiblahDirection>(
@@ -59,6 +109,10 @@ class QiblahCompassState extends State<QiblahCompass> {
           children: [
             SizedBox(height: 40.h),
             StatusIndicator(isAligned: isAligned, isDark: widget.isDark),
+            CalibrationBanner(
+              show: _showCalibration,
+              isDark: widget.isDark,
+            ),
             SizedBox(height: 60.h),
             Expanded(
               child: Compass(
