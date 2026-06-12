@@ -3112,6 +3112,10 @@ class AppLocalizationsUr extends AppLocalizations {
   String get whatsNew350Feature2 => 'بگ فکس اور کارکردگی میں بہتری';
 
   @override
+  String get whatsNew350Feature3 =>
+      'یوآئی بہتری: کچھ صفحات پر تازہ اور بہتر شکل';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override

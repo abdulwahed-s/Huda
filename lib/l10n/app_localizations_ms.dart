@@ -3126,6 +3126,10 @@ class AppLocalizationsMs extends AppLocalizations {
       'Pembaikan pepijat dan penambahbaikan prestasi';
 
   @override
+  String get whatsNew350Feature3 =>
+      'Sentuhan UI: Rupa segar dan kemas pada beberapa halaman';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override

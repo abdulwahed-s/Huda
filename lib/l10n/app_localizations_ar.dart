@@ -3072,6 +3072,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get whatsNew350Feature2 => 'إصلاح الأخطاء وتحسين الأداء';
 
   @override
+  String get whatsNew350Feature3 =>
+      'لمسات على الواجهة: مظهر أنيق ومحدّث في بعض الصفحات';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override

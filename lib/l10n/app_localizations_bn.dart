@@ -3122,6 +3122,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String get whatsNew350Feature2 => 'বাগ সংশোধন এবং পারফরম্যান্স উন্নতি';
 
   @override
+  String get whatsNew350Feature3 =>
+      'ইউআই পরিমার্জন: কিছু স্ক্রিনে ঝকঝকে নতুন চেহারা';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override

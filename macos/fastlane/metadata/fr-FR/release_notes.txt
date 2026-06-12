@@ -1,7 +1,3 @@
-Audios : Parcourez et écoutez tous types d'audios islamiques avec téléchargement hors ligne et minuterie de sommeil
+Police de l'application : Changez la police de l'application depuis les paramètres
 
-Suivi récitateur & radio : Votre dernier récitateur écouté et station de radio sont maintenant sauvegardés — reprenez-les depuis l'écran d'accueil
-
-Progression du livre : Votre dernier livre lu est maintenant enregistré — continuez là où vous vous étiez arrêté depuis la page des livres
-
-Corrections de bugs et améliorations
+Corrections de bugs et améliorations des performances

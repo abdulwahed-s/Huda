@@ -3171,6 +3171,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fehlerbehebungen und Leistungsverbesserungen';
 
   @override
+  String get whatsNew350Feature3 =>
+      'UI-Feinschliff: Ein frischer, gepflegter Look auf einigen Seiten';
+
+  @override
   String get offlineMode => 'Offline-Modus';
 
   @override

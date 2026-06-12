@@ -1,7 +1,3 @@
-Audios: Explora y escucha todo tipo de audios islámicos con descarga sin conexión y temporizador de sueño
+Fuente de la app: Cambia la fuente de la aplicación desde los ajustes
 
-Seguimiento de recitador y radio: Tu último recitador y estación de radio se guardan ahora — reanudarlos desde la pantalla de inicio
-
-Progreso del libro: Tu último libro leído ahora se guarda — continúa desde donde lo dejaste desde la página de libros
-
-Correcciones de errores y mejoras
+Correcciones de errores y mejoras de rendimiento

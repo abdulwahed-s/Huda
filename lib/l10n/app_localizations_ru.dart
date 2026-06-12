@@ -3145,6 +3145,10 @@ class AppLocalizationsRu extends AppLocalizations {
       'Исправления ошибок и улучшение производительности';
 
   @override
+  String get whatsNew350Feature3 =>
+      'Штрихи интерфейса: свежий и аккуратный вид на нескольких экранах';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override

@@ -203,6 +203,11 @@ class WhatsNewContent {
         ),
         WhatsNewFeature(
           title: (context) =>
+              AppLocalizations.of(context)!.whatsNew350Feature3,
+          icon: Icons.auto_awesome_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) =>
               AppLocalizations.of(context)!.whatsNew350Feature2,
           icon: Icons.bug_report_outlined,
         ),

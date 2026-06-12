@@ -3120,6 +3120,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsNew350Feature2 => 'Bug fixes and performance improvements';
 
   @override
+  String get whatsNew350Feature3 =>
+      'UI Touch-ups: A fresh, polished look on several screens';
+
+  @override
   String get offlineMode => 'Offline Mode';
 
   @override

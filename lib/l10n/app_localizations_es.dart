@@ -3185,6 +3185,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Correcciones de errores y mejoras de rendimiento';
 
   @override
+  String get whatsNew350Feature3 =>
+      'Retoques de interfaz: un aspecto renovado y pulido en algunas pantallas';
+
+  @override
   String get offlineMode => 'Modo sin conexión';
 
   @override

@@ -3456,6 +3456,10 @@
     "@whatsNew350Feature2": {
         "description": "What's new feature 2 for v3.5.0"
     },
+    "whatsNew350Feature3": "UI Touch-ups: A fresh, polished look on several screens",
+    "@whatsNew350Feature3": {
+        "description": "What's new feature 3 for v3.5.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

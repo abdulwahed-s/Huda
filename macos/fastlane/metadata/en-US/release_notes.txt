@@ -1,7 +1,3 @@
-Audios: Browse and listen to all types of Islamic audios with offline download and sleep timer support
+Custom App Font: Change the app font from settings to suit your preference
 
-Reciter & Radio Tracking: Your last played reciter and radio station are now saved — resume them from the home screen
-
-Book Progress: Your last read book is now tracked — continue from where you left off from the books page
-
-Bug fixes and improvements
+Bug fixes and performance improvements

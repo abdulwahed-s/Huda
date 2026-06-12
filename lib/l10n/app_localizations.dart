@@ -5774,6 +5774,12 @@ abstract class AppLocalizations {
   /// **'Bug fixes and performance improvements'**
   String get whatsNew350Feature2;
 
+  /// What's new feature 3 for v3.5.0
+  ///
+  /// In en, this message translates to:
+  /// **'UI Touch-ups: A fresh, polished look on several screens'**
+  String get whatsNew350Feature3;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:

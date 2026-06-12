@@ -3119,6 +3119,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Hata düzeltmeleri ve performans iyileştirmeleri';
 
   @override
+  String get whatsNew350Feature3 =>
+      'Arayüz Rötuşları: Bazı ekranlarda taze ve şık bir görünüm';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override

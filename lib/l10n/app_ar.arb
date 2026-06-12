@@ -1711,6 +1711,7 @@
     "whatsNew340Feature4": "إصلاح الأخطاء والتحسينات",
     "whatsNew350Feature1": "خط التطبيق: يمكنك الآن تغيير خط التطبيق من الإعدادات",
     "whatsNew350Feature2": "إصلاح الأخطاء وتحسين الأداء",
+    "whatsNew350Feature3": "لمسات على الواجهة: مظهر أنيق ومحدّث في بعض الصفحات",
     "offlineMode": "وضع عدم الاتصال",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
