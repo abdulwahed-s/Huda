@@ -144,7 +144,11 @@ class TasbihCubit extends Cubit<TasbihState> {
             cacheHelper.getData(key: 'tasbih_selected_index') ?? 0;
       } else {
         _notes = _migrateLegacyNotes();
+        if (_notes.isEmpty) {
+          _notes = _defaultNotes();
+        }
         _selectedNoteIndex = 0;
+        saveTasbih();
       }
 
       if (_notes.isNotEmpty) {
@@ -167,6 +171,17 @@ class TasbihCubit extends Cubit<TasbihState> {
     );
     cacheHelper.saveData(key: 'tasbih_selected_index', value: _selectedNoteIndex);
   }
+
+  List<TasbihNote> _defaultNotes() => [
+        const TasbihNote(text: 'سُبْحَانَ اللّٰه'),
+        const TasbihNote(text: 'الْحَمْدُ لِلّٰه'),
+        const TasbihNote(text: 'اللّٰهُ أَكْبَر'),
+        const TasbihNote(text: 'لَا إِلٰهَ إِلَّا اللّٰه'),
+        const TasbihNote(text: 'أَسْتَغْفِرُ اللّٰه'),
+        const TasbihNote(text: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰه'),
+        const TasbihNote(text: 'سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ'),
+        const TasbihNote(text: 'اللّٰهُمَّ صَلِّ عَلَى مُحَمَّد'),
+      ];
 
   List<TasbihNote> _migrateLegacyNotes() {
     final legacyCount = cacheHelper.getData(key: 'tasbih_count') as int? ?? 0;
