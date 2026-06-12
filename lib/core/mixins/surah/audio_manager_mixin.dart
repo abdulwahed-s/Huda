@@ -29,6 +29,9 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   StreamSubscription<Duration>? _positionSubscription;
   StreamSubscription<Duration?>? _durationSubscription;
 
+  static final Uri _notificationArtUri = Uri.parse(
+      'https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?auto=compress&cs=tinysrgb&w=600');
+
   SurahModel get surah;
   int get surahNumber;
   bool get isBottomSheetOpen;
@@ -138,13 +141,20 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
             'surah_${surah.number}_ayah_${ayahFromCurrentScreen.numberInSurah}';
         final mediaTitle =
             '${surah.name ?? 'Surah'} - Ayah ${ayahFromCurrentScreen.numberInSurah}';
+        final mediaItem = MediaItem(
+          id: mediaId,
+          title: mediaTitle,
+          album: surah.name,
+          artist: _reciterNameForId(cubit, selectedReaderId!),
+          artUri: _notificationArtUri,
+        );
 
         _audioCoordinator.requestAudio(AudioCoordinator.surahAyah);
 
         if (downloadedPath != null) {
           await audioPlayer.setAudioSource(AudioSource.uri(
             Uri.file(downloadedPath),
-            tag: MediaItem(id: mediaId, title: mediaTitle),
+            tag: mediaItem,
           ));
         } else {
           if (kIsWeb) {
@@ -152,12 +162,12 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
                 'https://corsproxy.io/?${Uri.encodeComponent(targetAyah!.audio!)}';
             await audioPlayer.setAudioSource(AudioSource.uri(
               Uri.parse(proxyUrl),
-              tag: MediaItem(id: mediaId, title: mediaTitle),
+              tag: mediaItem,
             ));
           } else {
             await audioPlayer.setAudioSource(AudioSource.uri(
               Uri.parse(targetAyah!.audio!),
-              tag: MediaItem(id: mediaId, title: mediaTitle),
+              tag: mediaItem,
             ));
           }
         }
@@ -165,11 +175,18 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
         if (mounted) {
           setState(() => playingAyahIndex = index);
         }
-        // Don't await play() — just_audio_background blocks until completion on Android.
-        // UI state (isAudioPlaying) is driven by playerStateStream listener instead.
         audioPlayer.play();
       }
     }
+  }
+
+  String? _reciterNameForId(AudioCubit cubit, String readerId) {
+    for (final reader in cubit.getReadersByLanguage(null)) {
+      if (reader.identifier == readerId) {
+        return reader.englishName ?? reader.name;
+      }
+    }
+    return null;
   }
 
   void playNextAyah() async {
