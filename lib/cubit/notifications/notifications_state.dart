@@ -20,9 +20,11 @@ class NotificationPreferencesLoaded extends NotificationsState {
   final String eveningAthkarTime;
 
   final bool sahurAlarmEnabled;
-  final int sahurAlarmType; 
+  final int sahurAlarmType;
   final String sahurExactTime;
   final int sahurMinutesBeforeFajr;
+
+  final Set<String> loadingKeys;
 
   NotificationPreferencesLoaded({
     required this.kahfFriday,
@@ -40,5 +42,6 @@ class NotificationPreferencesLoaded extends NotificationsState {
     this.sahurAlarmType = 0,
     this.sahurExactTime = '04:00',
     this.sahurMinutesBeforeFajr = 30,
+    this.loadingKeys = const {},
   });
 }

@@ -117,8 +117,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
   }
 
-  Future<void> loadPreferences() async {
-    emit(NotificationPreferencesLoaded(
+  NotificationPreferencesLoaded _buildLoadedState({
+    Set<String> loadingKeys = const {},
+  }) {
+    return NotificationPreferencesLoaded(
       kahfFriday: cacheHelper.getData(key: 'kahfFriday') ?? false,
       randomAthkar: cacheHelper.getData(key: 'randomAthkar') ?? false,
       sabahMasaa: cacheHelper.getData(key: 'sabahMasaa') ?? false,
@@ -140,15 +142,39 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       sahurExactTime: cacheHelper.getData(key: 'sahurExactTime') ?? '04:00',
       sahurMinutesBeforeFajr:
           cacheHelper.getData(key: 'sahurMinutesBeforeFajr') ?? 30,
+      loadingKeys: loadingKeys,
+    );
+  }
+
+  Future<void> loadPreferences() async {
+    final current = state;
+    emit(_buildLoadedState(
+      loadingKeys: current is NotificationPreferencesLoaded
+          ? current.loadingKeys
+          : const {},
     ));
   }
 
   Future<void> togglePreference(String key, bool value) async {
+    final current = state;
+
+    if (current is NotificationPreferencesLoaded &&
+        current.loadingKeys.contains(key)) {
+      return;
+    }
+
     await cacheHelper.saveData(key: key, value: value);
+
+    final startingKeys = <String>{
+      if (current is NotificationPreferencesLoaded) ...current.loadingKeys,
+      key,
+    };
+    emit(_buildLoadedState(loadingKeys: startingKeys));
 
     final localizedContent = _getLocalizedContent();
 
-    switch (key) {
+    try {
+      switch (key) {
       case 'kahfFriday':
         if (value) {
           final timeStr = cacheHelper.getData(key: 'kahfFridayTime') ?? '09:00';
@@ -216,35 +242,14 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           await SahurAlarmHelper.stopAlarm();
         }
         break;
+      }
+    } finally {
+      final latest = state;
+      final remaining = <String>{
+        if (latest is NotificationPreferencesLoaded) ...latest.loadingKeys,
+      }..remove(key);
+      emit(_buildLoadedState(loadingKeys: remaining));
     }
-
-    loadPreferences();
-
-    final updated = NotificationPreferencesLoaded(
-      kahfFriday: cacheHelper.getData(key: 'kahfFriday') ?? false,
-      randomAthkar: cacheHelper.getData(key: 'randomAthkar') ?? false,
-      sabahMasaa: cacheHelper.getData(key: 'sabahMasaa') ?? false,
-      quranReminder: cacheHelper.getData(key: 'quranReminder') ?? false,
-      checklistReminder: cacheHelper.getData(key: 'checklistReminder') ?? false,
-      quranReminderTime:
-          cacheHelper.getData(key: 'quranReminderTime') ?? '19:30',
-      checklistReminderTime:
-          cacheHelper.getData(key: 'checklistReminderTime') ?? '20:00',
-      randomAthkarFrequency:
-          cacheHelper.getData(key: 'randomAthkarFrequency') ?? 60,
-      kahfFridayTime: cacheHelper.getData(key: 'kahfFridayTime') ?? '09:00',
-      morningAthkarTime:
-          cacheHelper.getData(key: 'morningAthkarTime') ?? '07:00',
-      eveningAthkarTime:
-          cacheHelper.getData(key: 'eveningAthkarTime') ?? '18:00',
-      sahurAlarmEnabled: cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false,
-      sahurAlarmType: cacheHelper.getData(key: 'sahurAlarmType') ?? 0,
-      sahurExactTime: cacheHelper.getData(key: 'sahurExactTime') ?? '04:00',
-      sahurMinutesBeforeFajr:
-          cacheHelper.getData(key: 'sahurMinutesBeforeFajr') ?? 30,
-    );
-
-    emit(updated);
   }
 
   Future<void> setSahurAlarmType(int type) async {

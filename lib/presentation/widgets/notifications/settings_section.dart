@@ -52,6 +52,7 @@ class SettingsSection extends StatelessWidget {
           icon: Icons.book_outlined,
           gradient: [Colors.green.shade400, Colors.green.shade600],
           value: state.kahfFriday,
+          isLoading: state.loadingKeys.contains('kahfFriday'),
           onChanged: (value) => context
               .read<NotificationsCubit>()
               .togglePreference('kahfFriday', value),
@@ -67,6 +68,7 @@ class SettingsSection extends StatelessWidget {
           icon: Icons.wb_sunny_outlined,
           gradient: [Colors.orange.shade400, Colors.orange.shade600],
           value: state.sabahMasaa,
+          isLoading: state.loadingKeys.contains('sabahMasaa'),
           onChanged: (value) => context
               .read<NotificationsCubit>()
               .togglePreference('sabahMasaa', value),
@@ -82,6 +84,7 @@ class SettingsSection extends StatelessWidget {
           icon: Icons.repeat_outlined,
           gradient: [Colors.blue.shade400, Colors.blue.shade600],
           value: state.randomAthkar,
+          isLoading: state.loadingKeys.contains('randomAthkar'),
           onChanged: (value) => context
               .read<NotificationsCubit>()
               .togglePreference('randomAthkar', value),
@@ -97,6 +100,7 @@ class SettingsSection extends StatelessWidget {
           icon: Icons.menu_book_outlined,
           gradient: [Colors.purple.shade400, Colors.purple.shade600],
           value: state.quranReminder,
+          isLoading: state.loadingKeys.contains('quranReminder'),
           onChanged: (value) => context
               .read<NotificationsCubit>()
               .togglePreference('quranReminder', value),
@@ -118,6 +122,7 @@ class SettingsSection extends StatelessWidget {
             icon: Icons.alarm,
             gradient: [Colors.indigo.shade400, Colors.indigo.shade600],
             value: state.sahurAlarmEnabled,
+            isLoading: state.loadingKeys.contains('sahurAlarmEnabled'),
             onChanged: (value) => context
                 .read<NotificationsCubit>()
                 .togglePreference('sahurAlarmEnabled', value),
@@ -134,6 +139,7 @@ class SettingsSection extends StatelessWidget {
             icon: Icons.checklist_rtl,
             gradient: [Colors.teal.shade400, Colors.teal.shade600],
             value: state.checklistReminder,
+            isLoading: state.loadingKeys.contains('checklistReminder'),
             onChanged: (value) => context
                 .read<NotificationsCubit>()
                 .togglePreference('checklistReminder', value),

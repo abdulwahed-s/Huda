@@ -11,6 +11,8 @@ class NotificationCard extends StatelessWidget {
   final Function(bool) onChanged;
   final VoidCallback onSettingsTap;
 
+  final bool isLoading;
+
   const NotificationCard({
     super.key,
     required this.title,
@@ -21,6 +23,7 @@ class NotificationCard extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.onSettingsTap,
+    this.isLoading = false,
   });
 
   @override
@@ -43,11 +46,13 @@ class NotificationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         child: Material(
           color: Colors.transparent,
-          child: Padding(
-            padding: EdgeInsets.all(16.0.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.0.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                 Row(
                   children: [
                     Container(
@@ -100,13 +105,21 @@ class NotificationCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 6.w),
-                    Transform.scale(
-                      scale: 0.9,
-                      child: Switch(
-                        value: value,
-                        onChanged: onChanged,
-                        activeThumbColor: gradient.first,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    AbsorbPointer(
+                      absorbing: isLoading,
+                      child: AnimatedOpacity(
+                        opacity: isLoading ? 0.7 : 1.0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Transform.scale(
+                          scale: 0.9,
+                          child: Switch(
+                            value: value,
+                            onChanged: onChanged,
+                            activeThumbColor: gradient.first,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -138,8 +151,22 @@ class NotificationCard extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],
-            ),
+                  ],
+                ),
+              ),
+              if (isLoading)
+                Positioned(
+                  left: 16.w,
+                  right: 16.w,
+                  bottom: 6.h,
+                  child: LinearProgressIndicator(
+                    minHeight: 3.h,
+                    borderRadius: BorderRadius.circular(3.r),
+                    backgroundColor: gradient.first.withValues(alpha: 0.12),
+                    valueColor: AlwaysStoppedAnimation<Color>(gradient.first),
+                  ),
+                ),
+            ],
           ),
         ),
       ),
