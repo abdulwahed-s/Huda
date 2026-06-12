@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="4dp"
-        android:scaleType="centerInside"
+        android:scaleType="fitCenter"
         android:contentDescription="@null" />
 
     <LinearLayout
@@ -49,7 +49,7 @@
             android:id="@+id/prayer_widget_next_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             android:gravity="center"
             android:maxLines="1" />
@@ -69,7 +69,7 @@
             android:id="@+id/prayer_widget_countdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:fontFamily="@font/amiri_bold"
             android:gravity="center"

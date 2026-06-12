@@ -26,7 +26,7 @@ internal object PrayerWidgetBackgrounds {
         val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
-        val cornerPx = if (theme.rounded) dp(context, 22f) else 0f
+        val cornerPx = dp(context, 22f)
         val rect = RectF(0f, 0f, w.toFloat(), h.toFloat())
 
         val basePaint = Paint(Paint.ANTI_ALIAS_FLAG)

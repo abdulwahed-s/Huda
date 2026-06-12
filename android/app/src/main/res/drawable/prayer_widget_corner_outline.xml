@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Transparent rounded-rect used purely as a clip outline for the prayer widget's
+  bitmap container. `android:clipToOutline="true"` on the container clips the
+  rendered bitmap to these corners at the view level (works on API 21+ across all
+  launchers), so rounded corners no longer depend on the OS/launcher's automatic
+  widget corner enforcement — which Huawei (EMUI) and Xiaomi (MIUI) don't apply.
+  The transparent fill adds no visible background; it only supplies the outline.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@android:color/transparent" />
+    <corners android:radius="22dp" />
+</shape>

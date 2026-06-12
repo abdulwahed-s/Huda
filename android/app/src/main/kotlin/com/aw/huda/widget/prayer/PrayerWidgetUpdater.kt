@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -14,6 +15,7 @@ import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TypefaceSpan
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.SizeF
 import android.util.TypedValue
@@ -29,6 +31,7 @@ import com.aw.huda.R
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
 import java.util.Calendar
 import java.util.Date
+import kotlin.math.roundToInt
 
 internal enum class WidgetFamily {
     CIRCULAR, RECTANGULAR, SMALL, MEDIUM, LARGE
@@ -56,9 +59,10 @@ internal object PrayerWidgetUpdater {
             val snapshot = PrayerWidgetRepository.readSnapshot(context)
             val opts = manager.getAppWidgetOptions(widgetId)
 
-            val (wDp, hDp) = resolveWidgetSizeDp(context, opts)
+            val (rawWDp, rawHDp) = resolveWidgetSizeDp(context, opts)
+            val (wDp, hDp) = normalizeForStableDensity(context, rawWDp, rawHDp)
             val family = classifySize(wDp.toFloat(), hDp.toFloat())
-            Log.d(TAG, "[$widgetId] size=${wDp}x${hDp}dp family=$family " +
+            Log.d(TAG, "[$widgetId] size=${wDp}x${hDp}dp(raw ${rawWDp}x${rawHDp}) family=$family " +
                 "minW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)} " +
                 "maxW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)} " +
                 "minH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)} " +
@@ -83,17 +87,6 @@ internal object PrayerWidgetUpdater {
         val portrait = context.resources.configuration.orientation ==
             android.content.res.Configuration.ORIENTATION_PORTRAIT
 
-        // Per Android docs, the four MIN/MAX bundle keys map to orientations:
-        //   MIN_WIDTH  = portrait width  (phone is narrower in portrait → smaller width)
-        //   MAX_WIDTH  = landscape width (phone is wider in landscape → larger width)
-        //   MIN_HEIGHT = landscape height (widget is shorter in landscape → smaller height)
-        //   MAX_HEIGHT = portrait height (widget is taller in portrait → larger height)
-        //
-        // These values are reliably set by ALL launchers including Samsung One UI.
-        // OPTION_APPWIDGET_SIZES (Android 12+) is NOT used as primary because Samsung
-        // One UI 5.x populates it with stale landscape dimensions after the user resizes
-        // the widget, causing the bitmap to be rendered at the wrong size and then
-        // distorted by fitXY to fit the actual (different) widget area.
         val w = opts.getInt(
             if (portrait) AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH
             else AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH,
@@ -104,7 +97,6 @@ internal object PrayerWidgetUpdater {
         )
         if (w > 0 && h > 0) return Pair(w, h)
 
-        // Fallback: OPTION_APPWIDGET_SIZES on Android 12+ (stock / Pixel launchers)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             @Suppress("DEPRECATION")
             val sizes = opts.getParcelableArrayList<SizeF>(
@@ -120,7 +112,6 @@ internal object PrayerWidgetUpdater {
             }
         }
 
-        // Last resort: larger of each pair (pre-Android 12 or no data at all)
         return Pair(
             maxOf(
                 opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH),
@@ -133,12 +124,16 @@ internal object PrayerWidgetUpdater {
         )
     }
 
+    private fun normalizeForStableDensity(context: Context, wDp: Int, hDp: Int): Pair<Int, Int> {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return Pair(wDp, hDp)
+        val current = context.resources.displayMetrics.densityDpi
+        val stable = DisplayMetrics.DENSITY_DEVICE_STABLE
+        if (stable <= 0 || current <= 0 || current == stable) return Pair(wDp, hDp)
+        val factor = current.toFloat() / stable
+        return Pair((wDp * factor).roundToInt(), (hDp * factor).roundToInt())
+    }
+
     private fun classifySize(w: Float, h: Float): WidgetFamily {
-        // Samsung One UI rows are ~127-157dp tall vs stock ~90dp.
-        // 1-row Samsung reports h ≈ 116-127dp → threshold must be > 127dp; 150dp is safe.
-        // 2-row Samsung reports h ≈ 234-254dp → well above 150dp, won't be RECTANGULAR.
-        // LARGE: 340dp ensures LARGE only fires on 3-row Samsung (≈471dp) or 4-row stock (≈360dp),
-        // not on 2-row Samsung (≈314dp) which should use the horizontal MEDIUM layout.
         return when {
             w <= 0 || h <= 0 -> WidgetFamily.MEDIUM
             w < 120 -> WidgetFamily.CIRCULAR
@@ -200,11 +195,15 @@ internal object PrayerWidgetUpdater {
         now: Date,
         family: WidgetFamily,
     ): RemoteViews {
+        val isRtl = PrayerWidgetLocalization.isRTL(snapshot.effectiveLocale)
         val layoutRes = when (family) {
             WidgetFamily.SMALL -> R.layout.prayer_widget_hero_small
-            WidgetFamily.MEDIUM -> R.layout.prayer_widget_hero_medium
-            WidgetFamily.LARGE -> R.layout.prayer_widget_hero_large
-            else -> R.layout.prayer_widget_hero_medium
+            WidgetFamily.MEDIUM -> if (isRtl) R.layout.prayer_widget_hero_medium_rtl
+                else R.layout.prayer_widget_hero_medium
+            WidgetFamily.LARGE -> if (isRtl) R.layout.prayer_widget_hero_large_rtl
+                else R.layout.prayer_widget_hero_large
+            else -> if (isRtl) R.layout.prayer_widget_hero_medium_rtl
+                else R.layout.prayer_widget_hero_medium
         }
         val views = RemoteViews(context.packageName, layoutRes)
         val locale = snapshot.effectiveLocale
@@ -1088,9 +1087,9 @@ internal object PrayerWidgetUpdater {
         views.setTextColor(R.id.prayer_widget_countdown, primary)
     }
 
-    private const val CIRCULAR_ARC_SIZE_PX = 256
+    private const val CIRCULAR_ARC_SIZE_PX = 384
 
-    private const val CIRCULAR_ARC_STROKE_PX = 18f
+    private const val CIRCULAR_ARC_STROKE_PX = 27f
 
     private fun buildProgressArcBitmap(
         sizePx: Int,
@@ -1236,6 +1235,15 @@ internal object PrayerWidgetUpdater {
         }
     }
 
+    private fun renderContext(context: Context): Context {
+        val config = Configuration(context.resources.configuration)
+        config.fontScale = 1f
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.densityDpi = DisplayMetrics.DENSITY_DEVICE_STABLE
+        }
+        return context.createConfigurationContext(config)
+    }
+
     private fun renderToBitmap(
         context: Context,
         remoteViews: RemoteViews,
@@ -1244,23 +1252,22 @@ internal object PrayerWidgetUpdater {
         family: WidgetFamily,
         theme: PrayerWidgetTheme? = null,
     ): RemoteViews {
-        val density = context.resources.displayMetrics.density
+        val ctx = renderContext(context)
+        val density = ctx.resources.displayMetrics.density
         val widthPx = (widthDp * density).toInt()
         val heightPx = (heightDp * density).toInt()
 
         if (widthPx <= 0 || heightPx <= 0) return remoteViews
 
         return try {
-            val parent = FrameLayout(context)
-            val view = remoteViews.apply(context, parent)
+            val parent = FrameLayout(ctx)
+            val view = remoteViews.apply(ctx, parent)
             parent.addView(view)
 
-            // Re-render background at actual widget pixel dimensions so corner radii
-            // are not distorted when the widget aspect ratio differs from 1:1.
             if (theme != null) {
                 val bgView = view.findViewById<android.widget.ImageView>(R.id.prayer_widget_background)
                 if (bgView != null && bgView.visibility == View.VISIBLE) {
-                    val correctedBg = PrayerWidgetBackgrounds.render(context, theme, widthPx, heightPx)
+                    val correctedBg = PrayerWidgetBackgrounds.render(ctx, theme, widthPx, heightPx)
                     if (correctedBg != null) bgView.setImageBitmap(correctedBg)
                 }
             }
@@ -1269,8 +1276,20 @@ internal object PrayerWidgetUpdater {
 
             val wSpec = View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY)
 
-            // Render at the exact widget height. Allowing overflow then squishing via
-            // fitXY caused vertical compression artifacts; clipping is a better tradeoff.
+            if (theme != null) {
+                repeat(2) {
+                    parent.measure(
+                        wSpec,
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    )
+                    val naturalH = parent.measuredHeight
+                    if (naturalH > heightPx) {
+                        val scale = (heightPx.toFloat() / naturalH).coerceIn(0.70f, 0.99f)
+                        scaleTextRecursive(parent, scale)
+                    }
+                }
+            }
+
             val bmpH = heightPx
 
             parent.measure(
@@ -1291,6 +1310,18 @@ internal object PrayerWidgetUpdater {
         } catch (e: Exception) {
             Log.e(TAG, "Bitmap render failed, falling back", e)
             remoteViews
+        }
+    }
+
+    private fun scaleTextRecursive(view: View, scale: Float) {
+        if (scale >= 1f) return
+        if (view is TextView) {
+            view.setTextSize(TypedValue.COMPLEX_UNIT_PX, view.textSize * scale)
+        }
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                scaleTextRecursive(view.getChildAt(i), scale)
+            }
         }
     }
 

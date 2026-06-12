@@ -51,7 +51,7 @@ class WidgetDeepLinkHandler {
 
     navigator.pushNamedAndRemoveUntil(
       route,
-      (predicate) => predicate.settings.name == AppRoute.home,
+      (r) => r.isFirst,
     );
   }
 

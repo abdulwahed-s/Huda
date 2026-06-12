@@ -11,6 +11,8 @@ class WidgetService {
   static const String _lastUpdateKey = 'last_widget_update';
   static const String _customVersesKey = 'custom_widget_verses';
 
+  static const String _nativeVersesKey = 'widgetCustomVersesNative';
+
   static const MethodChannel _channel = MethodChannel('com.aw.huda/widget');
 
   static const List<String> _inspirationalVerses = [
@@ -44,6 +46,7 @@ class WidgetService {
     }
 
     await _saveThemeDataToPrefs();
+    await _syncNativeVerses();
   }
 
   static Future<void> updateWidget() async {
@@ -164,9 +167,7 @@ class WidgetService {
       if (!customVerses.contains(verse)) {
         customVerses.add(verse);
         await prefs.setStringList(_customVersesKey, customVerses);
-
-        await prefs.setString(
-            'flutter.custom_widget_verses', customVerses.join('|||'));
+        await _syncNativeVerses();
 
         await updateWidget();
         return true;
@@ -195,8 +196,7 @@ class WidgetService {
 
       if (customVerses.remove(verse)) {
         await prefs.setStringList(_customVersesKey, customVerses);
-        await prefs.setString(
-            'flutter.custom_widget_verses', customVerses.join('|||'));
+        await _syncNativeVerses();
         await updateWidget();
         return true;
       }
@@ -211,10 +211,21 @@ class WidgetService {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_customVersesKey);
+      await prefs.remove(_nativeVersesKey);
       await prefs.remove('flutter.custom_widget_verses');
       await updateWidget();
     } catch (e) {
       debugPrint('Error clearing custom verses: $e');
+    }
+  }
+
+  static Future<void> _syncNativeVerses() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final customVerses = await getCustomVerses();
+      await prefs.setString(_nativeVersesKey, customVerses.join('|||'));
+    } catch (e) {
+      debugPrint('Error syncing native verses: $e');
     }
   }
 

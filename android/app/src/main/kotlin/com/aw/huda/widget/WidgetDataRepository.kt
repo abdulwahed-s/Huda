@@ -12,7 +12,10 @@ object WidgetDataRepository {
     private const val KEY_LAST_UPDATE = "flutter.lastUpdate"
     private const val KEY_THEME_NAME = "flutter.themeName"
     private const val KEY_THEME_MODE = "flutter.themeMode"
-    private const val KEY_CUSTOM_VERSES = "flutter.custom_widget_verses"
+
+    private const val KEY_CUSTOM_VERSES = "flutter.widgetCustomVersesNative"
+
+    private const val LIST_IDENTIFIER = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu"
 
     private val defaultVerses = listOf(
         "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
@@ -42,7 +45,9 @@ object WidgetDataRepository {
     }
     
     fun getCurrentQuote(context: Context): String {
-        return getFlutterPrefs(context).getString(KEY_QUOTE, defaultVerses[0]) ?: defaultVerses[0]
+        val quote = getFlutterPrefs(context).getString(KEY_QUOTE, defaultVerses[0])
+            ?: defaultVerses[0]
+        return if (quote.startsWith(LIST_IDENTIFIER)) defaultVerses[0] else quote
     }
     
     fun getLastUpdate(context: Context): String {
@@ -75,11 +80,12 @@ object WidgetDataRepository {
     
     fun getCustomVerses(context: Context): List<String> {
         val versesString = getFlutterPrefs(context).getString(KEY_CUSTOM_VERSES, null)
-        return if (versesString.isNullOrEmpty()) {
-            emptyList()
-        } else {
-            versesString.split("|||").filter { it.isNotEmpty() }
+        // Guard: if the value is a shared_preferences List<String> blob (wrong
+        // key/format), discard it rather than turning the whole blob into a verse.
+        if (versesString.isNullOrEmpty() || versesString.startsWith(LIST_IDENTIFIER)) {
+            return emptyList()
         }
+        return versesString.split("|||").filter { it.isNotEmpty() }
     }
     
     fun getAllVerses(context: Context): List<String> {
