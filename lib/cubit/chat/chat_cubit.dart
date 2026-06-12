@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/services/gemini_service.dart';
+import 'package:huda/data/models/chat_error.dart';
 import 'package:huda/data/models/chat_message_model.dart';
 import 'package:huda/data/models/counseling_response_model.dart';
 part 'chat_state.dart';
@@ -7,53 +8,73 @@ part 'chat_state.dart';
 class ChatCubit extends Cubit<ChatState> {
   final GeminiService _geminiService;
 
+  String? _lastFeeling;
+
   ChatCubit(this._geminiService) : super(const ChatState());
 
-  void sendMessage(String userInput) async {
+  void sendMessage(String userInput) {
+    final userMessage = ChatMessage(text: userInput, sender: Sender.user);
+    emit(state.copyWith(
+      messages: [...state.messages, userMessage],
+      isLoading: true,
+      clearError: true,
+    ));
+    _streamResponse(userInput);
+  }
+
+  void retryLastMessage() {
+    final lastUserInput = _lastUserInput();
+    if (lastUserInput == null) return;
+    emit(state.copyWith(isLoading: true, clearError: true));
+    _streamResponse(lastUserInput);
+  }
+
+  String? _lastUserInput() {
+    for (final message in state.messages.reversed) {
+      if (message.sender == Sender.user) return message.text;
+    }
+    return null;
+  }
+
+  Future<void> _streamResponse(String userInput) async {
+    final history = List<ChatMessage>.from(state.messages);
+    if (history.isNotEmpty) history.removeLast();
+
+    bool botMessageAdded = false;
     try {
-      final userMessage = ChatMessage(text: userInput, sender: Sender.user);
-
-      emit(state.copyWith(
-        messages: [...state.messages, userMessage],
-        isLoading: true,
-      ));
-
-      final conversationHistory = List<ChatMessage>.from(state.messages);
-      conversationHistory.removeLast();
-
       String accumulatedResponse = '';
-      ChatMessage? currentBotMessage;
 
       await for (final chunk
-          in _geminiService.sendMessageStream(userInput, conversationHistory)) {
+          in _geminiService.sendMessageStream(userInput, history)) {
         accumulatedResponse += chunk;
+        final botMessage =
+            ChatMessage(text: accumulatedResponse, sender: Sender.model);
 
-        if (currentBotMessage == null) {
-          currentBotMessage =
-              ChatMessage(text: accumulatedResponse, sender: Sender.model);
+        if (!botMessageAdded) {
+          botMessageAdded = true;
           emit(state.copyWith(
-            messages: [...state.messages, currentBotMessage],
+            messages: [...state.messages, botMessage],
             isLoading: true,
           ));
         } else {
           final updatedMessages = List<ChatMessage>.from(state.messages);
-          updatedMessages[updatedMessages.length - 1] =
-              ChatMessage(text: accumulatedResponse, sender: Sender.model);
-          emit(state.copyWith(
-            messages: updatedMessages,
-            isLoading: true,
-          ));
+          updatedMessages[updatedMessages.length - 1] = botMessage;
+          emit(state.copyWith(messages: updatedMessages, isLoading: true));
         }
       }
 
       emit(state.copyWith(isLoading: false));
     } catch (e) {
-      const errorMessage = ChatMessage(
-          text: 'Sorry, I encountered an error. Please try again.',
-          sender: Sender.model);
+      var messages = state.messages;
+      if (botMessageAdded &&
+          messages.isNotEmpty &&
+          messages.last.sender == Sender.model) {
+        messages = messages.sublist(0, messages.length - 1);
+      }
       emit(state.copyWith(
-        messages: [...state.messages, errorMessage],
+        messages: messages,
         isLoading: false,
+        errorType: _errorTypeOf(e),
       ));
     }
   }
@@ -63,11 +84,19 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void toggleMode() {
-    emit(state.copyWith(isCounselingMode: !state.isCounselingMode));
+    emit(state.copyWith(
+      isCounselingMode: !state.isCounselingMode,
+      clearError: true,
+    ));
   }
 
   void sendCounselingRequest(String userFeeling) async {
-    emit(state.copyWith(isLoading: true));
+    _lastFeeling = userFeeling;
+    emit(state.copyWith(
+      isLoading: true,
+      clearError: true,
+      clearCounselingResponse: true,
+    ));
 
     try {
       final response = await _geminiService.sendCounselingMessage(userFeeling);
@@ -78,15 +107,23 @@ class ChatCubit extends Cubit<ChatState> {
         ));
       } else {
         emit(state.copyWith(
-          error: 'Failed to generate counseling response. Please try again.',
           isLoading: false,
+          errorType: ChatErrorType.server,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        error: 'An error occurred: $e',
         isLoading: false,
+        errorType: _errorTypeOf(e),
       ));
     }
   }
+
+  void retryCounselingRequest() {
+    final feeling = _lastFeeling;
+    if (feeling != null) sendCounselingRequest(feeling);
+  }
+
+  ChatErrorType _errorTypeOf(Object error) =>
+      error is ChatException ? error.type : ChatErrorType.unknown;
 }

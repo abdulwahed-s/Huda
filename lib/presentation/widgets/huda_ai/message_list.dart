@@ -4,6 +4,7 @@ import 'package:huda/cubit/chat/chat_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/huda_ai/empty_state_widget.dart';
 import 'package:huda/presentation/widgets/huda_ai/message_bubble.dart';
+import 'package:huda/presentation/widgets/huda_ai/chat_error_view.dart';
 import 'package:huda/data/models/chat_message_model.dart';
 
 class MessageList extends StatelessWidget {
@@ -51,17 +52,28 @@ class MessageList extends StatelessWidget {
           return EmptyStateWidget(
             isDark: isDark,
             appLocalizations: appLocalizations,
-            controller:
-                textEditingController, // Pass textEditingController instead
+            controller: textEditingController,
             chatCubit: context.read<ChatCubit>(),
           );
         }
 
+        final hasError = state.errorType != null;
+
         return ListView.builder(
           controller: scrollController,
           padding: const EdgeInsets.all(16),
-          itemCount: state.messages.length,
+          itemCount: state.messages.length + (hasError ? 1 : 0),
           itemBuilder: (context, index) {
+            if (hasError && index == state.messages.length) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: ChatErrorView(
+                  errorType: state.errorType!,
+                  isDark: isDark,
+                  onRetry: () => context.read<ChatCubit>().retryLastMessage(),
+                ),
+              );
+            }
             final message = state.messages[index];
             return RepaintBoundary(
               key: message.sender == Sender.user

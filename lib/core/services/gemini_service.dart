@@ -2,12 +2,59 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:huda/core/keys/hadith_key.dart';
+import 'package:huda/data/models/chat_error.dart';
 import 'package:huda/data/models/chat_message_model.dart';
 import 'package:huda/data/models/counseling_response_model.dart';
 
 class GeminiService {
   final Dio _dio = Dio();
   final String _functionUrl = '$supabaseUrl/functions/v1/gemini-proxy';
+
+  ChatException _mapDioError(Object error) {
+    if (error is ChatException) return error;
+    if (error is DioException) {
+      switch (error.type) {
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.connectionError:
+          return const ChatException(ChatErrorType.noConnection);
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          return const ChatException(ChatErrorType.server);
+        case DioExceptionType.badResponse:
+          final statusCode = error.response?.statusCode;
+          if (statusCode == 429) {
+            return const ChatException(ChatErrorType.rateLimit);
+          }
+          if (statusCode != null && statusCode >= 500) {
+            return const ChatException(ChatErrorType.server);
+          }
+          return const ChatException(ChatErrorType.unknown);
+        default:
+          if (error.error is FormatException) {
+            return const ChatException(ChatErrorType.unknown);
+          }
+          return const ChatException(ChatErrorType.noConnection);
+      }
+    }
+    return const ChatException(ChatErrorType.unknown);
+  }
+
+  ChatException _mapApiError(Map<String, dynamic> error) {
+    final code = error['code'];
+    final status = error['status']?.toString();
+    if (code == 429 ||
+        status == 'RESOURCE_EXHAUSTED' ||
+        status == 'TOO_MANY_REQUESTS') {
+      return const ChatException(ChatErrorType.rateLimit);
+    }
+    if ((code is int && code >= 500) ||
+        status == 'UNAVAILABLE' ||
+        status == 'INTERNAL' ||
+        status == 'DEADLINE_EXCEEDED') {
+      return const ChatException(ChatErrorType.server);
+    }
+    return const ChatException(ChatErrorType.unknown);
+  }
 
   Map<String, String> get _headers => <String, String>{
         'Content-Type': 'application/json',
@@ -143,9 +190,8 @@ class GeminiService {
               final jsonData = json.decode(jsonString);
 
               if (jsonData['error'] != null) {
-                final errorMessage =
-                    jsonData['error']['message'] ?? 'Unknown error occurred';
-                yield* Stream.error('API Error: $errorMessage');
+                yield* Stream.error(_mapApiError(
+                    Map<String, dynamic>.from(jsonData['error'] as Map)));
                 return;
               }
 
@@ -156,7 +202,7 @@ class GeminiService {
                 final finishReason = candidate['finishReason'];
                 if (finishReason == 'SAFETY') {
                   yield* Stream.error(
-                      'Content was filtered due to safety policies');
+                      const ChatException(ChatErrorType.safetyFilter));
                   return;
                 } else if (finishReason == 'MAX_TOKENS') {
                 } else if (finishReason == 'STOP') {
@@ -181,7 +227,7 @@ class GeminiService {
         }
       }
     } catch (e) {
-      yield* Stream.error('Failed to connect to Gemini API: $e');
+      yield* Stream.error(_mapDioError(e));
     }
   }
 
@@ -238,7 +284,6 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
         options: Options(headers: _headers),
       );
 
-
       if (response.data is Map<String, dynamic> &&
           response.data['candidates'] != null &&
           (response.data['candidates'] as List).isNotEmpty) {
@@ -261,14 +306,16 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
                     jsonResponse.first as Map<String, dynamic>);
               }
             } catch (e) {
-              // 
+              throw const ChatException(ChatErrorType.server);
             }
           }
         }
       }
-      return null;
-    } catch (e) {
-      return null;
+      throw const ChatException(ChatErrorType.safetyFilter);
+    } on ChatException {
+      rethrow;
+    } on DioException catch (e) {
+      throw _mapDioError(e);
     }
   }
 }

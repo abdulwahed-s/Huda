@@ -8,6 +8,7 @@ import 'package:huda/presentation/widgets/huda_ai/counseling_skeleton.dart';
 import 'package:huda/presentation/widgets/huda_ai/counseling_empty_state.dart';
 import 'package:huda/presentation/widgets/huda_ai/counseling_response_card.dart';
 import 'package:huda/presentation/widgets/huda_ai/counseling_action_button.dart';
+import 'package:huda/presentation/widgets/huda_ai/chat_error_view.dart';
 
 class CounselingView extends StatefulWidget {
   final bool isDark;
@@ -61,11 +62,19 @@ class _CounselingViewState extends State<CounselingView>
           return CounselingSkeleton(isDark: widget.isDark);
         }
 
+        if (state.errorType != null && state.counselingResponse == null) {
+          return ChatErrorView(
+            errorType: state.errorType!,
+            isDark: widget.isDark,
+            centered: true,
+            onRetry: () => context.read<ChatCubit>().retryCounselingRequest(),
+          );
+        }
+
         if (state.counselingResponse == null) {
           return CounselingEmptyState(isDark: widget.isDark);
         }
 
-        // Trigger animation when response is available
         _animationController.forward(from: 0);
 
         final response = state.counselingResponse!;

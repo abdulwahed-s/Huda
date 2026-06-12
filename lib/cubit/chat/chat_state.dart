@@ -3,7 +3,8 @@ part of 'chat_cubit.dart';
 class ChatState {
   final List<ChatMessage> messages;
   final bool isLoading;
-  final String? error;
+
+  final ChatErrorType? errorType;
 
   final bool isCounselingMode;
   final CounselingResponse? counselingResponse;
@@ -11,7 +12,7 @@ class ChatState {
   const ChatState({
     this.messages = const [],
     this.isLoading = false,
-    this.error,
+    this.errorType,
     this.isCounselingMode = false,
     this.counselingResponse,
   });
@@ -19,16 +20,20 @@ class ChatState {
   ChatState copyWith({
     List<ChatMessage>? messages,
     bool? isLoading,
-    String? error,
+    ChatErrorType? errorType,
+    bool clearError = false,
     bool? isCounselingMode,
     CounselingResponse? counselingResponse,
+    bool clearCounselingResponse = false,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      errorType: clearError ? null : (errorType ?? this.errorType),
       isCounselingMode: isCounselingMode ?? this.isCounselingMode,
-      counselingResponse: counselingResponse ?? this.counselingResponse,
+      counselingResponse: clearCounselingResponse
+          ? null
+          : (counselingResponse ?? this.counselingResponse),
     );
   }
 
@@ -38,7 +43,7 @@ class ChatState {
     return other is ChatState &&
         _listEquals(other.messages, messages) &&
         other.isLoading == isLoading &&
-        other.error == error &&
+        other.errorType == errorType &&
         other.isCounselingMode == isCounselingMode &&
         other.counselingResponse == counselingResponse;
   }
@@ -47,7 +52,7 @@ class ChatState {
   int get hashCode =>
       _listHashCode(messages) ^
       isLoading.hashCode ^
-      error.hashCode ^
+      errorType.hashCode ^
       isCounselingMode.hashCode ^
       counselingResponse.hashCode;
 
