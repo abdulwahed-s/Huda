@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
@@ -97,88 +98,102 @@ class _TasbihNotesWheelState extends State<TasbihNotesWheel> {
         stops: [0.0, 0.18, 0.82, 1.0],
       ).createShader(bounds),
       blendMode: BlendMode.dstIn,
-      child: ListWheelScrollView.useDelegate(
-        controller: _controller,
-        physics: const FixedExtentScrollPhysics(
-          parent: BouncingScrollPhysics(),
+      child: ScrollConfiguration(
+        // Enable click-and-drag scrolling with a mouse/trackpad on desktop.
+        behavior: ScrollConfiguration.of(context).copyWith(
+          scrollbars: false,
+          dragDevices: const {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.trackpad,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.unknown,
+          },
         ),
-        itemExtent: _itemExtent,
-        diameterRatio: 6.0,
-        squeeze: 0.88,
-        onSelectedItemChanged: widget.onSelected,
-        childDelegate: ListWheelChildBuilderDelegate(
-          childCount: widget.notes.length,
-          builder: (context, index) {
-            return AnimatedBuilder(
-              animation: _controller,
-              builder: (context, _) {
-                final double fractional = (_controller.hasClients &&
-                        _controller.position.hasContentDimensions)
-                    ? _controller.offset / _itemExtent
-                    : widget.selectedIndex.toDouble();
+        child: ListWheelScrollView.useDelegate(
+          controller: _controller,
+          physics: const FixedExtentScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          itemExtent: _itemExtent,
+          diameterRatio: 6.0,
+          squeeze: 0.88,
+          onSelectedItemChanged: widget.onSelected,
+          childDelegate: ListWheelChildBuilderDelegate(
+            childCount: widget.notes.length,
+            builder: (context, index) {
+              return AnimatedBuilder(
+                animation: _controller,
+                builder: (context, _) {
+                  final double fractional = (_controller.hasClients &&
+                          _controller.position.hasContentDimensions)
+                      ? _controller.offset / _itemExtent
+                      : widget.selectedIndex.toDouble();
 
-                final double dist =
-                    (index.toDouble() - fractional).clamp(-3.0, 3.0);
-                final double distAbs = dist.abs();
+                  final double dist =
+                      (index.toDouble() - fractional).clamp(-3.0, 3.0);
+                  final double distAbs = dist.abs();
 
-                final double textAlpha =
-                    (1.0 - distAbs * 0.40).clamp(0.08, 1.0);
-                final double pillAlpha = (1.0 - distAbs * 2.8).clamp(0.0, 1.0);
-                final double scale = (1.0 - distAbs * 0.055).clamp(0.80, 1.0);
+                  final double textAlpha =
+                      (1.0 - distAbs * 0.40).clamp(0.08, 1.0);
+                  final double pillAlpha =
+                      (1.0 - distAbs * 2.8).clamp(0.0, 1.0);
+                  final double scale = (1.0 - distAbs * 0.055).clamp(0.80, 1.0);
 
-                final bool isSelected = index == widget.selectedIndex;
+                  final bool isSelected = index == widget.selectedIndex;
 
-                return Center(
-                  child: Transform.scale(
-                    scale: scale,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.w),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: isSelected ? 7.h : 4.h,
-                      ),
-                      decoration: pillAlpha > 0.02
-                          ? BoxDecoration(
-                              color: Colors.white
-                                  .withValues(alpha: 0.19 * pillAlpha),
-                              borderRadius: BorderRadius.circular(50.r),
-                              border: Border.all(
+                  return Center(
+                    child: Transform.scale(
+                      scale: scale,
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: isSelected ? 7.h : 4.h,
+                        ),
+                        decoration: pillAlpha > 0.02
+                            ? BoxDecoration(
                                 color: Colors.white
-                                    .withValues(alpha: 0.46 * pillAlpha),
-                                width: 1.5,
-                              ),
-                              boxShadow: pillAlpha > 0.6
-                                  ? [
-                                      BoxShadow(
-                                        color: Colors.black.withValues(
-                                            alpha: 0.12 * pillAlpha),
-                                        blurRadius: 12,
-                                        spreadRadius: -2,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ]
-                                  : null,
-                            )
-                          : null,
-                      child: Text(
-                        widget.notes[index].text,
-                        textAlign: TextAlign.center,
-                        maxLines: isSelected ? 4 : 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: isSelected ? 14.sp : 11.5.sp,
-                          color: Colors.white.withValues(alpha: textAlpha),
-                          fontWeight:
-                              isSelected ? FontWeight.w700 : FontWeight.w400,
-                          height: 1.55,
+                                    .withValues(alpha: 0.19 * pillAlpha),
+                                borderRadius: BorderRadius.circular(50.r),
+                                border: Border.all(
+                                  color: Colors.white
+                                      .withValues(alpha: 0.46 * pillAlpha),
+                                  width: 1.5,
+                                ),
+                                boxShadow: pillAlpha > 0.6
+                                    ? [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(
+                                              alpha: 0.12 * pillAlpha),
+                                          blurRadius: 12,
+                                          spreadRadius: -2,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ]
+                                    : null,
+                              )
+                            : null,
+                        child: Text(
+                          widget.notes[index].text,
+                          textAlign: TextAlign.center,
+                          maxLines: isSelected ? 4 : 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: isSelected ? 14.sp : 11.5.sp,
+                            color: Colors.white.withValues(alpha: textAlpha),
+                            fontWeight:
+                                isSelected ? FontWeight.w700 : FontWeight.w400,
+                            height: 1.55,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

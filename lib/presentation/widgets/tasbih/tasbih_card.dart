@@ -92,17 +92,25 @@ class TasbihCard extends StatelessWidget {
                     ),
                   ),
                   const _CardVerticalDivider(),
-                  SizedBox(
-                    width: 88.w,
-                    child: Center(
-                      child: Text(
-                        currentCount.toString(),
-                        style: TextStyle(
-                          fontSize: 64.sp,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                          height: 1.0,
-                          letterSpacing: -2,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.w),
+                    child: SizedBox(
+                      width: 100.w,
+                      child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            currentCount.toString(),
+                            maxLines: 1,
+                            softWrap: false,
+                            style: TextStyle(
+                              fontSize: 64.sp,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                              height: 1.0,
+                              letterSpacing: -2,
+                            ),
+                          ),
                         ),
                       ),
                     ),
