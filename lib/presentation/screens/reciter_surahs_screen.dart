@@ -124,10 +124,20 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
       if (query.isEmpty) {
         filteredSurahs = List.from(surahs);
       } else {
-        filteredSurahs = surahs
-            .where((s) =>
-                quran.normalise(s['suraName'].toString()).contains(query))
-            .toList();
+        final normalizedQuery = quran.normalise(query);
+        final lowerQuery = query.toLowerCase();
+        filteredSurahs = surahs.where((s) {
+          final surahNumber =
+              int.tryParse(s['surahNumber'].toString()) ?? 0;
+          final arabicName =
+              quran.normalise(s['suraName'].toString());
+          final englishName = surahNumber > 0
+              ? quran.getSurahNameEnglish(surahNumber).toLowerCase()
+              : '';
+          return arabicName.contains(normalizedQuery) ||
+              englishName.contains(lowerQuery) ||
+              s['surahNumber'].toString().contains(query);
+        }).toList();
       }
     });
   }
