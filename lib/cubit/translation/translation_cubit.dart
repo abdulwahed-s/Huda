@@ -20,9 +20,6 @@ class TranslationCubit extends Cubit<TranslationState> {
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
   static const int _cacheExpirationHours = 24;
 
-  // Persists the source list across state transitions (e.g. TranslationLoaded →
-  // SurahTranslationLoaded) so widgets can always retrieve it regardless of
-  // the current state.
   List<edition.Data> _lastKnownSources = [];
   List<edition.Data> get lastKnownSources => _lastKnownSources;
 
@@ -94,6 +91,8 @@ class TranslationCubit extends Cubit<TranslationState> {
             edition.EditionModel.fromJson(jsonDecode(cachedData));
         _lastKnownSources = translationReaders.data ?? [];
         emit(TranslationOffline(translationReaders));
+      } else if (await isOffline()) {
+        emit(TranslationOfflineNoContent());
       } else {
         emit(TranslationError(
             "Failed to load translation sources: ${e.toString()}"));

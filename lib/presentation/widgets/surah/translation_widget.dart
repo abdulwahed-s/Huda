@@ -5,6 +5,7 @@ import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
 import 'package:locale_names/locale_names.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/surah/offline_content_banner.dart';
 
 class TranslationWidget extends StatelessWidget {
   final List<edition.Data> translationSources;
@@ -42,7 +43,10 @@ class TranslationWidget extends StatelessWidget {
     required this.isDownloadingAll,
     required this.checkSurahDownloaded,
     required this.checkAllDownloaded,
+    this.offlineMessage,
   });
+
+  final String? offlineMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +59,6 @@ class TranslationWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Language filter for translations
         if (availableTranslationLanguages.length > 1)
           Column(
             children: [
@@ -147,8 +150,6 @@ class TranslationWidget extends StatelessWidget {
               const SizedBox(height: 16),
             ],
           ),
-
-        // Translation sources dropdown
         if (filteredSources.isNotEmpty)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -236,15 +237,14 @@ class TranslationWidget extends StatelessWidget {
               },
             ),
           )
+        else if (offlineMessage != null)
+          OfflineContentBanner(message: offlineMessage!)
         else
           Text(
             AppLocalizations.of(context)!.noTranslationAvailable,
             style: const TextStyle(color: Colors.grey),
           ),
-
         const SizedBox(height: 12),
-
-        // Translation content
         if (selectedTranslationId != null) ...[
           if (isLoadingTranslation)
             Center(
@@ -304,8 +304,6 @@ class TranslationWidget extends StatelessWidget {
                 ],
               ),
             ),
-
-          // Download options for translation - only show when online
           if (canDownload) ...[
             const SizedBox(height: 8),
             Row(

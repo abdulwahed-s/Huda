@@ -4,6 +4,7 @@ import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:locale_names/locale_names.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/surah/offline_content_banner.dart';
 
 class ReaderSelectionWidget extends StatelessWidget {
   final List<edition.Data> readers;
@@ -32,7 +33,6 @@ class ReaderSelectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section title
         Text(
           AppLocalizations.of(context)!.selectReader,
           style: TextStyle(
@@ -44,49 +44,11 @@ class ReaderSelectionWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: 6.h),
-
-        // Offline message
         if (offlineMessage != null)
-          Container(
-            padding: EdgeInsets.all(10.r),
-            margin: EdgeInsets.only(bottom: 14.h),
-            decoration: BoxDecoration(
-              color: readers.isEmpty
-                  ? (Theme.of(context).brightness == Brightness.dark
-                      ? Colors.red[900]?.withValues(alpha: 0.3)
-                      : Colors.red[50])
-                  : (Theme.of(context).brightness == Brightness.dark
-                      ? Colors.orange[900]?.withValues(alpha: 0.3)
-                      : Colors.orange[50]),
-              border: Border.all(
-                color: readers.isEmpty ? Colors.red[200]! : Colors.orange[200]!,
-              ),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  readers.isEmpty ? Icons.error_outline : Icons.info_outline,
-                  color: readers.isEmpty ? Colors.red[700] : Colors.orange[700],
-                  size: 18.sp,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    offlineMessage!,
-                    style: TextStyle(
-                      color: readers.isEmpty
-                          ? Colors.red[700]
-                          : Colors.orange[700],
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 14.h),
+            child: OfflineContentBanner(message: offlineMessage!),
           ),
-
-        // Language filter dropdown
         if (availableLanguages.length > 1)
           Column(
             children: [
@@ -178,8 +140,6 @@ class ReaderSelectionWidget extends StatelessWidget {
               const SizedBox(height: 16),
             ],
           ),
-
-        // Loading indicator
         if (isLoading)
           Center(
             child: Padding(
@@ -202,7 +162,6 @@ class ReaderSelectionWidget extends StatelessWidget {
             ),
           )
         else
-          // Readers list
           Container(
             constraints: const BoxConstraints(maxHeight: 200),
             child: ListView.builder(
@@ -259,7 +218,6 @@ class ReaderSelectionWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(16),
                         child: Row(
                           children: [
-                            // Reader avatar with improved design
                             Container(
                               width: 50,
                               height: 50,
@@ -286,7 +244,6 @@ class ReaderSelectionWidget extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            // Reader info
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,7 +298,6 @@ class ReaderSelectionWidget extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            // Selection indicator
                             if (isSelected)
                               Container(
                                 width: 32,

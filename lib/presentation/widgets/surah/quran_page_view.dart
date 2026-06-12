@@ -239,10 +239,6 @@ class _QuranPageViewState extends State<QuranPageView>
     });
   }
 
-  // Sync source lists from cubits' lastKnown* getters immediately in initState.
-  // BlocListeners only fire on *new* emissions; if the cubits were already
-  // loaded (e.g. returning from Mushaf mode), sources would otherwise be empty
-  // until the next state change.
   void _syncSourcesFromCubits() {
     final tafsirSources = context.read<TafsirCubit>().lastKnownSources;
     final translationSources =
@@ -1162,6 +1158,7 @@ class _QuranPageViewState extends State<QuranPageView>
       if (isOfflineMode && offlineCacheLoaded) {
         preloadOfflineCache();
       }
+    } else if (state is TafsirOfflineNoContent) {
     } else if (state is SurahTafsirLoaded) {
       setState(() {
         currentTafsir = state.tafsirModel;
@@ -1223,6 +1220,7 @@ class _QuranPageViewState extends State<QuranPageView>
       if (isOfflineMode && offlineCacheLoaded) {
         preloadOfflineCache();
       }
+    } else if (state is TranslationOfflineNoContent) {
     } else if (state is SurahTranslationLoaded) {
       setState(() {
         currentTranslation = state.translationModel;
@@ -1328,8 +1326,8 @@ class _QuranPageViewState extends State<QuranPageView>
                     } else if (cachedDownloadedReaders.isEmpty &&
                         cachedDownloadedTafsirSources.isEmpty &&
                         cachedDownloadedTranslationSources.isEmpty) {
-                      offlineMessage =
-                          'No internet connection. No offline content available.';
+                      offlineMessage = AppLocalizations.of(context)!
+                          .offlineAudioUnavailable;
                     }
 
                     if (!isOfflineMode) {

@@ -22,6 +22,8 @@ class TranslationError extends TranslationState {
   TranslationError(this.message);
 }
 
+class TranslationOfflineNoContent extends TranslationState {}
+
 class SurahTranslationLoading extends TranslationState {}
 
 class SurahTranslationLoaded extends TranslationState {

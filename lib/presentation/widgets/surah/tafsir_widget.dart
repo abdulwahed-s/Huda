@@ -3,6 +3,7 @@ import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/surah/offline_content_banner.dart';
 
 class TafsirWidget extends StatelessWidget {
   final List<edition.Data> tafsirSources;
@@ -19,6 +20,8 @@ class TafsirWidget extends StatelessWidget {
   final Future<bool> Function() checkSurahDownloaded;
   final Future<bool> Function() checkAllDownloaded;
 
+  final String? offlineMessage;
+
   const TafsirWidget({
     super.key,
     required this.tafsirSources,
@@ -34,6 +37,7 @@ class TafsirWidget extends StatelessWidget {
     required this.isDownloadingAll,
     required this.checkSurahDownloaded,
     required this.checkAllDownloaded,
+    this.offlineMessage,
   });
 
   @override
@@ -41,7 +45,6 @@ class TafsirWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Tafsir sources dropdown
         if (tafsirSources.isNotEmpty)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -129,15 +132,14 @@ class TafsirWidget extends StatelessWidget {
               },
             ),
           )
+        else if (offlineMessage != null)
+          OfflineContentBanner(message: offlineMessage!)
         else
           Text(
             AppLocalizations.of(context)!.noTafsirAvailable,
             style: const TextStyle(color: Colors.grey),
           ),
-
         const SizedBox(height: 12),
-
-        // Tafsir content
         if (selectedTafsirId != null) ...[
           if (isLoadingTafsir)
             Center(
@@ -165,7 +167,6 @@ class TafsirWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Tafsir source label
                   Row(
                     children: [
                       Icon(
@@ -185,7 +186,6 @@ class TafsirWidget extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  // Tafsir text with RTL direction
                   Directionality(
                     textDirection: TextDirection.rtl,
                     child: Text(
@@ -209,8 +209,6 @@ class TafsirWidget extends StatelessWidget {
                 ],
               ),
             ),
-
-          // Download options for tafsir - only show when online
           if (canDownload) ...[
             const SizedBox(height: 8),
             Row(

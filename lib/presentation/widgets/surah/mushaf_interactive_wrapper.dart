@@ -164,9 +164,6 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
   void _initSourcesFromCurrentCubitState() {
     if (!mounted) return;
 
-    // Use lastKnown* getters which persist across state transitions
-    // (e.g. TafsirLoaded → SurahTafsirLoaded) so we never see empty sources
-    // after a mode switch even when the cubit is mid-way through loading.
     final tafsirSources = context.read<TafsirCubit>().lastKnownSources;
     final translationSources =
         context.read<TranslationCubit>().lastKnownSources;
@@ -572,8 +569,8 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                   } else if (cachedDownloadedReaders.isEmpty &&
                       cachedDownloadedTafsirSources.isEmpty &&
                       cachedDownloadedTranslationSources.isEmpty) {
-                    offlineMessage =
-                        'No internet connection. No offline content available.';
+                    offlineMessage = AppLocalizations.of(context)!
+                        .offlineAudioUnavailable;
                   }
                   if (!isOfflineMode) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -809,10 +806,6 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                         setModalState(() => autoplayEnabled = value ?? true),
                     checkAllDownloaded: () async => false,
                     checkSingleDownloaded: () async => false,
-                    // Use surahNum (the tapped ayah's surah), not
-                    // widget.surahNumber (the navigation surah), so that
-                    // cross-surah ayahs in double-page mode fetch the correct
-                    // tafsir/translation content.
                     onTafsirSelected: (tafsirId) {
                       setState(() {
                         selectedTafsirId = tafsirId;
@@ -955,6 +948,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
         _availableTafsirSources = state.tafsirModel.data ?? [];
       });
       if (isOfflineMode && offlineCacheLoaded) preloadOfflineCache();
+    } else if (state is TafsirOfflineNoContent) {
     } else if (state is SurahTafsirLoaded) {
       setState(() {
         currentTafsir = state.tafsirModel;
@@ -1004,6 +998,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
         _availableTranslationSources = state.translationModel.data ?? [];
       });
       if (isOfflineMode && offlineCacheLoaded) preloadOfflineCache();
+    } else if (state is TranslationOfflineNoContent) {
     } else if (state is SurahTranslationLoaded) {
       setState(() {
         currentTranslation = state.translationModel;

@@ -1298,6 +1298,9 @@ class _AyahBottomSheetModalTabbedState
             isDownloadingAll: widget.isDownloadingAllTafsir,
             checkSurahDownloaded: widget.checkSurahTafsirDownloaded,
             checkAllDownloaded: widget.checkAllTafsirDownloaded,
+            offlineMessage: widget.isOfflineMode
+                ? AppLocalizations.of(context)!.offlineTafsirUnavailable
+                : null,
           ),
         ],
       ),
@@ -1384,6 +1387,9 @@ class _AyahBottomSheetModalTabbedState
             isDownloadingAll: widget.isDownloadingAllTranslation,
             checkSurahDownloaded: widget.checkSurahTranslationDownloaded,
             checkAllDownloaded: widget.checkAllTranslationDownloaded,
+            offlineMessage: widget.isOfflineMode
+                ? AppLocalizations.of(context)!.offlineTranslationUnavailable
+                : null,
           ),
         ],
       ),

@@ -22,6 +22,12 @@ class TafsirError extends TafsirState {
   TafsirError(this.message);
 }
 
+/// Emitted when the tafsir list cannot be loaded because the device is offline
+/// and nothing has been cached/downloaded yet. This is an expected situation
+/// (the user may simply not want any offline tafsir), so the UI should show a
+/// gentle inline message instead of an error snackbar.
+class TafsirOfflineNoContent extends TafsirState {}
+
 class SurahTafsirLoading extends TafsirState {}
 
 class SurahTafsirLoaded extends TafsirState {

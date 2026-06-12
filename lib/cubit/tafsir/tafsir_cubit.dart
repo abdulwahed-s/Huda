@@ -95,8 +95,7 @@ class TafsirCubit extends Cubit<TafsirState> {
             _lastKnownSources = tafsirReaders.data ?? [];
             emit(TafsirOffline(tafsirReaders));
           } else {
-            emit(TafsirError(
-                'No internet connection and no cached data available'));
+            emit(TafsirOfflineNoContent());
           }
         }
       }
@@ -107,6 +106,8 @@ class TafsirCubit extends Cubit<TafsirState> {
         final tafsirReaders = edition.EditionModel.fromJson(decodedData);
         _lastKnownSources = tafsirReaders.data ?? [];
         emit(TafsirLoaded(tafsirReaders));
+      } else if (await isOffline()) {
+        emit(TafsirOfflineNoContent());
       } else {
         emit(TafsirError(e.toString()));
       }
