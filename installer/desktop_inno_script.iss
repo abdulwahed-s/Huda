@@ -2,11 +2,20 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 ; Non-commercial use only
 
+; Version can be overridden from the command line:
+;   ISCC.exe /DMyAppVersion=3.5.0 installer\desktop_inno_script.iss
+#ifndef MyAppVersion
+  #define MyAppVersion "3.5.0"
+#endif
+
 #define MyAppName "Huda"
-#define MyAppVersion "2.2.0"
 #define MyAppPublisher "awr"
 #define MyAppURL "https://awrs.me/en/projects/huda-islamic-companion-app"
 #define MyAppExeName "huda.exe"
+
+; All paths below are relative to this script's folder (installer\), so the
+; script works on any machine / CI runner without editing absolute paths.
+#define BuildDir "..\build\windows\x64\runner\Release"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -16,6 +25,7 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
+AppPublisherURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 UninstallDisplayIcon={app}\{#MyAppExeName}
 ; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
@@ -29,9 +39,9 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
-OutputDir=C:\Users\robix\StudioProjects\Huda\installer
-OutputBaseFilename=mysetup
-SetupIconFile=C:\Users\robix\StudioProjects\Huda\windows\runner\resources\app_icon.ico
+OutputDir=Output
+OutputBaseFilename=Huda-{#MyAppVersion}-windows-setup
+SetupIconFile=..\windows\runner\resources\app_icon.ico
 SolidCompression=yes
 WizardStyle=modern
 
@@ -49,22 +59,9 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\app_links_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\connectivity_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\flutter_local_notifications_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\flutter_timezone_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\geolocator_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\libmpv-2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\media_kit_libs_windows_audio_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\pdfium.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\permission_handler_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\restart_app_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\share_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\speech_to_text_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\url_launcher_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\robix\StudioProjects\Huda\build\windows\x64\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
+; Bundle the entire Flutter release output (exe, all plugin DLLs, and the data
+; folder). Using a wildcard means new/removed plugins never require editing this.
+Source: "{#BuildDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -73,4 +70,3 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-

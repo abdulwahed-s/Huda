@@ -388,6 +388,27 @@ jobs:
           name: windows-msix
           path: build/**/*.msix
 
+      # Standalone .exe installer (Inno Setup) for direct download from the
+      # GitHub Release — version is read from pubspec, no manual edits needed.
+      - name: Build Inno Setup installer
+        shell: pwsh
+        run: |
+          $content = Get-Content pubspec.yaml -Raw
+          if ($content -match 'version:\s+(\d+\.\d+\.\d+)') {
+            $version = $Matches[1]
+          } else {
+            throw "Could not read version from pubspec.yaml"
+          }
+          Write-Host "Building installer for version $version"
+          choco install innosetup --no-progress -y
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=$version installer\desktop_inno_script.iss
+
+      - name: Upload Windows installer artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-installer
+          path: installer/Output/*.exe
+
   # ──────────────────────────────────────────────────────────
   # Linux — snap → Snapcraft Store
   # ──────────────────────────────────────────────────────────
@@ -476,6 +497,9 @@ jobs:
 
           find release-artifacts/windows-msix -name "*.msix" -exec \
             cp {} "release-assets/Huda-${VERSION}-windows.msix" \; 2>/dev/null || true
+
+          find release-artifacts/windows-installer -name "*.exe" -exec \
+            cp {} "release-assets/Huda-${VERSION}-windows-setup.exe" \; 2>/dev/null || true
 
           [ -f release-artifacts/macos-pkg/Huda-macOS.pkg ] && \
             cp release-artifacts/macos-pkg/Huda-macOS.pkg "release-assets/Huda-${VERSION}-macOS.pkg"
