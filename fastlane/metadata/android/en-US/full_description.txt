@@ -1,0 +1,23 @@
+Huda is a comprehensive Islamic companion app designed to support your daily worship and spiritual growth. It brings the tools Muslims need most into one clean, ad-free experience.
+
+Features:
+
+* Quran: complete Mushaf in authentic Uthmanic script, translations and Tafsir, audio recitations with offline playback, and smart reading-position tracking.
+
+* Prayer Times & Adhan: accurate location-based prayer times with multiple calculation methods, Adhan notifications and countdown timers.
+
+* Qibla Compass: precise Qibla direction with smooth animations and haptic feedback.
+
+* Digital Tasbih: a persistent Dhikr counter with notes and tracking.
+
+* Athkar & Duas: categorized daily supplications with audio pronunciation.
+
+* Daily Checklist: track prayers and habits, build streaks, with Hijri calendar integration.
+
+* Hadith & Islamic Library: curated books and Hadith collections with a built-in offline PDF reader.
+
+* Home Screen Widgets: quick access to prayer times and core features.
+
+* Multilingual & Themes: full RTL Arabic support, dynamic language switching, and Dark/Light themes.
+
+Note: some features (such as content sync and the AI assistant) rely on a remote server to work.

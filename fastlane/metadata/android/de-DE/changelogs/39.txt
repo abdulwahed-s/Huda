@@ -1,0 +1,3 @@
+App-Schriftart: Ändere die App-Schriftart in den Einstellungen nach deinen Wünschen
+
+Fehlerbehebungen und Leistungsverbesserungen

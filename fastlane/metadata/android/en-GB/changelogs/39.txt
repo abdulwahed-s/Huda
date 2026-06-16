@@ -1,0 +1,3 @@
+Custom App Font: Change the app font from settings to suit your preference
+
+Bug fixes and performance improvements

@@ -1,0 +1,3 @@
+Uygulama Yazı Tipi: Ayarlardan uygulama yazı tipini tercihlerinize göre değiştirin
+
+Hata düzeltmeleri ve performans iyileştirmeleri
