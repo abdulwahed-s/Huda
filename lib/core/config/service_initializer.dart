@@ -20,17 +20,15 @@ Future<void> initializeCriticalServices() async {
   await PerformanceUtils.timeAsyncOperation('Critical Services', () async {
     final tracker = ServiceInitializationTracker();
 
-    setupServiceLocator();
-
-    await Future.wait([
-      getIt<CacheHelper>()
-          .init()
-          .then((_) => tracker.markServiceReady('cache')),
-      NotificationServices()
-          .initialize()
-          .then((_) => tracker.markServiceReady('notifications')),
-    ]);
+    await getIt<CacheHelper>().init();
+    tracker.markServiceReady('cache');
   });
+}
+
+Future<void> initializeNotifications() async {
+  final tracker = ServiceInitializationTracker();
+  await NotificationServices().initialize();
+  tracker.markServiceReady('notifications');
 }
 
 Future<void> initializeNonCriticalServicesAsync() async {
