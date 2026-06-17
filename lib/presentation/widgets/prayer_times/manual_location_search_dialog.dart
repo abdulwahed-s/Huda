@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/data/models/location_search_error.dart';
 import 'package:huda/data/services/location_service.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class ManualLocationSearchDialog extends StatefulWidget {
   const ManualLocationSearchDialog({super.key});
@@ -21,7 +23,8 @@ class _ManualLocationSearchDialogState
   List<Map<String, dynamic>> _searchResults = [];
   bool _isLoading = false;
   Timer? _debounce;
-  String _errorMsg = '';
+  LocationSearchErrorType? _errorType;
+  bool _noResults = false;
 
   @override
   void dispose() {
@@ -36,7 +39,8 @@ class _ManualLocationSearchDialogState
     if (query.trim().isEmpty) {
       setState(() {
         _searchResults = [];
-        _errorMsg = '';
+        _errorType = null;
+        _noResults = false;
       });
       return;
     }
@@ -49,20 +53,27 @@ class _ManualLocationSearchDialogState
   Future<void> _performSearch(String query) async {
     setState(() {
       _isLoading = true;
-      _errorMsg = '';
+      _errorType = null;
+      _noResults = false;
     });
 
     try {
       final results = await _locationService.searchCity(query);
+      if (!mounted) return;
       setState(() {
         _searchResults = results;
-        if (results.isEmpty) {
-          _errorMsg = 'No locations found.';
-        }
+        _noResults = results.isEmpty;
       });
-    } catch (e) {
+    } on LocationSearchException catch (e) {
+      if (!mounted) return;
       setState(() {
-        _errorMsg = 'Error searching for location.';
+        _errorType = e.type;
+        _searchResults = [];
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _errorType = LocationSearchErrorType.unknown;
         _searchResults = [];
       });
     } finally {
@@ -74,9 +85,22 @@ class _ManualLocationSearchDialogState
     }
   }
 
+  String _errorMessage(AppLocalizations l10n, LocationSearchErrorType type) {
+    switch (type) {
+      case LocationSearchErrorType.rateLimit:
+        return l10n.tooManyRequests;
+      case LocationSearchErrorType.noConnection:
+        return l10n.noInternetSettings;
+      case LocationSearchErrorType.server:
+      case LocationSearchErrorType.unknown:
+        return l10n.somethingWentWrong;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
@@ -91,7 +115,7 @@ class _ManualLocationSearchDialogState
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Search Location',
+                  l10n.searchLocationTitle,
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
@@ -115,7 +139,7 @@ class _ManualLocationSearchDialogState
                 fontSize: 16.sp,
               ),
               decoration: InputDecoration(
-                hintText: 'Search city (e.g., New York)...',
+                hintText: l10n.searchCityHint,
                 hintStyle: TextStyle(
                   color: isDark ? Colors.white54 : Colors.black38,
                 ),
@@ -140,11 +164,25 @@ class _ManualLocationSearchDialogState
                   child: CircularProgressIndicator(),
                 ),
               )
-            else if (_errorMsg.isNotEmpty)
+            else if (_errorType != null)
               Expanded(
                 child: Center(
                   child: Text(
-                    _errorMsg,
+                    _errorMessage(l10n, _errorType!),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: isDark ? Colors.white54 : Colors.black54,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                ),
+              )
+            else if (_noResults)
+              Expanded(
+                child: Center(
+                  child: Text(
+                    l10n.noResultsFound,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: isDark ? Colors.white54 : Colors.black54,
                       fontSize: 16.sp,
@@ -165,7 +203,7 @@ class _ManualLocationSearchDialogState
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        'Type a city name above',
+                        l10n.typeCityNameHint,
                         style: TextStyle(
                           color: isDark ? Colors.white54 : Colors.black54,
                           fontSize: 16.sp,
@@ -214,7 +252,6 @@ class _ManualLocationSearchDialogState
                         ),
                       ),
                       onTap: () {
-                        // Return selected lat/lon map
                         Navigator.of(context).pop({
                           'lat': result['lat'],
                           'lon': result['lon'],
