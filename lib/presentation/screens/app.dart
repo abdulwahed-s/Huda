@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:feedback/feedback.dart';
-import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/presentation/widgets/feedback/screenshot_feedback_widget.dart';
-import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/routes/page_router.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/core/services/service_locator.dart';
@@ -33,7 +31,9 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 
 class App extends StatefulWidget {
-  const App({super.key});
+  const App({super.key, required this.initialRoute});
+
+  final String initialRoute;
 
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
@@ -43,12 +43,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  String _initialRoute = AppRoute.home;
-
   @override
   void initState() {
     super.initState();
-    _determineInitialRoute();
     WidgetDeepLinkHandler.start();
   }
 
@@ -56,17 +53,6 @@ class _AppState extends State<App> {
   void dispose() {
     WidgetDeepLinkHandler.dispose();
     super.dispose();
-  }
-
-  Future<void> _determineInitialRoute() async {
-    final cacheHelper = getIt<CacheHelper>();
-    final onboardingCompleted =
-        cacheHelper.getData(key: 'onboarding_completed') as bool?;
-
-    setState(() {
-      _initialRoute =
-          (onboardingCompleted == true) ? AppRoute.home : AppRoute.onboarding;
-    });
   }
 
   @override
@@ -112,7 +98,7 @@ class _AppState extends State<App> {
                   return MaterialApp(
                     navigatorKey: App.navigatorKey,
                     debugShowCheckedModeBanner: false,
-                    initialRoute: _initialRoute,
+                    initialRoute: widget.initialRoute,
                     themeMode: themeState.themeMode,
                     theme: AppThemeHelper.getLightTheme(
                         themeState.colorTheme, themeState.fontFamily),
