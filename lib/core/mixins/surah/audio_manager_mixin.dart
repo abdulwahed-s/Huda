@@ -4,6 +4,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
@@ -149,6 +150,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
           artUri: _notificationArtUri,
         );
 
+        await audioServiceReady;
         _audioCoordinator.requestAudio(AudioCoordinator.surahAyah);
 
         if (downloadedPath != null) {
