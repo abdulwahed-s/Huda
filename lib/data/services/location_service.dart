@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' show ClientException;
+import 'package:supabase_flutter/supabase_flutter.dart' show FunctionException;
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/api/nominatim_service.dart';
+import 'package:huda/data/models/location_search_error.dart';
 import 'package:huda/data/models/placemark_model.dart';
 
 class LocationService {
@@ -139,8 +144,20 @@ class LocationService {
         'lon': result.geometry?.location?.lng ?? 0.0,
       };
     }).toList();
+  } on FunctionException catch (e) {
+    if (e.status == 429) {
+      throw const LocationSearchException(LocationSearchErrorType.rateLimit);
+    }
+    if (e.status >= 500) {
+      throw const LocationSearchException(LocationSearchErrorType.server);
+    }
+    throw const LocationSearchException(LocationSearchErrorType.unknown);
+  } on SocketException {
+    throw const LocationSearchException(LocationSearchErrorType.noConnection);
+  } on ClientException {
+    throw const LocationSearchException(LocationSearchErrorType.noConnection);
   } catch (e) {
-    throw Exception('Failed to search location: $e');
+    throw const LocationSearchException(LocationSearchErrorType.unknown);
   }
 }
 
