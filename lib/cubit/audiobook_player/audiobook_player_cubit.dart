@@ -8,6 +8,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/audio_progress_service.dart';
 import 'package:huda/core/services/service_locator.dart';
@@ -21,7 +22,6 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
   final AudioProgressService _progressService;
   final OfflineAudiobooksService _offlineService;
 
-  // Fallback artwork so lock-screen / notification always shows something.
   static const String _fallbackArt =
       'https://images.pexels.com/photos/8164742/pexels-photo-8164742.jpeg?auto=compress&cs=tinysrgb&w=600';
 
@@ -34,11 +34,8 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
   final ValueNotifier<Duration?> sleepRemaining = ValueNotifier(null);
   Duration? _initialSleepDuration;
 
-  /// The original duration that was passed to [startSleepTimer], or null when
-  /// no minute-based timer is running. Used by the UI to highlight the active preset.
   Duration? get initialSleepDuration => _initialSleepDuration;
 
-  // Cached metadata for progress saving.
   int _currentId = 0;
   String _currentTitle = '';
   String _currentAuthor = '';
@@ -90,7 +87,6 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
         initialTrackIndex: initialIndex,
       ));
 
-      // Look up any downloaded copy so we can prefer local files per track.
       final offline = await _offlineService.getAudiobook(audiobookId);
       final Map<int, String> localByOrder = {};
       if (offline != null) {
@@ -136,6 +132,8 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
       );
       audioPlayer.setLoopMode(LoopMode.off);
 
+      await audioServiceReady;
+
       try {
         await audioPlayer.setAudioSource(
           ConcatenatingAudioSource(children: playList),
@@ -176,7 +174,6 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
     _indexSub = audioPlayer.currentIndexStream.listen((_) {
       _saveCurrentPosition();
       if (_endOfChapterSleep) {
-        // The chapter boundary was crossed -> stop after current chapter.
         _endOfChapterSleep = false;
         sleepRemaining.value = null;
         audioPlayer.pause();
@@ -232,7 +229,6 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
 
   Future<void> setSpeed(double speed) => audioPlayer.setSpeed(speed);
 
-  // ---- Sleep timer ----
 
   void startSleepTimer(Duration duration) {
     cancelSleepTimer();
@@ -255,7 +251,7 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
   void startEndOfChapterTimer() {
     cancelSleepTimer();
     _endOfChapterSleep = true;
-    sleepRemaining.value = const Duration(seconds: -1); // sentinel: end of chapter
+    sleepRemaining.value = const Duration(seconds: -1);
   }
 
   void cancelSleepTimer() {

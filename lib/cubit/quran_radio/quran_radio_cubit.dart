@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:bloc/bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/connection/network_info.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
@@ -158,12 +159,13 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
       isPlaying: false,
     ));
 
-    // Save immediately when station is selected, before attempting playback
     await getIt<QuranRadioProgressService>().saveStation(
       stationId: station.id,
       stationName: station.name?.toString() ?? '',
       stationUrl: station.url?.toString() ?? '',
     );
+
+    await audioServiceReady;
 
     try {
       final audioSource = AudioSource.uri(

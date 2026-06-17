@@ -9,6 +9,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/quran/quran.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/quran_audio_progress_service.dart';
@@ -132,6 +133,8 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
         },
       );
       audioPlayer.setLoopMode(LoopMode.off);
+
+      await audioServiceReady;
 
       try {
         await audioPlayer.setAudioSource(
