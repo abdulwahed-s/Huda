@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
@@ -106,6 +107,7 @@ class AthkarAudioPlayer {
         }
       } else {
         _coordinator.requestAudio(AudioCoordinator.athkar);
+        await audioServiceReady;
         await _audioPlayer.setAudioSource(AudioSource.uri(
           Uri.parse(audioUrl),
           tag: MediaItem(id: audioUrl, title: 'Athkar'),
