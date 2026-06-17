@@ -1,19 +1,22 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:alarm/alarm.dart';
+import 'package:flutter/foundation.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:huda/core/bootstrap/audio_service_ready.dart';
+import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/config/service_initializer.dart';
-import 'package:huda/core/services/prayer_widget_service.dart';
-import 'package:huda/core/services/quick_actions_service.dart';
-import 'package:huda/core/services/service_locator.dart';
-import 'package:huda/presentation/screens/app.dart';
 import 'package:huda/core/keys/hadith_key.dart';
+import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:huda/core/services/qcf_font_service.dart';
-import 'package:huda/presentation/screens/error.dart';
-import 'package:alarm/alarm.dart';
+import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/core/services/sahur_alarm_helper.dart';
+import 'package:huda/core/services/service_locator.dart';
 
 String? _findLinuxLibmpv() {
   final snap = Platform.environment['SNAP'];
@@ -29,7 +32,7 @@ String? _findLinuxLibmpv() {
         ? '/usr/lib/aarch64-linux-gnu/libmpv.so.2'
         : '/usr/lib/x86_64-linux-gnu/libmpv.so.2';
   }
-  
+
   for (final path in [
     '/usr/lib/x86_64-linux-gnu/libmpv.so.2',
     '/usr/lib/x86_64-linux-gnu/libmpv.so',
@@ -45,9 +48,15 @@ String? _findLinuxLibmpv() {
   return null;
 }
 
-Future<void> bootstrap() async {
-  WidgetsFlutterBinding.ensureInitialized();
+bool _locatorReady = false;
 
+void _ensureLocator() {
+  if (_locatorReady) return;
+  setupServiceLocator();
+  _locatorReady = true;
+}
+
+Future<String> initCriticalAndGetRoute() async {
   JustAudioMediaKit.ensureInitialized(
     windows: true,
     linux: true,
@@ -57,34 +66,68 @@ Future<void> bootstrap() async {
     libmpv: Platform.isLinux ? _findLinuxLibmpv() : null,
   );
 
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.huda.audio',
-    androidNotificationChannelName: 'Quran Player',
-    androidNotificationOngoing: true,
+  _ensureLocator();
+  await initializeCriticalServices().timeout(const Duration(seconds: 8));
+
+  _startBackgroundInit();
+
+  await getIt.allReady(timeout: const Duration(seconds: 8));
+
+  final onboardingCompleted =
+      getIt<CacheHelper>().getData(key: 'onboarding_completed') as bool?;
+  return (onboardingCompleted == true) ? AppRoute.home : AppRoute.onboarding;
+}
+
+bool _backgroundInitStarted = false;
+
+void _startBackgroundInit() {
+  unawaited(_runBackgroundInit());
+}
+
+Future<void> _runBackgroundInit() async {
+  if (_backgroundInitStarted) return;
+  _backgroundInitStarted = true;
+
+  audioServiceReady = _guard(
+    'JustAudioBackground',
+    () => JustAudioBackground.init(
+      androidNotificationChannelId: 'com.huda.audio',
+      androidNotificationChannelName: 'Quran Player',
+      androidNotificationOngoing: true,
+    ),
+    const Duration(seconds: 10),
   );
 
-  await Alarm.init();
-  SahurAlarmHelper.initListeners();
-
   await Future.wait([
-    initializeCriticalServices(),
-    _initializeSupabase(),
+    _guard('Alarm', () async {
+      await Alarm.init();
+      SahurAlarmHelper.initListeners();
+    }, const Duration(seconds: 8)),
+    _guard('Supabase', _initializeSupabase, const Duration(seconds: 10)),
+    _guard('Notifications', initializeNotifications,
+        const Duration(seconds: 8)),
+    _guard('PrayerWidget', PrayerWidgetService.initialize,
+        const Duration(seconds: 8)),
   ]);
 
-  initializeNonCriticalServicesAsync();
-
-  await getIt.allReady();
+  await initializeNonCriticalServicesAsync();
 
   getIt<QcfFontService>(instanceName: 'qcf4').init();
   getIt<QcfFontService>(instanceName: 'tajweed').init();
 
-  setCustomErrorWidget();
-
-  await PrayerWidgetService.initialize();
-
-  runApp(const App());
-
   QuickActionsService.initialize();
+}
+
+Future<void> _guard(
+  String name,
+  Future<void> Function() op,
+  Duration timeout,
+) async {
+  try {
+    await op().timeout(timeout);
+  } catch (e) {
+    debugPrint('⚠️ bootstrap step "$name" failed/timed out: $e');
+  }
 }
 
 Future<void> _initializeSupabase() async {
