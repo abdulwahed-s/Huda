@@ -9,6 +9,15 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'Standort suchen';
+
+  @override
+  String get searchCityHint => 'Stadt suchen (z. B. New York)...';
+
+  @override
+  String get typeCityNameHint => 'Geben Sie oben einen Stadtnamen ein';
+
+  @override
   String get appTitle => 'Huda';
 
   @override
@@ -4122,4 +4131,58 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get chatErrorGeneric =>
       'Etwas ist schiefgelaufen. Bitte versuche es erneut.';
+
+  @override
+  String get emailOptional => 'E-Mail (optional — für eine Antwort)';
+
+  @override
+  String get searchManually => 'Manuell suchen';
+
+  @override
+  String get locationPermissionDenied =>
+      'Standortberechtigung verweigert. Bitte erlaube den Standortzugriff in deinen Geräteeinstellungen.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'Standortberechtigung dauerhaft verweigert. Bitte erlaube den Standortzugriff in deinen Geräteeinstellungen.';
+
+  @override
+  String get errorDetailsCopied =>
+      'Fehlerdetails in die Zwischenablage kopiert';
+
+  @override
+  String get restartAppButton => 'App neu starten';
+
+  @override
+  String get copyButton => 'Kopieren';
+
+  @override
+  String get unknownErrorOccurred => 'Ein unbekannter Fehler ist aufgetreten';
+
+  @override
+  String get pleaseEnterMessage =>
+      'Bitte gib eine Nachricht ein, bevor du sendest';
+
+  @override
+  String get helpUsImproveTitle => 'Hilf uns, besser zu werden';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'Was hast du getan, als dieser Fehler auftrat? Dein Feedback hilft uns, diese Probleme schneller zu beheben.';
+
+  @override
+  String get errorFeedbackHint => 'Ich habe versucht ...';
+
+  @override
+  String get feedbackThankYou => 'Vielen Dank!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'Dein Feedback wurde gesendet. Wir nutzen es, um die App zu verbessern.';
+
+  @override
+  String get whatHappened => 'Was ist passiert?';
+
+  @override
+  String get describeIssueHint => 'Beschreibe das Problem oder Feedback ...';
 }

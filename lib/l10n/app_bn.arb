@@ -1,5 +1,8 @@
 {
     "@@locale": "bn",
+    "searchLocationTitle": "অবস্থান খুঁজুন",
+    "searchCityHint": "শহর খুঁজুন (যেমন, নিউ ইয়র্ক)...",
+    "typeCityNameHint": "উপরে একটি শহরের নাম লিখুন",
     "appTitle": "Huda",
     "@appTitle": {
         "description": "The title of the application"
@@ -1688,5 +1691,21 @@
     "settingsAppFont": "অ্যাপ ফন্ট",
     "settingsAppFontDescription": "অ্যাপ ইন্টারফেসে ব্যবহৃত ফন্ট",
     "settingsSystemFont": "সিস্টেম ডিফল্ট",
-    "settingsSystemFontDescription": "আপনার ডিভাইসের ডিফল্ট ফন্ট ব্যবহার করে"
+    "settingsSystemFontDescription": "আপনার ডিভাইসের ডিফল্ট ফন্ট ব্যবহার করে",
+    "emailOptional": "ইমেল (ঐচ্ছিক — উত্তরের জন্য)",
+    "searchManually": "ম্যানুয়ালি অনুসন্ধান করুন",
+    "locationPermissionDenied": "অবস্থানের অনুমতি প্রত্যাখ্যান করা হয়েছে। অনুগ্রহ করে আপনার ডিভাইস সেটিংসে অবস্থান অ্যাক্সেসের অনুমতি দিন।",
+    "locationPermissionPermanentlyDenied": "অবস্থানের অনুমতি স্থায়ীভাবে প্রত্যাখ্যান করা হয়েছে। অনুগ্রহ করে আপনার ডিভাইস সেটিংসে অবস্থান অ্যাক্সেসের অনুমতি দিন।",
+    "errorDetailsCopied": "ত্রুটির বিবরণ ক্লিপবোর্ডে অনুলিপি করা হয়েছে",
+    "restartAppButton": "অ্যাপ পুনরায় চালু করুন",
+    "copyButton": "অনুলিপি",
+    "unknownErrorOccurred": "অজানা ত্রুটি ঘটেছে",
+    "pleaseEnterMessage": "পাঠানোর আগে একটি বার্তা লিখুন",
+    "helpUsImproveTitle": "আমাদের উন্নতিতে সহায়তা করুন",
+    "errorFeedbackPrompt": "এই ত্রুটি ঘটার সময় আপনি কী করছিলেন? আপনার মতামত আমাদের এই সমস্যাগুলি দ্রুত সমাধান করতে সাহায্য করে।",
+    "errorFeedbackHint": "আমি চেষ্টা করছিলাম...",
+    "feedbackThankYou": "ধন্যবাদ!",
+    "feedbackThankYouMessage": "আপনার মতামত পাঠানো হয়েছে। আমরা অ্যাপটি উন্নত করতে এটি ব্যবহার করব।",
+    "whatHappened": "কী হয়েছিল?",
+    "describeIssueHint": "সমস্যা বা মতামত বর্ণনা করুন..."
 }

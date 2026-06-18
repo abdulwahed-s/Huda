@@ -9,6 +9,15 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'Search Location';
+
+  @override
+  String get searchCityHint => 'Search city (e.g., New York)...';
+
+  @override
+  String get typeCityNameHint => 'Type a city name above';
+
+  @override
   String get appTitle => 'Huda';
 
   @override
@@ -4067,4 +4076,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatErrorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get emailOptional => 'Email (optional — for a reply)';
+
+  @override
+  String get searchManually => 'Search Manually';
+
+  @override
+  String get locationPermissionDenied =>
+      'Location permission denied. Please allow location access in your device settings.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'Location permission permanently denied. Please allow location access in your device settings.';
+
+  @override
+  String get errorDetailsCopied => 'Error details copied to clipboard';
+
+  @override
+  String get restartAppButton => 'Restart App';
+
+  @override
+  String get copyButton => 'Copy';
+
+  @override
+  String get unknownErrorOccurred => 'Unknown error occurred';
+
+  @override
+  String get pleaseEnterMessage => 'Please enter a message before sending';
+
+  @override
+  String get helpUsImproveTitle => 'Help us improve';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'What were you doing when this error occurred? Your feedback helps us fix these issues faster.';
+
+  @override
+  String get errorFeedbackHint => 'I was trying to...';
+
+  @override
+  String get feedbackThankYou => 'Thank you!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'Your feedback has been sent. We\'ll use it to improve the app.';
+
+  @override
+  String get whatHappened => 'What happened?';
+
+  @override
+  String get describeIssueHint => 'Describe the issue or feedback...';
 }

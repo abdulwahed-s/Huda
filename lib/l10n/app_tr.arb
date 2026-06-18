@@ -1,5 +1,8 @@
 {
     "@@locale": "tr",
+    "searchLocationTitle": "Konum Ara",
+    "searchCityHint": "Şehir ara (örn. New York)...",
+    "typeCityNameHint": "Yukarıya bir şehir adı yazın",
     "appTitle": "Huda",
     "settings": "Ayarlar",
     "theme": "Tema",
@@ -1582,5 +1585,21 @@
     "settingsAppFont": "Uygulama Yazı Tipi",
     "settingsAppFontDescription": "Uygulama arayüzünde kullanılan yazı tipi",
     "settingsSystemFont": "Sistem Varsayılanı",
-    "settingsSystemFontDescription": "Cihazınızın varsayılan yazı tipini kullanır"
+    "settingsSystemFontDescription": "Cihazınızın varsayılan yazı tipini kullanır",
+    "emailOptional": "E-posta (isteğe bağlı — yanıt için)",
+    "searchManually": "Manuel Ara",
+    "locationPermissionDenied": "Konum izni reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.",
+    "locationPermissionPermanentlyDenied": "Konum izni kalıcı olarak reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.",
+    "errorDetailsCopied": "Hata ayrıntıları panoya kopyalandı",
+    "restartAppButton": "Uygulamayı Yeniden Başlat",
+    "copyButton": "Kopyala",
+    "unknownErrorOccurred": "Bilinmeyen bir hata oluştu",
+    "pleaseEnterMessage": "Göndermeden önce bir mesaj girin",
+    "helpUsImproveTitle": "Gelişmemize yardımcı olun",
+    "errorFeedbackPrompt": "Bu hata oluştuğunda ne yapıyordunuz? Geri bildiriminiz bu sorunları daha hızlı çözmemize yardımcı olur.",
+    "errorFeedbackHint": "Şunu yapmaya çalışıyordum...",
+    "feedbackThankYou": "Teşekkürler!",
+    "feedbackThankYouMessage": "Geri bildiriminiz gönderildi. Uygulamayı geliştirmek için kullanacağız.",
+    "whatHappened": "Ne oldu?",
+    "describeIssueHint": "Sorunu veya geri bildirimi açıklayın..."
 }

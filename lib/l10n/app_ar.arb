@@ -1,5 +1,8 @@
 {
     "@@locale": "ar",
+    "searchLocationTitle": "البحث عن موقع",
+    "searchCityHint": "ابحث عن مدينة (مثال: نيويورك)...",
+    "typeCityNameHint": "اكتب اسم مدينة بالأعلى",
     "appTitle": "هُدَى",
     "settings": "الإعدادات",
     "theme": "المظهر",
@@ -2088,5 +2091,21 @@
     "chatErrorRateLimit": "هناك عدد كبير من الطلبات حاليًا. يرجى الانتظار قليلًا والمحاولة مرة أخرى.",
     "chatErrorServer": "نواجه صعوبة في الوصول إلى الخادم. يرجى المحاولة مرة أخرى بعد قليل.",
     "chatErrorSafety": "تعذّر إكمال هذا الطلب وفقًا لإرشادات سلامة المحتوى. يرجى إعادة الصياغة والمحاولة مرة أخرى.",
-    "chatErrorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    "chatErrorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "emailOptional": "البريد الإلكتروني (اختياري — للرد)",
+    "searchManually": "البحث يدويًا",
+    "locationPermissionDenied": "تم رفض إذن الموقع. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.",
+    "locationPermissionPermanentlyDenied": "تم رفض إذن الموقع نهائيًا. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.",
+    "errorDetailsCopied": "تم نسخ تفاصيل الخطأ إلى الحافظة",
+    "restartAppButton": "إعادة تشغيل التطبيق",
+    "copyButton": "نسخ",
+    "unknownErrorOccurred": "حدث خطأ غير معروف",
+    "pleaseEnterMessage": "يرجى إدخال رسالة قبل الإرسال",
+    "helpUsImproveTitle": "ساعدنا على التحسين",
+    "errorFeedbackPrompt": "ماذا كنت تفعل عند حدوث هذا الخطأ؟ ملاحظاتك تساعدنا على إصلاح هذه المشكلات بشكل أسرع.",
+    "errorFeedbackHint": "كنت أحاول أن...",
+    "feedbackThankYou": "شكرًا لك!",
+    "feedbackThankYouMessage": "تم إرسال ملاحظاتك. سنستخدمها لتحسين التطبيق.",
+    "whatHappened": "ماذا حدث؟",
+    "describeIssueHint": "صف المشكلة أو الملاحظات..."
 }

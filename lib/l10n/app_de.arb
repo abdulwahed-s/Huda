@@ -1,5 +1,8 @@
 {
     "@@locale": "de",
+    "searchLocationTitle": "Standort suchen",
+    "searchCityHint": "Stadt suchen (z. B. New York)...",
+    "typeCityNameHint": "Geben Sie oben einen Stadtnamen ein",
     "appTitle": "Huda",
     "settings": "Einstellungen",
     "theme": "Design",
@@ -1559,5 +1562,21 @@
     "settingsAppFont": "App-Schriftart",
     "settingsAppFontDescription": "Schriftart für die App-Oberfläche",
     "settingsSystemFont": "Systemstandard",
-    "settingsSystemFontDescription": "Verwendet die Standardschriftart deines Geräts"
+    "settingsSystemFontDescription": "Verwendet die Standardschriftart deines Geräts",
+    "emailOptional": "E-Mail (optional — für eine Antwort)",
+    "searchManually": "Manuell suchen",
+    "locationPermissionDenied": "Standortberechtigung verweigert. Bitte erlaube den Standortzugriff in deinen Geräteeinstellungen.",
+    "locationPermissionPermanentlyDenied": "Standortberechtigung dauerhaft verweigert. Bitte erlaube den Standortzugriff in deinen Geräteeinstellungen.",
+    "errorDetailsCopied": "Fehlerdetails in die Zwischenablage kopiert",
+    "restartAppButton": "App neu starten",
+    "copyButton": "Kopieren",
+    "unknownErrorOccurred": "Ein unbekannter Fehler ist aufgetreten",
+    "pleaseEnterMessage": "Bitte gib eine Nachricht ein, bevor du sendest",
+    "helpUsImproveTitle": "Hilf uns, besser zu werden",
+    "errorFeedbackPrompt": "Was hast du getan, als dieser Fehler auftrat? Dein Feedback hilft uns, diese Probleme schneller zu beheben.",
+    "errorFeedbackHint": "Ich habe versucht ...",
+    "feedbackThankYou": "Vielen Dank!",
+    "feedbackThankYouMessage": "Dein Feedback wurde gesendet. Wir nutzen es, um die App zu verbessern.",
+    "whatHappened": "Was ist passiert?",
+    "describeIssueHint": "Beschreibe das Problem oder Feedback ..."
 }

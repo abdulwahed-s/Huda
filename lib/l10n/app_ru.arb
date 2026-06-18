@@ -1,5 +1,8 @@
 {
     "@@locale": "ru",
+    "searchLocationTitle": "Поиск местоположения",
+    "searchCityHint": "Поиск города (например, Нью-Йорк)...",
+    "typeCityNameHint": "Введите название города выше",
     "appTitle": "Huda",
     "settings": "Настройки",
     "theme": "Тема",
@@ -1582,5 +1585,21 @@
     "settingsAppFont": "Шрифт приложения",
     "settingsAppFontDescription": "Шрифт, используемый в интерфейсе приложения",
     "settingsSystemFont": "Системный по умолчанию",
-    "settingsSystemFontDescription": "Использует стандартный шрифт вашего устройства"
+    "settingsSystemFontDescription": "Использует стандартный шрифт вашего устройства",
+    "emailOptional": "Электронная почта (необязательно — для ответа)",
+    "searchManually": "Поиск вручную",
+    "locationPermissionDenied": "Доступ к местоположению запрещён. Разрешите доступ к местоположению в настройках устройства.",
+    "locationPermissionPermanentlyDenied": "Доступ к местоположению запрещён навсегда. Разрешите доступ к местоположению в настройках устройства.",
+    "errorDetailsCopied": "Сведения об ошибке скопированы в буфер обмена",
+    "restartAppButton": "Перезапустить приложение",
+    "copyButton": "Копировать",
+    "unknownErrorOccurred": "Произошла неизвестная ошибка",
+    "pleaseEnterMessage": "Введите сообщение перед отправкой",
+    "helpUsImproveTitle": "Помогите нам стать лучше",
+    "errorFeedbackPrompt": "Что вы делали, когда произошла эта ошибка? Ваш отзыв поможет нам быстрее устранить эти проблемы.",
+    "errorFeedbackHint": "Я пытался...",
+    "feedbackThankYou": "Спасибо!",
+    "feedbackThankYouMessage": "Ваш отзыв отправлен. Мы используем его, чтобы улучшить приложение.",
+    "whatHappened": "Что произошло?",
+    "describeIssueHint": "Опишите проблему или отзыв..."
 }

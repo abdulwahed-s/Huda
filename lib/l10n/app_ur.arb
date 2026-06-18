@@ -1,5 +1,8 @@
 {
     "@@locale": "ur",
+    "searchLocationTitle": "مقام تلاش کریں",
+    "searchCityHint": "شہر تلاش کریں (مثلاً، نیویارک)...",
+    "typeCityNameHint": "اوپر کسی شہر کا نام لکھیں",
     "appTitle": "ہدیٰ",
     "settings": "ترتیبات",
     "theme": "تھیم",
@@ -1598,5 +1601,21 @@
     "settingsAppFont": "ایپ فونٹ",
     "settingsAppFontDescription": "ایپ کے انٹرفیس میں استعمال ہونے والا فونٹ",
     "settingsSystemFont": "سسٹم ڈیفالٹ",
-    "settingsSystemFontDescription": "آپ کے آلے کا ڈیفالٹ فونٹ استعمال کرتا ہے"
+    "settingsSystemFontDescription": "آپ کے آلے کا ڈیفالٹ فونٹ استعمال کرتا ہے",
+    "emailOptional": "ای میل (اختیاری — جواب کے لیے)",
+    "searchManually": "دستی تلاش کریں",
+    "locationPermissionDenied": "مقام کی اجازت مسترد کر دی گئی۔ براہ کرم اپنے آلے کی ترتیبات میں مقام تک رسائی کی اجازت دیں۔",
+    "locationPermissionPermanentlyDenied": "مقام کی اجازت مستقل طور پر مسترد کر دی گئی۔ براہ کرم اپنے آلے کی ترتیبات میں مقام تک رسائی کی اجازت دیں۔",
+    "errorDetailsCopied": "خرابی کی تفصیلات کلپ بورڈ پر کاپی ہو گئیں",
+    "restartAppButton": "ایپ دوبارہ شروع کریں",
+    "copyButton": "کاپی کریں",
+    "unknownErrorOccurred": "نامعلوم خرابی پیش آگئی",
+    "pleaseEnterMessage": "بھیجنے سے پہلے ایک پیغام درج کریں",
+    "helpUsImproveTitle": "ہماری بہتری میں مدد کریں",
+    "errorFeedbackPrompt": "یہ خرابی پیش آتے وقت آپ کیا کر رہے تھے؟ آپ کی رائے ہمیں ان مسائل کو تیزی سے حل کرنے میں مدد دیتی ہے۔",
+    "errorFeedbackHint": "میں کوشش کر رہا تھا...",
+    "feedbackThankYou": "شکریہ!",
+    "feedbackThankYouMessage": "آپ کی رائے بھیج دی گئی ہے۔ ہم اسے ایپ کو بہتر بنانے کے لیے استعمال کریں گے۔",
+    "whatHappened": "کیا ہوا؟",
+    "describeIssueHint": "مسئلہ یا رائے بیان کریں..."
 }

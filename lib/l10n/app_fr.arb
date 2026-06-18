@@ -1,5 +1,8 @@
 {
     "@@locale": "fr",
+    "searchLocationTitle": "Rechercher un lieu",
+    "searchCityHint": "Rechercher une ville (ex. : New York)...",
+    "typeCityNameHint": "Saisissez le nom d'une ville ci-dessus",
     "appTitle": "Huda",
     "settings": "Paramètres",
     "theme": "Thème",
@@ -1586,5 +1589,21 @@
     "settingsAppFont": "Police de l'application",
     "settingsAppFontDescription": "Police utilisée dans l'interface de l'application",
     "settingsSystemFont": "Valeur par défaut du système",
-    "settingsSystemFontDescription": "Utilise la police par défaut de votre appareil"
+    "settingsSystemFontDescription": "Utilise la police par défaut de votre appareil",
+    "emailOptional": "E-mail (facultatif — pour une réponse)",
+    "searchManually": "Recherche manuelle",
+    "locationPermissionDenied": "Autorisation de localisation refusée. Veuillez autoriser l'accès à la localisation dans les paramètres de votre appareil.",
+    "locationPermissionPermanentlyDenied": "Autorisation de localisation refusée définitivement. Veuillez autoriser l'accès à la localisation dans les paramètres de votre appareil.",
+    "errorDetailsCopied": "Détails de l'erreur copiés dans le presse-papiers",
+    "restartAppButton": "Redémarrer l'app",
+    "copyButton": "Copier",
+    "unknownErrorOccurred": "Une erreur inconnue s'est produite",
+    "pleaseEnterMessage": "Veuillez saisir un message avant d'envoyer",
+    "helpUsImproveTitle": "Aidez-nous à nous améliorer",
+    "errorFeedbackPrompt": "Que faisiez-vous lorsque cette erreur s'est produite ? Vos commentaires nous aident à résoudre ces problèmes plus rapidement.",
+    "errorFeedbackHint": "J'essayais de...",
+    "feedbackThankYou": "Merci !",
+    "feedbackThankYouMessage": "Vos commentaires ont été envoyés. Nous les utiliserons pour améliorer l'application.",
+    "whatHappened": "Que s'est-il passé ?",
+    "describeIssueHint": "Décrivez le problème ou vos commentaires..."
 }

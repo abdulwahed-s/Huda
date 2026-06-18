@@ -9,6 +9,15 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'البحث عن موقع';
+
+  @override
+  String get searchCityHint => 'ابحث عن مدينة (مثال: نيويورك)...';
+
+  @override
+  String get typeCityNameHint => 'اكتب اسم مدينة بالأعلى';
+
+  @override
   String get appTitle => 'هُدَى';
 
   @override
@@ -4010,4 +4019,56 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chatErrorGeneric => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get emailOptional => 'البريد الإلكتروني (اختياري — للرد)';
+
+  @override
+  String get searchManually => 'البحث يدويًا';
+
+  @override
+  String get locationPermissionDenied =>
+      'تم رفض إذن الموقع. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'تم رفض إذن الموقع نهائيًا. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.';
+
+  @override
+  String get errorDetailsCopied => 'تم نسخ تفاصيل الخطأ إلى الحافظة';
+
+  @override
+  String get restartAppButton => 'إعادة تشغيل التطبيق';
+
+  @override
+  String get copyButton => 'نسخ';
+
+  @override
+  String get unknownErrorOccurred => 'حدث خطأ غير معروف';
+
+  @override
+  String get pleaseEnterMessage => 'يرجى إدخال رسالة قبل الإرسال';
+
+  @override
+  String get helpUsImproveTitle => 'ساعدنا على التحسين';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'ماذا كنت تفعل عند حدوث هذا الخطأ؟ ملاحظاتك تساعدنا على إصلاح هذه المشكلات بشكل أسرع.';
+
+  @override
+  String get errorFeedbackHint => 'كنت أحاول أن...';
+
+  @override
+  String get feedbackThankYou => 'شكرًا لك!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'تم إرسال ملاحظاتك. سنستخدمها لتحسين التطبيق.';
+
+  @override
+  String get whatHappened => 'ماذا حدث؟';
+
+  @override
+  String get describeIssueHint => 'صف المشكلة أو الملاحظات...';
 }

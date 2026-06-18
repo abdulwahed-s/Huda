@@ -114,6 +114,24 @@ abstract class AppLocalizations {
     Locale('ur')
   ];
 
+  /// Title of the manual location search dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Search Location'**
+  String get searchLocationTitle;
+
+  /// Hint text for the city search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search city (e.g., New York)...'**
+  String get searchCityHint;
+
+  /// Empty-state hint shown before a city search is entered
+  ///
+  /// In en, this message translates to:
+  /// **'Type a city name above'**
+  String get typeCityNameHint;
+
   /// The title of the application
   ///
   /// In en, this message translates to:
@@ -7429,6 +7447,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get chatErrorGeneric;
+
+  /// Hint for the optional email field in feedback forms
+  ///
+  /// In en, this message translates to:
+  /// **'Email (optional — for a reply)'**
+  String get emailOptional;
+
+  /// Button to manually search for a location
+  ///
+  /// In en, this message translates to:
+  /// **'Search Manually'**
+  String get searchManually;
+
+  /// Message shown when location permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied. Please allow location access in your device settings.'**
+  String get locationPermissionDenied;
+
+  /// Message shown when location permission is permanently denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission permanently denied. Please allow location access in your device settings.'**
+  String get locationPermissionPermanentlyDenied;
+
+  /// Snackbar shown when error details are copied to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Error details copied to clipboard'**
+  String get errorDetailsCopied;
+
+  /// Button to restart the app on the error screen
+  ///
+  /// In en, this message translates to:
+  /// **'Restart App'**
+  String get restartAppButton;
+
+  /// Copy button label on the error screen
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copyButton;
+
+  /// Fallback error summary when no message is available
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error occurred'**
+  String get unknownErrorOccurred;
+
+  /// Validation message when the feedback message is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a message before sending'**
+  String get pleaseEnterMessage;
+
+  /// Title of the feedback section on the error screen
+  ///
+  /// In en, this message translates to:
+  /// **'Help us improve'**
+  String get helpUsImproveTitle;
+
+  /// Prompt asking the user what they were doing when the error occurred
+  ///
+  /// In en, this message translates to:
+  /// **'What were you doing when this error occurred? Your feedback helps us fix these issues faster.'**
+  String get errorFeedbackPrompt;
+
+  /// Hint for the error feedback message field
+  ///
+  /// In en, this message translates to:
+  /// **'I was trying to...'**
+  String get errorFeedbackHint;
+
+  /// Thank you title shown after feedback is submitted
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you!'**
+  String get feedbackThankYou;
+
+  /// Confirmation message shown after feedback is submitted
+  ///
+  /// In en, this message translates to:
+  /// **'Your feedback has been sent. We\'ll use it to improve the app.'**
+  String get feedbackThankYouMessage;
+
+  /// Title for the screenshot feedback description field
+  ///
+  /// In en, this message translates to:
+  /// **'What happened?'**
+  String get whatHappened;
+
+  /// Hint for the screenshot feedback description field
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the issue or feedback...'**
+  String get describeIssueHint;
 }
 
 class _AppLocalizationsDelegate

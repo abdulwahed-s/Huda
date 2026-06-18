@@ -1,5 +1,8 @@
 {
     "@@locale": "ms",
+    "searchLocationTitle": "Cari Lokasi",
+    "searchCityHint": "Cari bandar (cth., New York)...",
+    "typeCityNameHint": "Taip nama bandar di atas",
     "appTitle": "Huda",
     "@appTitle": {
         "description": "The title of the application"
@@ -1672,5 +1675,21 @@
     "settingsAppFont": "Fon Aplikasi",
     "settingsAppFontDescription": "Fon yang digunakan di seluruh antara muka aplikasi",
     "settingsSystemFont": "Lalai Sistem",
-    "settingsSystemFontDescription": "Menggunakan fon lalai peranti anda"
+    "settingsSystemFontDescription": "Menggunakan fon lalai peranti anda",
+    "emailOptional": "E-mel (pilihan — untuk balasan)",
+    "searchManually": "Cari Secara Manual",
+    "locationPermissionDenied": "Kebenaran lokasi ditolak. Sila benarkan akses lokasi dalam tetapan peranti anda.",
+    "locationPermissionPermanentlyDenied": "Kebenaran lokasi ditolak secara kekal. Sila benarkan akses lokasi dalam tetapan peranti anda.",
+    "errorDetailsCopied": "Butiran ralat disalin ke papan keratan",
+    "restartAppButton": "Mulakan Semula Apl",
+    "copyButton": "Salin",
+    "unknownErrorOccurred": "Ralat tidak diketahui berlaku",
+    "pleaseEnterMessage": "Sila masukkan mesej sebelum menghantar",
+    "helpUsImproveTitle": "Bantu kami menambah baik",
+    "errorFeedbackPrompt": "Apakah yang anda lakukan ketika ralat ini berlaku? Maklum balas anda membantu kami membaiki isu ini dengan lebih cepat.",
+    "errorFeedbackHint": "Saya cuba untuk...",
+    "feedbackThankYou": "Terima kasih!",
+    "feedbackThankYouMessage": "Maklum balas anda telah dihantar. Kami akan menggunakannya untuk menambah baik apl ini.",
+    "whatHappened": "Apa yang berlaku?",
+    "describeIssueHint": "Terangkan isu atau maklum balas..."
 }

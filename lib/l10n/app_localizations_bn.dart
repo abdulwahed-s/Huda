@@ -9,6 +9,15 @@ class AppLocalizationsBn extends AppLocalizations {
   AppLocalizationsBn([String locale = 'bn']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'অবস্থান খুঁজুন';
+
+  @override
+  String get searchCityHint => 'শহর খুঁজুন (যেমন, নিউ ইয়র্ক)...';
+
+  @override
+  String get typeCityNameHint => 'উপরে একটি শহরের নাম লিখুন';
+
+  @override
   String get appTitle => 'Huda';
 
   @override
@@ -4068,4 +4077,57 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get chatErrorGeneric =>
       'কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
+
+  @override
+  String get emailOptional => 'ইমেল (ঐচ্ছিক — উত্তরের জন্য)';
+
+  @override
+  String get searchManually => 'ম্যানুয়ালি অনুসন্ধান করুন';
+
+  @override
+  String get locationPermissionDenied =>
+      'অবস্থানের অনুমতি প্রত্যাখ্যান করা হয়েছে। অনুগ্রহ করে আপনার ডিভাইস সেটিংসে অবস্থান অ্যাক্সেসের অনুমতি দিন।';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'অবস্থানের অনুমতি স্থায়ীভাবে প্রত্যাখ্যান করা হয়েছে। অনুগ্রহ করে আপনার ডিভাইস সেটিংসে অবস্থান অ্যাক্সেসের অনুমতি দিন।';
+
+  @override
+  String get errorDetailsCopied =>
+      'ত্রুটির বিবরণ ক্লিপবোর্ডে অনুলিপি করা হয়েছে';
+
+  @override
+  String get restartAppButton => 'অ্যাপ পুনরায় চালু করুন';
+
+  @override
+  String get copyButton => 'অনুলিপি';
+
+  @override
+  String get unknownErrorOccurred => 'অজানা ত্রুটি ঘটেছে';
+
+  @override
+  String get pleaseEnterMessage => 'পাঠানোর আগে একটি বার্তা লিখুন';
+
+  @override
+  String get helpUsImproveTitle => 'আমাদের উন্নতিতে সহায়তা করুন';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'এই ত্রুটি ঘটার সময় আপনি কী করছিলেন? আপনার মতামত আমাদের এই সমস্যাগুলি দ্রুত সমাধান করতে সাহায্য করে।';
+
+  @override
+  String get errorFeedbackHint => 'আমি চেষ্টা করছিলাম...';
+
+  @override
+  String get feedbackThankYou => 'ধন্যবাদ!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'আপনার মতামত পাঠানো হয়েছে। আমরা অ্যাপটি উন্নত করতে এটি ব্যবহার করব।';
+
+  @override
+  String get whatHappened => 'কী হয়েছিল?';
+
+  @override
+  String get describeIssueHint => 'সমস্যা বা মতামত বর্ণনা করুন...';
 }

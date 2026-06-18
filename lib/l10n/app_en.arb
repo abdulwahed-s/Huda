@@ -1,5 +1,17 @@
 {
     "@@locale": "en",
+    "searchLocationTitle": "Search Location",
+    "@searchLocationTitle": {
+        "description": "Title of the manual location search dialog"
+    },
+    "searchCityHint": "Search city (e.g., New York)...",
+    "@searchCityHint": {
+        "description": "Hint text for the city search field"
+    },
+    "typeCityNameHint": "Type a city name above",
+    "@typeCityNameHint": {
+        "description": "Empty-state hint shown before a city search is entered"
+    },
     "appTitle": "Huda",
     "@appTitle": {
         "description": "The title of the application"
@@ -4709,5 +4721,69 @@
     "chatErrorGeneric": "Something went wrong. Please try again.",
     "@chatErrorGeneric": {
         "description": "Generic AI chat error shown for unexpected failures"
+    },
+    "emailOptional": "Email (optional — for a reply)",
+    "@emailOptional": {
+        "description": "Hint for the optional email field in feedback forms"
+    },
+    "searchManually": "Search Manually",
+    "@searchManually": {
+        "description": "Button to manually search for a location"
+    },
+    "locationPermissionDenied": "Location permission denied. Please allow location access in your device settings.",
+    "@locationPermissionDenied": {
+        "description": "Message shown when location permission is denied"
+    },
+    "locationPermissionPermanentlyDenied": "Location permission permanently denied. Please allow location access in your device settings.",
+    "@locationPermissionPermanentlyDenied": {
+        "description": "Message shown when location permission is permanently denied"
+    },
+    "errorDetailsCopied": "Error details copied to clipboard",
+    "@errorDetailsCopied": {
+        "description": "Snackbar shown when error details are copied to clipboard"
+    },
+    "restartAppButton": "Restart App",
+    "@restartAppButton": {
+        "description": "Button to restart the app on the error screen"
+    },
+    "copyButton": "Copy",
+    "@copyButton": {
+        "description": "Copy button label on the error screen"
+    },
+    "unknownErrorOccurred": "Unknown error occurred",
+    "@unknownErrorOccurred": {
+        "description": "Fallback error summary when no message is available"
+    },
+    "pleaseEnterMessage": "Please enter a message before sending",
+    "@pleaseEnterMessage": {
+        "description": "Validation message when the feedback message is empty"
+    },
+    "helpUsImproveTitle": "Help us improve",
+    "@helpUsImproveTitle": {
+        "description": "Title of the feedback section on the error screen"
+    },
+    "errorFeedbackPrompt": "What were you doing when this error occurred? Your feedback helps us fix these issues faster.",
+    "@errorFeedbackPrompt": {
+        "description": "Prompt asking the user what they were doing when the error occurred"
+    },
+    "errorFeedbackHint": "I was trying to...",
+    "@errorFeedbackHint": {
+        "description": "Hint for the error feedback message field"
+    },
+    "feedbackThankYou": "Thank you!",
+    "@feedbackThankYou": {
+        "description": "Thank you title shown after feedback is submitted"
+    },
+    "feedbackThankYouMessage": "Your feedback has been sent. We'll use it to improve the app.",
+    "@feedbackThankYouMessage": {
+        "description": "Confirmation message shown after feedback is submitted"
+    },
+    "whatHappened": "What happened?",
+    "@whatHappened": {
+        "description": "Title for the screenshot feedback description field"
+    },
+    "describeIssueHint": "Describe the issue or feedback...",
+    "@describeIssueHint": {
+        "description": "Hint for the screenshot feedback description field"
     }
 }

@@ -9,6 +9,15 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'Поиск местоположения';
+
+  @override
+  String get searchCityHint => 'Поиск города (например, Нью-Йорк)...';
+
+  @override
+  String get typeCityNameHint => 'Введите название города выше';
+
+  @override
   String get appTitle => 'Huda';
 
   @override
@@ -4091,4 +4100,57 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chatErrorGeneric => 'Что-то пошло не так. Повторите попытку.';
+
+  @override
+  String get emailOptional => 'Электронная почта (необязательно — для ответа)';
+
+  @override
+  String get searchManually => 'Поиск вручную';
+
+  @override
+  String get locationPermissionDenied =>
+      'Доступ к местоположению запрещён. Разрешите доступ к местоположению в настройках устройства.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'Доступ к местоположению запрещён навсегда. Разрешите доступ к местоположению в настройках устройства.';
+
+  @override
+  String get errorDetailsCopied =>
+      'Сведения об ошибке скопированы в буфер обмена';
+
+  @override
+  String get restartAppButton => 'Перезапустить приложение';
+
+  @override
+  String get copyButton => 'Копировать';
+
+  @override
+  String get unknownErrorOccurred => 'Произошла неизвестная ошибка';
+
+  @override
+  String get pleaseEnterMessage => 'Введите сообщение перед отправкой';
+
+  @override
+  String get helpUsImproveTitle => 'Помогите нам стать лучше';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'Что вы делали, когда произошла эта ошибка? Ваш отзыв поможет нам быстрее устранить эти проблемы.';
+
+  @override
+  String get errorFeedbackHint => 'Я пытался...';
+
+  @override
+  String get feedbackThankYou => 'Спасибо!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'Ваш отзыв отправлен. Мы используем его, чтобы улучшить приложение.';
+
+  @override
+  String get whatHappened => 'Что произошло?';
+
+  @override
+  String get describeIssueHint => 'Опишите проблему или отзыв...';
 }

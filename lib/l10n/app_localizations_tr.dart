@@ -9,6 +9,15 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'Konum Ara';
+
+  @override
+  String get searchCityHint => 'Şehir ara (örn. New York)...';
+
+  @override
+  String get typeCityNameHint => 'Yukarıya bir şehir adı yazın';
+
+  @override
   String get appTitle => 'Huda';
 
   @override
@@ -4063,4 +4072,56 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get chatErrorGeneric =>
       'Bir şeyler ters gitti. Lütfen tekrar deneyin.';
+
+  @override
+  String get emailOptional => 'E-posta (isteğe bağlı — yanıt için)';
+
+  @override
+  String get searchManually => 'Manuel Ara';
+
+  @override
+  String get locationPermissionDenied =>
+      'Konum izni reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'Konum izni kalıcı olarak reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.';
+
+  @override
+  String get errorDetailsCopied => 'Hata ayrıntıları panoya kopyalandı';
+
+  @override
+  String get restartAppButton => 'Uygulamayı Yeniden Başlat';
+
+  @override
+  String get copyButton => 'Kopyala';
+
+  @override
+  String get unknownErrorOccurred => 'Bilinmeyen bir hata oluştu';
+
+  @override
+  String get pleaseEnterMessage => 'Göndermeden önce bir mesaj girin';
+
+  @override
+  String get helpUsImproveTitle => 'Gelişmemize yardımcı olun';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'Bu hata oluştuğunda ne yapıyordunuz? Geri bildiriminiz bu sorunları daha hızlı çözmemize yardımcı olur.';
+
+  @override
+  String get errorFeedbackHint => 'Şunu yapmaya çalışıyordum...';
+
+  @override
+  String get feedbackThankYou => 'Teşekkürler!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'Geri bildiriminiz gönderildi. Uygulamayı geliştirmek için kullanacağız.';
+
+  @override
+  String get whatHappened => 'Ne oldu?';
+
+  @override
+  String get describeIssueHint => 'Sorunu veya geri bildirimi açıklayın...';
 }

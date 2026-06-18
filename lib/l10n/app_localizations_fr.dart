@@ -9,6 +9,15 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'Rechercher un lieu';
+
+  @override
+  String get searchCityHint => 'Rechercher une ville (ex. : New York)...';
+
+  @override
+  String get typeCityNameHint => 'Saisissez le nom d\'une ville ci-dessus';
+
+  @override
   String get appTitle => 'Huda';
 
   @override
@@ -4144,4 +4153,58 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get chatErrorGeneric =>
       'Une erreur s\'est produite. Veuillez réessayer.';
+
+  @override
+  String get emailOptional => 'E-mail (facultatif — pour une réponse)';
+
+  @override
+  String get searchManually => 'Recherche manuelle';
+
+  @override
+  String get locationPermissionDenied =>
+      'Autorisation de localisation refusée. Veuillez autoriser l\'accès à la localisation dans les paramètres de votre appareil.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'Autorisation de localisation refusée définitivement. Veuillez autoriser l\'accès à la localisation dans les paramètres de votre appareil.';
+
+  @override
+  String get errorDetailsCopied =>
+      'Détails de l\'erreur copiés dans le presse-papiers';
+
+  @override
+  String get restartAppButton => 'Redémarrer l\'app';
+
+  @override
+  String get copyButton => 'Copier';
+
+  @override
+  String get unknownErrorOccurred => 'Une erreur inconnue s\'est produite';
+
+  @override
+  String get pleaseEnterMessage =>
+      'Veuillez saisir un message avant d\'envoyer';
+
+  @override
+  String get helpUsImproveTitle => 'Aidez-nous à nous améliorer';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'Que faisiez-vous lorsque cette erreur s\'est produite ? Vos commentaires nous aident à résoudre ces problèmes plus rapidement.';
+
+  @override
+  String get errorFeedbackHint => 'J\'essayais de...';
+
+  @override
+  String get feedbackThankYou => 'Merci !';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'Vos commentaires ont été envoyés. Nous les utiliserons pour améliorer l\'application.';
+
+  @override
+  String get whatHappened => 'Que s\'est-il passé ?';
+
+  @override
+  String get describeIssueHint => 'Décrivez le problème ou vos commentaires...';
 }

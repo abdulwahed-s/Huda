@@ -9,6 +9,15 @@ class AppLocalizationsUr extends AppLocalizations {
   AppLocalizationsUr([String locale = 'ur']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'مقام تلاش کریں';
+
+  @override
+  String get searchCityHint => 'شہر تلاش کریں (مثلاً، نیویارک)...';
+
+  @override
+  String get typeCityNameHint => 'اوپر کسی شہر کا نام لکھیں';
+
+  @override
   String get appTitle => 'ہدیٰ';
 
   @override
@@ -4057,4 +4066,56 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get chatErrorGeneric => 'کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔';
+
+  @override
+  String get emailOptional => 'ای میل (اختیاری — جواب کے لیے)';
+
+  @override
+  String get searchManually => 'دستی تلاش کریں';
+
+  @override
+  String get locationPermissionDenied =>
+      'مقام کی اجازت مسترد کر دی گئی۔ براہ کرم اپنے آلے کی ترتیبات میں مقام تک رسائی کی اجازت دیں۔';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'مقام کی اجازت مستقل طور پر مسترد کر دی گئی۔ براہ کرم اپنے آلے کی ترتیبات میں مقام تک رسائی کی اجازت دیں۔';
+
+  @override
+  String get errorDetailsCopied => 'خرابی کی تفصیلات کلپ بورڈ پر کاپی ہو گئیں';
+
+  @override
+  String get restartAppButton => 'ایپ دوبارہ شروع کریں';
+
+  @override
+  String get copyButton => 'کاپی کریں';
+
+  @override
+  String get unknownErrorOccurred => 'نامعلوم خرابی پیش آگئی';
+
+  @override
+  String get pleaseEnterMessage => 'بھیجنے سے پہلے ایک پیغام درج کریں';
+
+  @override
+  String get helpUsImproveTitle => 'ہماری بہتری میں مدد کریں';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'یہ خرابی پیش آتے وقت آپ کیا کر رہے تھے؟ آپ کی رائے ہمیں ان مسائل کو تیزی سے حل کرنے میں مدد دیتی ہے۔';
+
+  @override
+  String get errorFeedbackHint => 'میں کوشش کر رہا تھا...';
+
+  @override
+  String get feedbackThankYou => 'شکریہ!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'آپ کی رائے بھیج دی گئی ہے۔ ہم اسے ایپ کو بہتر بنانے کے لیے استعمال کریں گے۔';
+
+  @override
+  String get whatHappened => 'کیا ہوا؟';
+
+  @override
+  String get describeIssueHint => 'مسئلہ یا رائے بیان کریں...';
 }

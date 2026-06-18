@@ -1,5 +1,8 @@
 {
     "@@locale": "es",
+    "searchLocationTitle": "Buscar ubicación",
+    "searchCityHint": "Buscar ciudad (p. ej., Nueva York)...",
+    "typeCityNameHint": "Escribe el nombre de una ciudad arriba",
     "appTitle": "Huda",
     "settings": "Configuración",
     "theme": "Tema",
@@ -1598,5 +1601,21 @@
     "settingsAppFont": "Fuente de la app",
     "settingsAppFontDescription": "Fuente utilizada en la interfaz de la app",
     "settingsSystemFont": "Predeterminada del sistema",
-    "settingsSystemFontDescription": "Usa la fuente predeterminada de tu dispositivo"
+    "settingsSystemFontDescription": "Usa la fuente predeterminada de tu dispositivo",
+    "emailOptional": "Correo electrónico (opcional — para responder)",
+    "searchManually": "Buscar manualmente",
+    "locationPermissionDenied": "Permiso de ubicación denegado. Permite el acceso a la ubicación en los ajustes de tu dispositivo.",
+    "locationPermissionPermanentlyDenied": "Permiso de ubicación denegado permanentemente. Permite el acceso a la ubicación en los ajustes de tu dispositivo.",
+    "errorDetailsCopied": "Detalles del error copiados al portapapeles",
+    "restartAppButton": "Reiniciar la app",
+    "copyButton": "Copiar",
+    "unknownErrorOccurred": "Se produjo un error desconocido",
+    "pleaseEnterMessage": "Escribe un mensaje antes de enviar",
+    "helpUsImproveTitle": "Ayúdanos a mejorar",
+    "errorFeedbackPrompt": "¿Qué estabas haciendo cuando ocurrió este error? Tus comentarios nos ayudan a solucionar estos problemas más rápido.",
+    "errorFeedbackHint": "Estaba intentando...",
+    "feedbackThankYou": "¡Gracias!",
+    "feedbackThankYouMessage": "Tus comentarios se han enviado. Los usaremos para mejorar la app.",
+    "whatHappened": "¿Qué ocurrió?",
+    "describeIssueHint": "Describe el problema o los comentarios..."
 }

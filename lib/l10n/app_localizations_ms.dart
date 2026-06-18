@@ -9,6 +9,15 @@ class AppLocalizationsMs extends AppLocalizations {
   AppLocalizationsMs([String locale = 'ms']) : super(locale);
 
   @override
+  String get searchLocationTitle => 'Cari Lokasi';
+
+  @override
+  String get searchCityHint => 'Cari bandar (cth., New York)...';
+
+  @override
+  String get typeCityNameHint => 'Taip nama bandar di atas';
+
+  @override
   String get appTitle => 'Huda';
 
   @override
@@ -4072,4 +4081,56 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get chatErrorGeneric => 'Sesuatu tidak kena. Sila cuba lagi.';
+
+  @override
+  String get emailOptional => 'E-mel (pilihan — untuk balasan)';
+
+  @override
+  String get searchManually => 'Cari Secara Manual';
+
+  @override
+  String get locationPermissionDenied =>
+      'Kebenaran lokasi ditolak. Sila benarkan akses lokasi dalam tetapan peranti anda.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'Kebenaran lokasi ditolak secara kekal. Sila benarkan akses lokasi dalam tetapan peranti anda.';
+
+  @override
+  String get errorDetailsCopied => 'Butiran ralat disalin ke papan keratan';
+
+  @override
+  String get restartAppButton => 'Mulakan Semula Apl';
+
+  @override
+  String get copyButton => 'Salin';
+
+  @override
+  String get unknownErrorOccurred => 'Ralat tidak diketahui berlaku';
+
+  @override
+  String get pleaseEnterMessage => 'Sila masukkan mesej sebelum menghantar';
+
+  @override
+  String get helpUsImproveTitle => 'Bantu kami menambah baik';
+
+  @override
+  String get errorFeedbackPrompt =>
+      'Apakah yang anda lakukan ketika ralat ini berlaku? Maklum balas anda membantu kami membaiki isu ini dengan lebih cepat.';
+
+  @override
+  String get errorFeedbackHint => 'Saya cuba untuk...';
+
+  @override
+  String get feedbackThankYou => 'Terima kasih!';
+
+  @override
+  String get feedbackThankYouMessage =>
+      'Maklum balas anda telah dihantar. Kami akan menggunakannya untuk menambah baik apl ini.';
+
+  @override
+  String get whatHappened => 'Apa yang berlaku?';
+
+  @override
+  String get describeIssueHint => 'Terangkan isu atau maklum balas...';
 }
