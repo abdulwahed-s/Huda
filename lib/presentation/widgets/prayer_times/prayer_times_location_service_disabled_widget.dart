@@ -32,7 +32,7 @@ class PrayerTimesLocationServiceDisabledWidget extends StatelessWidget {
           ),
         SizedBox(width: 8.w),
         ActionButton(
-          text: 'Search Manually',
+          text: AppLocalizations.of(context)!.searchManually,
           icon: Icons.search,
           onPressed: () async {
             final result = await showDialog<Map<String, dynamic>>(

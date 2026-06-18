@@ -2,6 +2,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class ScreenshotFeedbackWidget extends StatefulWidget {
   final OnSubmit onSubmit;
@@ -54,7 +55,7 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
             padding: EdgeInsets.all(16.w),
             children: [
               Text(
-                'What happened?',
+                AppLocalizations.of(context)!.whatHappened,
                 style: TextStyle(
                   color: textColor,
                   fontSize: 16.sp,
@@ -71,7 +72,7 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                   color: textColor,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Describe the issue or feedback...',
+                  hintText: AppLocalizations.of(context)!.describeIssueHint,
                   hintStyle: TextStyle(
                     color: subtitleColor,
                   ),
@@ -104,7 +105,7 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                   color: textColor,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Email (optional — for a reply)',
+                  hintText: AppLocalizations.of(context)!.emailOptional,
                   hintStyle: TextStyle(
                     color: subtitleColor,
                   ),
@@ -145,7 +146,7 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
                 onPressed: _submit,
                 icon: Icon(Icons.send_rounded, size: 18.sp),
                 label: Text(
-                  'Send Feedback',
+                  AppLocalizations.of(context)!.feedbackSendButton,
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600,

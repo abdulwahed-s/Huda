@@ -15,8 +15,7 @@ class PrayerTimesLocationPermanentlyDeniedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ErrorCard(
-      message:
-          "Location permission permanently denied. Please allow location access in your device settings.",
+      message: AppLocalizations.of(context)!.locationPermissionPermanentlyDenied,
       actions: [
         if (!PlatformUtils.isLinux)
           ActionButton(
@@ -38,7 +37,7 @@ class PrayerTimesLocationPermanentlyDeniedWidget extends StatelessWidget {
         ),
         SizedBox(width: 8.w),
         ActionButton(
-          text: 'Search Manually',
+          text: AppLocalizations.of(context)!.searchManually,
           icon: Icons.search,
           onPressed: () async {
             final result = await showDialog<Map<String, dynamic>>(

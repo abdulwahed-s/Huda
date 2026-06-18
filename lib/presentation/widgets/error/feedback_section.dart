@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/error/error_cubit.dart';
+import 'package:huda/l10n/app_localizations.dart';
 
 class FeedbackSection extends StatefulWidget {
   final bool isDark;
@@ -44,7 +45,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
             children: [
               Icon(Icons.warning, color: Colors.white, size: 20.sp),
               SizedBox(width: 8.w),
-              Text('Please enter a message before sending',
+              Text(AppLocalizations.of(context)!.pleaseEnterMessage,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -159,7 +160,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                           ),
                           SizedBox(width: 12.w),
                           Text(
-                            'Help us improve',
+                            AppLocalizations.of(context)!.helpUsImproveTitle,
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: context.primaryColor,
                               fontWeight: FontWeight.w700,
@@ -170,7 +171,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                       ),
                       SizedBox(height: 12.h),
                       Text(
-                        'What were you doing when this error occurred? Your feedback helps us fix these issues faster.',
+                        AppLocalizations.of(context)!.errorFeedbackPrompt,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: widget.subtitleColor,
                           fontSize: 14.sp,
@@ -200,7 +201,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             height: 1.4,
                           ),
                           decoration: InputDecoration(
-                            hintText: 'I was trying to...',
+                            hintText: AppLocalizations.of(context)!.errorFeedbackHint,
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
                               color: widget.subtitleColor,
@@ -251,7 +252,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             color: widget.textColor,
                           ),
                           decoration: InputDecoration(
-                            hintText: 'Email (optional — for a reply)',
+                            hintText: AppLocalizations.of(context)!.emailOptional,
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
                               color: widget.subtitleColor,
@@ -316,7 +317,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                     ),
                                     SizedBox(width: 12.w),
                                     Text(
-                                      'Sending...',
+                                      AppLocalizations.of(context)!.feedbackSending,
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
@@ -330,7 +331,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                     Icon(Icons.send_rounded, size: 18.sp),
                                     SizedBox(width: 8.w),
                                     Text(
-                                      'Send Feedback',
+                                      AppLocalizations.of(context)!.feedbackSendButton,
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
@@ -379,7 +380,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Thank you!',
+                              AppLocalizations.of(context)!.feedbackThankYou,
                               style: theme.textTheme.titleMedium?.copyWith(
                                 color: Colors.green.shade800,
                                 fontWeight: FontWeight.w700,
@@ -388,7 +389,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              'Your feedback has been sent. We\'ll use it to improve the app.',
+                              AppLocalizations.of(context)!.feedbackThankYouMessage,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: Colors.green.shade700,
                                 fontSize: 14.sp,

@@ -1,4 +1,5 @@
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/error/action_button.dart';
 import 'package:huda/presentation/widgets/error/error_details_card.dart';
 import 'package:huda/presentation/widgets/error/error_header.dart';
@@ -103,7 +104,7 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
           children: [
             Icon(Icons.check_circle, color: Colors.white, size: 20.sp),
             SizedBox(width: 8.w),
-            Text('Error details copied to clipboard',
+            Text(AppLocalizations.of(context)!.errorDetailsCopied,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -135,7 +136,7 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
       }
       return firstLine;
     }
-    return 'Unknown error occurred';
+    return AppLocalizations.of(context)!.unknownErrorOccurred;
   }
 
   @override
@@ -190,7 +191,7 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                             flex: 3,
                             child: ActionButton(
                               icon: Icons.refresh_rounded,
-                              label: 'Restart App',
+                              label: AppLocalizations.of(context)!.restartAppButton,
                               onPressed: _restartApp,
                               color: context.primaryColor,
                               isPrimary: true,
@@ -201,7 +202,7 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                             flex: 2,
                             child: ActionButton(
                               icon: Icons.copy_rounded,
-                              label: 'Copy',
+                              label: AppLocalizations.of(context)!.copyButton,
                               onPressed: _copyErrorToClipboard,
                               color: context.accentColor,
                               isPrimary: false,

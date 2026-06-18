@@ -378,7 +378,7 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                   controller: _emailController,
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
-                                    hintText: 'Email (optional — for a reply)',
+                                    hintText: AppLocalizations.of(context)!.emailOptional,
                                     hintStyle: TextStyle(
                                       color: isDark
                                           ? Colors.grey.shade500

@@ -112,7 +112,7 @@ class FeedbackFormCard extends StatelessWidget {
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                hintText: 'Email (optional — for a reply)',
+                hintText: l10n.emailOptional,
                 hintStyle: TextStyle(
                   color: subtitleColor,
                 ),
