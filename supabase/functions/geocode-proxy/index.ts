@@ -1,4 +1,5 @@
 import { cors } from "../_shared/cors.ts";
+import { isRateLimited } from "../_shared/rate_limit.ts";
 
 const MAPS_KEY = Deno.env.get("GOOGLE_MAPS_API_KEY")!;
 const BASE = "https://maps.googleapis.com/maps/api/geocode/json";
@@ -6,6 +7,13 @@ const BASE = "https://maps.googleapis.com/maps/api/geocode/json";
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   try {
+    if (await isRateLimited(req, "geocode")) {
+      return new Response(
+        JSON.stringify({ error: { message: "rate limited" } }),
+        { status: 429, headers: { ...cors, "Content-Type": "application/json" } },
+      );
+    }
+
     const { lat, lon, address } = await req.json();
     const url = address != null
       ? `${BASE}?address=${encodeURIComponent(address)}&key=${MAPS_KEY}`

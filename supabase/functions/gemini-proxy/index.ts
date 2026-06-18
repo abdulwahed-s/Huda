@@ -7,7 +7,7 @@ const MODEL = "gemini-3.1-flash-lite";
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   try {
-    if (await isRateLimited(req)) {
+    if (await isRateLimited(req, "gemini")) {
       return new Response(
         JSON.stringify({ error: { message: "rate limited" } }),
         { status: 429, headers: { ...cors, "Content-Type": "application/json" } },
