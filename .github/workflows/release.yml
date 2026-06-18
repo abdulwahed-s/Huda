@@ -480,6 +480,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
-          body_path: distribution/whatsnew/whatsnew-en-US
+          body_path: distribution/whatsnew/whatsnew-en-GB
           files: release-assets/*
           fail_on_unmatched_files: false

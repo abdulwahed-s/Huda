@@ -1,3 +1,1 @@
-Police de l'application : Changez la police de l'application depuis les paramètres
-
 Corrections de bugs et améliorations des performances
