@@ -390,14 +390,18 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
       fontService!.stateStream
           .firstWhere((s) => s.status == QcfFontStatus.ready)
           .then((_) {
-        if (Navigator.of(sheetCtx).canPop()) Navigator.pop(sheetCtx);
+        if (!mounted) return;
+        if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
+          Navigator.pop(sheetCtx);
+        }
         _setMode(mode);
       });
     } else if (!fontsBeingProcessed) {
       setSheetState(() {});
       fontService!.downloadAndInstall().then((_) {
+        if (!mounted) return;
         if (fontService.areFontsReady) {
-          if (Navigator.of(sheetCtx).canPop()) {
+          if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
             Navigator.pop(sheetCtx);
           }
           _setMode(mode);

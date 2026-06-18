@@ -115,17 +115,19 @@ class _PrayerWidgetTabState extends State<PrayerWidgetTab> {
     final picked = await showModalBottomSheet<PrayerWidgetLanguage>(
       context: context,
       builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (final lang in PrayerWidgetLanguage.values)
-              RadioListTile<PrayerWidgetLanguage>(
-                value: lang,
-                groupValue: _settings.language,
-                title: Text(_languageLabel(l10n, lang)),
-                onChanged: (selected) => Navigator.pop(ctx, selected),
-              ),
-          ],
+        child: RadioGroup<PrayerWidgetLanguage>(
+          groupValue: _settings.language,
+          onChanged: (selected) => Navigator.pop(ctx, selected),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (final lang in PrayerWidgetLanguage.values)
+                RadioListTile<PrayerWidgetLanguage>(
+                  value: lang,
+                  title: Text(_languageLabel(l10n, lang)),
+                ),
+            ],
+          ),
         ),
       ),
     );

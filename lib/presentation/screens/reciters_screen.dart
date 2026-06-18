@@ -103,8 +103,8 @@ class _RecitersScreenState extends State<RecitersScreen>
   }
 
   Future<void> _fetchAndStoreData() async {
-    final prefs = await SharedPreferences.getInstance();
     final lang = _langCode(context);
+    final prefs = await SharedPreferences.getInstance();
 
     try {
       final responses = await Future.wait([
@@ -131,8 +131,8 @@ class _RecitersScreenState extends State<RecitersScreen>
 
   Future<void> _fetchReciters() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
       final lang = _langCode(context);
+      final prefs = await SharedPreferences.getInstance();
 
       if (prefs.getString('huda_reciters_$lang') == null) {
         if (isOffline) {

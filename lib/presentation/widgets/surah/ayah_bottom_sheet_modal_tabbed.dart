@@ -457,7 +457,7 @@ class _AyahBottomSheetModalTabbedState
                             try {
                               final khatmaService = getIt<KhatmaService>();
                               await khatmaService.markTodayDone();
-                              if (mounted) Navigator.pop(context);
+                              if (context.mounted) Navigator.pop(context);
                             } catch (_) {}
                           },
                           icon: const Icon(Icons.check_circle_rounded),
