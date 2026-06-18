@@ -36,8 +36,11 @@ class ErrorCard extends StatelessWidget {
           ],
         ),
         SizedBox(height: 12.h),
-        Row(
-          children: actions,
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: actions,
+          ),
         ),
       ],
     );
