@@ -16,23 +16,34 @@ class ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: onPressed,
-        icon: Icon(icon, size: 14.sp),
-        label: Text(
-          text,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 6.h),
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6.r),
+            borderRadius: BorderRadius.circular(10.r),
           ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16.sp),
+            SizedBox(width: 6.w),
+            Flexible(
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                  height: 1.15,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
