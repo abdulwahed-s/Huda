@@ -76,7 +76,13 @@ platform :ios do
       app_version: version,
       skip_screenshots: true,
       force: true,
-      precheck_include_in_app_purchases: false
+      precheck_include_in_app_purchases: false,
+      submit_for_review: true,
+      automatic_release: true,
+      submission_information: {
+        export_compliance_uses_encryption: false,
+        add_id_info_uses_idfa: false
+      }
     )
   end
 end
