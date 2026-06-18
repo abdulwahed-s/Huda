@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 part 'qiblah_state.dart';
 
@@ -12,27 +12,23 @@ class QiblahCubit extends Cubit<QiblahState> {
     emit(QiblahLoading());
 
     try {
-      final location = Location();
-
-      bool serviceEnabled = await location.serviceEnabled();
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        serviceEnabled = await location.requestService();
-        if (!serviceEnabled) {
-          emit(QiblahPermissionDenied("Location service is disabled"));
+        emit(QiblahPermissionDenied("Location service is disabled"));
+        return;
+      }
 
-          return;
-        }
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
       }
-      PermissionStatus permission = await location.hasPermission();
-      if (permission == PermissionStatus.denied) {
-        permission = await location.requestPermission();
-      }
-      if (permission == PermissionStatus.deniedForever) {
+      if (permission == LocationPermission.deniedForever) {
         emit(QiblahPermissionDeniedForever(
             "Location permission permanently denied. Please enable it from app settings."));
         return;
       }
-      if (permission != PermissionStatus.granted) {
+      if (permission != LocationPermission.always &&
+          permission != LocationPermission.whileInUse) {
         emit(QiblahPermissionDenied("Location permission denied"));
         return;
       }
