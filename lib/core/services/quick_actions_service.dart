@@ -16,9 +16,15 @@ class QuickActionsService {
   static void initialize() {
     if (!Platform.isAndroid && !Platform.isIOS) return;
 
-    _quickActions.initialize((String shortcutType) {
-      _handleQuickAction(shortcutType);
-    });
+    try {
+      _quickActions.initialize((String shortcutType) {
+        _handleQuickAction(shortcutType);
+      }).catchError((Object e) {
+        debugPrint('QuickActions initialize skipped: $e');
+      });
+    } catch (e) {
+      debugPrint('QuickActions initialize failed: $e');
+    }
   }
 
   static void updateLocalizedLabels(BuildContext context) {
@@ -43,7 +49,9 @@ class QuickActionsService {
         localizedTitle: localizations.athkar,
         icon: Platform.isAndroid ? 'athkaricon' : 'AthkarIcon',
       ),
-    ]);
+    ]).catchError((Object e) {
+      debugPrint('QuickActions setShortcutItems skipped: $e');
+    });
   }
 
   static void _handleQuickAction(String shortcutType) {
