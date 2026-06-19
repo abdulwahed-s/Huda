@@ -70,7 +70,7 @@ configurations.all {
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.0.0"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.2.20"))
 
     implementation("androidx.glance:glance-appwidget:1.1.1")
     implementation("androidx.glance:glance-material3:1.1.1")
