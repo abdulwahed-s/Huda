@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/crash_reporter.dart';
 import 'package:huda/core/config/service_initializer.dart';
 import 'package:huda/core/keys/hadith_key.dart';
 import 'package:huda/core/routes/app_route.dart';
@@ -135,4 +136,5 @@ Future<void> _initializeSupabase() async {
     url: supabaseUrl,
     anonKey: supabaseAnonKey,
   );
+  unawaited(CrashReporter.flushPending());
 }

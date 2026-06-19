@@ -52,10 +52,19 @@ class ThemeCubit extends Cubit<ThemeState> {
     _loadSettings();
   }
 
+  static const double _minScale = 0.5;
+  static const double _maxScale = 2.0;
+
+  static double _sanitizeScale(Object? raw) {
+    final value = (raw is num) ? raw.toDouble() : 1.0;
+    if (value.isNaN || value.isInfinite) return 1.0;
+    return value.clamp(_minScale, _maxScale);
+  }
+
   Future<void> _loadSettings() async {
     final prefs = getIt<CacheHelper>();
     final savedMode = prefs.getDataString(key: _themeKey);
-    final savedScale = prefs.getData(key: _scaleKey) ?? 1.0;
+    final savedScale = _sanitizeScale(prefs.getData(key: _scaleKey));
     final savedColorTheme = prefs.getDataString(key: _colorThemeKey);
     final savedFont = prefs.getDataString(key: _fontKey) ?? 'Amiri';
 
@@ -108,10 +117,11 @@ class ThemeCubit extends Cubit<ThemeState> {
   }
 
   Future<void> setTextScaleFactor(double scale) async {
+    final safeScale = _sanitizeScale(scale);
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble(_scaleKey, scale);
+    await prefs.setDouble(_scaleKey, safeScale);
 
-    emit(state.copyWith(textScaleFactor: scale));
+    emit(state.copyWith(textScaleFactor: safeScale));
   }
 
   Future<void> setColorTheme(AppColorTheme colorTheme) async {

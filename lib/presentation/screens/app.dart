@@ -130,8 +130,11 @@ class _AppState extends State<App> {
                       QuickActionsService.updateLocalizedLabels(context);
                       return MediaQuery(
                         data: MediaQuery.of(context).copyWith(
-                          textScaler:
-                              TextScaler.linear(themeState.textScaleFactor),
+                          textScaler: TextScaler.linear(
+                            themeState.textScaleFactor.isFinite
+                                ? themeState.textScaleFactor.clamp(0.5, 2.0)
+                                : 1.0,
+                          ),
                         ),
                         child: child ?? const SizedBox.shrink(),
                       );
