@@ -10,13 +10,124 @@ import '../../cubit/error/error_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/cubit/theme/theme_cubit.dart';
+import 'package:huda/cubit/localization/localization_cubit.dart';
+
+const Color _kErrorBackground = Color(0xFF0c1d2b);
+
+bool _renderingError = false;
 
 void setCustomErrorWidget() {
-  ErrorWidget.builder = (FlutterErrorDetails e) => BlocProvider<ErrorCubit>(
-        create: (context) => ErrorCubit()..sendError(e.exceptionAsString()),
-        child: ErrorPage(errorMessage: e.exceptionAsString()),
-      );
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    if (_renderingError) {
+      return _MinimalErrorFallback(message: _firstLine(details));
+    }
+
+    _renderingError = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _renderingError = false;
+    });
+
+    try {
+      return _SafeErrorBoundary(errorMessage: details.exceptionAsString());
+    } catch (_) {
+      return _MinimalErrorFallback(message: _firstLine(details));
+    }
+  };
+}
+
+String _firstLine(FlutterErrorDetails details) {
+  final text = details.exceptionAsString();
+  final line = text.split('\n').first.trim();
+  if (line.isEmpty) return 'Something went wrong';
+  return line.length > 200 ? '${line.substring(0, 197)}...' : line;
+}
+
+class _SafeErrorBoundary extends StatelessWidget {
+  const _SafeErrorBoundary({required this.errorMessage});
+
+  final String errorMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bigEnough = constraints.hasBoundedWidth &&
+            constraints.hasBoundedHeight &&
+            constraints.maxWidth > 200 &&
+            constraints.maxHeight > 200;
+
+        if (!bigEnough) {
+          return _MinimalErrorFallback(
+            message: errorMessage.split('\n').first.trim(),
+          );
+        }
+
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => ThemeCubit()),
+            BlocProvider(create: (_) => ErrorCubit()..sendError(errorMessage)),
+          ],
+          child: ScreenUtilInit(
+            designSize: const Size(360, 690),
+            minTextAdapt: true,
+            builder: (_, __) => MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: LocalizationCubit.supportedLocales,
+              home: ErrorPage(errorMessage: errorMessage),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _MinimalErrorFallback extends StatelessWidget {
+  const _MinimalErrorFallback({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: LimitedBox(
+        maxWidth: 600,
+        maxHeight: 400,
+        child: ColoredBox(
+          color: _kErrorBackground,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                message.isEmpty ? 'Something went wrong' : message,
+                textAlign: TextAlign.center,
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Color(0xFFB0B8C4),
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class ErrorPage extends StatefulWidget {
@@ -40,7 +151,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    // Main fade animation
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
@@ -53,7 +163,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
       curve: Curves.easeOutCubic,
     ));
 
-    // Pulse animation for error icon
     _pulseController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -66,7 +175,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     ));
 
-    // Slide animation for content
     _slideController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -95,7 +203,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
   void _copyErrorToClipboard() {
     Clipboard.setData(ClipboardData(text: widget.errorMessage));
 
-    // Enhanced feedback with haptic
     HapticFeedback.lightImpact();
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -104,7 +211,9 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
           children: [
             Icon(Icons.check_circle, color: Colors.white, size: 20.sp),
             SizedBox(width: 8.w),
-            Text(AppLocalizations.of(context)!.errorDetailsCopied,
+            Text(
+                AppLocalizations.of(context)?.errorDetailsCopied ??
+                    'Error details copied',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -127,7 +236,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
   }
 
   String _getErrorSummary() {
-    // Extract meaningful error summary
     final lines = widget.errorMessage.split('\n');
     if (lines.isNotEmpty) {
       final firstLine = lines.first.trim();
@@ -136,14 +244,14 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
       }
       return firstLine;
     }
-    return AppLocalizations.of(context)!.unknownErrorOccurred;
+    return AppLocalizations.of(context)?.unknownErrorOccurred ??
+        'An unknown error occurred';
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Enhanced color scheme with better contrast
     final backgroundColor =
         isDark ? context.darkGradientStart : const Color(0xFFF8FAFC);
     final cardColor = isDark ? context.darkCardBackground : Colors.white;
@@ -171,8 +279,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
                     SizedBox(height: 20.h),
-
-                    // Header section
                     SlideTransition(
                       position: _slideAnimation,
                       child: ErrorHeader(
@@ -181,8 +287,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                       ),
                     ),
                     SizedBox(height: 28.h),
-
-                    // Action buttons
                     SlideTransition(
                       position: _slideAnimation,
                       child: Row(
@@ -191,7 +295,9 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                             flex: 3,
                             child: ActionButton(
                               icon: Icons.refresh_rounded,
-                              label: AppLocalizations.of(context)!.restartAppButton,
+                              label: AppLocalizations.of(context)
+                                      ?.restartAppButton ??
+                                  'Restart app',
                               onPressed: _restartApp,
                               color: context.primaryColor,
                               isPrimary: true,
@@ -202,7 +308,8 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                             flex: 2,
                             child: ActionButton(
                               icon: Icons.copy_rounded,
-                              label: AppLocalizations.of(context)!.copyButton,
+                              label: AppLocalizations.of(context)?.copyButton ??
+                                  'Copy',
                               onPressed: _copyErrorToClipboard,
                               color: context.accentColor,
                               isPrimary: false,
@@ -212,8 +319,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                       ),
                     ),
                     SizedBox(height: 28.h),
-
-                    // Error details card
                     SlideTransition(
                       position: _slideAnimation,
                       child: ErrorDetailsCard(
@@ -227,8 +332,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                       ),
                     ),
                     SizedBox(height: 28.h),
-
-                    // Feedback section
                     SlideTransition(
                       position: _slideAnimation,
                       child: FeedbackSection(
@@ -242,8 +345,6 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                       ),
                     ),
                     SizedBox(height: 28.h),
-
-                    // Info card
                     SlideTransition(
                       position: _slideAnimation,
                       child: InfoCard(
