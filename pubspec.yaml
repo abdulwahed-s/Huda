@@ -47,16 +47,14 @@ dependencies:
   media_kit_libs_linux: ^1.0.9
   audio_session: ^0.1.21
   dio: ^5.8.0+1
-  connectivity_plus: ^6.1.4
+  connectivity_plus: ^7.1.1
   shared_preferences: ^2.5.3
   get_it: ^8.0.3
   path_provider: ^2.1.4
-  http: ^1.2.2
   flutter_svg: ^2.2.0
   lottie: ^3.1.2
   newton_particles: ^0.2.2
   share_plus: ^11.0.0
-  another_flushbar: ^1.12.30
   jiffy: ^6.4.3
   locale_names: ^1.1.1
   home_widget: ^0.9.1
@@ -71,13 +69,11 @@ dependencies:
   permission_handler: ^12.0.1
   workmanager: ^0.9.0+2
   flutter_foreground_task: ^9.1.0
-  screenshot: ^3.0.0
   flutter_qiblah: ^3.1.0+1
   flutter_compass_v2: ^1.0.3
   vibration: ^3.1.3
   app_settings: ^6.1.1
   wave: ^0.2.2
-  table_calendar: ^3.2.0
   hijri: ^3.0.0
   equatable: ^2.0.7
   flutter_colorpicker: ^1.1.0
@@ -97,7 +93,6 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   upgrader: ^12.3.0
   scrollable_positioned_list: ^0.3.8
-  auto_size_text: ^3.0.0
   flutter_html: ^3.0.0
   html: ^0.15.6
   speech_to_text: ^7.3.0
