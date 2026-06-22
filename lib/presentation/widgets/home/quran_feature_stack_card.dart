@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vector_graphics/vector_graphics.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
@@ -247,21 +246,29 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
                 ),
                 SizedBox(height: 12.h),
                 Flexible(
-                  child: AutoSizeText(
-                    widget.stackLabel,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    minFontSize: 8,
-                    maxFontSize: 24,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w600,
-                      color: widget.isDarkMode
-                          ? Colors.white
-                          : Colors.black.withValues(alpha: 0.85),
-                      height: 1.2,
-                    ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: SizedBox(
+                          width: constraints.maxWidth,
+                          child: Text(
+                            widget.stackLabel,
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w600,
+                              color: widget.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black.withValues(alpha: 0.85),
+                              height: 1.2,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -564,11 +571,9 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
                               : context.primaryColor),
                 ),
                 SizedBox(height: 12.h),
-                AutoSizeText(item.title,
+                Text(item.title,
                     textAlign: TextAlign.center,
                     maxLines: 2,
-                    minFontSize: 8,
-                    maxFontSize: 24,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: fs,

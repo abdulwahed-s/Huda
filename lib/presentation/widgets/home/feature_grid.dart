@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
@@ -52,10 +54,12 @@ class _FeatureGridState extends State<FeatureGrid> {
       );
     }
 
-    final availableWidth = MediaQuery.sizeOf(context).width - 40.w;
-    final totalSpacing = 16.w * (crossAxisCount - 1);
-    final cellWidth = (availableWidth - totalSpacing) / crossAxisCount;
-    final cellHeight = cellWidth / adjustedAspectRatio;
+    final double availableWidth =
+        math.max(1.0, MediaQuery.sizeOf(context).width - 40.w);
+    final double totalSpacing = 16.w * (crossAxisCount - 1);
+    final double cellWidth =
+        math.max(1.0, (availableWidth - totalSpacing) / crossAxisCount);
+    final double cellHeight = math.max(1.0, cellWidth / adjustedAspectRatio);
 
     final List<Widget> columnChildren = [];
 
