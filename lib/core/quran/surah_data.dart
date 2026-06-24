@@ -6,7 +6,14 @@ const List surah = [
     "english": "The Opening",
     "turkish": "Fâtiha",
     "place": "Makkah",
-    "arabic": "الفاتحة"
+    "arabic": "الفاتحة",
+    "arabicName": "سُورَةُ ٱلْفَاتِحَةِ",
+    "englishName": "Al-Faatiha",
+    "englishNameTranslation": "The Opening",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Fatihah",
+    "names": {"en": "The Opener", "ar": "الفاتحة", "bn": "সূচনা", "de": "Die Eröffnung", "es": "La Apertura", "fr": "L'ouverture", "ms": "Pembukaan", "ru": "Открывающая Коран", "tr": "Fâtiha", "ur": "کھولنے والی"},
+    "translits": {"ru": "Аль-Фатиха", "bn": "আল ফাতিহা"}
   },
   {
     "id": 2,
@@ -15,7 +22,14 @@ const List surah = [
     "english": "The Cow",
     "turkish": "Bakara",
     "place": "Madinah",
-    "arabic": "البقرة"
+    "arabic": "البقرة",
+    "arabicName": "سُورَةُ البَقَرَةِ",
+    "englishName": "Al-Baqara",
+    "englishNameTranslation": "The Cow",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Baqarah",
+    "names": {"en": "The Cow", "ar": "البقرة", "bn": "বকনা-বাছুর", "de": "Die Kuh", "es": "La Vaca", "fr": "La vache", "ms": "Lembu Betina", "ru": "Корова", "tr": "Bakara", "ur": "گائے"},
+    "translits": {"ru": "Аль-Бакара", "bn": "আল বাকারা"}
   },
   {
     "id": 3,
@@ -24,7 +38,14 @@ const List surah = [
     "english": "The Family of Imran",
     "turkish": "Âl-i İmrân",
     "place": "Madinah",
-    "arabic": "آل عمران"
+    "arabic": "آل عمران",
+    "arabicName": "سُورَةُ آلِ عِمۡرَانَ",
+    "englishName": "Aal-i-Imraan",
+    "englishNameTranslation": "The Family of Imraan",
+    "revelationType": "Medinan",
+    "transliteration": "Ali 'Imran",
+    "names": {"en": "Family of Imran", "ar": "آل عمران", "bn": "ইমরানের পরিবার", "de": "Die Sippe Imrans", "es": "La Familia de Imran", "fr": "La famille de 'imran", "ms": "Keluarga Imran", "ru": "Семейство Имрана", "tr": "Âl-i İmrân", "ur": "عمران کا خاندان"},
+    "translits": {"ru": "Аль Имран", "bn": "আল ইমরান"}
   },
   {
     "id": 4,
@@ -33,7 +54,14 @@ const List surah = [
     "english": "The Women",
     "turkish": "Nisâ",
     "place": "Madinah",
-    "arabic": "النساء"
+    "arabic": "النساء",
+    "arabicName": "سُورَةُ النِّسَاءِ",
+    "englishName": "An-Nisaa",
+    "englishNameTranslation": "The Women",
+    "revelationType": "Medinan",
+    "transliteration": "An-Nisa",
+    "names": {"en": "The Women", "ar": "النساء", "bn": "নারী", "de": "Die Frauen", "es": "Las Mujeres", "fr": "Les femmes", "ms": "Wanita", "ru": "Женщины", "tr": "Nisâ", "ur": "عورت"},
+    "translits": {"ru": "Ан-Ниса", "bn": "আন নিসা"}
   },
   {
     "id": 5,
@@ -42,7 +70,14 @@ const List surah = [
     "english": "The Table",
     "turkish": "Mâide",
     "place": "Madinah",
-    "arabic": "المائدة"
+    "arabic": "المائدة",
+    "arabicName": "سُورَةُ المَائـِدَةِ",
+    "englishName": "Al-Maaida",
+    "englishNameTranslation": "The Table",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Ma'idah",
+    "names": {"en": "The Table Spread", "ar": "المائدة", "bn": "খাদ্য পরিবেশিত টেবিল", "de": "Der Tisch", "es": "La Mesa Servida", "fr": "La table servie", "ms": "Hidangan", "ru": "Трапеза", "tr": "Mâide", "ur": "دسترخوان"},
+    "translits": {"ru": "Аль-Маида", "bn": "আল মায়িদাহ"}
   },
   {
     "id": 6,
@@ -51,7 +86,14 @@ const List surah = [
     "english": "The Cattle",
     "turkish": "En'âm",
     "place": "Makkah",
-    "arabic": "الأنعام"
+    "arabic": "الأنعام",
+    "arabicName": "سُورَةُ الأَنۡعَامِ",
+    "englishName": "Al-An'aam",
+    "englishNameTranslation": "The Cattle",
+    "revelationType": "Meccan",
+    "transliteration": "Al-An'am",
+    "names": {"en": "The Cattle", "ar": "الأنعام", "bn": "গৃহপালিত পশু", "de": "Das Vieh", "es": "Los Rebaños", "fr": "Les bestiaux", "ms": "Binatang Ternakan", "ru": "Скот", "tr": "En'âm", "ur": "مویشی"},
+    "translits": {"ru": "Аль-Анам", "bn": "আল আনআম"}
   },
   {
     "id": 7,
@@ -60,7 +102,14 @@ const List surah = [
     "english": "The Heights",
     "turkish": "A'râf",
     "place": "Makkah",
-    "arabic": "الأعراف"
+    "arabic": "الأعراف",
+    "arabicName": "سُورَةُ الأَعۡرَافِ",
+    "englishName": "Al-A'raaf",
+    "englishNameTranslation": "The Heights",
+    "revelationType": "Meccan",
+    "transliteration": "Al-A'raf",
+    "names": {"en": "The Heights", "ar": "الأعراف", "bn": "উচু স্থান", "de": "Die Höhen", "es": "Los Lugares Elevados", "fr": "Al-A'raf", "ms": "Tempat Tertinggi", "ru": "Ограды", "tr": "A'râf", "ur": "اونچی جگہ"},
+    "translits": {"ru": "Аль-Араф", "bn": "আল আরাফ"}
   },
   {
     "id": 8,
@@ -69,7 +118,14 @@ const List surah = [
     "english": "The Spoils of War",
     "turkish": "Enfâl",
     "place": "Madinah",
-    "arabic": "الأنفال"
+    "arabic": "الأنفال",
+    "arabicName": "سُورَةُ الأَنفَالِ",
+    "englishName": "Al-Anfaal",
+    "englishNameTranslation": "The Spoils of War",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Anfal",
+    "names": {"en": "The Spoils of War", "ar": "الأنفال", "bn": "যুদ্ধ-লব্ধ ধনসম্পদ", "de": "Die Beute", "es": "Los Botines de Guerra", "fr": "Le butin", "ms": "Rampasan Perang", "ru": "Трофеи", "tr": "Enfâl", "ur": "مال غنیمت"},
+    "translits": {"ru": "Аль-Анфаль", "bn": "আল আনফাল"}
   },
   {
     "id": 9,
@@ -78,7 +134,14 @@ const List surah = [
     "english": "The Repentance",
     "turkish": "Tevbe",
     "place": "Madinah",
-    "arabic": "التوبة"
+    "arabic": "التوبة",
+    "arabicName": "سُورَةُ التَّوۡبَةِ",
+    "englishName": "At-Tawba",
+    "englishNameTranslation": "The Repentance",
+    "revelationType": "Medinan",
+    "transliteration": "At-Tawbah",
+    "names": {"en": "The Repentance", "ar": "التوبة", "bn": "অনুশোচনা", "de": "Die Buße", "es": "El Arrepentimiento", "fr": "Le repentir", "ms": "Pengampunan", "ru": "Покаяние", "tr": "Tevbe", "ur": "توبہ"},
+    "translits": {"ru": "Ат-Тавба", "bn": "আত-তাওবাহ্‌"}
   },
   {
     "id": 10,
@@ -87,7 +150,14 @@ const List surah = [
     "english": "Jonah",
     "turkish": "Yûnus",
     "place": "Makkah",
-    "arabic": "يونس"
+    "arabic": "يونس",
+    "arabicName": "سُورَةُ يُونُسَ",
+    "englishName": "Yunus",
+    "englishNameTranslation": "Jonas",
+    "revelationType": "Meccan",
+    "transliteration": "Yunus",
+    "names": {"en": "Jonah", "ar": "يونس", "bn": "নবী ইউনুস", "de": "Jonas", "es": "Jonás", "fr": "Jonas", "ms": "Nabi Yunus a.s.", "ru": "Йунус", "tr": "Yûnus", "ur": "یونس"},
+    "translits": {"ru": "Юнус", "bn": "ইউনুস"}
   },
   {
     "id": 11,
@@ -96,7 +166,14 @@ const List surah = [
     "english": "Hud",
     "turkish": "Hûd",
     "place": "Makkah",
-    "arabic": "هود"
+    "arabic": "هود",
+    "arabicName": "سُورَةُ هُودٍ",
+    "englishName": "Hud",
+    "englishNameTranslation": "Hud",
+    "revelationType": "Meccan",
+    "transliteration": "Hud",
+    "names": {"en": "Hud", "ar": "هود", "bn": "নবী হুদ", "de": "Hud", "es": "Hud", "fr": "Houd", "ms": "Nabi Hud a.s.", "ru": "Худ", "tr": "Hûd", "ur": "حود"},
+    "translits": {"ru": "Худ", "bn": "হুদ"}
   },
   {
     "id": 12,
@@ -105,7 +182,14 @@ const List surah = [
     "english": "Joseph",
     "turkish": "Yûsuf",
     "place": "Makkah",
-    "arabic": "يوسف"
+    "arabic": "يوسف",
+    "arabicName": "سُورَةُ يُوسُفَ",
+    "englishName": "Yusuf",
+    "englishNameTranslation": "Joseph",
+    "revelationType": "Meccan",
+    "transliteration": "Yusuf",
+    "names": {"en": "Joseph", "ar": "يوسف", "bn": "নবী ইউসুফ", "de": "Joseph", "es": "José", "fr": "Joseph", "ms": "Nabi Yusuf a.s.", "ru": "Йусуф", "tr": "Yûsuf", "ur": "یوسف"},
+    "translits": {"ru": "Юсуф", "bn": "ইউসুফ"}
   },
   {
     "id": 13,
@@ -114,7 +198,14 @@ const List surah = [
     "english": "The Thunder",
     "turkish": "Ra'd",
     "place": "Madinah",
-    "arabic": "الرعد"
+    "arabic": "الرعد",
+    "arabicName": "سُورَةُ الرَّعۡدِ",
+    "englishName": "Ar-Ra'd",
+    "englishNameTranslation": "The Thunder",
+    "revelationType": "Medinan",
+    "transliteration": "Ar-Ra'd",
+    "names": {"en": "The Thunder", "ar": "الرعد", "bn": "বজ্রপাত", "de": "Der Donner", "es": "El Trueno", "fr": "Le tonnerre", "ms": "Guruh", "ru": "Гром", "tr": "Ra'd", "ur": "گرج"},
+    "translits": {"ru": "Ар-Рад", "bn": "আর-রাদ"}
   },
   {
     "id": 14,
@@ -123,7 +214,14 @@ const List surah = [
     "english": "Abraham",
     "turkish": "İbrâhîm",
     "place": "Makkah",
-    "arabic": "ابراهيم"
+    "arabic": "ابراهيم",
+    "arabicName": "سُورَةُ إِبۡرَاهِيمَ",
+    "englishName": "Ibrahim",
+    "englishNameTranslation": "Abraham",
+    "revelationType": "Meccan",
+    "transliteration": "Ibrahim",
+    "names": {"en": "Abraham", "ar": "ابراهيم", "bn": "নবী ইবরাহীম", "de": "Abraham", "es": "Abraham", "fr": "Abraham", "ms": "Nabi Ibrahim a.s.", "ru": "Ибрахим", "tr": "İbrâhîm", "ur": "ابراہیم"},
+    "translits": {"ru": "Ибрахим", "bn": "ইব্রাহীম"}
   },
   {
     "id": 15,
@@ -132,7 +230,14 @@ const List surah = [
     "english": "The Stoneland",
     "turkish": "Hicr",
     "place": "Makkah",
-    "arabic": "الحجر"
+    "arabic": "الحجر",
+    "arabicName": "سُورَةُ الحِجۡرِ",
+    "englishName": "Al-Hijr",
+    "englishNameTranslation": "The Rock",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Hijr",
+    "names": {"en": "The Rocky Tract", "ar": "الحجر", "bn": "পাথুরে পাহাড়", "de": "Das steinige Land", "es": "Al-Hiyr", "fr": "Al-Hijr", "ms": "Kawasan Berbatu", "ru": "Хиджр", "tr": "Hicr", "ur": "پتھر"},
+    "translits": {"ru": "Аль-Хиджр", "bn": "সূরা আল হিজর"}
   },
   {
     "id": 16,
@@ -141,7 +246,14 @@ const List surah = [
     "english": "The Honey Bee",
     "turkish": "Nahl",
     "place": "Makkah",
-    "arabic": "النحل"
+    "arabic": "النحل",
+    "arabicName": "سُورَةُ النَّحۡلِ",
+    "englishName": "An-Nahl",
+    "englishNameTranslation": "The Bee",
+    "revelationType": "Meccan",
+    "transliteration": "An-Nahl",
+    "names": {"en": "The Bee", "ar": "النحل", "bn": "মৌমাছি", "de": "Die Biene", "es": "Las Abejas", "fr": "Les abeilles", "ms": "Lebah", "ru": "Пчелы", "tr": "Nahl", "ur": "شہد کی مکھی"},
+    "translits": {"ru": "Ан-Нахль", "bn": "আন নাহল"}
   },
   {
     "id": 17,
@@ -150,7 +262,14 @@ const List surah = [
     "english": "The Night Journey",
     "turkish": "İsrâ",
     "place": "Makkah",
-    "arabic": "الإسراء"
+    "arabic": "الإسراء",
+    "arabicName": "سُورَةُ الإِسۡرَاءِ",
+    "englishName": "Al-Israa",
+    "englishNameTranslation": "The Night Journey",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Isra",
+    "names": {"en": "The Night Journey", "ar": "الإسراء", "bn": "ইহুদি জাতি", "de": "Die nächtliche Reise", "es": "El Viaje Nocturno", "fr": "Le voyage nocturne", "ms": "Perjalanan Malam", "ru": "Ночной перенос", "tr": "İsrâ", "ur": "رات کا صفر"},
+    "translits": {"ru": "Аль-Исра", "bn": "বনী-ইসরাঈল"}
   },
   {
     "id": 18,
@@ -159,7 +278,14 @@ const List surah = [
     "english": "The Cave",
     "turkish": "Kehf",
     "place": "Makkah",
-    "arabic": "الكهف"
+    "arabic": "الكهف",
+    "arabicName": "سُورَةُ الكَهۡفِ",
+    "englishName": "Al-Kahf",
+    "englishNameTranslation": "The Cave",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Kahf",
+    "names": {"en": "The Cave", "ar": "الكهف", "bn": "গুহা", "de": "Die Höhle", "es": "La Caverna", "fr": "La caverne", "ms": "Gua", "ru": "Пещера", "tr": "Kehf", "ur": "غار"},
+    "translits": {"ru": "Аль-Кахф", "bn": "আল কাহফ"}
   },
   {
     "id": 19,
@@ -168,7 +294,14 @@ const List surah = [
     "english": "Mary",
     "turkish": "Meryem",
     "place": "Makkah",
-    "arabic": "مريم"
+    "arabic": "مريم",
+    "arabicName": "سُورَةُ مَرۡيَمَ",
+    "englishName": "Maryam",
+    "englishNameTranslation": "Mary",
+    "revelationType": "Meccan",
+    "transliteration": "Maryam",
+    "names": {"en": "Mary", "ar": "مريم", "bn": "মারইয়াম (ঈসা নবীর মা)", "de": "Maria", "es": "María", "fr": "Marie", "ms": "Siti Maryam", "ru": "Марьям", "tr": "Meryem", "ur": "مریم"},
+    "translits": {"ru": "Марьям", "bn": "মারইয়াম"}
   },
   {
     "id": 20,
@@ -177,7 +310,14 @@ const List surah = [
     "english": "Ta Ha",
     "turkish": "Tâhâ",
     "place": "Makkah",
-    "arabic": "طه"
+    "arabic": "طه",
+    "arabicName": "سُورَةُ طه",
+    "englishName": "Taa-Haa",
+    "englishNameTranslation": "Taa-Haa",
+    "revelationType": "Meccan",
+    "transliteration": "Taha",
+    "names": {"en": "Ta-Ha", "ar": "طه", "bn": "ত়া হা", "de": "Ta Ha", "es": "Ta-Ha", "fr": "Ta-Ha", "ms": "Taahaa", "ru": "Та Ха", "tr": "Tâhâ", "ur": "طٰہٰ"},
+    "translits": {"ru": "Та Ха", "bn": "ত্বোয়া-হা"}
   },
   {
     "id": 21,
@@ -186,7 +326,14 @@ const List surah = [
     "english": "The Prophets",
     "turkish": "Enbiyâ",
     "place": "Makkah",
-    "arabic": "الأنبياء"
+    "arabic": "الأنبياء",
+    "arabicName": "سُورَةُ الأَنبِيَاءِ",
+    "englishName": "Al-Anbiyaa",
+    "englishNameTranslation": "The Prophets",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Anbya",
+    "names": {"en": "The Prophets", "ar": "الأنبياء", "bn": "নবীগণ", "de": "Die Propheten", "es": "Los Profetas", "fr": "Les prophètes", "ms": "Para Nabi", "ru": "Пророки", "tr": "Enbiyâ", "ur": "پیغمبر"},
+    "translits": {"ru": "Аль-Анбия", "bn": "আল আম্বিয়া"}
   },
   {
     "id": 22,
@@ -195,7 +342,14 @@ const List surah = [
     "english": "The Pilgrimage",
     "turkish": "Hac",
     "place": "Madinah",
-    "arabic": "الحج"
+    "arabic": "الحج",
+    "arabicName": "سُورَةُ الحَجِّ",
+    "englishName": "Al-Hajj",
+    "englishNameTranslation": "The Pilgrimage",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Hajj",
+    "names": {"en": "The Pilgrimage", "ar": "الحج", "bn": "হ়াজ্জ", "de": "Die Wallfahrt", "es": "La Peregrinación", "fr": "Le pèlerinage", "ms": "Haji", "ru": "Паломничество", "tr": "Hac", "ur": "حج"},
+    "translits": {"ru": "Аль-Хаджж", "bn": "আল হাজ্জ্ব"}
   },
   {
     "id": 23,
@@ -204,7 +358,14 @@ const List surah = [
     "english": "The Believers",
     "turkish": "Mü'minûn",
     "place": "Makkah",
-    "arabic": "المؤمنون"
+    "arabic": "المؤمنون",
+    "arabicName": "سُورَةُ المُؤۡمِنُونَ",
+    "englishName": "Al-Muminoon",
+    "englishNameTranslation": "The Believers",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Mu'minun",
+    "names": {"en": "The Believers", "ar": "المؤمنون", "bn": "বিশ্বাসী", "de": "Die Gläubigen", "es": "Los Creyentes", "fr": "Les croyants", "ms": "Golongan yang Beriman", "ru": "Верующие", "tr": "Mü'minûn", "ur": "مومنین"},
+    "translits": {"ru": "Аль-Муминун", "bn": "আল মু'মিনূন"}
   },
   {
     "id": 24,
@@ -213,7 +374,14 @@ const List surah = [
     "english": "The Light",
     "turkish": "Nûr",
     "place": "Madinah",
-    "arabic": "النور"
+    "arabic": "النور",
+    "arabicName": "سُورَةُ النُّورِ",
+    "englishName": "An-Noor",
+    "englishNameTranslation": "The Light",
+    "revelationType": "Medinan",
+    "transliteration": "An-Nur",
+    "names": {"en": "The Light", "ar": "النور", "bn": "আলো", "de": "Das Licht", "es": "La Luz", "fr": "La lumière", "ms": "Cahaya", "ru": "Свет", "tr": "Nûr", "ur": "نور"},
+    "translits": {"ru": "Ан-Нур", "bn": "আন নূর"}
   },
   {
     "id": 25,
@@ -222,7 +390,14 @@ const List surah = [
     "english": "The Criterion",
     "turkish": "Furkân",
     "place": "Makkah",
-    "arabic": "الفرقان"
+    "arabic": "الفرقان",
+    "arabicName": "سُورَةُ الفُرۡقَانِ",
+    "englishName": "Al-Furqaan",
+    "englishNameTranslation": "The Criterion",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Furqan",
+    "names": {"en": "The Criterion", "ar": "الفرقان", "bn": "মানদণ্ড", "de": "Die Rettung", "es": "El Discernimiento", "fr": "Le discernement", "ms": "Pembeza Kebenaran dan Kebatilan", "ru": "аль-Фуркан", "tr": "Furkân", "ur": "صحیح اور غلط میں فرق کرنے والی کتاب"},
+    "translits": {"ru": "Аль-Фуркан", "bn": "আল ফুরকান"}
   },
   {
     "id": 26,
@@ -231,7 +406,14 @@ const List surah = [
     "english": "The Poets",
     "turkish": "Şuarâ",
     "place": "Makkah",
-    "arabic": "الشعراء"
+    "arabic": "الشعراء",
+    "arabicName": "سُورَةُ الشُّعَرَاءِ",
+    "englishName": "Ash-Shu'araa",
+    "englishNameTranslation": "The Poets",
+    "revelationType": "Meccan",
+    "transliteration": "Ash-Shu'ara",
+    "names": {"en": "The Poets", "ar": "الشعراء", "bn": "কবি", "de": "Die Dichter", "es": "Los Poetas", "fr": "Les poètes", "ms": "Para Penyair", "ru": "Поэты", "tr": "Şuarâ", "ur": "شعراٗ"},
+    "translits": {"ru": "Аш-Шуара", "bn": "আশ শুআরা"}
   },
   {
     "id": 27,
@@ -240,7 +422,14 @@ const List surah = [
     "english": "The Ant",
     "turkish": "Neml",
     "place": "Makkah",
-    "arabic": "النمل"
+    "arabic": "النمل",
+    "arabicName": "سُورَةُ النَّمۡلِ",
+    "englishName": "An-Naml",
+    "englishNameTranslation": "The Ant",
+    "revelationType": "Meccan",
+    "transliteration": "An-Naml",
+    "names": {"en": "The Ant", "ar": "النمل", "bn": "পিঁপড়া", "de": "Die Ameisen", "es": "Las Hormigas", "fr": "Les fourmis", "ms": "Semut", "ru": "Муравьи", "tr": "Neml", "ur": "چیونٹی"},
+    "translits": {"ru": "Ан-Намль", "bn": "আন নম্‌ল"}
   },
   {
     "id": 28,
@@ -249,7 +438,14 @@ const List surah = [
     "english": "The Narrations",
     "turkish": "Kasas",
     "place": "Makkah",
-    "arabic": "القصص"
+    "arabic": "القصص",
+    "arabicName": "سُورَةُ القَصَصِ",
+    "englishName": "Al-Qasas",
+    "englishNameTranslation": "The Stories",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Qasas",
+    "names": {"en": "The Stories", "ar": "القصص", "bn": "কাহিনি", "de": "Die Geschichte", "es": "Los Relatos", "fr": "Le récit", "ms": "Cerita-cerita", "ru": "Рассказ", "tr": "Kasas", "ur": "قصے"},
+    "translits": {"ru": "Аль-Касас", "bn": "আল কাসাস"}
   },
   {
     "id": 29,
@@ -258,7 +454,14 @@ const List surah = [
     "english": "The Spider",
     "turkish": "Ankebût",
     "place": "Makkah",
-    "arabic": "العنكبوت"
+    "arabic": "العنكبوت",
+    "arabicName": "سُورَةُ العَنكَبُوتِ",
+    "englishName": "Al-Ankaboot",
+    "englishNameTranslation": "The Spider",
+    "revelationType": "Meccan",
+    "transliteration": "Al-'Ankabut",
+    "names": {"en": "The Spider", "ar": "العنكبوت", "bn": "মাকড়শা", "de": "Die Spinne", "es": "La Araña", "fr": "L'araignée", "ms": "Labah-labah", "ru": "Паук", "tr": "Ankebût", "ur": "مکڑی"},
+    "translits": {"ru": "Аль-Анкабут", "bn": "আল আনকাবূত"}
   },
   {
     "id": 30,
@@ -267,7 +470,14 @@ const List surah = [
     "english": "Rome",
     "turkish": "Rûm",
     "place": "Makkah",
-    "arabic": "الروم"
+    "arabic": "الروم",
+    "arabicName": "سُورَةُ الرُّومِ",
+    "englishName": "Ar-Room",
+    "englishNameTranslation": "The Romans",
+    "revelationType": "Meccan",
+    "transliteration": "Ar-Rum",
+    "names": {"en": "The Romans", "ar": "الروم", "bn": "রোমান জাতি", "de": "Die Römer", "es": "Los Romanos", "fr": "Les romains", "ms": "Bangsa Rom", "ru": "Римляне", "tr": "Rûm", "ur": "روم"},
+    "translits": {"ru": "Ар-Рум", "bn": "আর রুম"}
   },
   {
     "id": 31,
@@ -276,7 +486,14 @@ const List surah = [
     "english": "Luqman",
     "turkish": "Lokmân",
     "place": "Makkah",
-    "arabic": "لقمان"
+    "arabic": "لقمان",
+    "arabicName": "سُورَةُ لُقۡمَانَ",
+    "englishName": "Luqman",
+    "englishNameTranslation": "Luqman",
+    "revelationType": "Meccan",
+    "transliteration": "Luqman",
+    "names": {"en": "Luqman", "ar": "لقمان", "bn": "এক জ্ঞানী ব্যাক্তি", "de": "Luqman", "es": "Luqmán", "fr": "Louqman", "ms": "Luqman", "ru": "Лукман", "tr": "Lokmân", "ur": "لقمان"},
+    "translits": {"ru": "Лукман", "bn": "লোক্‌মান"}
   },
   {
     "id": 32,
@@ -285,7 +502,14 @@ const List surah = [
     "english": "The Prostration",
     "turkish": "Secde",
     "place": "Makkah",
-    "arabic": "السجدة"
+    "arabic": "السجدة",
+    "arabicName": "سُورَةُ السَّجۡدَةِ",
+    "englishName": "As-Sajda",
+    "englishNameTranslation": "The Prostration",
+    "revelationType": "Meccan",
+    "transliteration": "As-Sajdah",
+    "names": {"en": "The Prostration", "ar": "السجدة", "bn": "সিজদা", "de": "Die Niederwerfung", "es": "La Postración", "fr": "La prosternation", "ms": "Sujud", "ru": "Земной поклон", "tr": "Secde", "ur": "سجدہ"},
+    "translits": {"ru": "Ас-Саджда", "bn": "আস সেজদাহ্"}
   },
   {
     "id": 33,
@@ -294,7 +518,14 @@ const List surah = [
     "english": "The Clans",
     "turkish": "Ahzâb",
     "place": "Madinah",
-    "arabic": "الأحزاب"
+    "arabic": "الأحزاب",
+    "arabicName": "سُورَةُ الأَحۡزَابِ",
+    "englishName": "Al-Ahzaab",
+    "englishNameTranslation": "The Clans",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Ahzab",
+    "names": {"en": "The Combined Forces", "ar": "الأحزاب", "bn": "জোট", "de": "Die Gruppen", "es": "Los Coligados", "fr": "Les coalisés", "ms": "Golongan yang Bersekutu", "ru": "Союзники", "tr": "Ahzâb", "ur": "متحد گروہ"},
+    "translits": {"ru": "Аль-Ахзаб", "bn": "আল আহ্‌যাব"}
   },
   {
     "id": 34,
@@ -303,7 +534,14 @@ const List surah = [
     "english": "Sheba",
     "turkish": "Sebe'",
     "place": "Makkah",
-    "arabic": "سبإ"
+    "arabic": "سبإ",
+    "arabicName": "سُورَةُ سَبَإٍ",
+    "englishName": "Saba",
+    "englishNameTranslation": "Sheba",
+    "revelationType": "Meccan",
+    "transliteration": "Saba",
+    "names": {"en": "Sheba", "ar": "سبإ", "bn": "রানী সাবা/শেবা", "de": "Die Sabäer", "es": "Saba", "fr": "Saba'", "ms": "Kaum Saba’", "ru": "Сава", "tr": "Sebe'", "ur": "سبا"},
+    "translits": {"ru": "Саба", "bn": "সাবা"}
   },
   {
     "id": 35,
@@ -312,7 +550,14 @@ const List surah = [
     "english": "The Originator",
     "turkish": "Fâtır",
     "place": "Makkah",
-    "arabic": "فاطر"
+    "arabic": "فاطر",
+    "arabicName": "سُورَةُ فَاطِرٍ",
+    "englishName": "Faatir",
+    "englishNameTranslation": "The Originator",
+    "revelationType": "Meccan",
+    "transliteration": "Fatir",
+    "names": {"en": "Originator", "ar": "فاطر", "bn": "আদি স্রষ্টা", "de": "Der Schöpfer", "es": "El Originador", "fr": "Le Créateur", "ms": "Pencipta", "ru": "Творец", "tr": "Fâtır", "ur": "پیدا کرنے والا"},
+    "translits": {"ru": "Фатир", "bn": "ফাতির"}
   },
   {
     "id": 36,
@@ -321,7 +566,14 @@ const List surah = [
     "english": "Ya Sin",
     "turkish": "Yâsîn",
     "place": "Makkah",
-    "arabic": "يس"
+    "arabic": "يس",
+    "arabicName": "سُورَةُ يسٓ",
+    "englishName": "Yaseen",
+    "englishNameTranslation": "Yaseen",
+    "revelationType": "Meccan",
+    "transliteration": "Ya-Sin",
+    "names": {"en": "Ya Sin", "ar": "يس", "bn": "ইয়াসীন", "de": "Ya-Sin", "es": "Ya Sin", "fr": "Ya-Sin", "ms": "Yaasin", "ru": "Йа Син", "tr": "Yâsîn", "ur": "یٰسٓ"},
+    "translits": {"ru": "Йа Син", "bn": "ইয়াসীন"}
   },
   {
     "id": 37,
@@ -330,7 +582,14 @@ const List surah = [
     "english": "Those Who Set The Ranks",
     "turkish": "Sâffât",
     "place": "Makkah",
-    "arabic": "الصافات"
+    "arabic": "الصافات",
+    "arabicName": "سُورَةُ الصَّافَّاتِ",
+    "englishName": "As-Saaffaat",
+    "englishNameTranslation": "Those drawn up in Ranks",
+    "revelationType": "Meccan",
+    "transliteration": "As-Saffat",
+    "names": {"en": "Those who set the Ranks", "ar": "الصافات", "bn": "সারিবদ্ধভাবে দাঁড়ানো", "de": "Die in Reih und Glied stehen", "es": "Los Que se Ponen en Filas", "fr": "Les rangés", "ms": "Yang Teratur Berbaris", "ru": "Выстроившиеся в ряды", "tr": "Sâffât", "ur": "صف باندھنے والے"},
+    "translits": {"ru": "Ас-Саффат", "bn": "আস ছাফ্‌ফাত"}
   },
   {
     "id": 38,
@@ -339,7 +598,14 @@ const List surah = [
     "english": "Ṣād",
     "turkish": "Sâd",
     "place": "Makkah",
-    "arabic": "ص"
+    "arabic": "ص",
+    "arabicName": "سُورَةُ صٓ",
+    "englishName": "Saad",
+    "englishNameTranslation": "The letter Saad",
+    "revelationType": "Meccan",
+    "transliteration": "Sad",
+    "names": {"en": "The Letter \"Saad\"", "ar": "ص", "bn": "আরবি বর্ণ সাদ", "de": "Sad", "es": "Sad", "fr": "Sad", "ms": "Saad", "ru": "Сод", "tr": "Sâd", "ur": "صٓ"},
+    "translits": {"ru": "Сад", "bn": "ছোয়াদ"}
   },
   {
     "id": 39,
@@ -348,7 +614,14 @@ const List surah = [
     "english": "The Crowds",
     "turkish": "Zümer",
     "place": "Makkah",
-    "arabic": "الزمر"
+    "arabic": "الزمر",
+    "arabicName": "سُورَةُ الزُّمَرِ",
+    "englishName": "Az-Zumar",
+    "englishNameTranslation": "The Groups",
+    "revelationType": "Meccan",
+    "transliteration": "Az-Zumar",
+    "names": {"en": "The Troops", "ar": "الزمر", "bn": "দলবদ্ধ জনতা", "de": "Die Scharen", "es": "Los Grupos", "fr": "Les groupes", "ms": "Rombongan", "ru": "Толпы", "tr": "Zümer", "ur": "گروہ"},
+    "translits": {"ru": "Аз-Зумар", "bn": "আয-জুমার"}
   },
   {
     "id": 40,
@@ -357,7 +630,14 @@ const List surah = [
     "english": "The Forgiver",
     "turkish": "Mü'min",
     "place": "Makkah",
-    "arabic": "غافر"
+    "arabic": "غافر",
+    "arabicName": "سُورَةُ غَافِرٍ",
+    "englishName": "Ghafir",
+    "englishNameTranslation": "The Forgiver",
+    "revelationType": "Meccan",
+    "transliteration": "Ghafir",
+    "names": {"en": "The Forgiver", "ar": "غافر", "bn": "ক্ষমাকারী", "de": "Der Vergebende", "es": "El Perdonador", "fr": "Le Pardonneur", "ms": "Orang yang Beriman", "ru": "Прощающий", "tr": "Mü'min", "ur": "بخشنے والا"},
+    "translits": {"ru": "Гафир", "bn": "আল মু'মিন"}
   },
   {
     "id": 41,
@@ -366,7 +646,14 @@ const List surah = [
     "english": "Expounded",
     "turkish": "Fussilet",
     "place": "Makkah",
-    "arabic": "فصلت"
+    "arabic": "فصلت",
+    "arabicName": "سُورَةُ فُصِّلَتۡ",
+    "englishName": "Fussilat",
+    "englishNameTranslation": "Explained in detail",
+    "revelationType": "Meccan",
+    "transliteration": "Fussilat",
+    "names": {"en": "Explained in Detail", "ar": "فصلت", "bn": "সুস্পষ্ট বিবরণ", "de": "Auseinandergesetzt sind", "es": "Se Han Expresado Con Claridad", "fr": "Les versets explicites", "ms": "Dijelaskan", "ru": "Разъяснены", "tr": "Fussilet", "ur": "مفصل"},
+    "translits": {"ru": "Фуссилят", "bn": "হা-মীম সেজদাহ্‌"}
   },
   {
     "id": 42,
@@ -375,7 +662,14 @@ const List surah = [
     "english": "The Consultation",
     "turkish": "Şûrâ",
     "place": "Makkah",
-    "arabic": "الشورى"
+    "arabic": "الشورى",
+    "arabicName": "سُورَةُ الشُّورَىٰ",
+    "englishName": "Ash-Shura",
+    "englishNameTranslation": "Consultation",
+    "revelationType": "Meccan",
+    "transliteration": "Ash-Shuraa",
+    "names": {"en": "The Consultation", "ar": "الشورى", "bn": "পরামর্শ", "de": "Die Beratung", "es": "La Consulta", "fr": "La concertation", "ms": "Permesyuaratan", "ru": "Совет", "tr": "Şûrâ", "ur": "شورٰی"},
+    "translits": {"ru": "Аш-Шура", "bn": "আশ্‌-শূরা"}
   },
   {
     "id": 43,
@@ -384,7 +678,14 @@ const List surah = [
     "english": "The Gold Adornments",
     "turkish": "Zuhruf",
     "place": "Makkah",
-    "arabic": "الزخرف"
+    "arabic": "الزخرف",
+    "arabicName": "سُورَةُ الزُّخۡرُفِ",
+    "englishName": "Az-Zukhruf",
+    "englishNameTranslation": "Ornaments of gold",
+    "revelationType": "Meccan",
+    "transliteration": "Az-Zukhruf",
+    "names": {"en": "The Ornaments of Gold", "ar": "الزخرف", "bn": "সোনাদানা", "de": "Der Prunk", "es": "Los Dorados", "fr": "L'ornement", "ms": "Perhiasan Emas", "ru": "Украшения", "tr": "Zuhruf", "ur": "سونے کی چمک"},
+    "translits": {"ru": "Аз-Зухруф", "bn": "আয্‌-যুখরুফ"}
   },
   {
     "id": 44,
@@ -393,7 +694,14 @@ const List surah = [
     "english": "The Smoke",
     "turkish": "Duhân",
     "place": "Makkah",
-    "arabic": "الدخان"
+    "arabic": "الدخان",
+    "arabicName": "سُورَةُ الدُّخَانِ",
+    "englishName": "Ad-Dukhaan",
+    "englishNameTranslation": "The Smoke",
+    "revelationType": "Meccan",
+    "transliteration": "Ad-Dukhan",
+    "names": {"en": "The Smoke", "ar": "الدخان", "bn": "ধোঁয়া", "de": "Der Rauch", "es": "El Humo", "fr": "La fumée", "ms": "Kabut / Asap", "ru": "Дым", "tr": "Duhân", "ur": "دھواں"},
+    "translits": {"ru": "Ад-Духан", "bn": "আদ-দোখান"}
   },
   {
     "id": 45,
@@ -402,7 +710,14 @@ const List surah = [
     "english": "The Kneeling Down",
     "turkish": "Câsiye",
     "place": "Makkah",
-    "arabic": "الجاثية"
+    "arabic": "الجاثية",
+    "arabicName": "سُورَةُ الجَاثِيَةِ",
+    "englishName": "Al-Jaathiya",
+    "englishNameTranslation": "Crouching",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Jathiyah",
+    "names": {"en": "The Crouching", "ar": "الجاثية", "bn": "নতজানু", "de": "Das Knien", "es": "La Arrodillada", "fr": "L'agenouillée", "ms": "Yang Berlutut", "ru": "Коленопреклоненные", "tr": "Câsiye", "ur": "زانوٗوں کے بل گری ہوئی"},
+    "translits": {"ru": "Аль-Джасия", "bn": "আল জাসিয়াহ"}
   },
   {
     "id": 46,
@@ -411,7 +726,14 @@ const List surah = [
     "english": "Winding Sand tracts",
     "turkish": "Ahkâf",
     "place": "Makkah",
-    "arabic": "الأحقاف"
+    "arabic": "الأحقاف",
+    "arabicName": "سُورَةُ الأَحۡقَافِ",
+    "englishName": "Al-Ahqaf",
+    "englishNameTranslation": "The Dunes",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Ahqaf",
+    "names": {"en": "The Wind-Curved Sandhills", "ar": "الأحقاف", "bn": "বালুর পাহাড়", "de": "Die Dünen", "es": "Las Dunas", "fr": "Al-Ahqaf", "ms": "Bukit-bukit Pasir", "ru": "Барханы", "tr": "Ahkâf", "ur": "ریگستان"},
+    "translits": {"ru": "Аль-Ахкаф", "bn": "আল আহ্‌ক্বাফ"}
   },
   {
     "id": 47,
@@ -420,7 +742,14 @@ const List surah = [
     "english": "Muhammad",
     "turkish": "Muhammed",
     "place": "Madinah",
-    "arabic": "محمد"
+    "arabic": "محمد",
+    "arabicName": "سُورَةُ مُحَمَّدٍ",
+    "englishName": "Muhammad",
+    "englishNameTranslation": "Muhammad",
+    "revelationType": "Medinan",
+    "transliteration": "Muhammad",
+    "names": {"en": "Muhammad", "ar": "محمد", "bn": "নবী মুহাম্মদ", "de": "Mohammed", "es": "Muhammad", "fr": "Mouhammad", "ms": "Nabi Muhammad SAW", "ru": "Мухаммад", "tr": "Muhammed", "ur": "محمدﷺ"},
+    "translits": {"ru": "Мухаммад", "bn": "মুহাম্মদ"}
   },
   {
     "id": 48,
@@ -429,7 +758,14 @@ const List surah = [
     "english": "The Victory",
     "turkish": "Fetih",
     "place": "Madinah",
-    "arabic": "الفتح"
+    "arabic": "الفتح",
+    "arabicName": "سُورَةُ الفَتۡحِ",
+    "englishName": "Al-Fath",
+    "englishNameTranslation": "The Victory",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Fath",
+    "names": {"en": "The Victory", "ar": "الفتح", "bn": "বিজয়", "de": "Der Erfolg", "es": "La Victoria", "fr": "La victoire éclatante", "ms": "Kemenangan", "ru": "Победа", "tr": "Fetih", "ur": "فتح"},
+    "translits": {"ru": "Аль-Фатх", "bn": "আল ফাত্‌হ"}
   },
   {
     "id": 49,
@@ -438,7 +774,14 @@ const List surah = [
     "english": "The Private Apartments",
     "turkish": "Hucurât",
     "place": "Madinah",
-    "arabic": "الحجرات"
+    "arabic": "الحجرات",
+    "arabicName": "سُورَةُ الحُجُرَاتِ",
+    "englishName": "Al-Hujuraat",
+    "englishNameTranslation": "The Inner Apartments",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Hujurat",
+    "names": {"en": "The Rooms", "ar": "الحجرات", "bn": "আবাস", "de": "Die Gemächer", "es": "Los Aposentos Privados", "fr": "Les appartements", "ms": "Bilik-bilik", "ru": "Комнаты", "tr": "Hucurât", "ur": "حجرے"},
+    "translits": {"ru": "Аль-Худжурат", "bn": "আল হুজুরাত"}
   },
   {
     "id": 50,
@@ -447,7 +790,14 @@ const List surah = [
     "english": "Q̈āf",
     "turkish": "Kâf",
     "place": "Makkah",
-    "arabic": "ق"
+    "arabic": "ق",
+    "arabicName": "سُورَةُ قٓ",
+    "englishName": "Qaaf",
+    "englishNameTranslation": "The letter Qaaf",
+    "revelationType": "Meccan",
+    "transliteration": "Qaf",
+    "names": {"en": "The Letter \"Qaf\"", "ar": "ق", "bn": "কাফ", "de": "Qaf", "es": "Qaf", "fr": "Qaf", "ms": "Qaaf", "ru": "Каф", "tr": "Kâf", "ur": "قٓ"},
+    "translits": {"ru": "Каф", "bn": "ক্বাফ"}
   },
   {
     "id": 51,
@@ -456,7 +806,14 @@ const List surah = [
     "english": "The Wind That Scatter",
     "turkish": "Zâriyât",
     "place": "Makkah",
-    "arabic": "الذاريات"
+    "arabic": "الذاريات",
+    "arabicName": "سُورَةُ الذَّارِيَاتِ",
+    "englishName": "Adh-Dhaariyat",
+    "englishNameTranslation": "The Winnowing Winds",
+    "revelationType": "Meccan",
+    "transliteration": "Adh-Dhariyat",
+    "names": {"en": "The Winnowing Winds", "ar": "الذاريات", "bn": "বিক্ষেপকারী বাতাস", "de": "Das Aufwirbeln", "es": "Los Que Levantan un Torbellino", "fr": "Qui éparpillent", "ms": "Angin yang Menerbangkan", "ru": "Рассеивающие прах", "tr": "Zâriyât", "ur": "بکھیرنے والیاں"},
+    "translits": {"ru": "Аз-Зарият", "bn": "আয-যারিয়াত"}
   },
   {
     "id": 52,
@@ -465,7 +822,14 @@ const List surah = [
     "english": "The Mount",
     "turkish": "Tûr",
     "place": "Makkah",
-    "arabic": "الطور"
+    "arabic": "الطور",
+    "arabicName": "سُورَةُ الطُّورِ",
+    "englishName": "At-Tur",
+    "englishNameTranslation": "The Mount",
+    "revelationType": "Meccan",
+    "transliteration": "At-Tur",
+    "names": {"en": "The Mount", "ar": "الطور", "bn": "পাহাড়", "de": "Der Berg", "es": "El Monte", "fr": "Le mont At-Tour", "ms": "Bukit", "ru": "Гора", "tr": "Tûr", "ur": "طور پہاڑ"},
+    "translits": {"ru": "Ат-Тур", "bn": "আত্ব তূর"}
   },
   {
     "id": 53,
@@ -474,7 +838,14 @@ const List surah = [
     "english": "The Star",
     "turkish": "Necm",
     "place": "Makkah",
-    "arabic": "النجم"
+    "arabic": "النجم",
+    "arabicName": "سُورَةُ النَّجۡمِ",
+    "englishName": "An-Najm",
+    "englishNameTranslation": "The Star",
+    "revelationType": "Meccan",
+    "transliteration": "An-Najm",
+    "names": {"en": "The Star", "ar": "النجم", "bn": "তারা", "de": "Der Stern", "es": "El Astro", "fr": "L'étoile", "ms": "Bintang", "ru": "Звезда", "tr": "Necm", "ur": "ستارہ"},
+    "translits": {"ru": "Ан-Наджм", "bn": "আন-নাজম"}
   },
   {
     "id": 54,
@@ -483,7 +854,14 @@ const List surah = [
     "english": "The Moon",
     "turkish": "Kamer",
     "place": "Makkah",
-    "arabic": "القمر"
+    "arabic": "القمر",
+    "arabicName": "سُورَةُ القَمَرِ",
+    "englishName": "Al-Qamar",
+    "englishNameTranslation": "The Moon",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Qamar",
+    "names": {"en": "The Moon", "ar": "القمر", "bn": "চাঁদ", "de": "Der Mond", "es": "La Luna", "fr": "La lune", "ms": "Bulan", "ru": "Месяц", "tr": "Kamer", "ur": "چاند"},
+    "translits": {"ru": "Аль-Камар", "bn": "আল ক্বামার"}
   },
   {
     "id": 55,
@@ -492,7 +870,14 @@ const List surah = [
     "english": "The Most Merciful",
     "turkish": "Rahmân",
     "place": "Madinah",
-    "arabic": "الرحمن"
+    "arabic": "الرحمن",
+    "arabicName": "سُورَةُ الرَّحۡمَٰن",
+    "englishName": "Ar-Rahmaan",
+    "englishNameTranslation": "The Beneficent",
+    "revelationType": "Medinan",
+    "transliteration": "Ar-Rahman",
+    "names": {"en": "The Beneficent", "ar": "الرحمن", "bn": "পরম করুণাময়", "de": "Der Barmherzige", "es": "El Misericordioso", "fr": "Le Tout Miséricordieux", "ms": "Yang Maha Pemurah", "ru": "Милостивый", "tr": "Rahmân", "ur": "مہربان"},
+    "translits": {"ru": "Ар-Рахман", "bn": "আর রাহমান"}
   },
   {
     "id": 56,
@@ -501,7 +886,14 @@ const List surah = [
     "english": "The Inevitable",
     "turkish": "Vâkıa",
     "place": "Makkah",
-    "arabic": "الواقعة"
+    "arabic": "الواقعة",
+    "arabicName": "سُورَةُ الوَاقِعَةِ",
+    "englishName": "Al-Waaqia",
+    "englishNameTranslation": "The Inevitable",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Waqi'ah",
+    "names": {"en": "The Inevitable", "ar": "الواقعة", "bn": "নিশ্চিত ঘটনা", "de": "Die hereinbrechende Katastrophe", "es": "Lo Que ha de Ocurrir", "fr": "L'inévitable", "ms": "Peristiwa yang Tidak Dapat Dielakkan", "ru": "Событие", "tr": "Vâkıa", "ur": "واقعہ ہونے والی قیامت"},
+    "translits": {"ru": "Аль-Вакиа", "bn": "আল-ওয়াকিয়াহ"}
   },
   {
     "id": 57,
@@ -510,7 +902,14 @@ const List surah = [
     "english": "The Iron",
     "turkish": "Hadîd",
     "place": "Madinah",
-    "arabic": "الحديد"
+    "arabic": "الحديد",
+    "arabicName": "سُورَةُ الحَدِيدِ",
+    "englishName": "Al-Hadid",
+    "englishNameTranslation": "The Iron",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Hadid",
+    "names": {"en": "The Iron", "ar": "الحديد", "bn": "লোহা", "de": "Das Eisen", "es": "El Hierro", "fr": "Le fer", "ms": "Besi", "ru": "Железо", "tr": "Hadîd", "ur": "فولاد"},
+    "translits": {"ru": "Аль-Хадид", "bn": "আল-হাদীদ"}
   },
   {
     "id": 58,
@@ -519,7 +918,14 @@ const List surah = [
     "english": "The Pleading",
     "turkish": "Mücâdele",
     "place": "Madinah",
-    "arabic": "المجادلة"
+    "arabic": "المجادلة",
+    "arabicName": "سُورَةُ المُجَادلَةِ",
+    "englishName": "Al-Mujaadila",
+    "englishNameTranslation": "The Pleading Woman",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Mujadila",
+    "names": {"en": "The Pleading Woman", "ar": "المجادلة", "bn": "অনুযোগকারিণী", "de": "Der Streit", "es": "La Discusión", "fr": "La discussion", "ms": "Perempuan yang Merayu", "ru": "Препирающаяся", "tr": "Mücâdele", "ur": "جھگڑنے والی"},
+    "translits": {"ru": "Аль-Муджадиля", "bn": "আল-মুজাদালাহ"}
   },
   {
     "id": 59,
@@ -528,7 +934,14 @@ const List surah = [
     "english": "The Mustering",
     "turkish": "Haşr",
     "place": "Manidah",
-    "arabic": "الحشر"
+    "arabic": "الحشر",
+    "arabicName": "سُورَةُ الحَشۡرِ",
+    "englishName": "Al-Hashr",
+    "englishNameTranslation": "The Exile",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Hashr",
+    "names": {"en": "The Exile", "ar": "الحشر", "bn": "সমাবেশ", "de": "Die Versammlung", "es": "La Concentración", "fr": "L'exode", "ms": "Pengusiran", "ru": "Сбор", "tr": "Haşr", "ur": "حشر"},
+    "translits": {"ru": "Аль-Хашр", "bn": "আল-হাশর"}
   },
   {
     "id": 60,
@@ -537,7 +950,14 @@ const List surah = [
     "english": "The Examined One",
     "turkish": "Mümtehine",
     "place": "Madinah",
-    "arabic": "الممتحنة"
+    "arabic": "الممتحنة",
+    "arabicName": "سُورَةُ المُمۡتَحنَةِ",
+    "englishName": "Al-Mumtahana",
+    "englishNameTranslation": "She that is to be examined",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Mumtahanah",
+    "names": {"en": "She that is to be examined", "ar": "الممتحنة", "bn": "নারী, যাকে পরীক্ষা করা হবে", "de": "Die Prüfung", "es": "La Examinada", "fr": "L'éprouvée", "ms": "Perempuan yang Diuji", "ru": "Испытуемая", "tr": "Mümtehine", "ur": "امتحان لی جانے والی"},
+    "translits": {"ru": "Аль-Мумтахана", "bn": "আল-মুমতাহিনাহ"}
   },
   {
     "id": 61,
@@ -546,7 +966,14 @@ const List surah = [
     "english": "The Ranks",
     "turkish": "Saff",
     "place": "Madinah",
-    "arabic": "الصف"
+    "arabic": "الصف",
+    "arabicName": "سُورَةُ الصَّفِّ",
+    "englishName": "As-Saff",
+    "englishNameTranslation": "The Ranks",
+    "revelationType": "Medinan",
+    "transliteration": "As-Saf",
+    "names": {"en": "The Ranks", "ar": "الصف", "bn": "সারিবদ্ধ সৈন্যদল", "de": "Reih und Glied", "es": "La Fila", "fr": "Le rang", "ms": "Barisan", "ru": "Ряды", "tr": "Saf", "ur": "صف"},
+    "translits": {"ru": "Ас-Сафф", "bn": "আস-সাফ"}
   },
   {
     "id": 62,
@@ -555,7 +982,14 @@ const List surah = [
     "english": "Congregation (Friday)",
     "turkish": "Cuma",
     "place": "Madinah",
-    "arabic": "الجمعة"
+    "arabic": "الجمعة",
+    "arabicName": "سُورَةُ الجُمُعَةِ",
+    "englishName": "Al-Jumu'a",
+    "englishNameTranslation": "Friday",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Jumu'ah",
+    "names": {"en": "The Congregation, Friday", "ar": "الجمعة", "bn": "সম্মেলন/শুক্রবার", "de": "Der Freitag", "es": "El Viernes", "fr": "Le vendredi", "ms": "Hari Jumaat", "ru": "Собрание", "tr": "Cuma", "ur": "جمعہ"},
+    "translits": {"ru": "Аль-Джумуа", "bn": "আল-জুমুআ"}
   },
   {
     "id": 63,
@@ -564,7 +998,14 @@ const List surah = [
     "english": "The Hypocrites",
     "turkish": "Münâfikûn",
     "place": "Madinah",
-    "arabic": "المنافقون"
+    "arabic": "المنافقون",
+    "arabicName": "سُورَةُ المُنَافِقُونَ",
+    "englishName": "Al-Munaafiqoon",
+    "englishNameTranslation": "The Hypocrites",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Munafiqun",
+    "names": {"en": "The Hypocrites", "ar": "المنافقون", "bn": "ভণ্ড বিশ্বাসী", "de": "Die Heuchler", "es": "Los Hipócritas", "fr": "Les hypocrites", "ms": "Golongan Munafik", "ru": "Лицемеры", "tr": "Münâfikûn", "ur": "منافقین"},
+    "translits": {"ru": "Аль-Мунафикун", "bn": "আল-মুনাফিকুন"}
   },
   {
     "id": 64,
@@ -573,7 +1014,14 @@ const List surah = [
     "english": "The Cheating",
     "turkish": "Tegâbün",
     "place": "Madinah",
-    "arabic": "التغابن"
+    "arabic": "التغابن",
+    "arabicName": "سُورَةُ التَّغَابُنِ",
+    "englishName": "At-Taghaabun",
+    "englishNameTranslation": "Mutual Disillusion",
+    "revelationType": "Medinan",
+    "transliteration": "At-Taghabun",
+    "names": {"en": "The Mutual Disillusion", "ar": "التغابن", "bn": "মোহ অপসারণ", "de": "Die Übervorteilung", "es": "El Desengaño", "fr": "La grande perte", "ms": "Dinampakkan Kesalahan", "ru": "Взаимное обделение", "tr": "Tegâbün", "ur": "ہار جیت"},
+    "translits": {"ru": "Ат-Тагабун", "bn": "আত-তাগাবুন"}
   },
   {
     "id": 65,
@@ -582,7 +1030,14 @@ const List surah = [
     "english": "Divorce",
     "turkish": "Talâk",
     "place": "Madinah",
-    "arabic": "الطلاق"
+    "arabic": "الطلاق",
+    "arabicName": "سُورَةُ الطَّلَاقِ",
+    "englishName": "At-Talaaq",
+    "englishNameTranslation": "Divorce",
+    "revelationType": "Medinan",
+    "transliteration": "At-Talaq",
+    "names": {"en": "The Divorce", "ar": "الطلاق", "bn": "তালাক", "de": "Die Entlassung (Scheidung)", "es": "El Divorcio", "fr": "Le divorce", "ms": "Cerai / Talak", "ru": "Развод", "tr": "Talâk", "ur": "طلاق"},
+    "translits": {"ru": "Ат-Таляк", "bn": "আত-তালাক"}
   },
   {
     "id": 66,
@@ -591,7 +1046,14 @@ const List surah = [
     "english": "The Prohibition",
     "turkish": "Tahrîm",
     "place": "Madinah",
-    "arabic": "التحريم"
+    "arabic": "التحريم",
+    "arabicName": "سُورَةُ التَّحۡرِيمِ",
+    "englishName": "At-Tahrim",
+    "englishNameTranslation": "The Prohibition",
+    "revelationType": "Medinan",
+    "transliteration": "At-Tahrim",
+    "names": {"en": "The Prohibition", "ar": "التحريم", "bn": "নিষিদ্ধকরণ", "de": "Das Verbot", "es": "La Prohibición", "fr": "L'interdiction", "ms": "Mengharamkan", "ru": "Запрещение", "tr": "Tahrîm", "ur": "حرمت"},
+    "translits": {"ru": "Ат-Тахрим", "bn": "আত-তাহরীম"}
   },
   {
     "id": 67,
@@ -600,7 +1062,14 @@ const List surah = [
     "english": "The Dominion",
     "turkish": "Mülk",
     "place": "Makkah",
-    "arabic": "الملك"
+    "arabic": "الملك",
+    "arabicName": "سُورَةُ المُلۡكِ",
+    "englishName": "Al-Mulk",
+    "englishNameTranslation": "The Sovereignty",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Mulk",
+    "names": {"en": "The Sovereignty", "ar": "الملك", "bn": "সার্বভৌম কর্তৃত্ব", "de": "Die Königsherrschaft", "es": "La Soberanía", "fr": "La royauté", "ms": "Kerajaan", "ru": "Власть", "tr": "Mülk", "ur": "بادشاہ"},
+    "translits": {"ru": "Аль-Мульк", "bn": "আল-মুলক"}
   },
   {
     "id": 68,
@@ -609,7 +1078,14 @@ const List surah = [
     "english": "The Pen",
     "turkish": "Kalem",
     "place": "Makkah",
-    "arabic": "القلم"
+    "arabic": "القلم",
+    "arabicName": "سُورَةُ القَلَمِ",
+    "englishName": "Al-Qalam",
+    "englishNameTranslation": "The Pen",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Qalam",
+    "names": {"en": "The Pen", "ar": "القلم", "bn": "কলম", "de": "Die Schreibfeder", "es": "El Cálamo", "fr": "La plume", "ms": "Pena / Kalam", "ru": "Письменная трость", "tr": "Kalem", "ur": "قلم"},
+    "translits": {"ru": "Аль-Калям", "bn": "আল-কলম"}
   },
   {
     "id": 69,
@@ -618,7 +1094,14 @@ const List surah = [
     "english": "The Sure Reality",
     "turkish": "Hâkka",
     "place": "Makkah",
-    "arabic": "الحاقة"
+    "arabic": "الحاقة",
+    "arabicName": "سُورَةُ الحَاقَّةِ",
+    "englishName": "Al-Haaqqa",
+    "englishNameTranslation": "The Reality",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Haqqah",
+    "names": {"en": "The Reality", "ar": "الحاقة", "bn": "নিশ্চিত সত্য", "de": "Die Wahrheit", "es": "La Verdad Indefectible", "fr": "L'inéluctable", "ms": "Keadaan Sebenar / Hari Kiamat", "ru": "Неминуемое", "tr": "Hâkka", "ur": "حق ہونے والی"},
+    "translits": {"ru": "Аль-Хакка", "bn": "আল-হাক্কাহ"}
   },
   {
     "id": 70,
@@ -627,7 +1110,14 @@ const List surah = [
     "english": "The Ways of Ascent",
     "turkish": "Meâric",
     "place": "Makkah",
-    "arabic": "المعارج"
+    "arabic": "المعارج",
+    "arabicName": "سُورَةُ المَعَارِجِ",
+    "englishName": "Al-Ma'aarij",
+    "englishNameTranslation": "The Ascending Stairways",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Ma'arij",
+    "names": {"en": "The Ascending Stairways", "ar": "المعارج", "bn": "উন্নয়নের সোপান", "de": "Die Himmelsleiter", "es": "Los Grados de Elevación", "fr": "Les voies d'ascension", "ms": "Tempat-tempat Naik", "ru": "Ступени", "tr": "Meâric", "ur": "عروج"},
+    "translits": {"ru": "Аль-Мааридж", "bn": "আল-মাআরিজ"}
   },
   {
     "id": 71,
@@ -636,7 +1126,14 @@ const List surah = [
     "english": "Noah",
     "turkish": "Nûh",
     "place": "Makkah",
-    "arabic": "نوح"
+    "arabic": "نوح",
+    "arabicName": "سُورَةُ نُوحٍ",
+    "englishName": "Nooh",
+    "englishNameTranslation": "Noah",
+    "revelationType": "Meccan",
+    "transliteration": "Nuh",
+    "names": {"en": "Noah", "ar": "نوح", "bn": "নবী নূহ", "de": "Noah", "es": "Noé", "fr": "Noé", "ms": "Nabi Nuh a.s.", "ru": "Нух", "tr": "Nûh", "ur": "نوح"},
+    "translits": {"ru": "Нух", "bn": "নূহ"}
   },
   {
     "id": 72,
@@ -645,7 +1142,14 @@ const List surah = [
     "english": "The Jinn",
     "turkish": "Cin",
     "place": "makkah",
-    "arabic": "الجن"
+    "arabic": "الجن",
+    "arabicName": "سُورَةُ الجِنِّ",
+    "englishName": "Al-Jinn",
+    "englishNameTranslation": "The Jinn",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Jinn",
+    "names": {"en": "The Jinn", "ar": "الجن", "bn": "জিন সম্প্রদায়", "de": "Die Jinn", "es": "Los Genios", "fr": "Les djinns", "ms": "Jin", "ru": "Джинны", "tr": "Cin", "ur": "جن"},
+    "translits": {"ru": "Аль-Джинн", "bn": "আল জ্বিন"}
   },
   {
     "id": 73,
@@ -654,7 +1158,14 @@ const List surah = [
     "english": "The Enfolded One",
     "turkish": "Müzzemmil",
     "place": "Makkah",
-    "arabic": "المزمل"
+    "arabic": "المزمل",
+    "arabicName": "سُورَةُ المُزَّمِّلِ",
+    "englishName": "Al-Muzzammil",
+    "englishNameTranslation": "The Enshrouded One",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Muzzammil",
+    "names": {"en": "The Enshrouded One", "ar": "المزمل", "bn": "বস্ত্রাচ্ছাদনকারী", "de": "Der sich eingehüllt hat", "es": "El Envuelto en El Manto", "fr": "L'enveloppé", "ms": "Yang Berselimut", "ru": "Закутавшийся", "tr": "Müzzemmil", "ur": "کپڑا لپیٹنے والا"},
+    "translits": {"ru": "Аль-Муззаммиль", "bn": "আল মুজাম্মিল"}
   },
   {
     "id": 74,
@@ -663,7 +1174,14 @@ const List surah = [
     "english": "The One Wrapped Up",
     "turkish": "Müddessir",
     "place": "Makkah",
-    "arabic": "المدثر"
+    "arabic": "المدثر",
+    "arabicName": "سُورَةُ المُدَّثِّرِ",
+    "englishName": "Al-Muddaththir",
+    "englishNameTranslation": "The Cloaked One",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Muddaththir",
+    "names": {"en": "The Cloaked One", "ar": "المدثر", "bn": "পোশাক পরিহিত", "de": "Der sich zugedeckt hat", "es": "El Arropado", "fr": "Celui qui se couvre", "ms": "Yang Berselubung", "ru": "Завернувшийся", "tr": "Müddessir", "ur": "کپڑا اوڑھنے والا"},
+    "translits": {"ru": "Аль-Муддассир", "bn": "আল মুদ্দাস্সির"}
   },
   {
     "id": 75,
@@ -672,7 +1190,14 @@ const List surah = [
     "english": "Resurrection",
     "turkish": "Kıyâmet",
     "place": "Makkah",
-    "arabic": "القيامة"
+    "arabic": "القيامة",
+    "arabicName": "سُورَةُ القِيَامَةِ",
+    "englishName": "Al-Qiyaama",
+    "englishNameTranslation": "The Resurrection",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Qiyamah",
+    "names": {"en": "The Resurrection", "ar": "القيامة", "bn": "পুনরুত্থান", "de": "Die Auferstehung", "es": "El Levantamiento", "fr": "La résurrection", "ms": "Hari Kebangkitan / Kiamat", "ru": "Воскресение", "tr": "Kıyâmet", "ur": "قیامۃ"},
+    "translits": {"ru": "Аль-Кияма", "bn": "আল-ক্বিয়ামাহ"}
   },
   {
     "id": 76,
@@ -681,7 +1206,14 @@ const List surah = [
     "english": "The Human",
     "turkish": "İnsân",
     "place": "Madinah",
-    "arabic": "الانسان"
+    "arabic": "الانسان",
+    "arabicName": "سُورَةُ الإِنسَانِ",
+    "englishName": "Al-Insaan",
+    "englishNameTranslation": "Man",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Insan",
+    "names": {"en": "The Man", "ar": "الانسان", "bn": "মানবজাতি", "de": "Der Mensch", "es": "El Hombre", "fr": "L'homme", "ms": "Manusia", "ru": "Человек", "tr": "İnsân", "ur": "انسان"},
+    "translits": {"ru": "Аль-Инсан", "bn": "আদ-দাহর"}
   },
   {
     "id": 77,
@@ -690,7 +1222,14 @@ const List surah = [
     "english": "Those Sent Forth",
     "turkish": "Mürselât",
     "place": "Makkah",
-    "arabic": "المرسلات"
+    "arabic": "المرسلات",
+    "arabicName": "سُورَةُ المُرۡسَلَاتِ",
+    "englishName": "Al-Mursalaat",
+    "englishNameTranslation": "The Emissaries",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Mursalat",
+    "names": {"en": "The Emissaries", "ar": "المرسلات", "bn": "প্রেরিত পুরুষ", "de": "Die Gesandten", "es": "Los Que Son Enviados", "fr": "Les envoyés", "ms": "Malaikat Yang Diutus", "ru": "Посылаемые", "tr": "Mürselât", "ur": "بھیجی جانے والی ہوائیں"},
+    "translits": {"ru": "Аль-Мурсалят", "bn": "আল-মুরসালাত"}
   },
   {
     "id": 78,
@@ -699,7 +1238,14 @@ const List surah = [
     "english": "The Great News",
     "turkish": "Nebe",
     "place": "Makkah",
-    "arabic": "النبأ"
+    "arabic": "النبأ",
+    "arabicName": "سُورَةُ النَّبَإِ",
+    "englishName": "An-Naba",
+    "englishNameTranslation": "The Announcement",
+    "revelationType": "Meccan",
+    "transliteration": "An-Naba",
+    "names": {"en": "The Tidings", "ar": "النبأ", "bn": "মহাসংবাদ", "de": "Die Ankündigung", "es": "La Noticia", "fr": "La nouvelle", "ms": "Berita Besar", "ru": "Весть", "tr": "Nebe", "ur": "خبر"},
+    "translits": {"ru": "Ан-Наба", "bn": "আন নাবা"}
   },
   {
     "id": 79,
@@ -708,7 +1254,14 @@ const List surah = [
     "english": "Those Who Tear Out",
     "turkish": "Naziât",
     "place": "Makkah",
-    "arabic": "النازعات"
+    "arabic": "النازعات",
+    "arabicName": "سُورَةُ النَّازِعَاتِ",
+    "englishName": "An-Naazi'aat",
+    "englishNameTranslation": "Those who drag forth",
+    "revelationType": "Meccan",
+    "transliteration": "An-Nazi'at",
+    "names": {"en": "Those who drag forth", "ar": "النازعات", "bn": "প্রচেষ্টাকারী", "de": "Die ausziehen", "es": "Los Que Arrancan", "fr": "Ceux qui arrachent", "ms": "Malaikat Yang Mencabut", "ru": "Исторгающие", "tr": "Naziât", "ur": "زور سے کھینچنے والے"},
+    "translits": {"ru": "Ан-Назиат", "bn": "আন নাযিয়াত"}
   },
   {
     "id": 80,
@@ -717,7 +1270,14 @@ const List surah = [
     "english": "He Frowned",
     "turkish": "Abese",
     "place": "Makkah",
-    "arabic": "عبس"
+    "arabic": "عبس",
+    "arabicName": "سُورَةُ عَبَسَ",
+    "englishName": "Abasa",
+    "englishNameTranslation": "He frowned",
+    "revelationType": "Meccan",
+    "transliteration": "'Abasa",
+    "names": {"en": "He Frowned", "ar": "عبس", "bn": "সে ভ্রু কুঁচকালো", "de": "Er zog die Stirne kraus", "es": "Frunció El Ceño", "fr": "Il s'est renfrogné", "ms": "Dia Bermasam Muka", "ru": "Нахмурился", "tr": "Abese", "ur": "تیوری چڑہائی"},
+    "translits": {"ru": "Абаса", "bn": "আবাসা"}
   },
   {
     "id": 81,
@@ -726,7 +1286,14 @@ const List surah = [
     "english": "The Folding Up",
     "turkish": "Tekvîr",
     "place": "Makkah",
-    "arabic": "التكوير"
+    "arabic": "التكوير",
+    "arabicName": "سُورَةُ التَّكۡوِيرِ",
+    "englishName": "At-Takwir",
+    "englishNameTranslation": "The Overthrowing",
+    "revelationType": "Meccan",
+    "transliteration": "At-Takwir",
+    "names": {"en": "The Overthrowing", "ar": "التكوير", "bn": "অন্ধকারাচ্ছন্ন", "de": "Das Einhüllen", "es": "El Arrollamiento", "fr": "L'obscurcissement", "ms": "Menggulung", "ru": "Скручивание", "tr": "Tekvîr", "ur": "لپیٹنا"},
+    "translits": {"ru": "Ат-Таквир", "bn": "আত-তাকভীর"}
   },
   {
     "id": 82,
@@ -735,7 +1302,14 @@ const List surah = [
     "english": "The Overthrowing",
     "turkish": "İnfitâr",
     "place": "Makkah",
-    "arabic": "الإنفطار"
+    "arabic": "الإنفطار",
+    "arabicName": "سُورَةُ الانفِطَارِ",
+    "englishName": "Al-Infitaar",
+    "englishNameTranslation": "The Cleaving",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Infitar",
+    "names": {"en": "The Cleaving", "ar": "الإنفطار", "bn": "বিদীর্ণ করা", "de": "Die Spaltung", "es": "La Hendidura", "fr": "La rupture", "ms": "Terpecah & Terbelah", "ru": "Раскалывание", "tr": "İnfitâr", "ur": "ٹکڑے ہونا"},
+    "translits": {"ru": "Аль-Инфитар", "bn": "আল-ইনফিতার"}
   },
   {
     "id": 83,
@@ -744,7 +1318,14 @@ const List surah = [
     "english": "The Cleaving Asunder",
     "turkish": "Mutaffifîn",
     "place": "Makkah",
-    "arabic": "المطففين"
+    "arabic": "المطففين",
+    "arabicName": "سُورَةُ المُطَفِّفِينَ",
+    "englishName": "Al-Mutaffifin",
+    "englishNameTranslation": "Defrauding",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Mutaffifin",
+    "names": {"en": "The Defrauding", "ar": "المطففين", "bn": "প্রতারণা করা", "de": "Die Betrüger", "es": "Los Defraudadores", "fr": "Les fraudeurs", "ms": "Golongan yang Curang", "ru": "Обвешивающие", "tr": "Mutaffifîn", "ur": "ناپ تول میں کمی کرنے والے"},
+    "translits": {"ru": "Аль-Мутаффифин", "bn": "আত মুত্বাফ্‌ফিফীন"}
   },
   {
     "id": 84,
@@ -753,7 +1334,14 @@ const List surah = [
     "english": "The Dealers in Fraud",
     "turkish": "İnşikâk",
     "place": "Makkah",
-    "arabic": "الإنشقاق"
+    "arabic": "الإنشقاق",
+    "arabicName": "سُورَةُ الانشِقَاقِ",
+    "englishName": "Al-Inshiqaaq",
+    "englishNameTranslation": "The Splitting Open",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Inshiqaq",
+    "names": {"en": "The Sundering", "ar": "الإنشقاق", "bn": "খণ্ড-বিখণ্ডকরণ", "de": "Das Zerbrechen", "es": "El Resquebrajamiento", "fr": "La déchirure", "ms": "Terbelah", "ru": "Разверзнется", "tr": "İnşikâk", "ur": "پھٹنا"},
+    "translits": {"ru": "Аль-Иншикак", "bn": "আল ইন‌শিকাক"}
   },
   {
     "id": 85,
@@ -762,7 +1350,14 @@ const List surah = [
     "english": "The Constellations",
     "turkish": "Burûc",
     "place": "Makkah",
-    "arabic": "البروج"
+    "arabic": "البروج",
+    "arabicName": "سُورَةُ البُرُوجِ",
+    "englishName": "Al-Burooj",
+    "englishNameTranslation": "The Constellations",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Buruj",
+    "names": {"en": "The Mansions of the Stars", "ar": "البروج", "bn": "নক্ষত্রপুঞ্জ", "de": "Die Türme", "es": "Las Constelaciones", "fr": "Les constellations", "ms": "Gugusan Bintang", "ru": "Созвездия Зодиака", "tr": "Burûc", "ur": "برج"},
+    "translits": {"ru": "Аль-Бурудж", "bn": "আল-বুরুজ"}
   },
   {
     "id": 86,
@@ -771,7 +1366,14 @@ const List surah = [
     "english": "The Morning Star",
     "turkish": "Târık",
     "place": "Makkah",
-    "arabic": "الطارق"
+    "arabic": "الطارق",
+    "arabicName": "سُورَةُ الطَّارِقِ",
+    "englishName": "At-Taariq",
+    "englishNameTranslation": "The Morning Star",
+    "revelationType": "Meccan",
+    "transliteration": "At-Tariq",
+    "names": {"en": "The Nightcommer", "ar": "الطارق", "bn": "রাতের আগন্তুক", "de": "Der bei Nacht kommende", "es": "El Que Viene de Noche", "fr": "L'astre nocturne", "ms": "Pengunjung Malam", "ru": "Ночной путник", "tr": "Târık", "ur": "رات کو آنے والا"},
+    "translits": {"ru": "Ат-Тарик", "bn": "আত-তারিক্ব"}
   },
   {
     "id": 87,
@@ -780,7 +1382,14 @@ const List surah = [
     "english": "The Most High",
     "turkish": "A'lâ",
     "place": "Makkah",
-    "arabic": "الأعلى"
+    "arabic": "الأعلى",
+    "arabicName": "سُورَةُ الأَعۡلَىٰ",
+    "englishName": "Al-A'laa",
+    "englishNameTranslation": "The Most High",
+    "revelationType": "Meccan",
+    "transliteration": "Al-A'la",
+    "names": {"en": "The Most High", "ar": "الأعلى", "bn": "সর্বোন্নত", "de": "Der Allerhöchste", "es": "El Altísimo", "fr": "Le Très-Haut", "ms": "Yang Tertinggi", "ru": "Всевышний", "tr": "A'lâ", "ur": "اعلی"},
+    "translits": {"ru": "Аль-Аля", "bn": "আল আ'লা"}
   },
   {
     "id": 88,
@@ -789,7 +1398,14 @@ const List surah = [
     "english": "The Overwhelming Event",
     "turkish": "Gâşiye",
     "place": "Makkah",
-    "arabic": "الغاشية"
+    "arabic": "الغاشية",
+    "arabicName": "سُورَةُ الغَاشِيَةِ",
+    "englishName": "Al-Ghaashiya",
+    "englishNameTranslation": "The Overwhelming",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Ghashiyah",
+    "names": {"en": "The Overwhelming", "ar": "الغاشية", "bn": "বিহ্বলকর ঘটনা", "de": "Die zudecken wird", "es": "El Envolvente", "fr": "L'enveloppante", "ms": "Peristiwa Menggelisahkan/Hari Pembalasan", "ru": "Покрывающее", "tr": "Gâşiye", "ur": "چھا جانے والی"},
+    "translits": {"ru": "Аль-Гашия", "bn": "আল গাশিয়াহ্‌"}
   },
   {
     "id": 89,
@@ -798,7 +1414,14 @@ const List surah = [
     "english": "The Daybreak",
     "turkish": "Fecr",
     "place": "Makkah",
-    "arabic": "الفجر"
+    "arabic": "الفجر",
+    "arabicName": "سُورَةُ الفَجۡرِ",
+    "englishName": "Al-Fajr",
+    "englishNameTranslation": "The Dawn",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Fajr",
+    "names": {"en": "The Dawn", "ar": "الفجر", "bn": "ভোরবেলা", "de": "Die Morgendämmerung", "es": "La Aurora", "fr": "L'aube", "ms": "Fajar / Sinar Mentari", "ru": "Заря", "tr": "Fecr", "ur": "فجر"},
+    "translits": {"ru": "Аль-Фаджр", "bn": "আল ফাজ্‌র"}
   },
   {
     "id": 90,
@@ -807,7 +1430,14 @@ const List surah = [
     "english": "The City",
     "turkish": "Beled",
     "place": "Makkah",
-    "arabic": "البلد"
+    "arabic": "البلد",
+    "arabicName": "سُورَةُ البَلَدِ",
+    "englishName": "Al-Balad",
+    "englishNameTranslation": "The City",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Balad",
+    "names": {"en": "The City", "ar": "البلد", "bn": "নগর", "de": "Die Stadt", "es": "El Territorio", "fr": "La cité", "ms": "Negeri", "ru": "Город", "tr": "Beled", "ur": "شہر"},
+    "translits": {"ru": "Аль-Баляд", "bn": "আল বালাদ"}
   },
   {
     "id": 91,
@@ -816,7 +1446,14 @@ const List surah = [
     "english": "The Sun",
     "turkish": "Şems",
     "place": "Makkah",
-    "arabic": "الشمس"
+    "arabic": "الشمس",
+    "arabicName": "سُورَةُ الشَّمۡسِ",
+    "englishName": "Ash-Shams",
+    "englishNameTranslation": "The Sun",
+    "revelationType": "Meccan",
+    "transliteration": "Ash-Shams",
+    "names": {"en": "The Sun", "ar": "الشمس", "bn": "সূর্য", "de": "Die Sonne", "es": "El Sol", "fr": "Le soleil", "ms": "Matahari", "ru": "Солнце", "tr": "Şems", "ur": "آفتاب"},
+    "translits": {"ru": "Аш-Шамс", "bn": "আশ-শাম্‌স"}
   },
   {
     "id": 92,
@@ -825,7 +1462,14 @@ const List surah = [
     "english": "The Night",
     "turkish": "Leyl",
     "place": "Makkah",
-    "arabic": "الليل"
+    "arabic": "الليل",
+    "arabicName": "سُورَةُ اللَّيۡلِ",
+    "englishName": "Al-Lail",
+    "englishNameTranslation": "The Night",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Layl",
+    "names": {"en": "The Night", "ar": "الليل", "bn": "রাত", "de": "Die Nacht", "es": "La Noche", "fr": "La nuit", "ms": "Malam", "ru": "Ночь", "tr": "Leyl", "ur": "رات"},
+    "translits": {"ru": "Аль-Ляйль", "bn": "আল লাইল"}
   },
   {
     "id": 93,
@@ -834,7 +1478,14 @@ const List surah = [
     "english": "The Glorious Morning Light",
     "turkish": "Duhâ",
     "place": "Makkah",
-    "arabic": "الضحى"
+    "arabic": "الضحى",
+    "arabicName": "سُورَةُ الضُّحَىٰ",
+    "englishName": "Ad-Dhuhaa",
+    "englishNameTranslation": "The Morning Hours",
+    "revelationType": "Meccan",
+    "transliteration": "Ad-Duhaa",
+    "names": {"en": "The Morning Hours", "ar": "الضحى", "bn": "পূর্বাহ্নের সুর্যকিরণ", "de": "Der Morgen", "es": "La Claridad de La Mañana", "fr": "Le jour montant", "ms": "Pagi yang Cemerlang / Matahari Meninggi", "ru": "Утро", "tr": "Duhâ", "ur": "دن کا چڑھنا"},
+    "translits": {"ru": "Ад-Духа", "bn": "আদ-দুহা"}
   },
   {
     "id": 94,
@@ -843,7 +1494,14 @@ const List surah = [
     "english": "The Opening Up of the Heart",
     "turkish": "İnşirâh",
     "place": "Makkah",
-    "arabic": "الشرح"
+    "arabic": "الشرح",
+    "arabicName": "سُورَةُ الشَّرۡحِ",
+    "englishName": "Ash-Sharh",
+    "englishNameTranslation": "The Consolation",
+    "revelationType": "Meccan",
+    "transliteration": "Ash-Sharh",
+    "names": {"en": "The Relief", "ar": "الشرح", "bn": "বক্ষ প্রশস্তকরণ", "de": "Das Weiten", "es": "No Te Hemos Abierto", "fr": "L'ouverture", "ms": "Melapangkan", "ru": "Раскрытие", "tr": "İnşirâh", "ur": "تسکین"},
+    "translits": {"ru": "Аш-Шарх", "bn": "আল ইনশিরাহ"}
   },
   {
     "id": 95,
@@ -852,7 +1510,14 @@ const List surah = [
     "english": "The Fig Tree",
     "turkish": "Tîn",
     "place": "Makkah",
-    "arabic": "التين"
+    "arabic": "التين",
+    "arabicName": "سُورَةُ التِّينِ",
+    "englishName": "At-Tin",
+    "englishNameTranslation": "The Fig",
+    "revelationType": "Meccan",
+    "transliteration": "At-Tin",
+    "names": {"en": "The Fig", "ar": "التين", "bn": "ডুমুর", "de": "Die Feigenbäume", "es": "Los Higos", "fr": "Les figues", "ms": "Buah Tin / Buah Ara", "ru": "Смоковница", "tr": "Tîn", "ur": "انجیر"},
+    "translits": {"ru": "Ат-Тин", "bn": "ত্বীন"}
   },
   {
     "id": 96,
@@ -861,7 +1526,14 @@ const List surah = [
     "english": "The Clinging Clot",
     "turkish": "Alak",
     "place": "Makkah",
-    "arabic": "العلق"
+    "arabic": "العلق",
+    "arabicName": "سُورَةُ العَلَقِ",
+    "englishName": "Al-Alaq",
+    "englishNameTranslation": "The Clot",
+    "revelationType": "Meccan",
+    "transliteration": "Al-'Alaq",
+    "names": {"en": "The Clot", "ar": "العلق", "bn": "রক্তপিণ্ড", "de": "Der Blutklumpen", "es": "El Coágulo", "fr": "L'adhérence", "ms": "Segumpal Darah", "ru": "Сгусток крови", "tr": "Alak", "ur": "جما ہوا خون"},
+    "translits": {"ru": "Аль-Аляк", "bn": "আলাক্ব"}
   },
   {
     "id": 97,
@@ -870,7 +1542,14 @@ const List surah = [
     "english": "The Night of Honor",
     "turkish": "Kadir",
     "place": "Makkah",
-    "arabic": "القدر"
+    "arabic": "القدر",
+    "arabicName": "سُورَةُ القَدۡرِ",
+    "englishName": "Al-Qadr",
+    "englishNameTranslation": "The Power, Fate",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Qadr",
+    "names": {"en": "The Power", "ar": "القدر", "bn": "মহিমান্বিত", "de": "Die Bestimmung", "es": "El Decreto", "fr": "La destinée", "ms": "Kemuliaan", "ru": "Предопределение", "tr": "Kadir", "ur": "شب قدر"},
+    "translits": {"ru": "Аль-Кадр", "bn": "ক্বদর"}
   },
   {
     "id": 98,
@@ -879,7 +1558,14 @@ const List surah = [
     "english": "The Clear Evidence",
     "turkish": "Beyyine",
     "place": "Madinah",
-    "arabic": "البينة"
+    "arabic": "البينة",
+    "arabicName": "سُورَةُ البَيِّنَةِ",
+    "englishName": "Al-Bayyina",
+    "englishNameTranslation": "The Evidence",
+    "revelationType": "Medinan",
+    "transliteration": "Al-Bayyinah",
+    "names": {"en": "The Clear Proof", "ar": "البينة", "bn": "প্রমাণ", "de": "Der klare Beweis", "es": "La Evidencia", "fr": "La preuve", "ms": "Bukti yang Nyata", "ru": "Ясное знамение", "tr": "Beyyine", "ur": "ثبوت"},
+    "translits": {"ru": "Аль-Баййина", "bn": "বাইয়্যিনাহ"}
   },
   {
     "id": 99,
@@ -888,7 +1574,14 @@ const List surah = [
     "english": "The Earthquake",
     "turkish": "Zilzâl",
     "place": "Madinah",
-    "arabic": "الزلزلة"
+    "arabic": "الزلزلة",
+    "arabicName": "سُورَةُ الزَّلۡزَلَةِ",
+    "englishName": "Az-Zalzala",
+    "englishNameTranslation": "The Earthquake",
+    "revelationType": "Medinan",
+    "transliteration": "Az-Zalzalah",
+    "names": {"en": "The Earthquake", "ar": "الزلزلة", "bn": "ভূমিকম্প", "de": "Das Beben", "es": "El Temblor", "fr": "Le séisme", "ms": "Kegoncangan", "ru": "Сотрясение", "tr": "Zilzâl", "ur": "زلزلہ"},
+    "translits": {"ru": "Аз-Зальзаля", "bn": "যিলযাল"}
   },
   {
     "id": 100,
@@ -897,7 +1590,14 @@ const List surah = [
     "english": "The Courser",
     "turkish": "Âdiyât",
     "place": "Makkah",
-    "arabic": "العاديات"
+    "arabic": "العاديات",
+    "arabicName": "سُورَةُ العَادِيَاتِ",
+    "englishName": "Al-Aadiyaat",
+    "englishNameTranslation": "The Chargers",
+    "revelationType": "Meccan",
+    "transliteration": "Al-'Adiyat",
+    "names": {"en": "The Courser", "ar": "العاديات", "bn": "অভিযানকারী", "de": "Das Laufen", "es": "Los Que Galopan", "fr": "Les coursiers", "ms": "Yang Berlari Kencang", "ru": "Скачущие", "tr": "Âdiyât", "ur": "دوڑنے والے گھوڑے"},
+    "translits": {"ru": "Аль-Адият", "bn": "আল-আদিয়াত"}
   },
   {
     "id": 101,
@@ -906,7 +1606,14 @@ const List surah = [
     "english": "The Striking Hour",
     "turkish": "Kâria",
     "place": "Makkah",
-    "arabic": "القارعة"
+    "arabic": "القارعة",
+    "arabicName": "سُورَةُ القَارِعَةِ",
+    "englishName": "Al-Qaari'a",
+    "englishNameTranslation": "The Calamity",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Qari'ah",
+    "names": {"en": "The Calamity", "ar": "القارعة", "bn": "মহাসংকট", "de": "Die Polternde", "es": "La Conmoción", "fr": "Le fracas", "ms": "Hari Yang Hingar Bingar / Kiamat", "ru": "Великое бедствие", "tr": "Kâria", "ur": "کھڑکھڑاہٹ"},
+    "translits": {"ru": "Аль-Кариа", "bn": "ক্বারিয়াহ"}
   },
   {
     "id": 102,
@@ -915,7 +1622,14 @@ const List surah = [
     "english": "The Piling Up",
     "turkish": "Tekâsür",
     "place": "Makkah",
-    "arabic": "التكاثر"
+    "arabic": "التكاثر",
+    "arabicName": "سُورَةُ التَّكَاثُرِ",
+    "englishName": "At-Takaathur",
+    "englishNameTranslation": "Competition",
+    "revelationType": "Meccan",
+    "transliteration": "At-Takathur",
+    "names": {"en": "The Rivalry in world increase", "ar": "التكاثر", "bn": "প্রাচুর্যের প্রতিযোগিতা", "de": "Die Sucht", "es": "La Rivalidad", "fr": "La course aux richesses", "ms": "Bermegah-megah", "ru": "Страсть к приумножению", "tr": "Tekâsür", "ur": "کثرت"},
+    "translits": {"ru": "Ат-Такасур", "bn": "তাকাসুর"}
   },
   {
     "id": 103,
@@ -924,7 +1638,14 @@ const List surah = [
     "english": "The Time",
     "turkish": "Asr",
     "place": "Makkah",
-    "arabic": "العصر"
+    "arabic": "العصر",
+    "arabicName": "سُورَةُ العَصۡرِ",
+    "englishName": "Al-Asr",
+    "englishNameTranslation": "The Declining Day, Epoch",
+    "revelationType": "Meccan",
+    "transliteration": "Al-'Asr",
+    "names": {"en": "The Declining Day", "ar": "العصر", "bn": "সময়", "de": "Der Nachmittag", "es": "El Tiempo", "fr": "Le temps", "ms": "Masa", "ru": "Предвечернее время", "tr": "Asr", "ur": "زمانہ"},
+    "translits": {"ru": "Аль-Аср", "bn": "আছর"}
   },
   {
     "id": 104,
@@ -933,7 +1654,14 @@ const List surah = [
     "english": "The Scandalmonger",
     "turkish": "Hümeze",
     "place": "Makkah",
-    "arabic": "الهمزة"
+    "arabic": "الهمزة",
+    "arabicName": "سُورَةُ الهُمَزَةِ",
+    "englishName": "Al-Humaza",
+    "englishNameTranslation": "The Traducer",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Humazah",
+    "names": {"en": "The Traducer", "ar": "الهمزة", "bn": "পরনিন্দাকারী", "de": "Der Stichler", "es": "El Murmurador", "fr": "Les calomniateurs", "ms": "Pengumpat", "ru": "Хулитель", "tr": "Hümeze", "ur": "عیب لگانے والا"},
+    "translits": {"ru": "Аль-Хумаза", "bn": "হুমাযাহ"}
   },
   {
     "id": 105,
@@ -942,7 +1670,14 @@ const List surah = [
     "english": "The Elephant",
     "turkish": "Fîl",
     "place": "Makkah",
-    "arabic": "الفيل"
+    "arabic": "الفيل",
+    "arabicName": "سُورَةُ الفِيلِ",
+    "englishName": "Al-Fil",
+    "englishNameTranslation": "The Elephant",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Fil",
+    "names": {"en": "The Elephant", "ar": "الفيل", "bn": "হাতি", "de": "Der Elefant", "es": "El Elefante", "fr": "L'éléphant", "ms": "Gajah", "ru": "Слон", "tr": "Fîl", "ur": "ہاتھی"},
+    "translits": {"ru": "Аль-Филь", "bn": "ফীল"}
   },
   {
     "id": 106,
@@ -951,7 +1686,14 @@ const List surah = [
     "english": "The Quraysh",
     "turkish": "Kureyş",
     "place": "Makkah",
-    "arabic": "قريش"
+    "arabic": "قريش",
+    "arabicName": "سُورَةُ قُرَيۡشٍ",
+    "englishName": "Quraish",
+    "englishNameTranslation": "Quraysh",
+    "revelationType": "Meccan",
+    "transliteration": "Quraysh",
+    "names": {"en": "Quraysh", "ar": "قريش", "bn": "কুরাইশ গোত্র", "de": "Die Quraisch", "es": "Los Quraysh", "fr": "Les Quraysh", "ms": "Kaum Quraisy", "ru": "Курейшиты", "tr": "Kureyş", "ur": "قریش"},
+    "translits": {"ru": "Курайш", "bn": "কুরাইশ"}
   },
   {
     "id": 107,
@@ -960,7 +1702,14 @@ const List surah = [
     "english": "The Neighbourly Assistance",
     "turkish": "Maûn",
     "place": "Makkah",
-    "arabic": "الماعون"
+    "arabic": "الماعون",
+    "arabicName": "سُورَةُ المَاعُونِ",
+    "englishName": "Al-Maa'un",
+    "englishNameTranslation": "Almsgiving",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Ma'un",
+    "names": {"en": "The Small kindnesses", "ar": "الماعون", "bn": "সাহায্য সহায়তা", "de": "Die Hilfeleistung", "es": "La Ayuda Imprescindible", "fr": "L'entraide", "ms": "Barangan Berguna", "ru": "Мелочь", "tr": "Maûn", "ur": "تھوڑی سی چیز"},
+    "translits": {"ru": "Аль-Маун", "bn": "মাউন"}
   },
   {
     "id": 108,
@@ -969,7 +1718,14 @@ const List surah = [
     "english": "Abundance",
     "turkish": "Kevser",
     "place": "Makkah",
-    "arabic": "الكوثر"
+    "arabic": "الكوثر",
+    "arabicName": "سُورَةُ الكَوۡثَرِ",
+    "englishName": "Al-Kawthar",
+    "englishNameTranslation": "Abundance",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Kawthar",
+    "names": {"en": "The Abundance", "ar": "الكوثر", "bn": "কাউসার/প্রাচুর্য", "de": "Die Fülle", "es": "La Abundancia", "fr": "L'abondance", "ms": "Sungai Di Syurga", "ru": "Изобилие", "tr": "Kevser", "ur": "جنت کی نہر"},
+    "translits": {"ru": "Аль-Кавсар", "bn": "কাওসার"}
   },
   {
     "id": 109,
@@ -978,7 +1734,14 @@ const List surah = [
     "english": "The Disbelievers",
     "turkish": "Kâfirûn",
     "place": "Makkah",
-    "arabic": "الكافرون"
+    "arabic": "الكافرون",
+    "arabicName": "سُورَةُ الكَافِرُونَ",
+    "englishName": "Al-Kaafiroon",
+    "englishNameTranslation": "The Disbelievers",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Kafirun",
+    "names": {"en": "The Disbelievers", "ar": "الكافرون", "bn": "অবিশ্বাসী", "de": "Die Ungläubigen", "es": "Los Incrédulos", "fr": "Les mécréants", "ms": "Golongan Kafir", "ru": "Неверующие", "tr": "Kâfirûn", "ur": "کافرین"},
+    "translits": {"ru": "Аль-Кафирун", "bn": "কাফিরুন"}
   },
   {
     "id": 110,
@@ -987,7 +1750,14 @@ const List surah = [
     "english": "The Help",
     "turkish": "Nasr",
     "place": "Madinah",
-    "arabic": "النصر"
+    "arabic": "النصر",
+    "arabicName": "سُورَةُ النَّصۡرِ",
+    "englishName": "An-Nasr",
+    "englishNameTranslation": "Divine Support",
+    "revelationType": "Medinan",
+    "transliteration": "An-Nasr",
+    "names": {"en": "The Divine Support", "ar": "النصر", "bn": "সাহায্য", "de": "Die Hilfe", "es": "La Victoria", "fr": "Le secours", "ms": "Pertolongan", "ru": "Помощь", "tr": "Nasr", "ur": "نصرت"},
+    "translits": {"ru": "Ан-Наср", "bn": "নাসর"}
   },
   {
     "id": 111,
@@ -996,7 +1766,14 @@ const List surah = [
     "english": "The Plaited Rope",
     "turkish": "Tebbet",
     "place": "Makkah",
-    "arabic": "المسد"
+    "arabic": "المسد",
+    "arabicName": "سُورَةُ المَسَدِ",
+    "englishName": "Al-Masad",
+    "englishNameTranslation": "The Palm Fibre",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Masad",
+    "names": {"en": "The Palm Fiber", "ar": "المسد", "bn": "খেজুরের পাকানো (রশি)", "de": "Der Palmfaserstrick", "es": "La Fibra", "fr": "Les fibres", "ms": "Nyalaan Api", "ru": "Пальмовые волокна", "tr": "Tebbet", "ur": "خوب بٹی ہوئی"},
+    "translits": {"ru": "Аль-Масад", "bn": "লাহাব"}
   },
   {
     "id": 112,
@@ -1005,7 +1782,14 @@ const List surah = [
     "english": "Purity of Faith",
     "turkish": "İhlâs",
     "place": "Makkah",
-    "arabic": "الإخلاص"
+    "arabic": "الإخلاص",
+    "arabicName": "سُورَةُ الإِخۡلَاصِ",
+    "englishName": "Al-Ikhlaas",
+    "englishNameTranslation": "Sincerity",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Ikhlas",
+    "names": {"en": "The Sincerity", "ar": "الإخلاص", "bn": "আন্তরিকতা", "de": "Die Aufrichtigkeit", "es": "La Adoración Pura", "fr": "La sincérité", "ms": "Tulus Ikhlas / Memurnikan Keesaan Allah", "ru": "Очищение веры", "tr": "İhlâs", "ur": "اخلاص"},
+    "translits": {"ru": "Аль-Ихляс", "bn": "আল-ইখলাস"}
   },
   {
     "id": 113,
@@ -1014,7 +1798,14 @@ const List surah = [
     "english": "The Rising Dawn",
     "turkish": "Felak",
     "place": "Makkah",
-    "arabic": "الفلق"
+    "arabic": "الفلق",
+    "arabicName": "سُورَةُ الفَلَقِ",
+    "englishName": "Al-Falaq",
+    "englishNameTranslation": "The Dawn",
+    "revelationType": "Meccan",
+    "transliteration": "Al-Falaq",
+    "names": {"en": "The Daybreak", "ar": "الفلق", "bn": "নিশিভোর", "de": "Das Frühlicht", "es": "El Rayar del Alba", "fr": "L'aube naissante", "ms": "Waktu Subuh / Dinihari", "ru": "Рассвет", "tr": "Felak", "ur": "صبح"},
+    "translits": {"ru": "Аль-Фаляк", "bn": "আল-ফালাক"}
   },
   {
     "id": 114,
@@ -1023,6 +1814,13 @@ const List surah = [
     "english": "Mankind",
     "turkish": "Nâs",
     "place": "Makkah",
-    "arabic": "الناس"
+    "arabic": "الناس",
+    "arabicName": "سُورَةُ النَّاسِ",
+    "englishName": "An-Naas",
+    "englishNameTranslation": "Mankind",
+    "revelationType": "Meccan",
+    "transliteration": "An-Nas",
+    "names": {"en": "Mankind", "ar": "الناس", "bn": "মানুষ জাতি", "de": "Die Menschheit", "es": "Los Hombres", "fr": "Les humains", "ms": "Manusia", "ru": "Люди", "tr": "Nâs", "ur": "انسان"},
+    "translits": {"ru": "Ан-Нас", "bn": "আন-নাস"}
   }
 ];
