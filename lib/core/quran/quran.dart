@@ -123,6 +123,19 @@ String getSurahNameArabic(int surahNumber) {
   return surah[surahNumber - 1]['arabic'].toString();
 }
 
+
+String getSurahNameLocalized(int surahNumber, String languageCode) {
+  if (surahNumber > 114 || surahNumber <= 0) {
+    throw "No Surah found with given surahNumber";
+  }
+  final data = surah[surahNumber - 1];
+  if (languageCode == 'ar' || languageCode == 'ur') {
+    return data['arabic'].toString();
+  }
+  final translits = data['translits'] as Map?;
+  return (translits?[languageCode] ?? data['transliteration']).toString();
+}
+
 ///Takes [surahNumber], [verseNumber] and returns the page number of the Quran
 int getPageNumber(int surahNumber, int verseNumber) {
   if (surahNumber > 114 || surahNumber <= 0) {
