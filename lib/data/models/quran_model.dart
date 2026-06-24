@@ -6,13 +6,30 @@ class QuranModel {
   int? numberOfAyahs;
   String? revelationType;
 
+  String? transliteration;
+
+  Map<String, String>? names;
+
+  Map<String, String>? translits;
+
   QuranModel(
       {this.number,
       this.name,
       this.englishName,
       this.englishNameTranslation,
       this.numberOfAyahs,
-      this.revelationType});
+      this.revelationType,
+      this.transliteration,
+      this.names,
+      this.translits});
+
+  String localizedName(String languageCode) =>
+      names?[languageCode] ?? names?['en'] ?? englishName ?? '';
+
+  String? localizedTransliteration(String languageCode) {
+    if (languageCode == 'ar' || languageCode == 'ur') return null;
+    return translits?[languageCode] ?? transliteration;
+  }
 
   QuranModel.fromJson(Map<String, dynamic> json) {
     number = json['number'];
@@ -21,6 +38,9 @@ class QuranModel {
     englishNameTranslation = json['englishNameTranslation'];
     numberOfAyahs = json['numberOfAyahs'];
     revelationType = json['revelationType'];
+    transliteration = json['transliteration'];
+    names = (json['names'] as Map?)?.map((k, v) => MapEntry('$k', '$v'));
+    translits = (json['translits'] as Map?)?.map((k, v) => MapEntry('$k', '$v'));
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +51,9 @@ class QuranModel {
     data['englishNameTranslation'] = englishNameTranslation;
     data['numberOfAyahs'] = numberOfAyahs;
     data['revelationType'] = revelationType;
+    data['transliteration'] = transliteration;
+    data['names'] = names;
+    data['translits'] = translits;
     return data;
   }
 }
