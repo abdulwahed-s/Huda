@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/app_colors.dart';
+import 'package:huda/core/theme/app_fonts.dart';
 import 'package:huda/core/services/widget_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,7 +67,8 @@ class ThemeCubit extends Cubit<ThemeState> {
     final savedMode = prefs.getDataString(key: _themeKey);
     final savedScale = _sanitizeScale(prefs.getData(key: _scaleKey));
     final savedColorTheme = prefs.getDataString(key: _colorThemeKey);
-    final savedFont = prefs.getDataString(key: _fontKey) ?? 'Amiri';
+    final savedFont =
+        AppFonts.sanitize(prefs.getDataString(key: _fontKey) ?? AppFonts.amiri);
 
     ThemeMode themeMode;
     if (savedMode == 'light') {
