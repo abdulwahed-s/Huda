@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:huda/presentation/widgets/common/app_shimmer.dart';
 import 'package:huda/presentation/widgets/audio/audiobook_top_bar.dart';
 
 class AudiobookLoadingSkeleton extends StatelessWidget {
@@ -20,7 +20,7 @@ class AudiobookLoadingSkeleton extends StatelessWidget {
           AudiobookTopBar(isDark: isDark),
           SizedBox(height: 16.h),
           Center(
-            child: Shimmer.fromColors(
+            child: AppShimmer(
               baseColor: shimmerBase,
               highlightColor: shimmerHighlight,
               child: Container(
@@ -34,7 +34,7 @@ class AudiobookLoadingSkeleton extends StatelessWidget {
             ),
           ),
           SizedBox(height: 24.h),
-          Shimmer.fromColors(
+          AppShimmer(
             baseColor: shimmerBase,
             highlightColor: shimmerHighlight,
             child: Column(
@@ -62,7 +62,7 @@ class AudiobookLoadingSkeleton extends StatelessWidget {
           SizedBox(height: 32.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Shimmer.fromColors(
+            child: AppShimmer(
               baseColor: shimmerBase,
               highlightColor: shimmerHighlight,
               child: Container(
@@ -78,7 +78,7 @@ class AudiobookLoadingSkeleton extends StatelessWidget {
           SizedBox(height: 32.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Shimmer.fromColors(
+            child: AppShimmer(
               baseColor: shimmerBase,
               highlightColor: shimmerHighlight,
               child: Row(

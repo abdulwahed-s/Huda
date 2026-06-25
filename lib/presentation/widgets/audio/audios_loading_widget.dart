@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:huda/presentation/widgets/common/app_shimmer.dart';
 
 class AudiosLoadingWidget extends StatelessWidget {
   final bool isDark;
@@ -16,7 +16,7 @@ class AudiosLoadingWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          (context, index) => Shimmer.fromColors(
+          (context, index) => AppShimmer(
             baseColor: baseColor,
             highlightColor: highlightColor,
             child: _ShimmerRow(isDark: isDark),

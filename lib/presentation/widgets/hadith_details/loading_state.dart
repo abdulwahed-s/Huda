@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:huda/presentation/widgets/common/app_shimmer.dart';
 
 class LoadingState extends StatelessWidget {
   final bool isDark;
@@ -14,7 +14,7 @@ class LoadingState extends StatelessWidget {
       child: ListView.builder(
         itemCount: 5,
         itemBuilder: (context, index) {
-          return Shimmer.fromColors(
+          return AppShimmer(
             baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
             highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
             child: Container(

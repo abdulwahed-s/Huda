@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:huda/presentation/widgets/common/app_shimmer.dart';
 
 class AudioDetailSkeletonLoader extends StatelessWidget {
   final bool isDark;
@@ -13,7 +13,7 @@ class AudioDetailSkeletonLoader extends StatelessWidget {
     final shimmerHighlight =
         isDark ? Colors.white.withValues(alpha: 0.14) : Colors.grey.shade100;
 
-    return Shimmer.fromColors(
+    return AppShimmer(
       baseColor: shimmerBase,
       highlightColor: shimmerHighlight,
       child: CustomScrollView(

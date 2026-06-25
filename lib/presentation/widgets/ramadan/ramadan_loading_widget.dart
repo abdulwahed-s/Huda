@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:huda/presentation/widgets/common/app_shimmer.dart';
 
 class RamadanLoadingWidget extends StatelessWidget {
   final bool isDark;
@@ -24,7 +24,7 @@ class RamadanLoadingWidget extends StatelessWidget {
     final highlightColor = isDark ? Colors.grey[800]! : Colors.grey[100]!;
     final cardColor = isDark ? Colors.white10 : Colors.black12;
 
-    return Shimmer.fromColors(
+    return AppShimmer(
       baseColor: baseColor,
       highlightColor: highlightColor,
       child: ListView(
