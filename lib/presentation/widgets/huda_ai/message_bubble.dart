@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/models/chat_message_model.dart';
@@ -161,6 +161,7 @@ class MessageBubble extends StatelessWidget {
                 p: TextStyle(
                   fontSize: 14.sp,
                   height: 1.5,
+                  color: isDark ? Colors.white : Colors.black87,
                 ),
               ),
             ),
