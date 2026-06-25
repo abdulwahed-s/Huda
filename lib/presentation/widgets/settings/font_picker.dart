@@ -25,11 +25,6 @@ class FontPicker extends StatelessWidget {
         title: 'Amiri',
         previewFamily: AppFonts.amiri,
       ),
-      const _FontOption(
-        value: AppFonts.tajawal,
-        title: 'Tajawal',
-        previewFamily: AppFonts.tajawal,
-      ),
       _FontOption(
         value: AppFonts.system,
         title: l.settingsSystemFont,
