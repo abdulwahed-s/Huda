@@ -1,5 +1,9 @@
 {
     "@@locale": "ur",
+    "updateAvailableTitle": "اپ ڈیٹ دستیاب ہے",
+    "updateAvailableBody": "ہدیٰ کا نیا ورژن تازہ ترین خصوصیات اور بہتری کے ساتھ دستیاب ہے۔",
+    "updateNow": "اپ ڈیٹ کریں",
+    "updateLater": "بعد میں",
     "searchLocationTitle": "مقام تلاش کریں",
     "searchCityHint": "شہر تلاش کریں (مثلاً، نیویارک)...",
     "typeCityNameHint": "اوپر کسی شہر کا نام لکھیں",

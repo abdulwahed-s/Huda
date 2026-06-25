@@ -9,6 +9,19 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'Update verfügbar';
+
+  @override
+  String get updateAvailableBody =>
+      'Eine neue Version von Huda ist mit den neuesten Funktionen und Verbesserungen verfügbar.';
+
+  @override
+  String get updateNow => 'Aktualisieren';
+
+  @override
+  String get updateLater => 'Später';
+
+  @override
   String get searchLocationTitle => 'Standort suchen';
 
   @override

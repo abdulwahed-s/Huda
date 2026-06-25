@@ -114,6 +114,30 @@ abstract class AppLocalizations {
     Locale('ur')
   ];
 
+  /// Title of the update-available dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Update Available'**
+  String get updateAvailableTitle;
+
+  /// Body shown in the update dialog when the store provides no release notes
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of Huda is available with the latest features and improvements.'**
+  String get updateAvailableBody;
+
+  /// Primary button that opens the store to update the app
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get updateNow;
+
+  /// Secondary button to dismiss the update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateLater;
+
   /// Title of the manual location search dialog
   ///
   /// In en, this message translates to:

@@ -1,5 +1,9 @@
 {
     "@@locale": "tr",
+    "updateAvailableTitle": "Güncelleme Mevcut",
+    "updateAvailableBody": "Huda'nın en son özellikler ve iyileştirmeler içeren yeni bir sürümü mevcut.",
+    "updateNow": "Güncelle",
+    "updateLater": "Daha sonra",
     "searchLocationTitle": "Konum Ara",
     "searchCityHint": "Şehir ara (örn. New York)...",
     "typeCityNameHint": "Yukarıya bir şehir adı yazın",

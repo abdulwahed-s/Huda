@@ -9,6 +9,19 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'Güncelleme Mevcut';
+
+  @override
+  String get updateAvailableBody =>
+      'Huda\'nın en son özellikler ve iyileştirmeler içeren yeni bir sürümü mevcut.';
+
+  @override
+  String get updateNow => 'Güncelle';
+
+  @override
+  String get updateLater => 'Daha sonra';
+
+  @override
   String get searchLocationTitle => 'Konum Ara';
 
   @override

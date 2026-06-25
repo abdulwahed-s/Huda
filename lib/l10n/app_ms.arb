@@ -1,5 +1,9 @@
 {
     "@@locale": "ms",
+    "updateAvailableTitle": "Kemas Kini Tersedia",
+    "updateAvailableBody": "Versi baharu Huda tersedia dengan ciri dan penambahbaikan terkini.",
+    "updateNow": "Kemas kini",
+    "updateLater": "Kemudian",
     "searchLocationTitle": "Cari Lokasi",
     "searchCityHint": "Cari bandar (cth., New York)...",
     "typeCityNameHint": "Taip nama bandar di atas",

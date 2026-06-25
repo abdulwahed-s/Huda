@@ -9,6 +9,19 @@ class AppLocalizationsUr extends AppLocalizations {
   AppLocalizationsUr([String locale = 'ur']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'اپ ڈیٹ دستیاب ہے';
+
+  @override
+  String get updateAvailableBody =>
+      'ہدیٰ کا نیا ورژن تازہ ترین خصوصیات اور بہتری کے ساتھ دستیاب ہے۔';
+
+  @override
+  String get updateNow => 'اپ ڈیٹ کریں';
+
+  @override
+  String get updateLater => 'بعد میں';
+
+  @override
   String get searchLocationTitle => 'مقام تلاش کریں';
 
   @override

@@ -1,5 +1,21 @@
 {
     "@@locale": "en",
+    "updateAvailableTitle": "Update Available",
+    "@updateAvailableTitle": {
+        "description": "Title of the update-available dialog"
+    },
+    "updateAvailableBody": "A new version of Huda is available with the latest features and improvements.",
+    "@updateAvailableBody": {
+        "description": "Body shown in the update dialog when the store provides no release notes"
+    },
+    "updateNow": "Update",
+    "@updateNow": {
+        "description": "Primary button that opens the store to update the app"
+    },
+    "updateLater": "Later",
+    "@updateLater": {
+        "description": "Secondary button to dismiss the update dialog"
+    },
     "searchLocationTitle": "Search Location",
     "@searchLocationTitle": {
         "description": "Title of the manual location search dialog"

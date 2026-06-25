@@ -1,5 +1,9 @@
 {
     "@@locale": "ru",
+    "updateAvailableTitle": "Доступно обновление",
+    "updateAvailableBody": "Доступна новая версия Huda с последними функциями и улучшениями.",
+    "updateNow": "Обновить",
+    "updateLater": "Позже",
     "searchLocationTitle": "Поиск местоположения",
     "searchCityHint": "Поиск города (например, Нью-Йорк)...",
     "typeCityNameHint": "Введите название города выше",

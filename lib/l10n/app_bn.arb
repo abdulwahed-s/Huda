@@ -1,5 +1,9 @@
 {
     "@@locale": "bn",
+    "updateAvailableTitle": "আপডেট উপলব্ধ",
+    "updateAvailableBody": "হুদা-এর একটি নতুন সংস্করণ উপলব্ধ, যেখানে সর্বশেষ ফিচার ও উন্নতি রয়েছে।",
+    "updateNow": "আপডেট",
+    "updateLater": "পরে",
     "searchLocationTitle": "অবস্থান খুঁজুন",
     "searchCityHint": "শহর খুঁজুন (যেমন, নিউ ইয়র্ক)...",
     "typeCityNameHint": "উপরে একটি শহরের নাম লিখুন",

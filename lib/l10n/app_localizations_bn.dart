@@ -9,6 +9,19 @@ class AppLocalizationsBn extends AppLocalizations {
   AppLocalizationsBn([String locale = 'bn']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'আপডেট উপলব্ধ';
+
+  @override
+  String get updateAvailableBody =>
+      'হুদা-এর একটি নতুন সংস্করণ উপলব্ধ, যেখানে সর্বশেষ ফিচার ও উন্নতি রয়েছে।';
+
+  @override
+  String get updateNow => 'আপডেট';
+
+  @override
+  String get updateLater => 'পরে';
+
+  @override
   String get searchLocationTitle => 'অবস্থান খুঁজুন';
 
   @override

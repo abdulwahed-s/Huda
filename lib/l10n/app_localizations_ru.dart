@@ -9,6 +9,19 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'Доступно обновление';
+
+  @override
+  String get updateAvailableBody =>
+      'Доступна новая версия Huda с последними функциями и улучшениями.';
+
+  @override
+  String get updateNow => 'Обновить';
+
+  @override
+  String get updateLater => 'Позже';
+
+  @override
   String get searchLocationTitle => 'Поиск местоположения';
 
   @override

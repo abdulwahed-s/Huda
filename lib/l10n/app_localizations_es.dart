@@ -9,6 +9,19 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'Actualización disponible';
+
+  @override
+  String get updateAvailableBody =>
+      'Hay una nueva versión de Huda disponible con las últimas funciones y mejoras.';
+
+  @override
+  String get updateNow => 'Actualizar';
+
+  @override
+  String get updateLater => 'Más tarde';
+
+  @override
   String get searchLocationTitle => 'Buscar ubicación';
 
   @override

@@ -9,6 +9,19 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'يتوفر تحديث';
+
+  @override
+  String get updateAvailableBody =>
+      'يتوفر إصدار جديد من هدى يتضمن أحدث الميزات والتحسينات.';
+
+  @override
+  String get updateNow => 'تحديث';
+
+  @override
+  String get updateLater => 'لاحقًا';
+
+  @override
   String get searchLocationTitle => 'البحث عن موقع';
 
   @override

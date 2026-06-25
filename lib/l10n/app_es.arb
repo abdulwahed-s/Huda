@@ -1,5 +1,9 @@
 {
     "@@locale": "es",
+    "updateAvailableTitle": "Actualización disponible",
+    "updateAvailableBody": "Hay una nueva versión de Huda disponible con las últimas funciones y mejoras.",
+    "updateNow": "Actualizar",
+    "updateLater": "Más tarde",
     "searchLocationTitle": "Buscar ubicación",
     "searchCityHint": "Buscar ciudad (p. ej., Nueva York)...",
     "typeCityNameHint": "Escribe el nombre de una ciudad arriba",

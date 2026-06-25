@@ -1,5 +1,9 @@
 {
     "@@locale": "ar",
+    "updateAvailableTitle": "يتوفر تحديث",
+    "updateAvailableBody": "يتوفر إصدار جديد من هدى يتضمن أحدث الميزات والتحسينات.",
+    "updateNow": "تحديث",
+    "updateLater": "لاحقًا",
     "searchLocationTitle": "البحث عن موقع",
     "searchCityHint": "ابحث عن مدينة (مثال: نيويورك)...",
     "typeCityNameHint": "اكتب اسم مدينة بالأعلى",

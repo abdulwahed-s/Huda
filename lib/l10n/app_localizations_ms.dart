@@ -9,6 +9,19 @@ class AppLocalizationsMs extends AppLocalizations {
   AppLocalizationsMs([String locale = 'ms']) : super(locale);
 
   @override
+  String get updateAvailableTitle => 'Kemas Kini Tersedia';
+
+  @override
+  String get updateAvailableBody =>
+      'Versi baharu Huda tersedia dengan ciri dan penambahbaikan terkini.';
+
+  @override
+  String get updateNow => 'Kemas kini';
+
+  @override
+  String get updateLater => 'Kemudian';
+
+  @override
   String get searchLocationTitle => 'Cari Lokasi';
 
   @override
