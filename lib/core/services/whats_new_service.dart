@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/utils/version_utils.dart';
 import 'package:huda/data/models/whats_new_content.dart';
 import 'package:huda/presentation/widgets/home/whats_new_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -22,7 +23,8 @@ class WhatsNewService {
 
     if (onboardingCompleted != true) return;
 
-    if (storedVersion != null && !_isNewer(currentVersion, storedVersion)) {
+    if (storedVersion != null &&
+        !VersionUtils.isNewer(currentVersion, storedVersion)) {
       return;
     }
 
@@ -39,18 +41,5 @@ class WhatsNewService {
     );
 
     await cacheHelper.saveData(key: _lastSeenVersionKey, value: currentVersion);
-  }
-
-  static bool _isNewer(String current, String stored) {
-    final currentParts = current.split('.').map(int.tryParse).toList();
-    final storedParts = stored.split('.').map(int.tryParse).toList();
-
-    for (int i = 0; i < currentParts.length; i++) {
-      final c = currentParts[i] ?? 0;
-      final s = (i < storedParts.length) ? (storedParts[i] ?? 0) : 0;
-      if (c > s) return true;
-      if (c < s) return false;
-    }
-    return false;
   }
 }
