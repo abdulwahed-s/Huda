@@ -3,8 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_notes_wheel.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
+import 'package:huda/presentation/widgets/tasbih/tasbih_waves.dart';
 
 class TasbihCard extends StatelessWidget {
   final List<TasbihNote> notes;
@@ -65,19 +64,7 @@ class TasbihCard extends StatelessWidget {
               right: 0,
               child: SizedBox(
                 height: 72.h,
-                child: WaveWidget(
-                  config: CustomConfig(
-                    colors: [
-                      Colors.white.withValues(alpha: 0.07),
-                      Colors.white.withValues(alpha: 0.04),
-                    ],
-                    durations: const [22000, 14000],
-                    heightPercentages: const [0.3, 0.55],
-                  ),
-                  backgroundColor: Colors.transparent,
-                  size: Size(double.infinity, 72.h),
-                  waveAmplitude: 6,
-                ),
+                child: const TasbihWaves(),
               ),
             ),
             Positioned.fill(
