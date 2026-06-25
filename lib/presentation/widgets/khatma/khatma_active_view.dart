@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_card.dart';
+import 'package:huda/presentation/widgets/khatma/khatma_progress_rings.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_icon_list_tile.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_legend_item.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_reminder_section.dart';
@@ -248,56 +248,12 @@ class _ConcentricRingsCard extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 28.h),
         child: Column(
           children: [
-            CircularPercentIndicator(
-              radius: 85.r,
-              lineWidth: 16.r,
-              animation: true,
-              animateFromLastPercent: true,
-              animationDuration: 1200,
-              curve: Curves.easeOutCubic,
-              percent: percentTotal,
-              circularStrokeCap: CircularStrokeCap.round,
-              backgroundColor: isDark ? Colors.white10 : Colors.black12,
-              linearGradient: const LinearGradient(
-                  colors: [Colors.greenAccent, Colors.green]),
-              center: CircularPercentIndicator(
-                radius: 67.r,
-                lineWidth: 14.r,
-                animation: true,
-                animateFromLastPercent: true,
-                animationDuration: 1400,
-                curve: Curves.easeOutCubic,
-                percent: percentDaily,
-                circularStrokeCap: CircularStrokeCap.round,
-                backgroundColor: isDark ? Colors.white10 : Colors.black12,
-                linearGradient: const LinearGradient(colors: [
-                  Colors.orangeAccent,
-                  Colors.deepOrange,
-                ]),
-                center: CircularPercentIndicator(
-                  radius: 50.r,
-                  lineWidth: 12.r,
-                  animation: true,
-                  animateFromLastPercent: true,
-                  animationDuration: 1600,
-                  curve: Curves.easeOutCubic,
-                  percent: percentPacing,
-                  circularStrokeCap: CircularStrokeCap.round,
-                  backgroundColor: isDark ? Colors.white10 : Colors.black12,
-                  linearGradient: const LinearGradient(colors: [
-                    Colors.cyanAccent,
-                    Colors.blue,
-                  ]),
-                  center: Text(
-                    '${(percentTotal * 100).toInt()}%',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 22.sp,
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
-                  ),
-                ),
-              ),
+            KhatmaProgressRings(
+              percentTotal: percentTotal,
+              percentDaily: percentDaily,
+              percentPacing: percentPacing,
+              isDark: isDark,
+              centerText: '${(percentTotal * 100).toInt()}%',
             ),
             SizedBox(height: 20.h),
             Wrap(
