@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/services/app_review_service.dart';
 import 'package:huda/cubit/rating/rating_cubit.dart';
 import 'package:huda/presentation/widgets/rating/app_rating_dialog.dart';
 
@@ -31,17 +32,18 @@ class RatingService {
   }
 
   void showRatingDialog(BuildContext context) {
-    _showRatingDialog(context);
+    _showRatingDialog(context, showDismissActions: false);
   }
 
-  void _showRatingDialog(BuildContext context) {
+  void _showRatingDialog(BuildContext context,
+      {bool showDismissActions = true}) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: !showDismissActions,
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: context.read<RatingCubit>(),
-          child: const AppRatingDialog(),
+          child: AppRatingDialog(showDismissActions: showDismissActions),
         );
       },
     );
@@ -62,9 +64,7 @@ class RatingService {
 
   Future<void> resetRatingPreferences(BuildContext context) async {
     try {
-      final ratingCubit = context.read<RatingCubit>();
-
-      await ratingCubit.rateMyApp.reset();
+      await AppReviewService.reset();
     } catch (e) {
       debugPrint('RatingService resetRatingPreferences error: $e');
     }
