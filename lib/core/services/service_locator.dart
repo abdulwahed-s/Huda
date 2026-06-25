@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
@@ -17,7 +16,6 @@ import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
 import 'package:huda/data/repository/miqaat_lock_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
-import 'package:upgrader/upgrader.dart';
 import 'package:huda/core/services/speech_service.dart';
 import 'package:huda/core/services/surah_screen_settings_service.dart';
 import 'package:huda/core/services/khatma_service.dart';
@@ -43,10 +41,6 @@ void setupServiceLocator() {
   getIt.registerSingleton<PrayerCountdownService>(PrayerCountdownService());
   getIt.registerSingleton<PersistentPrayerCountdownService>(
       PersistentPrayerCountdownService());
-  getIt.registerSingleton<Upgrader>(Upgrader(
-    languageCode: PlatformDispatcher.instance.locale.languageCode,
-    durationUntilAlertAgain: const Duration(hours: 12),
-  ));
 
   getIt.registerSingleton<SpeechService>(SpeechService());
 

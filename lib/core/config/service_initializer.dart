@@ -12,7 +12,6 @@ import 'package:huda/core/services/widget_background_service.dart';
 import 'package:huda/core/services/widget_service.dart';
 import 'package:huda/core/utils/performance_utils.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
-import 'package:upgrader/upgrader.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -80,8 +79,6 @@ Future<void> _initializePrayerServices() async {
 
 Future<void> _initializeDataServices() async {
   await SurahCubit.preloadSurahData();
-  final upgrader = getIt<Upgrader>();
-  await upgrader.initialize();
 }
 
 Future<void> _initializeBackgroundServices() async {
