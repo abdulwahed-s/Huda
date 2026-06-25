@@ -132,29 +132,38 @@ class FeatureCard extends StatelessWidget {
                         ),
                       SizedBox(height: 12.h),
                       Flexible(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: SizedBox(
-                                width: constraints.maxWidth,
-                                child: Text(
-                                  title,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: fontSize,
-                                    fontWeight: FontWeight.w600,
-                                    color: isDarkMode
-                                        ? Colors.white
-                                        : Colors.black.withValues(alpha: 0.85),
-                                    height: 1.2,
+                        child: Center(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final textStyle = TextStyle(
+                                fontSize: fontSize,
+                                fontWeight: FontWeight.w600,
+                                color: isDarkMode
+                                    ? Colors.white
+                                    : Colors.black.withValues(alpha: 0.85),
+                                height: 1.2,
+                              );
+
+                              final isSingleWord = !title.trim().contains(' ');
+                              return FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: isSingleWord
+                                        ? double.infinity
+                                        : constraints.maxWidth,
+                                  ),
+                                  child: Text(
+                                    title,
+                                    textAlign: TextAlign.center,
+                                    maxLines: isSingleWord ? 1 : 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textStyle,
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
