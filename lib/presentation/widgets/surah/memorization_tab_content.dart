@@ -1,4 +1,3 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -234,10 +233,9 @@ class _MicrophoneStatusCard extends StatelessWidget {
       child: Row(
         children: [
           if (isListening)
-            AvatarGlow(
+            _PulseGlow(
               glowColor: Colors.red,
               duration: const Duration(milliseconds: 2000),
-              repeat: true,
               child: Icon(
                 Icons.mic,
                 color: Colors.red,
@@ -278,6 +276,67 @@ class _MicrophoneStatusCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _PulseGlow extends StatefulWidget {
+  final Widget child;
+  final Color glowColor;
+  final Duration duration;
+
+  const _PulseGlow({
+    required this.child,
+    required this.glowColor,
+    this.duration = const Duration(milliseconds: 2000),
+  });
+
+  @override
+  State<_PulseGlow> createState() => _PulseGlowState();
+}
+
+class _PulseGlowState extends State<_PulseGlow>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: widget.duration,
+  )..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            for (final phase in const [0.0, 0.5])
+              _ring((_controller.value + phase) % 1.0),
+            child!,
+          ],
+        );
+      },
+      child: widget.child,
+    );
+  }
+
+  Widget _ring(double t) {
+    return Opacity(
+      opacity: (1.0 - t) * 0.4,
+      child: Container(
+        width: 28.sp + 40.sp * t,
+        height: 28.sp + 40.sp * t,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: widget.glowColor.withValues(alpha: 0.4),
+        ),
       ),
     );
   }
