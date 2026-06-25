@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/rendering.dart';
@@ -531,27 +530,51 @@ class _ShareWidgetState extends State<ShareWidget> {
       await Clipboard.setData(ClipboardData(text: _getShareText()));
 
       if (mounted) {
-        Flushbar(
-          message: AppLocalizations.of(context)!.copiedToClipboard,
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-          margin: const EdgeInsets.all(8),
-          borderRadius: BorderRadius.circular(8),
-          flushbarPosition: FlushbarPosition.TOP,
-        ).show(context);
+        _showSnack(AppLocalizations.of(context)!.copiedToClipboard,
+            isError: false);
       }
     } catch (e) {
       if (mounted) {
-        Flushbar(
-          message: AppLocalizations.of(context)!.failedToCopy,
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-          margin: const EdgeInsets.all(8),
-          borderRadius: BorderRadius.circular(8),
-          flushbarPosition: FlushbarPosition.TOP,
-        ).show(context);
+        _showSnack(AppLocalizations.of(context)!.failedToCopy, isError: true);
       }
     }
+  }
+
+  void _showSnack(String message, {required bool isError}) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                isError ? Icons.error_outline : Icons.check_circle_outline,
+                color: Colors.white,
+                size: 20.sp,
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Text(
+                  message,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor:
+              isError ? const Color(0xFFE53935) : const Color(0xFF2E7D32),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+          margin: EdgeInsets.all(12.w),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+        ),
+      );
   }
 
   void _shareText() async {
