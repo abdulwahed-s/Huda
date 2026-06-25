@@ -44,12 +44,17 @@ class _SurahIndexTabState extends State<SurahIndexTab> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
+    final langCode = Localizations.localeOf(context).languageCode;
     final allSurahs = List.generate(114, (i) => i + 1);
     final filteredSurahs = _searchQuery.isEmpty
         ? allSurahs
         : allSurahs.where((n) {
             final q = _searchQuery;
             return quran.getSurahNameArabic(n).contains(q) ||
+                quran
+                    .getSurahNameLocalized(n, langCode)
+                    .toLowerCase()
+                    .contains(q.toLowerCase()) ||
                 quran.getSurahName(n).toLowerCase().contains(q.toLowerCase()) ||
                 n.toString() == q;
           }).toList();
@@ -110,7 +115,7 @@ class _SurahIndexTabState extends State<SurahIndexTab> {
 
                 return SurahIndexGridTile(
                   surahNumber: surahNumber,
-                  arabicName: quran.getSurahNameArabic(surahNumber),
+                  name: quran.getSurahNameLocalized(surahNumber, langCode),
                   isMakki: isMakki,
                   revelationLabel: isMakki ? l.meccan : l.medinan,
                   verseCountLabel: l.verseCountLabel(verseCount),

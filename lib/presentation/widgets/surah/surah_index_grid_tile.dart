@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SurahIndexGridTile extends StatelessWidget {
   final int surahNumber;
-  final String arabicName;
+  final String name;
   final bool isMakki;
   final String revelationLabel;
   final String verseCountLabel;
@@ -15,7 +15,7 @@ class SurahIndexGridTile extends StatelessWidget {
   const SurahIndexGridTile({
     super.key,
     required this.surahNumber,
-    required this.arabicName,
+    required this.name,
     required this.isMakki,
     required this.revelationLabel,
     required this.verseCountLabel,
@@ -73,7 +73,7 @@ class SurahIndexGridTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    arabicName,
+                    name,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w700,
