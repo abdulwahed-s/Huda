@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
-import 'package:flutter/services.dart';
+import 'package:huda/core/quran/surah_builder.dart';
 import 'package:huda/data/models/quran_model.dart';
 import 'package:meta/meta.dart';
 
@@ -15,10 +13,7 @@ class QuranCubit extends Cubit<QuranState> {
   Future<void> loadQuran() async {
     emit(QuranLoading());
     try {
-      final String response =
-          await rootBundle.loadString('assets/json/quran_data.json');
-      final List data = json.decode(response);
-      surahs = data.map((json) => QuranModel.fromJson(json)).toList();
+      surahs = SurahBuilder.buildQuranIndex();
       emit(QuranLoaded(surahs));
     } catch (e) {
       emit(QuranError("Failed to load Quran data: $e"));
