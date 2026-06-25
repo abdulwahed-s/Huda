@@ -1,9 +1,9 @@
-import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PermissionDeniedState extends StatelessWidget {
   final String message;
@@ -52,7 +52,7 @@ class PermissionDeniedState extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: isPermanent
                   ? () async {
-                      await AppSettings.openAppSettings();
+                      await openAppSettings();
                       await Future.delayed(const Duration(seconds: 5));
                       if (context.mounted) {
                         context.read<QiblahCubit>().loadQiblah();
