@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/routes/app_route.dart';
-import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/services/update_service.dart';
 import 'package:huda/core/services/quran_audio_progress_service.dart';
 import 'package:huda/core/services/quran_radio_progress_service.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
@@ -21,7 +21,6 @@ import 'package:huda/presentation/screens/reciter_surahs_screen.dart';
 import 'package:huda/presentation/widgets/home/home_app_bar.dart';
 import 'package:huda/presentation/widgets/home/home_background.dart';
 import 'package:huda/presentation/widgets/home/home_content.dart';
-import 'package:upgrader/upgrader.dart';
 import 'package:huda/presentation/widgets/home/exit_confirmation_dialog.dart';
 import 'package:huda/core/services/whats_new_service.dart';
 
@@ -67,17 +66,20 @@ class _HomeState extends State<Home>
     context.read<HomeCubit>().loadHomeData();
     _animationController.forward();
 
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) {
-        WhatsNewService.checkAndShow(context);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _runStartupDialogs();
     });
+  }
 
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        RatingService.instance.checkAndShowRatingDialog(context);
-      }
-    });
+  Future<void> _runStartupDialogs() async {
+    final showedUpdate = await UpdateService.checkAndShow(context);
+    if (showedUpdate || !mounted) return;
+
+    await Future.delayed(const Duration(milliseconds: 1500));
+    if (mounted) WhatsNewService.checkAndShow(context);
+
+    await Future.delayed(const Duration(milliseconds: 1500));
+    if (mounted) RatingService.instance.checkAndShowRatingDialog(context);
   }
 
   @override
@@ -269,38 +271,32 @@ class _HomeState extends State<Home>
           SystemNavigator.pop();
         }
       },
-      child: UpgradeAlert(
-        barrierDismissible: false,
-        showReleaseNotes: true,
-        showIgnore: false,
-        upgrader: getIt<Upgrader>(),
-        child: Scaffold(
-          body: HomeBackground(
-            isDarkMode: isDarkMode,
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                // ignore: prefer_const_constructors
-                HomeAppBar(),
-                SliverSafeArea(
-                  top: false,
-                  left: false,
-                  right: false,
-                  sliver: HomeContent(
-                    animationController: _animationController,
-                    fadeAnimation: _fadeAnimation,
-                    slideAnimation: _slideAnimation,
-                    refreshHomeData: _refreshHomeData,
-                    openLastReadSurah: _openLastReadSurah,
-                    openLastReciterAudio: (progress) =>
-                        _openLastReciterAudio(progress as QuranAudioProgress),
-                    openLastRadioStation: (progress) =>
-                        _openLastRadioStation(progress as RadioStationProgress),
-                    isDarkMode: isDarkMode,
-                  ),
+      child: Scaffold(
+        body: HomeBackground(
+          isDarkMode: isDarkMode,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              // ignore: prefer_const_constructors
+              HomeAppBar(),
+              SliverSafeArea(
+                top: false,
+                left: false,
+                right: false,
+                sliver: HomeContent(
+                  animationController: _animationController,
+                  fadeAnimation: _fadeAnimation,
+                  slideAnimation: _slideAnimation,
+                  refreshHomeData: _refreshHomeData,
+                  openLastReadSurah: _openLastReadSurah,
+                  openLastReciterAudio: (progress) =>
+                      _openLastReciterAudio(progress as QuranAudioProgress),
+                  openLastRadioStation: (progress) =>
+                      _openLastRadioStation(progress as RadioStationProgress),
+                  isDarkMode: isDarkMode,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
