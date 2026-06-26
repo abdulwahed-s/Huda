@@ -47,14 +47,13 @@ dependencies:
   media_kit_libs_linux: ^1.0.9
   audio_session: ^0.1.21
   dio: ^5.8.0+1
-  connectivity_plus: ^7.1.1
   shared_preferences: ^2.5.3
   get_it: ^8.0.3
   path_provider: ^2.1.4
   flutter_svg: ^2.2.0
   lottie: ^3.1.2
   newton_particles: ^0.2.2
-  share_plus: ^11.0.0
+  share_plus: ^13.1.0
   jiffy: ^6.4.3
   locale_names: ^1.1.1
   home_widget: ^0.9.1
@@ -72,40 +71,28 @@ dependencies:
   flutter_qiblah: ^3.1.0+1
   flutter_compass_v2: ^1.0.3
   vibration: ^3.1.3
-  app_settings: ^6.1.1
-  wave: ^0.2.2
   hijri: ^3.0.0
   equatable: ^2.0.7
-  flutter_colorpicker: ^1.1.0
   uuid: ^4.5.1
   pdfrx: ^2.2.24
   synchronized: ^3.4.0
-  shimmer: ^3.0.0
   url_launcher: ^6.3.2
-  flutter_markdown: ^0.7.7+1
   supabase_flutter: ^2.8.4
-  device_info_plus: ^11.5.0
+  device_info_plus: ^13.1.0
   restart_app: ^1.7.3
   feedback: ^3.2.0
   path: ^1.9.1
   archive: ^4.0.4
-  rate_my_app: ^2.3.2
-  flutter_rating_bar: ^4.0.1
-  upgrader: ^12.3.0
   scrollable_positioned_list: ^0.3.8
-  flutter_html: ^3.0.0
   html: ^0.15.6
   speech_to_text: ^7.3.0
-  avatar_glow: ^3.0.1
   flutter_macos_permissions: ^2.0.7
   quick_actions: ^1.1.0
   vector_graphics: ^1.1.19
   alarm: ^5.2.1
-  package_info_plus: ^8.0.0
-  percent_indicator: ^4.2.5
-  wakelock_plus: ^1.3.3
-  another_flushbar: ^2.2.4
-
+  package_info_plus: ^10.1.0
+  wakelock_plus: ^1.6.1
+  flutter_markdown_plus: ^1.0.7
 dev_dependencies:
   flutter_test:
     sdk: flutter
