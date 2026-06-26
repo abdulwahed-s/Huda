@@ -1,12 +1,12 @@
 {
     "@@locale": "ar",
     "updateAvailableTitle": "يتوفر تحديث",
-    "updateAvailableBody": "يتوفر إصدار جديد من هدى يتضمن أحدث الميزات والتحسينات.",
+    "updateAvailableBody": "صدر إصدار جديد من هُدَى يتضمن أحدث الميزات والتحسينات.",
     "updateNow": "تحديث",
     "updateLater": "لاحقًا",
     "searchLocationTitle": "البحث عن موقع",
     "searchCityHint": "ابحث عن مدينة (مثال: نيويورك)...",
-    "typeCityNameHint": "اكتب اسم مدينة بالأعلى",
+    "typeCityNameHint": "اكتب اسم مدينة في الأعلى",
     "appTitle": "هُدَى",
     "settings": "الإعدادات",
     "theme": "المظهر",
@@ -33,9 +33,9 @@
     "hadithChapters": "أبواب الحديث",
     "hadithDetails": "تفاصيل الحديث",
     "books": "الكتب",
-    "bookmarks": "علامات مرجعية",
-    "homeScreenWidgetManagement": "إدارة عنصر الشاشة الرئيسية",
-    "loading": "جاري التحميل...",
+    "bookmarks": "الإشارات المرجعية",
+    "homeScreenWidgetManagement": "إدارة أداة الشاشة الرئيسية",
+    "loading": "جارٍ التحميل...",
     "retry": "إعادة المحاولة",
     "tryAgain": "حاول مرة أخرى",
     "cancel": "إلغاء",
@@ -52,28 +52,28 @@
     "shareText": "مشاركة النص",
     "refreshLocation": "تحديث الموقع",
     "autoUpdateWhenAppClosed": "التحديث التلقائي عند إغلاق التطبيق",
-    "backgroundUpdatesDisabled": "تم تعطيل التحديثات في الخلفية.",
+    "backgroundUpdatesDisabled": "عُطِّلت التحديثات في الخلفية.",
     "clearAllCustomVerses": "مسح جميع الآيات المخصصة",
     "clearAllBookmarks": "مسح جميع الإشارات المرجعية",
-    "verseRemovedFromWidget": "تم إزالة الآية من الودجت",
-    "allCustomVersesCleared": "تم مسح جميع الآيات المخصصة",
-    "downloadFeatureComingSoon": "ميزة التحميل قادمة قريباً!",
-    "prayerCountdownServiceStarted": "تم بدء خدمة العد التنازلي للصلاة",
-    "prayerCountdownServiceStopped": "تم إيقاف خدمة العد التنازلي للصلاة",
-    "prayerCountdownServiceRestarted": "تم إعادة تشغيل خدمة العد التنازلي للصلاة",
-    "failedToShareText": "فشل في مشاركة النص",
-    "failedToShareImage": "فشل في مشاركة الصورة",
-    "tafsirDownloadedSuccessfully": "تم تحميل التفسير بنجاح!",
-    "translationDownloadedSuccessfully": "تم تحميل الترجمة بنجاح!",
+    "verseRemovedFromWidget": "أُزيلت الآية من الأداة",
+    "allCustomVersesCleared": "مُسحت جميع الآيات المخصصة",
+    "downloadFeatureComingSoon": "ميزة التنزيل قادمة قريبًا!",
+    "prayerCountdownServiceStarted": "بدأت خدمة العد التنازلي للصلاة",
+    "prayerCountdownServiceStopped": "تَوقّفت خدمة العد التنازلي للصلاة",
+    "prayerCountdownServiceRestarted": "أُعيد تشغيل خدمة العد التنازلي للصلاة",
+    "failedToShareText": "تعذّرت مشاركة النص",
+    "failedToShareImage": "تعذّرت مشاركة الصورة",
+    "tafsirDownloadedSuccessfully": "نُزّل التفسير بنجاح!",
+    "translationDownloadedSuccessfully": "نُزّلت الترجمة بنجاح!",
     "unknownState": "حالة غير معروفة",
     "dailyProgress": "التقدم اليومي",
-    "consecutiveDays": "يوم متتالي",
+    "consecutiveDays": "يوم متتالٍ",
     "noTasksForDay": "لا توجد مهام لهذا اليوم",
     "deleteEvent": "حذف الحدث",
     "addEvent": "إضافة حدث",
     "editEvent": "تعديل الحدث",
-    "receiveNotification": "تلقي الإشعار",
-    "getNotifiedAboutEvent": "احصل على إشعار حول هذا الحدث",
+    "receiveNotification": "تلقّي الإشعار",
+    "getNotifiedAboutEvent": "تلقَّ إشعارًا بهذا الحدث",
     "allDayEvent": "حدث طوال اليوم",
     "chooseColor": "اختر اللون",
     "hijriCalendar": "التقويم الهجري",
@@ -118,7 +118,7 @@
     "notify": "إشعار",
     "library": "المكتبة",
     "all": "الكل",
-    "filtered": "مُرشح",
+    "filtered": "مُرشَّح",
     "readMore": "اقرأ المزيد",
     "readLess": "اقرأ أقل",
     "aboutThisAudio": "عن هذا المقطع",
@@ -130,9 +130,9 @@
     "last": "الأخيرة",
     "jumpTo": "انتقل إلى:",
     "go": "انطلق",
-    "oopsSomethingWentWrong": "عذراً! حدث خطأ ما",
+    "oopsSomethingWentWrong": "عذراً! وقع خطأٌ ما",
     "chooseLanguage": "اختر اللغة",
-    "searchLanguages": "البحث في اللغات...",
+    "searchLanguages": "ابحث في اللغات...",
     "saveEvent": "حفظ الحدث",
     "saveChanges": "حفظ التغييرات",
     "pickColor": "اختر لوناً",
@@ -143,32 +143,32 @@
     "asr": "العصر",
     "maghrib": "المغرب",
     "isha": "العشاء",
-    "resetCounter": "إعادة تعيين العداد",
-    "resetCounterConfirmation": "هل أنت متأكد من أنك تريد إعادة تعيين العداد إلى 0؟",
+    "resetCounter": "إعادة ضبط العداد",
+    "resetCounterConfirmation": "أمتأكد من إعادة ضبط العداد إلى 0؟",
     "note": "ملاحظة",
     "dhikr": "ذكر",
     "minus": "ناقص",
     "addDhikr": "أضف ذكراً",
-    "noDhikrYet": "لا يوجد ذكر بعد",
+    "noDhikrYet": "لا ذكر بعد",
     "enterDhikrHint": "أدخل ذكرك هنا...",
     "vibrate": "اهتزاز",
     "silent": "صامت",
-    "findingQiblahDirection": "جاري البحث عن اتجاه القبلة...",
-    "somethingWentWrong": "حدث خطأ ما",
-    "locationPermissionRequired": "مطلوب إذن الموقع",
+    "findingQiblahDirection": "يجري البحث عن اتجاه القبلة...",
+    "somethingWentWrong": "وقع خطأٌ ما",
+    "locationPermissionRequired": "يلزم إذنُ الموقع",
     "openSettings": "فتح الإعدادات",
     "alignedWithQiblah": "متجه نحو القبلة",
-    "findingDirection": "جاري البحث عن الاتجاه...",
+    "findingDirection": "يجري البحث عن الاتجاه...",
     "perfectQiblahAlignment": "🕋 ممتاز! أنت متجه نحو القبلة",
-    "rotateDeviceInstruction": "قم بتدوير جهازك حتى يشير السهم نحو مكة",
+    "rotateDeviceInstruction": "أدِر جهازك حتى يشير السهم نحو مكة",
     "calibrateCompass": "تحتاج البوصلة إلى معايرة",
-    "calibrateCompassInstruction": "حرّك هاتفك على شكل الرقم ٨ لتحسين الدقة",
+    "calibrateCompassInstruction": "حرّك هاتفك على هيئة الرقم ٨ لتحسين الدقة",
     "athkarCollection": "مجموعة الأذكار",
     "selectedAthkarGroups": "{count} مجموعة من الأذكار المختارة",
-    "retryArabic": "إعادة المحاولة",
-    "errorRemovingVerse": "خطأ في إزالة الآية",
+    "retryArabic": "أعد المحاولة",
+    "errorRemovingVerse": "تعذّرت إزالة الآية",
     "clearAll": "مسح الكل",
-    "errorClearingVerses": "خطأ في مسح الآيات",
+    "errorClearingVerses": "تعذّر مسح الآيات",
     "testNow": "اختبار الآن",
     "continueReading": "متابعة",
     "huda": "هُدَى",
@@ -181,71 +181,71 @@
     "athkarCounter": "عداد الأذكار",
     "remove": "إزالة",
     "today": "اليوم",
-    "noPrayerTimesAvailable": "لا توجد أوقات صلاة متاحة",
+    "noPrayerTimesAvailable": "لا تتوفر أوقات صلاة",
     "sunrise": "الشروق",
-    "noInternetConnection": "لا يوجد اتصال بالإنترنت",
-    "pleaseCheckConnection": "يرجى التحقق من الاتصال والمحاولة مرة أخرى.",
-    "cannotLoadOffline": "لا يمكن تحميل {section} أثناء عدم الاتصال.\nيرجى التحقق من اتصال الإنترنت.",
-    "noInternetOfflineUnavailable": "لا يوجد اتصال بالإنترنت. لا يوجد محتوى غير متصل متاح.",
-    "offlineAudioUnavailable": "لا يوجد اتصال بالإنترنت. لا يوجد صوت محفوظ للاستخدام دون اتصال.",
-    "offlineTafsirUnavailable": "لا يوجد اتصال بالإنترنت. لا يوجد تفسير محفوظ للاستخدام دون اتصال.",
-    "offlineTranslationUnavailable": "لا يوجد اتصال بالإنترنت. لا توجد ترجمة محفوظة للاستخدام دون اتصال.",
-    "loadingAthkar": "جاري تحميل الأذكار...",
+    "noInternetConnection": "لا اتصال بالإنترنت",
+    "pleaseCheckConnection": "يُرجى التحقق من الاتصال وإعادة المحاولة.",
+    "cannotLoadOffline": "يتعذّر تحميل {section} دون اتصال.\nيُرجى التحقق من اتصالك بالإنترنت.",
+    "noInternetOfflineUnavailable": "لا اتصال بالإنترنت، ولا محتوى متاح دون اتصال.",
+    "offlineAudioUnavailable": "لا اتصال بالإنترنت، ولا صوت محفوظ للاستخدام دون اتصال.",
+    "offlineTafsirUnavailable": "لا اتصال بالإنترنت، ولا تفسير محفوظ للاستخدام دون اتصال.",
+    "offlineTranslationUnavailable": "لا اتصال بالإنترنت، ولا ترجمة محفوظة للاستخدام دون اتصال.",
+    "loadingAthkar": "يجري تحميل الأذكار...",
     "pressForDetails": "اضغط للتفاصيل",
-    "connectionTimedOut": "انتهت مهلة الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.",
-    "serverTimeout": "استغرق الخادم وقتاً طويلاً للاستجابة. يرجى المحاولة مرة أخرى.",
-    "responseTimeout": "انتهت مهلة الاستجابة. يرجى التحقق من الاتصال والمحاولة مرة أخرى.",
-    "certificateError": "هناك مشكلة في شهادة الأمان. يرجى المحاولة لاحقاً أو الاتصال بالدعم.",
-    "noInternetSettings": "لا يوجد اتصال بالإنترنت. يرجى التحقق من إعدادات الشبكة والمحاولة مرة أخرى.",
-    "networkError": "خطأ في الشبكة. يرجى التحقق من اتصال الإنترنت.",
-    "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
-    "badRequest": "طلب غير صحيح. يرجى التحقق من المدخلات.",
-    "requestTimeout": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
-    "conflictError": "حدث تضارب. يرجى الحل والمحاولة مرة أخرى.",
-    "validationFailed": "فشل في التحقق. يرجى التحقق من المدخلات.",
-    "tooManyRequests": "طلبات كثيرة جداً. يرجى الانتظار والمحاولة لاحقاً.",
-    "noInternetCachedTranslation": "لا يوجد اتصال بالإنترنت ولا توجد ترجمة مخزنة متاحة",
-    "noInternetCachedData": "لا يوجد اتصال بالإنترنت ولا توجد بيانات مخزنة متاحة",
-    "noInternetCachedTafsir": "لا يوجد اتصال بالإنترنت ولا يوجد تفسير مخزن متاح",
-    "clearAllCustomVersesConfirmation": "هل أنت متأكد من أنك تريد إزالة جميع الآيات المخصصة من العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
-    "chatError": "عذراً، واجهت خطأ. يرجى المحاولة مرة أخرى.",
-    "tafsirDownloadSuccess": "تم تحميل التفسير بنجاح!",
-    "translationDownloadSuccess": "تم تحميل الترجمة بنجاح!",
+    "connectionTimedOut": "انتهت مهلة الاتصال. يُرجى التحقق من اتصالك بالإنترنت وإعادة المحاولة.",
+    "serverTimeout": "استغرق الخادم وقتاً طويلاً في الاستجابة. يُرجى إعادة المحاولة.",
+    "responseTimeout": "انتهت مهلة الاستجابة. يُرجى التحقق من الاتصال وإعادة المحاولة.",
+    "certificateError": "ثمة مشكلة في شهادة الأمان. يُرجى المحاولة لاحقاً أو الاتصال بالدعم.",
+    "noInternetSettings": "لا اتصال بالإنترنت. يُرجى التحقق من إعدادات الشبكة وإعادة المحاولة.",
+    "networkError": "خطأ في الشبكة. يُرجى التحقق من اتصالك بالإنترنت.",
+    "unexpectedError": "وقع خطأ غير متوقع. يُرجى إعادة المحاولة.",
+    "badRequest": "طلب غير صحيح. يُرجى التحقق من المُدخلات.",
+    "requestTimeout": "انتهت مهلة الطلب. يُرجى المحاولة مرة أخرى.",
+    "conflictError": "حدث تعارض. يُرجى حلّه ثم المحاولة مرة أخرى.",
+    "validationFailed": "تعذّر التحقق. يُرجى مراجعة المدخلات.",
+    "tooManyRequests": "الطلبات كثيرة جداً. يُرجى الانتظار والمحاولة لاحقاً.",
+    "noInternetCachedTranslation": "لا يوجد اتصال بالإنترنت ولا تتوفر ترجمة مخزَّنة",
+    "noInternetCachedData": "لا يوجد اتصال بالإنترنت ولا تتوفر بيانات مخزَّنة",
+    "noInternetCachedTafsir": "لا يوجد اتصال بالإنترنت ولا يتوفر تفسير مخزَّن",
+    "clearAllCustomVersesConfirmation": "هل تريد بالفعل إزالة جميع الآيات المخصَّصة من العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+    "chatError": "عذراً، اعترضنا خطأ. يُرجى المحاولة مرة أخرى.",
+    "tafsirDownloadSuccess": "اكتمل تنزيل التفسير بنجاح!",
+    "translationDownloadSuccess": "اكتمل تنزيل الترجمة بنجاح!",
     "tafsirError": "خطأ في التفسير: {message}",
     "translationError": "خطأ في الترجمة: {message}",
     "unknownError": "خطأ: {message}",
-    "failedShareText": "فشل في مشاركة النص",
-    "failedShareImage": "فشل في مشاركة الصورة",
-    "prayerCountdownStarted": "تم بدء خدمة العد التنازلي للصلاة",
-    "prayerCountdownStopped": "تم إيقاف خدمة العد التنازلي للصلاة",
-    "failedStartService": "فشل في بدء الخدمة: {error}",
-    "failedStopService": "فشل في إيقاف الخدمة: {error}",
-    "prayerCountdownRestarted": "تم إعادة تشغيل خدمة العد التنازلي للصلاة",
-    "failedRestartService": "فشل في إعادة تشغيل الخدمة: {error}",
+    "failedShareText": "تعذّرت مشاركة النص",
+    "failedShareImage": "تعذّرت مشاركة الصورة",
+    "prayerCountdownStarted": "بدأت خدمة العدّ التنازلي للصلاة",
+    "prayerCountdownStopped": "توقّفت خدمة العدّ التنازلي للصلاة",
+    "failedStartService": "تعذّر بدء الخدمة: {error}",
+    "failedStopService": "تعذّر إيقاف الخدمة: {error}",
+    "prayerCountdownRestarted": "أُعيد تشغيل خدمة العدّ التنازلي للصلاة",
+    "failedRestartService": "تعذّرت إعادة تشغيل الخدمة: {error}",
     "islamicReminders": "التذكيرات الإسلامية",
     "suratAlKahf": "سورة الكهف",
     "everyFridayAt": "كل جمعة في {time}",
     "morningEveningAthkar": "أذكار الصباح والمساء",
-    "dailyAthkarTimes": "{morningTime} و {eveningTime} يومياً",
+    "dailyAthkarTimes": "{morningTime} و{eveningTime} يومياً",
     "randomAthkar": "أذكار عشوائية",
     "everyMinutes": "كل {minutes} دقيقة",
-    "quranReadingReminder": "تذكير قراءة القرآن",
+    "quranReadingReminder": "تذكير بقراءة القرآن",
     "dailyAt": "يومياً في {time}",
-    "debug": "فحص",
-    "reinit": "إعادة تهيئة",
+    "debug": "تصحيح",
+    "reinit": "إعادة التهيئة",
     "testLimits": "اختبار الحدود",
-    "checkingCoverage": "فحص التغطية...",
+    "checkingCoverage": "جارٍ فحص التغطية...",
     "refreshCoverage": "تحديث التغطية",
     "gotIt": "فهمت",
     "athkarFrequency": "تكرار الأذكار",
-    "howOftenReceiveAthkar": "كم مرة تريد استقبال الأذكار العشوائية؟",
-    "testNotificationScheduled": "تم جدولة تنبيه تجريبي خلال 10 ثوانٍ من الآن!",
-    "checkConsoleDebugInfo": "تحقق من وحدة التحكم للحصول على معلومات التصحيح",
-    "forceReInitializedNotifications": "تم إعادة تهيئة التنبيهات بالقوة",
-    "checkConsoleLimitTestResults": "تحقق من وحدة التحكم لنتائج اختبار الحدود",
-    "coverageDaysNotifications": "التغطية: ~{days} أيام ({count} تنبيه)",
-    "notificationsEnabled": "التنبيهات مُفعلة",
-    "notificationsDisabled": "التنبيهات مُعطلة",
+    "howOftenReceiveAthkar": "كم مرة تريد تلقّي الأذكار العشوائية؟",
+    "testNotificationScheduled": "جُدوِل تنبيه تجريبي بعد عشر ثوانٍ من الآن!",
+    "checkConsoleDebugInfo": "راجع وحدة التحكم لمعلومات التصحيح",
+    "forceReInitializedNotifications": "أُعيدت تهيئة التنبيهات قسراً",
+    "checkConsoleLimitTestResults": "راجع وحدة التحكم لنتائج اختبار الحدود",
+    "coverageDaysNotifications": "التغطية: نحو {days} يوم ({count} تنبيه)",
+    "notificationsEnabled": "التنبيهات مُفعَّلة",
+    "notificationsDisabled": "التنبيهات مُعطَّلة",
     "tapToEnableNotifications": "اضغط لتفعيل أذونات التنبيهات",
     "notifications": "الإشعارات",
     "home": "الرئيسية",
@@ -272,21 +272,21 @@
     "enterAuthorNameHint": "أدخل اسم المؤلف",
     "enterDescriptionHint": "أدخل الوصف",
     "enterNotesHint": "أدخل ملاحظاتك هنا...",
-    "searchBooksHint": "البحث في الكتب...",
-    "searchBookmarksHint": "البحث في المفضلة...",
-    "searchHadithHint": "البحث في الأحاديث...",
+    "searchBooksHint": "ابحث في الكتب...",
+    "searchBookmarksHint": "ابحث في المفضلة...",
+    "searchHadithHint": "ابحث في الأحاديث...",
     "typeMessageHint": "اكتب رسالتك...",
-    "searchAthkarHint": "البحث في الأذكار...",
+    "searchAthkarHint": "ابحث في الأذكار...",
     "confirmDelete": "تأكيد الحذف",
-    "deleteConfirmation": "هل أنت متأكد من أنك تريد حذف هذا العنصر؟",
-    "deleteBookmark": "حذف العلامة المرجعية",
-    "deleteBookmarkConfirmation": "هل أنت متأكد من حذف هذه العلامة المرجعية؟ لا يمكن التراجع عن هذا الإجراء.",
+    "deleteConfirmation": "هل تريد بالفعل حذف هذا العنصر؟",
+    "deleteBookmark": "حذف الإشارة المرجعية",
+    "deleteBookmarkConfirmation": "هل تريد بالفعل حذف هذه الإشارة المرجعية؟ لا يمكن التراجع عن هذا الإجراء.",
     "confirmClearAll": "تأكيد مسح الكل",
-    "clearAllConfirmation": "هل أنت متأكد من أنك تريد مسح جميع العناصر؟ لا يمكن التراجع عن هذا الإجراء.",
+    "clearAllConfirmation": "هل تريد بالفعل مسح جميع العناصر؟ لا يمكن التراجع عن هذا الإجراء.",
     "exitDialog": "إغلاق التطبيق",
-    "exitConfirmation": "هل أنت متأكد من أنك تريد الخروج؟",
+    "exitConfirmation": "هل تريد بالفعل الخروج؟",
     "permissionDialog": "إذن مطلوب",
-    "permissionMessage": "تتطلب هذه الميزة إذناً للوصول إلى جهازك. يرجى منح الإذن للمتابعة.",
+    "permissionMessage": "تتطلب هذه الميزة إذناً بالوصول إلى جهازك. امنح الإذن للمتابعة.",
     "ok": "موافق",
     "yes": "نعم",
     "no": "لا",
@@ -294,57 +294,57 @@
     "close": "إغلاق",
     "back": "رجوع",
     "previous": "السابق",
-    "failedToLoad": "فشل في التحميل",
+    "failedToLoad": "تعذّر التحميل",
     "connectionError": "خطأ في الاتصال",
-    "loadingFailed": "فشل التحميل. يرجى المحاولة مرة أخرى.",
-    "fileNotFound": "لم يتم العثور على الملف",
-    "permissionDenied": "تم رفض الإذن",
+    "loadingFailed": "تعذّر التحميل. يُرجى المحاولة مرة أخرى.",
+    "fileNotFound": "لم يُعثر على الملف",
+    "permissionDenied": "رُفض الإذن",
     "bookName": "اسم الكتاب",
     "authorName": "اسم المؤلف",
-    "downloadStarted": "بدأ التحميل",
-    "downloadComplete": "اكتمل التحميل",
-    "operationComplete": "تمت العملية بنجاح",
+    "downloadStarted": "بدأ التنزيل",
+    "downloadComplete": "اكتمل التنزيل",
+    "operationComplete": "تمّت العملية بنجاح",
     "athkar": "الأذكار",
-    "athkarLoadingError": "حدث خطأ في تحميل الأذكار",
-    "searchResultsFound": "تم العثور على {count} نتيجة",
-    "noResultsFound": "لم يتم العثور على نتائج",
-    "tryDifferentSearch": "جرب البحث بكلمات أخرى",
-    "clickForDetails": "اضغط للتفاصيل",
+    "athkarLoadingError": "تعذّر تحميل الأذكار",
+    "searchResultsFound": "عُثر على {count} نتيجة",
+    "noResultsFound": "لم يُعثر على نتائج",
+    "tryDifferentSearch": "جرّب البحث بكلمات أخرى",
+    "clickForDetails": "اضغط لعرض التفاصيل",
     "islamicAssistant": "المساعد الإسلامي",
-    "welcomeToHudaAI": "مرحباً بك في هُدى AI",
-    "welcomeToHudaArabic": "مرحباً بك في هُدى",
-    "aiIntroMessage": "اسألني أي سؤال عن الإسلام، وسأقدم لك إجابات مبنية على القرآن والسنة الصحيحة.",
+    "welcomeToHudaAI": "مرحباً بك في هُدَى AI",
+    "welcomeToHudaArabic": "مرحباً بك في هُدَى",
+    "aiIntroMessage": "اسألني أيّ سؤال عن الإسلام، وسأقدّم لك إجابات مبنيّة على القرآن والسنّة الصحيحة.",
     "aiAssistantTitle": "المساعد الذكي",
-    "aiAssistantSubtitle": "يقدم إجابات مبنية على التعاليم الإسلامية ولكن لا يجب اعتباره مصدراً نهائياً.",
-    "verifySourcesTitle": "تحقق من المصادر الموثقة",
-    "verifySourcesSubtitle": "تأكد دائماً من إجابات الذكاء الاصطناعي مع القرآن والسنة.",
-    "tryAsking": "جرب أن تسأل:",
-    "exampleQuestion1": "ما هي أركان الإسلام الخمسة؟",
-    "exampleQuestion2": "كيف يمكنني تحسين الخشوع في الصلاة؟",
-    "exampleQuestion3": "ماذا يجب أن أقول قبل النوم؟",
-    "exampleQuestion4": "أخبرني حديثاً عن اللطف.",
-    "hudaAIThinking": "هُدى AI يفكر...",
-    "analyzingQuestion": "يحلل سؤالك مع المصادر الإسلامية",
-    "aiGeneratedDisclaimer": "محتوى مُولد بالذكاء الاصطناعي. يرجى التحقق من المصادر الموثقة.",
-    "messageCopied": "تم نسخ الرسالة إلى الحافظة",
-    "islamicQAFromHuda": "أسئلة وأجوبة إسلامية من هُدى AI",
-    "generatedByHudaAI": "تم إنتاجه بواسطة هدى AI - المساعد الإسلامي",
-    "verifyWithSources": "يرجى التحقق من المصادر الإسلامية الموثقة.",
+    "aiAssistantSubtitle": "يقدّم إجابات مبنيّة على التعاليم الإسلامية، غير أنه لا ينبغي اعتباره مصدراً نهائياً.",
+    "verifySourcesTitle": "تحقّق من المصادر الموثوقة",
+    "verifySourcesSubtitle": "تأكّد دائماً من إجابات الذكاء الاصطناعي بالرجوع إلى القرآن والسنّة.",
+    "tryAsking": "جرّب أن تسأل:",
+    "exampleQuestion1": "ما أركان الإسلام الخمسة؟",
+    "exampleQuestion2": "كيف أحسّن الخشوع في الصلاة؟",
+    "exampleQuestion3": "ماذا أقول قبل النوم؟",
+    "exampleQuestion4": "أخبرني بحديث عن الرفق.",
+    "hudaAIThinking": "يفكّر هُدَى AI...",
+    "analyzingQuestion": "يحلّل سؤالك بالرجوع إلى المصادر الإسلامية",
+    "aiGeneratedDisclaimer": "محتوى مُولَّد بالذكاء الاصطناعي، فتحقّق من المصادر الموثوقة.",
+    "messageCopied": "نُسخت الرسالة إلى الحافظة",
+    "islamicQAFromHuda": "أسئلة وأجوبة إسلامية من هُدَى AI",
+    "generatedByHudaAI": "من إنتاج هُدَى AI - المساعد الإسلامي",
+    "verifyWithSources": "يُرجى التحقّق من المصادر الإسلامية الموثوقة.",
     "@verifyWithSources": {
         "description": "Verification reminder in shared content"
     },
-    "shareQAFromHuda": "أسئلة وأجوبة إسلامية من هدى AI",
+    "shareQAFromHuda": "أسئلة وأجوبة إسلامية من هُدَى AI",
     "@shareQAFromHuda": {
         "description": "Header for shared Q&A content"
     },
     "@generatedByHudaAI": {
         "description": "Attribution in shared content"
     },
-    "islamicKnowledgeSubject": "معرفة إسلامية من هدى AI",
+    "islamicKnowledgeSubject": "معرفة إسلامية من هُدَى AI",
     "@islamicKnowledgeSubject": {
         "description": "Subject line for shared content"
     },
-    "hudaAI": "هدى AI",
+    "hudaAI": "هُدَى AI",
     "@hudaAI": {
         "description": "App name for Huda AI"
     },
@@ -352,7 +352,7 @@
     "@zakatCalculator": {
         "description": "Zakat Calculator screen title"
     },
-    "calculate": "حساب",
+    "calculate": "احسب",
     "@calculate": {
         "description": "Calculate tab title"
     },
@@ -376,7 +376,7 @@
     "@zakatIsDue": {
         "description": "Message when zakat is due"
     },
-    "noZakatDue": "لا توجد زكاة مستحقة",
+    "noZakatDue": "لا زكاة مستحقّة",
     "@noZakatDue": {
         "description": "Message when no zakat is due"
     },
@@ -392,7 +392,7 @@
     "@netAssets": {
         "description": "Net assets label"
     },
-    "nisabThreshold": "حد النصاب ({type})",
+    "nisabThreshold": "حدّ النصاب ({type})",
     "@nisabThreshold": {
         "description": "Nisab threshold label",
         "placeholders": {
@@ -418,27 +418,27 @@
     "@metalPrices": {
         "description": "Metal prices section title"
     },
-    "goldPricePerGram": "سعر الذهب لكل جرام",
+    "goldPricePerGram": "سعر الذهب للجرام",
     "@goldPricePerGram": {
         "description": "Gold price input label"
     },
-    "silverPricePerGram": "سعر الفضة لكل جرام",
+    "silverPricePerGram": "سعر الفضة للجرام",
     "@silverPricePerGram": {
         "description": "Silver price input label"
     },
-    "whatIsNisab": "ما هو النصاب؟",
+    "whatIsNisab": "ما النصاب؟",
     "@whatIsNisab": {
         "description": "Nisab info card title"
     },
-    "nisabDescription": "النصاب هو الحد الأدنى من الثروة الذي يجعل الزكاة واجبة. يمكن حسابه على أساس قيم الذهب (87.48 جرام) أو الفضة (612.36 جرام).",
+    "nisabDescription": "النصاب هو الحدّ الأدنى من المال الذي تجب فيه الزكاة. ويُحسب على أساس قيمة الذهب (87.48 جراماً) أو الفضة (612.36 جراماً).",
     "@nisabDescription": {
         "description": "Nisab description text"
     },
-    "quickSummary": "ملخص سريع",
+    "quickSummary": "ملخّص سريع",
     "@quickSummary": {
         "description": "Quick summary section title"
     },
-    "zakatDue": "الزكاة المستحقة:",
+    "zakatDue": "الزكاة المستحقّة:",
     "@zakatDue": {
         "description": "Zakat due label in summary"
     },
@@ -446,7 +446,7 @@
     "@assetBreakdown": {
         "description": "Asset breakdown section title"
     },
-    "nisabCalculationBasedOn": "حساب النصاب بناءً على",
+    "nisabCalculationBasedOn": "يُحسب النصاب على أساس",
     "@nisabCalculationBasedOn": {
         "description": "Nisab calculation method selection title"
     },
@@ -458,11 +458,11 @@
     "@silver": {
         "description": "Silver option"
     },
-    "goldGrams": "87.48 جرام",
+    "goldGrams": "87.48 جراماً",
     "@goldGrams": {
         "description": "Gold nisab amount in grams"
     },
-    "silverGrams": "612.36 جرام",
+    "silverGrams": "612.36 جراماً",
     "@silverGrams": {
         "description": "Silver nisab amount in grams"
     },
@@ -470,7 +470,7 @@
     "@aboutZakat": {
         "description": "About Zakat dialog title"
     },
-    "zakatDescription": "الزكاة هي أحد أركان الإسلام الخمسة وهي صدقة واجبة. تُحسب بنسبة 2.5% من الثروة المؤهلة التي تم الاحتفاظ بها لمدة عام هجري واحد على الأقل (الحول).\n\nالنصاب هو الحد الأدنى من الثروة الذي يجعل الزكاة واجبة. يمكن حسابه على أساس:\n• الذهب: 87.48 جرام (20 مثقال)\n• الفضة: 612.36 جرام (200 درهم)\n\nتساعدك هذه الحاسبة في تحديد ما إذا كانت ثروتك تصل إلى حد النصاب وحساب المبلغ الدقيق للزكاة المستحقة.",
+    "zakatDescription": "الزكاة أحد أركان الإسلام الخمسة، وهي صدقة واجبة. تُحسب بنسبة 2.5% من المال الذي تجب فيه الزكاة إذا مرّ عليه عام هجري كامل (الحَوْل).\n\nوالنصاب هو الحدّ الأدنى من المال الذي تجب فيه الزكاة، ويُحسب على أساس:\n• الذهب: 87.48 جراماً (20 مثقالاً)\n• الفضة: 612.36 جراماً (200 درهم)\n\nتساعدك هذه الحاسبة على معرفة ما إذا كان مالك قد بلغ حدّ النصاب، وعلى حساب مقدار الزكاة المستحقّة بدقّة.",
     "@zakatDescription": {
         "description": "Full Zakat description in info dialog"
     },
@@ -489,7 +489,7 @@
     "@silverAssets": {
         "description": "Silver asset category"
     },
-    "businessAssets": "أصول تجارية",
+    "businessAssets": "الأصول التجارية",
     "@businessAssets": {
         "description": "Business assets category"
     },
@@ -497,7 +497,7 @@
     "@investmentsAssets": {
         "description": "Investments asset category"
     },
-    "moneyOwedToYou": "الأموال المستحقة لك",
+    "moneyOwedToYou": "الأموال المستحقّة لك",
     "@moneyOwedToYou": {
         "description": "Receivables asset category"
     },
@@ -505,31 +505,31 @@
     "@debtsAndLiabilities": {
         "description": "Debts and liabilities category"
     },
-    "cashDescription": "حسابات التوفير، الحسابات الجارية، النقد في اليد، المحافظ الرقمية",
+    "cashDescription": "حسابات التوفير، والحسابات الجارية، والنقد في اليد، والمحافظ الرقمية",
     "@cashDescription": {
         "description": "Cash asset category description"
     },
-    "goldDescription": "قيمة مجوهرات الذهب والعملات والسبائك (القيمة السوقية)",
+    "goldDescription": "قيمة مجوهرات الذهب وعملاته وسبائكه (بالقيمة السوقية)",
     "@goldDescription": {
         "description": "Gold asset category description"
     },
-    "silverDescription": "قيمة مجوهرات الفضة والعملات والسبائك (القيمة السوقية)",
+    "silverDescription": "قيمة مجوهرات الفضة وعملاتها وسبائكها (بالقيمة السوقية)",
     "@silverDescription": {
         "description": "Silver asset category description"
     },
-    "businessDescription": "المخزون، النقد التجاري، الأرباح المحتفظ بها في الأعمال",
+    "businessDescription": "المخزون، والنقد التجاري، والأرباح المحتجزة في العمل",
     "@businessDescription": {
         "description": "Business assets category description"
     },
-    "investmentsDescription": "الأسهم، السندات، الصناديق المشتركة، حسابات التقاعد (إذا كانت خاضعة للزكاة)",
+    "investmentsDescription": "الأسهم، والسندات، والصناديق المشتركة، وحسابات التقاعد (إن كانت خاضعة للزكاة)",
     "@investmentsDescription": {
         "description": "Investments category description"
     },
-    "receivablesDescription": "الأموال المستحقة لك والتي تتوقع استلامها",
+    "receivablesDescription": "الأموال المستحقّة لك التي تتوقّع استلامها",
     "@receivablesDescription": {
         "description": "Receivables category description"
     },
-    "debtsDescription": "ديون بطاقات الائتمان، القروض، الفواتير المستحقة خلال العام",
+    "debtsDescription": "ديون بطاقات الائتمان، والقروض، والفواتير المستحقّة خلال العام",
     "@debtsDescription": {
         "description": "Debts category description"
     },
@@ -544,7 +544,7 @@
     "@bookmarkAyah": {
         "description": "Title for bookmark section"
     },
-    "bookmark": "علامة مرجعية",
+    "bookmark": "إشارة مرجعية",
     "@bookmark": {
         "description": "Bookmark tab label"
     },
@@ -586,7 +586,7 @@
             }
         }
     },
-    "noteHint": "اكتب ملاحظتك الشخصية أو تأملك حول هذه الآية...",
+    "noteHint": "اكتب ملاحظتك الشخصية أو تأمّلك في هذه الآية...",
     "@noteHint": {
         "description": "Placeholder text for note input"
     },
@@ -623,7 +623,7 @@
     "@includeReference": {
         "description": "Include reference option"
     },
-    "generating": "جاري الإنشاء...",
+    "generating": "جارٍ الإنشاء...",
     "@generating": {
         "description": "Generating content status"
     },
@@ -635,7 +635,7 @@
     "@tafsirLabel": {
         "description": "Tafsir section label"
     },
-    "hudaQuranApp": "هدى - تطبيق القرآن",
+    "hudaQuranApp": "هُدَى - تطبيق القرآن",
     "@hudaQuranApp": {
         "description": "App name for sharing"
     },
@@ -655,15 +655,15 @@
     "@translationLabel": {
         "description": "Translation section label"
     },
-    "sharedViaHuda": "مشارك عبر هدى - تطبيق القرآن",
+    "sharedViaHuda": "مشاركة عبر هُدَى - تطبيق القرآن",
     "@sharedViaHuda": {
         "description": "Footer for shared content"
     },
-    "copiedToClipboard": "تم النسخ إلى الحافظة",
+    "copiedToClipboard": "نُسِخَ إلى الحافظة",
     "@copiedToClipboard": {
         "description": "Success message for copy"
     },
-    "failedToCopy": "فشل في النسخ إلى الحافظة",
+    "failedToCopy": "تعذّر النسخ إلى الحافظة",
     "@failedToCopy": {
         "description": "Error message for copy failure"
     },
@@ -693,11 +693,11 @@
             }
         }
     },
-    "loadingAudio": "جاري تحميل الصوت...",
+    "loadingAudio": "جارٍ تحميل الصوت...",
     "@loadingAudio": {
         "description": "Loading audio status"
     },
-    "unableToLoadAudio": "غير قادر على تحميل الصوت لهذا القارئ",
+    "unableToLoadAudio": "تعذّر تحميل الصوت لهذا القارئ",
     "@unableToLoadAudio": {
         "description": "Audio loading error message"
     },
@@ -713,7 +713,7 @@
     "@allLanguages": {
         "description": "All languages option"
     },
-    "noReadersAvailable": "لا يوجد قراء متاحون",
+    "noReadersAvailable": "لا يوجد قُرّاء متاحون",
     "@noReadersAvailable": {
         "description": "No readers available message"
     },
@@ -753,7 +753,7 @@
     "@filterTranslationLanguage": {
         "description": "Translation language filter hint"
     },
-    "addToHomeWidget": "إضافة إلى عنصر الصفحة الرئيسية",
+    "addToHomeWidget": "إضافة إلى عنصر الشاشة الرئيسية",
     "@addToHomeWidget": {
         "description": "Add to home widget button"
     },
@@ -785,11 +785,11 @@
     "@ayahText": {
         "description": "Ayah text section title"
     },
-    "audioControls": "عناصر التحكم الصوتية",
+    "audioControls": "عناصر التحكم في الصوت",
     "@audioControls": {
         "description": "Audio controls section title"
     },
-    "unableLoadAudio": "غير قادر على تحميل الصوت لهذا القارئ",
+    "unableLoadAudio": "تعذّر تحميل الصوت لهذا القارئ",
     "@unableLoadAudio": {
         "description": "Unable to load audio message"
     },
@@ -797,7 +797,7 @@
     "@readerSelection": {
         "description": "Reader selection section title"
     },
-    "audioDownloads": "تحميلات الصوت",
+    "audioDownloads": "تنزيلات الصوت",
     "@audioDownloads": {
         "description": "Audio downloads section title"
     },
@@ -809,31 +809,31 @@
     "@includedInAll": {
         "description": "Included in all downloads status"
     },
-    "surahDownloaded": "تم تحميل السورة",
+    "surahDownloaded": "نُزِّلت السورة",
     "@surahDownloaded": {
         "description": "Surah downloaded status"
     },
-    "downloading": "جاري التحميل...",
+    "downloading": "جارٍ التنزيل...",
     "@downloading": {
         "description": "Downloading status"
     },
-    "downloadSurah": "تحميل السورة",
+    "downloadSurah": "تنزيل السورة",
     "@downloadSurah": {
         "description": "Download surah button"
     },
-    "allDownloaded": "تم تحميل الكل",
+    "allDownloaded": "نُزِّل الكل",
     "@allDownloaded": {
         "description": "All downloaded status"
     },
-    "downloadAll": "تحميل الكل",
+    "downloadAll": "تنزيل الكل",
     "@downloadAll": {
         "description": "Download all button"
     },
-    "checking": "جاري التحقق...",
+    "checking": "جارٍ التحقق...",
     "@checking": {
         "description": "Checking status message"
     },
-    "alreadyInWidget": "موجود بالفعل في العنصر",
+    "alreadyInWidget": "موجود في العنصر بالفعل",
     "@alreadyInWidget": {
         "description": "Already in widget status"
     },
@@ -841,7 +841,7 @@
     "@addToWidget": {
         "description": "Add to widget button"
     },
-    "addToWidgetInfo": "سيؤدي هذا إلى إضافة الآية المحددة إلى مجموعة عناصر شاشة الهاتف الرئيسية للوصول السهل.",
+    "addToWidgetInfo": "يضيف هذا الآية المحددة إلى مجموعة عناصر شاشة الهاتف الرئيسية لسهولة الوصول إليها.",
     "@addToWidgetInfo": {
         "description": "Widget tab info message"
     },
@@ -853,7 +853,7 @@
     "@openFile": {
         "description": "Button text for opening files"
     },
-    "download": "تحميل",
+    "download": "تنزيل",
     "@download": {
         "description": "Download button text"
     },
@@ -896,7 +896,7 @@
     "@shareBook": {
         "description": "Share dialog title"
     },
-    "shareBookQuestion": "مشاركة \"{title}\" مع الآخرين؟",
+    "shareBookQuestion": "هل تشارك \"{title}\" مع الآخرين؟",
     "@shareBookQuestion": {
         "description": "Share confirmation question",
         "placeholders": {
@@ -906,7 +906,7 @@
             }
         }
     },
-    "shareAsPdf": "مشاركة كـ PDF",
+    "shareAsPdf": "مشاركة كملف PDF",
     "@shareAsPdf": {
         "description": "Share as PDF option"
     },
@@ -925,15 +925,15 @@
         }
     },
     "everyFridayAtTime": "كل جمعة في {time}",
-    "weeklyReminderKahf": "تذكير أسبوعي لقراءة سورة الكهف يوم الجمعة للبركة والحماية.",
+    "weeklyReminderKahf": "تذكير أسبوعي بقراءة سورة الكهف يوم الجمعة للبركة والحماية.",
     "morningEveningAthkarTitle": "أذكار الصباح والمساء",
-    "dailyTimesSchedule": "{morningTime} و {eveningTime} يومياً",
-    "dailyRemindersAthkar": "تذكيرات يومية لأذكار الصباح والمساء لذكر الله.",
+    "dailyTimesSchedule": "{morningTime} و{eveningTime} يومياً",
+    "dailyRemindersAthkar": "تذكيرات يومية بأذكار الصباح والمساء لذكر الله.",
     "randomAthkarTitle": "أذكار متنوعة",
     "periodicRemindersAthkar": "تذكيرات دورية بأذكار متنوعة على مدار اليوم.",
-    "quranReadingReminderTitle": "تذكير قراءة القرآن",
+    "quranReadingReminderTitle": "تذكير بقراءة القرآن",
     "dailyAtTime": "يومياً في {time}",
-    "dailyReminderQuran": "تذكير يومي لقراءة وتدبر القرآن الكريم.",
+    "dailyReminderQuran": "تذكير يومي بقراءة القرآن الكريم وتدبره.",
     "debugTesting": "الاختبار والتشخيص",
     "pendingNotificationsCount": "التنبيهات المعلقة: {count}",
     "notificationsWorkBackground": "جميع التنبيهات تعمل في الخلفية وتبقى بعد إعادة تشغيل التطبيق.",
@@ -943,101 +943,101 @@
     "minutes": "دقائق",
     "minutesExample": "مثال: 30، 60، 120",
     "minutesUnit": "دقيقة",
-    "recommendedMinutes": "الموصى به: 30-120 دقيقة للتذكيرات المتوازنة",
-    "validNumberMinutes": "يرجى إدخال رقم صحيح بين 10-1440 دقيقة",
-    "selectQuranReminderTime": "اختيار وقت تذكير القرآن",
-    "selectKahfFridayTime": "اختيار وقت تذكير الكهف يوم الجمعة",
+    "recommendedMinutes": "الموصى به: 30-120 دقيقة لتذكيرات متوازنة",
+    "validNumberMinutes": "يرجى إدخال رقم صحيح بين 10 و1440 دقيقة",
+    "selectQuranReminderTime": "اختيار وقت التذكير بالقرآن",
+    "selectKahfFridayTime": "اختيار وقت التذكير بسورة الكهف يوم الجمعة",
     "athkarTimes": "أوقات الأذكار",
     "morning": "الصباح: ",
     "evening": "المساء: ",
     "selectMorningAthkarTime": "اختيار وقت أذكار الصباح",
     "selectEveningAthkarTime": "اختيار وقت أذكار المساء",
-    "notificationTimesCustomizable": "جميع أوقات التنبيهات قابلة للتخصيص بالكامل. اضغط على زر الإعدادات بجانب كل نوع تنبيه لتحديد الوقت المفضل لديك.",
-    "randomAthkarSmartScheduling": "الأذكار المتنوعة تستخدم جدولة ذكية: تغطية فورية لأكثر من 12 ساعة، ثم إكمال في الخلفية لتغطية 7 أيام كاملة.",
+    "notificationTimesCustomizable": "جميع أوقات التنبيهات قابلة للتخصيص بالكامل. اضغط على زر الإعدادات بجانب كل نوع من التنبيهات لتحديد الوقت المفضل لديك.",
+    "randomAthkarSmartScheduling": "تستخدم الأذكار المتنوعة جدولة ذكية: تغطية فورية لأكثر من 12 ساعة، ثم إكمال في الخلفية لتغطية 7 أيام كاملة.",
     "notificationsWorkClosed": "جميع التنبيهات تعمل عندما يكون التطبيق مغلقاً وتبقى بعد إعادة تشغيل الجهاز.",
     "pdfViewer": "عارض PDF",
     "switchLayout": "تبديل التخطيط",
-    "goToPage": "الانتقال للصفحة",
+    "goToPage": "الانتقال إلى الصفحة",
     "search": "البحث",
     "contents": "المحتويات",
     "pages": "الصفحات",
     "markers": "العلامات",
-    "goToPageTitle": "الانتقال للصفحة",
-    "enterPageNumber": "أدخل رقم الصفحة (1 إلى {pageCount})",
+    "goToPageTitle": "الانتقال إلى الصفحة",
+    "enterPageNumber": "أدخل رقم الصفحة (من 1 إلى {pageCount})",
     "pageNumber": "رقم الصفحة",
-    "searchInDocument": "البحث في المستند...",
-    "matchesCount": "{current} من {total} نتائج",
+    "searchInDocument": "ابحث في المستند...",
+    "matchesCount": "{current} من {total} نتيجة",
     "pageLabel": "الصفحة {pageNumber}",
-    "loadingPdf": "جارٍ تحميل PDF...",
-    "failedToLoadPdf": "فشل في تحميل PDF",
+    "loadingPdf": "جارٍ تحميل ملف PDF...",
+    "failedToLoadPdf": "تعذّر تحميل ملف PDF",
     "noTableOfContents": "لا يوجد فهرس للمحتويات",
     "noMarkersYet": "لا توجد علامات بعد",
-    "selectTextForMarkers": "حدد النص واستخدم أزرار الألوان لإضافة علامات",
-    "myBookmarks": "علاماتي المرجعية",
-    "bookmarkAdded": "تم إضافة العلامة المرجعية",
-    "bookmarkRemoved": "تم إزالة العلامة المرجعية",
-    "bookmarkUpdated": "تم تحديث العلامة المرجعية",
+    "selectTextForMarkers": "حدِّد النص واستخدم أزرار الألوان لإضافة العلامات",
+    "myBookmarks": "إشاراتي المرجعية",
+    "bookmarkAdded": "أُضيفت الإشارة المرجعية",
+    "bookmarkRemoved": "حُذفت الإشارة المرجعية",
+    "bookmarkUpdated": "حُدِّثت الإشارة المرجعية",
     "notes": "ملاحظات",
     "stars": "نجوم",
-    "errorLoadingBookmarks": "خطأ في تحميل العلامات المرجعية",
-    "noBookmarksYet": "لا توجد علامات مرجعية بعد",
-    "startBookmarkingFavoriteVerses": "ابدأ بوضع علامات مرجعية على آياتك المفضلة",
+    "errorLoadingBookmarks": "تعذّر تحميل الإشارات المرجعية",
+    "noBookmarksYet": "لا توجد إشارات مرجعية بعد",
+    "startBookmarkingFavoriteVerses": "ابدأ بوضع إشارات مرجعية على آياتك المفضّلة",
     "noNotesYet": "لا توجد ملاحظات بعد",
-    "addNotesToFavoriteVerses": "أضف ملاحظات على آياتك المفضلة",
-    "noStarredVersesYet": "لا توجد آيات مميزة بالنجوم بعد",
+    "addNotesToFavoriteVerses": "أضف ملاحظات على آياتك المفضّلة",
+    "noStarredVersesYet": "لا توجد آيات مميَّزة بنجمة بعد",
     "starImportantVerses": "ضع نجمة على آياتك المهمة",
-    "browseQuran": "تصفح القرآن",
-    "goToVerse": "انتقل للآية",
-    "navigateToVerseQuestion": "الانتقال إلى هذه الآية في قارئ القرآن؟",
+    "browseQuran": "تصفّح القرآن",
+    "goToVerse": "الانتقال إلى الآية",
+    "navigateToVerseQuestion": "هل تريد الانتقال إلى هذه الآية في قارئ القرآن؟",
     "total": "المجموع",
-    "clearAllBookmarksConfirmation": "هل أنت متأكد من حذف جميع العلامات المرجعية؟ لا يمكن التراجع عن هذا الإجراء.",
+    "clearAllBookmarksConfirmation": "هل أنت متأكد من حذف جميع الإشارات المرجعية؟ لا يمكن التراجع عن هذا الإجراء.",
     "location": "الموقع",
-    "nextPrayerCountdown": "التالي: {prayerName} خلال {time}",
-    "persistentPrayerCountdown": "العد التنازلي المستمر للصلاة",
+    "nextPrayerCountdown": "التالية: {prayerName} خلال {time}",
+    "persistentPrayerCountdown": "العدّ التنازلي المستمر للصلاة",
     "active": "نشط",
     "stopped": "متوقف",
-    "persistentNotificationRunning": "يظهر إشعار مستمر في شريط الحالة مع العد التنازلي للصلاة التالية. لا يمكن إخفاؤه ويتحدث كل ثانية.",
-    "persistentNotificationStopped": "إشعار العد التنازلي المستمر متوقف حالياً.",
-    "persistentNotificationInfo": "هذا ينشئ إشعاراً مستمراً واحداً يحدث محتواه دون إزعاج. مختلف عن إشعارات أوقات الصلاة.",
-    "persistentCountdownStarted": "تم بدء العد التنازلي المستمر",
-    "persistentCountdownStopped": "تم إيقاف العد التنازلي المستمر",
-    "persistentCountdownRestarted": "تم إعادة تشغيل العد التنازلي المستمر",
-    "failedToStart": "فشل في البدء: {error}",
-    "failedToStop": "فشل في الإيقاف: {error}",
-    "failedToRestart": "فشل في إعادة التشغيل: {error}",
-    "homeScreenWidget": "عنصر الشاشة الرئيسية",
+    "persistentNotificationRunning": "يظهر إشعار مستمر في شريط الحالة يحمل العدّ التنازلي للصلاة التالية، ولا يمكن إخفاؤه، ويتحدّث كل ثانية.",
+    "persistentNotificationStopped": "إشعار العدّ التنازلي المستمر متوقف حالياً.",
+    "persistentNotificationInfo": "يُنشئ هذا إشعاراً مستمراً واحداً يتحدّث محتواه دون إزعاج، ويختلف عن إشعارات أوقات الصلاة.",
+    "persistentCountdownStarted": "بدأ العدّ التنازلي المستمر",
+    "persistentCountdownStopped": "توقّف العدّ التنازلي المستمر",
+    "persistentCountdownRestarted": "أُعيد تشغيل العدّ التنازلي المستمر",
+    "failedToStart": "تعذّر البدء: {error}",
+    "failedToStop": "تعذّر الإيقاف: {error}",
+    "failedToRestart": "تعذّرت إعادة التشغيل: {error}",
+    "homeScreenWidget": "أداة الشاشة الرئيسية",
     "displayInspiringVerses": "اعرض آيات إسلامية ملهمة على شاشتك الرئيسية",
-    "widgetControl": "التحكم في العنصر",
-    "updateWidgetContentImmediately": "قم بتحديث محتوى العنصر فوراً",
-    "updatingWidget": "جاري تحديث العنصر...",
-    "forceUpdateWidget": "إجبار تحديث العنصر",
-    "homeScreenWidgetUpdatedSuccessfully": "تم تحديث عنصر الشاشة الرئيسية بنجاح!",
-    "errorUpdatingWidget": "خطأ في تحديث العنصر: {error}",
-    "customVerses": "الآيات المخصصة",
+    "widgetControl": "التحكم في الأداة",
+    "updateWidgetContentImmediately": "حدِّث محتوى الأداة فوراً",
+    "updatingWidget": "جارٍ تحديث الأداة...",
+    "forceUpdateWidget": "فرض تحديث الأداة",
+    "homeScreenWidgetUpdatedSuccessfully": "حُدِّثت أداة الشاشة الرئيسية بنجاح!",
+    "errorUpdatingWidget": "تعذّر تحديث الأداة: {error}",
+    "customVerses": "الآيات المخصّصة",
     "refreshVerses": "تحديث الآيات",
-    "versesAdded": "تم إضافة {count} آية",
-    "loadingVerses": "جاري تحميل الآيات...",
-    "noCustomVersesYet": "لا توجد آيات مخصصة بعد",
-    "visitSurahScreenToAddVerses": "قم بزيارة شاشة السورة لإضافة آيات إلى العنصر",
-    "ayahAddedToWidget": "تم إضافة الآية إلى الويدجت بنجاح!",
+    "versesAdded": "أُضيفت {count} آية",
+    "loadingVerses": "جارٍ تحميل الآيات...",
+    "noCustomVersesYet": "لا توجد آيات مخصّصة بعد",
+    "visitSurahScreenToAddVerses": "انتقل إلى شاشة السورة لإضافة آيات إلى الأداة",
+    "ayahAddedToWidget": "أُضيفت الآية إلى الأداة بنجاح!",
     "sahih": "صحيح",
     "daif": "ضعيف",
     "hasan": "حسن",
     "bukhari": "صحيح البخاري",
     "muslim": "صحيح مسلم",
     "tirmidhi": "جامع الترمذي",
-    "dawood": "سنن ابو داؤد",
-    "majah": "صحيح ابن ماجه",
+    "dawood": "سنن أبي داود",
+    "majah": "سنن ابن ماجه",
     "nasa": "سنن النسائي",
     "masabih": "مشكاة المصابيح",
     "ahmad": "مسند أحمد",
     "sahiha": "السلسلة الصحيحة",
     "contains": "يحتوي على",
-    "comingSoon": "قادم قريبا",
+    "comingSoon": "قريباً",
     "hadithCollections": "مجموعات الأحاديث",
-    "hadithBanner": "اكتشف أقوال وتعاليم النبي محمد ﷺ",
+    "hadithBanner": "اكتشف أقوال النبي محمد ﷺ وتعاليمه",
     "nextPrayerCountDown": "الصلاة التالية",
-    "persistentPrayerCountdownDescription": "خدمة الإخطار بالخلفية",
+    "persistentPrayerCountdownDescription": "خدمة الإشعار في الخلفية",
     "persistentPrayerCountdownStopped": "الخدمة متوقفة حالياً",
     "persistentPrayerCountdownRunning": "الخدمة تعمل في الخلفية",
     "persistentPrayerCountdownServiceControls": "التحكم في الخدمة",
@@ -1045,11 +1045,11 @@
     "success": "نجاح",
     "warning": "تحذير",
     "info": "معلومة",
-    "notification": "إخطار",
-    "shareTextHudaAI": "مشاركة من هُدى AI - المساعد الذكي الإسلامي",
+    "notification": "إشعار",
+    "shareTextHudaAI": "مشاركة من هُدَى AI - المساعد الإسلامي الذكي",
     "bookmarksYourCollection": "مجموعتك",
-    "bookmarksSavedVerses": "أيات محفوظة",
-    "adjustTextSizeForBetterReadability": "اضبط حجم النص لتحسين قابلية القراءة",
+    "bookmarksSavedVerses": "آيات محفوظة",
+    "adjustTextSizeForBetterReadability": "اضبط حجم النص لتحسين وضوح القراءة",
     "sampleTextPreview": "أَسْتَغْفِرُ اللّٰهَ وَأَتُوْبُ إِلَيْهِ",
     "small": "صغير",
     "normal": "طبيعي",
@@ -1061,37 +1061,37 @@
     "continueHome": "مواصلة القراءة",
     "noRecentActivityHome": "لا توجد أنشطة حديثة",
     "resumeReading": "استأنف قراءة القرآن الكريم",
-    "noRecentActivityDescription": "ابدأ بقراءة القرآن لترى تقدمك",
+    "noRecentActivityDescription": "ابدأ بقراءة القرآن لترى تقدّمك",
     "bookmarkTip": "اضغط على الآية لإضافتها إلى المفضلة",
     "darkmode": "الوضع الداكن",
     "lightmode": "الوضع الفاتح",
     "chooseThemeColor": "اختر لون السمة",
-    "themeDescription": "خصص تجربة استخدام التطبيق",
-    "themeInfo": "سيتم تطبيق السمة التي اخترتها على كامل تجربة التطبيق",
+    "themeDescription": "خصّص تجربتك في استخدام التطبيق",
+    "themeInfo": "تُطبَّق السمة التي اخترتها على التطبيق بأكمله",
     "purple": "بنفسجي",
     "green": "أخضر",
     "blue": "أزرق",
-    "red": "احمر",
+    "red": "أحمر",
     "orange": "برتقالي",
     "teal": "فيروزي",
     "indigo": "نيلي",
     "pink": "وردي",
     "supportAndFeedback": "الدعم والملاحظات",
-    "supportDescription": "ساعدنا في تحسين التطبيق",
-    "shareYourThoughts": "إرسل  ملاحظه",
-    "feedbackDescription": "شاركنا بآرائك",
-    "rateOurApp": "قيم التطبيق",
+    "supportDescription": "ساعدنا على تحسين التطبيق",
+    "shareYourThoughts": "أرسل ملاحظة",
+    "feedbackDescription": "شاركنا آراءك",
+    "rateOurApp": "قيّم التطبيق",
     "rateAppDescription": "ساعد الآخرين على اكتشاف هذا التطبيق",
-    "batteryOptimizationExemptionGranted": "تم منح إعفاء من تحسين البطارية",
-    "batteryOptimizationExemptionDenied": "رٌفض الإعفاء من تحسين البطارية",
-    "batteryOptimizationExemptionActive": "تحسين البطارية مُعطَّل",
-    "batteryOptimizationExemptionInactive": "تحسين البطارية مُفعَّل",
-    "notificationsWillWorkReliably": "الإشعارات ستصل إليك بدون مشاكل",
-    "notificationsMayBeDelayedOrMissed": "قد تتأخر الإشعارات أو لا تصلك أحيانًا",
-    "notificationsActive": "جميع الإشعارات تعمل بشكل صحيح",
-    "playing": "جاري التشغيل",
-    "islamicChecklistTitle": "القائمة الإسلامية اليومية",
-    "backToToday": "العودة لليوم",
+    "batteryOptimizationExemptionGranted": "مُنِح الإعفاء من تحسين البطارية",
+    "batteryOptimizationExemptionDenied": "رُفض الإعفاء من تحسين البطارية",
+    "batteryOptimizationExemptionActive": "تحسين البطارية مُعطَّل",
+    "batteryOptimizationExemptionInactive": "تحسين البطارية مُفعَّل",
+    "notificationsWillWorkReliably": "ستصلك الإشعارات دون مشكلات",
+    "notificationsMayBeDelayedOrMissed": "قد تتأخر الإشعارات أو لا تصلك أحياناً",
+    "notificationsActive": "جميع الإشعارات تعمل على نحو سليم",
+    "playing": "قيد التشغيل",
+    "islamicChecklistTitle": "قائمة المهام الإسلامية اليومية",
+    "backToToday": "العودة إلى اليوم",
     "addTask": "إضافة مهمة",
     "deleteTask": "حذف المهمة",
     "deleteTaskConfirmation": "هل أنت متأكد من حذف",
@@ -1136,11 +1136,11 @@
     "congratsMessage7": "نفعك الله",
     "congratsMessage8": "مبارك",
     "congratsMessage9": "تقبل الله منا ومنكم",
-    "congratsMessage10": "ربي يوفقك",
-    "congratsMessage11": "الله يبارك لك",
+    "congratsMessage10": "وفّقك ربي",
+    "congratsMessage11": "بارك الله لك",
     "congratsMessage12": "زادك الله علماً",
     "congratsMessage13": "رحمك الله",
-    "islamicChecklist": "القائمة اليومية الإسلامية",
+    "islamicChecklist": "قائمة المهام الإسلامية اليومية",
     "dailyChecklistReminder": "تذكير القائمة اليومية",
     "dailyChecklistSubtitle": "يومياً في {time}",
     "@dailyChecklistSubtitle": {
@@ -1152,11 +1152,11 @@
             }
         }
     },
-    "checklistReminderDescription": "احصل على تذكير لإكمال مهام قائمتك الإسلامية اليومية",
+    "checklistReminderDescription": "ذكّرنا إيّاك لإتمام مهام قائمتك الإسلامية اليومية",
     "selectChecklistReminderTime": "اختر وقت تذكير القائمة",
     "status": "الحالة",
     "optimize": "تحسين",
-    "loadingPreferences": "جاري تحميل التفضيلات...",
+    "loadingPreferences": "جارٍ تحميل التفضيلات...",
     "enableNotificationsSettings": "يرجى تفعيل الإشعارات في إعدادات النظام",
     "count": "{count}",
     "@count": {
@@ -1230,116 +1230,116 @@
     "@type": {
         "description": "Type or category label"
     },
-    "notificationKahfTitle": "🕌 تذكير سورة الكهف",
-    "notificationKahfBody": "اليوم يوم الجمعة! لا تنس قراءة سورة الكهف للحصول على البركات والحماية.",
+    "notificationKahfTitle": "🕌 تذكير بسورة الكهف",
+    "notificationKahfBody": "اليوم يوم الجمعة، فلا تنسَ قراءة سورة الكهف لتنال بركتها وحمايتها.",
     "notificationMorningAthkarTitle": "🌅 أذكار الصباح",
     "notificationMorningAthkarBody": "ابدأ يومك بأذكار الصباح وذكر الله.",
     "notificationEveningAthkarTitle": "🌅 أذكار المساء",
-    "notificationEveningAthkarBody": "اختتم يومك بأذكار المساء والشكر لله.",
-    "notificationQuranTitle": "📖 تذكير قراءة القرآن",
-    "notificationQuranBody": "حان وقت قراءة بعض الآيات من القرآن الكريم والتأمل في هدايته.",
-    "notificationChecklistTitle": "📋 تذكير القائمة اليومية",
-    "notificationChecklistBody": "حان وقت ملء قائمتك الإسلامية اليومية وتتبع تقدمك الروحي.",
-    "notificationKhatmaTitle": "📖 تذكير الختمة",
+    "notificationEveningAthkarBody": "اختتم يومك بأذكار المساء وشكر الله.",
+    "notificationQuranTitle": "📖 تذكير بقراءة القرآن",
+    "notificationQuranBody": "حان وقت تلاوة آيات من القرآن الكريم والتأمل في هدايته.",
+    "notificationChecklistTitle": "📋 تذكير بقائمة اليوم",
+    "notificationChecklistBody": "حان وقت إتمام قائمتك الإسلامية اليومية ومتابعة تقدمك الروحي.",
+    "notificationKhatmaTitle": "📖 تذكير بالختمة",
     "notificationKhatmaBody": "حان وقت قراءة وردك اليومي من القرآن الكريم",
     "notificationRandomAthkarTitle": "🤲 أذكار متنوعة",
     "notificationPrayerTimeTitle": "🕌 حان وقت صلاة {prayerName}",
-    "notificationPrayerTimeBody": "حان وقت صلاة {prayerName}. تقبل الله صلاتكم.",
-    "prayerCountdownTitle": "{prefix} التالية {prayerName} في {timeText}",
-    "prayerCountdownUrgentTitle": "{prefix} {prayerName} في {timeText}",
+    "notificationPrayerTimeBody": "حان وقت صلاة {prayerName}، تقبّل الله صلاتكم.",
+    "prayerCountdownTitle": "{prefix} التالية {prayerName} بعد {timeText}",
+    "prayerCountdownUrgentTitle": "{prefix} {prayerName} بعد {timeText}",
     "prayerCountdownFajrContext": "صلاة الفجر - ابدأ يومك بالصلاة 🤲",
     "prayerCountdownDhuhrContext": "صلاة الظهر - خذ استراحة مباركة ☀️",
     "prayerCountdownAsrContext": "صلاة العصر - اذكر الله 📿",
     "prayerCountdownMaghribContext": "صلاة المغرب - اختتم يومك بالامتنان 🤲",
-    "prayerCountdownIshaContext": "صلاة العشاء - نهاية سلمية ليومك 🌙",
-    "prayerCountdownDefaultContext": "ابق مستعداً لوقت الصلاة 🕌",
-    "prayerCountdownCriticalUrgency": "وقت الصلاة قريب جداً - استعد الآن!",
-    "prayerCountdownHighUrgency": "استعد للصلاة قريباً",
-    "prayerCountdownMediumUrgency": "وقت الصلاة يقترب",
+    "prayerCountdownIshaContext": "صلاة العشاء - ختام هادئ ليومك 🌙",
+    "prayerCountdownDefaultContext": "ابقَ مستعداً لوقت الصلاة 🕌",
+    "prayerCountdownCriticalUrgency": "اقترب وقت الصلاة جداً - استعد الآن!",
+    "prayerCountdownHighUrgency": "استعد للصلاة عمّا قريب",
+    "prayerCountdownMediumUrgency": "يقترب وقت الصلاة",
     "prayerCountdownLoadingTitle": "🕌 العد التنازلي للصلاة",
     "prayerCountdownLoadingText": "جارٍ تحميل أوقات الصلاة...",
     "prayerCountdownErrorText": "خطأ في حساب وقت الصلاة",
     "feedbackAppBarTitle": "إرسال الملاحظات",
     "feedbackEmptyWarning": "يرجى إدخال ملاحظاتك قبل الإرسال",
-    "feedbackSuccessMessage": "شكرًا لك! تم إرسال ملاحظاتك.",
+    "feedbackSuccessMessage": "شكراً لك! أُرسلت ملاحظاتك.",
     "feedbackHeroTitle": "نقدّر رأيك",
-    "feedbackHeroSubtitle": "ساعدنا في تحسين هُدَى من خلال مشاركة أفكارك واقتراحاتك أو الإبلاغ عن أي مشكلات واجهتها.",
+    "feedbackHeroSubtitle": "ساعدنا على تحسين هُدَى بمشاركة أفكارك واقتراحاتك أو الإبلاغ عن أي مشكلات واجهتها.",
     "feedbackFormTitle": "ملاحظاتك",
-    "feedbackFormSubtitle": "يرجى أن تكون دقيقًا قدر الإمكان. تساعدنا ملاحظاتك على جعل هُدَى أفضل للجميع.",
+    "feedbackFormSubtitle": "يرجى أن تكون دقيقاً قدر الإمكان، فملاحظاتك تساعدنا على جعل هُدَى أفضل للجميع.",
     "feedbackHintText": "شارك أفكارك أو اقتراحاتك أو أبلغ عن المشكلات...",
     "feedbackSending": "جارٍ الإرسال...",
     "feedbackSendButton": "إرسال الملاحظات",
     "feedbackPrivacyTitle": "إشعار الخصوصية",
-    "feedbackPrivacyDescription": "يتم إرسال ملاحظاتك بأمان وتساعدنا على تحسين التطبيق. لا يتم مشاركة أي معلومات شخصية مع جهات خارجية.",
+    "feedbackPrivacyDescription": "تُرسَل ملاحظاتك بأمان وتساعدنا على تحسين التطبيق، ولا تُشارَك أي معلومات شخصية مع جهات خارجية.",
     "detailedFeedbackTitle": "ملاحظات تفصيلية",
-    "detailedFeedbackSubtitle": "شارك أفكارًا واقتراحات تفصيلية",
+    "detailedFeedbackSubtitle": "شارك أفكاراً واقتراحات تفصيلية",
     "reportAnIssue": "الإبلاغ عن مشكلة",
-    "issueDescription": "ساعدنا على التحسين من خلال الإبلاغ عن أي مشكلات",
-    "onboardingWelcomeTitle": "مرحبًا بك في هدى",
-    "onboardingWelcomeDescription": "هدى - تطبيقك الإسلامي الشامل بكل ما يحتاجه المسلم في مكان واحد.",
+    "issueDescription": "ساعدنا على التحسين بالإبلاغ عن أي مشكلات",
+    "onboardingWelcomeTitle": "مرحباً بك في هُدَى",
+    "onboardingWelcomeDescription": "هُدَى - تطبيقك الإسلامي الشامل، يجمع كل ما يحتاجه المسلم في مكان واحد.",
     "onboardingPrayerTimesTitle": "أوقات الصلاة",
-    "onboardingPrayerTimesDescription": "لا تفوت أي صلاة مع أوقات دقيقة حسب موقعك. احصل على إشعارات وتابع صلواتك اليومية.",
+    "onboardingPrayerTimesDescription": "لا تفوّت أي صلاة بأوقات دقيقة حسب موقعك. تصلك الإشعارات وتتابع صلواتك اليومية.",
     "onboardingQuranTitle": "القرآن الكريم",
-    "onboardingQuranDescription": "اقرأ واستمع واحفظ القرآن الكريم مع تلاوات جميلة وترجمات وتفسير.",
+    "onboardingQuranDescription": "اقرأ القرآن الكريم واستمع إليه واحفظه مع تلاوات بديعة وترجمات وتفسير.",
     "onboardingAthkarTitle": "الأذكار والدعاء",
-    "onboardingAthkarDescription": "أذكار ودعوات يومية لتعزيز إيمانك.",
+    "onboardingAthkarDescription": "أذكار وأدعية يومية تعزز إيمانك.",
     "onboardingQiblahTitle": "اتجاه القبلة",
-    "onboardingQiblahDescription": "اعثر على اتجاه الكعبة المشرفة بدقة من أي مكان في العالم.",
+    "onboardingQiblahDescription": "حدّد اتجاه الكعبة المشرفة بدقة من أي مكان في العالم.",
     "onboardingMultilingualTitle": "دعم متعدد اللغات",
-    "onboardingMultilingualDescription": "استخدم التطبيق بعدة لغات لجعل رحلتك الإسلامية أكثر خصوصية وسهولة.",
+    "onboardingMultilingualDescription": "استخدم التطبيق بعدة لغات لتكون رحلتك الإسلامية أيسر وأقرب إليك.",
     "onboardingBooksTitle": "كتب إسلامية",
-    "onboardingBooksDescription": "استكشف مكتبة ضخمة من الكتب الإسلامية الموثوقة للمعرفة العميقة والنمو الروحي.",
+    "onboardingBooksDescription": "استكشف مكتبة ضخمة من الكتب الإسلامية الموثوقة لمعرفة عميقة ونمو روحي.",
     "onboardingHadithTitle": "مجموعة الأحاديث",
-    "onboardingHadithDescription": "اقرأ من مصادر موثوقة مثل صحيح البخاري وصحيح مسلم وسنن أبي داود وغيرها.",
-    "onboardingAITitle": "مساعد هدى AI",
-    "onboardingAIDescription": "اطرح أسئلة إسلامية واحصل على إجابات موثوقة من مساعدنا الذكي.",
+    "onboardingHadithDescription": "اقرأ من مصادر موثوقة كصحيح البخاري وصحيح مسلم وسنن أبي داود وغيرها.",
+    "onboardingAITitle": "مساعد هُدَى الذكي",
+    "onboardingAIDescription": "اطرح أسئلتك الإسلامية واحصل على إجابات موثوقة من مساعدنا الذكي.",
     "onboardingHijriTitle": "التقويم الهجري",
-    "onboardingHijriDescription": "اعرض التقويم الإسلامي الكامل مع تحويل التاريخ الميلادي للبقاء على اتصال بالتواريخ المهمة.",
-    "onboardingChecklistTitle": "قائمة الأعمال اليومية الإسلامية",
-    "onboardingChecklistDescription": "تابع صلواتك وعباداتك وأعمالك الصالحة اليومية بسهولة.",
+    "onboardingHijriDescription": "اطّلع على التقويم الإسلامي كاملاً مع تحويل التاريخ الميلادي لتبقى على صلة بالتواريخ المهمة.",
+    "onboardingChecklistTitle": "قائمة الأعمال الإسلامية اليومية",
+    "onboardingChecklistDescription": "تابع صلواتك وعباداتك وأعمالك الصالحة اليومية بيسر.",
     "onboardingJourneyTitle": "ابدأ رحلتك",
-    "onboardingJourneyDescription": "كل ما تحتاجه في رحلتك الإسلامية موجود هنا. ابدأ الاستكشاف وعزز صلتك بالله.",
-    "skip": "تخطي",
+    "onboardingJourneyDescription": "كل ما تحتاجه في رحلتك الإسلامية تجده هنا، فابدأ الاستكشاف وعزّز صلتك بالله.",
+    "skip": "تخطٍّ",
     "getStarted": "ابدأ",
     "shareAsText": "مشاركة كنص",
     "shareDhikr": "مشاركة الذكر",
-    "generatingImage": "جاري إنشاء الصورة...",
-    "locationServicesDisabled": "خدمات الموقع معطلة. يرجى تفعيلها في إعدادات جهازك.",
-    "rateAppTitle": "قيّم تطبيق هدى",
-    "rateExperienceQuestion": "كيف تقيم تجربتك مع تطبيقنا؟",
+    "generatingImage": "جارٍ إنشاء الصورة...",
+    "locationServicesDisabled": "خدمات الموقع معطّلة، يرجى تفعيلها في إعدادات جهازك.",
+    "rateAppTitle": "قيّم تطبيق هُدَى",
+    "rateExperienceQuestion": "كيف تقيّم تجربتك مع تطبيقنا؟",
     "helpUsImprove": "ساعدنا على التحسين:",
-    "feedbackHint": "ما الذي يمكننا فعله بشكل أفضل؟",
+    "feedbackHint": "ما الذي يمكننا تحسينه؟",
     "rateButton": "قيّم",
-    "maybeLater": "ربما لاحقًا",
-    "dontAskAgain": "لا تسأل مرة أخرى",
+    "maybeLater": "ربما لاحقاً",
+    "dontAskAgain": "لا تسألني مجدداً",
     "pleaseSelectRating": "يرجى اختيار تقييم",
     "provideFeedback": "يرجى تقديم ملاحظات للتحسين",
-    "thankYouRedirect": "شكرًا لك! سيتم تحويلك إلى المتجر.",
-    "thankYouFeedback": "شكرًا لملاحظاتك! سنعمل على التحسين.",
+    "thankYouRedirect": "شكراً لك! سنحوّلك إلى المتجر.",
+    "thankYouFeedback": "شكراً على ملاحظاتك! سنعمل على التحسين.",
     "noHadithsFound": "لا توجد أحاديث",
-    "noHadithsFoundChapter": "هذا الفصل لا يحتوي على أي أحاديث في الوقت الحالي.",
+    "noHadithsFoundChapter": "لا يحتوي هذا الفصل على أي أحاديث في الوقت الحالي.",
     "mawdu": "موضوع (مختلق)",
     "shadh": "شاذّ",
     "munkar": "منكر",
     "gharib": "غريب",
     "chain": "في السند",
     "noChapters": "لا توجد فصول متاحة",
-    "newContent": "سيتم إضافة محتوى جديد قريبًا.\nيرجى العودة لاحقًا للتحديثات.",
+    "newContent": "سيُضاف محتوى جديد قريباً.\nيرجى العودة لاحقاً للاطلاع على التحديثات.",
     "meccan": "مكية",
     "medinan": "مدنية",
     "ayahs": "آيات",
-    "downloaded": "مُنَزَّل",
+    "downloaded": "مُنَزَّل",
     "loopThisAyah": "تكرار هذه الآية",
-    "autoplayNextAyah": "تشغيل الآية التالية تلقائيًا",
+    "autoplayNextAyah": "تشغيل الآية التالية تلقائياً",
     "memorizationMode": "وضع الحفظ",
     "@memorizationMode": {
         "description": "Title for memorization mode"
     },
-    "memorizationDescription": "اختبر حفظك عن طريق إخفاء الآيات وتلاوتها. سيستمع التطبيق إلى تلاوتك ويكشف الآيات عندما تتلو بشكل صحيح.",
+    "memorizationDescription": "اختبر حفظك بإخفاء الآيات ثم تلاوتها. يُنصت التطبيق إلى تلاوتك ويُظهر الآيات إذا تلوتها تلاوة صحيحة.",
     "@memorizationDescription": {
         "description": "Description of memorization mode"
     },
-    "speechRecognitionDisclaimer": "جودة التعرف على الكلام تعتمد على إمكانيات جهازك.",
+    "speechRecognitionDisclaimer": "تعتمد دقة التعرف على الكلام على إمكانات جهازك.",
     "@speechRecognitionDisclaimer": {
         "description": "Disclaimer about speech recognition"
     },
@@ -1351,7 +1351,7 @@
     "@stopMemorization": {
         "description": "Button to stop memorization"
     },
-    "listening": "يستمع...",
+    "listening": "يُنصت...",
     "@listening": {
         "description": "Status when app is listening"
     },
@@ -1359,7 +1359,7 @@
     "@microphoneIdle": {
         "description": "Status when microphone is idle"
     },
-    "reciteToReveal": "اتلُ الآية للكشف عنها",
+    "reciteToReveal": "اتلُ الآية لإظهارها",
     "@reciteToReveal": {
         "description": "Instruction to recite"
     },
@@ -1367,22 +1367,22 @@
     "@beta": {
         "description": "Beta label"
     },
-    "surahMemorized": "لقد حفظت هذه السورة بنجاح.",
+    "surahMemorized": "أتقنت حفظ هذه السورة.",
     "counseling": "الاستشارة",
-    "chat": "دردشة",
+    "chat": "محادثة",
     "counselingMode": "وضع الاستشارة",
     "@counselingMode": {
         "description": "Title for counseling mode"
     },
-    "counselingIntro": "شارك مشاعرك، ودع هدى ترشدك بالحكمة الإسلامية.",
+    "counselingIntro": "شاركنا مشاعرك، ودَع هُدَى ترشدك بحكمة الإسلام.",
     "@counselingIntro": {
         "description": "Introduction text for counseling mode"
     },
-    "guidanceTitle": "توجيه",
+    "guidanceTitle": "إرشاد",
     "@guidanceTitle": {
         "description": "Guidance card title"
     },
-    "guidanceSubtitle": "توجيه إسلامي شخصي",
+    "guidanceSubtitle": "إرشاد إسلامي يخصك",
     "@guidanceSubtitle": {
         "description": "Guidance card subtitle"
     },
@@ -1390,7 +1390,7 @@
     "@quranTitle": {
         "description": "Quran card title"
     },
-    "quranSubtitle": "حكمة قرآنية ذات صلة",
+    "quranSubtitle": "حكمة قرآنية في موضعها",
     "@quranSubtitle": {
         "description": "Quran card subtitle"
     },
@@ -1402,7 +1402,7 @@
     "@duaaSubtitle": {
         "description": "Duaa card subtitle"
     },
-    "tryExpressing": "جرب التعبير عن:",
+    "tryExpressing": "جرّب أن تعبّر عن:",
     "@tryExpressing": {
         "description": "Text prompting users to try example questions"
     },
@@ -1410,7 +1410,7 @@
     "@exampleFeelAnxious": {
         "description": "Example question for anxiety"
     },
-    "exampleFeelOverwhelmed": "أشعر بالإرهاق",
+    "exampleFeelOverwhelmed": "أشعر بأن الهموم تثقلني",
     "@exampleFeelOverwhelmed": {
         "description": "Example question for overwhelmed"
     },
@@ -1418,7 +1418,7 @@
     "@exampleFeelingGrateful": {
         "description": "Example question for gratitude"
     },
-    "exampleSeekingPeace": "أبحث عن السلام",
+    "exampleSeekingPeace": "أنشد الطمأنينة",
     "@exampleSeekingPeace": {
         "description": "Example question for seeking peace"
     },
@@ -1434,28 +1434,28 @@
     "@duaa": {
         "description": "Title for Duaa section in counseling view"
     },
-    "addWidgetToHomeScreen": "إضافة العنصر إلى الشاشة الرئيسية",
-    "addWidgetInstructions": "اضغط الزر أدناه لإضافة عنصر هُدى مباشرة إلى شاشتك الرئيسية. يعرض آيات قرآنية جميلة تتحدث تلقائياً.",
-    "addWidget": "إضافة العنصر",
-    "featureOnlyAvailableOnAndroid": "هذه الميزة متاحة فقط على أندرويد",
-    "pinWidgetNotSupported": "تثبيت العنصر غير مدعوم على هذا الجهاز",
-    "errorAddingWidget": "خطأ في إضافة العنصر",
-    "howToAddWidget": "كيفية إضافة العنصر",
+    "addWidgetToHomeScreen": "إضافة الأداة إلى الشاشة الرئيسية",
+    "addWidgetInstructions": "اضغط الزر أدناه لإضافة أداة هُدَى مباشرة إلى شاشتك الرئيسية؛ فهي تعرض آيات قرآنية بديعة تتجدد تلقائياً.",
+    "addWidget": "إضافة الأداة",
+    "featureOnlyAvailableOnAndroid": "هذه الميزة متاحة على أندرويد فقط",
+    "pinWidgetNotSupported": "تثبيت الأداة غير مدعوم على هذا الجهاز",
+    "errorAddingWidget": "تعذّرت إضافة الأداة",
+    "howToAddWidget": "كيفية إضافة الأداة",
     "androidWidgetStep1": "اضغط مطولاً على مساحة فارغة في شاشتك الرئيسية",
-    "androidWidgetStep2": "اضغط على 'العناصر' من القائمة",
-    "androidWidgetStep3": "ابحث عن 'هُدى' في قائمة العناصر",
-    "androidWidgetStep4": "اسحب العنصر وأفلته في شاشتك الرئيسية",
+    "androidWidgetStep2": "اضغط على 'الأدوات' من القائمة",
+    "androidWidgetStep3": "ابحث عن 'هُدَى' في قائمة الأدوات",
+    "androidWidgetStep4": "اسحب الأداة وأفلتها في شاشتك الرئيسية",
     "iosWidgetStep1": "اضغط مطولاً على مساحة فارغة في شاشتك الرئيسية",
     "iosWidgetStep2": "اضغط على زر '+' في الزاوية العلوية اليسرى",
-    "iosWidgetStep3": "ابحث عن 'هُدى' في معرض العناصر",
-    "iosWidgetStep4": "اختر حجم العنصر واضغط على 'إضافة عنصر'",
-    "genericWidgetStep1": "اضغط مطولاً على شاشتك الرئيسية وابحث عن 'العناصر'",
-    "genericWidgetStep2": "ابحث عن عنصر 'هُدى' وأضفه إلى شاشتك الرئيسية",
+    "iosWidgetStep3": "ابحث عن 'هُدَى' في معرض الأدوات",
+    "iosWidgetStep4": "اختر حجم الأداة ثم اضغط على 'إضافة أداة'",
+    "genericWidgetStep1": "اضغط مطولاً على شاشتك الرئيسية وابحث عن 'الأدوات'",
+    "genericWidgetStep2": "ابحث عن أداة 'هُدَى' وأضفها إلى شاشتك الرئيسية",
     "sahurAlarmTitle": "منبه السحور",
     "sahurAlarmDescription": "استيقظ للسحور قبل صلاة الفجر.",
     "exactTime": "وقت محدد",
     "minutesBeforeFajr": "دقائق قبل صلاة الفجر",
-    "sahurMinutesPlaceholder": "الدقائق (مثال: 30)",
+    "sahurMinutesPlaceholder": "الدقائق (مثلاً: 30)",
     "atExactTime": "في {time}",
     "minsBeforeFajr": "{minutes} دقيقة قبل الفجر",
     "sahurAlarmNotSet": "غير محدد",
@@ -1463,7 +1463,7 @@
     "stopAlarm": "إيقاف",
     "sahurAlarmNotificationBody": "حان وقت الاستيقاظ للسحور",
     "alarmKilledTitle": "قد لا ترن منبهاتك",
-    "alarmKilledBody": "لقد أغلقت التطبيق. يرجى إعادة فتحه حتى نتمكن من إعادة جدولة منبهاتك.",
+    "alarmKilledBody": "لقد أغلقت التطبيق. أعد فتحه لنتمكن من إعادة جدولة منبهاتك.",
     "snoozeAlarm": "تأجيل",
     "miqaatLock": "قفل الميقات",
     "@miqaatLock": {
@@ -1473,7 +1473,7 @@
     "@enableMiqaatLock": {
         "description": "Enable toggle label"
     },
-    "miqaatLockDescription": "قفل التطبيقات أثناء أوقات العبادة لتقليل المشتتات.",
+    "miqaatLockDescription": "اقفل التطبيقات أثناء أوقات العبادة للتقليل من المشتتات.",
     "@miqaatLockDescription": {
         "description": "Feature description"
     },
@@ -1481,7 +1481,7 @@
     "@lockedApps": {
         "description": "Locked apps section title"
     },
-    "noAppsSelected": "لم يتم تحديد تطبيقات",
+    "noAppsSelected": "لم تُحدَّد أي تطبيقات",
     "@noAppsSelected": {
         "description": "Empty state message"
     },
@@ -1493,7 +1493,7 @@
     "@timeSlots": {
         "description": "Time slots section title"
     },
-    "noTimeSlotsConfigured": "لم يتم تكوين فترات زمنية",
+    "noTimeSlotsConfigured": "لم تُضبط فترات زمنية",
     "@noTimeSlotsConfigured": {
         "description": "Empty state message"
     },
@@ -1509,7 +1509,7 @@
     "@sessionDuration": {
         "description": "Session duration section title"
     },
-    "sessionDurationDescription": "الوقت المطلوب قضاؤه في تطبيق هدى (مثل قراءة القرآن) لإلغاء قفل تطبيقاتك",
+    "sessionDurationDescription": "المدة المطلوب قضاؤها في تطبيق هُدَى (كقراءة القرآن) لإلغاء قفل تطبيقاتك",
     "@sessionDurationDescription": {
         "description": "Session duration explanation"
     },
@@ -1532,15 +1532,15 @@
     "@selectApps": {
         "description": "App selection dialog title"
     },
-    "searchApps": "البحث عن تطبيقات...",
+    "searchApps": "ابحث عن تطبيقات...",
     "@searchApps": {
         "description": "Search apps placeholder"
     },
-    "loadingApps": "جاري تحميل التطبيقات...",
+    "loadingApps": "جارٍ تحميل التطبيقات...",
     "@loadingApps": {
         "description": "Loading apps message"
     },
-    "noAppsFound": "لم يتم العثور على تطبيقات",
+    "noAppsFound": "لم يُعثر على تطبيقات",
     "@noAppsFound": {
         "description": "No apps found message"
     },
@@ -1548,7 +1548,7 @@
     "@iosAppSelectionTitle": {
         "description": "iOS app selection title"
     },
-    "iosAppSelectionDescription": "بسبب قيود الخصوصية في iOS، تتم إدارة تحديد التطبيقات من خلال إعدادات مدة الاستخدام. مكّن الوصول إلى مدة الاستخدام لإدارة قيود التطبيقات.",
+    "iosAppSelectionDescription": "نظراً لقيود الخصوصية في iOS، تُدار عملية تحديد التطبيقات من خلال إعدادات مدة الاستخدام. فعّل الوصول إلى مدة الاستخدام لإدارة قيود التطبيقات.",
     "@iosAppSelectionDescription": {
         "description": "iOS app selection explanation"
     },
@@ -1556,7 +1556,7 @@
     "@label": {
         "description": "Label input label"
     },
-    "labelHint": "مثال: وقت الفجر، ساعات العمل",
+    "labelHint": "مثلاً: وقت الفجر، ساعات العمل",
     "@labelHint": {
         "description": "Label input hint"
     },
@@ -1564,11 +1564,11 @@
     "@timeRange": {
         "description": "Time range section title"
     },
-    "repeatOn": "تكرار في",
+    "repeatOn": "التكرار في",
     "@repeatOn": {
         "description": "Weekday selection title"
     },
-    "leaveEmptyForEveryday": "اتركه فارغاً للتكرار كل يوم",
+    "leaveEmptyForEveryday": "اتركه فارغاً ليتكرر كل يوم",
     "@leaveEmptyForEveryday": {
         "description": "Weekday selection hint"
     },
@@ -1608,7 +1608,7 @@
     "@permissionsRequired": {
         "description": "Permissions banner title"
     },
-    "permissionsRequiredDescription": "امنح الأذونات التالية لتفعيل قفل ميقات",
+    "permissionsRequiredDescription": "امنح الأذونات التالية لتفعيل قفل الميقات",
     "@permissionsRequiredDescription": {
         "description": "Permissions banner description"
     },
@@ -1616,7 +1616,7 @@
     "@accessibilityService": {
         "description": "Accessibility permission title"
     },
-    "accessibilityServiceDescription": "مطلوب لاكتشاف عمليات تشغيل التطبيقات",
+    "accessibilityServiceDescription": "مطلوبة لاكتشاف تشغيل التطبيقات",
     "@accessibilityServiceDescription": {
         "description": "Accessibility permission description"
     },
@@ -1656,7 +1656,7 @@
     "@appLocked": {
         "description": "Lock screen title"
     },
-    "focusTimeMessage": "هذا التطبيق مقفل خلال وقت تركيزك. ابدأ جلسة لفتحه مؤقتاً.",
+    "focusTimeMessage": "هذا التطبيق مقفل خلال وقت تركيزك. ابدأ جلسةً لفتحه مؤقتاً.",
     "@focusTimeMessage": {
         "description": "Lock screen message"
     },
@@ -1669,22 +1669,22 @@
     "ramadanDayLabel": "رمضان {day}",
     "durationOfFasting": "مدة الصيام: {hours} ساعة و{minutes} دقيقة",
     "durationOfIftar": "مدة الإفطار: {hours} ساعة و{minutes} دقيقة",
-    "remainingForIftar": "متبقي للإفطار أقل من {hours} ساعة",
-    "remainingForImsaak": "متبقي للإمساك أقل من {hours} ساعة",
+    "remainingForIftar": "بقي على الإفطار أقل من {hours} ساعة",
+    "remainingForImsaak": "بقي على الإمساك أقل من {hours} ساعة",
     "imsaakLabel": "الإمساك",
     "iftarLabel": "الإفطار",
-    "fastedStatus": "صمت",
+    "fastedStatus": "صُمت",
     "missedStatus": "أفطرت",
     "qadhaaDays": "أيام القضاء",
     "qadhaaInfoTitle": "عن القضاء",
-    "qadhaaInfoQ1Title": "ما هو القضاء؟",
-    "qadhaaInfoQ1Body": "القضاء هو صيام الأيام التي أفطرها المسلم في رمضان بعذر شرعي كالمرض أو السفر أو الحيض والنفاس، ويجب قضاؤها قبل دخول رمضان التالي.",
+    "qadhaaInfoQ1Title": "ما القضاء؟",
+    "qadhaaInfoQ1Body": "القضاء هو صيام الأيام التي أفطر فيها المسلم في رمضان بعذر شرعي كالمرض أو السفر أو الحيض والنفاس، ويجب قضاؤها قبل دخول رمضان التالي.",
     "qadhaaInfoQ2Title": "حكم القضاء",
     "qadhaaInfoQ2Body1": "قال الله تعالى:",
     "qadhaaInfoQ2Verse": "﴿فَمَن كَانَ مِنكُم مَّرِيضًا أَوْ عَلَىٰ سَفَرٍ فَعِدَّةٌ مِّنْ أَيَّامٍ أُخَرَ﴾ البقرة ١٨٤",
     "qadhaaInfoQ2Body2": "فيجب على من أفطر في رمضان بعذر أن يقضي تلك الأيام.",
     "qadhaaInfoQ3Title": "متى يجب القضاء؟",
-    "qadhaaInfoQ3Body": "يجب قضاء أيام رمضان قبل دخول رمضان التالي، ويجوز القضاء في أي وقت من السنة ما عدا أيام العيدين وأيام التشريق. والأفضل المبادرة بالقضاء وعدم التأخير.",
+    "qadhaaInfoQ3Body": "يجب قضاء أيام رمضان قبل دخول رمضان التالي، ويجوز القضاء في أي وقت من السنة عدا يومي العيدين وأيام التشريق. والأفضل المبادرة بالقضاء وعدم تأخيره.",
     "qadhaaInfoQ4Title": "كيفية الاستخدام",
     "qadhaaInfoQ4Body1": "أثناء رمضان: اضغط على اليوم الذي أفطرت فيه لتسجيله",
     "qadhaaInfoQ4Body2": "بعد رمضان: اضغط على اليوم المسجل لتأكيد قضائه",
@@ -1692,30 +1692,30 @@
     "whatsNewVersion": "الإصدار {version}",
     "whatsNewExploreButton": "فهمت!",
     "whatsNew153Feature1": "متتبع صيام رمضان مع سجل القضاء اليومي",
-    "whatsNew153Feature2": "قفل الميقات لحظر التطبيقات المشتتة أثناء أوقات الصلاة",
-    "whatsNew153Feature3": "متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة",
-    "whatsNew200Feature1": "قفل الميقات: حظر التطبيقات المشتتة خلال أوقاتك المخصصة",
-    "whatsNew200Feature2": "صفحة رمضان: متتبع القضاء لتسجيل وقضاء أيام الصيام الفائتة",
-    "whatsNew200Feature3": "منبه السحور: اختر وقتاً ثابتاً، أو دعه يرن تلقائياً قبل صلاة الفجر",
-    "whatsNew200Feature4": "تحسينات واجهة المستخدم",
+    "whatsNew153Feature2": "قفل الميقات لحجب التطبيقات المُشتِّتة أثناء أوقات الصلاة",
+    "whatsNew153Feature3": "متتبع القضاء لتسجيل أيام الصيام الفائتة وقضائها",
+    "whatsNew200Feature1": "قفل الميقات: حجب التطبيقات المُشتِّتة خلال أوقاتك المخصصة",
+    "whatsNew200Feature2": "صفحة رمضان: متتبع القضاء لتسجيل أيام الصيام الفائتة وقضائها",
+    "whatsNew200Feature3": "منبه السحور: اختر وقتاً ثابتاً، أو دعه يرنّ تلقائياً قبل صلاة الفجر",
+    "whatsNew200Feature4": "تحسينات في واجهة المستخدم",
     "whatsNew200Feature5": "إصلاح الأخطاء",
     "whatsNew300Feature1": "الآيات المتشابهة: اكتشف الآيات ذات المواضيع والمعاني المتشابهة في القرآن",
-    "whatsNew300Feature2": "متتبع الختمة: خطط وتتبع قراءتك للقرآن مع تذكيرات يومية",
+    "whatsNew300Feature2": "متتبع الختمة: خطّط لقراءتك للقرآن وتابعها مع تذكيرات يومية",
     "whatsNew300Feature3": "عرض المصحف: اقرأ القرآن بتخطيط صفحة المصحف التقليدي",
-    "whatsNew300Feature4": "صوتيات القرآن: استمع إلى التلاوات من قراء متعددين مع إمكانية التحميل",
+    "whatsNew300Feature4": "صوتيات القرآن: استمع إلى تلاوات من قراء متعددين مع إمكانية التحميل",
     "whatsNew300Feature5": "إذاعة القرآن: محطات إذاعية مباشرة للقرآن الكريم",
     "whatsNew300Feature6": "تعديل أوقات الصلاة: ضبط دقيق لأوقات الصلاة للحصول على إشعارات أكثر دقة",
-    "whatsNew300Feature7": "تحسينات في واجهة المستخدم والتصميم المتجاوب وتجربة استخدام محسّنة",
-    "whatsNew310Feature1iOS": "ودجة أوقات الصلاة: ودجة على الشاشة الرئيسية وشاشة القفل مع عداد تنازلي مباشر حتى صلاتك القادمة",
-    "whatsNew310Feature1Android": "ودجة أوقات الصلاة: ودجة على الشاشة الرئيسية مع عداد تنازلي مباشر حتى صلاتك القادمة",
+    "whatsNew300Feature7": "تحسينات في واجهة المستخدم والتصميم المتجاوب وتجربة استخدام أفضل",
+    "whatsNew310Feature1iOS": "ودجة أوقات الصلاة: ودجة على الشاشة الرئيسية وشاشة القفل مع عدّ تنازلي مباشر حتى صلاتك القادمة",
+    "whatsNew310Feature1Android": "ودجة أوقات الصلاة: ودجة على الشاشة الرئيسية مع عدّ تنازلي مباشر حتى صلاتك القادمة",
     "whatsNew310Feature2": "تحسينات في واجهة المستخدم والتجربة",
     "whatsNew310Feature3": "إصلاح الأخطاء",
     "whatsNew330Feature1": "متابعة القراءة في مكان جديد: اضغط على بطاقة القرآن في الشاشة الرئيسية لتوسيعها والعثور على تقدم قراءتك",
-    "whatsNew330Feature2": "إصلاح الأخطاء والتحسينات",
-    "whatsNew340Feature1": "المقاطع الصوتية: تصفح جميع أنواع المحتوى الإسلامي الصوتي مع دعم التحميل للاستماع بدون اتصال ومؤقت النوم",
-    "whatsNew340Feature2": "تتبع القارئ والراديو: آخر قارئ استمعت إليه وآخر محطة راديو محفوظان الآن — استأنفهما من الشاشة الرئيسية",
-    "whatsNew340Feature3": "تقدم الكتاب: آخر كتاب قرأته محفوظ الآن — تابع من حيث توقفت من صفحة الكتب",
-    "whatsNew340Feature4": "إصلاح الأخطاء والتحسينات",
+    "whatsNew330Feature2": "إصلاح الأخطاء وإدخال تحسينات",
+    "whatsNew340Feature1": "المقاطع الصوتية: تصفّح جميع أنواع المحتوى الإسلامي الصوتي مع دعم التحميل للاستماع دون اتصال ومؤقت النوم",
+    "whatsNew340Feature2": "تتبع القارئ والإذاعة: يُحفظ الآن آخر قارئ استمعت إليه وآخر محطة إذاعية — استأنفهما من الشاشة الرئيسية",
+    "whatsNew340Feature3": "تقدم الكتاب: يُحفظ الآن آخر كتاب قرأته — تابع من حيث توقفت من صفحة الكتب",
+    "whatsNew340Feature4": "إصلاح الأخطاء وإدخال تحسينات",
     "whatsNew350Feature1": "خط التطبيق: يمكنك الآن تغيير خط التطبيق من الإعدادات",
     "whatsNew350Feature2": "إصلاح الأخطاء وتحسين الأداء",
     "whatsNew350Feature3": "لمسات على الواجهة: مظهر أنيق ومحدّث في بعض الصفحات",
@@ -1723,7 +1723,7 @@
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
     },
-    "showingDownloadedBooks": "عرض {count} من الكتب المحملة",
+    "showingDownloadedBooks": "عرض {count} من الكتب المحمّلة",
     "@showingDownloadedBooks": {
         "description": "Shows the number of available downloaded books",
         "placeholders": {
@@ -1733,11 +1733,11 @@
             }
         }
     },
-    "bookDownloadedSuccessfully": "تم تنزيل الكتاب بنجاح!",
+    "bookDownloadedSuccessfully": "نُزِّل الكتاب بنجاح!",
     "@bookDownloadedSuccessfully": {
         "description": "Message shown when a book is downloaded successfully"
     },
-    "downloadFailed": "فشل التنزيل: {error}",
+    "downloadFailed": "تعذّر التنزيل: {error}",
     "@downloadFailed": {
         "description": "Message shown when a book download fails",
         "placeholders": {
@@ -1751,7 +1751,7 @@
     "@iosTapToSelectApps": {
         "description": "Instruction to select apps using Screen Time on iOS"
     },
-    "iosAppsSelectedSuccessfully": "تم تحديد التطبيقات بنجاح",
+    "iosAppsSelectedSuccessfully": "حُدِّدت التطبيقات بنجاح",
     "@iosAppsSelectedSuccessfully": {
         "description": "Success message when apps are selected"
     },
@@ -1807,11 +1807,11 @@
             }
         }
     },
-    "noDownloadedBooks": "لا توجد كتب محملة",
+    "noDownloadedBooks": "لا توجد كتب محمّلة",
     "@noDownloadedBooks": {
         "description": "Empty state title for downloaded books"
     },
-    "downloadBooksWhenOnlineToAccessThemOffline": "قم بتنزيل الكتب عند الاتصال بالإنترنت للوصول إليها دون اتصال",
+    "downloadBooksWhenOnlineToAccessThemOffline": "نزّل الكتب عند الاتصال بالإنترنت للوصول إليها دون اتصال",
     "@downloadBooksWhenOnlineToAccessThemOffline": {
         "description": "Empty state subtitle for downloaded books"
     },
@@ -1829,18 +1829,18 @@
             }
         }
     },
-    "accessibilityServiceRequiredDialogTitle": "مطلوب خدمة إمكانية الوصول",
+    "accessibilityServiceRequiredDialogTitle": "خدمة إمكانية الوصول مطلوبة",
     "accessibilityServiceRequiredDialogDesc": "يتطلب قفل الميقات واجهة برمجة تطبيقات خدمة إمكانية الوصول (AccessibilityService) لاكتشاف تشغيل التطبيقات وعرض شاشة القفل.",
-    "accessibilityServiceRequiredDialogPrivacy": "نحن لا نستخدم هذه الخدمة لجمع أو تخزين أو مشاركة أي بيانات شخصية أو حساسة للمستخدم.",
+    "accessibilityServiceRequiredDialogPrivacy": "لا نستخدم هذه الخدمة لجمع أي بيانات شخصية أو حساسة للمستخدم أو تخزينها أو مشاركتها.",
     "agree": "موافق",
     "quranAudio": "القرآن الكريم صوت",
     "searchReciters": "البحث عن القراء...",
     "searchSurah": "البحث عن سورة...",
     "verses": "آيات",
     "noDownloadedContent": "لا يوجد محتوى محمّل",
-    "connectToDownload": "اتصل بالإنترنت لتصفح وتحميل تلاوات القرآن الكريم",
+    "connectToDownload": "اتصل بالإنترنت لتصفّح تلاوات القرآن الكريم وتحميلها",
     "quranRadio": "إذاعة القرآن الكريم",
-    "searchRadio": "البحث عن محطات الراديو...",
+    "searchRadio": "البحث عن المحطات الإذاعية...",
     "nowPlaying": "يُذاع الآن",
     "khatmaTitle": "ختمة القرآن الكريم",
     "khatmaDescription": "حدد وردك اليومي أو المدة التي تريد ختم القرآن فيها، وتابع ختمتك طوال العام.",
@@ -1851,7 +1851,7 @@
     "khatmaDailyWird21Pages": "الورد اليومي: ٢١ صفحة تقريباً",
     "khatmaOtherPrograms": "برامج أخرى",
     "khatmaBySemanticTitle": "ختمة مقسمة بالمعنى",
-    "khatmaBySemanticSubtitle": "ورد مراعى فيه تمام المعنى",
+    "khatmaBySemanticSubtitle": "ورد يُراعى فيه تمام المعنى",
     "khatmaByPartsTitle": "ختمة مقسمة بالأجزاء والأرباع",
     "khatmaByPartsSubtitle": "ورد بحسب الأجزاء والأحزاب",
     "khatmaProgramTitle": "برنامج الختمة",
@@ -1886,7 +1886,7 @@
     "khatmaFromBeginningSubtitle": "ابدأ من الفاتحة",
     "khatmaSpecificWird": "ورد محدد",
     "khatmaSpecificWirdSubtitle": "اختر يوماً من قائمة الأوراد",
-    "khatmaStatsTitle": "إحصائيات الختمة",
+    "khatmaStatsTitle": "إحصاءات الختمة",
     "khatmaDayOf": "اليوم {current} من {total}",
     "khatmaTomorrow": "غداً",
     "khatmaInTwoDays": "بعد يومين",
@@ -1898,10 +1898,10 @@
     "khatmaManyDaysAgo": "منذ {count} يوماً",
     "khatmaLegendKhatma": "الختمة",
     "khatmaWirdCompleted": "مكتمل",
-    "khatmaWirdInProgress": "جاري",
+    "khatmaWirdInProgress": "جارٍ",
     "khatmaCommitment": "الالتزام",
     "khatmaDaysRemaining": "أيام باقية",
-    "khatmaPagesRead": "صفحات قرأت",
+    "khatmaPagesRead": "صفحات مقروءة",
     "khatmaPagesRemaining": "باقي (ص)",
     "khatmaDailyWirdOf": "ورد اليوم {day}",
     "khatmaFromSurah": "من {surah}: {verse}",
@@ -1914,7 +1914,7 @@
     "khatmaDeleteTitle": "حذف الختمة",
     "khatmaDeleteSubtitle": "مسح جميع بيانات التقدم",
     "khatmaCongrats": "بارك الله فيك!",
-    "khatmaCompletedMsg": "لقد أكملت هذه الختمة بنجاح",
+    "khatmaCompletedMsg": "أكملت هذه الختمة بنجاح",
     "khatmaRepeat": "إعادة هذه الختمة",
     "khatmaDeleteConfirmContent": "هل أنت متأكد من حذف الختمة الحالية ومسح جميع بيانات تقدمك؟",
     "khatmaAmIndicator": "ص",
@@ -1923,7 +1923,7 @@
     "surahsLabel": "السور",
     "surahIndexSubtitle": "١١٤ سورة",
     "searchSurahHint": "ابحث عن سورة...",
-    "surahNoResults": "لم يتم العثور على نتائج",
+    "surahNoResults": "لا توجد نتائج",
     "verseCountLabel": "{count} آية",
     "tabMemorization": "الحفظ",
     "readingModeScrollList": "قراءة متدرجة",
@@ -1950,22 +1950,22 @@
     "fontLoadingLabel": "جارٍ التحميل...",
     "nextSurah": "السورة التالية",
     "previousSurah": "السورة السابقة",
-    "scrollToTop": "للأعلى",
-    "noSimilarAyahsFound": "لم يتم العثور على آيات مشابهة",
+    "scrollToTop": "إلى الأعلى",
+    "noSimilarAyahsFound": "لم يُعثَر على آيات مشابهة",
     "similarAyahsCountLabel": "للآية {ayahKey} {count, plural, one{آية مشابهة واحدة} other{{count} آيات مشابهة}}",
     "similarAyahsMatchStats": "تطابق {matchedWordsCount} كلمات · تغطية {coverage}% · الدرجة: {score}",
     "quranVerseWidget": "آية قرآنية",
     "prayerTimesWidget": "أوقات الصلاة",
     "prayerWidgetTagline": "لا تفوّت موعد صلاة",
     "addPrayerWidgetTitle": "إضافة عنصر الصلاة",
-    "addPrayerWidgetDescription": "ثبّت عنصر هُدى للصلاة على الشاشة الرئيسية لمعرفة الصلاة القادمة مع عدّاد مباشر. تُحسب الأوقات على جهازك من موقعك المحفوظ.",
+    "addPrayerWidgetDescription": "ثبّت عنصر هُدَى للصلاة على الشاشة الرئيسية لتعرف الصلاة القادمة مع عدّاد مباشر. تُحسب الأوقات على جهازك من موقعك المحفوظ.",
     "addPrayerWidget": "إضافة إلى الشاشة الرئيسية",
     "customizePrayerWidget": "تخصيص",
     "prayerWidgetCustomization": "تخصيص عنصر الصلاة",
     "prayerWidgetPreview": "معاينة مباشرة",
     "design": "التصميم",
     "designHero": "الواجهة المميزة",
-    "designHeroDescription": "تركيز جريء على الصلاة القادمة مع العدّاد وأيقونة وقائمة جميع الصلوات.",
+    "designHeroDescription": "تركيز جريء على الصلاة القادمة مع العدّاد والأيقونة وقائمة الصلوات كلها.",
     "designCompact": "التقويم",
     "designCompactDescription": "بطاقة كلاسيكية بلون كريمي تعرض التاريخ واليوم وشبكة الصلوات وأوقات الليل.",
     "size": "الحجم",
@@ -1986,15 +1986,15 @@
     "arabicNumerals": "عربية (١، ٢، ٣)",
     "advanced": "خيارات متقدمة",
     "resetWidgetCustomization": "إعادة الضبط الافتراضي",
-    "resetWidgetCustomizationConfirm": "إعادة كل تخصيصات عنصر الصلاة إلى الإعدادات الافتراضية؟",
+    "resetWidgetCustomizationConfirm": "أتعيد كل تخصيصات عنصر الصلاة إلى الإعدادات الافتراضية؟",
     "followAppTheme": "اتباع مظهر التطبيق",
     "prayerWidgetEmptyTitle": "حدّد موقعك",
-    "prayerWidgetEmptyBody": "افتح هُدى وامنح إذن الموقع ليحسب العنصر مواعيد الصلاة لك.",
+    "prayerWidgetEmptyBody": "افتح هُدَى وامنح إذن الموقع ليحسب لك العنصر مواعيد الصلاة.",
     "prayerWidgetEmptyAction": "فتح أوقات الصلاة",
     "previousPrayer": "الصلاة السابقة",
     "timeUntilNextPrayer": "الوقت المتبقي للصلاة",
     "forcePrayerWidgetUpdate": "تحديث عنصر الصلاة",
-    "prayerWidgetUpdated": "تم تحديث عنصر الصلاة",
+    "prayerWidgetUpdated": "حُدِّث عنصر الصلاة",
     "prayerWidgetUpdating": "جارٍ التحديث…",
     "widgetTheme": "المظهر",
     "themeAuto": "مظهر التطبيق",
@@ -2009,7 +2009,7 @@
     "themeAmber": "الكهرماني",
     "themeArctic": "القطبي",
     "themeBurgundy": "العنّابي",
-    "themeSage": "الميرمية",
+    "themeSage": "المريمية",
     "eventRamadan": "رمضان مبارك",
     "eventLastTenRamadan": "العشر الأواخر",
     "eventEidAlFitr": "عيد الفطر مبارك",
@@ -2020,10 +2020,10 @@
     "eventDaysTashreeq": "أيام التشريق",
     "eventRamadanSubtitle": "شهر الصيام والقيام والتأمل",
     "eventLastTenRamadanSubtitle": "تحرّوا ليلة القدر في هذه الليالي المباركة",
-    "eventEidAlFitrSubtitle": "احتفلوا بإتمام رمضان بفرح وامتنان",
-    "eventEidAlAdhaSubtitle": "عيد الأضحى — يوم التقرب والإحسان",
+    "eventEidAlFitrSubtitle": "احتفلوا بإتمام رمضان فرحاً وامتناناً",
+    "eventEidAlAdhaSubtitle": "عيد الأضحى — يوم التقرّب والإحسان",
     "eventDayOfArafahSubtitle": "خير يوم طلعت عليه الشمس",
-    "eventFirstTenDhulHijjahSubtitle": "أحب الأيام إلى الله للعمل الصالح",
+    "eventFirstTenDhulHijjahSubtitle": "أحبّ الأيام إلى الله للعمل الصالح",
     "eventAshuraSubtitle": "يوم صيام وذكر لرحمة الله",
     "eventDaysTashreeqSubtitle": "أيام أكل وشرب وذكر لله",
     "eventRamadanArabic": "شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ",
@@ -2051,13 +2051,13 @@
     "eventDaysTashreeqTranslation": "واذكروا الله في أيام معدودات",
     "eventDaysTashreeqSource": "القرآن ٢:٢٠٣",
     "eventRamadanGuidance": "صوموا من الفجر إلى المغرب، وصلّوا التراويح، وأكثروا من تلاوة القرآن، وتصدّقوا، وأكثروا من الدعاء والاستغفار.",
-    "eventLastTenRamadanGuidance": "تحرّوا ليلة القدر في الليالي الوتر. أكثروا من قيام الليل واعتكفوا إن استطعتم. وردّدوا: اللهم إنك عفوٌّ تحب العفو فاعفُ عنّي.",
+    "eventLastTenRamadanGuidance": "تحرّوا ليلة القدر في الليالي الوتر. وأكثروا من قيام الليل، واعتكفوا إن استطعتم. وردّدوا: اللهم إنك عفوٌّ تحب العفو فاعفُ عنّي.",
     "eventEidAlFitrGuidance": "أخرجوا زكاة الفطر قبل صلاة العيد، وصلّوا صلاة العيد جماعة، وكبّروا، والبسوا أحسن ثيابكم، وأدخلوا السرور على الأهل والجيران.",
     "eventEidAlAdhaGuidance": "صلّوا صلاة العيد، واذبحوا الأضحية بعدها، وكبّروا دبر كل صلاة مكتوبة، ووزّعوا اللحم على الأهل والجيران والمحتاجين.",
-    "eventDayOfArafahGuidance": "صوموا هذا اليوم المبارك إن لم تكونوا حُجّاجاً. أكثروا من الدعاء، فهو اليوم الذي يُعتق الله فيه أكثر عباده من النار. وأكثروا من الذكر وقولوا: لا إله إلا الله وحده لا شريك له.",
-    "eventFirstTenDhulHijjahGuidance": "صوموا الأيام التسعة الأولى وخاصة يوم عرفة. أكثروا من الأعمال الصالحة، وردّدوا التكبير والتهليل والتحميد في هذه الأيام.",
-    "eventAshuraGuidance": "صوموا العاشر من محرّم، وأضيفوا التاسع اتباعاً للسنة. وتذكّروا أن النبي صلى الله عليه وسلم صامه شكراً لله على نجاة موسى من فرعون.",
-    "eventDaysTashreeqGuidance": "أكثروا من ذكر الله وكبّروا دبر كل صلاة مكتوبة. إنها أيام أكل وشرب وشكر. ولا يجوز صيامها إلا للحاج الذي لم يجد الهدي.",
+    "eventDayOfArafahGuidance": "صوموا هذا اليوم المبارك إن لم تكونوا حُجّاجاً. وأكثروا من الدعاء، فهو اليوم الذي يُعتق الله فيه أكثر عباده من النار. وأكثروا من الذكر، وقولوا: لا إله إلا الله وحده لا شريك له.",
+    "eventFirstTenDhulHijjahGuidance": "صوموا الأيام التسعة الأولى ولا سيما يوم عرفة. وأكثروا من الأعمال الصالحة، وردّدوا التكبير والتهليل والتحميد في هذه الأيام.",
+    "eventAshuraGuidance": "صوموا العاشر من محرّم، وأضيفوا إليه التاسع اتباعاً للسنة. وتذكّروا أن النبي صلى الله عليه وسلم صامه شكراً لله على نجاة موسى من فرعون.",
+    "eventDaysTashreeqGuidance": "أكثروا من ذكر الله، وكبّروا دبر كل صلاة مكتوبة. فهي أيام أكل وشرب وشكر. ولا يجوز صيامها إلا للحاج الذي لم يجد الهدي.",
     "audios": "صوتيات",
     "audiobooks": "صوتيات إسلامية",
     "audiobook": "المحتوى الصوتي الإسلامي",
@@ -2069,7 +2069,7 @@
     "resumePage": "صفحة {number}",
     "resumeChapter": "متابعة الجزء {number}",
     "continueRadio": "متابعة الراديو",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "متابعة {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {
@@ -2078,38 +2078,38 @@
             }
         }
     },
-    "noReciterActivityDescription": "ابدأ بالاستماع إلى تلاوات القرآن لرؤية تقدمك",
-    "noRadioActivityDescription": "استمع إلى راديو القرآن لمتابعة تقدمك",
+    "noReciterActivityDescription": "ابدأ بالاستماع إلى تلاوات القرآن لتتابع تقدمك",
+    "noRadioActivityDescription": "استمع إلى إذاعة القرآن لتتابع تقدمك",
     "playbackSpeed": "سرعة التشغيل",
     "sleepTimer": "مؤقت النوم",
     "endOfChapter": "نهاية الجزء",
     "sleepTimerMinutes": "{minutes} دقيقة",
-    "downloadAudiobook": "تنزيل الصوت الإسلامي",
-    "audiobookDownloaded": "تم التنزيل",
+    "downloadAudiobook": "تنزيل الملف الصوتي الإسلامي",
+    "audiobookDownloaded": "اكتمل التنزيل",
     "play": "تشغيل",
     "pause": "إيقاف مؤقت",
-    "noOfflineAudiobooks": "لا توجد صوتيات إسلامية محمّلة",
+    "noOfflineAudiobooks": "لا توجد صوتيات إسلامية منزَّلة",
     "chapterProgress": "الجزء {current} من {total}",
     "audioInLanguage": "باللغة {language}",
-    "chatErrorNoConnection": "لا يوجد اتصال بالإنترنت. يرجى التحقق من شبكتك والمحاولة مرة أخرى.",
-    "chatErrorRateLimit": "هناك عدد كبير من الطلبات حاليًا. يرجى الانتظار قليلًا والمحاولة مرة أخرى.",
-    "chatErrorServer": "نواجه صعوبة في الوصول إلى الخادم. يرجى المحاولة مرة أخرى بعد قليل.",
-    "chatErrorSafety": "تعذّر إكمال هذا الطلب وفقًا لإرشادات سلامة المحتوى. يرجى إعادة الصياغة والمحاولة مرة أخرى.",
-    "chatErrorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "chatErrorNoConnection": "لا يوجد اتصال بالإنترنت. يرجى التحقق من شبكتك وإعادة المحاولة.",
+    "chatErrorRateLimit": "تتوارد الطلبات بكثرة حالياً. يرجى الانتظار قليلاً ثم إعادة المحاولة.",
+    "chatErrorServer": "نواجه صعوبة في الوصول إلى الخادم. يرجى إعادة المحاولة بعد قليل.",
+    "chatErrorSafety": "تعذّر إكمال هذا الطلب وفقاً لإرشادات سلامة المحتوى. يرجى إعادة صياغته ثم المحاولة من جديد.",
+    "chatErrorGeneric": "حدث خطأ ما. يرجى إعادة المحاولة.",
     "emailOptional": "البريد الإلكتروني (اختياري — للرد)",
-    "searchManually": "البحث يدويًا",
-    "locationPermissionDenied": "تم رفض إذن الموقع. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.",
-    "locationPermissionPermanentlyDenied": "تم رفض إذن الموقع نهائيًا. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.",
-    "errorDetailsCopied": "تم نسخ تفاصيل الخطأ إلى الحافظة",
+    "searchManually": "البحث يدوياً",
+    "locationPermissionDenied": "رُفض إذن الموقع. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.",
+    "locationPermissionPermanentlyDenied": "رُفض إذن الموقع نهائياً. يرجى السماح بالوصول إلى الموقع في إعدادات جهازك.",
+    "errorDetailsCopied": "نُسخت تفاصيل الخطأ إلى الحافظة",
     "restartAppButton": "إعادة تشغيل التطبيق",
     "copyButton": "نسخ",
     "unknownErrorOccurred": "حدث خطأ غير معروف",
     "pleaseEnterMessage": "يرجى إدخال رسالة قبل الإرسال",
     "helpUsImproveTitle": "ساعدنا على التحسين",
-    "errorFeedbackPrompt": "ماذا كنت تفعل عند حدوث هذا الخطأ؟ ملاحظاتك تساعدنا على إصلاح هذه المشكلات بشكل أسرع.",
+    "errorFeedbackPrompt": "ماذا كنت تفعل حين وقع هذا الخطأ؟ ملاحظاتك تعيننا على إصلاح هذه المشكلات أسرع.",
     "errorFeedbackHint": "كنت أحاول أن...",
-    "feedbackThankYou": "شكرًا لك!",
-    "feedbackThankYouMessage": "تم إرسال ملاحظاتك. سنستخدمها لتحسين التطبيق.",
+    "feedbackThankYou": "شكراً لك!",
+    "feedbackThankYouMessage": "أُرسلت ملاحظاتك. وسنستعين بها على تحسين التطبيق.",
     "whatHappened": "ماذا حدث؟",
     "describeIssueHint": "صف المشكلة أو الملاحظات..."
 }

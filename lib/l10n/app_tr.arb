@@ -1467,7 +1467,7 @@
     "resumePage": "Sayfa {number}",
     "resumeChapter": "Bölüm {number}'e Devam Et",
     "continueRadio": "Radyoya Devam Et",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "{reciterName} ile devam et",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {

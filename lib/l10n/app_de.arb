@@ -1444,7 +1444,7 @@
     "resumePage": "Seite {number}",
     "resumeChapter": "Kapitel {number} fortsetzen",
     "continueRadio": "Radio fortsetzen",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "{reciterName} fortsetzen",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {

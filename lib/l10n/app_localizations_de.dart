@@ -4074,7 +4074,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String resumeReciter(String reciterName) {
-    return 'Resume $reciterName';
+    return '$reciterName fortsetzen';
   }
 
   @override

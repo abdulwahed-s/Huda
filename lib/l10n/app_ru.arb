@@ -1467,7 +1467,7 @@
     "resumePage": "Страница {number}",
     "resumeChapter": "Продолжить главу {number}",
     "continueRadio": "Продолжить радио",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "Продолжить {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {

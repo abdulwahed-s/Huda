@@ -1571,7 +1571,7 @@
     "resumePage": "পৃষ্ঠা {number}",
     "resumeChapter": "অধ্যায় {number} পুনরায় শুরু করুন",
     "continueRadio": "রেডিও চালিয়ে যান",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "{reciterName} চালিয়ে যান",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {

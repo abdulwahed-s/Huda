@@ -4021,7 +4021,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String resumeReciter(String reciterName) {
-    return 'Resume $reciterName';
+    return '$reciterName চালিয়ে যান';
   }
 
   @override

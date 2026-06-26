@@ -1483,7 +1483,7 @@
     "resumePage": "صفحہ {number}",
     "resumeChapter": "باب {number} دوبارہ شروع کریں",
     "continueRadio": "ریڈیو جاری رکھیں",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "{reciterName} جاری رکھیں",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {

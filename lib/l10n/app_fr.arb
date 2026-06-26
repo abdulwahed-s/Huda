@@ -1469,7 +1469,7 @@
     "resumePage": "Page {number}",
     "resumeChapter": "Reprendre le chapitre {number}",
     "continueRadio": "Continuer la radio",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "Reprendre {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {

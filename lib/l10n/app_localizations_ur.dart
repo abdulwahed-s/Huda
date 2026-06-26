@@ -4011,7 +4011,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String resumeReciter(String reciterName) {
-    return 'Resume $reciterName';
+    return '$reciterName جاری رکھیں';
   }
 
   @override

@@ -1481,7 +1481,7 @@
     "resumePage": "Página {number}",
     "resumeChapter": "Reanudar capítulo {number}",
     "continueRadio": "Continuar Radio",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "Reanudar {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {

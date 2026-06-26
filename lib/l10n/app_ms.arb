@@ -1557,7 +1557,7 @@
     "resumePage": "Halaman {number}",
     "resumeChapter": "Sambung Bab {number}",
     "continueRadio": "Teruskan Radio",
-    "resumeReciter": "Resume {reciterName}",
+    "resumeReciter": "Sambung {reciterName}",
     "@resumeReciter": {
         "description": "resumeReciter",
         "placeholders": {
