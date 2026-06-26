@@ -11,15 +11,15 @@ TOKEN_URL = "https://connect-api.cloud.huawei.com/api/oauth2/v1/token"
 BASE = "https://connect-api.cloud.huawei.com/api/publish/v2"
 
 LOCALE_MAP = {
-    "whatsnew-en-GB": "en_US",
+    "whatsnew-en-GB": "en-US",
     "whatsnew-ar":    "ar",
-    "whatsnew-de-DE": "de_DE",
-    "whatsnew-es-ES": "es_ES",
-    "whatsnew-fr-FR": "fr_FR",
-    "whatsnew-bn-BD": "bn_BD",
-    "whatsnew-ms":    "ms_MY",
-    "whatsnew-ru-RU": "ru_RU",
-    "whatsnew-tr-TR": "tr_TR",
+    "whatsnew-de-DE": "de-DE",
+    "whatsnew-es-ES": "es-ES",
+    "whatsnew-fr-FR": "fr-FR",
+    "whatsnew-bn-BD": "bn-BD",
+    "whatsnew-ms":    "ms-MY",
+    "whatsnew-ru-RU": "ru-RU",
+    "whatsnew-tr-TR": "tr-TR",
     "whatsnew-ur":    "ur",
 }
 
