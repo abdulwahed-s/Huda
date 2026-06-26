@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:convert';
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/quran/surah_builder.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
 import 'package:huda/data/models/quran_model.dart';
@@ -45,9 +44,18 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
 
   Future<void> _loadCachedSurahData() async {
     try {
-      final String response =
-          await rootBundle.loadString('assets/json/surah_data.json');
-      _cachedSurahData = json.decode(response);
+      _cachedSurahData = SurahBuilder.buildAllSurahAyahs()
+          .entries
+          .map((entry) => {
+                'number': entry.key,
+                'ayahs': entry.value
+                    .map((ayah) => {
+                          'text': ayah.text,
+                          'numberInSurah': ayah.numberInSurah,
+                        })
+                    .toList(),
+              })
+          .toList();
     } catch (e) {
       debugPrint('Failed to load cached surah data for search: $e');
     }
@@ -79,16 +87,30 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
         List<SearchResult> results = [];
         List<AyahSearchResult> ayahResults = [];
 
+        final langCode = Localizations.localeOf(context).languageCode;
+        final normalizedQuery =
+            TextUtils.removeDiacriticsAndNormalize(query.toLowerCase());
+
         List<QuranModel> matchingSurahs = _allSurahs.where((surah) {
-          return surah.englishName!
+          final q = query.toLowerCase();
+          final localizedMatch = surah
+                  .localizedName(langCode)
                   .toLowerCase()
-                  .contains(query.toLowerCase()) ||
-              surah.englishNameTranslation!
-                  .toLowerCase()
-                  .contains(query.toLowerCase()) ||
+                  .contains(q) ||
+              (surah.names?.values
+                      .any((n) => n.toLowerCase().contains(q)) ??
+                  false) ||
+              (surah.translits?.values
+                      .any((n) => n.toLowerCase().contains(q)) ??
+                  false) ||
+              (surah.transliteration?.toLowerCase().contains(q) ?? false);
+
+          return localizedMatch ||
+              surah.englishName!.toLowerCase().contains(q) ||
+              surah.englishNameTranslation!.toLowerCase().contains(q) ||
               surah.number.toString().contains(query) ||
               TextUtils.removeDiacriticsAndNormalize(surah.name.toString())
-                  .contains(TextUtils.removeDiacriticsAndNormalize(query));
+                  .contains(normalizedQuery);
         }).toList();
 
         for (var surah in matchingSurahs) {
