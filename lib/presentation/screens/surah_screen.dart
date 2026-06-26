@@ -236,6 +236,12 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     final gridScrollController =
         ScrollController(initialScrollOffset: initialOffset);
 
+    const rtlLanguages = {'ar', 'ur'};
+    final sheetDirection =
+        rtlLanguages.contains(Localizations.localeOf(context).languageCode)
+            ? TextDirection.rtl
+            : TextDirection.ltr;
+
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -244,7 +250,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
         return BlocProvider.value(
           value: memorizationCubit,
           child: Directionality(
-            textDirection: TextDirection.rtl,
+            textDirection: sheetDirection,
             child: DefaultTabController(
               length: PlatformUtils.isLinux ? 3 : 4,
               initialIndex: initialTab,
