@@ -1,1 +1,2 @@
 Fehlerbehebungen und Leistungsverbesserungen
+Verbesserungen der Benutzeroberfläche
