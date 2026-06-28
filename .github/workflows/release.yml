@@ -215,6 +215,9 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      - name: Disable Swift Package Manager (use CocoaPods)
+        run: flutter config --no-enable-swift-package-manager
+
       - run: flutter pub get
 
       - name: Install CocoaPods
