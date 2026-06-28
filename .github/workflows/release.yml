@@ -147,6 +147,9 @@ jobs:
           printf '%s' "$APP_STORE_CONNECT_KEY_P8" | base64 --decode \
             > ~/.private_keys/AuthKey_${ASC_KEY_ID}.p8
 
+      - name: Configure Xcode project
+        run: flutter build ios --config-only --release --no-codesign
+
       - name: Archive iOS app
         run: |
           cd ios
