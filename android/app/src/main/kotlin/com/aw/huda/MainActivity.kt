@@ -10,6 +10,8 @@ import com.aw.huda.widget.prayer.PrayerWidgetReliabilityManager
 import com.aw.huda.widget.prayer.PrayerWidgetScheduler
 import com.aw.huda.widget.prayer.PrayerWidgetUpdater
 import com.aw.huda.miqaat.MiqaatLockMethodHandler
+import com.aw.huda.location.LocationSource
+import com.aw.huda.location.LocationSupport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,9 +19,38 @@ import kotlinx.coroutines.withContext
 
 class MainActivity: AudioServiceActivity() {
     private val CHANNEL = "com.aw.huda/widget"
-    
+    private val LOCATION_CHANNEL = "com.aw.huda/location"
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+
+        val locationSource = LocationSource(applicationContext)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, LOCATION_CHANNEL)
+            .setMethodCallHandler { call, result ->
+                try {
+                    when (call.method) {
+                        "isLocationServiceEnabled" ->
+                            result.success(
+                                LocationSupport.isLocationServiceEnabled(applicationContext)
+                            )
+                        "openLocationSettings" ->
+                            result.success(LocationSupport.openLocationSettings(this))
+                        "getLastKnownPosition" ->
+                            locationSource.getLastKnownPosition { map ->
+                                runOnUiThread { result.success(map) }
+                            }
+                        "getCurrentPosition" ->
+                            locationSource.getCurrentPosition(
+                                { map -> runOnUiThread { result.success(map) } },
+                                { code, msg -> runOnUiThread { result.error(code, msg, null) } },
+                            )
+                        else -> result.notImplemented()
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("HudaLocation", "location channel error", e)
+                    runOnUiThread { result.error("LOCATION_ERROR", e.message, null) }
+                }
+            }
         
         // Widget channel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->

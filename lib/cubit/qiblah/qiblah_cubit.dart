@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:huda/core/services/geolocator.dart';
 
 part 'qiblah_state.dart';
 

@@ -54,6 +54,16 @@ signingConfigs {
            signingConfig signingConfigs.release
        }
    }
+
+    flavorDimensions "store"
+    productFlavors {
+        gplay {
+            dimension "store"
+        }
+        foss {
+            dimension "store"
+        }
+    }
 }
 
 flutter {
@@ -82,4 +92,6 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:1.6.0")
 
     implementation("com.batoulapps.adhan:adhan:1.2.1")
+
+    gplayImplementation("com.google.android.gms:play-services-location:21.2.0")
 }

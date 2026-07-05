@@ -1,13 +1,21 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
+import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:huda/core/services/crash_reporter.dart';
+import 'package:huda/core/services/huda_android_geolocator.dart';
 import 'package:huda/presentation/screens/bootstrapper.dart';
 
 void main() {
   runZonedGuarded(() {
     WidgetsFlutterBinding.ensureInitialized();
+
+    if (!kIsWeb && Platform.isAndroid) {
+      GeolocatorPlatform.instance = HudaAndroidGeolocator();
+    }
 
     FlutterError.onError = (FlutterErrorDetails details) {
       FlutterError.presentError(details);

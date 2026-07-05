@@ -1,5 +1,5 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:huda/core/errors/location_failures.dart';
+import 'package:huda/core/services/geolocator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 
 Future<Position> getCurrentLocation() async {
