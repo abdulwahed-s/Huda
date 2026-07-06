@@ -255,6 +255,7 @@ class _ManualLocationSearchDialogState
                         Navigator.of(context).pop({
                           'lat': result['lat'],
                           'lon': result['lon'],
+                          'name': result['name'],
                         });
                       },
                     );

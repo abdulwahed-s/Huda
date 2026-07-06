@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:huda/core/services/geolocator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
@@ -43,9 +43,11 @@ class PrayerTimesLocationServiceDisabledWidget extends StatelessWidget {
                 result['lat'] != null &&
                 result['lon'] != null) {
               if (context.mounted) {
-                context
-                    .read<PrayerTimesCubit>()
-                    .setManualLocation(result['lat'], result['lon']);
+                context.read<PrayerTimesCubit>().setManualLocation(
+                      result['lat'],
+                      result['lon'],
+                      cityName: result['name'],
+                    );
               }
             }
           },

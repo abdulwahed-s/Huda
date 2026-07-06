@@ -6,7 +6,7 @@ import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/action_button.dart';
 import 'package:huda/presentation/widgets/prayer_times/error_card.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:huda/core/services/geolocator.dart';
 import 'package:huda/presentation/widgets/prayer_times/manual_location_search_dialog.dart';
 
 class PrayerTimesLocationPermanentlyDeniedWidget extends StatelessWidget {
@@ -15,7 +15,8 @@ class PrayerTimesLocationPermanentlyDeniedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ErrorCard(
-      message: AppLocalizations.of(context)!.locationPermissionPermanentlyDenied,
+      message:
+          AppLocalizations.of(context)!.locationPermissionPermanentlyDenied,
       actions: [
         if (!PlatformUtils.isLinux)
           ActionButton(
@@ -48,9 +49,11 @@ class PrayerTimesLocationPermanentlyDeniedWidget extends StatelessWidget {
                 result['lat'] != null &&
                 result['lon'] != null) {
               if (context.mounted) {
-                context
-                    .read<PrayerTimesCubit>()
-                    .setManualLocation(result['lat'], result['lon']);
+                context.read<PrayerTimesCubit>().setManualLocation(
+                      result['lat'],
+                      result['lon'],
+                      cityName: result['name'],
+                    );
               }
             }
           },
