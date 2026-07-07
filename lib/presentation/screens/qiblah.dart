@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
@@ -51,7 +50,6 @@ class QiblahScreenState extends State<QiblahScreen>
   void dispose() {
     _pulseController.dispose();
     _rotationController.dispose();
-    FlutterQiblah().dispose();
     super.dispose();
   }
 

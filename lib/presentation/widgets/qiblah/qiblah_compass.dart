@@ -1,11 +1,6 @@
-import 'dart:async';
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:flutter_compass_v2/flutter_compass_v2.dart';
-import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/utils/compass_accuracy.dart';
+import 'package:huda/core/qiblah/qiblah_service.dart';
 import 'package:huda/presentation/widgets/qiblah/calibration_banner.dart';
 import 'package:huda/presentation/widgets/qiblah/compass.dart';
 import 'package:huda/presentation/widgets/qiblah/instructions.dart';
@@ -42,67 +37,28 @@ class QiblahCompass extends StatefulWidget {
 }
 
 class QiblahCompassState extends State<QiblahCompass> {
-  static const _showDelay = Duration(milliseconds: 1800);
-  static const _hideDelay = Duration(milliseconds: 1000);
-
-  StreamSubscription<CompassEvent>? _accuracySub;
-  Timer? _showTimer;
-  Timer? _hideTimer;
-  bool _showCalibration = false;
+  late final Stream<QiblahReading> _stream;
 
   @override
   void initState() {
     super.initState();
-    _accuracySub = FlutterCompass.events?.listen((event) {
-      _handleAccuracy(CompassAccuracy.fromEvent(event));
-    });
-  }
-
-  @override
-  void dispose() {
-    _accuracySub?.cancel();
-    _showTimer?.cancel();
-    _hideTimer?.cancel();
-    super.dispose();
-  }
-
-  void _handleAccuracy(CompassAccuracy accuracy) {
-    if (accuracy.needsCalibration) {
-      _hideTimer?.cancel();
-      _hideTimer = null;
-      if (!_showCalibration && _showTimer == null) {
-        _showTimer = Timer(_showDelay, () {
-          _showTimer = null;
-          if (mounted) setState(() => _showCalibration = true);
-        });
-      }
-    } else {
-      _showTimer?.cancel();
-      _showTimer = null;
-      if (_showCalibration && _hideTimer == null) {
-        _hideTimer = Timer(_hideDelay, () {
-          _hideTimer = null;
-          if (mounted) setState(() => _showCalibration = false);
-        });
-      }
-    }
+    _stream = QiblahService.qiblahStream();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QiblahDirection>(
-      stream: FlutterQiblah.qiblahStream,
+    return StreamBuilder<QiblahReading>(
+      stream: _stream,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (!snapshot.hasData || !snapshot.data!.hasHeading) {
           return LoadingState(isDark: widget.isDark);
         }
 
-        final qiblahDirection = snapshot.data!;
-        double angle = ((qiblahDirection.qiblah) * (math.pi / 180) * -1);
-        bool isAligned = angle >= -6.35 && angle <= -6.1;
+        final reading = snapshot.data!;
+        final isAligned = reading.isAligned;
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _handleAlignment(angle, isAligned);
+          _handleAlignment(isAligned);
         });
 
         return Column(
@@ -110,14 +66,13 @@ class QiblahCompassState extends State<QiblahCompass> {
             SizedBox(height: 40.h),
             StatusIndicator(isAligned: isAligned, isDark: widget.isDark),
             CalibrationBanner(
-              show: _showCalibration,
+              show: reading.shouldCalibrate,
               isDark: widget.isDark,
             ),
             SizedBox(height: 60.h),
             Expanded(
               child: Compass(
-                qiblahDirection: qiblahDirection,
-                angle: angle,
+                reading: reading,
                 isAligned: isAligned,
                 isDark: widget.isDark,
                 pulseAnimation: widget.pulseAnimation,
@@ -132,7 +87,7 @@ class QiblahCompassState extends State<QiblahCompass> {
     );
   }
 
-  void _handleAlignment(double angle, bool currentlyAligned) async {
+  void _handleAlignment(bool currentlyAligned) async {
     if (currentlyAligned != widget.isAligned) {
       widget.onAlignmentChanged(currentlyAligned);
 
@@ -146,11 +101,11 @@ class QiblahCompassState extends State<QiblahCompass> {
       }
     }
 
-    await _handleVibration(angle);
+    await _handleVibration(currentlyAligned);
   }
 
-  Future<void> _handleVibration(double angle) async {
-    if ((angle >= -6.35 && angle <= -6.1)) {
+  Future<void> _handleVibration(bool aligned) async {
+    if (aligned) {
       if (!widget.hasVibrated) {
         if (await Vibration.hasVibrator()) {
           if (await Vibration.hasCustomVibrationsSupport()) {

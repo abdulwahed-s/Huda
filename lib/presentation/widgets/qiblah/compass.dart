@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vector_graphics/vector_graphics.dart';
+import 'package:huda/core/qiblah/qiblah_service.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/presentation/widgets/qiblah/compass_ring.dart';
 import 'package:huda/presentation/widgets/qiblah/pulsing_effect.dart';
 
 class Compass extends StatelessWidget {
-  final QiblahDirection qiblahDirection;
-  final double angle;
+  final QiblahReading reading;
   final bool isAligned;
   final bool isDark;
   final Animation<double> pulseAnimation;
@@ -17,8 +16,7 @@ class Compass extends StatelessWidget {
 
   const Compass({
     super.key,
-    required this.qiblahDirection,
-    required this.angle,
+    required this.reading,
     required this.isAligned,
     required this.isDark,
     required this.pulseAnimation,
@@ -75,7 +73,7 @@ class Compass extends StatelessWidget {
               return Transform.scale(
                 scale: isAligned ? scaleAnimation.value : 1.0,
                 child: Transform.rotate(
-                  angle: angle,
+                  angle: reading.needleAngle,
                   child: Icon(
                     Icons.navigation,
                     size: 60.w,
@@ -99,7 +97,7 @@ class Compass extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
-                '${qiblahDirection.qiblah.toStringAsFixed(1)}°',
+                '${reading.qiblahBearing.toStringAsFixed(0)}°',
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
