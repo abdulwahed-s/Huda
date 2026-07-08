@@ -56,11 +56,17 @@ jobs:
           storeFile=keystore.jks
           EOF
 
-      - name: Build AAB
-        run: flutter build appbundle --release
+      - name: Build AAB (gplay)
+        run: flutter build appbundle --release --flavor gplay
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build APK (gplay)
+        run: flutter build apk --release --flavor gplay
+
+      - name: Build APK (foss)
+        run: flutter build apk --release --flavor foss
+
+      - name: Build AAB (foss)
+        run: flutter build appbundle --release --flavor foss
 
       - name: Upload to Google Play
         if: ${{ !inputs.dry_run }}
@@ -68,7 +74,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.aw.huda
-          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          releaseFiles: build/app/outputs/bundle/gplayRelease/app-gplay-release.aab
           track: production
           status: completed
           whatsNewDirectory: distribution/whatsnew
@@ -76,12 +82,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: android-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: |
+            build/app/outputs/flutter-apk/app-gplay-release.apk
+            build/app/outputs/flutter-apk/app-foss-release.apk
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: android-aab
-          path: build/app/outputs/bundle/release/app-release.aab
+          path: build/app/outputs/bundle/fossRelease/app-foss-release.aab
 
   # ──────────────────────────────────────────────────────────
   # iOS — IPA → App Store
@@ -441,7 +449,7 @@ jobs:
         run: |
           set -euo pipefail
           pip install requests
-          python3 distribution/appgallery_upload.py --aab app-release.aab
+          python3 distribution/appgallery_upload.py --aab app-foss-release.aab
 
   # ──────────────────────────────────────────────────────────
   # GitHub Release — collect all artifacts
