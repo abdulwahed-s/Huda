@@ -70,6 +70,9 @@ platform :ios do
     UI.user_error!("No IPA found in #{ipa_dir}") unless ipa_path
     UI.message("Uploading IPA: #{ipa_path}")
 
+    submit_for_review = ENV["APP_STORE_SUBMIT_FOR_REVIEW"] == "true"
+    UI.message("Submit for review: #{submit_for_review}")
+
     upload_to_app_store(
       api_key: api_key,
       ipa: ipa_path,
@@ -77,8 +80,9 @@ platform :ios do
       skip_screenshots: true,
       force: true,
       precheck_include_in_app_purchases: false,
-      submit_for_review: true,
-      automatic_release: true,
+      skip_waiting_for_build_processing: !submit_for_review,
+      submit_for_review: submit_for_review,
+      automatic_release: submit_for_review,
       submission_information: {
         export_compliance_uses_encryption: false,
         add_id_info_uses_idfa: false

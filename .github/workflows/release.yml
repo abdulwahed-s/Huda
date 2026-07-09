@@ -10,6 +10,10 @@ on:
         description: 'Build only — skip store uploads'
         type: boolean
         default: false
+      submit_ios_for_review:
+        description: 'Submit iOS build for App Store review after upload'
+        type: boolean
+        default: false
 
 env:
   FLUTTER_VERSION: '3.44.2'
@@ -194,6 +198,7 @@ jobs:
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
           IPA_DIR: ${{ github.workspace }}/build/ios/ipa
+          APP_STORE_SUBMIT_FOR_REVIEW: ${{ inputs.submit_ios_for_review || false }}
         run: cd ios && bundle exec fastlane deploy
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
