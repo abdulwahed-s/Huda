@@ -10,10 +10,6 @@ on:
         description: 'Build only — skip store uploads'
         type: boolean
         default: false
-      submit_ios_for_review:
-        description: 'Submit iOS build for App Store review after upload'
-        type: boolean
-        default: false
 
 env:
   FLUTTER_VERSION: '3.44.2'
@@ -198,7 +194,6 @@ jobs:
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
           IPA_DIR: ${{ github.workspace }}/build/ios/ipa
-          APP_STORE_SUBMIT_FOR_REVIEW: ${{ inputs.submit_ios_for_review || false }}
         run: cd ios && bundle exec fastlane deploy
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -363,14 +358,41 @@ jobs:
           MS_STORE_SELLER_ID: ${{ secrets.MS_STORE_SELLER_ID }}
           MS_STORE_APP_ID: ${{ secrets.MS_STORE_APP_ID }}
         run: |
+          $PSNativeCommandUseErrorActionPreference = $false
+
           msstore reconfigure `
             --tenantId "$env:AZURE_AD_TENANT_ID" `
             --clientId "$env:AZURE_AD_CLIENT_ID" `
             --clientSecret "$env:AZURE_AD_CLIENT_SECRET" `
             --sellerId "$env:MS_STORE_SELLER_ID"
 
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
           $msix = Get-ChildItem -Path build -Recurse -Filter "*.msix" | Select-Object -First 1
-          msstore publish "$($msix.FullName)" --appId "$env:MS_STORE_APP_ID" -v
+          if (-not $msix) {
+            throw "No MSIX package found under build"
+          }
+
+          $maxAttempts = 5
+          $delaySeconds = 60
+
+          for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+            Write-Host "Publishing MSIX to Microsoft Store (attempt $attempt/$maxAttempts)"
+            msstore publish "$($msix.FullName)" --appId "$env:MS_STORE_APP_ID" -v
+
+            if ($LASTEXITCODE -eq 0) {
+              break
+            }
+
+            if ($attempt -eq $maxAttempts) {
+              exit $LASTEXITCODE
+            }
+
+            Write-Warning "Microsoft Store publish failed with exit code $LASTEXITCODE. Retrying in $delaySeconds seconds."
+            Start-Sleep -Seconds $delaySeconds
+          }
 
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

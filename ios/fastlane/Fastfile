@@ -1,6 +1,34 @@
 default_platform(:ios)
 
 platform :ios do
+  private_lane :submit_uploaded_build do |options|
+    upload_options = options[:upload_options]
+    retries = (ENV["APP_STORE_SUBMIT_RETRIES"] || "6").to_i
+    wait_seconds = (ENV["APP_STORE_SUBMIT_RETRY_WAIT_SECONDS"] || "300").to_i
+
+    retries.times do |attempt|
+      begin
+        UI.message("Submitting iOS build for review (attempt #{attempt + 1}/#{retries})")
+        upload_to_app_store(
+          upload_options.merge(
+            skip_binary_upload: true,
+            submit_for_review: true,
+            automatic_release: true
+          )
+        )
+        break
+      rescue => error
+        retryable = error.message.include?("specified pre-release build could not be added") ||
+                    error.message.include?("relationship value is not acceptable")
+
+        raise unless retryable && attempt + 1 < retries
+
+        UI.important("App Store Connect is not ready to attach this build yet. Retrying in #{wait_seconds} seconds.")
+        sleep(wait_seconds)
+      end
+    end
+  end
+
   lane :install_profiles do
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
@@ -70,23 +98,37 @@ platform :ios do
     UI.user_error!("No IPA found in #{ipa_dir}") unless ipa_path
     UI.message("Uploading IPA: #{ipa_path}")
 
-    submit_for_review = ENV["APP_STORE_SUBMIT_FOR_REVIEW"] == "true"
-    UI.message("Submit for review: #{submit_for_review}")
-
-    upload_to_app_store(
+    upload_options = {
       api_key: api_key,
-      ipa: ipa_path,
       app_version: version,
       skip_screenshots: true,
       force: true,
       precheck_include_in_app_purchases: false,
-      skip_waiting_for_build_processing: !submit_for_review,
-      submit_for_review: submit_for_review,
-      automatic_release: submit_for_review,
       submission_information: {
         export_compliance_uses_encryption: false,
         add_id_info_uses_idfa: false
       }
-    )
+    }
+
+    begin
+      upload_to_app_store(
+        upload_options.merge(
+          ipa: ipa_path,
+          skip_waiting_for_build_processing: true,
+          submit_for_review: false,
+          automatic_release: false
+        )
+      )
+    rescue => error
+      already_uploaded = error.message.include?("has already been uploaded") ||
+                         error.message.include?("ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE") ||
+                         error.message.include?("The bundle version must be higher")
+
+      raise unless already_uploaded
+
+      UI.important("This build already exists in App Store Connect. Continuing to submit the uploaded build.")
+    end
+
+    submit_uploaded_build(upload_options: upload_options)
   end
 end
