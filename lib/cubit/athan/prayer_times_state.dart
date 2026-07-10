@@ -7,7 +7,7 @@ class PrayerTimesInitial extends PrayerTimesState {}
 class PrayerTimesLoading extends PrayerTimesState {}
 
 class PrayerTimesLoaded extends PrayerTimesState {
-  final PrayerTimes prayerTimes;
+  final DailyPrayerTimes prayerTimes;
   final List<Placemark> placemarks;
   final Map<String, int> offsets;
   PrayerTimesLoaded(this.prayerTimes, this.placemarks,
