@@ -125,7 +125,11 @@ struct PrayerHeroWidgetView: View {
             }
 
             if let target = entry.nextPrayerDate {
-                Text(PrayerTimeFormatter.format(target, useArabicNumerals: entry.arabicNumerals))
+                Text(PrayerTimeFormatter.format(
+                    target,
+                    useArabicNumerals: entry.arabicNumerals,
+                    timeZone: entry.settings.displayTimeZone
+                ))
                     .font(.system(size: 22 * entry.contentScale, weight: .bold, design: .rounded))
                     .foregroundColor(entry.resolvedTextColor)
                     .lineLimit(1)
@@ -152,7 +156,11 @@ struct PrayerHeroWidgetView: View {
                             .lineLimit(1)
                             .minimumScaleFactor(0.7)
                         Spacer(minLength: 4)
-                        Text(PrayerTimeFormatter.format(date, useArabicNumerals: entry.arabicNumerals))
+                        Text(PrayerTimeFormatter.format(
+                            date,
+                            useArabicNumerals: entry.arabicNumerals,
+                            timeZone: entry.settings.displayTimeZone
+                        ))
                             .font(.system(size: 11 * entry.contentScale, weight: .semibold, design: .rounded))
                             .foregroundColor(entry.resolvedSecondaryColor)
                             .monospacedDigit()
@@ -212,8 +220,11 @@ struct PrayerHeroWidgetView: View {
             }
 
             if let target = entry.nextPrayerDate {
-                Text(PrayerTimeFormatter.format(target,
-                                                useArabicNumerals: entry.arabicNumerals))
+                Text(PrayerTimeFormatter.format(
+                    target,
+                    useArabicNumerals: entry.arabicNumerals,
+                    timeZone: entry.settings.displayTimeZone
+                ))
                     .font(.system(size: 32 * entry.contentScale,
                                   weight: .heavy,
                                   design: .rounded))
@@ -264,8 +275,11 @@ struct PrayerHeroWidgetView: View {
                 }
 
                 if let target = entry.nextPrayerDate {
-                    Text(PrayerTimeFormatter.format(target,
-                                                    useArabicNumerals: entry.arabicNumerals))
+                    Text(PrayerTimeFormatter.format(
+                        target,
+                        useArabicNumerals: entry.arabicNumerals,
+                        timeZone: entry.settings.displayTimeZone
+                    ))
                         .font(.system(size: 48 * entry.contentScale,
                                       weight: .heavy,
                                       design: .rounded))
@@ -376,8 +390,11 @@ struct PrayerHeroWidgetView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
             Spacer(minLength: 4)
-            Text(PrayerTimeFormatter.format(date,
-                                            useArabicNumerals: entry.arabicNumerals))
+            Text(PrayerTimeFormatter.format(
+                date,
+                useArabicNumerals: entry.arabicNumerals,
+                timeZone: entry.settings.displayTimeZone
+            ))
                 .font(.system(size: timeSize * entry.contentScale,
                               weight: weight,
                               design: .rounded))
@@ -517,24 +534,31 @@ struct PrayerCompactWidgetView: View {
 
     private var isoDate: String {
         PrayerTimeFormatter.formatISODate(entry.date,
-                                          useArabicNumerals: entry.arabicNumerals)
+                                          useArabicNumerals: entry.arabicNumerals,
+                                          timeZone: entry.settings.displayTimeZone)
     }
 
     private var dayOfWeek: String {
         PrayerTimeFormatter.formatDayOfWeek(entry.date,
-                                            languageCode: entry.language)
+                                            languageCode: entry.language,
+                                            timeZone: entry.settings.displayTimeZone)
     }
 
     private func time12WithMeridiem(_ date: Date) -> String {
         PrayerTimeFormatter.format12WithMeridiem(
             date,
             useArabicNumerals: entry.arabicNumerals,
-            languageCode: entry.language
+            languageCode: entry.language,
+            timeZone: entry.settings.displayTimeZone
         )
     }
 
     private func time12(_ date: Date) -> String {
-        PrayerTimeFormatter.format12(date, useArabicNumerals: entry.arabicNumerals)
+        PrayerTimeFormatter.format12(
+            date,
+            useArabicNumerals: entry.arabicNumerals,
+            timeZone: entry.settings.displayTimeZone
+        )
     }
 
     private var smallLayout: some View {
@@ -1054,7 +1078,11 @@ struct PrayerAccessoryRectangularView: View {
                 .font(.system(size: 9, weight: nameWeight))
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
-            Text(PrayerTimeFormatter.format(date, useArabicNumerals: entry.arabicNumerals))
+            Text(PrayerTimeFormatter.format(
+                date,
+                useArabicNumerals: entry.arabicNumerals,
+                timeZone: entry.settings.displayTimeZone
+            ))
                 .font(.system(size: 10, weight: timeWeight, design: .rounded))
                 .monospacedDigit()
                 .lineLimit(1)

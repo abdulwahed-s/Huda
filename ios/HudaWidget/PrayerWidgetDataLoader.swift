@@ -6,6 +6,10 @@ struct PrayerWidgetDataLoader {
 
     private static let keyLatitude = "latitude"
     private static let keyLongitude = "longitude"
+    private static let keyCountryCode = "country_code"
+    private static let keyCalculationMethod = "calculation_method"
+    private static let keyMadhab = "madhab"
+    private static let keyHighLatitudeRule = "high_latitude_rule"
     private static let keyThemeName = "themeName"
     private static let keyThemeMode = "themeMode"
     private static let keyLocale = "locale"
@@ -53,6 +57,10 @@ struct PrayerWidgetDataLoader {
         return PrayerWidgetSettings(
             coordinates: coordinates,
             offsets: offsets,
+            countryCode: defaults?.string(forKey: keyCountryCode) ?? "",
+            calculationMethod: defaults?.string(forKey: keyCalculationMethod) ?? "auto",
+            madhab: defaults?.string(forKey: keyMadhab) ?? "shafi",
+            highLatitudeRule: defaults?.string(forKey: keyHighLatitudeRule) ?? "automatic",
             themeName: defaults?.string(forKey: keyThemeName) ?? "purple",
             themeMode: defaults?.string(forKey: keyThemeMode) ?? "light",
             locale: defaults?.string(forKey: keyLocale) ?? "en",
@@ -108,6 +116,10 @@ enum PrayerWidgetNumerals: String {
 struct PrayerWidgetSettings {
     let coordinates: Coordinates?
     let offsets: [Prayer: Int]
+    let countryCode: String
+    let calculationMethod: String
+    let madhab: String
+    let highLatitudeRule: String
     let themeName: String
     let themeMode: String
     let locale: String
@@ -142,5 +154,32 @@ struct PrayerWidgetSettings {
         case .auto:
             return effectiveLanguage.hasPrefix("ar")
         }
+    }
+
+    var displayTimeZone: TimeZone {
+        let zonesByCountry = [
+            "AE": "Asia/Dubai",
+            "BH": "Asia/Bahrain",
+            "DE": "Europe/Berlin",
+            "EG": "Africa/Cairo",
+            "ES": "Europe/Madrid",
+            "FR": "Europe/Paris",
+            "GB": "Europe/London",
+            "ID": "Asia/Jakarta",
+            "KW": "Asia/Kuwait",
+            "MY": "Asia/Kuala_Lumpur",
+            "OM": "Asia/Muscat",
+            "PK": "Asia/Karachi",
+            "QA": "Asia/Qatar",
+            "SA": "Asia/Riyadh",
+            "TR": "Europe/Istanbul",
+            "UK": "Europe/London"
+        ]
+        let key = countryCode.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        guard let identifier = zonesByCountry[key],
+              let timeZone = TimeZone(identifier: identifier) else {
+            return .current
+        }
+        return timeZone
     }
 }

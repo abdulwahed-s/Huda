@@ -2,13 +2,9 @@ PODS:
   - alarm (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - flutter_compass_v2 (0.0.1):
-    - Flutter
   - flutter_fgbg (0.0.1):
     - Flutter
   - flutter_foreground_task (0.0.1):
-    - Flutter
-  - flutter_qiblah (0.0.1):
     - Flutter
   - permission_handler_apple (9.3.0):
     - Flutter
@@ -20,10 +16,8 @@ PODS:
 DEPENDENCIES:
   - alarm (from `.symlinks/plugins/alarm/ios`)
   - Flutter (from `Flutter`)
-  - flutter_compass_v2 (from `.symlinks/plugins/flutter_compass_v2/ios`)
   - flutter_fgbg (from `.symlinks/plugins/flutter_fgbg/ios`)
   - flutter_foreground_task (from `.symlinks/plugins/flutter_foreground_task/ios`)
-  - flutter_qiblah (from `.symlinks/plugins/flutter_qiblah/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - vibration (from `.symlinks/plugins/vibration/ios`)
   - workmanager_apple (from `.symlinks/plugins/workmanager_apple/ios`)
@@ -33,14 +27,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/alarm/ios"
   Flutter:
     :path: Flutter
-  flutter_compass_v2:
-    :path: ".symlinks/plugins/flutter_compass_v2/ios"
   flutter_fgbg:
     :path: ".symlinks/plugins/flutter_fgbg/ios"
   flutter_foreground_task:
     :path: ".symlinks/plugins/flutter_foreground_task/ios"
-  flutter_qiblah:
-    :path: ".symlinks/plugins/flutter_qiblah/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   vibration:
@@ -51,10 +41,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   alarm: 8a8ed4893eb9bd09e7c5a96bf8ab8104f380f65f
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_compass_v2: bdaac539c444ca34617debfa444b037c30be6e54
   flutter_fgbg: d3da78df78454b1808f0829a5da9cd17dfe16444
   flutter_foreground_task: a159d2c2173b33699ddb3e6c2a067045d7cebb89
-  flutter_qiblah: 453c7fb44af9a329373bcef113c25627d5b8c9e8
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   vibration: 69774ad57825b11c951ee4c46155f455d7a592ce
   workmanager_apple: 904529ae31e97fc5be632cf628507652294a0778

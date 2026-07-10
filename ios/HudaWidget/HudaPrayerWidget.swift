@@ -85,11 +85,12 @@ struct PrayerWidgetProvider: TimelineProvider {
             return [PrayerWidgetEntry.empty(themeColors: theme, settings: settings)]
         }
 
-        let calendar = Calendar(identifier: .gregorian)
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = settings.displayTimeZone
         let startOfToday = calendar.startOfDay(for: now)
         let allTransitions = PrayerWidgetCalculator.transitions(
             coordinates: coordinates,
-            offsets: settings.offsets,
+            settings: settings,
             startingAt: startOfToday,
             dayCount: 5
         )
@@ -102,7 +103,7 @@ struct PrayerWidgetProvider: TimelineProvider {
             guard let times = PrayerWidgetCalculator.computeTimes(
                 coordinates: coordinates,
                 date: now,
-                offsets: settings.offsets
+                settings: settings
             ) else { return [] }
             return PrayerWidgetCalculator.displayMap(from: times)
         }()
@@ -121,13 +122,13 @@ struct PrayerWidgetProvider: TimelineProvider {
                     return PrayerWidgetCalculator.computeTimes(
                         coordinates: coordinates,
                         date: now,
-                        offsets: settings.offsets
+                        settings: settings
                     )
                 }
                 return PrayerWidgetCalculator.computeTimes(
                     coordinates: coordinates,
                     date: activeFrom,
-                    offsets: settings.offsets
+                    settings: settings
                 )
             }()
 
@@ -139,7 +140,7 @@ struct PrayerWidgetProvider: TimelineProvider {
                 return PrayerWidgetCalculator.displayMap(from: times)
             }()
 
-            let sunnah = activeDayTimes.flatMap { SunnahTimes(from: $0) }
+            let sunnah = activeDayTimes.map { SunnahTimes(from: $0) }
 
             return PrayerWidgetEntry(
                 date: activeFrom,
