@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 internal object PrayerWidgetLocalization {
@@ -144,15 +145,23 @@ internal object PrayerWidgetLocalization {
 }
 
 internal object PrayerTimeFormatter {
-    fun format(date: Date, useArabicNumerals: Boolean): String {
-        val cal = Calendar.getInstance().apply { time = date }
+    fun format(
+        date: Date,
+        useArabicNumerals: Boolean,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String {
+        val cal = Calendar.getInstance(timeZone).apply { time = date }
         val h = cal.get(Calendar.HOUR_OF_DAY).toString().padStart(2, '0')
         val m = cal.get(Calendar.MINUTE).toString().padStart(2, '0')
         return "$h:$m".applyNumerals(useArabicNumerals)
     }
 
-    fun format12(date: Date, useArabicNumerals: Boolean): String {
-        val cal = Calendar.getInstance().apply { time = date }
+    fun format12(
+        date: Date,
+        useArabicNumerals: Boolean,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String {
+        val cal = Calendar.getInstance(timeZone).apply { time = date }
         val h24 = cal.get(Calendar.HOUR_OF_DAY)
         val h12 = if (h24 == 0) 12 else if (h24 > 12) h24 - 12 else h24
         val m = cal.get(Calendar.MINUTE).toString().padStart(2, '0')
@@ -163,8 +172,9 @@ internal object PrayerTimeFormatter {
         date: Date,
         useArabicNumerals: Boolean,
         languageCode: String,
+        timeZone: TimeZone = TimeZone.getDefault(),
     ): String {
-        val cal = Calendar.getInstance().apply { time = date }
+        val cal = Calendar.getInstance(timeZone).apply { time = date }
         val h24 = cal.get(Calendar.HOUR_OF_DAY)
         val h12 = if (h24 == 0) 12 else if (h24 > 12) h24 - 12 else h24
         val m = cal.get(Calendar.MINUTE).toString().padStart(2, '0')
@@ -177,14 +187,24 @@ internal object PrayerTimeFormatter {
         return "$h12:$m $ampm".applyNumerals(useArabicNumerals)
     }
 
-    fun formatISODate(date: Date, useArabicNumerals: Boolean): String {
+    fun formatISODate(
+        date: Date,
+        useArabicNumerals: Boolean,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        sdf.timeZone = timeZone
         return sdf.format(date).applyNumerals(useArabicNumerals)
     }
 
-    fun formatDayOfWeek(date: Date, languageCode: String): String {
+    fun formatDayOfWeek(
+        date: Date,
+        languageCode: String,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String {
         val locale = Locale.forLanguageTag(languageCode)
         val sdf = SimpleDateFormat("EEEE", locale)
+        sdf.timeZone = timeZone
         return sdf.format(date)
     }
 

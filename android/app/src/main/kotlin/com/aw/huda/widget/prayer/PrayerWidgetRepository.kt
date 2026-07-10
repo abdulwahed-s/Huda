@@ -2,6 +2,7 @@ package com.aw.huda.widget.prayer
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.util.TimeZone
 
 internal object PrayerWidgetRepository {
     private const val FLUTTER_PREFS_NAME = "FlutterSharedPreferences"
@@ -9,6 +10,10 @@ internal object PrayerWidgetRepository {
 
     private const val K_LAT = "${PREFIX}latitude"
     private const val K_LON = "${PREFIX}longitude"
+    private const val K_COUNTRY = "${PREFIX}country_code"
+    private const val K_METHOD = "${PREFIX}calculation_method"
+    private const val K_MADHAB = "${PREFIX}madhab"
+    private const val K_HIGH_LAT = "${PREFIX}high_latitude_rule"
 
     private const val K_THEME_NAME = "${PREFIX}themeName"
     private const val K_THEME_MODE = "${PREFIX}themeMode"
@@ -56,6 +61,10 @@ internal object PrayerWidgetRepository {
         return PrayerWidgetSnapshot(
             latitude = lat,
             longitude = lon,
+            countryCode = p.getString(K_COUNTRY, null),
+            calculationMethod = p.getString(K_METHOD, null),
+            madhab = p.getString(K_MADHAB, null),
+            highLatitudeRule = p.getString(K_HIGH_LAT, null),
             offsets = offsets,
             themeName = p.getString(K_THEME_NAME, "purple") ?: "purple",
             themeMode = p.getString(K_THEME_MODE, "light") ?: "light",
@@ -77,6 +86,10 @@ internal object PrayerWidgetRepository {
 internal data class PrayerWidgetSnapshot(
     val latitude: Double?,
     val longitude: Double?,
+    val countryCode: String?,
+    val calculationMethod: String?,
+    val madhab: String?,
+    val highLatitudeRule: String?,
 
     val offsets: Map<String, Int>,
     val themeName: String,
@@ -94,6 +107,9 @@ internal data class PrayerWidgetSnapshot(
     val contentSize: Int,
 ) {
     val hasCoordinates: Boolean get() = latitude != null && longitude != null
+
+    val displayTimeZone: TimeZone
+        get() = PrayerWidgetTimeZones.timeZoneFor(countryCode)
 
     val effectiveLocale: String
         get() = when (language) {

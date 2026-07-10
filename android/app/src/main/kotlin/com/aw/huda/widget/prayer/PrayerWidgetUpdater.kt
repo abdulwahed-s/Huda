@@ -290,7 +290,11 @@ internal object PrayerWidgetUpdater {
 
         setStyledText(views,
             R.id.prayer_widget_next_time,
-            PrayerTimeFormatter.format(next.time, snapshot.useArabicNumerals()),
+            PrayerTimeFormatter.format(
+                next.time,
+                snapshot.useArabicNumerals(),
+                snapshot.displayTimeZone,
+            ),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
@@ -328,7 +332,11 @@ internal object PrayerWidgetUpdater {
                     PrayerWidgetLocalization.prayerName(kind, locale))
                 views.setTextColor(upcomingRowIds[i].first, secondary)
                 setStyledText(views, upcomingRowIds[i].second,
-                    PrayerTimeFormatter.format(time, snapshot.useArabicNumerals()))
+                    PrayerTimeFormatter.format(
+                        time,
+                        snapshot.useArabicNumerals(),
+                        snapshot.displayTimeZone,
+                    ))
                 views.setTextColor(upcomingRowIds[i].second, secondary)
             } else {
                 views.setViewVisibility(upcomingContainerIds[i], View.GONE)
@@ -354,7 +362,11 @@ internal object PrayerWidgetUpdater {
 
         setStyledText(views,
             R.id.prayer_widget_next_time,
-            PrayerTimeFormatter.format(next.time, snapshot.useArabicNumerals()),
+            PrayerTimeFormatter.format(
+                next.time,
+                snapshot.useArabicNumerals(),
+                snapshot.displayTimeZone,
+            ),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
@@ -392,7 +404,11 @@ internal object PrayerWidgetUpdater {
         views.setTextColor(R.id.prayer_widget_next_name, secondary)
         setStyledText(views,
             R.id.prayer_widget_next_time,
-            PrayerTimeFormatter.format(next.time, snapshot.useArabicNumerals()),
+            PrayerTimeFormatter.format(
+                next.time,
+                snapshot.useArabicNumerals(),
+                snapshot.displayTimeZone,
+            ),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
@@ -448,7 +464,11 @@ internal object PrayerWidgetUpdater {
         views.setTextColor(ids.nameId, color)
         setStyledText(views,
             ids.timeId,
-            PrayerTimeFormatter.format(time, snapshot.useArabicNumerals()),
+            PrayerTimeFormatter.format(
+                time,
+                snapshot.useArabicNumerals(),
+                snapshot.displayTimeZone,
+            ),
         )
         views.setTextColor(ids.timeId, color)
 
@@ -646,12 +666,20 @@ internal object PrayerWidgetUpdater {
 
         setStyledText(views,
             R.id.prayer_widget_iso_date,
-            PrayerTimeFormatter.formatISODate(now, snapshot.useArabicNumerals()),
+            PrayerTimeFormatter.formatISODate(
+                now,
+                snapshot.useArabicNumerals(),
+                snapshot.displayTimeZone,
+            ),
         )
         views.setTextColor(R.id.prayer_widget_iso_date, primary)
 
         val day = ArabicTatweel.elongate(
-            PrayerTimeFormatter.formatDayOfWeek(now, locale), tatweel,
+            PrayerTimeFormatter.formatDayOfWeek(
+                now,
+                locale,
+                snapshot.displayTimeZone,
+            ), tatweel,
         )
         setStyledText(views, R.id.prayer_widget_day_of_week, day)
         views.setTextColor(R.id.prayer_widget_day_of_week, primary)
@@ -665,7 +693,10 @@ internal object PrayerWidgetUpdater {
         setStyledText(views,
             R.id.prayer_widget_next_time,
             PrayerTimeFormatter.format12WithMeridiem(
-                next.time, snapshot.useArabicNumerals(), locale,
+                next.time,
+                snapshot.useArabicNumerals(),
+                locale,
+                snapshot.displayTimeZone,
             ),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
@@ -693,12 +724,20 @@ internal object PrayerWidgetUpdater {
 
         setStyledText(views,
             R.id.prayer_widget_iso_date,
-            PrayerTimeFormatter.formatISODate(now, snapshot.useArabicNumerals()),
+            PrayerTimeFormatter.formatISODate(
+                now,
+                snapshot.useArabicNumerals(),
+                snapshot.displayTimeZone,
+            ),
         )
         views.setTextColor(R.id.prayer_widget_iso_date, primary)
 
         val day = ArabicTatweel.elongate(
-            PrayerTimeFormatter.formatDayOfWeek(now, locale), tatweel,
+            PrayerTimeFormatter.formatDayOfWeek(
+                now,
+                locale,
+                snapshot.displayTimeZone,
+            ), tatweel,
         )
         setStyledText(views, R.id.prayer_widget_day_of_week, day)
         views.setTextColor(R.id.prayer_widget_day_of_week, primary)
@@ -718,7 +757,11 @@ internal object PrayerWidgetUpdater {
             views.setTextColor(ids.nameId, color)
             setStyledText(views,
                 ids.timeId,
-                PrayerTimeFormatter.format12(time, snapshot.useArabicNumerals()),
+                PrayerTimeFormatter.format12(
+                    time,
+                    snapshot.useArabicNumerals(),
+                    snapshot.displayTimeZone,
+                ),
             )
             views.setTextColor(ids.timeId, color)
         }
@@ -771,13 +814,21 @@ internal object PrayerWidgetUpdater {
 
         setStyledText(views,
             R.id.prayer_widget_iso_date,
-            PrayerTimeFormatter.formatISODate(now, snapshot.useArabicNumerals()),
+            PrayerTimeFormatter.formatISODate(
+                now,
+                snapshot.useArabicNumerals(),
+                snapshot.displayTimeZone,
+            ),
         )
         views.setTextColor(R.id.prayer_widget_iso_date, primary)
 
         val daySize = if (isRTL) 30f else 56f
         val day = ArabicTatweel.elongate(
-            PrayerTimeFormatter.formatDayOfWeek(now, locale), tatweel,
+            PrayerTimeFormatter.formatDayOfWeek(
+                now,
+                locale,
+                snapshot.displayTimeZone,
+            ), tatweel,
         )
         setStyledText(views, R.id.prayer_widget_day_of_week, day)
         views.setTextColor(R.id.prayer_widget_day_of_week, primary)
@@ -801,7 +852,10 @@ internal object PrayerWidgetUpdater {
         setStyledText(views,
             R.id.prayer_widget_pill_time,
             PrayerTimeFormatter.format12WithMeridiem(
-                next.time, snapshot.useArabicNumerals(), locale,
+                next.time,
+                snapshot.useArabicNumerals(),
+                locale,
+                snapshot.displayTimeZone,
             ),
         )
         views.setTextColor(R.id.prayer_widget_pill_time, primary)
@@ -821,14 +875,18 @@ internal object PrayerWidgetUpdater {
             views.setTextColor(ids.nameId, color)
             setStyledText(views,
                 ids.timeId,
-                PrayerTimeFormatter.format12(time, snapshot.useArabicNumerals()),
+                PrayerTimeFormatter.format12(
+                    time,
+                    snapshot.useArabicNumerals(),
+                    snapshot.displayTimeZone,
+                ),
             )
             views.setTextColor(ids.timeId, color)
         }
 
         val sunnah = PrayerWidgetCalculator.computeSunnah(
             snapshot,
-            Calendar.getInstance().apply { time = now },
+            Calendar.getInstance(snapshot.displayTimeZone).apply { time = now },
         )
         setStyledText(views,
             R.id.prayer_widget_sunnah_last_third_label,
@@ -838,7 +896,11 @@ internal object PrayerWidgetUpdater {
         setStyledText(views,
             R.id.prayer_widget_sunnah_last_third_value,
             sunnah?.lastThirdOfNight?.let {
-                PrayerTimeFormatter.format12(it, snapshot.useArabicNumerals())
+                PrayerTimeFormatter.format12(
+                    it,
+                    snapshot.useArabicNumerals(),
+                    snapshot.displayTimeZone,
+                )
             } ?: "—",
         )
         views.setTextColor(R.id.prayer_widget_sunnah_last_third_value, primary)
@@ -851,7 +913,11 @@ internal object PrayerWidgetUpdater {
         setStyledText(views,
             R.id.prayer_widget_sunnah_middle_value,
             sunnah?.middleOfNight?.let {
-                PrayerTimeFormatter.format12(it, snapshot.useArabicNumerals())
+                PrayerTimeFormatter.format12(
+                    it,
+                    snapshot.useArabicNumerals(),
+                    snapshot.displayTimeZone,
+                )
             } ?: "—",
         )
         views.setTextColor(R.id.prayer_widget_sunnah_middle_value, primary)
@@ -1177,7 +1243,11 @@ internal object PrayerWidgetUpdater {
             views.setTextColor(ids.nameId, color)
             setStyledText(views,
                 ids.timeId,
-                PrayerTimeFormatter.format(time, snapshot.useArabicNumerals()),
+                PrayerTimeFormatter.format(
+                    time,
+                    snapshot.useArabicNumerals(),
+                    snapshot.displayTimeZone,
+                ),
             )
             views.setTextColor(ids.timeId, color)
         }

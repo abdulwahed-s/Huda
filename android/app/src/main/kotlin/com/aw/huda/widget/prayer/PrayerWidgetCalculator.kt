@@ -1,15 +1,17 @@
 package com.aw.huda.widget.prayer
 
-import com.batoulapps.adhan.CalculationMethod
-import com.batoulapps.adhan.Coordinates
-import com.batoulapps.adhan.Madhab
-import com.batoulapps.adhan.Prayer
-import com.batoulapps.adhan.PrayerTimes
-import com.batoulapps.adhan.SunnahTimes
-import com.batoulapps.adhan.data.DateComponents
+import io.github.abdulwaheds.prayertimeplus.AutoMethod
+import io.github.abdulwaheds.prayertimeplus.CalculationMethod
+import io.github.abdulwaheds.prayertimeplus.Coordinates
+import io.github.abdulwaheds.prayertimeplus.DateComponents
+import io.github.abdulwaheds.prayertimeplus.HighLatitudeRule
+import io.github.abdulwaheds.prayertimeplus.Madhab
+import io.github.abdulwaheds.prayertimeplus.Prayer
+import io.github.abdulwaheds.prayertimeplus.PrayerTimes
+import io.github.abdulwaheds.prayertimeplus.SunnahTimes
+import java.time.OffsetDateTime
 import java.util.Calendar
 import java.util.Date
-import java.util.TimeZone
 
 internal object PrayerWidgetCalculator {
     data class DayTimes(
@@ -40,28 +42,50 @@ internal object PrayerWidgetCalculator {
     }
 
     fun computeDay(snapshot: PrayerWidgetSnapshot, day: Calendar): DayTimes? {
-        return rawTimes(snapshot, day)?.let { rawToDay(it, snapshot) }
+        val raw = rawTimes(snapshot, day) ?: return null
+        return rawToDay(raw, snapshot)
     }
 
     private fun rawTimes(snapshot: PrayerWidgetSnapshot, day: Calendar): PrayerTimes? {
         val lat = snapshot.latitude ?: return null
         val lon = snapshot.longitude ?: return null
 
-        val params = CalculationMethod.UMM_AL_QURA.parameters
-        params.madhab = Madhab.SHAFI
+        val countryCode = snapshot.countryCode?.trim().orEmpty()
+        val method = methodFrom(snapshot.calculationMethod, countryCode)
+        val params = method.parameters().copy(
+            madhab = madhabFrom(snapshot.madhab),
+            highLatitudeRule = highLatitudeRuleFrom(snapshot.highLatitudeRule),
+        )
 
-        val date = DateComponents.from(day.time)
-        return PrayerTimes(Coordinates(lat, lon), date, params)
+        val date = DateComponents(
+            day.get(Calendar.YEAR),
+            day.get(Calendar.MONTH) + 1,
+            day.get(Calendar.DAY_OF_MONTH),
+        )
+        val utcOffset = PrayerWidgetTimeZones.zoneOffsetFor(countryCode, day.toInstant())
+        return PrayerTimes(
+            Coordinates(lat, lon),
+            date,
+            params,
+            utcOffset,
+            countryCode = countryCode,
+        )
     }
 
-    private fun rawToDay(raw: PrayerTimes, snapshot: PrayerWidgetSnapshot): DayTimes {
+    private fun rawToDay(raw: PrayerTimes, snapshot: PrayerWidgetSnapshot): DayTimes? {
+        val fajr = raw.fajr?.toDate() ?: return null
+        val sunrise = raw.sunrise?.toDate() ?: return null
+        val dhuhr = raw.dhuhr?.toDate() ?: return null
+        val asr = raw.asr?.toDate() ?: return null
+        val maghrib = raw.maghrib?.toDate() ?: return null
+        val isha = raw.isha?.toDate() ?: return null
         return DayTimes(
-            fajr = raw.fajr.applyOffset(snapshot.offsets["fajr"] ?: 0),
-            sunrise = raw.sunrise.applyOffset(snapshot.offsets["sunrise"] ?: 0),
-            dhuhr = raw.dhuhr.applyOffset(snapshot.offsets["dhuhr"] ?: 0),
-            asr = raw.asr.applyOffset(snapshot.offsets["asr"] ?: 0),
-            maghrib = raw.maghrib.applyOffset(snapshot.offsets["maghrib"] ?: 0),
-            isha = raw.isha.applyOffset(snapshot.offsets["isha"] ?: 0),
+            fajr = fajr.applyOffset(snapshot.offsets["fajr"] ?: 0),
+            sunrise = sunrise.applyOffset(snapshot.offsets["sunrise"] ?: 0),
+            dhuhr = dhuhr.applyOffset(snapshot.offsets["dhuhr"] ?: 0),
+            asr = asr.applyOffset(snapshot.offsets["asr"] ?: 0),
+            maghrib = maghrib.applyOffset(snapshot.offsets["maghrib"] ?: 0),
+            isha = isha.applyOffset(snapshot.offsets["isha"] ?: 0),
         )
     }
 
@@ -69,9 +93,11 @@ internal object PrayerWidgetCalculator {
         val raw = rawTimes(snapshot, day) ?: return null
         return try {
             val sunnah = SunnahTimes(raw)
+            val middle = sunnah.middleOfTheNight?.toDate() ?: return null
+            val lastThird = sunnah.lastThirdOfTheNight?.toDate() ?: return null
             SunnahTimesResult(
-                middleOfNight = sunnah.middleOfTheNight,
-                lastThirdOfNight = sunnah.lastThirdOfTheNight,
+                middleOfNight = middle,
+                lastThirdOfNight = lastThird,
             )
         } catch (_: Exception) {
             null
@@ -88,7 +114,7 @@ internal object PrayerWidgetCalculator {
     )
 
     fun nextAfter(snapshot: PrayerWidgetSnapshot, now: Date): NextPrayer? {
-        val today = computeDay(snapshot, calendarFor(now)) ?: return null
+        val today = computeDay(snapshot, calendarFor(snapshot, now)) ?: return null
         val candidates = listOf(
             PrayerKind.FAJR to today.fajr,
             PrayerKind.DHUHR to today.dhuhr,
@@ -102,13 +128,13 @@ internal object PrayerWidgetCalculator {
             return NextPrayer(upcomingToday.first, upcomingToday.second, today)
         }
 
-        val tomorrowCal = calendarFor(now).apply { add(Calendar.DATE, 1) }
+        val tomorrowCal = calendarFor(snapshot, now).apply { add(Calendar.DATE, 1) }
         val tomorrow = computeDay(snapshot, tomorrowCal) ?: return null
         return NextPrayer(PrayerKind.FAJR, tomorrow.fajr, tomorrow)
     }
 
     fun previousBefore(snapshot: PrayerWidgetSnapshot, now: Date): PreviousPrayer? {
-        val today = computeDay(snapshot, calendarFor(now)) ?: return null
+        val today = computeDay(snapshot, calendarFor(snapshot, now)) ?: return null
         val candidates = listOf(
             PrayerKind.FAJR to today.fajr,
             PrayerKind.DHUHR to today.dhuhr,
@@ -121,16 +147,44 @@ internal object PrayerWidgetCalculator {
         return PreviousPrayer(passed.first, passed.second)
     }
 
-    private fun Date.applyOffset(minutes: Int): Date {
-        if (minutes == 0) return this
-        val cal = Calendar.getInstance(TimeZone.getDefault())
-        cal.time = this
-        cal.add(Calendar.MINUTE, minutes)
-        return cal.time
+    private fun OffsetDateTime.toDate(): Date = Date.from(this.toInstant())
+
+    private fun madhabFrom(token: String?): Madhab =
+        if (token == "hanafi") Madhab.HANAFI else Madhab.SHAFI
+
+    private fun highLatitudeRuleFrom(token: String?): HighLatitudeRule = when (token) {
+        "automatic" -> HighLatitudeRule.AUTOMATIC
+        "middleOfTheNight" -> HighLatitudeRule.MIDDLE_OF_THE_NIGHT
+        "seventhOfTheNight" -> HighLatitudeRule.SEVENTH_OF_THE_NIGHT
+        "twilightAngle" -> HighLatitudeRule.TWILIGHT_ANGLE
+        "none" -> HighLatitudeRule.NONE
+        else -> HighLatitudeRule.AUTOMATIC
     }
 
-    private fun calendarFor(now: Date): Calendar {
-        val cal = Calendar.getInstance(TimeZone.getDefault())
+    private fun methodFrom(token: String?, countryCode: String): CalculationMethod = when (token) {
+        null, "", "auto" ->
+            if (countryCode.isBlank()) CalculationMethod.UMM_AL_QURA
+            else AutoMethod.forCountry(countryCode)
+        "ummAlQura" -> CalculationMethod.UMM_AL_QURA
+        "muslimWorldLeague" -> CalculationMethod.MUSLIM_WORLD_LEAGUE
+        "egyptian" -> CalculationMethod.EGYPTIAN
+        "karachi" -> CalculationMethod.KARACHI
+        "northAmerica" -> CalculationMethod.NORTH_AMERICA
+        "dubai" -> CalculationMethod.DUBAI
+        "qatar" -> CalculationMethod.QATAR
+        "kuwait" -> CalculationMethod.KUWAIT
+        "turkey" -> CalculationMethod.TURKEY
+        "indonesia" -> CalculationMethod.INDONESIA
+        else -> CalculationMethod.UMM_AL_QURA
+    }
+
+    private fun Date.applyOffset(minutes: Int): Date {
+        if (minutes == 0) return this
+        return Date(time + minutes * 60L * 1000L)
+    }
+
+    private fun calendarFor(snapshot: PrayerWidgetSnapshot, now: Date): Calendar {
+        val cal = Calendar.getInstance(snapshot.displayTimeZone)
         cal.time = now
         return cal
     }
