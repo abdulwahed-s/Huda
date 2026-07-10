@@ -3138,6 +3138,17 @@ class AppLocalizationsUr extends AppLocalizations {
       'یوآئی بہتری: کچھ صفحات پر تازہ اور بہتر شکل';
 
   @override
+  String get whatsNew370Feature1 =>
+      'نماز کے اوقات میں بہتری: عمان، الجزائر اور مزید نئے حسابی طریقوں کے ساتھ زیادہ درست اوقات';
+
+  @override
+  String get whatsNew370Feature2 =>
+      'قبلہ کمپاس: کمپاس کے رویے اور قبلہ کی درستگی میں بہتری';
+
+  @override
+  String get whatsNew370Feature3 => 'بگ فکس اور کارکردگی میں بہتری';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override
@@ -4131,4 +4142,217 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get describeIssueHint => 'مسئلہ یا رائے بیان کریں...';
+
+  @override
+  String get prayerSettingsTitle => 'نماز اوقات کی ترتیبات';
+
+  @override
+  String get prayerSettingsSubtitle => 'طریقہ، مذہب اور باریک ترتیب';
+
+  @override
+  String get prayerCalculationMethod => 'حساب کا طریقہ';
+
+  @override
+  String get prayerAsrMethod => 'عصر کا طریقہ (مذہب)';
+
+  @override
+  String get prayerHighLatitudeRule => 'بلند عرض البلد قاعدہ';
+
+  @override
+  String get prayerTimeAdjustment => 'اوقات کی درستگی';
+
+  @override
+  String get prayerAdjustmentSubtitle => '+ یا - دبا کر منٹ ایڈجسٹ کریں';
+
+  @override
+  String get prayerMethodAuto => 'خودکار (ملک کے مطابق)';
+
+  @override
+  String get prayerHighLatitudeNone => 'کوئی نہیں';
+
+  @override
+  String get prayerHighLatitudeMiddleOfTheNight => 'نصف شب';
+
+  @override
+  String get prayerHighLatitudeSeventhOfTheNight => 'رات کا ساتواں حصہ';
+
+  @override
+  String get prayerHighLatitudeTwilightAngle => 'زاویۂ شفق';
+
+  @override
+  String get prayerMadhabShafi => 'شافعی';
+
+  @override
+  String get prayerMadhabHanafi => 'حنفی';
+
+  @override
+  String get prayerMethodUmmAlQura => 'ام القریٰ';
+
+  @override
+  String get prayerMethodMuslimWorldLeague => 'عالمی مسلم لیگ';
+
+  @override
+  String get prayerMethodEgyptian => 'مصری جنرل اتھارٹی برائے سروے';
+
+  @override
+  String get prayerMethodKarachi => 'جامعہ علوم اسلامیہ، کراچی';
+
+  @override
+  String get prayerMethodNorthAmerica => 'شمالی امریکہ (ISNA)';
+
+  @override
+  String get prayerMethodEmirates => 'متحدہ عرب امارات (GAIAE)';
+
+  @override
+  String get prayerMethodDubai => 'دبئی';
+
+  @override
+  String get prayerMethodQatar => 'قطر کیلنڈر ہاؤس';
+
+  @override
+  String get prayerMethodKuwait => 'کویت';
+
+  @override
+  String get prayerMethodOman => 'عمان';
+
+  @override
+  String get prayerMethodOmanMuscat => 'مسقط، عمان';
+
+  @override
+  String get prayerMethodJordan => 'اردن';
+
+  @override
+  String get prayerMethodPalestine => 'فلسطین';
+
+  @override
+  String get prayerMethodSyria => 'شام (ہاشمی)';
+
+  @override
+  String get prayerMethodIraq => 'عراق';
+
+  @override
+  String get prayerMethodMorocco => 'مراکش (حبوس)';
+
+  @override
+  String get prayerMethodAzrou => 'آزرو، مراکش';
+
+  @override
+  String get prayerMethodAlgeria => 'الجزائر';
+
+  @override
+  String get prayerMethodTunisia => 'تیونس';
+
+  @override
+  String get prayerMethodLibya => 'لیبیا';
+
+  @override
+  String get prayerMethodSudan => 'سوڈان';
+
+  @override
+  String get prayerMethodTurkey => 'ترکی (دیانت)';
+
+  @override
+  String get prayerMethodMalaysia => 'جنوب مشرقی ایشیا';
+
+  @override
+  String get prayerMethodMalaysia2 => 'ملائیشیا';
+
+  @override
+  String get prayerMethodIndonesia => 'انڈونیشیا';
+
+  @override
+  String get prayerMethodKazakhstan => 'قازقستان';
+
+  @override
+  String get prayerMethodTajikistan => 'تاجکستان';
+
+  @override
+  String get prayerMethodMaldives => 'مالدیپ';
+
+  @override
+  String get prayerMethodSouthKorea => 'جنوبی کوریا';
+
+  @override
+  String get prayerMethodUoif => 'UOIF';
+
+  @override
+  String get prayerMethodParis => 'پیرس';
+
+  @override
+  String get prayerMethodToulouse => 'تولوز';
+
+  @override
+  String get prayerMethodLyon => 'لیون';
+
+  @override
+  String get prayerMethodOrleans => 'اورلیاں';
+
+  @override
+  String get prayerMethodMoscow => 'ماسکو';
+
+  @override
+  String get prayerMethodCzech => 'جمہوریہ چیک';
+
+  @override
+  String get prayerMethodSwitzerland => 'سوئٹزرلینڈ (جنیوا)';
+
+  @override
+  String get prayerMethodFribourg => 'فریبورگ، سوئٹزرلینڈ';
+
+  @override
+  String get prayerMethodBelgium => 'بیلجیم';
+
+  @override
+  String get prayerMethodLuxembourg => 'لکسمبرگ';
+
+  @override
+  String get prayerMethodAustria => 'آسٹریا';
+
+  @override
+  String get prayerMethodLondon => 'لندن';
+
+  @override
+  String get prayerMethodBirmingham => 'برمنگھم';
+
+  @override
+  String get prayerMethodBlackburn => 'بلیک برن';
+
+  @override
+  String get prayerMethodAachen => 'آخن';
+
+  @override
+  String get prayerMethodMunchen => 'میونخ';
+
+  @override
+  String get prayerMethodPotsdam => 'پوٹسڈام';
+
+  @override
+  String get prayerMethodNurnberg => 'نیورمبرگ';
+
+  @override
+  String get prayerMethodRotterdam => 'روٹرڈیم';
+
+  @override
+  String get prayerMethodDordrecht => 'ڈورڈریخت';
+
+  @override
+  String get prayerMethodEindhoven => 'آئندہوون';
+
+  @override
+  String get prayerMethodMontreal => 'مونٹریال';
+
+  @override
+  String get prayerMethodWindsor => 'ونڈسر';
+
+  @override
+  String get prayerMethodCalgary => 'کیلگری';
+
+  @override
+  String get prayerMethodMississauga => 'مسیساگا';
+
+  @override
+  String get prayerMethodOther => 'حسب ضرورت';
+
+  @override
+  String get prayerSettingsApply => 'لاگو کریں';
 }

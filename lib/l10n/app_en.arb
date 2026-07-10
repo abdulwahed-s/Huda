@@ -3488,6 +3488,18 @@
     "@whatsNew350Feature3": {
         "description": "What's new feature 3 for v3.5.0"
     },
+    "whatsNew370Feature1": "Prayer Time Improvements: more accurate prayer times with new calculation methods including Oman, Algeria, and more",
+    "@whatsNew370Feature1": {
+        "description": "What's new feature 1 for v3.7.0"
+    },
+    "whatsNew370Feature2": "Qiblah Compass: improved compass behavior and Qiblah accuracy",
+    "@whatsNew370Feature2": {
+        "description": "What's new feature 2 for v3.7.0"
+    },
+    "whatsNew370Feature3": "Bug fixes and performance improvements",
+    "@whatsNew370Feature3": {
+        "description": "What's new feature 3 for v3.7.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
@@ -4801,5 +4813,289 @@
     "describeIssueHint": "Describe the issue or feedback...",
     "@describeIssueHint": {
         "description": "Hint for the screenshot feedback description field"
+    },
+    "prayerSettingsTitle": "Prayer Time Settings",
+    "@prayerSettingsTitle": {
+        "description": "Title for the prayer time settings bottom sheet"
+    },
+    "prayerSettingsSubtitle": "Method, madhab and fine-tuning",
+    "@prayerSettingsSubtitle": {
+        "description": "Subtitle for the prayer time settings bottom sheet"
+    },
+    "prayerCalculationMethod": "Calculation Method",
+    "@prayerCalculationMethod": {
+        "description": "Prayer calculation method section title"
+    },
+    "prayerAsrMethod": "Asr Method (Madhab)",
+    "@prayerAsrMethod": {
+        "description": "Asr madhab selection section title"
+    },
+    "prayerHighLatitudeRule": "High Latitude Rule",
+    "@prayerHighLatitudeRule": {
+        "description": "High latitude rule section title"
+    },
+    "prayerTimeAdjustment": "Time Adjustment",
+    "@prayerTimeAdjustment": {
+        "description": "Prayer time manual adjustment section title"
+    },
+    "prayerAdjustmentSubtitle": "Tap + or - to adjust minutes",
+    "@prayerAdjustmentSubtitle": {
+        "description": "Instruction for changing prayer time offsets"
+    },
+    "prayerMethodAuto": "Automatic (by country)",
+    "@prayerMethodAuto": {
+        "description": "Automatic prayer calculation method option"
+    },
+    "prayerHighLatitudeNone": "None",
+    "@prayerHighLatitudeNone": {
+        "description": "No high latitude rule option"
+    },
+    "prayerHighLatitudeMiddleOfTheNight": "Middle of the Night",
+    "@prayerHighLatitudeMiddleOfTheNight": {
+        "description": "Middle of the night high latitude rule option"
+    },
+    "prayerHighLatitudeSeventhOfTheNight": "One-Seventh of the Night",
+    "@prayerHighLatitudeSeventhOfTheNight": {
+        "description": "One-seventh high latitude rule option"
+    },
+    "prayerHighLatitudeTwilightAngle": "Twilight Angle",
+    "@prayerHighLatitudeTwilightAngle": {
+        "description": "Twilight angle high latitude rule option"
+    },
+    "prayerMadhabShafi": "Shafi",
+    "@prayerMadhabShafi": {
+        "description": "Shafi madhab option"
+    },
+    "prayerMadhabHanafi": "Hanafi",
+    "@prayerMadhabHanafi": {
+        "description": "Hanafi madhab option"
+    },
+    "prayerMethodUmmAlQura": "Umm al-Qura",
+    "@prayerMethodUmmAlQura": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMuslimWorldLeague": "Muslim World League",
+    "@prayerMethodMuslimWorldLeague": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodEgyptian": "Egyptian General Authority of Survey",
+    "@prayerMethodEgyptian": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodKarachi": "University of Islamic Sciences, Karachi",
+    "@prayerMethodKarachi": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodNorthAmerica": "North America (ISNA)",
+    "@prayerMethodNorthAmerica": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodEmirates": "UAE (GAIAE)",
+    "@prayerMethodEmirates": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodDubai": "Dubai",
+    "@prayerMethodDubai": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodQatar": "Qatar Calendar House",
+    "@prayerMethodQatar": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodKuwait": "Kuwait",
+    "@prayerMethodKuwait": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodOman": "Oman",
+    "@prayerMethodOman": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodOmanMuscat": "Muscat, Oman",
+    "@prayerMethodOmanMuscat": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodJordan": "Jordan",
+    "@prayerMethodJordan": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodPalestine": "Palestine",
+    "@prayerMethodPalestine": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodSyria": "Syria (Hashemi)",
+    "@prayerMethodSyria": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodIraq": "Iraq",
+    "@prayerMethodIraq": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMorocco": "Morocco (Habous)",
+    "@prayerMethodMorocco": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodAzrou": "Azrou, Morocco",
+    "@prayerMethodAzrou": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodAlgeria": "Algeria",
+    "@prayerMethodAlgeria": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodTunisia": "Tunisia",
+    "@prayerMethodTunisia": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodLibya": "Libya",
+    "@prayerMethodLibya": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodSudan": "Sudan",
+    "@prayerMethodSudan": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodTurkey": "Turkey (Diyanet)",
+    "@prayerMethodTurkey": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMalaysia": "Southeast Asia",
+    "@prayerMethodMalaysia": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMalaysia2": "Malaysia",
+    "@prayerMethodMalaysia2": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodIndonesia": "Indonesia",
+    "@prayerMethodIndonesia": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodKazakhstan": "Kazakhstan",
+    "@prayerMethodKazakhstan": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodTajikistan": "Tajikistan",
+    "@prayerMethodTajikistan": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMaldives": "Maldives",
+    "@prayerMethodMaldives": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodSouthKorea": "South Korea",
+    "@prayerMethodSouthKorea": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodUoif": "UOIF",
+    "@prayerMethodUoif": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodParis": "Paris",
+    "@prayerMethodParis": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodToulouse": "Toulouse",
+    "@prayerMethodToulouse": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodLyon": "Lyon",
+    "@prayerMethodLyon": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodOrleans": "Orleans",
+    "@prayerMethodOrleans": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMoscow": "Moscow",
+    "@prayerMethodMoscow": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodCzech": "Czech Republic",
+    "@prayerMethodCzech": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodSwitzerland": "Switzerland (Geneva)",
+    "@prayerMethodSwitzerland": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodFribourg": "Fribourg, Switzerland",
+    "@prayerMethodFribourg": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodBelgium": "Belgium",
+    "@prayerMethodBelgium": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodLuxembourg": "Luxembourg",
+    "@prayerMethodLuxembourg": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodAustria": "Austria",
+    "@prayerMethodAustria": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodLondon": "London",
+    "@prayerMethodLondon": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodBirmingham": "Birmingham",
+    "@prayerMethodBirmingham": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodBlackburn": "Blackburn",
+    "@prayerMethodBlackburn": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodAachen": "Aachen",
+    "@prayerMethodAachen": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMunchen": "Munich",
+    "@prayerMethodMunchen": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodPotsdam": "Potsdam",
+    "@prayerMethodPotsdam": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodNurnberg": "Nuremberg",
+    "@prayerMethodNurnberg": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodRotterdam": "Rotterdam",
+    "@prayerMethodRotterdam": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodDordrecht": "Dordrecht",
+    "@prayerMethodDordrecht": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodEindhoven": "Eindhoven",
+    "@prayerMethodEindhoven": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMontreal": "Montreal",
+    "@prayerMethodMontreal": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodWindsor": "Windsor",
+    "@prayerMethodWindsor": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodCalgary": "Calgary",
+    "@prayerMethodCalgary": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodMississauga": "Mississauga",
+    "@prayerMethodMississauga": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerMethodOther": "Custom",
+    "@prayerMethodOther": {
+        "description": "Prayer calculation method option label"
+    },
+    "prayerSettingsApply": "Apply",
+    "@prayerSettingsApply": {
+        "description": "Apply button label in the prayer time settings sheet"
     }
 }

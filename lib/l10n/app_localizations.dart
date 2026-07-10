@@ -5822,6 +5822,24 @@ abstract class AppLocalizations {
   /// **'UI Touch-ups: A fresh, polished look on several screens'**
   String get whatsNew350Feature3;
 
+  /// What's new feature 1 for v3.7.0
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Time Improvements: more accurate prayer times with new calculation methods including Oman, Algeria, and more'**
+  String get whatsNew370Feature1;
+
+  /// What's new feature 2 for v3.7.0
+  ///
+  /// In en, this message translates to:
+  /// **'Qiblah Compass: improved compass behavior and Qiblah accuracy'**
+  String get whatsNew370Feature2;
+
+  /// What's new feature 3 for v3.7.0
+  ///
+  /// In en, this message translates to:
+  /// **'Bug fixes and performance improvements'**
+  String get whatsNew370Feature3;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:
@@ -7567,6 +7585,432 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Describe the issue or feedback...'**
   String get describeIssueHint;
+
+  /// Title for the prayer time settings bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Time Settings'**
+  String get prayerSettingsTitle;
+
+  /// Subtitle for the prayer time settings bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Method, madhab and fine-tuning'**
+  String get prayerSettingsSubtitle;
+
+  /// Prayer calculation method section title
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation Method'**
+  String get prayerCalculationMethod;
+
+  /// Asr madhab selection section title
+  ///
+  /// In en, this message translates to:
+  /// **'Asr Method (Madhab)'**
+  String get prayerAsrMethod;
+
+  /// High latitude rule section title
+  ///
+  /// In en, this message translates to:
+  /// **'High Latitude Rule'**
+  String get prayerHighLatitudeRule;
+
+  /// Prayer time manual adjustment section title
+  ///
+  /// In en, this message translates to:
+  /// **'Time Adjustment'**
+  String get prayerTimeAdjustment;
+
+  /// Instruction for changing prayer time offsets
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + or - to adjust minutes'**
+  String get prayerAdjustmentSubtitle;
+
+  /// Automatic prayer calculation method option
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic (by country)'**
+  String get prayerMethodAuto;
+
+  /// No high latitude rule option
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get prayerHighLatitudeNone;
+
+  /// Middle of the night high latitude rule option
+  ///
+  /// In en, this message translates to:
+  /// **'Middle of the Night'**
+  String get prayerHighLatitudeMiddleOfTheNight;
+
+  /// One-seventh high latitude rule option
+  ///
+  /// In en, this message translates to:
+  /// **'One-Seventh of the Night'**
+  String get prayerHighLatitudeSeventhOfTheNight;
+
+  /// Twilight angle high latitude rule option
+  ///
+  /// In en, this message translates to:
+  /// **'Twilight Angle'**
+  String get prayerHighLatitudeTwilightAngle;
+
+  /// Shafi madhab option
+  ///
+  /// In en, this message translates to:
+  /// **'Shafi'**
+  String get prayerMadhabShafi;
+
+  /// Hanafi madhab option
+  ///
+  /// In en, this message translates to:
+  /// **'Hanafi'**
+  String get prayerMadhabHanafi;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Umm al-Qura'**
+  String get prayerMethodUmmAlQura;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Muslim World League'**
+  String get prayerMethodMuslimWorldLeague;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Egyptian General Authority of Survey'**
+  String get prayerMethodEgyptian;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'University of Islamic Sciences, Karachi'**
+  String get prayerMethodKarachi;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'North America (ISNA)'**
+  String get prayerMethodNorthAmerica;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'UAE (GAIAE)'**
+  String get prayerMethodEmirates;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Dubai'**
+  String get prayerMethodDubai;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Qatar Calendar House'**
+  String get prayerMethodQatar;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Kuwait'**
+  String get prayerMethodKuwait;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Oman'**
+  String get prayerMethodOman;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Muscat, Oman'**
+  String get prayerMethodOmanMuscat;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Jordan'**
+  String get prayerMethodJordan;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Palestine'**
+  String get prayerMethodPalestine;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Syria (Hashemi)'**
+  String get prayerMethodSyria;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Iraq'**
+  String get prayerMethodIraq;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Morocco (Habous)'**
+  String get prayerMethodMorocco;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Azrou, Morocco'**
+  String get prayerMethodAzrou;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Algeria'**
+  String get prayerMethodAlgeria;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Tunisia'**
+  String get prayerMethodTunisia;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Libya'**
+  String get prayerMethodLibya;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Sudan'**
+  String get prayerMethodSudan;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Turkey (Diyanet)'**
+  String get prayerMethodTurkey;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Southeast Asia'**
+  String get prayerMethodMalaysia;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Malaysia'**
+  String get prayerMethodMalaysia2;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Indonesia'**
+  String get prayerMethodIndonesia;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Kazakhstan'**
+  String get prayerMethodKazakhstan;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Tajikistan'**
+  String get prayerMethodTajikistan;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Maldives'**
+  String get prayerMethodMaldives;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'South Korea'**
+  String get prayerMethodSouthKorea;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'UOIF'**
+  String get prayerMethodUoif;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Paris'**
+  String get prayerMethodParis;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Toulouse'**
+  String get prayerMethodToulouse;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Lyon'**
+  String get prayerMethodLyon;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Orleans'**
+  String get prayerMethodOrleans;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Moscow'**
+  String get prayerMethodMoscow;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Czech Republic'**
+  String get prayerMethodCzech;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Switzerland (Geneva)'**
+  String get prayerMethodSwitzerland;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Fribourg, Switzerland'**
+  String get prayerMethodFribourg;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Belgium'**
+  String get prayerMethodBelgium;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Luxembourg'**
+  String get prayerMethodLuxembourg;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Austria'**
+  String get prayerMethodAustria;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'London'**
+  String get prayerMethodLondon;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Birmingham'**
+  String get prayerMethodBirmingham;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Blackburn'**
+  String get prayerMethodBlackburn;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Aachen'**
+  String get prayerMethodAachen;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Munich'**
+  String get prayerMethodMunchen;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Potsdam'**
+  String get prayerMethodPotsdam;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Nuremberg'**
+  String get prayerMethodNurnberg;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Rotterdam'**
+  String get prayerMethodRotterdam;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Dordrecht'**
+  String get prayerMethodDordrecht;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Eindhoven'**
+  String get prayerMethodEindhoven;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Montreal'**
+  String get prayerMethodMontreal;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Windsor'**
+  String get prayerMethodWindsor;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Calgary'**
+  String get prayerMethodCalgary;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Mississauga'**
+  String get prayerMethodMississauga;
+
+  /// Prayer calculation method option label
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get prayerMethodOther;
+
+  /// Apply button label in the prayer time settings sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get prayerSettingsApply;
 }
 
 class _AppLocalizationsDelegate
