@@ -49,7 +49,7 @@ dependencies:
   archive: ^4.0.4
 
   # Prayer times & qibla
-  adhan: ^2.0.0+1
+  prayer_time_plus: ^0.2.0
   hijri: ^3.0.0
   precise_compass: ^0.1.0
 
