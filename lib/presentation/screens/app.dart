@@ -150,6 +150,20 @@ class _AppState extends State<App> {
 
               return BetterFeedback(
                 themeMode: themeState.themeMode,
+                theme: FeedbackThemeData.light().copyWith(
+                  feedbackSheetHeight: 0.38,
+                  feedbackSheetColor: Colors.white,
+                  background: Colors.black54,
+                  dragHandleColor: Colors.black38,
+                ),
+                darkTheme: FeedbackThemeData.dark().copyWith(
+                  feedbackSheetHeight: 0.38,
+                  feedbackSheetColor: const Color(0xFF1F2937),
+                  background: Colors.black87,
+                  dragHandleColor: Colors.white54,
+                ),
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                localeOverride: localizationState.locale,
                 feedbackBuilder: (context, onSubmit, scrollController) =>
                     ScreenshotFeedbackWidget(
                   onSubmit: onSubmit,

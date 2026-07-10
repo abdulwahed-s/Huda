@@ -1,6 +1,6 @@
 // error_cubit.dart
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -8,6 +8,12 @@ part 'error_state.dart';
 
 class ErrorCubit extends Cubit<ErrorState> {
   ErrorCubit() : super(ErrorInitial());
+
+  Future<void> sendFlutterError(FlutterErrorDetails details) async {
+    if (details.silent) return;
+
+    await sendError(details.exceptionAsString());
+  }
 
   Future<void> sendError(String error) async {
     emit(ErrorLoading());
@@ -51,15 +57,12 @@ class ErrorCubit extends Cubit<ErrorState> {
     if (currentState is ErrorLoaded) {
       emit(ErrorSubmitting());
       try {
-        await Supabase.instance.client
-            .from('error_reports')
-            .update({
-              'user_message': message,
-              if (contactEmail != null && contactEmail.isNotEmpty)
-                'contact_email': contactEmail,
-              'updated_at': DateTime.now().toIso8601String(),
-            })
-            .eq('id', currentState.docId);
+        await Supabase.instance.client.from('error_reports').update({
+          'user_message': message,
+          if (contactEmail != null && contactEmail.isNotEmpty)
+            'contact_email': contactEmail,
+          'updated_at': DateTime.now().toIso8601String(),
+        }).eq('id', currentState.docId);
         emit(ErrorSubmitted());
       } catch (e) {
         emit(ErrorFailure(message: 'Failed to submit feedback'));

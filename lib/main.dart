@@ -19,6 +19,8 @@ void main() {
 
     FlutterError.onError = (FlutterErrorDetails details) {
       FlutterError.presentError(details);
+      if (details.silent) return;
+
       debugPrint('FlutterError: ${details.exceptionAsString()}');
       CrashReporter.report(details.exception, details.stack, source: 'flutter');
     };

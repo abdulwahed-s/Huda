@@ -22,6 +22,7 @@ class ScreenshotFeedbackWidget extends StatefulWidget {
 class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  bool _showDescriptionError = false;
 
   @override
   void dispose() {
@@ -31,9 +32,17 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
   }
 
   void _submit() {
+    final description = _textController.text.trim();
+    if (description.isEmpty) {
+      setState(() {
+        _showDescriptionError = true;
+      });
+      return;
+    }
+
     final email = _emailController.text.trim();
     widget.onSubmit(
-      _textController.text,
+      description,
       extras: email.isNotEmpty ? {'email': email} : null,
     );
   }
@@ -50,105 +59,130 @@ class _ScreenshotFeedbackWidgetState extends State<ScreenshotFeedbackWidget> {
     return Column(
       children: [
         Expanded(
-          child: ListView(
-            controller: widget.scrollController,
-            padding: EdgeInsets.all(16.w),
+          child: Stack(
             children: [
-              Text(
-                AppLocalizations.of(context)!.whatHappened,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
+              ListView(
+                controller: widget.scrollController,
+                padding: EdgeInsets.fromLTRB(
+                  16.w,
+                  widget.scrollController != null ? 22.h : 14.h,
+                  16.w,
+                  8.h,
                 ),
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.whatHappened,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  TextField(
+                    controller: _textController,
+                    minLines: 4,
+                    maxLines: 6,
+                    maxLength: 1000,
+                    onChanged: (value) {
+                      if (_showDescriptionError && value.trim().isNotEmpty) {
+                        setState(() {
+                          _showDescriptionError = false;
+                        });
+                      }
+                    },
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      color: textColor,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.describeIssueHint,
+                      hintStyle: TextStyle(
+                        color: subtitleColor,
+                      ),
+                      errorText: _showDescriptionError
+                          ? AppLocalizations.of(context)!.feedbackEmptyWarning
+                          : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide:
+                            BorderSide(color: context.primaryColor, width: 2),
+                      ),
+                      filled: true,
+                      fillColor: fillColor,
+                      counterStyle: TextStyle(
+                        color: subtitleColor,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  TextField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      color: textColor,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.emailOptional,
+                      hintStyle: TextStyle(
+                        color: subtitleColor,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.mail_outline_rounded,
+                        color: subtitleColor,
+                        size: 20.sp,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide: BorderSide(color: borderColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide:
+                            BorderSide(color: context.primaryColor, width: 2),
+                      ),
+                      filled: true,
+                      fillColor: fillColor,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 16.h,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 8.h),
-              TextField(
-                controller: _textController,
-                maxLines: 5,
-                maxLength: 1000,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: textColor,
-                ),
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.describeIssueHint,
-                  hintStyle: TextStyle(
-                    color: subtitleColor,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide:
-                        BorderSide(color: context.primaryColor, width: 2),
-                  ),
-                  filled: true,
-                  fillColor: fillColor,
-                  counterStyle: TextStyle(
-                    color: subtitleColor,
-                  ),
-                ),
-              ),
-              SizedBox(height: 12.h),
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: textColor,
-                ),
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.emailOptional,
-                  hintStyle: TextStyle(
-                    color: subtitleColor,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.mail_outline_rounded,
-                    color: subtitleColor,
-                    size: 18.sp,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide:
-                        BorderSide(color: context.primaryColor, width: 2),
-                  ),
-                  filled: true,
-                  fillColor: fillColor,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-                ),
-              ),
+              if (widget.scrollController != null)
+                const FeedbackSheetDragHandle(),
             ],
           ),
         ),
         SafeArea(
+          top: false,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
+            padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 10.h),
             child: SizedBox(
               width: double.infinity,
-              height: 50.h,
+              height: 44.h,
               child: ElevatedButton.icon(
                 onPressed: _submit,
-                icon: Icon(Icons.send_rounded, size: 18.sp),
+                icon: Icon(Icons.send_rounded, size: 17.sp),
                 label: Text(
                   AppLocalizations.of(context)!.feedbackSendButton,
                   style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

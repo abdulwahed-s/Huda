@@ -32,7 +32,7 @@ void setCustomErrorWidget() {
     });
 
     try {
-      return _SafeErrorBoundary(errorMessage: details.exceptionAsString());
+      return _SafeErrorBoundary(errorDetails: details);
     } catch (_) {
       return _MinimalErrorFallback(message: _firstLine(details));
     }
@@ -47,12 +47,14 @@ String _firstLine(FlutterErrorDetails details) {
 }
 
 class _SafeErrorBoundary extends StatelessWidget {
-  const _SafeErrorBoundary({required this.errorMessage});
+  const _SafeErrorBoundary({required this.errorDetails});
 
-  final String errorMessage;
+  final FlutterErrorDetails errorDetails;
 
   @override
   Widget build(BuildContext context) {
+    final errorMessage = errorDetails.exceptionAsString();
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final bigEnough = constraints.hasBoundedWidth &&
@@ -69,7 +71,9 @@ class _SafeErrorBoundary extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => ThemeCubit()),
-            BlocProvider(create: (_) => ErrorCubit()..sendError(errorMessage)),
+            BlocProvider(
+              create: (_) => ErrorCubit()..sendFlutterError(errorDetails),
+            ),
           ],
           child: ScreenUtilInit(
             designSize: const Size(360, 690),
