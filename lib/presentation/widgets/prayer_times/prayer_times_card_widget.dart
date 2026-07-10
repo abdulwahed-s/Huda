@@ -16,6 +16,12 @@ class PrayerTimesCardWidget extends StatelessWidget {
     required this.state,
   });
 
+  static String _formatTime(String locale, DateTime? base, int? offset) {
+    if (base == null) return '--:--';
+    return DateFormat.jm(locale)
+        .format(base.add(Duration(minutes: offset ?? 0)));
+  }
+
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context).toString();
@@ -80,43 +86,39 @@ class PrayerTimesCardWidget extends StatelessWidget {
             SizedBox(height: 16.h),
             PrayerTimeRow(
               prayerName: AppLocalizations.of(context)!.fajr,
-              time: DateFormat.jm(locale).format(times.fajr
-                  .add(Duration(minutes: state.offsets['fajr'] ?? 0))),
+              time: _formatTime(locale, times.fajr, state.offsets['fajr']),
               icon: Icons.wb_twilight,
             ),
             const PrayerDivider(),
             PrayerTimeRow(
               prayerName: AppLocalizations.of(context)!.sunrise,
-              time: DateFormat.jm(locale).format(times.sunrise
-                  .add(Duration(minutes: state.offsets['sunrise'] ?? 0))),
-              icon: Icons.wb_sunny_rounded,
+              time:
+                  _formatTime(locale, times.sunrise, state.offsets['sunrise']),
+              iconAsset: 'assets/images/sunrise.svg.vec',
             ),
             const PrayerDivider(),
             PrayerTimeRow(
               prayerName: AppLocalizations.of(context)!.dhuhr,
-              time: DateFormat.jm(locale).format(times.dhuhr
-                  .add(Duration(minutes: state.offsets['dhuhr'] ?? 0))),
+              time: _formatTime(locale, times.dhuhr, state.offsets['dhuhr']),
               icon: Icons.wb_sunny,
             ),
             const PrayerDivider(),
             PrayerTimeRow(
               prayerName: AppLocalizations.of(context)!.asr,
-              time: DateFormat.jm(locale).format(
-                  times.asr.add(Duration(minutes: state.offsets['asr'] ?? 0))),
+              time: _formatTime(locale, times.asr, state.offsets['asr']),
               icon: Icons.wb_sunny_outlined,
             ),
             const PrayerDivider(),
             PrayerTimeRow(
               prayerName: AppLocalizations.of(context)!.maghrib,
-              time: DateFormat.jm(locale).format(times.maghrib
-                  .add(Duration(minutes: state.offsets['maghrib'] ?? 0))),
-              icon: Icons.wb_twilight,
+              time:
+                  _formatTime(locale, times.maghrib, state.offsets['maghrib']),
+              iconAsset: 'assets/images/sunset.svg.vec',
             ),
             const PrayerDivider(),
             PrayerTimeRow(
               prayerName: AppLocalizations.of(context)!.isha,
-              time: DateFormat.jm(locale).format(times.isha
-                  .add(Duration(minutes: state.offsets['isha'] ?? 0))),
+              time: _formatTime(locale, times.isha, state.offsets['isha']),
               icon: Icons.nights_stay,
             ),
           ],

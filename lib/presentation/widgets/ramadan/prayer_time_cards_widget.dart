@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class PrayerTimeCardsWidget extends StatefulWidget {
   final DateTime fajrTime;
@@ -94,7 +96,7 @@ class _PrayerTimeCardsWidgetState extends State<PrayerTimeCardsWidget> {
             title: l10n.maghrib,
             time: widget.maghribTime,
             countdown: _maghribCountdown,
-            icon: Icons.nights_stay_rounded,
+            iconAsset: 'assets/images/sunset.svg.vec',
             primary: primary,
           ),
         ),
@@ -106,9 +108,12 @@ class _PrayerTimeCardsWidgetState extends State<PrayerTimeCardsWidget> {
     required String title,
     required DateTime time,
     required Duration countdown,
-    required IconData icon,
+    IconData? icon,
+    String? iconAsset,
     required Color primary,
   }) {
+    assert(icon != null || iconAsset != null);
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 14.w),
       decoration: BoxDecoration(
@@ -139,8 +144,9 @@ class _PrayerTimeCardsWidgetState extends State<PrayerTimeCardsWidget> {
               color: primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Icon(
-              icon,
+            child: _PrayerCardIcon(
+              icon: icon,
+              iconAsset: iconAsset,
               color: primary,
               size: 22.sp,
             ),
@@ -183,6 +189,38 @@ class _PrayerTimeCardsWidgetState extends State<PrayerTimeCardsWidget> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PrayerCardIcon extends StatelessWidget {
+  final IconData? icon;
+  final String? iconAsset;
+  final Color color;
+  final double size;
+
+  const _PrayerCardIcon({
+    required this.icon,
+    required this.iconAsset,
+    required this.color,
+    required this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (iconAsset != null) {
+      return SvgPicture(
+        AssetBytesLoader(iconAsset!),
+        width: size,
+        height: size,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+      );
+    }
+
+    return Icon(
+      icon,
+      color: color,
+      size: size,
     );
   }
 }
