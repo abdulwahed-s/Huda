@@ -142,6 +142,7 @@ class LocationService {
         'name': name,
         'lat': result.geometry?.location?.lat ?? 0.0,
         'lon': result.geometry?.location?.lng ?? 0.0,
+        'country_code': addressMap['country_code'] ?? '',
       };
     }).toList();
   } on FunctionException catch (e) {

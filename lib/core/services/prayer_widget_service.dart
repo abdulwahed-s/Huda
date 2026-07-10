@@ -21,6 +21,10 @@ class PrayerWidgetService {
 
   static const String _latKey = PrayerTimesCalculator.latKey;
   static const String _lonKey = PrayerTimesCalculator.lonKey;
+  static const String _countryCodeKey = PrayerTimesCalculator.countryCodeKey;
+  static const String _methodKey = PrayerTimesCalculator.methodKey;
+  static const String _madhabKey = PrayerTimesCalculator.madhabKey;
+  static const String _highLatKey = PrayerTimesCalculator.highLatitudeRuleKey;
 
   static const List<String> _offsetKeys =
       PrayerTimesCalculator.offsetPrayerKeys;
@@ -92,6 +96,19 @@ class PrayerWidgetService {
       final lon = cache.getDataString(key: _lonKey);
       await _writeString(prefs, _latKey, lat);
       await _writeString(prefs, _lonKey, lon);
+
+      // Prayer-calculation settings consumed by the native widgets.
+      await _writeString(prefs, _countryCodeKey,
+          cache.getDataString(key: _countryCodeKey));
+      await _writeString(prefs, _methodKey,
+          cache.getDataString(key: _methodKey) ??
+              PrayerTimesCalculator.defaultMethodToken);
+      await _writeString(prefs, _madhabKey,
+          cache.getDataString(key: _madhabKey) ??
+              PrayerTimesCalculator.defaultMadhabToken);
+      await _writeString(prefs, _highLatKey,
+          cache.getDataString(key: _highLatKey) ??
+              PrayerTimesCalculator.defaultHighLatitudeToken);
 
       for (final key in _offsetKeys) {
         final storageKey = PrayerTimesCalculator.offsetKeyFor(key);

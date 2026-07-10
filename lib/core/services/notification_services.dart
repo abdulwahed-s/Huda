@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:adhan/adhan.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';

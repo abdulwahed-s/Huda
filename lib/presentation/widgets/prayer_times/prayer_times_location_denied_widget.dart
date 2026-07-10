@@ -51,6 +51,7 @@ class PrayerTimesLocationDeniedWidget extends StatelessWidget {
                       result['lat'],
                       result['lon'],
                       cityName: result['name'],
+                      countryCode: result['country_code'],
                     );
               }
             }

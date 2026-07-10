@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-import 'package:adhan/adhan.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
@@ -586,7 +586,7 @@ void startCallback() {
 
 class PrayerCountdownTaskHandler extends TaskHandler {
   Timer? _updateTimer;
-  PrayerTimes? _prayerTimes;
+  DailyPrayerTimes? _prayerTimes;
   DateTime? _lastCalculationDate;
   Coordinates? _cachedCoordinates;
   NextPrayerInfo? _lastValidPrayerInfo;
@@ -594,6 +594,33 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   bool _isCalculatingTomorrowPrayers = false;
 
   Map<String, int> _prayerOffsets = PrayerTimesCalculator.zeroOffsets();
+
+  String _methodToken = PrayerTimesCalculator.defaultMethodToken;
+  String _madhabToken = PrayerTimesCalculator.defaultMadhabToken;
+  String _highLatToken = PrayerTimesCalculator.defaultHighLatitudeToken;
+  String _countryCode = '';
+
+  void _loadSettings(SharedPreferences prefs) {
+    _methodToken = PrayerTimesCalculator.methodTokenFromPrefs(prefs);
+    _madhabToken = prefs.getString(PrayerTimesCalculator.madhabKey) ??
+        PrayerTimesCalculator.defaultMadhabToken;
+    _highLatToken =
+        prefs.getString(PrayerTimesCalculator.highLatitudeRuleKey) ??
+            PrayerTimesCalculator.defaultHighLatitudeToken;
+    _countryCode = PrayerTimesCalculator.countryCodeFromPrefs(prefs);
+  }
+
+  DailyPrayerTimes _computeWith(Coordinates coordinates, DateTime date) {
+    return PrayerTimesCalculator.compute(
+      coordinates,
+      date,
+      methodToken: _methodToken,
+      countryCode: _countryCode,
+      madhab: PrayerTimesCalculator.madhabFromToken(_madhabToken),
+      highLatitudeRule:
+          PrayerTimesCalculator.highLatitudeRuleFromToken(_highLatToken),
+    );
+  }
 
   DateTime? _lastMinuteUpdate;
 
@@ -617,6 +644,7 @@ class PrayerCountdownTaskHandler extends TaskHandler {
       final prefs = await SharedPreferences.getInstance();
 
       _prayerOffsets = PrayerTimesCalculator.offsetsFromPrefs(prefs);
+      _loadSettings(prefs);
       _cachedCoordinates =
           PrayerTimesCalculator.coordinatesFromPrefs(prefs);
 
@@ -633,15 +661,14 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
         if (_lastCalculationDate == null ||
             !_isSameDay(now, _lastCalculationDate!)) {
-          _prayerTimes =
-              PrayerTimesCalculator.compute(_cachedCoordinates!, now);
+          _prayerTimes = _computeWith(_cachedCoordinates!, now);
           _lastCalculationDate = now;
 
           await prefs.setString(
               'last_prayer_calculation_date', now.toIso8601String());
         } else {
-          _prayerTimes = PrayerTimesCalculator.compute(
-              _cachedCoordinates!, _lastCalculationDate!);
+          _prayerTimes =
+              _computeWith(_cachedCoordinates!, _lastCalculationDate!);
         }
 
         debugPrint(
@@ -711,8 +738,7 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
       if (coordinates != null) {
         final tomorrow = now.add(const Duration(days: 1));
-        final tomorrowPrayerTimes =
-            PrayerTimesCalculator.compute(coordinates, tomorrow);
+        final tomorrowPrayerTimes = _computeWith(coordinates, tomorrow);
         final adjustedFajr = PrayerTimesCalculator.adjustedTimeFor(
             tomorrowPrayerTimes, Prayer.fajr, _prayerOffsets);
 
@@ -747,8 +773,7 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
     if (_cachedCoordinates != null) {
       try {
-        _prayerTimes =
-            PrayerTimesCalculator.compute(_cachedCoordinates!, date);
+        _prayerTimes = _computeWith(_cachedCoordinates!, date);
         _lastCalculationDate = date;
 
         SharedPreferences.getInstance().then((prefs) {

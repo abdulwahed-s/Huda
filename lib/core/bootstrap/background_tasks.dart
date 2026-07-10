@@ -1,4 +1,4 @@
-import 'package:adhan/adhan.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/notification_services.dart';
@@ -109,8 +109,8 @@ Future<bool> _handlePrayerNotificationsRenewal() async {
 
     for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
       final targetDate = now.add(Duration(days: dayOffset));
-      final prayerTimes =
-          PrayerTimesCalculator.compute(coordinates, targetDate);
+      final prayerTimes = PrayerTimesCalculator.computeFromCache(
+          cacheHelper, coordinates, targetDate);
       final adjusted =
           PrayerTimesCalculator.dailyAdjustedTimes(prayerTimes, offsets);
 

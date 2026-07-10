@@ -1,10 +1,10 @@
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-import 'package:adhan/adhan.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SalahCountdownTaskHandler extends TaskHandler {
-  PrayerTimes? _prayerTimes;
+  DailyPrayerTimes? _prayerTimes;
   Map<String, int> _prayerOffsets = PrayerTimesCalculator.zeroOffsets();
 
   @override
@@ -23,8 +23,8 @@ class SalahCountdownTaskHandler extends TaskHandler {
 
       final coordinates = PrayerTimesCalculator.coordinatesFromPrefs(prefs);
       if (coordinates != null) {
-        _prayerTimes =
-            PrayerTimesCalculator.compute(coordinates, DateTime.now());
+        _prayerTimes = PrayerTimesCalculator.computeFromPrefs(
+            prefs, coordinates, DateTime.now());
       }
     } catch (e) {
       // todo Add error handling here

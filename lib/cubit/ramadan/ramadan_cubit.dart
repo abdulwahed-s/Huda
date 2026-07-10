@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:adhan/adhan.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/get_current_location.dart';
@@ -54,14 +54,17 @@ class RamadanCubit extends Cubit<RamadanState> {
       }
 
       final coordinates = Coordinates(lat, lon);
-      final prayerTimes = PrayerTimesCalculator.compute(coordinates, now);
+      final prayerTimes =
+          PrayerTimesCalculator.computeFromCache(cacheHelper, coordinates, now);
       final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
       final fajrTime = PrayerTimesCalculator.adjustedTimeFor(
               prayerTimes, Prayer.fajr, offsets) ??
-          prayerTimes.fajr;
+          prayerTimes.fajr ??
+          now;
       final maghribTime = PrayerTimesCalculator.adjustedTimeFor(
               prayerTimes, Prayer.maghrib, offsets) ??
-          prayerTimes.maghrib;
+          prayerTimes.maghrib ??
+          now;
 
       final ramadanDays = _buildRamadanDays(ramadanHijriYear, now);
 

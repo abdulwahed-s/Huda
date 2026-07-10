@@ -256,6 +256,7 @@ class _ManualLocationSearchDialogState
                           'lat': result['lat'],
                           'lon': result['lon'],
                           'name': result['name'],
+                          'country_code': result['country_code'],
                         });
                       },
                     );

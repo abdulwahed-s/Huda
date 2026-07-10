@@ -2,7 +2,7 @@ import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:huda/core/cache/cache_helper.dart';
-import 'package:adhan/adhan.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -29,9 +29,9 @@ void callbackDispatcher() {
         await notifications.initialize();
 
         await _schedulePrayersForDate(
-            coordinates, offsets, notifications, DateTime.now(), 1);
-        await _schedulePrayersForDate(coordinates, offsets, notifications,
-            DateTime.now().add(const Duration(days: 1)), 100);
+            cacheHelper, coordinates, offsets, notifications, DateTime.now(), 1);
+        await _schedulePrayersForDate(cacheHelper, coordinates, offsets,
+            notifications, DateTime.now().add(const Duration(days: 1)), 100);
       } catch (e) {
         //
       }
@@ -42,12 +42,14 @@ void callbackDispatcher() {
 }
 
 Future<void> _schedulePrayersForDate(
+    CacheHelper cacheHelper,
     Coordinates coordinates,
     Map<String, int> offsets,
     NotificationServices notifications,
     DateTime date,
     int idOffset) async {
-  final prayerTimes = PrayerTimesCalculator.compute(coordinates, date);
+  final prayerTimes =
+      PrayerTimesCalculator.computeFromCache(cacheHelper, coordinates, date);
   final prayers =
       PrayerTimesCalculator.dailyAdjustedTimes(prayerTimes, offsets);
 

@@ -6,7 +6,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/presentation/screens/app.dart';
 import 'package:huda/presentation/screens/sahur_alarm_ring_screen.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:adhan/adhan.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 
 class SahurAlarmHelper {
   static const int sahurAlarmId = 114;
@@ -122,10 +122,10 @@ class SahurAlarmHelper {
         DateTime? nextFajrTime;
         if (coordinates != null) {
           try {
-            final prayerTimes =
-                PrayerTimesCalculator.compute(coordinates, targetDate);
-            nextFajrTime = prayerTimes.fajr
-                .add(Duration(minutes: fajrOffsetMinutes));
+            final prayerTimes = PrayerTimesCalculator.computeFromCache(
+                cacheHelper, coordinates, targetDate);
+            nextFajrTime =
+                prayerTimes.fajr?.add(Duration(minutes: fajrOffsetMinutes));
           } catch (e) {
             debugPrint('Error calculating Fajr time for $targetDate: $e');
           }
