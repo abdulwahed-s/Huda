@@ -1,2 +1,3 @@
+Mejoras en los horarios de oración con nuevos métodos de cálculo, incluidos Omán, Argelia y más
+Mayor precisión de la brújula de la Qiblah
 Correcciones de errores y mejoras de rendimiento
-Mejoras en la interfaz

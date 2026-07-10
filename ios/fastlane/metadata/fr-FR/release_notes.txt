@@ -1,2 +1,3 @@
+Améliorations des horaires de prière avec de nouvelles méthodes de calcul, dont Oman, Algérie et plus
+Précision de la boussole Qiblah améliorée
 Corrections de bugs et améliorations des performances
-Améliorations de l'interface

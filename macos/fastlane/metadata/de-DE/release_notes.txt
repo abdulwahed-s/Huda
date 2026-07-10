@@ -1,2 +1,3 @@
+Gebetszeiten verbessert, mit neuen Berechnungsmethoden wie Oman, Algerien und mehr
+Qibla-Kompass und Genauigkeit verbessert
 Fehlerbehebungen und Leistungsverbesserungen
-Verbesserungen der Benutzeroberfläche

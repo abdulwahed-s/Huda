@@ -1,2 +1,3 @@
+Prayer time improvements with new calculation methods, including Oman, Algeria, and more
+Improved Qiblah compass accuracy
 Bug fixes and performance improvements
-UI improvements

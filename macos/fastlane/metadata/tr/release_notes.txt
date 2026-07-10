@@ -1,2 +1,3 @@
+Umman, Cezayir ve daha fazlasını içeren yeni hesaplama yöntemleriyle namaz vakti iyileştirmeleri
+Kıble pusulası doğruluğu iyileştirildi
 Hata düzeltmeleri ve performans iyileştirmeleri
-Arayüz iyileştirmeleri
