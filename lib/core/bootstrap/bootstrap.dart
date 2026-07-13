@@ -105,8 +105,8 @@ Future<void> _runBackgroundInit() async {
       SahurAlarmHelper.initListeners();
     }, const Duration(seconds: 8)),
     _guard('Supabase', _initializeSupabase, const Duration(seconds: 10)),
-    _guard('Notifications', initializeNotifications,
-        const Duration(seconds: 8)),
+    _guard(
+        'Notifications', initializeNotifications, const Duration(seconds: 8)),
     _guard('PrayerWidget', PrayerWidgetService.initialize,
         const Duration(seconds: 8)),
   ]);
