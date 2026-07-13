@@ -89,15 +89,13 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   }
 
   Future<void> playPauseAudio(int index) async {
-    final isPlaying =
-        isAudioPlaying && playingAyahIndex == index;
+    final isPlaying = isAudioPlaying && playingAyahIndex == index;
 
     if (isPlaying) {
       await audioPlayer.pause();
     } else {
       if (currentSurahAudio != null) {
-        if (playingAyahIndex == index &&
-            !isAudioPlaying) {
+        if (playingAyahIndex == index && !isAudioPlaying) {
           audioPlayer.play();
         } else {
           await playAyahAudio(index);
