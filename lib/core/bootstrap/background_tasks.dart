@@ -93,11 +93,9 @@ Future<bool> _handlePrayerNotificationsRenewal() async {
     final notificationServices = NotificationServices();
     await notificationServices.initialize();
 
-    final coordinates =
-        PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+    final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
     if (coordinates == null) {
-      debugPrint(
-          '❌ Location not available for prayer notifications renewal');
+      debugPrint('❌ Location not available for prayer notifications renewal');
       return false;
     }
 
