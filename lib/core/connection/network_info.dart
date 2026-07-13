@@ -17,8 +17,7 @@ class NetworkInfo {
         );
         socket.destroy();
         return true;
-      } catch (_) {
-      }
+      } catch (_) {}
     }
     return false;
   }
