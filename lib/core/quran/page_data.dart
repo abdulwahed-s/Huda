@@ -1790,8 +1790,8 @@ const List pageData = [
   [
     {"surah": 80, "start": 1, "end": 40}
   ],
-  [    {"surah": 80, "start": 41, "end": 42}
-,
+  [
+    {"surah": 80, "start": 41, "end": 42},
     {"surah": 81, "start": 1, "end": 29}
   ],
   [
@@ -1805,8 +1805,8 @@ const List pageData = [
     {"surah": 83, "start": 34, "end": 36},
     {"surah": 84, "start": 1, "end": 24}
   ],
-  [    {"surah": 84, "start": 25, "end": 25}
-,
+  [
+    {"surah": 84, "start": 25, "end": 25},
     {"surah": 85, "start": 1, "end": 22}
   ],
   [
@@ -1817,16 +1817,16 @@ const List pageData = [
     {"surah": 87, "start": 11, "end": 19},
     {"surah": 88, "start": 1, "end": 22}
   ],
-  [    {"surah": 88, "start": 23, "end": 26}
-,
+  [
+    {"surah": 88, "start": 23, "end": 26},
     {"surah": 89, "start": 1, "end": 22}
   ],
   [
     {"surah": 89, "start": 23, "end": 30},
     {"surah": 90, "start": 1, "end": 18}
   ],
-  [    {"surah": 90, "start": 19, "end": 20}
-,
+  [
+    {"surah": 90, "start": 19, "end": 20},
     {"surah": 91, "start": 1, "end": 15},
     {"surah": 92, "start": 1, "end": 9}
   ],
@@ -1835,23 +1835,23 @@ const List pageData = [
     {"surah": 93, "start": 1, "end": 11},
     {"surah": 94, "start": 1, "end": 2}
   ],
-  [    {"surah": 94, "start": 3, "end": 8}
-,
+  [
+    {"surah": 94, "start": 3, "end": 8},
     {"surah": 95, "start": 1, "end": 8},
     {"surah": 96, "start": 1, "end": 12}
   ],
-  [    {"surah": 96, "start": 13, "end": 19},
-
+  [
+    {"surah": 96, "start": 13, "end": 19},
     {"surah": 97, "start": 1, "end": 5},
     {"surah": 98, "start": 1, "end": 5}
   ],
-  [    {"surah": 98, "start": 6, "end": 8},
-
+  [
+    {"surah": 98, "start": 6, "end": 8},
     {"surah": 99, "start": 1, "end": 8},
     {"surah": 100, "start": 1, "end": 5}
   ],
-  [    {"surah": 100, "start": 6, "end": 11}
-,
+  [
+    {"surah": 100, "start": 6, "end": 11},
     {"surah": 101, "start": 1, "end": 11},
     {"surah": 102, "start": 1, "end": 8}
   ],
@@ -1867,7 +1867,7 @@ const List pageData = [
   ],
   [
     {"surah": 109, "start": 1, "end": 6},
-    {"surah": 110, "start": 1, "end": 3}, 
+    {"surah": 110, "start": 1, "end": 3},
     {"surah": 111, "start": 1, "end": 5}
   ],
   [
