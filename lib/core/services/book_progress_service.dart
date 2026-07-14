@@ -84,8 +84,8 @@ class BookProgressService {
       updatedAt: DateTime.now(),
       title: title ?? (existing != null ? existing['title'] : null),
       author: author ?? (existing != null ? existing['author'] : null),
-      attachmentUrl:
-          attachmentUrl ?? (existing != null ? existing['attachmentUrl'] : null),
+      attachmentUrl: attachmentUrl ??
+          (existing != null ? existing['attachmentUrl'] : null),
       language: language ?? (existing != null ? existing['language'] : null),
     );
     all[bookId.toString()] = progress.toJson();
