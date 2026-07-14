@@ -645,8 +645,7 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
       _prayerOffsets = PrayerTimesCalculator.offsetsFromPrefs(prefs);
       _loadSettings(prefs);
-      _cachedCoordinates =
-          PrayerTimesCalculator.coordinatesFromPrefs(prefs);
+      _cachedCoordinates = PrayerTimesCalculator.coordinatesFromPrefs(prefs);
 
       if (_cachedCoordinates != null) {
         final cachedDateStr = prefs.getString('last_prayer_calculation_date');
@@ -1403,10 +1402,8 @@ class PersistentPrayerCountdownService {
         const testLat = 24.8607;
         const testLon = 67.0011;
 
-        await prefs.setString(
-            PrayerTimesCalculator.latKey, testLat.toString());
-        await prefs.setString(
-            PrayerTimesCalculator.lonKey, testLon.toString());
+        await prefs.setString(PrayerTimesCalculator.latKey, testLat.toString());
+        await prefs.setString(PrayerTimesCalculator.lonKey, testLon.toString());
 
         debugPrint('Set test coordinates for Karachi ($testLat, $testLon)');
         debugPrint(
