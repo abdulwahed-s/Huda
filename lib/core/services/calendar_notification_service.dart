@@ -27,9 +27,11 @@ class CalendarNotificationService {
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
 
-    const linux = LinuxInitializationSettings(defaultActionName: 'Open notification');
+    const linux =
+        LinuxInitializationSettings(defaultActionName: 'Open notification');
 
-    const settings = InitializationSettings(android: android, windows: windows,linux: linux);
+    const settings = InitializationSettings(
+        android: android, windows: windows, linux: linux);
 
     await _plugin.initialize(settings);
   }
