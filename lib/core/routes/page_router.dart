@@ -5,7 +5,6 @@ import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/core/services/gemini_service.dart';
 import 'package:huda/core/services/service_locator.dart';
-import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/athkar/athkar_cubit.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
@@ -32,6 +31,8 @@ import 'package:huda/cubit/hadith/hadith_cubit.dart';
 import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
 import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
+import 'package:huda/cubit/home_customization/home_customization_cubit.dart';
+import 'package:huda/core/services/home_preferences_service.dart';
 import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
 import 'package:huda/core/services/islamic_event_service.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
@@ -95,6 +96,11 @@ class PageRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<HomeCubit>(create: (_) => HomeCubit()),
+              BlocProvider<HomeCustomizationCubit>(
+                create: (_) => HomeCustomizationCubit(
+                  getIt<HomePreferencesService>(),
+                ),
+              ),
               BlocProvider<IslamicEventCubit>(
                 create: (_) => IslamicEventCubit(
                   service: getIt<IslamicEventService>(),
@@ -112,7 +118,7 @@ class PageRouter {
             child: const HomeQuran(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -170,7 +176,7 @@ class PageRouter {
             );
           },
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -191,7 +197,7 @@ class PageRouter {
             child: const Settings(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -215,7 +221,7 @@ class PageRouter {
             child: const BookmarksPage(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -234,7 +240,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => const WidgetManagementScreen(),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -251,12 +257,9 @@ class PageRouter {
       case AppRoute.prayerTimes:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<PrayerTimesCubit>(
-            create: (context) => PrayerTimesCubit(getIt<CacheHelper>()),
-            child: const PrayerTimes(),
-          ),
+          pageBuilder: (_, animation, __) => const PrayerTimes(),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -278,7 +281,7 @@ class PageRouter {
             child: const Notifications(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -299,7 +302,7 @@ class PageRouter {
             child: const AthkarScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -327,7 +330,7 @@ class PageRouter {
             );
           },
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -348,7 +351,7 @@ class PageRouter {
             child: const Hadith(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -376,7 +379,7 @@ class PageRouter {
             );
           },
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -406,7 +409,7 @@ class PageRouter {
             );
           },
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -427,7 +430,7 @@ class PageRouter {
             child: const QiblahScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -449,7 +452,7 @@ class PageRouter {
             child: const Tasbih(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -470,7 +473,7 @@ class PageRouter {
             child: const HijriCalendarScreenNew(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -498,7 +501,7 @@ class PageRouter {
             child: const BooksScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -536,7 +539,7 @@ class PageRouter {
             );
           },
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -618,7 +621,7 @@ class PageRouter {
             language: args['language'] as String?,
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -639,7 +642,7 @@ class PageRouter {
             child: const ChatScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -660,7 +663,7 @@ class PageRouter {
             child: const IslamicChecklistScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -681,7 +684,7 @@ class PageRouter {
             child: const FeedbackScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -702,7 +705,7 @@ class PageRouter {
             child: const ZakatCalculator(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -720,7 +723,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => const MiqaatLockScreen(),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
@@ -741,7 +744,7 @@ class PageRouter {
             child: const RamadanScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {
-            const begin = Offset(1.0, 0.0); // Slide in from right
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
