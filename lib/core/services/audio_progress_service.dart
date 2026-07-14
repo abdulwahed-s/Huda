@@ -79,7 +79,8 @@ class AudioProgressService {
       updatedAt: DateTime.now(),
       title: title ?? (existing != null ? existing['title'] : null),
       author: author ?? (existing != null ? existing['author'] : null),
-      trackCount: trackCount ?? (existing != null ? existing['trackCount'] : null),
+      trackCount:
+          trackCount ?? (existing != null ? existing['trackCount'] : null),
     );
     all[audiobookId.toString()] = progress.toJson();
     await _cacheHelper.saveData(key: _progressKey, value: jsonEncode(all));
