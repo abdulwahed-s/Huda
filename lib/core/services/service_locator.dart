@@ -21,6 +21,7 @@ import 'package:huda/core/services/surah_screen_settings_service.dart';
 import 'package:huda/core/services/khatma_service.dart';
 import 'package:huda/core/services/islamic_event_service.dart';
 import 'package:huda/core/services/qcf_font_service.dart';
+import 'package:huda/core/services/home_preferences_service.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
@@ -32,8 +33,10 @@ void setupServiceLocator() {
   getIt.registerSingleton<ReadingPositionService>(ReadingPositionService());
   getIt.registerSingleton<AudioProgressService>(AudioProgressService());
   getIt.registerSingleton<BookProgressService>(BookProgressService());
-  getIt.registerSingleton<QuranAudioProgressService>(QuranAudioProgressService());
-  getIt.registerSingleton<QuranRadioProgressService>(QuranRadioProgressService());
+  getIt.registerSingleton<QuranAudioProgressService>(
+      QuranAudioProgressService());
+  getIt.registerSingleton<QuranRadioProgressService>(
+      QuranRadioProgressService());
   getIt.registerSingleton<OfflineAudiobooksService>(OfflineAudiobooksService());
   getIt.registerSingleton<AudiobookDownloadService>(AudiobookDownloadService());
   getIt.registerSingleton<BookmarkService>(
@@ -52,6 +55,9 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<IslamicEventService>(
       IslamicEventService(cacheHelper: getIt<CacheHelper>()));
+
+  getIt.registerSingleton<HomePreferencesService>(
+      HomePreferencesService(cache: getIt<CacheHelper>()));
 
   getIt.registerLazySingleton<QcfFontService>(
       () => QcfFontService(
