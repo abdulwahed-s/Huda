@@ -245,16 +245,16 @@ String? getHizbTextForPage(List pageContent) {
   for (int i = 0; i < quarters.length; i++) {
     final qSurah = quarters[i]['surah']!;
     final qAyah = quarters[i]['ayah']!;
-    
+
     for (final section in pageContent) {
       final pSurah = section['surah'] as int;
       final pStart = section['start'] as int;
       final pEnd = section['end'] as int;
-      
+
       if (qSurah == pSurah && qAyah >= pStart && qAyah <= pEnd) {
-        final quarterIndex = i % 4; 
+        final quarterIndex = i % 4;
         final hizbNumber = (i ~/ 4) + 1;
-        
+
         if (quarterIndex == 0) {
           return 'Hizb $hizbNumber';
         } else {
@@ -263,6 +263,6 @@ String? getHizbTextForPage(List pageContent) {
       }
     }
   }
-  
+
   return null;
 }
