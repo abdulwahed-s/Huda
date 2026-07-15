@@ -20,8 +20,7 @@ class RadioStationProgress {
       stationId: json['stationId'],
       stationName: json['stationName'] ?? '',
       stationUrl: json['stationUrl'] ?? '',
-      updatedAt:
-          DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] ?? 0),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] ?? 0),
     );
   }
 
