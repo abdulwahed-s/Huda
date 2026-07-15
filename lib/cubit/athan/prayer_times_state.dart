@@ -24,3 +24,5 @@ class PrayerTimesLocationDenied extends PrayerTimesState {}
 class PrayerTimesLocationPermanentlyDenied extends PrayerTimesState {}
 
 class PrayerTimesLocationServiceDisabled extends PrayerTimesState {}
+
+class PrayerTimesNeedsSetup extends PrayerTimesState {}
