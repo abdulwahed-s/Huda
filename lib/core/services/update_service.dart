@@ -32,15 +32,17 @@ class UpdateService {
         return false;
       }
 
-      final locale =
-          context.mounted ? Localizations.localeOf(context) : const Locale('en');
+      final locale = context.mounted
+          ? Localizations.localeOf(context)
+          : const Locale('en');
 
       final latest = await _resolveLatest(info, locale);
       if (latest?.version == null) {
         return false;
       }
 
-      final hasUpdate = VersionUtils.isNewer(latest!.version!, packageInfo.version);
+      final hasUpdate =
+          VersionUtils.isNewer(latest!.version!, packageInfo.version);
       if (!hasUpdate) return false;
 
       if (_recentlyShown(latest.version!)) {
@@ -67,13 +69,10 @@ class UpdateService {
     }
   }
 
-
   static Future<_UpdateInfo?> _resolveLatest(
       AppStoreInfo info, Locale locale) async {
     final cached = _getCached();
-    if (cached != null &&
-        cached.store == info.target.name &&
-        _isCacheFresh()) {
+    if (cached != null && cached.store == info.target.name && _isCacheFresh()) {
       return cached;
     }
 
@@ -153,7 +152,6 @@ class UpdateService {
       value: DateTime.now().millisecondsSinceEpoch.toString(),
     );
   }
-
 
   static bool _recentlyShown(String version) {
     final cache = getIt<CacheHelper>();
