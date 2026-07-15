@@ -12,4 +12,3 @@ class AppFonts {
   static String sanitize(String fontFamily) =>
       selectable.contains(fontFamily) ? fontFamily : amiri;
 }
-
