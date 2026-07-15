@@ -48,8 +48,7 @@ class QuranAudioProgress {
       surahIndex: json['surahIndex'] ?? 0,
       positionMs: json['positionMs'] ?? 0,
       jsonData: json['jsonData'] ?? '[]',
-      updatedAt:
-          DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] ?? 0),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] ?? 0),
     );
   }
 
