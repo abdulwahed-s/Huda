@@ -97,16 +97,21 @@ class PrayerWidgetService {
       await _writeString(prefs, _latKey, lat);
       await _writeString(prefs, _lonKey, lon);
 
-      // Prayer-calculation settings consumed by the native widgets.
-      await _writeString(prefs, _countryCodeKey,
-          cache.getDataString(key: _countryCodeKey));
-      await _writeString(prefs, _methodKey,
+      await _writeString(
+          prefs, _countryCodeKey, cache.getDataString(key: _countryCodeKey));
+      await _writeString(
+          prefs,
+          _methodKey,
           cache.getDataString(key: _methodKey) ??
               PrayerTimesCalculator.defaultMethodToken);
-      await _writeString(prefs, _madhabKey,
+      await _writeString(
+          prefs,
+          _madhabKey,
           cache.getDataString(key: _madhabKey) ??
               PrayerTimesCalculator.defaultMadhabToken);
-      await _writeString(prefs, _highLatKey,
+      await _writeString(
+          prefs,
+          _highLatKey,
           cache.getDataString(key: _highLatKey) ??
               PrayerTimesCalculator.defaultHighLatitudeToken);
 
