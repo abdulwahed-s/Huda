@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:huda/core/cache/cache_helper.dart';
@@ -39,13 +38,16 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   static const _methodKey = PrayerTimesCalculator.methodKey;
   static const _madhabKey = PrayerTimesCalculator.madhabKey;
   static const _highLatKey = PrayerTimesCalculator.highLatitudeRuleKey;
+  static const _localityKey = 'prayer_location_locality';
+  static const _countryNameKey = 'prayer_location_country';
   static const _fajrOffsetKey = 'prayer_offset_fajr';
   static const _dhuhrOffsetKey = 'prayer_offset_dhuhr';
   static const _asrOffsetKey = 'prayer_offset_asr';
   static const _maghribOffsetKey = 'prayer_offset_maghrib';
   static const _ishaOffsetKey = 'prayer_offset_isha';
   static const _sunriseOffsetKey = 'prayer_offset_sunrise';
-  final LocationService _locationService = LocationService();
+  LocationService? _locationService;
+  LocationService get _locations => _locationService ??= LocationService();
 
   Map<String, int> _prayerOffsets = {
     'fajr': 0,
@@ -65,17 +67,18 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   String get madhabToken => _madhabToken;
   String get highLatitudeRuleToken => _highLatToken;
 
-  BuildContext? _context;
+  AppLocalizations? _localizations;
 
-  void setContext(BuildContext context) {
-    _context = context;
+  void setLocalizations(AppLocalizations localizations) {
+    _localizations = localizations;
   }
 
-  PrayerTimesCubit(this.cacheHelper) : super(PrayerTimesInitial()) {
+  PrayerTimesCubit(this.cacheHelper, {LocationService? locationService})
+      : _locationService = locationService,
+        super(PrayerTimesInitial()) {
     _loadOffsets();
     _loadSettings();
   }
-
 
   void _loadOffsets() {
     _prayerOffsets = {
@@ -116,12 +119,41 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     );
   }
 
-  Future<void> _cacheCountryFromPlacemarks(List<Placemark> placemarks) async {
-    final code =
-        placemarks.isNotEmpty ? (placemarks.first.isoCountryCode ?? '') : '';
+  Future<void> _cachePlacemark(List<Placemark> placemarks) async {
+    if (placemarks.isEmpty) return;
+    final placemark = placemarks.first;
+    final code = (placemark.isoCountryCode ?? '').trim();
     if (code.trim().isNotEmpty) {
       await cacheHelper.saveData(key: _countryCodeKey, value: code.trim());
     }
+    await _saveOrRemove(_localityKey, placemark.locality);
+    await _saveOrRemove(_countryNameKey, placemark.country);
+  }
+
+  Future<void> _saveOrRemove(String key, String? value) async {
+    final normalized = (value ?? '').trim();
+    if (normalized.isEmpty) {
+      await cacheHelper.removeData(key: key);
+    } else {
+      await cacheHelper.saveData(key: key, value: normalized);
+    }
+  }
+
+  List<Placemark> _cachedPlacemarks() {
+    final locality = cacheHelper.getDataString(key: _localityKey)?.trim() ?? '';
+    final country =
+        cacheHelper.getDataString(key: _countryNameKey)?.trim() ?? '';
+    final countryCode = _countryCode.trim().toUpperCase();
+    if (locality.isEmpty && country.isEmpty && countryCode.isEmpty) {
+      return const [];
+    }
+    return [
+      Placemark(
+        locality: locality,
+        country: country.isEmpty ? countryCode : country,
+        isoCountryCode: countryCode,
+      ),
+    ];
   }
 
   Future<void> savePrayerOffsets(Map<String, int> offsets) async {
@@ -154,8 +186,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
     final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
     if (coordinates != null) {
-      final placemarks =
-          state is PrayerTimesLoaded ? (state as PrayerTimesLoaded).placemarks : <Placemark>[];
+      final placemarks = state is PrayerTimesLoaded
+          ? (state as PrayerTimesLoaded).placemarks
+          : <Placemark>[];
       final prayerTimes = _computeWithSettings(coordinates, DateTime.now());
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
     }
@@ -165,29 +198,21 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   Future<void> _persistOffsets(Map<String, int> offsets) async {
-    await cacheHelper.saveData(key: _fajrOffsetKey, value: offsets['fajr'] ?? 0);
+    await cacheHelper.saveData(
+        key: _fajrOffsetKey, value: offsets['fajr'] ?? 0);
     await cacheHelper.saveData(
         key: _dhuhrOffsetKey, value: offsets['dhuhr'] ?? 0);
     await cacheHelper.saveData(key: _asrOffsetKey, value: offsets['asr'] ?? 0);
     await cacheHelper.saveData(
         key: _maghribOffsetKey, value: offsets['maghrib'] ?? 0);
-    await cacheHelper.saveData(key: _ishaOffsetKey, value: offsets['isha'] ?? 0);
+    await cacheHelper.saveData(
+        key: _ishaOffsetKey, value: offsets['isha'] ?? 0);
     await cacheHelper.saveData(
         key: _sunriseOffsetKey, value: offsets['sunrise'] ?? 0);
   }
 
-
   Map<String, String> _getLocalizedPrayerContent(Prayer prayer) {
-    if (_context == null) {
-      final englishName = _getPrayerDisplayName(prayer);
-      return {
-        'title': '🕌 $englishName Prayer Time',
-        'body':
-            'It\'s time for $englishName prayer. May Allah accept your prayers.',
-      };
-    }
-
-    final localizations = AppLocalizations.of(_context!);
+    final localizations = _localizations;
     if (localizations == null) {
       final englishName = _getPrayerDisplayName(prayer);
       return {
@@ -206,11 +231,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   String _getLocalizedPrayerNameForCountdown(Prayer prayer) {
-    if (_context == null) {
-      return _getPrayerDisplayName(prayer);
-    }
-
-    final localizations = AppLocalizations.of(_context!);
+    final localizations = _localizations;
     if (localizations == null) {
       return _getPrayerDisplayName(prayer);
     }
@@ -342,7 +363,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
   }
 
-
   Future<void> loadPrayerTimes() async {
     emit(PrayerTimesLoading());
 
@@ -362,8 +382,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       }
 
       final List<Placemark> placemarks =
-          await _locationService.getPlacemarks(lat, lon);
-      await _cacheCountryFromPlacemarks(placemarks);
+          await _locations.getPlacemarks(lat, lon);
+      await _cachePlacemark(placemarks);
 
       _loadSettings();
       _loadOffsets();
@@ -376,6 +396,33 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await scheduleNotificationsForToday(NotificationServices());
     } catch (e) {
       emit(PrayerTimesError(e.toString()));
+    }
+  }
+
+  void loadCachedPrayerTimes() {
+    final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+    if (coordinates == null) {
+      if (state is! PrayerTimesLoaded) emit(PrayerTimesNeedsSetup());
+      return;
+    }
+
+    try {
+      _loadSettings();
+      _loadOffsets();
+      final prayerTimes = _computeWithSettings(coordinates, DateTime.now());
+      final currentPlacemarks = state is PrayerTimesLoaded
+          ? (state as PrayerTimesLoaded).placemarks
+          : const <Placemark>[];
+      final placemarks = currentPlacemarks.isNotEmpty
+          ? currentPlacemarks
+          : _cachedPlacemarks();
+      emit(PrayerTimesLoaded(
+        prayerTimes,
+        placemarks,
+        offsets: _prayerOffsets,
+      ));
+    } catch (error) {
+      emit(PrayerTimesError(error.toString()));
     }
   }
 
@@ -403,19 +450,20 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           ),
         ];
       } else {
-        placemarks = await _locationService.getPlacemarks(lat, lon);
+        placemarks = await _locations.getPlacemarks(lat, lon);
         country = placemarks.isNotEmpty
             ? (placemarks.first.isoCountryCode ?? '').trim()
             : '';
       }
       await cacheHelper.saveData(key: _countryCodeKey, value: country);
+      await _cachePlacemark(placemarks);
 
       _loadSettings();
       _loadOffsets();
 
       final coordinates = Coordinates(lat, lon);
-      final prayerTimes =
-          _computeWithSettings(coordinates, DateTime.now(), countryCode: country);
+      final prayerTimes = _computeWithSettings(coordinates, DateTime.now(),
+          countryCode: country);
 
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
       await PrayerWidgetService.pushSettings();
@@ -437,8 +485,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await cacheHelper.saveData(key: _lonKey, value: lon.toString());
 
       final List<Placemark> placemarks =
-          await _locationService.getPlacemarks(lat, lon);
-      await _cacheCountryFromPlacemarks(placemarks);
+          await _locations.getPlacemarks(lat, lon);
+      await _cachePlacemark(placemarks);
 
       _loadSettings();
       _loadOffsets();
@@ -467,7 +515,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
   }
 
-
   Stream<NextPrayerCountdown> getNextPrayerCountdown() async* {
     while (true) {
       if (state is! PrayerTimesLoaded) {
@@ -479,7 +526,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
       try {
         final now = DateTime.now();
-        final currentPrayerInfo = await _getCurrentOrNextPrayerTime(now);
+        final currentPrayerInfo = await getCurrentOrNextPrayerTime(now);
 
         if (currentPrayerInfo.isPastPrayer) {
           yield NextPrayerCountdown(
@@ -512,7 +559,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
   }
 
-  Future<NextPrayerInfo> _getCurrentOrNextPrayerTime(DateTime now) async {
+  @visibleForTesting
+  Future<NextPrayerInfo> getCurrentOrNextPrayerTime(DateTime now) async {
     if (state is! PrayerTimesLoaded) {
       throw Exception('Prayer times not loaded');
     }
@@ -525,20 +573,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     const gracePeriodMinutes = 25;
 
     final todayPrayerTimes = _computeWithSettings(coordinates, now);
-    final todayPrayers = <(Prayer, DateTime)>[];
-    void addPrayer(Prayer prayer, DateTime? base) {
-      if (base == null) return;
-      todayPrayers.add((
-        prayer,
-        base.add(Duration(minutes: _prayerOffsets[prayer.name.toLowerCase()] ?? 0)),
-      ));
-    }
-
-    addPrayer(Prayer.fajr, todayPrayerTimes.fajr);
-    addPrayer(Prayer.dhuhr, todayPrayerTimes.dhuhr);
-    addPrayer(Prayer.asr, todayPrayerTimes.asr);
-    addPrayer(Prayer.maghrib, todayPrayerTimes.maghrib);
-    addPrayer(Prayer.isha, todayPrayerTimes.isha);
+    final todayPrayers = _adjustedPrayers(todayPrayerTimes);
 
     for (final (prayer, prayerTime) in todayPrayers) {
       final secondsSincePrayer = now.difference(prayerTime).inSeconds;
@@ -557,21 +592,46 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     for (final (prayer, prayerTime) in todayPrayers) {
       if (prayerTime.isAfter(now)) {
         return NextPrayerInfo(
-            name: _getLocalizedPrayerNameForCountdown(prayer), time: prayerTime);
+            name: _getLocalizedPrayerNameForCountdown(prayer),
+            time: prayerTime);
       }
     }
 
-    final tomorrow = now.add(const Duration(days: 1));
-    final tomorrowPrayerTimes = _computeWithSettings(coordinates, tomorrow);
-    final tomorrowFajr = tomorrowPrayerTimes.fajr;
-    if (tomorrowFajr == null) {
-      throw Exception('No upcoming prayer time available');
+    final today = DateTime(now.year, now.month, now.day);
+    for (var dayOffset = 1; dayOffset <= 7; dayOffset++) {
+      final date = today.add(Duration(days: dayOffset));
+      final prayerTimes = _computeWithSettings(coordinates, date);
+      for (final (prayer, prayerTime) in _adjustedPrayers(prayerTimes)) {
+        if (prayerTime.isAfter(now)) {
+          return NextPrayerInfo(
+            name: _getLocalizedPrayerNameForCountdown(prayer),
+            time: prayerTime,
+          );
+        }
+      }
     }
 
-    return NextPrayerInfo(
-        name: _getLocalizedPrayerNameForCountdown(Prayer.fajr),
-        time: tomorrowFajr
-            .add(Duration(minutes: _prayerOffsets['fajr'] ?? 0)));
+    throw Exception('No upcoming prayer time available in the next 7 days');
+  }
+
+  List<(Prayer, DateTime)> _adjustedPrayers(DailyPrayerTimes prayerTimes) {
+    final result = <(Prayer, DateTime)>[];
+    void add(Prayer prayer, DateTime? base) {
+      if (base == null) return;
+      final key = prayer.name.toLowerCase();
+      result.add((
+        prayer,
+        base.add(Duration(minutes: _prayerOffsets[key] ?? 0)),
+      ));
+    }
+
+    add(Prayer.fajr, prayerTimes.fajr);
+    add(Prayer.dhuhr, prayerTimes.dhuhr);
+    add(Prayer.asr, prayerTimes.asr);
+    add(Prayer.maghrib, prayerTimes.maghrib);
+    add(Prayer.isha, prayerTimes.isha);
+    result.sort((left, right) => left.$2.compareTo(right.$2));
+    return result;
   }
 
   String _getPrayerDisplayName(Prayer prayer) {
