@@ -18,4 +18,3 @@ final class HadithDetailsError extends HadithDetailsState {
 
   HadithDetailsError(this.message);
 }
-
