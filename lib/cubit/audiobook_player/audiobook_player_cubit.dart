@@ -103,18 +103,15 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
       int nextMediaId = 0;
       final List<AudioSource> playList = tracks.map((track) {
         final localPath = localByOrder[track.order];
-        final Uri uri =
-            (localPath != null && File(localPath).existsSync())
-                ? Uri.file(localPath)
-                : Uri.parse(track.url);
+        final Uri uri = (localPath != null && File(localPath).existsSync())
+            ? Uri.file(localPath)
+            : Uri.parse(track.url);
         return AudioSource.uri(
           uri,
           tag: MediaItem(
             id: '${nextMediaId++}',
             album: author,
-            title: track.description.isNotEmpty
-                ? track.description
-                : title,
+            title: track.description.isNotEmpty ? track.description : title,
             artUri: Uri.parse(
                 (artUrl != null && artUrl.isNotEmpty) ? artUrl : _fallbackArt),
           ),
@@ -229,7 +226,6 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
 
   Future<void> setSpeed(double speed) => audioPlayer.setSpeed(speed);
 
-
   void startSleepTimer(Duration duration) {
     cancelSleepTimer();
     _endOfChapterSleep = false;
@@ -262,8 +258,7 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
     sleepRemaining.value = null;
   }
 
-  bool get isSleepTimerActive =>
-      _sleepTimer != null || _endOfChapterSleep;
+  bool get isSleepTimerActive => _sleepTimer != null || _endOfChapterSleep;
 
   void closePlayer() {
     _saveCurrentPosition();
