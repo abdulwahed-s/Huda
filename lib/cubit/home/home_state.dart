@@ -14,6 +14,8 @@ final class HomeLoaded extends HomeState {
   final QuranAudioProgress? lastQuranAudio;
   final bool hasLastRadioStation;
   final RadioStationProgress? lastRadioStation;
+  final DailyAyah dailyAyah;
+  final KhatmaSnapshot khatma;
 
   HomeLoaded({
     required this.hasLastReadPosition,
@@ -22,6 +24,8 @@ final class HomeLoaded extends HomeState {
     this.lastQuranAudio,
     required this.hasLastRadioStation,
     this.lastRadioStation,
+    required this.dailyAyah,
+    required this.khatma,
   });
 }
 
