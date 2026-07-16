@@ -18,4 +18,3 @@ final class ChaptersError extends ChaptersState {
 
   ChaptersError(this.message);
 }
-
