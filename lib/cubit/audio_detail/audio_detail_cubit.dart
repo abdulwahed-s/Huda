@@ -35,8 +35,7 @@ class AudioDetailCubit extends Cubit<AudioDetailState> {
   Future<void> fetchOfflineAudioDetail(int audioId) async {
     emit(AudioDetailLoading());
     try {
-      final offlineAudio =
-          await offlineAudiobooksService.getAudiobook(audioId);
+      final offlineAudio = await offlineAudiobooksService.getAudiobook(audioId);
       if (offlineAudio != null) {
         emit(AudioDetailOfflineLoaded(offlineAudio));
       } else {
