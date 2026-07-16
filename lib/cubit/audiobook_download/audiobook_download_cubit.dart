@@ -7,7 +7,6 @@ import 'package:huda/data/services/offline_audiobooks_service.dart';
 
 part 'audiobook_download_state.dart';
 
-/// Drives the per-audiobook download button on the detail screen.
 class AudiobookDownloadCubit extends Cubit<AudiobookDownloadState> {
   final AudiobookDownloadService _downloadService;
   final OfflineAudiobooksService _offlineService;
@@ -70,7 +69,8 @@ class AudiobookDownloadCubit extends Cubit<AudiobookDownloadState> {
 
   Future<void> cancel(int audiobookId) async {
     await _downloadService.cancelDownload(audiobookId);
-    emit(state.copyWith(isDownloading: false, isDownloaded: false, progress: 0.0));
+    emit(state.copyWith(
+        isDownloading: false, isDownloaded: false, progress: 0.0));
   }
 
   Future<void> delete(int audiobookId) async {
