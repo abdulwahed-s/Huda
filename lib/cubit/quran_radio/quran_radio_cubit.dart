@@ -71,12 +71,15 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
   }
 
   Future<void> fetchRadios(String appLangCode) async {
-    final previousStation =
-        state is QuranRadioLoaded ? (state as QuranRadioLoaded).currentlyPlaying : null;
-    final wasPlaying =
-        state is QuranRadioLoaded ? (state as QuranRadioLoaded).isPlaying : false;
-    final wasBuffering =
-        state is QuranRadioLoaded ? (state as QuranRadioLoaded).isBuffering : false;
+    final previousStation = state is QuranRadioLoaded
+        ? (state as QuranRadioLoaded).currentlyPlaying
+        : null;
+    final wasPlaying = state is QuranRadioLoaded
+        ? (state as QuranRadioLoaded).isPlaying
+        : false;
+    final wasBuffering = state is QuranRadioLoaded
+        ? (state as QuranRadioLoaded).isBuffering
+        : false;
 
     emit(QuranRadioLoading());
     final apiLang = mapLanguage(appLangCode);
@@ -236,9 +239,7 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
         cacheKey,
         jsonEncode(radioModel.toJson()),
       );
-    } catch (e) {
-      // Silent update failure
-    }
+    } catch (e) {}
   }
 
   bool _isCacheExpired(String key) {
