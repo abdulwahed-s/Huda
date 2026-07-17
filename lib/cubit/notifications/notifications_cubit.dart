@@ -175,73 +175,74 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
     try {
       switch (key) {
-      case 'kahfFriday':
-        if (value) {
-          final timeStr = cacheHelper.getData(key: 'kahfFridayTime') ?? '09:00';
-          final time = _parseTimeOfDay(timeStr);
-          await _notificationHelper.scheduleKahfFriday(value, time,
-              localizedContent['kahfTitle'], localizedContent['kahfBody']);
-        } else {
-          await _notificationHelper.scheduleKahfFriday(false, null);
-        }
-        break;
-      case 'sabahMasaa':
-        if (value) {
-          final morningTimeStr =
-              cacheHelper.getData(key: 'morningAthkarTime') ?? '07:00';
-          final eveningTimeStr =
-              cacheHelper.getData(key: 'eveningAthkarTime') ?? '18:00';
-          final morningTime = _parseTimeOfDay(morningTimeStr);
-          final eveningTime = _parseTimeOfDay(eveningTimeStr);
-          await _notificationHelper.scheduleSabahMasaa(
-              value,
-              morningTime,
-              eveningTime,
-              localizedContent['morningTitle'],
-              localizedContent['morningBody'],
-              localizedContent['eveningTitle'],
-              localizedContent['eveningBody']);
-        } else {
-          await _notificationHelper.scheduleSabahMasaa(false, null, null);
-        }
-        break;
-      case 'randomAthkar':
-        final frequency =
-            cacheHelper.getData(key: 'randomAthkarFrequency') ?? 60;
-        await _notificationHelper.scheduleRandomAthkar(value, frequency);
-        break;
-      case 'quranReminder':
-        if (value) {
-          final timeStr =
-              cacheHelper.getData(key: 'quranReminderTime') ?? '19:30';
-          final time = _parseTimeOfDay(timeStr);
-          await _notificationHelper.scheduleQuranReminder(value, time,
-              localizedContent['quranTitle'], localizedContent['quranBody']);
-        } else {
-          await _notificationHelper.scheduleQuranReminder(false, null);
-        }
-        break;
-      case 'checklistReminder':
-        if (value) {
-          final timeStr =
-              cacheHelper.getData(key: 'checklistReminderTime') ?? '20:00';
-          final time = _parseTimeOfDay(timeStr);
-          await _notificationHelper.scheduleChecklistReminder(
-              value,
-              time,
-              localizedContent['checklistTitle'],
-              localizedContent['checklistBody']);
-        } else {
-          await _notificationHelper.scheduleChecklistReminder(false, null);
-        }
-        break;
-      case 'sahurAlarmEnabled':
-        if (value) {
-          await SahurAlarmHelper.updateSahurAlarmSchedule();
-        } else {
-          await SahurAlarmHelper.stopAlarm();
-        }
-        break;
+        case 'kahfFriday':
+          if (value) {
+            final timeStr =
+                cacheHelper.getData(key: 'kahfFridayTime') ?? '09:00';
+            final time = _parseTimeOfDay(timeStr);
+            await _notificationHelper.scheduleKahfFriday(value, time,
+                localizedContent['kahfTitle'], localizedContent['kahfBody']);
+          } else {
+            await _notificationHelper.scheduleKahfFriday(false, null);
+          }
+          break;
+        case 'sabahMasaa':
+          if (value) {
+            final morningTimeStr =
+                cacheHelper.getData(key: 'morningAthkarTime') ?? '07:00';
+            final eveningTimeStr =
+                cacheHelper.getData(key: 'eveningAthkarTime') ?? '18:00';
+            final morningTime = _parseTimeOfDay(morningTimeStr);
+            final eveningTime = _parseTimeOfDay(eveningTimeStr);
+            await _notificationHelper.scheduleSabahMasaa(
+                value,
+                morningTime,
+                eveningTime,
+                localizedContent['morningTitle'],
+                localizedContent['morningBody'],
+                localizedContent['eveningTitle'],
+                localizedContent['eveningBody']);
+          } else {
+            await _notificationHelper.scheduleSabahMasaa(false, null, null);
+          }
+          break;
+        case 'randomAthkar':
+          final frequency =
+              cacheHelper.getData(key: 'randomAthkarFrequency') ?? 60;
+          await _notificationHelper.scheduleRandomAthkar(value, frequency);
+          break;
+        case 'quranReminder':
+          if (value) {
+            final timeStr =
+                cacheHelper.getData(key: 'quranReminderTime') ?? '19:30';
+            final time = _parseTimeOfDay(timeStr);
+            await _notificationHelper.scheduleQuranReminder(value, time,
+                localizedContent['quranTitle'], localizedContent['quranBody']);
+          } else {
+            await _notificationHelper.scheduleQuranReminder(false, null);
+          }
+          break;
+        case 'checklistReminder':
+          if (value) {
+            final timeStr =
+                cacheHelper.getData(key: 'checklistReminderTime') ?? '20:00';
+            final time = _parseTimeOfDay(timeStr);
+            await _notificationHelper.scheduleChecklistReminder(
+                value,
+                time,
+                localizedContent['checklistTitle'],
+                localizedContent['checklistBody']);
+          } else {
+            await _notificationHelper.scheduleChecklistReminder(false, null);
+          }
+          break;
+        case 'sahurAlarmEnabled':
+          if (value) {
+            await SahurAlarmHelper.updateSahurAlarmSchedule();
+          } else {
+            await SahurAlarmHelper.stopAlarm();
+          }
+          break;
       }
     } finally {
       final latest = state;
