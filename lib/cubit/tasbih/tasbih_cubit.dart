@@ -137,7 +137,8 @@ class TasbihCubit extends Cubit<TasbihState> {
       if (notesJson != null && notesJson.isNotEmpty) {
         final decoded = jsonDecode(notesJson) as List<dynamic>;
         _notes = decoded
-            .map((e) => TasbihNote.fromJson(Map<String, dynamic>.from(e as Map)))
+            .map(
+                (e) => TasbihNote.fromJson(Map<String, dynamic>.from(e as Map)))
             .where((n) => n.text.isNotEmpty)
             .toList();
         _selectedNoteIndex =
@@ -169,7 +170,8 @@ class TasbihCubit extends Cubit<TasbihState> {
       key: 'tasbih_notes',
       value: jsonEncode(_notes.map((n) => n.toJson()).toList()),
     );
-    cacheHelper.saveData(key: 'tasbih_selected_index', value: _selectedNoteIndex);
+    cacheHelper.saveData(
+        key: 'tasbih_selected_index', value: _selectedNoteIndex);
   }
 
   List<TasbihNote> _defaultNotes() => [
