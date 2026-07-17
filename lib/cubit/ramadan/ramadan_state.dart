@@ -4,7 +4,7 @@ class RamadanDayInfo {
   final int dayNumber;
   final DateTime gregorianDate;
   final String dayOfWeek;
-  final String status; 
+  final String status;
 
   RamadanDayInfo({
     required this.dayNumber,
