@@ -8,10 +8,12 @@ part 'islamic_event_state.dart';
 class IslamicEventCubit extends Cubit<IslamicEventState> {
   final IslamicEventService _service;
 
-  IslamicEventCubit({required IslamicEventService service})
-      : _service = service,
+  IslamicEventCubit({
+    required IslamicEventService service,
+    bool loadOnCreate = true,
+  })  : _service = service,
         super(IslamicEventInitial()) {
-    loadActiveEvent();
+    if (loadOnCreate) loadActiveEvent();
   }
 
   Future<void> loadActiveEvent() async {
