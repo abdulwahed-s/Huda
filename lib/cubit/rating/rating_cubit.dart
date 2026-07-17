@@ -20,7 +20,8 @@ class RatingCubit extends Cubit<RatingState> {
     }
   }
 
-  Future<void> handleRating(int rating, {String? comment, String? contactEmail}) async {
+  Future<void> handleRating(int rating,
+      {String? comment, String? contactEmail}) async {
     emit(RatingSubmitting());
 
     try {
@@ -29,7 +30,8 @@ class RatingCubit extends Cubit<RatingState> {
         await AppReviewService.recordDoNotAskAgain();
         emit(RatingSubmitted(rating: rating, message: 'Redirected to store'));
       } else {
-        await _submitFeedback(rating, comment ?? '', contactEmail: contactEmail);
+        await _submitFeedback(rating, comment ?? '',
+            contactEmail: contactEmail);
         await AppReviewService.recordRemindLater();
         emit(RatingSubmitted(rating: rating, message: 'Feedback collected'));
       }
@@ -38,7 +40,8 @@ class RatingCubit extends Cubit<RatingState> {
     }
   }
 
-  Future<void> _submitFeedback(int rating, String feedback, {String? contactEmail}) async {
+  Future<void> _submitFeedback(int rating, String feedback,
+      {String? contactEmail}) async {
     try {
       final deviceInfo = DeviceInfoPlugin();
       String model = 'Unknown';
@@ -69,7 +72,8 @@ class RatingCubit extends Cubit<RatingState> {
     }
   }
 
-  Future<void> submitDetailedFeedback(String feedback, {String? contactEmail}) async {
+  Future<void> submitDetailedFeedback(String feedback,
+      {String? contactEmail}) async {
     emit(FeedbackSubmitting());
 
     try {
