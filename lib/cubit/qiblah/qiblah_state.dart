@@ -14,7 +14,6 @@ class QiblahError extends QiblahState {
   QiblahError(this.message);
 }
 
-
 class QiblahPermissionDenied extends QiblahState {
   final String message;
   QiblahPermissionDenied(this.message);
