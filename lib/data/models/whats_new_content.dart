@@ -82,38 +82,31 @@ class WhatsNewContent {
       title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
       features: [
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew300Feature1,
+          title: (context) => AppLocalizations.of(context)!.whatsNew300Feature1,
           icon: Icons.find_in_page_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew300Feature2,
+          title: (context) => AppLocalizations.of(context)!.whatsNew300Feature2,
           icon: Icons.menu_book_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew300Feature3,
+          title: (context) => AppLocalizations.of(context)!.whatsNew300Feature3,
           icon: Icons.auto_stories_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew300Feature4,
+          title: (context) => AppLocalizations.of(context)!.whatsNew300Feature4,
           icon: Icons.headphones_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew300Feature5,
+          title: (context) => AppLocalizations.of(context)!.whatsNew300Feature5,
           icon: Icons.radio_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew300Feature6,
+          title: (context) => AppLocalizations.of(context)!.whatsNew300Feature6,
           icon: Icons.access_time_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew300Feature7,
+          title: (context) => AppLocalizations.of(context)!.whatsNew300Feature7,
           icon: Icons.auto_awesome_outlined,
         ),
       ],
@@ -136,13 +129,11 @@ class WhatsNewContent {
             icon: Icons.access_time_outlined,
           ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew310Feature2,
+          title: (context) => AppLocalizations.of(context)!.whatsNew310Feature2,
           icon: Icons.auto_awesome_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew310Feature3,
+          title: (context) => AppLocalizations.of(context)!.whatsNew310Feature3,
           icon: Icons.bug_report_outlined,
         ),
       ],
@@ -153,13 +144,11 @@ class WhatsNewContent {
       title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
       features: [
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew330Feature1,
+          title: (context) => AppLocalizations.of(context)!.whatsNew330Feature1,
           icon: Icons.menu_book_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew330Feature2,
+          title: (context) => AppLocalizations.of(context)!.whatsNew330Feature2,
           icon: Icons.bug_report_outlined,
         ),
       ],
@@ -170,23 +159,19 @@ class WhatsNewContent {
       title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
       features: [
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew340Feature1,
+          title: (context) => AppLocalizations.of(context)!.whatsNew340Feature1,
           icon: Icons.headphones_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew340Feature2,
+          title: (context) => AppLocalizations.of(context)!.whatsNew340Feature2,
           icon: Icons.play_circle_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew340Feature3,
+          title: (context) => AppLocalizations.of(context)!.whatsNew340Feature3,
           icon: Icons.menu_book_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew340Feature4,
+          title: (context) => AppLocalizations.of(context)!.whatsNew340Feature4,
           icon: Icons.bug_report_outlined,
         ),
       ],
@@ -197,18 +182,15 @@ class WhatsNewContent {
       title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
       features: [
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew350Feature1,
+          title: (context) => AppLocalizations.of(context)!.whatsNew350Feature1,
           icon: Icons.text_fields_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew350Feature3,
+          title: (context) => AppLocalizations.of(context)!.whatsNew350Feature3,
           icon: Icons.auto_awesome_outlined,
         ),
         WhatsNewFeature(
-          title: (context) =>
-              AppLocalizations.of(context)!.whatsNew350Feature2,
+          title: (context) => AppLocalizations.of(context)!.whatsNew350Feature2,
           icon: Icons.bug_report_outlined,
         ),
       ],
