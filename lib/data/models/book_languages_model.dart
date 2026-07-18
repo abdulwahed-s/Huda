@@ -20,7 +20,7 @@ class BookLanguagesModel {
   factory BookLanguagesModel.fromJson(Map<String, dynamic> json) {
     return BookLanguagesModel(
       id: json['id'],
-      sourceId: json['source_id'], // you can also use json['sourceid'] — they are equal
+      sourceId: json['source_id'],
       slang: json['slang'],
       type: json['type'],
       apiUrl: json['api_url'],
