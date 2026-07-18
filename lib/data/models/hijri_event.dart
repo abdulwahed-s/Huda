@@ -7,7 +7,7 @@ class HijriEvent {
   final TimeOfDay? startTime;
   final TimeOfDay? endTime;
   final bool isAllDay;
-  final int colorValue; // Store as ARGB int for SharedPreferences
+  final int colorValue;
   final int? notificationId;
   final bool notify;
 
@@ -18,7 +18,7 @@ class HijriEvent {
     this.startTime,
     this.endTime,
     this.isAllDay = true,
-    this.colorValue = 0xFF2196F3, // default blue
+    this.colorValue = 0xFF2196F3,
     this.notificationId,
     required this.notify,
   });
@@ -58,6 +58,6 @@ class HijriEvent {
         isAllDay: json['isAllDay'] ?? true,
         colorValue: json['colorValue'],
         notificationId: json['notificationId'],
-         notify: json['notify'] ?? false,
+        notify: json['notify'] ?? false,
       );
 }
