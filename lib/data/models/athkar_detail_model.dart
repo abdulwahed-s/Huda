@@ -36,7 +36,6 @@ class AthkarDetailModel {
   }
 }
 
-
 class AthkarCategory {
   final String title;
   final List<AthkarDetailModel> details;
