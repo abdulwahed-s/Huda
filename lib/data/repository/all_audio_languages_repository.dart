@@ -10,10 +10,9 @@ class AllAudioLanguagesRepository {
 
   Future<List<AudioLanguageModel>> getAllAudioLanguages(String lang) async {
     try {
-      final response = await allAudiosLanguagesServices.getAudiosLanguages(lang);
-      return response
-          .map((item) => AudioLanguageModel.fromJson(item))
-          .toList();
+      final response =
+          await allAudiosLanguagesServices.getAudiosLanguages(lang);
+      return response.map((item) => AudioLanguageModel.fromJson(item)).toList();
     } on DioException catch (e) {
       throw getDioErrorMessage(e);
     }
