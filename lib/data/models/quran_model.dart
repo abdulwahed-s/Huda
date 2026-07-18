@@ -40,7 +40,8 @@ class QuranModel {
     revelationType = json['revelationType'];
     transliteration = json['transliteration'];
     names = (json['names'] as Map?)?.map((k, v) => MapEntry('$k', '$v'));
-    translits = (json['translits'] as Map?)?.map((k, v) => MapEntry('$k', '$v'));
+    translits =
+        (json['translits'] as Map?)?.map((k, v) => MapEntry('$k', '$v'));
   }
 
   Map<String, dynamic> toJson() {
