@@ -17,8 +17,8 @@ class OfflineAudiobookModel extends Equatable {
   final List<OfflinePreparedBy> preparedBy;
   final DateTime downloadedAt;
   final DateTime updatedAt;
-  final int fileSize; 
-  final int? totalDurationMs; 
+  final int fileSize;
+  final int? totalDurationMs;
 
   const OfflineAudiobookModel({
     required this.id,
