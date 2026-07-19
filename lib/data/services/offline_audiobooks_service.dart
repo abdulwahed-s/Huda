@@ -74,9 +74,7 @@ class OfflineAudiobooksService {
       final data = CacheHelper.sharedPreferences.getString(_audiobooksKey);
       if (data == null) return [];
       final List<dynamic> list = jsonDecode(data);
-      return list
-          .map((json) => OfflineAudiobookModel.fromJson(json))
-          .toList();
+      return list.map((json) => OfflineAudiobookModel.fromJson(json)).toList();
     } catch (e) {
       return await _getAudiobooksFromDirectory();
     }
@@ -215,9 +213,7 @@ class OfflineAudiobooksService {
       map.remove(id.toString());
       await CacheHelper.sharedPreferences
           .setString(_downloadProgressKey, jsonEncode(map));
-    } catch (e) {
-      //
-    }
+    } catch (e) {}
   }
 
   Future<void> cleanupOrphanedFiles() async {
@@ -233,9 +229,7 @@ class OfflineAudiobooksService {
           }
         }
       }
-    } catch (e) {
-      //
-    }
+    } catch (e) {}
   }
 
   Map<String, dynamic> _progressToJson(DownloadProgress p) {
