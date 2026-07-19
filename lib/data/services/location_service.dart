@@ -117,49 +117,48 @@ class LocationService {
   }
 
   Future<List<Map<String, dynamic>>> searchCity(String query) async {
-  try {
-    final placemarkModel = await _nominatimService.searchLocation(query);
+    try {
+      final placemarkModel = await _nominatimService.searchLocation(query);
 
-    if (placemarkModel.results == null || placemarkModel.results!.isEmpty) {
-      return [];
-    }
-
-    return placemarkModel.results!.map((result) {
-      final components = result.addressComponents ?? [];
-      final addressMap = _parseAddressComponents(components);
-
-      String name = result.formattedAddress ?? '';
-      if (name.isEmpty) {
-        final parts = [
-          addressMap['locality'],
-          addressMap['administrative_area_level_1'],
-          addressMap['country']
-        ].where((part) => part != null && part.isNotEmpty).toList();
-        name = parts.join(', ');
+      if (placemarkModel.results == null || placemarkModel.results!.isEmpty) {
+        return [];
       }
 
-      return {
-        'name': name,
-        'lat': result.geometry?.location?.lat ?? 0.0,
-        'lon': result.geometry?.location?.lng ?? 0.0,
-        'country_code': addressMap['country_code'] ?? '',
-      };
-    }).toList();
-  } on FunctionException catch (e) {
-    if (e.status == 429) {
-      throw const LocationSearchException(LocationSearchErrorType.rateLimit);
-    }
-    if (e.status >= 500) {
-      throw const LocationSearchException(LocationSearchErrorType.server);
-    }
-    throw const LocationSearchException(LocationSearchErrorType.unknown);
-  } on SocketException {
-    throw const LocationSearchException(LocationSearchErrorType.noConnection);
-  } on ClientException {
-    throw const LocationSearchException(LocationSearchErrorType.noConnection);
-  } catch (e) {
-    throw const LocationSearchException(LocationSearchErrorType.unknown);
-  }
-}
+      return placemarkModel.results!.map((result) {
+        final components = result.addressComponents ?? [];
+        final addressMap = _parseAddressComponents(components);
 
+        String name = result.formattedAddress ?? '';
+        if (name.isEmpty) {
+          final parts = [
+            addressMap['locality'],
+            addressMap['administrative_area_level_1'],
+            addressMap['country']
+          ].where((part) => part != null && part.isNotEmpty).toList();
+          name = parts.join(', ');
+        }
+
+        return {
+          'name': name,
+          'lat': result.geometry?.location?.lat ?? 0.0,
+          'lon': result.geometry?.location?.lng ?? 0.0,
+          'country_code': addressMap['country_code'] ?? '',
+        };
+      }).toList();
+    } on FunctionException catch (e) {
+      if (e.status == 429) {
+        throw const LocationSearchException(LocationSearchErrorType.rateLimit);
+      }
+      if (e.status >= 500) {
+        throw const LocationSearchException(LocationSearchErrorType.server);
+      }
+      throw const LocationSearchException(LocationSearchErrorType.unknown);
+    } on SocketException {
+      throw const LocationSearchException(LocationSearchErrorType.noConnection);
+    } on ClientException {
+      throw const LocationSearchException(LocationSearchErrorType.noConnection);
+    } catch (e) {
+      throw const LocationSearchException(LocationSearchErrorType.unknown);
+    }
+  }
 }
