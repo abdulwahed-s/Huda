@@ -8,9 +8,11 @@ class BookLanguagesRepository {
 
   BookLanguagesRepository({required this.booksLanguagesServices});
 
-  Future<List<BookLanguagesModel>> getBookLanguages(int bookId,String respLang) async {
+  Future<List<BookLanguagesModel>> getBookLanguages(
+      int bookId, String respLang) async {
     try {
-      final response = await booksLanguagesServices.getBookLanguages(bookId, respLang);
+      final response =
+          await booksLanguagesServices.getBookLanguages(bookId, respLang);
       return response.map((item) => BookLanguagesModel.fromJson(item)).toList();
     } on DioException catch (e) {
       throw getDioErrorMessage(e);
