@@ -34,21 +34,14 @@ class AudiobookDownloadService {
       if (detail.image != null && detail.image!.isNotEmpty) {
         try {
           localImagePath = await _downloadImage(offline.id, detail.image!);
-        } catch (e) {
-          //
-        }
+        } catch (e) {}
       }
 
       final List<OfflineTrack> downloadedTracks = [];
       for (int i = 0; i < offline.tracks.length; i++) {
         final track = offline.tracks[i];
-        await _updateProgress(
-            offline.id,
-            'Downloading ${track.description}...',
-            i / offline.tracks.length,
-            0,
-            1,
-            DownloadStatus.downloading);
+        await _updateProgress(offline.id, 'Downloading ${track.description}...',
+            i / offline.tracks.length, 0, 1, DownloadStatus.downloading);
         downloadedTracks.add(await _downloadTrack(offline.id, track));
       }
 
@@ -186,9 +179,7 @@ class AudiobookDownloadService {
       await _updateProgress(
           id, 'Download cancelled', 0.0, 0, 1, DownloadStatus.cancelled);
       await _offlineService.deleteAudiobook(id);
-    } catch (e) {
-      //
-    }
+    } catch (e) {}
   }
 
   Future<bool> isDownloading(int id) async {
