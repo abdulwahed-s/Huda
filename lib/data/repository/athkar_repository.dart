@@ -37,24 +37,21 @@ class AthkarRepository {
     }
   }
 
-Future<AthkarCategory> getAthkarDetail(String id) async {
-  try {
-    final response = await service.getAthkarDetail(id);
+  Future<AthkarCategory> getAthkarDetail(String id) async {
+    try {
+      final response = await service.getAthkarDetail(id);
 
-    // There will be only one key-value pair
-    final entry = response.entries.first;
+      final entry = response.entries.first;
 
-    final String title = entry.key;
-    final List<dynamic> values = entry.value;
+      final String title = entry.key;
+      final List<dynamic> values = entry.value;
 
-    final details = values
-        .map((item) => AthkarDetailModel.fromJson(item))
-        .toList();
+      final details =
+          values.map((item) => AthkarDetailModel.fromJson(item)).toList();
 
-    return AthkarCategory(title: title, details: details);
-  } on DioException catch (e) {
-    throw Exception(getDioErrorMessage(e));
+      return AthkarCategory(title: title, details: details);
+    } on DioException catch (e) {
+      throw Exception(getDioErrorMessage(e));
+    }
   }
-}
-
 }
