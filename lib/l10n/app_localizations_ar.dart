@@ -4303,4 +4303,138 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get prayerSettingsApply => 'تطبيق';
+
+  @override
+  String get customizeHome => 'تخصيص الرئيسية';
+
+  @override
+  String get homeTheme => 'نمط الرئيسية';
+
+  @override
+  String get themeClassic => 'الكلاسيكي';
+
+  @override
+  String get themePrayerToday => 'درب الصلاة';
+
+  @override
+  String get themeQuranJourney => 'رحلة القرآن';
+
+  @override
+  String get themeClassicDescription =>
+      'شبكة هدى المألوفة مع ترتيب مرن للبطاقات.';
+
+  @override
+  String get themePrayerTodayDescription =>
+      'تنقّل بين الصلوات مع عدّ تنازلي واضح للصلاة القادمة وجدول الصلوات اليومي الكامل.';
+
+  @override
+  String get themeQuranJourneyDescription =>
+      'آية اليوم وتقدم القراءة والختمة في الواجهة.';
+
+  @override
+  String get primaryCards => 'البطاقات الرئيسية';
+
+  @override
+  String get viewMore => 'عرض المزيد';
+
+  @override
+  String get showLess => 'عرض أقل';
+
+  @override
+  String get moveToPrimary => 'نقل إلى الرئيسية';
+
+  @override
+  String get moveToViewMore => 'نقل إلى عرض المزيد';
+
+  @override
+  String get homeSections => 'الأقسام';
+
+  @override
+  String get resetTheme => 'إعادة ضبط النمط';
+
+  @override
+  String get applyChanges => 'تطبيق';
+
+  @override
+  String get discardChanges => 'تجاهل التغييرات؟';
+
+  @override
+  String get discardChangesMessage =>
+      'لم يتم تطبيق تغييرات تخصيص الصفحة الرئيسية.';
+
+  @override
+  String get discard => 'تجاهل';
+
+  @override
+  String get todaysAyah => 'آية اليوم';
+
+  @override
+  String get khatmaProgress => 'تقدم الختمة';
+
+  @override
+  String get noActiveKhatma => 'لا توجد خطة ختمة نشطة';
+
+  @override
+  String get prayerSetupRequired => 'حدد موقعك لعرض أوقات الصلاة';
+
+  @override
+  String get setUpPrayerTimes => 'إعداد أوقات الصلاة';
+
+  @override
+  String get gregorianDate => 'التاريخ الميلادي';
+
+  @override
+  String get quranTools => 'أدوات القرآن';
+
+  @override
+  String get sectionDateAndPrayer => 'التاريخ والصلاة القادمة';
+
+  @override
+  String get sectionPrayerSchedule => 'جدول الصلوات اليومي';
+
+  @override
+  String get sectionDailyAyah => 'آية اليوم';
+
+  @override
+  String get sectionContinueReading => 'متابعة القراءة';
+
+  @override
+  String get sectionKhatmaProgress => 'تقدم الختمة';
+
+  @override
+  String get sectionQuranTools => 'أدوات القرآن';
+
+  @override
+  String get homeMoreTools => 'المزيد من الأدوات';
+
+  @override
+  String get saveHomeChangesTitle => 'حفظ تغييرات الصفحة الرئيسية؟';
+
+  @override
+  String get homeChangesNotApplied =>
+      'لم يتم تطبيق تغييرات التخطيط والنمط الحالية بعد.';
+
+  @override
+  String get keepEditing => 'متابعة التعديل';
+
+  @override
+  String get discardChangesAction => 'تجاهل التغييرات';
+
+  @override
+  String get unsaved => 'غير محفوظ';
+
+  @override
+  String get saving => 'جارٍ الحفظ';
+
+  @override
+  String get customizeHomeHint =>
+      'اسحب لإعادة الترتيب، واستخدم عناصر التحكم لإظهار البطاقات أو نقلها بين الرئيسية وعرض المزيد.';
+
+  @override
+  String get themeResetMessage =>
+      'تمت إعادة ضبط هذا النمط إلى تخطيطه الافتراضي.';
+
+  @override
+  String get homeChangesSaveFailed =>
+      'تعذّر حفظ تغييرات الصفحة الرئيسية. حاول مرة أخرى.';
 }
