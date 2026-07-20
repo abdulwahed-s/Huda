@@ -8011,6 +8011,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply'**
   String get prayerSettingsApply;
+
+  /// No description provided for @customizeHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize Home'**
+  String get customizeHome;
+
+  /// No description provided for @homeTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Home theme'**
+  String get homeTheme;
+
+  /// No description provided for @themeClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get themeClassic;
+
+  /// No description provided for @themePrayerToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Path of Prayer'**
+  String get themePrayerToday;
+
+  /// No description provided for @themeQuranJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Journey'**
+  String get themeQuranJourney;
+
+  /// No description provided for @themeClassicDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The familiar Huda grid with flexible card ordering.'**
+  String get themeClassicDescription;
+
+  /// No description provided for @themePrayerTodayDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Move through each prayer with a clear countdown to the next and the full daily schedule.'**
+  String get themePrayerTodayDescription;
+
+  /// No description provided for @themeQuranJourneyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily ayah, reading progress, and Khatma at the center.'**
+  String get themeQuranJourneyDescription;
+
+  /// No description provided for @primaryCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary cards'**
+  String get primaryCards;
+
+  /// No description provided for @viewMore.
+  ///
+  /// In en, this message translates to:
+  /// **'View More'**
+  String get viewMore;
+
+  /// No description provided for @showLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Less'**
+  String get showLess;
+
+  /// No description provided for @moveToPrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to primary'**
+  String get moveToPrimary;
+
+  /// No description provided for @moveToViewMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to View More'**
+  String get moveToViewMore;
+
+  /// No description provided for @homeSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Sections'**
+  String get homeSections;
+
+  /// No description provided for @resetTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset theme'**
+  String get resetTheme;
+
+  /// No description provided for @applyChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get applyChanges;
+
+  /// No description provided for @discardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get discardChanges;
+
+  /// No description provided for @discardChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Home customization changes have not been applied.'**
+  String get discardChangesMessage;
+
+  /// No description provided for @discard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discard;
+
+  /// No description provided for @todaysAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Ayah'**
+  String get todaysAyah;
+
+  /// No description provided for @khatmaProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma progress'**
+  String get khatmaProgress;
+
+  /// No description provided for @noActiveKhatma.
+  ///
+  /// In en, this message translates to:
+  /// **'No active Khatma plan'**
+  String get noActiveKhatma;
+
+  /// No description provided for @prayerSetupRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your location to show prayer times'**
+  String get prayerSetupRequired;
+
+  /// No description provided for @setUpPrayerTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up prayer times'**
+  String get setUpPrayerTimes;
+
+  /// No description provided for @gregorianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Gregorian Date'**
+  String get gregorianDate;
+
+  /// No description provided for @quranTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran tools'**
+  String get quranTools;
+
+  /// No description provided for @sectionDateAndPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and next prayer'**
+  String get sectionDateAndPrayer;
+
+  /// No description provided for @sectionPrayerSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily prayer schedule'**
+  String get sectionPrayerSchedule;
+
+  /// No description provided for @sectionDailyAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily ayah'**
+  String get sectionDailyAyah;
+
+  /// No description provided for @sectionContinueReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue reading'**
+  String get sectionContinueReading;
+
+  /// No description provided for @sectionKhatmaProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma progress'**
+  String get sectionKhatmaProgress;
+
+  /// No description provided for @sectionQuranTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran tools'**
+  String get sectionQuranTools;
+
+  /// No description provided for @homeMoreTools.
+  ///
+  /// In en, this message translates to:
+  /// **'More tools'**
+  String get homeMoreTools;
+
+  /// No description provided for @saveHomeChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your home changes?'**
+  String get saveHomeChangesTitle;
+
+  /// No description provided for @homeChangesNotApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'The current layout and theme changes have not been applied.'**
+  String get homeChangesNotApplied;
+
+  /// No description provided for @keepEditing.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep editing'**
+  String get keepEditing;
+
+  /// No description provided for @discardChangesAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes'**
+  String get discardChangesAction;
+
+  /// No description provided for @unsaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved'**
+  String get unsaved;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get saving;
+
+  /// No description provided for @customizeHomeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to reorder. Use the controls to show cards or move them between Primary and View More.'**
+  String get customizeHomeHint;
+
+  /// No description provided for @themeResetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This theme was reset to its default layout.'**
+  String get themeResetMessage;
+
+  /// No description provided for @homeChangesSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t save your home changes. Try again.'**
+  String get homeChangesSaveFailed;
 }
 
 class _AppLocalizationsDelegate
