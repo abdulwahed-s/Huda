@@ -4424,4 +4424,139 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get prayerSettingsApply => 'Anwenden';
+
+  @override
+  String get customizeHome => 'Startseite anpassen';
+
+  @override
+  String get homeTheme => 'Startseiten-Design';
+
+  @override
+  String get themeClassic => 'Klassisch';
+
+  @override
+  String get themePrayerToday => 'Weg des Gebets';
+
+  @override
+  String get themeQuranJourney => 'Koran-Reise';
+
+  @override
+  String get themeClassicDescription =>
+      'Das vertraute Huda-Raster mit flexibler Kartenreihenfolge.';
+
+  @override
+  String get themePrayerTodayDescription =>
+      'Begleite jedes Gebet mit einem klaren Countdown zum nächsten und dem vollständigen Tagesplan.';
+
+  @override
+  String get themeQuranJourneyDescription =>
+      'Tägliche Aya, Lesefortschritt und Khatma im Mittelpunkt.';
+
+  @override
+  String get primaryCards => 'Primäre Karten';
+
+  @override
+  String get viewMore => 'Mehr anzeigen';
+
+  @override
+  String get showLess => 'Weniger anzeigen';
+
+  @override
+  String get moveToPrimary => 'Zu Primar verschieben';
+
+  @override
+  String get moveToViewMore => 'Zu Mehr anzeigen verschieben';
+
+  @override
+  String get homeSections => 'Abschnitte';
+
+  @override
+  String get resetTheme => 'Design zurücksetzen';
+
+  @override
+  String get applyChanges => 'Anwenden';
+
+  @override
+  String get discardChanges => 'Änderungen verwerfen?';
+
+  @override
+  String get discardChangesMessage =>
+      'Deine Anpassungen der Startseite wurden nicht angewendet.';
+
+  @override
+  String get discard => 'Verwerfen';
+
+  @override
+  String get todaysAyah => 'Heutige Aya';
+
+  @override
+  String get khatmaProgress => 'Khatma-Fortschritt';
+
+  @override
+  String get noActiveKhatma => 'Kein aktiver Khatma-Plan';
+
+  @override
+  String get prayerSetupRequired =>
+      'Lege deinen Standort fest, um Gebetszeiten anzuzeigen';
+
+  @override
+  String get setUpPrayerTimes => 'Gebetszeiten einrichten';
+
+  @override
+  String get gregorianDate => 'Gregorianisches Datum';
+
+  @override
+  String get quranTools => 'Koran-Werkzeuge';
+
+  @override
+  String get sectionDateAndPrayer => 'Datum und nächstes Gebet';
+
+  @override
+  String get sectionPrayerSchedule => 'Täglicher Gebetsplan';
+
+  @override
+  String get sectionDailyAyah => 'Tägliche Aya';
+
+  @override
+  String get sectionContinueReading => 'Weiterlesen';
+
+  @override
+  String get sectionKhatmaProgress => 'Khatma-Fortschritt';
+
+  @override
+  String get sectionQuranTools => 'Koran-Werkzeuge';
+
+  @override
+  String get homeMoreTools => 'Weitere Werkzeuge';
+
+  @override
+  String get saveHomeChangesTitle => 'Änderungen an der Startseite speichern?';
+
+  @override
+  String get homeChangesNotApplied =>
+      'Die aktuellen Layout- und Designänderungen wurden noch nicht angewendet.';
+
+  @override
+  String get keepEditing => 'Weiter bearbeiten';
+
+  @override
+  String get discardChangesAction => 'Änderungen verwerfen';
+
+  @override
+  String get unsaved => 'Nicht gespeichert';
+
+  @override
+  String get saving => 'Wird gespeichert';
+
+  @override
+  String get customizeHomeHint =>
+      'Zum Sortieren ziehen. Mit den Steuerelementen Karten anzeigen oder zwischen Primär und Mehr anzeigen verschieben.';
+
+  @override
+  String get themeResetMessage =>
+      'Dieses Design wurde auf das Standardlayout zurückgesetzt.';
+
+  @override
+  String get homeChangesSaveFailed =>
+      'Die Änderungen konnten nicht gespeichert werden. Versuche es erneut.';
 }
