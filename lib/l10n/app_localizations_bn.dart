@@ -4367,4 +4367,138 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get prayerSettingsApply => 'প্রয়োগ করুন';
+
+  @override
+  String get customizeHome => 'হোম কাস্টমাইজ করুন';
+
+  @override
+  String get homeTheme => 'হোম থিম';
+
+  @override
+  String get themeClassic => 'ক্লাসিক';
+
+  @override
+  String get themePrayerToday => 'নামাজের পথ';
+
+  @override
+  String get themeQuranJourney => 'কুরআন যাত্রা';
+
+  @override
+  String get themeClassicDescription =>
+      'কার্ডের নমনীয় ক্রমসহ পরিচিত হুদা গ্রিড।';
+
+  @override
+  String get themePrayerTodayDescription =>
+      'পরবর্তী নামাজের স্পষ্ট কাউন্টডাউন ও পূর্ণ দৈনিক সময়সূচি নিয়ে প্রতিটি নামাজের পথে এগিয়ে চলুন।';
+
+  @override
+  String get themeQuranJourneyDescription =>
+      'দৈনিক আয়াত, পড়ার অগ্রগতি এবং খতমকে কেন্দ্রে রাখে।';
+
+  @override
+  String get primaryCards => 'প্রধান কার্ড';
+
+  @override
+  String get viewMore => 'আরও দেখুন';
+
+  @override
+  String get showLess => 'কম দেখুন';
+
+  @override
+  String get moveToPrimary => 'প্রধান অংশে নিন';
+
+  @override
+  String get moveToViewMore => 'আরও দেখুন অংশে নিন';
+
+  @override
+  String get homeSections => 'বিভাগ';
+
+  @override
+  String get resetTheme => 'থিম রিসেট করুন';
+
+  @override
+  String get applyChanges => 'প্রয়োগ করুন';
+
+  @override
+  String get discardChanges => 'পরিবর্তন বাতিল করবেন?';
+
+  @override
+  String get discardChangesMessage =>
+      'আপনার হোম কাস্টমাইজেশনের পরিবর্তন প্রয়োগ করা হয়নি।';
+
+  @override
+  String get discard => 'বাতিল করুন';
+
+  @override
+  String get todaysAyah => 'আজকের আয়াত';
+
+  @override
+  String get khatmaProgress => 'খতমের অগ্রগতি';
+
+  @override
+  String get noActiveKhatma => 'কোনো সক্রিয় খতম পরিকল্পনা নেই';
+
+  @override
+  String get prayerSetupRequired =>
+      'নামাজের সময় দেখাতে আপনার অবস্থান নির্ধারণ করুন';
+
+  @override
+  String get setUpPrayerTimes => 'নামাজের সময় সেট করুন';
+
+  @override
+  String get gregorianDate => 'গ্রেগরিয়ান তারিখ';
+
+  @override
+  String get quranTools => 'কুরআন সরঞ্জাম';
+
+  @override
+  String get sectionDateAndPrayer => 'তারিখ ও পরবর্তী নামাজ';
+
+  @override
+  String get sectionPrayerSchedule => 'দৈনিক নামাজের সময়সূচি';
+
+  @override
+  String get sectionDailyAyah => 'দৈনিক আয়াত';
+
+  @override
+  String get sectionContinueReading => 'পড়া চালিয়ে যান';
+
+  @override
+  String get sectionKhatmaProgress => 'খতমের অগ্রগতি';
+
+  @override
+  String get sectionQuranTools => 'কুরআন সরঞ্জাম';
+
+  @override
+  String get homeMoreTools => 'আরও সরঞ্জাম';
+
+  @override
+  String get saveHomeChangesTitle => 'আপনার হোম পরিবর্তন সংরক্ষণ করবেন?';
+
+  @override
+  String get homeChangesNotApplied =>
+      'বর্তমান লেআউট ও থিমের পরিবর্তন এখনো প্রয়োগ করা হয়নি।';
+
+  @override
+  String get keepEditing => 'সম্পাদনা চালিয়ে যান';
+
+  @override
+  String get discardChangesAction => 'পরিবর্তন বাতিল করুন';
+
+  @override
+  String get unsaved => 'অসংরক্ষিত';
+
+  @override
+  String get saving => 'সংরক্ষণ হচ্ছে';
+
+  @override
+  String get customizeHomeHint =>
+      'ক্রম বদলাতে টেনে আনুন। কার্ড দেখাতে বা প্রধান ও আরও দেখুন অংশের মধ্যে সরাতে নিয়ন্ত্রণ ব্যবহার করুন।';
+
+  @override
+  String get themeResetMessage => 'এই থিমটি ডিফল্ট লেআউটে রিসেট করা হয়েছে।';
+
+  @override
+  String get homeChangesSaveFailed =>
+      'হোমের পরিবর্তন সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।';
 }
