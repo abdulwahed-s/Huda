@@ -4447,4 +4447,140 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get prayerSettingsApply => 'Appliquer';
+
+  @override
+  String get customizeHome => 'Personnaliser l\'accueil';
+
+  @override
+  String get homeTheme => 'Thème d\'accueil';
+
+  @override
+  String get themeClassic => 'Classique';
+
+  @override
+  String get themePrayerToday => 'Chemin de la prière';
+
+  @override
+  String get themeQuranJourney => 'Parcours du Coran';
+
+  @override
+  String get themeClassicDescription =>
+      'La grille Huda familière avec un ordre de cartes flexible.';
+
+  @override
+  String get themePrayerTodayDescription =>
+      'Avancez de prière en prière avec un compte à rebours clair et le programme quotidien complet.';
+
+  @override
+  String get themeQuranJourneyDescription =>
+      'Verset quotidien, progression de lecture et Khatma au centre.';
+
+  @override
+  String get primaryCards => 'Cartes principales';
+
+  @override
+  String get viewMore => 'Voir plus';
+
+  @override
+  String get showLess => 'Voir moins';
+
+  @override
+  String get moveToPrimary => 'Déplacer vers les principales';
+
+  @override
+  String get moveToViewMore => 'Déplacer vers Voir plus';
+
+  @override
+  String get homeSections => 'Sections';
+
+  @override
+  String get resetTheme => 'Réinitialiser le thème';
+
+  @override
+  String get applyChanges => 'Appliquer';
+
+  @override
+  String get discardChanges => 'Ignorer les modifications ?';
+
+  @override
+  String get discardChangesMessage =>
+      'Vos modifications de l\'accueil n\'ont pas été appliquées.';
+
+  @override
+  String get discard => 'Ignorer';
+
+  @override
+  String get todaysAyah => 'Verset du jour';
+
+  @override
+  String get khatmaProgress => 'Progression de la Khatma';
+
+  @override
+  String get noActiveKhatma => 'Aucun programme de Khatma actif';
+
+  @override
+  String get prayerSetupRequired =>
+      'Définissez votre position pour afficher les heures de prière';
+
+  @override
+  String get setUpPrayerTimes => 'Configurer les heures de prière';
+
+  @override
+  String get gregorianDate => 'Date grégorienne';
+
+  @override
+  String get quranTools => 'Outils du Coran';
+
+  @override
+  String get sectionDateAndPrayer => 'Date et prochaine prière';
+
+  @override
+  String get sectionPrayerSchedule => 'Programme quotidien des prières';
+
+  @override
+  String get sectionDailyAyah => 'Verset quotidien';
+
+  @override
+  String get sectionContinueReading => 'Continuer la lecture';
+
+  @override
+  String get sectionKhatmaProgress => 'Progression de la Khatma';
+
+  @override
+  String get sectionQuranTools => 'Outils du Coran';
+
+  @override
+  String get homeMoreTools => 'Plus d’outils';
+
+  @override
+  String get saveHomeChangesTitle =>
+      'Enregistrer les modifications de l’accueil ?';
+
+  @override
+  String get homeChangesNotApplied =>
+      'Les modifications actuelles de disposition et de thème n’ont pas été appliquées.';
+
+  @override
+  String get keepEditing => 'Continuer à modifier';
+
+  @override
+  String get discardChangesAction => 'Ignorer les modifications';
+
+  @override
+  String get unsaved => 'Non enregistré';
+
+  @override
+  String get saving => 'Enregistrement';
+
+  @override
+  String get customizeHomeHint =>
+      'Faites glisser pour réorganiser. Utilisez les commandes pour afficher les cartes ou les déplacer entre Principales et Voir plus.';
+
+  @override
+  String get themeResetMessage =>
+      'Ce thème a retrouvé sa disposition par défaut.';
+
+  @override
+  String get homeChangesSaveFailed =>
+      'Impossible d’enregistrer les modifications. Réessayez.';
 }
