@@ -4371,4 +4371,139 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get prayerSettingsApply => 'Guna';
+
+  @override
+  String get customizeHome => 'Sesuaikan Halaman Utama';
+
+  @override
+  String get homeTheme => 'Tema halaman utama';
+
+  @override
+  String get themeClassic => 'Klasik';
+
+  @override
+  String get themePrayerToday => 'Jalan Solat';
+
+  @override
+  String get themeQuranJourney => 'Perjalanan Al-Quran';
+
+  @override
+  String get themeClassicDescription =>
+      'Grid Huda yang biasa dengan susunan kad yang fleksibel.';
+
+  @override
+  String get themePrayerTodayDescription =>
+      'Ikuti setiap solat dengan kira detik yang jelas ke solat seterusnya dan jadual harian lengkap.';
+
+  @override
+  String get themeQuranJourneyDescription =>
+      'Ayat harian, kemajuan bacaan dan Khatma sebagai tumpuan.';
+
+  @override
+  String get primaryCards => 'Kad utama';
+
+  @override
+  String get viewMore => 'Lihat Lagi';
+
+  @override
+  String get showLess => 'Lihat Kurang';
+
+  @override
+  String get moveToPrimary => 'Pindah ke utama';
+
+  @override
+  String get moveToViewMore => 'Pindah ke Lihat Lagi';
+
+  @override
+  String get homeSections => 'Bahagian';
+
+  @override
+  String get resetTheme => 'Tetapkan semula tema';
+
+  @override
+  String get applyChanges => 'Guna';
+
+  @override
+  String get discardChanges => 'Buang perubahan?';
+
+  @override
+  String get discardChangesMessage =>
+      'Perubahan penyesuaian halaman utama anda belum digunakan.';
+
+  @override
+  String get discard => 'Buang';
+
+  @override
+  String get todaysAyah => 'Ayat Hari Ini';
+
+  @override
+  String get khatmaProgress => 'Kemajuan Khatma';
+
+  @override
+  String get noActiveKhatma => 'Tiada pelan Khatma aktif';
+
+  @override
+  String get prayerSetupRequired =>
+      'Tetapkan lokasi anda untuk memaparkan waktu solat';
+
+  @override
+  String get setUpPrayerTimes => 'Sediakan waktu solat';
+
+  @override
+  String get gregorianDate => 'Tarikh Masihi';
+
+  @override
+  String get quranTools => 'Alat Al-Quran';
+
+  @override
+  String get sectionDateAndPrayer => 'Tarikh dan solat seterusnya';
+
+  @override
+  String get sectionPrayerSchedule => 'Jadual solat harian';
+
+  @override
+  String get sectionDailyAyah => 'Ayat harian';
+
+  @override
+  String get sectionContinueReading => 'Teruskan membaca';
+
+  @override
+  String get sectionKhatmaProgress => 'Kemajuan Khatma';
+
+  @override
+  String get sectionQuranTools => 'Alat Al-Quran';
+
+  @override
+  String get homeMoreTools => 'Lebih banyak alat';
+
+  @override
+  String get saveHomeChangesTitle => 'Simpan perubahan halaman utama?';
+
+  @override
+  String get homeChangesNotApplied =>
+      'Perubahan susun atur dan tema semasa belum digunakan.';
+
+  @override
+  String get keepEditing => 'Teruskan mengedit';
+
+  @override
+  String get discardChangesAction => 'Buang perubahan';
+
+  @override
+  String get unsaved => 'Belum disimpan';
+
+  @override
+  String get saving => 'Menyimpan';
+
+  @override
+  String get customizeHomeHint =>
+      'Seret untuk menyusun semula. Gunakan kawalan untuk memaparkan kad atau memindahkannya antara Utama dan Lihat Lagi.';
+
+  @override
+  String get themeResetMessage =>
+      'Tema ini ditetapkan semula kepada susun atur lalai.';
+
+  @override
+  String get homeChangesSaveFailed =>
+      'Perubahan halaman utama tidak dapat disimpan. Cuba lagi.';
 }
