@@ -50,7 +50,8 @@ class _BootstrapperState extends State<Bootstrapper> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
-      home: _error != null ? _RetryGate(onRetry: _runGate) : const _SplashGate(),
+      home:
+          _error != null ? _RetryGate(onRetry: _runGate) : const _SplashGate(),
     );
   }
 }
