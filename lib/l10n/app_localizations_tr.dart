@@ -4362,4 +4362,138 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerSettingsApply => 'Uygula';
+
+  @override
+  String get customizeHome => 'Ana Sayfayı Özelleştir';
+
+  @override
+  String get homeTheme => 'Ana sayfa teması';
+
+  @override
+  String get themeClassic => 'Klasik';
+
+  @override
+  String get themePrayerToday => 'Namaz Yolu';
+
+  @override
+  String get themeQuranJourney => 'Kur\'an Yolculuğu';
+
+  @override
+  String get themeClassicDescription =>
+      'Esnek kart sıralamasıyla tanıdık Huda ızgarası.';
+
+  @override
+  String get themePrayerTodayDescription =>
+      'Sıradaki namaza net bir geri sayım ve tam günlük programla her namazı takip edin.';
+
+  @override
+  String get themeQuranJourneyDescription =>
+      'Günün ayeti, okuma ilerlemesi ve hatim merkezde.';
+
+  @override
+  String get primaryCards => 'Ana kartlar';
+
+  @override
+  String get viewMore => 'Daha Fazla';
+
+  @override
+  String get showLess => 'Daha Az';
+
+  @override
+  String get moveToPrimary => 'Ana bölüme taşı';
+
+  @override
+  String get moveToViewMore => 'Daha Fazla bölümüne taşı';
+
+  @override
+  String get homeSections => 'Bölümler';
+
+  @override
+  String get resetTheme => 'Temayı sıfırla';
+
+  @override
+  String get applyChanges => 'Uygula';
+
+  @override
+  String get discardChanges => 'Değişiklikler iptal edilsin mi?';
+
+  @override
+  String get discardChangesMessage =>
+      'Ana sayfa özelleştirme değişiklikleriniz uygulanmadı.';
+
+  @override
+  String get discard => 'İptal et';
+
+  @override
+  String get todaysAyah => 'Günün Ayeti';
+
+  @override
+  String get khatmaProgress => 'Hatim ilerlemesi';
+
+  @override
+  String get noActiveKhatma => 'Etkin hatim planı yok';
+
+  @override
+  String get prayerSetupRequired =>
+      'Namaz vakitlerini göstermek için konumunuzu ayarlayın';
+
+  @override
+  String get setUpPrayerTimes => 'Namaz vakitlerini ayarla';
+
+  @override
+  String get gregorianDate => 'Miladi Tarih';
+
+  @override
+  String get quranTools => 'Kur\'an araçları';
+
+  @override
+  String get sectionDateAndPrayer => 'Tarih ve sıradaki namaz';
+
+  @override
+  String get sectionPrayerSchedule => 'Günlük namaz programı';
+
+  @override
+  String get sectionDailyAyah => 'Günün ayeti';
+
+  @override
+  String get sectionContinueReading => 'Okumaya devam et';
+
+  @override
+  String get sectionKhatmaProgress => 'Hatim ilerlemesi';
+
+  @override
+  String get sectionQuranTools => 'Kur\'an araçları';
+
+  @override
+  String get homeMoreTools => 'Daha fazla araç';
+
+  @override
+  String get saveHomeChangesTitle => 'Ana sayfa değişiklikleri kaydedilsin mi?';
+
+  @override
+  String get homeChangesNotApplied =>
+      'Geçerli düzen ve tema değişiklikleri henüz uygulanmadı.';
+
+  @override
+  String get keepEditing => 'Düzenlemeye devam et';
+
+  @override
+  String get discardChangesAction => 'Değişiklikleri iptal et';
+
+  @override
+  String get unsaved => 'Kaydedilmedi';
+
+  @override
+  String get saving => 'Kaydediliyor';
+
+  @override
+  String get customizeHomeHint =>
+      'Sıralamak için sürükleyin. Kartları göstermek veya Ana ve Daha Fazla arasında taşımak için denetimleri kullanın.';
+
+  @override
+  String get themeResetMessage => 'Bu tema varsayılan düzenine sıfırlandı.';
+
+  @override
+  String get homeChangesSaveFailed =>
+      'Ana sayfa değişiklikleri kaydedilemedi. Tekrar deneyin.';
 }
