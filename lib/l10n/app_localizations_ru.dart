@@ -4391,4 +4391,139 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get prayerSettingsApply => 'Применить';
+
+  @override
+  String get customizeHome => 'Настроить главный экран';
+
+  @override
+  String get homeTheme => 'Тема главного экрана';
+
+  @override
+  String get themeClassic => 'Классическая';
+
+  @override
+  String get themePrayerToday => 'Путь молитвы';
+
+  @override
+  String get themeQuranJourney => 'Путь Корана';
+
+  @override
+  String get themeClassicDescription =>
+      'Знакомая сетка Huda с гибким порядком карточек.';
+
+  @override
+  String get themePrayerTodayDescription =>
+      'Следуйте от молитвы к молитве с понятным обратным отсчетом и полным расписанием на день.';
+
+  @override
+  String get themeQuranJourneyDescription =>
+      'Аят дня, прогресс чтения и хатма в центре внимания.';
+
+  @override
+  String get primaryCards => 'Основные карточки';
+
+  @override
+  String get viewMore => 'Показать больше';
+
+  @override
+  String get showLess => 'Показать меньше';
+
+  @override
+  String get moveToPrimary => 'Переместить в основные';
+
+  @override
+  String get moveToViewMore => 'Переместить в дополнительные';
+
+  @override
+  String get homeSections => 'Разделы';
+
+  @override
+  String get resetTheme => 'Сбросить тему';
+
+  @override
+  String get applyChanges => 'Применить';
+
+  @override
+  String get discardChanges => 'Отменить изменения?';
+
+  @override
+  String get discardChangesMessage =>
+      'Изменения главного экрана еще не применены.';
+
+  @override
+  String get discard => 'Отменить';
+
+  @override
+  String get todaysAyah => 'Аят дня';
+
+  @override
+  String get khatmaProgress => 'Прогресс хатмы';
+
+  @override
+  String get noActiveKhatma => 'Нет активного плана хатмы';
+
+  @override
+  String get prayerSetupRequired =>
+      'Укажите местоположение для показа времени молитв';
+
+  @override
+  String get setUpPrayerTimes => 'Настроить время молитв';
+
+  @override
+  String get gregorianDate => 'Григорианская дата';
+
+  @override
+  String get quranTools => 'Инструменты Корана';
+
+  @override
+  String get sectionDateAndPrayer => 'Дата и следующая молитва';
+
+  @override
+  String get sectionPrayerSchedule => 'Расписание молитв на день';
+
+  @override
+  String get sectionDailyAyah => 'Аят дня';
+
+  @override
+  String get sectionContinueReading => 'Продолжить чтение';
+
+  @override
+  String get sectionKhatmaProgress => 'Прогресс хатмы';
+
+  @override
+  String get sectionQuranTools => 'Инструменты Корана';
+
+  @override
+  String get homeMoreTools => 'Другие инструменты';
+
+  @override
+  String get saveHomeChangesTitle => 'Сохранить изменения главного экрана?';
+
+  @override
+  String get homeChangesNotApplied =>
+      'Текущие изменения макета и темы еще не применены.';
+
+  @override
+  String get keepEditing => 'Продолжить редактирование';
+
+  @override
+  String get discardChangesAction => 'Отменить изменения';
+
+  @override
+  String get unsaved => 'Не сохранено';
+
+  @override
+  String get saving => 'Сохранение';
+
+  @override
+  String get customizeHomeHint =>
+      'Перетаскивайте для сортировки. Используйте элементы управления, чтобы показывать карточки или перемещать их между основными и дополнительными.';
+
+  @override
+  String get themeResetMessage =>
+      'Для этой темы восстановлен макет по умолчанию.';
+
+  @override
+  String get homeChangesSaveFailed =>
+      'Не удалось сохранить изменения. Попробуйте еще раз.';
 }
