@@ -9,6 +9,10 @@ import 'package:huda/core/services/update_service.dart';
 import 'package:huda/core/services/quran_audio_progress_service.dart';
 import 'package:huda/core/services/quran_radio_progress_service.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
+import 'package:huda/cubit/home_customization/home_customization_cubit.dart';
+import 'package:huda/cubit/home_customization/home_customization_state.dart';
+import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
+import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
 import 'package:huda/cubit/quran_player/quran_player_cubit.dart';
 import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
@@ -17,12 +21,15 @@ import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
 import 'package:huda/core/services/rating_service.dart';
 import 'package:huda/data/models/reciter_model.dart';
 import 'package:huda/data/models/radio_station_model.dart';
+import 'package:huda/data/models/home/home_preferences.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/screens/reciter_surahs_screen.dart';
-import 'package:huda/presentation/widgets/home/home_app_bar.dart';
 import 'package:huda/presentation/widgets/home/home_background.dart';
 import 'package:huda/presentation/widgets/home/home_content.dart';
+import 'package:huda/presentation/widgets/home/themes/classic_home_header.dart';
 import 'package:huda/presentation/widgets/home/exit_confirmation_dialog.dart';
 import 'package:huda/core/services/whats_new_service.dart';
+import 'package:huda/presentation/screens/home_customization.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -36,6 +43,8 @@ class _HomeState extends State<Home>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+  bool _entranceStarted = false;
+  bool _entranceScheduled = false;
 
   @override
   void initState() {
@@ -64,10 +73,44 @@ class _HomeState extends State<Home>
     ));
 
     context.read<HomeCubit>().loadHomeData();
-    _animationController.forward();
+    context.read<PrayerTimesCubit>().loadCachedPrayerTimes();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _runStartupDialogs();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _animationController
+        ..stop()
+        ..value = 1;
+      _entranceStarted = true;
+    } else if (!_entranceStarted && TickerMode.valuesOf(context).enabled) {
+      _scheduleEntrance();
+    }
+    final localizations = AppLocalizations.of(context);
+    if (localizations != null) {
+      context.read<PrayerTimesCubit>().setLocalizations(localizations);
+    }
+  }
+
+  void _scheduleEntrance() {
+    if (_entranceStarted || _entranceScheduled) return;
+    _entranceScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _entranceScheduled = false;
+      if (!mounted || _entranceStarted) return;
+      if (MediaQuery.disableAnimationsOf(context)) {
+        _animationController.value = 1;
+        _entranceStarted = true;
+        return;
+      }
+      if (!TickerMode.valuesOf(context).enabled) return;
+      _entranceStarted = true;
+      _animationController.forward(from: 0);
     });
   }
 
@@ -93,6 +136,7 @@ class _HomeState extends State<Home>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       context.read<HomeCubit>().loadHomeData();
+      context.read<PrayerTimesCubit>().loadCachedPrayerTimes();
       debugPrint('🏠 Home screen: Refreshing data on app resume');
 
       Future.delayed(const Duration(seconds: 5), () {
@@ -257,6 +301,79 @@ class _HomeState extends State<Home>
     }
   }
 
+  Future<void> _openSurahAt(int surahNumber, int ayahNumber) async {
+    try {
+      final quranCubit = QuranCubit();
+      await quranCubit.loadQuran();
+      final surah = quranCubit.surahs.firstWhere(
+        (item) => item.number == surahNumber,
+        orElse: () => throw Exception('Surah not found'),
+      );
+      if (!mounted) return;
+      await Navigator.pushNamed(
+        context,
+        AppRoute.surahScreen,
+        arguments: {
+          'surahInfo': surah,
+          'shouldRestorePosition': false,
+          'scrollToAyah': ayahNumber,
+        },
+      );
+      if (mounted) _refreshHomeData();
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error opening surah: $error')),
+      );
+    }
+  }
+
+  Future<void> _openCustomization() async {
+    final customization = context.read<HomeCustomizationCubit>();
+    final home = context.read<HomeCubit>();
+    final events = context.read<IslamicEventCubit>();
+    final prayer = context.read<PrayerTimesCubit>();
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    await Navigator.push(
+      context,
+      PageRouteBuilder<void>(
+        transitionDuration:
+            reduceMotion ? Duration.zero : const Duration(milliseconds: 420),
+        reverseTransitionDuration:
+            reduceMotion ? Duration.zero : const Duration(milliseconds: 300),
+        pageBuilder: (_, animation, secondaryAnimation) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: customization),
+            BlocProvider.value(value: home),
+            BlocProvider.value(value: events),
+            BlocProvider.value(value: prayer),
+          ],
+          child: const HomeCustomizationScreen(),
+        ),
+        transitionsBuilder: (_, animation, secondaryAnimation, child) {
+          final curved = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutCubic,
+            reverseCurve: Curves.easeInCubic,
+          );
+          return FadeTransition(
+            opacity: curved,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.035),
+                end: Offset.zero,
+              ).animate(curved),
+              child: ScaleTransition(
+                scale: Tween<double>(begin: 0.975, end: 1).animate(curved),
+                child: child,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -274,29 +391,61 @@ class _HomeState extends State<Home>
       child: Scaffold(
         body: HomeBackground(
           isDarkMode: isDarkMode,
-          child: CustomScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              // ignore: prefer_const_constructors
-              HomeAppBar(),
-              SliverSafeArea(
-                top: false,
-                left: false,
-                right: false,
-                sliver: HomeContent(
-                  animationController: _animationController,
-                  fadeAnimation: _fadeAnimation,
-                  slideAnimation: _slideAnimation,
-                  refreshHomeData: _refreshHomeData,
-                  openLastReadSurah: _openLastReadSurah,
-                  openLastReciterAudio: (progress) =>
-                      _openLastReciterAudio(progress as QuranAudioProgress),
-                  openLastRadioStation: (progress) =>
-                      _openLastRadioStation(progress as RadioStationProgress),
-                  isDarkMode: isDarkMode,
-                ),
-              ),
-            ],
+          child: BlocBuilder<HomeCustomizationCubit, HomeCustomizationState>(
+            buildWhen: (previous, current) {
+              final previousTheme = previous is HomeCustomizationReady
+                  ? previous.preferences.selectedTheme
+                  : null;
+              final currentTheme = current is HomeCustomizationReady
+                  ? current.preferences.selectedTheme
+                  : null;
+              return previousTheme != currentTheme;
+            },
+            builder: (context, customization) {
+              final selectedTheme = customization is HomeCustomizationReady
+                  ? customization.preferences.selectedTheme
+                  : HomeThemeId.classic;
+              final scrollView = CustomScrollView(
+                physics: selectedTheme != HomeThemeId.classic
+                    ? const AlwaysScrollableScrollPhysics(
+                        parent: ClampingScrollPhysics(),
+                      )
+                    : const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  if (selectedTheme == HomeThemeId.classic)
+                    ClassicHomeHeaderSliver(
+                      entranceAnimation: _animationController,
+                      onCustomize: _openCustomization,
+                    ),
+                  SliverSafeArea(
+                    top: false,
+                    left: false,
+                    right: false,
+                    sliver: HomeContent(
+                      animationController: _animationController,
+                      fadeAnimation: _fadeAnimation,
+                      slideAnimation: _slideAnimation,
+                      refreshHomeData: _refreshHomeData,
+                      openLastReadSurah: _openLastReadSurah,
+                      openLastReciterAudio: (progress) => _openLastReciterAudio(
+                        progress as QuranAudioProgress,
+                      ),
+                      openLastRadioStation: (progress) => _openLastRadioStation(
+                        progress as RadioStationProgress,
+                      ),
+                      openSurah: _openSurahAt,
+                      onCustomize: _openCustomization,
+                      isDarkMode: isDarkMode,
+                    ),
+                  ),
+                ],
+              );
+              if (selectedTheme != HomeThemeId.classic) return scrollView;
+              return ClassicHomeSystemOverlay(
+                isDark: isDarkMode,
+                child: scrollView,
+              );
+            },
           ),
         ),
       ),
