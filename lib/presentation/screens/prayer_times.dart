@@ -31,13 +31,20 @@ class _PrayerTimesState extends State<PrayerTimes> {
   void initState() {
     super.initState();
     _prayerTimesCubit = context.read<PrayerTimesCubit>();
-    _prayerTimesCubit.setContext(context);
     _prayerTimesCubit.loadPrayerTimes();
     _requestNotificationPermission();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final localizations = AppLocalizations.of(context);
+    if (localizations != null) {
+      _prayerTimesCubit.setLocalizations(localizations);
+    }
+  }
+
   Future<void> _requestNotificationPermission() async {
-    // Request exact alarm permission (Android 12+)
     if (PlatformUtils.isAndroid &&
         await Permission.scheduleExactAlarm.isDenied) {
       await Permission.scheduleExactAlarm.request();
@@ -75,7 +82,6 @@ class _PrayerTimesState extends State<PrayerTimes> {
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           child: Column(
             children: [
-              // Location Card
               Card(
                 elevation: 3,
                 margin: EdgeInsets.only(bottom: 12.h),
@@ -116,8 +122,6 @@ class _PrayerTimesState extends State<PrayerTimes> {
                   ),
                 ),
               ),
-
-              // Prayer Times Card
               BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
                 builder: (context, state) {
                   if (state is PrayerTimesLoaded) {
@@ -126,8 +130,6 @@ class _PrayerTimesState extends State<PrayerTimes> {
                   return const SizedBox.shrink();
                 },
               ),
-
-              // Next Prayer Countdown Card
               BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
                 builder: (context, state) {
                   if (state is PrayerTimesLoaded) {
@@ -139,12 +141,7 @@ class _PrayerTimesState extends State<PrayerTimes> {
                   return const SizedBox.shrink();
                 },
               ),
-
-              // Refresh Button
               const RefreshLocationButtonWidget(),
-
-              // Persistent Prayer Countdown Control Widget
-              //TODO add support for other platform later
               if (PlatformUtils.isAndroid)
                 const PersistentPrayerCountdownControlWidget(),
             ],
