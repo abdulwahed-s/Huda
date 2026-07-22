@@ -127,10 +127,8 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
         final normalizedQuery = quran.normalise(query);
         final lowerQuery = query.toLowerCase();
         filteredSurahs = surahs.where((s) {
-          final surahNumber =
-              int.tryParse(s['surahNumber'].toString()) ?? 0;
-          final arabicName =
-              quran.normalise(s['suraName'].toString());
+          final surahNumber = int.tryParse(s['surahNumber'].toString()) ?? 0;
+          final arabicName = quran.normalise(s['suraName'].toString());
           final englishName = surahNumber > 0
               ? quran.getSurahNameEnglish(surahNumber).toLowerCase()
               : '';
