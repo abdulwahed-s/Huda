@@ -97,8 +97,7 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
                   .localizedName(langCode)
                   .toLowerCase()
                   .contains(q) ||
-              (surah.names?.values
-                      .any((n) => n.toLowerCase().contains(q)) ??
+              (surah.names?.values.any((n) => n.toLowerCase().contains(q)) ??
                   false) ||
               (surah.translits?.values
                       .any((n) => n.toLowerCase().contains(q)) ??
