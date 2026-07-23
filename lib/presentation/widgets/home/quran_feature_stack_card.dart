@@ -287,6 +287,7 @@ class QuranExpandedSubGrid extends StatefulWidget {
   final Function(Map<String, dynamic>)? openLastReadSurah;
   final Function(dynamic)? openLastReciterAudio;
   final Function(dynamic)? openLastRadioStation;
+  final bool showReadingContinuation;
 
   const QuranExpandedSubGrid({
     super.key,
@@ -302,6 +303,7 @@ class QuranExpandedSubGrid extends StatefulWidget {
     this.openLastReadSurah,
     this.openLastReciterAudio,
     this.openLastRadioStation,
+    this.showReadingContinuation = true,
   });
 
   @override
@@ -358,6 +360,14 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.value = 1;
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -408,91 +418,105 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
     const readingInactive = [Color(0xFFCBD5E1), Color(0xFF94A3B8)];
     const reciterInactive = [Color(0xFFD4D4D4), Color(0xFFA3A3A3)];
     const radioInactive = [Color(0xFFD6D3D1), Color(0xFFA8A29E)];
+    final cards = <Widget>[
+      if (widget.showReadingContinuation)
+        BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, homeState) {
+            final HomeLoaded? loaded =
+                homeState is HomeLoaded ? homeState : null;
+            final bool hasLastRead = loaded?.hasLastReadPosition ?? false;
+            final VoidCallback? onTap =
+                hasLastRead && widget.openLastReadSurah != null
+                    ? () => widget.openLastReadSurah!(loaded!.lastReadSummary!)
+                    : null;
+
+            return ContinueReadingCard(
+              hasLastRead: hasLastRead,
+              onTap: onTap,
+              continueText: l10n.continueHome,
+              noActivityText: l10n.noRecentActivityHome,
+              resumeText: l10n.resumeReading,
+              noActivityDescription: l10n.noRecentActivityDescription,
+              activeGradient: readingActive,
+              inactiveGradient: readingInactive,
+            );
+          },
+        ),
+      BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, homeState) {
+          final HomeLoaded? loaded = homeState is HomeLoaded ? homeState : null;
+          final hasLastAudio = loaded?.hasLastQuranAudio ?? false;
+          final quranAudio = loaded?.lastQuranAudio;
+          final VoidCallback? onTap =
+              hasLastAudio && widget.openLastReciterAudio != null
+                  ? () => widget.openLastReciterAudio!(quranAudio)
+                  : null;
+
+          return ContinueReciterCard(
+            hasLastPlayed: hasLastAudio,
+            onTap: onTap,
+            continueText: l10n.continueListening,
+            noActivityText: l10n.noRecentActivityHome,
+            resumeText:
+                hasLastAudio ? l10n.resumeReciter(quranAudio!.reciterName) : '',
+            noActivityDescription: l10n.noReciterActivityDescription,
+            activeGradient: reciterActive,
+            inactiveGradient: reciterInactive,
+          );
+        },
+      ),
+      BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, homeState) {
+          final HomeLoaded? loaded = homeState is HomeLoaded ? homeState : null;
+          final hasLastStation = loaded?.hasLastRadioStation ?? false;
+          final radioStation = loaded?.lastRadioStation;
+          final VoidCallback? onTap =
+              hasLastStation && widget.openLastRadioStation != null
+                  ? () => widget.openLastRadioStation!(radioStation)
+                  : null;
+
+          return ContinueRadioCard(
+            hasLastStation: hasLastStation,
+            onTap: onTap,
+            continueText: l10n.continueRadio,
+            noActivityText: l10n.noRecentActivityHome,
+            resumeText: hasLastStation ? radioStation!.stationName : '',
+            noActivityDescription: l10n.noRadioActivityDescription,
+            activeGradient: radioActive,
+            inactiveGradient: radioInactive,
+          );
+        },
+      ),
+    ];
 
     return Transform.scale(
       scale: _scaleAnims[0].value,
       child: Opacity(
         opacity: _opacityAnims[0].value.clamp(0.0, 1.0),
-        child: Row(children: [
-          Expanded(
-            child: BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, homeState) {
-                final HomeLoaded? loaded =
-                    homeState is HomeLoaded ? homeState : null;
-                final bool hasLastRead = loaded?.hasLastReadPosition ?? false;
-                final VoidCallback? onTap = hasLastRead &&
-                        widget.openLastReadSurah != null
-                    ? () => widget.openLastReadSurah!(loaded!.lastReadSummary!)
-                    : null;
-
-                return ContinueReadingCard(
-                  hasLastRead: hasLastRead,
-                  onTap: onTap,
-                  continueText: l10n.continueHome,
-                  noActivityText: l10n.noRecentActivityHome,
-                  resumeText: l10n.resumeReading,
-                  noActivityDescription: l10n.noRecentActivityDescription,
-                  activeGradient: readingActive,
-                  inactiveGradient: readingInactive,
-                );
-              },
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, homeState) {
-                final HomeLoaded? loaded =
-                    homeState is HomeLoaded ? homeState : null;
-                final hasLastAudio = loaded?.hasLastQuranAudio ?? false;
-                final quranAudio = loaded?.lastQuranAudio;
-                final VoidCallback? onTap =
-                    hasLastAudio && widget.openLastReciterAudio != null
-                        ? () => widget.openLastReciterAudio!(quranAudio)
-                        : null;
-
-                return ContinueReciterCard(
-                  hasLastPlayed: hasLastAudio,
-                  onTap: onTap,
-                  continueText: l10n.continueListening,
-                  noActivityText: l10n.noRecentActivityHome,
-                  resumeText: hasLastAudio
-                      ? l10n.resumeReciter(quranAudio!.reciterName)
-                      : '',
-                  noActivityDescription: l10n.noReciterActivityDescription,
-                  activeGradient: reciterActive,
-                  inactiveGradient: reciterInactive,
-                );
-              },
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, homeState) {
-                final HomeLoaded? loaded =
-                    homeState is HomeLoaded ? homeState : null;
-                final hasLastStation = loaded?.hasLastRadioStation ?? false;
-                final radioStation = loaded?.lastRadioStation;
-                final VoidCallback? onTap =
-                    hasLastStation && widget.openLastRadioStation != null
-                        ? () => widget.openLastRadioStation!(radioStation)
-                        : null;
-
-                return ContinueRadioCard(
-                  hasLastStation: hasLastStation,
-                  onTap: onTap,
-                  continueText: l10n.continueRadio,
-                  noActivityText: l10n.noRecentActivityHome,
-                  resumeText: hasLastStation ? radioStation!.stationName : '',
-                  noActivityDescription: l10n.noRadioActivityDescription,
-                  activeGradient: radioActive,
-                  inactiveGradient: radioInactive,
-                );
-              },
-            ),
-          ),
-        ]),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final textScale = MediaQuery.textScalerOf(context).scale(1);
+            final stack = constraints.maxWidth < 330 || textScale > 1.5;
+            if (stack) {
+              return Column(
+                children: [
+                  for (var index = 0; index < cards.length; index++) ...[
+                    if (index > 0) SizedBox(height: 12.h),
+                    SizedBox(width: double.infinity, child: cards[index]),
+                  ],
+                ],
+              );
+            }
+            return Row(
+              children: [
+                for (var index = 0; index < cards.length; index++) ...[
+                  if (index > 0) SizedBox(width: 12.w),
+                  Expanded(child: cards[index]),
+                ],
+              ],
+            );
+          },
+        ),
       ),
     );
   }
