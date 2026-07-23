@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
@@ -9,16 +8,18 @@ import 'package:huda/presentation/widgets/home/special_event_card.dart';
 
 void showSpecialEventDialog(
     BuildContext context, String eventKey, bool isDarkMode) {
-  HapticFeedback.mediumImpact();
+  final reduceMotion = MediaQuery.disableAnimationsOf(context);
   showGeneralDialog(
     context: context,
     barrierDismissible: true,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
     barrierColor: Colors.black54,
-    transitionDuration: const Duration(milliseconds: 500),
+    transitionDuration:
+        reduceMotion ? Duration.zero : const Duration(milliseconds: 500),
     pageBuilder: (_, __, ___) =>
         _EventDialogContent(eventKey: eventKey, isDarkMode: isDarkMode),
     transitionBuilder: (context, anim, secondaryAnim, child) {
+      if (reduceMotion) return child;
       final curve = CurvedAnimation(parent: anim, curve: Curves.easeOutCubic);
       return ScaleTransition(
         scale: Tween<double>(begin: 0.85, end: 1.0).animate(curve),
@@ -42,20 +43,54 @@ class _EventDialogContent extends StatefulWidget {
 }
 
 class _EventDialogContentState extends State<_EventDialogContent>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final AnimationController _anim;
+  bool _appIsActive = true;
+  bool _reduceMotion = false;
+  bool _tickerEnabled = true;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _appIsActive = switch (WidgetsBinding.instance.lifecycleState) {
+      null || AppLifecycleState.resumed => true,
+      _ => false,
+    };
     _anim = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 6),
-    )..repeat();
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reduceMotion = MediaQuery.disableAnimationsOf(context);
+    _tickerEnabled = TickerMode.valuesOf(context).enabled;
+    _syncDecorationMotion();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _appIsActive = state == AppLifecycleState.resumed;
+    _syncDecorationMotion();
+  }
+
+  void _syncDecorationMotion() {
+    if (!mounted) return;
+    final motionAllowed = _appIsActive && !_reduceMotion && _tickerEnabled;
+    if (motionAllowed) {
+      if (!_anim.isAnimating) _anim.repeat();
+    } else {
+      _anim.stop();
+      if (_reduceMotion) _anim.value = 0;
+    }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _anim.dispose();
     super.dispose();
   }
@@ -228,7 +263,7 @@ class _EventDialogContentState extends State<_EventDialogContent>
         ),
         SizedBox(height: 16.h),
         Text(
-          _getTitle(l10n, widget.eventKey),
+          IslamicEventPresentation.titleFor(l10n, widget.eventKey),
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: titleSize,
@@ -240,7 +275,7 @@ class _EventDialogContentState extends State<_EventDialogContent>
         ),
         SizedBox(height: 8.h),
         Text(
-          _getSubtitle(l10n, widget.eventKey),
+          IslamicEventPresentation.subtitleFor(l10n, widget.eventKey),
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: translationSize,
@@ -342,34 +377,6 @@ class _EventDialogContentState extends State<_EventDialogContent>
         SizedBox(height: 8.h),
       ],
     );
-  }
-
-  static String _getTitle(AppLocalizations l10n, String eventKey) {
-    return switch (eventKey) {
-      'ramadan' => l10n.eventRamadan,
-      'last_ten_ramadan' => l10n.eventLastTenRamadan,
-      'eid_al_fitr' => l10n.eventEidAlFitr,
-      'eid_al_adha' => l10n.eventEidAlAdha,
-      'day_of_arafah' => l10n.eventDayOfArafah,
-      'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjah,
-      'ashura' => l10n.eventAshura,
-      'days_of_tashreeq' => l10n.eventDaysTashreeq,
-      _ => eventKey,
-    };
-  }
-
-  static String _getSubtitle(AppLocalizations l10n, String eventKey) {
-    return switch (eventKey) {
-      'ramadan' => l10n.eventRamadanSubtitle,
-      'last_ten_ramadan' => l10n.eventLastTenRamadanSubtitle,
-      'eid_al_fitr' => l10n.eventEidAlFitrSubtitle,
-      'eid_al_adha' => l10n.eventEidAlAdhaSubtitle,
-      'day_of_arafah' => l10n.eventDayOfArafahSubtitle,
-      'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjahSubtitle,
-      'ashura' => l10n.eventAshuraSubtitle,
-      'days_of_tashreeq' => l10n.eventDaysTashreeqSubtitle,
-      _ => '',
-    };
   }
 }
 
