@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/data/models/islamic_event_config.dart';
@@ -295,6 +294,66 @@ class EventPalette {
   }
 }
 
+class IslamicEventPresentation {
+  const IslamicEventPresentation({
+    required this.event,
+    required this.title,
+    required this.subtitle,
+    required this.palette,
+  });
+
+  final IslamicEventConfig event;
+  final String title;
+  final String subtitle;
+  final EventPalette palette;
+
+  IconData get icon => palette.icon;
+
+  String get semanticLabel => subtitle.isEmpty ? title : '$title. $subtitle';
+
+  factory IslamicEventPresentation.resolve(
+    BuildContext context, {
+    required IslamicEventConfig event,
+    required bool isDark,
+  }) {
+    final l10n = AppLocalizations.of(context)!;
+    return IslamicEventPresentation(
+      event: event,
+      title: titleFor(l10n, event.eventKey),
+      subtitle: subtitleFor(l10n, event.eventKey),
+      palette: EventPalette.forEvent(event.eventKey, isDark),
+    );
+  }
+
+  static String titleFor(AppLocalizations l10n, String eventKey) {
+    return switch (eventKey) {
+      'ramadan' => l10n.eventRamadan,
+      'last_ten_ramadan' => l10n.eventLastTenRamadan,
+      'eid_al_fitr' => l10n.eventEidAlFitr,
+      'eid_al_adha' => l10n.eventEidAlAdha,
+      'day_of_arafah' => l10n.eventDayOfArafah,
+      'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjah,
+      'ashura' => l10n.eventAshura,
+      'days_of_tashreeq' => l10n.eventDaysTashreeq,
+      _ => eventKey,
+    };
+  }
+
+  static String subtitleFor(AppLocalizations l10n, String eventKey) {
+    return switch (eventKey) {
+      'ramadan' => l10n.eventRamadanSubtitle,
+      'last_ten_ramadan' => l10n.eventLastTenRamadanSubtitle,
+      'eid_al_fitr' => l10n.eventEidAlFitrSubtitle,
+      'eid_al_adha' => l10n.eventEidAlAdhaSubtitle,
+      'day_of_arafah' => l10n.eventDayOfArafahSubtitle,
+      'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjahSubtitle,
+      'ashura' => l10n.eventAshuraSubtitle,
+      'days_of_tashreeq' => l10n.eventDaysTashreeqSubtitle,
+      _ => '',
+    };
+  }
+}
+
 class SpecialEventCard extends StatefulWidget {
   final IslamicEventConfig event;
   final bool isDarkMode;
@@ -312,34 +371,74 @@ class SpecialEventCard extends StatefulWidget {
 }
 
 class _SpecialEventCardState extends State<SpecialEventCard>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final AnimationController _anim;
   bool _pressed = false;
+  bool _appIsActive = true;
+  bool _reduceMotion = false;
+  bool _tickerEnabled = true;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _appIsActive = switch (WidgetsBinding.instance.lifecycleState) {
+      null || AppLifecycleState.resumed => true,
+      _ => false,
+    };
     _anim = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
-    )..repeat();
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reduceMotion = MediaQuery.disableAnimationsOf(context);
+    _tickerEnabled = TickerMode.valuesOf(context).enabled;
+    _syncDecorationMotion();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _appIsActive = state == AppLifecycleState.resumed;
+    _syncDecorationMotion();
+  }
+
+  void _syncDecorationMotion() {
+    if (!mounted) return;
+    final motionAllowed = _appIsActive && !_reduceMotion && _tickerEnabled;
+    if (motionAllowed) {
+      if (!_anim.isAnimating) _anim.repeat();
+    } else {
+      _anim.stop();
+      if (_reduceMotion) _anim.value = 0;
+    }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _anim.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final palette =
-        EventPalette.forEvent(widget.event.eventKey, widget.isDarkMode);
+    final presentation = IslamicEventPresentation.resolve(
+      context,
+      event: widget.event,
+      isDark: widget.isDarkMode,
+    );
+    final palette = presentation.palette;
     final radius = BorderRadius.circular(20.r);
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: 1.0),
-      duration: const Duration(milliseconds: 800),
+      duration:
+          reduceMotion ? Duration.zero : const Duration(milliseconds: 800),
       curve: Curves.easeOutCubic,
       builder: (context, v, child) {
         return Transform.scale(
@@ -347,88 +446,110 @@ class _SpecialEventCardState extends State<SpecialEventCard>
           child: Opacity(opacity: v.clamp(0.0, 1.0), child: child),
         );
       },
-      child: GestureDetector(
-        onTapDown: (_) => setState(() => _pressed = true),
-        onTapUp: (_) {
-          setState(() => _pressed = false);
-          HapticFeedback.lightImpact();
-          widget.onTap();
-        },
-        onTapCancel: () => setState(() => _pressed = false),
-        child: AnimatedScale(
-          scale: _pressed ? 0.975 : 1.0,
-          duration: const Duration(milliseconds: 120),
-          curve: Curves.easeOutCubic,
-          child: AnimatedBuilder(
-            animation: _anim,
-            builder: (context, _) {
-              return Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: palette.gradient,
-                  ),
-                  borderRadius: radius,
-                  border: Border.all(color: palette.border, width: 1.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: palette.shadow,
-                      blurRadius: 24,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
+      child: Semantics(
+        button: true,
+        label: presentation.semanticLabel,
+        onTap: widget.onTap,
+        child: ExcludeSemantics(
+          child: AnimatedScale(
+            scale: _pressed ? 0.975 : 1.0,
+            duration: reduceMotion
+                ? Duration.zero
+                : const Duration(milliseconds: 120),
+            curve: Curves.easeOutCubic,
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: radius,
+              child: InkWell(
+                key: const ValueKey('special-event-card-action'),
+                onTap: widget.onTap,
+                onHighlightChanged: (pressed) {
+                  if (_pressed != pressed) setState(() => _pressed = pressed);
+                },
+                borderRadius: radius,
+                focusColor: palette.accent.withValues(alpha: 0.13),
+                hoverColor: palette.accent.withValues(alpha: 0.08),
+                splashColor: palette.accent.withValues(alpha: 0.12),
+                child: AnimatedBuilder(
+                  animation: _anim,
+                  builder: (context, _) {
+                    return Ink(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: palette.gradient,
+                        ),
+                        borderRadius: radius,
+                        border: Border.all(color: palette.border, width: 1.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: palette.shadow,
+                            blurRadius: 24,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: radius,
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: CustomPaint(
+                                painter: IslamicPatternPainter(
+                                  patternColor: palette.pattern,
+                                  tileSize: 55,
+                                ),
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: CustomPaint(
+                                painter: EventDecorationPainter(
+                                  eventKey: widget.event.eventKey,
+                                  animValue: _anim.value,
+                                  accentColor: palette.accent,
+                                  glowColor: palette.glow,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: context.responsive(
+                                  mobile: 22.w,
+                                  tablet: 28.w,
+                                  desktop: 36.w,
+                                ),
+                                vertical: context.responsive(
+                                  mobile: 20.w,
+                                  tablet: 24.w,
+                                  desktop: 30.w,
+                                ),
+                              ),
+                              child: _buildContent(
+                                context,
+                                presentation,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                child: ClipRRect(
-                  borderRadius: radius,
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: CustomPaint(
-                          painter: IslamicPatternPainter(
-                            patternColor: palette.pattern,
-                            tileSize: 55,
-                          ),
-                        ),
-                      ),
-                      Positioned.fill(
-                        child: CustomPaint(
-                          painter: EventDecorationPainter(
-                            eventKey: widget.event.eventKey,
-                            animValue: _anim.value,
-                            accentColor: palette.accent,
-                            glowColor: palette.glow,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: context.responsive(
-                            mobile: 22.w,
-                            tablet: 28.w,
-                            desktop: 36.w,
-                          ),
-                          vertical: context.responsive(
-                            mobile: 20.w,
-                            tablet: 24.w,
-                            desktop: 30.w,
-                          ),
-                        ),
-                        child: _buildContent(context, palette),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildContent(BuildContext context, EventPalette palette) {
+  Widget _buildContent(
+    BuildContext context,
+    IslamicEventPresentation presentation,
+  ) {
+    final palette = presentation.palette;
     final titleSize = context.responsive(
       mobile: 18.sp,
       tablet: 22.sp,
@@ -472,7 +593,7 @@ class _SpecialEventCardState extends State<SpecialEventCard>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                _getEventTitle(context, widget.event.eventKey),
+                presentation.title,
                 style: TextStyle(
                   fontSize: titleSize,
                   fontWeight: FontWeight.bold,
@@ -483,7 +604,7 @@ class _SpecialEventCardState extends State<SpecialEventCard>
               ),
               SizedBox(height: 4.h),
               Text(
-                _getEventSubtitle(context, widget.event.eventKey),
+                presentation.subtitle,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -497,35 +618,5 @@ class _SpecialEventCardState extends State<SpecialEventCard>
         ),
       ],
     );
-  }
-
-  static String _getEventTitle(BuildContext context, String eventKey) {
-    final l10n = AppLocalizations.of(context)!;
-    return switch (eventKey) {
-      'ramadan' => l10n.eventRamadan,
-      'last_ten_ramadan' => l10n.eventLastTenRamadan,
-      'eid_al_fitr' => l10n.eventEidAlFitr,
-      'eid_al_adha' => l10n.eventEidAlAdha,
-      'day_of_arafah' => l10n.eventDayOfArafah,
-      'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjah,
-      'ashura' => l10n.eventAshura,
-      'days_of_tashreeq' => l10n.eventDaysTashreeq,
-      _ => eventKey,
-    };
-  }
-
-  static String _getEventSubtitle(BuildContext context, String eventKey) {
-    final l10n = AppLocalizations.of(context)!;
-    return switch (eventKey) {
-      'ramadan' => l10n.eventRamadanSubtitle,
-      'last_ten_ramadan' => l10n.eventLastTenRamadanSubtitle,
-      'eid_al_fitr' => l10n.eventEidAlFitrSubtitle,
-      'eid_al_adha' => l10n.eventEidAlAdhaSubtitle,
-      'day_of_arafah' => l10n.eventDayOfArafahSubtitle,
-      'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjahSubtitle,
-      'ashura' => l10n.eventAshuraSubtitle,
-      'days_of_tashreeq' => l10n.eventDaysTashreeqSubtitle,
-      _ => '',
-    };
   }
 }
