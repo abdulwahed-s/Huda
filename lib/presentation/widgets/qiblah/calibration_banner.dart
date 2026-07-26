@@ -121,8 +121,9 @@ class _CalibrationBannerState extends State<CalibrationBanner>
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
                               height: 1.35,
-                              color:
-                                  isDark ? Colors.white70 : Colors.black.withValues(alpha: 0.66),
+                              color: isDark
+                                  ? Colors.white70
+                                  : Colors.black.withValues(alpha: 0.66),
                             ),
                           ),
                         ],
