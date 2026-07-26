@@ -53,104 +53,106 @@ class NotificationCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                Row(
-                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: gradient,
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Icon(icon, color: Colors.white, size: 20.sp),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                title,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 3.h),
+                              Text(
+                                subtitle,
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: isDark
+                                      ? Colors.grey[400]
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.tune,
+                            color: gradient.first,
+                          ),
+                          onPressed: onSettingsTap,
+                          style: IconButton.styleFrom(
+                            backgroundColor:
+                                gradient.first.withValues(alpha: 0.1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 6.w),
+                        AbsorbPointer(
+                          absorbing: isLoading,
+                          child: AnimatedOpacity(
+                            opacity: isLoading ? 0.7 : 1.0,
+                            duration: const Duration(milliseconds: 200),
+                            child: Transform.scale(
+                              scale: 0.9,
+                              child: Switch(
+                                value: value,
+                                onChanged: onChanged,
+                                activeThumbColor: gradient.first,
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
                     Container(
                       padding: EdgeInsets.all(10.w),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: gradient,
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(10.r),
+                        color: gradient.first.withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(6.r),
                       ),
-                      child: Icon(icon, color: Colors.white, size: 20.sp),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Icon(
+                            Icons.info_outline,
+                            size: 14.sp,
+                            color: gradient.first,
                           ),
-                          SizedBox(height: 3.h),
-                          Text(
-                            subtitle,
-                            style: TextStyle(
-                              fontSize: 11.sp,
-                              color:
-                                  isDark ? Colors.grey[400] : Colors.grey[600],
+                          SizedBox(width: 6.w),
+                          Expanded(
+                            child: Text(
+                              description,
+                              style: TextStyle(
+                                fontSize: 10.sp,
+                                color: Colors.grey[700],
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.tune,
-                        color: gradient.first,
-                      ),
-                      onPressed: onSettingsTap,
-                      style: IconButton.styleFrom(
-                        backgroundColor: gradient.first.withValues(alpha: 0.1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 6.w),
-                    AbsorbPointer(
-                      absorbing: isLoading,
-                      child: AnimatedOpacity(
-                        opacity: isLoading ? 0.7 : 1.0,
-                        duration: const Duration(milliseconds: 200),
-                        child: Transform.scale(
-                          scale: 0.9,
-                          child: Switch(
-                            value: value,
-                            onChanged: onChanged,
-                            activeThumbColor: gradient.first,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.h),
-                Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    color: gradient.first.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        size: 14.sp,
-                        color: gradient.first,
-                      ),
-                      SizedBox(width: 6.w),
-                      Expanded(
-                        child: Text(
-                          description,
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                   ],
                 ),
               ),
