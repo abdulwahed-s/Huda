@@ -49,7 +49,6 @@ class _PrayerTimeAdjustmentBottomSheetState
         PrayerTimesCalculator.countryCodeFromCache(cubit.cacheHelper);
   }
 
-
   AppLocalizations get _l10n => AppLocalizations.of(context)!;
 
   String _methodLabel(String token) {
