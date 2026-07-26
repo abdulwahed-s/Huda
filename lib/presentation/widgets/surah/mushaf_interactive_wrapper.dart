@@ -569,8 +569,8 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                   } else if (cachedDownloadedReaders.isEmpty &&
                       cachedDownloadedTafsirSources.isEmpty &&
                       cachedDownloadedTranslationSources.isEmpty) {
-                    offlineMessage = AppLocalizations.of(context)!
-                        .offlineAudioUnavailable;
+                    offlineMessage =
+                        AppLocalizations.of(context)!.offlineAudioUnavailable;
                   }
                   if (!isOfflineMode) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
