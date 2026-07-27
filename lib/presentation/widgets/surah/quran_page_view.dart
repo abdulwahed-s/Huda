@@ -1326,8 +1326,8 @@ class _QuranPageViewState extends State<QuranPageView>
                     } else if (cachedDownloadedReaders.isEmpty &&
                         cachedDownloadedTafsirSources.isEmpty &&
                         cachedDownloadedTranslationSources.isEmpty) {
-                      offlineMessage = AppLocalizations.of(context)!
-                          .offlineAudioUnavailable;
+                      offlineMessage =
+                          AppLocalizations.of(context)!.offlineAudioUnavailable;
                     }
 
                     if (!isOfflineMode) {
