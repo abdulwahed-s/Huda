@@ -32,7 +32,9 @@ void callbackDispatcher() {
             notifications, DateTime.now(), 1);
         await _schedulePrayersForDate(cacheHelper, coordinates, offsets,
             notifications, DateTime.now().add(const Duration(days: 1)), 100);
-      } catch (e) {}
+      } catch (e) {
+        //
+      }
     }
 
     return Future.value(true);

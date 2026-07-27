@@ -239,7 +239,9 @@ class QuranRadioCubit extends Cubit<QuranRadioState> {
         cacheKey,
         jsonEncode(radioModel.toJson()),
       );
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   bool _isCacheExpired(String key) {

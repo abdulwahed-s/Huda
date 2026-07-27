@@ -34,7 +34,9 @@ class AudiobookDownloadService {
       if (detail.image != null && detail.image!.isNotEmpty) {
         try {
           localImagePath = await _downloadImage(offline.id, detail.image!);
-        } catch (e) {}
+        } catch (e) {
+          //
+        }
       }
 
       final List<OfflineTrack> downloadedTracks = [];
@@ -179,7 +181,9 @@ class AudiobookDownloadService {
       await _updateProgress(
           id, 'Download cancelled', 0.0, 0, 1, DownloadStatus.cancelled);
       await _offlineService.deleteAudiobook(id);
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   Future<bool> isDownloading(int id) async {

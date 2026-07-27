@@ -224,6 +224,8 @@ class ChecklistCubit extends Cubit<ChecklistState> {
       if (currentState is ChecklistLoaded) {
         await loadChecklist(currentState.currentDate);
       }
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 }

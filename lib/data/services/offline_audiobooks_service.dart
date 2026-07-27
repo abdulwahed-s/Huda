@@ -213,7 +213,9 @@ class OfflineAudiobooksService {
       map.remove(id.toString());
       await CacheHelper.sharedPreferences
           .setString(_downloadProgressKey, jsonEncode(map));
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   Future<void> cleanupOrphanedFiles() async {
@@ -229,7 +231,9 @@ class OfflineAudiobooksService {
           }
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   Map<String, dynamic> _progressToJson(DownloadProgress p) {
