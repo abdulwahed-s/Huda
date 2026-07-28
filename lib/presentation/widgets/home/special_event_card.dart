@@ -279,6 +279,99 @@ class EventPalette {
               pattern: Color(0x083A6B2A),
               icon: Icons.celebration,
             ),
+      'white_days_fasting' => dark
+          ? const EventPalette(
+              gradient: [
+                Color(0xFF0C2130),
+                Color(0xFF12364A),
+                Color(0xFF102B3C),
+              ],
+              accent: Color(0xFFB9E7F2),
+              glow: Color(0xFFF0D98A),
+              text: Color(0xFFF2FAFC),
+              subtitle: Color(0xFFC1D8DE),
+              border: Color(0xFF24546A),
+              shadow: Color(0x4012364A),
+              pattern: Color(0x0AB9E7F2),
+              icon: Icons.brightness_5_outlined,
+            )
+          : const EventPalette(
+              gradient: [
+                Color(0xFFF2F9FA),
+                Color(0xFFE2F0F2),
+                Color(0xFFF4F8F5),
+              ],
+              accent: Color(0xFF24758A),
+              glow: Color(0xFFDFC15F),
+              text: Color(0xFF163743),
+              subtitle: Color(0xFF426570),
+              border: Color(0xFFC8E0E2),
+              shadow: Color(0x2024758A),
+              pattern: Color(0x0824758A),
+              icon: Icons.brightness_5_outlined,
+            ),
+      'monday_thursday_fasting' => dark
+          ? const EventPalette(
+              gradient: [
+                Color(0xFF12251F),
+                Color(0xFF1D4235),
+                Color(0xFF17352B),
+              ],
+              accent: Color(0xFFCDE9A4),
+              glow: Color(0xFFF0CC75),
+              text: Color(0xFFF5FAEE),
+              subtitle: Color(0xFFCBDCC0),
+              border: Color(0xFF315B4A),
+              shadow: Color(0x401D4235),
+              pattern: Color(0x0ACDE9A4),
+              icon: Icons.wb_twilight_outlined,
+            )
+          : const EventPalette(
+              gradient: [
+                Color(0xFFF6FAF1),
+                Color(0xFFE7F0DC),
+                Color(0xFFF7F8EE),
+              ],
+              accent: Color(0xFF4E7D42),
+              glow: Color(0xFFD8B44E),
+              text: Color(0xFF24432A),
+              subtitle: Color(0xFF526A50),
+              border: Color(0xFFD6E2CA),
+              shadow: Color(0x204E7D42),
+              pattern: Color(0x084E7D42),
+              icon: Icons.wb_twilight_outlined,
+            ),
+      'white_days_monday_thursday_fasting' => dark
+          ? const EventPalette(
+              gradient: [
+                Color(0xFF202040),
+                Color(0xFF373166),
+                Color(0xFF2A2952),
+              ],
+              accent: Color(0xFFF0D784),
+              glow: Color(0xFFC4E7E8),
+              text: Color(0xFFFAF7EE),
+              subtitle: Color(0xFFD9D3E6),
+              border: Color(0xFF585181),
+              shadow: Color(0x40373166),
+              pattern: Color(0x0AF0D784),
+              icon: Icons.brightness_5_outlined,
+            )
+          : const EventPalette(
+              gradient: [
+                Color(0xFFF8F6FC),
+                Color(0xFFEDE8F7),
+                Color(0xFFF8F6EE),
+              ],
+              accent: Color(0xFF65548B),
+              glow: Color(0xFFD2AA47),
+              text: Color(0xFF372E50),
+              subtitle: Color(0xFF605675),
+              border: Color(0xFFDDD6EA),
+              shadow: Color(0x2065548B),
+              pattern: Color(0x0865548B),
+              icon: Icons.brightness_5_outlined,
+            ),
       _ => const EventPalette(
           gradient: [Color(0xFF1A1A2E), Color(0xFF2A2A4E), Color(0xFF1E1E3E)],
           accent: Color(0xFFD4AF37),
@@ -335,6 +428,10 @@ class IslamicEventPresentation {
       'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjah,
       'ashura' => l10n.eventAshura,
       'days_of_tashreeq' => l10n.eventDaysTashreeq,
+      'white_days_fasting' => l10n.eventWhiteDaysFasting,
+      'monday_thursday_fasting' => l10n.eventMondayThursdayFasting,
+      'white_days_monday_thursday_fasting' =>
+        l10n.eventWhiteDaysMondayThursdayFasting,
       _ => eventKey,
     };
   }
@@ -349,6 +446,10 @@ class IslamicEventPresentation {
       'first_ten_dhul_hijjah' => l10n.eventFirstTenDhulHijjahSubtitle,
       'ashura' => l10n.eventAshuraSubtitle,
       'days_of_tashreeq' => l10n.eventDaysTashreeqSubtitle,
+      'white_days_fasting' => l10n.eventWhiteDaysFastingSubtitle,
+      'monday_thursday_fasting' => l10n.eventMondayThursdayFastingSubtitle,
+      'white_days_monday_thursday_fasting' =>
+        l10n.eventWhiteDaysMondayThursdayFastingSubtitle,
       _ => '',
     };
   }

@@ -37,6 +37,12 @@ class EventDecorationPainter extends CustomPainter {
         _drawBlessedRadiance(canvas, size);
       case 'days_of_tashreeq':
         _drawCelebration(canvas, size);
+      case 'white_days_fasting':
+        _drawFastingMoon(canvas, size);
+      case 'monday_thursday_fasting':
+        _drawFastingMoon(canvas, size, paired: true);
+      case 'white_days_monday_thursday_fasting':
+        _drawFastingMoon(canvas, size, paired: true, radiant: true);
     }
 
     _drawShimmerBand(canvas, size);
@@ -347,6 +353,51 @@ class EventDecorationPainter extends CustomPainter {
       false,
       arcPaint,
     );
+  }
+
+  void _drawFastingMoon(
+    Canvas canvas,
+    Size size, {
+    bool paired = false,
+    bool radiant = false,
+  }) {
+    final w = size.width;
+    final h = size.height;
+    final intensity = radiant ? 0.16 : 0.11;
+    _drawGlowOrb(
+      canvas,
+      Offset(w * 0.82, h * 0.24),
+      w * (radiant ? 0.24 : 0.19),
+      glowColor,
+      intensity,
+    );
+    _drawCrescent(
+      canvas,
+      Offset(w * 0.82, h * 0.24),
+      w * 0.055,
+      accentColor,
+      0.58,
+    );
+
+    if (paired) {
+      _drawCrescent(
+        canvas,
+        Offset(w * 0.70, h * 0.38),
+        w * 0.032,
+        accentColor,
+        0.35,
+      );
+    }
+
+    final stars = _generateStarPositions(radiant ? 8 : 5, paired ? 119 : 103);
+    for (final star in stars) {
+      final twinkle = (sin(animValue * 2 * pi + star[2]) + 1) / 2;
+      canvas.drawCircle(
+        Offset(w * star[0], h * star[1]),
+        star[3] * 0.65,
+        Paint()..color = accentColor.withValues(alpha: 0.22 + twinkle * 0.24),
+      );
+    }
   }
 
   void _drawDiamond(Canvas canvas, Offset center, double size, Color color) {

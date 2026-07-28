@@ -43,6 +43,10 @@ abstract final class HomeSpecialEventPreview {
     defaultValue: false,
   );
 
+  static bool testingOverride = false;
+
+  static bool get fixtureEnabled => enabled || testingOverride;
+
   static const IslamicEventConfig ramadanFixture = IslamicEventConfig(
     id: 'testing-ramadan',
     eventKey: 'ramadan',
@@ -77,10 +81,11 @@ class ActiveIslamicEventBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<IslamicEventCubit, IslamicEventState>(
       builder: (context, state) {
+        final showFixture = enableVisualTestingFixture ||
+            HomeSpecialEventPreview.fixtureEnabled;
         final event = switch (state) {
           IslamicEventActive(:final event) => event,
-          _ when enableVisualTestingFixture =>
-            HomeSpecialEventPreview.ramadanFixture,
+          _ when showFixture => HomeSpecialEventPreview.ramadanFixture,
           _ => null,
         };
         final child = event == null

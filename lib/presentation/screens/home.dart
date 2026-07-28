@@ -137,6 +137,7 @@ class _HomeState extends State<Home>
     if (state == AppLifecycleState.resumed) {
       context.read<HomeCubit>().loadHomeData();
       context.read<PrayerTimesCubit>().loadCachedPrayerTimes();
+      context.read<IslamicEventCubit>().loadActiveEvent();
       debugPrint('🏠 Home screen: Refreshing data on app resume');
 
       Future.delayed(const Duration(seconds: 5), () {
@@ -149,6 +150,7 @@ class _HomeState extends State<Home>
 
   void _refreshHomeData() {
     context.read<HomeCubit>().loadHomeData();
+    context.read<IslamicEventCubit>().loadActiveEvent();
     debugPrint('🏠 Home screen: Manual refresh triggered');
   }
 

@@ -443,6 +443,24 @@ class _DialogEventContent {
           source: l10n.eventDaysTashreeqSource,
           guidance: l10n.eventDaysTashreeqGuidance,
         ),
+      'white_days_fasting' => _DialogEventContent(
+          arabicText: l10n.eventWhiteDaysFastingArabic,
+          translation: l10n.eventWhiteDaysFastingTranslation,
+          source: l10n.eventWhiteDaysFastingSource,
+          guidance: l10n.eventWhiteDaysFastingGuidance,
+        ),
+      'monday_thursday_fasting' => _DialogEventContent(
+          arabicText: l10n.eventMondayThursdayFastingArabic,
+          translation: l10n.eventMondayThursdayFastingTranslation,
+          source: l10n.eventMondayThursdayFastingSource,
+          guidance: l10n.eventMondayThursdayFastingGuidance,
+        ),
+      'white_days_monday_thursday_fasting' => _DialogEventContent(
+          arabicText: l10n.eventWhiteDaysMondayThursdayFastingArabic,
+          translation: l10n.eventWhiteDaysMondayThursdayFastingTranslation,
+          source: l10n.eventWhiteDaysMondayThursdayFastingSource,
+          guidance: l10n.eventWhiteDaysMondayThursdayFastingGuidance,
+        ),
       _ => const _DialogEventContent(
           arabicText: '',
           translation: '',
