@@ -3939,7 +3939,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get eventRamadanSubtitle =>
-      'Le mois du jeune, de la priere et de la reflexion';
+      'Le mois du jeûne, de la prière nocturne et de la récitation du Coran';
 
   @override
   String get eventLastTenRamadanSubtitle =>
@@ -4090,26 +4090,27 @@ class AppLocalizationsFr extends AppLocalizations {
       'Rappelez-vous Allah abondamment et recitez le Takbir apres chaque priere obligatoire. Ce sont des jours pour manger, boire et remercier. Le jeune y est interdit sauf pour le pelerin qui ne peut offrir de sacrifice.';
 
   @override
-  String get eventWhiteDaysFasting => 'Jeûne des jours blancs';
+  String get eventWhiteDaysFasting => 'La sunna du jeûne des Jours blancs';
 
   @override
-  String get eventMondayThursdayFasting => 'Jeûne du lundi et du jeudi';
+  String get eventMondayThursdayFasting =>
+      'La sunna du jeûne du lundi et du jeudi';
 
   @override
   String get eventWhiteDaysMondayThursdayFasting =>
-      'Jours blancs et jeûne lundi–jeudi';
+      'Jours blancs coïncidant avec un lundi ou un jeudi';
 
   @override
   String get eventWhiteDaysFastingSubtitle =>
-      'Jeûne surérogatoire des Al Ayyam Albeedh.';
+      'Jeûner les 13e, 14e et 15e jours de chaque mois hégirien.';
 
   @override
   String get eventMondayThursdayFastingSubtitle =>
-      'Un jeûne surérogatoire de la Sunna le lundi ou le jeudi.';
+      'Un jeûne surérogatoire pendant les deux jours où les œuvres sont présentées.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingSubtitle =>
-      'Un rappel surérogatoire pour les jours blancs et le lundi ou jeudi.';
+      'Un Jour blanc qui tombe un lundi ou un jeudi.';
 
   @override
   String get eventWhiteDaysFastingArabic =>
@@ -4124,7 +4125,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get eventWhiteDaysFastingGuidance =>
-      'Les jours blancs sont des jeûnes surérogatoires les 13e, 14e et 15e jours du mois hégirien. Huda affiche le rappel du Maghrib précédent jusqu\'au Fajr afin que vous puissiez vous préparer avant le début du jeûne.';
+      'Veillez à jeûner les Jours blancs —les 13e, 14e et 15e du mois hégirien— conformément à la sunna du Prophète ﷺ.';
 
   @override
   String get eventMondayThursdayFastingArabic =>
@@ -4139,7 +4140,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get eventMondayThursdayFastingGuidance =>
-      'Le jeûne du lundi ou du jeudi est surérogatoire. Huda affiche ce rappel du Maghrib précédent jusqu\'au Fajr, selon vos heures de prière locales, afin que vous puissiez vous préparer.';
+      'Jeûnez les lundis et jeudis selon vos possibilités, conformément à la sunna du Prophète ﷺ ; les œuvres sont présentées ces jours-là, et il aimait que les siennes soient présentées pendant qu’il jeûnait.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingArabic =>
@@ -4155,7 +4156,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get eventWhiteDaysMondayThursdayFastingGuidance =>
-      'Ces deux jeûnes sont surérogatoires. Ce bref rappel vous aide à prévoir les jours blancs et un jeûne du lundi ou du jeudi avant le Fajr.';
+      'Lorsqu’un Jour blanc tombe un lundi ou un jeudi, profitez-en pour observer le jeûne surérogatoire conformément à la sunna du Prophète ﷺ, et multipliez les invocations et le rappel d’Allah.';
 
   @override
   String get audios => 'Audio';
@@ -4672,4 +4673,18 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get homeChangesSaveFailed =>
       'Impossible d’enregistrer les modifications. Réessayez.';
+
+  @override
+  String get eventSpecialOccasion => 'Une occasion particulière';
+
+  @override
+  String get eventSpecialOccasionSubtitle =>
+      'Un jour important du calendrier musulman';
+
+  @override
+  String get eventSpecialOccasionGuidance =>
+      'Marquez ce jour par le rappel, la gratitude et des conseils fiables propres à cette occasion.';
+
+  @override
+  String get snackbarNeutral => 'Avis';
 }

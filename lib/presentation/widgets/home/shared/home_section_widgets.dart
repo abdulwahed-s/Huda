@@ -43,9 +43,13 @@ abstract final class HomeSpecialEventPreview {
     defaultValue: false,
   );
 
-  static bool testingOverride = false;
+  static const String environmentEventKey = String.fromEnvironment(
+    'HUDA_SPECIAL_EVENT_PREVIEW_KEY',
+    defaultValue: '',
+  );
 
-  static bool get fixtureEnabled => enabled || testingOverride;
+  static bool testingOverride = false;
+  static String? _testingEventKeyOverride;
 
   static const IslamicEventConfig ramadanFixture = IslamicEventConfig(
     id: 'testing-ramadan',
@@ -57,6 +61,161 @@ abstract final class HomeSpecialEventPreview {
     iconName: 'nightlight_round',
     priority: 0,
   );
+
+  static const Map<String, IslamicEventConfig> fixtures = {
+    'ramadan': ramadanFixture,
+    'last_ten_ramadan': IslamicEventConfig(
+      id: 'testing-last_ten_ramadan',
+      eventKey: 'last_ten_ramadan',
+      hijriMonth: 9,
+      hijriDayStart: 21,
+      hijriDayEnd: 30,
+      actionRoute: '',
+      iconName: 'nights_stay',
+      priority: 0,
+    ),
+    'eid_al_fitr': IslamicEventConfig(
+      id: 'testing-eid_al_fitr',
+      eventKey: 'eid_al_fitr',
+      hijriMonth: 10,
+      hijriDayStart: 1,
+      hijriDayEnd: 1,
+      actionRoute: '',
+      iconName: 'auto_awesome',
+      priority: 0,
+    ),
+    'eid_al_adha': IslamicEventConfig(
+      id: 'testing-eid_al_adha',
+      eventKey: 'eid_al_adha',
+      hijriMonth: 12,
+      hijriDayStart: 10,
+      hijriDayEnd: 10,
+      actionRoute: '',
+      iconName: 'mosque',
+      priority: 0,
+    ),
+    'day_of_arafah': IslamicEventConfig(
+      id: 'testing-day_of_arafah',
+      eventKey: 'day_of_arafah',
+      hijriMonth: 12,
+      hijriDayStart: 9,
+      hijriDayEnd: 9,
+      actionRoute: '',
+      iconName: 'terrain',
+      priority: 0,
+    ),
+    'first_ten_dhul_hijjah': IslamicEventConfig(
+      id: 'testing-first_ten_dhul_hijjah',
+      eventKey: 'first_ten_dhul_hijjah',
+      hijriMonth: 12,
+      hijriDayStart: 1,
+      hijriDayEnd: 10,
+      actionRoute: '',
+      iconName: 'wb_sunny_outlined',
+      priority: 0,
+    ),
+    'ashura': IslamicEventConfig(
+      id: 'testing-ashura',
+      eventKey: 'ashura',
+      hijriMonth: 1,
+      hijriDayStart: 10,
+      hijriDayEnd: 10,
+      actionRoute: '',
+      iconName: 'brightness_7',
+      priority: 0,
+    ),
+    'days_of_tashreeq': IslamicEventConfig(
+      id: 'testing-days_of_tashreeq',
+      eventKey: 'days_of_tashreeq',
+      hijriMonth: 12,
+      hijriDayStart: 11,
+      hijriDayEnd: 13,
+      actionRoute: '',
+      iconName: 'celebration',
+      priority: 0,
+    ),
+    'white_days_fasting': IslamicEventConfig(
+      id: 'testing-white_days_fasting',
+      eventKey: 'white_days_fasting',
+      hijriMonth: 8,
+      hijriDayStart: 13,
+      hijriDayEnd: 15,
+      actionRoute: '',
+      iconName: 'brightness_5_outlined',
+      priority: 0,
+      source: IslamicEventSource.localRecurring,
+    ),
+    'monday_thursday_fasting': IslamicEventConfig(
+      id: 'testing-monday_thursday_fasting',
+      eventKey: 'monday_thursday_fasting',
+      hijriMonth: 8,
+      hijriDayStart: 8,
+      hijriDayEnd: 8,
+      actionRoute: '',
+      iconName: 'wb_twilight_outlined',
+      priority: 0,
+      source: IslamicEventSource.localRecurring,
+    ),
+    'white_days_monday_thursday_fasting': IslamicEventConfig(
+      id: 'testing-white_days_monday_thursday_fasting',
+      eventKey: 'white_days_monday_thursday_fasting',
+      hijriMonth: 8,
+      hijriDayStart: 13,
+      hijriDayEnd: 13,
+      actionRoute: '',
+      iconName: 'brightness_5_outlined',
+      priority: 0,
+      source: IslamicEventSource.localRecurring,
+    ),
+  };
+
+  static Iterable<String> get supportedEventKeys => fixtures.keys;
+
+  static IslamicEventConfig? fixtureForKey(String? eventKey) {
+    if (eventKey == null) return null;
+    return fixtures[eventKey.trim()];
+  }
+
+  static IslamicEventConfig? get selectedFixture {
+    final testingFixture = fixtureForKey(_testingEventKeyOverride);
+    if (testingFixture != null) return testingFixture;
+
+    final environmentFixture = fixtureForKey(environmentEventKey);
+    if (environmentFixture != null) return environmentFixture;
+
+    return enabled || testingOverride ? ramadanFixture : null;
+  }
+
+  static bool get fixtureEnabled => selectedFixture != null;
+
+  static IslamicEventConfig? resolveFixture({
+    bool enableLegacyRamadanFixture = false,
+  }) {
+    return selectedFixture ??
+        (enableLegacyRamadanFixture ? ramadanFixture : null);
+  }
+
+  static void selectFixtureForTesting(String? eventKey) {
+    if (eventKey == null) {
+      _testingEventKeyOverride = null;
+      return;
+    }
+
+    final fixture = fixtureForKey(eventKey);
+    if (fixture == null) {
+      throw ArgumentError.value(
+        eventKey,
+        'eventKey',
+        'Unsupported special-event preview key',
+      );
+    }
+    _testingEventKeyOverride = fixture.eventKey;
+  }
+
+  static void resetTestingOverrides() {
+    testingOverride = false;
+    _testingEventKeyOverride = null;
+  }
 }
 
 typedef ActiveIslamicEventWidgetBuilder = Widget Function(
@@ -65,7 +224,7 @@ typedef ActiveIslamicEventWidgetBuilder = Widget Function(
   VoidCallback onActivate,
 );
 
-class ActiveIslamicEventBuilder extends StatelessWidget {
+class ActiveIslamicEventBuilder extends StatefulWidget {
   const ActiveIslamicEventBuilder({
     super.key,
     required this.isDark,
@@ -78,40 +237,61 @@ class ActiveIslamicEventBuilder extends StatelessWidget {
   final bool enableVisualTestingFixture;
 
   @override
+  State<ActiveIslamicEventBuilder> createState() =>
+      _ActiveIslamicEventBuilderState();
+}
+
+class _ActiveIslamicEventBuilderState extends State<ActiveIslamicEventBuilder> {
+  bool _dialogPending = false;
+
+  Future<void> _activate(
+    BuildContext eventContext,
+    IslamicEventConfig event,
+  ) async {
+    if (_dialogPending) return;
+    _dialogPending = true;
+    HapticFeedback.lightImpact();
+    try {
+      await showSpecialEventDialog(
+        eventContext,
+        event.eventKey,
+        widget.isDark,
+      );
+    } finally {
+      _dialogPending = false;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<IslamicEventCubit, IslamicEventState>(
       builder: (context, state) {
-        final showFixture = enableVisualTestingFixture ||
-            HomeSpecialEventPreview.fixtureEnabled;
+        final previewFixture = HomeSpecialEventPreview.resolveFixture(
+          enableLegacyRamadanFixture: widget.enableVisualTestingFixture,
+        );
         final event = switch (state) {
           IslamicEventActive(:final event) => event,
-          _ when showFixture => HomeSpecialEventPreview.ramadanFixture,
-          _ => null,
+          _ => previewFixture,
         };
         final child = event == null
             ? const SizedBox.shrink(
                 key: ValueKey('no-active-islamic-event'),
               )
             : KeyedSubtree(
-                key: ValueKey('active-islamic-event-${event.id}'),
+                key: ValueKey(
+                  'active-islamic-event-${event.id}-${event.eventKey}',
+                ),
                 child: Builder(
                   builder: (eventContext) {
                     final presentation = IslamicEventPresentation.resolve(
                       eventContext,
                       event: event,
-                      isDark: isDark,
+                      isDark: widget.isDark,
                     );
-                    return builder(
+                    return widget.builder(
                       eventContext,
                       presentation,
-                      () {
-                        HapticFeedback.lightImpact();
-                        showSpecialEventDialog(
-                          eventContext,
-                          event.eventKey,
-                          isDark,
-                        );
-                      },
+                      () => _activate(eventContext, event),
                     );
                   },
                 ),
@@ -126,31 +306,36 @@ class ActiveIslamicEventBuilder extends StatelessWidget {
 
         return AnimatedSize(
           key: const ValueKey('active-islamic-event-boundary'),
-          duration: const Duration(milliseconds: 240),
+          duration: const Duration(milliseconds: 430),
           curve: Curves.easeInOutCubic,
           alignment: Alignment.topCenter,
           child: ClipRect(
             child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 210),
-              switchInCurve: Curves.easeOutCubic,
-              switchOutCurve: Curves.easeInCubic,
+              duration: const Duration(milliseconds: 420),
+              reverseDuration: const Duration(milliseconds: 300),
+              switchInCurve: Curves.linear,
+              switchOutCurve: Curves.linear,
               transitionBuilder: (child, animation) => AnimatedBuilder(
                 animation: animation,
-                child: FadeTransition(
-                  opacity: animation,
-                  child: SizeTransition(
-                    sizeFactor: animation,
-                    alignment: Alignment.topCenter,
-                    child: child,
-                  ),
-                ),
+                child: child,
                 builder: (context, transitionedChild) {
                   final exiting = animation.status == AnimationStatus.reverse;
+                  final phase =
+                      ((animation.value - 0.48) / 0.52).clamp(0.0, 1.0);
+                  final resolved = exiting
+                      ? Curves.easeInCubic.transform(phase)
+                      : Curves.easeOutCubic.transform(phase);
                   return IgnorePointer(
                     ignoring: exiting,
                     child: ExcludeSemantics(
                       excluding: exiting,
-                      child: transitionedChild!,
+                      child: ClipPath(
+                        clipper: _EventIdentitySwitchClipper(resolved),
+                        child: Opacity(
+                          opacity: resolved,
+                          child: transitionedChild,
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -162,6 +347,31 @@ class ActiveIslamicEventBuilder extends StatelessWidget {
       },
     );
   }
+}
+
+class _EventIdentitySwitchClipper extends CustomClipper<Path> {
+  const _EventIdentitySwitchClipper(this.progress);
+
+  final double progress;
+
+  @override
+  Path getClip(Size size) {
+    if (progress >= 1) return Path()..addRect(Offset.zero & size);
+    final halfHeight = size.height * progress * 0.5;
+    return Path()
+      ..addRect(
+        Rect.fromLTRB(
+          0,
+          size.height * 0.5 - halfHeight,
+          size.width,
+          size.height * 0.5 + halfHeight,
+        ),
+      );
+  }
+
+  @override
+  bool shouldReclip(covariant _EventIdentitySwitchClipper oldClipper) =>
+      oldClipper.progress != progress;
 }
 
 class HomeSpecialEventSection extends StatelessWidget {

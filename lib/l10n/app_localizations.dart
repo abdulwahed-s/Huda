@@ -7109,7 +7109,7 @@ abstract class AppLocalizations {
   /// Subtitle for the Ramadan event card
   ///
   /// In en, this message translates to:
-  /// **'The month of fasting, prayer, and reflection'**
+  /// **'The month of fasting, night prayer, and Quran recitation'**
   String get eventRamadanSubtitle;
 
   /// Subtitle for the last ten nights of Ramadan event card
@@ -7349,37 +7349,37 @@ abstract class AppLocalizations {
   /// Title for the recurring White Days fasting reminder
   ///
   /// In en, this message translates to:
-  /// **'Fasting on the White Days'**
+  /// **'The Sunnah of Fasting the White Days'**
   String get eventWhiteDaysFasting;
 
   /// Title for the recurring Monday and Thursday fasting reminder
   ///
   /// In en, this message translates to:
-  /// **'Monday–Thursday Fasting'**
+  /// **'The Sunnah of Monday–Thursday Fasting'**
   String get eventMondayThursdayFasting;
 
   /// Title when White Days and Monday or Thursday fasting overlap
   ///
   /// In en, this message translates to:
-  /// **'White Days & Monday–Thursday Fasting'**
+  /// **'White Days Coinciding with Monday or Thursday'**
   String get eventWhiteDaysMondayThursdayFasting;
 
   /// Concise subtitle for the White Days fasting reminder
   ///
   /// In en, this message translates to:
-  /// **'Fasting on Al Ayyam Albeedh.'**
+  /// **'Fasting the 13th, 14th, and 15th of every Hijri month.'**
   String get eventWhiteDaysFastingSubtitle;
 
   /// Concise subtitle for the Monday and Thursday fasting reminder
   ///
   /// In en, this message translates to:
-  /// **'A voluntary Sunnah fast on Monday or Thursday.'**
+  /// **'A voluntary fast on the two days when deeds are presented.'**
   String get eventMondayThursdayFastingSubtitle;
 
   /// Concise subtitle for the combined fasting reminder
   ///
   /// In en, this message translates to:
-  /// **'A voluntary reminder for the White Days and Monday or Thursday.'**
+  /// **'A White Day that falls on a Monday or Thursday.'**
   String get eventWhiteDaysMondayThursdayFastingSubtitle;
 
   /// Arabic hadith text for the White Days fasting reminder
@@ -7403,7 +7403,7 @@ abstract class AppLocalizations {
   /// Guidance for the White Days fasting dialog
   ///
   /// In en, this message translates to:
-  /// **'The White Days are voluntary fasts on the 13th, 14th, and 15th of the Hijri month. Huda shows the reminder from the previous Maghrib until Fajr so you can plan before the fast begins.'**
+  /// **'Observe the White Days—the 13th, 14th, and 15th of the Hijri month—in accordance with the Sunnah of the Prophet ﷺ.'**
   String get eventWhiteDaysFastingGuidance;
 
   /// Arabic hadith text for the Monday and Thursday fasting reminder
@@ -7427,7 +7427,7 @@ abstract class AppLocalizations {
   /// Guidance for the Monday and Thursday fasting dialog
   ///
   /// In en, this message translates to:
-  /// **'Fasting on Monday or Thursday is voluntary. Huda shows this reminder from the preceding Maghrib until Fajr, using your local prayer times, so you can prepare before the fast begins.'**
+  /// **'Fast as many Mondays and Thursdays as you are able, following the Sunnah of the Prophet ﷺ; deeds are presented on these days, and he loved for his deeds to be presented while he was fasting.'**
   String get eventMondayThursdayFastingGuidance;
 
   /// Arabic source text for the combined fasting reminder
@@ -7451,7 +7451,7 @@ abstract class AppLocalizations {
   /// Guidance for the combined fasting dialog
   ///
   /// In en, this message translates to:
-  /// **'Both are voluntary fasts. This short reminder lets you plan for the White Days and for a Monday or Thursday fast before Fajr.'**
+  /// **'When a White Day falls on Monday or Thursday, make the most of it by observing the voluntary fast in accordance with the Sunnah of the Prophet ﷺ, and increase in supplication and remembrance.'**
   String get eventWhiteDaysMondayThursdayFastingGuidance;
 
   /// No description provided for @audios.
@@ -8407,6 +8407,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'t save your home changes. Try again.'**
   String get homeChangesSaveFailed;
+
+  /// Fallback title for an unknown configured Islamic occasion
+  ///
+  /// In en, this message translates to:
+  /// **'A Blessed Occasion'**
+  String get eventSpecialOccasion;
+
+  /// Fallback subtitle for an unknown configured Islamic occasion
+  ///
+  /// In en, this message translates to:
+  /// **'A meaningful day in the Islamic calendar'**
+  String get eventSpecialOccasionSubtitle;
+
+  /// Respectful generic guidance for an unknown configured Islamic occasion
+  ///
+  /// In en, this message translates to:
+  /// **'Mark this day with remembrance, gratitude, and reliable guidance specific to the occasion.'**
+  String get eventSpecialOccasionGuidance;
+
+  /// Accessible status label for routine neutral feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Notice'**
+  String get snackbarNeutral;
 }
 
 class _AppLocalizationsDelegate

@@ -3889,7 +3889,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get eventDaysTashreeq => 'Дни Ташрик';
 
   @override
-  String get eventRamadanSubtitle => 'Месяц поста, молитвы и размышлений';
+  String get eventRamadanSubtitle =>
+      'Месяц поста, ночной молитвы и чтения Корана';
 
   @override
   String get eventLastTenRamadanSubtitle =>
@@ -4038,26 +4039,27 @@ class AppLocalizationsRu extends AppLocalizations {
       'Обильно поминайте Аллаха и произносите такбир после каждой обязательной молитвы. Это дни еды, питья и благодарности. Пост в эти дни запрещен кроме паломника, который не может принести жертву.';
 
   @override
-  String get eventWhiteDaysFasting => 'Пост в белые дни';
+  String get eventWhiteDaysFasting => 'Сунна поста в Белые дни';
 
   @override
-  String get eventMondayThursdayFasting => 'Пост по понедельникам и четвергам';
+  String get eventMondayThursdayFasting =>
+      'Сунна поста по понедельникам и четвергам';
 
   @override
   String get eventWhiteDaysMondayThursdayFasting =>
-      'Белые дни и пост в понедельник–четверг';
+      'Белые дни, совпавшие с понедельником или четвергом';
 
   @override
   String get eventWhiteDaysFastingSubtitle =>
-      'Добровольный пост в Аль-Айям аль-Бид.';
+      'Пост 13-го, 14-го и 15-го числа каждого месяца хиджры.';
 
   @override
   String get eventMondayThursdayFastingSubtitle =>
-      'Добровольный пост по Сунне в понедельник или четверг.';
+      'Добровольный пост в два дня, когда представляются деяния.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingSubtitle =>
-      'Добровольное напоминание о белых днях и посте в понедельник или четверг.';
+      'Белый день, выпавший на понедельник или четверг.';
 
   @override
   String get eventWhiteDaysFastingArabic =>
@@ -4072,7 +4074,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get eventWhiteDaysFastingGuidance =>
-      'Белые дни — это добровольные посты 13-го, 14-го и 15-го дней месяца по хиджре. Huda показывает напоминание с Магриба предыдущего дня до Фаджра, чтобы вы могли подготовиться до начала поста.';
+      'Старайтесь поститься в Белые дни — 13-го, 14-го и 15-го числа месяца хиджры — следуя сунне Пророка ﷺ.';
 
   @override
   String get eventMondayThursdayFastingArabic =>
@@ -4087,7 +4089,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get eventMondayThursdayFastingGuidance =>
-      'Пост в понедельник или четверг добровольный. Huda показывает это напоминание с Магриба предыдущего дня до Фаджра по местному времени молитв, чтобы вы могли подготовиться.';
+      'Поститесь по понедельникам и четвергам по мере возможности, следуя сунне Пророка ﷺ: в эти дни представляются деяния, и он любил, чтобы его деяния представлялись, когда он постился.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingArabic =>
@@ -4103,7 +4105,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get eventWhiteDaysMondayThursdayFastingGuidance =>
-      'Оба поста добровольные. Это краткое напоминание помогает запланировать белые дни и пост в понедельник или четверг до Фаджра.';
+      'Если Белый день выпадает на понедельник или четверг, воспользуйтесь этим днём для добровольного поста по сунне Пророка ﷺ и чаще обращайтесь с мольбами и поминайте Аллаха.';
 
   @override
   String get audios => 'Аудио';
@@ -4615,4 +4617,18 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get homeChangesSaveFailed =>
       'Не удалось сохранить изменения. Попробуйте еще раз.';
+
+  @override
+  String get eventSpecialOccasion => 'Особый день';
+
+  @override
+  String get eventSpecialOccasionSubtitle =>
+      'Значимый день исламского календаря';
+
+  @override
+  String get eventSpecialOccasionGuidance =>
+      'Проведите этот день в поминании, благодарности и следовании достоверным наставлениям, относящимся к этому событию.';
+
+  @override
+  String get snackbarNeutral => 'Уведомление';
 }

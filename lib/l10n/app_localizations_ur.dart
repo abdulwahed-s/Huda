@@ -3855,7 +3855,8 @@ class AppLocalizationsUr extends AppLocalizations {
   String get eventDaysTashreeq => 'ایام تشریق';
 
   @override
-  String get eventRamadanSubtitle => 'روزے، نماز اور غور و فکر کا مہینہ';
+  String get eventRamadanSubtitle =>
+      'روزے، قیام اللیل اور تلاوتِ قرآن کا مہینہ';
 
   @override
   String get eventLastTenRamadanSubtitle =>
@@ -4003,25 +4004,26 @@ class AppLocalizationsUr extends AppLocalizations {
       'اللہ کا کثرت سے ذکر کریں اور ہر فرض نماز کے بعد تکبیر کہیں۔ یہ کھانے، پینے اور شکر کے دن ہیں۔ ان دنوں میں روزہ جائز نہیں سوائے اس حاجی کے جو قربانی کی استطاعت نہ رکھتا ہو۔';
 
   @override
-  String get eventWhiteDaysFasting => 'ایامِ بیض کے روزے';
+  String get eventWhiteDaysFasting => 'ایامِ بیض کے روزوں کی سنت';
 
   @override
-  String get eventMondayThursdayFasting => 'پیر اور جمعرات کے روزے';
+  String get eventMondayThursdayFasting => 'پیر اور جمعرات کے روزوں کی سنت';
 
   @override
   String get eventWhiteDaysMondayThursdayFasting =>
-      'ایامِ بیض اور پیر–جمعرات کے روزے';
+      'پیر یا جمعرات کے ساتھ ایامِ بیض کا اجتماع';
 
   @override
-  String get eventWhiteDaysFastingSubtitle => 'ایامِ بیض کے نفلی روزے۔';
+  String get eventWhiteDaysFastingSubtitle =>
+      'ہر ہجری مہینے کی تیرہ، چودہ اور پندرہ تاریخ کا روزہ۔';
 
   @override
   String get eventMondayThursdayFastingSubtitle =>
-      'پیر یا جمعرات کا نفلی سنت روزہ۔';
+      'ان دو دنوں کا نفلی روزہ جن میں اعمال پیش کیے جاتے ہیں۔';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingSubtitle =>
-      'ایامِ بیض اور پیر یا جمعرات کے لیے نفلی یاددہانی۔';
+      'ایامِ بیض کا کوئی دن جو پیر یا جمعرات کو آئے۔';
 
   @override
   String get eventWhiteDaysFastingArabic =>
@@ -4036,7 +4038,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get eventWhiteDaysFastingGuidance =>
-      'ایامِ بیض ہجری مہینے کی 13، 14 اور 15 تاریخ کے نفلی روزے ہیں۔ ہُدا پچھلے دن کے مغرب سے فجر تک یاددہانی دکھاتا ہے تاکہ روزہ شروع ہونے سے پہلے تیاری کی جا سکے۔';
+      'نبی کریم ﷺ کی سنت پر عمل کرتے ہوئے ہجری مہینے کی تیرہ، چودہ اور پندرہ تاریخ، یعنی ایامِ بیض کے روزے رکھنے کا اہتمام کریں۔';
 
   @override
   String get eventMondayThursdayFastingArabic =>
@@ -4051,7 +4053,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get eventMondayThursdayFastingGuidance =>
-      'پیر یا جمعرات کا روزہ نفلی ہے۔ ہُدا مقامی نماز کے اوقات کے مطابق پچھلے مغرب سے فجر تک یہ یاددہانی دکھاتا ہے تاکہ آپ تیاری کر سکیں۔';
+      'حسبِ استطاعت پیر اور جمعرات کے روزے نبی کریم ﷺ کی سنت پر عمل کرتے ہوئے رکھیں؛ ان دنوں اعمال پیش کیے جاتے ہیں، اور آپ ﷺ پسند فرماتے تھے کہ آپ کے اعمال روزے کی حالت میں پیش ہوں۔';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingArabic =>
@@ -4067,7 +4069,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get eventWhiteDaysMondayThursdayFastingGuidance =>
-      'دونوں نفلی روزے ہیں۔ یہ مختصر یاددہانی فجر سے پہلے ایامِ بیض اور پیر یا جمعرات کے روزے کی منصوبہ بندی میں مدد دیتی ہے۔';
+      'جب ایامِ بیض کا کوئی دن پیر یا جمعرات کو آئے تو نبی کریم ﷺ کی سنت پر عمل کرتے ہوئے نفلی روزہ رکھ کر اس دن کو غنیمت جانیں، اور دعا و ذکر کا اہتمام بڑھائیں۔';
 
   @override
   String get audios => 'آڈیو';
@@ -4578,4 +4580,17 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get homeChangesSaveFailed =>
       'ہوم کی تبدیلیاں محفوظ نہیں ہو سکیں۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get eventSpecialOccasion => 'ایک بابرکت موقع';
+
+  @override
+  String get eventSpecialOccasionSubtitle => 'اسلامی تقویم کا ایک بامعنی دن';
+
+  @override
+  String get eventSpecialOccasionGuidance =>
+      'اس دن کو ذکر، شکر اور اس موقع سے متعلق معتبر رہنمائی کے ساتھ بامعنی بنائیں۔';
+
+  @override
+  String get snackbarNeutral => 'اطلاع';
 }

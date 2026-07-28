@@ -1,397 +1,481 @@
-import 'dart:math';
-import 'dart:ui' as ui;
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/home/special_event/canonical_event_motif.dart';
+import 'package:huda/presentation/widgets/home/special_event/ceremonial_event_reveal.dart';
+import 'package:huda/presentation/widgets/home/special_event/event_visual_identity.dart';
 import 'package:huda/presentation/widgets/home/special_event_card.dart';
 
-void showSpecialEventDialog(
-    BuildContext context, String eventKey, bool isDarkMode) {
+final Expando<bool> _openEventDialogs = Expando<bool>('openEventDialogs');
+
+Future<void> showSpecialEventDialog(
+  BuildContext context,
+  String eventKey,
+  bool isDarkMode,
+) async {
+  final navigator = Navigator.of(context, rootNavigator: true);
+  if (_openEventDialogs[navigator] ?? false) return;
+  _openEventDialogs[navigator] = true;
   final reduceMotion = MediaQuery.disableAnimationsOf(context);
-  showGeneralDialog(
-    context: context,
-    barrierDismissible: true,
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: Colors.black54,
-    transitionDuration:
-        reduceMotion ? Duration.zero : const Duration(milliseconds: 500),
-    pageBuilder: (_, __, ___) =>
-        _EventDialogContent(eventKey: eventKey, isDarkMode: isDarkMode),
-    transitionBuilder: (context, anim, secondaryAnim, child) {
-      if (reduceMotion) return child;
-      final curve = CurvedAnimation(parent: anim, curve: Curves.easeOutCubic);
-      return ScaleTransition(
-        scale: Tween<double>(begin: 0.85, end: 1.0).animate(curve),
-        child: FadeTransition(opacity: curve, child: child),
-      );
-    },
-  );
+  try {
+    await showGeneralDialog<void>(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black.withValues(alpha: isDarkMode ? 0.72 : 0.64),
+      transitionDuration:
+          reduceMotion ? Duration.zero : const Duration(milliseconds: 460),
+      pageBuilder: (_, __, ___) => SpecialEventDialogPreview(
+        eventKey: eventKey,
+      ),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        if (reduceMotion) return child;
+        final curved = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+          reverseCurve: Curves.easeInCubic,
+        );
+        return FadeTransition(
+          opacity: curved,
+          child: ClipPath(
+            clipper: _CeremonialRouteClipper(curved.value),
+            child: child,
+          ),
+        );
+      },
+    );
+  } finally {
+    _openEventDialogs[navigator] = false;
+  }
 }
 
-class _EventDialogContent extends StatefulWidget {
-  final String eventKey;
-  final bool isDarkMode;
-
-  const _EventDialogContent({
+class SpecialEventDialogPreview extends StatelessWidget {
+  const SpecialEventDialogPreview({
+    super.key,
     required this.eventKey,
-    required this.isDarkMode,
+    this.routeSemantics = true,
   });
 
-  @override
-  State<_EventDialogContent> createState() => _EventDialogContentState();
-}
-
-class _EventDialogContentState extends State<_EventDialogContent>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  late final AnimationController _anim;
-  bool _appIsActive = true;
-  bool _reduceMotion = false;
-  bool _tickerEnabled = true;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    _appIsActive = switch (WidgetsBinding.instance.lifecycleState) {
-      null || AppLifecycleState.resumed => true,
-      _ => false,
-    };
-    _anim = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 6),
-    );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _reduceMotion = MediaQuery.disableAnimationsOf(context);
-    _tickerEnabled = TickerMode.valuesOf(context).enabled;
-    _syncDecorationMotion();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    _appIsActive = state == AppLifecycleState.resumed;
-    _syncDecorationMotion();
-  }
-
-  void _syncDecorationMotion() {
-    if (!mounted) return;
-    final motionAllowed = _appIsActive && !_reduceMotion && _tickerEnabled;
-    if (motionAllowed) {
-      if (!_anim.isAnimating) _anim.repeat();
-    } else {
-      _anim.stop();
-      if (_reduceMotion) _anim.value = 0;
-    }
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _anim.dispose();
-    super.dispose();
-  }
+  final String eventKey;
+  final bool routeSemantics;
 
   @override
   Widget build(BuildContext context) {
-    final palette = EventPalette.forEvent(widget.eventKey, widget.isDarkMode);
     final l10n = AppLocalizations.of(context)!;
-    final content = _DialogEventContent.forEvent(widget.eventKey, l10n);
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
-    final maxWidth = context.responsive(
-      mobile: MediaQuery.of(context).size.width * 0.9,
-      tablet: 480.0,
-      desktop: 520.0,
-    );
+    final themeIsDark = Theme.of(context).brightness == Brightness.dark;
+    final palette = EventPalette.forEvent(eventKey, themeIsDark);
+    final content = _DialogEventContent.forEvent(eventKey, l10n);
+    final identity = EventVisualIdentity.resolve(eventKey);
+    final media = MediaQuery.of(context);
+    final highContrast = media.highContrast;
+    final textScale = media.textScaler.scale(1);
+    final direction = Directionality.of(context);
 
-    return Center(
-      child: Material(
-        color: Colors.transparent,
-        child: Container(
-          width: maxWidth,
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.85,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                palette.gradient[0],
-                palette.gradient[1],
-                palette.gradient[2],
-              ],
-            ),
-            borderRadius: BorderRadius.circular(24.r),
-            border: Border.all(color: palette.border, width: 1.2),
-            boxShadow: [
-              BoxShadow(
-                color: palette.shadow,
-                blurRadius: 40,
-                offset: const Offset(0, 16),
+    return SafeArea(
+      minimum: const EdgeInsets.all(8),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final nearFullScreen = constraints.maxWidth < 370 || textScale > 1.55;
+          final width = nearFullScreen
+              ? constraints.maxWidth
+              : math.min(constraints.maxWidth * 0.92, 600.0);
+          final maxHeight = nearFullScreen
+              ? constraints.maxHeight
+              : constraints.maxHeight * 0.91;
+          return Center(
+            child: Semantics(
+              key: const ValueKey('special-event-dialog'),
+              scopesRoute: routeSemantics,
+              namesRoute: routeSemantics,
+              explicitChildNodes: true,
+              label: IslamicEventPresentation.titleFor(l10n, eventKey),
+              child: Material(
+                color: Colors.transparent,
+                child: SizedBox(
+                  width: width,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: maxHeight),
+                    child: CeremonialEventReveal(
+                      eventKey: eventKey,
+                      duration: const Duration(milliseconds: 1320),
+                      curve: Curves.easeOutCubic,
+                      builder: (context, reveal) => ClipPath(
+                        clipper: _DialogFrameClipper(
+                          compact: nearFullScreen,
+                        ),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                palette.gradient.first,
+                                palette.gradient[1],
+                                palette.gradient.last,
+                              ],
+                              stops: const [0, 0.42, 1],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: palette.shadow,
+                                blurRadius: 46,
+                                offset: const Offset(0, 18),
+                              ),
+                            ],
+                          ),
+                          child: CustomPaint(
+                            painter: _CeremonialDialogFramePainter(
+                              progress: reveal,
+                              accent: palette.accent,
+                              border: palette.border,
+                              glow: palette.glow,
+                              structuralCount: identity.structuralCount,
+                              highContrast: highContrast,
+                              textDirection: direction,
+                            ),
+                            child: Stack(
+                              children: [
+                                SingleChildScrollView(
+                                  key: const ValueKey('event-dialog-scroll'),
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                    nearFullScreen ? 20 : 34,
+                                    nearFullScreen ? 58 : 52,
+                                    nearFullScreen ? 20 : 34,
+                                    nearFullScreen ? 24 : 34,
+                                  ),
+                                  child: _EventDialogBody(
+                                    eventKey: eventKey,
+                                    palette: palette,
+                                    content: content,
+                                    reveal: reveal,
+                                    textScale: textScale,
+                                    highContrast: highContrast,
+                                  ),
+                                ),
+                                PositionedDirectional(
+                                  top: nearFullScreen ? 8 : 12,
+                                  end: nearFullScreen ? 8 : 12,
+                                  child: _DialogCloseButton(
+                                    label: l10n.close,
+                                    color: palette.text,
+                                    accent: palette.accent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24.r),
-            child: AnimatedBuilder(
-              animation: _anim,
-              builder: (context, _) {
-                return Stack(
-                  children: [
-                    Positioned.fill(
-                      child: CustomPaint(
-                        painter: _DialogPatternPainter(
-                          color: palette.pattern,
-                          animValue: _anim.value,
-                        ),
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: CustomPaint(
-                        painter: _DialogDecorationPainter(
-                          eventKey: widget.eventKey,
-                          animValue: _anim.value,
-                          accentColor: palette.accent,
-                          glowColor: palette.glow,
-                        ),
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: context.responsive(
-                          mobile: 24.w,
-                          tablet: 32.w,
-                          desktop: 40.w,
-                        ),
-                        vertical: context.responsive(
-                          mobile: 28.w,
-                          tablet: 34.w,
-                          desktop: 40.w,
-                        ),
-                      ),
-                      child:
-                          _buildBody(context, palette, content, l10n, isArabic),
-                    ),
-                  ],
-                );
-              },
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
+}
 
-  Widget _buildDivider(EventPalette palette, double width) {
-    return Center(
-      child: Container(
-        width: width,
-        height: 1.5,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              palette.accent.withValues(alpha: 0),
-              palette.accent.withValues(alpha: 0.5),
-              palette.accent.withValues(alpha: 0),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+class _EventDialogBody extends StatelessWidget {
+  const _EventDialogBody({
+    required this.eventKey,
+    required this.palette,
+    required this.content,
+    required this.reveal,
+    required this.textScale,
+    required this.highContrast,
+  });
 
-  Widget _buildBody(BuildContext context, EventPalette palette,
-      _DialogEventContent content, AppLocalizations l10n, bool isArabic) {
-    final titleSize = context.responsive(
-      mobile: 22.sp,
-      tablet: 26.sp,
-      desktop: 30.sp,
-    );
-    final arabicSize = context.responsive(
-      mobile: 20.sp,
-      tablet: 24.sp,
-      desktop: 28.sp,
-    );
-    final translationSize = context.responsive(
-      mobile: 14.sp,
-      tablet: 16.sp,
-      desktop: 18.sp,
-    );
-    final sourceSize = context.responsive(
-      mobile: 12.sp,
-      tablet: 13.sp,
-      desktop: 14.sp,
-    );
-    final guidanceSize = context.responsive(
-      mobile: 13.sp,
-      tablet: 15.sp,
-      desktop: 17.sp,
-    );
-    final iconContainerSize = context.responsive(
-      mobile: 56.w,
-      tablet: 68.w,
-      desktop: 80.w,
-    );
-    final iconSize = context.responsive(
-      mobile: 28.sp,
-      tablet: 36.sp,
-      desktop: 42.sp,
-    );
+  final String eventKey;
+  final EventPalette palette;
+  final _DialogEventContent content;
+  final Animation<double> reveal;
+  final double textScale;
+  final bool highContrast;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final direction = Directionality.of(context);
+    final titleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
+          color: palette.text,
+          fontWeight: FontWeight.w800,
+          height: 1.16,
+          letterSpacing: 0.1,
+        );
+    final subtitleStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: palette.subtitle,
+          height: 1.45,
+        );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(
-          child: Container(
-            width: iconContainerSize,
-            height: iconContainerSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: palette.accent.withValues(alpha: 0.12),
-              border: Border.all(
-                color: palette.accent.withValues(alpha: 0.3),
-                width: 1.5,
-              ),
-            ),
-            child: Icon(palette.icon, size: iconSize, color: palette.accent),
-          ),
-        ),
-        SizedBox(height: 16.h),
-        Text(
-          IslamicEventPresentation.titleFor(l10n, widget.eventKey),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: titleSize,
-            fontWeight: FontWeight.bold,
-            color: palette.text,
-            height: 1.3,
-            letterSpacing: 0.3,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Text(
-          IslamicEventPresentation.subtitleFor(l10n, widget.eventKey),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: translationSize,
-            color: palette.subtitle,
-            height: 1.4,
-          ),
-        ),
-        SizedBox(height: 24.h),
-        _buildDivider(palette, 40.w),
-        SizedBox(height: 24.h),
-        if (isArabic) ...[
-          Text(
-            content.arabicText,
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-            style: TextStyle(
-              fontSize: arabicSize,
-              color: palette.accent,
-              height: 1.8,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ] else ...[
-          Text(
-            content.arabicText,
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-            style: TextStyle(
-              fontSize: arabicSize,
-              color: palette.accent,
-              height: 1.8,
-              letterSpacing: 0.5,
-            ),
-          ),
-          SizedBox(height: 20.h),
-          Center(
-            child: Container(
-              width: 24.w,
-              height: 1,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    palette.accent.withValues(alpha: 0),
-                    palette.accent.withValues(alpha: 0.35),
-                    palette.accent.withValues(alpha: 0),
-                  ],
+        ExcludeSemantics(
+          child: SizedBox(
+            height: textScale > 1.55 ? 112 : 142,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomPaint(
+                  size: Size(textScale > 1.55 ? 112 : 142,
+                      textScale > 1.55 ? 112 : 142),
+                  painter: _DialogIdentityAperturePainter(
+                    progress: reveal,
+                    accent: palette.accent,
+                    secondary: palette.glow,
+                    highContrast: highContrast,
+                  ),
                 ),
-              ),
+                SizedBox.square(
+                  dimension: textScale > 1.55 ? 82 : 106,
+                  child: Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: CanonicalEventMotif(
+                      eventKey: eventKey,
+                      host: EventVisualHost.dialog,
+                      accent: palette.accent,
+                      secondary: palette.glow,
+                      progress: reveal,
+                      textDirection: direction,
+                      strokeWidth: highContrast ? 2.2 : 1.65,
+                      highContrast: highContrast,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 16.h),
+        ),
+        const SizedBox(height: 10),
+        FadeTransition(
+          opacity: CurvedAnimation(
+            parent: reveal,
+            curve: const Interval(0.22, 0.68, curve: Curves.easeOut),
+          ),
+          child: Column(
+            children: [
+              Text(
+                IslamicEventPresentation.titleFor(l10n, eventKey),
+                textAlign: TextAlign.center,
+                style: titleStyle,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                IslamicEventPresentation.subtitleFor(l10n, eventKey),
+                textAlign: TextAlign.center,
+                style: subtitleStyle,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+        _CeremonialRule(color: palette.accent, progress: reveal),
+        const SizedBox(height: 24),
+        if (content.arabicText.isNotEmpty)
+          Text(
+            content.arabicText,
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.rtl,
+            style: TextStyle(
+              fontSize: 20,
+              color: palette.accent,
+              fontWeight: FontWeight.w500,
+              height: 1.85,
+            ),
+          ),
+        if (!isArabic && content.translation.isNotEmpty) ...[
+          const SizedBox(height: 18),
           Text(
             content.translation,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: translationSize,
-              color: palette.subtitle,
-              fontStyle: FontStyle.italic,
-              height: 1.6,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: palette.subtitle,
+                  fontStyle: FontStyle.italic,
+                  height: 1.6,
+                ),
           ),
         ],
-        SizedBox(height: 20.h),
-        Center(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              color: palette.accent.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(
-                color: palette.accent.withValues(alpha: 0.15),
-                width: 0.8,
+        if (content.source.isNotEmpty) ...[
+          const SizedBox(height: 22),
+          _EventSourceLine(
+            source: content.source,
+            color: palette.accent,
+            highContrast: highContrast,
+          ),
+        ],
+        const SizedBox(height: 24),
+        _CeremonialRule(color: palette.accent, progress: reveal),
+        const SizedBox(height: 20),
+        if (content.guidance.isNotEmpty)
+          CustomPaint(
+            painter: _GuidancePanelPainter(
+              accent: palette.accent,
+              highContrast: highContrast,
+            ),
+            child: Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(18, 18, 18, 20),
+              child: Text(
+                content.guidance,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: palette.text.withValues(alpha: 0.9),
+                      height: 1.68,
+                    ),
               ),
             ),
+          ),
+      ],
+    );
+  }
+}
+
+class _DialogCloseButton extends StatefulWidget {
+  const _DialogCloseButton({
+    required this.label,
+    required this.color,
+    required this.accent,
+  });
+
+  final String label;
+  final Color color;
+  final Color accent;
+
+  @override
+  State<_DialogCloseButton> createState() => _DialogCloseButtonState();
+}
+
+class _DialogCloseButtonState extends State<_DialogCloseButton> {
+  late final FocusNode _focusNode;
+
+  bool get _focused => _focusNode.hasFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode(debugLabel: 'special-event-dialog-close')
+      ..addListener(_handleFocus);
+  }
+
+  void _handleFocus() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _focusNode
+      ..removeListener(_handleFocus)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void dismiss() => Navigator.of(context).pop();
+
+    return Semantics(
+      key: const ValueKey('special-event-dialog-close'),
+      button: true,
+      label: widget.label,
+      onTap: dismiss,
+      child: ExcludeSemantics(
+        child: IconButton(
+          focusNode: _focusNode,
+          tooltip: widget.label,
+          onPressed: dismiss,
+          style: IconButton.styleFrom(
+            minimumSize: const Size.square(48),
+            foregroundColor: widget.color,
+            backgroundColor: widget.accent.withValues(alpha: 0.08),
+            side: BorderSide(
+              color: widget.accent.withValues(alpha: _focused ? 0.95 : 0.42),
+              width: _focused ? 2 : 1,
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+          ),
+          icon: const Icon(Icons.close_rounded),
+        ),
+      ),
+    );
+  }
+}
+
+class _CeremonialRule extends StatelessWidget {
+  const _CeremonialRule({required this.color, required this.progress});
+
+  final Color color;
+  final Animation<double> progress;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExcludeSemantics(
+      child: SizedBox(
+        height: 13,
+        child: CustomPaint(
+          painter: _CeremonialRulePainter(color: color, progress: progress),
+        ),
+      ),
+    );
+  }
+}
+
+class _EventSourceLine extends StatelessWidget {
+  const _EventSourceLine({
+    required this.source,
+    required this.color,
+    required this.highContrast,
+  });
+
+  final String source;
+  final Color color;
+  final bool highContrast;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: color.withValues(alpha: 0.3))),
+        Expanded(
+          flex: 4,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              content.source,
+              source,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: sourceSize,
-                color: palette.accent.withValues(alpha: 0.8),
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.3,
-              ),
+              softWrap: true,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: color.withValues(alpha: highContrast ? 1 : 0.84),
+                    fontWeight: FontWeight.w700,
+                  ),
             ),
           ),
         ),
-        SizedBox(height: 24.h),
-        _buildDivider(palette, 40.w),
-        SizedBox(height: 20.h),
-        Text(
-          content.guidance,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: guidanceSize,
-            color: palette.text.withValues(alpha: 0.85),
-            height: 1.7,
-          ),
-        ),
-        SizedBox(height: 8.h),
+        Expanded(child: Divider(color: color.withValues(alpha: 0.3))),
       ],
     );
   }
 }
 
 class _DialogEventContent {
-  final String arabicText;
-  final String translation;
-  final String source;
-  final String guidance;
-
   const _DialogEventContent({
     required this.arabicText,
     required this.translation,
     required this.source,
     required this.guidance,
   });
+
+  final String arabicText;
+  final String translation;
+  final String source;
+  final String guidance;
 
   static _DialogEventContent forEvent(String eventKey, AppLocalizations l10n) {
     return switch (eventKey) {
@@ -461,137 +545,280 @@ class _DialogEventContent {
           source: l10n.eventWhiteDaysMondayThursdayFastingSource,
           guidance: l10n.eventWhiteDaysMondayThursdayFastingGuidance,
         ),
-      _ => const _DialogEventContent(
+      _ => _DialogEventContent(
           arabicText: '',
           translation: '',
           source: '',
-          guidance: '',
+          guidance: l10n.eventSpecialOccasionGuidance,
         ),
     };
   }
 }
 
-class _DialogPatternPainter extends CustomPainter {
-  final Color color;
-  final double animValue;
+class _CeremonialRouteClipper extends CustomClipper<Path> {
+  const _CeremonialRouteClipper(this.progress);
 
-  _DialogPatternPainter({required this.color, required this.animValue});
+  final double progress;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.5;
-
-    const tileSize = 50.0;
-    final drift = animValue * tileSize * 0.3;
-    final cols = (size.width / tileSize).ceil() + 2;
-    final rows = (size.height / tileSize).ceil() + 2;
-
-    for (int r = -1; r < rows; r++) {
-      for (int c = -1; c < cols; c++) {
-        final cx = c * tileSize + drift;
-        final cy = r * tileSize + drift * 0.5;
-        _drawStar(canvas, Offset(cx, cy), tileSize * 0.3, paint);
-      }
-    }
-  }
-
-  void _drawStar(Canvas canvas, Offset center, double radius, Paint paint) {
-    final path = Path();
-    for (int i = 0; i < 8; i++) {
-      final angle = i * pi / 4;
-      final r = i.isEven ? radius : radius * 0.42;
-      final x = center.dx + cos(angle) * r;
-      final y = center.dy + sin(angle) * r;
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-    }
-    path.close();
-    canvas.drawPath(path, paint);
+  Path getClip(Size size) {
+    if (progress >= 1) return Path()..addRect(Offset.zero & size);
+    final eased = Curves.easeOutCubic.transform(progress.clamp(0, 1));
+    final halfHeight = size.height * 0.5 * eased;
+    final horizontalInset = size.width * 0.5 * (1 - eased);
+    return Path()
+      ..addRect(
+        Rect.fromLTRB(
+          horizontalInset,
+          size.height * 0.5 - halfHeight,
+          size.width - horizontalInset,
+          size.height * 0.5 + halfHeight,
+        ),
+      );
   }
 
   @override
-  bool shouldRepaint(covariant _DialogPatternPainter old) =>
-      old.animValue != animValue || old.color != color;
+  bool shouldReclip(covariant _CeremonialRouteClipper oldClipper) =>
+      oldClipper.progress != progress;
 }
 
-class _DialogDecorationPainter extends CustomPainter {
-  final String eventKey;
-  final double animValue;
-  final Color accentColor;
-  final Color glowColor;
+class _DialogFrameClipper extends CustomClipper<Path> {
+  const _DialogFrameClipper({required this.compact});
 
-  _DialogDecorationPainter({
-    required this.eventKey,
-    required this.animValue,
-    required this.accentColor,
-    required this.glowColor,
-  });
+  final bool compact;
+
+  @override
+  Path getClip(Size size) => _dialogFramePath(size, compact: compact);
+
+  @override
+  bool shouldReclip(covariant _DialogFrameClipper oldClipper) =>
+      oldClipper.compact != compact;
+}
+
+Path _dialogFramePath(Size size, {required bool compact}) {
+  final cut = compact ? 12.0 : 22.0;
+  final shoulder = compact ? 34.0 : 54.0;
+  final center = size.width / 2;
+  return Path()
+    ..moveTo(cut, 0)
+    ..lineTo(center - shoulder, 0)
+    ..lineTo(center - shoulder * 0.72, 7)
+    ..lineTo(center + shoulder * 0.72, 7)
+    ..lineTo(center + shoulder, 0)
+    ..lineTo(size.width - cut, 0)
+    ..lineTo(size.width, cut)
+    ..lineTo(size.width, size.height - cut)
+    ..lineTo(size.width - cut, size.height)
+    ..lineTo(cut, size.height)
+    ..lineTo(0, size.height - cut)
+    ..lineTo(0, cut)
+    ..close();
+}
+
+class _CeremonialDialogFramePainter extends CustomPainter {
+  _CeremonialDialogFramePainter({
+    required this.progress,
+    required this.accent,
+    required this.border,
+    required this.glow,
+    required this.structuralCount,
+    required this.highContrast,
+    required this.textDirection,
+  }) : super(repaint: progress);
+
+  final Animation<double> progress;
+  final Color accent;
+  final Color border;
+  final Color glow;
+  final int structuralCount;
+  final bool highContrast;
+  final TextDirection textDirection;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final w = size.width;
-    final h = size.height;
+    if (size.isEmpty) return;
+    final value = progress.value.clamp(0.0, 1.0);
+    final frame = _dialogFramePath(size, compact: size.width < 370);
+    final metrics = frame.computeMetrics();
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = highContrast ? 2 : 1.15
+      ..color = Color.lerp(border, accent, 0.28)!
+          .withValues(alpha: highContrast ? 1 : 0.86);
+    for (final metric in metrics) {
+      canvas.drawPath(metric.extractPath(0, metric.length * value), paint);
+    }
 
-    _drawCornerGlow(canvas, size);
-
-    final shimmerWidth = w * 0.35;
-    final total = w + shimmerWidth;
-    final xPos = animValue * total - shimmerWidth;
-    final shimmerPaint = Paint()
-      ..shader = ui.Gradient.linear(
-        Offset(xPos, 0),
-        Offset(xPos + shimmerWidth, 0),
-        [
-          const Color(0x00FFFFFF),
-          const Color(0x08FFFFFF),
-          const Color(0x00FFFFFF),
-        ],
-        [0.0, 0.5, 1.0],
+    final glowCenter = Offset(
+      textDirection == TextDirection.rtl
+          ? size.width * 0.75
+          : size.width * 0.25,
+      size.height * 0.08,
+    );
+    final glowPaint = Paint()
+      ..shader = RadialGradient(
+        colors: [glow.withValues(alpha: 0.12), glow.withValues(alpha: 0)],
+      ).createShader(
+        Rect.fromCircle(center: glowCenter, radius: size.width * 0.42),
       );
-    canvas.drawRect(Rect.fromLTWH(0, 0, w, h), shimmerPaint);
-  }
+    canvas.drawCircle(glowCenter, size.width * 0.42, glowPaint);
 
-  void _drawCornerGlow(Canvas canvas, Size size) {
-    final w = size.width;
-    final h = size.height;
-
-    final topRight = Offset(w, 0);
-    final gradientPaint = Paint()
-      ..shader = ui.Gradient.radial(
-        topRight,
-        w * 0.5,
-        [
-          glowColor.withValues(alpha: 0.06),
-          glowColor.withValues(alpha: 0.02),
-          glowColor.withValues(alpha: 0),
-        ],
-        [0.0, 0.5, 1.0],
-      );
-    canvas.drawCircle(topRight, w * 0.5, gradientPaint);
-
-    final bottomLeft = Offset(0, h);
-    final bottomPaint = Paint()
-      ..shader = ui.Gradient.radial(
-        bottomLeft,
-        w * 0.4,
-        [
-          accentColor.withValues(alpha: 0.04),
-          accentColor.withValues(alpha: 0),
-        ],
-        [0.0, 1.0],
-      );
-    canvas.drawCircle(bottomLeft, w * 0.4, bottomPaint);
+    final count = structuralCount.clamp(2, 10);
+    final markProgress = ((value - 0.32) / 0.58).clamp(0.0, 1.0);
+    final markPaint = Paint()
+      ..color = accent.withValues(alpha: highContrast ? 0.65 : 0.24)
+      ..strokeWidth = highContrast ? 1.4 : 0.8;
+    for (var index = 0; index < count; index++) {
+      final local = (markProgress * count - index).clamp(0.0, 1.0);
+      if (local <= 0) continue;
+      final y = size.height * (index + 1) / (count + 1);
+      final length = (index.isEven ? 12.0 : 7.0) * local;
+      canvas
+        ..drawLine(Offset(5, y), Offset(5 + length, y), markPaint)
+        ..drawLine(
+          Offset(size.width - 5, y),
+          Offset(size.width - 5 - length, y),
+          markPaint,
+        );
+    }
   }
 
   @override
-  bool shouldRepaint(covariant _DialogDecorationPainter old) =>
-      old.animValue != animValue ||
-      old.eventKey != eventKey ||
-      old.accentColor != accentColor;
+  bool shouldRepaint(covariant _CeremonialDialogFramePainter oldDelegate) =>
+      oldDelegate.accent != accent ||
+      oldDelegate.border != border ||
+      oldDelegate.glow != glow ||
+      oldDelegate.structuralCount != structuralCount ||
+      oldDelegate.highContrast != highContrast ||
+      oldDelegate.textDirection != textDirection;
+}
+
+class _DialogIdentityAperturePainter extends CustomPainter {
+  _DialogIdentityAperturePainter({
+    required this.progress,
+    required this.accent,
+    required this.secondary,
+    required this.highContrast,
+  }) : super(repaint: progress);
+
+  final Animation<double> progress;
+  final Color accent;
+  final Color secondary;
+  final bool highContrast;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final value = progress.value.clamp(0.0, 1.0);
+    final center = size.center(Offset.zero);
+    final radius = size.shortestSide * 0.43;
+    final wash = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          secondary.withValues(alpha: 0.16),
+          accent.withValues(alpha: 0.055),
+          accent.withValues(alpha: 0),
+        ],
+      ).createShader(Rect.fromCircle(center: center, radius: radius));
+    canvas.drawCircle(center, radius, wash);
+
+    final ring = Paint()
+      ..color = accent.withValues(alpha: highContrast ? 0.8 : 0.42)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = highContrast ? 1.8 : 1;
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius * 0.79),
+      -math.pi / 2,
+      math.pi * 2 * value,
+      false,
+      ring,
+    );
+    final diamondRadius = radius * 0.94 * value;
+    final diamond = Path()
+      ..moveTo(center.dx, center.dy - diamondRadius)
+      ..lineTo(center.dx + diamondRadius, center.dy)
+      ..lineTo(center.dx, center.dy + diamondRadius)
+      ..lineTo(center.dx - diamondRadius, center.dy)
+      ..close();
+    canvas.drawPath(diamond, ring..color = accent.withValues(alpha: 0.22));
+  }
+
+  @override
+  bool shouldRepaint(covariant _DialogIdentityAperturePainter oldDelegate) =>
+      oldDelegate.accent != accent ||
+      oldDelegate.secondary != secondary ||
+      oldDelegate.highContrast != highContrast;
+}
+
+class _CeremonialRulePainter extends CustomPainter {
+  _CeremonialRulePainter({required this.color, required this.progress})
+      : super(repaint: progress);
+
+  final Color color;
+  final Animation<double> progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final value = progress.value.clamp(0.0, 1.0);
+    final center = size.center(Offset.zero);
+    final extent = size.width * 0.46 * value;
+    final paint = Paint()
+      ..color = color.withValues(alpha: 0.4)
+      ..strokeWidth = 0.9;
+    canvas
+      ..drawLine(Offset(center.dx - extent, center.dy), center, paint)
+      ..drawLine(center, Offset(center.dx + extent, center.dy), paint);
+    final diamond = Path()
+      ..moveTo(center.dx, center.dy - 4 * value)
+      ..lineTo(center.dx + 4 * value, center.dy)
+      ..lineTo(center.dx, center.dy + 4 * value)
+      ..lineTo(center.dx - 4 * value, center.dy)
+      ..close();
+    canvas.drawPath(diamond, Paint()..color = color.withValues(alpha: 0.72));
+  }
+
+  @override
+  bool shouldRepaint(covariant _CeremonialRulePainter oldDelegate) =>
+      oldDelegate.color != color;
+}
+
+class _GuidancePanelPainter extends CustomPainter {
+  const _GuidancePanelPainter({
+    required this.accent,
+    required this.highContrast,
+  });
+
+  final Color accent;
+  final bool highContrast;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const cut = 12.0;
+    final path = Path()
+      ..moveTo(cut, 0)
+      ..lineTo(size.width - cut, 0)
+      ..lineTo(size.width, cut)
+      ..lineTo(size.width, size.height - cut)
+      ..lineTo(size.width - cut, size.height)
+      ..lineTo(cut, size.height)
+      ..lineTo(0, size.height - cut)
+      ..lineTo(0, cut)
+      ..close();
+    canvas
+      ..drawPath(
+        path,
+        Paint()..color = accent.withValues(alpha: highContrast ? 0.11 : 0.065),
+      )
+      ..drawPath(
+        path,
+        Paint()
+          ..color = accent.withValues(alpha: highContrast ? 0.72 : 0.26)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = highContrast ? 1.4 : 0.8,
+      );
+  }
+
+  @override
+  bool shouldRepaint(covariant _GuidancePanelPainter oldDelegate) =>
+      oldDelegate.accent != accent || oldDelegate.highContrast != highContrast;
 }

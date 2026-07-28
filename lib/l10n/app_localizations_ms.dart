@@ -3869,7 +3869,8 @@ class AppLocalizationsMs extends AppLocalizations {
   String get eventDaysTashreeq => 'Hari-hari Tasyrik';
 
   @override
-  String get eventRamadanSubtitle => 'Bulan puasa, solat, dan muhasabah diri';
+  String get eventRamadanSubtitle =>
+      'Bulan puasa, qiamullail dan bacaan al-Quran';
 
   @override
   String get eventLastTenRamadanSubtitle =>
@@ -4019,25 +4020,26 @@ class AppLocalizationsMs extends AppLocalizations {
       'Ingatlah Allah dengan banyak dan bertakbir selepas setiap solat fardhu. Ini adalah hari-hari makan, minum dan bersyukur. Berpuasa tidak dibenarkan pada hari-hari ini kecuali bagi jemaah haji yang tidak mampu berkurban.';
 
   @override
-  String get eventWhiteDaysFasting => 'Puasa Hari-Hari Putih';
+  String get eventWhiteDaysFasting => 'Sunah Berpuasa pada Hari Putih';
 
   @override
-  String get eventMondayThursdayFasting => 'Puasa Isnin–Khamis';
+  String get eventMondayThursdayFasting => 'Sunah Puasa Isnin–Khamis';
 
   @override
   String get eventWhiteDaysMondayThursdayFasting =>
-      'Hari-Hari Putih & Puasa Isnin–Khamis';
+      'Hari Putih yang Bertepatan dengan Isnin atau Khamis';
 
   @override
-  String get eventWhiteDaysFastingSubtitle => 'Puasa sunat Al Ayyam Albeedh.';
+  String get eventWhiteDaysFastingSubtitle =>
+      'Berpuasa pada 13, 14 dan 15 setiap bulan Hijrah.';
 
   @override
   String get eventMondayThursdayFastingSubtitle =>
-      'Puasa sunat pada hari Isnin atau Khamis.';
+      'Puasa sunat pada dua hari ketika amalan dibentangkan.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingSubtitle =>
-      'Peringatan sunat untuk Hari-Hari Putih dan Isnin atau Khamis.';
+      'Hari Putih yang jatuh pada hari Isnin atau Khamis.';
 
   @override
   String get eventWhiteDaysFastingArabic =>
@@ -4052,7 +4054,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get eventWhiteDaysFastingGuidance =>
-      'Hari-Hari Putih ialah puasa sunat pada 13, 14 dan 15 bulan Hijri. Huda memaparkan peringatan dari Maghrib hari sebelumnya hingga Fajr supaya anda boleh bersedia sebelum puasa bermula.';
+      'Usahakan berpuasa pada Hari Putih—13, 14 dan 15 bulan Hijrah—mengikut sunah Nabi ﷺ.';
 
   @override
   String get eventMondayThursdayFastingArabic =>
@@ -4067,7 +4069,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get eventMondayThursdayFastingGuidance =>
-      'Puasa Isnin atau Khamis adalah sunat. Huda memaparkan peringatan ini dari Maghrib sebelumnya hingga Fajr, menggunakan waktu solat tempatan anda, supaya anda boleh bersedia.';
+      'Berpuasalah pada hari Isnin dan Khamis setakat yang mampu, mengikut sunah Nabi ﷺ; amalan dibentangkan pada dua hari ini, dan baginda suka amalannya dibentangkan ketika baginda berpuasa.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingArabic =>
@@ -4083,7 +4085,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get eventWhiteDaysMondayThursdayFastingGuidance =>
-      'Kedua-duanya puasa sunat. Peringatan ringkas ini membantu anda merancang Hari-Hari Putih serta puasa Isnin atau Khamis sebelum Fajr.';
+      'Apabila Hari Putih jatuh pada hari Isnin atau Khamis, manfaatkan hari itu dengan puasa sunat mengikut sunah Nabi ﷺ serta perbanyakkan doa dan zikir.';
 
   @override
   String get audios => 'Audio';
@@ -4594,4 +4596,18 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get homeChangesSaveFailed =>
       'Perubahan halaman utama tidak dapat disimpan. Cuba lagi.';
+
+  @override
+  String get eventSpecialOccasion => 'Satu peristiwa istimewa';
+
+  @override
+  String get eventSpecialOccasionSubtitle =>
+      'Hari yang bermakna dalam kalendar Islam';
+
+  @override
+  String get eventSpecialOccasionGuidance =>
+      'Hayati hari ini dengan berzikir, bersyukur dan panduan yang sahih untuk peristiwa ini.';
+
+  @override
+  String get snackbarNeutral => 'Makluman';
 }

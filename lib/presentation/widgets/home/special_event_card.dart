@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/data/models/islamic_event_config.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/home/event_decoration_painter.dart';
-import 'package:huda/presentation/widgets/home/islamic_pattern_painter.dart';
+import 'package:huda/presentation/widgets/home/special_event/canonical_event_motif.dart';
+import 'package:huda/presentation/widgets/home/special_event/ceremonial_event_reveal.dart';
 
 class EventPalette {
   final List<Color> gradient;
@@ -14,7 +14,6 @@ class EventPalette {
   final Color subtitle;
   final Color border;
   final Color shadow;
-  final Color pattern;
   final IconData icon;
 
   const EventPalette({
@@ -25,7 +24,6 @@ class EventPalette {
     required this.subtitle,
     required this.border,
     required this.shadow,
-    required this.pattern,
     required this.icon,
   });
 
@@ -44,7 +42,6 @@ class EventPalette {
               subtitle: Color(0xFFCDC4B0),
               border: Color(0xFF33336B),
               shadow: Color(0x401A1A4E),
-              pattern: Color(0x0AD4AF37),
               icon: Icons.nightlight_round,
             )
           : const EventPalette(
@@ -59,7 +56,6 @@ class EventPalette {
               subtitle: Color(0xFF4A4A70),
               border: Color(0xFFE0D8C8),
               shadow: Color(0x20806830),
-              pattern: Color(0x088B7532),
               icon: Icons.nightlight_round,
             ),
       'last_ten_ramadan' => dark
@@ -75,7 +71,6 @@ class EventPalette {
               subtitle: Color(0xFFCDC4B0),
               border: Color(0xFF2A2A60),
               shadow: Color(0x40151545),
-              pattern: Color(0x0AE8C84C),
               icon: Icons.nights_stay,
             )
           : const EventPalette(
@@ -90,7 +85,6 @@ class EventPalette {
               subtitle: Color(0xFF3A3A60),
               border: Color(0xFFDDD5C2),
               shadow: Color(0x207A6528),
-              pattern: Color(0x087A6528),
               icon: Icons.nights_stay,
             ),
       'eid_al_fitr' => dark
@@ -106,7 +100,6 @@ class EventPalette {
               subtitle: Color(0xFFB8D8B8),
               border: Color(0xFF2A5A38),
               shadow: Color(0x401A4428),
-              pattern: Color(0x0AFFD700),
               icon: Icons.auto_awesome,
             )
           : const EventPalette(
@@ -121,7 +114,6 @@ class EventPalette {
               subtitle: Color(0xFF388E3C),
               border: Color(0xFFD0E8D0),
               shadow: Color(0x202E7D32),
-              pattern: Color(0x082E7D32),
               icon: Icons.auto_awesome,
             ),
       'eid_al_adha' => dark
@@ -137,7 +129,6 @@ class EventPalette {
               subtitle: Color(0xFFD0B8C0),
               border: Color(0xFF5A2A40),
               shadow: Color(0x404A1A30),
-              pattern: Color(0x0AE8B923),
               icon: Icons.mosque,
             )
           : const EventPalette(
@@ -152,7 +143,6 @@ class EventPalette {
               subtitle: Color(0xFF6A3A50),
               border: Color(0xFFE8D4D8),
               shadow: Color(0x208B3A50),
-              pattern: Color(0x088B3A50),
               icon: Icons.mosque,
             ),
       'day_of_arafah' => dark
@@ -168,7 +158,6 @@ class EventPalette {
               subtitle: Color(0xFFD4C0A8),
               border: Color(0xFF5A4028),
               shadow: Color(0x404A3018),
-              pattern: Color(0x0AF4C430),
               icon: Icons.terrain,
             )
           : const EventPalette(
@@ -183,7 +172,6 @@ class EventPalette {
               subtitle: Color(0xFF6A5030),
               border: Color(0xFFE8DCC8),
               shadow: Color(0x208B6520),
-              pattern: Color(0x088B6520),
               icon: Icons.terrain,
             ),
       'first_ten_dhul_hijjah' => dark
@@ -199,7 +187,6 @@ class EventPalette {
               subtitle: Color(0xFFD4C8A8),
               border: Color(0xFF5A4A28),
               shadow: Color(0x404A3A18),
-              pattern: Color(0x0AFFB74D),
               icon: Icons.wb_sunny_outlined,
             )
           : const EventPalette(
@@ -214,7 +201,6 @@ class EventPalette {
               subtitle: Color(0xFF6A5830),
               border: Color(0xFFE8E0C8),
               shadow: Color(0x208B6B20),
-              pattern: Color(0x088B6B20),
               icon: Icons.wb_sunny_outlined,
             ),
       'ashura' => dark
@@ -230,7 +216,6 @@ class EventPalette {
               subtitle: Color(0xFFB0C8D8),
               border: Color(0xFF2A4055),
               shadow: Color(0x401A3045),
-              pattern: Color(0x0A85C1E9),
               icon: Icons.brightness_7,
             )
           : const EventPalette(
@@ -245,7 +230,6 @@ class EventPalette {
               subtitle: Color(0xFF2A5070),
               border: Color(0xFFD0E0E8),
               shadow: Color(0x201A5276),
-              pattern: Color(0x081A5276),
               icon: Icons.brightness_7,
             ),
       'days_of_tashreeq' => dark
@@ -261,7 +245,6 @@ class EventPalette {
               subtitle: Color(0xFFB8CDB8),
               border: Color(0xFF2A4E38),
               shadow: Color(0x401A3E30),
-              pattern: Color(0x0AD4A853),
               icon: Icons.celebration,
             )
           : const EventPalette(
@@ -276,7 +259,6 @@ class EventPalette {
               subtitle: Color(0xFF3A5A30),
               border: Color(0xFFD0E0D0),
               shadow: Color(0x203A6B2A),
-              pattern: Color(0x083A6B2A),
               icon: Icons.celebration,
             ),
       'white_days_fasting' => dark
@@ -292,7 +274,6 @@ class EventPalette {
               subtitle: Color(0xFFC1D8DE),
               border: Color(0xFF24546A),
               shadow: Color(0x4012364A),
-              pattern: Color(0x0AB9E7F2),
               icon: Icons.brightness_5_outlined,
             )
           : const EventPalette(
@@ -307,7 +288,6 @@ class EventPalette {
               subtitle: Color(0xFF426570),
               border: Color(0xFFC8E0E2),
               shadow: Color(0x2024758A),
-              pattern: Color(0x0824758A),
               icon: Icons.brightness_5_outlined,
             ),
       'monday_thursday_fasting' => dark
@@ -323,7 +303,6 @@ class EventPalette {
               subtitle: Color(0xFFCBDCC0),
               border: Color(0xFF315B4A),
               shadow: Color(0x401D4235),
-              pattern: Color(0x0ACDE9A4),
               icon: Icons.wb_twilight_outlined,
             )
           : const EventPalette(
@@ -338,7 +317,6 @@ class EventPalette {
               subtitle: Color(0xFF526A50),
               border: Color(0xFFD6E2CA),
               shadow: Color(0x204E7D42),
-              pattern: Color(0x084E7D42),
               icon: Icons.wb_twilight_outlined,
             ),
       'white_days_monday_thursday_fasting' => dark
@@ -354,7 +332,6 @@ class EventPalette {
               subtitle: Color(0xFFD9D3E6),
               border: Color(0xFF585181),
               shadow: Color(0x40373166),
-              pattern: Color(0x0AF0D784),
               icon: Icons.brightness_5_outlined,
             )
           : const EventPalette(
@@ -369,7 +346,6 @@ class EventPalette {
               subtitle: Color(0xFF605675),
               border: Color(0xFFDDD6EA),
               shadow: Color(0x2065548B),
-              pattern: Color(0x0865548B),
               icon: Icons.brightness_5_outlined,
             ),
       _ => const EventPalette(
@@ -380,7 +356,6 @@ class EventPalette {
           subtitle: Color(0xFFCDC4B0),
           border: Color(0xFF3A3A5E),
           shadow: Color(0x402A2A4E),
-          pattern: Color(0x0AD4AF37),
           icon: Icons.star,
         ),
     };
@@ -432,7 +407,7 @@ class IslamicEventPresentation {
       'monday_thursday_fasting' => l10n.eventMondayThursdayFasting,
       'white_days_monday_thursday_fasting' =>
         l10n.eventWhiteDaysMondayThursdayFasting,
-      _ => eventKey,
+      _ => l10n.eventSpecialOccasion,
     };
   }
 
@@ -450,7 +425,7 @@ class IslamicEventPresentation {
       'monday_thursday_fasting' => l10n.eventMondayThursdayFastingSubtitle,
       'white_days_monday_thursday_fasting' =>
         l10n.eventWhiteDaysMondayThursdayFastingSubtitle,
-      _ => '',
+      _ => l10n.eventSpecialOccasionSubtitle,
     };
   }
 }
@@ -471,59 +446,10 @@ class SpecialEventCard extends StatefulWidget {
   State<SpecialEventCard> createState() => _SpecialEventCardState();
 }
 
-class _SpecialEventCardState extends State<SpecialEventCard>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  late final AnimationController _anim;
+class _SpecialEventCardState extends State<SpecialEventCard> {
+  bool _hovered = false;
+  bool _focused = false;
   bool _pressed = false;
-  bool _appIsActive = true;
-  bool _reduceMotion = false;
-  bool _tickerEnabled = true;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    _appIsActive = switch (WidgetsBinding.instance.lifecycleState) {
-      null || AppLifecycleState.resumed => true,
-      _ => false,
-    };
-    _anim = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 4),
-    );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _reduceMotion = MediaQuery.disableAnimationsOf(context);
-    _tickerEnabled = TickerMode.valuesOf(context).enabled;
-    _syncDecorationMotion();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    _appIsActive = state == AppLifecycleState.resumed;
-    _syncDecorationMotion();
-  }
-
-  void _syncDecorationMotion() {
-    if (!mounted) return;
-    final motionAllowed = _appIsActive && !_reduceMotion && _tickerEnabled;
-    if (motionAllowed) {
-      if (!_anim.isAnimating) _anim.repeat();
-    } else {
-      _anim.stop();
-      if (_reduceMotion) _anim.value = 0;
-    }
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _anim.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -533,110 +459,112 @@ class _SpecialEventCardState extends State<SpecialEventCard>
       isDark: widget.isDarkMode,
     );
     final palette = presentation.palette;
-    final radius = BorderRadius.circular(20.r);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final highContrast = MediaQuery.highContrastOf(context);
+    final active = _hovered || _focused || _pressed;
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final direction = Directionality.of(context);
 
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.0, end: 1.0),
-      duration:
-          reduceMotion ? Duration.zero : const Duration(milliseconds: 800),
+    return CeremonialEventReveal(
+      eventKey: widget.event.eventKey,
+      duration: const Duration(milliseconds: 1180),
       curve: Curves.easeOutCubic,
-      builder: (context, v, child) {
-        return Transform.scale(
-          scale: 0.92 + 0.08 * v,
-          child: Opacity(opacity: v.clamp(0.0, 1.0), child: child),
-        );
-      },
-      child: Semantics(
+      builder: (context, reveal) => Semantics(
         button: true,
+        focusable: true,
+        focused: _focused,
         label: presentation.semanticLabel,
         onTap: widget.onTap,
         child: ExcludeSemantics(
           child: AnimatedScale(
-            scale: _pressed ? 0.975 : 1.0,
+            scale: _pressed ? 0.992 : 1,
             duration: reduceMotion
                 ? Duration.zero
-                : const Duration(milliseconds: 120),
+                : const Duration(milliseconds: 110),
             curve: Curves.easeOutCubic,
             child: Material(
               color: Colors.transparent,
-              borderRadius: radius,
               child: InkWell(
                 key: const ValueKey('special-event-card-action'),
                 onTap: widget.onTap,
+                onHover: (value) {
+                  if (_hovered != value) setState(() => _hovered = value);
+                },
+                onFocusChange: (value) {
+                  if (_focused != value) setState(() => _focused = value);
+                },
                 onHighlightChanged: (pressed) {
                   if (_pressed != pressed) setState(() => _pressed = pressed);
                 },
-                borderRadius: radius,
+                customBorder: const _ClassicEventThresholdBorder(),
                 focusColor: palette.accent.withValues(alpha: 0.13),
                 hoverColor: palette.accent.withValues(alpha: 0.08),
                 splashColor: palette.accent.withValues(alpha: 0.12),
-                child: AnimatedBuilder(
-                  animation: _anim,
-                  builder: (context, _) {
-                    return Ink(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: palette.gradient,
+                child: Ink(
+                  width: double.infinity,
+                  decoration: ShapeDecoration(
+                    shape: const _ClassicEventThresholdBorder(),
+                    gradient: LinearGradient(
+                      begin: direction == TextDirection.rtl
+                          ? Alignment.topRight
+                          : Alignment.topLeft,
+                      end: direction == TextDirection.rtl
+                          ? Alignment.bottomLeft
+                          : Alignment.bottomRight,
+                      colors: palette.gradient,
+                      stops: const [0, 0.52, 1],
+                    ),
+                    shadows: [
+                      BoxShadow(
+                        color: palette.shadow,
+                        blurRadius: active ? 25 : 18,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: ClipPath(
+                    clipper: const _ClassicEventThresholdClipper(),
+                    child: CustomPaint(
+                      painter: _ClassicThresholdPainter(
+                        progress: reveal,
+                        accent: palette.accent,
+                        glow: palette.glow,
+                        border: palette.border,
+                        active: active,
+                        highContrast: highContrast,
+                        textDirection: direction,
+                      ),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: textScale > 1.55 ? 132 : 116,
                         ),
-                        borderRadius: radius,
-                        border: Border.all(color: palette.border, width: 1.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: palette.shadow,
-                            blurRadius: 24,
-                            offset: const Offset(0, 10),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                            context.responsive(
+                              mobile: 16.w,
+                              tablet: 22.w,
+                              desktop: 28.w,
+                            ),
+                            textScale > 1.55 ? 16 : 13,
+                            context.responsive(
+                              mobile: 18.w,
+                              tablet: 24.w,
+                              desktop: 30.w,
+                            ),
+                            textScale > 1.55 ? 16 : 13,
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: radius,
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: CustomPaint(
-                                painter: IslamicPatternPainter(
-                                  patternColor: palette.pattern,
-                                  tileSize: 55,
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: CustomPaint(
-                                painter: EventDecorationPainter(
-                                  eventKey: widget.event.eventKey,
-                                  animValue: _anim.value,
-                                  accentColor: palette.accent,
-                                  glowColor: palette.glow,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: context.responsive(
-                                  mobile: 22.w,
-                                  tablet: 28.w,
-                                  desktop: 36.w,
-                                ),
-                                vertical: context.responsive(
-                                  mobile: 20.w,
-                                  tablet: 24.w,
-                                  desktop: 30.w,
-                                ),
-                              ),
-                              child: _buildContent(
-                                context,
-                                presentation,
-                              ),
-                            ),
-                          ],
+                          child: _buildContent(
+                            context,
+                            presentation,
+                            reveal,
+                            active: active,
+                            highContrast: highContrast,
+                            textScale: textScale,
+                          ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -649,45 +577,64 @@ class _SpecialEventCardState extends State<SpecialEventCard>
   Widget _buildContent(
     BuildContext context,
     IslamicEventPresentation presentation,
-  ) {
+    Animation<double> reveal, {
+    required bool active,
+    required bool highContrast,
+    required double textScale,
+  }) {
     final palette = presentation.palette;
     final titleSize = context.responsive(
-      mobile: 18.sp,
-      tablet: 22.sp,
-      desktop: 26.sp,
+      mobile: 17.sp,
+      tablet: 20.sp,
+      desktop: 23.sp,
     );
     final subtitleSize = context.responsive(
       mobile: 12.sp,
       tablet: 14.sp,
       desktop: 16.sp,
     );
-    final iconSize = context.responsive(
-      mobile: 26.sp,
-      tablet: 34.sp,
-      desktop: 42.sp,
-    );
-    final iconContainer = context.responsive(
-      mobile: 50.w,
-      tablet: 62.w,
-      desktop: 74.w,
-    );
-
-    return Row(
+    final motifExtent = textScale > 1.55
+        ? 60.0
+        : context.responsive(mobile: 76.0, tablet: 86.0, desktop: 94.0);
+    final direction = Directionality.of(context);
+    final content = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          width: iconContainer,
-          height: iconContainer,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: palette.accent.withValues(alpha: 0.12),
-            border: Border.all(
-              color: palette.accent.withValues(alpha: 0.25),
-              width: 1.2,
-            ),
+        SizedBox.square(
+          dimension: motifExtent,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              DecoratedBox(
+                decoration: ShapeDecoration(
+                  color: palette.accent.withValues(alpha: active ? 0.13 : 0.08),
+                  shape: _EventPortalShape(
+                    side: BorderSide(
+                      color: palette.accent.withValues(
+                        alpha: highContrast ? 0.9 : (active ? 0.68 : 0.46),
+                      ),
+                      width: highContrast ? 1.6 : 1,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(9),
+                child: CanonicalEventMotif(
+                  eventKey: widget.event.eventKey,
+                  host: EventVisualHost.classic,
+                  accent: palette.accent,
+                  secondary: palette.glow,
+                  progress: reveal,
+                  textDirection: direction,
+                  strokeWidth: highContrast ? 2 : 1.45,
+                  highContrast: highContrast,
+                ),
+              ),
+            ],
           ),
-          child: Icon(palette.icon, size: iconSize, color: palette.accent),
         ),
-        SizedBox(width: 18.w),
+        SizedBox(width: textScale > 1.55 ? 12 : 16.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -695,29 +642,222 @@ class _SpecialEventCardState extends State<SpecialEventCard>
             children: [
               Text(
                 presentation.title,
+                maxLines: textScale > 1.55 ? null : 2,
+                overflow: textScale > 1.55
+                    ? TextOverflow.visible
+                    : TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: titleSize,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   color: palette.text,
-                  height: 1.3,
-                  letterSpacing: 0.2,
+                  height: 1.22,
+                  letterSpacing: 0.1,
                 ),
               ),
-              SizedBox(height: 4.h),
+              SizedBox(height: textScale > 1.55 ? 6 : 4.h),
               Text(
                 presentation.subtitle,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                maxLines: textScale > 1.55 ? null : 2,
+                overflow: textScale > 1.55
+                    ? TextOverflow.visible
+                    : TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: subtitleSize,
                   color: palette.subtitle,
-                  height: 1.4,
+                  height: 1.35,
                 ),
               ),
             ],
           ),
         ),
+        const SizedBox(width: 8),
+        AnimatedContainer(
+          duration: MediaQuery.disableAnimationsOf(context)
+              ? Duration.zero
+              : const Duration(milliseconds: 150),
+          width: 28,
+          height: 38,
+          decoration: BoxDecoration(
+            border: BorderDirectional(
+              start: BorderSide(
+                color: palette.accent.withValues(alpha: active ? 0.7 : 0.34),
+              ),
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.arrow_forward_rounded,
+            size: 17,
+            color: palette.accent.withValues(alpha: active ? 1 : 0.72),
+          ),
+        ),
       ],
     );
+
+    return FadeTransition(
+      opacity: CurvedAnimation(
+        parent: reveal,
+        curve: const Interval(0.22, 0.72, curve: Curves.easeOut),
+      ),
+      child: content,
+    );
   }
+}
+
+class _ClassicEventThresholdClipper extends CustomClipper<Path> {
+  const _ClassicEventThresholdClipper();
+
+  @override
+  Path getClip(Size size) => _classicThresholdPath(Offset.zero & size);
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class _ClassicEventThresholdBorder extends ShapeBorder {
+  const _ClassicEventThresholdBorder();
+
+  @override
+  EdgeInsetsGeometry get dimensions => EdgeInsets.zero;
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
+      _classicThresholdPath(rect.deflate(1));
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) =>
+      _classicThresholdPath(rect);
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {}
+
+  @override
+  ShapeBorder scale(double t) => this;
+}
+
+Path _classicThresholdPath(Rect rect) {
+  final cut = (rect.shortestSide * 0.12).clamp(14.0, 24.0);
+  final notch = (rect.width * 0.055).clamp(14.0, 30.0);
+  final center = rect.center.dx;
+  return Path()
+    ..moveTo(rect.left + cut, rect.top)
+    ..lineTo(rect.right - cut, rect.top)
+    ..lineTo(rect.right, rect.top + cut)
+    ..lineTo(rect.right, rect.bottom - cut * 0.72)
+    ..lineTo(rect.right - cut * 0.72, rect.bottom)
+    ..lineTo(center + notch, rect.bottom)
+    ..lineTo(center, rect.bottom - 4)
+    ..lineTo(center - notch, rect.bottom)
+    ..lineTo(rect.left + cut * 0.72, rect.bottom)
+    ..lineTo(rect.left, rect.bottom - cut * 0.72)
+    ..lineTo(rect.left, rect.top + cut)
+    ..close();
+}
+
+class _EventPortalShape extends ShapeBorder {
+  const _EventPortalShape({required this.side});
+
+  final BorderSide side;
+
+  @override
+  EdgeInsetsGeometry get dimensions => EdgeInsets.all(side.width);
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
+      getOuterPath(rect.deflate(side.width), textDirection: textDirection);
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    final c = rect.center;
+    return Path()
+      ..moveTo(c.dx, rect.top)
+      ..lineTo(rect.right, c.dy * 0.72)
+      ..lineTo(rect.right, rect.bottom - rect.height * 0.22)
+      ..lineTo(c.dx, rect.bottom)
+      ..lineTo(rect.left, rect.bottom - rect.height * 0.22)
+      ..lineTo(rect.left, c.dy * 0.72)
+      ..close();
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    canvas.drawPath(
+      getOuterPath(rect, textDirection: textDirection),
+      side.toPaint()..style = PaintingStyle.stroke,
+    );
+  }
+
+  @override
+  ShapeBorder scale(double t) => _EventPortalShape(side: side.scale(t));
+}
+
+class _ClassicThresholdPainter extends CustomPainter {
+  _ClassicThresholdPainter({
+    required this.progress,
+    required this.accent,
+    required this.glow,
+    required this.border,
+    required this.active,
+    required this.highContrast,
+    required this.textDirection,
+  }) : super(repaint: progress);
+
+  final Animation<double> progress;
+  final Color accent;
+  final Color glow;
+  final Color border;
+  final bool active;
+  final bool highContrast;
+  final TextDirection textDirection;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (size.isEmpty) return;
+    final value = progress.value.clamp(0.0, 1.0);
+    final frame = _classicThresholdPath(Offset.zero & size);
+    final metric = frame.computeMetrics().first;
+    final drawn = metric.extractPath(0, metric.length * value);
+    final framePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = highContrast ? 1.8 : 1.05
+      ..strokeCap = StrokeCap.round
+      ..color = Color.lerp(border, accent, active ? 0.58 : 0.25)!
+          .withValues(alpha: highContrast ? 1 : 0.82);
+    canvas.drawPath(drawn, framePaint);
+
+    final originOnRight = textDirection == TextDirection.ltr;
+    final origin = Offset(originOnRight ? size.width * 0.84 : size.width * 0.16,
+        size.height * 0.28);
+    final wash = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          glow.withValues(alpha: active ? 0.15 : 0.09),
+          glow.withValues(alpha: 0),
+        ],
+      ).createShader(Rect.fromCircle(center: origin, radius: size.width * 0.3));
+    canvas.drawCircle(origin, size.width * 0.3, wash);
+
+    final ruleProgress = ((value - 0.18) / 0.56).clamp(0.0, 1.0);
+    final rulePaint = Paint()
+      ..color = accent.withValues(alpha: highContrast ? 0.6 : 0.22)
+      ..strokeWidth = highContrast ? 1.1 : 0.65;
+    final inset = size.width * 0.035;
+    final extent = (size.width - inset * 2) * ruleProgress;
+    canvas
+      ..drawLine(Offset(inset, 7), Offset(inset + extent, 7), rulePaint)
+      ..drawLine(
+        Offset(size.width - inset, size.height - 8),
+        Offset(size.width - inset - extent, size.height - 8),
+        rulePaint,
+      );
+  }
+
+  @override
+  bool shouldRepaint(covariant _ClassicThresholdPainter oldDelegate) =>
+      oldDelegate.accent != accent ||
+      oldDelegate.glow != glow ||
+      oldDelegate.border != border ||
+      oldDelegate.active != active ||
+      oldDelegate.highContrast != highContrast ||
+      oldDelegate.textDirection != textDirection;
 }

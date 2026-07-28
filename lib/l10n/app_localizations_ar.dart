@@ -3806,7 +3806,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get eventDaysTashreeq => 'أيام التشريق';
 
   @override
-  String get eventRamadanSubtitle => 'شهر الصيام والقيام والتأمل';
+  String get eventRamadanSubtitle => 'شهر الصيام والقيام وتلاوة القرآن';
 
   @override
   String get eventLastTenRamadanSubtitle =>
@@ -3951,26 +3951,26 @@ class AppLocalizationsAr extends AppLocalizations {
       'أكثروا من ذكر الله، وكبّروا دبر كل صلاة مكتوبة. فهي أيام أكل وشرب وشكر. ولا يجوز صيامها إلا للحاج الذي لم يجد الهدي.';
 
   @override
-  String get eventWhiteDaysFasting => 'صيام الأيام البيض';
+  String get eventWhiteDaysFasting => 'سُنّة صيام الأيام البيض';
 
   @override
-  String get eventMondayThursdayFasting => 'صيام الاثنين والخميس';
+  String get eventMondayThursdayFasting => 'سُنّة صيام الاثنين والخميس';
 
   @override
   String get eventWhiteDaysMondayThursdayFasting =>
-      'صيام الأيام البيض والاثنين والخميس';
+      'اجتماع سُنّة الأيام البيض مع الاثنين أو الخميس';
 
   @override
   String get eventWhiteDaysFastingSubtitle =>
-      'صيام الأيام البيض من كل شهر هجري.';
+      'صيام الثالث عشر والرابع عشر والخامس عشر من كل شهر هجري.';
 
   @override
   String get eventMondayThursdayFastingSubtitle =>
-      'صيام نافلة من السنة يوم الاثنين أو الخميس.';
+      'صيام نافلة في اليومين اللذين تُعرض فيهما الأعمال.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingSubtitle =>
-      'تذكير نافلة للأيام البيض وصيام الاثنين أو الخميس.';
+      'يوم من الأيام البيض يوافق يوم الاثنين أو الخميس.';
 
   @override
   String get eventWhiteDaysFastingArabic =>
@@ -3985,7 +3985,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get eventWhiteDaysFastingGuidance =>
-      'الأيام البيض صيام نافلة في الثالث عشر والرابع عشر والخامس عشر من الشهر الهجري. يظهر هدى التذكير من مغرب اليوم السابق إلى الفجر لتتمكن من الاستعداد قبل بدء الصيام.';
+      'احرصوا على صيام الأيام البيض، وهي الثالث عشر والرابع عشر والخامس عشر من الشهر الهجري، اقتداءً بسنة النبي ﷺ.';
 
   @override
   String get eventMondayThursdayFastingArabic =>
@@ -4000,7 +4000,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get eventMondayThursdayFastingGuidance =>
-      'صيام الاثنين أو الخميس نافلة. يظهر هدى هذا التذكير من مغرب اليوم السابق إلى الفجر وفق أوقات الصلاة المحلية لتستعد قبل بدء الصيام.';
+      'احرصوا على صيام ما تيسّر من يومَي الاثنين والخميس اقتداءً بسنة النبي ﷺ؛ ففيهما تُعرض الأعمال، وكان يحب أن يُعرض عمله وهو صائم.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingArabic =>
@@ -4016,7 +4016,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get eventWhiteDaysMondayThursdayFastingGuidance =>
-      'كلاهما صيام نافلة. يتيح لك هذا التذكير القصير التخطيط للأيام البيض وصيام الاثنين أو الخميس قبل الفجر.';
+      'إذا وافق أحد الأيام البيض يوم الاثنين أو الخميس، فاغتنموا هذا اليوم بصيام النافلة اقتداءً بسنة النبي ﷺ، وأكثروا فيه من الدعاء والذكر.';
 
   @override
   String get audios => 'صوتيات';
@@ -4526,4 +4526,17 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get homeChangesSaveFailed =>
       'تعذّر حفظ تغييرات الصفحة الرئيسية. حاول مرة أخرى.';
+
+  @override
+  String get eventSpecialOccasion => 'مناسبة مباركة';
+
+  @override
+  String get eventSpecialOccasionSubtitle => 'يوم ذو معنى في التقويم الهجري';
+
+  @override
+  String get eventSpecialOccasionGuidance =>
+      'أحيوا هذا اليوم بالذكر والشكر، واتبعوا ما ثبت من الهدي الخاص بهذه المناسبة.';
+
+  @override
+  String get snackbarNeutral => 'تنبيه';
 }

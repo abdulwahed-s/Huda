@@ -3916,7 +3916,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get eventRamadanSubtitle =>
-      'Der Monat des Fastens, des Gebets und der Besinnung';
+      'Der Monat des Fastens, des Nachtgebets und der Koranrezitation';
 
   @override
   String get eventLastTenRamadanSubtitle =>
@@ -4067,26 +4067,28 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gedenkt Allahs reichlich und sprecht den Takbir nach jedem Pflichtgebet. Es sind Tage des Essens, Trinkens und der Dankbarkeit. Das Fasten ist an diesen Tagen verboten, ausser fur den Pilger, der kein Opfer bringen kann.';
 
   @override
-  String get eventWhiteDaysFasting => 'Fasten an den weißen Tagen';
+  String get eventWhiteDaysFasting =>
+      'Die Sunna des Fastens an den Weißen Tagen';
 
   @override
-  String get eventMondayThursdayFasting => 'Fasten am Montag und Donnerstag';
+  String get eventMondayThursdayFasting =>
+      'Die Sunna des Fastens am Montag und Donnerstag';
 
   @override
   String get eventWhiteDaysMondayThursdayFasting =>
-      'Weiße Tage & Montag–Donnerstag-Fasten';
+      'Weiße Tage an einem Montag oder Donnerstag';
 
   @override
   String get eventWhiteDaysFastingSubtitle =>
-      'Freiwilliges Fasten an Al-Ayyam al-Bid.';
+      'Fasten am 13., 14. und 15. jedes Hidschri-Monats.';
 
   @override
   String get eventMondayThursdayFastingSubtitle =>
-      'Ein freiwilliges Sunna-Fasten am Montag oder Donnerstag.';
+      'Ein freiwilliges Fasten an den beiden Tagen, an denen die Taten vorgelegt werden.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingSubtitle =>
-      'Eine freiwillige Erinnerung für die weißen Tage und Montag oder Donnerstag.';
+      'Ein Weißer Tag, der auf einen Montag oder Donnerstag fällt.';
 
   @override
   String get eventWhiteDaysFastingArabic =>
@@ -4101,7 +4103,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get eventWhiteDaysFastingGuidance =>
-      'Die weißen Tage sind freiwillige Fastentage am 13., 14. und 15. des Hidschri-Monats. Huda zeigt die Erinnerung vom Maghrib des Vortags bis zum Fajr, damit du dich vor Beginn des Fastens vorbereiten kannst.';
+      'Bemühe dich, an den Weißen Tagen – dem 13., 14. und 15. des Hidschri-Monats – gemäß der Sunna des Propheten ﷺ zu fasten.';
 
   @override
   String get eventMondayThursdayFastingArabic =>
@@ -4116,7 +4118,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get eventMondayThursdayFastingGuidance =>
-      'Das Fasten am Montag oder Donnerstag ist freiwillig. Huda zeigt diese Erinnerung vom Maghrib des Vortags bis zum Fajr nach deinen lokalen Gebetszeiten, damit du dich vorbereiten kannst.';
+      'Faste nach deinen Möglichkeiten montags und donnerstags gemäß der Sunna des Propheten ﷺ; an diesen Tagen werden die Taten vorgelegt, und er liebte es, dass seine Taten vorgelegt wurden, während er fastete.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingArabic =>
@@ -4132,7 +4134,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get eventWhiteDaysMondayThursdayFastingGuidance =>
-      'Beides sind freiwillige Fasten. Diese kurze Erinnerung hilft dir, die weißen Tage und ein Fasten am Montag oder Donnerstag vor Fajr zu planen.';
+      'Fällt ein Weißer Tag auf einen Montag oder Donnerstag, nutze diesen Tag für das freiwillige Fasten gemäß der Sunna des Propheten ﷺ und mehre Bittgebet und Gottesgedenken.';
 
   @override
   String get audios => 'Audio';
@@ -4648,4 +4650,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get homeChangesSaveFailed =>
       'Die Änderungen konnten nicht gespeichert werden. Versuche es erneut.';
+
+  @override
+  String get eventSpecialOccasion => 'Ein besonderer Anlass';
+
+  @override
+  String get eventSpecialOccasionSubtitle =>
+      'Ein bedeutungsvoller Tag im islamischen Kalender';
+
+  @override
+  String get eventSpecialOccasionGuidance =>
+      'Begehe diesen Tag mit Gedenken, Dankbarkeit und verlässlicher Anleitung für diesen Anlass.';
+
+  @override
+  String get snackbarNeutral => 'Hinweis';
 }

@@ -3932,7 +3932,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get eventRamadanSubtitle =>
-      'El mes del ayuno, la oracion y la reflexion';
+      'El mes del ayuno, la oración nocturna y la recitación del Corán';
 
   @override
   String get eventLastTenRamadanSubtitle =>
@@ -4083,26 +4083,26 @@ class AppLocalizationsEs extends AppLocalizations {
       'Recordad a Allah abundantemente y recitad el Takbir tras cada oracion obligatoria. Son dias de comer, beber y agradecer. El ayuno esta prohibido estos dias excepto para el peregrino que no puede ofrecer sacrificio.';
 
   @override
-  String get eventWhiteDaysFasting => 'Ayuno de los días blancos';
+  String get eventWhiteDaysFasting => 'La sunnah de ayunar los Días Blancos';
 
   @override
-  String get eventMondayThursdayFasting => 'Ayuno de lunes y jueves';
+  String get eventMondayThursdayFasting => 'La sunnah de ayunar lunes y jueves';
 
   @override
   String get eventWhiteDaysMondayThursdayFasting =>
-      'Días blancos y ayuno de lunes–jueves';
+      'Días Blancos que coinciden con lunes o jueves';
 
   @override
   String get eventWhiteDaysFastingSubtitle =>
-      'Ayuno voluntario de Al Ayyam Albeedh.';
+      'Ayuno de los días 13, 14 y 15 de cada mes hiyri.';
 
   @override
   String get eventMondayThursdayFastingSubtitle =>
-      'Un ayuno voluntario de la Sunnah en lunes o jueves.';
+      'Un ayuno voluntario en los dos días en que se presentan las obras.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingSubtitle =>
-      'Un recordatorio voluntario para los días blancos y lunes o jueves.';
+      'Un Día Blanco que cae en lunes o jueves.';
 
   @override
   String get eventWhiteDaysFastingArabic =>
@@ -4117,7 +4117,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get eventWhiteDaysFastingGuidance =>
-      'Los días blancos son ayunos voluntarios los días 13, 14 y 15 del mes hiyri. Huda muestra el recordatorio desde el Maghrib anterior hasta el Fajr para que puedas prepararte antes de comenzar el ayuno.';
+      'Procura ayunar los Días Blancos —el 13, 14 y 15 del mes hiyri— siguiendo la sunnah del Profeta ﷺ.';
 
   @override
   String get eventMondayThursdayFastingArabic =>
@@ -4132,7 +4132,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get eventMondayThursdayFastingGuidance =>
-      'El ayuno de lunes o jueves es voluntario. Huda muestra este recordatorio desde el Maghrib anterior hasta el Fajr, según tus horarios locales de oración, para que puedas prepararte.';
+      'Ayuna los lunes y jueves que puedas, siguiendo la sunnah del Profeta ﷺ; en esos días se presentan las obras, y él amaba que sus obras fueran presentadas mientras ayunaba.';
 
   @override
   String get eventWhiteDaysMondayThursdayFastingArabic =>
@@ -4148,7 +4148,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get eventWhiteDaysMondayThursdayFastingGuidance =>
-      'Ambos son ayunos voluntarios. Este breve recordatorio te ayuda a planificar los días blancos y un ayuno de lunes o jueves antes del Fajr.';
+      'Cuando un Día Blanco cae en lunes o jueves, aprovecha el día con el ayuno voluntario siguiendo la sunnah del Profeta ﷺ, y aumenta la súplica y el recuerdo de Allah.';
 
   @override
   String get audios => 'Audio';
@@ -4661,4 +4661,18 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get homeChangesSaveFailed =>
       'No se pudieron guardar los cambios. Inténtalo de nuevo.';
+
+  @override
+  String get eventSpecialOccasion => 'Una ocasión especial';
+
+  @override
+  String get eventSpecialOccasionSubtitle =>
+      'Un día significativo del calendario islámico';
+
+  @override
+  String get eventSpecialOccasionGuidance =>
+      'Vive este día con recuerdo, gratitud y orientación fiable para la ocasión.';
+
+  @override
+  String get snackbarNeutral => 'Aviso';
 }
