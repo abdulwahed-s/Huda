@@ -155,6 +155,11 @@ flutter_native_splash:
     icon_background_color: "#0c1d2b"
 
 flutter:
+  config:
+    # Several Apple plugins in this project do not support Swift Package
+    # Manager yet; speech_to_text 7.3.0 also declares an invalid macOS 10.14
+    # SPM target. CocoaPods uses the package's correct macOS 11.0 target.
+    enable-swift-package-manager: false
   generate: true
   uses-material-design: true
 
