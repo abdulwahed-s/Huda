@@ -61,4 +61,7 @@ ios/ExportOptions-CI.plist
 android/key.properties
 android/app/keystore.jks
 *.p12
+*.p8
 Gemfile.lock
+supabase/.temp/
+supabase/migrations

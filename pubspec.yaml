@@ -41,6 +41,7 @@ dependencies:
   # Networking & backend
   dio: ^5.8.0+1
   supabase_flutter: ^2.8.4
+  crypto: ^3.0.6
 
   # Storage & files
   shared_preferences: ^2.5.3

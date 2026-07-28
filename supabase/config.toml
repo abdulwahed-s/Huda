@@ -1,0 +1,7 @@
+project_id = "huda"
+
+[functions.prayer-push-sync]
+verify_jwt = false
+
+[functions.prayer-push-dispatch]
+verify_jwt = false

@@ -18,6 +18,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		A1L10N0001000000000001 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1L10N0001000000000000 /* InfoPlist.strings */; };
+		ADFEED000000000000000002 /* adhan.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADFEED000000000000000001 /* adhan.caf */; };
 		A4284F3CED208BDF319C55BE /* ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245133971C96B8916F5AF55F /* ShieldActionExtension.swift */; };
 		B4BE427B2ACAED4E1D18C346 /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C282291C2F390CC600DE1448 /* ManagedSettingsUI.framework */; };
 		C24FF2842F08C50400FAB435 /* huda_icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C24FF2832F08C50400FAB435 /* huda_icon.icon */; };
@@ -102,6 +103,7 @@
 		538A654D891DB463D77E3A70 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ADFEED000000000000000001 /* adhan.caf */ = {isa = PBXFileReference; lastKnownFileType = audio.caf; path = adhan.caf; sourceTree = "<group>"; };
 		7639391E0956FD26B262C4B9 /* HudaShieldAction.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = HudaShieldAction.entitlements; sourceTree = "<group>"; };
 		76F5C1567F673F5A7A766D9F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				C3FAMACT12345678901235 /* FamilyActivityPickerView.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				A1L10N0001000000000000 /* InfoPlist.strings */,
+				ADFEED000000000000000001 /* adhan.caf */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -561,6 +564,7 @@
 				C24FF2842F08C50400FAB435 /* huda_icon.icon in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				A1L10N0001000000000001 /* InfoPlist.strings in Resources */,
+				ADFEED000000000000000002 /* adhan.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
