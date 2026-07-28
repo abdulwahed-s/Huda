@@ -6,7 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:huda/core/cache/cache_helper.dart';
-import 'package:huda/core/services/notification_isolate_helper.dart';
+import 'package:huda/core/services/notification_capacity_policy.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -26,7 +26,9 @@ class NotificationPageHelper {
   static const int _randomAthkarBaseId = 1100;
 
   static const String _renewalTaskName = 'renewAthkarNotifications';
-  static const int _maxRandomAthkarNotifications = 450;
+  static const int _historicalRandomAthkarLimit = 450;
+  static int get _maxRandomAthkarNotifications =>
+      NotificationCapacityPolicy.current.randomAthkarLimit;
 
   static const String _athkarProgressKey = 'athkarSchedulingProgress';
   static const String _athkarLastScheduledKey = 'athkarLastScheduledTime';
@@ -272,6 +274,13 @@ class NotificationPageHelper {
           presentSound: true,
           interruptionLevel: InterruptionLevel.timeSensitive,
         ),
+        macOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.timeSensitive,
+        ),
+        windows: WindowsNotificationDetails(),
       ),
       matchDateTimeComponents: DateTimeComponents.time,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -321,6 +330,13 @@ class NotificationPageHelper {
           presentSound: true,
           interruptionLevel: InterruptionLevel.timeSensitive,
         ),
+        macOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.timeSensitive,
+        ),
+        windows: WindowsNotificationDetails(),
       ),
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -434,6 +450,13 @@ class NotificationPageHelper {
       return;
     }
 
+    if (_maxRandomAthkarNotifications == 0) {
+      await _clearSchedulingProgress();
+      debugPrint(
+          'Random Athkar scheduling is disabled on this platform to preserve notification capacity');
+      return;
+    }
+
     debugPrint('🚀 Starting resilient 24/7 athkar scheduling...');
 
     if (await _shouldResumeBackgroundScheduling(frequencyMinutes)) {
@@ -463,20 +486,15 @@ class NotificationPageHelper {
   }
 
   Future<void> _cancelAllRandomAthkar() async {
-    if (Platform.isWindows) {
-      await windowsCancelAllAndRescheduleFixed(_plugin);
-    } else {
-      final ids = List<int>.generate(
-        _maxRandomAthkarNotifications,
-        (i) => _randomAthkarBaseId + i,
-      );
-      for (final id in ids) {
-        await _plugin.cancel(id);
-      }
+    final pending = await _plugin.pendingNotificationRequests();
+    final ids = pending.map((notification) => notification.id).where((id) =>
+        id >= _randomAthkarBaseId &&
+        id < _randomAthkarBaseId + _historicalRandomAthkarLimit);
+    for (final id in ids) {
+      await _plugin.cancel(id);
     }
 
-    debugPrint(
-        '🗑️ Cancelled up to $_maxRandomAthkarNotifications random athkar notifications');
+    debugPrint('🗑️ Cancelled historical random athkar notifications');
   }
 
   Future<void> _scheduleAthkarRenewal(int frequencyMinutes) async {
@@ -529,17 +547,15 @@ class NotificationPageHelper {
   }
 
   Future<void> cancelAll() async {
-    if (Platform.isWindows) {
-      await _plugin.cancelAll();
-    } else {
-      await cancel(_kahfNotificationId);
-      await cancel(_athkarMorningId);
-      await cancel(_athkarEveningId);
-      await cancel(_quranReminderId);
-      await cancel(_quranReminderId + 100);
-      await cancel(_khatmaReminderId);
-      await _cancelAllRandomAthkar();
-    }
+    await cancel(_kahfNotificationId);
+    await cancel(_athkarMorningId);
+    await cancel(_athkarEveningId);
+    await cancel(_quranReminderId);
+    await cancel(_quranReminderId + 100);
+    await cancel(_checklistReminderId);
+    await cancel(_checklistReminderId + 100);
+    await cancel(_khatmaReminderId);
+    await _cancelAllRandomAthkar();
 
     debugPrint(
         '🔔 Cancelled all Islamic reminder notifications (preserving foreground services)');
@@ -559,7 +575,7 @@ class NotificationPageHelper {
               notification.id <= _khatmaReminderId) ||
           (notification.id >= _randomAthkarBaseId &&
               notification.id <
-                  _randomAthkarBaseId + _maxRandomAthkarNotifications);
+                  _randomAthkarBaseId + _historicalRandomAthkarLimit);
     }).toList();
 
     debugPrint(
@@ -876,7 +892,8 @@ class NotificationPageHelper {
     final endTime = now.add(const Duration(hours: 12));
     int scheduledCount = 0;
 
-    const maxImmediateNotifications = 50;
+    final maxImmediateNotifications =
+        _maxRandomAthkarNotifications.clamp(0, 50).toInt();
 
     while (nextTime.isBefore(endTime) &&
         scheduledCount < maxImmediateNotifications) {
@@ -915,6 +932,13 @@ class NotificationPageHelper {
               presentSound: true,
               interruptionLevel: InterruptionLevel.active,
             ),
+            macOS: DarwinNotificationDetails(
+              presentAlert: true,
+              presentBadge: true,
+              presentSound: true,
+              interruptionLevel: InterruptionLevel.active,
+            ),
+            windows: WindowsNotificationDetails(),
           ),
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         );
@@ -952,7 +976,8 @@ class NotificationPageHelper {
 
         final now = tz.TZDateTime.now(tz.local);
 
-        const maxImmediateNotifications = 50;
+        final maxImmediateNotifications =
+            _maxRandomAthkarNotifications.clamp(0, 50).toInt();
         final startId = _randomAthkarBaseId + 1 + maxImmediateNotifications;
 
         int notificationId = startId;
@@ -1009,6 +1034,13 @@ class NotificationPageHelper {
                     presentSound: true,
                     interruptionLevel: InterruptionLevel.active,
                   ),
+                  macOS: DarwinNotificationDetails(
+                    presentAlert: true,
+                    presentBadge: true,
+                    presentSound: true,
+                    interruptionLevel: InterruptionLevel.active,
+                  ),
+                  windows: WindowsNotificationDetails(),
                 ),
                 androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
               );

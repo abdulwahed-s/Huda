@@ -1,100 +1,142 @@
 import 'dart:io';
 
-import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:huda/core/services/notification_isolate_helper.dart';
+import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/presentation/screens/app.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:prayer_time_plus/prayer_time_plus.dart';
+import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationServices {
-  final FlutterLocalNotificationsPlugin notificationPlugin =
+  static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
+  static Future<void>? _initialization;
+  static String _timeZoneName = 'local';
 
-  bool isInitialized = false;
+  FlutterLocalNotificationsPlugin get notificationPlugin => _plugin;
+  bool get isReady => _initialization != null;
+  String get timeZoneName => _timeZoneName;
 
-  static const int _prayerNotificationBaseId = 2000;
-  static const int _fajrId = 2001;
-  static const int _dhuhrId = 2002;
-  static const int _asrId = 2003;
-  static const int _maghribId = 2004;
-  static const int _ishaId = 2005;
+  Future<void> initialize({bool requestPermissions = false}) async {
+    _initialization ??= _initializePlugin();
+    try {
+      await _initialization;
+    } catch (_) {
+      _initialization = null;
+      rethrow;
+    }
+    if (requestPermissions) await requestNotificationPermissions();
+  }
 
-  bool get isReady => isInitialized;
-
-  Future<void> initialize() async {
-    if (isInitialized) return;
-
-    tz.initializeTimeZones();
-    final locationName = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(locationName));
-
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    const DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-
-    const WindowsInitializationSettings initializationSettingsWindows =
-        WindowsInitializationSettings(
-      appName: 'Huda',
-      appUserModelId: 'awr.Huda-IslamicCompanionApp',
-      guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
-    );
-
-    const DarwinInitializationSettings initializationSettingsMacOS =
-        DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-
-    const LinuxInitializationSettings initializationSettingsLinux =
-        LinuxInitializationSettings(defaultActionName: 'Open notification');
-
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-      macOS: initializationSettingsMacOS,
-      windows: initializationSettingsWindows,
-      linux: initializationSettingsLinux,
-    );
-
-    await notificationPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: _onNotificationResponse,
-    );
-
-    final iosPlugin = notificationPlugin.resolvePlatformSpecificImplementation<
-        IOSFlutterLocalNotificationsPlugin>();
-    if (iosPlugin != null) {
-      debugPrint('Requesting iOS notification permissions on app startup...');
-      final result = await iosPlugin.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-      debugPrint('iOS notification permission result: $result');
+  Future<void> _initializePlugin() async {
+    tz_data.initializeTimeZones();
+    try {
+      _timeZoneName = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(_timeZoneName));
+    } catch (error) {
+      debugPrint('Unable to determine local timezone: $error');
     }
 
-    await _createNotificationChannel();
+    const settings = InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      iOS: DarwinInitializationSettings(
+        requestAlertPermission: false,
+        requestBadgePermission: false,
+        requestSoundPermission: false,
+      ),
+      macOS: DarwinInitializationSettings(
+        requestAlertPermission: false,
+        requestBadgePermission: false,
+        requestSoundPermission: false,
+      ),
+      windows: WindowsInitializationSettings(
+        appName: 'Huda',
+        appUserModelId: 'awr.Huda-IslamicCompanionApp',
+        guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
+      ),
+      linux: LinuxInitializationSettings(
+        defaultActionName: 'Open notification',
+      ),
+    );
 
-    isInitialized = true;
+    await _plugin.initialize(
+      settings,
+      onDidReceiveNotificationResponse: _onNotificationResponse,
+    );
+    await _createNotificationChannel();
   }
 
   static void _onNotificationResponse(NotificationResponse response) {
     App.navigatorKey.currentState?.pushNamed('/prayerTimes');
   }
 
+  Future<bool> requestNotificationPermissions() async {
+    await initialize();
+    if (Platform.isAndroid) {
+      final android = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      final notificationPermission =
+          await android?.requestNotificationsPermission() ?? true;
+      if (await android?.canScheduleExactNotifications() == false) {
+        await android?.requestExactAlarmsPermission();
+      }
+      return notificationPermission;
+    }
+    if (Platform.isIOS) {
+      final ios = _plugin.resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>();
+      return await ios?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          ) ??
+          false;
+    }
+    if (Platform.isMacOS) {
+      final mac = _plugin.resolvePlatformSpecificImplementation<
+          MacOSFlutterLocalNotificationsPlugin>();
+      return await mac?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          ) ??
+          false;
+    }
+    return true;
+  }
+
+  Future<bool> areNotificationsAllowed() async {
+    await initialize();
+    if (Platform.isAndroid) {
+      final android = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      return await android?.areNotificationsEnabled() ?? true;
+    }
+    if (Platform.isIOS) {
+      final ios = _plugin.resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>();
+      return (await ios?.checkPermissions())?.isEnabled ?? false;
+    }
+    if (Platform.isMacOS) {
+      final mac = _plugin.resolvePlatformSpecificImplementation<
+          MacOSFlutterLocalNotificationsPlugin>();
+      return (await mac?.checkPermissions())?.isEnabled ?? false;
+    }
+    return true;
+  }
+
+  Future<bool> canScheduleExactNotifications() async {
+    await initialize();
+    if (!Platform.isAndroid) return true;
+    final android = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    return await android?.canScheduleExactNotifications() ?? true;
+  }
+
   Future<void> _createNotificationChannel() async {
-    const AndroidNotificationChannel prayerChannel = AndroidNotificationChannel(
+    const channel = AndroidNotificationChannel(
       'prayer_times_channel',
       'Prayer Times',
       description: 'Notifications for daily prayer times (Adhan)',
@@ -105,14 +147,9 @@ class NotificationServices {
       sound: RawResourceAndroidNotificationSound('azan_sound'),
       showBadge: true,
     );
-
-    final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-        notificationPlugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
-
-    await androidImplementation?.createNotificationChannel(prayerChannel);
-    debugPrint(
-        '✅ Prayer times notification channel created (isolated from Islamic reminders)');
+    final android = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    await android?.createNotificationChannel(channel);
   }
 
   NotificationDetails notificationDetails() {
@@ -136,6 +173,20 @@ class NotificationServices {
         presentBadge: true,
         presentSound: true,
         sound: 'adhan.caf',
+        interruptionLevel: InterruptionLevel.timeSensitive,
+      ),
+      macOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+        sound: 'adhan.caf',
+        interruptionLevel: InterruptionLevel.timeSensitive,
+      ),
+      windows: WindowsNotificationDetails(
+        duration: WindowsNotificationDuration.long,
+      ),
+      linux: LinuxNotificationDetails(
+        urgency: LinuxNotificationUrgency.critical,
       ),
     );
   }
@@ -145,16 +196,62 @@ class NotificationServices {
     required String title,
     required String body,
   }) async {
-    if (!isInitialized) {
-      await initialize();
+    await initialize();
+    await _plugin.show(id, title, body, notificationDetails());
+  }
+
+  Future<bool> schedulePrayerEvent(PrayerNotificationEvent event) async {
+    await initialize();
+    if (!event.scheduledTime.isAfter(DateTime.now())) return false;
+
+    final scheduled = tz.TZDateTime(
+      tz.local,
+      event.scheduledTime.year,
+      event.scheduledTime.month,
+      event.scheduledTime.day,
+      event.scheduledTime.hour,
+      event.scheduledTime.minute,
+      event.scheduledTime.second,
+    );
+
+    var mode = AndroidScheduleMode.exactAllowWhileIdle;
+    if (Platform.isAndroid && !await canScheduleExactNotifications()) {
+      mode = AndroidScheduleMode.inexactAllowWhileIdle;
     }
 
-    await notificationPlugin.show(
-      id,
-      title,
-      body,
-      notificationDetails(),
-    );
+    try {
+      await _plugin.zonedSchedule(
+        event.id,
+        event.title,
+        event.body,
+        scheduled,
+        notificationDetails(),
+        payload: event.payload,
+        androidScheduleMode: mode,
+      );
+      return true;
+    } catch (error) {
+      if (Platform.isAndroid &&
+          mode != AndroidScheduleMode.inexactAllowWhileIdle) {
+        try {
+          await _plugin.zonedSchedule(
+            event.id,
+            event.title,
+            event.body,
+            scheduled,
+            notificationDetails(),
+            payload: event.payload,
+            androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          );
+          return true;
+        } catch (fallbackError) {
+          debugPrint('Prayer notification fallback failed: $fallbackError');
+        }
+      } else {
+        debugPrint('Prayer notification scheduling failed: $error');
+      }
+      return false;
+    }
   }
 
   Future<void> schedulePrayerNotification({
@@ -163,63 +260,13 @@ class NotificationServices {
     required String body,
     required DateTime scheduledTime,
   }) async {
-    if (!isInitialized) {
-      await initialize();
-    }
-
-    final prayerNotificationId = _getPrayerNotificationId(title, id);
-
-    final tz.TZDateTime tzScheduledTime =
-        tz.TZDateTime.from(scheduledTime, tz.local);
-
-    if (scheduledTime.isBefore(DateTime.now())) {
-      debugPrint('⚠️ Prayer notification for $title skipped - time has passed');
-      return;
-    }
-
-    try {
-      await notificationPlugin.zonedSchedule(
-        prayerNotificationId,
-        title,
-        body,
-        tzScheduledTime,
-        notificationDetails(),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      );
-
-      debugPrint(
-          '✅ Prayer notification scheduled for $title at $scheduledTime (ID: $prayerNotificationId)');
-    } catch (e) {
-      debugPrint('❌ Error scheduling prayer notification for $title: $e');
-
-      try {
-        await notificationPlugin.zonedSchedule(
-          prayerNotificationId,
-          title,
-          body,
-          tzScheduledTime,
-          notificationDetails(),
-          androidScheduleMode: AndroidScheduleMode.exact,
-        );
-        debugPrint(
-            '✅ Prayer notification scheduled (fallback mode) for $title');
-      } catch (fallbackError) {
-        debugPrint(
-            '❌ Fallback prayer notification also failed for $title: $fallbackError');
-      }
-    }
-  }
-
-  int _getPrayerNotificationIdWithDate(Prayer prayer, int dayOffset) {
-    const baseIds = {
-      Prayer.fajr: 2100,
-      Prayer.dhuhr: 2200,
-      Prayer.asr: 2300,
-      Prayer.maghrib: 2400,
-      Prayer.isha: 2500,
-    };
-
-    return (baseIds[prayer] ?? 2000) + dayOffset;
+    await schedulePrayerEvent(PrayerNotificationEvent(
+      id: 2000 + id,
+      prayer: Prayer.none,
+      scheduledTime: scheduledTime,
+      title: title,
+      body: body,
+    ));
   }
 
   Future<void> schedulePrayerNotificationWithDate({
@@ -229,131 +276,56 @@ class NotificationServices {
     required DateTime scheduledTime,
     required int dayOffset,
   }) async {
-    if (!isInitialized) {
-      await initialize();
-    }
-
-    final prayerNotificationId =
-        _getPrayerNotificationIdWithDate(prayer, dayOffset);
-
-    final tz.TZDateTime tzScheduledTime =
-        tz.TZDateTime.from(scheduledTime, tz.local);
-
-    if (scheduledTime.isBefore(DateTime.now())) {
-      debugPrint('⚠️ Prayer notification for $title skipped - time has passed');
-      return;
-    }
-
-    try {
-      await notificationPlugin.zonedSchedule(
-        prayerNotificationId,
-        title,
-        body,
-        tzScheduledTime,
-        notificationDetails(),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      );
-
-      debugPrint(
-          '✅ Prayer notification scheduled for $title at $scheduledTime (ID: $prayerNotificationId, Day: $dayOffset)');
-    } catch (e) {
-      debugPrint('❌ Error scheduling prayer notification for $title: $e');
-
-      try {
-        await notificationPlugin.zonedSchedule(
-          prayerNotificationId,
-          title,
-          body,
-          tzScheduledTime,
-          notificationDetails(),
-          androidScheduleMode: AndroidScheduleMode.exact,
-        );
-        debugPrint(
-            '✅ Prayer notification scheduled (fallback mode) for $title');
-      } catch (fallbackError) {
-        debugPrint(
-            '❌ Fallback prayer notification also failed for $title: $fallbackError');
-      }
-    }
+    await schedulePrayerEvent(PrayerNotificationEvent(
+      id: PrayerNotificationEvent.idFor(scheduledTime, prayer),
+      prayer: prayer,
+      scheduledTime: scheduledTime,
+      title: title,
+      body: body,
+    ));
   }
 
-  int _getPrayerNotificationId(String prayerName, int fallbackId) {
-    switch (prayerName.toLowerCase()) {
-      case 'fajr':
-        return _fajrId;
-      case 'dhuhr':
-        return _dhuhrId;
-      case 'asr':
-        return _asrId;
-      case 'maghrib':
-        return _maghribId;
-      case 'isha':
-        return _ishaId;
-      default:
-        return _prayerNotificationBaseId + fallbackId;
-    }
-  }
-
-  Future<void> cancelAllNotifications() async {
-    await cancelAllPrayerNotifications();
-    debugPrint(
-        '🔔 Cancelled all prayer time notifications (preserving Islamic reminders)');
-  }
-
-  Future<void> cancelAllPrayerNotifications() async {
-    if (Platform.isWindows) {
-      await windowsCancelAllAndRescheduleFixed(notificationPlugin);
-    } else {
-      final ids = <int>[
-        _fajrId,
-        _dhuhrId,
-        _asrId,
-        _maghribId,
-        _ishaId,
-        for (int i = _prayerNotificationBaseId;
-            i <= _prayerNotificationBaseId + 10;
-            i++)
-          i,
-        for (int day = 0; day < 30; day++) ...[
-          2100 + day,
-          2200 + day,
-          2300 + day,
-          2400 + day,
-          2500 + day,
-        ],
-      ];
-      for (final id in ids) {
-        await notificationPlugin.cancel(id);
-      }
-    }
-
-    debugPrint(
-        '🕌 All prayer time notifications cancelled (including multi-day)');
-  }
-
-  Future<void> cancelAllNotificationsIncludingIslamicReminders() async {
-    await notificationPlugin.cancelAll();
-    debugPrint(
-        '⚠️ EMERGENCY: All notifications cancelled (including Islamic reminders)');
+  Future<List<PendingNotificationRequest>> pendingNotificationRequests() async {
+    await initialize();
+    return _plugin.pendingNotificationRequests();
   }
 
   Future<void> cancelNotification(int id) async {
-    await notificationPlugin.cancel(id);
+    await initialize();
+    await _plugin.cancel(id);
+  }
+
+  Future<void> cancelNotifications(Iterable<int> ids) async {
+    await initialize();
+    for (final id in ids.toSet()) {
+      await _plugin.cancel(id);
+    }
+  }
+
+  Future<void> cancelAllPrayerNotifications() async {
+    final pending = await pendingNotificationRequests();
+    await cancelNotifications(
+      pending.map((request) => request.id).where(
+            PrayerNotificationEvent.isPrayerId,
+          ),
+    );
+
+    await cancelNotifications([
+      for (var id = 2000; id <= 2599; id++) id,
+    ]);
+  }
+
+  Future<void> cancelAllNotifications() => cancelAllPrayerNotifications();
+
+  Future<void> cancelAllNotificationsIncludingIslamicReminders() async {
+    await initialize();
+    await _plugin.cancelAll();
   }
 
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {
-    final allPending = await notificationPlugin.pendingNotificationRequests();
-
-    final prayerNotifications = allPending.where((notification) {
-      final id = notification.id;
-      return (id >= _prayerNotificationBaseId &&
-              id <= _prayerNotificationBaseId + 10) ||
-          [_fajrId, _dhuhrId, _asrId, _maghribId, _ishaId].contains(id) ||
-          (id >= 2100 && id <= 2599);
-    }).toList();
-
-    debugPrint(
-        '📊 Found ${prayerNotifications.length} prayer time notifications');
-    return prayerNotifications;
+    final pending = await pendingNotificationRequests();
+    return pending
+        .where((request) => PrayerNotificationEvent.isPrayerId(request.id))
+        .toList(growable: false);
   }
 }
