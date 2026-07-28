@@ -641,7 +641,7 @@
     "@tafsirLabel": {
         "description": "Tafsir section label"
     },
-    "hudaQuranApp": "هُدَى - تطبيق القرآن",
+    "hudaQuranApp": "هُدَى - رفيقك الإسلامي",
     "@hudaQuranApp": {
         "description": "App name for sharing"
     },
@@ -661,7 +661,7 @@
     "@translationLabel": {
         "description": "Translation section label"
     },
-    "sharedViaHuda": "مشاركة عبر هُدَى - تطبيق القرآن",
+    "sharedViaHuda": "تمّت المشاركة عبر هُدَى - رفيقك الإسلامي\nحمّل هُدَى: http://huda.awrs.me/download",
     "@sharedViaHuda": {
         "description": "Footer for shared content"
     },
@@ -920,6 +920,10 @@
     "@shareInMessage": {
         "description": "Share in message option"
     },
+    "shareBookTitle": "مشاركة «{title}»",
+    "shareBookSubject": "اطّلع على هذا الكتاب: {title}",
+    "preparingPdfForSharing": "جارٍ تجهيز ملف PDF للمشاركة...",
+    "athkarShareRepeatCount": "عدد التكرار: {count}",
     "errorLoadingLanguages": "خطأ في تحميل اللغات: {error}",
     "@errorLoadingLanguages": {
         "description": "Error message for language loading failure",
@@ -1052,7 +1056,6 @@
     "warning": "تحذير",
     "info": "معلومة",
     "notification": "إشعار",
-    "shareTextHudaAI": "مشاركة من هُدَى AI - المساعد الإسلامي الذكي",
     "bookmarksYourCollection": "مجموعتك",
     "bookmarksSavedVerses": "آيات محفوظة",
     "adjustTextSizeForBetterReadability": "اضبط حجم النص لتحسين وضوح القراءة",

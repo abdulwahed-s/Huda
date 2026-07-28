@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class ShareImageOverlay {
   static Future<void> shareAsImage({
@@ -18,7 +19,6 @@ class ShareImageOverlay {
   }) async {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
-    final scaffoldMessengerState = ScaffoldMessenger.of(context);
 
     try {
       final GlobalKey shareKey = GlobalKey();
@@ -55,7 +55,7 @@ class ShareImageOverlay {
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],
-        text: appLocalizations.shareTextHudaAI,
+        text: appLocalizations.sharedViaHuda,
         sharePositionOrigin: Rect.fromCenter(
           center: Offset(screenSize.width / 2, screenSize.height / 2),
           width: 1,
@@ -64,17 +64,9 @@ class ShareImageOverlay {
       ));
     } catch (e) {
       if (context.mounted) {
-        scaffoldMessengerState.showSnackBar(
-          SnackBar(
-            content: Text(
-              '${appLocalizations.error}: ${e.toString()}',
-              style: const TextStyle(),
-            ),
-            backgroundColor: colorScheme.error,
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: appLocalizations.failedToShareImage,
         );
       }
       onError(e);
@@ -163,9 +155,9 @@ class ShareImageOverlay {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Huda AI',
-                style: TextStyle(
+              Text(
+                appLocalizations.hudaAI,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

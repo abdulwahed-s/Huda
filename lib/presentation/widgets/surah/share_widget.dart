@@ -11,6 +11,7 @@ import '../../../core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/data/models/surah_model.dart';
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class ShareWidget extends StatefulWidget {
   final Ayahs ayah;
@@ -495,10 +496,11 @@ class _ShareWidgetState extends State<ShareWidget> {
         widget.surahName ?? AppLocalizations.of(context)!.unknownSurah;
     final englishName = widget.surahEnglishName ?? '';
     final ayahNumber = widget.ayah.numberInSurah ?? 1;
+    final displaySurahName =
+        englishName.isNotEmpty ? '$surahName ($englishName)' : surahName;
 
-    return englishName.isNotEmpty
-        ? '$surahName ($englishName) - Ayah $ayahNumber'
-        : '$surahName - Ayah $ayahNumber';
+    return AppLocalizations.of(context)!
+        .surahAyahReference(displaySurahName, ayahNumber.toString());
   }
 
   String _getShareText() {
@@ -530,51 +532,28 @@ class _ShareWidgetState extends State<ShareWidget> {
       await Clipboard.setData(ClipboardData(text: _getShareText()));
 
       if (mounted) {
-        _showSnack(AppLocalizations.of(context)!.copiedToClipboard,
-            isError: false);
+        _showSnack(
+          AppLocalizations.of(context)!.copiedToClipboard,
+          HudaSnackBarKind.success,
+        );
       }
     } catch (e) {
       if (mounted) {
-        _showSnack(AppLocalizations.of(context)!.failedToCopy, isError: true);
+        _showSnack(
+          AppLocalizations.of(context)!.failedToCopy,
+          HudaSnackBarKind.error,
+        );
       }
     }
   }
 
-  void _showSnack(String message, {required bool isError}) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(
-                isError ? Icons.error_outline : Icons.check_circle_outline,
-                color: Colors.white,
-                size: 20.sp,
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Text(
-                  message,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          backgroundColor:
-              isError ? const Color(0xFFE53935) : const Color(0xFF2E7D32),
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 2),
-          margin: EdgeInsets.all(12.w),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
-      );
+  void _showSnack(String message, HudaSnackBarKind kind) {
+    HudaSnackBar.show(
+      context,
+      message: message,
+      kind: kind,
+      duration: const Duration(seconds: 2),
+    );
   }
 
   void _shareText() async {
@@ -593,14 +572,9 @@ class _ShareWidgetState extends State<ShareWidget> {
       ));
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.failedShareText),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.failedShareText,
         );
       }
     }
@@ -630,11 +604,12 @@ class _ShareWidgetState extends State<ShareWidget> {
 
       if (!mounted) return;
       final screenSize = MediaQuery.of(context).size;
+      final shareTitle = widget.surahName != null
+          ? appLocalizations.ayahFromSurah(widget.surahName!)
+          : appLocalizations.ayahFromQuran;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],
-        text: widget.surahName != null
-            ? appLocalizations.ayahFromSurah(widget.surahName!)
-            : appLocalizations.ayahFromQuran,
+        text: '$shareTitle\n\n${appLocalizations.sharedViaHuda}',
         sharePositionOrigin: Rect.fromCenter(
           center: Offset(screenSize.width / 2, screenSize.height / 2),
           width: 1,
@@ -643,14 +618,9 @@ class _ShareWidgetState extends State<ShareWidget> {
       ));
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.failedShareImage),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.failedShareImage,
         );
       }
     } finally {

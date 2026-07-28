@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/data/models/hadith_details_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/hadith_details/action_button.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:html/parser.dart' as html_parser;
 
@@ -71,7 +71,11 @@ class ActionButtonsRow extends StatelessWidget {
       ));
     } catch (e) {
       if (context.mounted) {
-        _showSnackBar(context, _getErrorMessage('share', e));
+        _showSnackBar(
+          context,
+          AppLocalizations.of(context)!.failedToShareText,
+          HudaSnackBarKind.error,
+        );
       }
     }
   }
@@ -84,11 +88,19 @@ class ActionButtonsRow extends StatelessWidget {
       final formattedText = _formatHadithForSharing(currentLanguageCode);
       await Clipboard.setData(ClipboardData(text: formattedText));
       if (context.mounted) {
-        _showSnackBar(context, _getSuccessMessage('copy'));
+        _showSnackBar(
+          context,
+          AppLocalizations.of(context)!.messageCopied,
+          HudaSnackBarKind.success,
+        );
       }
     } catch (e) {
       if (context.mounted) {
-        _showSnackBar(context, _getErrorMessage('copy', e));
+        _showSnackBar(
+          context,
+          AppLocalizations.of(context)!.failedToCopy,
+          HudaSnackBarKind.error,
+        );
       }
     }
   }
@@ -110,9 +122,7 @@ class ActionButtonsRow extends StatelessWidget {
   }
 
   String _formatHadithForSharing(String languageCode) {
-    final currentLanguageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    int index = currentLanguageCode == "ar" ? 1 : 0;
+    final index = languageCode == 'ar' ? 1 : 0;
 
     final rawHadithHtml = hadith.hadith![index].body!;
 
@@ -128,41 +138,18 @@ class ActionButtonsRow extends StatelessWidget {
                 ? hadith.hadith![0].grades![0].grade ?? ""
                 : ""
             : "");
+    final localizations = AppLocalizations.of(context)!;
 
-    if (languageCode == "ar") {
-      return '''
+    return '''
 📖 $chapterName
 
 $hadithText
 
-🔍 الحالة: $status
+🔍 ${localizations.status}: $status
 
 ---
-مشارك من تطبيق هدى
+${localizations.sharedViaHuda}
 ''';
-    } else if (languageCode == "ur") {
-      return '''
-📖 $chapterName
-
-$hadithText
-
-🔍 حیثیت: $status
-
----
-ہدیٰ ایپ سے شیئر کیا گیا
-''';
-    } else {
-      return '''
-📖 $chapterName
-
-$hadithText
-
-🔍 Status: $status
-
----
-Shared from Huda App
-''';
-    }
   }
 
   String _getTranslatedStatus(BuildContext context, String status) {
@@ -181,69 +168,11 @@ Shared from Huda App
     }
   }
 
-  String _getSuccessMessage(String action) {
-    final currentLanguageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    if (action == 'copy') {
-      return currentLanguageCode == "ar"
-          ? "تم نسخ الحديث إلى الحافظة"
-          : currentLanguageCode == "ur"
-              ? "حدیث کلپ بورڈ میں کاپی ہو گئی"
-              : "Hadith copied to clipboard";
-    }
-    return '';
-  }
-
-  String _getErrorMessage(String action, dynamic error) {
-    final currentLanguageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    if (action == 'share') {
-      return currentLanguageCode == "ar"
-          ? "فشل في مشاركة الحديث"
-          : currentLanguageCode == "ur"
-              ? "حدیث شیئر کرنے میں ناکام"
-              : "Failed to share hadith";
-    } else if (action == 'copy') {
-      return currentLanguageCode == "ar"
-          ? "فشل في نسخ الحديث"
-          : currentLanguageCode == "ur"
-              ? "حدیث کاپی کرنے میں ناکام"
-              : "Failed to copy hadith";
-    }
-    return '';
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(
-              Icons.check_circle_outline,
-              color: Colors.white,
-              size: 20.sp,
-            ),
-            SizedBox(width: 12.0.w),
-            Expanded(
-              child: Text(
-                message,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: context.primaryColor,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        margin: EdgeInsets.all(16.0.w),
-        duration: const Duration(seconds: 3),
-        elevation: 6,
-      ),
-    );
+  void _showSnackBar(
+    BuildContext context,
+    String message,
+    HudaSnackBarKind kind,
+  ) {
+    HudaSnackBar.show(context, message: message, kind: kind);
   }
 }

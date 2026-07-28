@@ -1163,7 +1163,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tafsirLabel => 'Tafsir:';
 
   @override
-  String get hudaQuranApp => 'Huda - Koran-App';
+  String get hudaQuranApp => 'Huda - Ihr islamischer Begleiter';
 
   @override
   String get translationNotAvailable => 'Übersetzung nicht verfügbar';
@@ -1178,7 +1178,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get translationLabel => 'Übersetzung:';
 
   @override
-  String get sharedViaHuda => 'Geteilt über Huda - Koran-App';
+  String get sharedViaHuda =>
+      'Geteilt über Huda - Ihr islamischer Begleiter\nHuda herunterladen: http://huda.awrs.me/download';
 
   @override
   String get copiedToClipboard => 'In Zwischenablage kopiert';
@@ -1368,6 +1369,24 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get shareInMessage => 'In Nachricht teilen';
+
+  @override
+  String shareBookTitle(String title) {
+    return '„$title“ teilen';
+  }
+
+  @override
+  String shareBookSubject(String title) {
+    return 'Entdecken Sie dieses Buch: $title';
+  }
+
+  @override
+  String get preparingPdfForSharing => 'PDF wird zum Teilen vorbereitet...';
+
+  @override
+  String athkarShareRepeatCount(int count) {
+    return 'Wiederholungen: $count';
+  }
 
   @override
   String errorLoadingLanguages(String error) {
@@ -1799,10 +1818,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notification => 'Benachrichtigung';
-
-  @override
-  String get shareTextHudaAI =>
-      'Beigetragen von Huda AI - Der intelligente islamische Assistent';
 
   @override
   String get bookmarksYourCollection => 'Ihre Sammlung';

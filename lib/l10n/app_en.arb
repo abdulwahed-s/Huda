@@ -1513,7 +1513,7 @@
     "@tafsirLabel": {
         "description": "Tafsir section label"
     },
-    "hudaQuranApp": "Huda - Quran App",
+    "hudaQuranApp": "Huda - Islamic Companion App",
     "@hudaQuranApp": {
         "description": "App name for sharing"
     },
@@ -1533,9 +1533,9 @@
     "@translationLabel": {
         "description": "Translation section label"
     },
-    "sharedViaHuda": "Shared via Huda - Quran App",
+    "sharedViaHuda": "Shared via Huda - Islamic Companion App\nDownload Huda: http://huda.awrs.me/download",
     "@sharedViaHuda": {
-        "description": "Footer for shared content"
+        "description": "Localized attribution and download link appended to all shared content"
     },
     "copiedToClipboard": "Copied to clipboard",
     "@copiedToClipboard": {
@@ -1788,6 +1788,40 @@
     "shareInMessage": "Share in Message",
     "@shareInMessage": {
         "description": "Share in message option"
+    },
+    "shareBookTitle": "Share “{title}”",
+    "@shareBookTitle": {
+        "description": "Title for the book sharing dialog",
+        "placeholders": {
+            "title": {
+                "type": "String",
+                "description": "Book title"
+            }
+        }
+    },
+    "shareBookSubject": "Check out this book: {title}",
+    "@shareBookSubject": {
+        "description": "Subject line for a shared book",
+        "placeholders": {
+            "title": {
+                "type": "String",
+                "description": "Book title"
+            }
+        }
+    },
+    "preparingPdfForSharing": "Preparing PDF for sharing...",
+    "@preparingPdfForSharing": {
+        "description": "Progress message while preparing a PDF to share"
+    },
+    "athkarShareRepeatCount": "Repeat count: {count}",
+    "@athkarShareRepeatCount": {
+        "description": "Repeat count shown in shared Athkar text",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "description": "Number of repetitions"
+            }
+        }
     },
     "errorLoadingLanguages": "Error loading languages: {error}",
     "@errorLoadingLanguages": {
@@ -2308,7 +2342,6 @@
     "warning": "warning",
     "info": "info",
     "notification": "notification",
-    "shareTextHudaAI": "Contributed by Huda AI - The Islamic Smart Assistant",
     "bookmarksYourCollection": "Your Collection",
     "bookmarksSavedVerses": "saved verses",
     "adjustTextSizeForBetterReadability": "Adjust text size for better readability",

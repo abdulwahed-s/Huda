@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/data/models/athkar_detail_model.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:huda/presentation/widgets/athkar%20details/share_image_arabic_text.dart';
@@ -58,12 +60,15 @@ class AthkarShareHandler {
     if (state is! AthkarDetailsLoaded) return;
 
     final athkar = state.athkarCategory.details[index];
+    final localizations = AppLocalizations.of(context)!;
     final shareText = """
 ${athkar.arabicText ?? ''}
 
 ${athkar.translatedText ?? ''}
 
-${"عدد التكرار: ${athkar.repeat}"}
+${localizations.athkarShareRepeatCount(athkar.repeat ?? 0)}
+
+${localizations.sharedViaHuda}
 """;
 
     final screenSize = MediaQuery.of(context).size;
@@ -100,7 +105,8 @@ ${"عدد التكرار: ${athkar.repeat}"}
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
           files: [XFile(file.path)],
-          text: 'مشاركة الأذكار - ${state.athkarCategory.title}',
+          text:
+              '${state.athkarCategory.title}\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
           sharePositionOrigin: Rect.fromCenter(
             center: Offset(screenSize.width / 2, screenSize.height / 2),
             width: 1,
@@ -211,17 +217,9 @@ ${"عدد التكرار: ${athkar.repeat}"}
   }
 
   void _showShareErrorSnackbar(String error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'فشل في مشاركة الصورة: $error',
-          style: const TextStyle(),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.error,
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-      ),
+    HudaSnackBar.error(
+      context,
+      message: AppLocalizations.of(context)!.failedToShareImage,
     );
   }
 }

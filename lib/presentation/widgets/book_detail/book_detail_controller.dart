@@ -9,6 +9,8 @@ import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/data/models/offline_book_model.dart';
 import 'package:huda/data/services/offline_books_service.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
@@ -140,12 +142,9 @@ class BookDetailController {
     try {
       launchUrl(Uri.parse(url));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: ${e.toString()}'),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.red,
-        ),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.unexpectedError,
       );
     }
   }
@@ -168,11 +167,9 @@ class BookDetailController {
         },
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Opening files not yet available'),
-          behavior: SnackBarBehavior.floating,
-        ),
+      HudaSnackBar.info(
+        context,
+        message: AppLocalizations.of(context)!.comingSoon,
       );
     }
   }
@@ -228,21 +225,16 @@ class BookDetailController {
       isBookDownloaded = false;
       refreshUI();
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Book deleted successfully'),
-            behavior: SnackBarBehavior.floating,
-          ),
+        HudaSnackBar.success(
+          context,
+          message: AppLocalizations.of(context)!.operationComplete,
         );
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to delete book: $e'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.red,
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }
@@ -250,11 +242,9 @@ class BookDetailController {
 
   Future<void> downloadBook(BookDetailLoaded state) async {
     if (kIsWeb) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Downloads are not available on web'),
-          behavior: SnackBarBehavior.floating,
-        ),
+      HudaSnackBar.info(
+        context,
+        message: AppLocalizations.of(context)!.downloadFeatureComingSoon,
       );
       return;
     }
@@ -281,25 +271,22 @@ class BookDetailController {
         isDownloading = false;
         downloadProgress = 0.0;
         refreshUI();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to start download: $e'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.red,
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }
   }
 
   void shareAsMessage() {
-    final message =
-        'I found this amazing book "$title" - read it in Huda app! 📚\n\nDownload Huda app to explore more Islamic books and resources.';
+    final localizations = AppLocalizations.of(context)!;
+    final message = '$title\n\n${localizations.sharedViaHuda}';
 
     final screenSize = MediaQuery.of(context).size;
     SharePlus.instance.share(ShareParams(
       text: message,
-      subject: 'Check out this book: $title',
+      subject: localizations.shareBookSubject(title),
       sharePositionOrigin: Rect.fromCenter(
         center: Offset(screenSize.width / 2, screenSize.height / 2),
         width: 1,
@@ -334,12 +321,9 @@ class BookDetailController {
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to share PDF: ${e.toString()}'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.red,
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.failedToShareImage,
         );
       }
     }
@@ -360,8 +344,8 @@ class BookDetailController {
           final screenSize = MediaQuery.of(context).size;
           await SharePlus.instance.share(ShareParams(
             files: [XFile(pdfAttachment.localPath)],
-            text: 'Check out this book: $title',
-            subject: title,
+            text: '$title\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
+            subject: AppLocalizations.of(context)!.shareBookSubject(title),
             sharePositionOrigin: Rect.fromCenter(
               center: Offset(screenSize.width / 2, screenSize.height / 2),
               width: 1,
@@ -385,12 +369,9 @@ class BookDetailController {
         await launchUrl(Uri.parse(url));
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to open PDF: ${e.toString()}'),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.red,
-            ),
+          HudaSnackBar.error(
+            context,
+            message: AppLocalizations.of(context)!.unexpectedError,
           );
         }
       }
@@ -407,7 +388,7 @@ class BookDetailController {
               const CircularProgressIndicator(),
               const SizedBox(height: 16),
               Text(
-                'Preparing PDF for sharing...',
+                AppLocalizations.of(context)!.preparingPdfForSharing,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
@@ -430,8 +411,8 @@ class BookDetailController {
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(filePath)],
-        text: 'Check out this book: $title',
-        subject: title,
+        text: '$title\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
+        subject: AppLocalizations.of(context)!.shareBookSubject(title),
         sharePositionOrigin: Rect.fromCenter(
           center: Offset(screenSize.width / 2, screenSize.height / 2),
           width: 1,
@@ -469,21 +450,23 @@ class ShareDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return AlertDialog(
-      title: Text('Share $title'),
+      title: Text(localizations.shareBookTitle(title)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (!PlatformUtils.isLinux)
             ListTile(
               leading: const Icon(Icons.picture_as_pdf),
-              title: const Text('Share as PDF'),
+              title: Text(localizations.shareAsPdf),
               onTap: onShareAsPdf,
             ),
           const Divider(height: 1),
           ListTile(
             leading: const Icon(Icons.message),
-            title: const Text('Share as Message'),
+            title: Text(localizations.shareInMessage),
             onTap: onShareAsMessage,
           ),
         ],

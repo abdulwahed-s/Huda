@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/data/models/counseling_response_model.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class CounselingShareOverlay {
   static Future<void> shareAsImage({
@@ -18,7 +19,6 @@ class CounselingShareOverlay {
   }) async {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
-    final scaffoldMessengerState = ScaffoldMessenger.of(context);
 
     try {
       final GlobalKey shareKey = GlobalKey();
@@ -55,7 +55,7 @@ class CounselingShareOverlay {
       final screenSize = MediaQuery.of(context).size;
       await SharePlus.instance.share(ShareParams(
         files: [XFile(file.path)],
-        text: appLocalizations.shareTextHudaAI,
+        text: appLocalizations.sharedViaHuda,
         sharePositionOrigin: Rect.fromCenter(
           center: Offset(screenSize.width / 2, screenSize.height / 2),
           width: 1,
@@ -64,17 +64,9 @@ class CounselingShareOverlay {
       ));
     } catch (e) {
       if (context.mounted) {
-        scaffoldMessengerState.showSnackBar(
-          SnackBar(
-            content: Text(
-              '${appLocalizations.error}: ${e.toString()}',
-              style: const TextStyle(),
-            ),
-            backgroundColor: colorScheme.error,
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: appLocalizations.failedToShareImage,
         );
       }
       onError(e);
@@ -122,17 +114,22 @@ class CounselingShareOverlay {
                 children: [
                   _buildHeader(appLocalizations),
                   const SizedBox(height: 24),
-                  _buildGuidanceCard(response.counselingText),
+                  _buildGuidanceCard(
+                    response.counselingText,
+                    appLocalizations,
+                  ),
                   const SizedBox(height: 16),
                   _buildQuranCard(
                     response.ayah,
                     response.ayahTranslation,
                     response.ayahReference,
+                    appLocalizations,
                   ),
                   const SizedBox(height: 16),
                   _buildDuaaCard(
                     response.duaa,
                     response.duaaTranslation,
+                    appLocalizations,
                   ),
                   const SizedBox(height: 20),
                   _buildFooter(appLocalizations),
@@ -174,9 +171,9 @@ class CounselingShareOverlay {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Huda AI',
-                style: TextStyle(
+              Text(
+                appLocalizations.hudaAI,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -186,9 +183,9 @@ class CounselingShareOverlay {
             ],
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Counseling Mode',
-            style: TextStyle(
+          Text(
+            appLocalizations.counselingMode,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Colors.white,
@@ -200,9 +197,12 @@ class CounselingShareOverlay {
     );
   }
 
-  static Widget _buildGuidanceCard(String content) {
+  static Widget _buildGuidanceCard(
+    String content,
+    AppLocalizations appLocalizations,
+  ) {
     return _buildSectionCard(
-      title: 'Guidance',
+      title: appLocalizations.guidance,
       icon: Icons.light_mode,
       content: content,
       gradientColors: const [Color(0xFF00897B), Color(0xFF00BFA5)],
@@ -213,9 +213,10 @@ class CounselingShareOverlay {
     String ayah,
     String translation,
     String reference,
+    AppLocalizations appLocalizations,
   ) {
     return _buildSectionCard(
-      title: 'Quranic Wisdom',
+      title: appLocalizations.quranicWisdom,
       icon: Icons.menu_book,
       content: ayah,
       subContent: translation.isNotEmpty ? translation : null,
@@ -224,9 +225,13 @@ class CounselingShareOverlay {
     );
   }
 
-  static Widget _buildDuaaCard(String duaa, String translation) {
+  static Widget _buildDuaaCard(
+    String duaa,
+    String translation,
+    AppLocalizations appLocalizations,
+  ) {
     return _buildSectionCard(
-      title: 'Duaa',
+      title: appLocalizations.duaa,
       icon: Icons.favorite,
       content: duaa,
       subContent: translation.isNotEmpty ? translation : null,

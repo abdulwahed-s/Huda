@@ -2241,7 +2241,7 @@ abstract class AppLocalizations {
   /// App name for sharing
   ///
   /// In en, this message translates to:
-  /// **'Huda - Quran App'**
+  /// **'Huda - Islamic Companion App'**
   String get hudaQuranApp;
 
   /// Translation not available message
@@ -2268,10 +2268,10 @@ abstract class AppLocalizations {
   /// **'Translation:'**
   String get translationLabel;
 
-  /// Footer for shared content
+  /// Localized attribution and download link appended to all shared content
   ///
   /// In en, this message translates to:
-  /// **'Shared via Huda - Quran App'**
+  /// **'Shared via Huda - Islamic Companion App\nDownload Huda: http://huda.awrs.me/download'**
   String get sharedViaHuda;
 
   /// Success message for copy
@@ -2627,6 +2627,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share in Message'**
   String get shareInMessage;
+
+  /// Title for the book sharing dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Share “{title}”'**
+  String shareBookTitle(String title);
+
+  /// Subject line for a shared book
+  ///
+  /// In en, this message translates to:
+  /// **'Check out this book: {title}'**
+  String shareBookSubject(String title);
+
+  /// Progress message while preparing a PDF to share
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing PDF for sharing...'**
+  String get preparingPdfForSharing;
+
+  /// Repeat count shown in shared Athkar text
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat count: {count}'**
+  String athkarShareRepeatCount(int count);
 
   /// Error message for language loading failure
   ///
@@ -3365,12 +3389,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'notification'**
   String get notification;
-
-  /// No description provided for @shareTextHudaAI.
-  ///
-  /// In en, this message translates to:
-  /// **'Contributed by Huda AI - The Islamic Smart Assistant'**
-  String get shareTextHudaAI;
 
   /// No description provided for @bookmarksYourCollection.
   ///
