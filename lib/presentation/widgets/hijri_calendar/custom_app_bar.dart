@@ -7,12 +7,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isDark;
   final bool isTablet;
   final VoidCallback onTodayPressed;
+  final VoidCallback onAdjustmentPressed;
 
   const CustomAppBar({
     super.key,
     required this.isDark,
     required this.isTablet,
     required this.onTodayPressed,
+    required this.onAdjustmentPressed,
   });
 
   @override
@@ -36,18 +38,40 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           SizedBox(width: isTablet ? 16 : 10.w),
-          Text(
-            AppLocalizations.of(context)!.hijriCalendar,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: isTablet ? 24 : 16.sp,
-              fontWeight: FontWeight.w600,
+          Expanded(
+            child: Text(
+              AppLocalizations.of(context)!.hijriCalendar,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: isTablet ? 24 : 16.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
       ),
       actions: [
         IconButton(
+          key: const ValueKey('hijri-adjustment-action'),
+          tooltip: AppLocalizations.of(context)!.hijriAdjustmentAction,
+          onPressed: onAdjustmentPressed,
+          icon: Container(
+            padding: EdgeInsets.all(isTablet ? 12 : 6.w),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Icon(
+              Icons.tune_rounded,
+              color: Colors.white,
+              size: isTablet ? 28 : 18.w,
+            ),
+          ),
+        ),
+        IconButton(
+          tooltip: AppLocalizations.of(context)!.today,
           onPressed: onTodayPressed,
           icon: Container(
             padding: EdgeInsets.all(isTablet ? 12 : 6.w),

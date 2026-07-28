@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
 
 class AppLifecycleManager extends WidgetsBindingObserver {
   static final AppLifecycleManager _instance = AppLifecycleManager._internal();
@@ -20,6 +21,12 @@ class AppLifecycleManager extends WidgetsBindingObserver {
   }
 
   Future<void> _checkAndResumeScheduling() async {
+    try {
+      await getIt<HijriCalendarService>().refreshAutomaticAdjustmentIfDue();
+    } catch (error) {
+      debugPrint('Hijri calendar refresh check failed: $error');
+    }
+
     try {
       debugPrint(
           '📱 App resumed - checking for interrupted scheduling and coverage');

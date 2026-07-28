@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hijri/hijri_calendar.dart';
+import 'package:hijri_plus/hijri_plus.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class CalendarHeaderWidget extends StatelessWidget {
   final Animation<double> animation;
-  final HijriCalendar focusedHijri;
+  final HijriDate focusedHijri;
   final VoidCallback onPreviousMonth;
   final VoidCallback onNextMonth;
   final bool isDark;
@@ -89,7 +89,7 @@ class CalendarHeaderWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _getHijriMonthName(focusedHijri.hMonth),
+                              _getHijriMonthName(focusedHijri.month),
                               style: TextStyle(
                                 fontSize: isLandscape ? 18.sp : 22.sp,
                                 fontWeight: FontWeight.w700,
@@ -100,7 +100,7 @@ class CalendarHeaderWidget extends StatelessWidget {
                             ),
                             SizedBox(height: 2.h),
                             Text(
-                              '${focusedHijri.hYear} هـ',
+                              '${focusedHijri.year} هـ',
                               style: TextStyle(
                                 fontSize: isLandscape ? 14.sp : 16.sp,
                                 fontWeight: FontWeight.w500,

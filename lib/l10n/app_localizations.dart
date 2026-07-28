@@ -558,6 +558,42 @@ abstract class AppLocalizations {
   /// **'Hijri Calendar'**
   String get hijriCalendar;
 
+  /// Title of the one-time Hijri calendar adjustment dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust Hijri calendar'**
+  String get hijriAdjustmentTitle;
+
+  /// Explanation shown in the one-time Hijri calendar adjustment dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how Huda displays Hijri dates.'**
+  String get hijriAdjustmentDescription;
+
+  /// Tooltip for changing the Hijri calendar adjustment
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar adjustment'**
+  String get hijriAdjustmentAction;
+
+  /// Description of automatic Hijri calendar adjustment
+  ///
+  /// In en, this message translates to:
+  /// **'Uses the official Umm al-Qura calendar.'**
+  String get hijriAutomaticAdjustmentDescription;
+
+  /// Heading for manual Hijri calendar adjustment choices
+  ///
+  /// In en, this message translates to:
+  /// **'Manual adjustment'**
+  String get hijriManualAdjustment;
+
+  /// Description of manual Hijri calendar adjustment
+  ///
+  /// In en, this message translates to:
+  /// **'Move the Hijri date forward or backward by up to two days.'**
+  String get hijriManualAdjustmentDescription;
+
   /// Selected date label
   ///
   /// In en, this message translates to:
@@ -7309,6 +7345,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remember Allah abundantly and recite the Takbir after every obligatory prayer. These are days of eating, drinking, and gratitude. Fasting is not permitted on these days except for the pilgrim who cannot afford the sacrifice.'**
   String get eventDaysTashreeqGuidance;
+
+  /// Title for the recurring White Days fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting on the White Days'**
+  String get eventWhiteDaysFasting;
+
+  /// Title for the recurring Monday and Thursday fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Monday–Thursday Fasting'**
+  String get eventMondayThursdayFasting;
+
+  /// Title when White Days and Monday or Thursday fasting overlap
+  ///
+  /// In en, this message translates to:
+  /// **'White Days & Monday–Thursday Fasting'**
+  String get eventWhiteDaysMondayThursdayFasting;
+
+  /// Concise subtitle for the White Days fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting on Al Ayyam Albeedh.'**
+  String get eventWhiteDaysFastingSubtitle;
+
+  /// Concise subtitle for the Monday and Thursday fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'A voluntary Sunnah fast on Monday or Thursday.'**
+  String get eventMondayThursdayFastingSubtitle;
+
+  /// Concise subtitle for the combined fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'A voluntary reminder for the White Days and Monday or Thursday.'**
+  String get eventWhiteDaysMondayThursdayFastingSubtitle;
+
+  /// Arabic hadith text for the White Days fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ'**
+  String get eventWhiteDaysFastingArabic;
+
+  /// Translation of the White Days hadith
+  ///
+  /// In en, this message translates to:
+  /// **'He used to command us to fast the white days: the thirteenth, fourteenth, and fifteenth of the month.'**
+  String get eventWhiteDaysFastingTranslation;
+
+  /// Source for the White Days hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Sunan Abi Dawud 2449'**
+  String get eventWhiteDaysFastingSource;
+
+  /// Guidance for the White Days fasting dialog
+  ///
+  /// In en, this message translates to:
+  /// **'The White Days are voluntary fasts on the 13th, 14th, and 15th of the Hijri month. Huda shows the reminder from the previous Maghrib until Fajr so you can plan before the fast begins.'**
+  String get eventWhiteDaysFastingGuidance;
+
+  /// Arabic hadith text for the Monday and Thursday fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ'**
+  String get eventMondayThursdayFastingArabic;
+
+  /// Translation of the Monday and Thursday fasting hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Deeds are presented on Monday and Thursday, and I love for my deeds to be presented while I am fasting.'**
+  String get eventMondayThursdayFastingTranslation;
+
+  /// Source for the Monday and Thursday fasting hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Jami at-Tirmidhi 747'**
+  String get eventMondayThursdayFastingSource;
+
+  /// Guidance for the Monday and Thursday fasting dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting on Monday or Thursday is voluntary. Huda shows this reminder from the preceding Maghrib until Fajr, using your local prayer times, so you can prepare before the fast begins.'**
+  String get eventMondayThursdayFastingGuidance;
+
+  /// Arabic source text for the combined fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ'**
+  String get eventWhiteDaysMondayThursdayFastingArabic;
+
+  /// Translation for the combined fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'The White Days are the 13th, 14th, and 15th of the Hijri month; deeds are presented on Monday and Thursday.'**
+  String get eventWhiteDaysMondayThursdayFastingTranslation;
+
+  /// Sources for the combined fasting reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Sunan Abi Dawud 2449 · Jami at-Tirmidhi 747'**
+  String get eventWhiteDaysMondayThursdayFastingSource;
+
+  /// Guidance for the combined fasting dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Both are voluntary fasts. This short reminder lets you plan for the White Days and for a Monday or Thursday fast before Fajr.'**
+  String get eventWhiteDaysMondayThursdayFastingGuidance;
 
   /// No description provided for @audios.
   ///

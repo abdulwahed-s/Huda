@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hijri_plus/hijri_plus.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
-import 'package:hijri/hijri_calendar.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/get_current_location.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 
 part 'ramadan_state.dart';
@@ -15,8 +16,14 @@ class RamadanCubit extends Cubit<RamadanState> {
   static const _latKey = PrayerTimesCalculator.latKey;
   static const _lonKey = PrayerTimesCalculator.lonKey;
   static const _ramadanHijriMonth = 9;
+  final HijriCalendarService? _hijriCalendarService;
+  final UmmAlQuraCalendar _fallbackCalendar = UmmAlQuraCalendar();
 
-  RamadanCubit(this.cacheHelper) : super(RamadanInitial());
+  RamadanCubit(
+    this.cacheHelper, {
+    HijriCalendarService? hijriCalendarService,
+  })  : _hijriCalendarService = hijriCalendarService,
+        super(RamadanInitial());
 
   Future<void> loadRamadanData() async {
     emit(RamadanLoading());
@@ -37,15 +44,15 @@ class RamadanCubit extends Cubit<RamadanState> {
       }
 
       final now = DateTime.now();
-      final todayHijri = HijriCalendar.fromDate(now);
-      final isRamadan = todayHijri.hMonth == _ramadanHijriMonth;
-      final currentDay = isRamadan ? todayHijri.hDay : 0;
+      final todayHijri = _toHijri(now);
+      final isRamadan = todayHijri.month == _ramadanHijriMonth;
+      final currentDay = isRamadan ? todayHijri.day : 0;
 
       int ramadanHijriYear;
-      if (isRamadan || todayHijri.hMonth > _ramadanHijriMonth) {
-        ramadanHijriYear = todayHijri.hYear;
+      if (isRamadan || todayHijri.month > _ramadanHijriMonth) {
+        ramadanHijriYear = todayHijri.year;
       } else {
-        ramadanHijriYear = todayHijri.hYear;
+        ramadanHijriYear = todayHijri.year;
       }
 
       int daysUntilRamadan = 0;
@@ -97,11 +104,11 @@ class RamadanCubit extends Cubit<RamadanState> {
     }
   }
 
-  int _calculateDaysUntilRamadan(DateTime now, HijriCalendar todayHijri) {
+  int _calculateDaysUntilRamadan(DateTime now, HijriDate todayHijri) {
     for (int i = 1; i <= 365; i++) {
       final futureDate = now.add(Duration(days: i));
-      final futureHijri = HijriCalendar.fromDate(futureDate);
-      if (futureHijri.hMonth == _ramadanHijriMonth && futureHijri.hDay == 1) {
+      final futureHijri = _toHijri(futureDate);
+      if (futureHijri.month == _ramadanHijriMonth && futureHijri.day == 1) {
         return i;
       }
     }
@@ -117,8 +124,8 @@ class RamadanCubit extends Cubit<RamadanState> {
     for (int day = 1; day <= 30; day++) {
       final gregorianDate = ramadanStart.add(Duration(days: day - 1));
 
-      final hijriCheck = HijriCalendar.fromDate(gregorianDate);
-      if (hijriCheck.hMonth != _ramadanHijriMonth) break;
+      final hijriCheck = _toHijri(gregorianDate);
+      if (hijriCheck.month != _ramadanHijriMonth) break;
 
       final dayOfWeek = _getDayOfWeek(gregorianDate.weekday);
       days.add(RamadanDayInfo(
@@ -137,15 +144,19 @@ class RamadanCubit extends Cubit<RamadanState> {
 
     for (int i = -200; i <= 200; i++) {
       final date = now.add(Duration(days: i));
-      final hijri = HijriCalendar.fromDate(date);
-      if (hijri.hYear == hijriYear &&
-          hijri.hMonth == _ramadanHijriMonth &&
-          hijri.hDay == 1) {
+      final hijri = _toHijri(date);
+      if (hijri.year == hijriYear &&
+          hijri.month == _ramadanHijriMonth &&
+          hijri.day == 1) {
         return date;
       }
     }
     return null;
   }
+
+  HijriDate _toHijri(DateTime date) =>
+      _hijriCalendarService?.toHijri(date) ??
+      _fallbackCalendar.toHijriDateTime(date).date;
 
   String _getDayOfWeek(int weekday) {
     switch (weekday) {

@@ -240,6 +240,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hijriCalendar => 'Calendrier Hijri';
 
   @override
+  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+
+  @override
+  String get hijriAdjustmentDescription =>
+      'Choose how Huda displays Hijri dates.';
+
+  @override
+  String get hijriAdjustmentAction => 'Calendar adjustment';
+
+  @override
+  String get hijriAutomaticAdjustmentDescription =>
+      'Uses the official Umm al-Qura calendar.';
+
+  @override
+  String get hijriManualAdjustment => 'Manual adjustment';
+
+  @override
+  String get hijriManualAdjustmentDescription =>
+      'Move the Hijri date forward or backward by up to two days.';
+
+  @override
   String get selectedDate => 'Date sélectionnée';
 
   @override
@@ -4067,6 +4088,74 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'Rappelez-vous Allah abondamment et recitez le Takbir apres chaque priere obligatoire. Ce sont des jours pour manger, boire et remercier. Le jeune y est interdit sauf pour le pelerin qui ne peut offrir de sacrifice.';
+
+  @override
+  String get eventWhiteDaysFasting => 'Jeûne des jours blancs';
+
+  @override
+  String get eventMondayThursdayFasting => 'Jeûne du lundi et du jeudi';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFasting =>
+      'Jours blancs et jeûne lundi–jeudi';
+
+  @override
+  String get eventWhiteDaysFastingSubtitle =>
+      'Jeûne surérogatoire des Al Ayyam Albeedh.';
+
+  @override
+  String get eventMondayThursdayFastingSubtitle =>
+      'Un jeûne surérogatoire de la Sunna le lundi ou le jeudi.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSubtitle =>
+      'Un rappel surérogatoire pour les jours blancs et le lundi ou jeudi.';
+
+  @override
+  String get eventWhiteDaysFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ';
+
+  @override
+  String get eventWhiteDaysFastingTranslation =>
+      'Il nous ordonnait de jeûner les jours blancs : le treizième, le quatorzième et le quinzième du mois.';
+
+  @override
+  String get eventWhiteDaysFastingSource => 'Sunan Abi Dawud 2449';
+
+  @override
+  String get eventWhiteDaysFastingGuidance =>
+      'Les jours blancs sont des jeûnes surérogatoires les 13e, 14e et 15e jours du mois hégirien. Huda affiche le rappel du Maghrib précédent jusqu\'au Fajr afin que vous puissiez vous préparer avant le début du jeûne.';
+
+  @override
+  String get eventMondayThursdayFastingArabic =>
+      'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ';
+
+  @override
+  String get eventMondayThursdayFastingTranslation =>
+      'Les œuvres sont présentées le lundi et le jeudi, et j\'aime que mes œuvres soient présentées pendant que je jeûne.';
+
+  @override
+  String get eventMondayThursdayFastingSource => 'Jami at-Tirmidhi 747';
+
+  @override
+  String get eventMondayThursdayFastingGuidance =>
+      'Le jeûne du lundi ou du jeudi est surérogatoire. Huda affiche ce rappel du Maghrib précédent jusqu\'au Fajr, selon vos heures de prière locales, afin que vous puissiez vous préparer.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingTranslation =>
+      'Les jours blancs sont les 13e, 14e et 15e jours du mois hégirien ; les œuvres sont présentées le lundi et le jeudi.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSource =>
+      'Sunan Abi Dawud 2449 · Jami at-Tirmidhi 747';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingGuidance =>
+      'Ces deux jeûnes sont surérogatoires. Ce bref rappel vous aide à prévoir les jours blancs et un jeûne du lundi ou du jeudi avant le Fajr.';
 
   @override
   String get audios => 'Audio';

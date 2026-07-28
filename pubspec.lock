@@ -565,14 +565,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  hijri:
+  hijri_plus:
     dependency: "direct main"
     description:
-      name: hijri
-      sha256: "203eb7341e32789af6429877e88411b1526ef44c5d157ce4d3b930dd32c37ef1"
+      name: hijri_plus
+      sha256: a4ec2c29419bec7198415f63cd58bd83f818b0c609666b4e030888f477d3c610
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "0.1.0"
   home_widget:
     dependency: "direct main"
     description:
@@ -1707,5 +1707,5 @@ packages:
     source: hosted
     version: "2.1.0"
 sdks:
-  dart: ">=3.10.0 <4.0.0"
+  dart: ">=3.12.2 <4.0.0"
   flutter: ">=3.38.1"

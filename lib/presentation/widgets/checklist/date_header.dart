@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hijri/hijri_calendar.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/utils/hijri_date_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
@@ -43,7 +43,7 @@ class DateHeader extends StatelessWidget {
     final colors = context.appColors;
     final dateFormat = DateFormat(
         'MMMM d, yyyy', Localizations.localeOf(context).languageCode);
-    final hijriDate = HijriCalendar.fromDate(currentDate);
+    final hijriDate = hijriDateFromDateTime(currentDate);
 
     return Column(
       children: [
@@ -94,7 +94,7 @@ class DateHeader extends StatelessWidget {
                         ),
                         SizedBox(height: 3.h),
                         Text(
-                          '${hijriDate.hDay} ${_getHijriMonthName(hijriDate.hMonth, context)} ${hijriDate.hYear} هـ',
+                          '${hijriDate.day} ${_getHijriMonthName(hijriDate.month, context)} ${hijriDate.year} هـ',
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: isDark

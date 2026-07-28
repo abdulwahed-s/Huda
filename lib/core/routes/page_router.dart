@@ -33,6 +33,7 @@ import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/cubit/home_customization/home_customization_cubit.dart';
 import 'package:huda/core/services/home_preferences_service.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
 import 'package:huda/core/services/islamic_event_service.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
@@ -740,7 +741,10 @@ class PageRouter {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<RamadanCubit>(
-            create: (context) => RamadanCubit(getIt<CacheHelper>()),
+            create: (context) => RamadanCubit(
+              getIt<CacheHelper>(),
+              hijriCalendarService: getIt<HijriCalendarService>(),
+            ),
             child: const RamadanScreen(),
           ),
           transitionsBuilder: (_, animation, __, child) {

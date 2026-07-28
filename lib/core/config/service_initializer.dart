@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/app_lifecycle_manager.dart';
 import 'package:huda/core/services/background_task.dart';
 import 'package:huda/core/services/calendar_notification_service.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/core/services/notification_boot_service.dart';
 import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
@@ -20,6 +23,10 @@ Future<void> initializeCriticalServices() async {
     final tracker = ServiceInitializationTracker();
 
     await getIt<CacheHelper>().init();
+    await getIt<HijriCalendarService>().initialize();
+    unawaited(
+      getIt<HijriCalendarService>().refreshAutomaticAdjustmentIfDue(),
+    );
     tracker.markServiceReady('cache');
   });
 }

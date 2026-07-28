@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hijri/hijri_calendar.dart';
+import 'package:hijri_plus/hijri_plus.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class SelectedDateInfoWidget extends StatelessWidget {
-  final HijriCalendar selectedHijri;
+  final HijriDate selectedHijri;
   final DateTime focusedGregorian;
   final bool isDark;
   final BuildContext context;
@@ -86,7 +86,7 @@ class SelectedDateInfoWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${selectedHijri.hDay} ${_getHijriMonthName(selectedHijri.hMonth)} ${selectedHijri.hYear} هـ',
+                  '${selectedHijri.day} ${_getHijriMonthName(selectedHijri.month)} ${selectedHijri.year} هـ',
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700,

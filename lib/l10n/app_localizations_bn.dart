@@ -236,6 +236,27 @@ class AppLocalizationsBn extends AppLocalizations {
   String get hijriCalendar => 'হিজরি ক্যালেন্ডার';
 
   @override
+  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+
+  @override
+  String get hijriAdjustmentDescription =>
+      'Choose how Huda displays Hijri dates.';
+
+  @override
+  String get hijriAdjustmentAction => 'Calendar adjustment';
+
+  @override
+  String get hijriAutomaticAdjustmentDescription =>
+      'Uses the official Umm al-Qura calendar.';
+
+  @override
+  String get hijriManualAdjustment => 'Manual adjustment';
+
+  @override
+  String get hijriManualAdjustmentDescription =>
+      'Move the Hijri date forward or backward by up to two days.';
+
+  @override
   String get selectedDate => 'নির্বাচিত তারিখ';
 
   @override
@@ -3990,6 +4011,73 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'আল্লাহকে বেশি করে স্মরণ করুন এবং প্রতিটি ফরজ নামাজের পর তাকবীর বলুন। এগুলো খাওয়া, পানীয় ও কৃতজ্ঞতার দিন। কুরবানী দিতে অক্ষম হাজী ব্যতীত এই দিনগুলোতে রোজা নিষিদ্ধ।';
+
+  @override
+  String get eventWhiteDaysFasting => 'আইয়ামুল বীদে রোজা';
+
+  @override
+  String get eventMondayThursdayFasting => 'সোম ও বৃহস্পতিবারের রোজা';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFasting =>
+      'আইয়ামুল বীদ ও সোম–বৃহস্পতিবারের রোজা';
+
+  @override
+  String get eventWhiteDaysFastingSubtitle => 'আইয়ামুল বীদের নফল রোজা।';
+
+  @override
+  String get eventMondayThursdayFastingSubtitle =>
+      'সোম বা বৃহস্পতিবারের নফল সুন্নত রোজা।';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSubtitle =>
+      'আইয়ামুল বীদ ও সোম বা বৃহস্পতিবারের নফল স্মরণিকা।';
+
+  @override
+  String get eventWhiteDaysFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ';
+
+  @override
+  String get eventWhiteDaysFastingTranslation =>
+      'তিনি আমাদের মাসের সাদা দিনগুলো—তেরো, চৌদ্দ ও পনেরো তারিখে—রোজা রাখতে বলতেন।';
+
+  @override
+  String get eventWhiteDaysFastingSource => 'সুনান আবু দাউদ ২৪৪৯';
+
+  @override
+  String get eventWhiteDaysFastingGuidance =>
+      'আইয়ামুল বীদ হলো হিজরি মাসের ১৩, ১৪ ও ১৫ তারিখের নফল রোজা। হুদা আগের দিনের মাগরিব থেকে ফজর পর্যন্ত স্মরণিকাটি দেখায়, যাতে রোজা শুরুর আগে প্রস্তুতি নিতে পারেন।';
+
+  @override
+  String get eventMondayThursdayFastingArabic =>
+      'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ';
+
+  @override
+  String get eventMondayThursdayFastingTranslation =>
+      'সোম ও বৃহস্পতিবার আমল পেশ করা হয়; আমি চাই আমার আমল রোজা অবস্থায় পেশ হোক।';
+
+  @override
+  String get eventMondayThursdayFastingSource => 'জামি আত-তিরমিজি ৭৪৭';
+
+  @override
+  String get eventMondayThursdayFastingGuidance =>
+      'সোম বা বৃহস্পতিবারের রোজা নফল। স্থানীয় সালাতের সময় অনুযায়ী আগের মাগরিব থেকে ফজর পর্যন্ত এই স্মরণিকা দেখা যায়, যাতে রোজা শুরুর আগে প্রস্তুতি নিতে পারেন।';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingTranslation =>
+      'আইয়ামুল বীদ হিজরি মাসের ১৩, ১৪ ও ১৫ তারিখ; আর সোম ও বৃহস্পতিবার আমল পেশ করা হয়।';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSource =>
+      'সুনান আবু দাউদ ২৪৪৯ · জামি আত-তিরমিজি ৭৪৭';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingGuidance =>
+      'দুটিই নফল রোজা। এই সংক্ষিপ্ত স্মরণিকা ফজরের আগে আইয়ামুল বীদ এবং সোম বা বৃহস্পতিবারের রোজার পরিকল্পনায় সহায়তা করে।';
 
   @override
   String get audios => 'অডিও';

@@ -236,6 +236,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hijriCalendar => 'Hijri Calendar';
 
   @override
+  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+
+  @override
+  String get hijriAdjustmentDescription =>
+      'Choose how Huda displays Hijri dates.';
+
+  @override
+  String get hijriAdjustmentAction => 'Calendar adjustment';
+
+  @override
+  String get hijriAutomaticAdjustmentDescription =>
+      'Uses the official Umm al-Qura calendar.';
+
+  @override
+  String get hijriManualAdjustment => 'Manual adjustment';
+
+  @override
+  String get hijriManualAdjustmentDescription =>
+      'Move the Hijri date forward or backward by up to two days.';
+
+  @override
   String get selectedDate => 'Selected Date';
 
   @override
@@ -3990,6 +4011,73 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'Remember Allah abundantly and recite the Takbir after every obligatory prayer. These are days of eating, drinking, and gratitude. Fasting is not permitted on these days except for the pilgrim who cannot afford the sacrifice.';
+
+  @override
+  String get eventWhiteDaysFasting => 'Fasting on the White Days';
+
+  @override
+  String get eventMondayThursdayFasting => 'Monday–Thursday Fasting';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFasting =>
+      'White Days & Monday–Thursday Fasting';
+
+  @override
+  String get eventWhiteDaysFastingSubtitle => 'Fasting on Al Ayyam Albeedh.';
+
+  @override
+  String get eventMondayThursdayFastingSubtitle =>
+      'A voluntary Sunnah fast on Monday or Thursday.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSubtitle =>
+      'A voluntary reminder for the White Days and Monday or Thursday.';
+
+  @override
+  String get eventWhiteDaysFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ';
+
+  @override
+  String get eventWhiteDaysFastingTranslation =>
+      'He used to command us to fast the white days: the thirteenth, fourteenth, and fifteenth of the month.';
+
+  @override
+  String get eventWhiteDaysFastingSource => 'Sunan Abi Dawud 2449';
+
+  @override
+  String get eventWhiteDaysFastingGuidance =>
+      'The White Days are voluntary fasts on the 13th, 14th, and 15th of the Hijri month. Huda shows the reminder from the previous Maghrib until Fajr so you can plan before the fast begins.';
+
+  @override
+  String get eventMondayThursdayFastingArabic =>
+      'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ';
+
+  @override
+  String get eventMondayThursdayFastingTranslation =>
+      'Deeds are presented on Monday and Thursday, and I love for my deeds to be presented while I am fasting.';
+
+  @override
+  String get eventMondayThursdayFastingSource => 'Jami at-Tirmidhi 747';
+
+  @override
+  String get eventMondayThursdayFastingGuidance =>
+      'Fasting on Monday or Thursday is voluntary. Huda shows this reminder from the preceding Maghrib until Fajr, using your local prayer times, so you can prepare before the fast begins.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingTranslation =>
+      'The White Days are the 13th, 14th, and 15th of the Hijri month; deeds are presented on Monday and Thursday.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSource =>
+      'Sunan Abi Dawud 2449 · Jami at-Tirmidhi 747';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingGuidance =>
+      'Both are voluntary fasts. This short reminder lets you plan for the White Days and for a Monday or Thursday fast before Fajr.';
 
   @override
   String get audios => 'Audio';

@@ -5,20 +5,26 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hijri/hijri_calendar.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/calendar_notification_service.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/data/models/hijri_event.dart';
 
 part 'hijri_calendar_state.dart';
 
 class HijriCalendarCubit extends Cubit<HijriCalendarState> {
-  HijriCalendarCubit() : super(HijriCalendarState()) {
+  HijriCalendarCubit({
+    CacheHelper? cacheHelper,
+    HijriCalendarService? calendarService,
+  })  : cacheHelper = cacheHelper ?? getIt<CacheHelper>(),
+        calendarService = calendarService ?? getIt<HijriCalendarService>(),
+        super(HijriCalendarState()) {
     _loadEvents();
   }
 
-  final CacheHelper cacheHelper = getIt<CacheHelper>();
+  final CacheHelper cacheHelper;
+  final HijriCalendarService calendarService;
   final now = DateTime.now();
 
   Future<void> _loadEvents() async {
@@ -43,8 +49,8 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
   }
 
   void addEvent(DateTime selectedGregorian, HijriEvent event) {
-    final hijriDate = HijriCalendar.fromDate(selectedGregorian);
-    final key = hijriDate.toString();
+    final hijriDate = calendarService.toHijri(selectedGregorian);
+    final key = HijriCalendarService.eventKey(hijriDate);
 
     final current = Map<String, List<HijriEvent>>.from(state.events);
     final updated = List<HijriEvent>.from(current[key] ?? []);
@@ -59,8 +65,8 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
   }
 
   void removeEvent(DateTime selectedGregorian, HijriEvent event) {
-    final hijriDate = HijriCalendar.fromDate(selectedGregorian);
-    final key = hijriDate.toString();
+    final hijriDate = calendarService.toHijri(selectedGregorian);
+    final key = HijriCalendarService.eventKey(hijriDate);
 
     // Create a completely new map and new lists
     final newEvents = Map<String, List<HijriEvent>>.fromEntries(
@@ -109,8 +115,8 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
   }
 
   void editEvent(DateTime selectedGregorian, HijriEvent updatedEvent) {
-    final hijriDate = HijriCalendar.fromDate(selectedGregorian);
-    final key = hijriDate.toString();
+    final hijriDate = calendarService.toHijri(selectedGregorian);
+    final key = HijriCalendarService.eventKey(hijriDate);
 
     final current = Map<String, List<HijriEvent>>.from(state.events);
     final list = List<HijriEvent>.from(current[key] ?? []);

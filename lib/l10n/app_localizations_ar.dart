@@ -234,6 +234,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hijriCalendar => 'التقويم الهجري';
 
   @override
+  String get hijriAdjustmentTitle => 'ضبط التقويم الهجري';
+
+  @override
+  String get hijriAdjustmentDescription =>
+      'اختر كيفية عرض هدى للتواريخ الهجرية.';
+
+  @override
+  String get hijriAdjustmentAction => 'ضبط التقويم';
+
+  @override
+  String get hijriAutomaticAdjustmentDescription =>
+      'يستخدم تقويم أم القرى الرسمي.';
+
+  @override
+  String get hijriManualAdjustment => 'ضبط يدوي';
+
+  @override
+  String get hijriManualAdjustmentDescription =>
+      'قدّم أو أخّر التاريخ الهجري بما يصل إلى يومين.';
+
+  @override
   String get selectedDate => 'التاريخ المحدد';
 
   @override
@@ -3928,6 +3949,74 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'أكثروا من ذكر الله، وكبّروا دبر كل صلاة مكتوبة. فهي أيام أكل وشرب وشكر. ولا يجوز صيامها إلا للحاج الذي لم يجد الهدي.';
+
+  @override
+  String get eventWhiteDaysFasting => 'صيام الأيام البيض';
+
+  @override
+  String get eventMondayThursdayFasting => 'صيام الاثنين والخميس';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFasting =>
+      'صيام الأيام البيض والاثنين والخميس';
+
+  @override
+  String get eventWhiteDaysFastingSubtitle =>
+      'صيام الأيام البيض من كل شهر هجري.';
+
+  @override
+  String get eventMondayThursdayFastingSubtitle =>
+      'صيام نافلة من السنة يوم الاثنين أو الخميس.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSubtitle =>
+      'تذكير نافلة للأيام البيض وصيام الاثنين أو الخميس.';
+
+  @override
+  String get eventWhiteDaysFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ';
+
+  @override
+  String get eventWhiteDaysFastingTranslation =>
+      'كان يأمرنا بصيام أيام البيض: الثالث عشر والرابع عشر والخامس عشر من الشهر.';
+
+  @override
+  String get eventWhiteDaysFastingSource => 'سنن أبي داود 2449';
+
+  @override
+  String get eventWhiteDaysFastingGuidance =>
+      'الأيام البيض صيام نافلة في الثالث عشر والرابع عشر والخامس عشر من الشهر الهجري. يظهر هدى التذكير من مغرب اليوم السابق إلى الفجر لتتمكن من الاستعداد قبل بدء الصيام.';
+
+  @override
+  String get eventMondayThursdayFastingArabic =>
+      'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ';
+
+  @override
+  String get eventMondayThursdayFastingTranslation =>
+      'تعرض الأعمال يوم الاثنين والخميس، وأحب أن يعرض عملي وأنا صائم.';
+
+  @override
+  String get eventMondayThursdayFastingSource => 'جامع الترمذي 747';
+
+  @override
+  String get eventMondayThursdayFastingGuidance =>
+      'صيام الاثنين أو الخميس نافلة. يظهر هدى هذا التذكير من مغرب اليوم السابق إلى الفجر وفق أوقات الصلاة المحلية لتستعد قبل بدء الصيام.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingTranslation =>
+      'الأيام البيض هي الثالث عشر والرابع عشر والخامس عشر من الشهر الهجري، وتعرض الأعمال يوم الاثنين والخميس.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSource =>
+      'سنن أبي داود 2449 · جامع الترمذي 747';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingGuidance =>
+      'كلاهما صيام نافلة. يتيح لك هذا التذكير القصير التخطيط للأيام البيض وصيام الاثنين أو الخميس قبل الفجر.';
 
   @override
   String get audios => 'صوتيات';

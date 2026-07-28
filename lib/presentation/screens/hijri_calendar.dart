@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hijri/hijri_calendar.dart';
+import 'package:hijri_plus/hijri_plus.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
+import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/data/models/hijri_event.dart';
@@ -11,11 +13,17 @@ import 'package:huda/presentation/widgets/hijri_calendar/custom_app_bar.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/delete_confirmation_dialog.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/event_dialog.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/events_section_widget.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/hijri_adjustment_dialog.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/selected_date_info_widget.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class HijriCalendarScreenNew extends StatefulWidget {
-  const HijriCalendarScreenNew({super.key});
+  const HijriCalendarScreenNew({
+    super.key,
+    this.calendarService,
+  });
+
+  final HijriCalendarService? calendarService;
 
   @override
   State<HijriCalendarScreenNew> createState() => _HijriCalendarScreenState();
@@ -23,9 +31,10 @@ class HijriCalendarScreenNew extends StatefulWidget {
 
 class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
     with TickerProviderStateMixin {
-  HijriCalendar? _selectedHijri;
+  HijriDate? _selectedHijri;
   late DateTime _focusedGregorian;
-  late HijriCalendar _focusedHijri;
+  late HijriDate _focusedHijri;
+  late HijriCalendarService _calendarService;
   late AnimationController _headerAnimationController;
   late AnimationController _fabAnimationController;
   late Animation<double> _headerAnimation;
@@ -34,9 +43,11 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
   @override
   void initState() {
     super.initState();
+    _calendarService = widget.calendarService ?? getIt<HijriCalendarService>();
+    _calendarService.addListener(_handleCalendarChanged);
     _focusedGregorian = DateTime.now();
-    _selectedHijri = HijriCalendar.fromDate(_focusedGregorian);
-    _focusedHijri = HijriCalendar.fromDate(_focusedGregorian);
+    _selectedHijri = _calendarService.toHijri(_focusedGregorian);
+    _focusedHijri = _selectedHijri!;
 
     _headerAnimationController = AnimationController(
       duration: const Duration(milliseconds: 600),
@@ -58,10 +69,15 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
 
     _headerAnimationController.forward();
     _fabAnimationController.forward();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showAdjustmentDialogIfNeeded();
+    });
   }
 
   @override
   void dispose() {
+    _calendarService.removeListener(_handleCalendarChanged);
     _headerAnimationController.dispose();
     _fabAnimationController.dispose();
     super.dispose();
@@ -69,41 +85,64 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
 
   void _goToPreviousHijriMonth() {
     setState(() {
-      if (_focusedHijri.hMonth == 1) {
-        _focusedHijri.hMonth = 12;
-        _focusedHijri.hYear -= 1;
-      } else {
-        _focusedHijri.hMonth -= 1;
-      }
-      _focusedGregorian = _focusedGregorian.subtract(const Duration(days: 29));
+      final previousYear = _focusedHijri.month == 1
+          ? _focusedHijri.year - 1
+          : _focusedHijri.year;
+      final previousMonth =
+          _focusedHijri.month == 1 ? 12 : _focusedHijri.month - 1;
+      _focusedHijri = HijriDate(previousYear, previousMonth, 1);
     });
   }
 
   void _goToNextHijriMonth() {
     setState(() {
-      if (_focusedHijri.hMonth == 12) {
-        _focusedHijri.hMonth = 1;
-        _focusedHijri.hYear += 1;
-      } else {
-        _focusedHijri.hMonth += 1;
-      }
-      _focusedGregorian = _focusedGregorian.add(const Duration(days: 29));
+      final nextYear = _focusedHijri.month == 12
+          ? _focusedHijri.year + 1
+          : _focusedHijri.year;
+      final nextMonth = _focusedHijri.month == 12 ? 1 : _focusedHijri.month + 1;
+      _focusedHijri = HijriDate(nextYear, nextMonth, 1);
     });
   }
 
-  DateTime _getGregorianDateFromHijri(HijriCalendar hijriDate) {
+  DateTime _getGregorianDateFromHijri(HijriDate hijriDate) {
     try {
-      final today = DateTime.now();
-      final todayHijri = HijriCalendar.fromDate(today);
-      final yearDiff = (hijriDate.hYear - todayHijri.hYear) * 354;
-      final monthDiff = (hijriDate.hMonth - todayHijri.hMonth) * 29;
-      final dayDiff = hijriDate.hDay - todayHijri.hDay;
-      final totalDayDiff = yearDiff + monthDiff + dayDiff;
-      return today.add(Duration(days: totalDayDiff));
+      return _calendarService.toGregorian(hijriDate);
     } catch (e) {
       debugPrint('Date conversion error: $e');
       return DateTime.now();
     }
+  }
+
+  void _handleCalendarChanged() {
+    if (!mounted) return;
+    setState(() {
+      _selectedHijri = _calendarService.toHijri(_focusedGregorian);
+      _focusedHijri = _selectedHijri!;
+    });
+  }
+
+  Future<void> _showAdjustmentDialogIfNeeded() async {
+    await _calendarService.initialize();
+    if (!mounted) return;
+
+    _handleCalendarChanged();
+    if (_calendarService.hasAdjustmentChoice) return;
+    await _showAdjustmentDialog(isRequired: true);
+  }
+
+  Future<void> _showAdjustmentDialog({required bool isRequired}) async {
+    await _calendarService.initialize();
+    if (!mounted) return;
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: !isRequired,
+      builder: (_) => HijriAdjustmentDialog(
+        initialChoice: _calendarService.adjustmentChoice,
+        canDismiss: !isRequired,
+        onSave: _calendarService.setAdjustmentChoice,
+      ),
+    );
   }
 
   @override
@@ -113,7 +152,7 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
     final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
 
     return BlocProvider(
-      create: (_) => HijriCalendarCubit(),
+      create: (_) => HijriCalendarCubit(calendarService: _calendarService),
       child: Builder(
         builder: (parentContext) => Scaffold(
           backgroundColor:
@@ -121,18 +160,21 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
           appBar: CustomAppBar(
             isDark: isDark,
             isTablet: isTablet,
+            onAdjustmentPressed: () => _showAdjustmentDialog(isRequired: false),
             onTodayPressed: () {
               setState(() {
                 _focusedGregorian = DateTime.now();
-                _selectedHijri = HijriCalendar.fromDate(_focusedGregorian);
-                _focusedHijri = HijriCalendar.fromDate(_focusedGregorian);
+                _selectedHijri = _calendarService.toHijri(_focusedGregorian);
+                _focusedHijri = _selectedHijri!;
               });
             },
           ),
           body: BlocBuilder<HijriCalendarCubit, HijriCalendarState>(
             builder: (context, state) {
               final events = _selectedHijri != null
-                  ? state.events[_selectedHijri.toString()] ?? []
+                  ? state.events[
+                          HijriCalendarService.eventKey(_selectedHijri!)] ??
+                      []
                   : [];
 
               return OrientationBuilder(
@@ -159,6 +201,7 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                                 ),
                                 CalendarGridWidget(
                                   focusedHijri: _focusedHijri,
+                                  calendarService: _calendarService,
                                   state: state,
                                   isDark: isDark,
                                   selectedHijri: _selectedHijri,
@@ -231,6 +274,7 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                       ),
                       CalendarGridWidget(
                         focusedHijri: _focusedHijri,
+                        calendarService: _calendarService,
                         state: state,
                         isDark: isDark,
                         selectedHijri: _selectedHijri,

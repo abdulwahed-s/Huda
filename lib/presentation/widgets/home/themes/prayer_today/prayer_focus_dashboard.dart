@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hijri/hijri_calendar.dart';
+import 'package:huda/core/utils/hijri_date_utils.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
@@ -314,7 +314,7 @@ class _LoadedPrayerCanvasState extends State<_LoadedPrayerCanvas>
           final countdownValue = snapshot.data;
           final now = DateTime.now();
           final locale = Localizations.localeOf(context).toString();
-          final hijri = HijriCalendar.fromDate(now);
+          final hijri = hijriDateFromDateTime(now);
           final moments = _adjustedMoments(
             context,
             widget.state,
@@ -338,9 +338,9 @@ class _LoadedPrayerCanvasState extends State<_LoadedPrayerCanvas>
                   distance: 5,
                   child: _IntegratedPrayerContext(
                     gregorian: intl.DateFormat.yMMMMEEEEd(locale).format(now),
-                    hijri: '${hijri.hDay} '
-                        '${_hijriMonth(context, hijri.hMonth)} '
-                        '${hijri.hYear}',
+                    hijri: '${hijri.day} '
+                        '${_hijriMonth(context, hijri.month)} '
+                        '${hijri.year}',
                     location: prayerLocationLabel(context, widget.state),
                   ),
                 ),
@@ -1248,7 +1248,7 @@ class _UnavailablePrayerCanvas extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final locale = Localizations.localeOf(context).toString();
-    final hijri = HijriCalendar.fromDate(now);
+    final hijri = hijriDateFromDateTime(now);
     return Padding(
       padding: const EdgeInsets.fromLTRB(22, 10, 22, 76),
       child: Column(
@@ -1256,8 +1256,8 @@ class _UnavailablePrayerCanvas extends StatelessWidget {
         children: [
           _IntegratedPrayerContext(
             gregorian: intl.DateFormat.yMMMMEEEEd(locale).format(now),
-            hijri: '${hijri.hDay} '
-                '${_hijriMonth(context, hijri.hMonth)} ${hijri.hYear}',
+            hijri: '${hijri.day} '
+                '${_hijriMonth(context, hijri.month)} ${hijri.year}',
             location: null,
           ),
           const SizedBox(height: 34),

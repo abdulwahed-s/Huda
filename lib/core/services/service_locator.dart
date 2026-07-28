@@ -22,12 +22,16 @@ import 'package:huda/core/services/khatma_service.dart';
 import 'package:huda/core/services/islamic_event_service.dart';
 import 'package:huda/core/services/qcf_font_service.dart';
 import 'package:huda/core/services/home_preferences_service.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
   getIt.registerSingleton<AudioPlayer>(AudioPlayer());
   getIt.registerSingleton<AudioCoordinator>(AudioCoordinator());
   getIt.registerSingleton<CacheHelper>(CacheHelper());
+  getIt.registerSingleton<HijriCalendarService>(
+    HijriCalendarService(cache: getIt<CacheHelper>()),
+  );
   getIt.registerSingleton<Dio>(Dio());
   getIt.registerSingleton<DownloadService>(DownloadService());
   getIt.registerSingleton<ReadingPositionService>(ReadingPositionService());
@@ -54,7 +58,11 @@ void setupServiceLocator() {
       KhatmaService(cache: getIt<CacheHelper>()));
 
   getIt.registerSingleton<IslamicEventService>(
-      IslamicEventService(cacheHelper: getIt<CacheHelper>()));
+    IslamicEventService(
+      cacheHelper: getIt<CacheHelper>(),
+      hijriCalendarService: getIt<HijriCalendarService>(),
+    ),
+  );
 
   getIt.registerSingleton<HomePreferencesService>(
       HomePreferencesService(cache: getIt<CacheHelper>()));

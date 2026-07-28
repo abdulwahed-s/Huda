@@ -240,6 +240,27 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hijriCalendar => 'Hijri-Kalender';
 
   @override
+  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+
+  @override
+  String get hijriAdjustmentDescription =>
+      'Choose how Huda displays Hijri dates.';
+
+  @override
+  String get hijriAdjustmentAction => 'Calendar adjustment';
+
+  @override
+  String get hijriAutomaticAdjustmentDescription =>
+      'Uses the official Umm al-Qura calendar.';
+
+  @override
+  String get hijriManualAdjustment => 'Manual adjustment';
+
+  @override
+  String get hijriManualAdjustmentDescription =>
+      'Move the Hijri date forward or backward by up to two days.';
+
+  @override
   String get selectedDate => 'Ausgewähltes Datum';
 
   @override
@@ -4044,6 +4065,74 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'Gedenkt Allahs reichlich und sprecht den Takbir nach jedem Pflichtgebet. Es sind Tage des Essens, Trinkens und der Dankbarkeit. Das Fasten ist an diesen Tagen verboten, ausser fur den Pilger, der kein Opfer bringen kann.';
+
+  @override
+  String get eventWhiteDaysFasting => 'Fasten an den weißen Tagen';
+
+  @override
+  String get eventMondayThursdayFasting => 'Fasten am Montag und Donnerstag';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFasting =>
+      'Weiße Tage & Montag–Donnerstag-Fasten';
+
+  @override
+  String get eventWhiteDaysFastingSubtitle =>
+      'Freiwilliges Fasten an Al-Ayyam al-Bid.';
+
+  @override
+  String get eventMondayThursdayFastingSubtitle =>
+      'Ein freiwilliges Sunna-Fasten am Montag oder Donnerstag.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSubtitle =>
+      'Eine freiwillige Erinnerung für die weißen Tage und Montag oder Donnerstag.';
+
+  @override
+  String get eventWhiteDaysFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ';
+
+  @override
+  String get eventWhiteDaysFastingTranslation =>
+      'Er pflegte uns zu gebieten, an den weißen Tagen zu fasten: am dreizehnten, vierzehnten und fünfzehnten des Monats.';
+
+  @override
+  String get eventWhiteDaysFastingSource => 'Sunan Abi Dawud 2449';
+
+  @override
+  String get eventWhiteDaysFastingGuidance =>
+      'Die weißen Tage sind freiwillige Fastentage am 13., 14. und 15. des Hidschri-Monats. Huda zeigt die Erinnerung vom Maghrib des Vortags bis zum Fajr, damit du dich vor Beginn des Fastens vorbereiten kannst.';
+
+  @override
+  String get eventMondayThursdayFastingArabic =>
+      'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ';
+
+  @override
+  String get eventMondayThursdayFastingTranslation =>
+      'Die Taten werden am Montag und Donnerstag vorgelegt, und ich liebe es, dass meine Taten vorgelegt werden, während ich faste.';
+
+  @override
+  String get eventMondayThursdayFastingSource => 'Jami at-Tirmidhi 747';
+
+  @override
+  String get eventMondayThursdayFastingGuidance =>
+      'Das Fasten am Montag oder Donnerstag ist freiwillig. Huda zeigt diese Erinnerung vom Maghrib des Vortags bis zum Fajr nach deinen lokalen Gebetszeiten, damit du dich vorbereiten kannst.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingTranslation =>
+      'Die weißen Tage sind der 13., 14. und 15. des Hidschri-Monats; die Taten werden am Montag und Donnerstag vorgelegt.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSource =>
+      'Sunan Abi Dawud 2449 · Jami at-Tirmidhi 747';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingGuidance =>
+      'Beides sind freiwillige Fasten. Diese kurze Erinnerung hilft dir, die weißen Tage und ein Fasten am Montag oder Donnerstag vor Fajr zu planen.';
 
   @override
   String get audios => 'Audio';

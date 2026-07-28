@@ -50,7 +50,7 @@ dependencies:
 
   # Prayer times & qibla
   prayer_time_plus: ^0.2.0
-  hijri: ^3.0.0
+  hijri_plus: ^0.1.0
   precise_compass: ^0.1.0
 
   geolocator_platform_interface: ^4.2.6

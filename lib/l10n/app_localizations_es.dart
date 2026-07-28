@@ -241,6 +241,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get hijriCalendar => 'Calendario Hijri';
 
   @override
+  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+
+  @override
+  String get hijriAdjustmentDescription =>
+      'Choose how Huda displays Hijri dates.';
+
+  @override
+  String get hijriAdjustmentAction => 'Calendar adjustment';
+
+  @override
+  String get hijriAutomaticAdjustmentDescription =>
+      'Uses the official Umm al-Qura calendar.';
+
+  @override
+  String get hijriManualAdjustment => 'Manual adjustment';
+
+  @override
+  String get hijriManualAdjustmentDescription =>
+      'Move the Hijri date forward or backward by up to two days.';
+
+  @override
   String get selectedDate => 'Fecha seleccionada';
 
   @override
@@ -4060,6 +4081,74 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'Recordad a Allah abundantemente y recitad el Takbir tras cada oracion obligatoria. Son dias de comer, beber y agradecer. El ayuno esta prohibido estos dias excepto para el peregrino que no puede ofrecer sacrificio.';
+
+  @override
+  String get eventWhiteDaysFasting => 'Ayuno de los días blancos';
+
+  @override
+  String get eventMondayThursdayFasting => 'Ayuno de lunes y jueves';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFasting =>
+      'Días blancos y ayuno de lunes–jueves';
+
+  @override
+  String get eventWhiteDaysFastingSubtitle =>
+      'Ayuno voluntario de Al Ayyam Albeedh.';
+
+  @override
+  String get eventMondayThursdayFastingSubtitle =>
+      'Un ayuno voluntario de la Sunnah en lunes o jueves.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSubtitle =>
+      'Un recordatorio voluntario para los días blancos y lunes o jueves.';
+
+  @override
+  String get eventWhiteDaysFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ';
+
+  @override
+  String get eventWhiteDaysFastingTranslation =>
+      'Solía ordenarnos ayunar los días blancos: el decimotercero, decimocuarto y decimoquinto del mes.';
+
+  @override
+  String get eventWhiteDaysFastingSource => 'Sunan Abi Dawud 2449';
+
+  @override
+  String get eventWhiteDaysFastingGuidance =>
+      'Los días blancos son ayunos voluntarios los días 13, 14 y 15 del mes hiyri. Huda muestra el recordatorio desde el Maghrib anterior hasta el Fajr para que puedas prepararte antes de comenzar el ayuno.';
+
+  @override
+  String get eventMondayThursdayFastingArabic =>
+      'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ';
+
+  @override
+  String get eventMondayThursdayFastingTranslation =>
+      'Las obras se presentan el lunes y el jueves, y amo que mis obras se presenten mientras ayuno.';
+
+  @override
+  String get eventMondayThursdayFastingSource => 'Jami at-Tirmidhi 747';
+
+  @override
+  String get eventMondayThursdayFastingGuidance =>
+      'El ayuno de lunes o jueves es voluntario. Huda muestra este recordatorio desde el Maghrib anterior hasta el Fajr, según tus horarios locales de oración, para que puedas prepararte.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingTranslation =>
+      'Los días blancos son el 13, 14 y 15 del mes hiyri; las obras se presentan el lunes y el jueves.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSource =>
+      'Sunan Abi Dawud 2449 · Jami at-Tirmidhi 747';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingGuidance =>
+      'Ambos son ayunos voluntarios. Este breve recordatorio te ayuda a planificar los días blancos y un ayuno de lunes o jueves antes del Fajr.';
 
   @override
   String get audios => 'Audio';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hijri/hijri_calendar.dart';
+import 'package:huda/core/utils/hijri_date_utils.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
@@ -868,9 +868,9 @@ class _LoadedPrayerOverview extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final locale = Localizations.localeOf(context).toString();
-    final hijri = HijriCalendar.fromDate(now);
+    final hijri = hijriDateFromDateTime(now);
     final hijriText =
-        '${hijri.hDay} ${_hijriMonth(context, hijri.hMonth)} ${hijri.hYear}';
+        '${hijri.day} ${_hijriMonth(context, hijri.month)} ${hijri.year}';
     final entries = <(String, DateTime?, String)>[
       (l10n.fajr, state.prayerTimes.fajr, 'fajr'),
       (l10n.sunrise, state.prayerTimes.sunrise, 'sunrise'),
@@ -1364,9 +1364,9 @@ class HomeDatePrayerSection extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final locale = Localizations.localeOf(context).toString();
-    final hijri = HijriCalendar.fromDate(now);
+    final hijri = hijriDateFromDateTime(now);
     final hijriText =
-        '${hijri.hDay} ${_hijriMonth(context, hijri.hMonth)} ${hijri.hYear}';
+        '${hijri.day} ${_hijriMonth(context, hijri.month)} ${hijri.year}';
 
     return Container(
       padding: EdgeInsets.all(compact ? 14.w : 20.w),

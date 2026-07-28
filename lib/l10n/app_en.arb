@@ -296,6 +296,30 @@
     "@hijriCalendar": {
         "description": "Hijri Calendar screen title"
     },
+    "hijriAdjustmentTitle": "Adjust Hijri calendar",
+    "@hijriAdjustmentTitle": {
+        "description": "Title of the one-time Hijri calendar adjustment dialog"
+    },
+    "hijriAdjustmentDescription": "Choose how Huda displays Hijri dates.",
+    "@hijriAdjustmentDescription": {
+        "description": "Explanation shown in the one-time Hijri calendar adjustment dialog"
+    },
+    "hijriAdjustmentAction": "Calendar adjustment",
+    "@hijriAdjustmentAction": {
+        "description": "Tooltip for changing the Hijri calendar adjustment"
+    },
+    "hijriAutomaticAdjustmentDescription": "Uses the official Umm al-Qura calendar.",
+    "@hijriAutomaticAdjustmentDescription": {
+        "description": "Description of automatic Hijri calendar adjustment"
+    },
+    "hijriManualAdjustment": "Manual adjustment",
+    "@hijriManualAdjustment": {
+        "description": "Heading for manual Hijri calendar adjustment choices"
+    },
+    "hijriManualAdjustmentDescription": "Move the Hijri date forward or backward by up to two days.",
+    "@hijriManualAdjustmentDescription": {
+        "description": "Description of manual Hijri calendar adjustment"
+    },
     "selectedDate": "Selected Date",
     "@selectedDate": {
         "description": "Selected date label"
@@ -4645,6 +4669,78 @@
     "eventDaysTashreeqGuidance": "Remember Allah abundantly and recite the Takbir after every obligatory prayer. These are days of eating, drinking, and gratitude. Fasting is not permitted on these days except for the pilgrim who cannot afford the sacrifice.",
     "@eventDaysTashreeqGuidance": {
         "description": "Guidance text for Days of Tashreeq dialog"
+    },
+    "eventWhiteDaysFasting": "Fasting on the White Days",
+    "@eventWhiteDaysFasting": {
+        "description": "Title for the recurring White Days fasting reminder"
+    },
+    "eventMondayThursdayFasting": "Monday–Thursday Fasting",
+    "@eventMondayThursdayFasting": {
+        "description": "Title for the recurring Monday and Thursday fasting reminder"
+    },
+    "eventWhiteDaysMondayThursdayFasting": "White Days & Monday–Thursday Fasting",
+    "@eventWhiteDaysMondayThursdayFasting": {
+        "description": "Title when White Days and Monday or Thursday fasting overlap"
+    },
+    "eventWhiteDaysFastingSubtitle": "Fasting on Al Ayyam Albeedh.",
+    "@eventWhiteDaysFastingSubtitle": {
+        "description": "Concise subtitle for the White Days fasting reminder"
+    },
+    "eventMondayThursdayFastingSubtitle": "A voluntary Sunnah fast on Monday or Thursday.",
+    "@eventMondayThursdayFastingSubtitle": {
+        "description": "Concise subtitle for the Monday and Thursday fasting reminder"
+    },
+    "eventWhiteDaysMondayThursdayFastingSubtitle": "A voluntary reminder for the White Days and Monday or Thursday.",
+    "@eventWhiteDaysMondayThursdayFastingSubtitle": {
+        "description": "Concise subtitle for the combined fasting reminder"
+    },
+    "eventWhiteDaysFastingArabic": "كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ",
+    "@eventWhiteDaysFastingArabic": {
+        "description": "Arabic hadith text for the White Days fasting reminder"
+    },
+    "eventWhiteDaysFastingTranslation": "He used to command us to fast the white days: the thirteenth, fourteenth, and fifteenth of the month.",
+    "@eventWhiteDaysFastingTranslation": {
+        "description": "Translation of the White Days hadith"
+    },
+    "eventWhiteDaysFastingSource": "Sunan Abi Dawud 2449",
+    "@eventWhiteDaysFastingSource": {
+        "description": "Source for the White Days hadith"
+    },
+    "eventWhiteDaysFastingGuidance": "The White Days are voluntary fasts on the 13th, 14th, and 15th of the Hijri month. Huda shows the reminder from the previous Maghrib until Fajr so you can plan before the fast begins.",
+    "@eventWhiteDaysFastingGuidance": {
+        "description": "Guidance for the White Days fasting dialog"
+    },
+    "eventMondayThursdayFastingArabic": "تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ",
+    "@eventMondayThursdayFastingArabic": {
+        "description": "Arabic hadith text for the Monday and Thursday fasting reminder"
+    },
+    "eventMondayThursdayFastingTranslation": "Deeds are presented on Monday and Thursday, and I love for my deeds to be presented while I am fasting.",
+    "@eventMondayThursdayFastingTranslation": {
+        "description": "Translation of the Monday and Thursday fasting hadith"
+    },
+    "eventMondayThursdayFastingSource": "Jami at-Tirmidhi 747",
+    "@eventMondayThursdayFastingSource": {
+        "description": "Source for the Monday and Thursday fasting hadith"
+    },
+    "eventMondayThursdayFastingGuidance": "Fasting on Monday or Thursday is voluntary. Huda shows this reminder from the preceding Maghrib until Fajr, using your local prayer times, so you can prepare before the fast begins.",
+    "@eventMondayThursdayFastingGuidance": {
+        "description": "Guidance for the Monday and Thursday fasting dialog"
+    },
+    "eventWhiteDaysMondayThursdayFastingArabic": "كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ",
+    "@eventWhiteDaysMondayThursdayFastingArabic": {
+        "description": "Arabic source text for the combined fasting reminder"
+    },
+    "eventWhiteDaysMondayThursdayFastingTranslation": "The White Days are the 13th, 14th, and 15th of the Hijri month; deeds are presented on Monday and Thursday.",
+    "@eventWhiteDaysMondayThursdayFastingTranslation": {
+        "description": "Translation for the combined fasting reminder"
+    },
+    "eventWhiteDaysMondayThursdayFastingSource": "Sunan Abi Dawud 2449 · Jami at-Tirmidhi 747",
+    "@eventWhiteDaysMondayThursdayFastingSource": {
+        "description": "Sources for the combined fasting reminder"
+    },
+    "eventWhiteDaysMondayThursdayFastingGuidance": "Both are voluntary fasts. This short reminder lets you plan for the White Days and for a Monday or Thursday fast before Fajr.",
+    "@eventWhiteDaysMondayThursdayFastingGuidance": {
+        "description": "Guidance for the combined fasting dialog"
     },
     "audios": "Audio",
     "audiobooks": "Islamic Audios",

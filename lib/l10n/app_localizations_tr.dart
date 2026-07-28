@@ -237,6 +237,27 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hijriCalendar => 'Hicri Takvim';
 
   @override
+  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+
+  @override
+  String get hijriAdjustmentDescription =>
+      'Choose how Huda displays Hijri dates.';
+
+  @override
+  String get hijriAdjustmentAction => 'Calendar adjustment';
+
+  @override
+  String get hijriAutomaticAdjustmentDescription =>
+      'Uses the official Umm al-Qura calendar.';
+
+  @override
+  String get hijriManualAdjustment => 'Manual adjustment';
+
+  @override
+  String get hijriManualAdjustmentDescription =>
+      'Move the Hijri date forward or backward by up to two days.';
+
+  @override
   String get selectedDate => 'Seçilen Tarih';
 
   @override
@@ -3986,6 +4007,73 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get eventDaysTashreeqGuidance =>
       'Allah\'i bol bol anin ve her farz namazin ardindan tekbir getirin. Bunlar yeme, icme ve sukur gunleridir. Kurban kesemeyen haccilar disinda bu gunlerde oruc tutulmaz.';
+
+  @override
+  String get eventWhiteDaysFasting => 'Eyyâm-ı Bîd Orucu';
+
+  @override
+  String get eventMondayThursdayFasting => 'Pazartesi–Perşembe Orucu';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFasting =>
+      'Eyyâm-ı Bîd ve Pazartesi–Perşembe Orucu';
+
+  @override
+  String get eventWhiteDaysFastingSubtitle => 'Eyyâm-ı Bîd\'de nafile oruç.';
+
+  @override
+  String get eventMondayThursdayFastingSubtitle =>
+      'Pazartesi veya Perşembe günü nafile sünnet orucu.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSubtitle =>
+      'Eyyâm-ı Bîd ve Pazartesi veya Perşembe için nafile hatırlatma.';
+
+  @override
+  String get eventWhiteDaysFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ';
+
+  @override
+  String get eventWhiteDaysFastingTranslation =>
+      'Bize ayın beyaz günlerinde, yani on üçüncü, on dördüncü ve on beşinci günlerinde oruç tutmamızı emrederdi.';
+
+  @override
+  String get eventWhiteDaysFastingSource => 'Sünen-i Ebû Dâvûd 2449';
+
+  @override
+  String get eventWhiteDaysFastingGuidance =>
+      'Eyyâm-ı Bîd, hicri ayın 13, 14 ve 15. günlerindeki nafile oruçlardır. Huda, oruca başlamadan önce hazırlanabilmeniz için hatırlatmayı önceki günün akşam namazından fecre kadar gösterir.';
+
+  @override
+  String get eventMondayThursdayFastingArabic =>
+      'تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ فَأُحِبُّ أَنْ يُعْرَضَ عَمَلِي وَأَنَا صَائِمٌ';
+
+  @override
+  String get eventMondayThursdayFastingTranslation =>
+      'Ameller pazartesi ve perşembe günleri arz edilir; amellerimin oruçluyken arz edilmesini severim.';
+
+  @override
+  String get eventMondayThursdayFastingSource => 'Câmiʿ et-Tirmizî 747';
+
+  @override
+  String get eventMondayThursdayFastingGuidance =>
+      'Pazartesi veya Perşembe orucu nafiledir. Huda, yerel namaz vakitlerinize göre bu hatırlatmayı önceki akşam namazından fecre kadar gösterir; böylece hazırlanabilirsiniz.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingArabic =>
+      'كَانَ يَأْمُرُنَا أَنْ نَصُومَ الْبِيضَ ثَلَاثَ عَشْرَةَ وَأَرْبَعَ عَشْرَةَ وَخَمْسَ عَشْرَةَ · تُعْرَضُ الأَعْمَالُ يَوْمَ الاِثْنَيْنِ وَالْخَمِيسِ';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingTranslation =>
+      'Eyyâm-ı Bîd hicri ayın 13, 14 ve 15. günleridir; ameller pazartesi ve perşembe günleri arz edilir.';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingSource =>
+      'Sünen-i Ebû Dâvûd 2449 · Câmiʿ et-Tirmizî 747';
+
+  @override
+  String get eventWhiteDaysMondayThursdayFastingGuidance =>
+      'Her ikisi de nafile oruçtur. Bu kısa hatırlatma, Eyyâm-ı Bîd ve Pazartesi veya Perşembe orucunu fecrden önce planlamanıza yardımcı olur.';
 
   @override
   String get audios => 'Sesli';

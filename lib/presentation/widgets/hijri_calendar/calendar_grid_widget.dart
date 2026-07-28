@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hijri/hijri_calendar.dart';
+import 'package:hijri_plus/hijri_plus.dart';
+import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/data/models/hijri_event.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class CalendarGridWidget extends StatelessWidget {
-  final HijriCalendar focusedHijri;
+  final HijriDate focusedHijri;
+  final HijriCalendarService calendarService;
   final HijriCalendarState state;
   final bool isDark;
-  final HijriCalendar? selectedHijri;
-  final Function(HijriCalendar, DateTime) onDateSelected;
+  final HijriDate? selectedHijri;
+  final Function(HijriDate, DateTime) onDateSelected;
   final void Function(BuildContext) onAddEvent;
   final BuildContext context;
 
   const CalendarGridWidget({
     super.key,
     required this.focusedHijri,
+    required this.calendarService,
     required this.state,
     required this.isDark,
     required this.selectedHijri,
@@ -111,7 +114,7 @@ class CalendarGridWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${_getHijriMonthName(focusedHijri.hMonth)} ${focusedHijri.hYear} هـ',
+                  '${_getHijriMonthName(focusedHijri.month)} ${focusedHijri.year} هـ',
                   style: TextStyle(
                     fontSize: isLandscape ? 16.sp : 18.sp,
                     fontWeight: FontWeight.w700,
@@ -233,11 +236,12 @@ class CalendarGridWidget extends StatelessWidget {
 
   Widget _buildHijriMonthGrid(BuildContext context) {
     final daysInMonth =
-        _getDaysInHijriMonth(focusedHijri.hYear, focusedHijri.hMonth);
-    final firstDayHijri = HijriCalendar()
-      ..hYear = focusedHijri.hYear
-      ..hMonth = focusedHijri.hMonth
-      ..hDay = 1;
+        calendarService.daysInMonth(focusedHijri.year, focusedHijri.month);
+    final firstDayHijri = HijriDate(
+      focusedHijri.year,
+      focusedHijri.month,
+      1,
+    );
 
     final firstDayGregorian = _getGregorianDateFromHijri(firstDayHijri);
     final firstDayWeekday =
@@ -251,13 +255,15 @@ class CalendarGridWidget extends StatelessWidget {
     }
 
     for (int day = 1; day <= daysInMonth; day++) {
-      final currentHijri = HijriCalendar()
-        ..hYear = focusedHijri.hYear
-        ..hMonth = focusedHijri.hMonth
-        ..hDay = day;
+      final currentHijri = HijriDate(
+        focusedHijri.year,
+        focusedHijri.month,
+        day,
+      );
 
       final gregorianDateTime = _getGregorianDateFromHijri(currentHijri);
-      final events = state.events[currentHijri.toString()] ?? [];
+      final events =
+          state.events[HijriCalendarService.eventKey(currentHijri)] ?? [];
 
       days.add(_buildCurrentMonthDay(
         currentHijri,
@@ -289,11 +295,11 @@ class CalendarGridWidget extends StatelessWidget {
   }
 
   Widget _buildCurrentMonthDay(
-    HijriCalendar hijriDate,
+    HijriDate hijriDate,
     DateTime gregorianDate,
     List<HijriEvent> events,
   ) {
-    final isSelected = selectedHijri?.toString() == hijriDate.toString();
+    final isSelected = selectedHijri == hijriDate;
     final isToday = _isSameDay(gregorianDate, DateTime.now());
     final isWeekend = gregorianDate.weekday == DateTime.friday ||
         gregorianDate.weekday == DateTime.saturday;
@@ -342,7 +348,7 @@ class CalendarGridWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${hijriDate.hDay}',
+                    '${hijriDate.day}',
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: isSelected || isToday
@@ -532,26 +538,12 @@ class CalendarGridWidget extends StatelessWidget {
     return isDark ? Colors.white : Colors.black87;
   }
 
-  int _getDaysInHijriMonth(int year, int month) {
-    if (month.isOdd) return 30;
-    if (month == 12 && _isHijriLeapYear(year)) return 30;
-    return 29;
-  }
-
-  bool _isHijriLeapYear(int year) => ((year * 11) + 14) % 30 < 11;
-
   bool _isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
 
-  DateTime _getGregorianDateFromHijri(HijriCalendar hijriDate) {
+  DateTime _getGregorianDateFromHijri(HijriDate hijriDate) {
     try {
-      final today = DateTime.now();
-      final todayHijri = HijriCalendar.fromDate(today);
-      final yearDiff = (hijriDate.hYear - todayHijri.hYear) * 354;
-      final monthDiff = (hijriDate.hMonth - todayHijri.hMonth) * 29;
-      final dayDiff = hijriDate.hDay - todayHijri.hDay;
-      final totalDayDiff = yearDiff + monthDiff + dayDiff;
-      return today.add(Duration(days: totalDayDiff));
+      return calendarService.toGregorian(hijriDate);
     } catch (e) {
       debugPrint('Date conversion error: $e');
       return DateTime.now();

@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+enum IslamicEventSource {
+  remote,
+  localRecurring,
+}
+
 class IslamicEventConfig {
   final String id;
   final String eventKey;
@@ -9,6 +14,7 @@ class IslamicEventConfig {
   final String actionRoute;
   final String iconName;
   final int priority;
+  final IslamicEventSource source;
 
   const IslamicEventConfig({
     required this.id,
@@ -19,7 +25,11 @@ class IslamicEventConfig {
     required this.actionRoute,
     required this.iconName,
     required this.priority,
+    this.source = IslamicEventSource.remote,
   });
+
+  bool get isRemoteConfigured => source == IslamicEventSource.remote;
+  bool get isLocalRecurring => source == IslamicEventSource.localRecurring;
 
   factory IslamicEventConfig.fromJson(Map<String, dynamic> json) {
     return IslamicEventConfig(
@@ -31,10 +41,16 @@ class IslamicEventConfig {
       actionRoute: json['action_route'] as String,
       iconName: json['icon_name'] as String,
       priority: json['priority'] as int,
+      source: IslamicEventSource.remote,
     );
   }
 
   Map<String, dynamic> toJson() {
+    if (!isRemoteConfigured) {
+      throw StateError(
+        'Locally calculated Islamic events must not be serialized as remote data.',
+      );
+    }
     return {
       'id': id,
       'event_key': eventKey,
@@ -54,4 +70,31 @@ class IslamicEventConfig {
       jsonDecode(jsonString) as Map<String, dynamic>,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is IslamicEventConfig &&
+        other.id == id &&
+        other.eventKey == eventKey &&
+        other.hijriMonth == hijriMonth &&
+        other.hijriDayStart == hijriDayStart &&
+        other.hijriDayEnd == hijriDayEnd &&
+        other.actionRoute == actionRoute &&
+        other.iconName == iconName &&
+        other.priority == priority &&
+        other.source == source;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        id,
+        eventKey,
+        hijriMonth,
+        hijriDayStart,
+        hijriDayEnd,
+        actionRoute,
+        iconName,
+        priority,
+        source,
+      );
 }
