@@ -41,6 +41,12 @@ apps:
     slots:
       - dbus-huda
       - mpris
+  prayer-notifications:
+    command: bin/huda-prayer-notification-helper
+    daemon: simple
+    daemon-scope: user
+    plugs:
+      - desktop
 
 parts:
   huda:
@@ -49,6 +55,11 @@ parts:
     flutter-target: lib/main.dart
     stage-packages:
       - libmpv2
+      - libnotify-bin
+    override-build: |
+      craftctl default
+      install -Dm755 "$CRAFT_PART_SRC/assets/linux/huda_prayer_notification_helper.sh" \
+        "$CRAFT_PART_INSTALL/bin/huda-prayer-notification-helper"
     override-prime: |
       craftctl default
       # Debian's update-alternatives is not available inside the snap,

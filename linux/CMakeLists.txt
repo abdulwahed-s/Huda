@@ -121,6 +121,18 @@ install(CODE "
 install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
   DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
 
+# This shell helper is executable code for Linux only. Declaring it as a
+# Flutter asset would copy it into App.framework on Apple platforms, where App
+# Store code-signing validation rejects unsigned scripts. Install it directly
+# into the Linux asset bundle instead; the Dart scheduler copies it to the
+# user's data directory and marks that copy executable at runtime.
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/../assets/linux/huda_prayer_notification_helper.sh"
+  DESTINATION
+    "${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}/assets/linux"
+  PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+  COMPONENT Runtime)
+
 # Install the AOT library on non-Debug builds only.
 if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
   install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"

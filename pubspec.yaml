@@ -167,6 +167,8 @@ flutter:
     - assets/images/
     - assets/json/
     - assets/audio/
+    # assets/linux is installed only by Linux CMake/Snapcraft. Bundling its
+    # shell helper in App.framework causes App Store signature rejection.
 
   fonts:
     - family: arsura
