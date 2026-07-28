@@ -1,99 +1,74 @@
-import 'package:huda/core/services/notification_services.dart';
-import 'package:huda/core/services/prayer_times_calculator.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:flutter/widgets.dart';
 import 'package:huda/core/cache/cache_helper.dart';
-import 'package:prayer_time_plus/prayer_time_plus.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:huda/core/services/notification_page_helper.dart';
+import 'package:huda/core/services/prayer_notification_background_scheduler.dart';
+import 'package:huda/core/services/prayer_notification_models.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/core/services/widget_background_service.dart';
+import 'package:huda/core/services/widget_service.dart';
+import 'package:workmanager/workmanager.dart';
 
-const String dailyTaskKey = "dailyPrayerNotificationTask";
+const String dailyTaskKey =
+    PrayerNotificationBackgroundScheduler.legacyTaskName;
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    if (task == dailyTaskKey) {
-      try {
-        tz.initializeTimeZones();
-        tz.setLocalLocation(tz.getLocation('Asia/Muscat'));
-
-        final cacheHelper = CacheHelper();
-        await cacheHelper.init();
-
-        final coordinates =
-            PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
-        if (coordinates == null) return Future.value(true);
-
-        final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
-
-        final notifications = NotificationServices();
-        await notifications.initialize();
-
-        await _schedulePrayersForDate(cacheHelper, coordinates, offsets,
-            notifications, DateTime.now(), 1);
-        await _schedulePrayersForDate(cacheHelper, coordinates, offsets,
-            notifications, DateTime.now().add(const Duration(days: 1)), 100);
-      } catch (e) {
-        //
+    WidgetsFlutterBinding.ensureInitialized();
+    try {
+      switch (task) {
+        case PrayerNotificationBackgroundScheduler.taskName:
+        case PrayerNotificationBackgroundScheduler.legacyTaskName:
+        case PrayerNotificationBackgroundScheduler.iosIdentifier:
+          return _reconcilePrayerNotifications();
+        case 'renewAthkarNotifications':
+        case 'retryAthkarScheduling':
+          return _renewAthkar(inputData);
+        case 'updateHomeWidget':
+          return _updateHomeWidget();
+        default:
+          debugPrint('Unknown Workmanager task: $task');
+          return true;
       }
+    } catch (error, stackTrace) {
+      debugPrint('Workmanager task $task failed: $error');
+      debugPrintStack(stackTrace: stackTrace);
+      return false;
     }
-
-    return Future.value(true);
   });
 }
 
-Future<void> _schedulePrayersForDate(
-    CacheHelper cacheHelper,
-    Coordinates coordinates,
-    Map<String, int> offsets,
-    NotificationServices notifications,
-    DateTime date,
-    int idOffset) async {
-  final prayerTimes =
-      PrayerTimesCalculator.computeFromCache(cacheHelper, coordinates, date);
-  final prayers =
-      PrayerTimesCalculator.dailyAdjustedTimes(prayerTimes, offsets);
-
-  int id = idOffset;
-  for (final entry in prayers.entries) {
-    final name = _getPrayerDisplayName(entry.key);
-    final time = entry.value;
-    if (time.isAfter(DateTime.now())) {
-      await notifications.schedulePrayerNotification(
-        id: id++,
-        title: '🕌 $name Prayer Time',
-        body: 'It\'s time for $name prayer. May Allah accept your prayers.',
-        scheduledTime: time,
-      );
-    }
-  }
+Future<bool> _reconcilePrayerNotifications() async {
+  final cache = CacheHelper();
+  await cache.init();
+  final result = await PrayerNotificationScheduler(cacheHelper: cache)
+      .reconcile(reason: 'background-refresh');
+  return result.isSuccess ||
+      result.status == PrayerScheduleStatus.locationUnavailable ||
+      result.status == PrayerScheduleStatus.permissionDenied;
 }
 
-String _getPrayerDisplayName(Prayer prayer) {
-  switch (prayer) {
-    case Prayer.fajr:
-      return 'Fajr';
-    case Prayer.dhuhr:
-      return 'Dhuhr';
-    case Prayer.asr:
-      return 'Asr';
-    case Prayer.maghrib:
-      return 'Maghrib';
-    case Prayer.isha:
-      return 'Isha';
-    default:
-      return prayer.name;
-  }
+Future<bool> _renewAthkar(Map<String, dynamic>? inputData) async {
+  final cache = CacheHelper();
+  await cache.init();
+  if (cache.getData(key: 'randomAthkar') != true) return true;
+
+  final configured = cache.getData(key: 'randomAthkarFrequency');
+  final inputFrequency = inputData?['frequency'];
+  final frequency = inputFrequency is int
+      ? inputFrequency
+      : configured is int
+          ? configured
+          : 60;
+  final helper = NotificationPageHelper();
+  await helper.init();
+  await helper.scheduleRandomAthkar(true, frequency);
+  return true;
 }
 
-Duration calculateInitialDelay() {
-  final now = DateTime.now();
-  DateTime next2AM;
-
-  if (now.hour < 2) {
-    next2AM = DateTime(now.year, now.month, now.day, 2);
-  } else {
-    next2AM = DateTime(now.year, now.month, now.day + 1, 2);
-  }
-
-  return next2AM.difference(now);
+Future<bool> _updateHomeWidget() async {
+  await WidgetService.initialize();
+  await WidgetService.forceUpdateWidget();
+  await WidgetBackgroundService.updateLastUpdateTime();
+  return true;
 }

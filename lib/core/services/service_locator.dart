@@ -23,6 +23,8 @@ import 'package:huda/core/services/islamic_event_service.dart';
 import 'package:huda/core/services/qcf_font_service.dart';
 import 'package:huda/core/services/home_preferences_service.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
+import 'package:huda/core/services/notification_services.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
@@ -31,6 +33,13 @@ void setupServiceLocator() {
   getIt.registerSingleton<CacheHelper>(CacheHelper());
   getIt.registerSingleton<HijriCalendarService>(
     HijriCalendarService(cache: getIt<CacheHelper>()),
+  );
+  getIt.registerSingleton<NotificationServices>(NotificationServices());
+  getIt.registerSingleton<PrayerNotificationScheduler>(
+    PrayerNotificationScheduler(
+      cacheHelper: getIt<CacheHelper>(),
+      notifications: getIt<NotificationServices>(),
+    ),
   );
   getIt.registerSingleton<Dio>(Dio());
   getIt.registerSingleton<DownloadService>(DownloadService());

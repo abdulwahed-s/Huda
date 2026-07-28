@@ -8,6 +8,7 @@ import 'package:feedback/feedback.dart';
 import 'package:huda/presentation/widgets/feedback/screenshot_feedback_widget.dart';
 import 'package:huda/core/routes/page_router.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/widget_deep_link_handler.dart';
 import 'package:huda/core/theme/app_theme.dart';
@@ -66,7 +67,10 @@ class _AppState extends State<App> {
         BlocProvider(create: (_) => NotificationsCubit()),
         BlocProvider(create: (_) => RatingCubit()),
         BlocProvider(
-          create: (_) => PrayerTimesCubit(getIt<CacheHelper>()),
+          create: (_) => PrayerTimesCubit(
+            getIt<CacheHelper>(),
+            notificationScheduler: getIt<PrayerNotificationScheduler>(),
+          ),
         ),
         BlocProvider<MiqaatLockCubit>.value(
           value: getIt<MiqaatLockCubit>(),

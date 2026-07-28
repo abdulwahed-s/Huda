@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/core/services/notification_capacity_policy.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
 
 class AppLifecycleManager extends WidgetsBindingObserver {
@@ -35,22 +37,21 @@ class AppLifecycleManager extends WidgetsBindingObserver {
       final randomAthkarEnabled =
           cacheHelper.getData(key: 'randomAthkar') ?? false;
 
-      if (randomAthkarEnabled) {
-        final frequency =
-            cacheHelper.getData(key: 'randomAthkarFrequency') ?? 60;
-
-        await _notificationHelper.scheduleRandomAthkar(true, frequency);
-        debugPrint('🛡️ Interrupted scheduling check completed');
-      }
-
       final pending = await _notificationHelper.getPendingNotifications();
       final randomAthkarPending =
           pending.where((n) => n.id >= 1100 && n.id < 1550).length;
+      final randomAthkarLimit =
+          NotificationCapacityPolicy.current.randomAthkarLimit;
+      final renewalThreshold = randomAthkarLimit == 0
+          ? 0
+          : (randomAthkarLimit / 4).ceil().clamp(1, randomAthkarLimit);
 
       debugPrint(
           '📊 Random athkar notifications remaining: $randomAthkarPending');
 
-      if (randomAthkarPending < 100) {
+      if (randomAthkarEnabled &&
+          randomAthkarLimit > 0 &&
+          randomAthkarPending < renewalThreshold) {
         debugPrint(
             '⚠️ Low notification coverage detected - triggering renewal');
 
@@ -117,6 +118,17 @@ class AppLifecycleManager extends WidgetsBindingObserver {
       }
     } catch (e) {
       debugPrint('❌ Error in app lifecycle notification check: $e');
+    }
+
+    try {
+      final result = await getIt<PrayerNotificationScheduler>()
+          .reconcile(reason: 'app-resumed');
+      debugPrint(
+        'Prayer notification resume status: ${result.status.name}; '
+        'coverage=${result.coverageUntil}',
+      );
+    } catch (error) {
+      debugPrint('Prayer notification resume check failed: $error');
     }
   }
 

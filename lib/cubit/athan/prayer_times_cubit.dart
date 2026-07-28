@@ -5,11 +5,10 @@ import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/get_current_location.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/services/notification_services.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/data/models/countdown_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/services/location_service.dart';
 import 'package:huda/core/errors/location_failures.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
@@ -47,6 +46,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   static const _ishaOffsetKey = 'prayer_offset_isha';
   static const _sunriseOffsetKey = 'prayer_offset_sunrise';
   LocationService? _locationService;
+  final PrayerNotificationScheduler _notificationScheduler;
   LocationService get _locations => _locationService ??= LocationService();
 
   Map<String, int> _prayerOffsets = {
@@ -73,8 +73,13 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     _localizations = localizations;
   }
 
-  PrayerTimesCubit(this.cacheHelper, {LocationService? locationService})
-      : _locationService = locationService,
+  PrayerTimesCubit(
+    this.cacheHelper, {
+    LocationService? locationService,
+    PrayerNotificationScheduler? notificationScheduler,
+  })  : _notificationScheduler = notificationScheduler ??
+            PrayerNotificationScheduler(cacheHelper: cacheHelper),
+        _locationService = locationService,
         super(PrayerTimesInitial()) {
     _loadOffsets();
     _loadSettings();
@@ -165,7 +170,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           offsets: _prayerOffsets));
     }
     await PrayerWidgetService.pushSettings();
-    await scheduleNotificationsForToday(NotificationServices());
+    await _reconcilePrayerNotifications('offsets-changed', force: true);
   }
 
   Future<void> savePrayerSettings({
@@ -194,7 +199,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
 
     await PrayerWidgetService.pushSettings();
-    await scheduleNotificationsForToday(NotificationServices());
+    await _reconcilePrayerNotifications('calculation-settings-changed',
+        force: true);
   }
 
   Future<void> _persistOffsets(Map<String, int> offsets) async {
@@ -209,25 +215,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         key: _ishaOffsetKey, value: offsets['isha'] ?? 0);
     await cacheHelper.saveData(
         key: _sunriseOffsetKey, value: offsets['sunrise'] ?? 0);
-  }
-
-  Map<String, String> _getLocalizedPrayerContent(Prayer prayer) {
-    final localizations = _localizations;
-    if (localizations == null) {
-      final englishName = _getPrayerDisplayName(prayer);
-      return {
-        'title': '🕌 $englishName Prayer Time',
-        'body':
-            'It\'s time for $englishName prayer. May Allah accept your prayers.',
-      };
-    }
-
-    final localizedPrayerName = _getLocalizedPrayerName(prayer, localizations);
-
-    return {
-      'title': localizations.notificationPrayerTimeTitle(localizedPrayerName),
-      'body': localizations.notificationPrayerTimeBody(localizedPrayerName),
-    };
   }
 
   String _getLocalizedPrayerNameForCountdown(Prayer prayer) {
@@ -259,108 +246,26 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   Future<void> scheduleNotificationsForToday(
       NotificationServices notificationServices) async {
-    await scheduleNotificationsForMultipleDays(notificationServices, 7);
+    await _reconcilePrayerNotifications('prayer-times-requested');
   }
 
   Future<void> scheduleNotificationsForMultipleDays(
       NotificationServices notificationServices, int daysAhead) async {
-    if (kIsWeb) {
-      debugPrint('⏭️ Skipping notification scheduling on web platform');
-      return;
-    }
-
-    if (state is! PrayerTimesLoaded) return;
-
-    final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
-    if (coordinates == null) {
-      debugPrint('❌ Location not available for scheduling notifications');
-      return;
-    }
-
-    await notificationServices.cancelAllPrayerNotifications();
-
-    final country = _countryCode;
-    final now = DateTime.now();
-    int totalScheduled = 0;
-
-    for (int dayOffset = 0; dayOffset < daysAhead; dayOffset++) {
-      final targetDate = now.add(Duration(days: dayOffset));
-      final prayerTimes =
-          _computeWithSettings(coordinates, targetDate, countryCode: country);
-
-      final prayers = <(Prayer, DateTime?)>[
-        (Prayer.fajr, prayerTimes.fajr),
-        (Prayer.dhuhr, prayerTimes.dhuhr),
-        (Prayer.asr, prayerTimes.asr),
-        (Prayer.maghrib, prayerTimes.maghrib),
-        (Prayer.isha, prayerTimes.isha),
-      ];
-
-      for (final (prayer, baseTime) in prayers) {
-        if (baseTime == null) continue;
-        final offsetMinutes = _prayerOffsets[prayer.name.toLowerCase()] ?? 0;
-        final time = baseTime.add(Duration(minutes: offsetMinutes));
-
-        if (time.isAfter(now)) {
-          final localizedContent = _getLocalizedPrayerContent(prayer);
-
-          await notificationServices.schedulePrayerNotificationWithDate(
-            prayer: prayer,
-            title: localizedContent['title']!,
-            body: localizedContent['body']!,
-            scheduledTime: time,
-            dayOffset: dayOffset,
-          );
-          totalScheduled++;
-        }
-      }
-    }
-
-    debugPrint(
-        '✅ Prayer notifications scheduled for $daysAhead days ($totalScheduled total notifications)');
-    debugPrint(
-        '🛡️ Prayer notifications use dedicated IDs - no conflict with Islamic reminders');
-
-    await _schedulePrayerNotificationsRenewal(daysAhead);
+    await _reconcilePrayerNotifications('multi-day-prayer-times-requested');
   }
 
-  Future<void> _schedulePrayerNotificationsRenewal(int daysAhead) async {
-    if (!PlatformUtils.isMobile) return;
-    try {
-      final workmanager = Workmanager();
-
-      try {
-        await workmanager.cancelByTag('test-initialization');
-      } catch (initError) {
-        debugPrint(
-            '⚠️ WorkManager not initialized yet, skipping prayer renewal scheduling');
-        debugPrint(
-            '   This is normal during app startup - prayer notifications will still work');
-        return;
-      }
-
-      await workmanager.cancelByTag('prayer-renewal');
-
-      final renewalDays = (daysAhead - 1).clamp(1, 6);
-
-      await workmanager.registerOneOffTask(
-        'prayer-renewal-${DateTime.now().millisecondsSinceEpoch}',
-        'renewPrayerNotifications',
-        initialDelay: Duration(days: renewalDays),
-        tag: 'prayer-renewal',
-        constraints: Constraints(
-          requiresBatteryNotLow: true,
-          networkType: NetworkType.notRequired,
-        ),
-      );
-
-      debugPrint(
-          '🔄 Prayer notifications renewal scheduled for $renewalDays days from now');
-    } catch (e) {
-      debugPrint('❌ Error scheduling prayer notifications renewal: $e');
-      debugPrint(
-          '   Prayer notifications will still work - renewal will be handled on next app start');
-    }
+  Future<void> _reconcilePrayerNotifications(
+    String reason, {
+    bool force = false,
+  }) async {
+    final result = await _notificationScheduler.reconcile(
+      reason: reason,
+      force: force,
+    );
+    debugPrint(
+      'Prayer notification status: ${result.status.name}; '
+      'pending=${result.pendingCount}; coverage=${result.coverageUntil}',
+    );
   }
 
   Future<void> loadPrayerTimes() async {
@@ -393,7 +298,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
       await PrayerWidgetService.pushSettings();
-      await scheduleNotificationsForToday(NotificationServices());
+      await _reconcilePrayerNotifications('location-loaded', force: true);
     } catch (e) {
       emit(PrayerTimesError(e.toString()));
     }
@@ -467,7 +372,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
       await PrayerWidgetService.pushSettings();
-      await scheduleNotificationsForToday(NotificationServices());
+      await _reconcilePrayerNotifications('manual-location-changed',
+          force: true);
     } catch (e) {
       emit(PrayerTimesError(e.toString()));
     }
@@ -496,7 +402,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
       await PrayerWidgetService.pushSettings();
-      await scheduleNotificationsForToday(NotificationServices());
+      await _reconcilePrayerNotifications('device-location-changed',
+          force: true);
     } catch (e) {
       if (e is LocationServiceDisabledFailure ||
           e.toString() == 'Exception: Location services are disabled.') {

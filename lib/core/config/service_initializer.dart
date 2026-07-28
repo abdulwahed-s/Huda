@@ -9,6 +9,8 @@ import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/core/services/notification_boot_service.dart';
 import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
+import 'package:huda/core/services/prayer_notification_background_scheduler.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/service_initialization_tracker.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/widget_background_service.dart';
@@ -33,7 +35,7 @@ Future<void> initializeCriticalServices() async {
 
 Future<void> initializeNotifications() async {
   final tracker = ServiceInitializationTracker();
-  await NotificationServices().initialize();
+  await getIt<NotificationServices>().initialize(requestPermissions: true);
   tracker.markServiceReady('notifications');
 }
 
@@ -41,9 +43,12 @@ Future<void> initializeNonCriticalServicesAsync() async {
   await PerformanceUtils.timeAsyncOperation('Non-Critical Services', () async {
     try {
       if (PlatformUtils.isMobile) {
-        await Workmanager().initialize(
-          callbackDispatcher,
-        );
+        try {
+          await Workmanager().initialize(callbackDispatcher);
+          await PrayerNotificationBackgroundScheduler.ensureRegistered();
+        } catch (error) {
+          debugPrint('Background refresh registration failed: $error');
+        }
       }
 
       await Future.wait([
@@ -71,8 +76,22 @@ Future<void> _initializeWidgetServices() async {
 }
 
 Future<void> _initializeNotificationServices() async {
-  await CalendarNotificationService().init();
-  await NotificationBootService.rescheduleAfterBoot();
+  try {
+    await CalendarNotificationService().init();
+  } catch (error) {
+    debugPrint('Calendar notification initialization failed: $error');
+  }
+  try {
+    await NotificationBootService.rescheduleAfterBoot();
+  } catch (error) {
+    debugPrint('Reminder notification restoration failed: $error');
+  }
+  final result = await getIt<PrayerNotificationScheduler>()
+      .reconcile(reason: 'app-startup');
+  debugPrint(
+    'Prayer notification startup status: ${result.status.name}, '
+    'coverage: ${result.coverageUntil}',
+  );
 }
 
 Future<void> _initializePrayerServices() async {

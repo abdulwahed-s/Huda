@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -250,6 +251,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         if (latest is NotificationPreferencesLoaded) ...latest.loadingKeys,
       }..remove(key);
       emit(_buildLoadedState(loadingKeys: remaining));
+      await _reconcilePrayerCapacity('notification-preference-changed');
     }
   }
 
@@ -289,6 +291,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
 
     await loadPreferences();
+    await _reconcilePrayerCapacity('quran-reminder-time-changed');
   }
 
   Future<void> setChecklistReminderTime(String time) async {
@@ -306,6 +309,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
 
     await loadPreferences();
+    await _reconcilePrayerCapacity('checklist-reminder-time-changed');
   }
 
   Future<void> setRandomAthkarFrequency(int minutes) async {
@@ -317,6 +321,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
 
     await loadPreferences();
+    await _reconcilePrayerCapacity('random-athkar-frequency-changed');
   }
 
   Future<void> setKahfFridayTime(String time) async {
@@ -331,6 +336,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
 
     await loadPreferences();
+    await _reconcilePrayerCapacity('kahf-reminder-time-changed');
   }
 
   Future<void> setMorningAthkarTime(String time) async {
@@ -354,6 +360,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
 
     await loadPreferences();
+    await _reconcilePrayerCapacity('morning-athkar-time-changed');
   }
 
   Future<void> setEveningAthkarTime(String time) async {
@@ -377,6 +384,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
 
     await loadPreferences();
+    await _reconcilePrayerCapacity('evening-athkar-time-changed');
   }
 
   TimeOfDay _parseTimeOfDay(String timeStr) {
@@ -453,7 +461,18 @@ class NotificationsCubit extends Cubit<NotificationsState> {
             ? _parseTimeOfDay(state.checklistReminderTime)
             : null,
       );
+      await _reconcilePrayerCapacity('notification-settings-restored');
     }
+  }
+
+  Future<void> _reconcilePrayerCapacity(String reason) async {
+    if (!getIt.isRegistered<PrayerNotificationScheduler>()) return;
+    final result =
+        await getIt<PrayerNotificationScheduler>().reconcile(reason: reason);
+    debugPrint(
+      'Prayer capacity reconciliation: ${result.status.name}; '
+      'coverage=${result.coverageUntil}',
+    );
   }
 
   Future<int> getPendingNotificationsCount() async {

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalizationState {
@@ -75,12 +76,22 @@ class LocalizationCubit extends Cubit<LocalizationState> {
 
     if (supportedSystemLocale.languageCode != 'en') {
       final sharedPrefs = await SharedPreferences.getInstance();
+      await sharedPrefs.setString(
+          _localeKey, supportedSystemLocale.languageCode);
       await sharedPrefs.setString('locale', supportedSystemLocale.languageCode);
 
       emit(LocalizationState(locale: supportedSystemLocale));
     } else {
       final sharedPrefs = await SharedPreferences.getInstance();
+      await sharedPrefs.setString(_localeKey, 'en');
       await sharedPrefs.setString('locale', 'en');
+    }
+
+    if (getIt.isRegistered<PrayerNotificationScheduler>()) {
+      await getIt<PrayerNotificationScheduler>().reconcile(
+        reason: 'system-locale-selected',
+        force: true,
+      );
     }
   }
 
@@ -93,6 +104,13 @@ class LocalizationCubit extends Cubit<LocalizationState> {
       await prefs.setString('locale', locale.languageCode);
 
       emit(LocalizationState(locale: locale));
+
+      if (getIt.isRegistered<PrayerNotificationScheduler>()) {
+        await getIt<PrayerNotificationScheduler>().reconcile(
+          reason: 'locale-changed',
+          force: true,
+        );
+      }
     }
   }
 
