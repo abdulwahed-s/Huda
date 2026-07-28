@@ -7,6 +7,7 @@ import 'package:huda/presentation/widgets/widget_management/add_widget_section.d
 import 'package:huda/presentation/widgets/widget_management/custom_verses_section.dart';
 import 'package:huda/presentation/widgets/widget_management/force_update_section.dart';
 import 'package:huda/presentation/widgets/widget_management/header_section.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:workmanager/workmanager.dart';
 
 class QuranVerseWidgetTab extends StatefulWidget {
@@ -120,25 +121,15 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
       setState(() => _customVerses.removeAt(index));
       await WidgetService.forceUpdateWidget();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.verseRemovedFromWidget,
-            style: const TextStyle(),
-          ),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-        ),
+      HudaSnackBar.success(
+        context,
+        message: AppLocalizations.of(context)!.verseRemovedFromWidget,
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text('${AppLocalizations.of(context)!.errorRemovingVerse}: $e'),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.errorRemovingVerse,
       );
     }
   }
@@ -171,22 +162,15 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
       setState(() => _customVerses.clear());
       await WidgetService.forceUpdateWidget();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.allCustomVersesCleared),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-        ),
+      HudaSnackBar.success(
+        context,
+        message: AppLocalizations.of(context)!.allCustomVersesCleared,
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text('${AppLocalizations.of(context)!.errorClearingVerses}: $e'),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.errorClearingVerses,
       );
     }
   }

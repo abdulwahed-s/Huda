@@ -5,6 +5,7 @@ import 'package:huda/presentation/widgets/error/error_details_card.dart';
 import 'package:huda/presentation/widgets/error/error_header.dart';
 import 'package:huda/presentation/widgets/error/feedback_section.dart';
 import 'package:huda/presentation/widgets/error/info_card.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:restart_app/restart_app.dart';
 import '../../cubit/error/error_cubit.dart';
 import 'package:flutter/material.dart';
@@ -209,28 +210,10 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
 
     HapticFeedback.lightImpact();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.white, size: 20.sp),
-            SizedBox(width: 8.w),
-            Text(
-                AppLocalizations.of(context)?.errorDetailsCopied ??
-                    'Error details copied',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                )),
-          ],
-        ),
-        backgroundColor: context.accentColor,
-        behavior: SnackBarBehavior.floating,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-        margin: EdgeInsets.all(16.w),
-        duration: const Duration(seconds: 2),
-      ),
+    HudaSnackBar.success(
+      context,
+      message: AppLocalizations.of(context)!.errorDetailsCopied,
+      duration: const Duration(seconds: 2),
     );
   }
 

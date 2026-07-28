@@ -8,6 +8,7 @@ import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class AthkarAudioPlayer {
   final BuildContext context;
@@ -126,12 +127,7 @@ class AthkarAudioPlayer {
   }
 
   void _showAudioErrorSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message, style: const TextStyle()),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      ),
-    );
+    HudaSnackBar.error(context, message: message);
   }
 
   void dispose() {

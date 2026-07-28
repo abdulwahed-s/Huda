@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 import '../../../core/services/service_locator.dart';
 import '../../../core/services/prayer_countdown_service.dart';
@@ -95,18 +96,17 @@ class _PrayerCountdownControlWidgetState
       await getIt<PrayerCountdownService>().startCountdownNotification();
       await _checkServiceStatus();
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content:
-                  Text(AppLocalizations.of(context)!.prayerCountdownStarted)),
+        HudaSnackBar.success(
+          context,
+          message: AppLocalizations.of(context)!.prayerCountdownStarted,
         );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(AppLocalizations.of(context)!
-                  .failedStartService(e.toString()))),
+        HudaSnackBar.error(
+          context,
+          message:
+              AppLocalizations.of(context)!.failedStartService(e.toString()),
         );
       }
     }
@@ -117,18 +117,17 @@ class _PrayerCountdownControlWidgetState
       await getIt<PrayerCountdownService>().stopCountdownNotification();
       await _checkServiceStatus();
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content:
-                  Text(AppLocalizations.of(context)!.prayerCountdownStopped)),
+        HudaSnackBar.success(
+          context,
+          message: AppLocalizations.of(context)!.prayerCountdownStopped,
         );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(AppLocalizations.of(context)!
-                  .failedStopService(e.toString()))),
+        HudaSnackBar.error(
+          context,
+          message:
+              AppLocalizations.of(context)!.failedStopService(e.toString()),
         );
       }
     }
@@ -141,18 +140,17 @@ class _PrayerCountdownControlWidgetState
       await getIt<PrayerCountdownService>().startCountdownNotification();
       await _checkServiceStatus();
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content:
-                  Text(AppLocalizations.of(context)!.prayerCountdownRestarted)),
+        HudaSnackBar.success(
+          context,
+          message: AppLocalizations.of(context)!.prayerCountdownRestarted,
         );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(AppLocalizations.of(context)!
-                  .failedRestartService(e.toString()))),
+        HudaSnackBar.error(
+          context,
+          message:
+              AppLocalizations.of(context)!.failedRestartService(e.toString()),
         );
       }
     }

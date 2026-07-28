@@ -8,6 +8,7 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/feedback/feedback_form_card.dart';
 import 'package:huda/presentation/widgets/feedback/feedback_hero_card.dart';
 import 'package:huda/presentation/widgets/feedback/feedback_privacy_card.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key});
@@ -72,28 +73,9 @@ class _FeedbackScreenState extends State<FeedbackScreen>
     final feedback = _feedbackController.text.trim();
     if (feedback.isEmpty) {
       HapticFeedback.selectionClick();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.warning, color: Colors.white, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text(
-                AppLocalizations.of(context)!.feedbackEmptyWarning,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.orange.shade600,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          margin: EdgeInsets.all(16.w),
-        ),
+      HudaSnackBar.warning(
+        context,
+        message: AppLocalizations.of(context)!.feedbackEmptyWarning,
       );
       return;
     }
@@ -149,56 +131,15 @@ class _FeedbackScreenState extends State<FeedbackScreen>
               if (state is FeedbackSubmitted) {
                 HapticFeedback.heavyImpact();
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Row(
-                      children: [
-                        Icon(Icons.check_circle,
-                            color: Colors.white, size: 20.sp),
-                        SizedBox(width: 8.w),
-                        Text(
-                          l10n.feedbackSuccessMessage,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    backgroundColor: context.accentColor,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    margin: EdgeInsets.all(16.w),
-                  ),
+                HudaSnackBar.success(
+                  context,
+                  message: l10n.feedbackSuccessMessage,
                 );
               } else if (state is FeedbackFailure) {
                 HapticFeedback.heavyImpact();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Row(
-                      children: [
-                        Icon(Icons.error, color: Colors.white, size: 20.sp),
-                        SizedBox(width: 8.w),
-                        Expanded(
-                          child: Text(
-                            state.message,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    backgroundColor: Colors.red.shade600,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    margin: EdgeInsets.all(16.w),
-                  ),
+                HudaSnackBar.error(
+                  context,
+                  message: state.message,
                 );
               }
             },

@@ -16,6 +16,7 @@ import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/utils/ui_performance_utils.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 import 'package:huda/core/mixins/surah/audio_manager_mixin.dart';
 import 'package:huda/core/mixins/surah/download_manager_mixin.dart';
@@ -967,22 +968,17 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
         isDownloadingAllTafsir = false;
       });
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.tafsirDownloadSuccess),
-          backgroundColor: Colors.green,
-        ),
+      HudaSnackBar.success(
+        context,
+        message: AppLocalizations.of(context)!.tafsirDownloadSuccess,
       );
       if (isOfflineMode && offlineCacheLoaded) preloadOfflineCache();
     } else if (state is TafsirError) {
       setState(() => isLoadingTafsir = false);
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text(AppLocalizations.of(context)!.tafsirError(state.message)),
-          backgroundColor: Colors.red,
-        ),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.tafsirError(state.message),
       );
     }
   }
@@ -1017,23 +1013,17 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
         isDownloadingAllTranslation = false;
       });
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text(AppLocalizations.of(context)!.translationDownloadSuccess),
-          backgroundColor: Colors.green,
-        ),
+      HudaSnackBar.success(
+        context,
+        message: AppLocalizations.of(context)!.translationDownloadSuccess,
       );
       if (isOfflineMode && offlineCacheLoaded) preloadOfflineCache();
     } else if (state is TranslationError) {
       setState(() => isLoadingTranslation = false);
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              AppLocalizations.of(context)!.translationError(state.message)),
-          backgroundColor: Colors.red,
-        ),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.translationError(state.message),
       );
     }
   }

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/error/error_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class FeedbackSection extends StatefulWidget {
   final bool isDark;
@@ -39,25 +40,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
     final message = _messageController.text.trim();
     if (message.isEmpty) {
       HapticFeedback.selectionClick();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.warning, color: Colors.white, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text(AppLocalizations.of(context)!.pleaseEnterMessage,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  )),
-            ],
-          ),
-          backgroundColor: Colors.orange.shade600,
-          behavior: SnackBarBehavior.floating,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-          margin: EdgeInsets.all(16.w),
-        ),
+      HudaSnackBar.warning(
+        context,
+        message: AppLocalizations.of(context)!.pleaseEnterMessage,
       );
       return;
     }
@@ -89,27 +74,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
       listener: (context, state) {
         if (state is ErrorFailure) {
           HapticFeedback.heavyImpact();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.error, color: Colors.white, size: 20.sp),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(state.message,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                        )),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.red.shade600,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)),
-              margin: EdgeInsets.all(16.w),
-            ),
+          HudaSnackBar.error(
+            context,
+            message: state.message,
           );
         } else if (state is ErrorSubmitted) {
           HapticFeedback.lightImpact();

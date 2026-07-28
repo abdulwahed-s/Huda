@@ -7,6 +7,7 @@ import 'package:home_widget/home_widget.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:huda/cubit/theme/theme_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class PrayerWidgetTab extends StatefulWidget {
   const PrayerWidgetTab({super.key, required this.isDark});
@@ -70,10 +71,9 @@ class _PrayerWidgetTabState extends State<PrayerWidgetTab> {
     try {
       await PrayerWidgetService.forceUpdate();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.prayerWidgetUpdated),
-        ),
+      HudaSnackBar.success(
+        context,
+        message: AppLocalizations.of(context)!.prayerWidgetUpdated,
       );
     } finally {
       if (mounted) setState(() => _isRefreshing = false);

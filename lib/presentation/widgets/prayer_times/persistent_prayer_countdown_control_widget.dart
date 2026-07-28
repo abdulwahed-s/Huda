@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class PersistentPrayerCountdownControlWidget extends StatefulWidget {
   const PersistentPrayerCountdownControlWidget({super.key});
@@ -395,13 +396,17 @@ class _PersistentPrayerCountdownControlWidgetState
       await _countdownService.startPersistentCountdown();
       setState(() {});
       if (mounted) {
-        _showSnackBar(AppLocalizations.of(context)!.persistentCountdownStarted,
-            Colors.green);
+        _showSnackBar(
+          AppLocalizations.of(context)!.persistentCountdownStarted,
+          HudaSnackBarKind.success,
+        );
       }
     } catch (e) {
       if (mounted) {
-        _showSnackBar(AppLocalizations.of(context)!.failedToStart(e.toString()),
-            Colors.red);
+        _showSnackBar(
+          AppLocalizations.of(context)!.failedToStart(e.toString()),
+          HudaSnackBarKind.error,
+        );
       }
     }
   }
@@ -411,13 +416,17 @@ class _PersistentPrayerCountdownControlWidgetState
       await _countdownService.stopPersistentCountdown();
       setState(() {});
       if (mounted) {
-        _showSnackBar(AppLocalizations.of(context)!.persistentCountdownStopped,
-            Colors.orange);
+        _showSnackBar(
+          AppLocalizations.of(context)!.persistentCountdownStopped,
+          HudaSnackBarKind.success,
+        );
       }
     } catch (e) {
       if (mounted) {
-        _showSnackBar(AppLocalizations.of(context)!.failedToStop(e.toString()),
-            Colors.red);
+        _showSnackBar(
+          AppLocalizations.of(context)!.failedToStop(e.toString()),
+          HudaSnackBarKind.error,
+        );
       }
     }
   }
@@ -428,110 +437,28 @@ class _PersistentPrayerCountdownControlWidgetState
       setState(() {});
       if (mounted) {
         _showSnackBar(
-            AppLocalizations.of(context)!.persistentCountdownRestarted,
-            Colors.blue);
+          AppLocalizations.of(context)!.persistentCountdownRestarted,
+          HudaSnackBarKind.success,
+        );
       }
     } catch (e) {
       if (mounted) {
         _showSnackBar(
-            AppLocalizations.of(context)!.failedToRestart(e.toString()),
-            Colors.red);
+          AppLocalizations.of(context)!.failedToRestart(e.toString()),
+          HudaSnackBarKind.error,
+        );
       }
     }
   }
 
-  void _showSnackBar(String message, Color color) {
+  void _showSnackBar(String message, HudaSnackBarKind kind) {
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Container(
-            padding: EdgeInsets.symmetric(vertical: 4.h),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(6.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    _getSnackBarIcon(color),
-                    color: Colors.white,
-                    size: 18.sp,
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _getSnackBarTitle(color),
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 2.h),
-                      Text(
-                        message,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.white.withValues(alpha: 0.9),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          backgroundColor: color,
-          duration: const Duration(seconds: 3),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(16.w),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          elevation: 8,
-          action: SnackBarAction(
-            label: AppLocalizations.of(context)!.ok,
-            textColor: Colors.white,
-            backgroundColor: Colors.white.withValues(alpha: 0.2),
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-          ),
-        ),
+      HudaSnackBar.show(
+        context,
+        message: message,
+        kind: kind,
+        dismissible: kind == HudaSnackBarKind.error,
       );
     }
-  }
-
-  IconData _getSnackBarIcon(Color color) {
-    if (color == Colors.green) {
-      return Icons.check_circle;
-    } else if (color == Colors.red) {
-      return Icons.error;
-    } else if (color == Colors.orange) {
-      return Icons.warning;
-    } else if (color == Colors.blue) {
-      return Icons.refresh;
-    }
-    return Icons.info;
-  }
-
-  String _getSnackBarTitle(Color color) {
-    if (color == Colors.green) {
-      return AppLocalizations.of(context)!.success;
-    } else if (color == Colors.red) {
-      return AppLocalizations.of(context)!.error;
-    } else if (color == Colors.orange) {
-      return AppLocalizations.of(context)!.warning;
-    } else if (color == Colors.blue) {
-      return AppLocalizations.of(context)!.info;
-    }
-    return AppLocalizations.of(context)!.notification;
   }
 }

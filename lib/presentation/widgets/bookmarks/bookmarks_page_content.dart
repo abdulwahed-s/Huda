@@ -25,6 +25,7 @@ import 'package:huda/presentation/widgets/bookmarks/delete_confirmation_dialog.d
 import 'package:huda/presentation/widgets/bookmarks/edit_note_dialog.dart';
 import 'package:huda/presentation/widgets/bookmarks/navigate_confirmation_dialog.dart';
 import 'package:huda/presentation/widgets/bookmarks/options_menu.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class BookmarksPageContent extends StatefulWidget {
   const BookmarksPageContent({super.key});
@@ -62,41 +63,13 @@ class _BookmarksPageContentState extends State<BookmarksPageContent>
     _bookmarkChangesSubscription =
         bookmarkService.bookmarkChanges.listen((change) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  change.action == BookmarkChangeAction.added
-                      ? Icons.bookmark_add
-                      : change.action == BookmarkChangeAction.removed
-                          ? Icons.bookmark_remove
-                          : Icons.edit,
-                  color: Colors.white,
-                  size: 18,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  change.action == BookmarkChangeAction.added
-                      ? AppLocalizations.of(context)!.bookmarkAdded
-                      : change.action == BookmarkChangeAction.removed
-                          ? AppLocalizations.of(context)!.bookmarkRemoved
-                          : AppLocalizations.of(context)!.bookmarkUpdated,
-                ),
-              ],
-            ),
-            backgroundColor: change.action == BookmarkChangeAction.removed
-                ? Colors.red
-                : Colors.green,
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-              left: 16,
-              right: 16,
-            ),
-          ),
+        HudaSnackBar.success(
+          context,
+          message: change.action == BookmarkChangeAction.added
+              ? AppLocalizations.of(context)!.bookmarkAdded
+              : change.action == BookmarkChangeAction.removed
+                  ? AppLocalizations.of(context)!.bookmarkRemoved
+                  : AppLocalizations.of(context)!.bookmarkUpdated,
         );
         context.read<BookmarksCubit>().loadBookmarks();
       }

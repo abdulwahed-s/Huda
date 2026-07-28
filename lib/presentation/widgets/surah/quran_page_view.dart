@@ -35,6 +35,7 @@ import '../../../core/mixins/surah/state_validators_mixin.dart';
 import '../../../core/mixins/surah/reading_position_tracker_mixin.dart';
 
 import 'package:huda/core/utils/ui_performance_utils.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class QuranPageView extends StatefulWidget {
   final SurahModel surah;
@@ -1181,11 +1182,9 @@ class _QuranPageViewState extends State<QuranPageView>
         isDownloadingAllTafsir = false;
       });
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.tafsirDownloadSuccess),
-          backgroundColor: Colors.green,
-        ),
+      HudaSnackBar.success(
+        context,
+        message: AppLocalizations.of(context)!.tafsirDownloadSuccess,
       );
 
       if (isOfflineMode && offlineCacheLoaded) {
@@ -1196,12 +1195,9 @@ class _QuranPageViewState extends State<QuranPageView>
         isLoadingTafsir = false;
       });
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text(AppLocalizations.of(context)!.tafsirError(state.message)),
-          backgroundColor: Colors.red,
-        ),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.tafsirError(state.message),
       );
     }
   }
@@ -1243,12 +1239,9 @@ class _QuranPageViewState extends State<QuranPageView>
         isDownloadingAllTranslation = false;
       });
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text(AppLocalizations.of(context)!.translationDownloadSuccess),
-          backgroundColor: Colors.green,
-        ),
+      HudaSnackBar.success(
+        context,
+        message: AppLocalizations.of(context)!.translationDownloadSuccess,
       );
 
       if (isOfflineMode && offlineCacheLoaded) {
@@ -1259,12 +1252,9 @@ class _QuranPageViewState extends State<QuranPageView>
         isLoadingTranslation = false;
       });
       safeModalSetState();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              AppLocalizations.of(context)!.translationError(state.message)),
-          backgroundColor: Colors.red,
-        ),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.translationError(state.message),
       );
     }
   }

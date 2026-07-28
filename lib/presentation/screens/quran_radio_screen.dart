@@ -13,6 +13,7 @@ import 'package:huda/presentation/widgets/quran_radio/radio_header_background.da
 import 'package:huda/presentation/widgets/quran_radio/radio_now_playing_bar.dart';
 import 'package:huda/presentation/widgets/quran_radio/radio_search_bar.dart';
 import 'package:huda/presentation/widgets/quran_radio/radio_station_card.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class QuranRadioScreen extends StatefulWidget {
   const QuranRadioScreen({super.key});
@@ -67,8 +68,9 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
       await context.read<QuranRadioCubit>().playStation(station);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context)!.error}: $e')),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }

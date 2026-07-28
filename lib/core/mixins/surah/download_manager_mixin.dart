@@ -7,6 +7,8 @@ import 'package:huda/cubit/translation/translation_cubit.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/surah_audio_model.dart' as audio;
 import 'package:huda/data/models/surah_model.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
   bool isDownloadingSingleAyah = false;
@@ -59,11 +61,9 @@ mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error downloading ayah: $e'),
-            backgroundColor: Colors.red,
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }
@@ -86,11 +86,9 @@ mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
           );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error downloading surah: $e'),
-            backgroundColor: Colors.red,
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }

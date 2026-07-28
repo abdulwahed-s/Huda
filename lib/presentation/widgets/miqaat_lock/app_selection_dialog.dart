@@ -9,6 +9,7 @@ import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
 import 'package:huda/cubit/miqaat_lock/miqaat_lock_state.dart';
 import 'package:huda/data/models/miqaat_lock/locked_app.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppSelectionDialog extends StatefulWidget {
@@ -221,69 +222,17 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
                 final hasApps =
                     await platform.invokeMethod('showFamilyActivityPicker');
                 if (hasApps == true && mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          Icon(Icons.check_circle_rounded,
-                              color: Colors.white, size: 24.sp),
-                          SizedBox(width: 12.w),
-                          Expanded(
-                            child: Text(
-                              l10n.iosAppsSelectedSuccessfully,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      backgroundColor: const Color(0xFF00C9A7),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.r),
-                      ),
-                      margin: EdgeInsets.all(16.r),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 14.h),
-                      elevation: 4,
-                    ),
+                  HudaSnackBar.success(
+                    context,
+                    message: l10n.iosAppsSelectedSuccessfully,
                   );
                   Navigator.pop(context);
                 }
               } on PlatformException catch (e) {
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          Icon(Icons.error_outline_rounded,
-                              color: Colors.white, size: 24.sp),
-                          SizedBox(width: 12.w),
-                          Expanded(
-                            child: Text(
-                              l10n.iosAppSelectionError(e.message ?? ''),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      backgroundColor: Colors.red.shade400,
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.r),
-                      ),
-                      margin: EdgeInsets.all(16.r),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 14.h),
-                      elevation: 4,
-                    ),
+                  HudaSnackBar.error(
+                    context,
+                    message: l10n.iosAppSelectionError(e.message ?? ''),
                   );
                 }
               }

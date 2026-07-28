@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/update_service.dart';
 import 'package:huda/core/services/quran_audio_progress_service.dart';
@@ -30,6 +29,7 @@ import 'package:huda/presentation/widgets/home/themes/classic_home_header.dart';
 import 'package:huda/presentation/widgets/home/exit_confirmation_dialog.dart';
 import 'package:huda/core/services/whats_new_service.dart';
 import 'package:huda/presentation/screens/home_customization.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -213,15 +213,9 @@ class _HomeState extends State<Home>
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error opening reciter: $e'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }
@@ -247,15 +241,9 @@ class _HomeState extends State<Home>
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error opening radio: $e'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }
@@ -289,15 +277,9 @@ class _HomeState extends State<Home>
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error opening last read surah: $e'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
     }
@@ -324,8 +306,9 @@ class _HomeState extends State<Home>
       if (mounted) _refreshHomeData();
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error opening surah: $error')),
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.unexpectedError,
       );
     }
   }

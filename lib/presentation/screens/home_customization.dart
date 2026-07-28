@@ -16,6 +16,7 @@ import 'package:huda/presentation/widgets/home_customization/customization_theme
 import 'package:huda/presentation/widgets/home_customization/home_customization_labels.dart';
 import 'package:huda/presentation/widgets/home_customization/home_customization_sheets.dart';
 import 'package:huda/presentation/widgets/home_customization/unsaved_changes_confirmation.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class HomeCustomizationScreen extends StatefulWidget {
   const HomeCustomizationScreen({super.key});
@@ -228,14 +229,15 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen>
     if (!success) {
       _closing = false;
       final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.homeChangesSaveFailed),
-          action: SnackBarAction(
-            label: l10n.retry,
-            onPressed: _finishEditing,
-          ),
+      HudaSnackBar.error(
+        context,
+        message: l10n.homeChangesSaveFailed,
+        action: HudaSnackBarAction(
+          label: l10n.retry,
+          onPressed: _finishEditing,
         ),
+        dismissible: true,
+        replaceCurrent: false,
       );
       return;
     }
@@ -254,9 +256,7 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen>
     _customizationCubit.resetCurrentTheme();
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(l10n.themeResetMessage)));
+    HudaSnackBar.success(context, message: l10n.themeResetMessage);
   }
 
   void _autoScroll(DragUpdateDetails details) {

@@ -6,6 +6,7 @@ import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/presentation/widgets/rating/star_rating_input.dart';
 import 'package:huda/cubit/rating/rating_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class AppRatingDialog extends StatefulWidget {
   final bool showDismissActions;
@@ -91,54 +92,18 @@ class _AppRatingDialogState extends State<AppRatingDialog>
   void _submitRating() {
     if (_rating == 0) {
       HapticFeedback.selectionClick();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.warning, color: Colors.white, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text(
-                AppLocalizations.of(context)!.pleaseSelectRating,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.orange.shade600,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
+      HudaSnackBar.warning(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectRating,
       );
       return;
     }
 
     if (_showFeedbackField && _feedbackController.text.trim().isEmpty) {
       HapticFeedback.selectionClick();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.warning, color: Colors.white, size: 20.sp),
-              SizedBox(width: 8.w),
-              Text(
-                AppLocalizations.of(context)!.provideFeedback,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.orange.shade600,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
+      HudaSnackBar.warning(
+        context,
+        message: AppLocalizations.of(context)!.provideFeedback,
       );
       return;
     }
@@ -179,56 +144,15 @@ class _AppRatingDialogState extends State<AppRatingDialog>
               ? AppLocalizations.of(context)!.thankYouRedirect
               : AppLocalizations.of(context)!.thankYouFeedback;
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.check_circle, color: Colors.white, size: 20.sp),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(
-                      message,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: context.accentColor,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              margin: EdgeInsets.all(16.w),
-            ),
+          HudaSnackBar.success(
+            context,
+            message: message,
           );
         } else if (state is RatingFailure) {
           HapticFeedback.heavyImpact();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.error, color: Colors.white, size: 20.sp),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(
-                      state.message,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.red.shade600,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
+          HudaSnackBar.error(
+            context,
+            message: state.message,
           );
         }
       },

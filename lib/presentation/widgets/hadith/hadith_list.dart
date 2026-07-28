@@ -7,6 +7,7 @@ import 'package:huda/data/models/hadith_books_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_book_card.dart';
 import 'package:huda/presentation/widgets/hadith/header_banner.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class HadithList extends StatelessWidget {
   final HadithBooksModel hadithBooks;
@@ -61,45 +62,11 @@ class HadithList extends StatelessWidget {
   }
 
   void _showComingSoonSnackBar() {
-    final snackBar = SnackBar(
-      content: Row(
-        children: [
-          Icon(
-            Icons.schedule_rounded,
-            color: Colors.white,
-            size: 20.sp,
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Text(
-              AppLocalizations.of(context)!.comingSoon,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
+    HudaSnackBar.info(
+      context,
+      message: AppLocalizations.of(context)!.comingSoon,
       duration: const Duration(seconds: 3),
-      backgroundColor: const Color(0xFF2D3748),
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.all(16.w),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      elevation: 8,
-      action: SnackBarAction(
-        label: AppLocalizations.of(context)!.ok,
-        textColor: const Color(0xFF63B3ED),
-        onPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        },
-      ),
-      dismissDirection: DismissDirection.horizontal,
+      dismissible: true,
     );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

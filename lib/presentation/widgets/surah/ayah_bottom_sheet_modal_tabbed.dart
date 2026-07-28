@@ -26,6 +26,7 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/data/models/quran_model.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class AyahBottomSheetModalTabbed extends StatefulWidget {
   final Ayahs ayah;
@@ -1840,27 +1841,10 @@ class _AyahBottomSheetModalTabbedState
         _checkAyahWidgetStatus();
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(Icons.check_circle, color: Colors.white),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      AppLocalizations.of(context)!.ayahAddedToWidget,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.green,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              duration: const Duration(seconds: 3),
-            ),
+          HudaSnackBar.success(
+            context,
+            message: AppLocalizations.of(context)!.ayahAddedToWidget,
+            duration: const Duration(seconds: 3),
           );
         }
       } else {
@@ -1870,53 +1854,19 @@ class _AyahBottomSheetModalTabbedState
         });
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Row(
-                children: [
-                  Icon(Icons.info, color: Colors.white),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'This ayah is already in your widget collection.',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.orange,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              duration: const Duration(seconds: 3),
-            ),
+          HudaSnackBar.info(
+            context,
+            message: AppLocalizations.of(context)!.alreadyInWidget,
+            duration: const Duration(seconds: 3),
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.error, color: Colors.white),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Failed to add ayah to widget: $e',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            duration: const Duration(seconds: 4),
-          ),
+        HudaSnackBar.error(
+          context,
+          message: AppLocalizations.of(context)!.errorAddingWidget,
+          duration: const Duration(seconds: 4),
         );
       }
     }

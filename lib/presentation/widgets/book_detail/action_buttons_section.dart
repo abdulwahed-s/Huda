@@ -5,6 +5,7 @@ import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/book_detail/download_button.dart';
 import 'package:huda/presentation/widgets/book_detail/primary_button.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class ActionButtonsSection extends StatefulWidget {
   final dynamic bookDetail;
@@ -46,23 +47,18 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
             } else if (downloadState is DownloadCompleted &&
                 downloadState.bookId == widget.bookId) {
               widget.onDownloadStateChanged(false, 1.0);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                      AppLocalizations.of(context)!.bookDownloadedSuccessfully),
-                  behavior: SnackBarBehavior.floating,
-                ),
+              HudaSnackBar.success(
+                context,
+                message:
+                    AppLocalizations.of(context)!.bookDownloadedSuccessfully,
               );
             } else if (downloadState is DownloadError &&
                 downloadState.bookId == widget.bookId) {
               widget.onDownloadStateChanged(false, 0.0);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!
-                      .downloadFailed(downloadState.message)),
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.red,
-                ),
+              HudaSnackBar.error(
+                context,
+                message: AppLocalizations.of(context)!
+                    .downloadFailed(downloadState.message),
               );
             }
           },
