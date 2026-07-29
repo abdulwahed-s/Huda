@@ -14,6 +14,8 @@ import 'package:huda/presentation/widgets/hijri_calendar/delete_confirmation_dia
 import 'package:huda/presentation/widgets/hijri_calendar/event_dialog.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/events_section_widget.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/hijri_adjustment_dialog.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/islamic_calendar_event.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/islamic_events_section_widget.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/selected_date_info_widget.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
@@ -171,11 +173,39 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
           ),
           body: BlocBuilder<HijriCalendarCubit, HijriCalendarState>(
             builder: (context, state) {
-              final events = _selectedHijri != null
+              final List<HijriEvent> userEvents = _selectedHijri != null
                   ? state.events[
                           HijriCalendarService.eventKey(_selectedHijri!)] ??
-                      []
-                  : [];
+                      const <HijriEvent>[]
+                  : const <HijriEvent>[];
+              final islamicEvents = _selectedHijri == null
+                  ? const <IslamicCalendarEvent>[]
+                  : IslamicCalendarEvents.forDate(_selectedHijri!);
+              final showUserEventsSection =
+                  userEvents.isNotEmpty || islamicEvents.isEmpty;
+              final calendarState = HijriCalendarState(
+                events: IslamicCalendarEvents.withMarkers(
+                  userEvents: state.events,
+                  focusedMonth: _focusedHijri,
+                  daysInFocusedMonth: _calendarService.daysInMonth(
+                    _focusedHijri.year,
+                    _focusedHijri.month,
+                  ),
+                ),
+              );
+              final userEventsSection = EventsSectionWidget(
+                events: userEvents,
+                parentContext: parentContext,
+                isDark: isDark,
+                onEditEvent: (event) => _showEditEventDialog(
+                  parentContext,
+                  _focusedGregorian,
+                  event,
+                ),
+                onDeleteEvent: (event) =>
+                    _showDeleteConfirmation(parentContext, event),
+                context: context,
+              );
 
               return OrientationBuilder(
                 builder: (context, orientation) {
@@ -202,7 +232,7 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                                 CalendarGridWidget(
                                   focusedHijri: _focusedHijri,
                                   calendarService: _calendarService,
-                                  state: state,
+                                  state: calendarState,
                                   isDark: isDark,
                                   selectedHijri: _selectedHijri,
                                   onDateSelected: (hijriDate, gregorianDate) {
@@ -240,19 +270,14 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                                     isDark: isDark,
                                     context: context,
                                   ),
+                                IslamicEventsSectionWidget(
+                                  events: islamicEvents,
+                                  isDark: isDark,
+                                ),
                                 Expanded(
-                                  child: EventsSectionWidget(
-                                    events: events.cast<HijriEvent>(),
-                                    parentContext: parentContext,
-                                    isDark: isDark,
-                                    onEditEvent: (event) =>
-                                        _showEditEventDialog(parentContext,
-                                            _focusedGregorian, event),
-                                    onDeleteEvent: (event) =>
-                                        _showDeleteConfirmation(
-                                            parentContext, event),
-                                    context: context,
-                                  ),
+                                  child: showUserEventsSection
+                                      ? userEventsSection
+                                      : const SizedBox.shrink(),
                                 ),
                               ],
                             ),
@@ -275,7 +300,7 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                       CalendarGridWidget(
                         focusedHijri: _focusedHijri,
                         calendarService: _calendarService,
-                        state: state,
+                        state: calendarState,
                         isDark: isDark,
                         selectedHijri: _selectedHijri,
                         onDateSelected: (hijriDate, gregorianDate) {
@@ -294,16 +319,11 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                           isDark: isDark,
                           context: context,
                         ),
-                      EventsSectionWidget(
-                        events: events.cast<HijriEvent>(),
-                        parentContext: parentContext,
+                      IslamicEventsSectionWidget(
+                        events: islamicEvents,
                         isDark: isDark,
-                        onEditEvent: (event) => _showEditEventDialog(
-                            parentContext, _focusedGregorian, event),
-                        onDeleteEvent: (event) =>
-                            _showDeleteConfirmation(parentContext, event),
-                        context: context,
                       ),
+                      if (showUserEventsSection) userEventsSection,
                     ],
                   );
                 },
