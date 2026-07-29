@@ -1081,123 +1081,133 @@ class _SelectionPickerSheetState extends State<_SelectionPickerSheet> {
     final filteredOptions = _filteredOptions;
     final background = isDark ? colors.darkGradientMid : colors.lightSurface;
 
-    return SafeArea(
-      top: false,
-      child: Container(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.76,
-        ),
-        decoration: BoxDecoration(
-          color: background,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(26.r),
-            topRight: Radius.circular(26.r),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.46 : 0.16),
-              blurRadius: 26,
-              offset: const Offset(0, -8),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final preferredHeight = MediaQuery.sizeOf(context).height * 0.76;
+        final sheetHeight =
+            preferredHeight.clamp(0.0, constraints.maxHeight).toDouble();
+
+        return SafeArea(
+          top: false,
+          child: Container(
+            height: sheetHeight,
+            decoration: BoxDecoration(
+              color: background,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(26.r),
+                topRight: Radius.circular(26.r),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: isDark ? 0.46 : 0.16),
+                  blurRadius: 26,
+                  offset: const Offset(0, -8),
+                ),
+              ],
             ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(18.w, 10.h, 14.w, 12.h),
-              child: Column(
-                children: [
-                  Container(
-                    width: 42.w,
-                    height: 4.h,
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.28)
-                          : Colors.black.withValues(alpha: 0.14),
-                      borderRadius: BorderRadius.circular(2.r),
-                    ),
-                  ),
-                  SizedBox(height: 14.h),
-                  Row(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(18.w, 10.h, 14.w, 12.h),
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Text(
-                          widget.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w900,
-                            color:
-                                isDark ? colors.darkText : colors.primaryDark,
-                          ),
+                      Container(
+                        width: 42.w,
+                        height: 4.h,
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.28)
+                              : Colors.black.withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(2.r),
                         ),
                       ),
-                      Material(
-                        color: isDark
-                            ? Colors.white.withValues(alpha: 0.06)
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(11.r),
-                        child: InkWell(
-                          onTap: () => Navigator.of(context).pop(),
-                          borderRadius: BorderRadius.circular(11.r),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.w),
-                            child: Icon(
-                              Icons.close_rounded,
-                              size: 19.sp,
-                              color:
-                                  isDark ? Colors.white70 : colors.primaryDark,
+                      SizedBox(height: 14.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 17.sp,
+                                fontWeight: FontWeight.w900,
+                                color: isDark
+                                    ? colors.darkText
+                                    : colors.primaryDark,
+                              ),
                             ),
                           ),
-                        ),
+                          Material(
+                            color: isDark
+                                ? Colors.white.withValues(alpha: 0.06)
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(11.r),
+                            child: InkWell(
+                              onTap: () => Navigator.of(context).pop(),
+                              borderRadius: BorderRadius.circular(11.r),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.w),
+                                child: Icon(
+                                  Icons.close_rounded,
+                                  size: 19.sp,
+                                  color: isDark
+                                      ? Colors.white70
+                                      : colors.primaryDark,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  if (widget.searchable) ...[
-                    SizedBox(height: 12.h),
-                    _PickerSearchField(
-                      hint: widget.searchHint ?? '',
-                      colors: colors,
-                      isDark: isDark,
-                      onChanged: (value) => setState(() => _query = value),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            Flexible(
-              child: filteredOptions.isEmpty
-                  ? _PickerEmptyState(colors: colors, isDark: isDark)
-                  : ListView.separated(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.fromLTRB(
-                        14.w,
-                        0,
-                        14.w,
-                        14.h + MediaQuery.paddingOf(context).bottom,
-                      ),
-                      itemCount: filteredOptions.length,
-                      separatorBuilder: (_, __) => SizedBox(height: 8.h),
-                      itemBuilder: (context, index) {
-                        final option = filteredOptions[index];
-                        final selected = option.token == widget.selectedToken;
-
-                        return _SelectionOptionTile(
-                          option: option,
-                          selected: selected,
+                      if (widget.searchable) ...[
+                        SizedBox(height: 12.h),
+                        _PickerSearchField(
+                          hint: widget.searchHint ?? '',
                           colors: colors,
                           isDark: isDark,
-                          onTap: () => Navigator.of(context).pop(option.token),
-                        );
-                      },
-                    ),
+                          onChanged: (value) => setState(() => _query = value),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                Flexible(
+                  child: filteredOptions.isEmpty
+                      ? _PickerEmptyState(colors: colors, isDark: isDark)
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.fromLTRB(
+                            14.w,
+                            0,
+                            14.w,
+                            14.h + MediaQuery.paddingOf(context).bottom,
+                          ),
+                          itemCount: filteredOptions.length,
+                          separatorBuilder: (_, __) => SizedBox(height: 8.h),
+                          itemBuilder: (context, index) {
+                            final option = filteredOptions[index];
+                            final selected =
+                                option.token == widget.selectedToken;
+
+                            return _SelectionOptionTile(
+                              option: option,
+                              selected: selected,
+                              colors: colors,
+                              isDark: isDark,
+                              onTap: () =>
+                                  Navigator.of(context).pop(option.token),
+                            );
+                          },
+                        ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
