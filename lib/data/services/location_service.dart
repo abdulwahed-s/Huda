@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' show FunctionException;
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/api/nominatim_service.dart';
 import 'package:huda/data/models/location_search_error.dart';
+import 'package:huda/data/models/location_search_suggestion.dart';
 import 'package:huda/data/models/placemark_model.dart';
 
 class LocationService {
@@ -116,35 +117,56 @@ class LocationService {
     return map;
   }
 
-  Future<List<Map<String, dynamic>>> searchCity(String query) async {
-    try {
-      final placemarkModel = await _nominatimService.searchLocation(query);
+  Future<List<LocationSearchSuggestion>> searchCity(
+    String query, {
+    required String languageCode,
+  }) {
+    return _withSearchErrorHandling(
+      () => _nominatimService.autocompleteCities(
+        query,
+        languageCode: languageCode,
+      ),
+    );
+  }
 
-      if (placemarkModel.results == null || placemarkModel.results!.isEmpty) {
-        return [];
+  Future<Map<String, dynamic>> resolveCity(
+    LocationSearchSuggestion suggestion, {
+    required String languageCode,
+  }) {
+    return _withSearchErrorHandling(() async {
+      final placemarkModel = await _nominatimService.resolvePlace(
+        suggestion.placeId,
+        languageCode: languageCode,
+      );
+      final result = _findBestResult(placemarkModel.results);
+      final location = result?.geometry?.location;
+      final latitude = location?.lat;
+      final longitude = location?.lng;
+
+      if (result == null || latitude == null || longitude == null) {
+        throw const LocationSearchException(LocationSearchErrorType.unknown);
       }
 
-      return placemarkModel.results!.map((result) {
-        final components = result.addressComponents ?? [];
-        final addressMap = _parseAddressComponents(components);
+      final addressMap =
+          _parseAddressComponents(result.addressComponents ?? []);
+      final formattedAddress = result.formattedAddress?.trim();
 
-        String name = result.formattedAddress ?? '';
-        if (name.isEmpty) {
-          final parts = [
-            addressMap['locality'],
-            addressMap['administrative_area_level_1'],
-            addressMap['country']
-          ].where((part) => part != null && part.isNotEmpty).toList();
-          name = parts.join(', ');
-        }
+      return {
+        'name': formattedAddress == null || formattedAddress.isEmpty
+            ? suggestion.displayName
+            : formattedAddress,
+        'lat': latitude,
+        'lon': longitude,
+        'country_code': addressMap['country_code'] ?? '',
+      };
+    });
+  }
 
-        return {
-          'name': name,
-          'lat': result.geometry?.location?.lat ?? 0.0,
-          'lon': result.geometry?.location?.lng ?? 0.0,
-          'country_code': addressMap['country_code'] ?? '',
-        };
-      }).toList();
+  Future<T> _withSearchErrorHandling<T>(Future<T> Function() operation) async {
+    try {
+      return await operation();
+    } on LocationSearchException {
+      rethrow;
     } on FunctionException catch (e) {
       if (e.status == 429) {
         throw const LocationSearchException(LocationSearchErrorType.rateLimit);
