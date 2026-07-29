@@ -6,25 +6,101 @@ on:
       - 'v*'
   workflow_dispatch:
     inputs:
+      source_ref:
+        description: 'Commit SHA or immutable tag to build (blank uses the selected run commit)'
+        type: string
+        required: false
       dry_run:
-        description: 'Build only — skip store uploads'
+        description: 'Build all platforms only — skip every store upload'
+        type: boolean
+        default: false
+      all_stores:
+        description: 'Publish every store'
+        type: boolean
+        default: false
+      google_play:
+        description: 'Publish Google Play'
+        type: boolean
+        default: false
+      appgallery:
+        description: 'Publish Huawei AppGallery'
+        type: boolean
+        default: false
+      ios_app_store:
+        description: 'Publish Apple App Store (iOS)'
+        type: boolean
+        default: false
+      macos_app_store:
+        description: 'Publish Apple App Store (macOS)'
+        type: boolean
+        default: false
+      snapcraft:
+        description: 'Publish Snapcraft'
+        type: boolean
+        default: false
+      microsoft_store:
+        description: 'Publish Microsoft Store'
         type: boolean
         default: false
 
 env:
   FLUTTER_VERSION: '3.44.2'
+  RELEASE_SOURCE_REF: ${{ inputs.source_ref || github.sha }}
 
 permissions:
   contents: write
 
 jobs:
+  # Tag pushes always build and publish every target. Manual runs are deliberately
+  # opt-in: select one or more stores, or choose dry_run to build everything.
+  release-plan:
+    name: Validate release selection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate manual selection
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          ALL_STORES: ${{ inputs.all_stores }}
+          GOOGLE_PLAY: ${{ inputs.google_play }}
+          APPGALLERY: ${{ inputs.appgallery }}
+          IOS_APP_STORE: ${{ inputs.ios_app_store }}
+          MACOS_APP_STORE: ${{ inputs.macos_app_store }}
+          SNAPCRAFT: ${{ inputs.snapcraft }}
+          MICROSOFT_STORE: ${{ inputs.microsoft_store }}
+        run: |
+          if [[ "$DRY_RUN" != "true" &&
+                "$ALL_STORES" != "true" &&
+                "$GOOGLE_PLAY" != "true" &&
+                "$APPGALLERY" != "true" &&
+                "$IOS_APP_STORE" != "true" &&
+                "$MACOS_APP_STORE" != "true" &&
+                "$SNAPCRAFT" != "true" &&
+                "$MICROSOFT_STORE" != "true" ]]; then
+            echo "Select at least one store, or enable dry_run." >&2
+            exit 1
+          fi
+
   # ──────────────────────────────────────────────────────────
-  # Android — AAB → Google Play, APK → artifact
+  # Android — shared build for Google Play and AppGallery
   # ──────────────────────────────────────────────────────────
   build-android:
+    name: Build · Android
+    needs: release-plan
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
+        inputs.google_play ||
+        inputs.appgallery
+      }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
 
       - uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4
         with:
@@ -59,37 +135,54 @@ jobs:
       - name: Build AAB (gplay)
         run: flutter build appbundle --release --flavor gplay
 
-      - name: Build APK (gplay)
-        run: flutter build apk --release --flavor gplay
+      - name: Build per-ABI APKs (gplay)
+        run: flutter build apk --release --flavor gplay --split-per-abi
 
-      - name: Build APK (foss)
-        run: flutter build apk --release --flavor foss
+      - name: Build per-ABI APKs (foss)
+        run: flutter build apk --release --flavor foss --split-per-abi
+
+      - name: Verify per-ABI APKs
+        shell: bash
+        run: |
+          for flavor in gplay foss; do
+            for abi in armeabi-v7a arm64-v8a x86_64; do
+              apk="build/app/outputs/flutter-apk/app-${abi}-${flavor}-release.apk"
+              if [[ ! -f "$apk" ]]; then
+                echo "Missing expected APK: $apk" >&2
+                exit 1
+              fi
+            done
+          done
 
       - name: Build AAB (foss)
         run: flutter build appbundle --release --flavor foss
-
-      - name: Upload to Google Play
-        if: ${{ !inputs.dry_run }}
-        uses: r0adkll/upload-google-play@e738b9dd8f2476ea806d921b64aacd24f34515a5 # v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: com.aw.huda
-          releaseFiles: build/app/outputs/bundle/gplayRelease/app-gplay-release.aab
-          track: production
-          status: completed
-          whatsNewDirectory: distribution/whatsnew
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: android-apk
           path: |
-            build/app/outputs/flutter-apk/app-gplay-release.apk
-            build/app/outputs/flutter-apk/app-foss-release.apk
+            build/app/outputs/flutter-apk/app-armeabi-v7a-gplay-release.apk
+            build/app/outputs/flutter-apk/app-arm64-v8a-gplay-release.apk
+            build/app/outputs/flutter-apk/app-x86_64-gplay-release.apk
+            build/app/outputs/flutter-apk/app-armeabi-v7a-foss-release.apk
+            build/app/outputs/flutter-apk/app-arm64-v8a-foss-release.apk
+            build/app/outputs/flutter-apk/app-x86_64-foss-release.apk
+          if-no-files-found: error
+          overwrite: true
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: android-aab
           path: build/app/outputs/bundle/fossRelease/app-foss-release.aab
+          if-no-files-found: error
+          overwrite: true
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: android-google-play-aab
+          path: build/app/outputs/bundle/gplayRelease/app-gplay-release.aab
+          if-no-files-found: error
+          overwrite: true
 
   # ──────────────────────────────────────────────────────────
   # iOS — IPA → App Store
@@ -98,12 +191,23 @@ jobs:
   # No provisioning profile secrets needed.
   # ──────────────────────────────────────────────────────────
   build-ios:
+    name: Build · iOS
+    needs: release-plan
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
+        inputs.ios_app_store
+      }}
     runs-on: macos-26  # Xcode 26 — required by Apple (iOS 26 SDK) since Apr 2026
     env:
       ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
@@ -187,8 +291,44 @@ jobs:
             -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist \
             -exportPath build/ios/ipa
 
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ios-ipa
+          path: build/ios/ipa/*.ipa
+          if-no-files-found: error
+          overwrite: true
+
+      - name: Cleanup keychain
+        if: always()
+        run: security delete-keychain "$KEYCHAIN_PATH" 2>/dev/null || true
+
+  publish-ios-app-store:
+    name: Publish · Apple App Store (iOS)
+    needs: build-ios
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'workflow_dispatch' &&
+         (inputs.all_stores || inputs.ios_app_store) &&
+         !inputs.dry_run)
+      }}
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
+
+      - uses: ruby/setup-ruby@12fd324f1d0b43274fdc8130f6980590a667c455 # v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: ios-ipa
+          path: build/ios/ipa
+
       - name: Upload to App Store
-        if: ${{ !inputs.dry_run }}
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
@@ -196,22 +336,24 @@ jobs:
           IPA_DIR: ${{ github.workspace }}/build/ios/ipa
         run: cd ios && bundle exec fastlane deploy
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: ios-ipa
-          path: build/ios/ipa/*.ipa
-
-      - name: Cleanup keychain
-        if: always()
-        run: security delete-keychain "$KEYCHAIN_PATH" 2>/dev/null || true
-
   # ──────────────────────────────────────────────────────────
   # macOS — pkg → App Store
   # ──────────────────────────────────────────────────────────
   build-macos:
+    name: Build · macOS
+    needs: release-plan
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
+        inputs.macos_app_store
+      }}
     runs-on: macos-26  # Xcode 26 — required by Apple (macOS 26 SDK) since Apr 2026
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
@@ -294,8 +436,44 @@ jobs:
             --component "$APP_PATH" /Applications \
             build/macos/Huda-macOS.pkg
 
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: macos-pkg
+          path: build/macos/Huda-macOS.pkg
+          if-no-files-found: error
+          overwrite: true
+
+      - name: Cleanup keychain
+        if: always()
+        run: security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" 2>/dev/null || true
+
+  publish-macos-app-store:
+    name: Publish · Apple App Store (macOS)
+    needs: build-macos
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'workflow_dispatch' &&
+         (inputs.all_stores || inputs.macos_app_store) &&
+         !inputs.dry_run)
+      }}
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
+
+      - uses: ruby/setup-ruby@12fd324f1d0b43274fdc8130f6980590a667c455 # v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: macos-pkg
+          path: build/macos
+
       - name: Upload to App Store
-        if: ${{ !inputs.dry_run }}
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
@@ -303,22 +481,24 @@ jobs:
           PKG_PATH: ${{ github.workspace }}/build/macos/Huda-macOS.pkg
         run: cd macos && bundle exec fastlane deploy
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: macos-pkg
-          path: build/macos/Huda-macOS.pkg
-
-      - name: Cleanup keychain
-        if: always()
-        run: security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" 2>/dev/null || true
-
   # ──────────────────────────────────────────────────────────
   # Windows — MSIX → Microsoft Store
   # ──────────────────────────────────────────────────────────
   build-windows:
+    name: Build · Windows
+    needs: release-plan
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
+        inputs.microsoft_store
+      }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
@@ -344,61 +524,13 @@ jobs:
       - name: Create MSIX
         run: dart run msix:create --store
 
-      - name: Setup Microsoft Store CLI
-        if: ${{ !inputs.dry_run }}
-        uses: microsoft/setup-msstore-cli@3b2ec9136230357ce9abc02b9d056626fb248d3f # v1
-
-      - name: Upload to Microsoft Store
-        if: ${{ !inputs.dry_run }}
-        shell: pwsh
-        env:
-          AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-          AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-          AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-          MS_STORE_SELLER_ID: ${{ secrets.MS_STORE_SELLER_ID }}
-          MS_STORE_APP_ID: ${{ secrets.MS_STORE_APP_ID }}
-        run: |
-          $PSNativeCommandUseErrorActionPreference = $false
-
-          msstore reconfigure `
-            --tenantId "$env:AZURE_AD_TENANT_ID" `
-            --clientId "$env:AZURE_AD_CLIENT_ID" `
-            --clientSecret "$env:AZURE_AD_CLIENT_SECRET" `
-            --sellerId "$env:MS_STORE_SELLER_ID"
-
-          if ($LASTEXITCODE -ne 0) {
-            exit $LASTEXITCODE
-          }
-
-          $msix = Get-ChildItem -Path build -Recurse -Filter "*.msix" | Select-Object -First 1
-          if (-not $msix) {
-            throw "No MSIX package found under build"
-          }
-
-          $maxAttempts = 5
-          $delaySeconds = 60
-
-          for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
-            Write-Host "Publishing MSIX to Microsoft Store (attempt $attempt/$maxAttempts)"
-            msstore publish "$($msix.FullName)" --appId "$env:MS_STORE_APP_ID" -v
-
-            if ($LASTEXITCODE -eq 0) {
-              break
-            }
-
-            if ($attempt -eq $maxAttempts) {
-              exit $LASTEXITCODE
-            }
-
-            Write-Warning "Microsoft Store publish failed with exit code $LASTEXITCODE. Retrying in $delaySeconds seconds."
-            Start-Sleep -Seconds $delaySeconds
-          }
-
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: windows-msix
           path: build/**/*.msix
+          if-no-files-found: error
+          overwrite: true
 
       # Standalone .exe installer (Inno Setup) for direct download from the
       # GitHub Release — version is read from pubspec, no manual edits needed.
@@ -420,14 +552,92 @@ jobs:
         with:
           name: windows-installer
           path: installer/Output/*.exe
+          if-no-files-found: error
+          overwrite: true
+
+  publish-microsoft-store:
+    name: Publish · Microsoft Store
+    needs: build-windows
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'workflow_dispatch' &&
+         (inputs.all_stores || inputs.microsoft_store) &&
+         !inputs.dry_run)
+      }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: windows-msix
+          path: store-artifact
+
+      - name: Setup Microsoft Store CLI
+        uses: microsoft/setup-msstore-cli@3b2ec9136230357ce9abc02b9d056626fb248d3f # v1
+
+      - name: Upload to Microsoft Store
+        shell: pwsh
+        env:
+          AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+          AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          AZURE_AD_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+          MS_STORE_SELLER_ID: ${{ secrets.MS_STORE_SELLER_ID }}
+          MS_STORE_APP_ID: ${{ secrets.MS_STORE_APP_ID }}
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $false
+
+          msstore reconfigure `
+            --tenantId "$env:AZURE_AD_TENANT_ID" `
+            --clientId "$env:AZURE_AD_CLIENT_ID" `
+            --clientSecret "$env:AZURE_AD_CLIENT_SECRET" `
+            --sellerId "$env:MS_STORE_SELLER_ID"
+
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+          $msix = Get-ChildItem -Path store-artifact -Recurse -Filter "*.msix" | Select-Object -First 1
+          if (-not $msix) {
+            throw "No MSIX package found in the downloaded artifact"
+          }
+
+          $maxAttempts = 5
+          $delaySeconds = 60
+
+          for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+            Write-Host "Publishing MSIX to Microsoft Store (attempt $attempt/$maxAttempts)"
+            msstore publish "$($msix.FullName)" --appId "$env:MS_STORE_APP_ID" -v
+
+            if ($LASTEXITCODE -eq 0) {
+              break
+            }
+
+            if ($attempt -eq $maxAttempts) {
+              exit $LASTEXITCODE
+            }
+
+            Write-Warning "Microsoft Store publish failed with exit code $LASTEXITCODE. Retrying in $delaySeconds seconds."
+            Start-Sleep -Seconds $delaySeconds
+          }
 
   # ──────────────────────────────────────────────────────────
   # Linux — snap → Snapcraft Store
   # ──────────────────────────────────────────────────────────
   build-linux:
+    name: Build · Linux snap
+    needs: release-plan
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
+        inputs.snapcraft
+      }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
 
       - name: Sync snap version from pubspec
         run: |
@@ -438,35 +648,108 @@ jobs:
       - uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1
         id: snapcraft
 
-      - name: Upload to Snapcraft Store
-        if: ${{ !inputs.dry_run }}
-        uses: snapcore/action-publish@214b86e5ca036ead1668c79afb81e550e6c54d40 # v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-        with:
-          snap: ${{ steps.snapcraft.outputs.snap }}
-          release: stable
-
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: linux-snap
           path: ${{ steps.snapcraft.outputs.snap }}
+          if-no-files-found: error
+          overwrite: true
+
+  publish-snapcraft:
+    name: Publish · Snapcraft
+    needs: build-linux
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'workflow_dispatch' &&
+         (inputs.all_stores || inputs.snapcraft) &&
+         !inputs.dry_run)
+      }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: linux-snap
+          path: store-artifact
+
+      - name: Find snap artifact
+        id: snap
+        shell: bash
+        run: |
+          SNAP_PATH=$(find store-artifact -type f -name '*.snap' -print -quit)
+          if [[ -z "$SNAP_PATH" ]]; then
+            echo "No snap found in the downloaded artifact" >&2
+            exit 1
+          fi
+          echo "path=$SNAP_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to Snapcraft Store
+        uses: snapcore/action-publish@214b86e5ca036ead1668c79afb81e550e6c54d40 # v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.snap.outputs.path }}
+          release: stable
+
+  # ──────────────────────────────────────────────────────────
+  # Google Play — consume the signed gplay AAB from build-android
+  # ──────────────────────────────────────────────────────────
+  publish-google-play:
+    name: Publish · Google Play
+    needs: build-android
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'workflow_dispatch' &&
+         (inputs.all_stores || inputs.google_play) &&
+         !inputs.dry_run)
+      }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: android-google-play-aab
+          path: store-artifact
+
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@e738b9dd8f2476ea806d921b64aacd24f34515a5 # v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.aw.huda
+          releaseFiles: store-artifact/app-gplay-release.aab
+          track: production
+          status: completed
+          whatsNewDirectory: distribution/whatsnew
 
   # ──────────────────────────────────────────────────────────
   # Huawei AppGallery — AAB upload via Publishing API
   # Uses a team-level Connect API client (client_id + client_secret).
   # Service-account JSON keys are NOT accepted by the Publishing API.
   # ──────────────────────────────────────────────────────────
-  upload-appgallery:
+  publish-appgallery:
+    name: Publish · Huawei AppGallery
     needs: build-android
-    if: ${{ !inputs.dry_run }}
+    if: >-
+      ${{
+        github.event_name == 'push' ||
+        (github.event_name == 'workflow_dispatch' &&
+         (inputs.all_stores || inputs.appgallery) &&
+         !inputs.dry_run)
+      }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: android-aab
+          path: store-artifact
 
       - name: Upload to AppGallery
         env:
@@ -476,17 +759,25 @@ jobs:
         run: |
           set -euo pipefail
           pip install requests
-          python3 distribution/appgallery_upload.py --aab app-foss-release.aab
+          python3 distribution/appgallery_upload.py --aab store-artifact/app-foss-release.aab
 
   # ──────────────────────────────────────────────────────────
   # GitHub Release — collect all artifacts
   # ──────────────────────────────────────────────────────────
   create-release:
+    name: Publish · GitHub Release
     needs: [build-android, build-ios, build-macos, build-windows, build-linux]
-    if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/') }}
+    if: >-
+      ${{
+        !cancelled() &&
+        github.event_name == 'push' &&
+        startsWith(github.ref, 'refs/tags/')
+      }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -497,8 +788,18 @@ jobs:
           mkdir -p release-assets
           VERSION=${GITHUB_REF_NAME#v}
 
-          [ -f release-artifacts/android-apk/app-release.apk ] && \
-            cp release-artifacts/android-apk/app-release.apk "release-assets/Huda-${VERSION}-android.apk"
+          if [ -d release-artifacts/android-apk ]; then
+            for flavor in gplay foss; do
+              for abi in armeabi-v7a arm64-v8a x86_64; do
+                source="release-artifacts/android-apk/app-${abi}-${flavor}-release.apk"
+                if [ ! -f "$source" ]; then
+                  echo "Missing expected release APK: $source" >&2
+                  exit 1
+                fi
+                cp "$source" "release-assets/Huda-${VERSION}-android-${flavor}-${abi}.apk"
+              done
+            done
+          fi
 
           find release-artifacts/windows-msix -name "*.msix" -exec \
             cp {} "release-assets/Huda-${VERSION}-windows.msix" \; 2>/dev/null || true
