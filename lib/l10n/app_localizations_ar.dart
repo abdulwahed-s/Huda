@@ -3801,19 +3801,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get eventRamadan => 'رمضان مبارك';
 
   @override
+  String get calendarEventFirstDayRamadan => 'أول يوم من رمضان';
+
+  @override
+  String get calendarEventEidAlFitr => 'عيد الفطر';
+
+  @override
+  String get calendarEventEidAlAdha => 'عيد الأضحى';
+
+  @override
   String get eventLastTenRamadan => 'العشر الأواخر';
 
   @override
-  String get eventEidAlFitr => 'عيد الفطر مبارك';
+  String get eventEidAlFitr => 'عيد فطر مبارك';
 
   @override
-  String get eventEidAlAdha => 'عيد الأضحى مبارك';
+  String get eventEidAlAdha => 'عيد أضحى مبارك';
 
   @override
   String get eventDayOfArafah => 'يوم عرفة';
 
   @override
-  String get eventFirstTenDhulHijjah => 'عشر ذي الحجة المباركة';
+  String get eventFirstTenDhulHijjah => 'الأيام العشر من ذي الحجة';
 
   @override
   String get eventAshura => 'يوم عاشوراء';

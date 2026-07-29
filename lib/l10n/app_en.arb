@@ -4515,15 +4515,27 @@
     "@eventRamadan": {
         "description": "Title for the Ramadan special event card"
     },
+    "calendarEventFirstDayRamadan": "First Day of Ramadan",
+    "@calendarEventFirstDayRamadan": {
+        "description": "Title for the first day of Ramadan in the Hijri calendar"
+    },
+    "calendarEventEidAlFitr": "Eid al-Fitr",
+    "@calendarEventEidAlFitr": {
+        "description": "Title for Eid al-Fitr in the Hijri calendar"
+    },
+    "calendarEventEidAlAdha": "Eid al-Adha",
+    "@calendarEventEidAlAdha": {
+        "description": "Title for Eid al-Adha in the Hijri calendar"
+    },
     "eventLastTenRamadan": "The Last Ten Nights",
     "@eventLastTenRamadan": {
         "description": "Title for the last ten nights of Ramadan event card"
     },
-    "eventEidAlFitr": "Eid al-Fitr Mubarak",
+    "eventEidAlFitr": "Eid Fitr Mubarak",
     "@eventEidAlFitr": {
         "description": "Title for the Eid al-Fitr event card"
     },
-    "eventEidAlAdha": "Eid al-Adha Mubarak",
+    "eventEidAlAdha": "Eid Adha Mubarak",
     "@eventEidAlAdha": {
         "description": "Title for the Eid al-Adha event card"
     },
@@ -4531,7 +4543,7 @@
     "@eventDayOfArafah": {
         "description": "Title for the Day of Arafah event card"
     },
-    "eventFirstTenDhulHijjah": "Blessed Ten Days",
+    "eventFirstTenDhulHijjah": "First Ten Days of Dhu al-Hijjah",
     "@eventFirstTenDhulHijjah": {
         "description": "Title for the first ten days of Dhul Hijjah event card"
     },

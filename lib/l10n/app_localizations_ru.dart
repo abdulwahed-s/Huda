@@ -238,25 +238,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get hijriCalendar => 'Хиджри календарь';
 
   @override
-  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+  String get hijriAdjustmentTitle => 'Настроить календарь хиджры';
 
   @override
   String get hijriAdjustmentDescription =>
-      'Choose how Huda displays Hijri dates.';
+      'Выберите, как Huda отображает даты по хиджре.';
 
   @override
-  String get hijriAdjustmentAction => 'Calendar adjustment';
+  String get hijriAdjustmentAction => 'Настройка календаря';
 
   @override
   String get hijriAutomaticAdjustmentDescription =>
-      'Uses the official Umm al-Qura calendar.';
+      'Используется официальный календарь Умм аль-Кура.';
 
   @override
-  String get hijriManualAdjustment => 'Manual adjustment';
+  String get hijriManualAdjustment => 'Ручная настройка';
 
   @override
   String get hijriManualAdjustmentDescription =>
-      'Move the Hijri date forward or backward by up to two days.';
+      'Сдвиньте дату по хиджре вперёд или назад не более чем на два дня.';
 
   @override
   String get selectedDate => 'Выбранная дата';
@@ -3883,6 +3883,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get eventRamadan => 'Рамадан Мубарак';
 
   @override
+  String get calendarEventFirstDayRamadan => 'Первый день Рамадана';
+
+  @override
+  String get calendarEventEidAlFitr => 'Ид аль-Фитр';
+
+  @override
+  String get calendarEventEidAlAdha => 'Ид аль-Адха';
+
+  @override
   String get eventLastTenRamadan => 'Последние десять ночей';
 
   @override
@@ -3895,7 +3904,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get eventDayOfArafah => 'День Арафат';
 
   @override
-  String get eventFirstTenDhulHijjah => 'Благословенные десять дней';
+  String get eventFirstTenDhulHijjah => 'Первые десять дней Зу-ль-Хиджи';
 
   @override
   String get eventAshura => 'День Ашура';

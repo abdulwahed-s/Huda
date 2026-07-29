@@ -7082,6 +7082,24 @@ abstract class AppLocalizations {
   /// **'Ramadan Mubarak'**
   String get eventRamadan;
 
+  /// Title for the first day of Ramadan in the Hijri calendar
+  ///
+  /// In en, this message translates to:
+  /// **'First Day of Ramadan'**
+  String get calendarEventFirstDayRamadan;
+
+  /// Title for Eid al-Fitr in the Hijri calendar
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Fitr'**
+  String get calendarEventEidAlFitr;
+
+  /// Title for Eid al-Adha in the Hijri calendar
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Adha'**
+  String get calendarEventEidAlAdha;
+
   /// Title for the last ten nights of Ramadan event card
   ///
   /// In en, this message translates to:
@@ -7091,13 +7109,13 @@ abstract class AppLocalizations {
   /// Title for the Eid al-Fitr event card
   ///
   /// In en, this message translates to:
-  /// **'Eid al-Fitr Mubarak'**
+  /// **'Eid Fitr Mubarak'**
   String get eventEidAlFitr;
 
   /// Title for the Eid al-Adha event card
   ///
   /// In en, this message translates to:
-  /// **'Eid al-Adha Mubarak'**
+  /// **'Eid Adha Mubarak'**
   String get eventEidAlAdha;
 
   /// Title for the Day of Arafah event card
@@ -7109,7 +7127,7 @@ abstract class AppLocalizations {
   /// Title for the first ten days of Dhul Hijjah event card
   ///
   /// In en, this message translates to:
-  /// **'Blessed Ten Days'**
+  /// **'First Ten Days of Dhu al-Hijjah'**
   String get eventFirstTenDhulHijjah;
 
   /// Title for the Day of Ashura event card

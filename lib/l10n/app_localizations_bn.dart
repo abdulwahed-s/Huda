@@ -236,25 +236,25 @@ class AppLocalizationsBn extends AppLocalizations {
   String get hijriCalendar => 'হিজরি ক্যালেন্ডার';
 
   @override
-  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+  String get hijriAdjustmentTitle => 'হিজরি ক্যালেন্ডার সমন্বয়';
 
   @override
   String get hijriAdjustmentDescription =>
-      'Choose how Huda displays Hijri dates.';
+      'হুদা কীভাবে হিজরি তারিখ প্রদর্শন করবে তা বেছে নিন।';
 
   @override
-  String get hijriAdjustmentAction => 'Calendar adjustment';
+  String get hijriAdjustmentAction => 'ক্যালেন্ডার সমন্বয়';
 
   @override
   String get hijriAutomaticAdjustmentDescription =>
-      'Uses the official Umm al-Qura calendar.';
+      'সরকারি উম্মুল কুরা ক্যালেন্ডার ব্যবহার করে।';
 
   @override
-  String get hijriManualAdjustment => 'Manual adjustment';
+  String get hijriManualAdjustment => 'ম্যানুয়াল সমন্বয়';
 
   @override
   String get hijriManualAdjustmentDescription =>
-      'Move the Hijri date forward or backward by up to two days.';
+      'হিজরি তারিখ সর্বোচ্চ দুই দিন এগিয়ে বা পিছিয়ে নিন।';
 
   @override
   String get selectedDate => 'নির্বাচিত তারিখ';
@@ -3859,6 +3859,15 @@ class AppLocalizationsBn extends AppLocalizations {
   String get eventRamadan => 'রমজান মোবারক';
 
   @override
+  String get calendarEventFirstDayRamadan => 'রমজানের প্রথম দিন';
+
+  @override
+  String get calendarEventEidAlFitr => 'ঈদুল ফিতর';
+
+  @override
+  String get calendarEventEidAlAdha => 'ঈদুল আযহা';
+
+  @override
   String get eventLastTenRamadan => 'শেষ দশ রাত';
 
   @override
@@ -3871,7 +3880,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get eventDayOfArafah => 'আরাফার দিন';
 
   @override
-  String get eventFirstTenDhulHijjah => 'বরকতময় দশ দিন';
+  String get eventFirstTenDhulHijjah => 'জিলহজের প্রথম দশ দিন';
 
   @override
   String get eventAshura => 'আশুরার দিন';

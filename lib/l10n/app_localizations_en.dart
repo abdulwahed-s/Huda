@@ -3855,19 +3855,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eventRamadan => 'Ramadan Mubarak';
 
   @override
+  String get calendarEventFirstDayRamadan => 'First Day of Ramadan';
+
+  @override
+  String get calendarEventEidAlFitr => 'Eid al-Fitr';
+
+  @override
+  String get calendarEventEidAlAdha => 'Eid al-Adha';
+
+  @override
   String get eventLastTenRamadan => 'The Last Ten Nights';
 
   @override
-  String get eventEidAlFitr => 'Eid al-Fitr Mubarak';
+  String get eventEidAlFitr => 'Eid Fitr Mubarak';
 
   @override
-  String get eventEidAlAdha => 'Eid al-Adha Mubarak';
+  String get eventEidAlAdha => 'Eid Adha Mubarak';
 
   @override
   String get eventDayOfArafah => 'Day of Arafah';
 
   @override
-  String get eventFirstTenDhulHijjah => 'Blessed Ten Days';
+  String get eventFirstTenDhulHijjah => 'First Ten Days of Dhu al-Hijjah';
 
   @override
   String get eventAshura => 'Day of Ashura';

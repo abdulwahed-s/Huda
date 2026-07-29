@@ -237,25 +237,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hijriCalendar => 'Hicri Takvim';
 
   @override
-  String get hijriAdjustmentTitle => 'Adjust Hijri calendar';
+  String get hijriAdjustmentTitle => 'Hicri takvimi ayarla';
 
   @override
   String get hijriAdjustmentDescription =>
-      'Choose how Huda displays Hijri dates.';
+      'Huda\'nın Hicri tarihleri nasıl göstereceğini seçin.';
 
   @override
-  String get hijriAdjustmentAction => 'Calendar adjustment';
+  String get hijriAdjustmentAction => 'Takvim ayarı';
 
   @override
   String get hijriAutomaticAdjustmentDescription =>
-      'Uses the official Umm al-Qura calendar.';
+      'Resmî Ümmü\'l-Kurâ takvimini kullanır.';
 
   @override
-  String get hijriManualAdjustment => 'Manual adjustment';
+  String get hijriManualAdjustment => 'Manuel ayar';
 
   @override
   String get hijriManualAdjustmentDescription =>
-      'Move the Hijri date forward or backward by up to two days.';
+      'Hicri tarihi en fazla iki gün ileri veya geri alın.';
 
   @override
   String get selectedDate => 'Seçilen Tarih';
@@ -3852,22 +3852,31 @@ class AppLocalizationsTr extends AppLocalizations {
   String get themeSage => 'Adaçayı';
 
   @override
-  String get eventRamadan => 'Ramazan Mubarek';
+  String get eventRamadan => 'Ramazan Mübarek';
+
+  @override
+  String get calendarEventFirstDayRamadan => 'Ramazan\'ın ilk günü';
+
+  @override
+  String get calendarEventEidAlFitr => 'Ramazan Bayramı';
+
+  @override
+  String get calendarEventEidAlAdha => 'Kurban Bayramı';
 
   @override
   String get eventLastTenRamadan => 'Son On Gece';
 
   @override
-  String get eventEidAlFitr => 'Ramazan Bayraminiz Mubarek';
+  String get eventEidAlFitr => 'Ramazan Bayramınız Mübarek';
 
   @override
-  String get eventEidAlAdha => 'Kurban Bayraminiz Mubarek';
+  String get eventEidAlAdha => 'Kurban Bayramınız Mübarek';
 
   @override
   String get eventDayOfArafah => 'Arefe Gunu';
 
   @override
-  String get eventFirstTenDhulHijjah => 'Mubarek On Gun';
+  String get eventFirstTenDhulHijjah => 'Zilhicce\'nin ilk on günü';
 
   @override
   String get eventAshura => 'Asure Gunu';
