@@ -19,7 +19,7 @@ class NotificationServices {
   bool get isReady => _initialization != null;
   String get timeZoneName => _timeZoneName;
 
-  Future<void> initialize({bool requestPermissions = false}) async {
+  Future<void> initialize() async {
     _initialization ??= _initializePlugin();
     try {
       await _initialization;
@@ -27,7 +27,6 @@ class NotificationServices {
       _initialization = null;
       rethrow;
     }
-    if (requestPermissions) await requestNotificationPermissions();
   }
 
   Future<void> _initializePlugin() async {
@@ -70,41 +69,6 @@ class NotificationServices {
 
   static void _onNotificationResponse(NotificationResponse response) {
     App.navigatorKey.currentState?.pushNamed('/prayerTimes');
-  }
-
-  Future<bool> requestNotificationPermissions() async {
-    await initialize();
-    if (Platform.isAndroid) {
-      final android = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
-      final notificationPermission =
-          await android?.requestNotificationsPermission() ?? true;
-      if (await android?.canScheduleExactNotifications() == false) {
-        await android?.requestExactAlarmsPermission();
-      }
-      return notificationPermission;
-    }
-    if (Platform.isIOS) {
-      final ios = _plugin.resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>();
-      return await ios?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          ) ??
-          false;
-    }
-    if (Platform.isMacOS) {
-      final mac = _plugin.resolvePlatformSpecificImplementation<
-          MacOSFlutterLocalNotificationsPlugin>();
-      return await mac?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          ) ??
-          false;
-    }
-    return true;
   }
 
   Future<bool> areNotificationsAllowed() async {
