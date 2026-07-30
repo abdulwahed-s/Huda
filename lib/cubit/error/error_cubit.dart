@@ -1,8 +1,9 @@
 // error_cubit.dart
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'error_state.dart';
 
@@ -16,6 +17,8 @@ class ErrorCubit extends Cubit<ErrorState> {
   }
 
   Future<void> sendError(String error) async {
+    if (kDebugMode) return;
+
     emit(ErrorLoading());
 
     try {
@@ -23,6 +26,12 @@ class ErrorCubit extends Cubit<ErrorState> {
       String model = 'Unknown';
       String version = 'Unknown';
       String manufacturer = 'Unknown';
+      String appVersion = 'Unknown';
+
+      try {
+        final packageInfo = await PackageInfo.fromPlatform();
+        appVersion = '${packageInfo.version}+${packageInfo.buildNumber}';
+      } catch (_) {}
 
       try {
         final androidInfo = await deviceInfo.androidInfo;
@@ -41,6 +50,7 @@ class ErrorCubit extends Cubit<ErrorState> {
               'version': version,
               'manufacturer': manufacturer,
             },
+            'app_version': appVersion,
           })
           .select('id')
           .single();
