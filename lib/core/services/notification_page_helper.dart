@@ -82,75 +82,7 @@ class NotificationPageHelper {
     final initialized = await _plugin.initialize(settings);
     debugPrint('🔧 Plugin initialized: $initialized');
 
-    await _checkPermissions();
-
     await _createNotificationChannels();
-  }
-
-  Future<void> _checkPermissions() async {
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-
-    if (androidPlugin != null) {
-      final granted = await androidPlugin.areNotificationsEnabled();
-      debugPrint('📱 Notifications enabled: $granted');
-
-      final exactAlarmsAllowed =
-          await androidPlugin.canScheduleExactNotifications();
-      debugPrint('⏰ Exact alarms allowed: $exactAlarmsAllowed');
-
-      if (exactAlarmsAllowed != null && !exactAlarmsAllowed) {
-        debugPrint(
-            '⚠️ EXACT ALARMS NOT ALLOWED - This will prevent notifications from working!');
-        debugPrint('💡 Requesting exact alarm permission...');
-        try {
-          await androidPlugin.requestExactAlarmsPermission();
-          debugPrint('✅ Exact alarm permission requested');
-        } catch (e) {
-          debugPrint('❌ Failed to request exact alarm permission: $e');
-        }
-      }
-
-      if (granted != null && !granted) {
-        debugPrint('⚠️ NOTIFICATIONS NOT ENABLED - Requesting permission...');
-        try {
-          final result = await androidPlugin.requestNotificationsPermission();
-          debugPrint('📱 Notification permission result: $result');
-        } catch (e) {
-          debugPrint('❌ Failed to request notification permission: $e');
-        }
-      }
-    }
-
-    final macOSPlugin = _plugin.resolvePlatformSpecificImplementation<
-        MacOSFlutterLocalNotificationsPlugin>();
-
-    if (macOSPlugin != null) {
-      try {
-        await macOSPlugin.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-      } catch (e) {
-        debugPrint('Failed to request macOS notification permission: $e');
-      }
-    }
-
-    final iosPlugin = _plugin.resolvePlatformSpecificImplementation<
-        IOSFlutterLocalNotificationsPlugin>();
-
-    if (iosPlugin != null) {
-      try {
-        await iosPlugin.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-      } catch (e) {
-        debugPrint('Failed to request iOS notification permission: $e');
-      }
-    }
   }
 
   Future<bool> checkIOSPermissionStatus() async {
@@ -215,6 +147,20 @@ class NotificationPageHelper {
       await androidPlugin.createNotificationChannel(kahfChannel);
       debugPrint('✅ Notification channels created with maximum priority');
     }
+  }
+
+  Future<AndroidScheduleMode> _androidScheduleMode() async {
+    if (!PlatformUtils.isAndroid) {
+      return AndroidScheduleMode.exactAllowWhileIdle;
+    }
+
+    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    final canScheduleExact =
+        await androidPlugin?.canScheduleExactNotifications() ?? true;
+    return canScheduleExact
+        ? AndroidScheduleMode.exactAllowWhileIdle
+        : AndroidScheduleMode.inexactAllowWhileIdle;
   }
 
   Future<void> scheduleDaily({
@@ -283,7 +229,7 @@ class NotificationPageHelper {
         windows: WindowsNotificationDetails(),
       ),
       matchDateTimeComponents: DateTimeComponents.time,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: await _androidScheduleMode(),
     );
 
     debugPrint(
@@ -339,7 +285,7 @@ class NotificationPageHelper {
         windows: WindowsNotificationDetails(),
       ),
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: await _androidScheduleMode(),
     );
   }
 
@@ -672,7 +618,7 @@ class NotificationPageHelper {
             showWhen: true,
           ),
         ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: await _androidScheduleMode(),
       );
       debugPrint(
           '⏰ Scheduled notification for: $testTime (3 seconds from now)');
@@ -783,7 +729,7 @@ class NotificationPageHelper {
             ongoing: false,
           ),
         ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: await _androidScheduleMode(),
       );
       debugPrint(
           '⏰ Scheduled notification set for: $testTime (5 seconds from now)');
@@ -940,7 +886,7 @@ class NotificationPageHelper {
             ),
             windows: WindowsNotificationDetails(),
           ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: await _androidScheduleMode(),
         );
 
         nextTime = nextTime.add(Duration(minutes: frequencyMinutes));
@@ -1042,7 +988,7 @@ class NotificationPageHelper {
                   ),
                   windows: WindowsNotificationDetails(),
                 ),
-                androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+                androidScheduleMode: await _androidScheduleMode(),
               );
 
               nextTime = nextTime.add(Duration(minutes: frequencyMinutes));
