@@ -21,6 +21,16 @@ class CalendarNotificationService {
     final locationName = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(locationName));
     const android = AndroidInitializationSettings('ic_calendar_notification');
+    const ios = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    const macOS = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
     const windows = WindowsInitializationSettings(
       appName: 'Huda',
       appUserModelId: 'awr.Huda-IslamicCompanionApp',
@@ -31,7 +41,12 @@ class CalendarNotificationService {
         LinuxInitializationSettings(defaultActionName: 'Open notification');
 
     const settings = InitializationSettings(
-        android: android, windows: windows, linux: linux);
+      android: android,
+      iOS: ios,
+      macOS: macOS,
+      windows: windows,
+      linux: linux,
+    );
 
     await _plugin.initialize(settings);
   }
@@ -43,6 +58,11 @@ class CalendarNotificationService {
     required DateTime dateTime,
     required Color color,
   }) async {
+    final android = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    final canScheduleExact =
+        await android?.canScheduleExactNotifications() ?? true;
+
     await _plugin.zonedSchedule(
       id,
       title,
@@ -57,8 +77,20 @@ class CalendarNotificationService {
           color: color,
           icon: 'ic_calendar_notification',
         ),
+        iOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+        macOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: canScheduleExact
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.dateAndTime,
     );
   }
