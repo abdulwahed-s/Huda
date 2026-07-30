@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -21,12 +22,15 @@ class CrashReporter {
   static bool _flushing = false;
 
   static Map<String, String>? _deviceInfo;
+  static String? _appVersion;
 
   static Future<void> report(
     Object error,
     StackTrace? stack, {
     String source = 'dart',
   }) async {
+    if (kDebugMode) return;
+
     try {
       if (_reportCount >= _maxReportsPerSession) return;
 
@@ -55,6 +59,8 @@ class CrashReporter {
   }
 
   static Future<void> flushPending() async {
+    if (kDebugMode) return;
+
     if (_flushing) return;
     _flushing = true;
     try {
@@ -96,6 +102,7 @@ class CrashReporter {
         'error': entry['error'],
         'user_message': '',
         'device': entry['device'],
+        'app_version': await _getAppVersion(),
       });
       return true;
     } catch (_) {
@@ -144,5 +151,16 @@ class CrashReporter {
       'version': version,
       'manufacturer': manufacturer,
     };
+  }
+
+  static Future<String> _getAppVersion() async {
+    if (_appVersion != null) return _appVersion!;
+
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      return _appVersion = '${packageInfo.version}+${packageInfo.buildNumber}';
+    } catch (_) {
+      return _appVersion = 'Unknown';
+    }
   }
 }
