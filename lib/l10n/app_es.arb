@@ -1771,5 +1771,22 @@
     "eventSpecialOccasion": "Una ocasión especial",
     "eventSpecialOccasionSubtitle": "Un día significativo del calendario islámico",
     "eventSpecialOccasionGuidance": "Vive este día con recuerdo, gratitud y orientación fiable para la ocasión.",
-    "snackbarNeutral": "Aviso"
+    "snackbarNeutral": "Aviso",
+    "notificationPermissionDescription": "Activa las notificaciones para recibir los recordatorios que elijas justo cuando los necesites.",
+    "enableNotifications": "Activar notificaciones",
+    "batteryOptimizationDescription": "La optimización de batería de Android puede retrasar los recordatorios. Permite que Huda se ejecute sin optimización para recibir alertas más fiables.",
+    "keepRemindersReliable": "Permitir recordatorios fiables",
+    "prayerTimesPermissionTitle": "Recibe alertas de oración",
+    "prayerTimesPermissionDescription": "Activa las notificaciones para recibir cada alerta de oración, incluso cuando Huda esté cerrada.",
+    "calendarPermissionTitle": "Recibe recordatorios de eventos",
+    "calendarPermissionDescription": "Activa las notificaciones para recordar los eventos del calendario hégira que elijas.",
+    "remindersPermissionTitle": "Activa tus recordatorios",
+    "remindersPermissionDescription": "Activa las notificaciones para el Corán, los adhkar, el suhur y otros recordatorios que habilites.",
+    "khatmaPermissionTitle": "Mantén tu Khatma al día",
+    "khatmaPermissionDescription": "Activa las notificaciones para recibir tu recordatorio diario de wird a la hora que elijas.",
+    "batteryOptimizationTitle": "Recibe los recordatorios a tiempo",
+    "notificationsReadyTitle": "Las notificaciones están activadas",
+    "notificationsReadyDescription": "Tus recordatorios activados están listos para enviarse.",
+    "batteryOptimizationReadyTitle": "La optimización de batería está desactivada",
+    "batteryOptimizationReadyDescription": "Huda puede ejecutarse en segundo plano de forma más fiable."
 }

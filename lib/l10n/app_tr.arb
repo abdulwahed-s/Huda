@@ -1755,5 +1755,22 @@
     "eventSpecialOccasion": "Mübarek bir gün",
     "eventSpecialOccasionSubtitle": "Hicri takvimde anlamlı bir gün",
     "eventSpecialOccasionGuidance": "Bu günü zikir, şükür ve bu güne ilişkin güvenilir rehberlikle değerlendirin.",
-    "snackbarNeutral": "Bildirim"
+    "snackbarNeutral": "Bildirim",
+    "notificationPermissionDescription": "Seçtiğiniz hatırlatıcıları tam zamanında almak için bildirimleri açın.",
+    "enableNotifications": "Bildirimleri aç",
+    "batteryOptimizationDescription": "Android pil optimizasyonu hatırlatıcıları geciktirebilir. Daha güvenilir uyarılar için Huda'nın optimizasyon olmadan çalışmasına izin verin.",
+    "keepRemindersReliable": "Güvenilir hatırlatıcılara izin ver",
+    "prayerTimesPermissionTitle": "Namaz vakti uyarılarını alın",
+    "prayerTimesPermissionDescription": "Huda kapalıyken bile her namaz vakti uyarısını almak için bildirimleri açın.",
+    "calendarPermissionTitle": "Takvim etkinliği hatırlatıcılarını alın",
+    "calendarPermissionDescription": "Seçtiğiniz Hicri takvim etkinlikleri için hatırlatıcı almak üzere bildirimleri açın.",
+    "remindersPermissionTitle": "Hatırlatıcılarınızı açın",
+    "remindersPermissionDescription": "Etkinleştirdiğiniz Kur'an, zikir, sahur ve diğer hatırlatıcılar için bildirimleri açın.",
+    "khatmaPermissionTitle": "Hatminizde düzeni koruyun",
+    "khatmaPermissionDescription": "Seçtiğiniz saatte günlük vird hatırlatıcısı almak için bildirimleri açın.",
+    "batteryOptimizationTitle": "Hatırlatıcıları zamanında alın",
+    "notificationsReadyTitle": "Bildirimler açık",
+    "notificationsReadyDescription": "Etkinleştirdiğiniz hatırlatıcılar gönderilmeye hazır.",
+    "batteryOptimizationReadyTitle": "Pil optimizasyonu kapalı",
+    "batteryOptimizationReadyDescription": "Huda arka planda daha güvenilir çalışabilir."
 }

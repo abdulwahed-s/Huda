@@ -4623,4 +4623,64 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'Bildirim';
+
+  @override
+  String get notificationPermissionDescription =>
+      'Seçtiğiniz hatırlatıcıları tam zamanında almak için bildirimleri açın.';
+
+  @override
+  String get enableNotifications => 'Bildirimleri aç';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'Android pil optimizasyonu hatırlatıcıları geciktirebilir. Daha güvenilir uyarılar için Huda\'nın optimizasyon olmadan çalışmasına izin verin.';
+
+  @override
+  String get keepRemindersReliable => 'Güvenilir hatırlatıcılara izin ver';
+
+  @override
+  String get prayerTimesPermissionTitle => 'Namaz vakti uyarılarını alın';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'Huda kapalıyken bile her namaz vakti uyarısını almak için bildirimleri açın.';
+
+  @override
+  String get calendarPermissionTitle =>
+      'Takvim etkinliği hatırlatıcılarını alın';
+
+  @override
+  String get calendarPermissionDescription =>
+      'Seçtiğiniz Hicri takvim etkinlikleri için hatırlatıcı almak üzere bildirimleri açın.';
+
+  @override
+  String get remindersPermissionTitle => 'Hatırlatıcılarınızı açın';
+
+  @override
+  String get remindersPermissionDescription =>
+      'Etkinleştirdiğiniz Kur\'an, zikir, sahur ve diğer hatırlatıcılar için bildirimleri açın.';
+
+  @override
+  String get khatmaPermissionTitle => 'Hatminizde düzeni koruyun';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'Seçtiğiniz saatte günlük vird hatırlatıcısı almak için bildirimleri açın.';
+
+  @override
+  String get batteryOptimizationTitle => 'Hatırlatıcıları zamanında alın';
+
+  @override
+  String get notificationsReadyTitle => 'Bildirimler açık';
+
+  @override
+  String get notificationsReadyDescription =>
+      'Etkinleştirdiğiniz hatırlatıcılar gönderilmeye hazır.';
+
+  @override
+  String get batteryOptimizationReadyTitle => 'Pil optimizasyonu kapalı';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'Huda arka planda daha güvenilir çalışabilir.';
 }

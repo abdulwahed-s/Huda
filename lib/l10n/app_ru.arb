@@ -1755,5 +1755,22 @@
     "eventSpecialOccasion": "Особый день",
     "eventSpecialOccasionSubtitle": "Значимый день исламского календаря",
     "eventSpecialOccasionGuidance": "Проведите этот день в поминании, благодарности и следовании достоверным наставлениям, относящимся к этому событию.",
-    "snackbarNeutral": "Уведомление"
+    "snackbarNeutral": "Уведомление",
+    "notificationPermissionDescription": "Включите уведомления, чтобы получать выбранные напоминания именно тогда, когда они нужны.",
+    "enableNotifications": "Включить уведомления",
+    "batteryOptimizationDescription": "Оптимизация батареи Android может задерживать напоминания. Разрешите Huda работать без оптимизации, чтобы оповещения приходили надежнее.",
+    "keepRemindersReliable": "Разрешить надежные напоминания",
+    "prayerTimesPermissionTitle": "Получать оповещения о времени намаза",
+    "prayerTimesPermissionDescription": "Включите уведомления, чтобы получать каждое оповещение о времени намаза, даже когда приложение Huda закрыто.",
+    "calendarPermissionTitle": "Получать напоминания о событиях",
+    "calendarPermissionDescription": "Включите уведомления, чтобы получать напоминания о выбранных вами событиях хиджрийского календаря.",
+    "remindersPermissionTitle": "Включить свои напоминания",
+    "remindersPermissionDescription": "Включите уведомления для Корана, азкаров, сухура и других напоминаний, которые вы активируете.",
+    "khatmaPermissionTitle": "Не сбиваться с пути в хатме",
+    "khatmaPermissionDescription": "Включите уведомления, чтобы получать ежедневное напоминание о вирде в выбранное время.",
+    "batteryOptimizationTitle": "Получать напоминания вовремя",
+    "notificationsReadyTitle": "Уведомления включены",
+    "notificationsReadyDescription": "Выбранные напоминания готовы к доставке.",
+    "batteryOptimizationReadyTitle": "Оптимизация батареи отключена",
+    "batteryOptimizationReadyDescription": "Huda может надежнее работать в фоновом режиме."
 }

@@ -4655,4 +4655,64 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'Уведомление';
+
+  @override
+  String get notificationPermissionDescription =>
+      'Включите уведомления, чтобы получать выбранные напоминания именно тогда, когда они нужны.';
+
+  @override
+  String get enableNotifications => 'Включить уведомления';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'Оптимизация батареи Android может задерживать напоминания. Разрешите Huda работать без оптимизации, чтобы оповещения приходили надежнее.';
+
+  @override
+  String get keepRemindersReliable => 'Разрешить надежные напоминания';
+
+  @override
+  String get prayerTimesPermissionTitle =>
+      'Получать оповещения о времени намаза';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'Включите уведомления, чтобы получать каждое оповещение о времени намаза, даже когда приложение Huda закрыто.';
+
+  @override
+  String get calendarPermissionTitle => 'Получать напоминания о событиях';
+
+  @override
+  String get calendarPermissionDescription =>
+      'Включите уведомления, чтобы получать напоминания о выбранных вами событиях хиджрийского календаря.';
+
+  @override
+  String get remindersPermissionTitle => 'Включить свои напоминания';
+
+  @override
+  String get remindersPermissionDescription =>
+      'Включите уведомления для Корана, азкаров, сухура и других напоминаний, которые вы активируете.';
+
+  @override
+  String get khatmaPermissionTitle => 'Не сбиваться с пути в хатме';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'Включите уведомления, чтобы получать ежедневное напоминание о вирде в выбранное время.';
+
+  @override
+  String get batteryOptimizationTitle => 'Получать напоминания вовремя';
+
+  @override
+  String get notificationsReadyTitle => 'Уведомления включены';
+
+  @override
+  String get notificationsReadyDescription =>
+      'Выбранные напоминания готовы к доставке.';
+
+  @override
+  String get batteryOptimizationReadyTitle => 'Оптимизация батареи отключена';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'Huda может надежнее работать в фоновом режиме.';
 }

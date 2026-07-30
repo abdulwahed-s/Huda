@@ -5288,5 +5288,22 @@
     "eventSpecialOccasionGuidance": "Mark this day with remembrance, gratitude, and reliable guidance specific to the occasion.",
     "@eventSpecialOccasionGuidance": {"description": "Respectful generic guidance for an unknown configured Islamic occasion"},
     "snackbarNeutral": "Notice",
-    "@snackbarNeutral": {"description": "Accessible status label for routine neutral feedback"}
+    "@snackbarNeutral": {"description": "Accessible status label for routine neutral feedback"},
+    "notificationPermissionDescription": "Turn on notifications to receive the reminders you choose, right when they matter.",
+    "enableNotifications": "Turn on notifications",
+    "batteryOptimizationDescription": "Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts.",
+    "keepRemindersReliable": "Allow reliable reminders",
+    "prayerTimesPermissionTitle": "Get prayer-time alerts",
+    "prayerTimesPermissionDescription": "Turn on notifications to receive each prayer-time alert, even when Huda is closed.",
+    "calendarPermissionTitle": "Get calendar event reminders",
+    "calendarPermissionDescription": "Turn on notifications to be reminded about the Hijri calendar events you choose.",
+    "remindersPermissionTitle": "Enable your reminders",
+    "remindersPermissionDescription": "Turn on notifications for the Quran, Athkar, Sahur, and other reminders you enable.",
+    "khatmaPermissionTitle": "Keep your Khatma on track",
+    "khatmaPermissionDescription": "Turn on notifications to receive your daily wird reminder at the time you choose.",
+    "batteryOptimizationTitle": "Keep reminders on time",
+    "notificationsReadyTitle": "Notifications are on",
+    "notificationsReadyDescription": "Your enabled reminders are ready to be delivered.",
+    "batteryOptimizationReadyTitle": "Battery optimization is off",
+    "batteryOptimizationReadyDescription": "Huda can run more reliably in the background."
 }

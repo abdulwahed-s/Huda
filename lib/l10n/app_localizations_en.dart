@@ -4626,4 +4626,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'Notice';
+
+  @override
+  String get notificationPermissionDescription =>
+      'Turn on notifications to receive the reminders you choose, right when they matter.';
+
+  @override
+  String get enableNotifications => 'Turn on notifications';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts.';
+
+  @override
+  String get keepRemindersReliable => 'Allow reliable reminders';
+
+  @override
+  String get prayerTimesPermissionTitle => 'Get prayer-time alerts';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'Turn on notifications to receive each prayer-time alert, even when Huda is closed.';
+
+  @override
+  String get calendarPermissionTitle => 'Get calendar event reminders';
+
+  @override
+  String get calendarPermissionDescription =>
+      'Turn on notifications to be reminded about the Hijri calendar events you choose.';
+
+  @override
+  String get remindersPermissionTitle => 'Enable your reminders';
+
+  @override
+  String get remindersPermissionDescription =>
+      'Turn on notifications for the Quran, Athkar, Sahur, and other reminders you enable.';
+
+  @override
+  String get khatmaPermissionTitle => 'Keep your Khatma on track';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'Turn on notifications to receive your daily wird reminder at the time you choose.';
+
+  @override
+  String get batteryOptimizationTitle => 'Keep reminders on time';
+
+  @override
+  String get notificationsReadyTitle => 'Notifications are on';
+
+  @override
+  String get notificationsReadyDescription =>
+      'Your enabled reminders are ready to be delivered.';
+
+  @override
+  String get batteryOptimizationReadyTitle => 'Battery optimization is off';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'Huda can run more reliably in the background.';
 }

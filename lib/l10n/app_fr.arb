@@ -1759,5 +1759,22 @@
     "eventSpecialOccasion": "Une occasion particulière",
     "eventSpecialOccasionSubtitle": "Un jour important du calendrier musulman",
     "eventSpecialOccasionGuidance": "Marquez ce jour par le rappel, la gratitude et des conseils fiables propres à cette occasion.",
-    "snackbarNeutral": "Avis"
+    "snackbarNeutral": "Avis",
+    "notificationPermissionDescription": "Activez les notifications pour recevoir les rappels que vous choisissez au moment opportun.",
+    "enableNotifications": "Activer les notifications",
+    "batteryOptimizationDescription": "L'optimisation de la batterie Android peut retarder les rappels. Autorisez Huda à fonctionner sans optimisation pour des alertes plus fiables.",
+    "keepRemindersReliable": "Autoriser des rappels fiables",
+    "prayerTimesPermissionTitle": "Recevoir les alertes de prière",
+    "prayerTimesPermissionDescription": "Activez les notifications pour recevoir chaque alerte d'heure de prière, même lorsque l'application Huda est fermée.",
+    "calendarPermissionTitle": "Recevoir les rappels d'événements",
+    "calendarPermissionDescription": "Activez les notifications pour recevoir les rappels des événements du calendrier hégirien que vous choisissez.",
+    "remindersPermissionTitle": "Activer vos rappels",
+    "remindersPermissionDescription": "Activez les notifications pour le Coran, les adhkar, le sahur et les autres rappels que vous activez.",
+    "khatmaPermissionTitle": "Rester sur la bonne voie pour votre khatma",
+    "khatmaPermissionDescription": "Activez les notifications pour recevoir le rappel de votre wird quotidien à l'heure de votre choix.",
+    "batteryOptimizationTitle": "Recevoir les rappels à l'heure",
+    "notificationsReadyTitle": "Les notifications sont activées",
+    "notificationsReadyDescription": "Vos rappels activés sont prêts à être envoyés.",
+    "batteryOptimizationReadyTitle": "L'optimisation de la batterie est désactivée",
+    "batteryOptimizationReadyDescription": "Huda peut fonctionner plus fiablement en arrière-plan."
 }

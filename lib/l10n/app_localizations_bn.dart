@@ -4630,4 +4630,63 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'বিজ্ঞপ্তি';
+
+  @override
+  String get notificationPermissionDescription =>
+      'আপনার বেছে নেওয়া অনুস্মারকগুলো সময়মতো পেতে বিজ্ঞপ্তি চালু করুন।';
+
+  @override
+  String get enableNotifications => 'বিজ্ঞপ্তি চালু করুন';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'অ্যান্ড্রয়েডের ব্যাটারি অপ্টিমাইজেশন অনুস্মারক দেরি করাতে পারে। আরও নির্ভরযোগ্য সতর্কতার জন্য হুদাকে অপ্টিমাইজেশন ছাড়া চলতে দিন।';
+
+  @override
+  String get keepRemindersReliable => 'নির্ভরযোগ্য অনুস্মারক অনুমতি দিন';
+
+  @override
+  String get prayerTimesPermissionTitle => 'নামাজের সময়ের সতর্কতা পান';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'হুদা বন্ধ থাকলেও প্রতিটি নামাজের সময়ের সতর্কতা পেতে বিজ্ঞপ্তি চালু করুন।';
+
+  @override
+  String get calendarPermissionTitle => 'ক্যালেন্ডার ইভেন্টের অনুস্মারক পান';
+
+  @override
+  String get calendarPermissionDescription =>
+      'আপনার বেছে নেওয়া হিজরি ক্যালেন্ডার ইভেন্টগুলোর অনুস্মারক পেতে বিজ্ঞপ্তি চালু করুন।';
+
+  @override
+  String get remindersPermissionTitle => 'আপনার অনুস্মারক চালু করুন';
+
+  @override
+  String get remindersPermissionDescription =>
+      'কুরআন, আযকার, সাহরি এবং আপনার চালু করা অন্যান্য অনুস্মারকের জন্য বিজ্ঞপ্তি চালু করুন।';
+
+  @override
+  String get khatmaPermissionTitle => 'খতমের অগ্রগতি ধরে রাখুন';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'আপনার বেছে নেওয়া সময়ে দৈনিক ওয়ার্দের অনুস্মারক পেতে বিজ্ঞপ্তি চালু করুন।';
+
+  @override
+  String get batteryOptimizationTitle => 'অনুস্মারক সময়মতো রাখুন';
+
+  @override
+  String get notificationsReadyTitle => 'বিজ্ঞপ্তি চালু আছে';
+
+  @override
+  String get notificationsReadyDescription =>
+      'আপনার চালু করা অনুস্মারকগুলো পাঠানোর জন্য প্রস্তুত।';
+
+  @override
+  String get batteryOptimizationReadyTitle => 'ব্যাটারি অপ্টিমাইজেশন বন্ধ আছে';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'হুদা ব্যাকগ্রাউন্ডে আরও নির্ভরযোগ্যভাবে চলতে পারে।';
 }

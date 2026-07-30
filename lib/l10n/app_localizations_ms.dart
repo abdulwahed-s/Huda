@@ -4634,4 +4634,65 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'Makluman';
+
+  @override
+  String get notificationPermissionDescription =>
+      'Aktifkan pemberitahuan untuk menerima peringatan yang anda pilih tepat pada waktunya.';
+
+  @override
+  String get enableNotifications => 'Aktifkan pemberitahuan';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'Pengoptimuman bateri Android boleh melambatkan peringatan. Benarkan Huda berjalan tanpa pengoptimuman untuk makluman yang lebih boleh dipercayai.';
+
+  @override
+  String get keepRemindersReliable =>
+      'Benarkan peringatan yang boleh dipercayai';
+
+  @override
+  String get prayerTimesPermissionTitle => 'Dapatkan peringatan waktu solat';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'Aktifkan pemberitahuan untuk menerima setiap peringatan waktu solat, walaupun Huda ditutup.';
+
+  @override
+  String get calendarPermissionTitle => 'Dapatkan peringatan acara kalendar';
+
+  @override
+  String get calendarPermissionDescription =>
+      'Aktifkan pemberitahuan untuk menerima peringatan acara kalendar Hijri yang anda pilih.';
+
+  @override
+  String get remindersPermissionTitle => 'Aktifkan peringatan anda';
+
+  @override
+  String get remindersPermissionDescription =>
+      'Aktifkan pemberitahuan untuk al-Quran, zikir, sahur dan peringatan lain yang anda hidupkan.';
+
+  @override
+  String get khatmaPermissionTitle => 'Kekal konsisten dengan khatam anda';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'Aktifkan pemberitahuan untuk menerima peringatan wird harian pada waktu yang anda pilih.';
+
+  @override
+  String get batteryOptimizationTitle =>
+      'Pastikan peringatan tiba tepat pada waktunya';
+
+  @override
+  String get notificationsReadyTitle => 'Pemberitahuan dihidupkan';
+
+  @override
+  String get notificationsReadyDescription =>
+      'Peringatan yang anda aktifkan sedia untuk dihantar.';
+
+  @override
+  String get batteryOptimizationReadyTitle => 'Pengoptimuman bateri dimatikan';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'Huda boleh berjalan dengan lebih boleh dipercayai di latar belakang.';
 }

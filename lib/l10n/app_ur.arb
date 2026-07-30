@@ -1771,5 +1771,22 @@
     "eventSpecialOccasion": "ایک بابرکت موقع",
     "eventSpecialOccasionSubtitle": "اسلامی تقویم کا ایک بامعنی دن",
     "eventSpecialOccasionGuidance": "اس دن کو ذکر، شکر اور اس موقع سے متعلق معتبر رہنمائی کے ساتھ بامعنی بنائیں۔",
-    "snackbarNeutral": "اطلاع"
+    "snackbarNeutral": "اطلاع",
+    "notificationPermissionDescription": "اپنی منتخب یاددہانیاں بروقت پانے کے لیے نوٹیفیکیشنز فعال کریں۔",
+    "enableNotifications": "نوٹیفیکیشنز فعال کریں",
+    "batteryOptimizationDescription": "اینڈرائیڈ بیٹری آپٹیمائزیشن یاددہانیوں میں تاخیر کر سکتی ہے۔ زیادہ قابلِ اعتماد الرٹس کے لیے ہدیٰ کو آپٹیمائزیشن کے بغیر چلنے دیں۔",
+    "keepRemindersReliable": "قابلِ اعتماد یاددہانیوں کی اجازت دیں",
+    "prayerTimesPermissionTitle": "نماز کے وقت کے الرٹس حاصل کریں",
+    "prayerTimesPermissionDescription": "ہدیٰ بند ہونے پر بھی ہر نماز کے وقت کا الرٹ حاصل کرنے کے لیے نوٹیفیکیشنز فعال کریں۔",
+    "calendarPermissionTitle": "کیلنڈر ایونٹس کی یاددہانیاں حاصل کریں",
+    "calendarPermissionDescription": "اپنے منتخب کردہ ہجری کیلنڈر ایونٹس کی یاددہانیاں حاصل کرنے کے لیے نوٹیفیکیشنز فعال کریں۔",
+    "remindersPermissionTitle": "اپنی یاددہانیاں فعال کریں",
+    "remindersPermissionDescription": "قرآن، اذکار، سحری اور اپنی فعال کردہ دیگر یاددہانیوں کے لیے نوٹیفیکیشنز فعال کریں۔",
+    "khatmaPermissionTitle": "اپنی ختم کے ساتھ جاری رہیں",
+    "khatmaPermissionDescription": "اپنے منتخب وقت پر روزانہ ورد کی یاددہانی پانے کے لیے نوٹیفیکیشنز فعال کریں۔",
+    "batteryOptimizationTitle": "یاددہانیاں وقت پر رکھیں",
+    "notificationsReadyTitle": "نوٹیفیکیشنز فعال ہیں",
+    "notificationsReadyDescription": "آپ کی فعال کردہ یاددہانیاں پہنچنے کے لیے تیار ہیں۔",
+    "batteryOptimizationReadyTitle": "بیٹری آپٹیمائزیشن بند ہے",
+    "batteryOptimizationReadyDescription": "ہدیٰ پس منظر میں زیادہ قابلِ اعتماد طریقے سے کام کر سکتا ہے۔"
 }

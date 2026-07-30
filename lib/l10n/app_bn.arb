@@ -1861,5 +1861,22 @@
     "eventSpecialOccasion": "একটি বরকতময় উপলক্ষ",
     "eventSpecialOccasionSubtitle": "হিজরি বর্ষপঞ্জির একটি তাৎপর্যপূর্ণ দিন",
     "eventSpecialOccasionGuidance": "স্মরণ, কৃতজ্ঞতা এবং এই উপলক্ষের নির্ভরযোগ্য নির্দেশনার মাধ্যমে দিনটিকে অর্থবহ করে তুলুন।",
-    "snackbarNeutral": "বিজ্ঞপ্তি"
+    "snackbarNeutral": "বিজ্ঞপ্তি",
+    "notificationPermissionDescription": "আপনার বেছে নেওয়া অনুস্মারকগুলো সময়মতো পেতে বিজ্ঞপ্তি চালু করুন।",
+    "enableNotifications": "বিজ্ঞপ্তি চালু করুন",
+    "batteryOptimizationDescription": "অ্যান্ড্রয়েডের ব্যাটারি অপ্টিমাইজেশন অনুস্মারক দেরি করাতে পারে। আরও নির্ভরযোগ্য সতর্কতার জন্য হুদাকে অপ্টিমাইজেশন ছাড়া চলতে দিন।",
+    "keepRemindersReliable": "নির্ভরযোগ্য অনুস্মারক অনুমতি দিন",
+    "prayerTimesPermissionTitle": "নামাজের সময়ের সতর্কতা পান",
+    "prayerTimesPermissionDescription": "হুদা বন্ধ থাকলেও প্রতিটি নামাজের সময়ের সতর্কতা পেতে বিজ্ঞপ্তি চালু করুন।",
+    "calendarPermissionTitle": "ক্যালেন্ডার ইভেন্টের অনুস্মারক পান",
+    "calendarPermissionDescription": "আপনার বেছে নেওয়া হিজরি ক্যালেন্ডার ইভেন্টগুলোর অনুস্মারক পেতে বিজ্ঞপ্তি চালু করুন।",
+    "remindersPermissionTitle": "আপনার অনুস্মারক চালু করুন",
+    "remindersPermissionDescription": "কুরআন, আযকার, সাহরি এবং আপনার চালু করা অন্যান্য অনুস্মারকের জন্য বিজ্ঞপ্তি চালু করুন।",
+    "khatmaPermissionTitle": "খতমের অগ্রগতি ধরে রাখুন",
+    "khatmaPermissionDescription": "আপনার বেছে নেওয়া সময়ে দৈনিক ওয়ার্দের অনুস্মারক পেতে বিজ্ঞপ্তি চালু করুন।",
+    "batteryOptimizationTitle": "অনুস্মারক সময়মতো রাখুন",
+    "notificationsReadyTitle": "বিজ্ঞপ্তি চালু আছে",
+    "notificationsReadyDescription": "আপনার চালু করা অনুস্মারকগুলো পাঠানোর জন্য প্রস্তুত।",
+    "batteryOptimizationReadyTitle": "ব্যাটারি অপ্টিমাইজেশন বন্ধ আছে",
+    "batteryOptimizationReadyDescription": "হুদা ব্যাকগ্রাউন্ডে আরও নির্ভরযোগ্যভাবে চলতে পারে।"
 }

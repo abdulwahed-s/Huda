@@ -1845,5 +1845,22 @@
     "eventSpecialOccasion": "Satu peristiwa istimewa",
     "eventSpecialOccasionSubtitle": "Hari yang bermakna dalam kalendar Islam",
     "eventSpecialOccasionGuidance": "Hayati hari ini dengan berzikir, bersyukur dan panduan yang sahih untuk peristiwa ini.",
-    "snackbarNeutral": "Makluman"
+    "snackbarNeutral": "Makluman",
+    "notificationPermissionDescription": "Aktifkan pemberitahuan untuk menerima peringatan yang anda pilih tepat pada waktunya.",
+    "enableNotifications": "Aktifkan pemberitahuan",
+    "batteryOptimizationDescription": "Pengoptimuman bateri Android boleh melambatkan peringatan. Benarkan Huda berjalan tanpa pengoptimuman untuk makluman yang lebih boleh dipercayai.",
+    "keepRemindersReliable": "Benarkan peringatan yang boleh dipercayai",
+    "prayerTimesPermissionTitle": "Dapatkan peringatan waktu solat",
+    "prayerTimesPermissionDescription": "Aktifkan pemberitahuan untuk menerima setiap peringatan waktu solat, walaupun Huda ditutup.",
+    "calendarPermissionTitle": "Dapatkan peringatan acara kalendar",
+    "calendarPermissionDescription": "Aktifkan pemberitahuan untuk menerima peringatan acara kalendar Hijri yang anda pilih.",
+    "remindersPermissionTitle": "Aktifkan peringatan anda",
+    "remindersPermissionDescription": "Aktifkan pemberitahuan untuk al-Quran, zikir, sahur dan peringatan lain yang anda hidupkan.",
+    "khatmaPermissionTitle": "Kekal konsisten dengan khatam anda",
+    "khatmaPermissionDescription": "Aktifkan pemberitahuan untuk menerima peringatan wird harian pada waktu yang anda pilih.",
+    "batteryOptimizationTitle": "Pastikan peringatan tiba tepat pada waktunya",
+    "notificationsReadyTitle": "Pemberitahuan dihidupkan",
+    "notificationsReadyDescription": "Peringatan yang anda aktifkan sedia untuk dihantar.",
+    "batteryOptimizationReadyTitle": "Pengoptimuman bateri dimatikan",
+    "batteryOptimizationReadyDescription": "Huda boleh berjalan dengan lebih boleh dipercayai di latar belakang."
 }

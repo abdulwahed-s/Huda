@@ -4712,4 +4712,65 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'Avis';
+
+  @override
+  String get notificationPermissionDescription =>
+      'Activez les notifications pour recevoir les rappels que vous choisissez au moment opportun.';
+
+  @override
+  String get enableNotifications => 'Activer les notifications';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'L\'optimisation de la batterie Android peut retarder les rappels. Autorisez Huda à fonctionner sans optimisation pour des alertes plus fiables.';
+
+  @override
+  String get keepRemindersReliable => 'Autoriser des rappels fiables';
+
+  @override
+  String get prayerTimesPermissionTitle => 'Recevoir les alertes de prière';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'Activez les notifications pour recevoir chaque alerte d\'heure de prière, même lorsque l\'application Huda est fermée.';
+
+  @override
+  String get calendarPermissionTitle => 'Recevoir les rappels d\'événements';
+
+  @override
+  String get calendarPermissionDescription =>
+      'Activez les notifications pour recevoir les rappels des événements du calendrier hégirien que vous choisissez.';
+
+  @override
+  String get remindersPermissionTitle => 'Activer vos rappels';
+
+  @override
+  String get remindersPermissionDescription =>
+      'Activez les notifications pour le Coran, les adhkar, le sahur et les autres rappels que vous activez.';
+
+  @override
+  String get khatmaPermissionTitle =>
+      'Rester sur la bonne voie pour votre khatma';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'Activez les notifications pour recevoir le rappel de votre wird quotidien à l\'heure de votre choix.';
+
+  @override
+  String get batteryOptimizationTitle => 'Recevoir les rappels à l\'heure';
+
+  @override
+  String get notificationsReadyTitle => 'Les notifications sont activées';
+
+  @override
+  String get notificationsReadyDescription =>
+      'Vos rappels activés sont prêts à être envoyés.';
+
+  @override
+  String get batteryOptimizationReadyTitle =>
+      'L\'optimisation de la batterie est désactivée';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'Huda peut fonctionner plus fiablement en arrière-plan.';
 }

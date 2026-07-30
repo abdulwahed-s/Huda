@@ -4619,4 +4619,63 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'اطلاع';
+
+  @override
+  String get notificationPermissionDescription =>
+      'اپنی منتخب یاددہانیاں بروقت پانے کے لیے نوٹیفیکیشنز فعال کریں۔';
+
+  @override
+  String get enableNotifications => 'نوٹیفیکیشنز فعال کریں';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'اینڈرائیڈ بیٹری آپٹیمائزیشن یاددہانیوں میں تاخیر کر سکتی ہے۔ زیادہ قابلِ اعتماد الرٹس کے لیے ہدیٰ کو آپٹیمائزیشن کے بغیر چلنے دیں۔';
+
+  @override
+  String get keepRemindersReliable => 'قابلِ اعتماد یاددہانیوں کی اجازت دیں';
+
+  @override
+  String get prayerTimesPermissionTitle => 'نماز کے وقت کے الرٹس حاصل کریں';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'ہدیٰ بند ہونے پر بھی ہر نماز کے وقت کا الرٹ حاصل کرنے کے لیے نوٹیفیکیشنز فعال کریں۔';
+
+  @override
+  String get calendarPermissionTitle => 'کیلنڈر ایونٹس کی یاددہانیاں حاصل کریں';
+
+  @override
+  String get calendarPermissionDescription =>
+      'اپنے منتخب کردہ ہجری کیلنڈر ایونٹس کی یاددہانیاں حاصل کرنے کے لیے نوٹیفیکیشنز فعال کریں۔';
+
+  @override
+  String get remindersPermissionTitle => 'اپنی یاددہانیاں فعال کریں';
+
+  @override
+  String get remindersPermissionDescription =>
+      'قرآن، اذکار، سحری اور اپنی فعال کردہ دیگر یاددہانیوں کے لیے نوٹیفیکیشنز فعال کریں۔';
+
+  @override
+  String get khatmaPermissionTitle => 'اپنی ختم کے ساتھ جاری رہیں';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'اپنے منتخب وقت پر روزانہ ورد کی یاددہانی پانے کے لیے نوٹیفیکیشنز فعال کریں۔';
+
+  @override
+  String get batteryOptimizationTitle => 'یاددہانیاں وقت پر رکھیں';
+
+  @override
+  String get notificationsReadyTitle => 'نوٹیفیکیشنز فعال ہیں';
+
+  @override
+  String get notificationsReadyDescription =>
+      'آپ کی فعال کردہ یاددہانیاں پہنچنے کے لیے تیار ہیں۔';
+
+  @override
+  String get batteryOptimizationReadyTitle => 'بیٹری آپٹیمائزیشن بند ہے';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'ہدیٰ پس منظر میں زیادہ قابلِ اعتماد طریقے سے کام کر سکتا ہے۔';
 }

@@ -4564,4 +4564,62 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'تنبيه';
+
+  @override
+  String get notificationPermissionDescription =>
+      'فعِّل التنبيهات لتصلك التذكيرات التي تختارها في الوقت المناسب.';
+
+  @override
+  String get enableNotifications => 'تفعيل التنبيهات';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'قد يؤدي تحسين البطارية في أندرويد إلى تأخير التذكيرات. اسمح لتطبيق هدى بالعمل دون تحسين البطارية لتنبيهات أكثر موثوقية.';
+
+  @override
+  String get keepRemindersReliable => 'السماح بتذكيرات موثوقة';
+
+  @override
+  String get prayerTimesPermissionTitle => 'تنبيهات أوقات الصلاة';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'فعِّل التنبيهات لتصلك تنبيهات كل صلاة، حتى عند إغلاق تطبيق هدى.';
+
+  @override
+  String get calendarPermissionTitle => 'تذكيرات أحداث التقويم';
+
+  @override
+  String get calendarPermissionDescription =>
+      'فعِّل التنبيهات لتتلقى تذكيرات بالأحداث التي تختارها في التقويم الهجري.';
+
+  @override
+  String get remindersPermissionTitle => 'فعِّل تذكيراتك';
+
+  @override
+  String get remindersPermissionDescription =>
+      'فعِّل التنبيهات لتصلك تذكيرات القرآن والأذكار والسحور وغيرها مما تختاره.';
+
+  @override
+  String get khatmaPermissionTitle => 'واصل تقدّمك في الختمة';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'فعِّل التنبيهات لتتلقى تذكير الورد اليومي في الوقت الذي تختاره.';
+
+  @override
+  String get batteryOptimizationTitle => 'حافظ على وصول التذكيرات في وقتها';
+
+  @override
+  String get notificationsReadyTitle => 'التنبيهات مفعّلة';
+
+  @override
+  String get notificationsReadyDescription => 'تذكيراتك المفعّلة جاهزة للوصول.';
+
+  @override
+  String get batteryOptimizationReadyTitle => 'تحسين البطارية متوقف';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'يمكن لتطبيق هدى العمل في الخلفية بصورة أكثر موثوقية.';
 }

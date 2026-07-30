@@ -8467,6 +8467,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notice'**
   String get snackbarNeutral;
+
+  /// No description provided for @notificationPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications to receive the reminders you choose, right when they matter.'**
+  String get notificationPermissionDescription;
+
+  /// No description provided for @enableNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications'**
+  String get enableNotifications;
+
+  /// No description provided for @batteryOptimizationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts.'**
+  String get batteryOptimizationDescription;
+
+  /// No description provided for @keepRemindersReliable.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow reliable reminders'**
+  String get keepRemindersReliable;
+
+  /// No description provided for @prayerTimesPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get prayer-time alerts'**
+  String get prayerTimesPermissionTitle;
+
+  /// No description provided for @prayerTimesPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications to receive each prayer-time alert, even when Huda is closed.'**
+  String get prayerTimesPermissionDescription;
+
+  /// No description provided for @calendarPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get calendar event reminders'**
+  String get calendarPermissionTitle;
+
+  /// No description provided for @calendarPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications to be reminded about the Hijri calendar events you choose.'**
+  String get calendarPermissionDescription;
+
+  /// No description provided for @remindersPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable your reminders'**
+  String get remindersPermissionTitle;
+
+  /// No description provided for @remindersPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications for the Quran, Athkar, Sahur, and other reminders you enable.'**
+  String get remindersPermissionDescription;
+
+  /// No description provided for @khatmaPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your Khatma on track'**
+  String get khatmaPermissionTitle;
+
+  /// No description provided for @khatmaPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications to receive your daily wird reminder at the time you choose.'**
+  String get khatmaPermissionDescription;
+
+  /// No description provided for @batteryOptimizationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep reminders on time'**
+  String get batteryOptimizationTitle;
+
+  /// No description provided for @notificationsReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are on'**
+  String get notificationsReadyTitle;
+
+  /// No description provided for @notificationsReadyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your enabled reminders are ready to be delivered.'**
+  String get notificationsReadyDescription;
+
+  /// No description provided for @batteryOptimizationReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery optimization is off'**
+  String get batteryOptimizationReadyTitle;
+
+  /// No description provided for @batteryOptimizationReadyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda can run more reliably in the background.'**
+  String get batteryOptimizationReadyDescription;
 }
 
 class _AppLocalizationsDelegate

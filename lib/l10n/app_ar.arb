@@ -2261,5 +2261,22 @@
     "eventSpecialOccasion": "مناسبة مباركة",
     "eventSpecialOccasionSubtitle": "يوم ذو معنى في التقويم الهجري",
     "eventSpecialOccasionGuidance": "أحيوا هذا اليوم بالذكر والشكر، واتبعوا ما ثبت من الهدي الخاص بهذه المناسبة.",
-    "snackbarNeutral": "تنبيه"
+    "snackbarNeutral": "تنبيه",
+    "notificationPermissionDescription": "فعِّل التنبيهات لتصلك التذكيرات التي تختارها في الوقت المناسب.",
+    "enableNotifications": "تفعيل التنبيهات",
+    "batteryOptimizationDescription": "قد يؤدي تحسين البطارية في أندرويد إلى تأخير التذكيرات. اسمح لتطبيق هدى بالعمل دون تحسين البطارية لتنبيهات أكثر موثوقية.",
+    "keepRemindersReliable": "السماح بتذكيرات موثوقة",
+    "prayerTimesPermissionTitle": "تنبيهات أوقات الصلاة",
+    "prayerTimesPermissionDescription": "فعِّل التنبيهات لتصلك تنبيهات كل صلاة، حتى عند إغلاق تطبيق هدى.",
+    "calendarPermissionTitle": "تذكيرات أحداث التقويم",
+    "calendarPermissionDescription": "فعِّل التنبيهات لتتلقى تذكيرات بالأحداث التي تختارها في التقويم الهجري.",
+    "remindersPermissionTitle": "فعِّل تذكيراتك",
+    "remindersPermissionDescription": "فعِّل التنبيهات لتصلك تذكيرات القرآن والأذكار والسحور وغيرها مما تختاره.",
+    "khatmaPermissionTitle": "واصل تقدّمك في الختمة",
+    "khatmaPermissionDescription": "فعِّل التنبيهات لتتلقى تذكير الورد اليومي في الوقت الذي تختاره.",
+    "batteryOptimizationTitle": "حافظ على وصول التذكيرات في وقتها",
+    "notificationsReadyTitle": "التنبيهات مفعّلة",
+    "notificationsReadyDescription": "تذكيراتك المفعّلة جاهزة للوصول.",
+    "batteryOptimizationReadyTitle": "تحسين البطارية متوقف",
+    "batteryOptimizationReadyDescription": "يمكن لتطبيق هدى العمل في الخلفية بصورة أكثر موثوقية."
 }

@@ -4689,4 +4689,66 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'Hinweis';
+
+  @override
+  String get notificationPermissionDescription =>
+      'Aktiviere Benachrichtigungen, damit deine ausgewählten Erinnerungen rechtzeitig ankommen.';
+
+  @override
+  String get enableNotifications => 'Benachrichtigungen aktivieren';
+
+  @override
+  String get batteryOptimizationDescription =>
+      'Die Akku-Optimierung von Android kann Erinnerungen verzögern. Erlaube Huda, ohne Optimierung zu laufen, damit Benachrichtigungen zuverlässiger ankommen.';
+
+  @override
+  String get keepRemindersReliable => 'Zuverlässige Erinnerungen erlauben';
+
+  @override
+  String get prayerTimesPermissionTitle =>
+      'Gebetszeit-Benachrichtigungen erhalten';
+
+  @override
+  String get prayerTimesPermissionDescription =>
+      'Aktiviere Benachrichtigungen, damit du jede Gebetszeit auch bei geschlossener Huda-App erhältst.';
+
+  @override
+  String get calendarPermissionTitle =>
+      'Erinnerungen für Kalenderereignisse erhalten';
+
+  @override
+  String get calendarPermissionDescription =>
+      'Aktiviere Benachrichtigungen für die Ereignisse, die du im Hidschri-Kalender auswählst.';
+
+  @override
+  String get remindersPermissionTitle => 'Deine Erinnerungen aktivieren';
+
+  @override
+  String get remindersPermissionDescription =>
+      'Aktiviere Benachrichtigungen für Koran, Adhkar, Sahur und alle weiteren Erinnerungen, die du einschaltest.';
+
+  @override
+  String get khatmaPermissionTitle => 'Bleib bei deiner Khatma auf Kurs';
+
+  @override
+  String get khatmaPermissionDescription =>
+      'Aktiviere Benachrichtigungen, um deinen täglichen Wird zur gewünschten Zeit zu erhalten.';
+
+  @override
+  String get batteryOptimizationTitle => 'Erinnerungen pünktlich erhalten';
+
+  @override
+  String get notificationsReadyTitle => 'Benachrichtigungen sind aktiviert';
+
+  @override
+  String get notificationsReadyDescription =>
+      'Deine aktivierten Erinnerungen können zugestellt werden.';
+
+  @override
+  String get batteryOptimizationReadyTitle =>
+      'Akku-Optimierung ist deaktiviert';
+
+  @override
+  String get batteryOptimizationReadyDescription =>
+      'Huda kann im Hintergrund zuverlässiger laufen.';
 }
