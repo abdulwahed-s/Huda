@@ -1361,12 +1361,9 @@ class PersistentPrayerCountdownService {
       final NotificationPermission notificationPermissionStatus =
           await FlutterForegroundTask.checkNotificationPermission();
       if (notificationPermissionStatus != NotificationPermission.granted) {
-        final NotificationPermission requestResult =
-            await FlutterForegroundTask.requestNotificationPermission();
-        if (requestResult != NotificationPermission.granted) {
-          debugPrint('Notification permission denied');
-          return;
-        }
+        debugPrint(
+            'Notification permission is required before starting the persistent countdown');
+        return;
       }
 
       await FlutterForegroundTask.startService(
