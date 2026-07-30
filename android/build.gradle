@@ -13,6 +13,23 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+subprojects { project ->
+    if (project.name == "home_widget") {
+        project.afterEvaluate {
+            project.android.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_11
+                targetCompatibility JavaVersion.VERSION_11
+            }
+
+            project.tasks.configureEach { task ->
+                if (task.name.startsWith("compile") && task.name.endsWith("Kotlin")) {
+                    task.kotlinOptions.jvmTarget = "11"
+                }
+            }
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
