@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/presentation/widgets/notifications/frequency_dialog.dart';
 import 'package:huda/presentation/widgets/notifications/loading_state.dart';
 import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
+import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
 import 'package:huda/presentation/widgets/notifications/settings_section.dart';
-import 'package:huda/presentation/widgets/notifications/status_section.dart';
 import 'package:huda/presentation/widgets/notifications/time_pickers.dart';
 
 extension NotificationContextExtension on BuildContext {
@@ -58,6 +58,28 @@ class _NotificationsState extends State<Notifications>
     await cubit.initializeNotifications();
   }
 
+  Future<void> _togglePreference(String key, bool value) async {
+    if (value &&
+        !await PermissionHandlers.requestNotificationPermission(context)) {
+      return;
+    }
+    if (!mounted) return;
+    await context.togglePreference(key, value);
+  }
+
+  Future<void> _openReminderSettings(
+    bool reminderEnabled,
+    VoidCallback openSettings,
+  ) async {
+    if (reminderEnabled &&
+        !await PermissionHandlers.requestNotificationPermission(context)) {
+      return;
+    }
+    if (mounted) {
+      openSettings();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -94,13 +116,10 @@ class _NotificationsState extends State<Notifications>
               ),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  StatusSection(
-                    isDark: isDark,
-                    requestNotificationPermission: () =>
-                        PermissionHandlers.requestNotificationPermission(
-                            context),
-                    requestBatteryOptimization: () =>
-                        PermissionHandlers.requestBatteryOptimization(context),
+                  NotificationRequirementsSection(
+                    feature: NotificationFeature.reminders,
+                    showConfiguredStatus: true,
+                    onNotificationEnabled: _initializeNotifications,
                   ),
                   SizedBox(height: 24.h),
                   BlocBuilder<NotificationsCubit, NotificationsState>(
@@ -109,29 +128,56 @@ class _NotificationsState extends State<Notifications>
                         return SettingsSection(
                           state: state,
                           isDark: isDark,
-                          pickKahfTime: () => TimePickers.pickKahfTime(
+                          pickKahfTime: () => _openReminderSettings(
+                            state.kahfFriday,
+                            () => TimePickers.pickKahfTime(
                               context,
                               state.kahfFridayTime,
-                              context.read<NotificationsCubit>()),
-                          pickAthkarTimes: () => TimePickers.pickAthkarTimes(
+                              context.read<NotificationsCubit>(),
+                            ),
+                          ),
+                          pickAthkarTimes: () => _openReminderSettings(
+                            state.sabahMasaa,
+                            () => TimePickers.pickAthkarTimes(
                               context,
                               state.morningAthkarTime,
                               state.eveningAthkarTime,
-                              context.read<NotificationsCubit>()),
-                          pickRandomAthkarFrequency: () => FrequencyDialog.show(
-                              context, state.randomAthkarFrequency),
-                          pickQuranTime: () => TimePickers.pickQuranTime(
+                              context.read<NotificationsCubit>(),
+                            ),
+                          ),
+                          pickRandomAthkarFrequency: () =>
+                              _openReminderSettings(
+                            state.randomAthkar,
+                            () => FrequencyDialog.show(
+                              context,
+                              state.randomAthkarFrequency,
+                            ),
+                          ),
+                          pickQuranTime: () => _openReminderSettings(
+                            state.quranReminder,
+                            () => TimePickers.pickQuranTime(
                               context,
                               state.quranReminderTime,
-                              context.read<NotificationsCubit>()),
-                          pickChecklistTime: () =>
-                              TimePickers.pickChecklistTime(
-                                  context,
-                                  state.checklistReminderTime,
-                                  context.read<NotificationsCubit>()),
-                          pickSahurAlarmSettings: () =>
-                              TimePickers.pickSahurAlarmSettings(context, state,
-                                  context.read<NotificationsCubit>()),
+                              context.read<NotificationsCubit>(),
+                            ),
+                          ),
+                          pickChecklistTime: () => _openReminderSettings(
+                            state.checklistReminder,
+                            () => TimePickers.pickChecklistTime(
+                              context,
+                              state.checklistReminderTime,
+                              context.read<NotificationsCubit>(),
+                            ),
+                          ),
+                          pickSahurAlarmSettings: () => _openReminderSettings(
+                            state.sahurAlarmEnabled,
+                            () => TimePickers.pickSahurAlarmSettings(
+                              context,
+                              state,
+                              context.read<NotificationsCubit>(),
+                            ),
+                          ),
+                          onPreferenceChanged: _togglePreference,
                         );
                       }
                       return const LoadingState();
