@@ -17,6 +17,8 @@ import 'package:huda/presentation/widgets/khatma/khatma_new_view.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_program_meaning_view.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_program_parts_view.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_start_from_view.dart';
+import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
+import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
 
 class KhatmaPage extends StatefulWidget {
   const KhatmaPage({super.key});
@@ -88,6 +90,12 @@ class _KhatmaPageState extends State<KhatmaPage> {
       initialTime: _reminderTime,
     );
     if (picked != null) {
+      if (!mounted) return;
+      if (_reminderEnabled &&
+          !await PermissionHandlers.requestNotificationPermission(context)) {
+        return;
+      }
+      if (!mounted) return;
       await _service.setReminder(
         enabled: _reminderEnabled,
         hour: picked.hour,
@@ -101,6 +109,11 @@ class _KhatmaPageState extends State<KhatmaPage> {
   }
 
   Future<void> _toggleReminder(bool value) async {
+    if (value &&
+        !await PermissionHandlers.requestNotificationPermission(context)) {
+      return;
+    }
+    if (!mounted) return;
     await _service.setReminder(
       enabled: value,
       hour: _reminderTime.hour,
@@ -108,6 +121,12 @@ class _KhatmaPageState extends State<KhatmaPage> {
     );
     await _notifHelper.scheduleKhatmaReminder(value, _reminderTime);
     setState(() => _reminderEnabled = value);
+  }
+
+  Future<void> _restoreKhatmaReminder() async {
+    if (_reminderEnabled) {
+      await _notifHelper.scheduleKhatmaReminder(true, _reminderTime);
+    }
   }
 
   TextDirection get _localeDirection {
@@ -297,6 +316,13 @@ class _KhatmaPageState extends State<KhatmaPage> {
           _navigateToSurah(todayDetails.startSurah, todayDetails.startVerse),
       onNavigateToEnd: () =>
           _navigateToSurah(todayDetails.endSurah, todayDetails.endVerse),
+      notificationRequirements: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: NotificationRequirementsSection(
+          feature: NotificationFeature.khatma,
+          onNotificationEnabled: _restoreKhatmaReminder,
+        ),
+      ),
       onToggleReminder: _toggleReminder,
       onPickReminderTime: _pickReminderTime,
     );
@@ -341,6 +367,13 @@ class _KhatmaPageState extends State<KhatmaPage> {
           setState(() => _step = _KhatmaStep.allWirds);
         },
         onDelete: () => _confirmResetPlan(context),
+        notificationRequirements: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: NotificationRequirementsSection(
+            feature: NotificationFeature.khatma,
+            onNotificationEnabled: _restoreKhatmaReminder,
+          ),
+        ),
         onToggleReminder: _toggleReminder,
         onPickReminderTime: _pickReminderTime,
       );
