@@ -18,6 +18,7 @@ import 'package:huda/presentation/widgets/hijri_calendar/islamic_calendar_event.
 import 'package:huda/presentation/widgets/hijri_calendar/islamic_events_section_widget.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/selected_date_info_widget.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
 
 class HijriCalendarScreenNew extends StatefulWidget {
   const HijriCalendarScreenNew({
@@ -274,6 +275,13 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                                   events: islamicEvents,
                                   isDark: isDark,
                                 ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: const NotificationRequirementsSection(
+                                    feature: NotificationFeature.hijriCalendar,
+                                  ),
+                                ),
                                 Expanded(
                                   child: showUserEventsSection
                                       ? userEventsSection
@@ -322,6 +330,12 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                       IslamicEventsSectionWidget(
                         events: islamicEvents,
                         isDark: isDark,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: const NotificationRequirementsSection(
+                          feature: NotificationFeature.hijriCalendar,
+                        ),
                       ),
                       if (showUserEventsSection) userEventsSection,
                     ],
