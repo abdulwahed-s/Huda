@@ -16,6 +16,7 @@ class KhatmaCompletedView extends StatelessWidget {
   final VoidCallback onStartNew;
   final VoidCallback onAllWirds;
   final VoidCallback onDelete;
+  final Widget notificationRequirements;
   final ValueChanged<bool> onToggleReminder;
   final VoidCallback onPickReminderTime;
 
@@ -28,6 +29,7 @@ class KhatmaCompletedView extends StatelessWidget {
     required this.onStartNew,
     required this.onAllWirds,
     required this.onDelete,
+    required this.notificationRequirements,
     required this.onToggleReminder,
     required this.onPickReminderTime,
   });
@@ -86,6 +88,7 @@ class KhatmaCompletedView extends StatelessWidget {
             reminderEnabled: reminderEnabled,
             formattedTime: formattedReminderTime,
             textDirection: textDirection,
+            notificationRequirements: notificationRequirements,
             onToggleReminder: onToggleReminder,
             onPickTime: onPickReminderTime,
           ),
