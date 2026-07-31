@@ -35,7 +35,7 @@ Future<void> initializeCriticalServices() async {
 
 Future<void> initializeNotifications() async {
   final tracker = ServiceInitializationTracker();
-  await getIt<NotificationServices>().initialize(requestPermissions: true);
+  await getIt<NotificationServices>().initialize();
   tracker.markServiceReady('notifications');
 }
 
