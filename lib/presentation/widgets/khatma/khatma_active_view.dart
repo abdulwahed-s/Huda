@@ -31,6 +31,7 @@ class KhatmaActiveView extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onNavigateToStart;
   final VoidCallback onNavigateToEnd;
+  final Widget notificationRequirements;
   final ValueChanged<bool> onToggleReminder;
   final VoidCallback onPickReminderTime;
 
@@ -56,6 +57,7 @@ class KhatmaActiveView extends StatelessWidget {
     required this.onDelete,
     required this.onNavigateToStart,
     required this.onNavigateToEnd,
+    required this.notificationRequirements,
     required this.onToggleReminder,
     required this.onPickReminderTime,
   });
@@ -108,11 +110,11 @@ class KhatmaActiveView extends StatelessWidget {
             onNavigateToStart: onNavigateToStart,
             onNavigateToEnd: onNavigateToEnd,
           ),
-          SizedBox(height: 10.h),
           KhatmaReminderSection(
             reminderEnabled: reminderEnabled,
             formattedTime: formattedReminderTime,
             textDirection: textDirection,
+            notificationRequirements: notificationRequirements,
             onToggleReminder: onToggleReminder,
             onPickTime: onPickReminderTime,
           ),
