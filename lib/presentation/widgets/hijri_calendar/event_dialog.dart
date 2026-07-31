@@ -6,6 +6,7 @@ import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/models/hijri_event.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/color_picker_dialog.dart';
+import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
 import 'package:uuid/uuid.dart';
 
 class EventDialog extends StatefulWidget {
@@ -159,7 +160,14 @@ class _EventDialogState extends State<EventDialog> {
                               (_startTime != null &&
                                   _startTime!.isAfter(_endTime!)))
                       ? null
-                      : () {
+                      : () async {
+                          if (_notify &&
+                              !PlatformUtils.isLinux &&
+                              !await PermissionHandlers
+                                  .requestNotificationPermission(context)) {
+                            return;
+                          }
+                          if (!mounted) return;
                           final event = HijriEvent(
                             id: widget.oldEvent?.id ?? const Uuid().v4(),
                             title: _titleController.text.trim(),
@@ -259,7 +267,16 @@ class _EventDialogState extends State<EventDialog> {
                 style: TextStyle(
                   fontSize: isTablet ? 12 : 10.sp,
                 )),
-            onChanged: (value) => setState(() => _notify = value),
+            onChanged: (value) async {
+              if (value &&
+                  !await PermissionHandlers.requestNotificationPermission(
+                      context)) {
+                return;
+              }
+              if (mounted) {
+                setState(() => _notify = value);
+              }
+            },
             contentPadding: EdgeInsets.zero,
           ),
         CheckboxListTile(
