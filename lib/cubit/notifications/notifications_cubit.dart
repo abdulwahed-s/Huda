@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
@@ -12,9 +13,7 @@ import 'package:huda/core/services/sahur_alarm_helper.dart';
 part 'notifications_state.dart';
 
 class NotificationsCubit extends Cubit<NotificationsState> {
-  NotificationsCubit() : super(NotificationsInitial()) {
-    _notificationHelper.init();
-  }
+  NotificationsCubit() : super(NotificationsInitial());
 
   final CacheHelper cacheHelper = getIt<CacheHelper>();
   final NotificationPageHelper _notificationHelper = NotificationPageHelper();
@@ -90,11 +89,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       return macOSGranted;
     }
 
-    if (PlatformUtils.isDesktop) return true;
+    if (kIsWeb || PlatformUtils.isDesktop) return true;
 
     if (PlatformUtils.isIOS) {
-      final iosGranted = await _notificationHelper.checkIOSPermissionStatus();
-      return iosGranted;
+      return (await Permission.notification.status).isGranted;
     }
 
     PermissionStatus status = await Permission.notification.status;
@@ -157,6 +155,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<void> togglePreference(String key, bool value) async {
+    await _notificationHelper.init();
     final current = state;
 
     if (current is NotificationPreferencesLoaded &&
@@ -419,17 +418,11 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> initializeNotifications() async {
     await _notificationHelper.init();
-
-    final batteryOptGranted = await requestBatteryOptimizationExemption();
-    if (!batteryOptGranted) {
-      debugPrint(
-          '⚠️ Battery optimization not granted - notifications may be unreliable');
-    }
-
     await loadPreferences();
 
     final state = this.state;
-    if (state is NotificationPreferencesLoaded) {
+    if (state is NotificationPreferencesLoaded &&
+        await getIsNotificationEnabled()) {
       final localizedContent = _getLocalizedContent();
       await _notificationHelper.rescheduleAllNotifications(
         kahfFriday: state.kahfFriday,
