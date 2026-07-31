@@ -14,8 +14,8 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_times_location_den
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_location_permanently_denied_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_location_service_disabled_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/refresh_location_button_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
 
 class PrayerTimes extends StatefulWidget {
   const PrayerTimes({super.key});
@@ -32,7 +32,6 @@ class _PrayerTimesState extends State<PrayerTimes> {
     super.initState();
     _prayerTimesCubit = context.read<PrayerTimesCubit>();
     _prayerTimesCubit.loadPrayerTimes();
-    _requestNotificationPermission();
   }
 
   @override
@@ -41,17 +40,6 @@ class _PrayerTimesState extends State<PrayerTimes> {
     final localizations = AppLocalizations.of(context);
     if (localizations != null) {
       _prayerTimesCubit.setLocalizations(localizations);
-    }
-  }
-
-  Future<void> _requestNotificationPermission() async {
-    if (PlatformUtils.isAndroid &&
-        await Permission.scheduleExactAlarm.isDenied) {
-      await Permission.scheduleExactAlarm.request();
-    }
-
-    if (!PlatformUtils.isLinux && await Permission.notification.isDenied) {
-      await Permission.notification.request();
     }
   }
 
@@ -140,6 +128,12 @@ class _PrayerTimesState extends State<PrayerTimes> {
                   }
                   return const SizedBox.shrink();
                 },
+              ),
+              NotificationRequirementsSection(
+                feature: NotificationFeature.prayerTimes,
+                onNotificationEnabled:
+                    _prayerTimesCubit.refreshNotificationSchedule,
+                bottomSpacing: 12.h,
               ),
               const RefreshLocationButtonWidget(),
               if (PlatformUtils.isAndroid)
