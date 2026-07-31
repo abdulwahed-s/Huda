@@ -254,6 +254,13 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     await _reconcilePrayerNotifications('multi-day-prayer-times-requested');
   }
 
+  Future<void> refreshNotificationSchedule() async {
+    await _reconcilePrayerNotifications(
+      'notification-permission-granted',
+      force: true,
+    );
+  }
+
   Future<void> _reconcilePrayerNotifications(
     String reason, {
     bool force = false,
