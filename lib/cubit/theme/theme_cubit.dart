@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/theme/app_fonts.dart';
 import 'package:huda/core/services/widget_service.dart';
@@ -47,7 +48,7 @@ class ThemeCubit extends Cubit<ThemeState> {
       : super(ThemeState(
           themeMode: ThemeMode.system,
           textScaleFactor: 1.0,
-          colorTheme: AppColorTheme.purple,
+          colorTheme: AppColors.defaultTheme,
           fontFamily: 'Amiri',
         )) {
     _loadSettings();
@@ -79,15 +80,9 @@ class ThemeCubit extends Cubit<ThemeState> {
       themeMode = ThemeMode.system;
     }
 
-    AppColorTheme colorTheme = AppColorTheme.teal;
+    AppColorTheme colorTheme = AppColors.defaultTheme;
     if (savedColorTheme != null) {
-      try {
-        colorTheme = AppColorTheme.values.firstWhere(
-          (theme) => theme.toString() == savedColorTheme,
-        );
-      } catch (e) {
-        colorTheme = AppColorTheme.purple;
-      }
+      colorTheme = AppColors.fromStorage(savedColorTheme);
     }
 
     isDark = themeMode == ThemeMode.dark;
@@ -108,6 +103,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     emit(state.copyWith(themeMode: mode));
 
     await WidgetService.onThemeChanged();
+    await PrayerWidgetService.onAppThemeChanged();
   }
 
   Future<void> useSystemTheme() async {
@@ -116,6 +112,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     emit(state.copyWith(themeMode: ThemeMode.system));
 
     await WidgetService.onThemeChanged();
+    await PrayerWidgetService.onAppThemeChanged();
   }
 
   Future<void> setTextScaleFactor(double scale) async {
@@ -133,6 +130,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     emit(state.copyWith(colorTheme: colorTheme));
 
     await WidgetService.onThemeChanged();
+    await PrayerWidgetService.onAppThemeChanged();
   }
 
   Future<void> setFontFamily(String fontFamily) async {
