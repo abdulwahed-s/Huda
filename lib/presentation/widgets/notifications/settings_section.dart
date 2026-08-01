@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
@@ -15,6 +14,7 @@ class SettingsSection extends StatelessWidget {
   final void Function() pickQuranTime;
   final void Function() pickChecklistTime;
   final void Function() pickSahurAlarmSettings;
+  final Future<void> Function(String key, bool value) onPreferenceChanged;
 
   const SettingsSection({
     super.key,
@@ -26,6 +26,7 @@ class SettingsSection extends StatelessWidget {
     required this.pickQuranTime,
     required this.pickChecklistTime,
     required this.pickSahurAlarmSettings,
+    required this.onPreferenceChanged,
   });
 
   @override
@@ -53,9 +54,7 @@ class SettingsSection extends StatelessWidget {
           gradient: [Colors.green.shade400, Colors.green.shade600],
           value: state.kahfFriday,
           isLoading: state.loadingKeys.contains('kahfFriday'),
-          onChanged: (value) => context
-              .read<NotificationsCubit>()
-              .togglePreference('kahfFriday', value),
+          onChanged: (value) => onPreferenceChanged('kahfFriday', value),
           onSettingsTap: () => pickKahfTime(),
         ),
 
@@ -69,9 +68,7 @@ class SettingsSection extends StatelessWidget {
           gradient: [Colors.orange.shade400, Colors.orange.shade600],
           value: state.sabahMasaa,
           isLoading: state.loadingKeys.contains('sabahMasaa'),
-          onChanged: (value) => context
-              .read<NotificationsCubit>()
-              .togglePreference('sabahMasaa', value),
+          onChanged: (value) => onPreferenceChanged('sabahMasaa', value),
           onSettingsTap: () => pickAthkarTimes(),
         ),
 
@@ -85,9 +82,7 @@ class SettingsSection extends StatelessWidget {
           gradient: [Colors.blue.shade400, Colors.blue.shade600],
           value: state.randomAthkar,
           isLoading: state.loadingKeys.contains('randomAthkar'),
-          onChanged: (value) => context
-              .read<NotificationsCubit>()
-              .togglePreference('randomAthkar', value),
+          onChanged: (value) => onPreferenceChanged('randomAthkar', value),
           onSettingsTap: () => pickRandomAthkarFrequency(),
         ),
 
@@ -101,9 +96,7 @@ class SettingsSection extends StatelessWidget {
           gradient: [Colors.purple.shade400, Colors.purple.shade600],
           value: state.quranReminder,
           isLoading: state.loadingKeys.contains('quranReminder'),
-          onChanged: (value) => context
-              .read<NotificationsCubit>()
-              .togglePreference('quranReminder', value),
+          onChanged: (value) => onPreferenceChanged('quranReminder', value),
           onSettingsTap: () => pickQuranTime(),
         ),
 
@@ -123,9 +116,8 @@ class SettingsSection extends StatelessWidget {
             gradient: [Colors.indigo.shade400, Colors.indigo.shade600],
             value: state.sahurAlarmEnabled,
             isLoading: state.loadingKeys.contains('sahurAlarmEnabled'),
-            onChanged: (value) => context
-                .read<NotificationsCubit>()
-                .togglePreference('sahurAlarmEnabled', value),
+            onChanged: (value) =>
+                onPreferenceChanged('sahurAlarmEnabled', value),
             onSettingsTap: () => pickSahurAlarmSettings(),
           ),
 
@@ -140,9 +132,8 @@ class SettingsSection extends StatelessWidget {
             gradient: [Colors.teal.shade400, Colors.teal.shade600],
             value: state.checklistReminder,
             isLoading: state.loadingKeys.contains('checklistReminder'),
-            onChanged: (value) => context
-                .read<NotificationsCubit>()
-                .togglePreference('checklistReminder', value),
+            onChanged: (value) =>
+                onPreferenceChanged('checklistReminder', value),
             onSettingsTap: () => pickChecklistTime()),
       ],
     );
