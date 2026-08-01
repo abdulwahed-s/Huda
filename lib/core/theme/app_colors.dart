@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 enum AppColorTheme {
+  teal,
   purple,
   green,
   blue,
+  yellow,
   red,
   orange,
-  teal,
   indigo,
+  cream,
   pink,
+  brown,
 }
 
 class AppColors {
+  static const AppColorTheme defaultTheme = AppColorTheme.teal;
+
   static const Map<AppColorTheme, AppColorScheme> _colorSchemes = {
     AppColorTheme.purple: AppColorScheme(
       primary: Color(0xFF7C3AED),
@@ -158,10 +163,78 @@ class AppColors {
       lightText: Color(0xFF2C2C2C),
       darkTabBackground: Color(0xFF2A1A26),
     ),
+    AppColorTheme.yellow: AppColorScheme(
+      primary: Color(0xFFA16207),
+      primaryVariant: Color(0xFFFACC15),
+      primaryLight: Color(0xFFFDE047),
+      primaryDark: Color(0xFF713F12),
+      accent: Color(0xFFEAB308),
+      accentDark: Color(0xFFCA8A04),
+      primaryExtraLight: Color(0xFFFEF9C3),
+      primarySurface: Color(0xFFFACC15),
+      darkGradientStart: Color(0xFF1A180A),
+      darkGradientMid: Color(0xFF2D2A1B),
+      darkGradientEnd: Color(0xFF4A462C),
+      darkCardBackground: Color(0xFF1A1A1A),
+      lightSurface: Color(0xFFFFFDF7),
+      darkText: Color(0xFFF8FAFC),
+      lightText: Color(0xFF2C2C2C),
+      darkTabBackground: Color(0xFF2A281A),
+    ),
+    AppColorTheme.brown: AppColorScheme(
+      primary: Color(0xFF5D4037),
+      primaryVariant: Color(0xFF8D6E63),
+      primaryLight: Color(0xFFA1887F),
+      primaryDark: Color(0xFF3E2723),
+      accent: Color(0xFF795548),
+      accentDark: Color(0xFF4E342E),
+      primaryExtraLight: Color(0xFFEFEBE9),
+      primarySurface: Color(0xFFA1887F),
+      darkGradientStart: Color(0xFF1A100C),
+      darkGradientMid: Color(0xFF2D211B),
+      darkGradientEnd: Color(0xFF4A372C),
+      darkCardBackground: Color(0xFF1A1A1A),
+      lightSurface: Color(0xFFFFFDF7),
+      darkText: Color(0xFFF8FAFC),
+      lightText: Color(0xFF2C2C2C),
+      darkTabBackground: Color(0xFF2A201A),
+    ),
+    AppColorTheme.cream: AppColorScheme(
+      primary: Color(0xFF8A6D3B),
+      primaryVariant: Color(0xFFD8C59A),
+      primaryLight: Color(0xFFE8DDBF),
+      primaryDark: Color(0xFF5C4827),
+      accent: Color(0xFFB08D57),
+      accentDark: Color(0xFF80683F),
+      primaryExtraLight: Color(0xFFFFF8E7),
+      primarySurface: Color(0xFFF5E6C8),
+      darkGradientStart: Color(0xFF1A160D),
+      darkGradientMid: Color(0xFF2D271A),
+      darkGradientEnd: Color(0xFF4A402B),
+      darkCardBackground: Color(0xFF1A1A1A),
+      lightSurface: Color(0xFFFFFDF7),
+      darkText: Color(0xFFF8FAFC),
+      lightText: Color(0xFF2C2C2C),
+      darkTabBackground: Color(0xFF2A2418),
+    ),
   };
 
   static AppColorScheme getColorScheme(AppColorTheme theme) {
-    return _colorSchemes[theme] ?? _colorSchemes[AppColorTheme.purple]!;
+    return _colorSchemes[theme] ?? _colorSchemes[defaultTheme]!;
+  }
+
+  static AppColorTheme fromStorage(
+    String? storedTheme, {
+    AppColorTheme fallback = defaultTheme,
+  }) {
+    if (storedTheme == 'AppColorTheme.gray' || storedTheme == 'gray') {
+      return AppColorTheme.cream;
+    }
+
+    return AppColorTheme.values.firstWhere(
+      (theme) => theme.toString() == storedTheme || theme.name == storedTheme,
+      orElse: () => fallback,
+    );
   }
 
   static List<AppColorTheme> get availableThemes => AppColorTheme.values;
@@ -184,6 +257,12 @@ class AppColors {
         return AppLocalizations.of(context)!.indigo;
       case AppColorTheme.pink:
         return AppLocalizations.of(context)!.pink;
+      case AppColorTheme.cream:
+        return AppLocalizations.of(context)!.cream;
+      case AppColorTheme.brown:
+        return AppLocalizations.of(context)!.brown;
+      case AppColorTheme.yellow:
+        return AppLocalizations.of(context)!.yellow;
     }
   }
 }
