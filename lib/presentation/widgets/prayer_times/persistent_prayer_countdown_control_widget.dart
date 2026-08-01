@@ -4,6 +4,7 @@ import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
+import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
 
 class PersistentPrayerCountdownControlWidget extends StatefulWidget {
   const PersistentPrayerCountdownControlWidget({super.key});
@@ -393,6 +394,9 @@ class _PersistentPrayerCountdownControlWidgetState
 
   Future<void> _startService() async {
     try {
+      if (!await PermissionHandlers.requestNotificationPermission(context)) {
+        return;
+      }
       await _countdownService.startPersistentCountdown();
       setState(() {});
       if (mounted) {
@@ -433,6 +437,9 @@ class _PersistentPrayerCountdownControlWidgetState
 
   Future<void> _restartService() async {
     try {
+      if (!await PermissionHandlers.requestNotificationPermission(context)) {
+        return;
+      }
       await _countdownService.restart();
       setState(() {});
       if (mounted) {
