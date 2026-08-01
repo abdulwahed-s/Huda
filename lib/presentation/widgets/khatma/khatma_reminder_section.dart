@@ -9,6 +9,7 @@ class KhatmaReminderSection extends StatelessWidget {
   final bool reminderEnabled;
   final String formattedTime;
   final TextDirection textDirection;
+  final Widget? notificationRequirements;
   final ValueChanged<bool> onToggleReminder;
   final VoidCallback onPickTime;
 
@@ -17,6 +18,7 @@ class KhatmaReminderSection extends StatelessWidget {
     required this.reminderEnabled,
     required this.formattedTime,
     required this.textDirection,
+    this.notificationRequirements,
     required this.onToggleReminder,
     required this.onPickTime,
   });
@@ -30,6 +32,10 @@ class KhatmaReminderSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         KhatmaSectionLabel(text: l10n.khatmaDailyReminderSection),
+        if (notificationRequirements != null) ...[
+          SizedBox(height: 8.h),
+          notificationRequirements!,
+        ],
         KhatmaCard(
           child: ListTile(
             contentPadding:
