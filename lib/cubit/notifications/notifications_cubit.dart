@@ -116,6 +116,14 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
   }
 
+  Future<bool> canScheduleExactNotifications() async {
+    return _notificationHelper.canScheduleExactNotifications();
+  }
+
+  Future<bool> requestExactAlarmsPermission() async {
+    return _notificationHelper.requestExactAlarmsPermission();
+  }
+
   NotificationPreferencesLoaded _buildLoadedState({
     Set<String> loadingKeys = const {},
   }) {
