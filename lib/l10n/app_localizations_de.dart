@@ -1912,6 +1912,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pink => 'rosa';
 
   @override
+  String get yellow => 'gelb';
+
+  @override
+  String get brown => 'braun';
+
+  @override
+  String get cream => 'cremefarben';
+
+  @override
   String get supportAndFeedback => 'Support und Feedback';
 
   @override
@@ -4702,6 +4711,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Akku-Optimierung von Android kann Erinnerungen verzögern. Erlaube Huda, ohne Optimierung zu laufen, damit Benachrichtigungen zuverlässiger ankommen.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'Die Akku-Optimierung von Android kann Erinnerungen verzögern. Erlaube Huda, ohne Optimierung zu laufen, damit Benachrichtigungen zuverlässiger ankommen; ab Android 12 ermöglicht dies auch eine zeitgenaue Planung.';
+
+  @override
   String get keepRemindersReliable => 'Zuverlässige Erinnerungen erlauben';
 
   @override
@@ -4751,4 +4764,21 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'Huda kann im Hintergrund zuverlässiger laufen.';
+
+  @override
+  String get exactAlarmTitle => 'Stattdessen genaue Alarme verwenden';
+
+  @override
+  String get exactAlarmDescription =>
+      'Lass die Akku-Optimierung aktiviert und erlaube genaue Alarme für eine präzise Planung. Akku-Beschränkungen können die Zustellung dennoch verzögern.';
+
+  @override
+  String get allowExactAlarms => 'Exakte Alarme erlauben';
+
+  @override
+  String get exactAlarmsReadyTitle => 'Zeitgenaue Planung ist bereit';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'Huda kann Gebetszeiten und Erinnerungen zum exakten Zeitpunkt planen.';
 }

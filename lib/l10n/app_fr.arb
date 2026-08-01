@@ -575,6 +575,9 @@
     "teal": "sarcelle",
     "indigo": "indigo",
     "pink": "rose",
+    "yellow": "jaune",
+    "brown": "marron",
+    "cream": "crème",
     "supportAndFeedback": "Support et commentaires",
     "supportDescription": "Aidez-nous à améliorer l'application",
     "shareYourThoughts": "Envoyer des commentaires",
@@ -1763,6 +1766,7 @@
     "notificationPermissionDescription": "Activez les notifications pour recevoir les rappels que vous choisissez au moment opportun.",
     "enableNotifications": "Activer les notifications",
     "batteryOptimizationDescription": "L'optimisation de la batterie Android peut retarder les rappels. Autorisez Huda à fonctionner sans optimisation pour des alertes plus fiables.",
+    "batteryOptimizationExactAlarmDescription": "L'optimisation de la batterie Android peut retarder les rappels. Autorisez Huda à fonctionner sans optimisation pour des alertes plus fiables ; sur Android 12 et versions ultérieures, cela active aussi la planification à l'heure exacte.",
     "keepRemindersReliable": "Autoriser des rappels fiables",
     "prayerTimesPermissionTitle": "Recevoir les alertes de prière",
     "prayerTimesPermissionDescription": "Activez les notifications pour recevoir chaque alerte d'heure de prière, même lorsque l'application Huda est fermée.",
@@ -1776,5 +1780,10 @@
     "notificationsReadyTitle": "Les notifications sont activées",
     "notificationsReadyDescription": "Vos rappels activés sont prêts à être envoyés.",
     "batteryOptimizationReadyTitle": "L'optimisation de la batterie est désactivée",
-    "batteryOptimizationReadyDescription": "Huda peut fonctionner plus fiablement en arrière-plan."
+    "batteryOptimizationReadyDescription": "Huda peut fonctionner plus fiablement en arrière-plan.",
+    "exactAlarmTitle": "Utiliser plutôt les alarmes exactes",
+    "exactAlarmDescription": "Gardez l'optimisation de la batterie activée et autorisez les alarmes exactes pour une planification précise. Les restrictions de batterie peuvent tout de même retarder la réception.",
+    "allowExactAlarms": "Autoriser les alarmes exactes",
+    "exactAlarmsReadyTitle": "La planification à l'heure exacte est prête",
+    "exactAlarmsReadyDescription": "Huda peut programmer les alertes de prière et les rappels à leur heure exacte."
 }

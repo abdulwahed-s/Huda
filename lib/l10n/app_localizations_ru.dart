@@ -1912,6 +1912,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get pink => 'розовый';
 
   @override
+  String get yellow => 'жёлтый';
+
+  @override
+  String get brown => 'коричневый';
+
+  @override
+  String get cream => 'кремовый';
+
+  @override
   String get supportAndFeedback => 'Поддержка и обратная связь';
 
   @override
@@ -4668,6 +4677,10 @@ class AppLocalizationsRu extends AppLocalizations {
       'Оптимизация батареи Android может задерживать напоминания. Разрешите Huda работать без оптимизации, чтобы оповещения приходили надежнее.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'Оптимизация батареи Android может задерживать напоминания. Разрешите Huda работать без оптимизации, чтобы оповещения приходили надежнее; на Android 12 и новее это также включает планирование точно по времени.';
+
+  @override
   String get keepRemindersReliable => 'Разрешить надежные напоминания';
 
   @override
@@ -4715,4 +4728,21 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'Huda может надежнее работать в фоновом режиме.';
+
+  @override
+  String get exactAlarmTitle => 'Использовать точные будильники вместо этого';
+
+  @override
+  String get exactAlarmDescription =>
+      'Оставьте оптимизацию батареи включенной и разрешите точные будильники для точного планирования. Ограничения батареи всё равно могут задерживать доставку.';
+
+  @override
+  String get allowExactAlarms => 'Разрешить точные будильники';
+
+  @override
+  String get exactAlarmsReadyTitle => 'Точное по времени планирование готово';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'Huda может планировать оповещения о намазе и напоминания точно по времени.';
 }

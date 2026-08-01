@@ -1922,6 +1922,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pink => 'rose';
 
   @override
+  String get yellow => 'jaune';
+
+  @override
+  String get brown => 'marron';
+
+  @override
+  String get cream => 'crème';
+
+  @override
   String get supportAndFeedback => 'Support et commentaires';
 
   @override
@@ -4725,6 +4734,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'L\'optimisation de la batterie Android peut retarder les rappels. Autorisez Huda à fonctionner sans optimisation pour des alertes plus fiables.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'L\'optimisation de la batterie Android peut retarder les rappels. Autorisez Huda à fonctionner sans optimisation pour des alertes plus fiables ; sur Android 12 et versions ultérieures, cela active aussi la planification à l\'heure exacte.';
+
+  @override
   String get keepRemindersReliable => 'Autoriser des rappels fiables';
 
   @override
@@ -4773,4 +4786,22 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'Huda peut fonctionner plus fiablement en arrière-plan.';
+
+  @override
+  String get exactAlarmTitle => 'Utiliser plutôt les alarmes exactes';
+
+  @override
+  String get exactAlarmDescription =>
+      'Gardez l\'optimisation de la batterie activée et autorisez les alarmes exactes pour une planification précise. Les restrictions de batterie peuvent tout de même retarder la réception.';
+
+  @override
+  String get allowExactAlarms => 'Autoriser les alarmes exactes';
+
+  @override
+  String get exactAlarmsReadyTitle =>
+      'La planification à l\'heure exacte est prête';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'Huda peut programmer les alertes de prière et les rappels à leur heure exacte.';
 }

@@ -535,6 +535,9 @@
     "teal": "turkuaz",
     "indigo": "çivit mavisi",
     "pink": "pembe",
+    "yellow": "sarı",
+    "brown": "kahverengi",
+    "cream": "krem",
     "supportAndFeedback": "Destek ve Geri Bildirim",
     "supportDescription": "Uygulamayı daha iyi hale getirmemize yardım edin",
     "shareYourThoughts": "Geri Bildirim Gönder",
@@ -1759,6 +1762,7 @@
     "notificationPermissionDescription": "Seçtiğiniz hatırlatıcıları tam zamanında almak için bildirimleri açın.",
     "enableNotifications": "Bildirimleri aç",
     "batteryOptimizationDescription": "Android pil optimizasyonu hatırlatıcıları geciktirebilir. Daha güvenilir uyarılar için Huda'nın optimizasyon olmadan çalışmasına izin verin.",
+    "batteryOptimizationExactAlarmDescription": "Android pil optimizasyonu hatırlatıcıları geciktirebilir. Daha güvenilir uyarılar için Huda'nın optimizasyon olmadan çalışmasına izin verin; Android 12 ve sonraki sürümlerde bu, tam zamanlı planlamayı da etkinleştirir.",
     "keepRemindersReliable": "Güvenilir hatırlatıcılara izin ver",
     "prayerTimesPermissionTitle": "Namaz vakti uyarılarını alın",
     "prayerTimesPermissionDescription": "Huda kapalıyken bile her namaz vakti uyarısını almak için bildirimleri açın.",
@@ -1772,5 +1776,10 @@
     "notificationsReadyTitle": "Bildirimler açık",
     "notificationsReadyDescription": "Etkinleştirdiğiniz hatırlatıcılar gönderilmeye hazır.",
     "batteryOptimizationReadyTitle": "Pil optimizasyonu kapalı",
-    "batteryOptimizationReadyDescription": "Huda arka planda daha güvenilir çalışabilir."
+    "batteryOptimizationReadyDescription": "Huda arka planda daha güvenilir çalışabilir.",
+    "exactAlarmTitle": "Yerine tam zamanlı alarmları kullan",
+    "exactAlarmDescription": "Pil optimizasyonunu açık bırakın ve hassas planlama için tam zamanlı alarmlara izin verin. Pil kısıtlamaları yine de teslimatı geciktirebilir.",
+    "allowExactAlarms": "Kesin alarmlara izin ver",
+    "exactAlarmsReadyTitle": "Tam zamanlı planlama hazır",
+    "exactAlarmsReadyDescription": "Huda, namaz vakti uyarılarını ve hatırlatıcıları tam saatinde planlayabilir."
 }

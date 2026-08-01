@@ -1886,6 +1886,15 @@ class AppLocalizationsBn extends AppLocalizations {
   String get pink => 'গোলাপি';
 
   @override
+  String get yellow => 'হলুদ';
+
+  @override
+  String get brown => 'বাদামি';
+
+  @override
+  String get cream => 'ক্রিম';
+
+  @override
   String get supportAndFeedback => 'সাপোর্ট এবং মতামত';
 
   @override
@@ -4643,6 +4652,10 @@ class AppLocalizationsBn extends AppLocalizations {
       'অ্যান্ড্রয়েডের ব্যাটারি অপ্টিমাইজেশন অনুস্মারক দেরি করাতে পারে। আরও নির্ভরযোগ্য সতর্কতার জন্য হুদাকে অপ্টিমাইজেশন ছাড়া চলতে দিন।';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'অ্যান্ড্রয়েডের ব্যাটারি অপ্টিমাইজেশন অনুস্মারক দেরি করাতে পারে। আরও নির্ভরযোগ্য সতর্কতার জন্য হুদাকে অপ্টিমাইজেশন ছাড়া চলতে দিন; Android 12 ও পরবর্তী সংস্করণে এটি নির্দিষ্ট সময়ের সময়সূচিও সক্ষম করে।';
+
+  @override
   String get keepRemindersReliable => 'নির্ভরযোগ্য অনুস্মারক অনুমতি দিন';
 
   @override
@@ -4689,4 +4702,21 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'হুদা ব্যাকগ্রাউন্ডে আরও নির্ভরযোগ্যভাবে চলতে পারে।';
+
+  @override
+  String get exactAlarmTitle => 'বিকল্প হিসেবে সঠিক অ্যালার্ম ব্যবহার করুন';
+
+  @override
+  String get exactAlarmDescription =>
+      'ব্যাটারি অপ্টিমাইজেশন চালু রেখে নির্ভুল সময়সূচির জন্য সঠিক অ্যালার্ম অনুমতি দিন। ব্যাটারি সীমাবদ্ধতা এখনও ডেলিভারি বিলম্বিত করতে পারে।';
+
+  @override
+  String get allowExactAlarms => 'সঠিক অ্যালার্ম অনুমতি দিন';
+
+  @override
+  String get exactAlarmsReadyTitle => 'নির্দিষ্ট সময়ের সময়সূচি প্রস্তুত';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'হুদা নামাজের সতর্কতা ও অনুস্মারক নির্দিষ্ট সময়ে নির্ধারণ করতে পারে।';
 }

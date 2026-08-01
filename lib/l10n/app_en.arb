@@ -2371,6 +2371,9 @@
     "teal": "teal",
     "indigo": "indigo",
     "pink": "pink",
+    "yellow": "yellow",
+    "brown": "brown",
+    "cream": "cream",
     "supportAndFeedback": "Support & Feedback",
     "supportDescription": "Help us make the app better",
     "shareYourThoughts": "Send Feedback",
@@ -5292,6 +5295,7 @@
     "notificationPermissionDescription": "Turn on notifications to receive the reminders you choose, right when they matter.",
     "enableNotifications": "Turn on notifications",
     "batteryOptimizationDescription": "Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts.",
+    "batteryOptimizationExactAlarmDescription": "Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts; on Android 12 and later, this also enables exact-time scheduling.",
     "keepRemindersReliable": "Allow reliable reminders",
     "prayerTimesPermissionTitle": "Get prayer-time alerts",
     "prayerTimesPermissionDescription": "Turn on notifications to receive each prayer-time alert, even when Huda is closed.",
@@ -5305,5 +5309,10 @@
     "notificationsReadyTitle": "Notifications are on",
     "notificationsReadyDescription": "Your enabled reminders are ready to be delivered.",
     "batteryOptimizationReadyTitle": "Battery optimization is off",
-    "batteryOptimizationReadyDescription": "Huda can run more reliably in the background."
+    "batteryOptimizationReadyDescription": "Huda can run more reliably in the background.",
+    "exactAlarmTitle": "Use exact alarms instead",
+    "exactAlarmDescription": "Keep battery optimization on and allow exact alarms for precise scheduling. Battery restrictions may still delay delivery.",
+    "allowExactAlarms": "Allow exact alarms",
+    "exactAlarmsReadyTitle": "Exact-time scheduling is ready",
+    "exactAlarmsReadyDescription": "Huda can schedule prayer alerts and reminders for their exact time."
 }

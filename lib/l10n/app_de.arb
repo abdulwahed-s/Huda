@@ -574,6 +574,9 @@
     "teal": "türkis",
     "indigo": "indigo",
     "pink": "rosa",
+    "yellow": "gelb",
+    "brown": "braun",
+    "cream": "cremefarben",
     "supportAndFeedback": "Support und Feedback",
     "supportDescription": "Helfen Sie uns, die App zu verbessern",
     "shareYourThoughts": "Feedback senden",
@@ -1736,6 +1739,7 @@
     "notificationPermissionDescription": "Aktiviere Benachrichtigungen, damit deine ausgewählten Erinnerungen rechtzeitig ankommen.",
     "enableNotifications": "Benachrichtigungen aktivieren",
     "batteryOptimizationDescription": "Die Akku-Optimierung von Android kann Erinnerungen verzögern. Erlaube Huda, ohne Optimierung zu laufen, damit Benachrichtigungen zuverlässiger ankommen.",
+    "batteryOptimizationExactAlarmDescription": "Die Akku-Optimierung von Android kann Erinnerungen verzögern. Erlaube Huda, ohne Optimierung zu laufen, damit Benachrichtigungen zuverlässiger ankommen; ab Android 12 ermöglicht dies auch eine zeitgenaue Planung.",
     "keepRemindersReliable": "Zuverlässige Erinnerungen erlauben",
     "prayerTimesPermissionTitle": "Gebetszeit-Benachrichtigungen erhalten",
     "prayerTimesPermissionDescription": "Aktiviere Benachrichtigungen, damit du jede Gebetszeit auch bei geschlossener Huda-App erhältst.",
@@ -1749,5 +1753,10 @@
     "notificationsReadyTitle": "Benachrichtigungen sind aktiviert",
     "notificationsReadyDescription": "Deine aktivierten Erinnerungen können zugestellt werden.",
     "batteryOptimizationReadyTitle": "Akku-Optimierung ist deaktiviert",
-    "batteryOptimizationReadyDescription": "Huda kann im Hintergrund zuverlässiger laufen."
+    "batteryOptimizationReadyDescription": "Huda kann im Hintergrund zuverlässiger laufen.",
+    "exactAlarmTitle": "Stattdessen genaue Alarme verwenden",
+    "exactAlarmDescription": "Lass die Akku-Optimierung aktiviert und erlaube genaue Alarme für eine präzise Planung. Akku-Beschränkungen können die Zustellung dennoch verzögern.",
+    "allowExactAlarms": "Exakte Alarme erlauben",
+    "exactAlarmsReadyTitle": "Zeitgenaue Planung ist bereit",
+    "exactAlarmsReadyDescription": "Huda kann Gebetszeiten und Erinnerungen zum exakten Zeitpunkt planen."
 }

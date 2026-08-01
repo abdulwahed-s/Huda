@@ -1886,6 +1886,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pink => 'pembe';
 
   @override
+  String get yellow => 'sarı';
+
+  @override
+  String get brown => 'kahverengi';
+
+  @override
+  String get cream => 'krem';
+
+  @override
   String get supportAndFeedback => 'Destek ve Geri Bildirim';
 
   @override
@@ -4636,6 +4645,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Android pil optimizasyonu hatırlatıcıları geciktirebilir. Daha güvenilir uyarılar için Huda\'nın optimizasyon olmadan çalışmasına izin verin.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'Android pil optimizasyonu hatırlatıcıları geciktirebilir. Daha güvenilir uyarılar için Huda\'nın optimizasyon olmadan çalışmasına izin verin; Android 12 ve sonraki sürümlerde bu, tam zamanlı planlamayı da etkinleştirir.';
+
+  @override
   String get keepRemindersReliable => 'Güvenilir hatırlatıcılara izin ver';
 
   @override
@@ -4683,4 +4696,21 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'Huda arka planda daha güvenilir çalışabilir.';
+
+  @override
+  String get exactAlarmTitle => 'Yerine tam zamanlı alarmları kullan';
+
+  @override
+  String get exactAlarmDescription =>
+      'Pil optimizasyonunu açık bırakın ve hassas planlama için tam zamanlı alarmlara izin verin. Pil kısıtlamaları yine de teslimatı geciktirebilir.';
+
+  @override
+  String get allowExactAlarms => 'Kesin alarmlara izin ver';
+
+  @override
+  String get exactAlarmsReadyTitle => 'Tam zamanlı planlama hazır';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'Huda, namaz vakti uyarılarını ve hatırlatıcıları tam saatinde planlayabilir.';
 }

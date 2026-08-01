@@ -575,6 +575,9 @@
     "teal": "бирюзовый",
     "indigo": "индиго",
     "pink": "розовый",
+    "yellow": "жёлтый",
+    "brown": "коричневый",
+    "cream": "кремовый",
     "supportAndFeedback": "Поддержка и обратная связь",
     "supportDescription": "Помогите нам улучшить приложение",
     "shareYourThoughts": "Отправить отзыв",
@@ -1759,6 +1762,7 @@
     "notificationPermissionDescription": "Включите уведомления, чтобы получать выбранные напоминания именно тогда, когда они нужны.",
     "enableNotifications": "Включить уведомления",
     "batteryOptimizationDescription": "Оптимизация батареи Android может задерживать напоминания. Разрешите Huda работать без оптимизации, чтобы оповещения приходили надежнее.",
+    "batteryOptimizationExactAlarmDescription": "Оптимизация батареи Android может задерживать напоминания. Разрешите Huda работать без оптимизации, чтобы оповещения приходили надежнее; на Android 12 и новее это также включает планирование точно по времени.",
     "keepRemindersReliable": "Разрешить надежные напоминания",
     "prayerTimesPermissionTitle": "Получать оповещения о времени намаза",
     "prayerTimesPermissionDescription": "Включите уведомления, чтобы получать каждое оповещение о времени намаза, даже когда приложение Huda закрыто.",
@@ -1772,5 +1776,10 @@
     "notificationsReadyTitle": "Уведомления включены",
     "notificationsReadyDescription": "Выбранные напоминания готовы к доставке.",
     "batteryOptimizationReadyTitle": "Оптимизация батареи отключена",
-    "batteryOptimizationReadyDescription": "Huda может надежнее работать в фоновом режиме."
+    "batteryOptimizationReadyDescription": "Huda может надежнее работать в фоновом режиме.",
+    "exactAlarmTitle": "Использовать точные будильники вместо этого",
+    "exactAlarmDescription": "Оставьте оптимизацию батареи включенной и разрешите точные будильники для точного планирования. Ограничения батареи всё равно могут задерживать доставку.",
+    "allowExactAlarms": "Разрешить точные будильники",
+    "exactAlarmsReadyTitle": "Точное по времени планирование готово",
+    "exactAlarmsReadyDescription": "Huda может планировать оповещения о намазе и напоминания точно по времени."
 }

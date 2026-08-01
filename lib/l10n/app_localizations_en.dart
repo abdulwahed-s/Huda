@@ -1890,6 +1890,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pink => 'pink';
 
   @override
+  String get yellow => 'yellow';
+
+  @override
+  String get brown => 'brown';
+
+  @override
+  String get cream => 'cream';
+
+  @override
   String get supportAndFeedback => 'Support & Feedback';
 
   @override
@@ -4639,6 +4648,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts; on Android 12 and later, this also enables exact-time scheduling.';
+
+  @override
   String get keepRemindersReliable => 'Allow reliable reminders';
 
   @override
@@ -4685,4 +4698,21 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'Huda can run more reliably in the background.';
+
+  @override
+  String get exactAlarmTitle => 'Use exact alarms instead';
+
+  @override
+  String get exactAlarmDescription =>
+      'Keep battery optimization on and allow exact alarms for precise scheduling. Battery restrictions may still delay delivery.';
+
+  @override
+  String get allowExactAlarms => 'Allow exact alarms';
+
+  @override
+  String get exactAlarmsReadyTitle => 'Exact-time scheduling is ready';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'Huda can schedule prayer alerts and reminders for their exact time.';
 }

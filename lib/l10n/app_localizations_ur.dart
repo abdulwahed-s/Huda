@@ -1890,6 +1890,15 @@ class AppLocalizationsUr extends AppLocalizations {
   String get pink => 'گلابی';
 
   @override
+  String get yellow => 'پیلا';
+
+  @override
+  String get brown => 'بھورا';
+
+  @override
+  String get cream => 'کریمی';
+
+  @override
   String get supportAndFeedback => 'مدد اور رائے';
 
   @override
@@ -4632,6 +4641,10 @@ class AppLocalizationsUr extends AppLocalizations {
       'اینڈرائیڈ بیٹری آپٹیمائزیشن یاددہانیوں میں تاخیر کر سکتی ہے۔ زیادہ قابلِ اعتماد الرٹس کے لیے ہدیٰ کو آپٹیمائزیشن کے بغیر چلنے دیں۔';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'اینڈرائیڈ بیٹری آپٹیمائزیشن یاددہانیوں میں تاخیر کر سکتی ہے۔ زیادہ قابلِ اعتماد الرٹس کے لیے ہدیٰ کو آپٹیمائزیشن کے بغیر چلنے دیں؛ Android 12 اور اس کے بعد کے ورژنز میں یہ عین وقت کی شیڈولنگ بھی فعال کرتا ہے۔';
+
+  @override
   String get keepRemindersReliable => 'قابلِ اعتماد یاددہانیوں کی اجازت دیں';
 
   @override
@@ -4678,4 +4691,21 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'ہدیٰ پس منظر میں زیادہ قابلِ اعتماد طریقے سے کام کر سکتا ہے۔';
+
+  @override
+  String get exactAlarmTitle => 'اس کے بجائے درست الارمز استعمال کریں';
+
+  @override
+  String get exactAlarmDescription =>
+      'بیٹری آپٹیمائزیشن کو فعال رکھیں اور درست شیڈولنگ کے لیے عین وقت کے الارمز کی اجازت دیں۔ بیٹری کی پابندیاں پھر بھی ترسیل میں تاخیر کر سکتی ہیں۔';
+
+  @override
+  String get allowExactAlarms => 'درست الارمز کی اجازت دیں';
+
+  @override
+  String get exactAlarmsReadyTitle => 'عین وقت کی شیڈولنگ تیار ہے';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'ہدیٰ نماز کے وقت کے الرٹس اور یاددہانیوں کو عین وقت پر شیڈول کر سکتا ہے۔';
 }

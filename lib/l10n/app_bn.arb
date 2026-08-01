@@ -537,6 +537,9 @@
     "persistentPrayerCountdownStopped": "সেবা বর্তমানে বন্ধ",
     "pickColor": "একটি রঙ বেছে নিন",
     "pink": "গোলাপি",
+    "yellow": "হলুদ",
+    "brown": "বাদামি",
+    "cream": "ক্রিম",
     "playing": "চলছে",
     "pleaseCheckConnection": "দয়া করে আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।",
     "prayerCountdownRestarted": "নামাজের কাউন্টডাউন সেবা পুনরায় চালু হয়েছে",
@@ -1865,6 +1868,7 @@
     "notificationPermissionDescription": "আপনার বেছে নেওয়া অনুস্মারকগুলো সময়মতো পেতে বিজ্ঞপ্তি চালু করুন।",
     "enableNotifications": "বিজ্ঞপ্তি চালু করুন",
     "batteryOptimizationDescription": "অ্যান্ড্রয়েডের ব্যাটারি অপ্টিমাইজেশন অনুস্মারক দেরি করাতে পারে। আরও নির্ভরযোগ্য সতর্কতার জন্য হুদাকে অপ্টিমাইজেশন ছাড়া চলতে দিন।",
+    "batteryOptimizationExactAlarmDescription": "অ্যান্ড্রয়েডের ব্যাটারি অপ্টিমাইজেশন অনুস্মারক দেরি করাতে পারে। আরও নির্ভরযোগ্য সতর্কতার জন্য হুদাকে অপ্টিমাইজেশন ছাড়া চলতে দিন; Android 12 ও পরবর্তী সংস্করণে এটি নির্দিষ্ট সময়ের সময়সূচিও সক্ষম করে।",
     "keepRemindersReliable": "নির্ভরযোগ্য অনুস্মারক অনুমতি দিন",
     "prayerTimesPermissionTitle": "নামাজের সময়ের সতর্কতা পান",
     "prayerTimesPermissionDescription": "হুদা বন্ধ থাকলেও প্রতিটি নামাজের সময়ের সতর্কতা পেতে বিজ্ঞপ্তি চালু করুন।",
@@ -1878,5 +1882,10 @@
     "notificationsReadyTitle": "বিজ্ঞপ্তি চালু আছে",
     "notificationsReadyDescription": "আপনার চালু করা অনুস্মারকগুলো পাঠানোর জন্য প্রস্তুত।",
     "batteryOptimizationReadyTitle": "ব্যাটারি অপ্টিমাইজেশন বন্ধ আছে",
-    "batteryOptimizationReadyDescription": "হুদা ব্যাকগ্রাউন্ডে আরও নির্ভরযোগ্যভাবে চলতে পারে।"
+    "batteryOptimizationReadyDescription": "হুদা ব্যাকগ্রাউন্ডে আরও নির্ভরযোগ্যভাবে চলতে পারে।",
+    "exactAlarmTitle": "বিকল্প হিসেবে সঠিক অ্যালার্ম ব্যবহার করুন",
+    "exactAlarmDescription": "ব্যাটারি অপ্টিমাইজেশন চালু রেখে নির্ভুল সময়সূচির জন্য সঠিক অ্যালার্ম অনুমতি দিন। ব্যাটারি সীমাবদ্ধতা এখনও ডেলিভারি বিলম্বিত করতে পারে।",
+    "allowExactAlarms": "সঠিক অ্যালার্ম অনুমতি দিন",
+    "exactAlarmsReadyTitle": "নির্দিষ্ট সময়ের সময়সূচি প্রস্তুত",
+    "exactAlarmsReadyDescription": "হুদা নামাজের সতর্কতা ও অনুস্মারক নির্দিষ্ট সময়ে নির্ধারণ করতে পারে।"
 }

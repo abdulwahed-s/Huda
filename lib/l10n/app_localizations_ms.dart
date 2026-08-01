@@ -1890,6 +1890,15 @@ class AppLocalizationsMs extends AppLocalizations {
   String get pink => 'merah jambu';
 
   @override
+  String get yellow => 'kuning';
+
+  @override
+  String get brown => 'coklat';
+
+  @override
+  String get cream => 'krim';
+
+  @override
   String get supportAndFeedback => 'Sokongan dan maklum balas';
 
   @override
@@ -4647,6 +4656,10 @@ class AppLocalizationsMs extends AppLocalizations {
       'Pengoptimuman bateri Android boleh melambatkan peringatan. Benarkan Huda berjalan tanpa pengoptimuman untuk makluman yang lebih boleh dipercayai.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'Pengoptimuman bateri Android boleh melambatkan peringatan. Benarkan Huda berjalan tanpa pengoptimuman untuk makluman yang lebih boleh dipercayai; pada Android 12 dan ke atas, ini juga membolehkan penjadualan pada waktu tepat.';
+
+  @override
   String get keepRemindersReliable =>
       'Benarkan peringatan yang boleh dipercayai';
 
@@ -4695,4 +4708,21 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'Huda boleh berjalan dengan lebih boleh dipercayai di latar belakang.';
+
+  @override
+  String get exactAlarmTitle => 'Gunakan penggera tepat sebagai alternatif';
+
+  @override
+  String get exactAlarmDescription =>
+      'Kekalkan pengoptimuman bateri dan benarkan penggera tepat untuk penjadualan yang tepat. Sekatan bateri masih boleh melambatkan penghantaran.';
+
+  @override
+  String get allowExactAlarms => 'Benarkan penggera tepat';
+
+  @override
+  String get exactAlarmsReadyTitle => 'Penjadualan waktu tepat sedia';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'Huda boleh menjadualkan peringatan waktu solat dan peringatan pada waktu tepatnya.';
 }

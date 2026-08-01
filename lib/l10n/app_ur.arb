@@ -575,6 +575,9 @@
     "teal": "فیروزی",
     "indigo": "نیلگوں",
     "pink": "گلابی",
+    "yellow": "پیلا",
+    "brown": "بھورا",
+    "cream": "کریمی",
     "supportAndFeedback": "مدد اور رائے",
     "supportDescription": "ایپ کو بہتر بنانے میں ہماری مدد کریں",
     "shareYourThoughts": "رائے بھیجیں",
@@ -1775,6 +1778,7 @@
     "notificationPermissionDescription": "اپنی منتخب یاددہانیاں بروقت پانے کے لیے نوٹیفیکیشنز فعال کریں۔",
     "enableNotifications": "نوٹیفیکیشنز فعال کریں",
     "batteryOptimizationDescription": "اینڈرائیڈ بیٹری آپٹیمائزیشن یاددہانیوں میں تاخیر کر سکتی ہے۔ زیادہ قابلِ اعتماد الرٹس کے لیے ہدیٰ کو آپٹیمائزیشن کے بغیر چلنے دیں۔",
+    "batteryOptimizationExactAlarmDescription": "اینڈرائیڈ بیٹری آپٹیمائزیشن یاددہانیوں میں تاخیر کر سکتی ہے۔ زیادہ قابلِ اعتماد الرٹس کے لیے ہدیٰ کو آپٹیمائزیشن کے بغیر چلنے دیں؛ Android 12 اور اس کے بعد کے ورژنز میں یہ عین وقت کی شیڈولنگ بھی فعال کرتا ہے۔",
     "keepRemindersReliable": "قابلِ اعتماد یاددہانیوں کی اجازت دیں",
     "prayerTimesPermissionTitle": "نماز کے وقت کے الرٹس حاصل کریں",
     "prayerTimesPermissionDescription": "ہدیٰ بند ہونے پر بھی ہر نماز کے وقت کا الرٹ حاصل کرنے کے لیے نوٹیفیکیشنز فعال کریں۔",
@@ -1788,5 +1792,10 @@
     "notificationsReadyTitle": "نوٹیفیکیشنز فعال ہیں",
     "notificationsReadyDescription": "آپ کی فعال کردہ یاددہانیاں پہنچنے کے لیے تیار ہیں۔",
     "batteryOptimizationReadyTitle": "بیٹری آپٹیمائزیشن بند ہے",
-    "batteryOptimizationReadyDescription": "ہدیٰ پس منظر میں زیادہ قابلِ اعتماد طریقے سے کام کر سکتا ہے۔"
+    "batteryOptimizationReadyDescription": "ہدیٰ پس منظر میں زیادہ قابلِ اعتماد طریقے سے کام کر سکتا ہے۔",
+    "exactAlarmTitle": "اس کے بجائے درست الارمز استعمال کریں",
+    "exactAlarmDescription": "بیٹری آپٹیمائزیشن کو فعال رکھیں اور درست شیڈولنگ کے لیے عین وقت کے الارمز کی اجازت دیں۔ بیٹری کی پابندیاں پھر بھی ترسیل میں تاخیر کر سکتی ہیں۔",
+    "allowExactAlarms": "درست الارمز کی اجازت دیں",
+    "exactAlarmsReadyTitle": "عین وقت کی شیڈولنگ تیار ہے",
+    "exactAlarmsReadyDescription": "ہدیٰ نماز کے وقت کے الرٹس اور یاددہانیوں کو عین وقت پر شیڈول کر سکتا ہے۔"
 }

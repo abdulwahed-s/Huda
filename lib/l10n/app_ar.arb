@@ -1085,6 +1085,9 @@
     "teal": "فيروزي",
     "indigo": "نيلي",
     "pink": "وردي",
+    "yellow": "أصفر",
+    "brown": "بني",
+    "cream": "كريمي",
     "supportAndFeedback": "الدعم والملاحظات",
     "supportDescription": "ساعدنا على تحسين التطبيق",
     "shareYourThoughts": "أرسل ملاحظة",
@@ -2265,6 +2268,7 @@
     "notificationPermissionDescription": "فعِّل التنبيهات لتصلك التذكيرات التي تختارها في الوقت المناسب.",
     "enableNotifications": "تفعيل التنبيهات",
     "batteryOptimizationDescription": "قد يؤدي تحسين البطارية في أندرويد إلى تأخير التذكيرات. اسمح لتطبيق هدى بالعمل دون تحسين البطارية لتنبيهات أكثر موثوقية.",
+    "batteryOptimizationExactAlarmDescription": "قد يؤدي تحسين البطارية في أندرويد إلى تأخير التذكيرات. اسمح لتطبيق هدى بالعمل دون تحسين البطارية لتنبيهات أكثر موثوقية؛ وعلى أندرويد 12 والإصدارات الأحدث، يتيح ذلك أيضًا الجدولة في الوقت الدقيق.",
     "keepRemindersReliable": "السماح بتذكيرات موثوقة",
     "prayerTimesPermissionTitle": "تنبيهات أوقات الصلاة",
     "prayerTimesPermissionDescription": "فعِّل التنبيهات لتصلك تنبيهات كل صلاة، حتى عند إغلاق تطبيق هدى.",
@@ -2278,5 +2282,10 @@
     "notificationsReadyTitle": "التنبيهات مفعّلة",
     "notificationsReadyDescription": "تذكيراتك المفعّلة جاهزة للوصول.",
     "batteryOptimizationReadyTitle": "تحسين البطارية متوقف",
-    "batteryOptimizationReadyDescription": "يمكن لتطبيق هدى العمل في الخلفية بصورة أكثر موثوقية."
+    "batteryOptimizationReadyDescription": "يمكن لتطبيق هدى العمل في الخلفية بصورة أكثر موثوقية.",
+    "exactAlarmTitle": "استخدم المنبّهات الدقيقة بدلًا من ذلك",
+    "exactAlarmDescription": "أبقِ تحسين البطارية مفعّلًا واسمح بالمنبّهات الدقيقة لجدولة أكثر دقة. قد تظل قيود البطارية تؤخر وصول التنبيهات.",
+    "allowExactAlarms": "السماح بالمنبّهات الدقيقة",
+    "exactAlarmsReadyTitle": "الجدولة في الوقت الدقيق جاهزة",
+    "exactAlarmsReadyDescription": "يمكن لتطبيق هدى جدولة تنبيهات الصلاة والتذكيرات في وقتها المحدد."
 }

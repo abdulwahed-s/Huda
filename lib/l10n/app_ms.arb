@@ -665,6 +665,9 @@
     "teal": "teal",
     "indigo": "indigo",
     "pink": "merah jambu",
+    "yellow": "kuning",
+    "brown": "coklat",
+    "cream": "krim",
     "supportAndFeedback": "Sokongan dan maklum balas",
     "supportDescription": "Bantu kami menambah baik aplikasi",
     "shareYourThoughts": "Hantar maklum balas",
@@ -1849,6 +1852,7 @@
     "notificationPermissionDescription": "Aktifkan pemberitahuan untuk menerima peringatan yang anda pilih tepat pada waktunya.",
     "enableNotifications": "Aktifkan pemberitahuan",
     "batteryOptimizationDescription": "Pengoptimuman bateri Android boleh melambatkan peringatan. Benarkan Huda berjalan tanpa pengoptimuman untuk makluman yang lebih boleh dipercayai.",
+    "batteryOptimizationExactAlarmDescription": "Pengoptimuman bateri Android boleh melambatkan peringatan. Benarkan Huda berjalan tanpa pengoptimuman untuk makluman yang lebih boleh dipercayai; pada Android 12 dan ke atas, ini juga membolehkan penjadualan pada waktu tepat.",
     "keepRemindersReliable": "Benarkan peringatan yang boleh dipercayai",
     "prayerTimesPermissionTitle": "Dapatkan peringatan waktu solat",
     "prayerTimesPermissionDescription": "Aktifkan pemberitahuan untuk menerima setiap peringatan waktu solat, walaupun Huda ditutup.",
@@ -1862,5 +1866,10 @@
     "notificationsReadyTitle": "Pemberitahuan dihidupkan",
     "notificationsReadyDescription": "Peringatan yang anda aktifkan sedia untuk dihantar.",
     "batteryOptimizationReadyTitle": "Pengoptimuman bateri dimatikan",
-    "batteryOptimizationReadyDescription": "Huda boleh berjalan dengan lebih boleh dipercayai di latar belakang."
+    "batteryOptimizationReadyDescription": "Huda boleh berjalan dengan lebih boleh dipercayai di latar belakang.",
+    "exactAlarmTitle": "Gunakan penggera tepat sebagai alternatif",
+    "exactAlarmDescription": "Kekalkan pengoptimuman bateri dan benarkan penggera tepat untuk penjadualan yang tepat. Sekatan bateri masih boleh melambatkan penghantaran.",
+    "allowExactAlarms": "Benarkan penggera tepat",
+    "exactAlarmsReadyTitle": "Penjadualan waktu tepat sedia",
+    "exactAlarmsReadyDescription": "Huda boleh menjadualkan peringatan waktu solat dan peringatan pada waktu tepatnya."
 }

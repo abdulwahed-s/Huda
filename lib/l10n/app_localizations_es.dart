@@ -1921,6 +1921,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pink => 'rosa';
 
   @override
+  String get yellow => 'amarillo';
+
+  @override
+  String get brown => 'marrón';
+
+  @override
+  String get cream => 'crema';
+
+  @override
   String get supportAndFeedback => 'Soporte y comentarios';
 
   @override
@@ -4713,6 +4722,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'La optimización de batería de Android puede retrasar los recordatorios. Permite que Huda se ejecute sin optimización para recibir alertas más fiables.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'La optimización de batería de Android puede retrasar los recordatorios. Permite que Huda se ejecute sin optimización para recibir alertas más fiables; en Android 12 y versiones posteriores, esto también habilita la programación a la hora exacta.';
+
+  @override
   String get keepRemindersReliable => 'Permitir recordatorios fiables';
 
   @override
@@ -4760,4 +4773,22 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'Huda puede ejecutarse en segundo plano de forma más fiable.';
+
+  @override
+  String get exactAlarmTitle => 'Usar alarmas exactas en su lugar';
+
+  @override
+  String get exactAlarmDescription =>
+      'Mantén activada la optimización de batería y permite alarmas exactas para una programación precisa. Las restricciones de batería aún pueden retrasar la entrega.';
+
+  @override
+  String get allowExactAlarms => 'Permitir alarmas exactas';
+
+  @override
+  String get exactAlarmsReadyTitle =>
+      'La programación a la hora exacta está lista';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'Huda puede programar alertas de oración y recordatorios para su hora exacta.';
 }

@@ -3564,6 +3564,24 @@ abstract class AppLocalizations {
   /// **'pink'**
   String get pink;
 
+  /// No description provided for @yellow.
+  ///
+  /// In en, this message translates to:
+  /// **'yellow'**
+  String get yellow;
+
+  /// No description provided for @brown.
+  ///
+  /// In en, this message translates to:
+  /// **'brown'**
+  String get brown;
+
+  /// No description provided for @cream.
+  ///
+  /// In en, this message translates to:
+  /// **'cream'**
+  String get cream;
+
   /// No description provided for @supportAndFeedback.
   ///
   /// In en, this message translates to:
@@ -8486,6 +8504,12 @@ abstract class AppLocalizations {
   /// **'Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts.'**
   String get batteryOptimizationDescription;
 
+  /// No description provided for @batteryOptimizationExactAlarmDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts; on Android 12 and later, this also enables exact-time scheduling.'**
+  String get batteryOptimizationExactAlarmDescription;
+
   /// No description provided for @keepRemindersReliable.
   ///
   /// In en, this message translates to:
@@ -8569,6 +8593,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Huda can run more reliably in the background.'**
   String get batteryOptimizationReadyDescription;
+
+  /// No description provided for @exactAlarmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use exact alarms instead'**
+  String get exactAlarmTitle;
+
+  /// No description provided for @exactAlarmDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep battery optimization on and allow exact alarms for precise scheduling. Battery restrictions may still delay delivery.'**
+  String get exactAlarmDescription;
+
+  /// No description provided for @allowExactAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow exact alarms'**
+  String get allowExactAlarms;
+
+  /// No description provided for @exactAlarmsReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact-time scheduling is ready'**
+  String get exactAlarmsReadyTitle;
+
+  /// No description provided for @exactAlarmsReadyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda can schedule prayer alerts and reminders for their exact time.'**
+  String get exactAlarmsReadyDescription;
 }
 
 class _AppLocalizationsDelegate

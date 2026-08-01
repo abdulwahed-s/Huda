@@ -1860,6 +1860,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pink => 'وردي';
 
   @override
+  String get yellow => 'أصفر';
+
+  @override
+  String get brown => 'بني';
+
+  @override
+  String get cream => 'كريمي';
+
+  @override
   String get supportAndFeedback => 'الدعم والملاحظات';
 
   @override
@@ -4577,6 +4586,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'قد يؤدي تحسين البطارية في أندرويد إلى تأخير التذكيرات. اسمح لتطبيق هدى بالعمل دون تحسين البطارية لتنبيهات أكثر موثوقية.';
 
   @override
+  String get batteryOptimizationExactAlarmDescription =>
+      'قد يؤدي تحسين البطارية في أندرويد إلى تأخير التذكيرات. اسمح لتطبيق هدى بالعمل دون تحسين البطارية لتنبيهات أكثر موثوقية؛ وعلى أندرويد 12 والإصدارات الأحدث، يتيح ذلك أيضًا الجدولة في الوقت الدقيق.';
+
+  @override
   String get keepRemindersReliable => 'السماح بتذكيرات موثوقة';
 
   @override
@@ -4622,4 +4635,21 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get batteryOptimizationReadyDescription =>
       'يمكن لتطبيق هدى العمل في الخلفية بصورة أكثر موثوقية.';
+
+  @override
+  String get exactAlarmTitle => 'استخدم المنبّهات الدقيقة بدلًا من ذلك';
+
+  @override
+  String get exactAlarmDescription =>
+      'أبقِ تحسين البطارية مفعّلًا واسمح بالمنبّهات الدقيقة لجدولة أكثر دقة. قد تظل قيود البطارية تؤخر وصول التنبيهات.';
+
+  @override
+  String get allowExactAlarms => 'السماح بالمنبّهات الدقيقة';
+
+  @override
+  String get exactAlarmsReadyTitle => 'الجدولة في الوقت الدقيق جاهزة';
+
+  @override
+  String get exactAlarmsReadyDescription =>
+      'يمكن لتطبيق هدى جدولة تنبيهات الصلاة والتذكيرات في وقتها المحدد.';
 }
