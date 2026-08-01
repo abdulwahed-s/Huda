@@ -79,7 +79,7 @@ class ThemeCubit extends Cubit<ThemeState> {
       themeMode = ThemeMode.system;
     }
 
-    AppColorTheme colorTheme = AppColorTheme.purple;
+    AppColorTheme colorTheme = AppColorTheme.teal;
     if (savedColorTheme != null) {
       try {
         colorTheme = AppColorTheme.values.firstWhere(
