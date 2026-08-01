@@ -312,6 +312,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   void loadCachedPrayerTimes() {
+    if (state is PrayerTimesLoading) return;
+
     final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
     if (coordinates == null) {
       if (state is! PrayerTimesLoaded) emit(PrayerTimesNeedsSetup());
