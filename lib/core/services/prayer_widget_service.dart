@@ -216,6 +216,10 @@ class PrayerWidgetService {
     await pushSettings();
   }
 
+  static Future<void> onAppThemeChanged() async {
+    await pushSettings();
+  }
+
   static Future<void> _refreshNativeWidget() async {
     try {
       if (PlatformUtils.isIOS) {
@@ -262,16 +266,7 @@ class PrayerWidgetService {
     final savedColorTheme = prefs.getString('color_theme');
     final savedThemeMode = prefs.getString('theme_mode');
 
-    var colorTheme = AppColorTheme.purple;
-    if (savedColorTheme != null) {
-      try {
-        colorTheme = AppColorTheme.values.firstWhere(
-          (t) => t.toString() == savedColorTheme,
-        );
-      } catch (_) {
-        colorTheme = AppColorTheme.purple;
-      }
-    }
+    final colorTheme = AppColors.fromStorage(savedColorTheme);
 
     String themeMode;
     if (savedThemeMode == 'dark') {
