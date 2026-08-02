@@ -44,9 +44,9 @@ struct WidgetDataLoader {
 
     static func getThemeName() -> String {
         guard let defaults = sharedDefaults else {
-            return "purple"
+            return "teal"
         }
-        return defaults.string(forKey: keyThemeName) ?? "purple"
+        return defaults.string(forKey: keyThemeName) ?? "teal"
     }
 
     static func isDarkMode() -> Bool {
