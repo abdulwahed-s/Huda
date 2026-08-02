@@ -62,8 +62,8 @@ class WidgetService {
 
       final themeColorData = await _getCurrentThemeColor();
 
-      await prefs.setString(
-          'themeName', themeColorData['themeName'] ?? 'purple');
+      await prefs.setString('themeName',
+          themeColorData['themeName'] ?? AppColors.defaultTheme.name);
       await prefs.setString(
           'themeMode', themeColorData['themeMode'] ?? 'light');
 
@@ -257,8 +257,8 @@ class WidgetService {
       final prefs = await SharedPreferences.getInstance();
       final themeColorData = await _getCurrentThemeColor();
 
-      await prefs.setString(
-          'themeName', themeColorData['themeName'] ?? 'purple');
+      await prefs.setString('themeName',
+          themeColorData['themeName'] ?? AppColors.defaultTheme.name);
       await prefs.setString(
           'themeMode', themeColorData['themeMode'] ?? 'light');
 
@@ -275,16 +275,7 @@ class WidgetService {
       final savedColorTheme = prefs.getString('color_theme');
       final savedThemeMode = prefs.getString('theme_mode');
 
-      AppColorTheme colorTheme = AppColorTheme.purple;
-      if (savedColorTheme != null) {
-        try {
-          colorTheme = AppColorTheme.values.firstWhere(
-            (theme) => theme.toString() == savedColorTheme,
-          );
-        } catch (e) {
-          colorTheme = AppColorTheme.purple;
-        }
-      }
+      final colorTheme = AppColors.fromStorage(savedColorTheme);
 
       String themeMode = 'light';
       if (savedThemeMode == 'dark') {
@@ -304,7 +295,7 @@ class WidgetService {
     } catch (e) {
       debugPrint('Error getting theme color: $e');
       return {
-        'themeName': 'purple',
+        'themeName': AppColors.defaultTheme.name,
         'themeMode': 'light',
       };
     }
