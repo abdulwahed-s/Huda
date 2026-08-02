@@ -61,7 +61,7 @@ struct PrayerWidgetDataLoader {
             calculationMethod: defaults?.string(forKey: keyCalculationMethod) ?? "auto",
             madhab: defaults?.string(forKey: keyMadhab) ?? "shafi",
             highLatitudeRule: defaults?.string(forKey: keyHighLatitudeRule) ?? "automatic",
-            themeName: defaults?.string(forKey: keyThemeName) ?? "purple",
+            themeName: defaults?.string(forKey: keyThemeName) ?? "teal",
             themeMode: defaults?.string(forKey: keyThemeMode) ?? "light",
             locale: defaults?.string(forKey: keyLocale) ?? "en",
             design: PrayerWidgetDesign(
