@@ -13,7 +13,7 @@ struct HudaWidgetProvider: TimelineProvider {
         HudaWidgetEntry(
             date: Date(),
             quote: WidgetDataLoader.defaultVerses[0],
-            themeColors: WidgetThemeColors.getThemeColors(themeName: "purple", isDarkMode: false)
+            themeColors: WidgetThemeColors.getThemeColors(themeName: "teal", isDarkMode: false)
         )
     }
     
