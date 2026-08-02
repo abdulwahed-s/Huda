@@ -111,6 +111,42 @@ struct WidgetThemeColors {
             quoteTextColor: Color(hex: 0x2C2C2C),
             textColor: Color(hex: 0x2C2C2C),
             secondaryTextColor: Color(hex: 0x666666)
+        ),
+        "yellow": ThemeColors(
+            primary: Color(hex: 0xA16207),
+            accent: Color(hex: 0xEAB308),
+            gradientStart: Color(hex: 0xFEFCE8),
+            gradientEnd: Color(hex: 0xFEF9C3),
+            borderColor: Color(hex: 0xFDE68A),
+            badgeBackground: Color(hex: 0xFEF9C3),
+            quoteCardBackground: Color.white,
+            quoteTextColor: Color(hex: 0x2C2C2C),
+            textColor: Color(hex: 0x2C2C2C),
+            secondaryTextColor: Color(hex: 0x666666)
+        ),
+        "brown": ThemeColors(
+            primary: Color(hex: 0x5D4037),
+            accent: Color(hex: 0x795548),
+            gradientStart: Color(hex: 0xF7F3F1),
+            gradientEnd: Color(hex: 0xEFEBE9),
+            borderColor: Color(hex: 0xD7CCC8),
+            badgeBackground: Color(hex: 0xEFEBE9),
+            quoteCardBackground: Color.white,
+            quoteTextColor: Color(hex: 0x2C2C2C),
+            textColor: Color(hex: 0x2C2C2C),
+            secondaryTextColor: Color(hex: 0x666666)
+        ),
+        "cream": ThemeColors(
+            primary: Color(hex: 0x8A6D3B),
+            accent: Color(hex: 0xB08D57),
+            gradientStart: Color(hex: 0xFFFCF2),
+            gradientEnd: Color(hex: 0xFFF8E7),
+            borderColor: Color(hex: 0xE6D5AE),
+            badgeBackground: Color(hex: 0xFFF3D6),
+            quoteCardBackground: Color.white,
+            quoteTextColor: Color(hex: 0x2C2C2C),
+            textColor: Color(hex: 0x2C2C2C),
+            secondaryTextColor: Color(hex: 0x666666)
         )
     ]
     
@@ -210,12 +246,48 @@ struct WidgetThemeColors {
             quoteTextColor: Color(hex: 0xF8FAFC),
             textColor: Color(hex: 0xF8FAFC),
             secondaryTextColor: Color(hex: 0xCCCCCC)
+        ),
+        "yellow": ThemeColors(
+            primary: Color(hex: 0xFACC15),
+            accent: Color(hex: 0xEAB308),
+            gradientStart: Color(hex: 0x2E290F),
+            gradientEnd: Color(hex: 0x453D1B),
+            borderColor: Color(hex: 0x9E893D),
+            badgeBackground: Color(hex: 0x50461A),
+            quoteCardBackground: Color(hex: 0x403815),
+            quoteTextColor: Color(hex: 0xF8FAFC),
+            textColor: Color(hex: 0xF8FAFC),
+            secondaryTextColor: Color(hex: 0xCCCCCC)
+        ),
+        "brown": ThemeColors(
+            primary: Color(hex: 0x8D6E63),
+            accent: Color(hex: 0x795548),
+            gradientStart: Color(hex: 0x2B1D18),
+            gradientEnd: Color(hex: 0x3E2A23),
+            borderColor: Color(hex: 0x795548),
+            badgeBackground: Color(hex: 0x4A332B),
+            quoteCardBackground: Color(hex: 0x34241E),
+            quoteTextColor: Color(hex: 0xF8FAFC),
+            textColor: Color(hex: 0xF8FAFC),
+            secondaryTextColor: Color(hex: 0xCCCCCC)
+        ),
+        "cream": ThemeColors(
+            primary: Color(hex: 0xD8C59A),
+            accent: Color(hex: 0xB08D57),
+            gradientStart: Color(hex: 0x261F13),
+            gradientEnd: Color(hex: 0x3A3020),
+            borderColor: Color(hex: 0x80683F),
+            badgeBackground: Color(hex: 0x443720),
+            quoteCardBackground: Color(hex: 0x302719),
+            quoteTextColor: Color(hex: 0xF8FAFC),
+            textColor: Color(hex: 0xF8FAFC),
+            secondaryTextColor: Color(hex: 0xCCCCCC)
         )
     ]
     
     static func getThemeColors(themeName: String, isDarkMode: Bool) -> ThemeColors {
         let themes = isDarkMode ? darkThemes : lightThemes
-        return themes[themeName] ?? themes["purple"]!
+        return themes[themeName] ?? themes["teal"]!
     }
 }
 
