@@ -154,13 +154,39 @@ class NotificationPageHelper {
       return AndroidScheduleMode.exactAllowWhileIdle;
     }
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-    final canScheduleExact =
-        await androidPlugin?.canScheduleExactNotifications() ?? true;
+    final canScheduleExact = await canScheduleExactNotifications();
     return canScheduleExact
         ? AndroidScheduleMode.exactAllowWhileIdle
         : AndroidScheduleMode.inexactAllowWhileIdle;
+  }
+
+  Future<bool> canScheduleExactNotifications() async {
+    if (!PlatformUtils.isAndroid) return true;
+
+    try {
+      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      return await androidPlugin?.canScheduleExactNotifications() ?? true;
+    } catch (error) {
+      debugPrint('Unable to check exact alarm access: $error');
+      return false;
+    }
+  }
+
+  Future<bool> requestExactAlarmsPermission() async {
+    if (!PlatformUtils.isAndroid) return true;
+
+    try {
+      if (await canScheduleExactNotifications()) return true;
+
+      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      final granted = await androidPlugin?.requestExactAlarmsPermission();
+      return granted ?? await canScheduleExactNotifications();
+    } catch (error) {
+      debugPrint('Unable to request exact alarm access: $error');
+      return false;
+    }
   }
 
   Future<void> scheduleDaily({
