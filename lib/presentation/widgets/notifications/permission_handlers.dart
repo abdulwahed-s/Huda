@@ -51,7 +51,7 @@ class PermissionHandlers {
     }
   }
 
-  /// Requests notification access only as a direct response to a user action.
+  /// Requests notification access from a contextual notification feature.
   ///
   /// Android and iOS use their own request paths. When the OS will no longer
   /// display a prompt, the same action takes the user to the app settings.
@@ -161,6 +161,13 @@ class PermissionHandlers {
         kind: granted ? HudaSnackBarKind.success : HudaSnackBarKind.warning,
       );
     }
+    return granted;
+  }
+
+  static Future<bool> requestExactAlarmsPermission(BuildContext context) async {
+    final cubit = context.read<NotificationsCubit>();
+    final granted = await cubit.requestExactAlarmsPermission();
+    _notifyAccessSettingsChanged();
     return granted;
   }
 }
