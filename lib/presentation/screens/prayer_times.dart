@@ -16,6 +16,8 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_times_location_ser
 import 'package:huda/presentation/widgets/prayer_times/refresh_location_button_widget.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
+import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PrayerTimes extends StatefulWidget {
   const PrayerTimes({super.key});
@@ -27,11 +29,34 @@ class PrayerTimes extends StatefulWidget {
 class _PrayerTimesState extends State<PrayerTimes> {
   late PrayerTimesCubit _prayerTimesCubit;
 
+  static bool _isPreparingPrayerTimes(PrayerTimesState state) {
+    return state is PrayerTimesInitial ||
+        state is PrayerTimesLoading ||
+        state is PrayerTimesNeedsSetup;
+  }
+
   @override
   void initState() {
     super.initState();
     _prayerTimesCubit = context.read<PrayerTimesCubit>();
-    _prayerTimesCubit.loadPrayerTimes();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _preparePrayerTimes();
+    });
+  }
+
+  Future<void> _preparePrayerTimes() async {
+    if (!mounted) return;
+
+    if (PlatformUtils.isAndroid || PlatformUtils.isIOS) {
+      final notificationStatus = await Permission.notification.status;
+      if (!mounted) return;
+      if (notificationStatus.isDenied) {
+        await PermissionHandlers.requestNotificationPermission(context);
+      }
+    }
+
+    if (!mounted) return;
+    await _prayerTimesCubit.loadPrayerTimes();
   }
 
   @override
@@ -70,6 +95,12 @@ class _PrayerTimesState extends State<PrayerTimes> {
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           child: Column(
             children: [
+              NotificationRequirementsSection(
+                feature: NotificationFeature.prayerTimes,
+                onNotificationEnabled:
+                    _prayerTimesCubit.refreshNotificationSchedule,
+                bottomSpacing: 12.h,
+              ),
               Card(
                 elevation: 3,
                 margin: EdgeInsets.only(bottom: 12.h),
@@ -91,7 +122,7 @@ class _PrayerTimesState extends State<PrayerTimes> {
                   padding: EdgeInsets.all(16.w),
                   child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
                     builder: (context, state) {
-                      if (state is PrayerTimesLoading) {
+                      if (_isPreparingPrayerTimes(state)) {
                         return const PrayerTimesLoadingWidget();
                       } else if (state is PrayerTimesLoaded) {
                         return PrayerTimesLoadedWidget(state: state);
@@ -129,15 +160,21 @@ class _PrayerTimesState extends State<PrayerTimes> {
                   return const SizedBox.shrink();
                 },
               ),
-              NotificationRequirementsSection(
-                feature: NotificationFeature.prayerTimes,
-                onNotificationEnabled:
-                    _prayerTimesCubit.refreshNotificationSchedule,
-                bottomSpacing: 12.h,
+              BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+                builder: (context, state) {
+                  if (_isPreparingPrayerTimes(state)) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return Column(
+                    children: [
+                      const RefreshLocationButtonWidget(),
+                      if (PlatformUtils.isAndroid)
+                        const PersistentPrayerCountdownControlWidget(),
+                    ],
+                  );
+                },
               ),
-              const RefreshLocationButtonWidget(),
-              if (PlatformUtils.isAndroid)
-                const PersistentPrayerCountdownControlWidget(),
             ],
           ),
         ),
