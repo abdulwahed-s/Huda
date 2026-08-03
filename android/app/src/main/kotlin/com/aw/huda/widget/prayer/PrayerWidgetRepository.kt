@@ -66,7 +66,7 @@ internal object PrayerWidgetRepository {
             madhab = p.getString(K_MADHAB, null),
             highLatitudeRule = p.getString(K_HIGH_LAT, null),
             offsets = offsets,
-            themeName = p.getString(K_THEME_NAME, "purple") ?: "purple",
+            themeName = p.getString(K_THEME_NAME, "teal") ?: "teal",
             themeMode = p.getString(K_THEME_MODE, "light") ?: "light",
             appLocale = p.getString(K_LOCALE, "en") ?: "en",
             design = PrayerWidgetDesign.fromStorage(p.getString(K_DESIGN, null)),
