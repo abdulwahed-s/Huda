@@ -45,6 +45,8 @@ class _HomeState extends State<Home>
   late Animation<Offset> _slideAnimation;
   bool _entranceStarted = false;
   bool _entranceScheduled = false;
+  bool _isStartupDialogSequenceRunning = false;
+  bool _isRatingCheckScheduled = false;
 
   @override
   void initState() {
@@ -115,14 +117,37 @@ class _HomeState extends State<Home>
   }
 
   Future<void> _runStartupDialogs() async {
-    final showedUpdate = await UpdateService.checkAndShow(context);
-    if (showedUpdate || !mounted) return;
+    if (_isStartupDialogSequenceRunning) return;
 
-    await Future.delayed(const Duration(milliseconds: 1500));
-    if (mounted) WhatsNewService.checkAndShow(context);
+    _isStartupDialogSequenceRunning = true;
+    try {
+      final showedUpdate = await UpdateService.checkAndShow(context);
+      if (showedUpdate || !mounted) return;
 
-    await Future.delayed(const Duration(milliseconds: 1500));
-    if (mounted) RatingService.instance.checkAndShowRatingDialog(context);
+      await Future.delayed(const Duration(milliseconds: 1500));
+      if (!mounted) return;
+      await WhatsNewService.checkAndShow(context);
+
+      await Future.delayed(const Duration(milliseconds: 1500));
+      if (!mounted) return;
+      await RatingService.instance.checkAndShowRatingDialog(context);
+    } finally {
+      _isStartupDialogSequenceRunning = false;
+    }
+  }
+
+  Future<void> _scheduleRatingCheckAfterResume() async {
+    if (_isStartupDialogSequenceRunning || _isRatingCheckScheduled) return;
+
+    _isRatingCheckScheduled = true;
+    try {
+      await Future.delayed(const Duration(seconds: 5));
+      if (mounted) {
+        await RatingService.instance.checkAndShowRatingDialog(context);
+      }
+    } finally {
+      _isRatingCheckScheduled = false;
+    }
   }
 
   @override
@@ -140,11 +165,7 @@ class _HomeState extends State<Home>
       context.read<IslamicEventCubit>().loadActiveEvent();
       debugPrint('🏠 Home screen: Refreshing data on app resume');
 
-      Future.delayed(const Duration(seconds: 5), () {
-        if (mounted) {
-          RatingService.instance.checkAndShowRatingDialog(context);
-        }
-      });
+      _scheduleRatingCheckAfterResume();
     }
   }
 
