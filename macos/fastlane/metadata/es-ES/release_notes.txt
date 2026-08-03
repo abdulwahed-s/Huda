@@ -1,3 +1,5 @@
-Mejoras en los horarios de oración con nuevos métodos de cálculo, incluidos Omán, Argelia y más
-Mayor precisión de la brújula de la Qiblah
-Correcciones de errores y mejoras de rendimiento
+Personaliza la pantalla de inicio: elige un tema, reorganiza las secciones y selecciona las funciones que se muestran
+Mayor precisión del calendario hiyri
+Las notificaciones de horarios de oración ahora cubren más días para recordatorios más fiables
+Mejoras visuales en toda la aplicación
+Una experiencia más fluida e intuitiva

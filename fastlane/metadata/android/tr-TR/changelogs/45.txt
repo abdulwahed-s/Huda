@@ -1,3 +1,5 @@
-Umman, Cezayir ve daha fazlasını içeren yeni hesaplama yöntemleriyle namaz vakti iyileştirmeleri
-Kıble pusulası doğruluğu iyileştirildi
-Hata düzeltmeleri ve performans iyileştirmeleri
+Ana ekranınızı kişiselleştirin: tema seçin, bölümleri yeniden sıralayın ve gösterilecek özellikleri belirleyin
+Hicri takvimin doğruluğu iyileştirildi
+Namaz vakti bildirimleri daha güvenilir hatırlatmalar için artık daha fazla günü kapsıyor
+Uygulama genelinde görsel iyileştirmeler
+Daha akıcı ve sezgisel bir deneyim

@@ -3560,6 +3560,26 @@
     "@whatsNew370Feature3": {
         "description": "What's new feature 3 for v3.7.0"
     },
+    "whatsNew400Feature1": "Customize your Home screen: choose a theme, reorder sections, and select which features appear",
+    "@whatsNew400Feature1": {
+        "description": "What's new feature 1 for v4.0.0"
+    },
+    "whatsNew400Feature2": "Improved Hijri calendar accuracy",
+    "@whatsNew400Feature2": {
+        "description": "What's new feature 2 for v4.0.0"
+    },
+    "whatsNew400Feature3": "Prayer time notifications now cover more days for more reliable reminders",
+    "@whatsNew400Feature3": {
+        "description": "What's new feature 3 for v4.0.0"
+    },
+    "whatsNew400Feature4": "Visual refinements throughout the app",
+    "@whatsNew400Feature4": {
+        "description": "What's new feature 4 for v4.0.0"
+    },
+    "whatsNew400Feature5": "A smoother, more intuitive experience",
+    "@whatsNew400Feature5": {
+        "description": "What's new feature 5 for v4.0.0"
+    },
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

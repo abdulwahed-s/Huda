@@ -3268,6 +3268,23 @@ class AppLocalizationsEs extends AppLocalizations {
       'Correcciones de errores y mejoras de rendimiento';
 
   @override
+  String get whatsNew400Feature1 =>
+      'Personaliza la pantalla de inicio: elige un tema, reorganiza las secciones y selecciona las funciones que se muestran';
+
+  @override
+  String get whatsNew400Feature2 => 'Mayor precisión del calendario hiyri';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'Las notificaciones de horarios de oración ahora cubren más días para recordatorios más fiables';
+
+  @override
+  String get whatsNew400Feature4 => 'Mejoras visuales en toda la aplicación';
+
+  @override
+  String get whatsNew400Feature5 => 'Una experiencia más fluida e intuitiva';
+
+  @override
   String get offlineMode => 'Modo sin conexión';
 
   @override

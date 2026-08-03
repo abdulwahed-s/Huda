@@ -5912,6 +5912,36 @@ abstract class AppLocalizations {
   /// **'Bug fixes and performance improvements'**
   String get whatsNew370Feature3;
 
+  /// What's new feature 1 for v4.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Customize your Home screen: choose a theme, reorder sections, and select which features appear'**
+  String get whatsNew400Feature1;
+
+  /// What's new feature 2 for v4.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Improved Hijri calendar accuracy'**
+  String get whatsNew400Feature2;
+
+  /// What's new feature 3 for v4.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer time notifications now cover more days for more reliable reminders'**
+  String get whatsNew400Feature3;
+
+  /// What's new feature 4 for v4.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Visual refinements throughout the app'**
+  String get whatsNew400Feature4;
+
+  /// What's new feature 5 for v4.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'A smoother, more intuitive experience'**
+  String get whatsNew400Feature5;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:

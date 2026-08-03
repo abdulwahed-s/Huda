@@ -3150,6 +3150,23 @@ class AppLocalizationsAr extends AppLocalizations {
   String get whatsNew370Feature3 => 'إصلاح الأخطاء وتحسين الأداء';
 
   @override
+  String get whatsNew400Feature1 =>
+      'خصّص شاشتك الرئيسية: اختر المظهر، وأعِد ترتيب الأقسام، وحدد الميزات التي تظهر';
+
+  @override
+  String get whatsNew400Feature2 => 'تحسين دقة التقويم الهجري';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'تغطي إشعارات مواقيت الصلاة الآن أيامًا أكثر لتذكيرات أكثر موثوقية';
+
+  @override
+  String get whatsNew400Feature4 => 'تحسينات مرئية في أنحاء التطبيق';
+
+  @override
+  String get whatsNew400Feature5 => 'تجربة أكثر سلاسة وسهولة في الاستخدام';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override

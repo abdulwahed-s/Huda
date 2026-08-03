@@ -3196,6 +3196,23 @@ class AppLocalizationsUr extends AppLocalizations {
   String get whatsNew370Feature3 => 'بگ فکس اور کارکردگی میں بہتری';
 
   @override
+  String get whatsNew400Feature1 =>
+      'اپنی ہوم اسکرین کو حسبِ پسند بنائیں: تھیم منتخب کریں، حصوں کی ترتیب بدلیں اور دکھائی جانے والی خصوصیات طے کریں';
+
+  @override
+  String get whatsNew400Feature2 => 'ہجری کیلنڈر کی درستگی میں بہتری';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'نماز کے اوقات کی اطلاعات اب زیادہ قابلِ اعتماد یاددہانیوں کے لیے مزید دنوں کا احاطہ کرتی ہیں';
+
+  @override
+  String get whatsNew400Feature4 => 'ایپ بھر میں بصری بہتریاں';
+
+  @override
+  String get whatsNew400Feature5 => 'زیادہ ہموار اور آسان تجربہ';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override

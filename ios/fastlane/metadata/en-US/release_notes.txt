@@ -1,3 +1,5 @@
-Prayer time improvements with new calculation methods, including Oman, Algeria, and more
-Improved Qiblah compass accuracy
-Bug fixes and performance improvements
+Customize your Home screen: choose a theme, reorder sections, and select which features appear
+Improved Hijri calendar accuracy
+Prayer time notifications now cover more days for more reliable reminders
+Visual refinements throughout the app
+A smoother, more intuitive experience

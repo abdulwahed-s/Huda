@@ -3254,6 +3254,25 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fehlerbehebungen und Leistungsverbesserungen';
 
   @override
+  String get whatsNew400Feature1 =>
+      'Passe deinen Startbildschirm an: Wähle ein Design, ordne Bereiche neu an und lege die angezeigten Funktionen fest';
+
+  @override
+  String get whatsNew400Feature2 =>
+      'Verbesserte Genauigkeit des Hidschri-Kalenders';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'Gebetszeit-Benachrichtigungen decken jetzt mehr Tage ab und sorgen für zuverlässigere Erinnerungen';
+
+  @override
+  String get whatsNew400Feature4 => 'Verfeinertes Design in der gesamten App';
+
+  @override
+  String get whatsNew400Feature5 =>
+      'Ein flüssigeres und intuitiveres Nutzungserlebnis';
+
+  @override
   String get offlineMode => 'Offline-Modus';
 
   @override

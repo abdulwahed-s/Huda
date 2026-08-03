@@ -3209,6 +3209,23 @@ class AppLocalizationsMs extends AppLocalizations {
       'Pembaikan pepijat dan penambahbaikan prestasi';
 
   @override
+  String get whatsNew400Feature1 =>
+      'Peribadikan skrin utama anda: pilih tema, susun semula bahagian dan tentukan ciri yang dipaparkan';
+
+  @override
+  String get whatsNew400Feature2 => 'Ketepatan kalendar Hijri dipertingkatkan';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'Pemberitahuan waktu solat kini meliputi lebih banyak hari untuk peringatan yang lebih boleh dipercayai';
+
+  @override
+  String get whatsNew400Feature4 => 'Penambahbaikan visual di seluruh aplikasi';
+
+  @override
+  String get whatsNew400Feature5 => 'Pengalaman yang lebih lancar dan intuitif';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override

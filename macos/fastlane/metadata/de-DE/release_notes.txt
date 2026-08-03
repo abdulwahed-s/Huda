@@ -1,3 +1,5 @@
-Gebetszeiten verbessert, mit neuen Berechnungsmethoden wie Oman, Algerien und mehr
-Qibla-Kompass und Genauigkeit verbessert
-Fehlerbehebungen und Leistungsverbesserungen
+Passe deinen Startbildschirm an: Wähle ein Design, ordne Bereiche neu an und lege die angezeigten Funktionen fest
+Verbesserte Genauigkeit des Hidschri-Kalenders
+Gebetszeit-Benachrichtigungen decken jetzt mehr Tage ab und sorgen für zuverlässigere Erinnerungen
+Verfeinertes Design in der gesamten App
+Ein flüssigeres und intuitiveres Nutzungserlebnis

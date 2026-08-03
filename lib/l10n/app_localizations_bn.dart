@@ -3205,6 +3205,24 @@ class AppLocalizationsBn extends AppLocalizations {
   String get whatsNew370Feature3 => 'বাগ সংশোধন এবং পারফরম্যান্স উন্নতি';
 
   @override
+  String get whatsNew400Feature1 =>
+      'হোম স্ক্রিন নিজের মতো সাজান: থিম বেছে নিন, বিভাগগুলো পুনর্বিন্যাস করুন এবং কোন ফিচার দেখাবেন তা ঠিক করুন';
+
+  @override
+  String get whatsNew400Feature2 =>
+      'হিজরি ক্যালেন্ডারের নির্ভুলতা উন্নত করা হয়েছে';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'আরও নির্ভরযোগ্য স্মরণ করানোর জন্য নামাজের সময়ের বিজ্ঞপ্তি এখন আরও বেশি দিন পর্যন্ত সক্রিয় থাকে';
+
+  @override
+  String get whatsNew400Feature4 => 'অ্যাপজুড়ে ভিজ্যুয়াল ডিজাইনের উন্নতি';
+
+  @override
+  String get whatsNew400Feature5 => 'আরও মসৃণ ও স্বজ্ঞাত অভিজ্ঞতা';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override

@@ -3228,6 +3228,24 @@ class AppLocalizationsRu extends AppLocalizations {
       'Исправления ошибок и улучшение производительности';
 
   @override
+  String get whatsNew400Feature1 =>
+      'Настраивайте главный экран: выбирайте тему, меняйте порядок разделов и определяйте отображаемые функции';
+
+  @override
+  String get whatsNew400Feature2 => 'Повышена точность календаря хиджры';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'Уведомления о времени молитв теперь охватывают больше дней для более надёжных напоминаний';
+
+  @override
+  String get whatsNew400Feature4 => 'Улучшен дизайн во всём приложении';
+
+  @override
+  String get whatsNew400Feature5 =>
+      'Более плавная и интуитивная работа с приложением';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override

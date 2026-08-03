@@ -3275,6 +3275,25 @@ class AppLocalizationsFr extends AppLocalizations {
       'Corrections de bugs et améliorations des performances';
 
   @override
+  String get whatsNew400Feature1 =>
+      'Personnalisez votre écran d’accueil : choisissez un thème, réorganisez les sections et sélectionnez les fonctionnalités à afficher';
+
+  @override
+  String get whatsNew400Feature2 =>
+      'Précision améliorée du calendrier hégirien';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'Les notifications d’horaires de prière couvrent désormais davantage de jours pour des rappels plus fiables';
+
+  @override
+  String get whatsNew400Feature4 =>
+      'Améliorations visuelles dans toute l’application';
+
+  @override
+  String get whatsNew400Feature5 => 'Une expérience plus fluide et intuitive';
+
+  @override
   String get offlineMode => 'Mode hors ligne';
 
   @override

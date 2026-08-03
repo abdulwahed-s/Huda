@@ -3202,6 +3202,23 @@ class AppLocalizationsTr extends AppLocalizations {
       'Hata düzeltmeleri ve performans iyileştirmeleri';
 
   @override
+  String get whatsNew400Feature1 =>
+      'Ana ekranınızı kişiselleştirin: tema seçin, bölümleri yeniden sıralayın ve gösterilecek özellikleri belirleyin';
+
+  @override
+  String get whatsNew400Feature2 => 'Hicri takvimin doğruluğu iyileştirildi';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'Namaz vakti bildirimleri daha güvenilir hatırlatmalar için artık daha fazla günü kapsıyor';
+
+  @override
+  String get whatsNew400Feature4 => 'Uygulama genelinde görsel iyileştirmeler';
+
+  @override
+  String get whatsNew400Feature5 => 'Daha akıcı ve sezgisel bir deneyim';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override

@@ -3202,6 +3202,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsNew370Feature3 => 'Bug fixes and performance improvements';
 
   @override
+  String get whatsNew400Feature1 =>
+      'Customize your Home screen: choose a theme, reorder sections, and select which features appear';
+
+  @override
+  String get whatsNew400Feature2 => 'Improved Hijri calendar accuracy';
+
+  @override
+  String get whatsNew400Feature3 =>
+      'Prayer time notifications now cover more days for more reliable reminders';
+
+  @override
+  String get whatsNew400Feature4 => 'Visual refinements throughout the app';
+
+  @override
+  String get whatsNew400Feature5 => 'A smoother, more intuitive experience';
+
+  @override
   String get offlineMode => 'Offline Mode';
 
   @override
