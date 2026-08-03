@@ -6,6 +6,8 @@ import 'package:huda/presentation/widgets/rating/app_rating_dialog.dart';
 
 class RatingService {
   static RatingService? _instance;
+  Future<void>? _activeDialogRequest;
+
   RatingService._internal();
 
   static RatingService get instance {
@@ -13,36 +15,52 @@ class RatingService {
     return _instance!;
   }
 
-  Future<void> checkAndShowRatingDialog(BuildContext context) async {
-    try {
-      final ratingCubit = context.read<RatingCubit>();
-      await ratingCubit.checkIfShouldShowDialog();
+  Future<void> checkAndShowRatingDialog(BuildContext context) {
+    return _runExclusively(() async {
+      try {
+        final ratingCubit = context.read<RatingCubit>();
+        await ratingCubit.checkIfShouldShowDialog();
 
-      final state = ratingCubit.state;
-      if (state is RatingReady && state.shouldShow) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            _showRatingDialog(context);
-          }
-        });
+        final state = ratingCubit.state;
+        if (context.mounted && state is RatingReady && state.shouldShow) {
+          await _showRatingDialog(context);
+        }
+      } catch (e) {
+        debugPrint('RatingService error: $e');
       }
-    } catch (e) {
-      debugPrint('RatingService error: $e');
-    }
+    });
   }
 
-  void showRatingDialog(BuildContext context) {
-    _showRatingDialog(context, showDismissActions: false);
+  Future<void> showRatingDialog(BuildContext context) {
+    return _runExclusively(
+      () => _showRatingDialog(context, showDismissActions: false),
+    );
   }
 
-  void _showRatingDialog(BuildContext context,
-      {bool showDismissActions = true}) {
-    showDialog(
+  Future<void> _runExclusively(Future<void> Function() action) {
+    final activeRequest = _activeDialogRequest;
+    if (activeRequest != null) return activeRequest;
+
+    final request = Future.sync(action);
+    _activeDialogRequest = request;
+    return request.whenComplete(() {
+      if (identical(_activeDialogRequest, request)) {
+        _activeDialogRequest = null;
+      }
+    });
+  }
+
+  Future<void> _showRatingDialog(BuildContext context,
+      {bool showDismissActions = true}) async {
+    if (!context.mounted) return;
+
+    final ratingCubit = context.read<RatingCubit>();
+    await showDialog<void>(
       context: context,
       barrierDismissible: !showDismissActions,
-      builder: (BuildContext context) {
+      builder: (_) {
         return BlocProvider.value(
-          value: context.read<RatingCubit>(),
+          value: ratingCubit,
           child: AppRatingDialog(showDismissActions: showDismissActions),
         );
       },
