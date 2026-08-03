@@ -9,8 +9,22 @@ import 'package:package_info_plus/package_info_plus.dart';
 class WhatsNewService {
   static const String _lastSeenVersionKey = 'whats_new_last_seen_version';
   static const String _onboardingKey = 'onboarding_completed';
+  static Future<void>? _activeCheckAndShow;
 
-  static Future<void> checkAndShow(BuildContext context) async {
+  static Future<void> checkAndShow(BuildContext context) {
+    final activeCheckAndShow = _activeCheckAndShow;
+    if (activeCheckAndShow != null) return activeCheckAndShow;
+
+    final request = _checkAndShow(context);
+    _activeCheckAndShow = request;
+    return request.whenComplete(() {
+      if (identical(_activeCheckAndShow, request)) {
+        _activeCheckAndShow = null;
+      }
+    });
+  }
+
+  static Future<void> _checkAndShow(BuildContext context) async {
     if (!context.mounted) return;
 
     final cacheHelper = getIt<CacheHelper>();
@@ -23,13 +37,13 @@ class WhatsNewService {
 
     if (onboardingCompleted != true) return;
 
+    final content = WhatsNewContent.getLatestForVersion(currentVersion);
+    if (content == null) return;
+
     if (storedVersion != null &&
-        !VersionUtils.isNewer(currentVersion, storedVersion)) {
+        !VersionUtils.isNewer(content.version, storedVersion)) {
       return;
     }
-
-    final content = WhatsNewContent.getForVersion(currentVersion);
-    if (content == null) return;
 
     if (!context.mounted) return;
 
@@ -40,6 +54,7 @@ class WhatsNewService {
       builder: (_) => WhatsNewDialog(content: content),
     );
 
-    await cacheHelper.saveData(key: _lastSeenVersionKey, value: currentVersion);
+    await cacheHelper.saveData(
+        key: _lastSeenVersionKey, value: content.version);
   }
 }
