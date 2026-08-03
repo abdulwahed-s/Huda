@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/core/utils/version_utils.dart';
 
 class WhatsNewFeature {
   final String Function(BuildContext) title;
@@ -246,5 +247,20 @@ class WhatsNewContent {
 
   static WhatsNewContent? getForVersion(String version) {
     return _versionContent[version];
+  }
+
+  static WhatsNewContent? getLatestForVersion(String version) {
+    WhatsNewContent? latestContent;
+
+    for (final content in _versionContent.values) {
+      if (VersionUtils.isNewer(content.version, version)) continue;
+
+      if (latestContent == null ||
+          VersionUtils.isNewer(content.version, latestContent.version)) {
+        latestContent = content;
+      }
+    }
+
+    return latestContent;
   }
 }
