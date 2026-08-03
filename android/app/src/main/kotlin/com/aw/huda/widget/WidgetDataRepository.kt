@@ -56,7 +56,7 @@ object WidgetDataRepository {
     
     fun getThemeName(context: Context): String {
         val prefs = getFlutterPrefs(context)
-        val theme = prefs.getString(KEY_THEME_NAME, "purple") ?: "purple"
+        val theme = prefs.getString(KEY_THEME_NAME, "teal") ?: "teal"
         println("📱 Widget reading themeName: $theme")
         return theme
     }
