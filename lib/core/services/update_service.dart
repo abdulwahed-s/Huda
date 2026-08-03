@@ -23,8 +23,22 @@ class UpdateService {
   static const _remindInterval = Duration(hours: 12);
 
   static final Dio _dio = Dio();
+  static Future<bool>? _activeCheckAndShow;
 
-  static Future<bool> checkAndShow(BuildContext context) async {
+  static Future<bool> checkAndShow(BuildContext context) {
+    final activeCheckAndShow = _activeCheckAndShow;
+    if (activeCheckAndShow != null) return activeCheckAndShow;
+
+    final request = _checkAndShow(context);
+    _activeCheckAndShow = request;
+    return request.whenComplete(() {
+      if (identical(_activeCheckAndShow, request)) {
+        _activeCheckAndShow = null;
+      }
+    });
+  }
+
+  static Future<bool> _checkAndShow(BuildContext context) async {
     try {
       final packageInfo = await PackageInfo.fromPlatform();
       final info = AppStoreInfo.resolve(packageInfo.installerStore);
