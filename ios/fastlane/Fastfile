@@ -114,7 +114,6 @@ platform :ios do
       upload_to_app_store(
         upload_options.merge(
           ipa: ipa_path,
-          skip_waiting_for_build_processing: true,
           submit_for_review: false,
           automatic_release: false
         )
