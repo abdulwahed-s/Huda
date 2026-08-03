@@ -116,6 +116,42 @@ object WidgetThemeColors {
             quoteTextColor = 0xFF2C2C2C.toInt(),
             textColor = 0xFF2C2C2C.toInt(),
             secondaryTextColor = 0xFF666666.toInt()
+        ),
+        "yellow" to ThemeColors(
+            primary = 0xFFA16207.toInt(),
+            accent = 0xFFEAB308.toInt(),
+            gradientStart = 0xFFFEFCE8.toInt(),
+            gradientEnd = 0xFFFEF9C3.toInt(),
+            borderColor = 0xFFFDE68A.toInt(),
+            badgeBackground = 0xFFFEF9C3.toInt(),
+            quoteCardBackground = 0xFFFFFFFF.toInt(),
+            quoteTextColor = 0xFF2C2C2C.toInt(),
+            textColor = 0xFF2C2C2C.toInt(),
+            secondaryTextColor = 0xFF666666.toInt()
+        ),
+        "brown" to ThemeColors(
+            primary = 0xFF5D4037.toInt(),
+            accent = 0xFF795548.toInt(),
+            gradientStart = 0xFFF7F3F1.toInt(),
+            gradientEnd = 0xFFEFEBE9.toInt(),
+            borderColor = 0xFFD7CCC8.toInt(),
+            badgeBackground = 0xFFEFEBE9.toInt(),
+            quoteCardBackground = 0xFFFFFFFF.toInt(),
+            quoteTextColor = 0xFF2C2C2C.toInt(),
+            textColor = 0xFF2C2C2C.toInt(),
+            secondaryTextColor = 0xFF666666.toInt()
+        ),
+        "cream" to ThemeColors(
+            primary = 0xFF8A6D3B.toInt(),
+            accent = 0xFFB08D57.toInt(),
+            gradientStart = 0xFFFFFCF2.toInt(),
+            gradientEnd = 0xFFFFF8E7.toInt(),
+            borderColor = 0xFFE6D5AE.toInt(),
+            badgeBackground = 0xFFFFF3D6.toInt(),
+            quoteCardBackground = 0xFFFFFFFF.toInt(),
+            quoteTextColor = 0xFF2C2C2C.toInt(),
+            textColor = 0xFF2C2C2C.toInt(),
+            secondaryTextColor = 0xFF666666.toInt()
         )
     )
     
@@ -215,11 +251,47 @@ object WidgetThemeColors {
             quoteTextColor = 0xFFF8FAFC.toInt(),
             textColor = 0xFFF8FAFC.toInt(),
             secondaryTextColor = 0xFFCCCCCC.toInt()
+        ),
+        "yellow" to ThemeColors(
+            primary = 0xFFFACC15.toInt(),
+            accent = 0xFFEAB308.toInt(),
+            gradientStart = 0xFF2E290F.toInt(),
+            gradientEnd = 0xFF453D1B.toInt(),
+            borderColor = 0xFF9E893D.toInt(),
+            badgeBackground = 0xFF50461A.toInt(),
+            quoteCardBackground = 0xFF403815.toInt(),
+            quoteTextColor = 0xFFF8FAFC.toInt(),
+            textColor = 0xFFF8FAFC.toInt(),
+            secondaryTextColor = 0xFFCCCCCC.toInt()
+        ),
+        "brown" to ThemeColors(
+            primary = 0xFF8D6E63.toInt(),
+            accent = 0xFF795548.toInt(),
+            gradientStart = 0xFF2B1D18.toInt(),
+            gradientEnd = 0xFF3E2A23.toInt(),
+            borderColor = 0xFF795548.toInt(),
+            badgeBackground = 0xFF4A332B.toInt(),
+            quoteCardBackground = 0xFF34241E.toInt(),
+            quoteTextColor = 0xFFF8FAFC.toInt(),
+            textColor = 0xFFF8FAFC.toInt(),
+            secondaryTextColor = 0xFFCCCCCC.toInt()
+        ),
+        "cream" to ThemeColors(
+            primary = 0xFFD8C59A.toInt(),
+            accent = 0xFFB08D57.toInt(),
+            gradientStart = 0xFF261F13.toInt(),
+            gradientEnd = 0xFF3A3020.toInt(),
+            borderColor = 0xFF80683F.toInt(),
+            badgeBackground = 0xFF443720.toInt(),
+            quoteCardBackground = 0xFF302719.toInt(),
+            quoteTextColor = 0xFFF8FAFC.toInt(),
+            textColor = 0xFFF8FAFC.toInt(),
+            secondaryTextColor = 0xFFCCCCCC.toInt()
         )
     )
     
     fun getThemeColors(themeName: String, isDarkMode: Boolean): ThemeColors {
         val themes = if (isDarkMode) darkThemes else lightThemes
-        return themes[themeName] ?: themes["purple"]!!
+        return themes[themeName] ?: themes["teal"]!!
     }
 }
