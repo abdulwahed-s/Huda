@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/keys/hadith_key.dart';
+import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_notification_planner.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:synchronized/synchronized.dart';
@@ -156,18 +157,13 @@ class PrayerPushService implements PrayerPushSynchronizer {
       if (plan == null || plan.events.isEmpty) return;
 
       final content = <String, Map<String, String>>{};
-      final events = <List<Object>>[];
       for (final event in plan.events) {
         content.putIfAbsent(
           event.prayer.name,
           () => {'title': event.title, 'body': event.body},
         );
-        events.add([
-          event.scheduledTime.toUtc().millisecondsSinceEpoch ~/ 1000,
-          event.id,
-          event.prayer.name,
-        ]);
       }
+      final events = encodeScheduleEvents(plan.events);
 
       final first = events.first;
       final last = events.last;
@@ -206,7 +202,7 @@ class PrayerPushService implements PrayerPushSynchronizer {
         'configurationSignature': opaqueConfigurationSignature,
         'localCoverageUntil':
             pending.localCoverageUntil?.toUtc().toIso8601String(),
-        'scheduleThrough': plan.coverageUntil?.toUtc().toIso8601String(),
+        'scheduleThrough': plan.coverageUntilInstant?.toIso8601String(),
         'content': content,
         'events': events,
         'reason': pending.reason,
@@ -221,6 +217,21 @@ class PrayerPushService implements PrayerPushSynchronizer {
         value: _now().toUtc().toIso8601String(),
       );
     });
+  }
+
+  @visibleForTesting
+  static List<List<Object>> encodeScheduleEvents(
+    Iterable<PrayerNotificationEvent> events,
+  ) {
+    return events
+        .map(
+          (event) => <Object>[
+            event.scheduledInstantUtc.millisecondsSinceEpoch ~/ 1000,
+            event.id,
+            event.prayer.name,
+          ],
+        )
+        .toList(growable: false);
   }
 
   Future<_InstallationIdentity> _installationIdentity() async {
