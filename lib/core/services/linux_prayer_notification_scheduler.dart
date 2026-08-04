@@ -6,9 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:path/path.dart' as path;
 
-class LinuxPrayerNotificationScheduler {
+abstract interface class LinuxPrayerScheduleWriter {
+  Future<bool> apply(PrayerNotificationPlan plan);
+}
+
+class LinuxPrayerNotificationScheduler implements LinuxPrayerScheduleWriter {
   static const _assetPath = 'assets/linux/huda_prayer_notification_helper.sh';
 
+  @override
   Future<bool> apply(PrayerNotificationPlan plan) async {
     if (!Platform.isLinux) return false;
 
@@ -32,7 +37,7 @@ class LinuxPrayerNotificationScheduler {
 
       final scheduleFile = File(path.join(dataRoot, 'schedule.tsv'));
       final temporaryFile = File('${scheduleFile.path}.new');
-      await temporaryFile.writeAsString(_serialize(plan));
+      await temporaryFile.writeAsString(serialize(plan));
       await temporaryFile.rename(scheduleFile.path);
 
       if (snapData != null && snapData.isNotEmpty) {
@@ -66,11 +71,12 @@ class LinuxPrayerNotificationScheduler {
     }
   }
 
-  String _serialize(PrayerNotificationPlan plan) {
+  @visibleForTesting
+  String serialize(PrayerNotificationPlan plan) {
     return plan.events.map((event) {
       final title = base64Encode(utf8.encode(event.title));
       final body = base64Encode(utf8.encode(event.body));
-      return '${event.scheduledTime.millisecondsSinceEpoch ~/ 1000}'
+      return '${event.scheduledInstantUtc.millisecondsSinceEpoch ~/ 1000}'
           '\t${event.id}\t$title\t$body';
     }).join('\n');
   }
