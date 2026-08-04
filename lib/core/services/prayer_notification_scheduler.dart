@@ -5,6 +5,7 @@ import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/linux_prayer_notification_scheduler.dart';
 import 'package:huda/core/services/notification_capacity_policy.dart';
 import 'package:huda/core/services/notification_services.dart';
+import 'package:huda/core/services/prayer_notification_gateway.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_notification_planner.dart';
 import 'package:huda/core/services/prayer_push_service.dart';
@@ -14,9 +15,9 @@ import 'package:synchronized/synchronized.dart';
 class PrayerNotificationScheduler {
   PrayerNotificationScheduler({
     required this.cacheHelper,
-    NotificationServices? notifications,
+    PrayerNotificationGateway? notifications,
     NotificationCapacityPolicy? capacityPolicy,
-    LinuxPrayerNotificationScheduler? linuxScheduler,
+    LinuxPrayerScheduleWriter? linuxScheduler,
     PrayerPushSynchronizer? pushSynchronizer,
     DateTime Function()? now,
   })  : notifications = notifications ?? NotificationServices(),
@@ -36,9 +37,9 @@ class PrayerNotificationScheduler {
   static final Lock _lock = Lock();
 
   final CacheHelper cacheHelper;
-  final NotificationServices notifications;
+  final PrayerNotificationGateway notifications;
   final NotificationCapacityPolicy capacityPolicy;
-  final LinuxPrayerNotificationScheduler linuxScheduler;
+  final LinuxPrayerScheduleWriter linuxScheduler;
   final PrayerPushSynchronizer pushSynchronizer;
   final DateTime Function() _now;
 
@@ -71,6 +72,7 @@ class PrayerNotificationScheduler {
 
     try {
       await notifications.initialize();
+      await notifications.refreshTimeZone();
       final planner = PrayerNotificationPlanner(cacheHelper);
       final now = _now();
 
@@ -114,11 +116,13 @@ class PrayerNotificationScheduler {
       await _trimRandomAthkar(allPending.map((item) => item.id));
       allPending = await notifications.pendingNotificationRequests();
 
-      final prayerPendingIds = allPending
-          .map((request) => request.id)
-          .where(PrayerNotificationEvent.isPrayerId)
-          .toSet();
-      final otherPendingCount = allPending.length - prayerPendingIds.length;
+      final prayerPendingById = {
+        for (final request in allPending)
+          if (PrayerNotificationEvent.isPrayerId(request.id))
+            request.id: request,
+      };
+      final prayerPendingIds = prayerPendingById.keys.toSet();
+      final otherPendingCount = allPending.length - prayerPendingById.length;
       final available = math.max(
         0,
         math.min(
@@ -154,9 +158,19 @@ class PrayerNotificationScheduler {
       final requiresFullRefresh = force || signatureChanged;
 
       final staleIds = prayerPendingIds.difference(desiredIds);
-      if (staleIds.isNotEmpty) {
-        await notifications.cancelNotifications(staleIds);
-        prayerPendingIds.removeAll(staleIds);
+      final mismatchedIds = prayerPendingIds.intersection(desiredIds).where(
+        (id) {
+          return !desiredById[id]!.matchesPendingPayload(
+            prayerPendingById[id]?.payload,
+          );
+        },
+      ).toSet();
+      final idsToReplace = requiresFullRefresh
+          ? prayerPendingIds.toSet()
+          : <int>{...staleIds, ...mismatchedIds};
+      if (idsToReplace.isNotEmpty) {
+        await notifications.cancelNotifications(idsToReplace);
+        prayerPendingIds.removeAll(idsToReplace);
       }
 
       final toSchedule = requiresFullRefresh
@@ -177,10 +191,20 @@ class PrayerNotificationScheduler {
       }
 
       final verifiedPending = await notifications.pendingNotificationRequests();
-      final verifiedIds = verifiedPending
-          .map((request) => request.id)
-          .where(desiredIds.contains)
-          .toSet();
+      final verifiedIds = <int>{};
+      final invalidRetainedIds = <int>{};
+      for (final request in verifiedPending) {
+        final desired = desiredById[request.id];
+        if (desired == null) continue;
+        if (desired.matchesPendingPayload(request.payload)) {
+          verifiedIds.add(request.id);
+        } else {
+          invalidRetainedIds.add(request.id);
+        }
+      }
+      if (invalidRetainedIds.isNotEmpty) {
+        await notifications.cancelNotifications(invalidRetainedIds);
+      }
       final verifiedEvents = plan.events
           .where((event) => verifiedIds.contains(event.id))
           .toList(growable: false);
@@ -261,8 +285,9 @@ class PrayerNotificationScheduler {
   }) async {
     try {
       await pushSynchronizer.syncFallback(
-        localCoverageUntil:
-            retainedEvents.isEmpty ? null : retainedEvents.last.scheduledTime,
+        localCoverageUntil: retainedEvents.isEmpty
+            ? null
+            : retainedEvents.last.scheduledInstantUtc,
         timeZoneName: timeZoneName,
         reason: reason,
       );
@@ -286,7 +311,7 @@ class PrayerNotificationScheduler {
   ) async {
     final coverage = retainedEvents.isEmpty
         ? null
-        : retainedEvents.last.scheduledTime.toIso8601String();
+        : retainedEvents.last.scheduledInstantUtc.toIso8601String();
     await cacheHelper.saveData(
       key: signatureKey,
       value: plan.configurationSignature,
