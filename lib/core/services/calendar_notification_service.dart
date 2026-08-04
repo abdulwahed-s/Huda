@@ -1,9 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
 
 class CalendarNotificationService {
   static final CalendarNotificationService _instance =
@@ -17,9 +16,7 @@ class CalendarNotificationService {
   CalendarNotificationService._internal();
 
   Future<void> init() async {
-    tz.initializeTimeZones();
-    final locationName = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(locationName));
+    await PrayerTimeZoneService.refreshLocalTimeZone();
     const android = AndroidInitializationSettings('ic_calendar_notification');
     const ios = DarwinInitializationSettings(
       requestAlertPermission: false,
