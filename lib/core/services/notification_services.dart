@@ -2,23 +2,25 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:huda/core/services/prayer_notification_gateway.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/presentation/screens/app.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
-import 'package:timezone/data/latest.dart' as tz_data;
-import 'package:timezone/timezone.dart' as tz;
 
-class NotificationServices {
+class NotificationServices implements PrayerNotificationGateway {
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
   static Future<void>? _initialization;
-  static String _timeZoneName = 'local';
+  static String _timeZoneName = 'UTC';
 
   FlutterLocalNotificationsPlugin get notificationPlugin => _plugin;
   bool get isReady => _initialization != null;
+
+  @override
   String get timeZoneName => _timeZoneName;
 
+  @override
   Future<void> initialize() async {
     _initialization ??= _initializePlugin();
     try {
@@ -30,13 +32,8 @@ class NotificationServices {
   }
 
   Future<void> _initializePlugin() async {
-    tz_data.initializeTimeZones();
-    try {
-      _timeZoneName = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(_timeZoneName));
-    } catch (error) {
-      debugPrint('Unable to determine local timezone: $error');
-    }
+    PrayerTimeZoneService.initializeDatabase();
+    await refreshTimeZone();
 
     const settings = InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
@@ -67,10 +64,17 @@ class NotificationServices {
     await _createNotificationChannel();
   }
 
+  @override
+  Future<String> refreshTimeZone() async {
+    _timeZoneName = await PrayerTimeZoneService.refreshLocalTimeZone();
+    return _timeZoneName;
+  }
+
   static void _onNotificationResponse(NotificationResponse response) {
     App.navigatorKey.currentState?.pushNamed('/prayerTimes');
   }
 
+  @override
   Future<bool> areNotificationsAllowed() async {
     await initialize();
     if (Platform.isAndroid) {
@@ -164,19 +168,14 @@ class NotificationServices {
     await _plugin.show(id, title, body, notificationDetails());
   }
 
+  @override
   Future<bool> schedulePrayerEvent(PrayerNotificationEvent event) async {
     await initialize();
-    if (!event.scheduledTime.isAfter(DateTime.now())) return false;
-
-    final scheduled = tz.TZDateTime(
-      tz.local,
-      event.scheduledTime.year,
-      event.scheduledTime.month,
-      event.scheduledTime.day,
-      event.scheduledTime.hour,
-      event.scheduledTime.minute,
-      event.scheduledTime.second,
-    );
+    final now = DateTime.now().toUtc();
+    final scheduled = event.scheduledDateTime;
+    if (!event.scheduledInstantUtc.isAfter(now)) {
+      return false;
+    }
 
     var mode = AndroidScheduleMode.exactAllowWhileIdle;
     if (Platform.isAndroid && !await canScheduleExactNotifications()) {
@@ -224,10 +223,17 @@ class NotificationServices {
     required String body,
     required DateTime scheduledTime,
   }) async {
+    await initialize();
+    await refreshTimeZone();
     await schedulePrayerEvent(PrayerNotificationEvent(
       id: 2000 + id,
       prayer: Prayer.none,
       scheduledTime: scheduledTime,
+      scheduledInstantUtc: PrayerTimeZoneService.fromWallClock(
+        scheduledTime,
+        _timeZoneName,
+      ).toUtc(),
+      timeZoneName: _timeZoneName,
       title: title,
       body: body,
     ));
@@ -240,15 +246,23 @@ class NotificationServices {
     required DateTime scheduledTime,
     required int dayOffset,
   }) async {
+    await initialize();
+    await refreshTimeZone();
     await schedulePrayerEvent(PrayerNotificationEvent(
       id: PrayerNotificationEvent.idFor(scheduledTime, prayer),
       prayer: prayer,
       scheduledTime: scheduledTime,
+      scheduledInstantUtc: PrayerTimeZoneService.fromWallClock(
+        scheduledTime,
+        _timeZoneName,
+      ).toUtc(),
+      timeZoneName: _timeZoneName,
       title: title,
       body: body,
     ));
   }
 
+  @override
   Future<List<PendingNotificationRequest>> pendingNotificationRequests() async {
     await initialize();
     return _plugin.pendingNotificationRequests();
@@ -259,6 +273,7 @@ class NotificationServices {
     await _plugin.cancel(id);
   }
 
+  @override
   Future<void> cancelNotifications(Iterable<int> ids) async {
     await initialize();
     for (final id in ids.toSet()) {
