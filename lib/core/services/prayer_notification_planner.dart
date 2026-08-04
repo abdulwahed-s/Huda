@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
@@ -8,7 +9,7 @@ import 'package:prayer_time_plus/prayer_time_plus.dart';
 class PrayerNotificationPlanner {
   const PrayerNotificationPlanner(this.cacheHelper);
 
-  static const int configurationVersion = 2;
+  static const int configurationVersion = 3;
 
   final CacheHelper cacheHelper;
 
@@ -26,19 +27,38 @@ class PrayerNotificationPlanner {
     final localeCode = _localeCode();
     final localizations = _localizations(localeCode);
     final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
-    final requestedThrough = now.add(horizon);
-    final events = <PrayerNotificationEvent>[];
+    final countryCode = PrayerTimesCalculator.countryCodeFromCache(cacheHelper);
+    final scheduleTimeZoneName = PrayerTimesCalculator.resolveTimeZoneName(
+      countryCode: countryCode,
+      fallbackTimeZoneName: timeZoneName,
+    );
+    final nowUtc = now.toUtc();
+    final zonedNow = PrayerTimeZoneService.atInstant(
+      nowUtc,
+      scheduleTimeZoneName,
+    );
+    final requestedThrough = nowUtc.add(horizon);
+    final zonedRequestedThrough = PrayerTimeZoneService.atInstant(
+      requestedThrough,
+      scheduleTimeZoneName,
+    );
+    final candidates = <PrayerNotificationEvent>[];
 
-    for (var dayOffset = 0;
-        dayOffset <= horizon.inDays && events.length < maxEvents;
-        dayOffset++) {
-      final date = DateTime(now.year, now.month, now.day + dayOffset);
+    for (var dayOffset = 0;; dayOffset++) {
+      final date = DateTime(
+        zonedNow.year,
+        zonedNow.month,
+        zonedNow.day + dayOffset,
+      );
+      if (_isAfterCalendarDate(date, zonedRequestedThrough)) break;
       final times = PrayerTimesCalculator.computeFromCache(
         cacheHelper,
         coordinates,
         date,
+        timeZoneName: scheduleTimeZoneName,
       );
-      final adjusted = PrayerTimesCalculator.dailyAdjustedTimes(times, offsets);
+      final adjustedInstants =
+          PrayerTimesCalculator.dailyAdjustedInstants(times, offsets);
 
       for (final prayer in const [
         Prayer.fajr,
@@ -47,34 +67,60 @@ class PrayerNotificationPlanner {
         Prayer.maghrib,
         Prayer.isha,
       ]) {
-        final scheduledTime = adjusted[prayer];
-        if (scheduledTime == null ||
-            !scheduledTime.isAfter(now) ||
-            scheduledTime.isAfter(requestedThrough)) {
-          continue;
-        }
+        final scheduledInstantUtc = adjustedInstants[prayer];
+        if (scheduledInstantUtc == null) continue;
+        final scheduledTime = PrayerTimeZoneService.wallClockAtInstant(
+          scheduledInstantUtc,
+          scheduleTimeZoneName,
+        );
 
         final prayerName = _prayerName(prayer, localizations);
-        events.add(PrayerNotificationEvent(
+        final event = PrayerNotificationEvent(
           id: PrayerNotificationEvent.idFor(scheduledTime, prayer),
           prayer: prayer,
           scheduledTime: scheduledTime,
+          scheduledInstantUtc: scheduledInstantUtc,
+          timeZoneName: scheduleTimeZoneName,
           title: localizations.notificationPrayerTimeTitle(prayerName),
           body: localizations.notificationPrayerTimeBody(prayerName),
-        ));
-        if (events.length == maxEvents) break;
+        );
+        if (!event.scheduledInstantUtc.isAfter(nowUtc) ||
+            event.scheduledInstantUtc.isAfter(requestedThrough)) {
+          continue;
+        }
+        candidates.add(event);
       }
+    }
+
+    candidates.sort(
+      (first, second) => first.scheduledInstantUtc.compareTo(
+        second.scheduledInstantUtc,
+      ),
+    );
+    final selectedIds = <int>{};
+    final events = <PrayerNotificationEvent>[];
+    for (final candidate in candidates) {
+      if (!selectedIds.add(candidate.id)) continue;
+      events.add(candidate);
+      if (events.length == maxEvents) break;
     }
 
     return PrayerNotificationPlan(
       events: List.unmodifiable(events),
       configurationSignature: _configurationSignature(
         localeCode: localeCode,
-        timeZoneName: timeZoneName,
+        deviceTimeZoneName: timeZoneName,
+        scheduleTimeZoneName: scheduleTimeZoneName,
         offsets: offsets,
       ),
       requestedThrough: requestedThrough,
     );
+  }
+
+  bool _isAfterCalendarDate(DateTime date, DateTime other) {
+    if (date.year != other.year) return date.year > other.year;
+    if (date.month != other.month) return date.month > other.month;
+    return date.day > other.day;
   }
 
   String _localeCode() =>
@@ -110,7 +156,8 @@ class PrayerNotificationPlanner {
 
   String _configurationSignature({
     required String localeCode,
-    required String timeZoneName,
+    required String deviceTimeZoneName,
+    required String scheduleTimeZoneName,
     required Map<String, int> offsets,
   }) {
     final parts = <String>[
@@ -124,7 +171,8 @@ class PrayerNotificationPlanner {
               key: PrayerTimesCalculator.highLatitudeRuleKey) ??
           '',
       localeCode,
-      timeZoneName,
+      'device-zone:$deviceTimeZoneName',
+      'schedule-zone:$scheduleTimeZoneName',
       for (final key in PrayerTimesCalculator.offsetPrayerKeys)
         '$key:${offsets[key] ?? 0}',
     ];
