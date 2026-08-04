@@ -4,12 +4,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/notification_capacity_policy.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:workmanager/workmanager.dart';
 
@@ -45,9 +44,7 @@ class NotificationPageHelper {
   ];
 
   Future<void> init() async {
-    tz.initializeTimeZones();
-    final locationName = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(locationName));
+    final locationName = await PrayerTimeZoneService.refreshLocalTimeZone();
 
     debugPrint('🌍 Timezone initialized: $locationName');
     debugPrint('🕒 Local time: ${tz.TZDateTime.now(tz.local)}');
