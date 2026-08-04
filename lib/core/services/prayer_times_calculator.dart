@@ -1,8 +1,7 @@
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timezone/data/latest_all.dart' as tz_data;
-import 'package:timezone/timezone.dart' as tz;
 
 class DailyPrayerTimes {
   const DailyPrayerTimes({
@@ -12,6 +11,12 @@ class DailyPrayerTimes {
     this.asr,
     this.maghrib,
     this.isha,
+    this.fajrInstantUtc,
+    this.sunriseInstantUtc,
+    this.dhuhrInstantUtc,
+    this.asrInstantUtc,
+    this.maghribInstantUtc,
+    this.ishaInstantUtc,
   });
 
   final DateTime? fajr;
@@ -20,6 +25,12 @@ class DailyPrayerTimes {
   final DateTime? asr;
   final DateTime? maghrib;
   final DateTime? isha;
+  final DateTime? fajrInstantUtc;
+  final DateTime? sunriseInstantUtc;
+  final DateTime? dhuhrInstantUtc;
+  final DateTime? asrInstantUtc;
+  final DateTime? maghribInstantUtc;
+  final DateTime? ishaInstantUtc;
 
   DateTime? timeForPrayer(Prayer prayer) {
     switch (prayer) {
@@ -35,6 +46,25 @@ class DailyPrayerTimes {
         return maghrib;
       case Prayer.isha:
         return isha;
+      case Prayer.none:
+        return null;
+    }
+  }
+
+  DateTime? instantForPrayer(Prayer prayer) {
+    switch (prayer) {
+      case Prayer.fajr:
+        return fajrInstantUtc;
+      case Prayer.sunrise:
+        return sunriseInstantUtc;
+      case Prayer.dhuhr:
+        return dhuhrInstantUtc;
+      case Prayer.asr:
+        return asrInstantUtc;
+      case Prayer.maghrib:
+        return maghribInstantUtc;
+      case Prayer.isha:
+        return ishaInstantUtc;
       case Prayer.none:
         return null;
     }
@@ -57,8 +87,6 @@ class PrayerTimesCalculator {
   static const String defaultMadhabToken = 'shafi';
   static const String defaultHighLatitudeToken = 'automatic';
 
-  static bool _timeZonesInitialized = false;
-
   static const Map<String, String> _countryTimeZoneIds = {
     'AE': 'Asia/Dubai',
     'BH': 'Asia/Bahrain',
@@ -68,8 +96,11 @@ class PrayerTimesCalculator {
     'FR': 'Europe/Paris',
     'GB': 'Europe/London',
     'ID': 'Asia/Jakarta',
+    'IN': 'Asia/Kolkata',
+    'JP': 'Asia/Tokyo',
     'KW': 'Asia/Kuwait',
     'MY': 'Asia/Kuala_Lumpur',
+    'NP': 'Asia/Kathmandu',
     'OM': 'Asia/Muscat',
     'PK': 'Asia/Karachi',
     'QA': 'Asia/Qatar',
@@ -155,28 +186,55 @@ class PrayerTimesCalculator {
     return DateTime(t.year, t.month, t.day, t.hour, t.minute, t.second);
   }
 
-  static void _ensureTimeZonesInitialized() {
-    if (_timeZonesInitialized) return;
-    tz_data.initializeTimeZones();
-    _timeZonesInitialized = true;
+  static DateTime? _instantUtc(DateTime? wallClock, Duration offset) {
+    return wallClock?.subtract(offset).toUtc();
   }
 
-  static Duration _offsetForCountry(String countryCode, DateTime date) {
-    final zoneId = _countryTimeZoneIds[countryCode.trim().toUpperCase()];
-    if (zoneId == null) return date.timeZoneOffset;
+  static DateTime? _wallClockAtInstant(
+    DateTime? instantUtc,
+    String? timeZoneName,
+    DateTime? fixedOffsetWallClock,
+  ) {
+    if (instantUtc == null) return null;
+    if (timeZoneName == null) return _localWallClock(fixedOffsetWallClock);
+    return PrayerTimeZoneService.wallClockAtInstant(
+      instantUtc,
+      timeZoneName,
+    );
+  }
 
+  static String? timeZoneNameForCountry(String countryCode) =>
+      _countryTimeZoneIds[countryCode.trim().toUpperCase()];
+
+  static String resolveTimeZoneName({
+    required String countryCode,
+    required String fallbackTimeZoneName,
+  }) {
+    return timeZoneNameForCountry(countryCode) ?? fallbackTimeZoneName;
+  }
+
+  static Duration offsetForTimeZone(String timeZoneName, DateTime date) {
+    final midday = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      12,
+    );
+    return PrayerTimeZoneService.fromWallClock(midday, timeZoneName)
+        .timeZoneOffset;
+  }
+
+  static Duration _calculationOffset({
+    required String countryCode,
+    required DateTime date,
+    String? timeZoneName,
+  }) {
+    final zoneId = timeZoneName ?? timeZoneNameForCountry(countryCode);
+    if (zoneId == null) return date.timeZoneOffset;
     try {
-      _ensureTimeZonesInitialized();
-      final location = tz.getLocation(zoneId);
-      final localDate = tz.TZDateTime(
-        location,
-        date.year,
-        date.month,
-        date.day,
-        12,
-      );
-      return localDate.timeZoneOffset;
+      return offsetForTimeZone(zoneId, date);
     } catch (_) {
+      if (timeZoneName != null) rethrow;
       return date.timeZoneOffset;
     }
   }
@@ -186,6 +244,7 @@ class PrayerTimesCalculator {
     DateTime date, {
     String methodToken = defaultMethodToken,
     String countryCode = '',
+    String? timeZoneName,
     Madhab madhab = Madhab.shafi,
     HighLatitudeRule highLatitudeRule = HighLatitudeRule.automatic,
   }) {
@@ -195,33 +254,78 @@ class PrayerTimesCalculator {
       madhab: madhab,
       highLatitudeRule: highLatitudeRule,
     );
+    final calculationOffset = _calculationOffset(
+      countryCode: countryCode,
+      date: date,
+      timeZoneName: timeZoneName,
+    );
     final times = PrayerTimes(
       coordinates,
       DateComponents(date.year, date.month, date.day),
       params,
-      utcOffset: _offsetForCountry(countryCode, date),
+      utcOffset: calculationOffset,
       countryCode: countryCode.trim(),
     );
+    final calculationTimeZoneName =
+        timeZoneName ?? timeZoneNameForCountry(countryCode);
+    final fajrInstant = _instantUtc(times.fajr, calculationOffset);
+    final sunriseInstant = _instantUtc(times.sunrise, calculationOffset);
+    final dhuhrInstant = _instantUtc(times.dhuhr, calculationOffset);
+    final asrInstant = _instantUtc(times.asr, calculationOffset);
+    final maghribInstant = _instantUtc(times.maghrib, calculationOffset);
+    final ishaInstant = _instantUtc(times.isha, calculationOffset);
     return DailyPrayerTimes(
-      fajr: _localWallClock(times.fajr),
-      sunrise: _localWallClock(times.sunrise),
-      dhuhr: _localWallClock(times.dhuhr),
-      asr: _localWallClock(times.asr),
-      maghrib: _localWallClock(times.maghrib),
-      isha: _localWallClock(times.isha),
+      fajr: _wallClockAtInstant(
+        fajrInstant,
+        calculationTimeZoneName,
+        times.fajr,
+      ),
+      sunrise: _wallClockAtInstant(
+        sunriseInstant,
+        calculationTimeZoneName,
+        times.sunrise,
+      ),
+      dhuhr: _wallClockAtInstant(
+        dhuhrInstant,
+        calculationTimeZoneName,
+        times.dhuhr,
+      ),
+      asr: _wallClockAtInstant(
+        asrInstant,
+        calculationTimeZoneName,
+        times.asr,
+      ),
+      maghrib: _wallClockAtInstant(
+        maghribInstant,
+        calculationTimeZoneName,
+        times.maghrib,
+      ),
+      isha: _wallClockAtInstant(
+        ishaInstant,
+        calculationTimeZoneName,
+        times.isha,
+      ),
+      fajrInstantUtc: fajrInstant,
+      sunriseInstantUtc: sunriseInstant,
+      dhuhrInstantUtc: dhuhrInstant,
+      asrInstantUtc: asrInstant,
+      maghribInstantUtc: maghribInstant,
+      ishaInstantUtc: ishaInstant,
     );
   }
 
   static DailyPrayerTimes computeFromCache(
     CacheHelper cache,
     Coordinates coordinates,
-    DateTime date,
-  ) {
+    DateTime date, {
+    String? timeZoneName,
+  }) {
     return compute(
       coordinates,
       date,
       methodToken: methodTokenFromCache(cache),
       countryCode: countryCodeFromCache(cache),
+      timeZoneName: timeZoneName,
       madhab: madhabFromToken(cache.getDataString(key: madhabKey)),
       highLatitudeRule: highLatitudeRuleFromToken(
           cache.getDataString(key: highLatitudeRuleKey)),
@@ -231,13 +335,15 @@ class PrayerTimesCalculator {
   static DailyPrayerTimes computeFromPrefs(
     SharedPreferences prefs,
     Coordinates coordinates,
-    DateTime date,
-  ) {
+    DateTime date, {
+    String? timeZoneName,
+  }) {
     return compute(
       coordinates,
       date,
       methodToken: methodTokenFromPrefs(prefs),
       countryCode: countryCodeFromPrefs(prefs),
+      timeZoneName: timeZoneName,
       madhab: madhabFromToken(prefs.getString(madhabKey)),
       highLatitudeRule:
           highLatitudeRuleFromToken(prefs.getString(highLatitudeRuleKey)),
@@ -325,6 +431,17 @@ class PrayerTimesCalculator {
     return base.add(Duration(minutes: offset));
   }
 
+  static DateTime? adjustedInstantFor(
+    DailyPrayerTimes prayerTimes,
+    Prayer prayer,
+    Map<String, int> offsets,
+  ) {
+    final base = prayerTimes.instantForPrayer(prayer);
+    if (base == null) return null;
+    final offset = offsets[keyOf(prayer)] ?? 0;
+    return base.add(Duration(minutes: offset)).toUtc();
+  }
+
   static Map<Prayer, DateTime> dailyAdjustedTimes(
     DailyPrayerTimes prayerTimes,
     Map<String, int> offsets,
@@ -339,6 +456,24 @@ class PrayerTimesCalculator {
     ]) {
       final t = adjustedTimeFor(prayerTimes, p, offsets);
       if (t != null) result[p] = t;
+    }
+    return result;
+  }
+
+  static Map<Prayer, DateTime> dailyAdjustedInstants(
+    DailyPrayerTimes prayerTimes,
+    Map<String, int> offsets,
+  ) {
+    final result = <Prayer, DateTime>{};
+    for (final p in const [
+      Prayer.fajr,
+      Prayer.dhuhr,
+      Prayer.asr,
+      Prayer.maghrib,
+      Prayer.isha,
+    ]) {
+      final instant = adjustedInstantFor(prayerTimes, p, offsets);
+      if (instant != null) result[p] = instant;
     }
     return result;
   }
