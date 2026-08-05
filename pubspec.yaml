@@ -40,6 +40,7 @@ dependencies:
 
   # Networking & backend
   dio: ^5.8.0+1
+  http: ^1.6.0
   supabase_flutter: ^2.8.4
   crypto: ^3.0.6
 
@@ -63,11 +64,11 @@ dependencies:
   # Date & time
   jiffy: ^6.4.3
   intl: ^0.20.2
-  timezone: ^0.10.1
+  timezone: ^0.11.0
   flutter_timezone: ^4.1.1
 
   # Notifications & background work
-  flutter_local_notifications: ^19.5.0
+  flutter_local_notifications: ^22.1.0
   workmanager: ^0.9.0+2
   flutter_foreground_task: ^9.1.0
   alarm: ^5.2.1
@@ -91,7 +92,9 @@ dependencies:
   widgets_to_image: ^2.0.1
 
   # PDF
-  pdfrx: ^2.2.24
+  dart_pdf_editor: 2.1.0
+  pdf_document: 2.1.0
+  pdf_graphics: 2.1.0
 
   # Misc
   uuid: ^4.5.1
