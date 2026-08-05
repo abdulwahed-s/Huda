@@ -45,7 +45,7 @@ class CalendarNotificationService {
       linux: linux,
     );
 
-    await _plugin.initialize(settings);
+    await _plugin.initialize(settings: settings);
   }
 
   Future<void> scheduleNotification({
@@ -61,11 +61,11 @@ class CalendarNotificationService {
         await android?.canScheduleExactNotifications() ?? true;
 
     await _plugin.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(dateTime, tz.local),
-      NotificationDetails(
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: tz.TZDateTime.from(dateTime, tz.local),
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           'event_reminder',
           'Event Reminder',
@@ -94,15 +94,16 @@ class CalendarNotificationService {
 
   Future<void> sendImmediateNotification() async {
     await _plugin.show(
-      0,
-      "Immediate Notification",
-      "This shows immediately on Windows",
-      const NotificationDetails(windows: WindowsNotificationDetails()),
+      id: 0,
+      title: "Immediate Notification",
+      body: "This shows immediately on Windows",
+      notificationDetails:
+          const NotificationDetails(windows: WindowsNotificationDetails()),
     );
   }
 
   Future<void> cancelNotification(int id) async {
-    await _plugin.cancel(id);
+    await _plugin.cancel(id: id);
   }
 
   Future<void> cancelAll() async {
