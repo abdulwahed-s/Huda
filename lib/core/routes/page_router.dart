@@ -620,6 +620,7 @@ class PageRouter {
             bookId: args['bookId'] as int?,
             bookTitle: args['bookTitle'] as String?,
             language: args['language'] as String?,
+            fallbackPdfUrl: args['fallbackPdfUrl'] as String?,
           ),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0);
