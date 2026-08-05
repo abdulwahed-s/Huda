@@ -76,7 +76,7 @@ class NotificationPageHelper {
         windows: windows,
         linux: linux);
 
-    final initialized = await _plugin.initialize(settings);
+    final initialized = await _plugin.initialize(settings: settings);
     debugPrint('🔧 Plugin initialized: $initialized');
 
     await _createNotificationChannels();
@@ -211,11 +211,11 @@ class NotificationPageHelper {
     }
 
     await _plugin.zonedSchedule(
-      id,
-      title,
-      body,
-      scheduled,
-      const NotificationDetails(
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: scheduled,
+      notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
           'islamic_reminders',
           'Islamic Reminders',
@@ -281,11 +281,11 @@ class NotificationPageHelper {
     }
 
     await _plugin.zonedSchedule(
-      id,
-      title,
-      body,
-      scheduled,
-      const NotificationDetails(
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: scheduled,
+      notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails('kahf_friday', 'Al-Kahf Friday',
             channelDescription: 'Weekly reminder for Surat Al-Kahf on Friday',
             importance: Importance.high,
@@ -460,7 +460,7 @@ class NotificationPageHelper {
         id >= _randomAthkarBaseId &&
         id < _randomAthkarBaseId + _historicalRandomAthkarLimit);
     for (final id in ids) {
-      await _plugin.cancel(id);
+      await _plugin.cancel(id: id);
     }
 
     debugPrint('🗑️ Cancelled historical random athkar notifications');
@@ -512,7 +512,7 @@ class NotificationPageHelper {
   }
 
   Future<void> cancel(int id) async {
-    await _plugin.cancel(id);
+    await _plugin.cancel(id: id);
   }
 
   Future<void> cancelAll() async {
@@ -605,10 +605,11 @@ class NotificationPageHelper {
 
       debugPrint('🧪 Testing immediate notification...');
       await _plugin.show(
-        99999,
-        '🔥 IMMEDIATE DEBUG TEST',
-        'If you see this notification, the basic system works! Time: ${DateTime.now()}',
-        const NotificationDetails(
+        id: 99999,
+        title: '🔥 IMMEDIATE DEBUG TEST',
+        body:
+            'If you see this notification, the basic system works! Time: ${DateTime.now()}',
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'islamic_reminders',
             'Islamic Reminders',
@@ -625,11 +626,12 @@ class NotificationPageHelper {
 
       final testTime = now.add(const Duration(seconds: 3));
       await _plugin.zonedSchedule(
-        99998,
-        '⏰ SCHEDULED DEBUG TEST',
-        'Scheduled test at $testTime - if you see this, scheduling works!',
-        testTime,
-        const NotificationDetails(
+        id: 99998,
+        title: '⏰ SCHEDULED DEBUG TEST',
+        body:
+            'Scheduled test at $testTime - if you see this, scheduling works!',
+        scheduledDate: testTime,
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'islamic_reminders',
             'Islamic Reminders',
@@ -692,10 +694,11 @@ class NotificationPageHelper {
       debugPrint('🕒 Scheduled time: $testTime');
 
       await _plugin.show(
-        9999,
-        '🚀 IMMEDIATE TEST #1',
-        'Basic immediate notification - should appear instantly! Time: ${DateTime.now()}',
-        const NotificationDetails(
+        id: 9999,
+        title: '🚀 IMMEDIATE TEST #1',
+        body:
+            'Basic immediate notification - should appear instantly! Time: ${DateTime.now()}',
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'islamic_reminders',
             'Islamic Reminders',
@@ -713,10 +716,11 @@ class NotificationPageHelper {
       debugPrint('🚀 Immediate notification #1 sent!');
 
       await _plugin.show(
-        9998,
-        '🔥 IMMEDIATE TEST #2',
-        'Different settings notification - should also appear instantly! Time: ${DateTime.now()}',
-        const NotificationDetails(
+        id: 9998,
+        title: '🔥 IMMEDIATE TEST #2',
+        body:
+            'Different settings notification - should also appear instantly! Time: ${DateTime.now()}',
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'kahf_friday',
             'Al-Kahf Friday',
@@ -734,11 +738,12 @@ class NotificationPageHelper {
       debugPrint('🚀 Immediate notification #2 sent!');
 
       await _plugin.zonedSchedule(
-        9997,
-        '⏰ SCHEDULED TEST',
-        'This is a scheduled test at $testTime - if you see this, scheduling works!',
-        testTime,
-        const NotificationDetails(
+        id: 9997,
+        title: '⏰ SCHEDULED TEST',
+        body:
+            'This is a scheduled test at $testTime - if you see this, scheduling works!',
+        scheduledDate: testTime,
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'islamic_reminders',
             'Islamic Reminders',
@@ -758,10 +763,10 @@ class NotificationPageHelper {
           '⏰ Scheduled notification set for: $testTime (5 seconds from now)');
 
       await _plugin.show(
-        9996,
-        'MINIMAL TEST',
-        'Minimal notification with basic settings',
-        const NotificationDetails(
+        id: 9996,
+        title: 'MINIMAL TEST',
+        body: 'Minimal notification with basic settings',
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'islamic_reminders',
             'Islamic Reminders',
@@ -870,11 +875,11 @@ class NotificationPageHelper {
         final athkarText = _getRandomAthkar();
 
         await _plugin.zonedSchedule(
-          notificationId,
-          '📿 Athkar Reminder',
-          athkarText,
-          nextTime,
-          const NotificationDetails(
+          id: notificationId,
+          title: '📿 Athkar Reminder',
+          body: athkarText,
+          scheduledDate: nextTime,
+          notificationDetails: const NotificationDetails(
             android: AndroidNotificationDetails(
               'islamic_reminders',
               'Islamic Reminders',
@@ -972,11 +977,11 @@ class NotificationPageHelper {
               final athkarText = _getRandomAthkar();
 
               await _plugin.zonedSchedule(
-                notificationId,
-                '📿 Athkar Reminder',
-                athkarText,
-                nextTime,
-                const NotificationDetails(
+                id: notificationId,
+                title: '📿 Athkar Reminder',
+                body: athkarText,
+                scheduledDate: nextTime,
+                notificationDetails: const NotificationDetails(
                   android: AndroidNotificationDetails(
                     'islamic_reminders',
                     'Islamic Reminders',
