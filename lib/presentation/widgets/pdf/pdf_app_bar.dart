@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:pdfrx/pdfrx.dart';
+import 'package:dart_pdf_editor/dart_pdf_editor.dart';
 
 class PdfAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isDark;
   final ColorScheme colorScheme;
   final ValueNotifier<bool> showLeftPane;
   final bool isHorizontalLayout;
+  final bool isDocumentReady;
   final VoidCallback changeLayoutType;
   final VoidCallback showGoToPageDialog;
   final PdfViewerController pdfViewerController;
@@ -18,6 +19,7 @@ class PdfAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.colorScheme,
     required this.showLeftPane,
     required this.isHorizontalLayout,
+    required this.isDocumentReady,
     required this.changeLayoutType,
     required this.showGoToPageDialog,
     required this.pdfViewerController,
@@ -57,9 +59,11 @@ class PdfAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: colorScheme.primary,
                 ),
               ),
-              onPressed: () {
-                showLeftPane.value = !showLeftPane.value;
-              },
+              onPressed: isDocumentReady
+                  ? () {
+                      showLeftPane.value = !showLeftPane.value;
+                    }
+                  : null,
             ),
             Container(
               margin: const EdgeInsets.only(right: 8),
@@ -72,18 +76,16 @@ class PdfAppBar extends StatelessWidget implements PreferredSizeWidget {
                   isHorizontalLayout ? Icons.view_agenda : Icons.view_day,
                   color: colorScheme.primary,
                 ),
-                onPressed: changeLayoutType,
+                onPressed: isDocumentReady ? changeLayoutType : null,
                 tooltip: AppLocalizations.of(context)!.switchLayout,
               ),
             ),
             IconButton(
               icon: Icon(Icons.find_in_page_outlined,
                   color: colorScheme.onSurface),
-              onPressed: () {
-                if (pdfViewerController.isReady) {
-                  showGoToPageDialog();
-                }
-              },
+              onPressed: isDocumentReady && pdfViewerController.pageCount > 0
+                  ? showGoToPageDialog
+                  : null,
               tooltip: AppLocalizations.of(context)!.goToPage,
             ),
           ],
