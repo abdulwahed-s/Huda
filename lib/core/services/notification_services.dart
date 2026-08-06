@@ -58,7 +58,7 @@ class NotificationServices implements PrayerNotificationGateway {
     );
 
     await _plugin.initialize(
-      settings,
+      settings: settings,
       onDidReceiveNotificationResponse: _onNotificationResponse,
     );
     await _createNotificationChannel();
@@ -165,7 +165,12 @@ class NotificationServices implements PrayerNotificationGateway {
     required String body,
   }) async {
     await initialize();
-    await _plugin.show(id, title, body, notificationDetails());
+    await _plugin.show(
+      id: id,
+      title: title,
+      body: body,
+      notificationDetails: notificationDetails(),
+    );
   }
 
   @override
@@ -184,11 +189,11 @@ class NotificationServices implements PrayerNotificationGateway {
 
     try {
       await _plugin.zonedSchedule(
-        event.id,
-        event.title,
-        event.body,
-        scheduled,
-        notificationDetails(),
+        id: event.id,
+        title: event.title,
+        body: event.body,
+        scheduledDate: scheduled,
+        notificationDetails: notificationDetails(),
         payload: event.payload,
         androidScheduleMode: mode,
       );
@@ -198,11 +203,11 @@ class NotificationServices implements PrayerNotificationGateway {
           mode != AndroidScheduleMode.inexactAllowWhileIdle) {
         try {
           await _plugin.zonedSchedule(
-            event.id,
-            event.title,
-            event.body,
-            scheduled,
-            notificationDetails(),
+            id: event.id,
+            title: event.title,
+            body: event.body,
+            scheduledDate: scheduled,
+            notificationDetails: notificationDetails(),
             payload: event.payload,
             androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
           );
@@ -270,14 +275,14 @@ class NotificationServices implements PrayerNotificationGateway {
 
   Future<void> cancelNotification(int id) async {
     await initialize();
-    await _plugin.cancel(id);
+    await _plugin.cancel(id: id);
   }
 
   @override
   Future<void> cancelNotifications(Iterable<int> ids) async {
     await initialize();
     for (final id in ids.toSet()) {
-      await _plugin.cancel(id);
+      await _plugin.cancel(id: id);
     }
   }
 
