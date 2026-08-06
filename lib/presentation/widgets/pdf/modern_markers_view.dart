@@ -110,7 +110,7 @@ class _ModernMarkersViewState extends State<ModernMarkersView> {
                         children: [
                           Text(
                             AppLocalizations.of(context)!
-                                .pageLabel(marker.range.pageNumber.toString()),
+                                .pageLabel(marker.pageNumber.toString()),
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
@@ -119,7 +119,7 @@ class _ModernMarkersViewState extends State<ModernMarkersView> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            marker.range.text,
+                            marker.text,
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: colorScheme.onSurface,
