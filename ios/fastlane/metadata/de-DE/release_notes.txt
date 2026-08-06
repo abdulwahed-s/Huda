@@ -1,5 +1,1 @@
-Passe deinen Startbildschirm an: Wähle ein Design, ordne Bereiche neu an und lege die angezeigten Funktionen fest
-Verbesserte Genauigkeit des Hidschri-Kalenders
-Gebetszeit-Benachrichtigungen decken jetzt mehr Tage ab und sorgen für zuverlässigere Erinnerungen
-Verfeinertes Design in der gesamten App
-Ein flüssigeres und intuitiveres Nutzungserlebnis
+Ein Problem wurde behoben, durch das die Abfrage der Mitteilungsberechtigung unter iOS nicht angezeigt wurde

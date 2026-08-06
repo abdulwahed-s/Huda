@@ -1,5 +1,1 @@
-Personnalisez votre écran d’accueil : choisissez un thème, réorganisez les sections et sélectionnez les fonctionnalités à afficher
-Précision améliorée du calendrier hégirien
-Les notifications d’horaires de prière couvrent désormais davantage de jours pour des rappels plus fiables
-Améliorations visuelles dans toute l’application
-Une expérience plus fluide et intuitive
+Correction d’un problème qui empêchait l’affichage de la demande d’autorisation des notifications sur iOS

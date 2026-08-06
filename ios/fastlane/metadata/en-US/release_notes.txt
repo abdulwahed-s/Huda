@@ -1,5 +1,1 @@
-Customize your Home screen: choose a theme, reorder sections, and select which features appear
-Improved Hijri calendar accuracy
-Prayer time notifications now cover more days for more reliable reminders
-Visual refinements throughout the app
-A smoother, more intuitive experience
+Fixed an issue that prevented the iOS notification permission prompt from appearing

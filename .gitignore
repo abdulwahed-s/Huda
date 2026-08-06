@@ -65,3 +65,5 @@ android/app/keystore.jks
 Gemfile.lock
 supabase/.temp/
 supabase/migrations
+
+docs/
