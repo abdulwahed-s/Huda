@@ -139,6 +139,38 @@ class OfflineBooksService {
     return true;
   }
 
+  Future<OfflineAttachment?> getDownloadedPdfAttachment(
+    int bookId, {
+    String? originalUrl,
+  }) async {
+    if (kIsWeb) return null;
+
+    final book = await getBook(bookId);
+    if (book == null) return null;
+
+    OfflineAttachment? soleValidPdf;
+    var validPdfCount = 0;
+
+    for (final attachment in book.attachments) {
+      final isDownloadedPdf = attachment.extensionType.toUpperCase() == 'PDF' &&
+          attachment.isDownloaded;
+      if (!isDownloadedPdf || !await File(attachment.localPath).exists()) {
+        continue;
+      }
+
+      if (originalUrl == null || attachment.originalUrl == originalUrl) {
+        return attachment;
+      }
+
+      soleValidPdf = attachment;
+      validPdfCount++;
+    }
+
+    if (originalUrl != null && validPdfCount == 1) return soleValidPdf;
+
+    return null;
+  }
+
   Future<List<OfflineBookModel>> getBooksByLanguage(String language) async {
     final books = await getAllBooks();
     return books.where((book) => book.language == language).toList();
