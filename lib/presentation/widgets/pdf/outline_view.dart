@@ -1,7 +1,8 @@
+import 'package:dart_pdf_editor/dart_pdf_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:pdfrx/pdfrx.dart';
+import 'package:pdf_document/pdf_document.dart';
 
 class OutlineView extends StatelessWidget {
   const OutlineView({
@@ -10,7 +11,7 @@ class OutlineView extends StatelessWidget {
     super.key,
   });
 
-  final List<PdfOutlineNode>? outline;
+  final PdfOutline? outline;
   final PdfViewerController controller;
 
   @override
@@ -52,7 +53,9 @@ class OutlineView extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(8),
-              onTap: () => controller.goToDest(item.node.dest),
+              onTap: item.node.destination == null
+                  ? null
+                  : () => controller.showDestination(item.node.destination!),
               child: Container(
                 padding: EdgeInsets.only(
                   left: item.level * 16.0 + 12,
@@ -98,12 +101,20 @@ class OutlineView extends StatelessWidget {
     );
   }
 
-  Iterable<({PdfOutlineNode node, int level})> _getOutlineList(
-      List<PdfOutlineNode>? outline, int level) sync* {
+  Iterable<({PdfOutlineItem node, int level})> _getOutlineList(
+      PdfOutline? outline, int level) sync* {
     if (outline == null) return;
-    for (var node in outline) {
+    for (final node in outline.items) {
       yield (node: node, level: level);
-      yield* _getOutlineList(node.children, level + 1);
+      yield* _getOutlineItems(node.children, level + 1);
+    }
+  }
+
+  Iterable<({PdfOutlineItem node, int level})> _getOutlineItems(
+      List<PdfOutlineItem> items, int level) sync* {
+    for (final node in items) {
+      yield (node: node, level: level);
+      yield* _getOutlineItems(node.children, level + 1);
     }
   }
 }
