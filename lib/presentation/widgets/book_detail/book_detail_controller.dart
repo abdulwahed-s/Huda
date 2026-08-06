@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/services/book_pdf_source_resolver.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/book_detail/book_detail_cubit.dart';
 import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
@@ -25,6 +26,7 @@ class BookDetailController {
   final String title;
   final VoidCallback refreshUI;
   final OfflineBooksService _offlineBooksService = OfflineBooksService();
+  final BookPdfSourceResolver _pdfSourceResolver = BookPdfSourceResolver();
 
   String? selectedLanguage;
   bool isDownloading = false;
@@ -82,10 +84,10 @@ class BookDetailController {
     }
   }
 
-  void handleDownloadStateChanged(bool isDownloading, double progress) {
-    isDownloading = isDownloading;
+  void handleDownloadStateChanged(bool downloading, double progress) {
+    isDownloading = downloading;
     downloadProgress = progress;
-    if (!isDownloading && progress == 1.0) {
+    if (!downloading && progress == 1.0) {
       isBookDownloaded = true;
     }
     refreshUI();
@@ -104,38 +106,23 @@ class BookDetailController {
     }
   }
 
-  void handlePrimaryAction(BookDetailLoaded state) {
-    if (state.bookDetail.attachments![0].extensionType == 'PDF') {
-      Navigator.pushNamed(
-        context,
-        AppRoute.pdfView,
-        arguments: {
-          'url': state.bookDetail.attachments![0].url,
-          'bookId': bookId,
-          'bookTitle': title,
-          'language': selectedLanguage ?? language,
-        },
-      );
-    } else {
-      _launchUrl(state.bookDetail.attachments![0].url!);
+  Future<void> handlePrimaryAction(BookDetailLoaded state) async {
+    final attachments = state.bookDetail.attachments;
+    if (attachments == null || attachments.isEmpty) return;
+    final attachment = attachments.first;
+    if (attachment.extensionType == 'PDF') {
+      await _openPdfFromRemote(attachment.url);
+      return;
     }
+    if (attachment.url != null) _launchUrl(attachment.url!);
   }
 
-  void handleAttachmentTap(dynamic attachment) {
+  Future<void> handleAttachmentTap(dynamic attachment) async {
     if (attachment.extensionType == 'PDF') {
-      Navigator.pushNamed(
-        context,
-        AppRoute.pdfView,
-        arguments: {
-          'url': attachment.url,
-          'bookId': bookId,
-          'bookTitle': title,
-          'language': selectedLanguage ?? language,
-        },
-      );
-    } else {
-      _launchUrl(attachment.url!);
+      await _openPdfFromRemote(attachment.url as String?);
+      return;
     }
+    if (attachment.url != null) _launchUrl(attachment.url! as String);
   }
 
   void _launchUrl(String url) {
@@ -149,29 +136,47 @@ class BookDetailController {
     }
   }
 
-  void handleOfflinePrimaryAction(BookDetailOfflineLoaded state) {
+  Future<void> handleOfflinePrimaryAction(BookDetailOfflineLoaded state) async {
     final firstAttachment = state.offlineBook.attachments.first;
-    handleOfflineAttachmentTap(firstAttachment);
+    await handleOfflineAttachmentTap(firstAttachment);
   }
 
-  void handleOfflineAttachmentTap(OfflineAttachment attachment) {
+  Future<void> handleOfflineAttachmentTap(OfflineAttachment attachment) async {
     if (attachment.extensionType == 'PDF') {
-      Navigator.pushNamed(
-        context,
-        AppRoute.pdfView,
-        arguments: {
-          'url': attachment.localPath,
-          'bookId': bookId,
-          'bookTitle': title,
-          'language': selectedLanguage ?? language,
-        },
-      );
-    } else {
-      HudaSnackBar.info(
-        context,
-        message: AppLocalizations.of(context)!.comingSoon,
-      );
+      await _openPdfFromRemote(attachment.originalUrl);
+      return;
     }
+    HudaSnackBar.info(
+      context,
+      message: AppLocalizations.of(context)!.comingSoon,
+    );
+  }
+
+  Future<void> _openPdfFromRemote(String? remoteUrl) async {
+    final source = await _pdfSourceResolver.resolve(
+      bookId: bookId,
+      remoteUrl: remoteUrl,
+    );
+    if (!context.mounted) return;
+    if (source == null) {
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.unexpectedError,
+      );
+      return;
+    }
+
+    Navigator.pushNamed(
+      context,
+      AppRoute.pdfView,
+      arguments: {
+        'url': source.location,
+        'fallbackPdfUrl': source.remoteUrl,
+        'bookId': bookId,
+        'bookTitle': title,
+        'language': selectedLanguage ?? language,
+      },
+    );
   }
 
   void showShareDialog(BuildContext context) {
