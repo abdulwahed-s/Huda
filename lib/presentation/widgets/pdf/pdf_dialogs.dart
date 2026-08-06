@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:pdfrx/pdfrx.dart';
+import 'package:dart_pdf_editor/dart_pdf_editor.dart';
 
 class PdfGoToPageDialog extends StatelessWidget {
   final PdfViewerController pdfViewerController;
   final TextEditingController searchController;
-  final bool isHorizontalLayout;
 
   const PdfGoToPageDialog({
     super.key,
     required this.pdfViewerController,
     required this.searchController,
-    required this.isHorizontalLayout,
   });
 
   @override
@@ -66,14 +64,10 @@ class PdfGoToPageDialog extends StatelessWidget {
             NavigatorState navigatorState = Navigator.of(context);
             final pageNumber = int.tryParse(searchController.text);
             if (pageNumber != null &&
-                pdfViewerController.isReady &&
+                pdfViewerController.pageCount > 0 &&
                 pageNumber > 0 &&
                 pageNumber <= pdfViewerController.pageCount) {
-              await pdfViewerController.goToPage(
-                  pageNumber: pageNumber,
-                  anchor: isHorizontalLayout
-                      ? PdfPageAnchor.left
-                      : PdfPageAnchor.top);
+              await pdfViewerController.jumpToPage(pageNumber - 1);
             }
             navigatorState.pop();
           },
