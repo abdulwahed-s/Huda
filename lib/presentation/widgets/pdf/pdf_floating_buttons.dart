@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pdfrx/pdfrx.dart';
+import 'package:dart_pdf_editor/dart_pdf_editor.dart';
 
 class PdfFloatingButtons extends StatelessWidget {
   final Animation<double> fabAnimation;
@@ -8,7 +8,6 @@ class PdfFloatingButtons extends StatelessWidget {
   final VoidCallback addOrangeMarker;
   final PdfViewerController pdfViewerController;
   final ColorScheme colorScheme;
-  final bool isHorizontalLayout;
 
   const PdfFloatingButtons({
     super.key,
@@ -18,7 +17,6 @@ class PdfFloatingButtons extends StatelessWidget {
     required this.addOrangeMarker,
     required this.pdfViewerController,
     required this.colorScheme,
-    required this.isHorizontalLayout,
   });
 
   @override
@@ -56,9 +54,7 @@ class PdfFloatingButtons extends StatelessWidget {
               FloatingActionButton.small(
                 heroTag: "zoom_out",
                 onPressed: () {
-                  if (pdfViewerController.isReady) {
-                    pdfViewerController.zoomDown();
-                  }
+                  pdfViewerController.setZoom(pdfViewerController.zoom / 1.25);
                 },
                 backgroundColor: colorScheme.surface,
                 foregroundColor: colorScheme.onSurface,
@@ -68,9 +64,7 @@ class PdfFloatingButtons extends StatelessWidget {
               FloatingActionButton.small(
                 heroTag: "zoom_in",
                 onPressed: () {
-                  if (pdfViewerController.isReady) {
-                    pdfViewerController.zoomUp();
-                  }
+                  pdfViewerController.setZoom(pdfViewerController.zoom * 1.25);
                 },
                 backgroundColor: colorScheme.surface,
                 foregroundColor: colorScheme.onSurface,
