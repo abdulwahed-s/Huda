@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/pdf/pdf_page_text_cache.dart';
+import 'package:huda/presentation/widgets/pdf/huda_pdf_search_controller.dart';
 import 'package:huda/presentation/widgets/pdf/search_result_tile.dart';
-import 'package:pdfrx/pdfrx.dart';
 
 class TextSearchView extends StatefulWidget {
   const TextSearchView({
@@ -11,7 +10,7 @@ class TextSearchView extends StatefulWidget {
     super.key,
   });
 
-  final PdfTextSearcher textSearcher;
+  final HudaPdfSearchController textSearcher;
 
   @override
   State<TextSearchView> createState() => _TextSearchViewState();
@@ -20,15 +19,13 @@ class TextSearchView extends StatefulWidget {
 class _TextSearchViewState extends State<TextSearchView> {
   final focusNode = FocusNode();
   final searchTextController = TextEditingController();
-  late final pageTextStore =
-      PdfPageTextCache(textSearcher: widget.textSearcher);
   final scrollController = ScrollController();
 
   @override
   void initState() {
+    super.initState();
     widget.textSearcher.addListener(_searchResultUpdated);
     searchTextController.addListener(_searchTextUpdated);
-    super.initState();
   }
 
   @override
@@ -42,31 +39,10 @@ class _TextSearchViewState extends State<TextSearchView> {
   }
 
   void _searchTextUpdated() {
-    widget.textSearcher.startTextSearch(searchTextController.text);
+    widget.textSearcher.search(searchTextController.text);
   }
 
-  int? _currentSearchSession;
-  final _matchIndexToListIndex = <int>[];
-  final _listIndexToMatchIndex = <int>[];
-
   void _searchResultUpdated() {
-    if (_currentSearchSession != widget.textSearcher.searchSession) {
-      _currentSearchSession = widget.textSearcher.searchSession;
-      _matchIndexToListIndex.clear();
-      _listIndexToMatchIndex.clear();
-    }
-    for (int i = _matchIndexToListIndex.length;
-        i < widget.textSearcher.matches.length;
-        i++) {
-      if (i == 0 ||
-          widget.textSearcher.matches[i - 1].pageNumber !=
-              widget.textSearcher.matches[i].pageNumber) {
-        _listIndexToMatchIndex.add(-widget.textSearcher.matches[i].pageNumber);
-      }
-      _matchIndexToListIndex.add(_listIndexToMatchIndex.length);
-      _listIndexToMatchIndex.add(i);
-    }
-
     if (mounted) setState(() {});
   }
 
@@ -75,12 +51,12 @@ class _TextSearchViewState extends State<TextSearchView> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final items = _buildListItems();
 
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          // Modern search field
           Container(
             decoration: BoxDecoration(
               color: colorScheme.surface,
@@ -99,7 +75,7 @@ class _TextSearchViewState extends State<TextSearchView> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           searchTextController.clear();
-                          widget.textSearcher.resetTextSearch();
+                          widget.textSearcher.reset();
                           focusNode.requestFocus();
                         },
                       )
@@ -111,10 +87,7 @@ class _TextSearchViewState extends State<TextSearchView> {
               textInputAction: TextInputAction.search,
             ),
           ),
-
           const SizedBox(height: 12),
-
-          // Search progress
           if (widget.textSearcher.isSearching)
             Container(
               height: 4,
@@ -125,7 +98,7 @@ class _TextSearchViewState extends State<TextSearchView> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(2),
                 child: LinearProgressIndicator(
-                  value: widget.textSearcher.searchProgress,
+                  value: widget.textSearcher.progress,
                   backgroundColor: Colors.transparent,
                   valueColor:
                       AlwaysStoppedAnimation<Color>(colorScheme.primary),
@@ -134,10 +107,7 @@ class _TextSearchViewState extends State<TextSearchView> {
             )
           else
             const SizedBox(height: 4),
-
           const SizedBox(height: 8),
-
-          // Search controls
           if (widget.textSearcher.hasMatches) ...[
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -150,8 +120,9 @@ class _TextSearchViewState extends State<TextSearchView> {
                   Expanded(
                     child: Text(
                       AppLocalizations.of(context)!.matchesCount(
-                          (widget.textSearcher.currentIndex! + 1).toString(),
-                          widget.textSearcher.matches.length.toString()),
+                        (widget.textSearcher.currentIndex + 1).toString(),
+                        widget.textSearcher.matches.length.toString(),
+                      ),
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: colorScheme.onPrimaryContainer,
@@ -160,9 +131,9 @@ class _TextSearchViewState extends State<TextSearchView> {
                     ),
                   ),
                   IconButton(
-                    onPressed: (widget.textSearcher.currentIndex ?? 0) > 0
+                    onPressed: widget.textSearcher.currentIndex > 0
                         ? () async {
-                            await widget.textSearcher.goToPrevMatch();
+                            await widget.textSearcher.goToPreviousMatch();
                             _conditionScrollPosition();
                           }
                         : null,
@@ -170,8 +141,9 @@ class _TextSearchViewState extends State<TextSearchView> {
                     iconSize: 20,
                   ),
                   IconButton(
-                    onPressed: (widget.textSearcher.currentIndex ?? 0) <
-                            widget.textSearcher.matches.length - 1
+                    onPressed: widget.textSearcher.currentIndex >= 0 &&
+                            widget.textSearcher.currentIndex <
+                                widget.textSearcher.matches.length - 1
                         ? () async {
                             await widget.textSearcher.goToNextMatch();
                             _conditionScrollPosition();
@@ -185,46 +157,42 @@ class _TextSearchViewState extends State<TextSearchView> {
             ),
             const SizedBox(height: 12),
           ],
-
-          // Search results
           Expanded(
             child: ListView.builder(
               key: Key(searchTextController.text),
               controller: scrollController,
-              itemCount: _listIndexToMatchIndex.length,
+              itemCount: items.length,
               itemBuilder: (context, index) {
-                final matchIndex = _listIndexToMatchIndex[index];
-                if (matchIndex >= 0 &&
-                    matchIndex < widget.textSearcher.matches.length) {
+                final item = items[index];
+                if (item.matchIndex case final matchIndex?) {
                   final match = widget.textSearcher.matches[matchIndex];
                   return SearchResultTile(
-                    key: ValueKey(index),
+                    key: ValueKey('match-$matchIndex'),
                     match: match,
                     onTap: () async {
                       await widget.textSearcher.goToMatchOfIndex(matchIndex);
-                      if (mounted) setState(() {});
+                      _conditionScrollPosition();
                     },
-                    pageTextStore: pageTextStore,
                     height: itemHeight,
                     isCurrent: matchIndex == widget.textSearcher.currentIndex,
                   );
-                } else {
-                  return Container(
-                    height: 40,
-                    alignment: Alignment.centerLeft,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(
-                      AppLocalizations.of(context)!
-                          .pageLabel((-matchIndex).toString()),
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                  );
                 }
+
+                return Container(
+                  height: 40,
+                  alignment: Alignment.centerLeft,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(
+                    AppLocalizations.of(context)!
+                        .pageLabel(item.pageNumber.toString()),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                );
               },
             ),
           ),
@@ -233,10 +201,32 @@ class _TextSearchViewState extends State<TextSearchView> {
     );
   }
 
+  List<_SearchListItem> _buildListItems() {
+    final items = <_SearchListItem>[];
+    var previousPage = -1;
+    for (var index = 0; index < widget.textSearcher.matches.length; index++) {
+      final match = widget.textSearcher.matches[index];
+      if (match.pageIndex != previousPage) {
+        previousPage = match.pageIndex;
+        items.add(_SearchListItem.pageHeader(match.pageNumber));
+      }
+      items.add(_SearchListItem.match(index));
+    }
+    return items;
+  }
+
   void _conditionScrollPosition() {
+    if (!scrollController.hasClients || widget.textSearcher.currentIndex < 0) {
+      return;
+    }
+    final items = _buildListItems();
+    final itemIndex = items.indexWhere(
+      (item) => item.matchIndex == widget.textSearcher.currentIndex,
+    );
+    if (itemIndex < 0) return;
+
     final pos = scrollController.position;
-    final newPos =
-        itemHeight * _matchIndexToListIndex[widget.textSearcher.currentIndex!];
+    final newPos = itemHeight * itemIndex;
     if (newPos + itemHeight > pos.pixels + pos.viewportDimension) {
       scrollController.animateTo(
         newPos + itemHeight - pos.viewportDimension,
@@ -250,7 +240,18 @@ class _TextSearchViewState extends State<TextSearchView> {
         curve: Curves.decelerate,
       );
     }
-
-    if (mounted) setState(() {});
   }
+}
+
+class _SearchListItem {
+  const _SearchListItem._({this.matchIndex, required this.pageNumber});
+
+  factory _SearchListItem.match(int matchIndex) =>
+      _SearchListItem._(matchIndex: matchIndex, pageNumber: 0);
+
+  factory _SearchListItem.pageHeader(int pageNumber) =>
+      _SearchListItem._(pageNumber: pageNumber);
+
+  final int? matchIndex;
+  final int pageNumber;
 }
