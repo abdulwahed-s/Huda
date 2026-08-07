@@ -1,23 +1,16 @@
+import 'package:dart_pdf_editor/dart_pdf_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/pdf/huda_pdf_search_controller.dart';
 import 'package:huda/presentation/widgets/pdf/marker.dart';
 import 'package:huda/presentation/widgets/pdf/modern_markers_view.dart';
 import 'package:huda/presentation/widgets/pdf/outline_view.dart';
 import 'package:huda/presentation/widgets/pdf/text_search_view.dart';
 import 'package:huda/presentation/widgets/pdf/thumbnails_view.dart';
-import 'package:pdfrx/pdfrx.dart';
+import 'package:pdf_document/pdf_document.dart';
 
 class PdfSidebar extends StatelessWidget {
-  final bool isDark;
-  final ColorScheme colorScheme;
-  final ValueNotifier<bool> showLeftPane;
-  final ValueNotifier<PdfTextSearcher?> textSearcher;
-  final ValueNotifier<List<PdfOutlineNode>?> outline;
-  final ValueNotifier<PdfDocumentRef?> documentRef;
-  final Map<int, List<Marker>> markers;
-  final PdfViewerController pdfViewerController;
-
   const PdfSidebar({
     super.key,
     required this.isDark,
@@ -25,10 +18,21 @@ class PdfSidebar extends StatelessWidget {
     required this.showLeftPane,
     required this.textSearcher,
     required this.outline,
-    required this.documentRef,
+    required this.document,
     required this.markers,
     required this.pdfViewerController,
+    required this.onMarkersChanged,
   });
+
+  final bool isDark;
+  final ColorScheme colorScheme;
+  final ValueNotifier<bool> showLeftPane;
+  final ValueNotifier<HudaPdfSearchController?> textSearcher;
+  final ValueNotifier<PdfOutline?> outline;
+  final ValueNotifier<PdfDocument?> document;
+  final Map<int, List<Marker>> markers;
+  final PdfViewerController pdfViewerController;
+  final VoidCallback onMarkersChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -76,66 +80,76 @@ class PdfSidebar extends StatelessWidget {
                         ),
                         tabs: [
                           Tab(
-                              icon: const Icon(Icons.search_outlined, size: 20),
-                              text: AppLocalizations.of(context)!.search),
+                            icon: const Icon(Icons.search_outlined, size: 20),
+                            text: AppLocalizations.of(context)!.search,
+                          ),
                           Tab(
-                              icon:
-                                  const Icon(Icons.list_alt_outlined, size: 20),
-                              text: AppLocalizations.of(context)!.contents),
+                            icon: const Icon(Icons.list_alt_outlined, size: 20),
+                            text: AppLocalizations.of(context)!.contents,
+                          ),
                           Tab(
-                              icon: const Icon(Icons.photo_library_outlined,
-                                  size: 20),
-                              text: AppLocalizations.of(context)!.pages),
+                            icon: const Icon(
+                              Icons.photo_library_outlined,
+                              size: 20,
+                            ),
+                            text: AppLocalizations.of(context)!.pages,
+                          ),
                           Tab(
-                              icon: const Icon(Icons.bookmark_border, size: 20),
-                              text: AppLocalizations.of(context)!.markers),
+                            icon: const Icon(Icons.bookmark_border, size: 20),
+                            text: AppLocalizations.of(context)!.markers,
+                          ),
                         ],
                       ),
                     ),
                     Expanded(
                       child: TabBarView(
                         children: [
-                          ValueListenableBuilder(
+                          ValueListenableBuilder<HudaPdfSearchController?>(
                             valueListenable: textSearcher,
-                            builder: (context, textSearcher, child) {
-                              if (textSearcher == null) {
+                            builder: (context, search, child) {
+                              if (search == null) {
                                 return const Center(
                                   child: CircularProgressIndicator(),
                                 );
                               }
-                              return TextSearchView(textSearcher: textSearcher);
+                              return TextSearchView(
+                                key: ValueKey(search),
+                                textSearcher: search,
+                              );
                             },
                           ),
-                          ValueListenableBuilder(
+                          ValueListenableBuilder<PdfOutline?>(
                             valueListenable: outline,
-                            builder: (context, outline, child) {
-                              return OutlineView(
-                                outline: outline,
-                                controller: pdfViewerController,
-                              );
-                            },
+                            builder: (context, value, child) => OutlineView(
+                              outline: value,
+                              controller: pdfViewerController,
+                            ),
                           ),
-                          ValueListenableBuilder(
-                            valueListenable: documentRef,
-                            builder: (context, docRef, child) {
-                              return ThumbnailsView(
-                                documentRef: docRef,
-                                controller: pdfViewerController,
-                              );
-                            },
+                          ValueListenableBuilder<PdfDocument?>(
+                            valueListenable: document,
+                            builder: (context, value, child) => ThumbnailsView(
+                              document: value,
+                              controller: pdfViewerController,
+                            ),
                           ),
                           ModernMarkersView(
-                            markers: markers.values.expand((e) => e).toList(),
-                            onTap: (marker) {
-                              final rect =
-                                  pdfViewerController.calcRectForRectInsidePage(
-                                pageNumber: marker.range.pageNumber,
-                                rect: marker.range.bounds,
+                            markers: markers.values
+                                .expand((value) => value)
+                                .toList(),
+                            onTap: (marker) async {
+                              final bounds = marker.bounds;
+                              if (bounds == null) return;
+                              await pdfViewerController.showRect(
+                                marker.pageIndex,
+                                bounds,
                               );
-                              pdfViewerController.ensureVisible(rect);
                             },
                             onDeleteTap: (marker) {
-                              markers[marker.range.pageNumber]!.remove(marker);
+                              markers[marker.pageIndex]?.remove(marker);
+                              if (markers[marker.pageIndex]?.isEmpty ?? false) {
+                                markers.remove(marker.pageIndex);
+                              }
+                              onMarkersChanged();
                             },
                           ),
                         ],
