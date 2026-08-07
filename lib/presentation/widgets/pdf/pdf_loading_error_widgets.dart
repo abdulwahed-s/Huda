@@ -68,6 +68,102 @@ class PdfLoadingWidget extends StatelessWidget {
   }
 }
 
+class PdfPreparingDocumentOverlay extends StatelessWidget {
+  const PdfPreparingDocumentOverlay({
+    super.key,
+    required this.bytesDownloaded,
+    required this.totalBytes,
+    required this.colorScheme,
+  });
+
+  final int bytesDownloaded;
+  final int? totalBytes;
+  final ColorScheme colorScheme;
+
+  @override
+  Widget build(BuildContext context) {
+    final total = totalBytes;
+    final progress = total != null && total > 0
+        ? (bytesDownloaded / total).clamp(0.0, 1.0)
+        : null;
+    final l10n = AppLocalizations.of(context)!;
+    return AbsorbPointer(
+      child: Semantics(
+        label: l10n.loadingPdf,
+        liveRegion: true,
+        child: ColoredBox(
+          color: colorScheme.scrim.withValues(alpha: 0.36),
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 300),
+              margin: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: colorScheme.surface.withValues(alpha: 0.98),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 38,
+                    width: 38,
+                    child: CircularProgressIndicator(
+                      value: progress,
+                      strokeWidth: 3,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.loadingPdf,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(99),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      minHeight: 6,
+                      backgroundColor:
+                          colorScheme.outline.withValues(alpha: 0.18),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                    ),
+                  ),
+                  if (progress != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      '${(progress * 100).toStringAsFixed(0)}%',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: colorScheme.onSurface.withValues(alpha: 0.68),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class PdfErrorWidget extends StatelessWidget {
   final dynamic error;
   final ColorScheme colorScheme;
