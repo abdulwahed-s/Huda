@@ -12,6 +12,9 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+def useLegacyNativeLibraryPackaging =
+    project.findProperty("hudaUseLegacyPackaging")?.toString()?.toBoolean() ?: false
+
 
 android {
     namespace = "com.aw.huda"
@@ -31,6 +34,12 @@ android {
 
     buildFeatures {
         compose = true
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = useLegacyNativeLibraryPackaging
+        }
     }
 
     defaultConfig {
