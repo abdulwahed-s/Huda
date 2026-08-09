@@ -7,15 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       source_ref:
-        description: 'Full 40-character commit SHA or immutable tag to build (blank uses the selected run commit)'
-        type: string
-        required: false
-      github_release_tag:
-        description: 'Existing GitHub Release tag to receive built assets, e.g. v3.7.0 (blank does not update a release)'
+        description: 'Commit SHA or immutable tag to build (blank uses the selected run commit)'
         type: string
         required: false
       dry_run:
-        description: 'Build selected targets without store uploads (build all when no target is selected)'
+        description: 'Build all platforms only — skip every store upload'
         type: boolean
         default: false
       all_stores:
@@ -56,20 +52,15 @@ permissions:
 
 jobs:
   # Tag pushes always build and publish every target. Manual runs are deliberately
-  # opt-in. With dry_run, selected targets build without publishing; dry_run by
-  # itself builds every target.
+  # opt-in: select one or more stores, or choose dry_run to build everything.
   release-plan:
     name: Validate release selection
     runs-on: ubuntu-latest
-    outputs:
-      build_all: ${{ steps.plan.outputs.build_all }}
     steps:
-      - name: Resolve release plan
-        id: plan
+      - name: Validate manual selection
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
-          SOURCE_REF: ${{ inputs.source_ref }}
           DRY_RUN: ${{ inputs.dry_run }}
           ALL_STORES: ${{ inputs.all_stores }}
           GOOGLE_PLAY: ${{ inputs.google_play }}
@@ -79,17 +70,6 @@ jobs:
           SNAPCRAFT: ${{ inputs.snapcraft }}
           MICROSOFT_STORE: ${{ inputs.microsoft_store }}
         run: |
-          if [[ "$EVENT_NAME" != "workflow_dispatch" ]]; then
-            echo "build_all=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          if [[ -n "$SOURCE_REF" && "$SOURCE_REF" =~ ^[[:xdigit:]]{1,39}$ ]]; then
-            echo "source_ref looks like a shortened commit SHA." >&2
-            echo "Use the full 40-character SHA, an immutable tag, or leave source_ref blank." >&2
-            exit 1
-          fi
-
           if [[ "$DRY_RUN" != "true" &&
                 "$ALL_STORES" != "true" &&
                 "$GOOGLE_PLAY" != "true" &&
@@ -98,78 +78,7 @@ jobs:
                 "$MACOS_APP_STORE" != "true" &&
                 "$SNAPCRAFT" != "true" &&
                 "$MICROSOFT_STORE" != "true" ]]; then
-            echo "Select at least one store/platform, all_stores, or dry_run." >&2
-            exit 1
-          fi
-
-          TARGET_SELECTED=false
-          for target in \
-            "$GOOGLE_PLAY" \
-            "$APPGALLERY" \
-            "$IOS_APP_STORE" \
-            "$MACOS_APP_STORE" \
-            "$SNAPCRAFT" \
-            "$MICROSOFT_STORE"; do
-            if [[ "$target" == "true" ]]; then
-              TARGET_SELECTED=true
-              break
-            fi
-          done
-
-          if [[ "$ALL_STORES" == "true" ||
-                ("$DRY_RUN" == "true" && "$TARGET_SELECTED" != "true") ]]; then
-            echo "build_all=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "build_all=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Verify existing GitHub Release
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.github_release_tag != '' }}
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_RELEASE_TAG: ${{ inputs.github_release_tag }}
-        run: |
-          if ! IS_DRAFT=$(gh release view "$TARGET_RELEASE_TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --json isDraft \
-            --jq '.isDraft'); then
-            echo "GitHub Release '$TARGET_RELEASE_TAG' does not exist." >&2
-            echo "The workflow will not create a release during a manual repair run." >&2
-            exit 1
-          fi
-
-          if [[ "$IS_DRAFT" == "true" ]]; then
-            echo "GitHub Release '$TARGET_RELEASE_TAG' is still a draft." >&2
-            echo "Publish the draft first or leave github_release_tag blank." >&2
-            exit 1
-          fi
-
-      - name: Validate source reference
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-        with:
-          ref: ${{ env.RELEASE_SOURCE_REF }}
-
-      - name: Validate manual release version
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.github_release_tag != '' }}
-        shell: bash
-        env:
-          TARGET_RELEASE_TAG: ${{ inputs.github_release_tag }}
-        run: |
-          RELEASE_VERSION=${TARGET_RELEASE_TAG#v}
-          SOURCE_VERSION=$(sed -nE \
-            's/^version:[[:space:]]*([^+[:space:]]+).*/\1/p' pubspec.yaml | head -1)
-
-          if [[ -z "$SOURCE_VERSION" ]]; then
-            echo "Could not read the application version from pubspec.yaml." >&2
-            exit 1
-          fi
-
-          if [[ "$SOURCE_VERSION" != "$RELEASE_VERSION" ]]; then
-            echo "Refusing to attach mismatched artifacts to '$TARGET_RELEASE_TAG'." >&2
-            echo "pubspec.yaml version: $SOURCE_VERSION" >&2
-            echo "GitHub Release version: $RELEASE_VERSION" >&2
+            echo "Select at least one store, or enable dry_run." >&2
             exit 1
           fi
 
@@ -182,7 +91,8 @@ jobs:
     if: >-
       ${{
         github.event_name == 'push' ||
-        needs.release-plan.outputs.build_all == 'true' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
         inputs.google_play ||
         inputs.appgallery
       }}
@@ -229,6 +139,8 @@ jobs:
         run: flutter build apk --release --flavor gplay --split-per-abi
 
       - name: Build per-ABI APKs (foss)
+        env:
+          ORG_GRADLE_PROJECT_hudaUseLegacyPackaging: 'true'
         run: flutter build apk --release --flavor foss --split-per-abi
 
       - name: Verify per-ABI APKs
@@ -245,6 +157,8 @@ jobs:
           done
 
       - name: Build AAB (foss)
+        env:
+          ORG_GRADLE_PROJECT_hudaUseLegacyPackaging: 'true'
         run: flutter build appbundle --release --flavor foss
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -286,7 +200,8 @@ jobs:
     if: >-
       ${{
         github.event_name == 'push' ||
-        needs.release-plan.outputs.build_all == 'true' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
         inputs.ios_app_store
       }}
     runs-on: macos-26  # Xcode 26 — required by Apple (iOS 26 SDK) since Apr 2026
@@ -434,7 +349,8 @@ jobs:
     if: >-
       ${{
         github.event_name == 'push' ||
-        needs.release-plan.outputs.build_all == 'true' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
         inputs.macos_app_store
       }}
     runs-on: macos-26  # Xcode 26 — required by Apple (macOS 26 SDK) since Apr 2026
@@ -578,7 +494,8 @@ jobs:
     if: >-
       ${{
         github.event_name == 'push' ||
-        needs.release-plan.outputs.build_all == 'true' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
         inputs.microsoft_store
       }}
     runs-on: windows-latest
@@ -716,7 +633,8 @@ jobs:
     if: >-
       ${{
         github.event_name == 'push' ||
-        needs.release-plan.outputs.build_all == 'true' ||
+        inputs.dry_run ||
+        inputs.all_stores ||
         inputs.snapcraft
       }}
     runs-on: ubuntu-latest
@@ -852,41 +770,15 @@ jobs:
   # ──────────────────────────────────────────────────────────
   create-release:
     name: Publish · GitHub Release
-    needs: [release-plan, build-android, build-ios, build-macos, build-windows, build-linux]
+    needs: [build-android, build-ios, build-macos, build-windows, build-linux]
     if: >-
       ${{
         !cancelled() &&
-        needs.release-plan.result == 'success' &&
-        (
-          (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) ||
-          (github.event_name == 'workflow_dispatch' && inputs.github_release_tag != '')
-        )
+        github.event_name == 'push' &&
+        startsWith(github.ref, 'refs/tags/')
       }}
     runs-on: ubuntu-latest
-    env:
-      TARGET_RELEASE_TAG: ${{ github.event_name == 'push' && github.ref_name || inputs.github_release_tag }}
     steps:
-      - name: Verify existing GitHub Release
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if ! IS_DRAFT=$(gh release view "$TARGET_RELEASE_TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --json isDraft \
-            --jq '.isDraft'); then
-            echo "GitHub Release '$TARGET_RELEASE_TAG' does not exist." >&2
-            echo "The workflow will not create a release during a manual repair run." >&2
-            exit 1
-          fi
-
-          if [[ "$IS_DRAFT" == "true" ]]; then
-            echo "GitHub Release '$TARGET_RELEASE_TAG' is still a draft." >&2
-            echo "Publish the draft first or leave github_release_tag blank." >&2
-            exit 1
-          fi
-
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           ref: ${{ env.RELEASE_SOURCE_REF }}
@@ -898,7 +790,7 @@ jobs:
       - name: Prepare release assets
         run: |
           mkdir -p release-assets
-          VERSION=${TARGET_RELEASE_TAG#v}
+          VERSION=${GITHUB_REF_NAME#v}
 
           if [ -d release-artifacts/android-apk ]; then
             for flavor in gplay foss; do
@@ -931,40 +823,9 @@ jobs:
           echo "Release assets:"
           ls -lh release-assets/
 
-          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] &&
-             ! compgen -G 'release-assets/*' >/dev/null; then
-            echo "No built assets are available to attach to '$TARGET_RELEASE_TAG'." >&2
-            exit 1
-          fi
-
       - name: Create GitHub Release
-        if: ${{ github.event_name == 'push' }}
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
-          tag_name: ${{ env.TARGET_RELEASE_TAG }}
           body_path: distribution/whatsnew/whatsnew-en-GB
           files: release-assets/*
           fail_on_unmatched_files: false
-
-      - name: Attach repaired assets to GitHub Release
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
-        with:
-          tag_name: ${{ env.TARGET_RELEASE_TAG }}
-          files: release-assets/*
-          fail_on_unmatched_files: true
-          overwrite_files: true
-
-      - name: Record repair provenance
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        shell: bash
-        run: |
-          SOURCE_SHA=$(git rev-parse HEAD)
-          {
-            echo "### GitHub Release asset repair"
-            echo
-            echo "- Release: \`$TARGET_RELEASE_TAG\`"
-            echo "- Built from: \`$SOURCE_SHA\`"
-            echo "- Existing same-named assets: overwritten"
-            echo "- Existing release notes and unrelated assets: preserved"
-          } >> "$GITHUB_STEP_SUMMARY"
