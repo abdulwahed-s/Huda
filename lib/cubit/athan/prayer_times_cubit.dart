@@ -307,7 +307,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await PrayerWidgetService.pushSettings();
       await _reconcilePrayerNotifications('location-loaded', force: true);
     } catch (e) {
-      emit(PrayerTimesError(e.toString()));
+      _emitLocationFailure(e);
     }
   }
 
@@ -414,20 +414,24 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await _reconcilePrayerNotifications('device-location-changed',
           force: true);
     } catch (e) {
-      if (e is LocationServiceDisabledFailure ||
-          e.toString() == 'Exception: Location services are disabled.') {
-        emit(PrayerTimesLocationServiceDisabled());
-      } else if (e is LocationPermissionDeniedFailure ||
-          e.toString() == 'Exception: Location permissions are denied.' ||
-          e.toString() == 'Exception: Location permissions are denied') {
-        emit(PrayerTimesLocationDenied());
-      } else if (e is LocationPermissionPermanentlyDeniedFailure ||
-          e.toString() ==
-              'Exception: Location permissions are permanently denied.') {
-        emit(PrayerTimesLocationPermanentlyDenied());
-      } else {
-        emit(PrayerTimesError(e.toString()));
-      }
+      _emitLocationFailure(e);
+    }
+  }
+
+  void _emitLocationFailure(Object error) {
+    final message = error.toString();
+    if (error is LocationServiceDisabledFailure ||
+        message == 'Exception: Location services are disabled.') {
+      emit(PrayerTimesLocationServiceDisabled());
+    } else if (error is LocationPermissionDeniedFailure ||
+        message == 'Exception: Location permissions are denied.' ||
+        message == 'Exception: Location permissions are denied') {
+      emit(PrayerTimesLocationDenied());
+    } else if (error is LocationPermissionPermanentlyDeniedFailure ||
+        message == 'Exception: Location permissions are permanently denied.') {
+      emit(PrayerTimesLocationPermanentlyDenied());
+    } else {
+      emit(PrayerTimesError(message));
     }
   }
 

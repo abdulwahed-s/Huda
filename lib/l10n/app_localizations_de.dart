@@ -22,6 +22,57 @@ class AppLocalizationsDe extends AppLocalizations {
   String get updateLater => 'Später';
 
   @override
+  String get chooseUpdateSource => 'Update-Quelle auswählen';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'Offizielle F-Droid-Paketseite von Huda öffnen';
+
+  @override
+  String get crashReportingConsentTitle => 'Helfen Sie, Huda zu verbessern?';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'Teilen Sie automatische Absturzberichte, damit wir Probleme in der FOSS-Version finden und beheben können.';
+
+  @override
+  String get crashReportingConsentAllow => 'Absturzberichte erlauben';
+
+  @override
+  String get crashReportingConsentDecline => 'Nicht erlauben';
+
+  @override
+  String get crashReportingSettingsTitle => 'Absturzberichte';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'Absturz- und Gerätedetails automatisch senden, um Huda zu verbessern';
+
+  @override
+  String get crashReportingSharedDataTitle => 'Welche Daten geteilt werden';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'Absturzdetails und Stacktraces, Gerätemodell, Hersteller, Android-Version und Huda-Version.';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'Es wird nichts gesendet, bevor Sie es erlauben. Sie können dies jederzeit in den Einstellungen ändern.';
+
+  @override
+  String get crashReportingEnabledLabel => 'Ein';
+
+  @override
+  String get crashReportingDisabledLabel => 'Aus';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'Automatische Absturzberichte sind deaktiviert. Sie können sie in den Einstellungen aktivieren.';
+
+  @override
   String get searchLocationTitle => 'Standort suchen';
 
   @override

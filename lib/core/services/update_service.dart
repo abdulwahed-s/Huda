@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
@@ -9,6 +10,7 @@ import 'package:huda/core/keys/hadith_key.dart';
 import 'package:huda/core/services/app_store_target.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/utils/version_utils.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/update_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -71,7 +73,14 @@ class UpdateService {
         builder: (_) => UpdateDialog(
           version: latest.version!,
           releaseNotes: latest.releaseNotes,
-          onUpdate: () => _launchStore(latest.url ?? info.storeUrl),
+          onUpdate: () {
+            final url = latest.url ?? info.storeUrl;
+            if (info.target == AppStoreTarget.fdroid) {
+              unawaited(_showUpdateSources(context, url));
+            } else {
+              unawaited(_launchStore(url));
+            }
+          },
         ),
       );
 
@@ -102,6 +111,10 @@ class UpdateService {
 
   static Future<_UpdateInfo> _fetchFromEdge(
       AppStoreInfo info, Locale locale) async {
+    if (info.target == AppStoreTarget.fdroid) {
+      return _fetchFromFdroid(info);
+    }
+
     final country = (locale.countryCode ??
             PlatformDispatcher.instance.locale.countryCode ??
             'us')
@@ -135,6 +148,49 @@ class UpdateService {
       version: data['version'] as String?,
       url: data['url'] as String?,
       releaseNotes: data['releaseNotes'] as String?,
+      store: info.target.name,
+    );
+  }
+
+  static Future<_UpdateInfo> _fetchFromFdroid(AppStoreInfo info) async {
+    final response = await _dio.get(
+      'https://f-droid.org/api/v1/packages/${info.lookupId}',
+      options: Options(
+        sendTimeout: const Duration(seconds: 8),
+        receiveTimeout: const Duration(seconds: 8),
+      ),
+    );
+
+    final data = response.data is String
+        ? jsonDecode(response.data as String) as Map<String, dynamic>
+        : (response.data as Map).cast<String, dynamic>();
+    final suggestedCode = (data['suggestedVersionCode'] as num?)?.toInt();
+    final packages = (data['packages'] as List<dynamic>? ?? const [])
+        .whereType<Map>()
+        .map((entry) => entry.cast<String, dynamic>())
+        .toList();
+
+    Map<String, dynamic>? selected;
+    if (suggestedCode != null) {
+      for (final package in packages) {
+        if ((package['versionCode'] as num?)?.toInt() == suggestedCode) {
+          selected = package;
+          break;
+        }
+      }
+    }
+    if (selected == null && packages.isNotEmpty) {
+      packages.sort((a, b) {
+        final aCode = (a['versionCode'] as num?)?.toInt() ?? -1;
+        final bCode = (b['versionCode'] as num?)?.toInt() ?? -1;
+        return bCode.compareTo(aCode);
+      });
+      selected = packages.first;
+    }
+
+    return _UpdateInfo(
+      version: selected?['versionName'] as String?,
+      url: info.storeUrl,
       store: info.target.name,
     );
   }
@@ -183,6 +239,48 @@ class UpdateService {
       key: _lastShownTsKey,
       value: DateTime.now().millisecondsSinceEpoch.toString(),
     );
+  }
+
+  static Future<void> _showUpdateSources(
+    BuildContext context,
+    String? fdroidUrl,
+  ) async {
+    if (!context.mounted || fdroidUrl == null) return;
+    final l10n = AppLocalizations.of(context)!;
+    final selectedUrl = await showModalBottomSheet<String>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                child: Text(
+                  l10n.chooseUpdateSource,
+                  style: Theme.of(sheetContext).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.store_rounded),
+                title: Text(l10n.fdroidStore),
+                subtitle: Text(l10n.fdroidUpdateSourceDescription),
+                trailing: const Icon(Icons.open_in_new_rounded),
+                onTap: () => Navigator.of(sheetContext).pop(fdroidUrl),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (selectedUrl != null) {
+      await _launchStore(selectedUrl);
+    }
   }
 
   static Future<void> _launchStore(String? url) async {

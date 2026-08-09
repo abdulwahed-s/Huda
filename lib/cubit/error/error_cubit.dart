@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:huda/core/services/crash_reporting_consent.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 part 'error_state.dart';
@@ -18,6 +19,10 @@ class ErrorCubit extends Cubit<ErrorState> {
 
   Future<void> sendError(String error) async {
     if (kDebugMode) return;
+    if (!await CrashReportingConsent.canReport()) {
+      emit(ErrorReportingDisabled());
+      return;
+    }
 
     emit(ErrorLoading());
 

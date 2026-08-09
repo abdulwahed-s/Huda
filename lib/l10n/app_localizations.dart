@@ -138,6 +138,96 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get updateLater;
 
+  /// Title of the update-source chooser
+  ///
+  /// In en, this message translates to:
+  /// **'Choose where to update'**
+  String get chooseUpdateSource;
+
+  /// Name of the F-Droid app store
+  ///
+  /// In en, this message translates to:
+  /// **'F-Droid'**
+  String get fdroidStore;
+
+  /// Description of the F-Droid update source
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda\'s official F-Droid package page'**
+  String get fdroidUpdateSourceDescription;
+
+  /// Title of the FOSS crash-reporting consent dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Help improve Huda?'**
+  String get crashReportingConsentTitle;
+
+  /// Explanation shown before enabling FOSS crash reporting
+  ///
+  /// In en, this message translates to:
+  /// **'Share automatic crash reports to help us find and fix problems in the FOSS edition.'**
+  String get crashReportingConsentDescription;
+
+  /// Button that grants FOSS crash-reporting consent
+  ///
+  /// In en, this message translates to:
+  /// **'Allow crash reports'**
+  String get crashReportingConsentAllow;
+
+  /// Button that declines FOSS crash-reporting consent
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t allow'**
+  String get crashReportingConsentDecline;
+
+  /// Title of the FOSS crash-reporting setting
+  ///
+  /// In en, this message translates to:
+  /// **'Crash reporting'**
+  String get crashReportingSettingsTitle;
+
+  /// Description of the FOSS crash-reporting setting
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically send crash and device details to help improve Huda'**
+  String get crashReportingSettingsDescription;
+
+  /// Heading above the list of data included in a crash report
+  ///
+  /// In en, this message translates to:
+  /// **'What is shared'**
+  String get crashReportingSharedDataTitle;
+
+  /// Data included in an automatic crash report
+  ///
+  /// In en, this message translates to:
+  /// **'Crash details and stack traces, device model, manufacturer, Android version, and Huda version.'**
+  String get crashReportingSharedDataDescription;
+
+  /// Privacy reassurance in the FOSS crash-reporting consent dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is sent until you allow it. You can change this anytime in Settings.'**
+  String get crashReportingPrivacyNote;
+
+  /// Label shown when automatic crash reporting is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get crashReportingEnabledLabel;
+
+  /// Label shown when automatic crash reporting is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get crashReportingDisabledLabel;
+
+  /// Message shown on the error screen when FOSS crash reporting is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic crash reporting is disabled. You can enable it in Settings.'**
+  String get crashReportingDisabledDescription;
+
   /// Title of the manual location search dialog
   ///
   /// In en, this message translates to:

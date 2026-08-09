@@ -22,6 +22,58 @@ class AppLocalizationsTr extends AppLocalizations {
   String get updateLater => 'Daha sonra';
 
   @override
+  String get chooseUpdateSource => 'Güncelleme kaynağını seçin';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'Huda\'nın resmi F-Droid paket sayfasını aç';
+
+  @override
+  String get crashReportingConsentTitle =>
+      'Huda\'yı geliştirmeye yardımcı olmak ister misiniz?';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'FOSS sürümündeki sorunları bulup düzeltmemize yardımcı olmak için otomatik kilitlenme raporlarını paylaşın.';
+
+  @override
+  String get crashReportingConsentAllow => 'Kilitlenme raporlarına izin ver';
+
+  @override
+  String get crashReportingConsentDecline => 'İzin verme';
+
+  @override
+  String get crashReportingSettingsTitle => 'Kilitlenme raporları';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'Huda\'yı geliştirmeye yardımcı olmak için kilitlenme ve cihaz ayrıntılarını otomatik gönder';
+
+  @override
+  String get crashReportingSharedDataTitle => 'Paylaşılan veriler';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'Kilitlenme ayrıntıları ve yığın izleri, cihaz modeli, üretici, Android sürümü ve Huda sürümü.';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'Siz izin verene kadar hiçbir şey gönderilmez. Bunu istediğiniz zaman Ayarlar\'dan değiştirebilirsiniz.';
+
+  @override
+  String get crashReportingEnabledLabel => 'Açık';
+
+  @override
+  String get crashReportingDisabledLabel => 'Kapalı';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'Otomatik kilitlenme raporları devre dışı. Ayarlar\'dan etkinleştirebilirsiniz.';
+
+  @override
   String get searchLocationTitle => 'Konum Ara';
 
   @override

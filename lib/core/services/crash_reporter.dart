@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:huda/core/services/crash_reporting_consent.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -30,6 +31,7 @@ class CrashReporter {
     String source = 'dart',
   }) async {
     if (kDebugMode) return;
+    if (!await CrashReportingConsent.canReport()) return;
 
     try {
       if (_reportCount >= _maxReportsPerSession) return;
@@ -60,6 +62,7 @@ class CrashReporter {
 
   static Future<void> flushPending() async {
     if (kDebugMode) return;
+    if (!await CrashReportingConsent.canReport()) return;
 
     if (_flushing) return;
     _flushing = true;
@@ -93,6 +96,20 @@ class CrashReporter {
     } finally {
       _flushing = false;
     }
+  }
+
+  static Future<void> setFossConsent(bool enabled) async {
+    await CrashReportingConsent.setEnabled(enabled);
+    if (enabled) {
+      await flushPending();
+    } else {
+      await clearPending();
+    }
+  }
+
+  static Future<void> clearPending() async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.remove(_queueKey);
   }
 
   static Future<bool> _tryInsert(Map<String, dynamic> entry) async {

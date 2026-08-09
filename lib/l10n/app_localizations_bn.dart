@@ -22,6 +22,57 @@ class AppLocalizationsBn extends AppLocalizations {
   String get updateLater => 'পরে';
 
   @override
+  String get chooseUpdateSource => 'আপডেটের উৎস বেছে নিন';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'Huda-এর অফিসিয়াল F-Droid প্যাকেজ পৃষ্ঠাটি খুলুন';
+
+  @override
+  String get crashReportingConsentTitle => 'Huda উন্নত করতে সাহায্য করবেন?';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'FOSS সংস্করণের সমস্যাগুলো খুঁজে বের করে সমাধান করতে আমাদের সাহায্য করার জন্য স্বয়ংক্রিয় ক্র্যাশ রিপোর্ট শেয়ার করুন।';
+
+  @override
+  String get crashReportingConsentAllow => 'ক্র্যাশ রিপোর্টের অনুমতি দিন';
+
+  @override
+  String get crashReportingConsentDecline => 'অনুমতি দেবেন না';
+
+  @override
+  String get crashReportingSettingsTitle => 'ক্র্যাশ রিপোর্টিং';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'Huda উন্নত করতে সহায়তার জন্য ক্র্যাশ ও ডিভাইসের তথ্য স্বয়ংক্রিয়ভাবে পাঠান';
+
+  @override
+  String get crashReportingSharedDataTitle => 'যেসব তথ্য শেয়ার করা হয়';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'ক্র্যাশের বিবরণ ও স্ট্যাক ট্রেস, ডিভাইসের মডেল, প্রস্তুতকারক, Android সংস্করণ এবং Huda সংস্করণ।';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'আপনি অনুমতি না দেওয়া পর্যন্ত কিছুই পাঠানো হবে না। সেটিংস থেকে যেকোনো সময় এটি পরিবর্তন করতে পারবেন।';
+
+  @override
+  String get crashReportingEnabledLabel => 'চালু';
+
+  @override
+  String get crashReportingDisabledLabel => 'বন্ধ';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'স্বয়ংক্রিয় ক্র্যাশ রিপোর্টিং বন্ধ আছে। সেটিংস থেকে এটি চালু করতে পারবেন।';
+
+  @override
   String get searchLocationTitle => 'অবস্থান খুঁজুন';
 
   @override

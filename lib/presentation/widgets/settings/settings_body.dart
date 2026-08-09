@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
+import 'package:huda/core/utils/distribution_channel.dart';
 import 'package:huda/presentation/widgets/settings/color_theme_selection_section.dart';
+import 'package:huda/presentation/widgets/settings/crash_reporting_settings_section.dart';
 import 'package:huda/presentation/widgets/settings/font_selection_section.dart';
 import 'package:huda/presentation/widgets/settings/language_selection_section.dart';
 import 'package:huda/presentation/widgets/settings/support_card.dart';
@@ -58,6 +60,12 @@ class SettingsBody extends StatelessWidget {
                 SizedBox(
                     height: context.responsive(
                         mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                if (DistributionChannel.isFoss) ...[
+                  const CrashReportingSettingsSection(),
+                  SizedBox(
+                      height: context.responsive(
+                          mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                ],
                 const SupportCard(),
                 SizedBox(
                     height: context.responsive(

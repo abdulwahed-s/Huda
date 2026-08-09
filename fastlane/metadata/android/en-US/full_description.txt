@@ -18,6 +18,8 @@ Features:
 
 * Home Screen Widgets: quick access to prayer times and core features.
 
+* Miqaat Lock: optionally block selected distracting apps during prayer times or custom time slots. On Android, Huda requests Accessibility and display-over-other-apps access only when you choose to enable this feature.
+
 * Multilingual & Themes: full RTL Arabic support, dynamic language switching, and Dark/Light themes.
 
-Note: some features (such as content sync and the AI assistant) rely on a remote server to work.
+Note: some features (such as content sync and the AI assistant) rely on a remote server to work. The FOSS edition asks for your permission before automatically sending crash details, device model, manufacturer, Android version and app version to Huda's Supabase service. You can change this choice later in Settings.

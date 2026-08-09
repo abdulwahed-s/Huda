@@ -22,3 +22,5 @@ class ErrorFailure extends ErrorState {
 
   ErrorFailure({required this.message});
 }
+
+class ErrorReportingDisabled extends ErrorState {}

@@ -22,6 +22,57 @@ class AppLocalizationsRu extends AppLocalizations {
   String get updateLater => 'Позже';
 
   @override
+  String get chooseUpdateSource => 'Выберите источник обновления';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'Открыть официальную страницу пакета Huda в F-Droid';
+
+  @override
+  String get crashReportingConsentTitle => 'Помочь улучшить Huda?';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'Отправляйте автоматические отчёты о сбоях, чтобы помочь нам находить и устранять проблемы в FOSS-версии.';
+
+  @override
+  String get crashReportingConsentAllow => 'Разрешить отчёты о сбоях';
+
+  @override
+  String get crashReportingConsentDecline => 'Не разрешать';
+
+  @override
+  String get crashReportingSettingsTitle => 'Отчёты о сбоях';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'Автоматически отправлять сведения о сбоях и устройстве, чтобы помочь улучшить Huda';
+
+  @override
+  String get crashReportingSharedDataTitle => 'Какие данные отправляются';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'Сведения о сбоях и трассировки стека, модель и производитель устройства, версия Android и версия Huda.';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'До вашего разрешения ничего не отправляется. Это можно изменить в любое время в настройках.';
+
+  @override
+  String get crashReportingEnabledLabel => 'Включено';
+
+  @override
+  String get crashReportingDisabledLabel => 'Отключено';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'Автоматическая отправка отчётов о сбоях отключена. Её можно включить в настройках.';
+
+  @override
   String get searchLocationTitle => 'Поиск местоположения';
 
   @override

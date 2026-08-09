@@ -22,6 +22,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateLater => 'Later';
 
   @override
+  String get chooseUpdateSource => 'Choose where to update';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'Open Huda\'s official F-Droid package page';
+
+  @override
+  String get crashReportingConsentTitle => 'Help improve Huda?';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'Share automatic crash reports to help us find and fix problems in the FOSS edition.';
+
+  @override
+  String get crashReportingConsentAllow => 'Allow crash reports';
+
+  @override
+  String get crashReportingConsentDecline => 'Don\'t allow';
+
+  @override
+  String get crashReportingSettingsTitle => 'Crash reporting';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'Automatically send crash and device details to help improve Huda';
+
+  @override
+  String get crashReportingSharedDataTitle => 'What is shared';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'Crash details and stack traces, device model, manufacturer, Android version, and Huda version.';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'Nothing is sent until you allow it. You can change this anytime in Settings.';
+
+  @override
+  String get crashReportingEnabledLabel => 'On';
+
+  @override
+  String get crashReportingDisabledLabel => 'Off';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'Automatic crash reporting is disabled. You can enable it in Settings.';
+
+  @override
   String get searchLocationTitle => 'Search Location';
 
   @override

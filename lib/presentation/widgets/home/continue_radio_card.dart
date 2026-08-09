@@ -28,7 +28,7 @@ class ContinueRadioCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cardHeight =
-        context.responsive(mobile: 100.h, tablet: 120.h, desktop: 140.h);
+        context.responsive(mobile: 116.h, tablet: 128.h, desktop: 144.h);
     final padding =
         context.responsive(mobile: 12.w, tablet: 16.w, desktop: 20.w);
     final iconPadding =
@@ -39,6 +39,11 @@ class ContinueRadioCard extends StatelessWidget {
         context.responsive(mobile: 13.sp, tablet: 16.sp, desktop: 19.sp);
     final subtitleSize =
         context.responsive(mobile: 10.sp, tablet: 12.sp, desktop: 14.sp);
+    final foregroundColor =
+        hasLastStation ? Colors.white : const Color(0xFF1F2937);
+    final secondaryColor = hasLastStation
+        ? Colors.white.withValues(alpha: 0.9)
+        : const Color(0xFF374151);
 
     return SizedBox(
       height: cardHeight,
@@ -50,7 +55,7 @@ class ContinueRadioCard extends StatelessWidget {
             colors: hasLastStation ? activeGradient : inactiveGradient,
           ),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.15),
+            color: foregroundColor.withValues(alpha: 0.15),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(12.r),
@@ -78,12 +83,12 @@ class ContinueRadioCard extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(iconPadding),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: foregroundColor.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       hasLastStation ? Icons.radio : Icons.history,
-                      color: Colors.white,
+                      color: foregroundColor,
                       size: iconSize,
                     ),
                   ),
@@ -102,18 +107,18 @@ class ContinueRadioCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: titleSize,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: foregroundColor,
                         ),
                       ),
                       SizedBox(height: 4.h),
                       Text(
                         hasLastStation ? resumeText : noActivityDescription,
-                        maxLines: 2,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: subtitleSize,
-                          color: Colors.white.withValues(alpha: 0.9),
+                          color: secondaryColor,
                         ),
                       ),
                     ],

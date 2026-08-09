@@ -83,6 +83,31 @@ class _FeedbackSectionState extends State<FeedbackSection> {
         }
       },
       builder: (context, state) {
+        if (state is ErrorReportingDisabled) {
+          return Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
+              color: widget.cardColor,
+              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(color: widget.borderColor),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.privacy_tip_outlined, color: context.primaryColor),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context)!
+                        .crashReportingDisabledDescription,
+                    style: TextStyle(color: widget.subtitleColor),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
         final isSubmitting = state is ErrorSubmitting;
         final isSubmitted = state is ErrorSubmitted;
 

@@ -16,6 +16,66 @@
     "@updateLater": {
         "description": "Secondary button to dismiss the update dialog"
     },
+    "chooseUpdateSource": "Choose where to update",
+    "@chooseUpdateSource": {
+        "description": "Title of the update-source chooser"
+    },
+    "fdroidStore": "F-Droid",
+    "@fdroidStore": {
+        "description": "Name of the F-Droid app store"
+    },
+    "fdroidUpdateSourceDescription": "Open Huda's official F-Droid package page",
+    "@fdroidUpdateSourceDescription": {
+        "description": "Description of the F-Droid update source"
+    },
+    "crashReportingConsentTitle": "Help improve Huda?",
+    "@crashReportingConsentTitle": {
+        "description": "Title of the FOSS crash-reporting consent dialog"
+    },
+    "crashReportingConsentDescription": "Share automatic crash reports to help us find and fix problems in the FOSS edition.",
+    "@crashReportingConsentDescription": {
+        "description": "Explanation shown before enabling FOSS crash reporting"
+    },
+    "crashReportingConsentAllow": "Allow crash reports",
+    "@crashReportingConsentAllow": {
+        "description": "Button that grants FOSS crash-reporting consent"
+    },
+    "crashReportingConsentDecline": "Don't allow",
+    "@crashReportingConsentDecline": {
+        "description": "Button that declines FOSS crash-reporting consent"
+    },
+    "crashReportingSettingsTitle": "Crash reporting",
+    "@crashReportingSettingsTitle": {
+        "description": "Title of the FOSS crash-reporting setting"
+    },
+    "crashReportingSettingsDescription": "Automatically send crash and device details to help improve Huda",
+    "@crashReportingSettingsDescription": {
+        "description": "Description of the FOSS crash-reporting setting"
+    },
+    "crashReportingSharedDataTitle": "What is shared",
+    "@crashReportingSharedDataTitle": {
+        "description": "Heading above the list of data included in a crash report"
+    },
+    "crashReportingSharedDataDescription": "Crash details and stack traces, device model, manufacturer, Android version, and Huda version.",
+    "@crashReportingSharedDataDescription": {
+        "description": "Data included in an automatic crash report"
+    },
+    "crashReportingPrivacyNote": "Nothing is sent until you allow it. You can change this anytime in Settings.",
+    "@crashReportingPrivacyNote": {
+        "description": "Privacy reassurance in the FOSS crash-reporting consent dialog"
+    },
+    "crashReportingEnabledLabel": "On",
+    "@crashReportingEnabledLabel": {
+        "description": "Label shown when automatic crash reporting is enabled"
+    },
+    "crashReportingDisabledLabel": "Off",
+    "@crashReportingDisabledLabel": {
+        "description": "Label shown when automatic crash reporting is disabled"
+    },
+    "crashReportingDisabledDescription": "Automatic crash reporting is disabled. You can enable it in Settings.",
+    "@crashReportingDisabledDescription": {
+        "description": "Message shown on the error screen when FOSS crash reporting is disabled"
+    },
     "searchLocationTitle": "Search Location",
     "@searchLocationTitle": {
         "description": "Title of the manual location search dialog"

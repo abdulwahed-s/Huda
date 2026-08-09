@@ -1,5 +1,6 @@
 ## What's new
 
-- Fixed an issue that could cause prayer time notifications to arrive late.
-- Improved the book PDF viewer.
-- Bug fixes and performance improvements.
+- Improved the F-Droid experience with F-Droid-aware update checks and crash-report consent controls.
+- Fixed prayer-time setup when location permission is denied.
+- Removed an unused Android permission.
+- Improved recent-activity card readability.

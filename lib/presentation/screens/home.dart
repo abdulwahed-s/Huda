@@ -27,6 +27,7 @@ import 'package:huda/presentation/widgets/home/home_background.dart';
 import 'package:huda/presentation/widgets/home/home_content.dart';
 import 'package:huda/presentation/widgets/home/themes/classic_home_header.dart';
 import 'package:huda/presentation/widgets/home/exit_confirmation_dialog.dart';
+import 'package:huda/presentation/widgets/privacy/foss_crash_reporting_consent_prompt.dart';
 import 'package:huda/core/services/whats_new_service.dart';
 import 'package:huda/presentation/screens/home_customization.dart';
 import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
@@ -121,6 +122,10 @@ class _HomeState extends State<Home>
 
     _isStartupDialogSequenceRunning = true;
     try {
+      final showedCrashConsent =
+          await FossCrashReportingConsentPrompt.showIfNeeded(context);
+      if (showedCrashConsent || !mounted) return;
+
       final showedUpdate = await UpdateService.checkAndShow(context);
       if (showedUpdate || !mounted) return;
 

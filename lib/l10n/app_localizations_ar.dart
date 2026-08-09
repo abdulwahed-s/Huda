@@ -22,6 +22,57 @@ class AppLocalizationsAr extends AppLocalizations {
   String get updateLater => 'لاحقًا';
 
   @override
+  String get chooseUpdateSource => 'اختر مصدر التحديث';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'افتح صفحة حزمة هدى الرسمية على F-Droid';
+
+  @override
+  String get crashReportingConsentTitle => 'هل تريد المساعدة في تحسين هدى؟';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'شارك تقارير الأعطال تلقائيًا لمساعدتنا في اكتشاف المشكلات وإصلاحها في الإصدار الحر ومفتوح المصدر.';
+
+  @override
+  String get crashReportingConsentAllow => 'السماح بتقارير الأعطال';
+
+  @override
+  String get crashReportingConsentDecline => 'عدم السماح';
+
+  @override
+  String get crashReportingSettingsTitle => 'تقارير الأعطال';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'إرسال تفاصيل الأعطال والجهاز تلقائيًا للمساعدة في تحسين هدى';
+
+  @override
+  String get crashReportingSharedDataTitle => 'البيانات التي تتم مشاركتها';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'تفاصيل الأعطال وتتبعات المكدس، وطراز الجهاز، والشركة المصنّعة، وإصدار أندرويد، وإصدار هدى.';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'لن يتم إرسال أي شيء قبل أن تسمح بذلك. يمكنك تغيير هذا الخيار في أي وقت من الإعدادات.';
+
+  @override
+  String get crashReportingEnabledLabel => 'مفعّل';
+
+  @override
+  String get crashReportingDisabledLabel => 'معطّل';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'تم تعطيل الإبلاغ التلقائي عن الأعطال. يمكنك تفعيله من الإعدادات.';
+
+  @override
   String get searchLocationTitle => 'البحث عن موقع';
 
   @override

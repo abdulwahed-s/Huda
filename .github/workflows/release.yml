@@ -156,10 +156,8 @@ jobs:
             done
           done
 
-      - name: Build AAB (foss)
-        env:
-          ORG_GRADLE_PROJECT_hudaUseLegacyPackaging: 'true'
-        run: flutter build appbundle --release --flavor foss
+      - name: Build AAB (appgallery)
+        run: flutter build appbundle --release --flavor appgallery
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -176,8 +174,8 @@ jobs:
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: android-aab
-          path: build/app/outputs/bundle/fossRelease/app-foss-release.aab
+          name: android-appgallery-aab
+          path: build/app/outputs/bundle/appgalleryRelease/app-appgallery-release.aab
           if-no-files-found: error
           overwrite: true
 
@@ -784,7 +782,7 @@ jobs:
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: android-aab
+          name: android-appgallery-aab
           path: store-artifact
 
       - name: Upload to AppGallery
@@ -795,7 +793,7 @@ jobs:
         run: |
           set -euo pipefail
           pip install requests
-          python3 distribution/appgallery_upload.py --aab store-artifact/app-foss-release.aab
+          python3 distribution/appgallery_upload.py --aab store-artifact/app-appgallery-release.aab
 
   # ──────────────────────────────────────────────────────────
   # GitHub Release — collect all artifacts

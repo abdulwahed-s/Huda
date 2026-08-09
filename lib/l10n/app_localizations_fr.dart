@@ -22,6 +22,57 @@ class AppLocalizationsFr extends AppLocalizations {
   String get updateLater => 'Plus tard';
 
   @override
+  String get chooseUpdateSource => 'Choisir la source de mise à jour';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'Ouvrir la page officielle du paquet Huda sur F-Droid';
+
+  @override
+  String get crashReportingConsentTitle => 'Aider à améliorer Huda ?';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'Partagez automatiquement les rapports de plantage pour nous aider à détecter et corriger les problèmes dans l’édition FOSS.';
+
+  @override
+  String get crashReportingConsentAllow => 'Autoriser les rapports de plantage';
+
+  @override
+  String get crashReportingConsentDecline => 'Ne pas autoriser';
+
+  @override
+  String get crashReportingSettingsTitle => 'Rapports de plantage';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'Envoyer automatiquement les détails des plantages et de l’appareil pour aider à améliorer Huda';
+
+  @override
+  String get crashReportingSharedDataTitle => 'Données partagées';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'Détails des plantages et traces de pile, modèle et fabricant de l’appareil, version d’Android et version de Huda.';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'Rien ne sera envoyé sans votre autorisation. Vous pouvez modifier ce choix à tout moment dans les paramètres.';
+
+  @override
+  String get crashReportingEnabledLabel => 'Activé';
+
+  @override
+  String get crashReportingDisabledLabel => 'Désactivé';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'L’envoi automatique des rapports de plantage est désactivé. Vous pouvez l’activer dans les paramètres.';
+
+  @override
   String get searchLocationTitle => 'Rechercher un lieu';
 
   @override

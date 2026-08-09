@@ -1,7 +1,9 @@
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/core/utils/distribution_channel.dart';
 
 enum AppStoreTarget {
   play,
+  fdroid,
   appGallery,
   appStore,
   macAppStore,
@@ -38,6 +40,24 @@ class AppStoreInfo {
 
   static AppStoreInfo resolve(String? installerStore) {
     if (PlatformUtils.isAndroid) {
+      if (DistributionChannel.isFoss) {
+        return const AppStoreInfo(
+          target: AppStoreTarget.fdroid,
+          canPrompt: true,
+          lookupId: _androidPackage,
+          storeUrl: 'https://f-droid.org/packages/$_androidPackage/',
+        );
+      }
+
+      if (DistributionChannel.isAppGallery) {
+        return const AppStoreInfo(
+          target: AppStoreTarget.appGallery,
+          canPrompt: true,
+          lookupId: _appGalleryContentId,
+          storeUrl: 'appmarket://details?id=$_androidPackage',
+        );
+      }
+
       const play = AppStoreInfo(
         target: AppStoreTarget.play,
         canPrompt: true,

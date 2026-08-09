@@ -22,6 +22,57 @@ class AppLocalizationsMs extends AppLocalizations {
   String get updateLater => 'Kemudian';
 
   @override
+  String get chooseUpdateSource => 'Pilih sumber kemas kini';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'Buka halaman pakej rasmi Huda di F-Droid';
+
+  @override
+  String get crashReportingConsentTitle => 'Bantu tingkatkan Huda?';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'Kongsi laporan ranap automatik untuk membantu kami mencari dan membaiki masalah dalam edisi FOSS.';
+
+  @override
+  String get crashReportingConsentAllow => 'Benarkan laporan ranap';
+
+  @override
+  String get crashReportingConsentDecline => 'Jangan benarkan';
+
+  @override
+  String get crashReportingSettingsTitle => 'Pelaporan ranap';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'Hantar butiran ranap dan peranti secara automatik untuk membantu meningkatkan Huda';
+
+  @override
+  String get crashReportingSharedDataTitle => 'Data yang dikongsi';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'Butiran ranap dan surihan tindanan, model peranti, pengeluar, versi Android dan versi Huda.';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'Tiada apa-apa akan dihantar sehingga anda membenarkannya. Anda boleh mengubahnya pada bila-bila masa dalam Tetapan.';
+
+  @override
+  String get crashReportingEnabledLabel => 'Hidup';
+
+  @override
+  String get crashReportingDisabledLabel => 'Mati';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'Pelaporan ranap automatik dilumpuhkan. Anda boleh mendayakannya dalam Tetapan.';
+
+  @override
   String get searchLocationTitle => 'Cari Lokasi';
 
   @override

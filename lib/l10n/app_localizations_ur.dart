@@ -22,6 +22,57 @@ class AppLocalizationsUr extends AppLocalizations {
   String get updateLater => 'بعد میں';
 
   @override
+  String get chooseUpdateSource => 'اپ ڈیٹ کا ذریعہ منتخب کریں';
+
+  @override
+  String get fdroidStore => 'F-Droid';
+
+  @override
+  String get fdroidUpdateSourceDescription =>
+      'F-Droid پر ہدیٰ کا آفیشل پیکیج صفحہ کھولیں';
+
+  @override
+  String get crashReportingConsentTitle => 'ہدیٰ کو بہتر بنانے میں مدد کریں؟';
+
+  @override
+  String get crashReportingConsentDescription =>
+      'FOSS ایڈیشن میں مسائل تلاش کرنے اور انہیں حل کرنے میں ہماری مدد کے لیے خودکار کریش رپورٹس شیئر کریں۔';
+
+  @override
+  String get crashReportingConsentAllow => 'کریش رپورٹس کی اجازت دیں';
+
+  @override
+  String get crashReportingConsentDecline => 'اجازت نہ دیں';
+
+  @override
+  String get crashReportingSettingsTitle => 'کریش رپورٹنگ';
+
+  @override
+  String get crashReportingSettingsDescription =>
+      'ہدیٰ کو بہتر بنانے میں مدد کے لیے کریش اور ڈیوائس کی تفصیلات خودکار طور پر بھیجیں';
+
+  @override
+  String get crashReportingSharedDataTitle => 'شیئر کی جانے والی معلومات';
+
+  @override
+  String get crashReportingSharedDataDescription =>
+      'کریش کی تفصیلات اور اسٹیک ٹریسز، ڈیوائس کا ماڈل، مینوفیکچرر، Android ورژن، اور ہدیٰ کا ورژن۔';
+
+  @override
+  String get crashReportingPrivacyNote =>
+      'آپ کی اجازت تک کچھ بھی نہیں بھیجا جائے گا۔ آپ اسے ترتیبات میں کسی بھی وقت تبدیل کر سکتے ہیں۔';
+
+  @override
+  String get crashReportingEnabledLabel => 'فعال';
+
+  @override
+  String get crashReportingDisabledLabel => 'غیر فعال';
+
+  @override
+  String get crashReportingDisabledDescription =>
+      'خودکار کریش رپورٹنگ غیر فعال ہے۔ آپ اسے ترتیبات میں فعال کر سکتے ہیں۔';
+
+  @override
   String get searchLocationTitle => 'مقام تلاش کریں';
 
   @override
