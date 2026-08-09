@@ -1,0 +1,3 @@
+Fixed prayer-time setup and location-permission state handling
+Kept cached and manually selected prayer times available when location refresh fails
+Improved recent-activity text and feature-label wrapping on narrow screens

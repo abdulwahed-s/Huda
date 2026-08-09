@@ -20,12 +20,7 @@ class PrayerTimesLocationDeniedWidget extends StatelessWidget {
           ActionButton(
             text: AppLocalizations.of(context)!.openSettings,
             icon: Icons.settings,
-            onPressed: () async {
-              if (await Geolocator.openLocationSettings()) {
-                return;
-              }
-              await Geolocator.openAppSettings();
-            },
+            onPressed: () => Geolocator.openAppSettings(),
           ),
         const SizedBox(width: 8),
         ActionButton(

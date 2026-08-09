@@ -28,7 +28,7 @@ class ContinueRadioCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cardHeight =
-        context.responsive(mobile: 116.h, tablet: 128.h, desktop: 144.h);
+        context.responsive(mobile: 164.h, tablet: 176.h, desktop: 192.h);
     final padding =
         context.responsive(mobile: 12.w, tablet: 16.w, desktop: 20.w);
     final iconPadding =
@@ -113,7 +113,7 @@ class ContinueRadioCard extends StatelessWidget {
                       SizedBox(height: 4.h),
                       Text(
                         hasLastStation ? resumeText : noActivityDescription,
-                        maxLines: 3,
+                        maxLines: 6,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: TextStyle(

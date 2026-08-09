@@ -28,9 +28,16 @@ Future<Position> getCurrentLocation() async {
     throw const LocationPermissionPermanentlyDeniedFailure();
   }
 
+  if (permission != LocationPermission.always &&
+      permission != LocationPermission.whileInUse) {
+    throw const LocationPermissionDeniedFailure();
+  }
+
   try {
     return await Geolocator.getCurrentPosition();
-  } catch (e) {
+  } on PermissionDeniedException {
+    throw const LocationPermissionDeniedFailure();
+  } on LocationServiceDisabledException {
     throw const LocationServiceDisabledFailure();
   }
 }

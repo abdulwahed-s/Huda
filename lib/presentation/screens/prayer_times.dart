@@ -13,6 +13,7 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_times_loading_widg
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_location_denied_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_location_permanently_denied_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_location_service_disabled_widget.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_times_needs_setup_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/refresh_location_button_widget.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
@@ -30,9 +31,7 @@ class _PrayerTimesState extends State<PrayerTimes> {
   late PrayerTimesCubit _prayerTimesCubit;
 
   static bool _isPreparingPrayerTimes(PrayerTimesState state) {
-    return state is PrayerTimesInitial ||
-        state is PrayerTimesLoading ||
-        state is PrayerTimesNeedsSetup;
+    return state is PrayerTimesInitial || state is PrayerTimesLoading;
   }
 
   @override
@@ -56,6 +55,19 @@ class _PrayerTimesState extends State<PrayerTimes> {
     }
 
     if (!mounted) return;
+    _prayerTimesCubit.loadCachedPrayerTimes();
+    final state = _prayerTimesCubit.state;
+    if (state is PrayerTimesLoaded ||
+        state is PrayerTimesLoading ||
+        state is PrayerTimesLocationDenied ||
+        state is PrayerTimesLocationPermanentlyDenied ||
+        state is PrayerTimesLocationServiceDisabled ||
+        state is PrayerTimesError) {
+      return;
+    }
+
+    // Initial/NeedsSetup is the only automatic location attempt. Once an
+    // attempt fails, retries are user-initiated from the visible action card.
     await _prayerTimesCubit.loadPrayerTimes();
   }
 
@@ -133,6 +145,8 @@ class _PrayerTimesState extends State<PrayerTimes> {
                       } else if (state
                           is PrayerTimesLocationPermanentlyDenied) {
                         return const PrayerTimesLocationPermanentlyDeniedWidget();
+                      } else if (state is PrayerTimesNeedsSetup) {
+                        return const PrayerTimesNeedsSetupWidget();
                       } else if (state is PrayerTimesError) {
                         return PrayerTimesErrorWidget(state: state);
                       }
@@ -162,7 +176,7 @@ class _PrayerTimesState extends State<PrayerTimes> {
               ),
               BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
                 builder: (context, state) {
-                  if (_isPreparingPrayerTimes(state)) {
+                  if (state is! PrayerTimesLoaded) {
                     return const SizedBox.shrink();
                   }
 

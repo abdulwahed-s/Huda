@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/geolocator.dart' show Position;
 import 'package:huda/core/services/get_current_location.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/services/notification_services.dart';
@@ -31,6 +32,8 @@ class NextPrayerInfo {
 
 class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   final CacheHelper cacheHelper;
+  final Future<Position> Function() _currentLocationProvider;
+  final Future<List<Placemark>> Function(double, double)? _placemarkProvider;
   static const _latKey = PrayerTimesCalculator.latKey;
   static const _lonKey = PrayerTimesCalculator.lonKey;
   static const _countryCodeKey = PrayerTimesCalculator.countryCodeKey;
@@ -77,9 +80,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     this.cacheHelper, {
     LocationService? locationService,
     PrayerNotificationScheduler? notificationScheduler,
+    Future<Position> Function()? currentLocationProvider,
+    Future<List<Placemark>> Function(double, double)? placemarkProvider,
   })  : _notificationScheduler = notificationScheduler ??
             PrayerNotificationScheduler(cacheHelper: cacheHelper),
         _locationService = locationService,
+        _currentLocationProvider =
+            currentLocationProvider ?? getCurrentLocation,
+        _placemarkProvider = placemarkProvider,
         super(PrayerTimesInitial()) {
     _loadOffsets();
     _loadSettings();
@@ -125,14 +133,43 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   Future<void> _cachePlacemark(List<Placemark> placemarks) async {
-    if (placemarks.isEmpty) return;
+    if (placemarks.isEmpty) {
+      await _clearPlacemarkCache();
+      return;
+    }
     final placemark = placemarks.first;
     final code = (placemark.isoCountryCode ?? '').trim();
-    if (code.trim().isNotEmpty) {
-      await cacheHelper.saveData(key: _countryCodeKey, value: code.trim());
-    }
+    await _saveOrRemove(_countryCodeKey, code);
     await _saveOrRemove(_localityKey, placemark.locality);
     await _saveOrRemove(_countryNameKey, placemark.country);
+  }
+
+  Future<void> _clearPlacemarkCache() async {
+    await cacheHelper.removeData(key: _countryCodeKey);
+    await cacheHelper.removeData(key: _localityKey);
+    await cacheHelper.removeData(key: _countryNameKey);
+  }
+
+  Future<List<Placemark>> _resolvePlacemarks(
+    double lat,
+    double lon, {
+    required bool preserveCachedMetadata,
+  }) async {
+    final cached = _cachedPlacemarks();
+    if (preserveCachedMetadata && cached.isNotEmpty) return cached;
+
+    try {
+      final placemarks = _placemarkProvider == null
+          ? await _locations.getPlacemarks(lat, lon)
+          : await _placemarkProvider(lat, lon);
+      await _cachePlacemark(placemarks);
+      return placemarks;
+    } catch (error) {
+      debugPrint('Could not resolve prayer location name: $error');
+      if (preserveCachedMetadata) return cached;
+      await _clearPlacemarkCache();
+      return const [];
+    }
   }
 
   Future<void> _saveOrRemove(String key, String? value) async {
@@ -279,33 +316,36 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     emit(PrayerTimesLoading());
 
     try {
-      double? lat =
-          double.tryParse(cacheHelper.getDataString(key: _latKey) ?? '');
-      double? lon =
-          double.tryParse(cacheHelper.getDataString(key: _lonKey) ?? '');
+      var coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+      final usingCachedCoordinates = coordinates != null;
 
-      if (lat == null || lon == null) {
-        final position = await getCurrentLocation();
-        lat = position.latitude;
-        lon = position.longitude;
+      if (coordinates == null) {
+        final position = await _currentLocationProvider();
+        coordinates = Coordinates(position.latitude, position.longitude);
 
-        await cacheHelper.saveData(key: _latKey, value: lat.toString());
-        await cacheHelper.saveData(key: _lonKey, value: lon.toString());
+        await cacheHelper.saveData(
+          key: _latKey,
+          value: position.latitude.toString(),
+        );
+        await cacheHelper.saveData(
+          key: _lonKey,
+          value: position.longitude.toString(),
+        );
       }
 
-      final List<Placemark> placemarks =
-          await _locations.getPlacemarks(lat, lon);
-      await _cachePlacemark(placemarks);
+      final placemarks = await _resolvePlacemarks(
+        coordinates.latitude,
+        coordinates.longitude,
+        preserveCachedMetadata: usingCachedCoordinates,
+      );
 
       _loadSettings();
       _loadOffsets();
 
-      final coordinates = Coordinates(lat, lon);
       final prayerTimes = _computeWithSettings(coordinates, DateTime.now());
 
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
-      await PrayerWidgetService.pushSettings();
-      await _reconcilePrayerNotifications('location-loaded', force: true);
+      await _syncLoadedPrayerTimes('location-loaded');
     } catch (e) {
       _emitLocationFailure(e);
     }
@@ -316,7 +356,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
     final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
     if (coordinates == null) {
-      if (state is! PrayerTimesLoaded) emit(PrayerTimesNeedsSetup());
+      // Keep actionable failure states intact when the app resumes after a
+      // permission or settings dialog. Only the untouched initial state means
+      // that location setup has not been attempted yet.
+      if (state is PrayerTimesInitial) emit(PrayerTimesNeedsSetup());
       return;
     }
 
@@ -364,12 +407,15 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           ),
         ];
       } else {
-        placemarks = await _locations.getPlacemarks(lat, lon);
+        placemarks = await _resolvePlacemarks(
+          lat,
+          lon,
+          preserveCachedMetadata: false,
+        );
         country = placemarks.isNotEmpty
             ? (placemarks.first.isoCountryCode ?? '').trim()
             : '';
       }
-      await cacheHelper.saveData(key: _countryCodeKey, value: country);
       await _cachePlacemark(placemarks);
 
       _loadSettings();
@@ -380,28 +426,30 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           countryCode: country);
 
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
-      await PrayerWidgetService.pushSettings();
-      await _reconcilePrayerNotifications('manual-location-changed',
-          force: true);
+      await _syncLoadedPrayerTimes('manual-location-changed');
     } catch (e) {
       emit(PrayerTimesError(e.toString()));
     }
   }
 
   Future<void> refreshLocationAndPrayerTimes() async {
+    final previousPrayerTimes =
+        state is PrayerTimesLoaded ? state as PrayerTimesLoaded : null;
     emit(PrayerTimesLoading());
 
     try {
-      final position = await getCurrentLocation();
+      final position = await _currentLocationProvider();
       final lat = position.latitude;
       final lon = position.longitude;
 
       await cacheHelper.saveData(key: _latKey, value: lat.toString());
       await cacheHelper.saveData(key: _lonKey, value: lon.toString());
 
-      final List<Placemark> placemarks =
-          await _locations.getPlacemarks(lat, lon);
-      await _cachePlacemark(placemarks);
+      final placemarks = await _resolvePlacemarks(
+        lat,
+        lon,
+        preserveCachedMetadata: false,
+      );
 
       _loadSettings();
       _loadOffsets();
@@ -410,11 +458,29 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       final prayerTimes = _computeWithSettings(coordinates, DateTime.now());
 
       emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
-      await PrayerWidgetService.pushSettings();
-      await _reconcilePrayerNotifications('device-location-changed',
-          force: true);
+      await _syncLoadedPrayerTimes('device-location-changed');
     } catch (e) {
-      _emitLocationFailure(e);
+      if (previousPrayerTimes != null) {
+        // A refresh failure must not discard an already usable manual or
+        // cached schedule. The user can retry precise device location later.
+        emit(previousPrayerTimes);
+      } else {
+        _emitLocationFailure(e);
+      }
+    }
+  }
+
+  Future<void> _syncLoadedPrayerTimes(String reason) async {
+    try {
+      await PrayerWidgetService.pushSettings();
+    } catch (error) {
+      debugPrint('Could not update prayer widgets: $error');
+    }
+
+    try {
+      await _reconcilePrayerNotifications(reason, force: true);
+    } catch (error) {
+      debugPrint('Could not update prayer notifications: $error');
     }
   }
 

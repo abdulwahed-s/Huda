@@ -355,6 +355,8 @@ class PrayerTimesCalculator {
     final lat = double.tryParse(latStr);
     final lon = double.tryParse(lonStr);
     if (lat == null || lon == null) return null;
+    if (!lat.isFinite || !lon.isFinite) return null;
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) return null;
     return Coordinates(lat, lon);
   }
 

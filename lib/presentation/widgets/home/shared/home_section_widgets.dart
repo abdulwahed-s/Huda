@@ -1683,9 +1683,22 @@ class _PrayerCountdown extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.runtimeType != current.runtimeType,
       builder: (context, state) {
-        if (state is PrayerTimesNeedsSetup || state is PrayerTimesError) {
+        if (state is PrayerTimesInitial || state is PrayerTimesLoading) {
+          return const LinearProgressIndicator(color: Colors.white);
+        }
+        if (state is! PrayerTimesLoaded) {
+          final message = switch (state) {
+            PrayerTimesLocationDenied() => l10n.locationPermissionDenied,
+            PrayerTimesLocationPermanentlyDenied() =>
+              l10n.locationPermissionPermanentlyDenied,
+            PrayerTimesLocationServiceDisabled() =>
+              l10n.locationServicesDisabled,
+            PrayerTimesError(:final message) => message,
+            _ => l10n.prayerSetupRequired,
+          };
           return Semantics(
             button: true,
+            label: message,
             child: InkWell(
               onTap: () => Navigator.pushNamed(context, AppRoute.prayerTimes),
               borderRadius: BorderRadius.circular(8.r),
@@ -1698,9 +1711,7 @@ class _PrayerCountdown extends StatelessWidget {
                     SizedBox(width: 8.w),
                     Flexible(
                       child: Text(
-                        compact
-                            ? l10n.setUpPrayerTimes
-                            : l10n.prayerSetupRequired,
+                        compact ? l10n.setUpPrayerTimes : message,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
@@ -1713,9 +1724,6 @@ class _PrayerCountdown extends StatelessWidget {
               ),
             ),
           );
-        }
-        if (state is! PrayerTimesLoaded) {
-          return const LinearProgressIndicator(color: Colors.white);
         }
 
         return StreamBuilder<NextPrayerCountdown>(

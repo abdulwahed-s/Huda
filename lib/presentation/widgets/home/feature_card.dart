@@ -152,21 +152,18 @@ class FeatureCard extends StatelessWidget {
                           );
 
                           final isSingleWord = !title.trim().contains(' ');
+                          final displayTitle = isSingleWord
+                              ? title
+                              : balancedTwoLineTitle(title);
                           return FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: isSingleWord
-                                    ? double.infinity
-                                    : constraints.maxWidth,
-                              ),
-                              child: Text(
-                                title,
-                                textAlign: TextAlign.center,
-                                maxLines: isSingleWord ? 1 : 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: textStyle,
-                              ),
+                            child: Text(
+                              displayTitle,
+                              textAlign: TextAlign.center,
+                              maxLines: isSingleWord ? 1 : 2,
+                              softWrap: false,
+                              overflow: TextOverflow.visible,
+                              style: textStyle,
                             ),
                           );
                         },
@@ -206,4 +203,25 @@ class FeatureCard extends StatelessWidget {
       },
     );
   }
+}
+
+@visibleForTesting
+String balancedTwoLineTitle(String title) {
+  final words = title.trim().split(RegExp(r'\s+'));
+  if (words.length < 2) return title.trim();
+
+  var bestSplit = 1;
+  var bestDifference = double.infinity;
+  for (var split = 1; split < words.length; split++) {
+    final firstLength = words.take(split).join(' ').length;
+    final secondLength = words.skip(split).join(' ').length;
+    final difference = (firstLength - secondLength).abs().toDouble();
+    if (difference < bestDifference) {
+      bestDifference = difference;
+      bestSplit = split;
+    }
+  }
+
+  return '${words.take(bestSplit).join(' ')}\n'
+      '${words.skip(bestSplit).join(' ')}';
 }
