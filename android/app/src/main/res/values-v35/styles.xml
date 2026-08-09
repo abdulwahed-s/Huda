@@ -6,7 +6,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
         <item name="android:windowSplashScreenBackground">#0c1d2b</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/android12splash</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash</item>
         <item name="android:windowSplashScreenIconBackgroundColor">#0c1d2b</item>
     </style>
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
