@@ -571,6 +571,10 @@ jobs:
       }}
     runs-on: windows-latest
     steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ env.RELEASE_SOURCE_REF }}
+
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: windows-msix
@@ -590,11 +594,7 @@ jobs:
         run: |
           $PSNativeCommandUseErrorActionPreference = $false
 
-          msstore reconfigure `
-            --tenantId "$env:AZURE_AD_TENANT_ID" `
-            --clientId "$env:AZURE_AD_CLIENT_ID" `
-            --clientSecret "$env:AZURE_AD_CLIENT_SECRET" `
-            --sellerId "$env:MS_STORE_SELLER_ID"
+          msstore reconfigure --tenantId "$env:AZURE_AD_TENANT_ID" --clientId "$env:AZURE_AD_CLIENT_ID" --clientSecret "$env:AZURE_AD_CLIENT_SECRET" --sellerId "$env:MS_STORE_SELLER_ID"
 
           if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
@@ -609,8 +609,8 @@ jobs:
           $delaySeconds = 60
 
           for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
-            Write-Host "Publishing MSIX to Microsoft Store (attempt $attempt/$maxAttempts)"
-            msstore publish "$($msix.FullName)" --appId "$env:MS_STORE_APP_ID" -v
+            Write-Host "Uploading MSIX to a Microsoft Store draft (attempt $attempt/$maxAttempts)"
+            msstore publish "$($msix.FullName)" --appId "$env:MS_STORE_APP_ID" --noCommit -v
 
             if ($LASTEXITCODE -eq 0) {
               break
@@ -620,7 +620,33 @@ jobs:
               exit $LASTEXITCODE
             }
 
-            Write-Warning "Microsoft Store publish failed with exit code $LASTEXITCODE. Retrying in $delaySeconds seconds."
+            Write-Warning "Microsoft Store upload failed with exit code $LASTEXITCODE. Retrying in $delaySeconds seconds."
+            Start-Sleep -Seconds $delaySeconds
+          }
+
+          Write-Host "Updating Microsoft Store release notes"
+          $releaseNotesScript = Join-Path $env:GITHUB_WORKSPACE "distribution/release-notes/update-microsoft-store-release-notes.ps1"
+          if (-not (Test-Path -LiteralPath $releaseNotesScript)) {
+            throw "Microsoft Store release-notes script not found: $releaseNotesScript"
+          }
+          & $releaseNotesScript -ProductId "$env:MS_STORE_APP_ID"
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+          for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+            Write-Host "Publishing Microsoft Store submission (attempt $attempt/$maxAttempts)"
+            msstore submission publish "$env:MS_STORE_APP_ID" -v
+
+            if ($LASTEXITCODE -eq 0) {
+              break
+            }
+
+            if ($attempt -eq $maxAttempts) {
+              exit $LASTEXITCODE
+            }
+
+            Write-Warning "Microsoft Store submission publish failed with exit code $LASTEXITCODE. Retrying in $delaySeconds seconds."
             Start-Sleep -Seconds $delaySeconds
           }
 
@@ -727,7 +753,7 @@ jobs:
           releaseFiles: store-artifact/app-gplay-release.aab
           track: production
           status: completed
-          whatsNewDirectory: distribution/whatsnew
+          whatsNewDirectory: distribution/release-notes/google-play
 
   # ──────────────────────────────────────────────────────────
   # Huawei AppGallery — AAB upload via Publishing API
@@ -826,6 +852,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
-          body_path: distribution/whatsnew/whatsnew-en-GB
+          body_path: distribution/release-notes/github.md
           files: release-assets/*
           fail_on_unmatched_files: false
