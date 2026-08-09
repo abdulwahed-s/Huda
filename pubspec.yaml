@@ -109,7 +109,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
-  flutter_native_splash: ^2.4.6
+  flutter_native_splash: ^2.4.8
   msix: ^3.16.12
   vector_graphics_compiler: ^1.1.19
 
@@ -147,7 +147,7 @@ flutter_launcher_icons:
 
 flutter_native_splash:
   color: "#0c1d2b"
-  image: "assets/images/huda_splash.png"
+  image: "assets/dev/huda_splash.png"
   android: true
   ios: true
   web: false
@@ -155,7 +155,8 @@ flutter_native_splash:
   android_gravity: center
   ios_content_mode: center
   android_12:
-    image: "assets/images/huda_splash.png"
+    color: "#0c1d2b"
+    image: "assets/dev/huda_splash.png"
     icon_background_color: "#0c1d2b"
 
 flutter:
