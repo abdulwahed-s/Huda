@@ -3,9 +3,7 @@ package com.aw.huda
 import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import androidx.glance.appwidget.updateAll
-import com.aw.huda.widget.HudaGlanceWidget
-import com.aw.huda.widget.HudaGlanceWidgetReceiver
+import com.aw.huda.widget.QuranWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerWidgetReliabilityManager
 import com.aw.huda.widget.prayer.PrayerWidgetScheduler
 import com.aw.huda.widget.prayer.PrayerWidgetUpdater
@@ -17,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity: AudioServiceActivity() {
+class MainActivity : AudioServiceActivity() {
     private val CHANNEL = "com.aw.huda/widget"
     private val LOCATION_CHANNEL = "com.aw.huda/location"
 
@@ -33,17 +31,21 @@ class MainActivity: AudioServiceActivity() {
                             result.success(
                                 LocationSupport.isLocationServiceEnabled(applicationContext)
                             )
+
                         "openLocationSettings" ->
                             result.success(LocationSupport.openLocationSettings(this))
+
                         "getLastKnownPosition" ->
                             locationSource.getLastKnownPosition { map ->
                                 runOnUiThread { result.success(map) }
                             }
+
                         "getCurrentPosition" ->
                             locationSource.getCurrentPosition(
                                 { map -> runOnUiThread { result.success(map) } },
                                 { code, msg -> runOnUiThread { result.error(code, msg, null) } },
                             )
+
                         else -> result.notImplemented()
                     }
                 } catch (e: Exception) {
@@ -51,24 +53,25 @@ class MainActivity: AudioServiceActivity() {
                     runOnUiThread { result.error("LOCATION_ERROR", e.message, null) }
                 }
             }
-        
+
         // Widget channel
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            CHANNEL
+        ).setMethodCallHandler { call, result ->
             when (call.method) {
-                "updateWidget" -> {
-                    CoroutineScope(Dispatchers.IO).launch {
+                "refreshQuranWidget" -> {
+                    CoroutineScope(Dispatchers.Main.immediate).launch {
                         try {
-                            val appCtx = applicationContext
-                            HudaGlanceWidget().updateAll(appCtx)
-                            HudaGlanceWidgetReceiver.ensureHourlyUpdates(appCtx)
-                            withContext(Dispatchers.Main) { result.success(true) }
+                            QuranWidgetUpdater.refreshAll(applicationContext)
+                            result.success(true)
                         } catch (e: Exception) {
-                            println("❌ Failed to update widget: ${e.message}")
-                            e.printStackTrace()
-                            withContext(Dispatchers.Main) { result.error("UPDATE_ERROR", e.message, null) }
+                            android.util.Log.e("HudaQuranWidget", "Failed to refresh widget", e)
+                            result.error("UPDATE_ERROR", e.message, null)
                         }
                     }
                 }
+
                 "updatePrayerWidget" -> {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
@@ -86,12 +89,13 @@ class MainActivity: AudioServiceActivity() {
                         }
                     }
                 }
+
                 else -> {
                     result.notImplemented()
                 }
             }
         }
-        
+
         // Miqaat Lock channel
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,

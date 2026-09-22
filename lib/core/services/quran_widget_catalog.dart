@@ -19,9 +19,7 @@ class QuranWidgetCatalog {
 
   static Future<QuranWidgetCatalog> load({AssetBundle? bundle}) async {
     final raw = await (bundle ?? rootBundle).loadString(assetPath);
-    return QuranWidgetCatalog.fromJson(
-      jsonDecode(raw) as Map<String, dynamic>,
-    );
+    return QuranWidgetCatalog.fromJson(jsonDecode(raw) as Map<String, dynamic>);
   }
 
   factory QuranWidgetCatalog.fromJson(Map<String, dynamic> json) {
@@ -39,28 +37,37 @@ class QuranWidgetCatalog {
       sources: rawSources.map(
         (key, value) => MapEntry(
           key,
-          QuranWidgetTranslationSource.fromJson(
-            value as Map<String, dynamic>,
-          ),
+          QuranWidgetTranslationSource.fromJson(value as Map<String, dynamic>),
         ),
       ),
       verses: rawVerses
           .map(
-            (value) => QuranWidgetVerse.fromJson(
-              value as Map<String, dynamic>,
-            ),
+            (value) => QuranWidgetVerse.fromJson(value as Map<String, dynamic>),
           )
           .toList(growable: false),
     );
   }
 
-  QuranWidgetVerse verseFor(DateTime date, {int offset = 0}) {
+  QuranWidgetVerse verseFor(
+    DateTime date, {
+    required QuranWidgetSize size,
+    int offset = 0,
+  }) {
     if (verses.isEmpty) {
       throw StateError('The Quran widget catalog is empty.');
     }
+    final eligible = verses
+        .where((verse) => verse.widgetSizes.contains(size))
+        .toList(growable: false);
+    if (eligible.isEmpty) {
+      return verses.firstWhere(
+        (verse) => verse.id == '94:6',
+        orElse: () => verses.first,
+      );
+    }
     final epochHour = date.toUtc().millisecondsSinceEpoch ~/ 3600000;
-    final index = (epochHour + offset) % verses.length;
-    return verses[index];
+    final index = (epochHour + offset) % eligible.length;
+    return eligible[index];
   }
 
   String displayReference(QuranWidgetVerse verse, String appLocale) {
@@ -114,6 +121,7 @@ class QuranWidgetVerse {
     required this.id,
     required this.surah,
     required this.ayah,
+    required this.widgetSizes,
     required this.arabic,
     required this.translations,
   });
@@ -121,6 +129,7 @@ class QuranWidgetVerse {
   final String id;
   final int surah;
   final int ayah;
+  final Set<QuranWidgetSize> widgetSizes;
   final String arabic;
   final Map<String, String> translations;
 
@@ -133,14 +142,33 @@ class QuranWidgetVerse {
   factory QuranWidgetVerse.fromJson(Map<String, dynamic> json) {
     final rawTranslations =
         json['translations'] as Map<String, dynamic>? ?? const {};
+    final rawWidgetSizes = json['widgetSizes'] as List<dynamic>? ?? const [];
     return QuranWidgetVerse(
       id: json['id'] as String? ?? '',
       surah: json['surah'] as int? ?? 0,
       ayah: json['ayah'] as int? ?? 0,
+      widgetSizes: Set.unmodifiable(
+        rawWidgetSizes
+            .map((value) => QuranWidgetSize.fromJson(value.toString()))
+            .whereType<QuranWidgetSize>(),
+      ),
       arabic: json['arabic'] as String? ?? '',
       translations: rawTranslations.map(
         (key, value) => MapEntry(key, value.toString()),
       ),
     );
+  }
+}
+
+enum QuranWidgetSize {
+  small,
+  medium,
+  large;
+
+  static QuranWidgetSize? fromJson(String value) {
+    for (final size in values) {
+      if (size.name == value) return size;
+    }
+    return null;
   }
 }

@@ -1,13 +1,19 @@
 import Foundation
 import SwiftUI
 
+enum QuranWidgetSize: String, Codable {
+    case small
+    case medium
+    case large
+}
+
 struct QuranWidgetVerse: Codable {
     let id: String
     let surah: Int
     let ayah: Int
+    let widgetSizes: Set<QuranWidgetSize>
     let arabic: String
     let translations: [String: String]
-
 }
 
 struct QuranWidgetSurah: Codable {
@@ -52,24 +58,41 @@ struct WidgetDataLoader {
     }
 
     private static let fallbackVerse = QuranWidgetVerse(
-        id: "94:5",
+        id: "94:6",
         surah: 94,
-        ayah: 5,
-        arabic: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
-        translations: ["en": "For indeed, with hardship comes ease."]
+        ayah: 6,
+        widgetSizes: [.small, .medium, .large],
+        arabic: "إِنَّ مَعَ ٱلۡعُسۡرِ يُسۡرٗا",
+        translations: [
+            "en": "Indeed, with hardship [will be] ease.",
+            "tr": "Gerçekten, güçlükle beraber bir kolaylık vardır.",
+            "fr": "A côté de la difficulté est, certes, une facilité!",
+            "de": "gewiß, mit der Erschwernis ist Erleichterung.",
+            "es": "¡La adversidad y la felicidad van a una!",
+            "ur": "(اور) بے شک مشکل کے ساتھ آسانی ہے",
+            "ru": "За каждой тягостью наступает облегчение.",
+            "ms": "(Sekali lagi ditegaskan): bahawa sesungguhnya tiap-tiap kesukaran disertai kemudahan.",
+            "bn": "নিশ্চয় কষ্টের সাথে স্বস্তি রয়েছে।",
+        ]
     )
 
     private static let catalog: Catalog? = {
         guard let url = Bundle.main.url(forResource: "quran_widget_verses", withExtension: "json"),
-              let data = try? Data(contentsOf: url) else { return nil }
+            let data = try? Data(contentsOf: url)
+        else { return nil }
         return try? JSONDecoder().decode(Catalog.self, from: data)
     }()
 
     private static var defaults: UserDefaults? { UserDefaults(suiteName: appGroupId) }
 
-    static func snapshot(at date: Date = Date()) -> QuranWidgetSnapshot {
+    static func snapshot(
+        at date: Date = Date(),
+        size: QuranWidgetSize
+    ) -> QuranWidgetSnapshot {
         let data = catalog
-        let verses = data?.verses.isEmpty == false ? data!.verses : [fallbackVerse]
+        let catalogVerses = data?.verses.isEmpty == false ? data!.verses : [fallbackVerse]
+        let eligibleVerses = catalogVerses.filter { $0.widgetSizes.contains(size) }
+        let verses = eligibleVerses.isEmpty ? [fallbackVerse] : eligibleVerses
         let hour = Int64(floor(date.timeIntervalSince1970 / 3600))
         let offset = Int64(defaults?.integer(forKey: "quranWidgetRotationOffset") ?? 0)
         let rawIndex = (hour + offset) % Int64(verses.count)
@@ -77,9 +100,11 @@ struct WidgetDataLoader {
         let verse = verses[index]
         let language = resolvedLanguage()
         let appLanguage = resolvedAppLanguage()
-        let surahName = data?.surahs?[String(verse.surah)]?.displayNames[appLanguage]
+        let surahName =
+            data?.surahs?[String(verse.surah)]?.displayNames[appLanguage]
             ?? data?.surahs?[String(verse.surah)]?.displayNames["en"]
-        let reference = surahName.flatMap { $0.isEmpty ? nil : "\($0) • \(verse.ayah)" }
+        let reference =
+            surahName.flatMap { $0.isEmpty ? nil : "\($0) • \(verse.ayah)" }
             ?? "\(verse.surah):\(verse.ayah)"
         return QuranWidgetSnapshot(
             verse: verse,
@@ -120,7 +145,8 @@ struct WidgetDataLoader {
 
     private static func resolvedAppLanguage() -> String {
         let rawLocale = defaults?.string(forKey: "locale") ?? "en"
-        let locale = rawLocale
+        let locale =
+            rawLocale
             .split(whereSeparator: { $0 == "-" || $0 == "_" })
             .first
             .map { String($0).lowercased() } ?? "en"

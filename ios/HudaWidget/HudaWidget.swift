@@ -11,28 +11,59 @@ struct HudaWidgetProvider: TimelineProvider {
     private static let futureEntryCount = 8
 
     func placeholder(in context: Context) -> HudaWidgetEntry {
-        HudaWidgetEntry(date: Date(), snapshot: WidgetDataLoader.snapshot())
+        HudaWidgetEntry(
+            date: Date(),
+            snapshot: WidgetDataLoader.snapshot(size: context.family.quranWidgetSize)
+        )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (HudaWidgetEntry) -> Void) {
-        completion(HudaWidgetEntry(date: Date(), snapshot: WidgetDataLoader.snapshot()))
+        completion(
+            HudaWidgetEntry(
+                date: Date(),
+                snapshot: WidgetDataLoader.snapshot(size: context.family.quranWidgetSize)
+            )
+        )
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<HudaWidgetEntry>) -> Void) {
         let now = Date()
         let calendar = Calendar(identifier: .gregorian)
-        let nextHour = calendar.dateInterval(of: .hour, for: now)?.end
+        let nextHour =
+            calendar.dateInterval(of: .hour, for: now)?.end
             ?? now.addingTimeInterval(3600)
-        var entries = [HudaWidgetEntry(date: now, snapshot: WidgetDataLoader.snapshot(at: now))]
+        let size = context.family.quranWidgetSize
+        var entries = [
+            HudaWidgetEntry(
+                date: now,
+                snapshot: WidgetDataLoader.snapshot(at: now, size: size)
+            )
+        ]
         for hourOffset in 0..<Self.futureEntryCount {
             guard let date = calendar.date(byAdding: .hour, value: hourOffset, to: nextHour) else {
                 continue
             }
             entries.append(
-                HudaWidgetEntry(date: date, snapshot: WidgetDataLoader.snapshot(at: date))
+                HudaWidgetEntry(
+                    date: date,
+                    snapshot: WidgetDataLoader.snapshot(at: date, size: size)
+                )
             )
         }
         completion(Timeline(entries: entries, policy: .atEnd))
+    }
+}
+
+private extension WidgetFamily {
+    var quranWidgetSize: QuranWidgetSize {
+        switch self {
+        case .systemLarge:
+            return .large
+        case .systemMedium:
+            return .medium
+        default:
+            return .small
+        }
     }
 }
 

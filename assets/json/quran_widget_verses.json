@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 7,
   "surahs": {
     "2": {"displayNames": {"en": "Al-Baqarah", "ar": "البقرة", "tr": "Bakara", "fr": "Al-Baqarah", "de": "Al-Baqarah", "es": "Al-Baqarah", "ur": "البقرة", "ru": "Аль-Бакара", "ms": "Al-Baqarah", "bn": "আল বাকারা"}},
     "3": {"displayNames": {"en": "Ali 'Imran", "ar": "آل عمران", "tr": "Âl-i İmrân", "fr": "Ali 'Imran", "de": "Ali 'Imran", "es": "Ali 'Imran", "ur": "آل عمران", "ru": "Аль Имран", "ms": "Ali 'Imran", "bn": "আল ইমরান"}},
@@ -12,13 +12,22 @@
     "26": {"displayNames": {"en": "Ash-Shu'ara", "ar": "الشعراء", "tr": "Şuarâ", "fr": "Ash-Shu'ara", "de": "Ash-Shu'ara", "es": "Ash-Shu'ara", "ur": "الشعراء", "ru": "Аш-Шуара", "ms": "Ash-Shu'ara", "bn": "আশ শুআরা"}},
     "29": {"displayNames": {"en": "Al-'Ankabut", "ar": "العنكبوت", "tr": "Ankebût", "fr": "Al-'Ankabut", "de": "Al-'Ankabut", "es": "Al-'Ankabut", "ur": "العنكبوت", "ru": "Аль-Анкабут", "ms": "Al-'Ankabut", "bn": "আল আনকাবূত"}},
     "33": {"displayNames": {"en": "Al-Ahzab", "ar": "الأحزاب", "tr": "Ahzâb", "fr": "Al-Ahzab", "de": "Al-Ahzab", "es": "Al-Ahzab", "ur": "الأحزاب", "ru": "Аль-Ахзаб", "ms": "Al-Ahzab", "bn": "আল আহ্‌যাব"}},
+    "36": {"displayNames": {"en": "Ya-Sin", "ar": "يس", "tr": "Yâsîn", "fr": "Ya-Sin", "de": "Ya-Sin", "es": "Ya-Sin", "ur": "يس", "ru": "Йа Син", "ms": "Ya-Sin", "bn": "ইয়াসীন"}},
+    "37": {"displayNames": {"en": "As-Saffat", "ar": "الصافات", "tr": "Sâffât", "fr": "As-Saffat", "de": "As-Saffat", "es": "As-Saffat", "ur": "الصافات", "ru": "Ас-Саффат", "ms": "As-Saffat", "bn": "আস ছাফ্‌ফাত"}},
     "39": {"displayNames": {"en": "Az-Zumar", "ar": "الزمر", "tr": "Zümer", "fr": "Az-Zumar", "de": "Az-Zumar", "es": "Az-Zumar", "ur": "الزمر", "ru": "Аз-Зумар", "ms": "Az-Zumar", "bn": "আয-জুমার"}},
     "40": {"displayNames": {"en": "Ghafir", "ar": "غافر", "tr": "Mü'min", "fr": "Ghafir", "de": "Ghafir", "es": "Ghafir", "ur": "غافر", "ru": "Гафир", "ms": "Ghafir", "bn": "আল মু'মিন"}},
+    "44": {"displayNames": {"en": "Ad-Dukhan", "ar": "الدخان", "tr": "Duhân", "fr": "Ad-Dukhan", "de": "Ad-Dukhan", "es": "Ad-Dukhan", "ur": "الدخان", "ru": "Ад-Духан", "ms": "Ad-Dukhan", "bn": "আদ-দোখান"}},
     "51": {"displayNames": {"en": "Adh-Dhariyat", "ar": "الذاريات", "tr": "Zâriyât", "fr": "Adh-Dhariyat", "de": "Adh-Dhariyat", "es": "Adh-Dhariyat", "ur": "الذاريات", "ru": "Аз-Зарият", "ms": "Adh-Dhariyat", "bn": "আয-যারিয়াত"}},
-    "53": {"displayNames": {"en": "An-Najm", "ar": "النجم", "tr": "Necm", "fr": "An-Najm", "de": "An-Najm", "es": "An-Najm", "ur": "النجم", "ru": "Ан-Наджм", "ms": "An-Najm", "bn": "আন-নাজম"}},
+    "54": {"displayNames": {"en": "Al-Qamar", "ar": "القمر", "tr": "Kamer", "fr": "Al-Qamar", "de": "Al-Qamar", "es": "Al-Qamar", "ur": "القمر", "ru": "Аль-Камар", "ms": "Al-Qamar", "bn": "আল ক্বামার"}},
+    "55": {"displayNames": {"en": "Ar-Rahman", "ar": "الرحمن", "tr": "Rahmân", "fr": "Ar-Rahman", "de": "Ar-Rahman", "es": "Ar-Rahman", "ur": "الرحمن", "ru": "Ар-Рахман", "ms": "Ar-Rahman", "bn": "আর রাহমান"}},
+    "68": {"displayNames": {"en": "Al-Qalam", "ar": "القلم", "tr": "Kalem", "fr": "Al-Qalam", "de": "Al-Qalam", "es": "Al-Qalam", "ur": "القلم", "ru": "Аль-Калям", "ms": "Al-Qalam", "bn": "আল-কলম"}},
+    "74": {"displayNames": {"en": "Al-Muddaththir", "ar": "المدثر", "tr": "Müddessir", "fr": "Al-Muddaththir", "de": "Al-Muddaththir", "es": "Al-Muddaththir", "ur": "المدثر", "ru": "Аль-Муддассир", "ms": "Al-Muddaththir", "bn": "আল মুদ্দাস্সির"}},
+    "85": {"displayNames": {"en": "Al-Buruj", "ar": "البروج", "tr": "Burûc", "fr": "Al-Buruj", "de": "Al-Buruj", "es": "Al-Buruj", "ur": "البروج", "ru": "Аль-Бурудж", "ms": "Al-Buruj", "bn": "আল-বুরুজ"}},
     "89": {"displayNames": {"en": "Al-Fajr", "ar": "الفجر", "tr": "Fecr", "fr": "Al-Fajr", "de": "Al-Fajr", "es": "Al-Fajr", "ur": "الفجر", "ru": "Аль-Фаджр", "ms": "Al-Fajr", "bn": "আল ফাজ্‌র"}},
     "93": {"displayNames": {"en": "Ad-Duhaa", "ar": "الضحى", "tr": "Duhâ", "fr": "Ad-Duhaa", "de": "Ad-Duhaa", "es": "Ad-Duhaa", "ur": "الضحى", "ru": "Ад-Духа", "ms": "Ad-Duhaa", "bn": "আদ-দুহা"}},
-    "94": {"displayNames": {"en": "Ash-Sharh", "ar": "الشرح", "tr": "İnşirâh", "fr": "Ash-Sharh", "de": "Ash-Sharh", "es": "Ash-Sharh", "ur": "الشرح", "ru": "Аш-Шарх", "ms": "Ash-Sharh", "bn": "আল ইনশিরাহ"}}
+    "94": {"displayNames": {"en": "Ash-Sharh", "ar": "الشرح", "tr": "İnşirâh", "fr": "Ash-Sharh", "de": "Ash-Sharh", "es": "Ash-Sharh", "ur": "الشرح", "ru": "Аш-Шарх", "ms": "Ash-Sharh", "bn": "আল ইনশিরাহ"}},
+    "96": {"displayNames": {"en": "Al-'Alaq", "ar": "العلق", "tr": "Alak", "fr": "Al-'Alaq", "de": "Al-'Alaq", "es": "Al-'Alaq", "ur": "العلق", "ru": "Аль-Аляк", "ms": "Al-'Alaq", "bn": "আলাক্ব"}},
+    "99": {"displayNames": {"en": "Az-Zalzalah", "ar": "الزلزلة", "tr": "Zilzâl", "fr": "Az-Zalzalah", "de": "Az-Zalzalah", "es": "Az-Zalzalah", "ur": "الزلزلة", "ru": "Аз-Зальзаля", "ms": "Az-Zalzalah", "bn": "যিলযাল"}}
   },
   "sources": {
     "en": {
@@ -63,6 +72,7 @@
       "id": "2:152",
       "surah": 2,
       "ayah": 152,
+      "widgetSizes": ["medium", "large"],
       "arabic": "فَٱذۡكُرُونِيٓ أَذۡكُرۡكُمۡ وَٱشۡكُرُواْ لِي وَلَا تَكۡفُرُونِ",
       "translations": {
         "en": "So remember Me; I will remember you. And be grateful to Me and do not deny Me.",
@@ -80,6 +90,7 @@
       "id": "2:153",
       "surah": 2,
       "ayah": 153,
+      "widgetSizes": ["large"],
       "arabic": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ ٱسۡتَعِينُواْ بِٱلصَّبۡرِ وَٱلصَّلَوٰةِۚ إِنَّ ٱللَّهَ مَعَ ٱلصَّٰبِرِينَ",
       "translations": {
         "en": "O you who have believed, seek help through patience and prayer. Indeed, Allah is with the patient.",
@@ -97,6 +108,7 @@
       "id": "3:139",
       "surah": 3,
       "ayah": 139,
+      "widgetSizes": ["large"],
       "arabic": "وَلَا تَهِنُواْ وَلَا تَحۡزَنُواْ وَأَنتُمُ ٱلۡأَعۡلَوۡنَ إِن كُنتُم مُّؤۡمِنِينَ",
       "translations": {
         "en": "So do not weaken and do not grieve, and you will be superior if you are [true] believers.",
@@ -114,6 +126,7 @@
       "id": "3:160",
       "surah": 3,
       "ayah": 160,
+      "widgetSizes": ["large"],
       "arabic": "إِن يَنصُرۡكُمُ ٱللَّهُ فَلَا غَالِبَ لَكُمۡۖ وَإِن يَخۡذُلۡكُمۡ فَمَن ذَا ٱلَّذِي يَنصُرُكُم مِّنۢ بَعۡدِهِۦۗ وَعَلَى ٱللَّهِ فَلۡيَتَوَكَّلِ ٱلۡمُؤۡمِنُونَ",
       "translations": {
         "en": "If Allah should aid you, no one can overcome you; but if He should forsake you, who is there that can aid you after Him? And upon Allah let the believers rely.",
@@ -128,9 +141,28 @@
       }
     },
     {
+      "id": "10:62",
+      "surah": 10,
+      "ayah": 62,
+      "widgetSizes": ["medium", "large"],
+      "arabic": "أَلَآ إِنَّ أَوۡلِيَآءَ ٱللَّهِ لَا خَوۡفٌ عَلَيۡهِمۡ وَلَا هُمۡ يَحۡزَنُونَ",
+      "translations": {
+        "en": "Unquestionably, [for] the allies of Allah there will be no fear concerning them, nor will they grieve",
+        "tr": "İyi bilin ki, Allah'ın dostlarına korku yoktur, onlar üzülmeyeceklerdir.",
+        "fr": "En vérité, les bien-aimés d'Allah seront à l'abri de toute crainte, et ils ne seront point affligés,",
+        "de": "Sicherlich, über Allahs Gefolgsleute soll keine Furcht kommen, noch sollen sie traurig sein,",
+        "es": "Ciertamente, los amigos de Alá no tienen que temer y no estarán tristes.",
+        "ur": "سن رکھو کہ جو خدا کے دوست ہیں ان کو نہ کچھ خوف ہوگا اور نہ وہ غمناک ہوں گے",
+        "ru": "Воистину, угодники Аллаха не познают страха и не будут опечалены.",
+        "ms": "Ketahuilah! Sesungguhnya wali-wali Allah, tidak ada kebimbangan (dari sesuatu yang tidak baik) terhadap mereka, dan mereka pula tidak akan berdukacita.",
+        "bn": "মনে রেখো যারা আল্লাহর বন্ধু, তাদের না কোন ভয় ভীতি আছে, না তারা চিন্তান্বিত হবে।"
+      }
+    },
+    {
       "id": "10:107",
       "surah": 10,
       "ayah": 107,
+      "widgetSizes": ["large"],
       "arabic": "وَإِن يَمۡسَسۡكَ ٱللَّهُ بِضُرّٖ فَلَا كَاشِفَ لَهُۥٓ إِلَّا هُوَۖ وَإِن يُرِدۡكَ بِخَيۡرٖ فَلَا رَآدَّ لِفَضۡلِهِۦۚ يُصِيبُ بِهِۦ مَن يَشَآءُ مِنۡ عِبَادِهِۦۚ وَهُوَ ٱلۡغَفُورُ ٱلرَّحِيمُ",
       "translations": {
         "en": "And if Allah should touch you with adversity, there is no remover of it except Him; and if He intends for you good, then there is no repeller of His bounty. He causes it to reach whom He wills of His servants. And He is the Forgiving, the Merciful",
@@ -148,6 +180,7 @@
       "id": "13:28",
       "surah": 13,
       "ayah": 28,
+      "widgetSizes": ["large"],
       "arabic": "ٱلَّذِينَ ءَامَنُواْ وَتَطۡمَئِنُّ قُلُوبُهُم بِذِكۡرِ ٱللَّهِۗ أَلَا بِذِكۡرِ ٱللَّهِ تَطۡمَئِنُّ ٱلۡقُلُوبُ",
       "translations": {
         "en": "Those who have believed and whose hearts are assured by the remembrance of Allah. Unquestionably, by the remembrance of Allah hearts are assured.\"",
@@ -165,6 +198,7 @@
       "id": "15:49",
       "surah": 15,
       "ayah": 49,
+      "widgetSizes": ["medium", "large"],
       "arabic": "۞ نَبِّئۡ عِبَادِيٓ أَنِّيٓ أَنَا ٱلۡغَفُورُ ٱلرَّحِيمُ",
       "translations": {
         "en": "[O Muhammad], inform My servants that it is I who am the Forgiving, the Merciful.",
@@ -182,6 +216,7 @@
       "id": "16:128",
       "surah": 16,
       "ayah": 128,
+      "widgetSizes": ["medium", "large"],
       "arabic": "إِنَّ ٱللَّهَ مَعَ ٱلَّذِينَ ٱتَّقَواْ وَّٱلَّذِينَ هُم مُّحۡسِنُونَ",
       "translations": {
         "en": "Indeed, Allah is with those who fear Him and those who are doers of good.",
@@ -199,6 +234,7 @@
       "id": "20:25",
       "surah": 20,
       "ayah": 25,
+      "widgetSizes": ["large"],
       "arabic": "قَالَ رَبِّ ٱشۡرَحۡ لِي صَدۡرِي",
       "translations": {
         "en": "[Moses] said, \"My Lord, expand for me my breast [with assurance]",
@@ -216,6 +252,7 @@
       "id": "20:46",
       "surah": 20,
       "ayah": 46,
+      "widgetSizes": ["large"],
       "arabic": "قَالَ لَا تَخَافَآۖ إِنَّنِي مَعَكُمَآ أَسۡمَعُ وَأَرَىٰ",
       "translations": {
         "en": "[Allah] said, \"Fear not. Indeed, I am with you both; I hear and I see.",
@@ -233,6 +270,7 @@
       "id": "21:83",
       "surah": 21,
       "ayah": 83,
+      "widgetSizes": ["large"],
       "arabic": "۞ وَأَيُّوبَ إِذۡ نَادَىٰ رَبَّهُۥٓ أَنِّي مَسَّنِيَ ٱلضُّرُّ وَأَنتَ أَرۡحَمُ ٱلرَّٰحِمِينَ",
       "translations": {
         "en": "And [mention] Job, when he called to his Lord, \"Indeed, adversity has touched me, and you are the Most Merciful of the merciful.\"",
@@ -250,6 +288,7 @@
       "id": "21:87",
       "surah": 21,
       "ayah": 87,
+      "widgetSizes": ["large"],
       "arabic": "وَذَا ٱلنُّونِ إِذ ذَّهَبَ مُغَٰضِبٗا فَظَنَّ أَن لَّن نَّقۡدِرَ عَلَيۡهِ فَنَادَىٰ فِي ٱلظُّلُمَٰتِ أَن لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبۡحَٰنَكَ إِنِّي كُنتُ مِنَ ٱلظَّٰلِمِينَ",
       "translations": {
         "en": "And [mention] the man of the fish, when he went off in anger and thought that We would not decree [anything] upon him. And he called out within the darknesses, \"There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers.\"",
@@ -267,6 +306,7 @@
       "id": "26:62",
       "surah": 26,
       "ayah": 62,
+      "widgetSizes": ["medium", "large"],
       "arabic": "قَالَ كَلَّآۖ إِنَّ مَعِيَ رَبِّي سَيَهۡدِينِ",
       "translations": {
         "en": "[Moses] said, \"No! Indeed, with me is my Lord; He will guide me.\"",
@@ -284,6 +324,7 @@
       "id": "29:69",
       "surah": 29,
       "ayah": 69,
+      "widgetSizes": ["large"],
       "arabic": "وَٱلَّذِينَ جَٰهَدُواْ فِينَا لَنَهۡدِيَنَّهُمۡ سُبُلَنَاۚ وَإِنَّ ٱللَّهَ لَمَعَ ٱلۡمُحۡسِنِينَ",
       "translations": {
         "en": "And those who strive for Us - We will surely guide them to Our ways. And indeed, Allah is with the doers of good.",
@@ -301,6 +342,7 @@
       "id": "33:3",
       "surah": 33,
       "ayah": 3,
+      "widgetSizes": ["medium", "large"],
       "arabic": "وَتَوَكَّلۡ عَلَى ٱللَّهِۚ وَكَفَىٰ بِٱللَّهِ وَكِيلٗا",
       "translations": {
         "en": "And rely upon Allah; and sufficient is Allah as Disposer of affairs.",
@@ -315,9 +357,46 @@
       }
     },
     {
+      "id": "36:58",
+      "surah": 36,
+      "ayah": 58,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "سَلَٰمٞ قَوۡلٗا مِّن رَّبّٖ رَّحِيمٖ",
+      "translations": {
+        "en": "[And] \"Peace,\" a word from a Merciful Lord.",
+        "tr": "Merhametli olan Rab katından onlara selam vardır.",
+        "fr": "«Salâm» [paix et salut]! Parole de la part d'un Seigneur Très Miséricordieux.",
+        "de": "\"Friede!\", als (Gruß)wort von einem barmherzigen Herrn.",
+        "es": "Les dirán de parte de un Señor misericordioso: «¡Paz!»",
+        "ur": "پروردگار مہربان کی طرف سے سلام (کہا جائے گا)",
+        "ru": "Милосердный Господь приветствует их словом: «Мир!».",
+        "ms": "(Mereka juga beroleh) ucapan salam sejahtera dari Tuhan Yang Maha Mengasihani.",
+        "bn": "করুণাময় পালনকর্তার পক্ষ থেকে তাদেরকে বলা হবে সালাম।"
+      }
+    },
+    {
+      "id": "37:100",
+      "surah": 37,
+      "ayah": 100,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "رَبِّ هَبۡ لِي مِنَ ٱلصَّٰلِحِينَ",
+      "translations": {
+        "en": "My Lord, grant me [a child] from among the righteous.\"",
+        "tr": "\"Rabbim! Bana iyilerden olacak bir çocuk ver\" diye yalvardı.",
+        "fr": "Seigneur, fais-moi don d'une [progéniture] d'entre les vertueux».",
+        "de": "Mein Herr, schenke mir einen von den Rechtschaffenen.\"",
+        "es": "¡Señor! ¡Regálame un hijo justo!»",
+        "ur": "اے پروردگار مجھے (اولاد) عطا فرما (جو) سعادت مندوں میں سے (ہو)",
+        "ru": "Господи, одари меня потомством из числа праведников!».",
+        "ms": "\" Wahai Tuhanku! Kurniakanlah kepadaku anak yang terhitung dari orang-orang yang soleh!\"",
+        "bn": "হে আমার পরওয়ারদেগার! আমাকে এক সৎপুত্র দান কর।"
+      }
+    },
+    {
       "id": "39:53",
       "surah": 39,
       "ayah": 53,
+      "widgetSizes": ["large"],
       "arabic": "۞ قُلۡ يَٰعِبَادِيَ ٱلَّذِينَ أَسۡرَفُواْ عَلَىٰٓ أَنفُسِهِمۡ لَا تَقۡنَطُواْ مِن رَّحۡمَةِ ٱللَّهِۚ إِنَّ ٱللَّهَ يَغۡفِرُ ٱلذُّنُوبَ جَمِيعًاۚ إِنَّهُۥ هُوَ ٱلۡغَفُورُ ٱلرَّحِيمُ",
       "translations": {
         "en": "Say, \"O My servants who have transgressed against themselves [by sinning], do not despair of the mercy of Allah. Indeed, Allah forgives all sins. Indeed, it is He who is the Forgiving, the Merciful.\"",
@@ -335,6 +414,7 @@
       "id": "40:44",
       "surah": 40,
       "ayah": 44,
+      "widgetSizes": ["large"],
       "arabic": "فَسَتَذۡكُرُونَ مَآ أَقُولُ لَكُمۡۚ وَأُفَوِّضُ أَمۡرِيٓ إِلَى ٱللَّهِۚ إِنَّ ٱللَّهَ بَصِيرُۢ بِٱلۡعِبَادِ",
       "translations": {
         "en": "And you will remember what I [now] say to you, and I entrust my affair to Allah. Indeed, Allah is Seeing of [His] servants.\"",
@@ -349,9 +429,28 @@
       }
     },
     {
+      "id": "44:51",
+      "surah": 44,
+      "ayah": 51,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "إِنَّ ٱلۡمُتَّقِينَ فِي مَقَامٍ أَمِينٖ",
+      "translations": {
+        "en": "Indeed, the righteous will be in a secure place;",
+        "tr": "Allah'a karşı gelmekten sakınmış olanlar ise, güvenli bir yerde, bahçelerde ve pınar başlarındadırlar.",
+        "fr": "Les pieux seront dans une demeure sûre,",
+        "de": "Gewiß, die Gottesfürchtigen befinden sich an sicherer Stätte,",
+        "es": "Los que teman a Alá estarán, en cambio, en lugar seguro,",
+        "ur": "بےشک پرہیزگار لوگ امن کے مقام میں ہوں گے",
+        "ru": "Воистину, богобоязненные пребудут в безопасном месте,",
+        "ms": "Sesungguhnya orang-orang yang bertaqwa (akan ditempatkan) di tempat tinggal yang aman sentosa. -",
+        "bn": "নিশ্চয় খোদাভীরুরা নিরাপদ স্থানে থাকবে-"
+      }
+    },
+    {
       "id": "51:50",
       "surah": 51,
       "ayah": 50,
+      "widgetSizes": ["medium", "large"],
       "arabic": "فَفِرُّوٓاْ إِلَى ٱللَّهِۖ إِنِّي لَكُم مِّنۡهُ نَذِيرٞ مُّبِينٞ",
       "translations": {
         "en": "So flee to Allah. Indeed, I am to you from Him a clear warner.",
@@ -366,26 +465,100 @@
       }
     },
     {
-      "id": "53:42",
-      "surah": 53,
-      "ayah": 42,
-      "arabic": "وَأَنَّ إِلَىٰ رَبِّكَ ٱلۡمُنتَهَىٰ",
+      "id": "54:17",
+      "surah": 54,
+      "ayah": 17,
+      "widgetSizes": ["medium", "large"],
+      "arabic": "وَلَقَدۡ يَسَّرۡنَا ٱلۡقُرۡءَانَ لِلذِّكۡرِ فَهَلۡ مِن مُّدَّكِرٖ",
       "translations": {
-        "en": "And that to your Lord is the finality",
-        "tr": "Doğrusu son varış Rabbinedir.",
-        "fr": "et que tout aboutit, en vérité, vers ton Seigneur,",
-        "de": "und daß zu deinem Herrn das Endziel sein wird",
-        "es": "que el fin de todo es tu Señor,",
-        "ur": "اور یہ کہ تمہارے پروردگار ہی کے پاس پہنچنا ہے",
-        "ru": "К твоему Господу предстоит конечный исход (или твоему Господу принадлежит конечный предел).",
-        "ms": "Dan bahawa sesungguhnya kepada hukum Tuhanmu lah kesudahan (segala perkara);",
-        "bn": "তোমার পালনকর্তার কাছে সবকিছুর সমাপ্তি,"
+        "en": "And We have certainly made the Qur'an easy for remembrance, so is there any who will remember?",
+        "tr": "And olsun ki Kuran'ı, öğüt olsun diye kolaylaştırdık; öğüt alan yok mudur?",
+        "fr": "En effet, Nous avons rendu le Coran facile pour la méditation. Y a-t-il quelqu'un pour réfléchir?",
+        "de": "Und Wir haben den Qur'an ja leicht zum Bedenken gemacht. Aber gibt es jemanden, der bedenkt?",
+        "es": "Hemos facilitado el Corán para que pueda servir de amonestación. Pero ¿hay alguien que se deje amonestar?",
+        "ur": "اور ہم نے قرآن کو سمجھنے کے لئے آسان کردیا ہے تو کوئی ہے کہ سوچے سمجھے؟",
+        "ru": "Мы облегчили Коран для поминания. Но есть ли среди вас вспоминающие?",
+        "ms": "Dan demi sesungguhnya! Kami telah mudahkan Al-Quran untuk menjadi peringatan dan pengajaran, maka adakah sesiapa yang mahu mengambil peringatan dan pelajaran (daripadanya)?",
+        "bn": "আমি কোরআনকে সহজ করে দিয়েছি বোঝার জন্যে। অতএব, কোন চিন্তাশীল আছে কি?"
+      }
+    },
+    {
+      "id": "55:13",
+      "surah": 55,
+      "ayah": 13,
+      "widgetSizes": ["medium", "large"],
+      "arabic": "فَبِأَيِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+      "translations": {
+        "en": "So which of the favors of your Lord would you deny?",
+        "tr": "Ey insanlar ve cinler! Öyleyken, Rabbinizin nimetlerinden hangisini yalanlarsınız?",
+        "fr": "Lequel donc des bienfaits de votre Seigneur nierez-vous?",
+        "de": "Welche der Wohltaten eures Herrn wollt ihr beide denn leugnen?",
+        "es": "¿Cuál, pues, de los beneficios de vuestro Señor negaréis?",
+        "ur": "تو (اے گروہ جن وانس) تم اپنے پروردگار کی کون کون سی نعمت کو جھٹلاؤ گے؟",
+        "ru": "Какую же из милостей вашего Господа вы считаете ложью?",
+        "ms": "Maka yang mana satu di antara nikmat-nikmat Tuhan kamu, yang kamu hendak dustakan (wahai umat manusia dan jin)?",
+        "bn": "অতএব, তোমরা উভয়ে তোমাদের পালনকর্তার কোন কোন অনুগ্রহকে অস্বীকার করবে?"
+      }
+    },
+    {
+      "id": "68:4",
+      "surah": 68,
+      "ayah": 4,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "وَإِنَّكَ لَعَلَىٰ خُلُقٍ عَظِيمٖ",
+      "translations": {
+        "en": "And indeed, you are of a great moral character.",
+        "tr": "Şüphesiz sen büyük bir ahlaka sahipsindir.",
+        "fr": "Et tu es certes, d'une moralité éminente.",
+        "de": "Und du bist wahrlich von großartiger Wesensart.",
+        "es": "Eres, sí, de eminente carácter.",
+        "ur": "اور اخلاق تمہارے بہت (عالی) ہیں",
+        "ru": "Воистину, твой нрав превосходен.",
+        "ms": "Dan bahawa sesungguhnya engkau mempunyai akhlak yang amat mulia.",
+        "bn": "আপনি অবশ্যই মহান চরিত্রের অধিকারী।"
+      }
+    },
+    {
+      "id": "74:7",
+      "surah": 74,
+      "ayah": 7,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "وَلِرَبِّكَ فَٱصۡبِرۡ",
+      "translations": {
+        "en": "But for your Lord be patient.",
+        "tr": "Rabbin için sabret.",
+        "fr": "Et pour ton Seigneur, endure.",
+        "de": "und ertrage standhaft (alles) für deinen Herrn.",
+        "es": "La decisión de tu Señor, ¡espérala paciente!",
+        "ur": "اور اپنے پروردگار کے لئے صبر کرو",
+        "ru": "Ради Господа твоего будь терпелив!",
+        "ms": "Dan bagi (menjalankan perintah) Tuhanmu, maka hendaklah engkau bersabar (terhadap tentangan musuh)!",
+        "bn": "এবং আপনার পালনকর্তার উদ্দেশে সবর করুন।"
+      }
+    },
+    {
+      "id": "85:14",
+      "surah": 85,
+      "ayah": 14,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "وَهُوَ ٱلۡغَفُورُ ٱلۡوَدُودُ",
+      "translations": {
+        "en": "And He is the Forgiving, the Affectionate,",
+        "tr": "Yüce arşın sahibi, çok seven, bağışlayan O'dur.",
+        "fr": "Et c'est Lui le Pardonneur, le Tout-Affectueux,",
+        "de": "Und Er ist der Allvergebende und Liebevolle,",
+        "es": "Él es el Indulgente, el Lleno de Amor,",
+        "ur": "اور وہ بخشنے والا اور محبت کرنے والا ہے",
+        "ru": "Он - Прощающий, Любящий (или Любимый),",
+        "ms": "Dan Dia lah yang Maha Pengampun, lagi Maha Pengasih.",
+        "bn": "তিনি ক্ষমাশীল, প্রেমময়;"
       }
     },
     {
       "id": "89:27",
       "surah": 89,
       "ayah": 27,
+      "widgetSizes": ["large"],
       "arabic": "يَٰٓأَيَّتُهَا ٱلنَّفۡسُ ٱلۡمُطۡمَئِنَّةُ",
       "translations": {
         "en": "[To the righteous it will be said], \"O reassured soul,",
@@ -400,9 +573,28 @@
       }
     },
     {
+      "id": "89:30",
+      "surah": 89,
+      "ayah": 30,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "وَٱدۡخُلِي جَنَّتِي",
+      "translations": {
+        "en": "And enter My Paradise.\"",
+        "tr": "Cennetime gir.",
+        "fr": "et entre dans Mon Paradis».",
+        "de": "und tritt ein in Meinen (Paradies)garten.",
+        "es": "Entra en Mi Jardín!»",
+        "ur": "اور میری بہشت میں داخل ہو جا",
+        "ru": "Войди в Мой Рай!",
+        "ms": "\"Dan masuklah ke dalam SyurgaKu! \"",
+        "bn": "এবং আমার জান্নাতে প্রবেশ কর।"
+      }
+    },
+    {
       "id": "93:3",
       "surah": 93,
       "ayah": 3,
+      "widgetSizes": ["medium", "large"],
       "arabic": "مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ",
       "translations": {
         "en": "Your Lord has not taken leave of you, [O Muhammad], nor has He detested [you].",
@@ -420,6 +612,7 @@
       "id": "93:4",
       "surah": 93,
       "ayah": 4,
+      "widgetSizes": ["medium", "large"],
       "arabic": "وَلَلۡأٓخِرَةُ خَيۡرٞ لَّكَ مِنَ ٱلۡأُولَىٰ",
       "translations": {
         "en": "And the Hereafter is better for you than the first [life].",
@@ -434,9 +627,82 @@
       }
     },
     {
+      "id": "93:5",
+      "surah": 93,
+      "ayah": 5,
+      "widgetSizes": ["medium", "large"],
+      "arabic": "وَلَسَوۡفَ يُعۡطِيكَ رَبُّكَ فَتَرۡضَىٰٓ",
+      "translations": {
+        "en": "And your Lord is going to give you, and you will be satisfied.",
+        "tr": "Rabbin şüphesiz sana verecek ve sen de hoşnut olacaksın.",
+        "fr": "Ton Seigneur t'accordera certes [Ses faveurs], et alors tu seras satisfait.",
+        "de": "Und dein Herr wird dir wahrlich geben, und dann wirst du zufrieden sein.",
+        "es": "Tu Señor te dará y quedarás satisfecho.",
+        "ur": "اور تمہیں پروردگار عنقریب وہ کچھ عطا فرمائے گا کہ تم خوش ہو جاؤ گے",
+        "ru": "Господь твой непременно одарит тебя, и ты будешь удовлетворен.",
+        "ms": "Dan sesungguhnya Tuhanmu akan memberikanmu (kejayaan dan kebahagiaan di dunia dan di akhirat) sehingga engkau reda - berpuas hati.",
+        "bn": "আপনার পালনকর্তা সত্বরই আপনাকে দান করবেন, অতঃপর আপনি সন্তুষ্ট হবেন।"
+      }
+    },
+    {
+      "id": "93:9",
+      "surah": 93,
+      "ayah": 9,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "فَأَمَّا ٱلۡيَتِيمَ فَلَا تَقۡهَرۡ",
+      "translations": {
+        "en": "So as for the orphan, do not oppress [him].",
+        "tr": "Öyleyse sakın öksüze kötü muamele etme;",
+        "fr": "Quant à l'orphelin, donc, ne le maltraite pas.",
+        "de": "Was nun die Waise angeht, so unterjoche (sie) nicht,",
+        "es": "En cuanto al huérfano, ¡no le oprimas!",
+        "ur": "تو تم بھی یتیم پر ستم نہ کرنا",
+        "ru": "Посему не притесняй сироту!",
+        "ms": "Oleh itu, adapun anak yatim maka janganlah engkau berlaku kasar terhadapnya,",
+        "bn": "সুতরাং আপনি এতীমের প্রতি কঠোর হবেন না;"
+      }
+    },
+    {
+      "id": "93:10",
+      "surah": 93,
+      "ayah": 10,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "وَأَمَّا ٱلسَّآئِلَ فَلَا تَنۡهَرۡ",
+      "translations": {
+        "en": "And as for the petitioner, do not repel [him].",
+        "tr": "Ve sakın bir şey isteyeni azarlama;",
+        "fr": "Quant au demandeur, ne le repousse pas.",
+        "de": "und was den Bettler angeht, so fahre (ihn) nicht an,",
+        "es": "Y en cuanto al mendigo, ¡no le rechaces!",
+        "ur": "اور مانگنے والے کو جھڑکی نہ دینا",
+        "ru": "И не гони просящего!",
+        "ms": "Adapun orang yang meminta (bantuan pimpinan) maka janganlah engkau tengking herdik;",
+        "bn": "সওয়ালকারীকে ধমক দেবেন না।"
+      }
+    },
+    {
+      "id": "93:11",
+      "surah": 93,
+      "ayah": 11,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "وَأَمَّا بِنِعۡمَةِ رَبِّكَ فَحَدِّثۡ",
+      "translations": {
+        "en": "But as for the favor of your Lord, report [it].",
+        "tr": "Yalnızca Rabbinin nimetini anlat.",
+        "fr": "Et quant au bienfait de ton Seigneur, proclame-le.",
+        "de": "und was die Gunst deines Herrn angeht, so erzähle (davon).",
+        "es": "Y en cuanto a la gracia de tu Señor, ¡publícala!",
+        "ur": "اور اپنے پروردگار کی نعمتوں کا بیان کرتے رہنا",
+        "ru": "И возвещай о милости своего Господа.",
+        "ms": "Adapun nikmat Tuhanmu, maka hendaklah engkau sebut-sebutkan (dan zahirkan) sebagai bersyukur kepadaNya.",
+        "bn": "এবং আপনার পালনকর্তার নেয়ামতের কথা প্রকাশ করুন।"
+      }
+    },
+    {
       "id": "94:5",
       "surah": 94,
       "ayah": 5,
+      "widgetSizes": ["small", "medium", "large"],
       "arabic": "فَإِنَّ مَعَ ٱلۡعُسۡرِ يُسۡرًا",
       "translations": {
         "en": "For indeed, with hardship [will be] ease.",
@@ -451,20 +717,57 @@
       }
     },
     {
-      "id": "94:6",
+      "id": "94:8",
       "surah": 94,
-      "ayah": 6,
-      "arabic": "إِنَّ مَعَ ٱلۡعُسۡرِ يُسۡرٗا",
+      "ayah": 8,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "وَإِلَىٰ رَبِّكَ فَٱرۡغَب",
       "translations": {
-        "en": "Indeed, with hardship [will be] ease.",
-        "tr": "Gerçekten, güçlükle beraber bir kolaylık vardır.",
-        "fr": "A côté de la difficulté est, certes, une facilité!",
-        "de": "gewiß, mit der Erschwernis ist Erleichterung.",
-        "es": "¡La adversidad y la felicidad van a una!",
-        "ur": "(اور) بے شک مشکل کے ساتھ آسانی ہے",
-        "ru": "За каждой тягостью наступает облегчение.",
-        "ms": "(Sekali lagi ditegaskan): bahawa sesungguhnya tiap-tiap kesukaran disertai kemudahan.",
-        "bn": "নিশ্চয় কষ্টের সাথে স্বস্তি রয়েছে।"
+        "en": "And to your Lord direct [your] longing.",
+        "tr": "Ve ümit edeceğini yalnız Rabbinden iste.",
+        "fr": "et à ton Seigneur aspire.",
+        "de": "und nach deinem Herrn richte dein Begehren aus.",
+        "es": "Y a tu Señor ¡deséale ardientemente!",
+        "ur": "اور اپنے پروردگار کی طرف متوجہ ہو جایا کرو",
+        "ru": "и устремись к своему Господу.",
+        "ms": "Dan kepada Tuhanmu sahaja hendaklah engkau memohon (apa yang engkau gemar dan ingini).",
+        "bn": "এবং আপনার পালনকর্তার প্রতি মনোনিবেশ করুন।"
+      }
+    },
+    {
+      "id": "96:1",
+      "surah": 96,
+      "ayah": 1,
+      "widgetSizes": ["small", "medium", "large"],
+      "arabic": "ٱقۡرَأۡ بِٱسۡمِ رَبِّكَ ٱلَّذِي خَلَقَ",
+      "translations": {
+        "en": "Recite in the name of your Lord who created -",
+        "tr": "Yaratan Rabbinin adıyla oku!",
+        "fr": "Lis, au nom de ton Seigneur qui a créé,",
+        "de": "Lies im Namen deines Herrn, Der erschaffen hat,",
+        "es": "¡Recita en el nombre de tu Señor, Que ha creado,",
+        "ur": "(اے محمدﷺ) اپنے پروردگار کا نام لے کر پڑھو جس نے (عالم کو) پیدا کیا",
+        "ru": "Читай во имя твоего Господа, Который сотворил все сущее,",
+        "ms": "Bacalah (wahai Muhammad) dengan nama Tuhanmu yang menciptakan (sekalian makhluk),",
+        "bn": "পাঠ করুন আপনার পালনকর্তার নামে যিনি সৃষ্টি করেছেন"
+      }
+    },
+    {
+      "id": "99:7",
+      "surah": 99,
+      "ayah": 7,
+      "widgetSizes": ["medium", "large"],
+      "arabic": "فَمَن يَعۡمَلۡ مِثۡقَالَ ذَرَّةٍ خَيۡرٗا يَرَهُۥ",
+      "translations": {
+        "en": "So whoever does an atom's weight of good will see it,",
+        "tr": "Kim zerre kadar iyilik yapmışsa onu görür.",
+        "fr": "Quiconque fait un bien fût-ce du poids d'un atome, le verra,",
+        "de": "Wer nun im Gewicht eines Stäubchens Gutes tut, wird es sehen.",
+        "es": "Quien haya hecho el peso de un átomo de bien, lo verá.",
+        "ur": "تو جس نے ذرہ بھر نیکی کی ہو گی وہ اس کو دیکھ لے گا",
+        "ru": "Тот, кто сделал добро весом в мельчайшую частицу, увидит его.",
+        "ms": "Maka sesiapa berbuat kebajikan seberat zarah, nescaya akan dilihatnya (dalam surat amalnya)!",
+        "bn": "অতঃপর কেউ অণু পরিমাণ সৎকর্ম করলে তা দেখতে পাবে"
       }
     }
   ]

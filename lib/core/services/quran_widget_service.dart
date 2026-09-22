@@ -11,9 +11,9 @@ import 'package:workmanager/workmanager.dart';
 class QuranWidgetService {
   QuranWidgetService._();
 
+  static Future<void> _operationQueue = Future<void>.value();
+
   static const iOSWidgetName = 'HudaWidget';
-  static const androidReceiverName =
-      'com.aw.huda.widget.HudaGlanceWidgetReceiver';
   static const _appGroupId = 'group.hudaHomeApp';
   static const _channel = MethodChannel('com.aw.huda/widget');
 
@@ -61,78 +61,90 @@ class QuranWidgetService {
     );
   }
 
-  static Future<void> initialize() async {
-    if (!PlatformUtils.isMobile) return;
-    if (PlatformUtils.isIOS) {
-      await HomeWidget.setAppGroupId(_appGroupId);
-    }
-    await _migrateLegacyWidgetData();
-    await pushSettings();
+  static Future<void> initialize() {
+    if (!PlatformUtils.isMobile) return Future<void>.value();
+    return _enqueueOperation(() async {
+      if (PlatformUtils.isIOS) {
+        await HomeWidget.setAppGroupId(_appGroupId);
+      }
+      await _migrateLegacyWidgetData();
+      await _pushSettingsNow();
+    });
   }
 
-  static Future<void> updateCustomization(QuranWidgetSettings next) async {
-    final cache = getIt<CacheHelper>();
-    await cache.saveData(key: _languageKey, value: next.language.storage);
-    await cache.saveData(key: _themeKey, value: next.visualTheme.storage);
-    await cache.saveData(key: _ayahTextSizeKey, value: next.ayahTextSize);
-    await cache.saveData(
-      key: _translationTextSizeKey,
-      value: next.translationTextSize,
-    );
-    await cache.saveData(key: _ayahAutoFitKey, value: next.ayahAutoFit);
-    await cache.saveData(
-      key: _translationAutoFitKey,
-      value: next.translationAutoFit,
-    );
-    await cache.saveData(
-      key: _ayahBoldKey,
-      value: next.ayahBold,
-    );
-    await cache.saveData(
-      key: _translationBoldKey,
-      value: next.translationBold,
-    );
-    await cache.saveData(
-      key: _rotationOffsetKey,
-      value: next.rotationOffset,
-    );
-    await pushSettings();
+  static Future<void> updateCustomization(QuranWidgetSettings next) {
+    return _enqueueOperation(() async {
+      final cache = getIt<CacheHelper>();
+      await cache.saveData(key: _languageKey, value: next.language.storage);
+      await cache.saveData(key: _themeKey, value: next.visualTheme.storage);
+      await cache.saveData(key: _ayahTextSizeKey, value: next.ayahTextSize);
+      await cache.saveData(
+        key: _translationTextSizeKey,
+        value: next.translationTextSize,
+      );
+      await cache.saveData(key: _ayahAutoFitKey, value: next.ayahAutoFit);
+      await cache.saveData(
+        key: _translationAutoFitKey,
+        value: next.translationAutoFit,
+      );
+      await cache.saveData(key: _ayahBoldKey, value: next.ayahBold);
+      await cache.saveData(
+        key: _translationBoldKey,
+        value: next.translationBold,
+      );
+      await cache.saveData(key: _rotationOffsetKey, value: next.rotationOffset);
+      await _pushSettingsNow(throwOnFailure: true);
+    });
   }
 
-  static Future<void> resetCustomization() async {
-    final cache = getIt<CacheHelper>();
-    for (final key in [
-      _languageKey,
-      _themeKey,
-      _ayahTextSizeKey,
-      _translationTextSizeKey,
-      _ayahAutoFitKey,
-      _translationAutoFitKey,
-      _ayahBoldKey,
-      _translationBoldKey,
-      ..._legacyColorKeys,
-      _rotationOffsetKey,
-    ]) {
-      await cache.removeData(key: key);
-    }
-    await pushSettings();
+  static Future<void> resetCustomization() {
+    return _enqueueOperation(() async {
+      final cache = getIt<CacheHelper>();
+      for (final key in [
+        _languageKey,
+        _themeKey,
+        _ayahTextSizeKey,
+        _translationTextSizeKey,
+        _ayahAutoFitKey,
+        _translationAutoFitKey,
+        _ayahBoldKey,
+        _translationBoldKey,
+        ..._legacyColorKeys,
+        _rotationOffsetKey,
+      ]) {
+        await cache.removeData(key: key);
+      }
+      await _pushSettingsNow(throwOnFailure: true);
+    });
   }
 
-  static Future<void> refreshNow() async {
-    final cache = getIt<CacheHelper>();
-    final current = readSettings();
-    await cache.saveData(
-      key: _rotationOffsetKey,
-      value: current.rotationOffset + 1,
-    );
-    await pushSettings();
+  static Future<void> refreshNow() {
+    return _enqueueOperation(() async {
+      final cache = getIt<CacheHelper>();
+      final current = readSettings();
+      await cache.saveData(
+        key: _rotationOffsetKey,
+        value: current.rotationOffset + 1,
+      );
+      await _pushSettingsNow(throwOnFailure: true);
+    });
   }
 
   static Future<void> onThemeChanged() => pushSettings();
 
   static Future<void> onLocaleChanged() => pushSettings();
 
-  static Future<void> pushSettings({bool triggerNativeUpdate = true}) async {
+  static Future<void> pushSettings({bool triggerNativeUpdate = true}) {
+    if (!PlatformUtils.isMobile) return Future<void>.value();
+    return _enqueueOperation(
+      () => _pushSettingsNow(triggerNativeUpdate: triggerNativeUpdate),
+    );
+  }
+
+  static Future<void> _pushSettingsNow({
+    bool triggerNativeUpdate = true,
+    bool throwOnFailure = false,
+  }) async {
     if (!PlatformUtils.isMobile) return;
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -152,15 +164,9 @@ class QuranWidgetService {
       await _writeString(prefs, _languageKey, settings.language.storage);
       await _writeString(prefs, _themeKey, settings.visualTheme.storage);
       await prefs.setInt(_ayahTextSizeKey, settings.ayahTextSize);
-      await prefs.setInt(
-        _translationTextSizeKey,
-        settings.translationTextSize,
-      );
+      await prefs.setInt(_translationTextSizeKey, settings.translationTextSize);
       await prefs.setBool(_ayahAutoFitKey, settings.ayahAutoFit);
-      await prefs.setBool(
-        _translationAutoFitKey,
-        settings.translationAutoFit,
-      );
+      await prefs.setBool(_translationAutoFitKey, settings.translationAutoFit);
       await prefs.setBool(_ayahBoldKey, settings.ayahBold);
       await prefs.setBool(_translationBoldKey, settings.translationBold);
       if (PlatformUtils.isIOS) {
@@ -180,10 +186,7 @@ class QuranWidgetService {
           _translationAutoFitKey,
           settings.translationAutoFit,
         );
-        await HomeWidget.saveWidgetData<bool>(
-          _ayahBoldKey,
-          settings.ayahBold,
-        );
+        await HomeWidget.saveWidgetData<bool>(_ayahBoldKey, settings.ayahBold);
         await HomeWidget.saveWidgetData<bool>(
           _translationBoldKey,
           settings.translationBold,
@@ -204,28 +207,28 @@ class QuranWidgetService {
       }
 
       if (triggerNativeUpdate) await _refreshNativeWidget();
-    } catch (error) {
+    } catch (error, stackTrace) {
       debugPrint('QuranWidgetService.pushSettings failed: $error');
+      if (throwOnFailure) {
+        Error.throwWithStackTrace(error, stackTrace);
+      }
     }
+  }
+
+  static Future<void> _enqueueOperation(Future<void> Function() operation) {
+    final queued = _operationQueue.then((_) => operation());
+    _operationQueue = queued.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace _) {},
+    );
+    return queued;
   }
 
   static Future<void> _refreshNativeWidget() async {
     if (PlatformUtils.isIOS) {
       await HomeWidget.updateWidget(iOSName: iOSWidgetName);
-    }
-    if (PlatformUtils.isAndroid) {
-      try {
-        await HomeWidget.updateWidget(
-          qualifiedAndroidName: androidReceiverName,
-        );
-      } catch (error) {
-        debugPrint('Quran widget broadcast failed: $error');
-      }
-      try {
-        await _channel.invokeMethod('updateWidget');
-      } catch (error) {
-        debugPrint('Quran widget native update failed: $error');
-      }
+    } else if (PlatformUtils.isAndroid) {
+      await _channel.invokeMethod<void>('refreshQuranWidget');
     }
   }
 

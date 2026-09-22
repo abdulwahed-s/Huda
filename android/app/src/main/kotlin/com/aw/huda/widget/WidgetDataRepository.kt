@@ -1,11 +1,31 @@
 package com.aw.huda.widget
 
 import android.content.Context
-import android.content.SharedPreferences
 import org.json.JSONObject
 import java.lang.Math.floorMod
 
-object WidgetDataRepository {
+enum class QuranWidgetSize {
+    SMALL,
+    MEDIUM,
+    LARGE;
+
+    companion object {
+        fun fromDimensions(widthDp: Float, heightDp: Float): QuranWidgetSize = when {
+            widthDp >= 280f && heightDp >= 311f -> LARGE
+            widthDp >= 280f && heightDp >= 140f -> MEDIUM
+            else -> SMALL
+        }
+
+        fun fromJson(value: String): QuranWidgetSize? = when (value) {
+            "small" -> SMALL
+            "medium" -> MEDIUM
+            "large" -> LARGE
+            else -> null
+        }
+    }
+}
+
+internal object WidgetDataRepository {
     private const val PREFS_NAME = "FlutterSharedPreferences"
     private const val ASSET_PATH = "flutter_assets/assets/json/quran_widget_verses.json"
 
@@ -28,8 +48,10 @@ object WidgetDataRepository {
     private var catalog: Catalog? = null
 
     data class Verse(
+        val id: String,
         val surah: Int,
         val ayah: Int,
+        val widgetSizes: Set<QuranWidgetSize>,
         val arabic: String,
         val translations: Map<String, String>,
     )
@@ -58,14 +80,22 @@ object WidgetDataRepository {
         val sources: Map<String, String>,
     )
 
-    fun snapshot(context: Context, timeMillis: Long = System.currentTimeMillis()): Snapshot {
-        val prefs = prefs(context)
+    fun snapshot(
+        context: Context,
+        size: QuranWidgetSize,
+        configuration: QuranWidgetConfiguration,
+        timeMillis: Long = System.currentTimeMillis(),
+    ): Snapshot {
         val data = loadCatalog(context)
-        val offset = prefs.getLongCompat(KEY_ROTATION_OFFSET)
+        val offset = configuration.rotationOffset
         val hour = Math.floorDiv(timeMillis, 3_600_000L)
-        val verse = data.verses[floorMod(hour + offset, data.verses.size.toLong()).toInt()]
-        val language = resolveLanguage(prefs)
-        val appLanguage = resolveAppLanguage(prefs)
+        val eligibleVerses = data.verses.filter { size in it.widgetSizes }
+        val verses = eligibleVerses.ifEmpty {
+            listOf(data.verses.firstOrNull { it.id == "94:6" } ?: data.verses.first())
+        }
+        val verse = verses[floorMod(hour + offset, verses.size.toLong()).toInt()]
+        val language = resolveLanguage(configuration)
+        val appLanguage = resolveAppLanguage(configuration)
         val surahName = data.surahs[verse.surah]
             ?.displayNames
             ?.let { names -> names[appLanguage] ?: names["en"] }
@@ -75,52 +105,80 @@ object WidgetDataRepository {
             translation = language?.let(verse.translations::get),
             translationLanguage = language,
             translationSource = language?.let(data.sources::get),
-            displayReference = surahName?.let { "$it • ${verse.ayah}" } ?: "${verse.surah}:${verse.ayah}",
+            displayReference = surahName?.let { "$it • ${verse.ayah}" }
+                ?: "${verse.surah}:${verse.ayah}",
             appLanguage = appLanguage,
-            palette = resolvePalette(context, prefs),
-            ayahTextSize = prefs.getLongCompat(KEY_AYAH_TEXT_SIZE, 100L).toInt().coerceIn(70, 140),
-            translationTextSize = prefs.getLongCompat(KEY_TRANSLATION_TEXT_SIZE, 100L).toInt().coerceIn(70, 140),
-            ayahAutoFit = prefs.getBoolean(KEY_AYAH_AUTO_FIT, true),
-            translationAutoFit = prefs.getBoolean(KEY_TRANSLATION_AUTO_FIT, true),
-            ayahBold = prefs.getBoolean(KEY_AYAH_BOLD, false),
-            translationBold = prefs.getBoolean(KEY_TRANSLATION_BOLD, false),
+            palette = resolvePalette(context, configuration),
+            ayahTextSize = configuration.ayahTextSize,
+            translationTextSize = configuration.translationTextSize,
+            ayahAutoFit = configuration.ayahAutoFit,
+            translationAutoFit = configuration.translationAutoFit,
+            ayahBold = configuration.ayahBold,
+            translationBold = configuration.translationBold,
         )
     }
 
-    fun getThemeName(context: Context): String = prefs(context).getString(KEY_THEME_NAME, "teal") ?: "teal"
+    fun readConfiguration(context: Context): QuranWidgetConfiguration =
+        configurationFrom(
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).all,
+        )
 
-    fun isDarkMode(context: Context): Boolean {
-        return when (prefs(context).getString(KEY_THEME_MODE, "light")) {
+    internal fun configurationFrom(values: Map<String, *>): QuranWidgetConfiguration =
+        QuranWidgetConfiguration(
+            language = values.stringValue(KEY_LANGUAGE, "auto"),
+            visualTheme = values.stringValue(KEY_VISUAL_THEME, "auto"),
+            ayahTextSize = values.intValue(KEY_AYAH_TEXT_SIZE, 100).coerceIn(70, 140),
+            translationTextSize =
+                values.intValue(KEY_TRANSLATION_TEXT_SIZE, 100).coerceIn(70, 140),
+            ayahAutoFit = values.booleanValue(KEY_AYAH_AUTO_FIT, true),
+            translationAutoFit = values.booleanValue(KEY_TRANSLATION_AUTO_FIT, true),
+            ayahBold = values.booleanValue(KEY_AYAH_BOLD, false),
+            translationBold = values.booleanValue(KEY_TRANSLATION_BOLD, false),
+            rotationOffset = values.longValue(KEY_ROTATION_OFFSET, 0L),
+            locale = values.stringValue(KEY_LOCALE, "en"),
+            appThemeName = values.stringValue(KEY_THEME_NAME, "teal"),
+            appThemeMode = values.stringValue(KEY_THEME_MODE, "light"),
+        )
+
+    private fun isDarkMode(
+        context: Context,
+        configuration: QuranWidgetConfiguration,
+    ): Boolean {
+        return when (configuration.appThemeMode) {
             "dark" -> true
             "light" -> false
             else -> {
-                val mode = context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
+                val mode =
+                    context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
                 mode == android.content.res.Configuration.UI_MODE_NIGHT_YES
             }
         }
     }
 
-    private fun resolveLanguage(prefs: SharedPreferences): String? {
-        val selected = prefs.getString(KEY_LANGUAGE, "auto") ?: "auto"
+    private fun resolveLanguage(configuration: QuranWidgetConfiguration): String? {
+        val selected = configuration.language
         if (selected != "auto") return selected.takeIf(supportedLanguages::contains) ?: "en"
-        val locale = (prefs.getString(KEY_LOCALE, "en") ?: "en").substringBefore('-').substringBefore('_')
+        val locale = configuration.locale.substringBefore('-').substringBefore('_')
         if (locale == "ar") return null
         return locale.takeIf(supportedLanguages::contains) ?: "en"
     }
 
-    private fun resolveAppLanguage(prefs: SharedPreferences): String {
-        val locale = (prefs.getString(KEY_LOCALE, "en") ?: "en")
+    private fun resolveAppLanguage(configuration: QuranWidgetConfiguration): String {
+        val locale = configuration.locale
             .substringBefore('-')
             .substringBefore('_')
             .lowercase()
         return locale.takeIf { it in supportedLanguages || it == "ar" } ?: "en"
     }
 
-    private fun resolvePalette(context: Context, prefs: SharedPreferences): QuranWidgetPalette =
+    private fun resolvePalette(
+        context: Context,
+        configuration: QuranWidgetConfiguration,
+    ): QuranWidgetPalette =
         QuranWidgetPaletteResolver.resolve(
-            visualTheme = prefs.getString(KEY_VISUAL_THEME, "auto"),
-            appThemeName = getThemeName(context),
-            isDarkMode = isDarkMode(context),
+            visualTheme = configuration.visualTheme,
+            appThemeName = configuration.appThemeName,
+            isDarkMode = isDarkMode(context, configuration),
         )
 
     private fun loadCatalog(context: Context): Catalog {
@@ -146,8 +204,25 @@ object WidgetDataRepository {
                     for (index in 0 until array.length()) {
                         val item = array.getJSONObject(index)
                         val translationsObject = item.getJSONObject("translations")
-                        val translations = translationsObject.keys().asSequence().associateWith(translationsObject::getString)
-                        add(Verse(item.getInt("surah"), item.getInt("ayah"), item.getString("arabic"), translations))
+                        val translations = translationsObject.keys().asSequence()
+                            .associateWith(translationsObject::getString)
+                        val rawWidgetSizes = item.getJSONArray("widgetSizes")
+                        val widgetSizes = buildSet {
+                            for (sizeIndex in 0 until rawWidgetSizes.length()) {
+                                QuranWidgetSize.fromJson(rawWidgetSizes.getString(sizeIndex))
+                                    ?.let(::add)
+                            }
+                        }
+                        add(
+                            Verse(
+                                id = item.getString("id"),
+                                surah = item.getInt("surah"),
+                                ayah = item.getInt("ayah"),
+                                widgetSizes = widgetSizes,
+                                arabic = item.getString("arabic"),
+                                translations = translations,
+                            ),
+                        )
                     }
                 }
                 Catalog(surahs, verses, sources).also { catalog = it }
@@ -155,13 +230,16 @@ object WidgetDataRepository {
         }
     }
 
-    private fun prefs(context: Context): SharedPreferences =
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private fun Map<String, *>.stringValue(key: String, defaultValue: String): String =
+        this[key] as? String ?: defaultValue
 
-    private fun SharedPreferences.getLongCompat(key: String, defaultValue: Long = 0L): Long = try {
-        getLong(key, defaultValue)
-    } catch (_: ClassCastException) {
-        getInt(key, defaultValue.toInt()).toLong()
-    }
+    private fun Map<String, *>.booleanValue(key: String, defaultValue: Boolean): Boolean =
+        this[key] as? Boolean ?: defaultValue
+
+    private fun Map<String, *>.intValue(key: String, defaultValue: Int): Int =
+        (this[key] as? Number)?.toInt() ?: defaultValue
+
+    private fun Map<String, *>.longValue(key: String, defaultValue: Long): Long =
+        (this[key] as? Number)?.toLong() ?: defaultValue
 
 }

@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -26,24 +29,41 @@ class HudaGlanceWidget : GlanceAppWidget() {
     override val sizeMode: SizeMode = SizeMode.Exact
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val snapshot = WidgetDataRepository.snapshot(context)
+        val initialState = QuranWidgetStateStore.currentOrInitialize(context) {
+            WidgetDataRepository.readConfiguration(context)
+        }
+        val widgetStates = QuranWidgetStateStore.states(context)
+
         provideContent {
+            val widgetState by widgetStates.collectAsState(initialState)
             GlanceTheme {
-                WidgetContent(snapshot)
+                WidgetContent(widgetState)
             }
         }
     }
 
     @Composable
-    private fun WidgetContent(snapshot: WidgetDataRepository.Snapshot) {
+    private fun WidgetContent(widgetState: QuranWidgetReactiveState) {
         val context = LocalContext.current
         val size = LocalSize.current
-        val bitmap = QuranWidgetRenderer.render(
-            context = context,
-            widthDp = size.width.value,
-            heightDp = size.height.value,
-            snapshot = snapshot,
-        )
+        val snapshot = remember(widgetState, size) {
+            WidgetDataRepository.snapshot(
+                context = context,
+                size = QuranWidgetSize.fromDimensions(
+                    widthDp = size.width.value,
+                    heightDp = size.height.value,
+                ),
+                configuration = widgetState.configuration,
+            )
+        }
+        val bitmap = remember(widgetState.refreshRevision, size, snapshot) {
+            QuranWidgetRenderer.render(
+                context = context,
+                widthDp = size.width.value,
+                heightDp = size.height.value,
+                snapshot = snapshot,
+            )
+        }
         val accessibilityText = listOfNotNull(
             snapshot.verse.arabic,
             snapshot.translation,
