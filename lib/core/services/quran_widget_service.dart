@@ -290,9 +290,9 @@ class QuranWidgetService {
     final mode = rawMode == 'dark' || rawMode == 'light'
         ? rawMode!
         : WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-                Brightness.dark
-            ? 'dark'
-            : 'light';
+              Brightness.dark
+        ? 'dark'
+        : 'light';
     return _AppThemeSnapshot(
       themeName: colorTheme.toString().split('.').last,
       themeMode: mode,
@@ -394,28 +394,28 @@ enum QuranWidgetTranslationLanguage {
   };
 
   static QuranWidgetTranslationLanguage fromStorage(String? raw) {
-    return values.firstWhere(
-      (value) => value.name == raw,
-      orElse: () => auto,
-    );
+    return values.firstWhere((value) => value.name == raw, orElse: () => auto);
   }
 }
 
 enum QuranWidgetVisualTheme {
   auto,
-  forest,
   ocean,
-  sandstone,
+  sunset,
+  forest,
   midnight,
+  sandstone,
+  rose,
+  lavender,
+  charcoal,
+  amber,
+  arctic,
   burgundy,
-  lavender;
+  sage;
 
   String get storage => name;
 
   static QuranWidgetVisualTheme fromStorage(String? raw) {
-    return values.firstWhere(
-      (value) => value.name == raw,
-      orElse: () => auto,
-    );
+    return values.firstWhere((value) => value.name == raw, orElse: () => auto);
   }
 }

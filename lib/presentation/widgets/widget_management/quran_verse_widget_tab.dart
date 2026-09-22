@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/services/quran_widget_service.dart';
@@ -28,7 +26,15 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
 
   Future<void> _commit(QuranWidgetSettings next) async {
     setState(() => _settings = next);
-    await QuranWidgetService.updateCustomization(next);
+    try {
+      await QuranWidgetService.updateCustomization(next);
+    } catch (error) {
+      if (!mounted) return;
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.errorUpdatingWidget('$error'),
+      );
+    }
   }
 
   Future<void> _refresh() async {
@@ -40,6 +46,12 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
       HudaSnackBar.success(
         context,
         message: AppLocalizations.of(context)!.quranWidgetUpdated,
+      );
+    } catch (error) {
+      if (!mounted) return;
+      HudaSnackBar.error(
+        context,
+        message: AppLocalizations.of(context)!.errorUpdatingWidget('$error'),
       );
     } finally {
       if (mounted) setState(() => _refreshing = false);
@@ -60,14 +72,30 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
           ),
           FilledButton(
             onPressed: () => Navigator.pop(dialogContext, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(dialogContext).colorScheme.error,
+              foregroundColor: Theme.of(dialogContext).colorScheme.onError,
+            ),
             child: Text(l10n.reset),
           ),
         ],
       ),
     );
     if (confirmed != true) return;
-    await QuranWidgetService.resetCustomization();
-    if (mounted) setState(() => _settings = QuranWidgetService.readSettings());
+    try {
+      await QuranWidgetService.resetCustomization();
+    } catch (error) {
+      if (mounted) {
+        HudaSnackBar.error(
+          context,
+          message: l10n.errorUpdatingWidget('$error'),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _settings = QuranWidgetService.readSettings());
+      }
+    }
   }
 
   Future<void> _pickLanguage() async {
@@ -75,36 +103,56 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
+      ),
       builder: (sheetContext) {
         final l10n = AppLocalizations.of(sheetContext)!;
-        return SafeArea(
-          child: RadioGroup<QuranWidgetTranslationLanguage>(
-            groupValue: _settings.language,
-            onChanged: (value) => Navigator.pop(sheetContext, value),
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(bottom: 12.h),
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20.w, 4.h, 20.w, 12.h),
-                  child: Text(
-                    l10n.translationLanguage,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w800,
-                    ),
+        return FractionallySizedBox(
+          heightFactor: 0.84,
+          child: Column(
+            children: [
+              _LanguageSheetHeader(
+                title: l10n.translationLanguage,
+                description: l10n.translationLanguageDescription,
+                onClose: () => Navigator.pop(sheetContext),
+              ),
+              Divider(height: 1, color: Theme.of(sheetContext).dividerColor),
+              Expanded(
+                child: ListView.separated(
+                  padding: EdgeInsets.fromLTRB(
+                    16.w,
+                    12.h,
+                    16.w,
+                    20.h + MediaQuery.viewPaddingOf(sheetContext).bottom,
                   ),
+                  itemCount: QuranWidgetTranslationLanguage.values.length,
+                  separatorBuilder: (_, _) => SizedBox(height: 8.h),
+                  itemBuilder: (context, index) {
+                    final language =
+                        QuranWidgetTranslationLanguage.values[index];
+                    final automaticLanguage = _settings.effectiveLanguage(
+                      Localizations.localeOf(sheetContext).languageCode,
+                    );
+                    return _LanguageOption(
+                      title: _languageLabel(l10n, language),
+                      subtitle: language == QuranWidgetTranslationLanguage.auto
+                          ? (automaticLanguage == null
+                                ? l10n.arabicTranslationHidden
+                                : l10n.translationSource(
+                                    _sourceName(automaticLanguage),
+                                  ))
+                          : _sourceName(language.code),
+                      code: language.code,
+                      selected: language == _settings.language,
+                      onTap: () => Navigator.pop(sheetContext, language),
+                    );
+                  },
                 ),
-                for (final language in QuranWidgetTranslationLanguage.values)
-                  RadioListTile<QuranWidgetTranslationLanguage>(
-                    value: language,
-                    title: Text(_languageLabel(l10n, language)),
-                    subtitle: language == QuranWidgetTranslationLanguage.auto
-                        ? Text(l10n.translationLanguageDescription)
-                        : Text(_sourceName(language.code)),
-                  ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -117,6 +165,7 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(
         16.w,
@@ -131,162 +180,93 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
           SizedBox(height: 12.h),
           AddWidgetSection(isDark: widget.isDark),
           SizedBox(height: 20.h),
-          Row(
-            children: [
-              Icon(
-                Icons.tune_rounded,
-                color: Theme.of(context).colorScheme.primary,
-                size: 20.sp,
-              ),
-              SizedBox(width: 8.w),
-              Text(
-                l10n.quranWidgetCustomization,
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.sp),
-              ),
-            ],
-          ),
+          _CustomizationHeading(title: l10n.quranWidgetCustomization),
           SizedBox(height: 12.h),
           _Section(
             title: l10n.translationLanguage,
+            icon: Icons.translate_rounded,
             isDark: widget.isDark,
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(
-                backgroundColor: Theme.of(context)
-                    .colorScheme
-                    .primary
-                    .withValues(alpha: 0.12),
-                child: Icon(
-                  Icons.translate_rounded,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              title: Text(_languageLabel(l10n, _settings.language)),
-              subtitle: Text(
-                _effectiveLanguage == null
-                    ? l10n.arabicTranslationHidden
-                    : l10n.translationSource(
-                        _sourceName(_effectiveLanguage),
-                      ),
-              ),
-              trailing: const Icon(Icons.chevron_right_rounded),
+            child: _SelectionTile(
+              title: _languageLabel(l10n, _settings.language),
+              subtitle: _effectiveLanguage == null
+                  ? l10n.arabicTranslationHidden
+                  : l10n.translationSource(_sourceName(_effectiveLanguage)),
+              icon: _settings.language == QuranWidgetTranslationLanguage.auto
+                  ? Icons.language_rounded
+                  : Icons.translate_rounded,
               onTap: _pickLanguage,
             ),
           ),
           _Section(
             title: l10n.quranWidgetTypography,
+            icon: Icons.text_fields_rounded,
             isDark: widget.isDark,
             child: Column(
               children: [
-                SwitchListTile.adaptive(
-                  contentPadding: EdgeInsets.zero,
-                  secondary: Icon(
-                    Icons.auto_awesome_rounded,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    l10n.ayahAutoFit,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  value: _settings.ayahAutoFit,
-                  onChanged: (value) => _commit(
-                    _settings.copyWith(ayahAutoFit: value),
-                  ),
-                ),
-                _TextSizeControl(
-                  label: l10n.ayahTextSize,
+                _TypographyGroup(
+                  title: l10n.ayahTextSize,
+                  previewText: 'آية',
+                  previewFontFamily: 'Amiri',
+                  autoFitLabel: l10n.ayahAutoFit,
+                  boldLabel: l10n.boldAyah,
                   autoLabel: l10n.automatic,
                   value: _settings.ayahTextSize,
-                  enabled: !_settings.ayahAutoFit,
-                  onChanged: (value) => setState(
+                  autoFit: _settings.ayahAutoFit,
+                  bold: _settings.ayahBold,
+                  onAutoFitChanged: (value) =>
+                      _commit(_settings.copyWith(ayahAutoFit: value)),
+                  onBoldChanged: (value) =>
+                      _commit(_settings.copyWith(ayahBold: value)),
+                  onSizeChanged: (value) => setState(
                     () => _settings = _settings.copyWith(ayahTextSize: value),
                   ),
-                  onChangeEnd: (value) => _commit(
-                    _settings.copyWith(ayahTextSize: value),
-                  ),
+                  onSizeChangeEnd: (value) =>
+                      _commit(_settings.copyWith(ayahTextSize: value)),
                 ),
-                Divider(height: 24.h),
-                SwitchListTile.adaptive(
-                  contentPadding: EdgeInsets.zero,
-                  secondary: Icon(
-                    Icons.auto_awesome_rounded,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    l10n.translationAutoFit,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  value: _settings.translationAutoFit,
-                  onChanged: (value) => _commit(
-                    _settings.copyWith(translationAutoFit: value),
-                  ),
-                ),
-                _TextSizeControl(
-                  label: l10n.translationTextSize,
+                SizedBox(height: 12.h),
+                _TypographyGroup(
+                  title: l10n.translationTextSize,
+                  previewText: 'Aa',
+                  autoFitLabel: l10n.translationAutoFit,
+                  boldLabel: l10n.boldTranslation,
                   autoLabel: l10n.automatic,
                   value: _settings.translationTextSize,
-                  enabled: !_settings.translationAutoFit,
-                  onChanged: (value) => setState(
-                    () => _settings =
-                        _settings.copyWith(translationTextSize: value),
+                  autoFit: _settings.translationAutoFit,
+                  bold: _settings.translationBold,
+                  onAutoFitChanged: (value) =>
+                      _commit(_settings.copyWith(translationAutoFit: value)),
+                  onBoldChanged: (value) =>
+                      _commit(_settings.copyWith(translationBold: value)),
+                  onSizeChanged: (value) => setState(
+                    () => _settings = _settings.copyWith(
+                      translationTextSize: value,
+                    ),
                   ),
-                  onChangeEnd: (value) => _commit(
-                    _settings.copyWith(translationTextSize: value),
-                  ),
-                ),
-                Divider(height: 16.h),
-                SwitchListTile.adaptive(
-                  contentPadding: EdgeInsets.zero,
-                  secondary: Icon(
-                    Icons.format_bold_rounded,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    l10n.boldAyah,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  value: _settings.ayahBold,
-                  onChanged: (value) => _commit(
-                    _settings.copyWith(ayahBold: value),
-                  ),
-                ),
-                Divider(height: 8.h),
-                SwitchListTile.adaptive(
-                  contentPadding: EdgeInsets.zero,
-                  secondary: Icon(
-                    Icons.format_bold_rounded,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    l10n.boldTranslation,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  value: _settings.translationBold,
-                  onChanged: (value) => _commit(
-                    _settings.copyWith(translationBold: value),
-                  ),
+                  onSizeChangeEnd: (value) =>
+                      _commit(_settings.copyWith(translationTextSize: value)),
                 ),
               ],
             ),
           ),
           _Section(
             title: l10n.widgetTheme,
+            icon: Icons.palette_outlined,
             isDark: widget.isDark,
             child: SizedBox(
               height: 108.h,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: QuranWidgetVisualTheme.values.length,
-                separatorBuilder: (_, __) => SizedBox(width: 10.w),
+                separatorBuilder: (_, _) => SizedBox(width: 10.w),
                 itemBuilder: (_, index) {
                   final theme = QuranWidgetVisualTheme.values[index];
                   return _ThemeCard(
                     label: _themeLabel(l10n, theme),
                     palette: _paletteFor(theme),
+                    automatic: theme == QuranWidgetVisualTheme.auto,
                     selected: _settings.visualTheme == theme,
-                    onTap: () => _commit(
-                      _settings.copyWith(visualTheme: theme),
-                    ),
+                    onTap: () =>
+                        _commit(_settings.copyWith(visualTheme: theme)),
                   );
                 },
               ),
@@ -294,20 +274,21 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
           ),
           _Section(
             title: l10n.advanced,
+            icon: Icons.settings_outlined,
             isDark: widget.isDark,
             child: Column(
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: 46.h,
+                  height: 48.h,
                   child: FilledButton.icon(
                     onPressed: _refreshing ? null : _refresh,
                     icon: _refreshing
                         ? SizedBox.square(
                             dimension: 18.w,
-                            child: const CircularProgressIndicator(
+                            child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: Colors.white,
+                              color: colorScheme.onPrimary,
                             ),
                           )
                         : const Icon(Icons.refresh_rounded),
@@ -318,12 +299,18 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
                     ),
                   ),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 10.h),
                 SizedBox(
                   width: double.infinity,
-                  height: 44.h,
+                  height: 46.h,
                   child: OutlinedButton.icon(
                     onPressed: _reset,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: colorScheme.error,
+                      side: BorderSide(
+                        color: colorScheme.error.withValues(alpha: 0.42),
+                      ),
+                    ),
                     icon: const Icon(Icons.restart_alt_rounded),
                     label: Text(l10n.resetWidgetCustomization),
                   ),
@@ -356,109 +343,122 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
   String _languageLabel(
     AppLocalizations l10n,
     QuranWidgetTranslationLanguage value,
-  ) =>
-      switch (value) {
-        QuranWidgetTranslationLanguage.auto => l10n.automatic,
-        QuranWidgetTranslationLanguage.en => l10n.english,
-        QuranWidgetTranslationLanguage.tr => l10n.turkish,
-        QuranWidgetTranslationLanguage.fr => l10n.french,
-        QuranWidgetTranslationLanguage.de => l10n.german,
-        QuranWidgetTranslationLanguage.es => l10n.spanish,
-        QuranWidgetTranslationLanguage.ur => l10n.urdu,
-        QuranWidgetTranslationLanguage.ru => l10n.russian,
-        QuranWidgetTranslationLanguage.ms => l10n.malay,
-        QuranWidgetTranslationLanguage.bn => l10n.bengali,
-      };
+  ) => switch (value) {
+    QuranWidgetTranslationLanguage.auto => l10n.automatic,
+    QuranWidgetTranslationLanguage.en => l10n.english,
+    QuranWidgetTranslationLanguage.tr => l10n.turkish,
+    QuranWidgetTranslationLanguage.fr => l10n.french,
+    QuranWidgetTranslationLanguage.de => l10n.german,
+    QuranWidgetTranslationLanguage.es => l10n.spanish,
+    QuranWidgetTranslationLanguage.ur => l10n.urdu,
+    QuranWidgetTranslationLanguage.ru => l10n.russian,
+    QuranWidgetTranslationLanguage.ms => l10n.malay,
+    QuranWidgetTranslationLanguage.bn => l10n.bengali,
+  };
 
   String _themeLabel(AppLocalizations l10n, QuranWidgetVisualTheme value) =>
       switch (value) {
         QuranWidgetVisualTheme.auto => l10n.themeAuto,
-        QuranWidgetVisualTheme.forest => l10n.themeForest,
         QuranWidgetVisualTheme.ocean => l10n.themeOcean,
-        QuranWidgetVisualTheme.sandstone => l10n.themeSandstone,
+        QuranWidgetVisualTheme.sunset => l10n.themeSunset,
+        QuranWidgetVisualTheme.forest => l10n.themeForest,
         QuranWidgetVisualTheme.midnight => l10n.themeMidnight,
-        QuranWidgetVisualTheme.burgundy => l10n.themeBurgundy,
+        QuranWidgetVisualTheme.sandstone => l10n.themeSandstone,
+        QuranWidgetVisualTheme.rose => l10n.themeRose,
         QuranWidgetVisualTheme.lavender => l10n.themeLavender,
+        QuranWidgetVisualTheme.charcoal => l10n.themeCharcoal,
+        QuranWidgetVisualTheme.amber => l10n.themeAmber,
+        QuranWidgetVisualTheme.arctic => l10n.themeArctic,
+        QuranWidgetVisualTheme.burgundy => l10n.themeBurgundy,
+        QuranWidgetVisualTheme.sage => l10n.themeSage,
       };
 
   _Palette _paletteFor(QuranWidgetVisualTheme theme) => switch (theme) {
-        QuranWidgetVisualTheme.forest => const _Palette(
-            background: Color(0xFF1B3A2A),
-            card: Color(0xFF244D38),
-            ayah: Color(0xFFE8F5E9),
-            translation: Color(0xFFC9DDCB),
-            accent: Color(0xFF81C784),
-          ),
-        QuranWidgetVisualTheme.ocean => const _Palette(
-            background: Color(0xFF1A3A5C),
-            card: Color(0xFF244B73),
-            ayah: Color(0xFFF0F4F8),
-            translation: Color(0xFFD2DEE8),
-            accent: Color(0xFF4DD0E1),
-          ),
-        QuranWidgetVisualTheme.sandstone => const _Palette(
-            background: Color(0xFFF5E6D3),
-            card: Color(0xFFFFF8EF),
-            ayah: Color(0xFF3E2C1A),
-            translation: Color(0xFF5E4932),
-            accent: Color(0xFFA83D15),
-            ornament: Color(0xFFC18445),
-            isLight: true,
-          ),
-        QuranWidgetVisualTheme.midnight => const _Palette(
-            background: Color(0xFF121218),
-            card: Color(0xFF20202A),
-            ayah: Color(0xFFF3F0FA),
-            translation: Color(0xFFC9C6D5),
-            accent: Color(0xFF9FA8DA),
-          ),
-        QuranWidgetVisualTheme.burgundy => const _Palette(
-            background: Color(0xFF4A0E1E),
-            card: Color(0xFF62152A),
-            ayah: Color(0xFFFDE8EF),
-            translation: Color(0xFFE6BEC9),
-            accent: Color(0xFFFF8A80),
-          ),
-        QuranWidgetVisualTheme.lavender => const _Palette(
-            background: Color(0xFF2E2450),
-            card: Color(0xFF3D3168),
-            ayah: Color(0xFFEDE7F6),
-            translation: Color(0xFFCBC2DE),
-            accent: Color(0xFFD59BE6),
-          ),
-        QuranWidgetVisualTheme.auto => _autoPalette(),
-      };
+    QuranWidgetVisualTheme.ocean => const _Palette(
+      background: Color(0xFF1A3A5C),
+      ayah: Color(0xFFF0F4F8),
+      translation: Color(0xFFD2DEE8),
+    ),
+    QuranWidgetVisualTheme.sunset => const _Palette(
+      background: Color(0xFF5C2A0E),
+      ayah: Color(0xFFFFF5EB),
+      translation: Color(0xFFE6D6C7),
+    ),
+    QuranWidgetVisualTheme.forest => const _Palette(
+      background: Color(0xFF1B3A2A),
+      ayah: Color(0xFFE8F5E9),
+      translation: Color(0xFFC9DDCB),
+    ),
+    QuranWidgetVisualTheme.midnight => const _Palette(
+      background: Color(0xFF121218),
+      ayah: Color(0xFFE0E0E8),
+      translation: Color(0xFFC9C6D5),
+    ),
+    QuranWidgetVisualTheme.sandstone => const _Palette(
+      background: Color(0xFFF5E6D3),
+      ayah: Color(0xFF3E2C1A),
+      translation: Color(0xFF5E4932),
+    ),
+    QuranWidgetVisualTheme.rose => const _Palette(
+      background: Color(0xFF3D1A2E),
+      ayah: Color(0xFFFCE4EC),
+      translation: Color(0xFFDFC5CF),
+    ),
+    QuranWidgetVisualTheme.lavender => const _Palette(
+      background: Color(0xFF2E2450),
+      ayah: Color(0xFFEDE7F6),
+      translation: Color(0xFFCBC2DE),
+    ),
+    QuranWidgetVisualTheme.charcoal => const _Palette(
+      background: Color(0xFF2C2C2C),
+      ayah: Color(0xFFF5F5F5),
+      translation: Color(0xFFD6D6D6),
+    ),
+    QuranWidgetVisualTheme.amber => const _Palette(
+      background: Color(0xFF4A3000),
+      ayah: Color(0xFFFFF8E1),
+      translation: Color(0xFFE6D8AD),
+    ),
+    QuranWidgetVisualTheme.arctic => const _Palette(
+      background: Color(0xFFE3F2FD),
+      ayah: Color(0xFF0D2137),
+      translation: Color(0xFF40566D),
+    ),
+    QuranWidgetVisualTheme.burgundy => const _Palette(
+      background: Color(0xFF4A0E1E),
+      ayah: Color(0xFFFDE8EF),
+      translation: Color(0xFFE6BEC9),
+    ),
+    QuranWidgetVisualTheme.sage => const _Palette(
+      background: Color(0xFF3B4A3A),
+      ayah: Color(0xFFF1F5E8),
+      translation: Color(0xFFD0DACA),
+    ),
+    QuranWidgetVisualTheme.auto => _autoPalette(),
+  };
 
   _Palette _autoPalette() {
     final primary = Theme.of(context).colorScheme.primary;
     final primaryRgb = primary.toARGB32() & 0x00FFFFFF;
-    final isHudaTeal = widget.isDark &&
+    final isHudaTeal =
+        widget.isDark &&
         const {0x14B8A6, 0x0D9488, 0x134E4A}.contains(primaryRgb);
     if (isHudaTeal) {
       return const _Palette(
         background: Color(0xFF061821),
-        card: Color(0xFF0A3339),
         ayah: Color(0xFFF6F5EA),
         translation: Color(0xFFD7E7E5),
-        accent: Color(0xFF62E6D2),
       );
     }
     final background = widget.isDark
         ? Color.lerp(const Color(0xFF101212), primary, 0.18)!
         : Color.lerp(Colors.white, primary, 0.09)!;
-    final card = widget.isDark
-        ? Color.lerp(background, Colors.white, 0.08)!
-        : Color.lerp(background, Colors.white, 0.72)!;
     return _Palette(
       background: background,
-      card: card,
       ayah: widget.isDark ? const Color(0xFFF8FAFC) : const Color(0xFF242424),
-      translation:
-          widget.isDark ? const Color(0xFFD2D8DC) : const Color(0xFF4E5559),
-      accent: primary,
-      ornament:
-          widget.isDark ? const Color(0xFFD9BE72) : const Color(0xFFC18445),
-      isLight: !widget.isDark,
+      translation: widget.isDark
+          ? const Color(0xFFD2D8DC)
+          : const Color(0xFF4E5559),
     );
   }
 }
@@ -471,28 +471,36 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final accent = Theme.of(context).colorScheme.primary;
+    final colorScheme = Theme.of(context).colorScheme;
+    final accent = colorScheme.primary;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
         gradient: LinearGradient(
+          begin: AlignmentDirectional.topStart,
+          end: AlignmentDirectional.bottomEnd,
           colors: [
-            accent.withValues(alpha: isDark ? 0.34 : 0.20),
-            accent.withValues(alpha: 0.06),
+            accent.withValues(alpha: isDark ? 0.26 : 0.16),
+            colorScheme.surface,
           ],
         ),
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(color: accent.withValues(alpha: 0.22)),
+        border: Border.all(color: accent.withValues(alpha: 0.24)),
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 23.r,
-            backgroundColor: accent.withValues(alpha: 0.15),
-            child: Icon(Icons.menu_book_rounded, color: accent, size: 25.sp),
+          Container(
+            width: 52.w,
+            height: 52.w,
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.14),
+              borderRadius: BorderRadius.circular(15.r),
+              border: Border.all(color: accent.withValues(alpha: 0.18)),
+            ),
+            child: Icon(Icons.menu_book_rounded, color: accent, size: 27.sp),
           ),
-          SizedBox(width: 13.w),
+          SizedBox(width: 14.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -502,6 +510,7 @@ class _Header extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w800,
+                    letterSpacing: -0.2,
                   ),
                 ),
                 SizedBox(height: 3.h),
@@ -509,8 +518,8 @@ class _Header extends StatelessWidget {
                   l10n.quranWidgetTagline,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    height: 1.35,
-                    color: isDark ? Colors.white70 : Colors.black54,
+                    height: 1.4,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -522,121 +531,570 @@ class _Header extends StatelessWidget {
   }
 }
 
+class _CustomizationHeading extends StatelessWidget {
+  const _CustomizationHeading({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        Container(
+          width: 34.w,
+          height: 34.w,
+          decoration: BoxDecoration(
+            color: colorScheme.primary.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Icon(
+            Icons.tune_rounded,
+            color: colorScheme.primary,
+            size: 19.sp,
+          ),
+        ),
+        SizedBox(width: 10.w),
+        Expanded(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 17.sp,
+              letterSpacing: -0.15,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _Section extends StatelessWidget {
   const _Section({
     required this.title,
+    required this.icon,
     required this.isDark,
     required this.child,
   });
 
   final String title;
+  final IconData icon;
   final bool isDark;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: 12.h),
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 3),
-            ),
-          ],
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.55),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
-            ),
-            SizedBox(height: 10.h),
-            child,
-          ],
-        ),
-      );
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.10 : 0.035),
+            blurRadius: 16,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 30.w,
+                height: 30.w,
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(9.r),
+                ),
+                child: Icon(icon, size: 17.sp, color: colorScheme.primary),
+              ),
+              SizedBox(width: 9.w),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          child,
+        ],
+      ),
+    );
+  }
 }
 
-class _TextSizeControl extends StatelessWidget {
-  const _TextSizeControl({
-    required this.label,
-    required this.autoLabel,
-    required this.value,
-    required this.enabled,
-    required this.onChanged,
-    required this.onChangeEnd,
+class _SelectionTile extends StatelessWidget {
+  const _SelectionTile({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.onTap,
   });
 
-  final String label;
-  final String autoLabel;
-  final int value;
-  final bool enabled;
-  final ValueChanged<int> onChanged;
-  final ValueChanged<int> onChangeEnd;
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final foreground = enabled
-        ? colorScheme.primary
-        : colorScheme.onSurface.withValues(alpha: 0.38);
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 180),
-      opacity: enabled ? 1 : 0.62,
+    return Material(
+      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
+      borderRadius: BorderRadius.circular(14.r),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14.r),
+        child: Padding(
+          padding: EdgeInsets.all(13.w),
+          child: Row(
+            children: [
+              Container(
+                width: 42.w,
+                height: 42.w,
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: colorScheme.primary, size: 21.sp),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 3.h),
+                    Text(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        height: 1.35,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TypographyGroup extends StatelessWidget {
+  const _TypographyGroup({
+    required this.title,
+    required this.previewText,
+    this.previewFontFamily,
+    required this.autoFitLabel,
+    required this.boldLabel,
+    required this.autoLabel,
+    required this.value,
+    required this.autoFit,
+    required this.bold,
+    required this.onAutoFitChanged,
+    required this.onBoldChanged,
+    required this.onSizeChanged,
+    required this.onSizeChangeEnd,
+  });
+
+  final String title;
+  final String previewText;
+  final String? previewFontFamily;
+  final String autoFitLabel;
+  final String boldLabel;
+  final String autoLabel;
+  final int value;
+  final bool autoFit;
+  final bool bold;
+  final ValueChanged<bool> onAutoFitChanged;
+  final ValueChanged<bool> onBoldChanged;
+  final ValueChanged<int> onSizeChanged;
+  final ValueChanged<int> onSizeChangeEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final sliderEnabled = !autoFit;
+    return Container(
+      padding: EdgeInsets.all(13.w),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.48),
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.45),
+        ),
+      ),
       child: Column(
         children: [
           Row(
             children: [
-              Icon(
-                Icons.text_fields_rounded,
-                size: 20.sp,
-                color: foreground,
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                width: 48.w,
+                height: 48.w,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.11),
+                  borderRadius: BorderRadius.circular(13.r),
+                ),
                 child: Text(
-                  label,
+                  previewText,
+                  textDirection: previewFontFamily == null
+                      ? TextDirection.ltr
+                      : TextDirection.rtl,
                   style: TextStyle(
-                    color: enabled ? null : foreground,
-                    fontWeight: FontWeight.w600,
+                    color: colorScheme.primary,
+                    fontFamily: previewFontFamily,
+                    fontSize: (20 * (value / 100)).clamp(15, 27).sp,
+                    height: 1,
+                    fontWeight: bold ? FontWeight.w800 : FontWeight.w500,
                   ),
                 ),
               ),
-              Container(
-                constraints: BoxConstraints(minWidth: 52.w),
-                padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 5.h),
+              SizedBox(width: 11.w),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                constraints: BoxConstraints(minWidth: 54.w),
+                padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: foreground.withValues(alpha: 0.10),
+                  color: colorScheme.primary.withValues(alpha: 0.11),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Text(
-                  enabled ? '$value%' : autoLabel,
+                  sliderEnabled ? '$value%' : autoLabel,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: foreground,
-                    fontWeight: FontWeight.w700,
+                    color: colorScheme.primary,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w800,
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
             ],
           ),
-          Slider(
-            min: 70,
-            max: 140,
-            divisions: 14,
-            value: value.toDouble(),
-            label: '$value%',
-            onChanged: enabled ? (next) => onChanged(next.round()) : null,
-            onChangeEnd: enabled ? (next) => onChangeEnd(next.round()) : null,
+          SizedBox(height: 8.h),
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 180),
+            opacity: sliderEnabled ? 1 : 0.44,
+            child: Row(
+              children: [
+                Text(
+                  'A',
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                Expanded(
+                  child: Slider(
+                    min: 70,
+                    max: 140,
+                    divisions: 14,
+                    value: value.toDouble(),
+                    label: '$value%',
+                    onChanged: sliderEnabled
+                        ? (next) => onSizeChanged(next.round())
+                        : null,
+                    onChangeEnd: sliderEnabled
+                        ? (next) => onSizeChangeEnd(next.round())
+                        : null,
+                  ),
+                ),
+                Text(
+                  'A',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(height: 12.h),
+          _TypographyToggle(
+            icon: Icons.fit_screen_rounded,
+            label: autoFitLabel,
+            value: autoFit,
+            onChanged: onAutoFitChanged,
+          ),
+          Divider(height: 8.h),
+          _TypographyToggle(
+            icon: Icons.format_bold_rounded,
+            label: boldLabel,
+            value: bold,
+            onChanged: onBoldChanged,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _TypographyToggle extends StatelessWidget {
+  const _TypographyToggle({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: () => onChanged(!value),
+      borderRadius: BorderRadius.circular(10.r),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 2.h),
+        child: Row(
+          children: [
+            Icon(icon, size: 19.sp, color: colorScheme.primary),
+            SizedBox(width: 10.w),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+              ),
+            ),
+            Switch.adaptive(value: value, onChanged: onChanged),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguageSheetHeader extends StatelessWidget {
+  const _LanguageSheetHeader({
+    required this.title,
+    required this.description,
+    required this.onClose,
+  });
+
+  final String title;
+  final String description;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20.w, 2.h, 12.w, 16.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 44.w,
+            height: 44.w,
+            decoration: BoxDecoration(
+              color: colorScheme.primary.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(13.r),
+            ),
+            child: Icon(
+              Icons.translate_rounded,
+              color: colorScheme.primary,
+              size: 23.sp,
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 19.sp,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    height: 1.4,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            tooltip: l10n.cancel,
+            onPressed: onClose,
+            icon: const Icon(Icons.close_rounded),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LanguageOption extends StatelessWidget {
+  const _LanguageOption({
+    required this.title,
+    required this.subtitle,
+    required this.code,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final String? code;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Semantics(
+      selected: selected,
+      button: true,
+      child: Material(
+        color: selected
+            ? colorScheme.primary.withValues(alpha: 0.10)
+            : colorScheme.surfaceContainerHighest.withValues(alpha: 0.42),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14.r),
+          side: BorderSide(
+            color: selected
+                ? colorScheme.primary
+                : colorScheme.outlineVariant.withValues(alpha: 0.5),
+            width: selected ? 1.5 : 1,
+          ),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(14.r),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 11.h),
+            child: Row(
+              children: [
+                Container(
+                  width: 42.w,
+                  height: 42.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: selected
+                        ? colorScheme.primary
+                        : colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: code == null
+                      ? Icon(
+                          Icons.language_rounded,
+                          size: 20.sp,
+                          color: selected
+                              ? colorScheme.onPrimary
+                              : colorScheme.primary,
+                        )
+                      : Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                            code!.toUpperCase(),
+                            style: TextStyle(
+                              color: selected
+                                  ? colorScheme.onPrimary
+                                  : colorScheme.primary,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: selected
+                              ? FontWeight.w800
+                              : FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        subtitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 11.5.sp,
+                          height: 1.35,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Icon(
+                  selected ? Icons.check_circle_rounded : Icons.circle_outlined,
+                  color: selected
+                      ? colorScheme.primary
+                      : colorScheme.outlineVariant,
+                  size: 22.sp,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -646,265 +1104,101 @@ class _ThemeCard extends StatelessWidget {
   const _ThemeCard({
     required this.label,
     required this.palette,
+    required this.automatic,
     required this.selected,
     required this.onTap,
   });
 
   final String label;
   final _Palette palette;
+  final bool automatic;
   final bool selected;
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-        selected: selected,
-        button: true,
-        label: label,
-        child: GestureDetector(
-          onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            width: 94.w,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  palette.card,
-                  palette.background,
-                  palette.background,
-                ],
-                stops: const [0, 0.58, 1],
-              ),
-              borderRadius: BorderRadius.circular(13.r),
-              border: Border.all(
-                color: selected
-                    ? Theme.of(context).colorScheme.primary
-                    : palette.accent.withValues(alpha: 0.45),
-                width: selected ? 2.5 : 1,
-              ),
+  Widget build(BuildContext context) {
+    final accent = Theme.of(context).colorScheme.primary;
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: label,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          width: 80.w,
+          decoration: BoxDecoration(
+            color: palette.background,
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(
+              color: selected ? accent : Colors.grey.withValues(alpha: 0.3),
+              width: selected ? 2.5 : 1,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12.r),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: CustomPaint(
-                      painter: _NoorThemeGeometryPainter(palette),
+            boxShadow: selected
+                ? [
+                    BoxShadow(
+                      color: accent.withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
+                  ]
+                : null,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (automatic)
+                Icon(Icons.palette_outlined, color: accent, size: 24.sp)
+              else
+                Text(
+                  'آ',
+                  textDirection: TextDirection.rtl,
+                  style: TextStyle(
+                    color: palette.ayah,
+                    fontFamily: 'Amiri',
+                    fontSize: 25.sp,
+                    height: 1,
+                    fontWeight: FontWeight.w700,
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(7.w),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 20.w,
-                              height: 20.w,
-                              padding: EdgeInsets.all(3.5.w),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: palette.accent.withValues(alpha: 0.14),
-                                border: Border.all(
-                                  color: palette.accent.withValues(alpha: 0.42),
-                                  width: 0.7,
-                                ),
-                              ),
-                              child: Image.asset(
-                                'assets/images/huda.png',
-                                color: palette.ayah,
-                                colorBlendMode: BlendMode.srcIn,
-                              ),
-                            ),
-                            const Spacer(),
-                            Container(
-                              height: 13.h,
-                              width: 31.w,
-                              padding: EdgeInsets.symmetric(horizontal: 4.w),
-                              decoration: BoxDecoration(
-                                color: palette.ayah.withValues(alpha: 0.07),
-                                borderRadius: BorderRadius.circular(20.r),
-                                border: Border.all(
-                                  color: palette.ayah.withValues(alpha: 0.16),
-                                  width: 0.6,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 2.5.w,
-                                    height: 2.5.w,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: palette.ornament,
-                                    ),
-                                  ),
-                                  SizedBox(width: 3.w),
-                                  Expanded(
-                                    child: Container(
-                                      height: 1,
-                                      color:
-                                          palette.ayah.withValues(alpha: 0.55),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Text(
-                          'آية',
-                          style: TextStyle(
-                            color: palette.ayah,
-                            fontFamily: 'Amiri',
-                            fontSize: 16.sp,
-                            height: 1,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(height: 3.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 12.w,
-                              height: 0.7,
-                              color: palette.accent.withValues(alpha: 0.48),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 3.w),
-                              width: 2.5.w,
-                              height: 2.5.w,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: palette.ornament,
-                              ),
-                            ),
-                            Container(
-                              width: 12.w,
-                              height: 0.7,
-                              color: palette.accent.withValues(alpha: 0.48),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 3.h),
-                        Text(
-                          label,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: palette.translation,
-                            fontSize: 9.sp,
-                            fontWeight:
-                                selected ? FontWeight.w700 : FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
+                ),
+              SizedBox(height: 4.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: automatic
+                        ? Theme.of(context).colorScheme.onSurfaceVariant
+                        : palette.translation,
+                    fontSize: 11.sp,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                   ),
-                ],
+                ),
               ),
-            ),
+              if (selected)
+                Padding(
+                  padding: EdgeInsets.only(top: 4.h),
+                  child: Icon(Icons.check_circle, color: accent, size: 16.sp),
+                ),
+            ],
           ),
         ),
-      );
-}
-
-class _NoorThemeGeometryPainter extends CustomPainter {
-  const _NoorThemeGeometryPainter(this.palette);
-
-  final _Palette palette;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final glowPaint = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          palette.accent.withValues(alpha: palette.isLight ? 0.13 : 0.22),
-          Colors.transparent,
-        ],
-      ).createShader(
-        Rect.fromCircle(
-          center: Offset(size.width * 0.5, size.height * 0.18),
-          radius: size.width * 0.65,
-        ),
-      );
-    canvas.drawRect(Offset.zero & size, glowPaint);
-
-    final linePaint = Paint()
-      ..color = palette.accent.withValues(alpha: palette.isLight ? 0.10 : 0.075)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.8
-      ..strokeCap = StrokeCap.round;
-    final arch = Path()
-      ..moveTo(size.width * 0.18, size.height * 0.94)
-      ..cubicTo(
-        size.width * 0.18,
-        size.height * 0.52,
-        size.width * 0.35,
-        size.height * 0.22,
-        size.width * 0.5,
-        size.height * 0.09,
-      )
-      ..cubicTo(
-        size.width * 0.65,
-        size.height * 0.22,
-        size.width * 0.82,
-        size.height * 0.52,
-        size.width * 0.82,
-        size.height * 0.94,
-      );
-    canvas.drawPath(arch, linePaint);
-
-    final star = Path();
-    final center = Offset(size.width * 0.96, size.height * 0.05);
-    final outer = math.min(size.width, size.height) * 0.26;
-    for (var index = 0; index < 16; index++) {
-      final angle = -math.pi / 2 + index * math.pi / 8;
-      final radius = index.isEven ? outer : outer * 0.46;
-      final point = Offset(
-        center.dx + math.cos(angle) * radius,
-        center.dy + math.sin(angle) * radius,
-      );
-      if (index == 0) {
-        star.moveTo(point.dx, point.dy);
-      } else {
-        star.lineTo(point.dx, point.dy);
-      }
-    }
-    star.close();
-    canvas.drawPath(
-      star,
-      Paint()
-        ..color = palette.ornament.withValues(alpha: 0.10)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 0.8,
+      ),
     );
   }
-
-  @override
-  bool shouldRepaint(covariant _NoorThemeGeometryPainter oldDelegate) =>
-      oldDelegate.palette != palette;
 }
 
 class _Palette {
   const _Palette({
     required this.background,
-    required this.card,
     required this.ayah,
     required this.translation,
-    required this.accent,
-    this.ornament = const Color(0xFFD9BE72),
-    this.isLight = false,
   });
 
   final Color background;
-  final Color card;
   final Color ayah;
   final Color translation;
-  final Color accent;
-  final Color ornament;
-  final bool isLight;
 }
