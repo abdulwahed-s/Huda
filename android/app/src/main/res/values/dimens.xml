@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fallback for launchers before the system app-widget radius existed. -->
+    <dimen name="prayer_widget_outer_corner_radius">22dp</dimen>
+</resources>

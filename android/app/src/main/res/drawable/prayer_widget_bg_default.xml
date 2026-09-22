@@ -12,5 +12,5 @@
         android:startColor="#7C3AED"
         android:endColor="#4338CA"
         android:type="linear" />
-    <corners android:radius="22dp" />
+    <corners android:radius="@dimen/prayer_widget_outer_corner_radius" />
 </shape>

@@ -3808,14 +3808,14 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'Fokus solat seterusnya yang menonjol dengan pemasa kira detik, ikon hero dan senarai kemas semua solat.';
+      'Fokus atmosfera pada solat seterusnya dengan kira detik tepat dan jadual samawi yang tenang.';
 
   @override
   String get designCompact => 'Almanak';
 
   @override
   String get designCompactDescription =>
-      'Kad krim klasik dengan tarikh, hari dalam minggu, grid solat penuh dan waktu malam.';
+      'Tarikh dan jadual editorial dengan solat seterusnya serta waktu malam yang jelas.';
 
   @override
   String get size => 'Saiz';

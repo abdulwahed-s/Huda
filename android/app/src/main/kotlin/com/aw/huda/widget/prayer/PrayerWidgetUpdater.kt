@@ -12,6 +12,7 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
+import android.os.SystemClock
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TypefaceSpan
@@ -29,6 +30,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.aw.huda.MainActivity
 import com.aw.huda.R
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
+import java.text.DecimalFormatSymbols
 import java.util.Calendar
 import java.util.Date
 import kotlin.math.roundToInt
@@ -69,10 +71,22 @@ internal object PrayerWidgetUpdater {
                 "maxH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)} " +
                 "density=${context.resources.displayMetrics.density}")
 
-            val theme = if (snapshot.hasCoordinates) PrayerWidgetTheme.resolve(context, snapshot) else null
-            val views = buildForFamily(context, snapshot, family)
-
-            val finalViews = renderToBitmap(context, views, wDp, hDp, family, theme)
+            val theme = PrayerWidgetTheme.resolve(context, snapshot)
+            val finalViews = try {
+                val rendered = PrayerWidgetCanvasRenderer.render(
+                    context = context,
+                    snapshot = snapshot,
+                    family = family,
+                    widthDp = wDp.toFloat(),
+                    heightDp = hDp.toFloat(),
+                    includeStaticCountdown = Build.VERSION.SDK_INT < Build.VERSION_CODES.N,
+                )
+                buildBitmapViews(context, rendered)
+            } catch (renderError: Exception) {
+                Log.e(TAG, "Celestial renderer failed; using XML fallback", renderError)
+                val views = buildForFamily(context, snapshot, family)
+                renderToBitmap(context, views, wDp, hDp, family, theme)
+            }
 
             manager.updateAppWidget(widgetId, finalViews)
         } catch (e: Exception) {
@@ -133,7 +147,7 @@ internal object PrayerWidgetUpdater {
         return Pair((wDp * factor).roundToInt(), (hDp * factor).roundToInt())
     }
 
-    private fun classifySize(w: Float, h: Float): WidgetFamily {
+    internal fun classifySize(w: Float, h: Float): WidgetFamily {
         return when {
             w <= 0 || h <= 0 -> WidgetFamily.MEDIUM
             w < 120 -> WidgetFamily.CIRCULAR
@@ -228,7 +242,7 @@ internal object PrayerWidgetUpdater {
         )
         views.setTextColor(R.id.prayer_widget_label, secondary)
 
-        val compact = PrayerTimeFormatter.formatHHMMRoundedUp(
+        val compact = PrayerTimeFormatter.formatHHMMSS(
             from = now, to = next.time,
             useArabicNumerals = snapshot.useArabicNumerals(),
         )
@@ -702,7 +716,7 @@ internal object PrayerWidgetUpdater {
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
         setStyledText(views, R.id.prayer_widget_countdown,
-            PrayerTimeFormatter.formatHHMMRoundedUp(
+            PrayerTimeFormatter.formatHHMMSS(
                 from = now, to = next.time,
                 useArabicNumerals = snapshot.useArabicNumerals(),
             ))
@@ -774,7 +788,7 @@ internal object PrayerWidgetUpdater {
             views.setTextColor(R.id.prayer_widget_remaining_label, highlight)
             setStyledText(views, R.id.prayer_widget_remaining_name, "")
             setStyledText(views, R.id.prayer_widget_countdown,
-                PrayerTimeFormatter.formatHHMMRoundedUp(
+                PrayerTimeFormatter.formatHHMMSS(
                     from = now, to = next.time,
                     useArabicNumerals = snapshot.useArabicNumerals(),
                 ))
@@ -791,7 +805,7 @@ internal object PrayerWidgetUpdater {
             )
             views.setTextColor(R.id.prayer_widget_remaining_name, highlight)
             setStyledText(views, R.id.prayer_widget_countdown,
-                PrayerTimeFormatter.formatHHMMRoundedUp(
+                PrayerTimeFormatter.formatHHMMSS(
                     from = now, to = next.time,
                     useArabicNumerals = snapshot.useArabicNumerals(),
                 ))
@@ -839,7 +853,7 @@ internal object PrayerWidgetUpdater {
         )
 
         setStyledText(views, R.id.prayer_widget_countdown,
-            PrayerTimeFormatter.formatHHMMRoundedUp(
+            PrayerTimeFormatter.formatHHMMSS(
                 from = now, to = next.time,
                 useArabicNumerals = snapshot.useArabicNumerals(),
             ))
@@ -1146,7 +1160,7 @@ internal object PrayerWidgetUpdater {
         views.setViewVisibility(R.id.prayer_widget_countdown_static, View.GONE)
         views.setViewVisibility(R.id.prayer_widget_countdown, View.VISIBLE)
         setStyledText(views, R.id.prayer_widget_countdown,
-            PrayerTimeFormatter.formatHHMMRoundedUp(
+            PrayerTimeFormatter.formatHHMMSS(
                 from = now, to = next.time,
                 useArabicNumerals = snapshot.useArabicNumerals(),
             ))
@@ -1200,7 +1214,7 @@ internal object PrayerWidgetUpdater {
         val accent = theme.accent
         val isRtl = PrayerWidgetLocalization.isRTL(locale)
 
-        val compact = PrayerTimeFormatter.formatHHMMRoundedUp(
+        val compact = PrayerTimeFormatter.formatHHMMSS(
             from = now, to = next.time,
             useArabicNumerals = snapshot.useArabicNumerals(),
         )
@@ -1380,6 +1394,100 @@ internal object PrayerWidgetUpdater {
         } catch (e: Exception) {
             Log.e(TAG, "Bitmap render failed, falling back", e)
             remoteViews
+        }
+    }
+
+    internal fun buildBitmapViews(
+        context: Context,
+        rendered: PrayerWidgetCanvasRenderer.Rendered,
+    ): RemoteViews {
+        return RemoteViews(
+            context.packageName,
+            R.layout.prayer_widget_bitmap_container,
+        ).also { views ->
+            views.setImageViewBitmap(R.id.prayer_widget_bitmap, rendered.bitmap)
+            views.setContentDescription(
+                R.id.prayer_widget_bitmap,
+                rendered.accessibilityLabel,
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                configureLiveCountdown(
+                    context = context,
+                    views = views,
+                    overlay = rendered.countdownOverlay,
+                )
+            }
+            applyDeepLink(views, context)
+        }
+    }
+
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.N)
+    private fun configureLiveCountdown(
+        context: Context,
+        views: RemoteViews,
+        overlay: PrayerWidgetCanvasRenderer.CountdownOverlay?,
+    ) {
+        val id = R.id.prayer_widget_live_countdown
+        val remainingMillis = overlay?.let {
+            (it.targetEpochMillis - System.currentTimeMillis()).coerceAtLeast(0L)
+        } ?: 0L
+        if (overlay == null || remainingMillis <= 0L) {
+            views.setViewVisibility(id, View.GONE)
+            return
+        }
+
+        val layoutDensity = if (DisplayMetrics.DENSITY_DEVICE_STABLE > 0) {
+            DisplayMetrics.DENSITY_DEVICE_STABLE.toFloat() / DisplayMetrics.DENSITY_DEFAULT
+        } else {
+            context.resources.displayMetrics.density
+        }
+        fun px(value: Float): Int = (value * layoutDensity).roundToInt().coerceAtLeast(0)
+
+        val rightDp = (
+            overlay.canvasWidthDp - overlay.leftDp - overlay.widthDp
+        ).coerceAtLeast(0f)
+        val bottomDp = (
+            overlay.canvasHeightDp - overlay.topDp - overlay.heightDp
+        ).coerceAtLeast(0f)
+        views.setViewPadding(
+            id,
+            px(overlay.leftDp),
+            px(overlay.topDp),
+            px(rightDp),
+            px(bottomDp),
+        )
+        val horizontalGravity = when (overlay.alignment) {
+            PrayerWidgetCanvasRenderer.CountdownAlignment.CENTER -> Gravity.CENTER_HORIZONTAL
+            PrayerWidgetCanvasRenderer.CountdownAlignment.END -> {
+                if (overlay.rtl) Gravity.LEFT else Gravity.RIGHT
+            }
+        }
+        views.setInt(id, "setGravity", Gravity.CENTER_VERTICAL or horizontalGravity)
+        views.setTextViewTextSize(
+            id,
+            TypedValue.COMPLEX_UNIT_PX,
+            overlay.textSizeDp * layoutDensity,
+        )
+        views.setTextColor(id, overlay.color)
+        views.setChronometer(
+            id,
+            SystemClock.elapsedRealtime() + remainingMillis,
+            liveCountdownFormat(remainingMillis),
+            true,
+        )
+        views.setChronometerCountDown(id, true)
+        views.setViewVisibility(id, View.VISIBLE)
+    }
+
+    private fun liveCountdownFormat(
+        remainingMillis: Long,
+    ): String {
+        val totalSeconds = (remainingMillis + 999L) / 1_000L
+        val zero = DecimalFormatSymbols.getInstance().zeroDigit.toString()
+        return when {
+            totalSeconds < 3_600L -> "$zero$zero:%s"
+            totalSeconds < 36_000L -> "$zero%s"
+            else -> "%s"
         }
     }
 

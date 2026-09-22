@@ -3796,14 +3796,14 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'کاؤنٹ ڈاؤن ٹائمر، ہیرو آئیکن اور تمام نمازوں کی صاف فہرست کے ساتھ اگلی نماز پر نمایاں توجہ۔';
+      'درست الٹی گنتی اور پُرسکون آسمانی اوقات کے ساتھ اگلی نماز پر دلکش توجہ۔';
 
   @override
   String get designCompact => 'المناک';
 
   @override
   String get designCompactDescription =>
-      'تاریخ، ہفتے کے دن، مکمل نماز گرڈ اور رات کے اوقات کے ساتھ کلاسک کریم کارڈ۔';
+      'اگلی نماز اور رات کے اوقات کو نمایاں کرنے والا اداریاتی تاریخ و نماز جدول۔';
 
   @override
   String get size => 'سائز';

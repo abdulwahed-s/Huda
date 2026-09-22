@@ -1,5 +1,7 @@
 package com.aw.huda.widget.prayer
 
+import android.content.Context
+import android.text.format.DateFormat
 import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -14,6 +16,11 @@ internal object PrayerWidgetLocalization {
     )
 
     private val translations: Map<String, Map<String, String>> = mapOf(
+        "huda" to mapOf(
+            "en" to "Huda", "ar" to "هُدَى", "tr" to "Huda", "fr" to "Huda",
+            "es" to "Huda", "de" to "Huda", "ru" to "Худа", "ur" to "ہدیٰ",
+            "ms" to "Huda", "bn" to "হুদা",
+        ),
         "fajr" to mapOf(
             "en" to "Fajr", "ar" to "الفجر", "tr" to "İmsak", "fr" to "Fajr",
             "es" to "Fajr", "de" to "Fadschr", "ru" to "Фаджр", "ur" to "فجر",
@@ -86,6 +93,30 @@ internal object PrayerWidgetLocalization {
             "ru" to "Полночь", "ur" to "آدھی رات",
             "ms" to "Tengah malam", "bn" to "মধ্যরাত",
         ),
+        "current" to mapOf(
+            "en" to "Current", "ar" to "الحالية", "tr" to "Şu an",
+            "fr" to "Actuelle", "es" to "Actual", "de" to "Aktuell",
+            "ru" to "Текущая", "ur" to "موجودہ", "ms" to "Semasa",
+            "bn" to "বর্তমান",
+        ),
+        "remaining" to mapOf(
+            "en" to "Remaining", "ar" to "الوقت المتبقي", "tr" to "Kalan",
+            "fr" to "Restant", "es" to "Restante", "de" to "Verbleibend",
+            "ru" to "Осталось", "ur" to "باقی", "ms" to "Berbaki",
+            "bn" to "বাকি",
+        ),
+        "prayer_table" to mapOf(
+            "en" to "Prayer table", "ar" to "جدول الصلاة", "tr" to "Namaz tablosu",
+            "fr" to "Table des prières", "es" to "Tabla de oración",
+            "de" to "Gebetsübersicht", "ru" to "Расписание молитв",
+            "ur" to "نماز کا جدول", "ms" to "Jadual solat", "bn" to "নামাজের তালিকা",
+        ),
+        "schedule" to mapOf(
+            "en" to "Daily arc", "ar" to "مسار اليوم", "tr" to "Günlük akış",
+            "fr" to "Cycle du jour", "es" to "Ciclo diario", "de" to "Tagesbogen",
+            "ru" to "Ритм дня", "ur" to "روزانہ اوقات", "ms" to "Kitaran harian",
+            "bn" to "দৈনিক সময়সূচি",
+        ),
         "empty_message" to mapOf(
             "en" to "Open the Prayer Time page to set your location",
             "ar" to "افتح صفحة مواقيت الصلاة لتحديد موقعك",
@@ -145,6 +176,43 @@ internal object PrayerWidgetLocalization {
 }
 
 internal object PrayerTimeFormatter {
+    fun formatForDevice(
+        context: Context,
+        date: Date,
+        useArabicNumerals: Boolean,
+        languageCode: String,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String = formatClock(
+        date = date,
+        is24Hour = DateFormat.is24HourFormat(context),
+        useArabicNumerals = useArabicNumerals,
+        languageCode = languageCode,
+        timeZone = timeZone,
+    )
+
+    internal fun formatClock(
+        date: Date,
+        is24Hour: Boolean,
+        useArabicNumerals: Boolean,
+        languageCode: String,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String {
+        val cal = Calendar.getInstance(timeZone).apply { time = date }
+        val h24 = cal.get(Calendar.HOUR_OF_DAY)
+        val minute = cal.get(Calendar.MINUTE).toString().padStart(2, '0')
+        val raw = if (is24Hour) {
+            "${h24.toString().padStart(2, '0')}:$minute"
+        } else {
+            val h12 = if (h24 == 0) 12 else if (h24 > 12) h24 - 12 else h24
+            val locale = Locale.forLanguageTag(languageCode)
+            val marker = DateFormatSymbols.getInstance(locale).amPmStrings[
+                if (h24 < 12) Calendar.AM else Calendar.PM
+            ]
+            "$h12:$minute $marker"
+        }
+        return raw.applyNumerals(useArabicNumerals)
+    }
+
     fun format(
         date: Date,
         useArabicNumerals: Boolean,
@@ -237,6 +305,26 @@ internal object PrayerTimeFormatter {
         val hours = totalMinutes / 60
         val minutes = totalMinutes % 60
         val raw = "${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}"
+        return raw.applyNumerals(useArabicNumerals)
+    }
+
+    fun formatHHMMSS(
+        from: Date,
+        to: Date,
+        useArabicNumerals: Boolean,
+    ): String {
+        val intervalSeconds = (to.time - from.time).coerceAtLeast(0L) / 1000.0
+        val totalSeconds = Math.ceil(intervalSeconds).toLong()
+        val hours = totalSeconds / 3_600
+        val minutes = (totalSeconds % 3_600) / 60
+        val seconds = totalSeconds % 60
+        val raw = buildString {
+            append(hours.toString().padStart(2, '0'))
+            append(':')
+            append(minutes.toString().padStart(2, '0'))
+            append(':')
+            append(seconds.toString().padStart(2, '0'))
+        }
         return raw.applyNumerals(useArabicNumerals)
     }
 }

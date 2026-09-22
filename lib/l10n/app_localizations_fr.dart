@@ -3879,14 +3879,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'Mise en avant claire de la prochaine prière avec minuteur de compte à rebours, icône vedette et une liste épurée de toutes les prières.';
+      'Focus atmosphérique sur la prochaine prière, avec compte à rebours précis et rythme céleste apaisant.';
 
   @override
   String get designCompact => 'Almanach';
 
   @override
   String get designCompactDescription =>
-      'Carte crème classique avec date, jour de la semaine, grille complète des prières et horaires nocturnes.';
+      'Date et calendrier éditorial avec mise en évidence de la prochaine prière et horaires nocturnes.';
 
   @override
   String get size => 'Taille';

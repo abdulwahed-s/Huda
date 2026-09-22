@@ -194,7 +194,7 @@ class _PrayerWidgetTabState extends State<PrayerWidgetTab> {
                     _DesignTile(
                       title: l10n.designHero,
                       description: l10n.designHeroDescription,
-                      icon: Icons.timer_rounded,
+                      design: PrayerWidgetDesign.hero,
                       selected: _settings.design == PrayerWidgetDesign.hero,
                       onTap: () => _commit(
                         _settings.copyWith(design: PrayerWidgetDesign.hero),
@@ -204,7 +204,7 @@ class _PrayerWidgetTabState extends State<PrayerWidgetTab> {
                     _DesignTile(
                       title: l10n.designCompact,
                       description: l10n.designCompactDescription,
-                      icon: Icons.view_agenda_rounded,
+                      design: PrayerWidgetDesign.compact,
                       selected: _settings.design == PrayerWidgetDesign.compact,
                       onTap: () => _commit(
                         _settings.copyWith(design: PrayerWidgetDesign.compact),
@@ -649,14 +649,14 @@ class _DesignTile extends StatelessWidget {
   const _DesignTile({
     required this.title,
     required this.description,
-    required this.icon,
+    required this.design,
     required this.selected,
     required this.onTap,
   });
 
   final String title;
   final String description;
-  final IconData icon;
+  final PrayerWidgetDesign design;
   final bool selected;
   final VoidCallback onTap;
 
@@ -678,10 +678,15 @@ class _DesignTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 18.r,
-              backgroundColor: accent.withValues(alpha: 0.15),
-              child: Icon(icon, color: accent),
+            SizedBox(
+              width: 48.w,
+              height: 40.h,
+              child: CustomPaint(
+                painter: _DesignMiniaturePainter(
+                  design: design,
+                  accent: accent,
+                ),
+              ),
             ),
             SizedBox(width: 12.w),
             Expanded(
@@ -712,6 +717,125 @@ class _DesignTile extends StatelessWidget {
       ),
     );
   }
+}
+
+class _DesignMiniaturePainter extends CustomPainter {
+  const _DesignMiniaturePainter({required this.design, required this.accent});
+
+  final PrayerWidgetDesign design;
+  final Color accent;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final radius = Radius.circular(size.height * 0.24);
+    final background = Paint()
+      ..shader = const LinearGradient(
+        colors: [Color(0xFF144441), Color(0xFF06191F)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ).createShader(rect);
+    canvas.drawRRect(RRect.fromRectAndRadius(rect, radius), background);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect.deflate(0.6), radius),
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1
+        ..color = accent.withValues(alpha: 0.62),
+    );
+
+    final cream = Paint()..color = const Color(0xFFF7F4E9);
+    final muted = Paint()..color = const Color(0xFFB9D0CC);
+    final gold = Paint()..color = const Color(0xFFE4C777);
+    final glow = Paint()..color = accent.withValues(alpha: 0.85);
+
+    if (design == PrayerWidgetDesign.hero) {
+      canvas.drawCircle(
+          Offset(size.width * 0.18, size.height * 0.22), 2.1, gold);
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+              size.width * 0.14, size.height * 0.38, size.width * 0.45, 3.2),
+          const Radius.circular(2),
+        ),
+        cream,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+              size.width * 0.14, size.height * 0.52, size.width * 0.58, 5),
+          const Radius.circular(2),
+        ),
+        cream,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+              size.width * 0.14, size.height * 0.72, size.width * 0.68, 4),
+          const Radius.circular(3),
+        ),
+        glow,
+      );
+      final horizon = Path()
+        ..moveTo(0, size.height * 0.78)
+        ..quadraticBezierTo(size.width * 0.48, size.height * 0.53, size.width,
+            size.height * 0.76);
+      canvas.drawPath(
+        horizon,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 0.8
+          ..color = accent.withValues(alpha: 0.42),
+      );
+    } else {
+      canvas.drawRect(
+        Rect.fromLTWH(
+            size.width * 0.24, size.height * 0.14, 0.8, size.height * 0.28),
+        gold,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+              size.width * 0.09, size.height * 0.18, size.width * 0.10, 5),
+          const Radius.circular(2),
+        ),
+        cream,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+              size.width * 0.32, size.height * 0.20, size.width * 0.42, 3),
+          const Radius.circular(2),
+        ),
+        muted,
+      );
+      const columns = 3;
+      const rows = 2;
+      final gap = size.width * 0.035;
+      final cellWidth = (size.width * 0.82 - gap * (columns - 1)) / columns;
+      final cellHeight = size.height * 0.16;
+      for (var row = 0; row < rows; row++) {
+        for (var column = 0; column < columns; column++) {
+          final cell = Rect.fromLTWH(
+            size.width * 0.09 + column * (cellWidth + gap),
+            size.height * 0.49 + row * (cellHeight + 2),
+            cellWidth,
+            cellHeight,
+          );
+          canvas.drawRRect(
+            RRect.fromRectAndRadius(cell, const Radius.circular(2.5)),
+            row == 1 && column == 1
+                ? glow
+                : (Paint()..color = cream.color.withValues(alpha: 0.18)),
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DesignMiniaturePainter oldDelegate) =>
+      oldDelegate.design != design || oldDelegate.accent != accent;
 }
 
 class _ThemeCard extends StatelessWidget {

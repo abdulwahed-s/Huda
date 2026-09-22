@@ -4408,7 +4408,7 @@
     "@designHero": {
         "description": "Name of the hero/big-countdown widget design"
     },
-    "designHeroDescription": "Bold next-prayer focus with countdown timer, hero icon and a clean list of all prayers.",
+    "designHeroDescription": "Atmospheric next-prayer focus with a precise countdown and calm celestial schedule.",
     "@designHeroDescription": {
         "description": "Description of the hero design"
     },
@@ -4416,7 +4416,7 @@
     "@designCompact": {
         "description": "Name of the compact design"
     },
-    "designCompactDescription": "Classic cream card with date, day-of-week, full prayer grid and night times.",
+    "designCompactDescription": "Editorial date and prayer schedule with clear next-prayer highlighting and night times.",
     "@designCompactDescription": {
         "description": "Description of the compact design"
     },

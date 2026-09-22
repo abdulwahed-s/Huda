@@ -3829,14 +3829,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'Яркий акцент на следующей молитве с таймером обратного отсчёта, главным значком и аккуратным списком всех молитв.';
+      'Атмосферный акцент на следующей молитве с точным отсчётом и спокойным небесным ритмом.';
 
   @override
   String get designCompact => 'Альманах';
 
   @override
   String get designCompactDescription =>
-      'Классическая кремовая карточка с датой, днём недели, полной сеткой молитв и ночным временем.';
+      'Редакционная дата и расписание с выделением следующей молитвы и ночным временем.';
 
   @override
   String get size => 'Размер';

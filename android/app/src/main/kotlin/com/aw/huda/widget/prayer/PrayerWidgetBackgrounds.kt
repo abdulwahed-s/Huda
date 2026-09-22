@@ -26,7 +26,9 @@ internal object PrayerWidgetBackgrounds {
         val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
-        val cornerPx = dp(context, 22f)
+        val cornerPx = context.resources.getDimension(
+            com.aw.huda.R.dimen.prayer_widget_outer_corner_radius,
+        )
         val rect = RectF(0f, 0f, w.toFloat(), h.toFloat())
 
         val basePaint = Paint(Paint.ANTI_ALIAS_FLAG)

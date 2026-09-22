@@ -3801,14 +3801,14 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'Geri sayım sayacı, kahraman simgesi ve tüm namazların sade listesiyle bir sonraki namaza belirgin odak.';
+      'Hassas geri sayım ve sakin göksel programla sonraki namaza atmosferik odak.';
 
   @override
   String get designCompact => 'Almanak';
 
   @override
   String get designCompactDescription =>
-      'Tarih, haftanın günü, tam namaz tablosu ve gece vakitleriyle klasik krem kart.';
+      'Sonraki namazı ve gece vakitlerini vurgulayan editoryal tarih ve namaz programı.';
 
   @override
   String get size => 'Boyut';

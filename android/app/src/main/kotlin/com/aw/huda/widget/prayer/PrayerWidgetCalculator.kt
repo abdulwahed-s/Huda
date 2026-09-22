@@ -143,8 +143,11 @@ internal object PrayerWidgetCalculator {
             PrayerKind.ISHA to today.isha,
         )
         val passed = candidates.lastOrNull { !it.second.after(now) }
-            ?: return null
-        return PreviousPrayer(passed.first, passed.second)
+        if (passed != null) return PreviousPrayer(passed.first, passed.second)
+
+        val yesterdayCal = calendarFor(snapshot, now).apply { add(Calendar.DATE, -1) }
+        val yesterday = computeDay(snapshot, yesterdayCal) ?: return null
+        return PreviousPrayer(PrayerKind.ISHA, yesterday.isha)
     }
 
     private fun OffsetDateTime.toDate(): Date = Date.from(this.toInstant())
@@ -161,21 +164,22 @@ internal object PrayerWidgetCalculator {
         else -> HighLatitudeRule.AUTOMATIC
     }
 
-    private fun methodFrom(token: String?, countryCode: String): CalculationMethod = when (token) {
-        null, "", "auto" ->
-            if (countryCode.isBlank()) CalculationMethod.UMM_AL_QURA
+    internal fun methodFrom(token: String?, countryCode: String): CalculationMethod {
+        if (token.isNullOrBlank() || token == "auto") {
+            return if (countryCode.isBlank()) CalculationMethod.UMM_AL_QURA
             else AutoMethod.forCountry(countryCode)
-        "ummAlQura" -> CalculationMethod.UMM_AL_QURA
-        "muslimWorldLeague" -> CalculationMethod.MUSLIM_WORLD_LEAGUE
-        "egyptian" -> CalculationMethod.EGYPTIAN
-        "karachi" -> CalculationMethod.KARACHI
-        "northAmerica" -> CalculationMethod.NORTH_AMERICA
-        "dubai" -> CalculationMethod.DUBAI
-        "qatar" -> CalculationMethod.QATAR
-        "kuwait" -> CalculationMethod.KUWAIT
-        "turkey" -> CalculationMethod.TURKEY
-        "indonesia" -> CalculationMethod.INDONESIA
-        else -> CalculationMethod.UMM_AL_QURA
+        }
+
+        val methodKey = when (token) {
+            "muslimWorldLeague" -> "mwl"
+            "egyptian" -> "egypt"
+            "ummAlQura" -> "makkah"
+            "northAmerica" -> "isna"
+            "southKorea" -> "southkorea"
+            "other" -> "custom"
+            else -> token
+        }
+        return CalculationMethod.fromKey(methodKey) ?: CalculationMethod.UMM_AL_QURA
     }
 
     private fun Date.applyOffset(minutes: Int): Date {

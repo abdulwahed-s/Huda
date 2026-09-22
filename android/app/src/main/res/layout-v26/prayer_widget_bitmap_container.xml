@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  API 26+ counterpart of the base bitmap container. Android framework font
+  resources are available to the launcher process here, so the live countdown
+  can use the bundled Amiri Bold face. API 24–25 keep the base layout's system
+  monospace font as the compatibility fallback.
+-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/prayer_widget_root"
     android:layout_width="match_parent"
@@ -12,17 +18,11 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
 
-    <!--
-      The Celestial layout is rendered as one stable bitmap, but the countdown
-      stays native so Android can advance its seconds without redrawing the
-      whole widget. Production code constrains this full-size Chronometer to
-      the countdown rectangle by applying family-specific padding.
-    -->
     <Chronometer
         android:id="@+id/prayer_widget_live_countdown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/amiri_bold"
         android:includeFontPadding="false"
         android:importantForAccessibility="no"
         android:singleLine="true"

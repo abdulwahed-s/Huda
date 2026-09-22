@@ -3869,14 +3869,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'Enfoque claro en la próxima oración con temporizador de cuenta regresiva, ícono destacado y una lista limpia de todas las oraciones.';
+      'Enfoque atmosférico en la próxima oración con cuenta regresiva precisa y ritmo celestial sereno.';
 
   @override
   String get designCompact => 'Almanaque';
 
   @override
   String get designCompactDescription =>
-      'Tarjeta clásica color crema con fecha, día de la semana, cuadrícula completa de oraciones y tiempos nocturnos.';
+      'Fecha y horario editorial con la próxima oración destacada y tiempos nocturnos.';
 
   @override
   String get size => 'Tamaño';

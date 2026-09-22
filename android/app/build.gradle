@@ -140,5 +140,7 @@ dependencies {
 
     implementation("io.github.abdulwahed-s:prayer-time-plus:0.2.0")
 
+    testImplementation("junit:junit:4.13.2")
+
     gplayImplementation("com.google.android.gms:play-services-location:21.2.0")
 }

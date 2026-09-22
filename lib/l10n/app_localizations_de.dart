@@ -3856,14 +3856,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'Klarer Fokus auf das nächste Gebet mit Countdown-Timer, Hero-Symbol und einer übersichtlichen Liste aller Gebete.';
+      'Atmosphärischer Fokus auf das nächste Gebet mit präzisem Countdown und ruhigem Himmelsrhythmus.';
 
   @override
   String get designCompact => 'Almanach';
 
   @override
   String get designCompactDescription =>
-      'Klassische cremefarbene Karte mit Datum, Wochentag, vollständigem Gebetsraster und Nachtzeiten.';
+      'Redaktionelle Datums- und Gebetsübersicht mit hervorgehobenem nächsten Gebet und Nachtzeiten.';
 
   @override
   String get size => 'Größe';

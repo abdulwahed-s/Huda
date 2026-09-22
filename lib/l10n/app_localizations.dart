@@ -6953,7 +6953,7 @@ abstract class AppLocalizations {
   /// Description of the hero design
   ///
   /// In en, this message translates to:
-  /// **'Bold next-prayer focus with countdown timer, hero icon and a clean list of all prayers.'**
+  /// **'Atmospheric next-prayer focus with a precise countdown and calm celestial schedule.'**
   String get designHeroDescription;
 
   /// Name of the compact design
@@ -6965,7 +6965,7 @@ abstract class AppLocalizations {
   /// Description of the compact design
   ///
   /// In en, this message translates to:
-  /// **'Classic cream card with date, day-of-week, full prayer grid and night times.'**
+  /// **'Editorial date and prayer schedule with clear next-prayer highlighting and night times.'**
   String get designCompactDescription;
 
   /// Section title for widget size picker

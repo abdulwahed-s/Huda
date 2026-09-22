@@ -8,7 +8,8 @@
     Samsung S20 FE virtual cell = ~92dp, so minWidth=400dp → ceil(400/92)=5
     cells, forcing full-width (column-0) placement. minResizeWidth=36dp is
     the true resize floor so the widget can still shrink to CIRCULAR/SMALL.
-    minHeight=180dp → 2-row initial placement on all launchers.
+    minHeight=100dp keeps the provider request compact; targetCellHeight=2
+    still gives it a practical two-row default on launchers that honor it.
   - `updatePeriodMillis="1800000"` (30 min) provides an Android-native
     safety-net heartbeat. Primary updates still come from exact alarms
     in PrayerWidgetScheduler; this catches cases where the alarm chain

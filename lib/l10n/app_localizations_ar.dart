@@ -3746,14 +3746,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'تركيز جريء على الصلاة القادمة مع العدّاد والأيقونة وقائمة الصلوات كلها.';
+      'تركيز هادئ على الصلاة القادمة مع عدّاد دقيق وجدول سماوي أنيق.';
 
   @override
   String get designCompact => 'التقويم';
 
   @override
   String get designCompactDescription =>
-      'بطاقة كلاسيكية بلون كريمي تعرض التاريخ واليوم وشبكة الصلوات وأوقات الليل.';
+      'عرض تحريري للتاريخ وجدول الصلوات مع إبراز الصلاة القادمة وأوقات الليل.';
 
   @override
   String get size => 'الحجم';

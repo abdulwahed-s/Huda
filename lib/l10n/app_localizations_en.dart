@@ -3800,14 +3800,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'Bold next-prayer focus with countdown timer, hero icon and a clean list of all prayers.';
+      'Atmospheric next-prayer focus with a precise countdown and calm celestial schedule.';
 
   @override
   String get designCompact => 'Almanac';
 
   @override
   String get designCompactDescription =>
-      'Classic cream card with date, day-of-week, full prayer grid and night times.';
+      'Editorial date and prayer schedule with clear next-prayer highlighting and night times.';
 
   @override
   String get size => 'Size';

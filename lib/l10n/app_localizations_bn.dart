@@ -3805,14 +3805,14 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get designHeroDescription =>
-      'কাউন্টডাউন টাইমার, হিরো আইকন এবং সমস্ত নামাজের পরিষ্কার তালিকা সহ পরবর্তী নামাজে স্পষ্ট ফোকাস।';
+      'নির্ভুল কাউন্টডাউন ও শান্ত আকাশী সময়সূচি সহ পরবর্তী নামাজে আবহময় ফোকাস।';
 
   @override
   String get designCompact => 'পঞ্জিকা';
 
   @override
   String get designCompactDescription =>
-      'তারিখ, সপ্তাহের দিন, সম্পূর্ণ নামাজ গ্রিড এবং রাতের সময় সহ ক্লাসিক ক্রিম কার্ড।';
+      'পরবর্তী নামাজ ও রাতের সময় স্পষ্ট করা সম্পাদকীয় তারিখ ও নামাজের সময়সূচি।';
 
   @override
   String get size => 'আকার';
