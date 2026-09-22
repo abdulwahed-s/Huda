@@ -2,131 +2,166 @@ package com.aw.huda.widget
 
 import android.content.Context
 import android.content.SharedPreferences
-import kotlin.random.Random
+import org.json.JSONObject
+import java.lang.Math.floorMod
 
 object WidgetDataRepository {
+    private const val PREFS_NAME = "FlutterSharedPreferences"
+    private const val ASSET_PATH = "flutter_assets/assets/json/quran_widget_verses.json"
 
-    private const val FLUTTER_PREFS_NAME = "FlutterSharedPreferences"
-
-    private const val KEY_QUOTE = "flutter.quote"
-    private const val KEY_LAST_UPDATE = "flutter.lastUpdate"
+    private const val KEY_LANGUAGE = "flutter.quranWidgetTranslationLanguage"
+    private const val KEY_VISUAL_THEME = "flutter.quranWidgetVisualTheme"
+    private const val KEY_AYAH_TEXT_SIZE = "flutter.quranWidgetAyahTextSize"
+    private const val KEY_TRANSLATION_TEXT_SIZE = "flutter.quranWidgetTranslationTextSize"
+    private const val KEY_AYAH_AUTO_FIT = "flutter.quranWidgetAyahAutoFit"
+    private const val KEY_TRANSLATION_AUTO_FIT = "flutter.quranWidgetTranslationAutoFit"
+    private const val KEY_AYAH_BOLD = "flutter.quranWidgetAyahBold"
+    private const val KEY_TRANSLATION_BOLD = "flutter.quranWidgetTranslationBold"
+    private const val KEY_ROTATION_OFFSET = "flutter.quranWidgetRotationOffset"
+    private const val KEY_LOCALE = "flutter.locale"
     private const val KEY_THEME_NAME = "flutter.themeName"
     private const val KEY_THEME_MODE = "flutter.themeMode"
 
-    private const val KEY_CUSTOM_VERSES = "flutter.widgetCustomVersesNative"
+    private val supportedLanguages = setOf("en", "tr", "fr", "de", "es", "ur", "ru", "ms", "bn")
 
-    private const val LIST_IDENTIFIER = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu"
+    @Volatile
+    private var catalog: Catalog? = null
 
-    private val defaultVerses = listOf(
-        "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
-        "وَٱللَّهُ غَفُورٌ رَّحِيمٌ",
-        "وَٱلَّذِينَ صَبَرُوا۟ ٱبْتِغَآءَ وَجْهِ رَبِّهِمْ",
-        "قَدْ أُجِيبَت دَّعْوَتُكُمَا",
-        "فَاسْتَجَابَ لَكُمْ",
-        "يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا",
-        "سَيَجعَلُ اللَّهُ بَعدَ عُسرٍ يُسرًا",
-        "لَا تَدْرِي لَعَلَّ اللَّهَ يُحْدِثُ بَعْدَ ذَٰلِكَ أَمْرًا",
-        "رَبِّ اشْرَحْ لِي صَدْرِي",
-        "وَتَوَكَّلْ عَلَى ٱللَّهِ ۚ وَكَفَىٰ بِٱللَّهِ وَكِيلًا",
-        "نَصْرٌ مِنَ اللَّهِ وَفَتْحٌ قَرِيبٌ",
-        "ادْعُونِي أَسْتَجِبْ لَكُمْ",
-        "فَاسْتَجَابَ لَهُ رَبُّهُ",
-        "عَسَىٰ أَنْ يَكُونَ قَرِيبًا",
-        "اذْكُرُوا نِعْمَةَ اللَّهِ عَلَيْكُمْ",
-        "وَأَثَابَهُمْ فَتْحًا قَرِيبًا",
-        "فَنِعْمَ الْمَوْلَىٰ وَنِعْمَ النَّصِيرُ",
-        "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا مَا آتَاهَا",
-        "فَإِن تُبْتُمْ فَهُوَ خَيْرٌ لَّكُمْ",
-        "إِنَّ وَعْدَ اللَّهِ حَقٌّ"
+    data class Verse(
+        val surah: Int,
+        val ayah: Int,
+        val arabic: String,
+        val translations: Map<String, String>,
     )
-    
-    private fun getFlutterPrefs(context: Context): SharedPreferences {
-        return context.getSharedPreferences(FLUTTER_PREFS_NAME, Context.MODE_PRIVATE)
+
+    data class Surah(val displayNames: Map<String, String>)
+
+    data class Snapshot(
+        val verse: Verse,
+        val translation: String?,
+        val translationLanguage: String?,
+        val translationSource: String?,
+        val displayReference: String,
+        val appLanguage: String,
+        val palette: QuranWidgetPalette,
+        val ayahTextSize: Int,
+        val translationTextSize: Int,
+        val ayahAutoFit: Boolean,
+        val translationAutoFit: Boolean,
+        val ayahBold: Boolean,
+        val translationBold: Boolean,
+    )
+
+    private data class Catalog(
+        val surahs: Map<Int, Surah>,
+        val verses: List<Verse>,
+        val sources: Map<String, String>,
+    )
+
+    fun snapshot(context: Context, timeMillis: Long = System.currentTimeMillis()): Snapshot {
+        val prefs = prefs(context)
+        val data = loadCatalog(context)
+        val offset = prefs.getLongCompat(KEY_ROTATION_OFFSET)
+        val hour = Math.floorDiv(timeMillis, 3_600_000L)
+        val verse = data.verses[floorMod(hour + offset, data.verses.size.toLong()).toInt()]
+        val language = resolveLanguage(prefs)
+        val appLanguage = resolveAppLanguage(prefs)
+        val surahName = data.surahs[verse.surah]
+            ?.displayNames
+            ?.let { names -> names[appLanguage] ?: names["en"] }
+            ?.takeIf { it.isNotBlank() }
+        return Snapshot(
+            verse = verse,
+            translation = language?.let(verse.translations::get),
+            translationLanguage = language,
+            translationSource = language?.let(data.sources::get),
+            displayReference = surahName?.let { "$it • ${verse.ayah}" } ?: "${verse.surah}:${verse.ayah}",
+            appLanguage = appLanguage,
+            palette = resolvePalette(context, prefs),
+            ayahTextSize = prefs.getLongCompat(KEY_AYAH_TEXT_SIZE, 100L).toInt().coerceIn(70, 140),
+            translationTextSize = prefs.getLongCompat(KEY_TRANSLATION_TEXT_SIZE, 100L).toInt().coerceIn(70, 140),
+            ayahAutoFit = prefs.getBoolean(KEY_AYAH_AUTO_FIT, true),
+            translationAutoFit = prefs.getBoolean(KEY_TRANSLATION_AUTO_FIT, true),
+            ayahBold = prefs.getBoolean(KEY_AYAH_BOLD, false),
+            translationBold = prefs.getBoolean(KEY_TRANSLATION_BOLD, false),
+        )
     }
-    
-    fun getCurrentQuote(context: Context): String {
-        val quote = getFlutterPrefs(context).getString(KEY_QUOTE, defaultVerses[0])
-            ?: defaultVerses[0]
-        return if (quote.startsWith(LIST_IDENTIFIER)) defaultVerses[0] else quote
-    }
-    
-    fun getLastUpdate(context: Context): String {
-        return getFlutterPrefs(context).getString(KEY_LAST_UPDATE, "") ?: ""
-    }
-    
-    fun getThemeName(context: Context): String {
-        val prefs = getFlutterPrefs(context)
-        val theme = prefs.getString(KEY_THEME_NAME, "teal") ?: "teal"
-        println("📱 Widget reading themeName: $theme")
-        return theme
-    }
-    
+
+    fun getThemeName(context: Context): String = prefs(context).getString(KEY_THEME_NAME, "teal") ?: "teal"
+
     fun isDarkMode(context: Context): Boolean {
-        val prefs = getFlutterPrefs(context)
-        val themeMode = prefs.getString(KEY_THEME_MODE, "light") ?: "light"
-        println("📱 Widget reading themeMode: $themeMode")
-        return when (themeMode) {
+        return when (prefs(context).getString(KEY_THEME_MODE, "light")) {
             "dark" -> true
             "light" -> false
             else -> {
-                val uiMode = context.resources.configuration.uiMode and 
-                    android.content.res.Configuration.UI_MODE_NIGHT_MASK
-                val isNight = uiMode == android.content.res.Configuration.UI_MODE_NIGHT_YES
-                println("📱 System mode detected, isNight: $isNight")
-                isNight
+                val mode = context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
+                mode == android.content.res.Configuration.UI_MODE_NIGHT_YES
             }
         }
     }
-    
-    fun getCustomVerses(context: Context): List<String> {
-        val versesString = getFlutterPrefs(context).getString(KEY_CUSTOM_VERSES, null)
-        // Guard: if the value is a shared_preferences List<String> blob (wrong
-        // key/format), discard it rather than turning the whole blob into a verse.
-        if (versesString.isNullOrEmpty() || versesString.startsWith(LIST_IDENTIFIER)) {
-            return emptyList()
-        }
-        return versesString.split("|||").filter { it.isNotEmpty() }
+
+    private fun resolveLanguage(prefs: SharedPreferences): String? {
+        val selected = prefs.getString(KEY_LANGUAGE, "auto") ?: "auto"
+        if (selected != "auto") return selected.takeIf(supportedLanguages::contains) ?: "en"
+        val locale = (prefs.getString(KEY_LOCALE, "en") ?: "en").substringBefore('-').substringBefore('_')
+        if (locale == "ar") return null
+        return locale.takeIf(supportedLanguages::contains) ?: "en"
     }
-    
-    fun getAllVerses(context: Context): List<String> {
-        val custom = getCustomVerses(context)
-        return custom + defaultVerses
+
+    private fun resolveAppLanguage(prefs: SharedPreferences): String {
+        val locale = (prefs.getString(KEY_LOCALE, "en") ?: "en")
+            .substringBefore('-')
+            .substringBefore('_')
+            .lowercase()
+        return locale.takeIf { it in supportedLanguages || it == "ar" } ?: "en"
     }
-    
-    fun getRandomVerse(context: Context): String {
-        val allVerses = getAllVerses(context)
-        return if (allVerses.isNotEmpty()) {
-            allVerses[Random.nextInt(allVerses.size)]
-        } else {
-            defaultVerses[0]
-        }
-    }
-    
-    fun saveNewQuote(context: Context, quote: String) {
-        getFlutterPrefs(context).edit().apply {
-            putString(KEY_QUOTE, quote)
-            putString(KEY_LAST_UPDATE, java.time.Instant.now().toString())
-            apply()
-        }
-    }
-    
-    fun formatLastUpdate(context: Context): String {
-        val lastUpdate = getLastUpdate(context)
-        if (lastUpdate.isEmpty()) return "آخر تحديث: الآن"
-        
-        return try {
-            val updateTime = java.time.Instant.parse(lastUpdate)
-            val now = java.time.Instant.now()
-            val minutes = java.time.Duration.between(updateTime, now).toMinutes()
-            
-            when {
-                minutes < 1 -> "آخر تحديث: الآن"
-                minutes < 60 -> "آخر تحديث: $minutes دقيقة"
-                minutes < 1440 -> "آخر تحديث: ${minutes / 60} ساعة"
-                else -> "آخر تحديث: ${minutes / 1440} يوم"
+
+    private fun resolvePalette(context: Context, prefs: SharedPreferences): QuranWidgetPalette =
+        QuranWidgetPaletteResolver.resolve(
+            visualTheme = prefs.getString(KEY_VISUAL_THEME, "auto"),
+            appThemeName = getThemeName(context),
+            isDarkMode = isDarkMode(context),
+        )
+
+    private fun loadCatalog(context: Context): Catalog {
+        catalog?.let { return it }
+        return synchronized(this) {
+            catalog ?: context.assets.open(ASSET_PATH).bufferedReader().use { reader ->
+                val root = JSONObject(reader.readText())
+                val surahObject = root.optJSONObject("surahs")
+                val surahs = surahObject?.keys()?.asSequence()?.associate { rawId ->
+                    val namesObject = surahObject
+                        .getJSONObject(rawId)
+                        .getJSONObject("displayNames")
+                    rawId.toInt() to Surah(
+                        namesObject.keys().asSequence().associateWith(namesObject::getString),
+                    )
+                }.orEmpty()
+                val sourceObject = root.getJSONObject("sources")
+                val sources = sourceObject.keys().asSequence().associateWith { code ->
+                    sourceObject.getJSONObject(code).getString("name")
+                }
+                val array = root.getJSONArray("verses")
+                val verses = buildList {
+                    for (index in 0 until array.length()) {
+                        val item = array.getJSONObject(index)
+                        val translationsObject = item.getJSONObject("translations")
+                        val translations = translationsObject.keys().asSequence().associateWith(translationsObject::getString)
+                        add(Verse(item.getInt("surah"), item.getInt("ayah"), item.getString("arabic"), translations))
+                    }
+                }
+                Catalog(surahs, verses, sources).also { catalog = it }
             }
-        } catch (e: Exception) {
-            "آخر تحديث: الآن"
         }
     }
+
+    private fun prefs(context: Context): SharedPreferences =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    private fun SharedPreferences.getLongCompat(key: String, defaultValue: Long = 0L): Long = try {
+        getLong(key, defaultValue)
+    } catch (_: ClassCastException) {
+        getInt(key, defaultValue.toInt()).toLong()
+    }
+
 }

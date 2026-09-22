@@ -2213,13 +2213,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix التالية $prayerName بعد $timeText';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName بعد $timeText';
   }
 
@@ -3697,7 +3703,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return 'تطابق $matchedWordsCount كلمات · تغطية $coverage% · الدرجة: $score';
   }
 
@@ -4720,4 +4729,84 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'يمكن لتطبيق هدى جدولة تنبيهات الصلاة والتذكيرات في وقتها المحدد.';
+
+  @override
+  String get quranWidgetTagline => 'آية جديدة وترجمتها كل ساعة';
+
+  @override
+  String get quranWidgetCustomization => 'تخصيص عنصر القرآن';
+
+  @override
+  String get quranWidgetTypography => 'نمط النص';
+
+  @override
+  String get ayahAutoFit => 'ملاءمة الآية تلقائيًا';
+
+  @override
+  String get translationAutoFit => 'ملاءمة الترجمة تلقائيًا';
+
+  @override
+  String get ayahTextSize => 'حجم الآية';
+
+  @override
+  String get translationTextSize => 'حجم الترجمة';
+
+  @override
+  String get boldAyah => 'آية بخط عريض';
+
+  @override
+  String get boldTranslation => 'ترجمة بخط عريض';
+
+  @override
+  String get quranWidgetPreview => 'معاينة مباشرة';
+
+  @override
+  String get translationLanguage => 'لغة الترجمة';
+
+  @override
+  String get translationLanguageDescription =>
+      'اختر اللغة التي تظهر أسفل الآية العربية.';
+
+  @override
+  String translationSource(String source) {
+    return 'ترجمة $source';
+  }
+
+  @override
+  String get customColors => 'ألوان مخصصة';
+
+  @override
+  String get customColorsDescription =>
+      'خصّص ألوان العنصر مع الحفاظ على وضوح النص.';
+
+  @override
+  String get ayahColor => 'لون الآية';
+
+  @override
+  String get translationColor => 'لون الترجمة';
+
+  @override
+  String get accentColor => 'لون التمييز';
+
+  @override
+  String get customizeColors => 'تخصيص الألوان';
+
+  @override
+  String get quranWidgetUpdated => 'تم تحديث عنصر القرآن';
+
+  @override
+  String get forceQuranWidgetUpdate => 'عرض آية أخرى';
+
+  @override
+  String get quranWidgetUpdating => 'جارٍ تحديث العنصر…';
+
+  @override
+  String get customTheme => 'مخصص';
+
+  @override
+  String get colorContrastTooLow => 'هذا اللون لا يوفر تباينًا كافيًا.';
+
+  @override
+  String get arabicTranslationHidden =>
+      'عند استخدام العربية يظهر العنصر بالآية العربية فقط.';
 }

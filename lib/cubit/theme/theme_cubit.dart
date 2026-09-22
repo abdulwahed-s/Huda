@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
+import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/theme/app_fonts.dart';
-import 'package:huda/core/services/widget_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeState {
@@ -102,7 +102,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     await prefs.setString(_themeKey, useDark ? 'dark' : 'light');
     emit(state.copyWith(themeMode: mode));
 
-    await WidgetService.onThemeChanged();
+    await QuranWidgetService.onThemeChanged();
     await PrayerWidgetService.onAppThemeChanged();
   }
 
@@ -111,7 +111,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     await prefs.remove(_themeKey);
     emit(state.copyWith(themeMode: ThemeMode.system));
 
-    await WidgetService.onThemeChanged();
+    await QuranWidgetService.onThemeChanged();
     await PrayerWidgetService.onAppThemeChanged();
   }
 
@@ -129,7 +129,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     emit(state.copyWith(colorTheme: colorTheme));
 
-    await WidgetService.onThemeChanged();
+    await QuranWidgetService.onThemeChanged();
     await PrayerWidgetService.onAppThemeChanged();
   }
 
@@ -138,6 +138,6 @@ class ThemeCubit extends Cubit<ThemeState> {
     await prefs.setString(_fontKey, fontFamily);
     emit(state.copyWith(fontFamily: fontFamily));
 
-    await WidgetService.onThemeChanged();
+    await QuranWidgetService.onThemeChanged();
   }
 }

@@ -2307,13 +2307,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix Prochaine $prayerName dans $timeText';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName dans $timeText';
   }
 
@@ -3830,7 +3836,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return 'Correspond à $matchedWordsCount mots · couverture $coverage% · Score : $score';
   }
 
@@ -4874,4 +4883,86 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'Huda peut programmer les alertes de prière et les rappels à leur heure exacte.';
+
+  @override
+  String get quranWidgetTagline =>
+      'Un nouveau verset et sa traduction chaque heure';
+
+  @override
+  String get quranWidgetCustomization => 'Personnalisation du widget Coran';
+
+  @override
+  String get quranWidgetTypography => 'Style du texte';
+
+  @override
+  String get ayahAutoFit => 'Ajustement automatique du verset';
+
+  @override
+  String get translationAutoFit => 'Ajustement automatique de la traduction';
+
+  @override
+  String get ayahTextSize => 'Taille du verset';
+
+  @override
+  String get translationTextSize => 'Taille de la traduction';
+
+  @override
+  String get boldAyah => 'Verset en gras';
+
+  @override
+  String get boldTranslation => 'Traduction en gras';
+
+  @override
+  String get quranWidgetPreview => 'Aperçu en direct';
+
+  @override
+  String get translationLanguage => 'Langue de traduction';
+
+  @override
+  String get translationLanguageDescription =>
+      'Choisissez la langue affichée sous le verset arabe.';
+
+  @override
+  String translationSource(String source) {
+    return 'Traduction par $source';
+  }
+
+  @override
+  String get customColors => 'Couleurs personnalisées';
+
+  @override
+  String get customColorsDescription =>
+      'Ajustez les couleurs tout en gardant le texte lisible.';
+
+  @override
+  String get ayahColor => 'Couleur du verset';
+
+  @override
+  String get translationColor => 'Couleur de la traduction';
+
+  @override
+  String get accentColor => 'Couleur d’accent';
+
+  @override
+  String get customizeColors => 'Personnaliser les couleurs';
+
+  @override
+  String get quranWidgetUpdated => 'Widget Coran actualisé';
+
+  @override
+  String get forceQuranWidgetUpdate => 'Afficher un autre verset';
+
+  @override
+  String get quranWidgetUpdating => 'Actualisation du widget…';
+
+  @override
+  String get customTheme => 'Personnalisé';
+
+  @override
+  String get colorContrastTooLow =>
+      'Cette couleur n’offre pas assez de contraste.';
+
+  @override
+  String get arabicTranslationHidden =>
+      'En arabe, le widget affiche uniquement le verset arabe.';
 }

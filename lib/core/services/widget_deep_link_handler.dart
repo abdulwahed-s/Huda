@@ -61,6 +61,9 @@ class WidgetDeepLinkHandler {
         .toLowerCase();
 
     switch (target) {
+      case 'quran':
+      case 'homequran':
+        return AppRoute.homeQuran;
       case 'prayer_times':
       case 'prayertimes':
         return AppRoute.prayerTimes;

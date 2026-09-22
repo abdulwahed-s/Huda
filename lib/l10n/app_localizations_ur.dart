@@ -2246,13 +2246,19 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix اگلی $prayerName $timeText میں';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName $timeText میں';
   }
 
@@ -3747,7 +3753,10 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return '$matchedWordsCount الفاظ مطابق · کوریج $coverage% · اسکور: $score';
   }
 
@@ -4776,4 +4785,84 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'ہدیٰ نماز کے وقت کے الرٹس اور یاددہانیوں کو عین وقت پر شیڈول کر سکتا ہے۔';
+
+  @override
+  String get quranWidgetTagline => 'ہر گھنٹے ایک نئی آیت اور ترجمہ';
+
+  @override
+  String get quranWidgetCustomization => 'قرآن ویجٹ کی تخصیص';
+
+  @override
+  String get quranWidgetTypography => 'متن کا انداز';
+
+  @override
+  String get ayahAutoFit => 'آیت کو خودکار طور پر فٹ کریں';
+
+  @override
+  String get translationAutoFit => 'ترجمے کو خودکار طور پر فٹ کریں';
+
+  @override
+  String get ayahTextSize => 'آیت کا سائز';
+
+  @override
+  String get translationTextSize => 'ترجمے کا سائز';
+
+  @override
+  String get boldAyah => 'موٹی آیت';
+
+  @override
+  String get boldTranslation => 'موٹا ترجمہ';
+
+  @override
+  String get quranWidgetPreview => 'براہِ راست پیش منظر';
+
+  @override
+  String get translationLanguage => 'ترجمے کی زبان';
+
+  @override
+  String get translationLanguageDescription =>
+      'عربی آیت کے نیچے دکھائی جانے والی زبان منتخب کریں۔';
+
+  @override
+  String translationSource(String source) {
+    return 'ترجمہ: $source';
+  }
+
+  @override
+  String get customColors => 'حسبِ خواہش رنگ';
+
+  @override
+  String get customColorsDescription =>
+      'متن کو واضح رکھتے ہوئے ویجٹ کے رنگ بدلیں۔';
+
+  @override
+  String get ayahColor => 'آیت کا رنگ';
+
+  @override
+  String get translationColor => 'ترجمے کا رنگ';
+
+  @override
+  String get accentColor => 'نمایاں رنگ';
+
+  @override
+  String get customizeColors => 'رنگ تبدیل کریں';
+
+  @override
+  String get quranWidgetUpdated => 'قرآن ویجٹ تازہ ہو گیا';
+
+  @override
+  String get forceQuranWidgetUpdate => 'دوسری آیت دکھائیں';
+
+  @override
+  String get quranWidgetUpdating => 'ویجٹ تازہ ہو رہا ہے…';
+
+  @override
+  String get customTheme => 'حسبِ خواہش';
+
+  @override
+  String get colorContrastTooLow => 'اس رنگ میں کافی تضاد نہیں ہے۔';
+
+  @override
+  String get arabicTranslationHidden =>
+      'عربی ایپ زبان میں ویجٹ صرف عربی آیت دکھاتا ہے۔';
 }

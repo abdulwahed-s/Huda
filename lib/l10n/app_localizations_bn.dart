@@ -2253,13 +2253,19 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix পরবর্তী $prayerName $timeText এর মধ্যে';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName $timeText এর মধ্যে';
   }
 
@@ -3756,7 +3762,10 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return '$matchedWordsCountটি শব্দ মিলেছে · কভারেজ $coverage% · স্কোর: $score';
   }
 
@@ -4788,4 +4797,84 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'হুদা নামাজের সতর্কতা ও অনুস্মারক নির্দিষ্ট সময়ে নির্ধারণ করতে পারে।';
+
+  @override
+  String get quranWidgetTagline => 'প্রতি ঘণ্টায় নতুন আয়াত ও অনুবাদ';
+
+  @override
+  String get quranWidgetCustomization => 'কুরআন উইজেট কাস্টমাইজেশন';
+
+  @override
+  String get quranWidgetTypography => 'পাঠ্য শৈলী';
+
+  @override
+  String get ayahAutoFit => 'আয়াত স্বয়ংক্রিয়ভাবে মানানসই করুন';
+
+  @override
+  String get translationAutoFit => 'অনুবাদ স্বয়ংক্রিয়ভাবে মানানসই করুন';
+
+  @override
+  String get ayahTextSize => 'আয়াতের আকার';
+
+  @override
+  String get translationTextSize => 'অনুবাদের আকার';
+
+  @override
+  String get boldAyah => 'গাঢ় আয়াত';
+
+  @override
+  String get boldTranslation => 'গাঢ় অনুবাদ';
+
+  @override
+  String get quranWidgetPreview => 'সরাসরি প্রিভিউ';
+
+  @override
+  String get translationLanguage => 'অনুবাদের ভাষা';
+
+  @override
+  String get translationLanguageDescription =>
+      'আরবি আয়াতের নিচে দেখানো ভাষা বেছে নিন।';
+
+  @override
+  String translationSource(String source) {
+    return '$source-এর অনুবাদ';
+  }
+
+  @override
+  String get customColors => 'নিজস্ব রং';
+
+  @override
+  String get customColorsDescription =>
+      'লেখা সহজপাঠ্য রেখে উইজেটের রং ঠিক করুন।';
+
+  @override
+  String get ayahColor => 'আয়াতের রং';
+
+  @override
+  String get translationColor => 'অনুবাদের রং';
+
+  @override
+  String get accentColor => 'অ্যাকসেন্ট রং';
+
+  @override
+  String get customizeColors => 'রং কাস্টমাইজ করুন';
+
+  @override
+  String get quranWidgetUpdated => 'কুরআন উইজেট রিফ্রেশ হয়েছে';
+
+  @override
+  String get forceQuranWidgetUpdate => 'আরেকটি আয়াত দেখান';
+
+  @override
+  String get quranWidgetUpdating => 'উইজেট রিফ্রেশ হচ্ছে…';
+
+  @override
+  String get customTheme => 'নিজস্ব';
+
+  @override
+  String get colorContrastTooLow => 'এই রঙে পর্যাপ্ত কনট্রাস্ট নেই।';
+
+  @override
+  String get arabicTranslationHidden =>
+      'অ্যাপের ভাষা আরবি হলে উইজেটে শুধু আরবি আয়াত দেখানো হয়।';
 }

@@ -2248,13 +2248,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix Next $prayerName in $timeText';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName in $timeText';
   }
 
@@ -3751,7 +3757,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return 'Matches $matchedWordsCount words · $coverage% coverage · Score: $score';
   }
 
@@ -4783,4 +4792,84 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'Huda can schedule prayer alerts and reminders for their exact time.';
+
+  @override
+  String get quranWidgetTagline => 'A new ayah and translation every hour';
+
+  @override
+  String get quranWidgetCustomization => 'Quran widget customization';
+
+  @override
+  String get quranWidgetTypography => 'Text style';
+
+  @override
+  String get ayahAutoFit => 'Ayah Auto Fit';
+
+  @override
+  String get translationAutoFit => 'Translation Auto Fit';
+
+  @override
+  String get ayahTextSize => 'Ayah size';
+
+  @override
+  String get translationTextSize => 'Translation size';
+
+  @override
+  String get boldAyah => 'Bold ayah';
+
+  @override
+  String get boldTranslation => 'Bold translation';
+
+  @override
+  String get quranWidgetPreview => 'Live preview';
+
+  @override
+  String get translationLanguage => 'Translation language';
+
+  @override
+  String get translationLanguageDescription =>
+      'Choose the language shown below the Arabic ayah.';
+
+  @override
+  String translationSource(String source) {
+    return 'Translation by $source';
+  }
+
+  @override
+  String get customColors => 'Custom colors';
+
+  @override
+  String get customColorsDescription =>
+      'Fine-tune the widget while keeping every line readable.';
+
+  @override
+  String get ayahColor => 'Ayah color';
+
+  @override
+  String get translationColor => 'Translation color';
+
+  @override
+  String get accentColor => 'Accent color';
+
+  @override
+  String get customizeColors => 'Customize colors';
+
+  @override
+  String get quranWidgetUpdated => 'Quran widget refreshed';
+
+  @override
+  String get forceQuranWidgetUpdate => 'Show another ayah';
+
+  @override
+  String get quranWidgetUpdating => 'Refreshing widget…';
+
+  @override
+  String get customTheme => 'Custom';
+
+  @override
+  String get colorContrastTooLow => 'This color does not have enough contrast.';
+
+  @override
+  String get arabicTranslationHidden =>
+      'Arabic app language uses an Arabic-only widget.';
 }

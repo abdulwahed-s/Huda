@@ -4,8 +4,6 @@ import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/prayer_notification_background_scheduler.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
-import 'package:huda/core/services/widget_background_service.dart';
-import 'package:huda/core/services/widget_service.dart';
 import 'package:workmanager/workmanager.dart';
 
 const String dailyTaskKey =
@@ -24,8 +22,6 @@ void callbackDispatcher() {
         case 'renewAthkarNotifications':
         case 'retryAthkarScheduling':
           return _renewAthkar(inputData);
-        case 'updateHomeWidget':
-          return _updateHomeWidget();
         default:
           debugPrint('Unknown Workmanager task: $task');
           return true;
@@ -63,12 +59,5 @@ Future<bool> _renewAthkar(Map<String, dynamic>? inputData) async {
   final helper = NotificationPageHelper();
   await helper.init();
   await helper.scheduleRandomAthkar(true, frequency);
-  return true;
-}
-
-Future<bool> _updateHomeWidget() async {
-  await WidgetService.initialize();
-  await WidgetService.forceUpdateWidget();
-  await WidgetBackgroundService.updateLastUpdateTime();
   return true;
 }

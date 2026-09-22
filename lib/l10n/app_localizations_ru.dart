@@ -2272,13 +2272,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix Следующий $prayerName через $timeText';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName через $timeText';
   }
 
@@ -3780,7 +3786,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return 'Совпадает $matchedWordsCount слов · охват $coverage% · Счёт: $score';
   }
 
@@ -4814,4 +4823,84 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'Huda может планировать оповещения о намазе и напоминания точно по времени.';
+
+  @override
+  String get quranWidgetTagline => 'Новый аят и перевод каждый час';
+
+  @override
+  String get quranWidgetCustomization => 'Настройка виджета Корана';
+
+  @override
+  String get quranWidgetTypography => 'Стиль текста';
+
+  @override
+  String get ayahAutoFit => 'Автоподбор аята';
+
+  @override
+  String get translationAutoFit => 'Автоподбор перевода';
+
+  @override
+  String get ayahTextSize => 'Размер аята';
+
+  @override
+  String get translationTextSize => 'Размер перевода';
+
+  @override
+  String get boldAyah => 'Жирный аят';
+
+  @override
+  String get boldTranslation => 'Жирный перевод';
+
+  @override
+  String get quranWidgetPreview => 'Предпросмотр';
+
+  @override
+  String get translationLanguage => 'Язык перевода';
+
+  @override
+  String get translationLanguageDescription =>
+      'Выберите язык текста под арабским аятом.';
+
+  @override
+  String translationSource(String source) {
+    return 'Перевод: $source';
+  }
+
+  @override
+  String get customColors => 'Свои цвета';
+
+  @override
+  String get customColorsDescription =>
+      'Настройте цвета, сохраняя хорошую читаемость.';
+
+  @override
+  String get ayahColor => 'Цвет аята';
+
+  @override
+  String get translationColor => 'Цвет перевода';
+
+  @override
+  String get accentColor => 'Цвет акцента';
+
+  @override
+  String get customizeColors => 'Настроить цвета';
+
+  @override
+  String get quranWidgetUpdated => 'Виджет Корана обновлён';
+
+  @override
+  String get forceQuranWidgetUpdate => 'Показать другой аят';
+
+  @override
+  String get quranWidgetUpdating => 'Обновление виджета…';
+
+  @override
+  String get customTheme => 'Свой';
+
+  @override
+  String get colorContrastTooLow => 'У этого цвета недостаточный контраст.';
+
+  @override
+  String get arabicTranslationHidden =>
+      'При арабском языке приложения виджет показывает только арабский аят.';
 }

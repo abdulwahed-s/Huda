@@ -2251,13 +2251,19 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName Seterusnya dalam $timeText';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName dalam $timeText';
   }
 
@@ -3759,7 +3765,10 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return 'Sepadan $matchedWordsCount perkataan · liputan $coverage% · Skor: $score';
   }
 
@@ -4793,4 +4802,85 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'Huda boleh menjadualkan peringatan waktu solat dan peringatan pada waktu tepatnya.';
+
+  @override
+  String get quranWidgetTagline => 'Ayat dan terjemahan baharu setiap jam';
+
+  @override
+  String get quranWidgetCustomization => 'Penyesuaian widget al-Quran';
+
+  @override
+  String get quranWidgetTypography => 'Gaya teks';
+
+  @override
+  String get ayahAutoFit => 'Muat automatik ayat';
+
+  @override
+  String get translationAutoFit => 'Muat automatik terjemahan';
+
+  @override
+  String get ayahTextSize => 'Saiz ayat';
+
+  @override
+  String get translationTextSize => 'Saiz terjemahan';
+
+  @override
+  String get boldAyah => 'Ayat tebal';
+
+  @override
+  String get boldTranslation => 'Terjemahan tebal';
+
+  @override
+  String get quranWidgetPreview => 'Pratonton langsung';
+
+  @override
+  String get translationLanguage => 'Bahasa terjemahan';
+
+  @override
+  String get translationLanguageDescription =>
+      'Pilih bahasa yang dipaparkan di bawah ayat Arab.';
+
+  @override
+  String translationSource(String source) {
+    return 'Terjemahan oleh $source';
+  }
+
+  @override
+  String get customColors => 'Warna tersuai';
+
+  @override
+  String get customColorsDescription =>
+      'Laraskan warna sambil memastikan teks mudah dibaca.';
+
+  @override
+  String get ayahColor => 'Warna ayat';
+
+  @override
+  String get translationColor => 'Warna terjemahan';
+
+  @override
+  String get accentColor => 'Warna aksen';
+
+  @override
+  String get customizeColors => 'Sesuaikan warna';
+
+  @override
+  String get quranWidgetUpdated => 'Widget al-Quran disegarkan';
+
+  @override
+  String get forceQuranWidgetUpdate => 'Tunjukkan ayat lain';
+
+  @override
+  String get quranWidgetUpdating => 'Menyegarkan widget…';
+
+  @override
+  String get customTheme => 'Tersuai';
+
+  @override
+  String get colorContrastTooLow =>
+      'Warna ini tidak mempunyai kontras yang mencukupi.';
+
+  @override
+  String get arabicTranslationHidden =>
+      'Apabila aplikasi menggunakan bahasa Arab, widget hanya memaparkan ayat Arab.';
 }

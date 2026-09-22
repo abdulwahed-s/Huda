@@ -5,7 +5,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import androidx.glance.appwidget.updateAll
 import com.aw.huda.widget.HudaGlanceWidget
-import com.aw.huda.widget.WidgetDataRepository
+import com.aw.huda.widget.HudaGlanceWidgetReceiver
 import com.aw.huda.widget.prayer.PrayerWidgetReliabilityManager
 import com.aw.huda.widget.prayer.PrayerWidgetScheduler
 import com.aw.huda.widget.prayer.PrayerWidgetUpdater
@@ -59,13 +59,8 @@ class MainActivity: AudioServiceActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
                             val appCtx = applicationContext
-                            val themeName = WidgetDataRepository.getThemeName(appCtx)
-                            val isDark = WidgetDataRepository.isDarkMode(appCtx)
-                            println("🔄 Updating widget with theme: $themeName, isDark: $isDark")
-
                             HudaGlanceWidget().updateAll(appCtx)
-
-                            println("✅ Widget updated via MethodChannel")
+                            HudaGlanceWidgetReceiver.ensureHourlyUpdates(appCtx)
                             withContext(Dispatchers.Main) { result.success(true) }
                         } catch (e: Exception) {
                             println("❌ Failed to update widget: ${e.message}")

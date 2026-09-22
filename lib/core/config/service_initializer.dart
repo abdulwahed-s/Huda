@@ -11,10 +11,9 @@ import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:huda/core/services/prayer_notification_background_scheduler.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/core/services/service_initialization_tracker.dart';
 import 'package:huda/core/services/service_locator.dart';
-import 'package:huda/core/services/widget_background_service.dart';
-import 'package:huda/core/services/widget_service.dart';
 import 'package:huda/core/utils/performance_utils.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:huda/core/utils/platform_utils.dart';
@@ -70,8 +69,7 @@ Future<void> _initializeWidgetServices() async {
   if (!PlatformUtils.isMobile) return;
 
   final tracker = ServiceInitializationTracker();
-  await WidgetService.initialize();
-  await WidgetBackgroundService.initialize();
+  await QuranWidgetService.initialize();
   tracker.markServiceReady('widgets');
 }
 

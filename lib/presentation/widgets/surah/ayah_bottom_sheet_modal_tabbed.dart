@@ -8,8 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:huda/core/services/get_fonts.dart';
 import 'package:huda/core/theme/theme_extension.dart';
-import 'package:huda/core/services/widget_service.dart';
-import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/data/models/surah_model.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/surah_audio_model.dart' as audio;
@@ -26,7 +24,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/data/models/quran_model.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class AyahBottomSheetModalTabbed extends StatefulWidget {
   final Ayahs ayah;
@@ -170,8 +167,6 @@ class AyahBottomSheetModalTabbed extends StatefulWidget {
 class _AyahBottomSheetModalTabbedState
     extends State<AyahBottomSheetModalTabbed> {
   bool _isCurrentAyahPlayable = true;
-  bool _isAyahInWidget = false;
-  bool _isCheckingWidgetStatus = false;
   bool _isKhatmaEnd = false;
   int _selectedTabIndex = 0;
   Map<String, dynamic>? _matchingAyahsData;
@@ -181,7 +176,6 @@ class _AyahBottomSheetModalTabbedState
   void initState() {
     super.initState();
     _checkAyahPlayability();
-    _checkAyahWidgetStatus();
     _checkKhatmaEndStatus();
   }
 
@@ -234,45 +228,6 @@ class _AyahBottomSheetModalTabbedState
       }
     } catch (_) {
       if (mounted) setState(() => _isLoadingMatchingAyahs = false);
-    }
-  }
-
-  Future<void> _checkAyahWidgetStatus() async {
-    if (_isCheckingWidgetStatus) return;
-
-    setState(() {
-      _isCheckingWidgetStatus = true;
-    });
-
-    try {
-      String ayahText = widget.ayah.text ?? '';
-      final isFirstAyah = widget.ayah.numberInSurah == 1;
-      final shouldShowBismillah =
-          isFirstAyah && widget.surahNumber != 1 && widget.surahNumber != 9;
-
-      if (shouldShowBismillah) {
-        const bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
-        if (ayahText.trim().startsWith(bismillahText)) {
-          ayahText = ayahText.trim().replaceFirst(bismillahText, '').trim();
-        }
-      }
-
-      final isInWidget =
-          await WidgetService.isVerseInCustomCollection(ayahText);
-
-      if (mounted) {
-        setState(() {
-          _isAyahInWidget = isInWidget;
-          _isCheckingWidgetStatus = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isAyahInWidget = false;
-          _isCheckingWidgetStatus = false;
-        });
-      }
     }
   }
 
@@ -512,18 +467,11 @@ class _AyahBottomSheetModalTabbedState
                           index: 4,
                           isSelected: _selectedTabIndex == 4,
                         ),
-                        if (PlatformUtils.isMobile)
-                          _buildTabButton(
-                            icon: Icons.widgets_rounded,
-                            label: AppLocalizations.of(context)!.widget,
-                            index: 5,
-                            isSelected: _selectedTabIndex == 5,
-                          ),
                         _buildTabButton(
                           icon: Icons.compare_arrows_rounded,
                           label: 'Similar',
-                          index: 6,
-                          isSelected: _selectedTabIndex == 6,
+                          index: 5,
+                          isSelected: _selectedTabIndex == 5,
                         ),
                       ],
                     ),
@@ -700,25 +648,6 @@ class _AyahBottomSheetModalTabbedState
         );
       case 5:
         return Container(
-          key: const ValueKey('widget_tab'),
-          child: TweenAnimationBuilder<double>(
-            duration: const Duration(milliseconds: 300),
-            tween: Tween<double>(begin: 0.0, end: 1.0),
-            curve: Curves.easeOutCubic,
-            builder: (context, value, child) {
-              return Opacity(
-                opacity: value,
-                child: Transform.translate(
-                  offset: Offset(0, 20 * (1 - value)),
-                  child: child,
-                ),
-              );
-            },
-            child: _buildWidgetTab(),
-          ),
-        );
-      case 6:
-        return Container(
           key: const ValueKey('similar_ayahs_tab'),
           child: TweenAnimationBuilder<double>(
             duration: const Duration(milliseconds: 300),
@@ -773,7 +702,7 @@ class _AyahBottomSheetModalTabbedState
         child: InkWell(
           onTap: () {
             setState(() => _selectedTabIndex = index);
-            if (index == 6) _loadMatchingAyahs();
+            if (index == 5) _loadMatchingAyahs();
           },
           borderRadius: BorderRadius.circular(10.r),
           child: AnimatedContainer(
@@ -1461,415 +1390,6 @@ class _AyahBottomSheetModalTabbedState
         getCurrentScrollPosition: widget.getCurrentScrollPosition,
       ),
     );
-  }
-
-  Widget _buildWidgetTab() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAyahWidgetStatus();
-    });
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Theme.of(context).cardColor
-            : Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: context.primaryColor.withValues(alpha: 0.1),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: context.primaryColor.withValues(alpha: 0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: context.primaryColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.widgets_rounded,
-                  color: context.primaryColor,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.addToHomeWidget,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black87,
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      AppLocalizations.of(context)!.addToWidgetDescription,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white70
-                                    : Colors.black54,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: Theme.of(context).brightness == Brightness.dark
-                    ? [
-                        Colors.grey[800]!,
-                        Colors.grey[850]!,
-                      ]
-                    : [
-                        Colors.grey[50]!,
-                        Colors.white,
-                      ],
-              ),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? context.accentColor.withValues(alpha: 0.3)
-                    : context.primaryColor.withValues(alpha: 0.2),
-                width: 1.5,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? context.accentColor.withValues(alpha: 0.1)
-                      : context.primaryColor.withValues(alpha: 0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? context.accentColor.withValues(alpha: 0.2)
-                        : context.primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.visibility_outlined,
-                        size: 16,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? context.accentColor
-                            : context.primaryColor,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        AppLocalizations.of(context)!.preview,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? context.accentColor
-                                  : context.primaryColor,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.grey[900]?.withValues(alpha: 0.5)
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[700]!
-                          : Colors.grey[200]!,
-                      width: 1,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 3,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              context.primaryColor.withValues(alpha: 0.7),
-                              context.primaryColor,
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Text(
-                          (() {
-                            String ayahText = widget.ayah.text ?? '';
-                            final isFirstAyah = widget.ayah.numberInSurah == 1;
-                            final shouldShowBismillah = isFirstAyah &&
-                                widget.surahNumber != 1 &&
-                                widget.surahNumber != 9;
-
-                            if (shouldShowBismillah) {
-                              const bismillahText =
-                                  'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
-                              if (ayahText.trim().startsWith(bismillahText)) {
-                                ayahText = ayahText
-                                    .trim()
-                                    .replaceFirst(bismillahText, '')
-                                    .trim();
-                              }
-                            }
-                            return ayahText;
-                          })(),
-                          style: TextStyle(
-                            fontFamily: getQuranFonts(),
-                            fontSize: 18.sp,
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black87,
-                            shadows:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? [
-                                        const Shadow(
-                                          color: Colors.black26,
-                                          blurRadius: 1,
-                                          offset: Offset(0, 1),
-                                        ),
-                                      ]
-                                    : null,
-                          ),
-                          textAlign: TextAlign.justify,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        height: 3,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              context.primaryColor,
-                              context.primaryColor.withValues(alpha: 0.7),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-                if (widget.surahName != null ||
-                    widget.ayah.numberInSurah != null)
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[700]?.withValues(alpha: 0.5)
-                          : Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.book_outlined,
-                          size: 14,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white70
-                              : Colors.black54,
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          '${widget.surahName ?? ''} ${widget.ayah.numberInSurah != null ? '- Ayah ${widget.ayah.numberInSurah}' : ''}',
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? Colors.white70
-                                        : Colors.black54,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton.icon(
-              onPressed: _isCheckingWidgetStatus
-                  ? null
-                  : (_isAyahInWidget ? null : () => _addAyahToWidget()),
-              icon: Icon(_isCheckingWidgetStatus
-                  ? Icons.hourglass_empty
-                  : (_isAyahInWidget
-                      ? Icons.check_circle
-                      : Icons.add_box_rounded)),
-              label: Text(_isCheckingWidgetStatus
-                  ? AppLocalizations.of(context)!.checking
-                  : (_isAyahInWidget
-                      ? AppLocalizations.of(context)!.alreadyInWidget
-                      : AppLocalizations.of(context)!.addToWidget)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _isAyahInWidget
-                    ? Colors.grey.shade400
-                    : context.primaryColor,
-                foregroundColor:
-                    _isAyahInWidget ? Colors.grey.shade600 : Colors.white,
-                elevation: 2,
-                shadowColor:
-                    (_isAyahInWidget ? Colors.grey : context.primaryColor)
-                        .withValues(alpha: 0.3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.blue[900]?.withValues(alpha: 0.3)
-                  : Colors.blue[50],
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.blue.withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.info_outline_rounded,
-                  color: Colors.blue[600],
-                  size: 20,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    AppLocalizations.of(context)!.addToWidgetInfo,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.blue[300]
-                              : Colors.blue[700],
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _addAyahToWidget() async {
-    try {
-      String ayahText = widget.ayah.text ?? '';
-      final surahName =
-          widget.surahName ?? AppLocalizations.of(context)!.unknownSurah;
-      final ayahNumber = widget.ayah.numberInSurah ?? widget.index + 1;
-
-      final isFirstAyah = ayahNumber == 1;
-      final shouldShowBismillah =
-          isFirstAyah && widget.surahNumber != 1 && widget.surahNumber != 9;
-
-      if (shouldShowBismillah) {
-        const bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
-        if (ayahText.trim().startsWith(bismillahText)) {
-          ayahText = ayahText.trim().replaceFirst(bismillahText, '').trim();
-        }
-      }
-
-      final success = await WidgetService.addCustomVerse(
-        ayahText,
-        surahName: surahName,
-        ayahNumber: ayahNumber,
-      );
-
-      if (success) {
-        await WidgetService.forceUpdateWidget();
-
-        _checkAyahWidgetStatus();
-
-        if (mounted) {
-          HudaSnackBar.success(
-            context,
-            message: AppLocalizations.of(context)!.ayahAddedToWidget,
-            duration: const Duration(seconds: 3),
-          );
-        }
-      } else {
-        setState(() {
-          _isAyahInWidget = true;
-          _isCheckingWidgetStatus = false;
-        });
-
-        if (mounted) {
-          HudaSnackBar.info(
-            context,
-            message: AppLocalizations.of(context)!.alreadyInWidget,
-            duration: const Duration(seconds: 3),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        HudaSnackBar.error(
-          context,
-          message: AppLocalizations.of(context)!.errorAddingWidget,
-          duration: const Duration(seconds: 4),
-        );
-      }
-    }
   }
 
   Widget _buildSimilarAyahsTab() {

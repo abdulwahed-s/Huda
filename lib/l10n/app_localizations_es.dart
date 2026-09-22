@@ -2305,13 +2305,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix Próxima $prayerName en $timeText';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName en $timeText';
   }
 
@@ -3820,7 +3826,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return 'Coincide con $matchedWordsCount palabras · cobertura $coverage% · Puntuación: $score';
   }
 
@@ -4859,4 +4868,84 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'Huda puede programar alertas de oración y recordatorios para su hora exacta.';
+
+  @override
+  String get quranWidgetTagline => 'Una nueva aleya y traducción cada hora';
+
+  @override
+  String get quranWidgetCustomization => 'Personalización del widget del Corán';
+
+  @override
+  String get quranWidgetTypography => 'Estilo del texto';
+
+  @override
+  String get ayahAutoFit => 'Ajuste automático de la aleya';
+
+  @override
+  String get translationAutoFit => 'Ajuste automático de la traducción';
+
+  @override
+  String get ayahTextSize => 'Tamaño de la aleya';
+
+  @override
+  String get translationTextSize => 'Tamaño de la traducción';
+
+  @override
+  String get boldAyah => 'Aleya en negrita';
+
+  @override
+  String get boldTranslation => 'Traducción en negrita';
+
+  @override
+  String get quranWidgetPreview => 'Vista previa en vivo';
+
+  @override
+  String get translationLanguage => 'Idioma de traducción';
+
+  @override
+  String get translationLanguageDescription =>
+      'Elige el idioma que aparece debajo de la aleya árabe.';
+
+  @override
+  String translationSource(String source) {
+    return 'Traducción de $source';
+  }
+
+  @override
+  String get customColors => 'Colores personalizados';
+
+  @override
+  String get customColorsDescription =>
+      'Ajusta los colores manteniendo el texto legible.';
+
+  @override
+  String get ayahColor => 'Color de la aleya';
+
+  @override
+  String get translationColor => 'Color de la traducción';
+
+  @override
+  String get accentColor => 'Color de acento';
+
+  @override
+  String get customizeColors => 'Personalizar colores';
+
+  @override
+  String get quranWidgetUpdated => 'Widget del Corán actualizado';
+
+  @override
+  String get forceQuranWidgetUpdate => 'Mostrar otra aleya';
+
+  @override
+  String get quranWidgetUpdating => 'Actualizando widget…';
+
+  @override
+  String get customTheme => 'Personalizado';
+
+  @override
+  String get colorContrastTooLow => 'Este color no tiene suficiente contraste.';
+
+  @override
+  String get arabicTranslationHidden =>
+      'Con el idioma árabe, el widget muestra solo la aleya árabe.';
 }

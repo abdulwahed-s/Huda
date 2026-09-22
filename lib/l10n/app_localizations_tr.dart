@@ -2246,13 +2246,19 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix Sonraki $prayerName $timeText içinde';
   }
 
   @override
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText) {
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
     return '$prefix $prayerName $timeText içinde';
   }
 
@@ -3752,7 +3758,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String similarAyahsMatchStats(
-      int matchedWordsCount, int coverage, int score) {
+    int matchedWordsCount,
+    int coverage,
+    int score,
+  ) {
     return '$matchedWordsCount kelime eşleşiyor · %$coverage kapsama · Puan: $score';
   }
 
@@ -4782,4 +4791,84 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get exactAlarmsReadyDescription =>
       'Huda, namaz vakti uyarılarını ve hatırlatıcıları tam saatinde planlayabilir.';
+
+  @override
+  String get quranWidgetTagline => 'Her saat yeni bir ayet ve çeviri';
+
+  @override
+  String get quranWidgetCustomization => 'Kur\'an widget özelleştirmesi';
+
+  @override
+  String get quranWidgetTypography => 'Metin stili';
+
+  @override
+  String get ayahAutoFit => 'Ayeti otomatik sığdır';
+
+  @override
+  String get translationAutoFit => 'Çeviriyi otomatik sığdır';
+
+  @override
+  String get ayahTextSize => 'Ayet boyutu';
+
+  @override
+  String get translationTextSize => 'Çeviri boyutu';
+
+  @override
+  String get boldAyah => 'Kalın ayet';
+
+  @override
+  String get boldTranslation => 'Kalın çeviri';
+
+  @override
+  String get quranWidgetPreview => 'Canlı önizleme';
+
+  @override
+  String get translationLanguage => 'Çeviri dili';
+
+  @override
+  String get translationLanguageDescription =>
+      'Arapça ayetin altında gösterilecek dili seçin.';
+
+  @override
+  String translationSource(String source) {
+    return '$source çevirisi';
+  }
+
+  @override
+  String get customColors => 'Özel renkler';
+
+  @override
+  String get customColorsDescription =>
+      'Metni okunaklı tutarak widget renklerini ayarlayın.';
+
+  @override
+  String get ayahColor => 'Ayet rengi';
+
+  @override
+  String get translationColor => 'Çeviri rengi';
+
+  @override
+  String get accentColor => 'Vurgu rengi';
+
+  @override
+  String get customizeColors => 'Renkleri özelleştir';
+
+  @override
+  String get quranWidgetUpdated => 'Kur\'an widget\'ı yenilendi';
+
+  @override
+  String get forceQuranWidgetUpdate => 'Başka bir ayet göster';
+
+  @override
+  String get quranWidgetUpdating => 'Widget yenileniyor…';
+
+  @override
+  String get customTheme => 'Özel';
+
+  @override
+  String get colorContrastTooLow => 'Bu renk yeterli kontrasta sahip değil.';
+
+  @override
+  String get arabicTranslationHidden =>
+      'Arapça uygulama dilinde widget yalnızca Arapça ayeti gösterir.';
 }

@@ -12,14 +12,9 @@ class HudaGlanceWidgetReceiver : GlanceAppWidgetReceiver() {
     
     override val glanceAppWidget: GlanceAppWidget = HudaGlanceWidget()
     
-    companion object {
-        const val WORK_NAME = "huda_widget_update_work"
-        const val UPDATE_INTERVAL_MINUTES = 15L
-    }
-    
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
-        schedulePeriodicUpdate(context)
+        ensureHourlyUpdates(context)
     }
     
     override fun onDisabled(context: Context) {
@@ -27,22 +22,24 @@ class HudaGlanceWidgetReceiver : GlanceAppWidgetReceiver() {
         cancelPeriodicUpdate(context)
     }
     
-    private fun schedulePeriodicUpdate(context: Context) {
-        val workRequest = PeriodicWorkRequestBuilder<HudaWidgetWorker>(
-            UPDATE_INTERVAL_MINUTES, TimeUnit.MINUTES
-        ).build()
-        
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            WORK_NAME,
-            ExistingPeriodicWorkPolicy.KEEP,
-            workRequest
-        )
-        
-        println("📅 Scheduled widget updates every $UPDATE_INTERVAL_MINUTES minutes")
-    }
-    
     private fun cancelPeriodicUpdate(context: Context) {
         WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
-        println("🛑 Cancelled widget periodic updates")
+    }
+
+    companion object {
+        const val WORK_NAME = "huda_widget_update_work"
+        const val UPDATE_INTERVAL_HOURS = 1L
+
+        fun ensureHourlyUpdates(context: Context) {
+            val request = PeriodicWorkRequestBuilder<HudaWidgetWorker>(
+                UPDATE_INTERVAL_HOURS,
+                TimeUnit.HOURS,
+            ).build()
+            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                WORK_NAME,
+                ExistingPeriodicWorkPolicy.UPDATE,
+                request,
+            )
+        }
     }
 }

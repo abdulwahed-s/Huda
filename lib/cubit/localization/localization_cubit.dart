@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalizationState {
@@ -62,6 +63,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
         await sharedPrefs.setString('locale', savedLocale);
 
         emit(LocalizationState(locale: locale));
+        await QuranWidgetService.onLocaleChanged();
         return;
       }
     }
@@ -93,6 +95,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
         force: true,
       );
     }
+    await QuranWidgetService.onLocaleChanged();
   }
 
   Future<void> setLocale(Locale locale) async {
@@ -104,6 +107,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
       await prefs.setString('locale', locale.languageCode);
 
       emit(LocalizationState(locale: locale));
+      await QuranWidgetService.onLocaleChanged();
 
       if (getIt.isRegistered<PrayerNotificationScheduler>()) {
         await getIt<PrayerNotificationScheduler>().reconcile(

@@ -71,7 +71,7 @@ import 'app_localizations_ur.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -94,11 +94,11 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
@@ -111,7 +111,7 @@ abstract class AppLocalizations {
     Locale('ms'),
     Locale('ru'),
     Locale('tr'),
-    Locale('ur')
+    Locale('ur'),
   ];
 
   /// Title of the update-available dialog
@@ -4223,14 +4223,20 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{prefix} Next {prayerName} in {timeText}'**
   String prayerCountdownTitle(
-      String prefix, String prayerName, String timeText);
+    String prefix,
+    String prayerName,
+    String timeText,
+  );
 
   /// Title for urgent prayer countdown notification
   ///
   /// In en, this message translates to:
   /// **'{prefix} {prayerName} in {timeText}'**
   String prayerCountdownUrgentTitle(
-      String prefix, String prayerName, String timeText);
+    String prefix,
+    String prayerName,
+    String timeText,
+  );
 
   /// Context message for Fajr prayer countdown
   ///
@@ -8743,6 +8749,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Huda can schedule prayer alerts and reminders for their exact time.'**
   String get exactAlarmsReadyDescription;
+
+  /// No description provided for @quranWidgetTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'A new ayah and translation every hour'**
+  String get quranWidgetTagline;
+
+  /// No description provided for @quranWidgetCustomization.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran widget customization'**
+  String get quranWidgetCustomization;
+
+  /// No description provided for @quranWidgetTypography.
+  ///
+  /// In en, this message translates to:
+  /// **'Text style'**
+  String get quranWidgetTypography;
+
+  /// No description provided for @ayahAutoFit.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah Auto Fit'**
+  String get ayahAutoFit;
+
+  /// No description provided for @translationAutoFit.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation Auto Fit'**
+  String get translationAutoFit;
+
+  /// No description provided for @ayahTextSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah size'**
+  String get ayahTextSize;
+
+  /// No description provided for @translationTextSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation size'**
+  String get translationTextSize;
+
+  /// No description provided for @boldAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold ayah'**
+  String get boldAyah;
+
+  /// No description provided for @boldTranslation.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold translation'**
+  String get boldTranslation;
+
+  /// No description provided for @quranWidgetPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Live preview'**
+  String get quranWidgetPreview;
+
+  /// No description provided for @translationLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation language'**
+  String get translationLanguage;
+
+  /// No description provided for @translationLanguageDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language shown below the Arabic ayah.'**
+  String get translationLanguageDescription;
+
+  /// No description provided for @translationSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation by {source}'**
+  String translationSource(String source);
+
+  /// No description provided for @customColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom colors'**
+  String get customColors;
+
+  /// No description provided for @customColorsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Fine-tune the widget while keeping every line readable.'**
+  String get customColorsDescription;
+
+  /// No description provided for @ayahColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah color'**
+  String get ayahColor;
+
+  /// No description provided for @translationColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation color'**
+  String get translationColor;
+
+  /// No description provided for @accentColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent color'**
+  String get accentColor;
+
+  /// No description provided for @customizeColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize colors'**
+  String get customizeColors;
+
+  /// No description provided for @quranWidgetUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran widget refreshed'**
+  String get quranWidgetUpdated;
+
+  /// No description provided for @forceQuranWidgetUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Show another ayah'**
+  String get forceQuranWidgetUpdate;
+
+  /// No description provided for @quranWidgetUpdating.
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshing widget…'**
+  String get quranWidgetUpdating;
+
+  /// No description provided for @customTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get customTheme;
+
+  /// No description provided for @colorContrastTooLow.
+  ///
+  /// In en, this message translates to:
+  /// **'This color does not have enough contrast.'**
+  String get colorContrastTooLow;
+
+  /// No description provided for @arabicTranslationHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic app language uses an Arabic-only widget.'**
+  String get arabicTranslationHidden;
 }
 
 class _AppLocalizationsDelegate
@@ -8756,17 +8912,17 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) => <String>[
-        'ar',
-        'bn',
-        'de',
-        'en',
-        'es',
-        'fr',
-        'ms',
-        'ru',
-        'tr',
-        'ur'
-      ].contains(locale.languageCode);
+    'ar',
+    'bn',
+    'de',
+    'en',
+    'es',
+    'fr',
+    'ms',
+    'ru',
+    'tr',
+    'ur',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -8798,8 +8954,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

@@ -1,0 +1,471 @@
+{
+  "version": 2,
+  "surahs": {
+    "2": {"displayNames": {"en": "Al-Baqarah", "ar": "البقرة", "tr": "Bakara", "fr": "Al-Baqarah", "de": "Al-Baqarah", "es": "Al-Baqarah", "ur": "البقرة", "ru": "Аль-Бакара", "ms": "Al-Baqarah", "bn": "আল বাকারা"}},
+    "3": {"displayNames": {"en": "Ali 'Imran", "ar": "آل عمران", "tr": "Âl-i İmrân", "fr": "Ali 'Imran", "de": "Ali 'Imran", "es": "Ali 'Imran", "ur": "آل عمران", "ru": "Аль Имран", "ms": "Ali 'Imran", "bn": "আল ইমরান"}},
+    "10": {"displayNames": {"en": "Yunus", "ar": "يونس", "tr": "Yûnus", "fr": "Yunus", "de": "Yunus", "es": "Yunus", "ur": "يونس", "ru": "Юнус", "ms": "Yunus", "bn": "ইউনুস"}},
+    "13": {"displayNames": {"en": "Ar-Ra'd", "ar": "الرعد", "tr": "Ra'd", "fr": "Ar-Ra'd", "de": "Ar-Ra'd", "es": "Ar-Ra'd", "ur": "الرعد", "ru": "Ар-Рад", "ms": "Ar-Ra'd", "bn": "আর-রাদ"}},
+    "15": {"displayNames": {"en": "Al-Hijr", "ar": "الحجر", "tr": "Hicr", "fr": "Al-Hijr", "de": "Al-Hijr", "es": "Al-Hijr", "ur": "الحجر", "ru": "Аль-Хиджр", "ms": "Al-Hijr", "bn": "সূরা আল হিজর"}},
+    "16": {"displayNames": {"en": "An-Nahl", "ar": "النحل", "tr": "Nahl", "fr": "An-Nahl", "de": "An-Nahl", "es": "An-Nahl", "ur": "النحل", "ru": "Ан-Нахль", "ms": "An-Nahl", "bn": "আন নাহল"}},
+    "20": {"displayNames": {"en": "Taha", "ar": "طه", "tr": "Tâhâ", "fr": "Taha", "de": "Taha", "es": "Taha", "ur": "طه", "ru": "Та Ха", "ms": "Taha", "bn": "ত্বোয়া-হা"}},
+    "21": {"displayNames": {"en": "Al-Anbya", "ar": "الأنبياء", "tr": "Enbiyâ", "fr": "Al-Anbya", "de": "Al-Anbya", "es": "Al-Anbya", "ur": "الأنبياء", "ru": "Аль-Анбия", "ms": "Al-Anbya", "bn": "আল আম্বিয়া"}},
+    "26": {"displayNames": {"en": "Ash-Shu'ara", "ar": "الشعراء", "tr": "Şuarâ", "fr": "Ash-Shu'ara", "de": "Ash-Shu'ara", "es": "Ash-Shu'ara", "ur": "الشعراء", "ru": "Аш-Шуара", "ms": "Ash-Shu'ara", "bn": "আশ শুআরা"}},
+    "29": {"displayNames": {"en": "Al-'Ankabut", "ar": "العنكبوت", "tr": "Ankebût", "fr": "Al-'Ankabut", "de": "Al-'Ankabut", "es": "Al-'Ankabut", "ur": "العنكبوت", "ru": "Аль-Анкабут", "ms": "Al-'Ankabut", "bn": "আল আনকাবূত"}},
+    "33": {"displayNames": {"en": "Al-Ahzab", "ar": "الأحزاب", "tr": "Ahzâb", "fr": "Al-Ahzab", "de": "Al-Ahzab", "es": "Al-Ahzab", "ur": "الأحزاب", "ru": "Аль-Ахзаб", "ms": "Al-Ahzab", "bn": "আল আহ্‌যাব"}},
+    "39": {"displayNames": {"en": "Az-Zumar", "ar": "الزمر", "tr": "Zümer", "fr": "Az-Zumar", "de": "Az-Zumar", "es": "Az-Zumar", "ur": "الزمر", "ru": "Аз-Зумар", "ms": "Az-Zumar", "bn": "আয-জুমার"}},
+    "40": {"displayNames": {"en": "Ghafir", "ar": "غافر", "tr": "Mü'min", "fr": "Ghafir", "de": "Ghafir", "es": "Ghafir", "ur": "غافر", "ru": "Гафир", "ms": "Ghafir", "bn": "আল মু'মিন"}},
+    "51": {"displayNames": {"en": "Adh-Dhariyat", "ar": "الذاريات", "tr": "Zâriyât", "fr": "Adh-Dhariyat", "de": "Adh-Dhariyat", "es": "Adh-Dhariyat", "ur": "الذاريات", "ru": "Аз-Зарият", "ms": "Adh-Dhariyat", "bn": "আয-যারিয়াত"}},
+    "53": {"displayNames": {"en": "An-Najm", "ar": "النجم", "tr": "Necm", "fr": "An-Najm", "de": "An-Najm", "es": "An-Najm", "ur": "النجم", "ru": "Ан-Наджм", "ms": "An-Najm", "bn": "আন-নাজম"}},
+    "89": {"displayNames": {"en": "Al-Fajr", "ar": "الفجر", "tr": "Fecr", "fr": "Al-Fajr", "de": "Al-Fajr", "es": "Al-Fajr", "ur": "الفجر", "ru": "Аль-Фаджр", "ms": "Al-Fajr", "bn": "আল ফাজ্‌র"}},
+    "93": {"displayNames": {"en": "Ad-Duhaa", "ar": "الضحى", "tr": "Duhâ", "fr": "Ad-Duhaa", "de": "Ad-Duhaa", "es": "Ad-Duhaa", "ur": "الضحى", "ru": "Ад-Духа", "ms": "Ad-Duhaa", "bn": "আদ-দুহা"}},
+    "94": {"displayNames": {"en": "Ash-Sharh", "ar": "الشرح", "tr": "İnşirâh", "fr": "Ash-Sharh", "de": "Ash-Sharh", "es": "Ash-Sharh", "ur": "الشرح", "ru": "Аш-Шарх", "ms": "Ash-Sharh", "bn": "আল ইনশিরাহ"}}
+  },
+  "sources": {
+    "en": {
+      "edition": "en.sahih",
+      "name": "Saheeh International"
+    },
+    "tr": {
+      "edition": "tr.diyanet",
+      "name": "Diyanet İşleri"
+    },
+    "fr": {
+      "edition": "fr.hamidullah",
+      "name": "Muhammad Hamidullah"
+    },
+    "de": {
+      "edition": "de.bubenheim",
+      "name": "Bubenheim & Elyas"
+    },
+    "es": {
+      "edition": "es.cortes",
+      "name": "Julio Cortes"
+    },
+    "ur": {
+      "edition": "ur.jalandhry",
+      "name": "Fateh Muhammad Jalandhry"
+    },
+    "ru": {
+      "edition": "ru.kuliev",
+      "name": "Elmir Kuliev"
+    },
+    "ms": {
+      "edition": "ms.basmeih",
+      "name": "Abdullah Muhammad Basmeih"
+    },
+    "bn": {
+      "edition": "bn.bengali",
+      "name": "Muhiuddin Khan"
+    }
+  },
+  "verses": [
+    {
+      "id": "2:152",
+      "surah": 2,
+      "ayah": 152,
+      "arabic": "فَٱذۡكُرُونِيٓ أَذۡكُرۡكُمۡ وَٱشۡكُرُواْ لِي وَلَا تَكۡفُرُونِ",
+      "translations": {
+        "en": "So remember Me; I will remember you. And be grateful to Me and do not deny Me.",
+        "tr": "Artık Beni anın, Ben de sizi anayım; Bana şükredin, nankörlük etmeyin.",
+        "fr": "Souvenez-vous de Moi donc. Je vous récompenserai. Remerciez-Moi et ne soyez pas ingrats envers Moi!",
+        "de": "Gedenkt Meiner, so gedenke Ich eurer. Seid Mir dankbar und seid nicht undankbar gegen Mich.",
+        "es": "¡Acordaos de Mí, que Yo Me acordaré de vosotros! ¡Dadme las gracias y no Me seáis desagradecidos!",
+        "ur": "سو تم مجھے یاد کرو۔ میں تمہیں یاد کیا کروں گا۔ اور میرے احسان مانتے رہنا اور ناشکری نہ کرنا",
+        "ru": "Поминайте Меня, и Я буду помнить о вас. Благодарите Меня и не будьте неблагодарны Мне.",
+        "ms": "Oleh itu ingatlah kamu kepadaKu (dengan mematuhi hukum dan undang-undangKu), supaya Aku membalas kamu dengan kebaikan; dan bersyukurlah kamu kepadaKu dan janganlah kamu kufur (akan nikmatKu).",
+        "bn": "সুতরাং তোমরা আমাকে স্মরণ কর, আমিও তোমাদের স্মরণ রাখবো এবং আমার কৃতজ্ঞতা প্রকাশ কর; অকৃতজ্ঞ হয়ো না।"
+      }
+    },
+    {
+      "id": "2:153",
+      "surah": 2,
+      "ayah": 153,
+      "arabic": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ ٱسۡتَعِينُواْ بِٱلصَّبۡرِ وَٱلصَّلَوٰةِۚ إِنَّ ٱللَّهَ مَعَ ٱلصَّٰبِرِينَ",
+      "translations": {
+        "en": "O you who have believed, seek help through patience and prayer. Indeed, Allah is with the patient.",
+        "tr": "Ey İnananlar! Sabır ve namazla yardım dileyin. Allah, muhakkak ki sabredenlerle beraberdir.",
+        "fr": "O les croyants! Cherchez secours dans l'endurance et la Salât. Car Allah est avec ceux qui sont endurants.",
+        "de": "O die ihr glaubt, sucht Hilfe in der Standhaftigkeit und im Gebet! Allah ist mit den Standhaften.",
+        "es": "¡Vosotros, los que creéis, buscad ayuda en la paciencia y en la azalá! Alá está con los pacientes.",
+        "ur": "اے ایمان والو صبر اور نماز سے مدد لیا کرو بےشک خدا صبر کرنے والوں کے ساتھ ہے",
+        "ru": "О те, которые уверовали! Обратитесь за помощью к терпению и намазу. Воистину, Аллах - с терпеливыми.",
+        "ms": "Wahai sekalian orang-orang yang beriman! Mintalah pertolongan (untuk menghadapi susah payah dalam menyempurnakan sesuatu perintah Tuhan) dengan bersabar dan dengan (mengerjakan) sembahyang; kerana sesungguhnya Allah menyertai (menolong) orang-orang yang sabar",
+        "bn": "হে মুমিন গন! তোমরা ধৈর্য্য ও নামাযের মাধ্যমে সাহায্য প্রার্থনা কর। নিশ্চিতই আল্লাহ ধৈর্য্যশীলদের সাথে রয়েছেন।"
+      }
+    },
+    {
+      "id": "3:139",
+      "surah": 3,
+      "ayah": 139,
+      "arabic": "وَلَا تَهِنُواْ وَلَا تَحۡزَنُواْ وَأَنتُمُ ٱلۡأَعۡلَوۡنَ إِن كُنتُم مُّؤۡمِنِينَ",
+      "translations": {
+        "en": "So do not weaken and do not grieve, and you will be superior if you are [true] believers.",
+        "tr": "Gevşemeyin, üzülmeyin, inanmışsanız, mutlaka siz en üstünsünüzdür.",
+        "fr": "Ne vous laissez pas battre, ne vous affligez pas alors que vous êtes les supérieurs, si vous êtes de vrais croyants.",
+        "de": "Und werdet nicht schwach noch seid traurig, wo ihr doch die Oberhand haben werdet, wenn ihr gläubig seid.",
+        "es": "¡No os desaniméis ni estéis tristes, ya que seréis vosotros quienes ganen! Si es que sois creyentes...",
+        "ur": "اور (دیکھو) بے دل نہ ہونا اور نہ کسی طرح کا غم کرنا اگر تم مومن (صادق) ہو تو تم ہی غالب رہو گے",
+        "ru": "Не слабейте и не печальтесь, в то время как вы будете на высоте, если вы действительно являетесь верующими.",
+        "ms": "Dan janganlah kamu merasa lemah (dalam perjuangan mempertahan dan menegakkan Islam), dan janganlah kamu berdukacita (terhadap apa yang akan menimpa kamu), padahal kamulah orang-orang yang tertinggi (mengatasi musuh dengan mencapai kemenangan) jika kamu orang-orang yang (sungguh-sungguh) beriman.",
+        "bn": "আর তোমরা নিরাশ হয়ো না এবং দুঃখ করো না। যদি তোমরা মুমিন হও তবে, তোমরাই জয়ী হবে।"
+      }
+    },
+    {
+      "id": "3:160",
+      "surah": 3,
+      "ayah": 160,
+      "arabic": "إِن يَنصُرۡكُمُ ٱللَّهُ فَلَا غَالِبَ لَكُمۡۖ وَإِن يَخۡذُلۡكُمۡ فَمَن ذَا ٱلَّذِي يَنصُرُكُم مِّنۢ بَعۡدِهِۦۗ وَعَلَى ٱللَّهِ فَلۡيَتَوَكَّلِ ٱلۡمُؤۡمِنُونَ",
+      "translations": {
+        "en": "If Allah should aid you, no one can overcome you; but if He should forsake you, who is there that can aid you after Him? And upon Allah let the believers rely.",
+        "tr": "Allah size yardım ederse, sizi yenecek yoktur; eğer sizi yardımsız bırakıverirse, O'ndan başka size yardım edecek kimdir? İnananlar yalnız Allah'a güvensinler.",
+        "fr": "Si Allah vous donne Son secours, nul ne peut vous vaincre. S'Il vous abandonne, qui donc après Lui vous donnera secours? C'est à Allah que les croyants doivent faire confiance.",
+        "de": "Wenn Allah euch zum Sieg verhilft, so kann euch keiner besiegen. Doch wenn Er euch im Stich läßt, wer ist es denn, der euch dann, nach Ihm, noch helfen könnte? Und auf Allah sollen sich die Gläubigen verlassen.",
+        "es": "Si Alá os auxilia, no habrá nadie que pueda venceros. Pero, si os abandona, ,¿quién podrá auxiliaros fuera de Él? ¡Que los creyentes confíen en Alá!",
+        "ur": "اور خدا تمہارا مددگار ہے تو تم پر کوئی غالب نہیں آسکتا۔ اور اگر وہ تمہیں چھوڑ دے تو پھر کون ہے کہ تمہاری مدد کرے اور مومنوں کو چاہیئے کہ خدا ہی پر بھروسا رکھیں",
+        "ru": "Если Аллах окажет вам поддержку, то никто не одолеет вас. Если же Он лишит вас поддержки, то кто же поможет вам вместо Него? Пусть же на Аллаха уповают верующие.",
+        "ms": "Jika Allah menolong kamu mencapai kemenangan maka tidak ada sesiapa pun yang akan dapat mengalahkan kamu; dan jika Ia mengalahkan kamu, maka siapakah yang akan dapat menolong kamu sesudah Allah (menetapkan yang demikian)? Dan (ingatlah), kepada Allah jualah hendaknya orang-orang yang beriman itu berserah diri.",
+        "bn": "যদি আল্লাহ তোমাদের সহায়তা করেন, তাহলে কেউ তোমাদের উপর পরাক্রান্ত হতে পারবে না। আর যদি তিনি তোমাদের সাহায্য না করেন, তবে এমন কে আছে, যে তোমাদের সাহায্য করতে পারে? আর আল্লাহর ওপরই মুসলমানগনের ভরসা করা উচিত।"
+      }
+    },
+    {
+      "id": "10:107",
+      "surah": 10,
+      "ayah": 107,
+      "arabic": "وَإِن يَمۡسَسۡكَ ٱللَّهُ بِضُرّٖ فَلَا كَاشِفَ لَهُۥٓ إِلَّا هُوَۖ وَإِن يُرِدۡكَ بِخَيۡرٖ فَلَا رَآدَّ لِفَضۡلِهِۦۚ يُصِيبُ بِهِۦ مَن يَشَآءُ مِنۡ عِبَادِهِۦۚ وَهُوَ ٱلۡغَفُورُ ٱلرَّحِيمُ",
+      "translations": {
+        "en": "And if Allah should touch you with adversity, there is no remover of it except Him; and if He intends for you good, then there is no repeller of His bounty. He causes it to reach whom He wills of His servants. And He is the Forgiving, the Merciful",
+        "tr": "Allah sana bir sıkıntı verirse, onu O'ndan başkası gideremez. Sana bir iyilik dilerse O'nun nimetini engelleyecek yoktur. O'nu kullarından dilediğine verir. O, bağışlayandır, merhametlidir.",
+        "fr": "Et si Allah fait qu'un mal te touche, nul ne peut l'écarter en dehors de Lui. Et s'Il te veut un bien, nul ne peut repousser Sa grâce. Il en gratifie qui Il veut parmi Ses serviteurs. Et c'est Lui le Pardonneur, le Miséricordieux.",
+        "de": "Wenn Allah dir Unheil widerfahren läßt, so kann es keiner hinwegnehmen außer Ihm. Und wenn Er für dich etwas Gutes will, so kann keiner Seine Huld zurückweisen. Er trifft damit, wen Er will von Seinen Dienern. Er ist der Allvergebende und Barmherzige.",
+        "es": "Si Alá te aflige con una desgracia, nadie sino Él podrá librarte de ella. Si Él te desea un bien, nadie podrá oponerse a Su favor. Se lo concede a quien Él quiere de Sus siervos. Él es el Indulgente, el Misericordioso.",
+        "ur": "اور اگر خدا تم کو کوئی تکلیف پہنچائے تو اس کے سوا اس کا کوئی دور کرنے والا نہیں اور اگر تم سے بھلائی کرنی چاہے تو اس کے فضل کو کوئی روکنے والا نہیں۔ وہ اپنے بندوں میں سے جسے چاہتا ہے فائدہ پہنچاتا ہے اور وہ بخشنے والا مہربان ہے",
+        "ru": "Если Аллах коснется тебя вредом, то никто, кроме Него, не избавит тебя от него. Если Он пожелает одарить тебя добром, то никто не отвратит Его милости. Он одаряет ею того из Своих рабов, кого пожелает. Он - Прощающий, Милосердный.",
+        "ms": "Dan jika Allah mengenakan engkau dengan sesuatu yang membahayakan, maka tiada sesiapa pun yang akan dapat menghapuskannya melainkan Dia; dan jika Ia menghendaki engkau beroleh sesuatu kebaikan, maka tiada sesiapapun yang akan dapat menghalangi limpah kurniaNya. Allah melimpahkan kurniaNya itu kepada sesiapa yang dikendakiNya dari hamba-hambaNya, dan Dia lah yang Maha Pengampun lagi Maha Mengasihani.",
+        "bn": "আর আল্লাহ যদি তোমার উপর কোন কষ্ট আরোপ করেন তাহলে কেউ নেই তা খন্ডাবার মত তাঁকে ছাড়া। পক্ষান্তরে যদি তিনি কিছু কল্যাণ দান করেন, তবে তার মেহেরবানীকে রহিত করার মতও কেউ নেই। তিনি যার প্রতি অনুগ্রহ দান করতে চান স্বীয় বান্দাদের মধ্যে তাকেই দান করেন; বস্তুত; তিনিই ক্ষমাশীল দয়ালু।"
+      }
+    },
+    {
+      "id": "13:28",
+      "surah": 13,
+      "ayah": 28,
+      "arabic": "ٱلَّذِينَ ءَامَنُواْ وَتَطۡمَئِنُّ قُلُوبُهُم بِذِكۡرِ ٱللَّهِۗ أَلَا بِذِكۡرِ ٱللَّهِ تَطۡمَئِنُّ ٱلۡقُلُوبُ",
+      "translations": {
+        "en": "Those who have believed and whose hearts are assured by the remembrance of Allah. Unquestionably, by the remembrance of Allah hearts are assured.\"",
+        "tr": "Onlar inanmışlar, kalbleri Allah'ı anmakla huzura kavuşmuştur. Dikkat edin, kalbler ancak Allah'ı anmakla huzura kavuşur.",
+        "fr": "ceux qui ont cru, et dont les cœurs se tranquillisent à l'évocation d'Allah». Certes, c'est par l'évocation d'Allah que les cœurs se tranquillisent.",
+        "de": "(Es sind) diejenigen, die glauben und deren Herzen im Gedenken Allahs Ruhe finden. Sicherlich, im Gedenken Allahs finden die Herzen Ruhe!",
+        "es": "Quienes crean, aquéllos cuyos corazones se tranquilicen con el recuerdo de Alá -¿cómo no van a tranquilizarse los corazones con el recuerdo de Alá?-,",
+        "ur": "(یعنی) جو لوگ ایمان لاتے اور جن کے دل یادِ خدا سے آرام پاتے ہیں (ان کو) اور سن رکھو کہ خدا کی یاد سے دل آرام پاتے ہیں",
+        "ru": "Они уверовали, и их сердца утешаются поминанием Аллаха. Разве не поминанием Аллаха утешаются сердца?",
+        "ms": "\"(Iaitu) orang-orang yang beriman dan tenang tenteram hati mereka dengan zikrullah\". Ketahuilah dengan \"zikrullah\" itu, tenang tenteramlah hati manusia.",
+        "bn": "যারা বিশ্বাস স্থাপন করে এবং তাদের অন্তর আল্লাহর যিকির দ্বারা শান্তি লাভ করে; জেনে রাখ, আল্লাহর যিকির দ্বারাই অন্তর সমূহ শান্তি পায়।"
+      }
+    },
+    {
+      "id": "15:49",
+      "surah": 15,
+      "ayah": 49,
+      "arabic": "۞ نَبِّئۡ عِبَادِيٓ أَنِّيٓ أَنَا ٱلۡغَفُورُ ٱلرَّحِيمُ",
+      "translations": {
+        "en": "[O Muhammad], inform My servants that it is I who am the Forgiving, the Merciful.",
+        "tr": "Kullarıma Benim bağışlayan, merhamet eden olduğumu, azabımın can yakıcı bir azap olduğunu haber ver.",
+        "fr": "Informe Mes serviteurs que c'est Moi le Pardonneur, le Très Miséricordieux.",
+        "de": "Tue Meinen Dienern kund, daß Ich es bin, der Allvergebend und Barmherzig ist,",
+        "es": "Informa a Mis siervos de que Yo soy el Indulgente, el Misericordioso,",
+        "ur": "(اے پیغمبر) میرے بندوں کو بتادو کہ میں بڑا بخشنے والا (اور) مہربان ہوں",
+        "ru": "Сообщи Моим рабам, что Я - Прощающий, Милосердный,",
+        "ms": "Khabarkanlah kepada hamba-hambaKu (wahai Muhammad), bahawa Akulah Yang Maha Pengampun lagi Maha Mengasihani (bagi mereka yang bertaubat dan beramal soleh).",
+        "bn": "আপনি আমার বান্দাদেরকে জানিয়ে দিন যে, আমি অত্যন্ত ক্ষমাশীল দয়ালু।"
+      }
+    },
+    {
+      "id": "16:128",
+      "surah": 16,
+      "ayah": 128,
+      "arabic": "إِنَّ ٱللَّهَ مَعَ ٱلَّذِينَ ٱتَّقَواْ وَّٱلَّذِينَ هُم مُّحۡسِنُونَ",
+      "translations": {
+        "en": "Indeed, Allah is with those who fear Him and those who are doers of good.",
+        "tr": "Allah şüphesiz sakınanlarla ve iyilik yapanlarla beraberdir.",
+        "fr": "Certes, Allah est avec ceux qui [L'] ont craint avec piété et ceux qui sont bienfaisants.",
+        "de": "Gewiß, Allah ist mit denjenigen, die gottesfürchtig sind und Gutes tun.",
+        "es": "Alá está con quienes Le temen y quienes hacen el bien.",
+        "ur": "کچھ شک نہیں کہ جو پرہیزگار ہیں اور جو نیکوکار ہیں خدا ان کا مددگار ہے",
+        "ru": "Воистину, Аллах - с теми, кто богобоязнен и кто творит добро.",
+        "ms": "Sesungguhnya Allah beserta orang-orang yang bertaqwa, dan orang-orang yang berusaha memperbaiki amalannya.",
+        "bn": "নিশ্চয় আল্লাহ তাদের সঙ্গে আছেন, যারা পরহেযগার এবং যারা সৎকর্ম করে।"
+      }
+    },
+    {
+      "id": "20:25",
+      "surah": 20,
+      "ayah": 25,
+      "arabic": "قَالَ رَبِّ ٱشۡرَحۡ لِي صَدۡرِي",
+      "translations": {
+        "en": "[Moses] said, \"My Lord, expand for me my breast [with assurance]",
+        "tr": "Musa: \"Rabbim! Göğsümü genişlet, işimi kolaylaştır, dilimin düğümünü çöz ki sözümü iyi anlasınlar. Ailemden kardeşim Harun'u bana vezir yap, beni onunla destekle, onu görevimde ortak kıl ki Seni daha çok tesbih edelim ve çokça analım. Şüphesiz Sen bizi görmektesin\" dedi.",
+        "fr": "[Moïse] dit: «Seigneur, ouvre-moi ma poitrine,",
+        "de": "Er sagte: \"Mein Herr, weite mir meine Brust,",
+        "es": "Dijo: «¡Señor! ¡Infúndeme ánimo!",
+        "ur": "کہا میرے پروردگار (اس کام کے لئے) میرا سینہ کھول دے",
+        "ru": "Муса (Моисей) сказал: «Господи! Раскрой для меня мою грудь!",
+        "ms": "Nabi Musa berdoa dengan berkata: \"Wahai Tuhanku, lapangkanlah bagiku, dadaku;",
+        "bn": "মূসা বললেনঃ হে আমার পালনকর্তা আমার বক্ষ প্রশস্ত করে দিন।"
+      }
+    },
+    {
+      "id": "20:46",
+      "surah": 20,
+      "ayah": 46,
+      "arabic": "قَالَ لَا تَخَافَآۖ إِنَّنِي مَعَكُمَآ أَسۡمَعُ وَأَرَىٰ",
+      "translations": {
+        "en": "[Allah] said, \"Fear not. Indeed, I am with you both; I hear and I see.",
+        "tr": "Allah: Korkmayın, dedi; Ben sizinle beraberim; görür ve işitirim. Ona gidin şöyle söyleyin: \"Doğrusu biz senin Rabbinin elçileriyiz. İsrailoğullarını bizimle beraber gönder, onlara azabetme; Rabbinden sana bir mucize getirdik; selam, doğru yolda gidene olsun! Doğrusu bize, yalanlayıp sırt çevirene azap edileceği vahyolundu.\"",
+        "fr": "Il dit: «Ne craignez rien. Je suis avec vous: J'entends et Je vois.",
+        "de": "Er sagte: \"Fürchtet euch nicht. Ich bin gewiß mit euch, Ich höre und Ich sehe (, was geschieht).",
+        "es": "Dijo: «¡No temáis! Yo estoy con vosotros, oyendo y viendo.",
+        "ur": "خدا نے فرمایا کہ ڈرو مت میں تمہارے ساتھ ہوں (اور) سنتا اور دیکھتا ہوں",
+        "ru": "Аллах сказал: «Не бойтесь, ибо Я - с вами. Я слышу и вижу.",
+        "ms": "Allah berfirman: \"Janganlah kamu takut, sesungguhnya Aku ada bersama-sama kamu; Aku mendengar dan melihat segala-galanya.",
+        "bn": "আল্লাহ বললেনঃ তোমরা ভয় করো না, আমি তোমাদের সাথে আছি, আমি শুনি ও দেখি।"
+      }
+    },
+    {
+      "id": "21:83",
+      "surah": 21,
+      "ayah": 83,
+      "arabic": "۞ وَأَيُّوبَ إِذۡ نَادَىٰ رَبَّهُۥٓ أَنِّي مَسَّنِيَ ٱلضُّرُّ وَأَنتَ أَرۡحَمُ ٱلرَّٰحِمِينَ",
+      "translations": {
+        "en": "And [mention] Job, when he called to his Lord, \"Indeed, adversity has touched me, and you are the Most Merciful of the merciful.\"",
+        "tr": "Eyyub da: \"Başıma bir bela geldi, (Sana sığındım), Sen merhametlilerin merhametlisisin\" diye Rabbine nida etmişti.",
+        "fr": "Et Job, quand il implora son Seigneur: «Le mal m'a touché. Mais Toi, tu es le plus miséricordieux des miséricordieux»!",
+        "de": "Und (auch) Ayyub, als er zu seinem Herrn rief: \"Mir ist gewiß Unheil widerfahren, doch Du bist der Barmherzigste der Barmherzigen.\"",
+        "es": "Y a Job. Cuando invocó a su Señor: «¡He sufrido una desgracia, pero Tú eres la Suma Misericordia!»",
+        "ur": "اور ایوب کو (یاد کرو) جب انہوں نے اپنے پروردگار سے دعا کی کہ مجھے ایذا ہو رہی ہے اور تو سب سے بڑھ کر رحم کرنے والا ہے",
+        "ru": "Помяни также Айюба (Иова), который воззвал к своему Господу: «Воистину, меня коснулось зло, а ведь Ты - Милосерднейший из милосердных».",
+        "ms": "Dan (sebutkanlah peristiwa) Nabi Ayub, ketika ia berdoa merayu kepada Tuhannya dengan berkata: \"Sesungguhnya aku ditimpa penyakit, sedang Engkaulah sahaja yang lebih mengasihani daripada segala (yang lain) yang mengasihani\".",
+        "bn": "এবং স্মরণ করুন আইয়্যুবের কথা, যখন তিনি তাঁর পালনকর্তাকে আহবান করে বলেছিলেনঃ আমি দুঃখকষ্টে পতিত হয়েছি এবং আপনি দয়াবানদের চাইতেও সর্বশ্রেষ্ট দয়াবান।"
+      }
+    },
+    {
+      "id": "21:87",
+      "surah": 21,
+      "ayah": 87,
+      "arabic": "وَذَا ٱلنُّونِ إِذ ذَّهَبَ مُغَٰضِبٗا فَظَنَّ أَن لَّن نَّقۡدِرَ عَلَيۡهِ فَنَادَىٰ فِي ٱلظُّلُمَٰتِ أَن لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبۡحَٰنَكَ إِنِّي كُنتُ مِنَ ٱلظَّٰلِمِينَ",
+      "translations": {
+        "en": "And [mention] the man of the fish, when he went off in anger and thought that We would not decree [anything] upon him. And he called out within the darknesses, \"There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers.\"",
+        "tr": "Zünnun (Balık Sahibi; Yunus) hakkında söylediğimizi de an. O, öfkelenerek giderken, kendisini sıkıntıya sokmayacağımızı sanmıştı; fakat sonunda karanlıklar içinde: \"Senden başka tanrı yoktur, Sen münezzehsin, doğrusu ben haksızlık edenlerdenim\" diye seslenmişti.",
+        "fr": "Et Dû'n-Nûn (Jonas) quand il partit, irrité. Il pensa que Nous N'allions pas l'éprouver. Puis il fit, dans les ténèbres, l'appel que voici: «Pas de divinité à part Toi! Pureté à Toi! J'ai été vraiment du nombre des injustes».",
+        "de": "Und (auch) dem Mann mit dem Fisch', als er erzürnt wegging. Da meinte er, Wir würden ihm nicht (den Lebensunterhalt) bemessen. Dann rief er in den Finsternissen: \"Es gibt keinen Gott außer Dir! Preis sei Dir! Gewiß, ich gehöre zu den Ungerechten.\"",
+        "es": "Y al del pez. Cuando se fue airado y creyó que no podríamos hacer nada contra él. Y clamó en las tinieblas: «¡No hay más dios que Tú! ¡Gloria a Ti! He sido de los impíos».",
+        "ur": "اور ذوالنون (کو یاد کرو) جب وہ (اپنی قوم سے ناراض ہو کر) غصے کی حالت میں چل دیئے اور خیال کیا کہ ہم ان پر قابو نہیں پاسکیں گے۔ آخر اندھیرے میں (خدا کو) پکارنے لگے کہ تیرے سوا کوئی معبود نہیں۔ تو پاک ہے (اور) بےشک میں قصوروار ہوں",
+        "ru": "Помяни также человека в рыбе (Иунуса), который ушел в гневе и подумал, что Мы не справимся с ним. Он воззвал из мрака: «Нет божества, кроме Тебя! Пречист Ты! Воистину, я был одним из беззаконников!».",
+        "ms": "Dan (sebutkanlah peristiwa) Zun-Nun, ketika ia pergi (meninggalkan kaumnya) dalam keadaan marah, yang menyebabkan ia menyangka bahawa Kami tidak akan mengenakannya kesusahan atau cubaan; (setelah berlaku kepadanya apa yang berlaku) maka ia pun menyeru dalam keadaan yang gelap-gelita dengan berkata: \"Sesungguhnya tiada Tuhan (yang dapat menolong) melainkan Engkau (ya Allah)! Maha Suci Engkau (daripada melakukan aniaya, tolongkanlah daku)! Sesungguhnya aku adalah dari orang-orang yang menganiaya diri sendiri\".",
+        "bn": "এবং মাছওয়ালার কথা স্মরণ করুন তিনি ক্রুদ্ধ হয়ে চলে গিয়েছিলেন, অতঃপর মনে করেছিলেন যে, আমি তাঁকে ধৃত করতে পারব না। অতঃপর তিনি অন্ধকারের মধ্যে আহবান করলেনঃ তুমি ব্যতীত কোন উপাস্য নেই; তুমি নির্দোষ আমি গুনাহগার।"
+      }
+    },
+    {
+      "id": "26:62",
+      "surah": 26,
+      "ayah": 62,
+      "arabic": "قَالَ كَلَّآۖ إِنَّ مَعِيَ رَبِّي سَيَهۡدِينِ",
+      "translations": {
+        "en": "[Moses] said, \"No! Indeed, with me is my Lord; He will guide me.\"",
+        "tr": "Musa: \"Hayır; Rabbim benimle beraberdir, bana elbette yol gösterecektir\" dedi.",
+        "fr": "Il dit: «Jamais, car j'ai avec moi mon Seigneur qui va me guider».",
+        "de": "Er sagte: \"Keineswegs! Denn mit mir ist mein Herr; Er wird mich leiten.\"",
+        "es": "Dijo: «¡No! ¡Mi Señor está conmigo, el me dirigirá!»",
+        "ur": "موسیٰ نے کہا ہرگز نہیں میرا پروردگار میرے ساتھ ہے وہ مجھے رستہ بتائے گا",
+        "ru": "Он сказал: «О нет! Со мной - мой Господь, и Он укажет мне прямой путь».",
+        "ms": "Nabi Musa menjawab: \"Tidak! Jangan fikir (akan berlaku yang demikian)! Sesungguhnya aku sentiasa disertai oleh Tuhanku (dengan pemuliharaan dan pertolonganNya), Ia akan menunjuk jalan kepadaku\".",
+        "bn": "মূসা বলল, কখনই নয়, আমার সাথে আছেন আমার পালনকর্তা। তিনি আমাকে পথ বলে দেবেন।"
+      }
+    },
+    {
+      "id": "29:69",
+      "surah": 29,
+      "ayah": 69,
+      "arabic": "وَٱلَّذِينَ جَٰهَدُواْ فِينَا لَنَهۡدِيَنَّهُمۡ سُبُلَنَاۚ وَإِنَّ ٱللَّهَ لَمَعَ ٱلۡمُحۡسِنِينَ",
+      "translations": {
+        "en": "And those who strive for Us - We will surely guide them to Our ways. And indeed, Allah is with the doers of good.",
+        "tr": "Ama Bizim uğrumuzda cihat edenleri elbette yollarımıza eriştireceğiz. Allah şüphesiz, iyi davrananlarla beraberdir.",
+        "fr": "Et quant à ceux qui luttent pour Notre cause, Nous les guiderons certes sur Nos sentiers. Allah est en vérité avec les bienfaisants.",
+        "de": "Diejenigen aber, die sich um Unsertwillen abmühen, werden Wir ganz gewiß Unsere Wege leiten. Und Allah ist wahrlich mit den Gutes Tuenden.",
+        "es": "A quienes hayan combatido por Nosotros ¡hemos de guiarles por Nuestros caminos! ¡Alá está, en verdad, con quienes hacen el bien!",
+        "ur": "اور جن لوگوں نے ہمارے لئے کوشش کی ہم اُن کو ضرور اپنے رستے دکھا دیں گے۔ اور خدا تو نیکو کاروں کے ساتھ ہے",
+        "ru": "А тех, которые сражаются ради Нас, Мы непременно поведем Нашими путями. Воистину, Аллах - с творящими добро!",
+        "ms": "Dan orang-orang yang berusaha dengan bersungguh-sungguh kerana memenuhi kehendak ugama Kami, sesungguhnya Kami akan memimpin mereka ke jalan-jalan Kami (yang menjadikan mereka bergembira serta beroleh keredaan); dan sesungguhnya (pertolongan dan bantuan) Allah adalah berserta orang-orang yang berusaha membaiki amalannya.",
+        "bn": "যারা আমার পথে সাধনায় আত্মনিয়োগ করে, আমি অবশ্যই তাদেরকে আমার পথে পরিচালিত করব। নিশ্চয় আল্লাহ সৎকর্মপরায়ণদের সাথে আছেন।"
+      }
+    },
+    {
+      "id": "33:3",
+      "surah": 33,
+      "ayah": 3,
+      "arabic": "وَتَوَكَّلۡ عَلَى ٱللَّهِۚ وَكَفَىٰ بِٱللَّهِ وَكِيلٗا",
+      "translations": {
+        "en": "And rely upon Allah; and sufficient is Allah as Disposer of affairs.",
+        "tr": "Allah'a güven, Allah, vekil olarak yeter.",
+        "fr": "Et place ta confiance en Allah. Allah te suffit comme protecteur.",
+        "de": "Und verlasse dich auf Allah. Allah genügt als Sachwalter.",
+        "es": "¡Confía en Alá! ¡Alá basta como protector!",
+        "ur": "اور خدا پر بھروسہ رکھنا۔ اور خدا ہی کارساز کافی ہے",
+        "ru": "Уповай на Аллаха, и довольно того, что Аллах является Попечителем и Хранителем!",
+        "ms": "Dan berserahlah kepada Allah (dan janganlah menumpukan harapanmu kepada yang lain), kerana cukuplah Allah menjadi Pentadbir urusanmu.",
+        "bn": "আপনি আল্লাহর উপর ভরসা করুন। কার্যনির্বাহীরূপে আল্লাহই যথেষ্ট।"
+      }
+    },
+    {
+      "id": "39:53",
+      "surah": 39,
+      "ayah": 53,
+      "arabic": "۞ قُلۡ يَٰعِبَادِيَ ٱلَّذِينَ أَسۡرَفُواْ عَلَىٰٓ أَنفُسِهِمۡ لَا تَقۡنَطُواْ مِن رَّحۡمَةِ ٱللَّهِۚ إِنَّ ٱللَّهَ يَغۡفِرُ ٱلذُّنُوبَ جَمِيعًاۚ إِنَّهُۥ هُوَ ٱلۡغَفُورُ ٱلرَّحِيمُ",
+      "translations": {
+        "en": "Say, \"O My servants who have transgressed against themselves [by sinning], do not despair of the mercy of Allah. Indeed, Allah forgives all sins. Indeed, it is He who is the Forgiving, the Merciful.\"",
+        "tr": "De ki: \"Ey kendilerine kötülük edip aşırı giden kullarım! Allah'ın rahmetinden umudunuzu kesmeyin. Doğrusu Allah günahların hepsini bağışlar. Çünkü O, bağışlayandır, merhametlidir.\"",
+        "fr": "Dis: «O Mes serviteurs qui avez commis des excès à votre propre détriment, ne désespérez pas de la miséricorde d'Allah. Car Allah pardonne tous les péchés. Oui, c'est Lui le Pardonneur, le Très Miséricordieux.",
+        "de": "Sag: O Meine Diener, die ihr gegen euch selbst maßlos gewesen seid, verliert nicht die Hoffnung auf Allahs Barmherzigkeit. Gewiß, Allah vergibt die Sünden alle. Er ist ja der Allvergebende und Barmherzige.",
+        "es": "Di: «¡Siervos que habéis prevaricado en detrimento propio! ¡No desesperéis de la misericordia de Alá! Alá perdona todos los pecados. Él es el Indulgente, el Misericordioso».",
+        "ur": "(اے پیغمبر میری طرف سے لوگوں کو) کہہ دو کہ اے میرے بندو جنہوں نے اپنی جانوں پر زیادتی کی ہے خدا کی رحمت سے ناامید نہ ہونا۔ خدا تو سب گناہوں کو بخش دیتا ہے۔ (اور) وہ تو بخشنے والا مہربان ہے",
+        "ru": "Скажи Моим рабам, которые излишествовали во вред самим себе: «Не отчаивайтесь в милости Аллаха. Воистину, Аллах прощает грехи полностью, ибо Он - Прощающий, Милосердный».",
+        "ms": "Katakanlah (wahai Muhammad): \"Wahai hamba-hambaKu yang telah melampaui batas terhadap diri mereka sendiri (dengan perbuatan-perbuatan maksiat), janganlah kamu berputus asa dari rahmat Allah, kerana sesungguhnya Allah mengampunkan segala dosa; sesungguhnya Dia lah jua Yang Maha Pengampun, lagi Maha Mengasihani.",
+        "bn": "বলুন, হে আমার বান্দাগণ যারা নিজেদের উপর যুলুম করেছ তোমরা আল্লাহর রহমত থেকে নিরাশ হয়ো না। নিশ্চয় আল্লাহ সমস্ত গোনাহ মাফ করেন। তিনি ক্ষমাশীল, পরম দয়ালু।"
+      }
+    },
+    {
+      "id": "40:44",
+      "surah": 40,
+      "ayah": 44,
+      "arabic": "فَسَتَذۡكُرُونَ مَآ أَقُولُ لَكُمۡۚ وَأُفَوِّضُ أَمۡرِيٓ إِلَى ٱللَّهِۚ إِنَّ ٱللَّهَ بَصِيرُۢ بِٱلۡعِبَادِ",
+      "translations": {
+        "en": "And you will remember what I [now] say to you, and I entrust my affair to Allah. Indeed, Allah is Seeing of [His] servants.\"",
+        "tr": "\"Size söylediğimi hatırlayacaksınız. Ben işimi Allah'a bırakıyorum. Doğrusu Allah, kulları görür.\"",
+        "fr": "Bientôt vous vous rappellerez ce que je vous dis; et je confie mon sort à Allah. Allah est, certes, Clairvoyant sur les serviteurs.",
+        "de": "Dann werdet ihr an das denken, was ich euch sage. Ich überlasse meine Angelegen heit Allah. Gewiß, Allah sieht die Diener wohl.\"",
+        "es": "Entonces, os acordaréis de lo que os digo. En cuanto a mí, me pongo en manos de Alá. Alá ve bien a Sus siervos».",
+        "ur": "جو بات میں تم سے کہتا ہوں تم اسے آگے چل کر یاد کرو گے۔ اور میں اپنا کام خدا کے سپرد کرتا ہوں۔ بےشک خدا بندوں کو دیکھنے والا ہے",
+        "ru": "Вы вспомните то, о чем я вам говорю. Я вверяю свое дело Аллаху. Воистину, Аллах видит рабов».",
+        "ms": "\"(Kiranya kamu tetap berdegil sekarang) maka kamu sudah tentu akan mengetahui kebenaran apa yang aku katakan kepada kamu; dan aku sentiasa menyerahkan urusanku bulat-bulat kepada Allah (untuk memeliharaku); sesungguhnya Allah Maha Melihat akan keadaan hamba-hambaNya\".",
+        "bn": "আমি তোমাদেরকে যা বলছি, তোমরা একদিন তা স্মরণ করবে। আমি আমার ব্যাপার আল্লাহর কাছে সমর্পণ করছি। নিশ্চয় বান্দারা আল্লাহর দৃষ্টিতে রয়েছে।"
+      }
+    },
+    {
+      "id": "51:50",
+      "surah": 51,
+      "ayah": 50,
+      "arabic": "فَفِرُّوٓاْ إِلَى ٱللَّهِۖ إِنِّي لَكُم مِّنۡهُ نَذِيرٞ مُّبِينٞ",
+      "translations": {
+        "en": "So flee to Allah. Indeed, I am to you from Him a clear warner.",
+        "tr": "De ki: \"Öyleyse Allah'a koşusun; doğrusu ben sizi O'nun azabı ile açıkça uyaranım.\"",
+        "fr": "«Fuyez donc vers Allah. Moi, je suis pour vous de Sa part, un avertisseur explicite.",
+        "de": "So flüchtet (nun) zu Allah. Gewiß, ich bin euch von Ihm ein deutlicher Warner.",
+        "es": "«¡Refugiaos, pues, en Alá! Soy para vosotros, de Su parte, un monitor que habla claro.",
+        "ur": "تو تم لوگ خدا کی طرف بھاگ چلو میں اس کی طرف سے تم کو صریح رستہ بتانے والا ہوں",
+        "ru": "Скажи: «Бегите же к Аллаху. Воистину, я являюсь для вас предостерегающим и разъясняющим увещевателем от Него.",
+        "ms": "(Katakanlah wahai Muhammad kepada mereka): \"Maka segeralah kamu kembali kepada Allah (dengan bertaubat dan taat), sesungguhnya aku diutuskan Allah kepada kamu, sebagai pemberi amaran yang nyata.",
+        "bn": "অতএব, আল্লাহর দিকে ধাবিত হও। আমি তাঁর তরফ থেকে তোমাদের জন্যে সুস্পষ্ট সতর্ককারী।"
+      }
+    },
+    {
+      "id": "53:42",
+      "surah": 53,
+      "ayah": 42,
+      "arabic": "وَأَنَّ إِلَىٰ رَبِّكَ ٱلۡمُنتَهَىٰ",
+      "translations": {
+        "en": "And that to your Lord is the finality",
+        "tr": "Doğrusu son varış Rabbinedir.",
+        "fr": "et que tout aboutit, en vérité, vers ton Seigneur,",
+        "de": "und daß zu deinem Herrn das Endziel sein wird",
+        "es": "que el fin de todo es tu Señor,",
+        "ur": "اور یہ کہ تمہارے پروردگار ہی کے پاس پہنچنا ہے",
+        "ru": "К твоему Господу предстоит конечный исход (или твоему Господу принадлежит конечный предел).",
+        "ms": "Dan bahawa sesungguhnya kepada hukum Tuhanmu lah kesudahan (segala perkara);",
+        "bn": "তোমার পালনকর্তার কাছে সবকিছুর সমাপ্তি,"
+      }
+    },
+    {
+      "id": "89:27",
+      "surah": 89,
+      "ayah": 27,
+      "arabic": "يَٰٓأَيَّتُهَا ٱلنَّفۡسُ ٱلۡمُطۡمَئِنَّةُ",
+      "translations": {
+        "en": "[To the righteous it will be said], \"O reassured soul,",
+        "tr": "Ey huzur içinde olan can!",
+        "fr": "«O toi, âme apaisée,",
+        "de": "O du Seele, die du Ruhe gefunden hast,",
+        "es": "«¡Alma sosegada!",
+        "ur": "اے اطمینان پانے والی روح!",
+        "ru": "О обретшая покой душа!",
+        "ms": "(Setelah menerangkan akibat orang-orang yang tidak menghiraukan akhirat, Tuhan menyatakan bahawa orang-orang yang beriman dan beramal soleh akan disambut dengan kata-kata): \"Wahai orang yang mempunyai jiwa yang sentiasa tenang tetap dengan kepercayaan dan bawaan baiknya! -",
+        "bn": "হে প্রশান্ত মন,"
+      }
+    },
+    {
+      "id": "93:3",
+      "surah": 93,
+      "ayah": 3,
+      "arabic": "مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ",
+      "translations": {
+        "en": "Your Lord has not taken leave of you, [O Muhammad], nor has He detested [you].",
+        "tr": "Rabbin seni ne bıraktı ve ne de sana darıldı.",
+        "fr": "Ton Seigneur ne t'a ni abandonné, ni détesté.",
+        "de": "Dein Herr hat sich weder von dir verabschiedet noch haßt Er (dich).",
+        "es": "Tu Señor no te ha abonadonado ni aborrecido",
+        "ur": "کہ (اے محمدﷺ) تمہارے پروردگار نے نہ تو تم کو چھوڑا اور نہ (تم سے) ناراض ہوا",
+        "ru": "Не покинул тебя твой Господь и не возненавидел.",
+        "ms": "(Bahawa) Tuhanmu (wahai Muhammad) tidak meninggalkanmu, dan Ia tidak benci (kepadamu, sebagaimana yang dituduh oleh kaum musyrik).",
+        "bn": "আপনার পালনকর্তা আপনাকে ত্যাগ করেনি এবং আপনার প্রতি বিরূপও হননি।"
+      }
+    },
+    {
+      "id": "93:4",
+      "surah": 93,
+      "ayah": 4,
+      "arabic": "وَلَلۡأٓخِرَةُ خَيۡرٞ لَّكَ مِنَ ٱلۡأُولَىٰ",
+      "translations": {
+        "en": "And the Hereafter is better for you than the first [life].",
+        "tr": "Doğrusu ahiret senin için dünyadan daha hayırlıdır.",
+        "fr": "La vie dernière t'est, certes, meilleure que la vie présente.",
+        "de": "Und das Jenseits ist wahrlich besser für dich als das Diesseits.",
+        "es": "Sí, la otra vida será mejor para ti que ésta.",
+        "ur": "اور آخرت تمہارے لیے پہلی (حالت یعنی دنیا) سے کہیں بہتر ہے",
+        "ru": "Воистину, будущее для тебя лучше, чем настоящее.",
+        "ms": "Dan sesungguhnya kesudahan keaadaanmu adalah lebih baik bagimu daripada permulaannya.",
+        "bn": "আপনার জন্যে পরকাল ইহকাল অপেক্ষা শ্রেয়।"
+      }
+    },
+    {
+      "id": "94:5",
+      "surah": 94,
+      "ayah": 5,
+      "arabic": "فَإِنَّ مَعَ ٱلۡعُسۡرِ يُسۡرًا",
+      "translations": {
+        "en": "For indeed, with hardship [will be] ease.",
+        "tr": "Elbette güçlükle beraber şüphesiz bir kolaylık vardır.",
+        "fr": "A côté de la difficulté est, certes, une facilité!",
+        "de": "Also gewiß, mit der Erschwernis ist Erleichterung,",
+        "es": "¡La adversidad y la felicidad van a una!",
+        "ur": "ہاں ہاں مشکل کے ساتھ آسانی بھی ہے",
+        "ru": "Воистину, за каждой тягостью наступает облегчение.",
+        "ms": "Oleh itu, maka (tetapkanlah kepercayaanmu) bahawa sesungguhnya tiap-tiap kesukaran disertai kemudahan,",
+        "bn": "নিশ্চয় কষ্টের সাথে স্বস্তি রয়েছে।"
+      }
+    },
+    {
+      "id": "94:6",
+      "surah": 94,
+      "ayah": 6,
+      "arabic": "إِنَّ مَعَ ٱلۡعُسۡرِ يُسۡرٗا",
+      "translations": {
+        "en": "Indeed, with hardship [will be] ease.",
+        "tr": "Gerçekten, güçlükle beraber bir kolaylık vardır.",
+        "fr": "A côté de la difficulté est, certes, une facilité!",
+        "de": "gewiß, mit der Erschwernis ist Erleichterung.",
+        "es": "¡La adversidad y la felicidad van a una!",
+        "ur": "(اور) بے شک مشکل کے ساتھ آسانی ہے",
+        "ru": "За каждой тягостью наступает облегчение.",
+        "ms": "(Sekali lagi ditegaskan): bahawa sesungguhnya tiap-tiap kesukaran disertai kemudahan.",
+        "bn": "নিশ্চয় কষ্টের সাথে স্বস্তি রয়েছে।"
+      }
+    }
+  ]
+}

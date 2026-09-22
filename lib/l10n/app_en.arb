@@ -5394,5 +5394,37 @@
     "exactAlarmDescription": "Keep battery optimization on and allow exact alarms for precise scheduling. Battery restrictions may still delay delivery.",
     "allowExactAlarms": "Allow exact alarms",
     "exactAlarmsReadyTitle": "Exact-time scheduling is ready",
-    "exactAlarmsReadyDescription": "Huda can schedule prayer alerts and reminders for their exact time."
+    "exactAlarmsReadyDescription": "Huda can schedule prayer alerts and reminders for their exact time.",
+    "quranWidgetTagline": "A new ayah and translation every hour",
+    "quranWidgetCustomization": "Quran widget customization",
+    "quranWidgetTypography": "Text style",
+    "ayahAutoFit": "Ayah Auto Fit",
+    "translationAutoFit": "Translation Auto Fit",
+    "ayahTextSize": "Ayah size",
+    "translationTextSize": "Translation size",
+    "boldAyah": "Bold ayah",
+    "boldTranslation": "Bold translation",
+    "quranWidgetPreview": "Live preview",
+    "translationLanguage": "Translation language",
+    "translationLanguageDescription": "Choose the language shown below the Arabic ayah.",
+    "translationSource": "Translation by {source}",
+    "@translationSource": {
+        "placeholders": {
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "customColors": "Custom colors",
+    "customColorsDescription": "Fine-tune the widget while keeping every line readable.",
+    "ayahColor": "Ayah color",
+    "translationColor": "Translation color",
+    "accentColor": "Accent color",
+    "customizeColors": "Customize colors",
+    "quranWidgetUpdated": "Quran widget refreshed",
+    "forceQuranWidgetUpdate": "Show another ayah",
+    "quranWidgetUpdating": "Refreshing widget…",
+    "customTheme": "Custom",
+    "colorContrastTooLow": "This color does not have enough contrast.",
+    "arabicTranslationHidden": "Arabic app language uses an Arabic-only widget."
 }
