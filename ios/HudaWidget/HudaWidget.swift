@@ -1,254 +1,661 @@
 import WidgetKit
 import SwiftUI
+import UIKit
 
 struct HudaWidgetEntry: TimelineEntry {
     let date: Date
-    let quote: String
-    let themeColors: ThemeColors
+    let snapshot: QuranWidgetSnapshot
 }
 
 struct HudaWidgetProvider: TimelineProvider {
-    
+    private static let futureEntryCount = 8
+
     func placeholder(in context: Context) -> HudaWidgetEntry {
-        HudaWidgetEntry(
-            date: Date(),
-            quote: WidgetDataLoader.defaultVerses[0],
-            themeColors: WidgetThemeColors.getThemeColors(themeName: "teal", isDarkMode: false)
-        )
+        HudaWidgetEntry(date: Date(), snapshot: WidgetDataLoader.snapshot())
     }
-    
+
     func getSnapshot(in context: Context, completion: @escaping (HudaWidgetEntry) -> Void) {
-        let entry = HudaWidgetEntry(
-            date: Date(),
-            quote: WidgetDataLoader.getCurrentQuote(),
-            themeColors: WidgetDataLoader.getThemeColors()
-        )
-        completion(entry)
+        completion(HudaWidgetEntry(date: Date(), snapshot: WidgetDataLoader.snapshot()))
     }
-    
+
     func getTimeline(in context: Context, completion: @escaping (Timeline<HudaWidgetEntry>) -> Void) {
-        var entries: [HudaWidgetEntry] = []
-        let currentDate = Date()
-
-        for minuteOffset in stride(from: 0, to: 60 * 4, by: 15) {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
-            let entry = HudaWidgetEntry(
-                date: entryDate,
-                quote: WidgetDataLoader.getCurrentQuote(),
-                themeColors: WidgetDataLoader.getThemeColors()
+        let now = Date()
+        let calendar = Calendar(identifier: .gregorian)
+        let nextHour = calendar.dateInterval(of: .hour, for: now)?.end
+            ?? now.addingTimeInterval(3600)
+        var entries = [HudaWidgetEntry(date: now, snapshot: WidgetDataLoader.snapshot(at: now))]
+        for hourOffset in 0..<Self.futureEntryCount {
+            guard let date = calendar.date(byAdding: .hour, value: hourOffset, to: nextHour) else {
+                continue
+            }
+            entries.append(
+                HudaWidgetEntry(date: date, snapshot: WidgetDataLoader.snapshot(at: date))
             )
-            entries.append(entry)
         }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+        completion(Timeline(entries: entries, policy: .atEnd))
     }
 }
 
 struct HudaWidgetEntryView: View {
-    var entry: HudaWidgetEntry
-    @Environment(\.widgetFamily) var widgetFamily
-    @Environment(\.widgetRenderingMode) var widgetRenderingMode
-    
+    let entry: HudaWidgetEntry
+
+    @Environment(\.widgetFamily) private var family
+    @Environment(\.widgetRenderingMode) private var renderingMode
+
     var body: some View {
-        VStack(spacing: verticalSpacing) {
-            headerSection
+        GeometryReader { geometry in
+            let layout = QuranNoorLayout(size: geometry.size, family: family)
+            let textLayout = makeTextLayout(layout: layout)
 
-            quoteCard
+            VStack(spacing: 0) {
+                QuranNoorHeader(
+                    reference: entry.snapshot.displayReference,
+                    appLanguage: entry.snapshot.appLanguage,
+                    compact: layout.isCompact,
+                    expanded: layout.isExpanded,
+                    palette: entry.snapshot.palette,
+                    fullColor: isFullColor
+                )
 
-            bottomDecoration
-        }
-        .padding(contentPadding)
-    }
+                Spacer().frame(height: layout.headerGap)
 
-    private var adaptiveAccentColor: Color {
-        switch widgetRenderingMode {
-        case .vibrant, .accented:
-            return .primary
-        default:
-            return entry.themeColors.accent
-        }
-    }
+                VStack(spacing: 0) {
+                    Text(entry.snapshot.verse.arabic)
+                        .font(.custom(ayahFontName, size: textLayout.ayahFontSize))
+                        .foregroundStyle(ayahColor)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(layout.arabicLineSpacing)
+                        .lineLimit(textLayout.ayahLineLimit)
+                        .truncationMode(.tail)
+                        .environment(\.layoutDirection, .rightToLeft)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: textLayout.ayahHeight)
+                        .clipped()
 
-    private var adaptiveTextColor: Color {
-        switch widgetRenderingMode {
-        case .vibrant, .accented:
-            return .primary
-        default:
-            return entry.themeColors.quoteTextColor
-        }
-    }
+                    if textLayout.showsTranslation,
+                       let translation = entry.snapshot.translation,
+                       !translation.isEmpty {
+                        QuranNoorDivider(
+                            compact: layout.isCompact,
+                            palette: entry.snapshot.palette,
+                            fullColor: isFullColor
+                        )
 
-    private var adaptiveCardBackground: Color {
-        switch widgetRenderingMode {
-        case .vibrant, .accented:
-            return .white.opacity(0.2)
-        default:
-            return entry.themeColors.quoteCardBackground
-        }
-    }
-
-    private var adaptiveBadgeBackground: Color {
-        switch widgetRenderingMode {
-        case .vibrant, .accented:
-            return .white.opacity(0.15)
-        default:
-            return entry.themeColors.accent.opacity(0.15)
-        }
-    }
-
-    private var headerSection: some View {
-        HStack(spacing: 8) {
-            Rectangle()
-                .fill(adaptiveAccentColor)
-                .frame(width: lineWidth, height: 2)
-
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(adaptiveBadgeBackground)
-                    .frame(width: iconBadgeSize, height: iconBadgeSize * 0.6)
-                
-                Image("HudaLogo")
-                    .renderingMode(.template)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: iconSize * 1.5, height: iconSize)
-                    .foregroundColor(adaptiveAccentColor)
+                        Text(translation)
+                            .font(.system(
+                                size: textLayout.translationFontSize,
+                                weight: entry.snapshot.translationBold ? .bold : .regular
+                            ))
+                            .foregroundStyle(translationColor)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(layout.translationLineSpacing)
+                            .lineLimit(textLayout.translationLineLimit)
+                            .truncationMode(.tail)
+                            .environment(
+                                \.layoutDirection,
+                                entry.snapshot.translationLanguage == "ur"
+                                    ? .rightToLeft
+                                    : .leftToRight
+                            )
+                            .frame(maxWidth: .infinity)
+                            .frame(height: textLayout.translationHeight)
+                            .clipped()
+                    }
+                }
+                .frame(maxHeight: .infinity, alignment: .center)
             }
-
-            Rectangle()
-                .fill(adaptiveAccentColor)
-                .frame(width: lineWidth, height: 2)
+            .padding(.horizontal, layout.horizontalPadding)
+            .padding(.vertical, layout.verticalPadding)
         }
+        .overlay {
+            ContainerRelativeShape()
+                .stroke(borderGradient, lineWidth: 1)
+        }
+        .overlay {
+            ContainerRelativeShape()
+                .inset(by: 1.5)
+                .stroke(ayahColor.opacity(0.09), lineWidth: 0.75)
+        }
+        .widgetURL(URL(string: "huda://quran"))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
     }
 
-    private var quoteCard: some View {
+    private var isFullColor: Bool { renderingMode == .fullColor }
+
+    private var ayahFontName: String {
+        entry.snapshot.ayahBold ? "Amiri-Bold" : "Amiri-Regular"
+    }
+
+    private var ayahColor: Color {
+        isFullColor ? entry.snapshot.palette.ayah : .primary
+    }
+
+    private var translationColor: Color {
+        isFullColor ? entry.snapshot.palette.translation.opacity(0.90) : .secondary
+    }
+
+    private var borderGradient: LinearGradient {
+        let palette = entry.snapshot.palette
+        return LinearGradient(
+            stops: [
+                .init(
+                    color: isFullColor ? palette.accent.opacity(0.62) : .primary.opacity(0.55),
+                    location: 0.00
+                ),
+                .init(
+                    color: isFullColor ? palette.ayah.opacity(0.16) : .primary.opacity(0.12),
+                    location: 0.36
+                ),
+                .init(
+                    color: isFullColor ? palette.ornament.opacity(0.34) : .primary.opacity(0.30),
+                    location: 0.72
+                ),
+                .init(
+                    color: isFullColor ? palette.accent.opacity(0.18) : .primary.opacity(0.16),
+                    location: 1.00
+                )
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    private func makeTextLayout(layout: QuranNoorLayout) -> QuranNoorTextLayout {
+        let hasTranslation = !(entry.snapshot.translation?.isEmpty ?? true)
+        let availableWidth = max(1, layout.size.width - layout.horizontalPadding * 2)
+        let availableHeight = max(
+            1,
+            layout.size.height
+                - layout.verticalPadding * 2
+                - layout.headerDiameter
+                - layout.headerGap
+        )
+        let ayahBaseSize: CGFloat = layout.isExpanded ? 27 : layout.isCompact ? 17 : 20
+        let translationBaseSize: CGFloat = layout.isExpanded ? 13 : layout.isCompact ? 9 : 10.5
+        var ayahSize = ayahBaseSize *
+            (entry.snapshot.ayahAutoFit ? 1 : entry.snapshot.ayahTextScale)
+        var translationSize = translationBaseSize *
+            (entry.snapshot.translationAutoFit ? 1 : entry.snapshot.translationTextScale)
+        let ayahMaxLines = layout.isExpanded ? 4 : layout.isMicro ? 2 : 3
+        let translationMaxLines = layout.isExpanded ? 5 : layout.isMicro ? 1 : layout.isCompact ? 2 : 3
+        var ayahLines = ayahMaxLines
+        var translationLines = translationMaxLines
+        var showsTranslation = hasTranslation
+        let dividerHeight = layout.dividerHeight
+
+        func ayahMetrics() -> QuranNoorTextMetrics {
+            textMetrics(
+                entry.snapshot.verse.arabic,
+                font: UIFont(name: ayahFontName, size: ayahSize)
+                    ?? UIFont.systemFont(ofSize: ayahSize),
+                width: availableWidth,
+                lineSpacing: layout.arabicLineSpacing
+            )
+        }
+
+        func translationMetrics() -> QuranNoorTextMetrics? {
+            guard showsTranslation, let translation = entry.snapshot.translation else { return nil }
+            return textMetrics(
+                translation,
+                font: UIFont.systemFont(
+                    ofSize: translationSize,
+                    weight: entry.snapshot.translationBold ? .bold : .regular
+                ),
+                width: availableWidth,
+                lineSpacing: layout.translationLineSpacing
+            )
+        }
+
+        func totalHeight() -> CGFloat {
+            let ayah = ayahMetrics().height(for: ayahLines)
+            guard let translation = translationMetrics() else { return ayah }
+            return ayah + dividerHeight + translation.height(for: translationLines)
+        }
+
+        for _ in 0..<120 {
+            if totalHeight() <= availableHeight { break }
+            if entry.snapshot.translationAutoFit,
+               showsTranslation,
+               translationSize > 9 {
+                translationSize = max(9, translationSize - 0.5)
+            } else if entry.snapshot.ayahAutoFit, ayahSize > 14 {
+                ayahSize = max(14, ayahSize - 0.5)
+            } else {
+                break
+            }
+        }
+
+        while showsTranslation && totalHeight() > availableHeight && translationLines > 1 {
+            translationLines -= 1
+        }
+        while totalHeight() > availableHeight && ayahLines > 1 {
+            ayahLines -= 1
+        }
+
+        let ayahWouldTruncate = ayahMetrics().lineCount > ayahLines
+        let translationWouldTruncate = translationMetrics()
+            .map { $0.lineCount > translationLines } ?? false
+        if showsTranslation,
+           layout.isCompact,
+           (totalHeight() > availableHeight || ayahWouldTruncate || translationWouldTruncate) {
+            showsTranslation = false
+            ayahLines = ayahMaxLines
+            if entry.snapshot.ayahAutoFit { ayahSize = ayahBaseSize }
+            while totalHeight() > availableHeight && ayahSize > 14 {
+                ayahSize = max(14, ayahSize - 0.5)
+            }
+            while totalHeight() > availableHeight && ayahLines > 1 {
+                ayahLines -= 1
+            }
+        }
+
+        let finalAyahMetrics = ayahMetrics()
+        let finalTranslationMetrics = translationMetrics()
+        var ayahHeight = finalAyahMetrics.height(for: ayahLines)
+        var translationHeight = finalTranslationMetrics?.height(for: translationLines) ?? 0
+        let requiredHeight = ayahHeight
+            + (showsTranslation ? dividerHeight + translationHeight : 0)
+        if requiredHeight > availableHeight {
+            if showsTranslation {
+                let textHeight = max(2, availableHeight - dividerHeight)
+                ayahHeight = max(1, textHeight * 0.62)
+                translationHeight = max(1, textHeight - ayahHeight)
+            } else {
+                ayahHeight = availableHeight
+            }
+        }
+
+        return QuranNoorTextLayout(
+            ayahFontSize: ayahSize,
+            translationFontSize: translationSize,
+            ayahHeight: ayahHeight,
+            translationHeight: translationHeight,
+            ayahLineLimit: max(1, ayahLines),
+            translationLineLimit: max(1, translationLines),
+            showsTranslation: showsTranslation
+        )
+    }
+
+    private func textMetrics(
+        _ text: String,
+        font: UIFont,
+        width: CGFloat,
+        lineSpacing: CGFloat
+    ) -> QuranNoorTextMetrics {
+        let bounds = (text as NSString).boundingRect(
+            with: CGSize(width: width, height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: font],
+            context: nil
+        )
+        let lineCount = max(1, Int(ceil(bounds.height / font.lineHeight)))
+        return QuranNoorTextMetrics(
+            lineCount: lineCount,
+            lineHeight: ceil(font.lineHeight),
+            lineSpacing: lineSpacing
+        )
+    }
+
+    private var accessibilityLabel: String {
+        [
+            entry.snapshot.verse.arabic,
+            entry.snapshot.translation,
+            entry.snapshot.displayReference
+        ]
+        .compactMap { $0 }
+        .joined(separator: ". ")
+    }
+}
+
+private struct QuranNoorLayout {
+    let size: CGSize
+    let isMicro: Bool
+    let isCompact: Bool
+    let isExpanded: Bool
+    let horizontalPadding: CGFloat
+    let verticalPadding: CGFloat
+    let headerDiameter: CGFloat
+    let headerGap: CGFloat
+    let arabicLineSpacing: CGFloat
+    let translationLineSpacing: CGFloat
+    let dividerHeight: CGFloat
+
+    init(size: CGSize, family: WidgetFamily) {
+        self.size = size
+        isMicro = size.width < 145 || size.height < 120
+        isExpanded = family == .systemLarge || size.height >= 235
+        isCompact = family == .systemSmall || size.width < 330 || size.height < 172
+
+        if isExpanded {
+            horizontalPadding = 24
+            verticalPadding = 20
+            headerDiameter = 34
+            headerGap = 13
+            arabicLineSpacing = 7
+            translationLineSpacing = 2
+            dividerHeight = 11
+        } else if isMicro {
+            horizontalPadding = 10
+            verticalPadding = 6
+            headerDiameter = 23
+            headerGap = 1
+            arabicLineSpacing = 2
+            translationLineSpacing = 1
+            dividerHeight = 6
+        } else if isCompact {
+            horizontalPadding = 14
+            verticalPadding = 7
+            headerDiameter = 25
+            headerGap = 2
+            arabicLineSpacing = 2.5
+            translationLineSpacing = 1
+            dividerHeight = 7
+        } else {
+            horizontalPadding = 18
+            verticalPadding = 10
+            headerDiameter = 29
+            headerGap = 4
+            arabicLineSpacing = 4
+            translationLineSpacing = 1.5
+            dividerHeight = 9
+        }
+    }
+}
+
+private struct QuranNoorTextLayout {
+    let ayahFontSize: CGFloat
+    let translationFontSize: CGFloat
+    let ayahHeight: CGFloat
+    let translationHeight: CGFloat
+    let ayahLineLimit: Int
+    let translationLineLimit: Int
+    let showsTranslation: Bool
+}
+
+private struct QuranNoorTextMetrics {
+    let lineCount: Int
+    let lineHeight: CGFloat
+    let lineSpacing: CGFloat
+
+    func height(for requestedLines: Int) -> CGFloat {
+        let lines = max(1, min(requestedLines, lineCount))
+        return CGFloat(lines) * lineHeight + CGFloat(max(0, lines - 1)) * lineSpacing
+    }
+}
+
+private struct QuranNoorHeader: View {
+    let reference: String
+    let appLanguage: String
+    let compact: Bool
+    let expanded: Bool
+    let palette: QuranWidgetPalette
+    let fullColor: Bool
+
+    var body: some View {
+        HStack(spacing: 0) {
+            QuranNoorMedallion(
+                size: expanded ? 34 : compact ? 25 : 29,
+                palette: palette,
+                fullColor: fullColor
+            )
+            .offset(y: 2)
+
+            Spacer(minLength: 8)
+
+            HStack(spacing: 5) {
+                Circle()
+                    .fill(fullColor ? palette.ornament : .primary)
+                    .frame(width: 3.5, height: 3.5)
+
+                Text(reference)
+                    .font(.system(size: compact ? 8 : expanded ? 10 : 8.8, weight: .medium))
+                    .tracking(0.15)
+                    .foregroundStyle(fullColor ? palette.ayah.opacity(0.92) : .primary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.78)
+                    .environment(\.layoutDirection, isRTL ? .rightToLeft : .leftToRight)
+            }
+            .padding(.horizontal, compact ? 8 : 10)
+            .padding(.vertical, compact ? 3 : 4)
+            .background(
+                (fullColor ? palette.ayah : Color.primary)
+                    .opacity(fullColor && palette.isLight ? 0.055 : 0.075),
+                in: Capsule()
+            )
+            .overlay {
+                Capsule().stroke(
+                    (fullColor ? palette.ayah : Color.primary).opacity(0.14),
+                    lineWidth: 0.75
+                )
+            }
+            .frame(maxWidth: compact ? 155 : expanded ? 235 : 205, alignment: .trailing)
+        }
+        .environment(\.layoutDirection, .leftToRight)
+        .offset(y: compact ? -2 : -4)
+    }
+
+    private var isRTL: Bool { appLanguage == "ar" || appLanguage == "ur" }
+}
+
+private struct QuranNoorMedallion: View {
+    let size: CGFloat
+    let palette: QuranWidgetPalette
+    let fullColor: Bool
+
+    var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(adaptiveCardBackground)
-            
-            Text(entry.quote)
-                .font(.custom("Amiri", size: quoteFontSize))
-                .foregroundColor(adaptiveTextColor)
-                .multilineTextAlignment(.center)
-                .lineLimit(maxLines)
-                .minimumScaleFactor(0.6)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: fullColor
+                            ? [palette.accent.opacity(0.22), palette.ayah.opacity(0.06)]
+                            : [.primary.opacity(0.22), .primary.opacity(0.06)],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: size * 0.5
+                    )
+                )
+
+            Circle()
+                .stroke(
+                    (fullColor ? palette.accent : Color.primary).opacity(0.38),
+                    lineWidth: 0.75
+                )
+
+            Image("HudaLogo")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle((fullColor ? palette.ayah : Color.primary).opacity(0.96))
+                .padding(size * 0.15)
         }
-        .frame(height: quoteCardHeight)
+        .frame(width: size, height: size)
+    }
+}
+
+private struct QuranNoorDivider: View {
+    let compact: Bool
+    let palette: QuranWidgetPalette
+    let fullColor: Bool
+
+    var body: some View {
+        HStack(spacing: 5) {
+            LinearGradient(
+                colors: [
+                    .clear,
+                    (fullColor ? palette.accent : Color.primary).opacity(0.58)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: compact ? 26 : 34, height: 0.75)
+
+            Circle()
+                .fill((fullColor ? palette.ornament : Color.primary).opacity(0.92))
+                .frame(width: 3, height: 3)
+
+            LinearGradient(
+                colors: [
+                    (fullColor ? palette.accent : Color.primary).opacity(0.58),
+                    .clear
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: compact ? 26 : 34, height: 0.75)
+        }
+        .padding(.vertical, compact ? 2 : 3)
+    }
+}
+
+private struct QuranNoorBackground: View {
+    let palette: QuranWidgetPalette
+
+    @Environment(\.widgetRenderingMode) private var renderingMode
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                LinearGradient(
+                    colors: fullColor
+                        ? [palette.surface, palette.background, palette.background]
+                        : [.primary.opacity(0.28), .primary.opacity(0.10)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+
+                RadialGradient(
+                    colors: [
+                        (fullColor ? palette.accent : Color.primary)
+                            .opacity(palette.isLight ? 0.16 : 0.27),
+                        .clear
+                    ],
+                    center: UnitPoint(x: 0.50, y: 0.18),
+                    startRadius: 0,
+                    endRadius: geometry.size.width * 0.62
+                )
+
+                RadialGradient(
+                    colors: [
+                        (fullColor ? palette.ornament : Color.primary).opacity(0.14),
+                        .clear
+                    ],
+                    center: UnitPoint(x: 0.88, y: -0.02),
+                    startRadius: 0,
+                    endRadius: geometry.size.width * 0.37
+                )
+
+                LinearGradient(
+                    stops: [
+                        .init(color: .clear, location: 0.48),
+                        .init(
+                            color: .black.opacity(fullColor && !palette.isLight ? 0.22 : 0.08),
+                            location: 1.00
+                        )
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+
+                QuranNoorSacredGeometry(
+                    palette: palette,
+                    fullColor: fullColor
+                )
+            }
+        }
     }
 
-    private var bottomDecoration: some View {
-        RoundedRectangle(cornerRadius: 2)
-            .fill(adaptiveAccentColor.opacity(0.5))
-            .frame(width: 50, height: 4)
+    private var fullColor: Bool { renderingMode == .fullColor }
+}
+
+private struct QuranNoorSacredGeometry: View {
+    let palette: QuranWidgetPalette
+    let fullColor: Bool
+
+    var body: some View {
+        Canvas { context, size in
+            var arch = Path()
+            arch.move(to: CGPoint(x: size.width * 0.18, y: size.height * 0.92))
+            arch.addCurve(
+                to: CGPoint(x: size.width * 0.50, y: size.height * 0.08),
+                control1: CGPoint(x: size.width * 0.18, y: size.height * 0.50),
+                control2: CGPoint(x: size.width * 0.35, y: size.height * 0.22)
+            )
+            arch.addCurve(
+                to: CGPoint(x: size.width * 0.82, y: size.height * 0.92),
+                control1: CGPoint(x: size.width * 0.65, y: size.height * 0.22),
+                control2: CGPoint(x: size.width * 0.82, y: size.height * 0.50)
+            )
+            context.stroke(
+                arch,
+                with: .color(
+                    (fullColor ? palette.accent : Color.primary)
+                        .opacity(palette.isLight ? 0.10 : 0.075)
+                ),
+                style: StrokeStyle(lineWidth: 1, lineCap: .round)
+            )
+
+            context.stroke(
+                eightPointStar(
+                    center: CGPoint(x: size.width * 0.96, y: size.height * 0.06),
+                    outerRadius: min(size.width, size.height) * 0.34
+                ),
+                with: .color(
+                    (fullColor ? palette.ornament : Color.primary)
+                        .opacity(palette.isLight ? 0.12 : 0.075)
+                ),
+                lineWidth: 1
+            )
+            context.stroke(
+                eightPointStar(
+                    center: CGPoint(x: size.width * 0.02, y: size.height * 0.98),
+                    outerRadius: min(size.width, size.height) * 0.23
+                ),
+                with: .color(
+                    (fullColor ? palette.accent : Color.primary)
+                        .opacity(palette.isLight ? 0.09 : 0.055)
+                ),
+                lineWidth: 1
+            )
+        }
     }
 
-    private var verticalSpacing: CGFloat {
-        switch widgetFamily {
-        case .systemSmall: return 6
-        case .systemMedium: return 8
-        case .systemLarge: return 10
-        default: return 8
+    private func eightPointStar(center: CGPoint, outerRadius: CGFloat) -> Path {
+        var path = Path()
+        let innerRadius = outerRadius * 0.46
+        for index in 0..<16 {
+            let angle = -Double.pi / 2 + Double(index) * Double.pi / 8
+            let radius = index.isMultiple(of: 2) ? outerRadius : innerRadius
+            let point = CGPoint(
+                x: center.x + cos(angle) * radius,
+                y: center.y + sin(angle) * radius
+            )
+            if index == 0 {
+                path.move(to: point)
+            } else {
+                path.addLine(to: point)
+            }
         }
-    }
-    
-    private var contentPadding: CGFloat {
-        switch widgetFamily {
-        case .systemSmall: return 10
-        case .systemMedium: return 12
-        case .systemLarge: return 14
-        default: return 12
-        }
-    }
-    
-    private var lineWidth: CGFloat {
-        switch widgetFamily {
-        case .systemSmall: return 30
-        case .systemMedium: return 50
-        case .systemLarge: return 60
-        default: return 50
-        }
-    }
-    
-    private var iconBadgeSize: CGFloat {
-        switch widgetFamily {
-        case .systemSmall: return 36
-        case .systemMedium: return 44
-        case .systemLarge: return 52
-        default: return 44
-        }
-    }
-    
-    private var iconSize: CGFloat {
-        switch widgetFamily {
-        case .systemSmall: return 14
-        case .systemMedium: return 18
-        case .systemLarge: return 22
-        default: return 18
-        }
-    }
-    
-    private var quoteFontSize: CGFloat {
-        switch widgetFamily {
-        case .systemSmall: return 16
-        case .systemMedium: return 20
-        case .systemLarge: return 24
-        default: return 20
-        }
-    }
-    
-    private var quoteCardHeight: CGFloat {
-        switch widgetFamily {
-        case .systemSmall: return 80
-        case .systemMedium: return 100
-        case .systemLarge: return 200
-        default: return 100
-        }
-    }
-    
-    private var maxLines: Int {
-        switch widgetFamily {
-        case .systemSmall: return 3
-        case .systemMedium: return 4
-        case .systemLarge: return 8
-        default: return 4
-        }
+        path.closeSubpath()
+        return path
     }
 }
 
 struct HudaWidget: Widget {
-    let kind: String = "HudaWidget"
-    
+    let kind = "HudaWidget"
+
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: HudaWidgetProvider()) { entry in
             HudaWidgetEntryView(entry: entry)
                 .containerBackground(for: .widget) {
-                    LinearGradient(
-                        colors: [entry.themeColors.gradientStart, entry.themeColors.gradientEnd],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    QuranNoorBackground(palette: entry.snapshot.palette)
                 }
         }
-        .configurationDisplayName("Huda")
-        .description("Beautiful Quranic verses on your home screen")
+        .configurationDisplayName("Quran Verse")
+        .description("An ayah with an optional translation, refreshed every hour.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .contentMarginsDisabled()
+        .containerBackgroundRemovable(false)
     }
-}
-
-#Preview(as: .systemMedium) {
-    HudaWidget()
-} timeline: {
-    HudaWidgetEntry(
-        date: .now,
-        quote: "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
-        themeColors: WidgetThemeColors.getThemeColors(themeName: "purple", isDarkMode: false)
-    )
-    HudaWidgetEntry(
-        date: .now,
-        quote: "وَٱللَّهُ غَفُورٌ رَّحِيمٌ",
-        themeColors: WidgetThemeColors.getThemeColors(themeName: "green", isDarkMode: true)
-    )
 }

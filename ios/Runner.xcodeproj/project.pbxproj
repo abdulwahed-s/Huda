@@ -28,6 +28,7 @@
 		C2BE24772F0FC13600032FC8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BE24762F0FC13600032FC8 /* WidgetKit.framework */; };
 		C2BE24792F0FC13600032FC8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BE24782F0FC13600032FC8 /* SwiftUI.framework */; };
 		C2BE248A2F0FC13600032FC8 /* HudaWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C2BE24752F0FC13600032FC8 /* HudaWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C2QURAN00000000000000001 /* quran_widget_verses.json in Resources */ = {isa = PBXBuildFile; fileRef = C2QURAN00000000000000002 /* quran_widget_verses.json */; };
 		C3FAMACT12345678901234 /* FamilyActivityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FAMACT12345678901235 /* FamilyActivityPickerView.swift */; };
 		C3MIQAAT12345678901234 /* MiqaatLockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3MIQAAT12345678901235 /* MiqaatLockManager.swift */; };
 		D11A71E84F4B33C4D8EE602D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B78399BFD158AB2AE9F8C896 /* Foundation.framework */; };
@@ -138,6 +139,7 @@
 		C2BE24782F0FC13600032FC8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C2BE24912F0FC18500032FC8 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		C2BE24922F0FC1FC00032FC8 /* HudaWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HudaWidgetExtension.entitlements; sourceTree = "<group>"; };
+		C2QURAN00000000000000002 /* quran_widget_verses.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = quran_widget_verses.json; path = ../assets/json/quran_widget_verses.json; sourceTree = SOURCE_ROOT; };
 		C3FAMACT12345678901235 /* FamilyActivityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyActivityPickerView.swift; sourceTree = "<group>"; };
 		C3MIQAAT12345678901235 /* MiqaatLockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiqaatLockManager.swift; sourceTree = "<group>"; };
 		CB5F8B8DBB324D16D96CA66E /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				E2C6DA781CBE08473F60C69A /* Frameworks */,
 				1117B5B475D3F1BA411E064F /* HudaShieldAction */,
 				DA0DEVMON0000000000000A /* HudaDeviceMonitor */,
+				C2E703863046DE4F00CFFE23 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -342,6 +345,14 @@
 				B78399BFD158AB2AE9F8C896 /* Foundation.framework */,
 			);
 			name = iOS;
+			sourceTree = "<group>";
+		};
+		C2E703863046DE4F00CFFE23 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				C2QURAN00000000000000002 /* quran_widget_verses.json */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		DA0DEVMON0000000000000A /* HudaDeviceMonitor */ = {
@@ -579,6 +590,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2QURAN00000000000000001 /* quran_widget_verses.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
