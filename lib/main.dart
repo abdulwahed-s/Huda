@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'dart:ui';
 
+import 'package:dart_pdf_editor_assets/dart_pdf_editor_assets.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
@@ -12,6 +13,7 @@ import 'package:huda/presentation/screens/bootstrapper.dart';
 void main() {
   runZonedGuarded(() {
     WidgetsFlutterBinding.ensureInitialized();
+    registerBundledEditorAssets();
 
     if (!kIsWeb && Platform.isAndroid) {
       GeolocatorPlatform.instance = HudaAndroidGeolocator();

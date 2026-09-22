@@ -47,6 +47,8 @@ dependencies:
 
   # Storage & files
   shared_preferences: ^2.5.3
+  flutter_secure_storage: ^11.0.0
+  hive_ce_flutter: ^2.3.4
   path_provider: ^2.1.4
   path: ^1.9.1
   archive: ^4.0.4
@@ -93,9 +95,10 @@ dependencies:
   widgets_to_image: ^2.0.1
 
   # PDF
-  dart_pdf_editor: 2.1.0
-  pdf_document: 2.1.0
-  pdf_graphics: 2.1.0
+  dart_pdf_editor: 4.0.0
+  dart_pdf_editor_assets: 4.0.0
+  pdf_document: 4.0.0
+  pdf_graphics: 4.0.0
 
   # Misc
   uuid: ^4.5.1

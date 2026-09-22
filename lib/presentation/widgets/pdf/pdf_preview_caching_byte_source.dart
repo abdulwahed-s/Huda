@@ -121,7 +121,7 @@ class PdfPreviewCachingByteSource implements PdfByteSource {
 
   Future<T> _runExclusive<T>(Future<T> Function() operation) {
     final result = _operations.then((_) => operation());
-    _operations = result.then<void>((_) {}, onError: (_, __) {});
+    _operations = result.then<void>((_) {}, onError: (_, _) {});
     return result;
   }
 

@@ -104,6 +104,7 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
           source,
           options: PdfSourceLoadOptions(
             firstPaintPages: 1,
+            completeFirstPaintPageTree: false,
             onProgress: (fetched, total) =>
                 _reportLoadProgress(source, generation, fetched, total),
           ),
