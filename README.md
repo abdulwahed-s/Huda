@@ -65,8 +65,9 @@
 
 ### Prerequisites
 
-* **Flutter SDK:** `3.6.2` or higher
-* **Dart SDK:** `3.6.2` or higher
+* **Flutter SDK:** `3.44.2` (pinned in `.fvmrc`)
+* **Dart SDK:** `3.12.2` (bundled with Flutter 3.44.2)
+* **Android builds:** JDK 17, Android SDK Platform 37.0, and Build Tools 37.0.0
 
 ### Installation
 

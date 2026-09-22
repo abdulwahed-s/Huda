@@ -1,4 +1,4 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import com.android.build.api.variant.FilterConfiguration.FilterType
 
 plugins {
     id "com.android.application"
@@ -16,22 +16,30 @@ if (keystorePropertiesFile.exists()) {
 
 def useLegacyNativeLibraryPackaging =
     project.findProperty("hudaUseLegacyPackaging")?.toString()?.toBoolean() ?: false
+def hudaSplitPerAbi =
+    project.findProperty("split-per-abi")?.toString()?.toBoolean() ?: false
+
+// Keep Flutter's CLI/output-discovery contract, but let AGP's public Variant API
+// own Huda's established ABI version codes instead of Flutter's legacy override.
+if (hudaSplitPerAbi) {
+    project.extensions.extraProperties.set("split-per-abi", "false")
+}
 
 
 android {
     namespace = "com.aw.huda"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
 
         coreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -41,6 +49,15 @@ android {
     packaging {
         jniLibs {
             useLegacyPackaging = useLegacyNativeLibraryPackaging
+        }
+    }
+
+    splits {
+        abi {
+            enable = hudaSplitPerAbi
+            reset()
+            include "armeabi-v7a", "arm64-v8a", "x86_64"
+            universalApk = false
         }
     }
 
@@ -82,11 +99,16 @@ signingConfigs {
 
 def abiCodes = ["armeabi-v7a": 1, "arm64-v8a": 2, "x86_64": 3]
 
-android.applicationVariants.configureEach { variant ->
-    variant.outputs.configureEach { output ->
-        def abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]
-        if (abiVersionCode != null) {
-            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.outputs.each { output ->
+            def abiVersionCode = abiCodes[
+                output.filters.find { it.filterType == FilterType.ABI }?.identifier
+            ]
+            if (abiVersionCode != null) {
+                def baseVersionCode = output.versionCode.get()
+                output.versionCode.set(baseVersionCode * 10 + abiVersionCode)
+            }
         }
     }
 }

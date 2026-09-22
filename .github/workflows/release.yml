@@ -112,6 +112,18 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
+      - name: Install Android SDK Platform 37
+        shell: bash
+        run: |
+          sdkmanager_path="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          if [[ ! -x "$sdkmanager_path" ]]; then
+            echo "Android sdkmanager not found at $sdkmanager_path" >&2
+            exit 1
+          fi
+          "$sdkmanager_path" --channel=3 \
+            "platforms;android-37.0" \
+            "build-tools;37.0.0"
+
       - run: flutter pub get
 
       - name: Decode Android keystore
@@ -146,11 +158,40 @@ jobs:
       - name: Verify per-ABI APKs
         shell: bash
         run: |
+          base_version_code="$(
+            sed -nE 's/^version: [^+]+\+([0-9]+)$/\1/p' pubspec.yaml
+          )"
+          if [[ ! "$base_version_code" =~ ^[0-9]+$ ]]; then
+            echo "Could not read the base version code from pubspec.yaml" >&2
+            exit 1
+          fi
+
+          aapt_path="$ANDROID_SDK_ROOT/build-tools/37.0.0/aapt"
+          if [[ ! -x "$aapt_path" ]]; then
+            echo "Android aapt not found at $aapt_path" >&2
+            exit 1
+          fi
+
+          declare -A abi_suffix=(
+            [armeabi-v7a]=1
+            [arm64-v8a]=2
+            [x86_64]=3
+          )
           for flavor in gplay foss; do
             for abi in armeabi-v7a arm64-v8a x86_64; do
               apk="build/app/outputs/flutter-apk/app-${abi}-${flavor}-release.apk"
               if [[ ! -f "$apk" ]]; then
                 echo "Missing expected APK: $apk" >&2
+                exit 1
+              fi
+
+              expected_code="$((base_version_code * 10 + abi_suffix[$abi]))"
+              actual_code="$(
+                "$aapt_path" dump badging "$apk" |
+                  sed -nE "s/^package:.* versionCode='([0-9]+)'.*/\1/p"
+              )"
+              if [[ "$actual_code" != "$expected_code" ]]; then
+                echo "$apk has version code $actual_code; expected $expected_code" >&2
                 exit 1
               fi
             done
