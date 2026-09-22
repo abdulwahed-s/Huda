@@ -40,12 +40,16 @@ struct PrayerWidgetDataLoader {
     static func loadSettings() -> PrayerWidgetSettings {
         let defaults = sharedDefaults
 
-        let latString = defaults?.string(forKey: keyLatitude)
-        let lonString = defaults?.string(forKey: keyLongitude)
-        let lat = latString.flatMap(Double.init)
-        let lon = lonString.flatMap(Double.init)
+        let lat = readDouble(defaults, keyLatitude)
+        let lon = readDouble(defaults, keyLongitude)
         let coordinates: Coordinates? = {
-            guard let lat = lat, let lon = lon else { return nil }
+            guard let lat = lat,
+                  let lon = lon,
+                  lat.isFinite,
+                  lon.isFinite,
+                  (-90.0...90.0).contains(lat),
+                  (-180.0...180.0).contains(lon)
+            else { return nil }
             return Coordinates(latitude: lat, longitude: lon)
         }()
 
@@ -99,6 +103,20 @@ struct PrayerWidgetDataLoader {
         guard let defaults = defaults else { return fallback }
         if defaults.object(forKey: key) == nil { return fallback }
         return defaults.integer(forKey: key)
+    }
+
+    private static func readDouble(
+        _ defaults: UserDefaults?,
+        _ key: String
+    ) -> Double? {
+        guard let value = defaults?.object(forKey: key) else { return nil }
+        if let number = value as? NSNumber {
+            return number.doubleValue
+        }
+        if let string = value as? String {
+            return Double(string.trimmingCharacters(in: .whitespacesAndNewlines))
+        }
+        return nil
     }
 }
 

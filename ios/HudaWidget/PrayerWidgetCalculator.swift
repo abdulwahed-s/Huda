@@ -92,22 +92,22 @@ struct PrayerWidgetCalculator {
 
     // MARK: Settings mapping
 
-    private static func method(from token: String, countryCode: String) -> CalculationMethod {
-        switch token {
-        case "", "auto":
+    static func method(from token: String, countryCode: String) -> CalculationMethod {
+        if token.isEmpty || token == "auto" {
             return countryCode.isEmpty ? .ummAlQura : AutoMethod.forCountry(countryCode)
-        case "ummAlQura": return .ummAlQura
-        case "muslimWorldLeague": return .muslimWorldLeague
-        case "egyptian": return .egyptian
-        case "karachi": return .karachi
-        case "northAmerica": return .northAmerica
-        case "dubai": return .dubai
-        case "qatar": return .qatar
-        case "kuwait": return .kuwait
-        case "turkey": return .turkey
-        case "indonesia": return .indonesia
-        default: return .ummAlQura
         }
+
+        let methodKey: String
+        switch token {
+        case "muslimWorldLeague": methodKey = "mwl"
+        case "egyptian": methodKey = "egypt"
+        case "ummAlQura": methodKey = "makkah"
+        case "northAmerica": methodKey = "isna"
+        case "southKorea": methodKey = "southkorea"
+        case "other": return .other
+        default: methodKey = token
+        }
+        return CalculationMethod.from(key: methodKey) ?? .ummAlQura
     }
 
     private static func madhab(from token: String) -> Madhab {

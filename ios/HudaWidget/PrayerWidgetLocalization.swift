@@ -7,6 +7,11 @@ struct PrayerWidgetLocalization {
     ]
 
     private static let translations: [String: [String: String]] = [
+        "huda": [
+            "en": "Huda", "ar": "هُدَى", "tr": "Huda", "fr": "Huda",
+            "es": "Huda", "de": "Huda", "ru": "Худа", "ur": "ہدیٰ",
+            "ms": "Huda", "bn": "হুদা"
+        ],
         "fajr": [
             "en": "Fajr", "ar": "الفجر", "tr": "İmsak", "fr": "Fajr",
             "es": "Fajr", "de": "Fadschr", "ru": "Фаджр", "ur": "فجر",
@@ -14,6 +19,11 @@ struct PrayerWidgetLocalization {
         ],
         "sunrise": [
             "en": "Sunrise", "ar": "الشروق", "tr": "Güneş", "fr": "Lever du soleil",
+            "es": "Amanecer", "de": "Sonnenaufgang", "ru": "Восход", "ur": "طلوع",
+            "ms": "Syuruk", "bn": "সূর্যোদয়"
+        ],
+        "shurooq": [
+            "en": "Shurooq", "ar": "الشروق", "tr": "Güneş", "fr": "Lever du soleil",
             "es": "Amanecer", "de": "Sonnenaufgang", "ru": "Восход", "ur": "طلوع",
             "ms": "Syuruk", "bn": "সূর্যোদয়"
         ],
@@ -42,6 +52,12 @@ struct PrayerWidgetLocalization {
             "fr": "Prochaine prière", "es": "Próxima oración", "de": "Nächstes Gebet",
             "ru": "Следующая молитва", "ur": "اگلی نماز", "ms": "Solat seterusnya",
             "bn": "পরবর্তী নামাজ"
+        ],
+        "todays_path": [
+            "en": "Today's path", "ar": "مسار اليوم", "tr": "Bugünün akışı",
+            "fr": "Parcours du jour", "es": "Ruta de hoy", "de": "Heutiger Verlauf",
+            "ru": "Путь сегодня", "ur": "آج کا سفر", "ms": "Laluan hari ini",
+            "bn": "আজকের পথ"
         ],
         "previous_prayer": [
             "en": "Previous", "ar": "السابقة", "tr": "Önceki",
@@ -90,6 +106,30 @@ struct PrayerWidgetLocalization {
             "ur": "آدھی رات",
             "ms": "Tengah malam",
             "bn": "মধ্যরাত"
+        ],
+        "current": [
+            "en": "Current", "ar": "الحالية", "tr": "Şu an",
+            "fr": "Actuelle", "es": "Actual", "de": "Aktuell",
+            "ru": "Текущая", "ur": "موجودہ", "ms": "Semasa",
+            "bn": "বর্তমান"
+        ],
+        "remaining": [
+            "en": "Remaining", "ar": "الوقت المتبقي", "tr": "Kalan",
+            "fr": "Restant", "es": "Restante", "de": "Verbleibend",
+            "ru": "Осталось", "ur": "باقی", "ms": "Berbaki",
+            "bn": "বাকি"
+        ],
+        "prayer_table": [
+            "en": "Prayer table", "ar": "جدول الصلاة", "tr": "Namaz tablosu",
+            "fr": "Table des prières", "es": "Tabla de oración",
+            "de": "Gebetsübersicht", "ru": "Расписание молитв",
+            "ur": "نماز کا جدول", "ms": "Jadual solat", "bn": "নামাজের তালিকা"
+        ],
+        "schedule": [
+            "en": "Daily arc", "ar": "مسار اليوم", "tr": "Günlük akış",
+            "fr": "Cycle du jour", "es": "Ciclo diario", "de": "Tagesbogen",
+            "ru": "Ритм дня", "ur": "روزانہ اوقات", "ms": "Kitaran harian",
+            "bn": "দৈনিক সময়সূচি"
         ],
         "empty_message": [
             "en": "Open the Prayer Time page to set your location",
@@ -146,18 +186,42 @@ struct PrayerWidgetLocalization {
 
 struct PrayerTimeFormatter {
 
+    static var deviceUses24HourClock: Bool {
+        let pattern = DateFormatter.dateFormat(
+            fromTemplate: "j",
+            options: 0,
+            locale: .current
+        ) ?? "h a"
+        return !pattern.contains("a")
+    }
+
+    static func formatDevice(
+        _ date: Date,
+        useArabicNumerals: Bool,
+        languageCode: String,
+        timeZone: TimeZone = .current
+    ) -> String {
+        let formatter = DateFormatter()
+        formatter.timeZone = timeZone
+        formatter.dateFormat = deviceUses24HourClock ? "HH:mm" : "h:mm a"
+        formatter.locale = Locale(identifier: languageCode)
+        return applyNumerals(
+            formatter.string(from: date),
+            useArabicNumerals: useArabicNumerals
+        )
+    }
+
     static func format(
         _ date: Date,
         useArabicNumerals: Bool,
         timeZone: TimeZone = .current
     ) -> String {
-        let formatter = DateFormatter()
-        formatter.timeZone = timeZone
-        formatter.dateFormat = "HH:mm"
-        formatter.locale = useArabicNumerals
-            ? Locale(identifier: "ar")
-            : Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: date)
+        return formatDevice(
+            date,
+            useArabicNumerals: useArabicNumerals,
+            languageCode: Locale.current.identifier,
+            timeZone: timeZone
+        )
     }
 
     static func format12(
@@ -168,10 +232,11 @@ struct PrayerTimeFormatter {
         let formatter = DateFormatter()
         formatter.timeZone = timeZone
         formatter.dateFormat = "h:mm"
-        formatter.locale = useArabicNumerals
-            ? Locale(identifier: "ar")
-            : Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: date)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return applyNumerals(
+            formatter.string(from: date),
+            useArabicNumerals: useArabicNumerals
+        )
     }
 
     static func format12WithMeridiem(
@@ -183,12 +248,11 @@ struct PrayerTimeFormatter {
         let formatter = DateFormatter()
         formatter.timeZone = timeZone
         formatter.dateFormat = "h:mm a"
-        if useArabicNumerals {
-            formatter.locale = Locale(identifier: "ar")
-        } else {
-            formatter.locale = Locale(identifier: languageCode)
-        }
-        return formatter.string(from: date)
+        formatter.locale = Locale(identifier: languageCode)
+        return applyNumerals(
+            formatter.string(from: date),
+            useArabicNumerals: useArabicNumerals
+        )
     }
 
     static func formatISODate(
@@ -199,10 +263,11 @@ struct PrayerTimeFormatter {
         let formatter = DateFormatter()
         formatter.timeZone = timeZone
         formatter.dateFormat = "yyyy-MM-dd"
-        formatter.locale = useArabicNumerals
-            ? Locale(identifier: "ar")
-            : Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: date)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return applyNumerals(
+            formatter.string(from: date),
+            useArabicNumerals: useArabicNumerals
+        )
     }
 
     static func formatDayOfWeek(
@@ -237,13 +302,34 @@ struct PrayerTimeFormatter {
         formatter.calendar = calendar
 
         if let rendered = formatter.string(from: interval), !rendered.isEmpty {
-            return rendered
+            return applyNumerals(
+                rendered,
+                useArabicNumerals: useArabicNumerals
+            )
         }
         let minutes = Int(interval / 60)
         let fallback = DateComponentsFormatter()
         fallback.unitsStyle = .abbreviated
         fallback.allowedUnits = [.minute]
         fallback.calendar = calendar
-        return fallback.string(from: TimeInterval(minutes * 60)) ?? ""
+        return applyNumerals(
+            fallback.string(from: TimeInterval(minutes * 60)) ?? "",
+            useArabicNumerals: useArabicNumerals
+        )
+    }
+
+    static func applyNumerals(
+        _ value: String,
+        useArabicNumerals: Bool
+    ) -> String {
+        guard useArabicNumerals else { return value }
+        let western = Array("0123456789")
+        let arabic = Array("٠١٢٣٤٥٦٧٨٩")
+        return String(value.map { character in
+            guard let index = western.firstIndex(of: character) else {
+                return character
+            }
+            return arabic[index]
+        })
     }
 }

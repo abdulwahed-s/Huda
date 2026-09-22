@@ -12,6 +12,13 @@ class PrayerWidgetService {
   PrayerWidgetService._();
 
   static const String iOSWidgetName = 'HudaPrayerWidget';
+  static const List<String> _iOSWidgetNames = [
+    iOSWidgetName,
+    'HudaEarlyPrayerTimesWidget',
+    'HudaLatePrayerTimesWidget',
+    'HudaPrayerPathWidget',
+    'HudaPrayerAlmanacWidget',
+  ];
 
   static const String androidReceiverName =
       'com.aw.huda.widget.prayer.PrayerWidgetReceiver';
@@ -78,7 +85,10 @@ class PrayerWidgetService {
       await HomeWidget.setAppGroupId(_appGroupId);
     }
 
-    await pushSettings(triggerNativeUpdate: false);
+    // Commit shared values before asking WidgetKit for a replacement timeline.
+    // This also recovers a redacted/placeholder widget after an extension
+    // watchdog termination instead of waiting for WidgetKit's next refresh.
+    await pushSettings();
   }
 
   static Future<void> pushSettings({bool triggerNativeUpdate = true}) async {
@@ -98,22 +108,28 @@ class PrayerWidgetService {
       await _writeString(prefs, _lonKey, lon);
 
       await _writeString(
-          prefs, _countryCodeKey, cache.getDataString(key: _countryCodeKey));
+        prefs,
+        _countryCodeKey,
+        cache.getDataString(key: _countryCodeKey),
+      );
       await _writeString(
-          prefs,
-          _methodKey,
-          cache.getDataString(key: _methodKey) ??
-              PrayerTimesCalculator.defaultMethodToken);
+        prefs,
+        _methodKey,
+        cache.getDataString(key: _methodKey) ??
+            PrayerTimesCalculator.defaultMethodToken,
+      );
       await _writeString(
-          prefs,
-          _madhabKey,
-          cache.getDataString(key: _madhabKey) ??
-              PrayerTimesCalculator.defaultMadhabToken);
+        prefs,
+        _madhabKey,
+        cache.getDataString(key: _madhabKey) ??
+            PrayerTimesCalculator.defaultMadhabToken,
+      );
       await _writeString(
-          prefs,
-          _highLatKey,
-          cache.getDataString(key: _highLatKey) ??
-              PrayerTimesCalculator.defaultHighLatitudeToken);
+        prefs,
+        _highLatKey,
+        cache.getDataString(key: _highLatKey) ??
+            PrayerTimesCalculator.defaultHighLatitudeToken,
+      );
 
       for (final key in _offsetKeys) {
         final storageKey = PrayerTimesCalculator.offsetKeyFor(key);
@@ -147,18 +163,21 @@ class PrayerWidgetService {
       await _writeString(prefs, _visualThemeKey, settings.visualTheme.storage);
       if (PlatformUtils.isIOS) {
         await HomeWidget.saveWidgetData<bool>(
-            _bgEnabledKey, settings.backgroundEnabled);
+          _bgEnabledKey,
+          settings.backgroundEnabled,
+        );
         await HomeWidget.saveWidgetData<bool>(
-            _bgGlassifyKey, settings.glassify);
+          _bgGlassifyKey,
+          settings.glassify,
+        );
         await HomeWidget.saveWidgetData<bool>(_bgRoundedKey, settings.rounded);
         await HomeWidget.saveWidgetData<int>(
-            _contentSizeKey, settings.contentSize);
+          _contentSizeKey,
+          settings.contentSize,
+        );
       }
 
-      await prefs.setInt(
-        _lastUpdateKey,
-        DateTime.now().millisecondsSinceEpoch,
-      );
+      await prefs.setInt(_lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
       if (triggerNativeUpdate) {
         await _refreshNativeWidget();
@@ -223,7 +242,9 @@ class PrayerWidgetService {
   static Future<void> _refreshNativeWidget() async {
     try {
       if (PlatformUtils.isIOS) {
-        await HomeWidget.updateWidget(iOSName: iOSWidgetName);
+        for (final widgetName in _iOSWidgetNames) {
+          await HomeWidget.updateWidget(iOSName: widgetName);
+        }
       }
       if (PlatformUtils.isAndroid) {
         try {
@@ -341,20 +362,20 @@ class PrayerWidgetSettings {
       backgroundColor: visualTheme != null
           ? newTheme.backgroundColor
           : (backgroundColor == _unset
-              ? this.backgroundColor
-              : backgroundColor as String?),
+                ? this.backgroundColor
+                : backgroundColor as String?),
       glassify: glassify ?? this.glassify,
       rounded: rounded ?? this.rounded,
       contentColor: visualTheme != null
           ? newTheme.contentColor
           : (contentColor == _unset
-              ? this.contentColor
-              : contentColor as String?),
+                ? this.contentColor
+                : contentColor as String?),
       highlightColor: visualTheme != null
           ? newTheme.highlightColor
           : (highlightColor == _unset
-              ? this.highlightColor
-              : highlightColor as String?),
+                ? this.highlightColor
+                : highlightColor as String?),
       contentSize: contentSize ?? this.contentSize,
       visualTheme: newTheme,
     );
@@ -424,53 +445,65 @@ enum PrayerWidgetNumerals {
 enum PrayerWidgetVisualTheme {
   auto(backgroundColor: null, contentColor: null, highlightColor: null),
   ocean(
-      backgroundColor: '#FF1A3A5C',
-      contentColor: '#FFF0F4F8',
-      highlightColor: '#FF4DD0E1'),
+    backgroundColor: '#FF1A3A5C',
+    contentColor: '#FFF0F4F8',
+    highlightColor: '#FF4DD0E1',
+  ),
   sunset(
-      backgroundColor: '#FF5C2A0E',
-      contentColor: '#FFFFF5EB',
-      highlightColor: '#FFFFD54F'),
+    backgroundColor: '#FF5C2A0E',
+    contentColor: '#FFFFF5EB',
+    highlightColor: '#FFFFD54F',
+  ),
   forest(
-      backgroundColor: '#FF1B3A2A',
-      contentColor: '#FFE8F5E9',
-      highlightColor: '#FF66BB6A'),
+    backgroundColor: '#FF1B3A2A',
+    contentColor: '#FFE8F5E9',
+    highlightColor: '#FF66BB6A',
+  ),
   midnight(
-      backgroundColor: '#FF121218',
-      contentColor: '#FFE0E0E8',
-      highlightColor: '#FF7986CB'),
+    backgroundColor: '#FF121218',
+    contentColor: '#FFE0E0E8',
+    highlightColor: '#FF7986CB',
+  ),
   sandstone(
-      backgroundColor: '#FFF5E6D3',
-      contentColor: '#FF3E2C1A',
-      highlightColor: '#FFD84315'),
+    backgroundColor: '#FFF5E6D3',
+    contentColor: '#FF3E2C1A',
+    highlightColor: '#FFD84315',
+  ),
   rose(
-      backgroundColor: '#FF3D1A2E',
-      contentColor: '#FFFCE4EC',
-      highlightColor: '#FFF06292'),
+    backgroundColor: '#FF3D1A2E',
+    contentColor: '#FFFCE4EC',
+    highlightColor: '#FFF06292',
+  ),
   lavender(
-      backgroundColor: '#FF2E2450',
-      contentColor: '#FFEDE7F6',
-      highlightColor: '#FFBA68C8'),
+    backgroundColor: '#FF2E2450',
+    contentColor: '#FFEDE7F6',
+    highlightColor: '#FFBA68C8',
+  ),
   charcoal(
-      backgroundColor: '#FF2C2C2C',
-      contentColor: '#FFF5F5F5',
-      highlightColor: '#FFFFB74D'),
+    backgroundColor: '#FF2C2C2C',
+    contentColor: '#FFF5F5F5',
+    highlightColor: '#FFFFB74D',
+  ),
   amber(
-      backgroundColor: '#FF4A3000',
-      contentColor: '#FFFFF8E1',
-      highlightColor: '#FFFFD740'),
+    backgroundColor: '#FF4A3000',
+    contentColor: '#FFFFF8E1',
+    highlightColor: '#FFFFD740',
+  ),
   arctic(
-      backgroundColor: '#FFE3F2FD',
-      contentColor: '#FF0D2137',
-      highlightColor: '#FF1976D2'),
+    backgroundColor: '#FFE3F2FD',
+    contentColor: '#FF0D2137',
+    highlightColor: '#FF1976D2',
+  ),
   burgundy(
-      backgroundColor: '#FF4A0E1E',
-      contentColor: '#FFFDE8EF',
-      highlightColor: '#FFEF5350'),
+    backgroundColor: '#FF4A0E1E',
+    contentColor: '#FFFDE8EF',
+    highlightColor: '#FFEF5350',
+  ),
   sage(
-      backgroundColor: '#FF3B4A3A',
-      contentColor: '#FFF1F5E8',
-      highlightColor: '#FF81C784');
+    backgroundColor: '#FF3B4A3A',
+    contentColor: '#FFF1F5E8',
+    highlightColor: '#FF81C784',
+  );
 
   const PrayerWidgetVisualTheme({
     required this.backgroundColor,

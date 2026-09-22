@@ -6,5 +6,9 @@ struct HudaWidgetBundle: WidgetBundle {
     var body: some Widget {
         HudaWidget()
         HudaPrayerWidget()
+        HudaEarlyPrayerTimesWidget()
+        HudaLatePrayerTimesWidget()
+        HudaPrayerPathWidget()
+        HudaPrayerAlmanacWidget()
     }
 }
