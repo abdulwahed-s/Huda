@@ -176,6 +176,33 @@ internal object PrayerWidgetLocalization {
 }
 
 internal object PrayerTimeFormatter {
+    fun formatForWidget(
+        context: Context,
+        date: Date,
+        preference: PrayerWidgetTimeFormat,
+        useArabicNumerals: Boolean,
+        languageCode: String,
+        timeZone: TimeZone = TimeZone.getDefault(),
+    ): String = formatClock(
+        date = date,
+        is24Hour = resolveIs24Hour(
+            preference,
+            systemIs24Hour = DateFormat.is24HourFormat(context),
+        ),
+        useArabicNumerals = useArabicNumerals,
+        languageCode = languageCode,
+        timeZone = timeZone,
+    )
+
+    internal fun resolveIs24Hour(
+        preference: PrayerWidgetTimeFormat,
+        systemIs24Hour: Boolean,
+    ): Boolean = when (preference) {
+        PrayerWidgetTimeFormat.SYSTEM -> systemIs24Hour
+        PrayerWidgetTimeFormat.TWELVE_HOUR -> false
+        PrayerWidgetTimeFormat.TWENTY_FOUR_HOUR -> true
+    }
+
     fun formatForDevice(
         context: Context,
         date: Date,
@@ -248,7 +275,7 @@ internal object PrayerTimeFormatter {
         val m = cal.get(Calendar.MINUTE).toString().padStart(2, '0')
 
         val markerLocale = if (useArabicNumerals) Locale.forLanguageTag("ar")
-            else Locale.forLanguageTag(languageCode)
+        else Locale.forLanguageTag(languageCode)
         val ampm = DateFormatSymbols.getInstance(markerLocale).amPmStrings[
             if (h24 < 12) Calendar.AM else Calendar.PM
         ]
@@ -290,8 +317,8 @@ internal object PrayerTimeFormatter {
         val hUnit = PrayerWidgetLocalization.string("unit_hour_short", languageCode)
         val mUnit = PrayerWidgetLocalization.string("unit_minute_short", languageCode)
         val raw = if (hours > 0) "${hours}$hUnit ${minutes}$mUnit"
-            else if (minutes > 0) "${minutes}$mUnit"
-            else "0$mUnit"
+        else if (minutes > 0) "${minutes}$mUnit"
+        else "0$mUnit"
         return raw.applyNumerals(useArabicNumerals)
     }
 
@@ -327,17 +354,45 @@ internal object PrayerTimeFormatter {
         }
         return raw.applyNumerals(useArabicNumerals)
     }
+
+    fun formatSignedCounter(
+        from: Date,
+        to: Date,
+        elapsed: Boolean,
+        useArabicNumerals: Boolean,
+    ): String {
+        val intervalMillis = (to.time - from.time).coerceAtLeast(0L)
+        val totalSeconds = if (elapsed) {
+            intervalMillis / 1_000L
+        } else {
+            Math.ceil(intervalMillis / 1_000.0).toLong()
+        }
+        val hours = totalSeconds / 3_600L
+        val minutes = (totalSeconds % 3_600L) / 60L
+        val seconds = totalSeconds % 60L
+        val body = if (hours > 0L) {
+            "$hours:${minutes.toString().padStart(2, '0')}:" +
+                    seconds.toString().padStart(2, '0')
+        } else {
+            "${minutes.toString().padStart(2, '0')}:" +
+                    seconds.toString().padStart(2, '0')
+        }
+        return ((if (elapsed) "+" else "−") + body)
+            .applyNumerals(useArabicNumerals)
+    }
 }
 
 internal fun String.applyNumerals(useArabicNumerals: Boolean): String {
     if (!useArabicNumerals) return this
     val sb = StringBuilder(length)
     for (c in this) {
-        sb.append(when (c) {
-            '0' -> '٠'; '1' -> '١'; '2' -> '٢'; '3' -> '٣'; '4' -> '٤'
-            '5' -> '٥'; '6' -> '٦'; '7' -> '٧'; '8' -> '٨'; '9' -> '٩'
-            else -> c
-        })
+        sb.append(
+            when (c) {
+                '0' -> '٠'; '1' -> '١'; '2' -> '٢'; '3' -> '٣'; '4' -> '٤'
+                '5' -> '٥'; '6' -> '٦'; '7' -> '٧'; '8' -> '٨'; '9' -> '٩'
+                else -> c
+            }
+        )
     }
     return sb.toString()
 }

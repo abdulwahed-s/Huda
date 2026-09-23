@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/quran_widget_service.dart';
+import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalizationState {
@@ -12,9 +14,7 @@ class LocalizationState {
   LocalizationState({required this.locale});
 
   LocalizationState copyWith({Locale? locale}) {
-    return LocalizationState(
-      locale: locale ?? this.locale,
-    );
+    return LocalizationState(locale: locale ?? this.locale);
   }
 }
 
@@ -48,7 +48,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
   };
 
   LocalizationCubit()
-      : super(LocalizationState(locale: const Locale('en', ''))) {
+    : super(LocalizationState(locale: const Locale('en', ''))) {
     _loadSavedLocale();
   }
 
@@ -64,6 +64,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
 
         emit(LocalizationState(locale: locale));
         await QuranWidgetService.onLocaleChanged();
+        await _refreshPrayerWidgetLocale();
         return;
       }
     }
@@ -79,7 +80,9 @@ class LocalizationCubit extends Cubit<LocalizationState> {
     if (supportedSystemLocale.languageCode != 'en') {
       final sharedPrefs = await SharedPreferences.getInstance();
       await sharedPrefs.setString(
-          _localeKey, supportedSystemLocale.languageCode);
+        _localeKey,
+        supportedSystemLocale.languageCode,
+      );
       await sharedPrefs.setString('locale', supportedSystemLocale.languageCode);
 
       emit(LocalizationState(locale: supportedSystemLocale));
@@ -96,6 +99,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
       );
     }
     await QuranWidgetService.onLocaleChanged();
+    await _refreshPrayerWidgetLocale();
   }
 
   Future<void> setLocale(Locale locale) async {
@@ -108,6 +112,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
 
       emit(LocalizationState(locale: locale));
       await QuranWidgetService.onLocaleChanged();
+      await _refreshPrayerWidgetLocale();
 
       if (getIt.isRegistered<PrayerNotificationScheduler>()) {
         await getIt<PrayerNotificationScheduler>().reconcile(
@@ -120,5 +125,17 @@ class LocalizationCubit extends Cubit<LocalizationState> {
 
   String getLanguageName(String languageCode) {
     return languageNames[languageCode] ?? languageCode;
+  }
+
+  Future<void> _refreshPrayerWidgetLocale() async {
+    try {
+      if (PrayerWidgetService.readSettings().language !=
+          PrayerWidgetLanguage.auto) {
+        return;
+      }
+      await PrayerWidgetService.pushSettings();
+    } catch (error) {
+      debugPrint('Could not refresh prayer widget locale: $error');
+    }
   }
 }
