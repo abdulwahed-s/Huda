@@ -9,46 +9,68 @@ class WidgetManagementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
-    final primary = Theme.of(context).colorScheme.primary;
+    final colorScheme = theme.colorScheme;
+    final primary = colorScheme.primary;
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor:
-            isDark ? const Color(0xFF121212) : const Color(0xFFF8F9FA),
+        backgroundColor: colorScheme.surfaceContainerLowest,
         appBar: AppBar(
+          toolbarHeight: 60.h,
           title: Text(
             l10n.homeScreenWidgetManagement,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.2,
             ),
           ),
           backgroundColor: primary,
-          foregroundColor: Colors.white,
+          foregroundColor: colorScheme.onPrimary,
           elevation: 0,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(48.h),
-            child: Container(
-              color: primary,
+            preferredSize: Size.fromHeight(60.h),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16.w, 2.h, 16.w, 10.h),
               child: TabBar(
-                indicatorColor: Colors.white,
-                indicatorWeight: 3,
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.white70,
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                splashBorderRadius: BorderRadius.circular(12.r),
+                indicator: BoxDecoration(
+                  color: colorScheme.onPrimary,
+                  borderRadius: BorderRadius.circular(12.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.10),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                labelColor: primary,
+                unselectedLabelColor: colorScheme.onPrimary.withValues(
+                  alpha: 0.78,
+                ),
                 labelStyle: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13.sp,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13.sp,
                 ),
                 tabs: [
-                  Tab(
-                    icon: const Icon(Icons.menu_book_rounded),
-                    text: l10n.quranVerseWidget,
+                  _ManagementTab(
+                    icon: Icons.menu_book_rounded,
+                    label: l10n.quranVerseWidget,
                   ),
-                  Tab(
-                    icon: const Icon(Icons.access_time_rounded),
-                    text: l10n.prayerTimesWidget,
+                  _ManagementTab(
+                    icon: Icons.access_time_rounded,
+                    label: l10n.prayerTimesWidget,
                   ),
                 ],
               ),
@@ -64,4 +86,26 @@ class WidgetManagementScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ManagementTab extends StatelessWidget {
+  const _ManagementTab({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Tab(
+    height: 48.h,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, size: 18.sp),
+        SizedBox(width: 7.w),
+        Flexible(
+          child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ),
+      ],
+    ),
+  );
 }
