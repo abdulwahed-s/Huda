@@ -82,6 +82,7 @@ struct HudaWidgetEntryView: View {
                 QuranNoorHeader(
                     reference: entry.snapshot.displayReference,
                     appLanguage: entry.snapshot.appLanguage,
+                    micro: layout.isMicro,
                     compact: layout.isCompact,
                     expanded: layout.isExpanded,
                     palette: entry.snapshot.palette,
@@ -104,19 +105,23 @@ struct HudaWidgetEntryView: View {
                         .clipped()
 
                     if textLayout.showsTranslation,
-                       let translation = entry.snapshot.translation,
-                       !translation.isEmpty {
+                        let translation = entry.snapshot.translation,
+                        !translation.isEmpty
+                    {
                         QuranNoorDivider(
+                            micro: layout.isMicro,
                             compact: layout.isCompact,
                             palette: entry.snapshot.palette,
                             fullColor: isFullColor
                         )
 
                         Text(translation)
-                            .font(.system(
-                                size: textLayout.translationFontSize,
-                                weight: entry.snapshot.translationBold ? .bold : .regular
-                            ))
+                            .font(
+                                .system(
+                                    size: textLayout.translationFontSize,
+                                    weight: entry.snapshot.translationBold ? .bold : .regular
+                                )
+                            )
                             .foregroundStyle(translationColor)
                             .multilineTextAlignment(.center)
                             .lineSpacing(layout.translationLineSpacing)
@@ -185,7 +190,7 @@ struct HudaWidgetEntryView: View {
                 .init(
                     color: isFullColor ? palette.accent.opacity(0.18) : .primary.opacity(0.16),
                     location: 1.00
-                )
+                ),
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -204,15 +209,11 @@ struct HudaWidgetEntryView: View {
         )
         let ayahBaseSize: CGFloat = layout.isExpanded ? 27 : layout.isCompact ? 17 : 20
         let translationBaseSize: CGFloat = layout.isExpanded ? 13 : layout.isCompact ? 9 : 10.5
-        var ayahSize = ayahBaseSize *
-            (entry.snapshot.ayahAutoFit ? 1 : entry.snapshot.ayahTextScale)
-        var translationSize = translationBaseSize *
-            (entry.snapshot.translationAutoFit ? 1 : entry.snapshot.translationTextScale)
-        let ayahMaxLines = layout.isExpanded ? 4 : layout.isMicro ? 2 : 3
-        let translationMaxLines = layout.isExpanded ? 5 : layout.isMicro ? 1 : layout.isCompact ? 2 : 3
-        var ayahLines = ayahMaxLines
-        var translationLines = translationMaxLines
-        var showsTranslation = hasTranslation
+        var ayahSize = ayahBaseSize * (entry.snapshot.ayahAutoFit ? 1 : entry.snapshot.ayahTextScale)
+        var translationSize =
+            translationBaseSize * (entry.snapshot.translationAutoFit ? 1 : entry.snapshot.translationTextScale)
+        let translationFloor: CGFloat = layout.isExpanded ? 8 : 9
+        let showsTranslation = hasTranslation
         let dividerHeight = layout.dividerHeight
 
         func ayahMetrics() -> QuranNoorTextMetrics {
@@ -239,17 +240,18 @@ struct HudaWidgetEntryView: View {
         }
 
         func totalHeight() -> CGFloat {
-            let ayah = ayahMetrics().height(for: ayahLines)
+            let ayah = ayahMetrics().fullHeight
             guard let translation = translationMetrics() else { return ayah }
-            return ayah + dividerHeight + translation.height(for: translationLines)
+            return ayah + dividerHeight + translation.fullHeight
         }
 
         for _ in 0..<120 {
             if totalHeight() <= availableHeight { break }
             if entry.snapshot.translationAutoFit,
-               showsTranslation,
-               translationSize > 9 {
-                translationSize = max(9, translationSize - 0.5)
+                showsTranslation,
+                translationSize > translationFloor
+            {
+                translationSize = max(translationFloor, translationSize - 0.5)
             } else if entry.snapshot.ayahAutoFit, ayahSize > 14 {
                 ayahSize = max(14, ayahSize - 0.5)
             } else {
@@ -257,35 +259,27 @@ struct HudaWidgetEntryView: View {
             }
         }
 
-        while showsTranslation && totalHeight() > availableHeight && translationLines > 1 {
-            translationLines -= 1
-        }
-        while totalHeight() > availableHeight && ayahLines > 1 {
-            ayahLines -= 1
+        var ayahLines = ayahMetrics().lineCount
+        var translationLines = translationMetrics()?.lineCount ?? 0
+        func limitedTotalHeight() -> CGFloat {
+            let ayah = ayahMetrics().height(for: ayahLines)
+            guard let translation = translationMetrics() else { return ayah }
+            return ayah + dividerHeight + translation.height(for: translationLines)
         }
 
-        let ayahWouldTruncate = ayahMetrics().lineCount > ayahLines
-        let translationWouldTruncate = translationMetrics()
-            .map { $0.lineCount > translationLines } ?? false
-        if showsTranslation,
-           layout.isCompact,
-           (totalHeight() > availableHeight || ayahWouldTruncate || translationWouldTruncate) {
-            showsTranslation = false
-            ayahLines = ayahMaxLines
-            if entry.snapshot.ayahAutoFit { ayahSize = ayahBaseSize }
-            while totalHeight() > availableHeight && ayahSize > 14 {
-                ayahSize = max(14, ayahSize - 0.5)
-            }
-            while totalHeight() > availableHeight && ayahLines > 1 {
-                ayahLines -= 1
-            }
+        while showsTranslation && limitedTotalHeight() > availableHeight && translationLines > 1 {
+            translationLines -= 1
+        }
+        while limitedTotalHeight() > availableHeight && ayahLines > 1 {
+            ayahLines -= 1
         }
 
         let finalAyahMetrics = ayahMetrics()
         let finalTranslationMetrics = translationMetrics()
         var ayahHeight = finalAyahMetrics.height(for: ayahLines)
         var translationHeight = finalTranslationMetrics?.height(for: translationLines) ?? 0
-        let requiredHeight = ayahHeight
+        let requiredHeight =
+            ayahHeight
             + (showsTranslation ? dividerHeight + translationHeight : 0)
         if requiredHeight > availableHeight {
             if showsTranslation {
@@ -332,7 +326,7 @@ struct HudaWidgetEntryView: View {
         [
             entry.snapshot.verse.arabic,
             entry.snapshot.translation,
-            entry.snapshot.displayReference
+            entry.snapshot.displayReference,
         ]
         .compactMap { $0 }
         .joined(separator: ". ")
@@ -360,7 +354,7 @@ private struct QuranNoorLayout {
 
         if isExpanded {
             horizontalPadding = 24
-            verticalPadding = 20
+            verticalPadding = 18
             headerDiameter = 34
             headerGap = 13
             arabicLineSpacing = 7
@@ -368,7 +362,7 @@ private struct QuranNoorLayout {
             dividerHeight = 11
         } else if isMicro {
             horizontalPadding = 10
-            verticalPadding = 6
+            verticalPadding = 5
             headerDiameter = 23
             headerGap = 1
             arabicLineSpacing = 2
@@ -409,6 +403,8 @@ private struct QuranNoorTextMetrics {
     let lineHeight: CGFloat
     let lineSpacing: CGFloat
 
+    var fullHeight: CGFloat { height(for: lineCount) }
+
     func height(for requestedLines: Int) -> CGFloat {
         let lines = max(1, min(requestedLines, lineCount))
         return CGFloat(lines) * lineHeight + CGFloat(max(0, lines - 1)) * lineSpacing
@@ -418,6 +414,7 @@ private struct QuranNoorTextMetrics {
 private struct QuranNoorHeader: View {
     let reference: String
     let appLanguage: String
+    let micro: Bool
     let compact: Bool
     let expanded: Bool
     let palette: QuranWidgetPalette
@@ -426,7 +423,7 @@ private struct QuranNoorHeader: View {
     var body: some View {
         HStack(spacing: 0) {
             QuranNoorMedallion(
-                size: expanded ? 34 : compact ? 25 : 29,
+                size: expanded ? 34 : micro ? 23 : compact ? 25 : 29,
                 palette: palette,
                 fullColor: fullColor
             )
@@ -506,6 +503,7 @@ private struct QuranNoorMedallion: View {
 }
 
 private struct QuranNoorDivider: View {
+    let micro: Bool
     let compact: Bool
     let palette: QuranWidgetPalette
     let fullColor: Bool
@@ -515,7 +513,7 @@ private struct QuranNoorDivider: View {
             LinearGradient(
                 colors: [
                     .clear,
-                    (fullColor ? palette.accent : Color.primary).opacity(0.58)
+                    (fullColor ? palette.accent : Color.primary).opacity(0.58),
                 ],
                 startPoint: .leading,
                 endPoint: .trailing
@@ -529,14 +527,14 @@ private struct QuranNoorDivider: View {
             LinearGradient(
                 colors: [
                     (fullColor ? palette.accent : Color.primary).opacity(0.58),
-                    .clear
+                    .clear,
                 ],
                 startPoint: .leading,
                 endPoint: .trailing
             )
             .frame(width: compact ? 26 : 34, height: 0.75)
         }
-        .padding(.vertical, compact ? 2 : 3)
+        .padding(.vertical, micro ? 1.5 : compact ? 2 : 3)
     }
 }
 
@@ -560,7 +558,7 @@ private struct QuranNoorBackground: View {
                     colors: [
                         (fullColor ? palette.accent : Color.primary)
                             .opacity(palette.isLight ? 0.16 : 0.27),
-                        .clear
+                        .clear,
                     ],
                     center: UnitPoint(x: 0.50, y: 0.18),
                     startRadius: 0,
@@ -570,7 +568,7 @@ private struct QuranNoorBackground: View {
                 RadialGradient(
                     colors: [
                         (fullColor ? palette.ornament : Color.primary).opacity(0.14),
-                        .clear
+                        .clear,
                     ],
                     center: UnitPoint(x: 0.88, y: -0.02),
                     startRadius: 0,
@@ -583,7 +581,7 @@ private struct QuranNoorBackground: View {
                         .init(
                             color: .black.opacity(fullColor && !palette.isLight ? 0.22 : 0.08),
                             location: 1.00
-                        )
+                        ),
                     ],
                     startPoint: .top,
                     endPoint: .bottom

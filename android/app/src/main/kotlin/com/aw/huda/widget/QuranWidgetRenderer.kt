@@ -25,7 +25,7 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
-object QuranWidgetRenderer {
+internal object QuranWidgetRenderer {
     private const val ARABIC_AUTO_FLOOR_SP = 14f
     private const val TRANSLATION_AUTO_FLOOR_SP = 9f
 
@@ -151,7 +151,12 @@ object QuranWidgetRenderer {
         }
         val halfOuterStroke = outerStroke.strokeWidth / 2f
         canvas.drawRoundRect(
-            RectF(halfOuterStroke, halfOuterStroke, width - halfOuterStroke, height - halfOuterStroke),
+            RectF(
+                halfOuterStroke,
+                halfOuterStroke,
+                width - halfOuterStroke,
+                height - halfOuterStroke
+            ),
             radius,
             radius,
             outerStroke,
@@ -286,8 +291,8 @@ object QuranWidgetRenderer {
         val dotGap = layout.dp(5f)
         val maxCapsuleWidth = layout.widthPx * 0.57f
         val maxTextWidth = (
-            maxCapsuleWidth - horizontalInset * 2f - dotSize - dotGap
-            ).coerceAtLeast(layout.dp(28f))
+                maxCapsuleWidth - horizontalInset * 2f - dotSize - dotGap
+                ).coerceAtLeast(layout.dp(28f))
         val reference = TextUtils.ellipsize(
             snapshot.displayReference,
             textPaint,
@@ -296,8 +301,8 @@ object QuranWidgetRenderer {
         ).toString()
         val textWidth = textPaint.measureText(reference)
         val capsuleWidth = (
-            horizontalInset * 2f + dotSize + dotGap + textWidth
-            ).coerceAtMost(maxCapsuleWidth)
+                horizontalInset * 2f + dotSize + dotGap + textWidth
+                ).coerceAtMost(maxCapsuleWidth)
         val right = layout.widthPx - layout.dp(layout.horizontalPadding)
         val capsule = RectF(
             right - capsuleWidth,
@@ -413,31 +418,26 @@ object QuranWidgetRenderer {
             if (snapshot.translationBold) Typeface.BOLD else Typeface.NORMAL,
         )
         val arabicBase = when {
-            widget.expanded -> 27f
-            widget.compact -> 17f
-            else -> 20f
+            widget.expanded -> 30f
+            widget.compact -> 19f
+            else -> 22f
         }
         val translationBase = when {
-            widget.expanded -> 13f
-            widget.compact -> 9f
-            else -> 10.5f
+            widget.expanded -> 14f
+            widget.compact -> 10f
+            else -> 11.5f
+        }
+        val translationFloorSp = if (
+            QuranWidgetSize.fromDimensions(widget.widthDp, widget.heightDp) == QuranWidgetSize.LARGE
+        ) {
+            8f
+        } else {
+            TRANSLATION_AUTO_FLOOR_SP
         }
         var arabicSp = arabicBase * if (snapshot.ayahAutoFit) 1f else snapshot.ayahTextSize / 100f
         var translationSp = translationBase *
-            if (snapshot.translationAutoFit) 1f else snapshot.translationTextSize / 100f
-        val arabicMaxLines = when {
-            widget.expanded -> 4
-            widget.micro -> 2
-            else -> 3
-        }
-        val translationMaxLines = when {
-            widget.expanded -> 5
-            widget.micro -> 1
-            else -> if (widget.compact) 2 else 3
-        }
-        var arabicLines = arabicMaxLines
-        var translationLines = translationMaxLines
-        var translation = snapshot.translation?.takeIf { it.isNotBlank() }
+                if (snapshot.translationAutoFit) 1f else snapshot.translationTextSize / 100f
+        val translation = snapshot.translation?.takeIf { it.isNotBlank() }
         val dividerHeight = widget.dp(widget.dividerHeight).roundToInt()
 
         fun arabicPaint() = textPaint(
@@ -445,87 +445,72 @@ object QuranWidgetRenderer {
             sizePx = widget.dp(arabicSp),
             typeface = arabicTypeface,
         )
+
         fun translationPaint() = textPaint(
             color = withAlpha(snapshot.palette.translation, 0.90f),
             sizePx = widget.dp(translationSp),
             typeface = translationTypeface,
         )
-        fun arabicLayout() = createLayout(
+
+        fun arabicLayout(maxLines: Int = Int.MAX_VALUE) = createLayout(
             snapshot.verse.arabic,
             arabicPaint(),
             contentWidth,
-            arabicLines,
+            maxLines,
             rtl = true,
             lineSpacingExtraPx = widget.dp(widget.arabicLineSpacing),
         )
-        fun translationLayout() = translation?.let {
+
+        fun translationLayout(maxLines: Int = Int.MAX_VALUE) = translation?.let {
             createLayout(
                 it,
                 translationPaint(),
                 contentWidth,
-                translationLines,
+                maxLines,
                 rtl = snapshot.translationLanguage == "ur",
                 lineSpacingExtraPx = widget.dp(widget.translationLineSpacing),
             )
         }
+
         fun totalHeight(): Int = arabicLayout().height +
-            (translationLayout()?.let { dividerHeight + it.height } ?: 0)
+                (translationLayout()?.let { dividerHeight + it.height } ?: 0)
 
         for (attempt in 0 until 120) {
             if (totalHeight() <= availableHeight) break
             when {
                 snapshot.translationAutoFit && translation != null &&
-                    translationSp > TRANSLATION_AUTO_FLOOR_SP -> translationSp -= 0.5f
-                snapshot.ayahAutoFit && arabicSp > ARABIC_AUTO_FLOOR_SP -> arabicSp -= 0.5f
+                        translationSp > translationFloorSp -> {
+                    translationSp = (translationSp - 0.5f).coerceAtLeast(translationFloorSp)
+                }
+
+                snapshot.ayahAutoFit && arabicSp > ARABIC_AUTO_FLOOR_SP -> {
+                    arabicSp = (arabicSp - 0.5f).coerceAtLeast(ARABIC_AUTO_FLOOR_SP)
+                }
+
                 else -> break
             }
         }
 
-        while (translation != null && totalHeight() > availableHeight && translationLines > 1) {
+        var arabicLines = arabicLayout().lineCount
+        var translationLines = translationLayout()?.lineCount ?: 0
+        fun limitedTotalHeight(): Int = arabicLayout(arabicLines).height +
+                (translationLayout(translationLines)?.let { dividerHeight + it.height } ?: 0)
+
+        while (
+            translation != null &&
+            limitedTotalHeight() > availableHeight &&
+            translationLines > 1
+        ) {
             translationLines -= 1
         }
-        while (totalHeight() > availableHeight && arabicLines > 1) {
+        while (limitedTotalHeight() > availableHeight && arabicLines > 1) {
             arabicLines -= 1
         }
 
-        val arabicWouldTruncate = createLayout(
-            snapshot.verse.arabic,
-            arabicPaint(),
-            contentWidth,
-            Int.MAX_VALUE,
-            rtl = true,
-            lineSpacingExtraPx = widget.dp(widget.arabicLineSpacing),
-        ).lineCount > arabicLines
-        val translationWouldTruncate = translation?.let {
-            createLayout(
-                it,
-                translationPaint(),
-                contentWidth,
-                Int.MAX_VALUE,
-                rtl = snapshot.translationLanguage == "ur",
-                lineSpacingExtraPx = widget.dp(widget.translationLineSpacing),
-            ).lineCount > translationLines
-        } ?: false
-        if (
-            translation != null &&
-            widget.compact &&
-            (totalHeight() > availableHeight || arabicWouldTruncate || translationWouldTruncate)
-        ) {
-            translation = null
-            arabicLines = arabicMaxLines
-            if (snapshot.ayahAutoFit) arabicSp = arabicBase
-            while (totalHeight() > availableHeight && arabicSp > ARABIC_AUTO_FLOOR_SP) {
-                arabicSp = (arabicSp - 0.5f).coerceAtLeast(ARABIC_AUTO_FLOOR_SP)
-            }
-            while (totalHeight() > availableHeight && arabicLines > 1) {
-                arabicLines -= 1
-            }
-        }
-
-        val finalArabic = arabicLayout()
-        val finalTranslation = translationLayout()
+        val finalArabic = arabicLayout(arabicLines)
+        val finalTranslation = translationLayout(translationLines)
         val finalHeight = finalArabic.height +
-            (finalTranslation?.let { dividerHeight + it.height } ?: 0)
+                (finalTranslation?.let { dividerHeight + it.height } ?: 0)
         var y = contentTop + ((availableHeight - finalHeight) / 2f).coerceAtLeast(0f)
         drawLayout(canvas, finalArabic, contentLeft, y)
         y += finalArabic.height
@@ -631,7 +616,7 @@ object QuranWidgetRenderer {
             else -> 18f
         }
         val verticalPadding = when {
-            expanded -> 20f
+            expanded -> 18f
             micro -> 6f
             compact -> 7f
             else -> 10f
