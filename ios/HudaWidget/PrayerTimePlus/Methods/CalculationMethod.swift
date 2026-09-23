@@ -127,7 +127,7 @@ public enum CalculationMethod: String, Sendable, Equatable, CaseIterable {
 
     /// The stable string key for this method.
     public var key: String {
-        rawValue
+        self == .other ? "custom" : rawValue
     }
 
     /// A fresh parameter set for this method.
@@ -135,17 +135,17 @@ public enum CalculationMethod: String, Sendable, Equatable, CaseIterable {
     /// ``other`` returns a neutral set; ``dubai`` (which has no dedicated row) uses
     /// the Muslim World League base angles.
     public var parameters: CalculationParameters {
-        if self == .other {
-            return CalculationParameters(method: rawValue)
-        }
-        let columns = GeneratedMethodData.parameters[rawValue]
+        let columns = GeneratedMethodData.parameters[key]
             ?? GeneratedMethodData.parameters["mwl"]
             ?? [18, 1, 0, 0, 17, 0, 0, 0, 0, 0, 0]
-        return CalculationParameters(key: rawValue, columns: columns)
+        return CalculationParameters(key: key, columns: columns)
     }
 
     /// The method for a string key, or `nil` if none matches.
     public static func from(key: String) -> CalculationMethod? {
-        CalculationMethod(rawValue: key)
+        if key == "custom" || key == "other" {
+            return .other
+        }
+        return CalculationMethod(rawValue: key)
     }
 }

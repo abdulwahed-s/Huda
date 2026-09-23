@@ -18,7 +18,7 @@ enum GeneratedAutoData {
         "AQ": "isna",
         "AR": "isna",
         "AS": "mwl",
-        "AT": "mwl",
+        "AT": "austria",
         "AU": "mwl",
         "AW": "isna",
         "AX": "mwl",
@@ -113,7 +113,7 @@ enum GeneratedAutoData {
         "IM": "mwl",
         "IN": "karachi",
         "IO": "isna",
-        "IQ": "egypt",
+        "IQ": "iraq",
         "IR": "mwl",
         "IS": "mwl",
         "IT": "mwl",
@@ -257,15 +257,5 @@ enum GeneratedAutoData {
         "ZA": "egypt",
         "ZM": "egypt",
         "ZW": "egypt",
-    ]
-
-    static let continent: [String: String] = [
-        "AF": "egypt",
-        "AN": "isna",
-        "AS": "mwl",
-        "EU": "mwl",
-        "NA": "isna",
-        "OC": "mwl",
-        "SA": "isna",
     ]
 }

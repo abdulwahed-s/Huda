@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,6 +11,7 @@ import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/core/utils/text_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
@@ -36,6 +38,9 @@ class _PrayerTimeAdjustmentBottomSheetState
   late String _madhabToken;
   late String _highLatToken;
   late String _countryCode;
+  late final TextEditingController _fajrAngleController;
+  late final TextEditingController _maghribAngleController;
+  late final TextEditingController _ishaAngleController;
 
   @override
   void initState() {
@@ -45,8 +50,26 @@ class _PrayerTimeAdjustmentBottomSheetState
     _methodToken = cubit.calculationMethodToken;
     _madhabToken = cubit.madhabToken;
     _highLatToken = cubit.highLatitudeRuleToken;
-    _countryCode =
-        PrayerTimesCalculator.countryCodeFromCache(cubit.cacheHelper);
+    _countryCode = PrayerTimesCalculator.countryCodeFromCache(
+      cubit.cacheHelper,
+    );
+    _fajrAngleController = TextEditingController(
+      text: CustomPrayerAngles.canonical(cubit.customPrayerAngles.fajr),
+    );
+    _maghribAngleController = TextEditingController(
+      text: CustomPrayerAngles.canonical(cubit.customPrayerAngles.maghrib),
+    );
+    _ishaAngleController = TextEditingController(
+      text: CustomPrayerAngles.canonical(cubit.customPrayerAngles.isha),
+    );
+  }
+
+  @override
+  void dispose() {
+    _fajrAngleController.dispose();
+    _maghribAngleController.dispose();
+    _ishaAngleController.dispose();
+    super.dispose();
   }
 
   AppLocalizations get _l10n => AppLocalizations.of(context)!;
@@ -223,17 +246,76 @@ class _PrayerTimeAdjustmentBottomSheetState
       _madhabToken = PrayerTimesCalculator.defaultMadhabToken;
       _highLatToken = PrayerTimesCalculator.defaultHighLatitudeToken;
       _offsets = PrayerTimesCalculator.zeroOffsets();
+      _setAngleText(_fajrAngleController, CustomPrayerAngles.defaultFajr);
+      _setAngleText(_maghribAngleController, CustomPrayerAngles.defaultMaghrib);
+      _setAngleText(_ishaAngleController, CustomPrayerAngles.defaultIsha);
     });
   }
 
-  Future<void> _apply() async {
-    final cubit = context.read<PrayerTimesCubit>();
-    await cubit.savePrayerSettings(
-      methodToken: _methodToken,
-      madhabToken: _madhabToken,
-      highLatToken: _highLatToken,
-      offsets: _offsets,
+  double? _angleValue(TextEditingController controller) =>
+      CustomPrayerAngles.tryParseLocalized(controller.text);
+
+  bool get _customAnglesAreValid =>
+      CustomPrayerAngles.isValidTwilightAngle(
+        _angleValue(_fajrAngleController),
+      ) &&
+      CustomPrayerAngles.isValidMaghribAngle(
+        _angleValue(_maghribAngleController),
+      ) &&
+      CustomPrayerAngles.isValidTwilightAngle(
+        _angleValue(_ishaAngleController),
+      );
+
+  CustomPrayerAngles get _customAnglesOrSaved {
+    if (!_customAnglesAreValid) {
+      return context.read<PrayerTimesCubit>().customPrayerAngles;
+    }
+    return CustomPrayerAngles(
+      fajr: _angleValue(_fajrAngleController)!,
+      maghrib: _angleValue(_maghribAngleController)!,
+      isha: _angleValue(_ishaAngleController)!,
     );
+  }
+
+  void _setAngleText(TextEditingController controller, double value) {
+    final text = CustomPrayerAngles.canonical(value);
+    controller.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
+
+  void _stepAngle(
+    TextEditingController controller,
+    double delta, {
+    required bool allowsZero,
+  }) {
+    final fallback = allowsZero
+        ? CustomPrayerAngles.defaultMaghrib
+        : CustomPrayerAngles.defaultFajr;
+    final current = _angleValue(controller) ?? fallback;
+    final minimum = allowsZero ? 0.0 : 0.1;
+    final stepped = ((current + delta) * 10).round() / 10;
+    final clamped = stepped.clamp(minimum, CustomPrayerAngles.maximum);
+    setState(() => _setAngleText(controller, clamped.toDouble()));
+  }
+
+  Future<void> _apply() async {
+    if (_methodToken == 'other' && !_customAnglesAreValid) return;
+    final cubit = context.read<PrayerTimesCubit>();
+    try {
+      await cubit.savePrayerSettings(
+        methodToken: _methodToken,
+        madhabToken: _madhabToken,
+        highLatToken: _highLatToken,
+        offsets: _offsets,
+        customAngles: _customAnglesOrSaved,
+      );
+    } catch (error) {
+      if (!mounted) return;
+      HudaSnackBar.error(context, message: _l10n.errorUpdatingWidget('$error'));
+      return;
+    }
 
     if (PlatformUtils.isAndroid) {
       final service = PersistentPrayerCountdownService();
@@ -298,6 +380,10 @@ class _PrayerTimeAdjustmentBottomSheetState
                         ),
                         SizedBox(height: 8.h),
                         _buildMethodDropdown(isDark, colors),
+                        if (_methodToken == 'other') ...[
+                          SizedBox(height: 16.h),
+                          _buildCustomAnglesEditor(isDark, colors),
+                        ],
                         SizedBox(height: 16.h),
                         _buildSectionHeader(
                           l10n.prayerAsrMethod,
@@ -533,10 +619,188 @@ class _PrayerTimeAdjustmentBottomSheetState
     );
   }
 
-  Future<void> _openMethodPicker(
-    bool isDark,
-    AppColorScheme colors,
-  ) async {
+  Widget _buildCustomAnglesEditor(bool isDark, AppColorScheme colors) {
+    final l10n = _l10n;
+    return Container(
+      key: const ValueKey('custom-prayer-angles'),
+      padding: EdgeInsets.all(12.w),
+      decoration: _fieldDecoration(isDark, colors),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            l10n.prayerCustomAnglesTitle,
+            Icons.wb_twilight_rounded,
+            isDark,
+            colors,
+          ),
+          SizedBox(height: 5.h),
+          Text(
+            l10n.prayerCustomAnglesSubtitle,
+            style: TextStyle(
+              fontSize: 11.5.sp,
+              height: 1.3,
+              color: isDark ? Colors.white60 : Colors.black54,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          _buildAngleRow(
+            fieldKey: const ValueKey('custom-fajr-angle'),
+            label: l10n.fajr,
+            controller: _fajrAngleController,
+            allowsZero: false,
+            isDark: isDark,
+            colors: colors,
+          ),
+          SizedBox(height: 10.h),
+          _buildAngleRow(
+            fieldKey: const ValueKey('custom-maghrib-angle'),
+            label: l10n.maghrib,
+            controller: _maghribAngleController,
+            allowsZero: true,
+            isDark: isDark,
+            colors: colors,
+          ),
+          Padding(
+            padding: EdgeInsetsDirectional.only(start: 2.w, top: 4.h),
+            child: Text(
+              l10n.prayerMaghribZeroMeansSunset,
+              style: TextStyle(
+                fontSize: 10.5.sp,
+                height: 1.25,
+                color: isDark ? Colors.white54 : Colors.black45,
+              ),
+            ),
+          ),
+          SizedBox(height: 10.h),
+          _buildAngleRow(
+            fieldKey: const ValueKey('custom-isha-angle'),
+            label: l10n.isha,
+            controller: _ishaAngleController,
+            allowsZero: false,
+            isDark: isDark,
+            colors: colors,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAngleRow({
+    required Key fieldKey,
+    required String label,
+    required TextEditingController controller,
+    required bool allowsZero,
+    required bool isDark,
+    required AppColorScheme colors,
+  }) {
+    final value = _angleValue(controller);
+    final valid = allowsZero
+        ? CustomPrayerAngles.isValidMaghribAngle(value)
+        : CustomPrayerAngles.isValidTwilightAngle(value);
+    final error = allowsZero
+        ? _l10n.prayerAngleRangeInclusive
+        : _l10n.prayerAngleRangeExclusive;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDark ? colors.darkText : colors.lightText,
+                ),
+              ),
+            ),
+            _ThemedButton(
+              icon: Icons.remove_rounded,
+              onTap: () => _stepAngle(controller, -0.1, allowsZero: allowsZero),
+              colors: colors,
+              isDark: isDark,
+            ),
+            SizedBox(width: 7.w),
+            SizedBox(
+              width: 76.w,
+              child: TextField(
+                key: fieldKey,
+                controller: controller,
+                onChanged: (_) => setState(() {}),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: const [_LocalizedAngleInputFormatter()],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w900,
+                  color: isDark ? colors.darkText : colors.primaryDark,
+                ),
+                decoration: InputDecoration(
+                  isDense: true,
+                  suffixText: '°',
+                  errorText: valid ? null : '',
+                  errorStyle: const TextStyle(height: 0, fontSize: 0),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 8.w,
+                    vertical: 9.h,
+                  ),
+                  filled: true,
+                  fillColor: isDark
+                      ? Colors.white.withValues(alpha: 0.06)
+                      : Colors.white.withValues(alpha: 0.82),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(11.r),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(11.r),
+                    borderSide: BorderSide(
+                      color: valid
+                          ? colors.primaryExtraLight
+                          : Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(11.r),
+                    borderSide: BorderSide(
+                      color: valid
+                          ? colors.primaryVariant
+                          : Theme.of(context).colorScheme.error,
+                      width: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 7.w),
+            _ThemedButton(
+              icon: Icons.add_rounded,
+              onTap: () => _stepAngle(controller, 0.1, allowsZero: allowsZero),
+              colors: colors,
+              isDark: isDark,
+            ),
+          ],
+        ),
+        if (!valid)
+          Padding(
+            padding: EdgeInsetsDirectional.only(start: 2.w, top: 4.h),
+            child: Text(
+              error,
+              style: TextStyle(
+                fontSize: 10.5.sp,
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Future<void> _openMethodPicker(bool isDark, AppColorScheme colors) async {
     final l10n = _l10n;
     final picked = await showModalBottomSheet<String>(
       context: context,
@@ -677,35 +941,41 @@ class _PrayerTimeAdjustmentBottomSheetState
 
     final prayers = <_PrayerEntry>[
       _PrayerEntry(
-          key: 'fajr',
-          name: _prayerName('fajr'),
-          baseTime: times?.fajr,
-          icon: Icons.wb_twilight_rounded),
+        key: 'fajr',
+        name: _prayerName('fajr'),
+        baseTime: times?.fajr,
+        icon: Icons.wb_twilight_rounded,
+      ),
       _PrayerEntry(
-          key: 'sunrise',
-          name: _prayerName('sunrise'),
-          baseTime: times?.sunrise,
-          iconAsset: 'assets/images/sunrise.svg.vec'),
+        key: 'sunrise',
+        name: _prayerName('sunrise'),
+        baseTime: times?.sunrise,
+        iconAsset: 'assets/images/sunrise.svg.vec',
+      ),
       _PrayerEntry(
-          key: 'dhuhr',
-          name: _prayerName('dhuhr'),
-          baseTime: times?.dhuhr,
-          icon: Icons.wb_sunny_rounded),
+        key: 'dhuhr',
+        name: _prayerName('dhuhr'),
+        baseTime: times?.dhuhr,
+        icon: Icons.wb_sunny_rounded,
+      ),
       _PrayerEntry(
-          key: 'asr',
-          name: _prayerName('asr'),
-          baseTime: times?.asr,
-          icon: Icons.wb_sunny_outlined),
+        key: 'asr',
+        name: _prayerName('asr'),
+        baseTime: times?.asr,
+        icon: Icons.wb_sunny_outlined,
+      ),
       _PrayerEntry(
-          key: 'maghrib',
-          name: _prayerName('maghrib'),
-          baseTime: times?.maghrib,
-          iconAsset: 'assets/images/sunset.svg.vec'),
+        key: 'maghrib',
+        name: _prayerName('maghrib'),
+        baseTime: times?.maghrib,
+        iconAsset: 'assets/images/sunset.svg.vec',
+      ),
       _PrayerEntry(
-          key: 'isha',
-          name: _prayerName('isha'),
-          baseTime: times?.isha,
-          icon: Icons.dark_mode_rounded),
+        key: 'isha',
+        name: _prayerName('isha'),
+        baseTime: times?.isha,
+        icon: Icons.dark_mode_rounded,
+      ),
     ];
 
     return Column(
@@ -738,15 +1008,15 @@ class _PrayerTimeAdjustmentBottomSheetState
         color: hasOffset
             ? colors.primary.withValues(alpha: isDark ? 0.18 : 0.08)
             : (isDark
-                ? colors.darkGradientMid.withValues(alpha: 0.45)
-                : colors.lightSurface.withValues(alpha: 0.82)),
+                  ? colors.darkGradientMid.withValues(alpha: 0.45)
+                  : colors.lightSurface.withValues(alpha: 0.82)),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: hasOffset
               ? colors.primaryVariant.withValues(alpha: isDark ? 0.46 : 0.28)
               : (isDark
-                  ? Colors.white.withValues(alpha: 0.07)
-                  : colors.primaryExtraLight.withValues(alpha: 0.85)),
+                    ? Colors.white.withValues(alpha: 0.07)
+                    : colors.primaryExtraLight.withValues(alpha: 0.85)),
         ),
       ),
       child: Row(
@@ -757,8 +1027,9 @@ class _PrayerTimeAdjustmentBottomSheetState
             decoration: BoxDecoration(
               color: hasOffset
                   ? colors.primary.withValues(alpha: 0.16)
-                  : colors.primaryExtraLight
-                      .withValues(alpha: isDark ? 0.1 : 0.5),
+                  : colors.primaryExtraLight.withValues(
+                      alpha: isDark ? 0.1 : 0.5,
+                    ),
               borderRadius: BorderRadius.circular(13.r),
             ),
             child: _PrayerEntryIcon(
@@ -767,8 +1038,8 @@ class _PrayerTimeAdjustmentBottomSheetState
               color: hasOffset
                   ? (isDark ? colors.primaryLight : colors.primary)
                   : (isDark
-                      ? Colors.white54
-                      : colors.primary.withValues(alpha: 0.7)),
+                        ? Colors.white54
+                        : colors.primary.withValues(alpha: 0.7)),
             ),
           ),
           SizedBox(width: 11.w),
@@ -853,7 +1124,9 @@ class _PrayerTimeAdjustmentBottomSheetState
             flex: 2,
             child: _FooterButton(
               label: l10n.prayerSettingsApply,
-              onTap: _apply,
+              onTap: _methodToken != 'other' || _customAnglesAreValid
+                  ? _apply
+                  : null,
               colors: colors,
               isDark: isDark,
               isPrimary: true,
@@ -925,11 +1198,7 @@ class _PrayerEntryIcon extends StatelessWidget {
       );
     }
 
-    return Icon(
-      entry.icon,
-      size: size,
-      color: color,
-    );
+    return Icon(entry.icon, size: size, color: color);
   }
 }
 
@@ -1084,8 +1353,9 @@ class _SelectionPickerSheetState extends State<_SelectionPickerSheet> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final preferredHeight = MediaQuery.sizeOf(context).height * 0.76;
-        final sheetHeight =
-            preferredHeight.clamp(0.0, constraints.maxHeight).toDouble();
+        final sheetHeight = preferredHeight
+            .clamp(0.0, constraints.maxHeight)
+            .toDouble();
 
         return SafeArea(
           top: false,
@@ -1186,7 +1456,7 @@ class _SelectionPickerSheetState extends State<_SelectionPickerSheet> {
                             14.h + MediaQuery.paddingOf(context).bottom,
                           ),
                           itemCount: filteredOptions.length,
-                          separatorBuilder: (_, __) => SizedBox(height: 8.h),
+                          separatorBuilder: (_, _) => SizedBox(height: 8.h),
                           itemBuilder: (context, index) {
                             final option = filteredOptions[index];
                             final selected =
@@ -1282,10 +1552,7 @@ class _PickerEmptyState extends StatelessWidget {
   final AppColorScheme colors;
   final bool isDark;
 
-  const _PickerEmptyState({
-    required this.colors,
-    required this.isDark,
-  });
+  const _PickerEmptyState({required this.colors, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -1303,8 +1570,9 @@ class _PickerEmptyState extends StatelessWidget {
           Icon(
             Icons.search_off_rounded,
             size: 28.sp,
-            color:
-                isDark ? Colors.white38 : colors.primary.withValues(alpha: 0.5),
+            color: isDark
+                ? Colors.white38
+                : colors.primary.withValues(alpha: 0.5),
           ),
           SizedBox(height: 10.h),
           Text(
@@ -1353,15 +1621,15 @@ class _SelectionOptionTile extends StatelessWidget {
             color: selected
                 ? colors.primary.withValues(alpha: isDark ? 0.24 : 0.1)
                 : (isDark
-                    ? colors.darkCardBackground.withValues(alpha: 0.68)
-                    : Colors.white),
+                      ? colors.darkCardBackground.withValues(alpha: 0.68)
+                      : Colors.white),
             borderRadius: borderRadius,
             border: Border.all(
               color: selected
                   ? colors.primaryVariant.withValues(alpha: isDark ? 0.5 : 0.3)
                   : (isDark
-                      ? Colors.white.withValues(alpha: 0.07)
-                      : colors.primaryExtraLight.withValues(alpha: 0.85)),
+                        ? Colors.white.withValues(alpha: 0.07)
+                        : colors.primaryExtraLight.withValues(alpha: 0.85)),
             ),
           ),
           child: Row(
@@ -1372,8 +1640,9 @@ class _SelectionOptionTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: selected
                       ? colors.primary.withValues(alpha: isDark ? 0.28 : 0.14)
-                      : colors.primaryExtraLight
-                          .withValues(alpha: isDark ? 0.1 : 0.45),
+                      : colors.primaryExtraLight.withValues(
+                          alpha: isDark ? 0.1 : 0.45,
+                        ),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
@@ -1382,8 +1651,8 @@ class _SelectionOptionTile extends StatelessWidget {
                   color: selected
                       ? (isDark ? colors.primaryLight : colors.primary)
                       : (isDark
-                          ? Colors.white54
-                          : colors.primary.withValues(alpha: 0.68)),
+                            ? Colors.white54
+                            : colors.primary.withValues(alpha: 0.68)),
                 ),
               ),
               SizedBox(width: 11.w),
@@ -1410,14 +1679,14 @@ class _SelectionOptionTile extends StatelessWidget {
                   color: selected
                       ? colors.primary
                       : (isDark
-                          ? Colors.white.withValues(alpha: 0.05)
-                          : colors.primaryExtraLight.withValues(alpha: 0.4)),
+                            ? Colors.white.withValues(alpha: 0.05)
+                            : colors.primaryExtraLight.withValues(alpha: 0.4)),
                   border: Border.all(
                     color: selected
                         ? colors.primary
                         : (isDark
-                            ? Colors.white.withValues(alpha: 0.08)
-                            : colors.primaryExtraLight),
+                              ? Colors.white.withValues(alpha: 0.08)
+                              : colors.primaryExtraLight),
                   ),
                 ),
                 child: selected
@@ -1471,8 +1740,9 @@ class _ThemedButton extends StatelessWidget {
               end: Alignment.bottomRight,
             ),
             border: Border.all(
-              color:
-                  colors.primaryVariant.withValues(alpha: isDark ? 0.48 : 0.3),
+              color: colors.primaryVariant.withValues(
+                alpha: isDark ? 0.48 : 0.3,
+              ),
               width: 1,
             ),
           ),
@@ -1539,15 +1809,15 @@ class _OffsetValue extends StatelessWidget {
         color: active
             ? colors.primary.withValues(alpha: isDark ? 0.24 : 0.12)
             : (isDark
-                ? Colors.white.withValues(alpha: 0.05)
-                : Colors.white.withValues(alpha: 0.7)),
+                  ? Colors.white.withValues(alpha: 0.05)
+                  : Colors.white.withValues(alpha: 0.7)),
         borderRadius: BorderRadius.circular(11.r),
         border: Border.all(
           color: active
               ? colors.primaryVariant.withValues(alpha: isDark ? 0.48 : 0.28)
               : (isDark
-                  ? Colors.white.withValues(alpha: 0.06)
-                  : colors.primaryExtraLight.withValues(alpha: 0.9)),
+                    ? Colors.white.withValues(alpha: 0.06)
+                    : colors.primaryExtraLight.withValues(alpha: 0.9)),
         ),
       ),
       child: Text(
@@ -1559,8 +1829,8 @@ class _OffsetValue extends StatelessWidget {
           color: active
               ? (isDark ? colors.primaryLight : colors.primary)
               : (isDark
-                  ? Colors.white.withValues(alpha: 0.45)
-                  : Colors.black38),
+                    ? Colors.white.withValues(alpha: 0.45)
+                    : Colors.black38),
         ),
       ),
     );
@@ -1569,7 +1839,7 @@ class _OffsetValue extends StatelessWidget {
 
 class _FooterButton extends StatelessWidget {
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final AppColorScheme colors;
   final bool isDark;
   final bool isPrimary;
@@ -1584,6 +1854,7 @@ class _FooterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final enabled = onTap != null;
     final borderRadius = BorderRadius.circular(15.r);
     return Material(
       color: Colors.transparent,
@@ -1594,7 +1865,7 @@ class _FooterButton extends StatelessWidget {
         child: Ink(
           padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 12.w),
           decoration: BoxDecoration(
-            gradient: isPrimary
+            gradient: isPrimary && enabled
                 ? LinearGradient(
                     colors: [colors.accent, colors.primary],
                     begin: Alignment.topLeft,
@@ -1602,10 +1873,10 @@ class _FooterButton extends StatelessWidget {
                   )
                 : null,
             color: isPrimary
-                ? null
+                ? (enabled ? null : Colors.grey.withValues(alpha: 0.35))
                 : (isDark
-                    ? colors.darkGradientEnd.withValues(alpha: 0.58)
-                    : Colors.white),
+                      ? colors.darkGradientEnd.withValues(alpha: 0.58)
+                      : Colors.white),
             borderRadius: borderRadius,
             border: isPrimary
                 ? null
@@ -1614,7 +1885,7 @@ class _FooterButton extends StatelessWidget {
                         ? Colors.white.withValues(alpha: 0.08)
                         : colors.primaryExtraLight,
                   ),
-            boxShadow: isPrimary
+            boxShadow: isPrimary && enabled
                 ? [
                     BoxShadow(
                       color: colors.primary.withValues(alpha: 0.32),
@@ -1633,15 +1904,42 @@ class _FooterButton extends StatelessWidget {
               fontSize: 14.5.sp,
               fontWeight: FontWeight.w900,
               color: isPrimary
-                  ? Colors.white
+                  ? Colors.white.withValues(alpha: enabled ? 1 : 0.58)
                   : (isDark
-                      ? colors.darkText.withValues(alpha: 0.78)
-                      : colors.primary),
+                        ? colors.darkText.withValues(alpha: 0.78)
+                        : colors.primary),
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class _LocalizedAngleInputFormatter extends TextInputFormatter {
+  const _LocalizedAngleInputFormatter();
+
+  static final RegExp _allowedCharacters = RegExp(r'^[0-9٠-٩۰-۹.,٫]*$');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text;
+    if (!_allowedCharacters.hasMatch(text)) return oldValue;
+
+    final separators =
+        '.'.allMatches(text).length +
+        ','.allMatches(text).length +
+        '٫'.allMatches(text).length;
+    if (separators > 1) return oldValue;
+
+    final separatorIndex = text.indexOf(RegExp(r'[.,٫]'));
+    if (separatorIndex >= 0 && text.length - separatorIndex - 1 > 1) {
+      return oldValue;
+    }
+    return newValue;
   }
 }
 

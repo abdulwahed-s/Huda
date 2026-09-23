@@ -4393,6 +4393,9 @@
         "description": "Button text to open the prayer widget customization page"
     },
     "prayerWidgetCustomization": "Customize prayer widget",
+    "prayerWidgetTimeFormat": "Prayer time format",
+    "prayerWidgetTwelveHour": "12-hour",
+    "prayerWidgetTwentyFourHour": "24-hour",
     "@prayerWidgetCustomization": {
         "description": "Title of the prayer widget customization screen"
     },
@@ -5050,6 +5053,11 @@
     "@prayerCalculationMethod": {
         "description": "Prayer calculation method section title"
     },
+    "prayerCustomAnglesTitle": "Custom angles",
+    "prayerCustomAnglesSubtitle": "Set the Fajr, Maghrib, and Isha sun angles.",
+    "prayerAngleRangeExclusive": "Enter an angle greater than 0° and up to 30°.",
+    "prayerAngleRangeInclusive": "Enter an angle from 0° to 30°.",
+    "prayerMaghribZeroMeansSunset": "0° means Maghrib is at sunset.",
     "prayerAsrMethod": "Asr Method (Madhab)",
     "@prayerAsrMethod": {
         "description": "Asr madhab selection section title"

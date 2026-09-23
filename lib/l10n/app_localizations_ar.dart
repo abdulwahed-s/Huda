@@ -3736,6 +3736,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get prayerWidgetCustomization => 'تخصيص عنصر الصلاة';
 
   @override
+  String get prayerWidgetTimeFormat => 'تنسيق وقت الصلاة';
+
+  @override
+  String get prayerWidgetTwelveHour => '12 ساعة';
+
+  @override
+  String get prayerWidgetTwentyFourHour => '24 ساعة';
+
+  @override
   String get prayerWidgetPreview => 'معاينة مباشرة';
 
   @override
@@ -4299,6 +4308,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get prayerCalculationMethod => 'طريقة الحساب';
+
+  @override
+  String get prayerCustomAnglesTitle => 'زوايا مخصصة';
+
+  @override
+  String get prayerCustomAnglesSubtitle =>
+      'اضبط زوايا الشمس للفجر والمغرب والعشاء.';
+
+  @override
+  String get prayerAngleRangeExclusive =>
+      'أدخل زاوية أكبر من 0° ولا تتجاوز 30°.';
+
+  @override
+  String get prayerAngleRangeInclusive => 'أدخل زاوية من 0° إلى 30°.';
+
+  @override
+  String get prayerMaghribZeroMeansSunset =>
+      '0° تعني أن المغرب عند غروب الشمس.';
 
   @override
   String get prayerAsrMethod => 'طريقة العصر (المذهب)';

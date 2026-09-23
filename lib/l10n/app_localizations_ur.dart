@@ -3786,6 +3786,15 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerWidgetCustomization => 'نماز ویجٹ کو حسب ضرورت بنائیں';
 
   @override
+  String get prayerWidgetTimeFormat => 'نماز کے وقت کی شکل';
+
+  @override
+  String get prayerWidgetTwelveHour => '12 گھنٹے';
+
+  @override
+  String get prayerWidgetTwentyFourHour => '24 گھنٹے';
+
+  @override
   String get prayerWidgetPreview => 'لائیو پیش منظر';
 
   @override
@@ -4353,6 +4362,24 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get prayerCalculationMethod => 'حساب کا طریقہ';
+
+  @override
+  String get prayerCustomAnglesTitle => 'حسبِ ضرورت زاویے';
+
+  @override
+  String get prayerCustomAnglesSubtitle =>
+      'فجر، مغرب اور عشاء کے شمسی زاویے مقرر کریں۔';
+
+  @override
+  String get prayerAngleRangeExclusive =>
+      '0° سے زیادہ اور 30° تک زاویہ درج کریں۔';
+
+  @override
+  String get prayerAngleRangeInclusive => '0° سے 30° تک زاویہ درج کریں۔';
+
+  @override
+  String get prayerMaghribZeroMeansSunset =>
+      '0° کا مطلب ہے کہ مغرب غروبِ آفتاب پر ہے۔';
 
   @override
   String get prayerAsrMethod => 'عصر کا طریقہ (مذہب)';

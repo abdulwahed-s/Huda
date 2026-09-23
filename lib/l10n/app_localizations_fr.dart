@@ -3869,6 +3869,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prayerWidgetCustomization => 'Personnaliser le widget de prière';
 
   @override
+  String get prayerWidgetTimeFormat => 'Format de l’heure de prière';
+
+  @override
+  String get prayerWidgetTwelveHour => '12 heures';
+
+  @override
+  String get prayerWidgetTwentyFourHour => '24 heures';
+
+  @override
   String get prayerWidgetPreview => 'Aperçu en direct';
 
   @override
@@ -4444,6 +4453,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get prayerCalculationMethod => 'Méthode de calcul';
+
+  @override
+  String get prayerCustomAnglesTitle => 'Angles personnalisés';
+
+  @override
+  String get prayerCustomAnglesSubtitle =>
+      'Définissez les angles solaires de Fajr, Maghrib et Isha.';
+
+  @override
+  String get prayerAngleRangeExclusive =>
+      'Saisissez un angle supérieur à 0° et inférieur ou égal à 30°.';
+
+  @override
+  String get prayerAngleRangeInclusive =>
+      'Saisissez un angle compris entre 0° et 30°.';
+
+  @override
+  String get prayerMaghribZeroMeansSunset =>
+      '0° signifie que Maghrib a lieu au coucher du soleil.';
 
   @override
   String get prayerAsrMethod => 'Méthode Asr (Madhhab)';

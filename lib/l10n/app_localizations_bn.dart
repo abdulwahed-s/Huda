@@ -3795,6 +3795,15 @@ class AppLocalizationsBn extends AppLocalizations {
   String get prayerWidgetCustomization => 'নামাজ উইজেট কাস্টমাইজ করুন';
 
   @override
+  String get prayerWidgetTimeFormat => 'নামাজের সময়ের বিন্যাস';
+
+  @override
+  String get prayerWidgetTwelveHour => '১২ ঘণ্টা';
+
+  @override
+  String get prayerWidgetTwentyFourHour => '২৪ ঘণ্টা';
+
+  @override
   String get prayerWidgetPreview => 'লাইভ প্রিভিউ';
 
   @override
@@ -4365,6 +4374,23 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get prayerCalculationMethod => 'গণনা পদ্ধতি';
+
+  @override
+  String get prayerCustomAnglesTitle => 'কাস্টম কোণ';
+
+  @override
+  String get prayerCustomAnglesSubtitle =>
+      'ফজর, মাগরিব ও ইশার সূর্য কোণ নির্ধারণ করুন।';
+
+  @override
+  String get prayerAngleRangeExclusive =>
+      '0°-এর বেশি এবং সর্বোচ্চ 30° কোণ লিখুন।';
+
+  @override
+  String get prayerAngleRangeInclusive => '0° থেকে 30° পর্যন্ত কোণ লিখুন।';
+
+  @override
+  String get prayerMaghribZeroMeansSunset => '0° মানে মাগরিব সূর্যাস্তের সময়।';
 
   @override
   String get prayerAsrMethod => 'আসর পদ্ধতি (মাযহাব)';

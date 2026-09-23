@@ -3791,6 +3791,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerWidgetCustomization => 'Namaz widget\'ını özelleştir';
 
   @override
+  String get prayerWidgetTimeFormat => 'Namaz saati biçimi';
+
+  @override
+  String get prayerWidgetTwelveHour => '12 saat';
+
+  @override
+  String get prayerWidgetTwentyFourHour => '24 saat';
+
+  @override
   String get prayerWidgetPreview => 'Canlı önizleme';
 
   @override
@@ -4359,6 +4368,24 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerCalculationMethod => 'Hesaplama yöntemi';
+
+  @override
+  String get prayerCustomAnglesTitle => 'Özel açılar';
+
+  @override
+  String get prayerCustomAnglesSubtitle =>
+      'Sabah, Akşam ve Yatsı güneş açılarını ayarlayın.';
+
+  @override
+  String get prayerAngleRangeExclusive =>
+      '0°\'dan büyük ve en fazla 30° olan bir açı girin.';
+
+  @override
+  String get prayerAngleRangeInclusive => '0° ile 30° arasında bir açı girin.';
+
+  @override
+  String get prayerMaghribZeroMeansSunset =>
+      '0°, Akşam vaktinin gün batımında olduğu anlamına gelir.';
 
   @override
   String get prayerAsrMethod => 'İkindi yöntemi (Mezhep)';

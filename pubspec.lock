@@ -1161,10 +1161,10 @@ packages:
     dependency: "direct main"
     description:
       name: prayer_time_plus
-      sha256: db9374af3d7853165fda37e3359871361e2a1157af7a5866eb6df7598812bc83
+      sha256: da3a26e37ce14e7cab6a483255fa4da09d479391992545b72624e8decdbe99d8
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.3.0"
   precise_compass:
     dependency: "direct main"
     description:

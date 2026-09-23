@@ -59,7 +59,7 @@ public struct CalculationParameters: Sendable, Equatable {
         adjustments: PrayerAdjustments = PrayerAdjustments(),
         madhab: Madhab = .shafi,
         highLatitudeRule: HighLatitudeRule = .automatic,
-        isRamadan: Bool = false,
+        isRamadan: Bool = false
     ) {
         self.method = method
         self.fajrAngle = fajrAngle
@@ -101,8 +101,8 @@ extension CalculationParameters {
                 dhuhr: offset(7),
                 asr: offset(8),
                 maghrib: offset(9),
-                isha: offset(10),
-            ),
+                isha: offset(10)
+            )
         )
     }
 }

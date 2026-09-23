@@ -1,51 +1,112 @@
 import Foundation
 
-struct PrayerWidgetCalculator {
+struct PrayerWidgetDayTimes {
+    let base: PrayerTimes
+    let offsets: [Prayer: Int]
+    let timeZone: TimeZone
 
+    func time(for prayer: Prayer) -> Date? {
+        guard let date = base.time(for: prayer) else { return nil }
+        var fixedCalendar = Calendar(identifier: .gregorian)
+        fixedCalendar.timeZone = TimeZone(
+            secondsFromGMT: Int(base.utcOffset)
+        ) ?? timeZone
+        let components = fixedCalendar.dateComponents(
+            [.year, .month, .day, .hour, .minute, .second],
+            from: date
+        )
+        var locationCalendar = Calendar(identifier: .gregorian)
+        locationCalendar.timeZone = timeZone
+        guard let locationDate = locationCalendar.date(from: components) else {
+            return nil
+        }
+        return PrayerWidgetCalculator.applyingManualOffset(
+            to: locationDate,
+            minutes: offsets[prayer] ?? 0
+        )
+    }
+
+    var fajr: Date? {
+        time(for: .fajr)
+    }
+
+    var maghrib: Date? {
+        time(for: .maghrib)
+    }
+}
+
+enum PrayerWidgetCalculator {
     static let dailyPrayers: [Prayer] = [.fajr, .dhuhr, .asr, .maghrib, .isha]
 
     static let displayPrayers: [Prayer] = [
-        .fajr, .sunrise, .dhuhr, .asr, .maghrib, .isha
+        .fajr, .sunrise, .dhuhr, .asr, .maghrib, .isha,
     ]
+
+    static func applyingManualOffset(to date: Date, minutes: Int) -> Date {
+        date.addingTimeInterval(TimeInterval(minutes * 60))
+    }
 
     static func computeTimes(
         coordinates: Coordinates,
         date: Date,
         settings: PrayerWidgetSettings
-    ) -> PrayerTimes? {
+    ) -> PrayerWidgetDayTimes? {
         let countryCode = settings.countryCode.trimmingCharacters(in: .whitespaces)
-        var params = method(from: settings.calculationMethod, countryCode: countryCode).parameters
+        let calculationMethod = method(
+            from: settings.calculationMethod,
+            countryCode: countryCode
+        )
+        var params = calculationMethod.parameters
         params.madhab = madhab(from: settings.madhab)
         params.highLatitudeRule = highLatitudeRule(from: settings.highLatitudeRule)
-
-        let offsets = settings.offsets
-        params.adjustments.fajr = offsets[.fajr] ?? 0
-        params.adjustments.sunrise = offsets[.sunrise] ?? 0
-        params.adjustments.dhuhr = offsets[.dhuhr] ?? 0
-        params.adjustments.asr = offsets[.asr] ?? 0
-        params.adjustments.maghrib = offsets[.maghrib] ?? 0
-        params.adjustments.isha = offsets[.isha] ?? 0
+        var islamicCalendar = Calendar(identifier: .islamicUmmAlQura)
+        islamicCalendar.timeZone = settings.displayTimeZone
+        let isRamadan = islamicCalendar.component(.month, from: date) == 9
+        params.isRamadan = isRamadan
+        if calculationMethod == .ummAlQura,
+           isRamadan,
+           countryCode.uppercased() != "SA"
+        {
+            params.ishaValue = 120
+        }
+        if calculationMethod == .other {
+            params.fajrAngle = settings.customFajrAngle
+            params.maghribIsInterval = false
+            params.maghribValue = settings.customMaghribAngle
+            params.ishaIsInterval = false
+            params.ishaValue = settings.customIshaAngle
+        }
 
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = settings.displayTimeZone
         let components = calendar.dateComponents([.year, .month, .day], from: date)
-        return PrayerTimes(
+        var noonComponents = components
+        noonComponents.hour = 12
+        let offsetReference = calendar.date(from: noonComponents) ?? date
+        let base = PrayerTimes(
             coordinates: coordinates,
             date: components,
             calculationParameters: params,
-            utcOffset: TimeInterval(settings.displayTimeZone.secondsFromGMT(for: date)),
+            utcOffset: TimeInterval(
+                settings.displayTimeZone.secondsFromGMT(for: offsetReference)
+            ),
             countryCode: countryCode
+        )
+        return PrayerWidgetDayTimes(
+            base: base,
+            offsets: settings.offsets,
+            timeZone: settings.displayTimeZone
         )
     }
 
-    static func dailyMap(from times: PrayerTimes) -> [(Prayer, Date)] {
-        return dailyPrayers.compactMap { prayer in
+    static func dailyMap(from times: PrayerWidgetDayTimes) -> [(Prayer, Date)] {
+        dailyPrayers.compactMap { prayer in
             times.time(for: prayer).map { (prayer, $0) }
         }
     }
 
-    static func displayMap(from times: PrayerTimes) -> [(Prayer, Date)] {
-        return displayPrayers.compactMap { prayer in
+    static func displayMap(from times: PrayerWidgetDayTimes) -> [(Prayer, Date)] {
+        displayPrayers.compactMap { prayer in
             times.time(for: prayer).map { (prayer, $0) }
         }
     }
@@ -57,7 +118,7 @@ struct PrayerWidgetCalculator {
     ) -> (prayer: Prayer, date: Date)? {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = settings.displayTimeZone
-        for dayOffset in 0..<5 {
+        for dayOffset in 0 ..< 5 {
             guard
                 let target = calendar.date(byAdding: .day, value: dayOffset, to: now),
                 let times = computeTimes(coordinates: coordinates, date: target, settings: settings)
@@ -78,7 +139,7 @@ struct PrayerWidgetCalculator {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = settings.displayTimeZone
         var result: [(Prayer, Date)] = []
-        for dayOffset in 0..<dayCount {
+        for dayOffset in 0 ..< dayCount {
             guard
                 let target = calendar.date(byAdding: .day, value: dayOffset, to: start),
                 let times = computeTimes(coordinates: coordinates, date: target, settings: settings)
@@ -88,6 +149,39 @@ struct PrayerWidgetCalculator {
             }
         }
         return result.sorted { $0.1 < $1.1 }
+    }
+
+    static func sunnahTimes(
+        coordinates: Coordinates,
+        settings: PrayerWidgetSettings,
+        date: Date
+    ) -> (middle: Date?, lastThird: Date?) {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = settings.displayTimeZone
+        guard
+            let today = computeTimes(
+                coordinates: coordinates,
+                date: date,
+                settings: settings
+            ),
+            let tomorrowDate = calendar.date(byAdding: .day, value: 1, to: date),
+            let tomorrow = computeTimes(
+                coordinates: coordinates,
+                date: tomorrowDate,
+                settings: settings
+            ),
+            let maghrib = today.maghrib,
+            let nextFajr = tomorrow.fajr,
+            nextFajr > maghrib
+        else { return (nil, nil) }
+        let night = nextFajr.timeIntervalSince(maghrib)
+        func rounded(_ value: Date) -> Date {
+            Date(timeIntervalSince1970: (value.timeIntervalSince1970 / 60).rounded() * 60)
+        }
+        return (
+            rounded(maghrib.addingTimeInterval(night / 2)),
+            rounded(maghrib.addingTimeInterval(night * 2 / 3))
+        )
     }
 
     // MARK: Settings mapping
@@ -111,17 +205,17 @@ struct PrayerWidgetCalculator {
     }
 
     private static func madhab(from token: String) -> Madhab {
-        return token == "hanafi" ? .hanafi : .shafi
+        token == "hanafi" ? .hanafi : .shafi
     }
 
     private static func highLatitudeRule(from token: String) -> HighLatitudeRule {
         switch token {
-        case "automatic": return .automatic
-        case "middleOfTheNight": return .middleOfTheNight
-        case "seventhOfTheNight": return .seventhOfTheNight
-        case "twilightAngle": return .twilightAngle
-        case "none": return .unadjusted
-        default: return .automatic
+        case "automatic": .automatic
+        case "middleOfTheNight": .middleOfTheNight
+        case "seventhOfTheNight": .seventhOfTheNight
+        case "twilightAngle": .twilightAngle
+        case "none": .unadjusted
+        default: .automatic
         }
     }
 }

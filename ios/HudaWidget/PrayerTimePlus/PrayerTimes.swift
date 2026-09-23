@@ -69,7 +69,7 @@ public struct PrayerTimes: Sendable {
         calculationParameters: CalculationParameters,
         utcOffset: TimeInterval,
         countryCode: String = "",
-        cityName: String = "",
+        cityName: String = ""
     ) {
         let (year, month, day) = Self.gregorianYearMonthDay(date)
         self.init(
@@ -80,7 +80,7 @@ public struct PrayerTimes: Sendable {
             calculationParameters: calculationParameters,
             utcOffset: utcOffset,
             countryCode: countryCode,
-            cityName: cityName,
+            cityName: cityName
         )
     }
 
@@ -92,7 +92,7 @@ public struct PrayerTimes: Sendable {
         calculationParameters: CalculationParameters,
         utcOffset: TimeInterval,
         countryCode: String,
-        cityName: String,
+        cityName: String
     ) {
         self.coordinates = coordinates
         self.year = year
@@ -112,7 +112,7 @@ public struct PrayerTimes: Sendable {
                 day: day,
                 parameters: parameters,
                 utcOffsetHours: utcOffset / 3600.0,
-                countryCode: countryCode,
+                countryCode: countryCode
             ).compute()
         }
 
@@ -124,7 +124,7 @@ public struct PrayerTimes: Sendable {
             times = compute()
         }
 
-        let midnightUTC = (SolarTime.julianDay(year: year, month: month, day: day) - 2440587.5) *
+        let midnightUTC = (SolarTime.julianDay(year: year, month: month, day: day) - 2_440_587.5) *
             86400.0
         func instant(_ minuteOfDay: Int?) -> Date? {
             guard let minuteOfDay else { return nil }
@@ -146,7 +146,7 @@ public struct PrayerTimes: Sendable {
         calculationParameters: CalculationParameters,
         utcOffset: TimeInterval,
         countryCode: String = "",
-        cityName: String = "",
+        cityName: String = ""
     ) -> PrayerTimes {
         var calendar = Calendar(identifier: .gregorian)
         if let zone = TimeZone(secondsFromGMT: Int(utcOffset)) {
@@ -159,7 +159,7 @@ public struct PrayerTimes: Sendable {
             calculationParameters: calculationParameters,
             utcOffset: utcOffset,
             countryCode: countryCode,
-            cityName: cityName,
+            cityName: cityName
         )
     }
 
@@ -201,7 +201,7 @@ public struct PrayerTimes: Sendable {
     func dayAfter() -> PrayerTimes {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        let midnightUTC = (SolarTime.julianDay(year: year, month: month, day: day) - 2440587.5) *
+        let midnightUTC = (SolarTime.julianDay(year: year, month: month, day: day) - 2_440_587.5) *
             86400.0
         let nextMidnight = Date(timeIntervalSince1970: midnightUTC + 86400.0)
         let components = calendar.dateComponents([.year, .month, .day], from: nextMidnight)
@@ -213,14 +213,14 @@ public struct PrayerTimes: Sendable {
             calculationParameters: calculationParameters,
             utcOffset: utcOffset,
             countryCode: countryCode,
-            cityName: cityName,
+            cityName: cityName
         )
     }
 
     /// Extracts year/month/day, resolving through a Gregorian calendar if the
     /// components are incomplete.
     private static func gregorianYearMonthDay(
-        _ components: DateComponents,
+        _ components: DateComponents
     ) -> (year: Int, month: Int, day: Int) {
         if let year = components.year, let month = components.month, let day = components.day {
             return (year, month, day)

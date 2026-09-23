@@ -71,6 +71,7 @@ struct PrayerTimeEngine {
         var dhuhr = solar.midDay(12.0 / 24.0)
         var asr = solar.asrTime(factor: Double(parameters.madhab.shadowFactor), t: 13.0 / 24.0)
         var sunset = solar.sunAngleTime(angle: dip, t: 18.0 / 24.0)
+        var angleMaghrib = solar.sunAngleTime(angle: parameters.maghribValue, t: 18.0 / 24.0)
         var isha = solar.sunAngleTime(angle: parameters.ishaValue, t: 18.0 / 24.0)
 
         // Convert the longitude-shifted frame to the local wall clock.
@@ -80,6 +81,7 @@ struct PrayerTimeEngine {
         dhuhr += localShift
         asr += localShift
         sunset += localShift
+        angleMaghrib += localShift
         isha += localShift
 
         // Fold the method's built-in offsets with the caller's tuning (minutes).
@@ -97,17 +99,26 @@ struct PrayerTimeEngine {
         dhuhr += Double(dhuhrOffset) / 60.0
         asr += Double(asrOffset) / 60.0
 
-        // Maghrib is always Sunset plus its offset, plus the interval when set.
-        var maghrib = sunset + Double(maghribOffset) / 60.0
-        if parameters.maghribIsInterval {
-            maghrib += parameters.maghribValue / 60.0
+        let sunsetBasedMaghrib = sunset + Double(maghribOffset) / 60.0
+        angleMaghrib += Double(maghribOffset) / 60.0
+        let angleIsha = isha + Double(ishaOffset) / 60.0
+        let maghrib: Double = if parameters.maghribIsInterval {
+            sunsetBasedMaghrib + parameters.maghribValue / 60.0
+        } else if parameters.maghribValue > 0,
+                  angleMaghrib.isFinite,
+                  angleMaghrib > sunset,
+                  parameters.ishaIsInterval || !angleIsha.isFinite || angleMaghrib < angleIsha
+        {
+            angleMaghrib
+        } else {
+            sunsetBasedMaghrib
         }
 
-        // Isha: an interval overrides the angle-based value; then apply the offset.
         if parameters.ishaIsInterval {
-            isha = maghrib + parameters.ishaValue / 60.0
+            isha = maghrib + parameters.ishaValue / 60.0 + Double(ishaOffset) / 60.0
+        } else {
+            isha = angleIsha
         }
-        isha += Double(ishaOffset) / 60.0
 
         // Umm al-Qura adds 30 minutes to Isha during Ramadan in Saudi Arabia.
         if methodKey == "makkah", countryCode.uppercased() == "SA", parameters.isRamadan {
@@ -135,7 +146,7 @@ struct PrayerTimeEngine {
             asr: Self.roundedMinute(asr),
             sunset: Self.roundedMinute(sunset),
             maghrib: Self.roundedMinute(maghrib),
-            isha: Self.roundedMinute(isha),
+            isha: Self.roundedMinute(isha)
         )
     }
 

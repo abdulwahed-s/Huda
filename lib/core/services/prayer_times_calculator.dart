@@ -2,6 +2,107 @@ import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hijri_plus/hijri_plus.dart';
+
+class CustomPrayerAngles {
+  const CustomPrayerAngles({
+    required this.fajr,
+    required this.maghrib,
+    required this.isha,
+  });
+
+  static const double defaultFajr = 18;
+  static const double defaultMaghrib = 0;
+  static const double defaultIsha = 17;
+  static const double maximum = 30;
+
+  static const CustomPrayerAngles defaults = CustomPrayerAngles(
+    fajr: defaultFajr,
+    maghrib: defaultMaghrib,
+    isha: defaultIsha,
+  );
+
+  final double fajr;
+  final double maghrib;
+  final double isha;
+
+  bool get isValid =>
+      isValidTwilightAngle(fajr) &&
+      isValidMaghribAngle(maghrib) &&
+      isValidTwilightAngle(isha);
+
+  static bool isValidTwilightAngle(double? value) =>
+      value != null && value.isFinite && value > 0 && value <= maximum;
+
+  static bool isValidMaghribAngle(double? value) =>
+      value != null && value.isFinite && value >= 0 && value <= maximum;
+
+  static double? tryParseLocalized(Object? raw) {
+    if (raw is num) {
+      final value = raw.toDouble();
+      return value.isFinite ? value : null;
+    }
+    if (raw is! String) return null;
+
+    const arabicIndic = '٠١٢٣٤٥٦٧٨٩';
+    const easternArabic = '۰۱۲۳۴۵۶۷۸۹';
+    var normalized = raw.trim();
+    for (var index = 0; index < 10; index++) {
+      normalized = normalized
+          .replaceAll(arabicIndic[index], '$index')
+          .replaceAll(easternArabic[index], '$index');
+    }
+    normalized = normalized.replaceAll('٫', '.').replaceAll(',', '.');
+    final value = double.tryParse(normalized);
+    return value != null && value.isFinite ? value : null;
+  }
+
+  static String canonical(double value) {
+    final fixed = value.toStringAsFixed(1);
+    return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
+  }
+
+  static double _toTenths(double value) => (value * 10).round() / 10;
+
+  factory CustomPrayerAngles.fromStoredValues({
+    Object? fajr,
+    Object? maghrib,
+    Object? isha,
+  }) {
+    final parsedFajr = tryParseLocalized(fajr);
+    final parsedMaghrib = tryParseLocalized(maghrib);
+    final parsedIsha = tryParseLocalized(isha);
+    return CustomPrayerAngles(
+      fajr: isValidTwilightAngle(parsedFajr)
+          ? _toTenths(parsedFajr!)
+          : defaultFajr,
+      maghrib: isValidMaghribAngle(parsedMaghrib)
+          ? _toTenths(parsedMaghrib!)
+          : defaultMaghrib,
+      isha: isValidTwilightAngle(parsedIsha)
+          ? _toTenths(parsedIsha!)
+          : defaultIsha,
+    );
+  }
+
+  CustomPrayerAngles copyWith({double? fajr, double? maghrib, double? isha}) {
+    return CustomPrayerAngles(
+      fajr: fajr ?? this.fajr,
+      maghrib: maghrib ?? this.maghrib,
+      isha: isha ?? this.isha,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is CustomPrayerAngles &&
+      other.fajr == fajr &&
+      other.maghrib == maghrib &&
+      other.isha == isha;
+
+  @override
+  int get hashCode => Object.hash(fajr, maghrib, isha);
+}
 
 class DailyPrayerTimes {
   const DailyPrayerTimes({
@@ -77,10 +178,15 @@ class PrayerTimesCalculator {
   static const String latKey = 'latitude';
   static const String lonKey = 'longitude';
   static const String countryCodeKey = 'country_code';
+  static const String timeZoneIdKey = 'prayer_time_zone_id';
+  static const String locationModeKey = 'prayer_location_mode';
 
   static const String methodKey = 'calculation_method';
   static const String madhabKey = 'madhab';
   static const String highLatitudeRuleKey = 'high_latitude_rule';
+  static const String customFajrAngleKey = 'custom_fajr_angle';
+  static const String customMaghribAngleKey = 'custom_maghrib_angle';
+  static const String customIshaAngleKey = 'custom_isha_angle';
 
   static const String autoMethodToken = 'auto';
   static const String defaultMethodToken = autoMethodToken;
@@ -130,6 +236,8 @@ class PrayerTimesCalculator {
     'isha',
   ];
 
+  static const int maxManualOffsetMinutes = 7 * 24 * 60;
+
   static String offsetKeyFor(String prayerKey) => 'prayer_offset_$prayerKey';
 
   static Madhab madhabFromToken(String? token) {
@@ -161,7 +269,9 @@ class PrayerTimesCalculator {
   }
 
   static CalculationMethod resolveMethod(
-      String methodToken, String countryCode) {
+    String methodToken,
+    String countryCode,
+  ) {
     if (methodToken == autoMethodToken) {
       if (countryCode.trim().isEmpty) return CalculationMethod.ummAlQura;
       return AutoMethod.forCountry(countryCode.trim());
@@ -174,10 +284,32 @@ class PrayerTimesCalculator {
     String countryCode = '',
     Madhab madhab = Madhab.shafi,
     HighLatitudeRule highLatitudeRule = HighLatitudeRule.automatic,
+    CustomPrayerAngles customAngles = CustomPrayerAngles.defaults,
+    bool isRamadan = false,
   }) {
-    final params = resolveMethod(methodToken, countryCode).getParameters()
+    final method = resolveMethod(methodToken, countryCode);
+    final effectiveCustomAngles = CustomPrayerAngles.fromStoredValues(
+      fajr: customAngles.fajr,
+      maghrib: customAngles.maghrib,
+      isha: customAngles.isha,
+    );
+    final params = method.getParameters()
       ..madhab = madhab
-      ..highLatitudeRule = highLatitudeRule;
+      ..highLatitudeRule = highLatitudeRule
+      ..isRamadan = isRamadan;
+    if (method == CalculationMethod.ummAlQura &&
+        isRamadan &&
+        countryCode.trim().toUpperCase() != 'SA') {
+      params.ishaValue = 120;
+    }
+    if (method == CalculationMethod.other) {
+      params
+        ..fajrAngle = effectiveCustomAngles.fajr
+        ..maghribIsInterval = false
+        ..maghribValue = effectiveCustomAngles.maghrib
+        ..ishaIsInterval = false
+        ..ishaValue = effectiveCustomAngles.isha;
+    }
     return params;
   }
 
@@ -197,10 +329,7 @@ class PrayerTimesCalculator {
   ) {
     if (instantUtc == null) return null;
     if (timeZoneName == null) return _localWallClock(fixedOffsetWallClock);
-    return PrayerTimeZoneService.wallClockAtInstant(
-      instantUtc,
-      timeZoneName,
-    );
+    return PrayerTimeZoneService.wallClockAtInstant(instantUtc, timeZoneName);
   }
 
   static String? timeZoneNameForCountry(String countryCode) =>
@@ -214,14 +343,11 @@ class PrayerTimesCalculator {
   }
 
   static Duration offsetForTimeZone(String timeZoneName, DateTime date) {
-    final midday = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      12,
-    );
-    return PrayerTimeZoneService.fromWallClock(midday, timeZoneName)
-        .timeZoneOffset;
+    final midday = DateTime(date.year, date.month, date.day, 12);
+    return PrayerTimeZoneService.fromWallClock(
+      midday,
+      timeZoneName,
+    ).timeZoneOffset;
   }
 
   static Duration _calculationOffset({
@@ -247,12 +373,20 @@ class PrayerTimesCalculator {
     String? timeZoneName,
     Madhab madhab = Madhab.shafi,
     HighLatitudeRule highLatitudeRule = HighLatitudeRule.automatic,
+    CustomPrayerAngles customAngles = CustomPrayerAngles.defaults,
   }) {
     final params = buildParameters(
       methodToken: methodToken,
       countryCode: countryCode,
       madhab: madhab,
       highLatitudeRule: highLatitudeRule,
+      customAngles: customAngles,
+      isRamadan:
+          UmmAlQuraCalendar()
+              .toHijriDateTime(DateTime(date.year, date.month, date.day, 12))
+              .date
+              .month ==
+          9,
     );
     final calculationOffset = _calculationOffset(
       countryCode: countryCode,
@@ -268,12 +402,23 @@ class PrayerTimesCalculator {
     );
     final calculationTimeZoneName =
         timeZoneName ?? timeZoneNameForCountry(countryCode);
-    final fajrInstant = _instantUtc(times.fajr, calculationOffset);
-    final sunriseInstant = _instantUtc(times.sunrise, calculationOffset);
-    final dhuhrInstant = _instantUtc(times.dhuhr, calculationOffset);
-    final asrInstant = _instantUtc(times.asr, calculationOffset);
-    final maghribInstant = _instantUtc(times.maghrib, calculationOffset);
-    final ishaInstant = _instantUtc(times.isha, calculationOffset);
+    DateTime? instant(DateTime? wallClock) {
+      if (wallClock == null) return null;
+      if (calculationTimeZoneName != null) {
+        return PrayerTimeZoneService.fromWallClock(
+          wallClock,
+          calculationTimeZoneName,
+        ).toUtc();
+      }
+      return _instantUtc(wallClock, calculationOffset);
+    }
+
+    final fajrInstant = instant(times.fajr);
+    final sunriseInstant = instant(times.sunrise);
+    final dhuhrInstant = instant(times.dhuhr);
+    final asrInstant = instant(times.asr);
+    final maghribInstant = instant(times.maghrib);
+    final ishaInstant = instant(times.isha);
     return DailyPrayerTimes(
       fajr: _wallClockAtInstant(
         fajrInstant,
@@ -290,11 +435,7 @@ class PrayerTimesCalculator {
         calculationTimeZoneName,
         times.dhuhr,
       ),
-      asr: _wallClockAtInstant(
-        asrInstant,
-        calculationTimeZoneName,
-        times.asr,
-      ),
+      asr: _wallClockAtInstant(asrInstant, calculationTimeZoneName, times.asr),
       maghrib: _wallClockAtInstant(
         maghribInstant,
         calculationTimeZoneName,
@@ -328,7 +469,9 @@ class PrayerTimesCalculator {
       timeZoneName: timeZoneName,
       madhab: madhabFromToken(cache.getDataString(key: madhabKey)),
       highLatitudeRule: highLatitudeRuleFromToken(
-          cache.getDataString(key: highLatitudeRuleKey)),
+        cache.getDataString(key: highLatitudeRuleKey),
+      ),
+      customAngles: customAnglesFromCache(cache),
     );
   }
 
@@ -345,8 +488,10 @@ class PrayerTimesCalculator {
       countryCode: countryCodeFromPrefs(prefs),
       timeZoneName: timeZoneName,
       madhab: madhabFromToken(prefs.getString(madhabKey)),
-      highLatitudeRule:
-          highLatitudeRuleFromToken(prefs.getString(highLatitudeRuleKey)),
+      highLatitudeRule: highLatitudeRuleFromToken(
+        prefs.getString(highLatitudeRuleKey),
+      ),
+      customAngles: customAnglesFromPrefs(prefs),
     );
   }
 
@@ -380,26 +525,60 @@ class PrayerTimesCalculator {
   static String countryCodeFromPrefs(SharedPreferences prefs) =>
       prefs.getString(countryCodeKey) ?? '';
 
+  static String? timeZoneNameFromCache(CacheHelper cache) {
+    final value = cache.getDataString(key: timeZoneIdKey)?.trim();
+    return value == null || value.isEmpty ? null : value;
+  }
+
+  static String? timeZoneNameFromPrefs(SharedPreferences prefs) {
+    final value = prefs.getString(timeZoneIdKey)?.trim();
+    return value == null || value.isEmpty ? null : value;
+  }
+
   static String methodTokenFromCache(CacheHelper cache) =>
       cache.getDataString(key: methodKey) ?? defaultMethodToken;
 
   static String methodTokenFromPrefs(SharedPreferences prefs) =>
       prefs.getString(methodKey) ?? defaultMethodToken;
 
+  static CustomPrayerAngles customAnglesFromCache(CacheHelper cache) {
+    return CustomPrayerAngles.fromStoredValues(
+      fajr: cache.getData(key: customFajrAngleKey),
+      maghrib: cache.getData(key: customMaghribAngleKey),
+      isha: cache.getData(key: customIshaAngleKey),
+    );
+  }
+
+  static CustomPrayerAngles customAnglesFromPrefs(SharedPreferences prefs) {
+    return CustomPrayerAngles.fromStoredValues(
+      fajr: prefs.get(customFajrAngleKey),
+      maghrib: prefs.get(customMaghribAngleKey),
+      isha: prefs.get(customIshaAngleKey),
+    );
+  }
+
   static Map<String, int> zeroOffsets() => {
-        for (final k in offsetPrayerKeys) k: 0,
-      };
+    for (final k in offsetPrayerKeys) k: 0,
+  };
+
+  static int sanitizeOffset(int value) =>
+      value.clamp(-maxManualOffsetMinutes, maxManualOffsetMinutes).toInt();
+
+  static Map<String, int> sanitizeOffsets(Map<String, int> offsets) => {
+    for (final k in offsetPrayerKeys) k: sanitizeOffset(offsets[k] ?? 0),
+  };
 
   static Map<String, int> offsetsFromCache(CacheHelper cache) {
     return {
       for (final k in offsetPrayerKeys)
-        k: (cache.getData(key: offsetKeyFor(k)) as int?) ?? 0,
+        k: sanitizeOffset((cache.getData(key: offsetKeyFor(k)) as int?) ?? 0),
     };
   }
 
   static Map<String, int> offsetsFromPrefs(SharedPreferences prefs) {
     return {
-      for (final k in offsetPrayerKeys) k: prefs.getInt(offsetKeyFor(k)) ?? 0,
+      for (final k in offsetPrayerKeys)
+        k: sanitizeOffset(prefs.getInt(offsetKeyFor(k)) ?? 0),
     };
   }
 
@@ -429,7 +608,7 @@ class PrayerTimesCalculator {
   ) {
     final base = prayerTimes.timeForPrayer(prayer);
     if (base == null) return null;
-    final offset = offsets[keyOf(prayer)] ?? 0;
+    final offset = sanitizeOffset(offsets[keyOf(prayer)] ?? 0);
     return base.add(Duration(minutes: offset));
   }
 
@@ -440,7 +619,7 @@ class PrayerTimesCalculator {
   ) {
     final base = prayerTimes.instantForPrayer(prayer);
     if (base == null) return null;
-    final offset = offsets[keyOf(prayer)] ?? 0;
+    final offset = sanitizeOffset(offsets[keyOf(prayer)] ?? 0);
     return base.add(Duration(minutes: offset)).toUtc();
   }
 

@@ -6932,6 +6932,24 @@ abstract class AppLocalizations {
   /// **'Customize prayer widget'**
   String get prayerWidgetCustomization;
 
+  /// No description provided for @prayerWidgetTimeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer time format'**
+  String get prayerWidgetTimeFormat;
+
+  /// No description provided for @prayerWidgetTwelveHour.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour'**
+  String get prayerWidgetTwelveHour;
+
+  /// No description provided for @prayerWidgetTwentyFourHour.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour'**
+  String get prayerWidgetTwentyFourHour;
+
   /// Label above the in-app preview
   ///
   /// In en, this message translates to:
@@ -7927,6 +7945,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Calculation Method'**
   String get prayerCalculationMethod;
+
+  /// No description provided for @prayerCustomAnglesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom angles'**
+  String get prayerCustomAnglesTitle;
+
+  /// No description provided for @prayerCustomAnglesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the Fajr, Maghrib, and Isha sun angles.'**
+  String get prayerCustomAnglesSubtitle;
+
+  /// No description provided for @prayerAngleRangeExclusive.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an angle greater than 0° and up to 30°.'**
+  String get prayerAngleRangeExclusive;
+
+  /// No description provided for @prayerAngleRangeInclusive.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an angle from 0° to 30°.'**
+  String get prayerAngleRangeInclusive;
+
+  /// No description provided for @prayerMaghribZeroMeansSunset.
+  ///
+  /// In en, this message translates to:
+  /// **'0° means Maghrib is at sunset.'**
+  String get prayerMaghribZeroMeansSunset;
 
   /// Asr madhab selection section title
   ///

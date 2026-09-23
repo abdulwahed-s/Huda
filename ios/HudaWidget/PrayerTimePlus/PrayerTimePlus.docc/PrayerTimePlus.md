@@ -5,7 +5,8 @@ Compute Islamic prayer times numerically, with no third-party dependencies.
 ## Overview
 
 `PrayerTimePlus` computes the daily prayer times — Fajr, Sunrise, Dhuhr, Asr,
-Maghrib and Isha — for any location and date using a classic solar model. The API
+Maghrib and Isha — for any location and date using a classic solar model. Maghrib
+can be Sunset, a Sunset interval, or an evening depression angle. The API
 mirrors the ergonomics of the Adhan Swift library, while the angles, offsets and
 "Auto" method resolution match a specific reference engine to the minute.
 

@@ -3798,6 +3798,15 @@ class AppLocalizationsMs extends AppLocalizations {
   String get prayerWidgetCustomization => 'Sesuaikan widget solat';
 
   @override
+  String get prayerWidgetTimeFormat => 'Format waktu solat';
+
+  @override
+  String get prayerWidgetTwelveHour => '12 jam';
+
+  @override
+  String get prayerWidgetTwentyFourHour => '24 jam';
+
+  @override
   String get prayerWidgetPreview => 'Pratonton langsung';
 
   @override
@@ -4367,6 +4376,24 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get prayerCalculationMethod => 'Kaedah pengiraan';
+
+  @override
+  String get prayerCustomAnglesTitle => 'Sudut tersuai';
+
+  @override
+  String get prayerCustomAnglesSubtitle =>
+      'Tetapkan sudut matahari untuk Subuh, Maghrib dan Isyak.';
+
+  @override
+  String get prayerAngleRangeExclusive =>
+      'Masukkan sudut lebih daripada 0° hingga 30°.';
+
+  @override
+  String get prayerAngleRangeInclusive => 'Masukkan sudut dari 0° hingga 30°.';
+
+  @override
+  String get prayerMaghribZeroMeansSunset =>
+      '0° bermaksud Maghrib pada waktu matahari terbenam.';
 
   @override
   String get prayerAsrMethod => 'Kaedah Asar (Mazhab)';

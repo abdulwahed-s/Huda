@@ -3819,6 +3819,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get prayerWidgetCustomization => 'Настроить виджет молитв';
 
   @override
+  String get prayerWidgetTimeFormat => 'Формат времени молитв';
+
+  @override
+  String get prayerWidgetTwelveHour => '12 часов';
+
+  @override
+  String get prayerWidgetTwentyFourHour => '24 часа';
+
+  @override
   String get prayerWidgetPreview => 'Предпросмотр в реальном времени';
 
   @override
@@ -4389,6 +4398,24 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get prayerCalculationMethod => 'Метод расчёта';
+
+  @override
+  String get prayerCustomAnglesTitle => 'Пользовательские углы';
+
+  @override
+  String get prayerCustomAnglesSubtitle =>
+      'Задайте углы солнца для Фаджра, Магриба и Иши.';
+
+  @override
+  String get prayerAngleRangeExclusive =>
+      'Введите угол больше 0° и не более 30°.';
+
+  @override
+  String get prayerAngleRangeInclusive => 'Введите угол от 0° до 30°.';
+
+  @override
+  String get prayerMaghribZeroMeansSunset =>
+      '0° означает, что Магриб наступает на закате.';
 
   @override
   String get prayerAsrMethod => 'Метод Аср (Мазхаб)';
