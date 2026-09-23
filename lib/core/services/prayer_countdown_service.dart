@@ -61,9 +61,12 @@ class PrayerCountdownService {
     if (!_isRunning) return;
 
     try {
-      final h = countdown.duration.inHours;
-      final m = countdown.duration.inMinutes.remainder(60);
-      final s = countdown.duration.inSeconds.remainder(60);
+      final effectiveDuration = countdown.isPastPrayer
+          ? Duration(seconds: countdown.secondsPassed)
+          : countdown.duration;
+      final h = effectiveDuration.inHours;
+      final m = effectiveDuration.inMinutes.remainder(60);
+      final s = effectiveDuration.inSeconds.remainder(60);
 
       String timeText;
       if (h > 0) {
@@ -74,8 +77,10 @@ class PrayerCountdownService {
         timeText = '${s}s';
       }
 
-      String title = 'Next ${countdown.prayerName} in $timeText';
-      String body = 'Stay prepared for prayer time';
+      final title = countdown.isPastPrayer
+          ? '${countdown.prayerName} +$timeText'
+          : 'Next ${countdown.prayerName} in $timeText';
+      const body = 'Stay prepared for prayer time';
 
       FlutterForegroundTask.updateService(
         notificationTitle: title,

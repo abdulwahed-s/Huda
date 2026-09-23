@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/services/prayer_moment_resolver.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/data/models/countdown_model.dart';
@@ -21,9 +22,7 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
     return Card(
       elevation: 3,
       margin: EdgeInsets.only(bottom: 12.h),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
@@ -42,9 +41,7 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: context.primaryColor,
-                ),
+                child: CircularProgressIndicator(color: context.primaryColor),
               );
             }
 
@@ -61,33 +58,19 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
     NextPrayerCountdown countdown,
     bool isDark,
   ) {
-    // Calculate time display
-    String hours, minutes, seconds, prefix;
-
-    if (countdown.isPastPrayer) {
-      // Show time that has passed since prayer
-      final totalSeconds = countdown.secondsPassed;
-      hours = (totalSeconds ~/ 3600).toString().padLeft(2, '0');
-      minutes = ((totalSeconds % 3600) ~/ 60).toString().padLeft(2, '0');
-      seconds = (totalSeconds % 60).toString().padLeft(2, '0');
-      prefix = '+';
-    } else {
-      // Show countdown to next prayer
-      hours = countdown.duration.inHours.toString().padLeft(2, '0');
-      minutes = (countdown.duration.inMinutes % 60).toString().padLeft(2, '0');
-      seconds = (countdown.duration.inSeconds % 60).toString().padLeft(2, '0');
-      prefix = '-';
-    }
+    final duration = countdown.isPastPrayer
+        ? Duration(seconds: countdown.secondsPassed)
+        : countdown.duration;
+    final counterText = PrayerCountdownFormatter.formatSigned(
+      duration,
+      elapsed: countdown.isPastPrayer,
+    );
 
     return Column(
       children: [
         Row(
           children: [
-            Icon(
-              Icons.timer,
-              color: context.primaryColor,
-              size: 20.sp,
-            ),
+            Icon(Icons.timer, color: context.primaryColor, size: 20.sp),
             SizedBox(width: 10.w),
             Text(
               AppLocalizations.of(context)!.nextPrayerCountDown,
@@ -116,7 +99,7 @@ class NextPrayerCountdownCardWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Text(
-            "$prefix $hours:$minutes:$seconds",
+            counterText,
             style: TextStyle(
               fontSize: 26.sp,
               fontWeight: FontWeight.bold,

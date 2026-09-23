@@ -9,7 +9,7 @@ import 'package:prayer_time_plus/prayer_time_plus.dart';
 class PrayerNotificationPlanner {
   const PrayerNotificationPlanner(this.cacheHelper);
 
-  static const int configurationVersion = 3;
+  static const int configurationVersion = 4;
 
   final CacheHelper cacheHelper;
 
@@ -28,10 +28,12 @@ class PrayerNotificationPlanner {
     final localizations = _localizations(localeCode);
     final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
     final countryCode = PrayerTimesCalculator.countryCodeFromCache(cacheHelper);
-    final scheduleTimeZoneName = PrayerTimesCalculator.resolveTimeZoneName(
-      countryCode: countryCode,
-      fallbackTimeZoneName: timeZoneName,
-    );
+    final scheduleTimeZoneName =
+        PrayerTimesCalculator.timeZoneNameFromCache(cacheHelper) ??
+        PrayerTimesCalculator.resolveTimeZoneName(
+          countryCode: countryCode,
+          fallbackTimeZoneName: timeZoneName,
+        );
     final nowUtc = now.toUtc();
     final zonedNow = PrayerTimeZoneService.atInstant(
       nowUtc,
@@ -44,7 +46,7 @@ class PrayerNotificationPlanner {
     );
     final candidates = <PrayerNotificationEvent>[];
 
-    for (var dayOffset = 0;; dayOffset++) {
+    for (var dayOffset = 0; ; dayOffset++) {
       final date = DateTime(
         zonedNow.year,
         zonedNow.month,
@@ -57,8 +59,10 @@ class PrayerNotificationPlanner {
         date,
         timeZoneName: scheduleTimeZoneName,
       );
-      final adjustedInstants =
-          PrayerTimesCalculator.dailyAdjustedInstants(times, offsets);
+      final adjustedInstants = PrayerTimesCalculator.dailyAdjustedInstants(
+        times,
+        offsets,
+      );
 
       for (final prayer in const [
         Prayer.fajr,
@@ -93,9 +97,8 @@ class PrayerNotificationPlanner {
     }
 
     candidates.sort(
-      (first, second) => first.scheduledInstantUtc.compareTo(
-        second.scheduledInstantUtc,
-      ),
+      (first, second) =>
+          first.scheduledInstantUtc.compareTo(second.scheduledInstantUtc),
     );
     final selectedIds = <int>{};
     final events = <PrayerNotificationEvent>[];
@@ -160,6 +163,9 @@ class PrayerNotificationPlanner {
     required String scheduleTimeZoneName,
     required Map<String, int> offsets,
   }) {
+    final customAngles = PrayerTimesCalculator.customAnglesFromCache(
+      cacheHelper,
+    );
     final parts = <String>[
       'v$configurationVersion',
       cacheHelper.getDataString(key: PrayerTimesCalculator.latKey) ?? '',
@@ -168,8 +174,12 @@ class PrayerNotificationPlanner {
       PrayerTimesCalculator.methodTokenFromCache(cacheHelper),
       cacheHelper.getDataString(key: PrayerTimesCalculator.madhabKey) ?? '',
       cacheHelper.getDataString(
-              key: PrayerTimesCalculator.highLatitudeRuleKey) ??
+            key: PrayerTimesCalculator.highLatitudeRuleKey,
+          ) ??
           '',
+      'custom-fajr:${CustomPrayerAngles.canonical(customAngles.fajr)}',
+      'custom-maghrib:${CustomPrayerAngles.canonical(customAngles.maghrib)}',
+      'custom-isha:${CustomPrayerAngles.canonical(customAngles.isha)}',
       localeCode,
       'device-zone:$deviceTimeZoneName',
       'schedule-zone:$scheduleTimeZoneName',

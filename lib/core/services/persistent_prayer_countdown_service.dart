@@ -4,6 +4,8 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
+import 'package:huda/core/services/prayer_moment_resolver.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 
 class PrayerCountdownLocalizations {
@@ -21,8 +23,10 @@ class PrayerCountdownLocalizations {
     required bool isUrgent,
   }) async {
     final language = await _getCurrentLanguage();
-    final localizedPrayerName =
-        await _getLocalizedPrayerName(prayerName, language);
+    final localizedPrayerName = await _getLocalizedPrayerName(
+      prayerName,
+      language,
+    );
 
     if (isUrgent) {
       switch (language) {
@@ -74,7 +78,9 @@ class PrayerCountdownLocalizations {
   }
 
   static Future<String> _getLocalizedPrayerName(
-      String prayerName, String language) async {
+    String prayerName,
+    String language,
+  ) async {
     switch (prayerName.toLowerCase()) {
       case 'fajr':
         switch (language) {
@@ -586,12 +592,9 @@ void startCallback() {
 
 class PrayerCountdownTaskHandler extends TaskHandler {
   Timer? _updateTimer;
-  DailyPrayerTimes? _prayerTimes;
-  DateTime? _lastCalculationDate;
   Coordinates? _cachedCoordinates;
   NextPrayerInfo? _lastValidPrayerInfo;
   bool _hasShownError = false;
-  bool _isCalculatingTomorrowPrayers = false;
 
   Map<String, int> _prayerOffsets = PrayerTimesCalculator.zeroOffsets();
 
@@ -599,15 +602,24 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   String _madhabToken = PrayerTimesCalculator.defaultMadhabToken;
   String _highLatToken = PrayerTimesCalculator.defaultHighLatitudeToken;
   String _countryCode = '';
+  String? _timeZoneId;
+  CustomPrayerAngles _customAngles = CustomPrayerAngles.defaults;
+  DateTime? _lastSettingsRefresh;
+  String? _lastSettingsGeneration;
+  bool _settingsRefreshInProgress = false;
+  bool _notificationUpdateInProgress = false;
 
   void _loadSettings(SharedPreferences prefs) {
     _methodToken = PrayerTimesCalculator.methodTokenFromPrefs(prefs);
-    _madhabToken = prefs.getString(PrayerTimesCalculator.madhabKey) ??
+    _madhabToken =
+        prefs.getString(PrayerTimesCalculator.madhabKey) ??
         PrayerTimesCalculator.defaultMadhabToken;
     _highLatToken =
         prefs.getString(PrayerTimesCalculator.highLatitudeRuleKey) ??
-            PrayerTimesCalculator.defaultHighLatitudeToken;
+        PrayerTimesCalculator.defaultHighLatitudeToken;
     _countryCode = PrayerTimesCalculator.countryCodeFromPrefs(prefs);
+    _timeZoneId = prefs.getString(PrayerTimesCalculator.timeZoneIdKey);
+    _customAngles = PrayerTimesCalculator.customAnglesFromPrefs(prefs);
   }
 
   DailyPrayerTimes _computeWith(Coordinates coordinates, DateTime date) {
@@ -616,20 +628,25 @@ class PrayerCountdownTaskHandler extends TaskHandler {
       date,
       methodToken: _methodToken,
       countryCode: _countryCode,
+      timeZoneName: _timeZoneId,
       madhab: PrayerTimesCalculator.madhabFromToken(_madhabToken),
-      highLatitudeRule:
-          PrayerTimesCalculator.highLatitudeRuleFromToken(_highLatToken),
+      highLatitudeRule: PrayerTimesCalculator.highLatitudeRuleFromToken(
+        _highLatToken,
+      ),
+      customAngles: _customAngles,
     );
   }
 
   DateTime? _lastMinuteUpdate;
 
-  static const Duration _postPrayerGracePeriod = Duration(minutes: 30);
+  final List<PrayerTransition> _momentTransitions = [];
+  DateTime? _momentCivilDate;
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
     debugPrint('Prayer countdown foreground task started');
 
+    PrayerTimeZoneService.initializeDatabase();
     await _initializePrayerTimes();
 
     _updateTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -642,163 +659,85 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   Future<void> _initializePrayerTimes() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      await prefs.reload();
 
       _prayerOffsets = PrayerTimesCalculator.offsetsFromPrefs(prefs);
       _loadSettings(prefs);
       _cachedCoordinates = PrayerTimesCalculator.coordinatesFromPrefs(prefs);
+      _lastSettingsGeneration = prefs.getString('prayer_widget_settings_v2');
+      _lastSettingsRefresh = DateTime.now();
 
       if (_cachedCoordinates != null) {
-        final cachedDateStr = prefs.getString('last_prayer_calculation_date');
         final now = DateTime.now();
-
-        if (cachedDateStr != null) {
-          final cachedDate = DateTime.parse(cachedDateStr);
-          if (_isSameDay(now, cachedDate)) {
-            _lastCalculationDate = cachedDate;
-          }
-        }
-
-        if (_lastCalculationDate == null ||
-            !_isSameDay(now, _lastCalculationDate!)) {
-          _prayerTimes = _computeWith(_cachedCoordinates!, now);
-          _lastCalculationDate = now;
-
-          await prefs.setString(
-              'last_prayer_calculation_date', now.toIso8601String());
-        } else {
-          _prayerTimes =
-              _computeWith(_cachedCoordinates!, _lastCalculationDate!);
-        }
-
         debugPrint(
-            'Prayer times initialized successfully in persistent foreground task');
+          'Prayer times initialized successfully in persistent foreground task',
+        );
+        _rebuildMomentTimeline(now);
       } else {
         debugPrint('No cached coordinates found in persistent foreground task');
       }
     } catch (e) {
       debugPrint(
-          'Error loading prayer times in persistent foreground task: $e');
+        'Error loading prayer times in persistent foreground task: $e',
+      );
+    }
+  }
+
+  Future<void> _refreshSettingsIfDue(DateTime now) async {
+    if (_settingsRefreshInProgress ||
+        (_lastSettingsRefresh != null &&
+            now.difference(_lastSettingsRefresh!) <
+                const Duration(seconds: 30))) {
+      return;
+    }
+    _settingsRefreshInProgress = true;
+    _lastSettingsRefresh = now;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.reload();
+      final generation = prefs.getString('prayer_widget_settings_v2');
+      if (generation == _lastSettingsGeneration) return;
+
+      _lastSettingsGeneration = generation;
+      _prayerOffsets = PrayerTimesCalculator.offsetsFromPrefs(prefs);
+      _loadSettings(prefs);
+      _cachedCoordinates = PrayerTimesCalculator.coordinatesFromPrefs(prefs);
+      _lastValidPrayerInfo = null;
+      _momentCivilDate = null;
+      _momentTransitions.clear();
+      if (_cachedCoordinates != null) _rebuildMomentTimeline(now);
+      debugPrint(
+        'Persistent prayer countdown loaded committed settings generation',
+      );
+    } catch (error) {
+      debugPrint('Persistent prayer settings refresh failed: $error');
+    } finally {
+      _settingsRefreshInProgress = false;
     }
   }
 
   NextPrayerInfo? _getNextPrayerTime() {
-    if (_prayerTimes == null) {
-      return _lastValidPrayerInfo;
-    }
-
     final now = DateTime.now();
-
-    if (_lastCalculationDate == null) {
-      debugPrint('No calculation date - recalculating for first time');
-      _recalculatePrayerTimesSync(now);
-    } else if (!_isSameDay(now, _lastCalculationDate!)) {
-      debugPrint(
-          'Day changed from ${_lastCalculationDate!.day} to ${now.day} - recalculating prayer times');
-      _recalculatePrayerTimesSync(now);
-    }
-
-    final prayers = [
-      Prayer.fajr,
-      Prayer.dhuhr,
-      Prayer.asr,
-      Prayer.maghrib,
-      Prayer.isha,
-    ];
-
-    for (final prayer in prayers) {
-      final basePrayerTime = _prayerTimes!.timeForPrayer(prayer);
-      if (basePrayerTime == null) continue;
-      final offsetMinutes = _prayerOffsets[_getPrayerKey(prayer)] ?? 0;
-      final prayerTime = basePrayerTime.add(Duration(minutes: offsetMinutes));
-      if (prayerTime.isAfter(now)) {
-        final duration = prayerTime.difference(now);
-        final nextPrayerInfo = NextPrayerInfo(
-          prayerName: _getPrayerDisplayName(prayer),
-          duration: duration,
-        );
-
-        _lastValidPrayerInfo = nextPrayerInfo;
-        _hasShownError = false;
-        return nextPrayerInfo;
-      }
-    }
-
-    if (!_isCalculatingTomorrowPrayers) {
-      _isCalculatingTomorrowPrayers = true;
-      _calculateTomorrowFajr(now);
-    }
-
-    return _lastValidPrayerInfo;
-  }
-
-  void _calculateTomorrowFajr(DateTime now) {
-    SharedPreferences.getInstance().then((prefs) {
-      final coordinates = PrayerTimesCalculator.coordinatesFromPrefs(prefs);
-
-      if (coordinates != null) {
-        final tomorrow = now.add(const Duration(days: 1));
-        final tomorrowPrayerTimes = _computeWith(coordinates, tomorrow);
-        final adjustedFajr = PrayerTimesCalculator.adjustedTimeFor(
-            tomorrowPrayerTimes, Prayer.fajr, _prayerOffsets);
-
-        if (adjustedFajr != null) {
-          _prayerTimes = tomorrowPrayerTimes;
-
-          final duration = adjustedFajr.difference(now);
-          _lastValidPrayerInfo = NextPrayerInfo(
-            prayerName: 'Fajr',
-            duration: duration,
-          );
-
-          prefs.setString(
-              'last_prayer_calculation_date', tomorrow.toIso8601String());
-
-          debugPrint('Tomorrow\'s Fajr calculated and cached successfully');
-        }
-      }
-
-      _isCalculatingTomorrowPrayers = false;
-    }).catchError((error) {
-      debugPrint('Error calculating tomorrow\'s Fajr: $error');
-      _isCalculatingTomorrowPrayers = false;
-    });
-  }
-
-  void _recalculatePrayerTimesSync(DateTime date) {
-    if (_lastCalculationDate != null &&
-        _isSameDay(date, _lastCalculationDate!)) {
-      return;
-    }
-
-    if (_cachedCoordinates != null) {
-      try {
-        _prayerTimes = _computeWith(_cachedCoordinates!, date);
-        _lastCalculationDate = date;
-
-        SharedPreferences.getInstance().then((prefs) {
-          prefs.setString(
-              'last_prayer_calculation_date', date.toIso8601String());
-        });
-
-        _isCalculatingTomorrowPrayers = false;
-        _hasShownError = false;
-
-        debugPrint('Prayer times recalculated for ${date.toString()}');
-      } catch (e) {
-        debugPrint('Error recalculating prayer times: $e');
-      }
-    } else {
-      debugPrint('No cached coordinates available for recalculation');
-    }
+    final moment = _resolvePrayerMoment(now);
+    if (moment == null || moment.isElapsed) return null;
+    final nextPrayerInfo = NextPrayerInfo(
+      prayerName: _getPrayerDisplayName(moment.prayer),
+      duration: moment.prayerInstant.difference(now.toUtc()),
+    );
+    _lastValidPrayerInfo = nextPrayerInfo;
+    _hasShownError = false;
+    return nextPrayerInfo;
   }
 
   bool _isSameDay(DateTime date1, DateTime date2) {
-    final isSame = date1.year == date2.year &&
+    final isSame =
+        date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
     if (!isSame) {
       debugPrint(
-          'Day comparison: ${date1.day}/${date1.month}/${date1.year} vs ${date2.day}/${date2.month}/${date2.year} = $isSame');
+        'Day comparison: ${date1.day}/${date1.month}/${date1.year} vs ${date2.day}/${date2.month}/${date2.year} = $isSame',
+      );
     }
     return isSame;
   }
@@ -820,58 +759,62 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     }
   }
 
-  String _getPrayerKey(Prayer prayer) {
-    switch (prayer) {
-      case Prayer.fajr:
-        return 'fajr';
-      case Prayer.dhuhr:
-        return 'dhuhr';
-      case Prayer.asr:
-        return 'asr';
-      case Prayer.maghrib:
-        return 'maghrib';
-      case Prayer.isha:
-        return 'isha';
-      default:
-        return '';
-    }
+  PostPrayerInfo? _getPostPrayerInfo() {
+    final now = DateTime.now();
+    final moment = _resolvePrayerMoment(now);
+    if (moment == null || !moment.isElapsed) return null;
+    return PostPrayerInfo(
+      prayerName: _getPrayerDisplayName(moment.prayer),
+      elapsedDuration: now.toUtc().difference(moment.prayerInstant),
+    );
   }
 
-  PostPrayerInfo? _getPostPrayerInfo() {
-    if (_prayerTimes == null) return null;
+  PrayerMoment? _resolvePrayerMoment(DateTime now) {
+    final civilNow = _timeZoneId == null
+        ? now.toLocal()
+        : PrayerTimeZoneService.wallClockAtInstant(now, _timeZoneId!);
+    if (_momentCivilDate == null || !_isSameDay(civilNow, _momentCivilDate!)) {
+      _rebuildMomentTimeline(now);
+    }
+    return PrayerMomentResolver.resolve(
+      now: now,
+      transitions: _momentTransitions,
+    );
+  }
 
-    final now = DateTime.now();
-    final prayers = [
-      Prayer.fajr,
-      Prayer.dhuhr,
-      Prayer.asr,
-      Prayer.maghrib,
-      Prayer.isha,
-    ];
-
-    for (final prayer in prayers.reversed) {
-      final basePrayerTime = _prayerTimes!.timeForPrayer(prayer);
-      if (basePrayerTime == null) continue;
-      final offsetMinutes = _prayerOffsets[_getPrayerKey(prayer)] ?? 0;
-      final prayerTime = basePrayerTime.add(Duration(minutes: offsetMinutes));
-      if (prayerTime.isBefore(now)) {
-        final elapsed = now.difference(prayerTime);
-        if (elapsed <= _postPrayerGracePeriod) {
-          return PostPrayerInfo(
-            prayerName: _getPrayerDisplayName(prayer),
-            elapsedDuration: elapsed,
-          );
-        }
-        break;
+  void _rebuildMomentTimeline(DateTime now) {
+    final coordinates = _cachedCoordinates;
+    if (coordinates == null) return;
+    final civilNow = _timeZoneId == null
+        ? now.toLocal()
+        : PrayerTimeZoneService.wallClockAtInstant(now, _timeZoneId!);
+    final anchor = DateTime.utc(civilNow.year, civilNow.month, civilNow.day);
+    _momentTransitions.clear();
+    for (var offset = -2; offset <= 7; offset++) {
+      final parts = anchor.add(Duration(days: offset));
+      final times = _computeWith(
+        coordinates,
+        DateTime(parts.year, parts.month, parts.day),
+      );
+      for (final entry in PrayerTimesCalculator.dailyAdjustedInstants(
+        times,
+        _prayerOffsets,
+      ).entries) {
+        _momentTransitions.add(
+          PrayerTransition(prayer: entry.key, instant: entry.value),
+        );
       }
     }
-    return null;
+    _momentCivilDate = civilNow;
   }
 
   String _formatElapsedTime(Duration elapsed) {
-    final m = elapsed.inMinutes;
+    final h = elapsed.inHours;
+    final m = elapsed.inMinutes.remainder(60);
     final s = elapsed.inSeconds.remainder(60);
-    return '+$m:${s.toString().padLeft(2, '0')}';
+    return '+${h.toString().padLeft(2, '0')}:'
+        '${m.toString().padLeft(2, '0')}:'
+        '${s.toString().padLeft(2, '0')}';
   }
 
   String _getPrayerEmoji(String prayerName) {
@@ -941,8 +884,9 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
     final now = DateTime.now();
     if (_lastMinuteUpdate != null) {
-      final secondsSinceLastUpdate =
-          now.difference(_lastMinuteUpdate!).inSeconds;
+      final secondsSinceLastUpdate = now
+          .difference(_lastMinuteUpdate!)
+          .inSeconds;
       if (secondsSinceLastUpdate < 60) {
         return true;
       }
@@ -996,8 +940,11 @@ class PrayerCountdownTaskHandler extends TaskHandler {
     return '$hour12:$minuteStr $amPm';
   }
 
-  Future<String> _buildEnhancedSubtitle(NextPrayerInfo nextPrayer,
-      Future<String> prayerTimeTextFuture, UrgencyStyle urgencyStyle) async {
+  Future<String> _buildEnhancedSubtitle(
+    NextPrayerInfo nextPrayer,
+    Future<String> prayerTimeTextFuture,
+    UrgencyStyle urgencyStyle,
+  ) async {
     final now = DateTime.now();
     final currentTimeStr = await _formatPrayerTime(now);
     final prayerTimeText = await prayerTimeTextFuture;
@@ -1040,11 +987,13 @@ class PrayerCountdownTaskHandler extends TaskHandler {
 
     if (urgencyStyle.isUrgent) {
       contextMessage = await PrayerCountdownLocalizations.getUrgencyMessage(
-          urgencyStyle.urgencyLevel);
+        urgencyStyle.urgencyLevel,
+      );
     } else {
       contextMessage =
           await PrayerCountdownLocalizations.getPrayerContextMessage(
-              nextPrayer.prayerName);
+            nextPrayer.prayerName,
+          );
     }
 
     String atText;
@@ -1131,7 +1080,10 @@ class PrayerCountdownTaskHandler extends TaskHandler {
   }
 
   void _updateNotification() async {
+    if (_notificationUpdateInProgress) return;
+    _notificationUpdateInProgress = true;
     try {
+      await _refreshSettingsIfDue(DateTime.now());
       final postPrayerInfo = _getPostPrayerInfo();
 
       if (postPrayerInfo != null) {
@@ -1195,7 +1147,10 @@ class PrayerCountdownTaskHandler extends TaskHandler {
       );
 
       final subtitle = await _buildEnhancedSubtitle(
-          nextPrayer, prayerTimeTextFuture, urgencyStyle);
+        nextPrayer,
+        prayerTimeTextFuture,
+        urgencyStyle,
+      );
 
       FlutterForegroundTask.updateService(
         notificationTitle: title,
@@ -1213,6 +1168,8 @@ class PrayerCountdownTaskHandler extends TaskHandler {
         );
         _hasShownError = true;
       }
+    } finally {
+      _notificationUpdateInProgress = false;
     }
   }
 
@@ -1247,10 +1204,7 @@ class NextPrayerInfo {
   final String prayerName;
   final Duration duration;
 
-  const NextPrayerInfo({
-    required this.prayerName,
-    required this.duration,
-  });
+  const NextPrayerInfo({required this.prayerName, required this.duration});
 }
 
 class UrgencyStyle {
@@ -1327,7 +1281,8 @@ class PersistentPrayerCountdownService {
 
     _isInitialized = true;
     debugPrint(
-        'Prayer countdown foreground service initialized with silent channel');
+      'Prayer countdown foreground service initialized with silent channel',
+    );
   }
 
   Future<void> startIfEnabled() async {
@@ -1335,7 +1290,8 @@ class PersistentPrayerCountdownService {
     final shouldStart = await getSavedState();
     if (shouldStart) {
       debugPrint(
-          'Prayer countdown was previously enabled by user, starting...');
+        'Prayer countdown was previously enabled by user, starting...',
+      );
       await startPersistentCountdown();
     } else {
       debugPrint('Prayer countdown is disabled by user preference');
@@ -1362,7 +1318,8 @@ class PersistentPrayerCountdownService {
           await FlutterForegroundTask.checkNotificationPermission();
       if (notificationPermissionStatus != NotificationPermission.granted) {
         debugPrint(
-            'Notification permission is required before starting the persistent countdown');
+          'Notification permission is required before starting the persistent countdown',
+        );
         return;
       }
 
@@ -1380,7 +1337,8 @@ class PersistentPrayerCountdownService {
       await _saveState(true);
       debugPrint('✅ Prayer countdown foreground service started successfully');
       debugPrint(
-          '🛡️ Service uses isolated notifications - no interference with athkar');
+        '🛡️ Service uses isolated notifications - no interference with athkar',
+      );
     } catch (e) {
       debugPrint('❌ Error starting persistent countdown: $e');
       _isRunning = false;
@@ -1404,7 +1362,8 @@ class PersistentPrayerCountdownService {
 
         debugPrint('Set test coordinates for Karachi ($testLat, $testLon)');
         debugPrint(
-            'NOTE: In production, user should set location via Prayer Times screen');
+          'NOTE: In production, user should set location via Prayer Times screen',
+        );
       }
     } catch (e) {
       debugPrint('Error setting test coordinates: $e');

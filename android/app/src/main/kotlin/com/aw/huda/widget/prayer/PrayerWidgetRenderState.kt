@@ -13,6 +13,13 @@ internal data class PrayerWidgetRenderItem(
     val formattedTime: String,
 )
 
+internal enum class PrayerWidgetCounterMode { COUNTDOWN, ELAPSED }
+
+internal data class PrayerWidgetCounter(
+    val mode: PrayerWidgetCounterMode,
+    val anchorEpochMillis: Long,
+)
+
 internal data class PrayerWidgetRenderState(
     val now: Date,
     val locale: String,
@@ -34,9 +41,19 @@ internal data class PrayerWidgetRenderState(
     val lastThirdOfNight: String?,
     val empty: Boolean,
     val accessibilityLabel: String,
+    val counter: PrayerWidgetCounter?,
+    val stateTransitionAt: Date?,
+    val isElapsed: Boolean,
 ) {
+    val primaryLabelKey: String get() = if (isElapsed) "current" else "next_prayer"
+    val counterLabelKey: String get() = if (isElapsed) "current" else "remaining"
+
     companion object {
-        fun build(context: Context, snapshot: PrayerWidgetSnapshot, now: Date): PrayerWidgetRenderState {
+        fun build(
+            context: Context,
+            snapshot: PrayerWidgetSnapshot,
+            now: Date
+        ): PrayerWidgetRenderState {
             val locale = snapshot.effectiveLocale
             val rtl = PrayerWidgetLocalization.isRTL(locale)
             val arabicNumerals = snapshot.useArabicNumeralsForWidget()
@@ -45,16 +62,17 @@ internal data class PrayerWidgetRenderState(
                 return empty(snapshot, now, locale, rtl, arabicNumerals, emptyLabel)
             }
 
-            val next = PrayerWidgetCalculator.nextAfter(snapshot, now)
+            val events = PrayerWidgetCalculator.eventTimeline(snapshot, now)
+            val moment = PrayerWidgetMomentResolver.resolve(now, events)
                 ?: return empty(snapshot, now, locale, rtl, arabicNumerals, emptyLabel)
-            val previous = PrayerWidgetCalculator.previousBefore(snapshot, now)
+            val event = moment.event
             val timeZone = snapshot.displayTimeZone
-            val activeDate = next.time
             val formatterLocale = Locale.forLanguageTag(locale)
 
-            fun clock(date: Date): String = PrayerTimeFormatter.formatForDevice(
+            fun clock(date: Date): String = PrayerTimeFormatter.formatForWidget(
                 context = context,
                 date = date,
+                preference = snapshot.timeFormat,
                 useArabicNumerals = arabicNumerals,
                 languageCode = locale,
                 timeZone = timeZone,
@@ -67,11 +85,19 @@ internal data class PrayerWidgetRenderState(
                 formattedTime = clock(date),
             )
 
-            val schedule = PrayerWidgetCalculator.displayList(next.day).map { item(it.first, it.second) }
-            val current = previous?.let { item(it.kind, it.time) }
-            val nextItem = item(next.kind, next.time)
-            val afterNext = findAfterNext(snapshot, next, ::item)
+            val displayed = item(event.kind, event.time)
+            val isElapsed = moment is PrayerWidgetMoment.Elapsed
+            val previousEvent = if (isElapsed) null else events.lastOrNull {
+                it.time.before(event.time)
+            }
+            val followingEvent = events.firstOrNull { it.time.after(event.time) }
+            val current = previousEvent?.let { item(it.kind, it.time) }
+            val afterNext = followingEvent?.let { item(it.kind, it.time) }
+            val schedule = PrayerWidgetCalculator.displayList(event.day).map {
+                item(it.first, it.second)
+            }
 
+            val activeDate = event.time
             val activeCalendar = Calendar.getInstance(timeZone).apply { time = activeDate }
             val dateBadge = activeCalendar.get(Calendar.DAY_OF_MONTH).toString()
                 .applyNumerals(arabicNumerals)
@@ -85,27 +111,35 @@ internal data class PrayerWidgetRenderState(
                 this.timeZone = timeZone
             }.format(activeDate).applyNumerals(arabicNumerals)
 
-            val countdown = PrayerTimeFormatter.formatHHMMSS(
-                from = now,
-                to = next.time,
-                useArabicNumerals = arabicNumerals,
-            )
-            val compactCountdown = countdown
+            val duration = if (isElapsed) {
+                PrayerTimeFormatter.formatSignedCounter(
+                    from = event.time,
+                    to = now,
+                    elapsed = true,
+                    useArabicNumerals = arabicNumerals,
+                )
+            } else {
+                PrayerTimeFormatter.formatSignedCounter(
+                    from = now,
+                    to = event.time,
+                    elapsed = false,
+                    useArabicNumerals = arabicNumerals,
+                )
+            }
 
             val nightCalendar = nightAnchor(snapshot, now)
             val sunnah = PrayerWidgetCalculator.computeSunnah(snapshot, nightCalendar)
-            val middle = sunnah?.middleOfNight?.let(::clock)
-            val lastThird = sunnah?.lastThirdOfNight?.let(::clock)
             val accessibility = buildString {
-                append(PrayerWidgetLocalization.string("next_prayer", locale))
+                append(
+                    PrayerWidgetLocalization.string(
+                        if (isElapsed) "current" else "next_prayer",
+                        locale,
+                    )
+                )
                 append(": ")
-                append(nextItem.name)
+                append(displayed.name)
                 append(", ")
-                append(nextItem.formattedTime)
-                append(". ")
-                append(PrayerWidgetLocalization.string("remaining", locale))
-                append(": ")
-                append(countdown)
+                append(displayed.formattedTime)
             }
 
             return PrayerWidgetRenderState(
@@ -116,19 +150,26 @@ internal data class PrayerWidgetRenderState(
                 design = snapshot.design,
                 contentScale = snapshot.contentSize.coerceIn(60, 140) / 100f,
                 current = current,
-                next = nextItem,
+                next = displayed,
                 afterNext = afterNext,
                 schedule = schedule,
                 weekday = weekday,
                 dateBadge = dateBadge,
                 monthYear = monthYear,
                 dateLong = dateLong,
-                countdown = countdown,
-                compactCountdown = compactCountdown,
-                middleOfNight = middle,
-                lastThirdOfNight = lastThird,
+                countdown = duration,
+                compactCountdown = duration,
+                middleOfNight = sunnah?.middleOfNight?.let(::clock),
+                lastThirdOfNight = sunnah?.lastThirdOfNight?.let(::clock),
                 empty = false,
                 accessibilityLabel = accessibility,
+                counter = PrayerWidgetCounter(
+                    mode = if (isElapsed) PrayerWidgetCounterMode.ELAPSED
+                    else PrayerWidgetCounterMode.COUNTDOWN,
+                    anchorEpochMillis = event.time.time,
+                ),
+                stateTransitionAt = moment.stateEnd,
+                isElapsed = isElapsed,
             )
         }
 
@@ -160,30 +201,15 @@ internal data class PrayerWidgetRenderState(
             lastThirdOfNight = null,
             empty = true,
             accessibilityLabel = label,
+            counter = null,
+            stateTransitionAt = null,
+            isElapsed = false,
         )
-
-        private fun findAfterNext(
-            snapshot: PrayerWidgetSnapshot,
-            next: NextPrayer,
-            makeItem: (PrayerKind, Date) -> PrayerWidgetRenderItem,
-        ): PrayerWidgetRenderItem? {
-            val daily = next.day.ordered
-            val index = daily.indexOfFirst { it.first == next.kind }
-            if (index >= 0 && index + 1 < daily.size) {
-                return daily[index + 1].let { makeItem(it.first, it.second) }
-            }
-            val calendar = Calendar.getInstance(snapshot.displayTimeZone).apply {
-                time = next.time
-                add(Calendar.DATE, 1)
-            }
-            val tomorrow = PrayerWidgetCalculator.computeDay(snapshot, calendar) ?: return null
-            return makeItem(PrayerKind.FAJR, tomorrow.fajr)
-        }
 
         private fun nightAnchor(snapshot: PrayerWidgetSnapshot, now: Date): Calendar {
             val calendar = Calendar.getInstance(snapshot.displayTimeZone).apply { time = now }
-            val today = PrayerWidgetCalculator.computeDay(snapshot, calendar)
-            if (today != null && now.before(today.fajr)) calendar.add(Calendar.DATE, -1)
+            val fajr = PrayerWidgetCalculator.computeDay(snapshot, calendar)?.fajr
+            if (fajr != null && now.before(fajr)) calendar.add(Calendar.DATE, -1)
             return calendar
         }
     }
