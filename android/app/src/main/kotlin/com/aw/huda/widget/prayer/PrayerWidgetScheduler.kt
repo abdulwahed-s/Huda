@@ -7,138 +7,183 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import java.util.Calendar
 import java.util.Date
+
+internal enum class PrayerAlarmPrecision { EXACT_IDLE, INEXACT_IDLE, NONE }
+
+internal data class PrayerAlarmScheduleResult(
+    val scheduled: Boolean,
+    val triggerAtMillis: Long?,
+    val precision: PrayerAlarmPrecision,
+    val error: String? = null,
+)
 
 internal object PrayerWidgetScheduler {
     private const val TAG = "PrayerWidgetScheduler"
     private const val REQUEST_CODE = 0xA01
-    private const val REQUEST_CODE_MINUTE_TICK = 0xA02
+    private const val LEGACY_REQUEST_CODE_MINUTE_TICK = 0xA02
+    internal const val EXTRA_EXPECTED_TRIGGER = "expectedTriggerAtMillis"
+    internal const val EXTRA_SETTINGS_REVISION = "settingsRevision"
 
-    fun scheduleNext(context: Context) {
-        try {
+    fun scheduleNext(
+        context: Context,
+        now: Date = Date(),
+    ): PrayerAlarmScheduleResult {
+        return try {
             val snapshot = PrayerWidgetRepository.readSnapshot(context)
-            val target = computeTargetTimeMillis(snapshot) ?: run {
-                Log.d(TAG, "No coordinates / no next prayer; skipping schedule.")
-                return
+            val target = computeTargetTimeMillis(snapshot, now) ?: run {
+                cancel(context)
+                Log.d(TAG, "No future prayer-state transition; alarm cancelled")
+                return PrayerAlarmScheduleResult(false, null, PrayerAlarmPrecision.NONE)
             }
             val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val pi = buildPendingIntent(context)
-
+            val pi = buildPendingIntent(context, target, snapshot.revision)
             am.cancel(pi)
-            scheduleAt(am, target, pi)
-            Log.d(TAG, "Scheduled prayer widget refresh at $target")
+            val precision = scheduleAt(am, target, pi)
+            PrayerWidgetReliabilityManager.scheduleTransitionSafetyNet(context, target)
+            Log.i(
+                TAG,
+                "Scheduled revision=${snapshot.revision} transition=$target precision=$precision",
+            )
+            PrayerAlarmScheduleResult(true, target, precision)
         } catch (e: Exception) {
             Log.e(TAG, "scheduleNext failed", e)
+            PrayerAlarmScheduleResult(
+                scheduled = false,
+                triggerAtMillis = null,
+                precision = PrayerAlarmPrecision.NONE,
+                error = e.message ?: e.javaClass.simpleName,
+            )
         }
     }
 
     fun cancel(context: Context) {
-        try {
+        runCatching {
             val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            am.cancel(buildPendingIntent(context))
-        } catch (_: Exception) {  }
+            am.cancel(buildPendingIntent(context, 0L, 0L))
+            am.cancel(buildLegacyMinutePendingIntent(context))
+        }.onFailure { Log.w(TAG, "Alarm cancellation failed", it) }
+        PrayerWidgetReliabilityManager.cancelTransitionSafetyNet(context)
     }
 
-    fun isAlarmPending(context: Context): Boolean {
-        val intent = Intent(ACTION_PRAYER_WIDGET_UPDATE).apply {
-            component = ComponentName(context, PrayerWidgetReceiver::class.java)
-        }
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_NO_CREATE
-        }
-        return PendingIntent.getBroadcast(context, REQUEST_CODE, intent, flags) != null
-    }
+    fun ensureAlarmsActive(context: Context): PrayerAlarmScheduleResult = scheduleNext(context)
 
-    fun ensureAlarmsActive(context: Context) {
-        if (!isAlarmPending(context)) {
-            Log.w(TAG, "Prayer alarm NOT pending — self-healing: rescheduling")
-            scheduleNext(context)
-        }
-        scheduleMinuteTick(context)
-    }
-
+    @Deprecated("The launcher Chronometer makes per-minute process wakeups unnecessary")
     fun scheduleMinuteTick(context: Context) {
-        try {
-            val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val pi = buildMinuteTickPendingIntent(context)
-            am.cancel(pi)
-            val nextMinuteMillis = (System.currentTimeMillis() / 60_000L + 1) * 60_000L
-            am.setExact(AlarmManager.RTC, nextMinuteMillis, pi)
-        } catch (e: Exception) {
-            Log.e(TAG, "scheduleMinuteTick failed", e)
-        }
+        cancelLegacyMinuteTick(context)
     }
 
-    fun cancelMinuteTick(context: Context) {
-        try {
-            val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            am.cancel(buildMinuteTickPendingIntent(context))
-        } catch (_: Exception) {  }
+    fun cancelMinuteTick(context: Context) = cancelLegacyMinuteTick(context)
+
+    fun logDelivery(intent: Intent, nowMillis: Long = System.currentTimeMillis()) {
+        val expected = intent.getLongExtra(EXTRA_EXPECTED_TRIGGER, 0L)
+        if (expected <= 0L) return
+        val lateness = (nowMillis - expected).coerceAtLeast(0L)
+        val revision = intent.getLongExtra(EXTRA_SETTINGS_REVISION, 0L)
+        val level = if (lateness >= 60_000L) Log.WARN else Log.INFO
+        Log.println(
+            level,
+            TAG,
+            "Transition delivered revision=$revision latenessMs=$lateness expected=$expected",
+        )
     }
 
-    private fun buildMinuteTickPendingIntent(context: Context): PendingIntent {
-        val intent = Intent(ACTION_PRAYER_WIDGET_MINUTE_TICK).apply {
-            component = ComponentName(context, PrayerWidgetReceiver::class.java)
-        }
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
-        return PendingIntent.getBroadcast(context, REQUEST_CODE_MINUTE_TICK, intent, flags)
+    internal fun computeTargetTimeMillis(
+        snapshot: PrayerWidgetSnapshot,
+        now: Date,
+    ): Long? {
+        val target = PrayerWidgetMomentResolver.resolve(snapshot, now)?.stateEnd?.time
+            ?: return null
+        return target.takeIf { it > now.time }
+    }
+
+    internal fun desiredPrecision(
+        sdkInt: Int,
+        exactAlarmAccess: Boolean,
+    ): PrayerAlarmPrecision = if (sdkInt < Build.VERSION_CODES.S || exactAlarmAccess) {
+        PrayerAlarmPrecision.EXACT_IDLE
+    } else {
+        PrayerAlarmPrecision.INEXACT_IDLE
     }
 
     private fun scheduleAt(
-        am: AlarmManager,
+        alarmManager: AlarmManager,
         triggerAtMillis: Long,
-        pi: PendingIntent,
-    ) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                !am.canScheduleExactAlarms()) {
-                am.setWindow(
+        pendingIntent: PendingIntent,
+    ): PrayerAlarmPrecision {
+        return if (desiredPrecision(
+                Build.VERSION.SDK_INT,
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+                        alarmManager.canScheduleExactAlarms(),
+            ) == PrayerAlarmPrecision.EXACT_IDLE
+        ) {
+            try {
+                alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
                     triggerAtMillis,
-                    60_000L,
-                    pi,
+                    pendingIntent,
                 )
-            } else {
-                am.setExactAndAllowWhileIdle(
+                PrayerAlarmPrecision.EXACT_IDLE
+            } catch (security: SecurityException) {
+                Log.w(
+                    TAG,
+                    "Exact alarm access changed while scheduling; using inexact idle",
+                    security
+                )
+                alarmManager.setAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
                     triggerAtMillis,
-                    pi,
+                    pendingIntent,
                 )
+                PrayerAlarmPrecision.INEXACT_IDLE
             }
-        } catch (e: SecurityException) {
-            am.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
+        } else {
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                pendingIntent,
+            )
+            PrayerAlarmPrecision.INEXACT_IDLE
         }
     }
 
-    private fun computeTargetTimeMillis(snapshot: PrayerWidgetSnapshot): Long? {
-        val now = Date()
-        val next = PrayerWidgetCalculator.nextAfter(snapshot, now) ?: return null
-
-        val withSlack = Calendar.getInstance().apply {
-            time = next.time
-            add(Calendar.SECOND, 1)
-        }.timeInMillis
-
-        val maxMillis = System.currentTimeMillis() + 24 * 60 * 60 * 1000L
-        return withSlack.coerceAtMost(maxMillis)
-    }
-
-    private fun buildPendingIntent(context: Context): PendingIntent {
+    private fun buildPendingIntent(
+        context: Context,
+        expectedTrigger: Long,
+        revision: Long,
+    ): PendingIntent {
         val intent = Intent(ACTION_PRAYER_WIDGET_UPDATE).apply {
             component = ComponentName(context, PrayerWidgetReceiver::class.java)
+            putExtra(EXTRA_EXPECTED_TRIGGER, expectedTrigger)
+            putExtra(EXTRA_SETTINGS_REVISION, revision)
         }
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    PendingIntent.FLAG_IMMUTABLE
+                } else 0
         return PendingIntent.getBroadcast(context, REQUEST_CODE, intent, flags)
+    }
+
+    private fun buildLegacyMinutePendingIntent(context: Context): PendingIntent {
+        val intent = Intent(ACTION_PRAYER_WIDGET_MINUTE_TICK).apply {
+            component = ComponentName(context, PrayerWidgetReceiver::class.java)
+        }
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    PendingIntent.FLAG_IMMUTABLE
+                } else 0
+        return PendingIntent.getBroadcast(
+            context,
+            LEGACY_REQUEST_CODE_MINUTE_TICK,
+            intent,
+            flags,
+        )
+    }
+
+    private fun cancelLegacyMinuteTick(context: Context) {
+        runCatching {
+            val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            am.cancel(buildLegacyMinutePendingIntent(context))
+        }.onFailure { Log.w(TAG, "Legacy minute alarm cancellation failed", it) }
     }
 }

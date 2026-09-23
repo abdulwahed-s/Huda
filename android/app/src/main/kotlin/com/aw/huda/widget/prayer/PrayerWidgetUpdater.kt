@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.net.Uri
@@ -30,7 +31,6 @@ import androidx.core.content.res.ResourcesCompat
 import com.aw.huda.MainActivity
 import com.aw.huda.R
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
-import java.text.DecimalFormatSymbols
 import java.util.Calendar
 import java.util.Date
 import kotlin.math.roundToInt
@@ -39,40 +39,98 @@ internal enum class WidgetFamily {
     CIRCULAR, RECTANGULAR, SMALL, MEDIUM, LARGE
 }
 
+internal data class PrayerWidgetUpdateResult(
+    val revision: Long,
+    val widgetCount: Int,
+    val successfulUpdates: Int,
+    val failedUpdates: Int,
+    val rendererPaths: Map<String, Int>,
+    val errors: List<String>,
+) {
+    fun toPlatformMap(): Map<String, Any> = mapOf(
+        "revision" to revision,
+        "widgetCount" to widgetCount,
+        "successfulUpdates" to successfulUpdates,
+        "failedUpdates" to failedUpdates,
+        "rendererPath" to rendererPaths,
+        "error" to errors.joinToString("; "),
+    )
+}
+
+private data class SingleWidgetUpdateResult(
+    val widgetId: Int,
+    val success: Boolean,
+    val rendererPath: String,
+    val error: String? = null,
+)
+
 internal object PrayerWidgetUpdater {
     private const val TAG = "PrayerWidgetUpdater"
     private const val DEEP_LINK = "huda://prayer_times"
 
-    fun updateAll(context: Context) {
+    fun updateAll(context: Context): PrayerWidgetUpdateResult {
         val manager = AppWidgetManager.getInstance(context)
         val ids = manager.getAppWidgetIds(
             ComponentName(context, PrayerWidgetReceiver::class.java),
         )
+        val snapshot = PrayerWidgetRepository.readSnapshot(context)
         if (ids.isEmpty()) {
             Log.d(TAG, "No prayer widgets pinned; skipping update.")
+            return PrayerWidgetUpdateResult(
+                revision = snapshot.revision,
+                widgetCount = 0,
+                successfulUpdates = 0,
+                failedUpdates = 0,
+                rendererPaths = emptyMap(),
+                errors = emptyList(),
+            )
         } else {
-            ids.forEach { update(context, manager, it) }
-            PrayerWidgetScheduler.ensureAlarmsActive(context)
+            val results = ids.map { update(context, manager, it, snapshot) }
+            return PrayerWidgetUpdateResult(
+                revision = snapshot.revision,
+                widgetCount = ids.size,
+                successfulUpdates = results.count { it.success },
+                failedUpdates = results.count { !it.success },
+                rendererPaths = results.groupingBy { it.rendererPath }.eachCount(),
+                errors = results.mapNotNull { it.error },
+            )
         }
     }
 
-    fun update(context: Context, manager: AppWidgetManager, widgetId: Int) {
-        try {
-            val snapshot = PrayerWidgetRepository.readSnapshot(context)
+    fun update(
+        context: Context,
+        manager: AppWidgetManager,
+        widgetId: Int,
+    ): Boolean = update(
+        context,
+        manager,
+        widgetId,
+        PrayerWidgetRepository.readSnapshot(context),
+    ).success
+
+    private fun update(
+        context: Context,
+        manager: AppWidgetManager,
+        widgetId: Int,
+        snapshot: PrayerWidgetSnapshot,
+    ): SingleWidgetUpdateResult {
+        return try {
             val opts = manager.getAppWidgetOptions(widgetId)
 
             val (rawWDp, rawHDp) = resolveWidgetSizeDp(context, opts)
             val (wDp, hDp) = normalizeForStableDensity(context, rawWDp, rawHDp)
             val family = classifySize(wDp.toFloat(), hDp.toFloat())
-            Log.d(TAG, "[$widgetId] size=${wDp}x${hDp}dp(raw ${rawWDp}x${rawHDp}) family=$family " +
-                "minW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)} " +
-                "maxW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)} " +
-                "minH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)} " +
-                "maxH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)} " +
-                "density=${context.resources.displayMetrics.density}")
+            Log.d(
+                TAG, "[$widgetId] size=${wDp}x${hDp}dp(raw ${rawWDp}x${rawHDp}) family=$family " +
+                        "minW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)} " +
+                        "maxW=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)} " +
+                        "minH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)} " +
+                        "maxH=${opts.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)} " +
+                        "density=${context.resources.displayMetrics.density}"
+            )
 
             val theme = PrayerWidgetTheme.resolve(context, snapshot)
-            val finalViews = try {
+            val (finalViews, rendererPath) = try {
                 val rendered = PrayerWidgetCanvasRenderer.render(
                     context = context,
                     snapshot = snapshot,
@@ -81,16 +139,25 @@ internal object PrayerWidgetUpdater {
                     heightDp = hDp.toFloat(),
                     includeStaticCountdown = Build.VERSION.SDK_INT < Build.VERSION_CODES.N,
                 )
-                buildBitmapViews(context, rendered)
+                buildBitmapViews(context, rendered) to "canvas_live"
             } catch (renderError: Exception) {
                 Log.e(TAG, "Celestial renderer failed; using XML fallback", renderError)
                 val views = buildForFamily(context, snapshot, family)
-                renderToBitmap(context, views, wDp, hDp, family, theme)
+                renderToBitmap(context, views, wDp, hDp, family, theme, snapshot) to
+                        "xml_bitmap_live"
             }
 
             manager.updateAppWidget(widgetId, finalViews)
+            Log.i(TAG, "[$widgetId] updated revision=${snapshot.revision} renderer=$rendererPath")
+            SingleWidgetUpdateResult(widgetId, true, rendererPath)
         } catch (e: Exception) {
             Log.e(TAG, "Update failed for $widgetId", e)
+            SingleWidgetUpdateResult(
+                widgetId = widgetId,
+                success = false,
+                rendererPath = "failed",
+                error = "widget $widgetId: ${e.message ?: e.javaClass.simpleName}",
+            )
         }
     }
 
@@ -99,7 +166,7 @@ internal object PrayerWidgetUpdater {
         opts: android.os.Bundle,
     ): Pair<Int, Int> {
         val portrait = context.resources.configuration.orientation ==
-            android.content.res.Configuration.ORIENTATION_PORTRAIT
+                android.content.res.Configuration.ORIENTATION_PORTRAIT
 
         val w = opts.getInt(
             if (portrait) AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH
@@ -168,21 +235,25 @@ internal object PrayerWidgetUpdater {
             return when (family) {
                 WidgetFamily.CIRCULAR,
                 WidgetFamily.RECTANGULAR -> buildAccessoryEmpty(context, snapshot, family)
+
                 else -> buildEmpty(context, snapshot)
             }
         }
         val now = Date()
-        val next = PrayerWidgetCalculator.nextAfter(snapshot, now)
+        val moment = PrayerWidgetMomentResolver.resolve(snapshot, now)
             ?: return when (family) {
                 WidgetFamily.CIRCULAR,
                 WidgetFamily.RECTANGULAR -> buildAccessoryEmpty(context, snapshot, family)
+
                 else -> buildEmpty(context, snapshot)
             }
+        val next = NextPrayer(moment.event.kind, moment.event.time, moment.event.day)
         val theme = PrayerWidgetTheme.resolve(context, snapshot)
 
         return when (family) {
             WidgetFamily.CIRCULAR,
             WidgetFamily.RECTANGULAR -> buildAccessory(context, snapshot, theme, next, now, family)
+
             else -> buildHome(context, snapshot, theme, next, now, family)
         }
     }
@@ -213,11 +284,13 @@ internal object PrayerWidgetUpdater {
         val layoutRes = when (family) {
             WidgetFamily.SMALL -> R.layout.prayer_widget_hero_small
             WidgetFamily.MEDIUM -> if (isRtl) R.layout.prayer_widget_hero_medium_rtl
-                else R.layout.prayer_widget_hero_medium
+            else R.layout.prayer_widget_hero_medium
+
             WidgetFamily.LARGE -> if (isRtl) R.layout.prayer_widget_hero_large_rtl
-                else R.layout.prayer_widget_hero_large
+            else R.layout.prayer_widget_hero_large
+
             else -> if (isRtl) R.layout.prayer_widget_hero_medium_rtl
-                else R.layout.prayer_widget_hero_medium
+            else R.layout.prayer_widget_hero_medium
         }
         val views = RemoteViews(context.packageName, layoutRes)
         val locale = snapshot.effectiveLocale
@@ -232,20 +305,20 @@ internal object PrayerWidgetUpdater {
                 "setBackgroundResource",
                 R.drawable.prayer_widget_inner_card,
             )
-            tintBackground(views, R.id.prayer_widget_inner_card,
-                PrayerWidgetTheme.withAlpha(theme.highlight, 0.12f))
+            tintBackground(
+                views, R.id.prayer_widget_inner_card,
+                PrayerWidgetTheme.withAlpha(theme.highlight, 0.12f)
+            )
         }
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_label,
-            PrayerWidgetLocalization.string("next_prayer", locale),
+            PrayerWidgetLocalization.string(primaryLabelKey(next, now), locale),
         )
         views.setTextColor(R.id.prayer_widget_label, secondary)
 
-        val compact = PrayerTimeFormatter.formatHHMMSS(
-            from = now, to = next.time,
-            useArabicNumerals = snapshot.useArabicNumerals(),
-        )
+        val compact = formatMomentCounter(snapshot, next, now)
         viewIfPresent(views, R.id.prayer_widget_countdown_static) {
             setStyledText(views, R.id.prayer_widget_countdown_static, compact)
 
@@ -260,22 +333,27 @@ internal object PrayerWidgetUpdater {
         }
 
         when (family) {
-            WidgetFamily.SMALL -> bindHeroSmall(views, snapshot, theme, next, locale)
+            WidgetFamily.SMALL -> bindHeroSmall(context, views, snapshot, theme, next, now, locale)
             WidgetFamily.LARGE -> bindHeroLarge(context, views, snapshot, theme, next, now, locale)
-            else -> bindHeroMedium(views, snapshot, theme, next, locale)
+            else -> bindHeroMedium(context, views, snapshot, theme, next, now, locale)
         }
 
         if (PrayerWidgetLocalization.isRTL(locale) && family != WidgetFamily.SMALL) {
             when (family) {
                 WidgetFamily.LARGE -> {
                     setStyledText(views, R.id.prayer_widget_label, compact)
-                    setStyledText(views, R.id.prayer_widget_countdown_static,
-                        PrayerWidgetLocalization.string("next_prayer", locale))
+                    setStyledText(
+                        views, R.id.prayer_widget_countdown_static,
+                        PrayerWidgetLocalization.string(primaryLabelKey(next, now), locale)
+                    )
                 }
+
                 else -> {
                     setStyledText(views, R.id.prayer_widget_in_word, compact)
-                    setStyledText(views, R.id.prayer_widget_countdown_static,
-                        PrayerWidgetLocalization.string("in_word", locale))
+                    setStyledText(
+                        views, R.id.prayer_widget_countdown_static,
+                        PrayerWidgetLocalization.string("in_word", locale)
+                    )
                 }
             }
         }
@@ -287,28 +365,28 @@ internal object PrayerWidgetUpdater {
     }
 
     private fun bindHeroSmall(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
         next: NextPrayer,
+        now: Date,
         locale: String,
     ) {
         val primary = theme.primaryText
         val secondary = theme.secondaryTextHero
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_name,
             PrayerWidgetLocalization.prayerName(next.kind, locale),
         )
         views.setTextColor(R.id.prayer_widget_next_name, primary)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_time,
-            PrayerTimeFormatter.format(
-                next.time,
-                snapshot.useArabicNumerals(),
-                snapshot.displayTimeZone,
-            ),
+            formatPrayerClock(context, snapshot, next.time),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
@@ -342,15 +420,15 @@ internal object PrayerWidgetUpdater {
             if (i < upcoming.size) {
                 val (kind, time) = upcoming[i]
                 views.setViewVisibility(upcomingContainerIds[i], View.VISIBLE)
-                setStyledText(views, upcomingRowIds[i].first,
-                    PrayerWidgetLocalization.prayerName(kind, locale))
+                setStyledText(
+                    views, upcomingRowIds[i].first,
+                    PrayerWidgetLocalization.prayerName(kind, locale)
+                )
                 views.setTextColor(upcomingRowIds[i].first, secondary)
-                setStyledText(views, upcomingRowIds[i].second,
-                    PrayerTimeFormatter.format(
-                        time,
-                        snapshot.useArabicNumerals(),
-                        snapshot.displayTimeZone,
-                    ))
+                setStyledText(
+                    views, upcomingRowIds[i].second,
+                    formatPrayerClock(context, snapshot, time)
+                )
                 views.setTextColor(upcomingRowIds[i].second, secondary)
             } else {
                 views.setViewVisibility(upcomingContainerIds[i], View.GONE)
@@ -359,44 +437,48 @@ internal object PrayerWidgetUpdater {
     }
 
     private fun bindHeroMedium(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
         next: NextPrayer,
+        now: Date,
         locale: String,
     ) {
         val primary = theme.primaryText
         val secondary = theme.secondaryTextHero
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_name,
             PrayerWidgetLocalization.prayerName(next.kind, locale),
         )
         views.setTextColor(R.id.prayer_widget_next_name, primary)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_time,
-            PrayerTimeFormatter.format(
-                next.time,
-                snapshot.useArabicNumerals(),
-                snapshot.displayTimeZone,
-            ),
+            formatPrayerClock(context, snapshot, next.time),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_in_word,
-            PrayerWidgetLocalization.string("in_word", locale),
+            if (isElapsedMoment(next, now)) ""
+            else PrayerWidgetLocalization.string("in_word", locale),
         )
         views.setTextColor(R.id.prayer_widget_in_word, secondary)
 
         if (PrayerWidgetLocalization.isRTL(locale)) {
             views.setInt(R.id.prayer_widget_next_time, "setGravity", Gravity.END)
-            views.setInt(R.id.prayer_widget_countdown_row, "setGravity",
-                Gravity.CENTER_VERTICAL or Gravity.END)
+            views.setInt(
+                R.id.prayer_widget_countdown_row, "setGravity",
+                Gravity.CENTER_VERTICAL or Gravity.END
+            )
         }
 
-        applyHeroList(views, snapshot, theme, next, locale, includeIcons = false)
+        applyHeroList(context, views, snapshot, theme, next, locale, includeIcons = false)
     }
 
     private fun bindHeroLarge(
@@ -411,39 +493,41 @@ internal object PrayerWidgetUpdater {
         val primary = theme.primaryText
         val secondary = theme.secondaryTextHero
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_name,
             PrayerWidgetLocalization.prayerName(next.kind, locale),
         )
         views.setTextColor(R.id.prayer_widget_next_name, secondary)
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_time,
-            PrayerTimeFormatter.format(
-                next.time,
-                snapshot.useArabicNumerals(),
-                snapshot.displayTimeZone,
-            ),
+            formatPrayerClock(context, snapshot, next.time),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_label,
-            PrayerWidgetLocalization.string("next_prayer", locale),
+            PrayerWidgetLocalization.string(primaryLabelKey(next, now), locale),
         )
         views.setTextColor(R.id.prayer_widget_label, secondary)
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_in_word,
-            PrayerWidgetLocalization.string("in_word", locale),
+            if (isElapsedMoment(next, now)) ""
+            else PrayerWidgetLocalization.string("in_word", locale),
         )
         views.setTextColor(R.id.prayer_widget_in_word, secondary)
 
         views.setImageViewResource(R.id.prayer_widget_hero_icon, prayerIconRes(next.kind))
         views.setInt(R.id.prayer_widget_hero_icon, "setColorFilter", secondary)
 
-        applyHeroList(views, snapshot, theme, next, locale, includeIcons = true)
+        applyHeroList(context, views, snapshot, theme, next, locale, includeIcons = true)
     }
 
     private fun applyHeroList(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
@@ -453,12 +537,15 @@ internal object PrayerWidgetUpdater {
     ) {
         val rows = PrayerWidgetCalculator.displayList(next.day)
         for ((kind, time) in rows) {
-            applyHeroRow(views, snapshot, theme, kind, time, locale,
-                isHighlighted = kind == next.kind, includeIcons = includeIcons)
+            applyHeroRow(
+                context, views, snapshot, theme, kind, time, locale,
+                isHighlighted = kind == next.kind, includeIcons = includeIcons
+            )
         }
     }
 
     private fun applyHeroRow(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
@@ -471,18 +558,16 @@ internal object PrayerWidgetUpdater {
         val ids = heroRowIds(kind)
         val color = if (isHighlighted) theme.primaryText else theme.secondaryTextHero
 
-        setStyledText(views,
+        setStyledText(
+            views,
             ids.nameId,
             PrayerWidgetLocalization.prayerName(kind, locale),
         )
         views.setTextColor(ids.nameId, color)
-        setStyledText(views,
+        setStyledText(
+            views,
             ids.timeId,
-            PrayerTimeFormatter.format(
-                time,
-                snapshot.useArabicNumerals(),
-                snapshot.displayTimeZone,
-            ),
+            formatPrayerClock(context, snapshot, time),
         )
         views.setTextColor(ids.timeId, color)
 
@@ -492,8 +577,10 @@ internal object PrayerWidgetUpdater {
                 "setBackgroundResource",
                 R.drawable.prayer_widget_pill_highlight,
             )
-            tintBackground(views, ids.rowId,
-                PrayerWidgetTheme.withAlpha(theme.highlight, 0.15f))
+            tintBackground(
+                views, ids.rowId,
+                PrayerWidgetTheme.withAlpha(theme.highlight, 0.15f)
+            )
         } else {
             views.setInt(
                 ids.rowId,
@@ -519,30 +606,35 @@ internal object PrayerWidgetUpdater {
             R.id.prayer_widget_row_fajr_time,
             R.id.prayer_widget_row_fajr_icon,
         )
+
         PrayerKind.SUNRISE -> HeroRowIds(
             R.id.prayer_widget_row_sunrise,
             R.id.prayer_widget_row_sunrise_name,
             R.id.prayer_widget_row_sunrise_time,
             R.id.prayer_widget_row_sunrise_icon,
         )
+
         PrayerKind.DHUHR -> HeroRowIds(
             R.id.prayer_widget_row_dhuhr,
             R.id.prayer_widget_row_dhuhr_name,
             R.id.prayer_widget_row_dhuhr_time,
             R.id.prayer_widget_row_dhuhr_icon,
         )
+
         PrayerKind.ASR -> HeroRowIds(
             R.id.prayer_widget_row_asr,
             R.id.prayer_widget_row_asr_name,
             R.id.prayer_widget_row_asr_time,
             R.id.prayer_widget_row_asr_icon,
         )
+
         PrayerKind.MAGHRIB -> HeroRowIds(
             R.id.prayer_widget_row_maghrib,
             R.id.prayer_widget_row_maghrib_name,
             R.id.prayer_widget_row_maghrib_time,
             R.id.prayer_widget_row_maghrib_icon,
         )
+
         PrayerKind.ISHA -> HeroRowIds(
             R.id.prayer_widget_row_isha,
             R.id.prayer_widget_row_isha_name,
@@ -574,6 +666,7 @@ internal object PrayerWidgetUpdater {
             R.id.prayer_widget_upcoming_3_name to 11f,
             R.id.prayer_widget_upcoming_3_time to 11f,
         )
+
         WidgetFamily.MEDIUM -> listOf(
             R.id.prayer_widget_label to 15f,
             R.id.prayer_widget_next_name to 42f,
@@ -593,6 +686,7 @@ internal object PrayerWidgetUpdater {
             R.id.prayer_widget_row_isha_name to 13f,
             R.id.prayer_widget_row_isha_time to 13f,
         )
+
         WidgetFamily.LARGE -> listOf(
             R.id.prayer_widget_next_name to 16f,
             R.id.prayer_widget_next_time to 42f,
@@ -612,6 +706,7 @@ internal object PrayerWidgetUpdater {
             R.id.prayer_widget_row_isha_name to 16f,
             R.id.prayer_widget_row_isha_time to 16f,
         )
+
         else -> emptyList()
     }
 
@@ -627,10 +722,11 @@ internal object PrayerWidgetUpdater {
         val layoutRes = when (family) {
             WidgetFamily.SMALL -> R.layout.prayer_widget_compact_small
             WidgetFamily.MEDIUM -> if (isRtl) R.layout.prayer_widget_compact_medium_rtl
-                else R.layout.prayer_widget_compact_medium
+            else R.layout.prayer_widget_compact_medium
+
             WidgetFamily.LARGE -> R.layout.prayer_widget_compact_large
             else -> if (isRtl) R.layout.prayer_widget_compact_medium_rtl
-                else R.layout.prayer_widget_compact_medium
+            else R.layout.prayer_widget_compact_medium
         }
         val views = RemoteViews(context.packageName, layoutRes)
         val locale = snapshot.effectiveLocale
@@ -651,14 +747,34 @@ internal object PrayerWidgetUpdater {
                 "setBackgroundResource",
                 R.drawable.prayer_widget_hero_pill,
             )
-            tintBackground(views, R.id.prayer_widget_hero_pill,
-                PrayerWidgetTheme.withAlpha(theme.highlight, 0.12f))
+            tintBackground(
+                views, R.id.prayer_widget_hero_pill,
+                PrayerWidgetTheme.withAlpha(theme.highlight, 0.12f)
+            )
         }
 
         when (family) {
-            WidgetFamily.SMALL -> bindCompactSmall(views, snapshot, theme, next, now, locale)
-            WidgetFamily.LARGE -> bindCompactLarge(views, snapshot, theme, next, now, locale)
-            else -> bindCompactMedium(views, snapshot, theme, next, now, locale)
+            WidgetFamily.SMALL -> bindCompactSmall(
+                context,
+                views,
+                snapshot,
+                theme,
+                next,
+                now,
+                locale
+            )
+
+            WidgetFamily.LARGE -> bindCompactLarge(
+                context,
+                views,
+                snapshot,
+                theme,
+                next,
+                now,
+                locale
+            )
+
+            else -> bindCompactMedium(context, views, snapshot, theme, next, now, locale)
         }
 
         applyContentSize(views, snapshot, compactFontSizes(family, locale))
@@ -668,6 +784,7 @@ internal object PrayerWidgetUpdater {
     }
 
     private fun bindCompactSmall(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
@@ -678,7 +795,8 @@ internal object PrayerWidgetUpdater {
         val primary = theme.primaryText
         val tatweel = if (PrayerWidgetLocalization.isRTL(locale)) 1 else 0
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_iso_date,
             PrayerTimeFormatter.formatISODate(
                 now,
@@ -693,37 +811,35 @@ internal object PrayerWidgetUpdater {
                 now,
                 locale,
                 snapshot.displayTimeZone,
-            ), tatweel,
+            ),
+            tatweel,
         )
         setStyledText(views, R.id.prayer_widget_day_of_week, day)
         views.setTextColor(R.id.prayer_widget_day_of_week, primary)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_name,
             PrayerWidgetLocalization.prayerName(next.kind, locale),
         )
         views.setTextColor(R.id.prayer_widget_next_name, primary)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_time,
-            PrayerTimeFormatter.format12WithMeridiem(
-                next.time,
-                snapshot.useArabicNumerals(),
-                locale,
-                snapshot.displayTimeZone,
-            ),
+            formatPrayerClock(context, snapshot, next.time),
         )
         views.setTextColor(R.id.prayer_widget_next_time, primary)
 
-        setStyledText(views, R.id.prayer_widget_countdown,
-            PrayerTimeFormatter.formatHHMMSS(
-                from = now, to = next.time,
-                useArabicNumerals = snapshot.useArabicNumerals(),
-            ))
+        setStyledText(
+            views, R.id.prayer_widget_countdown,
+            formatMomentCounter(snapshot, next, now)
+        )
         views.setTextColor(R.id.prayer_widget_countdown, primary)
     }
 
     private fun bindCompactMedium(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
@@ -736,7 +852,8 @@ internal object PrayerWidgetUpdater {
         val isRtl = PrayerWidgetLocalization.isRTL(locale)
         val tatweel = if (isRtl) 2 else 0
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_iso_date,
             PrayerTimeFormatter.formatISODate(
                 now,
@@ -751,7 +868,8 @@ internal object PrayerWidgetUpdater {
                 now,
                 locale,
                 snapshot.displayTimeZone,
-            ), tatweel,
+            ),
+            tatweel,
         )
         setStyledText(views, R.id.prayer_widget_day_of_week, day)
         views.setTextColor(R.id.prayer_widget_day_of_week, primary)
@@ -761,59 +879,66 @@ internal object PrayerWidgetUpdater {
         for (i in stripSlots.indices) {
             val ids = stripSlots[i].second
             val kind = stripKinds[i]
-            val time = next.day.timeOf(kind)
+            val time = next.day.timeOf(kind) ?: continue
             val isNext = kind == next.kind
             val color = if (isNext) highlight else primary
-            setStyledText(views,
+            setStyledText(
+                views,
                 ids.nameId,
                 PrayerWidgetLocalization.prayerName(kind, locale),
             )
             views.setTextColor(ids.nameId, color)
-            setStyledText(views,
+            setStyledText(
+                views,
                 ids.timeId,
-                PrayerTimeFormatter.format12(
-                    time,
-                    snapshot.useArabicNumerals(),
-                    snapshot.displayTimeZone,
-                ),
+                formatPrayerClock(context, snapshot, time),
             )
             views.setTextColor(ids.timeId, color)
         }
 
         if (isRtl) {
-            val remainLabel = PrayerWidgetLocalization.string("remaining_until", locale)
+            val remainLabel = PrayerWidgetLocalization.string(
+                if (isElapsedMoment(next, now)) "current" else "remaining_until",
+                locale,
+            )
             val prayerName = PrayerWidgetLocalization.prayerName(next.kind, locale)
-            setStyledText(views, R.id.prayer_widget_remaining_label,
-                "$remainLabel $prayerName")
-            views.setTextColor(R.id.prayer_widget_remaining_label, highlight)
-            setStyledText(views, R.id.prayer_widget_remaining_name, "")
-            setStyledText(views, R.id.prayer_widget_countdown,
-                PrayerTimeFormatter.formatHHMMSS(
-                    from = now, to = next.time,
-                    useArabicNumerals = snapshot.useArabicNumerals(),
-                ))
-            views.setTextColor(R.id.prayer_widget_countdown, highlight)
-        } else {
-            setStyledText(views,
-                R.id.prayer_widget_remaining_label,
-                PrayerWidgetLocalization.string("remaining_until", locale),
+            setStyledText(
+                views, R.id.prayer_widget_remaining_label,
+                "$remainLabel $prayerName"
             )
             views.setTextColor(R.id.prayer_widget_remaining_label, highlight)
-            setStyledText(views,
+            setStyledText(views, R.id.prayer_widget_remaining_name, "")
+            setStyledText(
+                views, R.id.prayer_widget_countdown,
+                formatMomentCounter(snapshot, next, now)
+            )
+            views.setTextColor(R.id.prayer_widget_countdown, highlight)
+        } else {
+            setStyledText(
+                views,
+                R.id.prayer_widget_remaining_label,
+                PrayerWidgetLocalization.string(
+                    if (isElapsedMoment(next, now)) "current" else "remaining_until",
+                    locale,
+                ),
+            )
+            views.setTextColor(R.id.prayer_widget_remaining_label, highlight)
+            setStyledText(
+                views,
                 R.id.prayer_widget_remaining_name,
                 PrayerWidgetLocalization.prayerName(next.kind, locale),
             )
             views.setTextColor(R.id.prayer_widget_remaining_name, highlight)
-            setStyledText(views, R.id.prayer_widget_countdown,
-                PrayerTimeFormatter.formatHHMMSS(
-                    from = now, to = next.time,
-                    useArabicNumerals = snapshot.useArabicNumerals(),
-                ))
+            setStyledText(
+                views, R.id.prayer_widget_countdown,
+                formatMomentCounter(snapshot, next, now)
+            )
             views.setTextColor(R.id.prayer_widget_countdown, highlight)
         }
     }
 
     private fun bindCompactLarge(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
@@ -826,7 +951,8 @@ internal object PrayerWidgetUpdater {
         val isRTL = PrayerWidgetLocalization.isRTL(locale)
         val tatweel = if (isRTL) 2 else 0
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_iso_date,
             PrayerTimeFormatter.formatISODate(
                 now,
@@ -842,7 +968,8 @@ internal object PrayerWidgetUpdater {
                 now,
                 locale,
                 snapshot.displayTimeZone,
-            ), tatweel,
+            ),
+            tatweel,
         )
         setStyledText(views, R.id.prayer_widget_day_of_week, day)
         views.setTextColor(R.id.prayer_widget_day_of_week, primary)
@@ -852,25 +979,21 @@ internal object PrayerWidgetUpdater {
             daySize * (snapshot.contentSize.coerceIn(60, 140) / 100f),
         )
 
-        setStyledText(views, R.id.prayer_widget_countdown,
-            PrayerTimeFormatter.formatHHMMSS(
-                from = now, to = next.time,
-                useArabicNumerals = snapshot.useArabicNumerals(),
-            ))
+        setStyledText(
+            views, R.id.prayer_widget_countdown,
+            formatMomentCounter(snapshot, next, now)
+        )
         views.setTextColor(R.id.prayer_widget_countdown, primary)
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_pill_name,
             PrayerWidgetLocalization.prayerName(next.kind, locale),
         )
         views.setTextColor(R.id.prayer_widget_pill_name, primary)
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_pill_time,
-            PrayerTimeFormatter.format12WithMeridiem(
-                next.time,
-                snapshot.useArabicNumerals(),
-                locale,
-                snapshot.displayTimeZone,
-            ),
+            formatPrayerClock(context, snapshot, next.time),
         )
         views.setTextColor(R.id.prayer_widget_pill_time, primary)
 
@@ -879,21 +1002,19 @@ internal object PrayerWidgetUpdater {
         for (i in gridSlots.indices) {
             val ids = gridSlots[i].second
             val kind = gridKinds[i]
-            val time = next.day.timeOf(kind)
+            val time = next.day.timeOf(kind) ?: continue
             val isNext = kind == next.kind
             val color = if (isNext) highlight else primary
-            setStyledText(views,
+            setStyledText(
+                views,
                 ids.nameId,
                 PrayerWidgetLocalization.prayerName(kind, locale),
             )
             views.setTextColor(ids.nameId, color)
-            setStyledText(views,
+            setStyledText(
+                views,
                 ids.timeId,
-                PrayerTimeFormatter.format12(
-                    time,
-                    snapshot.useArabicNumerals(),
-                    snapshot.displayTimeZone,
-                ),
+                formatPrayerClock(context, snapshot, time),
             )
             views.setTextColor(ids.timeId, color)
         }
@@ -902,36 +1023,32 @@ internal object PrayerWidgetUpdater {
             snapshot,
             Calendar.getInstance(snapshot.displayTimeZone).apply { time = now },
         )
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_sunnah_last_third_label,
             PrayerWidgetLocalization.string("last_third_night", locale),
         )
         views.setTextColor(R.id.prayer_widget_sunnah_last_third_label, primary)
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_sunnah_last_third_value,
             sunnah?.lastThirdOfNight?.let {
-                PrayerTimeFormatter.format12(
-                    it,
-                    snapshot.useArabicNumerals(),
-                    snapshot.displayTimeZone,
-                )
+                formatPrayerClock(context, snapshot, it)
             } ?: "—",
         )
         views.setTextColor(R.id.prayer_widget_sunnah_last_third_value, primary)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_sunnah_middle_label,
             PrayerWidgetLocalization.string("middle_of_night", locale),
         )
         views.setTextColor(R.id.prayer_widget_sunnah_middle_label, primary)
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_sunnah_middle_value,
             sunnah?.middleOfNight?.let {
-                PrayerTimeFormatter.format12(
-                    it,
-                    snapshot.useArabicNumerals(),
-                    snapshot.displayTimeZone,
-                )
+                formatPrayerClock(context, snapshot, it)
             } ?: "—",
         )
         views.setTextColor(R.id.prayer_widget_sunnah_middle_value, primary)
@@ -993,10 +1110,10 @@ internal object PrayerWidgetUpdater {
 
     private fun gridKindsOrdered(isRtl: Boolean): List<PrayerKind> = if (isRtl) listOf(
         PrayerKind.DHUHR, PrayerKind.SUNRISE, PrayerKind.FAJR,
-        PrayerKind.ISHA,  PrayerKind.MAGHRIB, PrayerKind.ASR,
+        PrayerKind.ISHA, PrayerKind.MAGHRIB, PrayerKind.ASR,
     ) else listOf(
-        PrayerKind.FAJR,  PrayerKind.SUNRISE, PrayerKind.DHUHR,
-        PrayerKind.ASR,   PrayerKind.MAGHRIB, PrayerKind.ISHA,
+        PrayerKind.FAJR, PrayerKind.SUNRISE, PrayerKind.DHUHR,
+        PrayerKind.ASR, PrayerKind.MAGHRIB, PrayerKind.ISHA,
     )
 
     private fun compactFontSizes(family: WidgetFamily, locale: String): List<Pair<Int, Float>> {
@@ -1007,6 +1124,7 @@ internal object PrayerWidgetUpdater {
             family == WidgetFamily.SMALL -> 1.1f
             else -> 1.3f
         }
+
         fun s(size: Float) = size * opticalScale
         return when (family) {
             WidgetFamily.SMALL -> listOf(
@@ -1016,6 +1134,7 @@ internal object PrayerWidgetUpdater {
                 R.id.prayer_widget_next_time to s(26f),
                 R.id.prayer_widget_countdown to s(18f),
             )
+
             WidgetFamily.MEDIUM -> listOf(
                 R.id.prayer_widget_iso_date to s(11f),
                 R.id.prayer_widget_day_of_week to s(if (isArabicScript) 32f else 42f),
@@ -1033,6 +1152,7 @@ internal object PrayerWidgetUpdater {
                 R.id.prayer_widget_remaining_name to s(14f),
                 R.id.prayer_widget_countdown to s(14f),
             )
+
             WidgetFamily.LARGE -> listOf(
                 R.id.prayer_widget_iso_date to s(12f),
 
@@ -1056,6 +1176,7 @@ internal object PrayerWidgetUpdater {
                 R.id.prayer_widget_sunnah_middle_label to s(16f),
                 R.id.prayer_widget_sunnah_middle_value to s(18f),
             )
+
             else -> emptyList()
         }
     }
@@ -1079,7 +1200,7 @@ internal object PrayerWidgetUpdater {
 
         when (family) {
             WidgetFamily.CIRCULAR -> bindCircular(views, snapshot, theme, next, now, locale)
-            else -> bindRectangular(views, snapshot, theme, next, now, locale)
+            else -> bindRectangular(context, views, snapshot, theme, next, now, locale)
         }
 
         applyDeepLink(views, context)
@@ -1112,6 +1233,7 @@ internal object PrayerWidgetUpdater {
 
                 views.setImageViewBitmap(R.id.prayer_widget_ring_progress, null)
             }
+
             else -> {
                 setStyledText(views, R.id.prayer_widget_next_name, message)
                 views.setTextColor(R.id.prayer_widget_next_name, theme.primaryText)
@@ -1151,7 +1273,8 @@ internal object PrayerWidgetUpdater {
         )
         views.setImageViewBitmap(R.id.prayer_widget_ring_progress, arcBitmap)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_next_name,
             PrayerWidgetLocalization.prayerName(next.kind, locale),
         )
@@ -1159,11 +1282,10 @@ internal object PrayerWidgetUpdater {
 
         views.setViewVisibility(R.id.prayer_widget_countdown_static, View.GONE)
         views.setViewVisibility(R.id.prayer_widget_countdown, View.VISIBLE)
-        setStyledText(views, R.id.prayer_widget_countdown,
-            PrayerTimeFormatter.formatHHMMSS(
-                from = now, to = next.time,
-                useArabicNumerals = snapshot.useArabicNumerals(),
-            ))
+        setStyledText(
+            views, R.id.prayer_widget_countdown,
+            formatMomentCounter(snapshot, next, now)
+        )
         views.setTextColor(R.id.prayer_widget_countdown, primary)
     }
 
@@ -1203,6 +1325,7 @@ internal object PrayerWidgetUpdater {
     }
 
     private fun bindRectangular(
+        context: Context,
         views: RemoteViews,
         snapshot: PrayerWidgetSnapshot,
         theme: PrayerWidgetTheme,
@@ -1214,28 +1337,31 @@ internal object PrayerWidgetUpdater {
         val accent = theme.accent
         val isRtl = PrayerWidgetLocalization.isRTL(locale)
 
-        val compact = PrayerTimeFormatter.formatHHMMSS(
-            from = now, to = next.time,
-            useArabicNumerals = snapshot.useArabicNumerals(),
-        )
+        val compact = formatMomentCounter(snapshot, next, now)
 
         if (isRtl) {
             val prayerName = PrayerWidgetLocalization.prayerName(next.kind, locale)
-            val inWord = PrayerWidgetLocalization.string("in_word", locale)
-            setStyledText(views, R.id.prayer_widget_countdown,
-                "$prayerName $inWord $compact")
+            val inWord = if (isElapsedMoment(next, now)) ""
+            else PrayerWidgetLocalization.string("in_word", locale)
+            setStyledText(
+                views, R.id.prayer_widget_countdown,
+                "$prayerName $inWord $compact"
+            )
             views.setTextColor(R.id.prayer_widget_countdown, accent)
             views.setViewVisibility(R.id.prayer_widget_next_name, View.GONE)
             views.setViewVisibility(R.id.prayer_widget_in_word, View.GONE)
         } else {
-            setStyledText(views,
+            setStyledText(
+                views,
                 R.id.prayer_widget_next_name,
                 PrayerWidgetLocalization.prayerName(next.kind, locale),
             )
             views.setTextColor(R.id.prayer_widget_next_name, accent)
-            setStyledText(views,
+            setStyledText(
+                views,
                 R.id.prayer_widget_in_word,
-                PrayerWidgetLocalization.string("in_word", locale),
+                if (isElapsedMoment(next, now)) ""
+                else PrayerWidgetLocalization.string("in_word", locale),
             )
             views.setTextColor(R.id.prayer_widget_in_word, primary)
             setStyledText(views, R.id.prayer_widget_countdown, compact)
@@ -1247,21 +1373,19 @@ internal object PrayerWidgetUpdater {
         for (i in stripSlots.indices) {
             val ids = stripSlots[i].second
             val kind = stripKinds[i]
-            val time = next.day.timeOf(kind)
+            val time = next.day.timeOf(kind) ?: continue
             val isNext = kind == next.kind
             val color = if (isNext) accent else primary
-            setStyledText(views,
+            setStyledText(
+                views,
                 ids.nameId,
                 PrayerWidgetLocalization.prayerName(kind, locale),
             )
             views.setTextColor(ids.nameId, color)
-            setStyledText(views,
+            setStyledText(
+                views,
                 ids.timeId,
-                PrayerTimeFormatter.format(
-                    time,
-                    snapshot.useArabicNumerals(),
-                    snapshot.displayTimeZone,
-                ),
+                formatPrayerClock(context, snapshot, time),
             )
             views.setTextColor(ids.timeId, color)
         }
@@ -1273,12 +1397,14 @@ internal object PrayerWidgetUpdater {
         val theme = PrayerWidgetTheme.resolve(context, snapshot)
         applyBackground(context, views, theme)
 
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_empty_title,
             context.getString(R.string.prayer_widget_empty_title),
         )
         views.setTextColor(R.id.prayer_widget_empty_title, theme.primaryText)
-        setStyledText(views,
+        setStyledText(
+            views,
             R.id.prayer_widget_empty_body,
             PrayerWidgetLocalization.string("empty_message", locale),
         )
@@ -1335,21 +1461,24 @@ internal object PrayerWidgetUpdater {
         heightDp: Int,
         family: WidgetFamily,
         theme: PrayerWidgetTheme? = null,
+        snapshot: PrayerWidgetSnapshot,
     ): RemoteViews {
         val ctx = renderContext(context)
         val density = ctx.resources.displayMetrics.density
         val widthPx = (widthDp * density).toInt()
         val heightPx = (heightDp * density).toInt()
 
-        if (widthPx <= 0 || heightPx <= 0) return remoteViews
+        require(widthPx > 0 && heightPx > 0) { "Invalid fallback widget size" }
 
         return try {
+            val state = PrayerWidgetRenderState.build(context, snapshot, Date())
             val parent = FrameLayout(ctx)
             val view = remoteViews.apply(ctx, parent)
             parent.addView(view)
 
             if (theme != null) {
-                val bgView = view.findViewById<android.widget.ImageView>(R.id.prayer_widget_background)
+                val bgView =
+                    view.findViewById<android.widget.ImageView>(R.id.prayer_widget_background)
                 if (bgView != null && bgView.visibility == View.VISIBLE) {
                     val correctedBg = PrayerWidgetBackgrounds.render(ctx, theme, widthPx, heightPx)
                     if (correctedBg != null) bgView.setImageBitmap(correctedBg)
@@ -1382,18 +1511,68 @@ internal object PrayerWidgetUpdater {
             )
             parent.layout(0, 0, widthPx, bmpH)
 
+            val counterView = listOf(
+                R.id.prayer_widget_countdown_static,
+                R.id.prayer_widget_countdown,
+            ).asSequence()
+                .mapNotNull { view.findViewById<TextView>(it) }
+                .firstOrNull { it.visibility == View.VISIBLE && it.width > 0 && it.height > 0 }
+            val counterRect = counterView?.let {
+                Rect().also { rect ->
+                    it.getDrawingRect(rect)
+                    parent.offsetDescendantRectToMyCoords(it, rect)
+                }
+            }
+            val counterTextSizeDp = counterView?.textSize?.div(density)
+            val counterColor = counterView?.currentTextColor
+            val counterAlignment = counterView?.gravity?.let {
+                if (it and Gravity.CENTER_HORIZONTAL != 0) {
+                    PrayerWidgetCanvasRenderer.CountdownAlignment.CENTER
+                } else {
+                    PrayerWidgetCanvasRenderer.CountdownAlignment.END
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && state.counter != null) {
+                counterView?.visibility = View.INVISIBLE
+            }
+
             val bitmap = Bitmap.createBitmap(widthPx, bmpH, Bitmap.Config.ARGB_8888)
             parent.draw(Canvas(bitmap))
 
-            val bitmapViews = RemoteViews(
-                context.packageName, R.layout.prayer_widget_bitmap_container,
+            val fallbackRect = counterRect ?: Rect(
+                (widthPx * 0.45f).roundToInt(),
+                (heightPx * 0.55f).roundToInt(),
+                (widthPx * 0.94f).roundToInt(),
+                (heightPx * 0.82f).roundToInt(),
             )
-            bitmapViews.setImageViewBitmap(R.id.prayer_widget_bitmap, bitmap)
-            applyDeepLink(bitmapViews, context)
-            bitmapViews
+            val overlay = state.counter?.let {
+                PrayerWidgetCanvasRenderer.CountdownOverlay(
+                    leftDp = fallbackRect.left / density,
+                    topDp = fallbackRect.top / density,
+                    widthDp = fallbackRect.width() / density,
+                    heightDp = fallbackRect.height() / density,
+                    canvasWidthDp = widthPx / density,
+                    canvasHeightDp = heightPx / density,
+                    textSizeDp = counterTextSizeDp ?: 16f,
+                    color = counterColor ?: theme?.primaryText ?: android.graphics.Color.WHITE,
+                    alignment = counterAlignment
+                        ?: PrayerWidgetCanvasRenderer.CountdownAlignment.END,
+                    rtl = state.rtl,
+                    counterMode = it.mode,
+                    anchorEpochMillis = it.anchorEpochMillis,
+                )
+            }
+            buildBitmapViews(
+                context,
+                PrayerWidgetCanvasRenderer.Rendered(
+                    bitmap = bitmap,
+                    accessibilityLabel = state.accessibilityLabel,
+                    countdownOverlay = overlay,
+                ),
+            )
         } catch (e: Exception) {
-            Log.e(TAG, "Bitmap render failed, falling back", e)
-            remoteViews
+            Log.e(TAG, "XML bitmap renderer failed", e)
+            throw e
         }
     }
 
@@ -1428,10 +1607,19 @@ internal object PrayerWidgetUpdater {
         overlay: PrayerWidgetCanvasRenderer.CountdownOverlay?,
     ) {
         val id = R.id.prayer_widget_live_countdown
-        val remainingMillis = overlay?.let {
-            (it.targetEpochMillis - System.currentTimeMillis()).coerceAtLeast(0L)
-        } ?: 0L
-        if (overlay == null || remainingMillis <= 0L) {
+        if (overlay == null) {
+            views.setViewVisibility(id, View.GONE)
+            return
+        }
+        val nowMillis = System.currentTimeMillis()
+        val durationMillis = when (overlay.counterMode) {
+            PrayerWidgetCounterMode.COUNTDOWN -> overlay.anchorEpochMillis - nowMillis
+            PrayerWidgetCounterMode.ELAPSED -> nowMillis - overlay.anchorEpochMillis
+        }
+        if (durationMillis < 0L ||
+            overlay.counterMode == PrayerWidgetCounterMode.ELAPSED &&
+            durationMillis >= PRAYER_GRACE_MILLIS
+        ) {
             views.setViewVisibility(id, View.GONE)
             return
         }
@@ -1441,14 +1629,15 @@ internal object PrayerWidgetUpdater {
         } else {
             context.resources.displayMetrics.density
         }
+
         fun px(value: Float): Int = (value * layoutDensity).roundToInt().coerceAtLeast(0)
 
         val rightDp = (
-            overlay.canvasWidthDp - overlay.leftDp - overlay.widthDp
-        ).coerceAtLeast(0f)
+                overlay.canvasWidthDp - overlay.leftDp - overlay.widthDp
+                ).coerceAtLeast(0f)
         val bottomDp = (
-            overlay.canvasHeightDp - overlay.topDp - overlay.heightDp
-        ).coerceAtLeast(0f)
+                overlay.canvasHeightDp - overlay.topDp - overlay.heightDp
+                ).coerceAtLeast(0f)
         views.setViewPadding(
             id,
             px(overlay.leftDp),
@@ -1469,26 +1658,62 @@ internal object PrayerWidgetUpdater {
             overlay.textSizeDp * layoutDensity,
         )
         views.setTextColor(id, overlay.color)
+        val countDown = overlay.counterMode == PrayerWidgetCounterMode.COUNTDOWN
+        val base = if (countDown) {
+            SystemClock.elapsedRealtime() + durationMillis
+        } else {
+            SystemClock.elapsedRealtime() - durationMillis
+        }
         views.setChronometer(
             id,
-            SystemClock.elapsedRealtime() + remainingMillis,
-            liveCountdownFormat(remainingMillis),
+            base,
+            liveCountdownFormat(countDown),
             true,
         )
-        views.setChronometerCountDown(id, true)
+        views.setChronometerCountDown(id, countDown)
         views.setViewVisibility(id, View.VISIBLE)
     }
 
-    private fun liveCountdownFormat(
-        remainingMillis: Long,
-    ): String {
-        val totalSeconds = (remainingMillis + 999L) / 1_000L
-        val zero = DecimalFormatSymbols.getInstance().zeroDigit.toString()
-        return when {
-            totalSeconds < 3_600L -> "$zero$zero:%s"
-            totalSeconds < 36_000L -> "$zero%s"
-            else -> "%s"
-        }
+    internal fun liveCountdownFormat(countDown: Boolean): String =
+        if (countDown) "−%s" else "+%s"
+
+    private fun formatPrayerClock(
+        context: Context,
+        snapshot: PrayerWidgetSnapshot,
+        date: Date,
+    ): String = PrayerTimeFormatter.formatForWidget(
+        context = context,
+        date = date,
+        preference = snapshot.timeFormat,
+        useArabicNumerals = snapshot.useArabicNumerals(),
+        languageCode = snapshot.effectiveLocale,
+        timeZone = snapshot.displayTimeZone,
+    )
+
+    private fun isElapsedMoment(next: NextPrayer, now: Date): Boolean =
+        now.time >= next.time.time && now.time < next.time.time + PRAYER_GRACE_MILLIS
+
+    private fun primaryLabelKey(next: NextPrayer, now: Date): String =
+        if (isElapsedMoment(next, now)) "current" else "next_prayer"
+
+    private fun formatMomentCounter(
+        snapshot: PrayerWidgetSnapshot,
+        next: NextPrayer,
+        now: Date,
+    ): String = if (isElapsedMoment(next, now)) {
+        PrayerTimeFormatter.formatSignedCounter(
+            from = next.time,
+            to = now,
+            elapsed = true,
+            useArabicNumerals = snapshot.useArabicNumerals(),
+        )
+    } else {
+        PrayerTimeFormatter.formatSignedCounter(
+            from = now,
+            to = next.time,
+            elapsed = false,
+            useArabicNumerals = snapshot.useArabicNumerals(),
+        )
     }
 
     private fun scaleTextRecursive(view: View, scale: Float) {

@@ -23,7 +23,6 @@ class PrayerWidgetReceiver : AppWidgetProvider() {
         }
 
         PrayerWidgetScheduler.scheduleNext(context)
-        PrayerWidgetScheduler.scheduleMinuteTick(context)
     }
 
     override fun onEnabled(context: Context) {
@@ -31,7 +30,6 @@ class PrayerWidgetReceiver : AppWidgetProvider() {
         Log.d(TAG, "onEnabled")
         PrayerWidgetUpdater.updateAll(context)
         PrayerWidgetScheduler.scheduleNext(context)
-        PrayerWidgetScheduler.scheduleMinuteTick(context)
         PrayerWidgetReliabilityManager.start(context)
     }
 
@@ -64,13 +62,23 @@ class PrayerWidgetReceiver : AppWidgetProvider() {
         when (intent.action) {
             ACTION_PRAYER_WIDGET_UPDATE,
             ACTION_HOME_WIDGET_UPDATE -> {
-                PrayerWidgetUpdater.updateAll(context)
-                PrayerWidgetScheduler.scheduleNext(context)
-                PrayerWidgetScheduler.scheduleMinuteTick(context)
+                PrayerWidgetScheduler.logDelivery(intent)
+                val update = PrayerWidgetUpdater.updateAll(context)
+                if (update.widgetCount > 0) {
+                    PrayerWidgetScheduler.scheduleNext(context)
+                } else {
+                    PrayerWidgetScheduler.cancel(context)
+                }
             }
+
             ACTION_PRAYER_WIDGET_MINUTE_TICK -> {
-                PrayerWidgetUpdater.updateAll(context)
-                PrayerWidgetScheduler.scheduleMinuteTick(context)
+                val update = PrayerWidgetUpdater.updateAll(context)
+                PrayerWidgetScheduler.cancelMinuteTick(context)
+                if (update.widgetCount > 0) {
+                    PrayerWidgetScheduler.scheduleNext(context)
+                } else {
+                    PrayerWidgetScheduler.cancel(context)
+                }
             }
         }
     }
