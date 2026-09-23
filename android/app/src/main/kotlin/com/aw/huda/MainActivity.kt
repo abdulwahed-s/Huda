@@ -7,6 +7,7 @@ import com.aw.huda.widget.QuranWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerWidgetReliabilityManager
 import com.aw.huda.widget.prayer.PrayerWidgetScheduler
 import com.aw.huda.widget.prayer.PrayerWidgetUpdater
+import com.aw.huda.widget.prayer.PrayerLocationTimeZoneResolver
 import com.aw.huda.miqaat.MiqaatLockMethodHandler
 import com.aw.huda.location.LocationSource
 import com.aw.huda.location.LocationSupport
@@ -18,6 +19,7 @@ import kotlinx.coroutines.withContext
 class MainActivity : AudioServiceActivity() {
     private val CHANNEL = "com.aw.huda/widget"
     private val LOCATION_CHANNEL = "com.aw.huda/location"
+    private val PRAYER_LOCATION_CHANNEL = "com.aw.huda/prayer_location"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -54,6 +56,34 @@ class MainActivity : AudioServiceActivity() {
                 }
             }
 
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PRAYER_LOCATION_CHANNEL)
+            .setMethodCallHandler { call, result ->
+                if (call.method != "resolveTimeZone") {
+                    result.notImplemented()
+                    return@setMethodCallHandler
+                }
+                val latitude = call.argument<Number>("latitude")?.toDouble()
+                val longitude = call.argument<Number>("longitude")?.toDouble()
+                if (latitude == null || longitude == null) {
+                    result.error("INVALID_COORDINATES", "Missing latitude/longitude", null)
+                    return@setMethodCallHandler
+                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val zone = PrayerLocationTimeZoneResolver.resolve(latitude, longitude)
+                    withContext(Dispatchers.Main) {
+                        if (zone == null) {
+                            result.error(
+                                "TIME_ZONE_UNAVAILABLE",
+                                "No IANA timezone boundary found for the coordinates",
+                                null,
+                            )
+                        } else {
+                            result.success(zone)
+                        }
+                    }
+                }
+            }
+
         // Widget channel
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
@@ -76,10 +106,25 @@ class MainActivity : AudioServiceActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
                             val appCtx = applicationContext
-                            PrayerWidgetUpdater.updateAll(appCtx)
-                            PrayerWidgetScheduler.scheduleNext(appCtx)
-                            PrayerWidgetReliabilityManager.start(appCtx)
-                            withContext(Dispatchers.Main) { result.success(true) }
+                            val update = PrayerWidgetUpdater.updateAll(appCtx)
+                            val alarm = if (update.widgetCount > 0) {
+                                PrayerWidgetReliabilityManager.start(appCtx)
+                                PrayerWidgetScheduler.scheduleNext(appCtx)
+                            } else {
+                                PrayerWidgetScheduler.cancel(appCtx)
+                                PrayerWidgetReliabilityManager.stop(appCtx)
+                                null
+                            }
+                            val response = update.toPlatformMap().toMutableMap().apply {
+                                put("alarmScheduled", alarm?.scheduled == true)
+                                put("alarmTriggerAt", alarm?.triggerAtMillis ?: 0L)
+                                put(
+                                    "alarmPrecision",
+                                    alarm?.precision?.name?.lowercase() ?: "none",
+                                )
+                                if (alarm?.error != null) put("alarmError", alarm.error)
+                            }
+                            withContext(Dispatchers.Main) { result.success(response) }
                         } catch (e: Exception) {
                             println("❌ Failed to update prayer widget: ${e.message}")
                             e.printStackTrace()

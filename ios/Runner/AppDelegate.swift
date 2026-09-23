@@ -1,117 +1,160 @@
+import alarm
+import CoreLocation
 import Flutter
 import UIKit
 import UserNotifications
-import alarm
 import workmanager_apple
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
-  private var miqaatLockHandler: MiqaatLockMethodHandler?
-  private var prayerPushChannel: FlutterMethodChannel?
-  private var apnsDeviceToken: String?
+    private var miqaatLockHandler: MiqaatLockMethodHandler?
+    private var prayerPushChannel: FlutterMethodChannel?
+    private var prayerLocationChannel: FlutterMethodChannel?
+    private let prayerTimeZoneGeocoder = CLGeocoder()
+    private var apnsDeviceToken: String?
 
-  private var apnsEnvironment: String {
-#if DEBUG
-    return "development"
-#else
-    return "production"
-#endif
-  }
-  
-  override func application(
-    _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-  ) -> Bool {
-    WorkmanagerPlugin.setPluginRegistrantCallback { registry in
-      GeneratedPluginRegistrant.register(with: registry)
-    }
-    if #available(iOS 13.0, *) {
-      WorkmanagerPlugin.registerPeriodicTask(
-        withIdentifier: "com.aw.huda.prayerNotifications.refresh",
-        frequency: NSNumber(value: 12 * 60 * 60)
-      )
+    private var apnsEnvironment: String {
+        #if DEBUG
+            return "development"
+        #else
+            return "production"
+        #endif
     }
 
-    if let controller = window?.rootViewController as? FlutterViewController {
-      miqaatLockHandler = MiqaatLockMethodHandler(messenger: controller.binaryMessenger)
-      let channel = FlutterMethodChannel(
-        name: "com.aw.huda/prayer_push",
-        binaryMessenger: controller.binaryMessenger
-      )
-      channel.setMethodCallHandler { [weak self] call, result in
-        guard call.method == "register" else {
-          result(FlutterMethodNotImplemented)
-          return
+    override func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        WorkmanagerPlugin.setPluginRegistrantCallback { registry in
+            GeneratedPluginRegistrant.register(with: registry)
         }
-        DispatchQueue.main.async {
-          application.registerForRemoteNotifications()
+        if #available(iOS 13.0, *) {
+            WorkmanagerPlugin.registerPeriodicTask(
+                withIdentifier: "com.aw.huda.prayerNotifications.refresh",
+                frequency: NSNumber(value: 12 * 60 * 60)
+            )
         }
-        result(self?.registrationPayload() ?? ["environment": "development"])
-      }
-      prayerPushChannel = channel
-    }
-    
-    if #available(iOS 10.0, *) {
-      UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
-    }
-    SwiftAlarmPlugin.registerBackgroundTasks()
-    
-    GeneratedPluginRegistrant.register(with: self)
-    let launched = super.application(
-      application,
-      didFinishLaunchingWithOptions: launchOptions
-    )
-    application.registerForRemoteNotifications()
-    return launched
-  }
 
-  override func application(
-    _ application: UIApplication,
-    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
-  ) {
-    apnsDeviceToken = deviceToken.map { String(format: "%02x", $0) }.joined()
-    prayerPushChannel?.invokeMethod("tokenUpdated", arguments: registrationPayload())
-    super.application(
-      application,
-      didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
-    )
-  }
+        if let controller = window?.rootViewController as? FlutterViewController {
+            miqaatLockHandler = MiqaatLockMethodHandler(messenger: controller.binaryMessenger)
+            let channel = FlutterMethodChannel(
+                name: "com.aw.huda/prayer_push",
+                binaryMessenger: controller.binaryMessenger
+            )
+            channel.setMethodCallHandler { [weak self] call, result in
+                guard call.method == "register" else {
+                    result(FlutterMethodNotImplemented)
+                    return
+                }
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                }
+                result(self?.registrationPayload() ?? ["environment": "development"])
+            }
+            prayerPushChannel = channel
 
-  override func application(
-    _ application: UIApplication,
-    didFailToRegisterForRemoteNotificationsWithError error: Error
-  ) {
-    prayerPushChannel?.invokeMethod(
-      "registrationFailed",
-      arguments: error.localizedDescription
-    )
-    super.application(
-      application,
-      didFailToRegisterForRemoteNotificationsWithError: error
-    )
-  }
+            let locationChannel = FlutterMethodChannel(
+                name: "com.aw.huda/prayer_location",
+                binaryMessenger: controller.binaryMessenger
+            )
+            locationChannel.setMethodCallHandler { call, result in
+                guard call.method == "resolveTimeZone" else {
+                    result(FlutterMethodNotImplemented)
+                    return
+                }
+                guard
+                    let arguments = call.arguments as? [String: Any],
+                    let latitude = arguments["latitude"] as? Double,
+                    let longitude = arguments["longitude"] as? Double,
+                    (-90.0 ... 90.0).contains(latitude),
+                    (-180.0 ... 180.0).contains(longitude)
+                else {
+                    result(FlutterError(
+                        code: "invalid_coordinates",
+                        message: "Valid latitude and longitude are required.",
+                        details: nil
+                    ))
+                    return
+                }
+                let location = CLLocation(latitude: latitude, longitude: longitude)
+                self.prayerTimeZoneGeocoder.cancelGeocode()
+                self.prayerTimeZoneGeocoder.reverseGeocodeLocation(location) { placemarks, error in
+                    if let identifier = placemarks?.first?.timeZone?.identifier {
+                        result(identifier)
+                    } else {
+                        result(FlutterError(
+                            code: "timezone_unavailable",
+                            message: error?.localizedDescription ??
+                                "No IANA timezone was found for these coordinates.",
+                            details: nil
+                        ))
+                    }
+                }
+            }
+            prayerLocationChannel = locationChannel
+        }
 
-  override func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
-    willPresent notification: UNNotification,
-    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-  ) {
-    if notification.request.content.userInfo["type"] as? String == "prayer_time" {
-      completionHandler([.banner, .list, .sound, .badge])
-      return
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
+        }
+        SwiftAlarmPlugin.registerBackgroundTasks()
+
+        GeneratedPluginRegistrant.register(with: self)
+        let launched = super.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
+        application.registerForRemoteNotifications()
+        return launched
     }
-    super.userNotificationCenter(
-      center,
-      willPresent: notification,
-      withCompletionHandler: completionHandler
-    )
-  }
 
-  private func registrationPayload() -> [String: String] {
-    var payload = ["environment": apnsEnvironment]
-    if let token = apnsDeviceToken {
-      payload["token"] = token
+    override func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        apnsDeviceToken = deviceToken.map { String(format: "%02x", $0) }.joined()
+        prayerPushChannel?.invokeMethod("tokenUpdated", arguments: registrationPayload())
+        super.application(
+            application,
+            didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
+        )
     }
-    return payload
-  }
+
+    override func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
+        prayerPushChannel?.invokeMethod(
+            "registrationFailed",
+            arguments: error.localizedDescription
+        )
+        super.application(
+            application,
+            didFailToRegisterForRemoteNotificationsWithError: error
+        )
+    }
+
+    override func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        if notification.request.content.userInfo["type"] as? String == "prayer_time" {
+            completionHandler([.banner, .list, .sound, .badge])
+            return
+        }
+        super.userNotificationCenter(
+            center,
+            willPresent: notification,
+            withCompletionHandler: completionHandler
+        )
+    }
+
+    private func registrationPayload() -> [String: String] {
+        var payload = ["environment": apnsEnvironment]
+        if let token = apnsDeviceToken {
+            payload["token"] = token
+        }
+        return payload
+    }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:home_widget/home_widget.dart';
@@ -32,6 +34,11 @@ class PrayerWidgetService {
   static const String _methodKey = PrayerTimesCalculator.methodKey;
   static const String _madhabKey = PrayerTimesCalculator.madhabKey;
   static const String _highLatKey = PrayerTimesCalculator.highLatitudeRuleKey;
+  static const List<String> _customAngleKeys = [
+    PrayerTimesCalculator.customFajrAngleKey,
+    PrayerTimesCalculator.customMaghribAngleKey,
+    PrayerTimesCalculator.customIshaAngleKey,
+  ];
 
   static const List<String> _offsetKeys =
       PrayerTimesCalculator.offsetPrayerKeys;
@@ -51,6 +58,8 @@ class PrayerWidgetService {
   static const String _contentSizeKey = 'prayerWidgetContentSize';
   static const String _visualThemeKey = 'prayerWidgetVisualTheme';
   static const String _lastUpdateKey = 'prayerWidgetLastUpdate';
+  static const String _settingsPayloadKey = 'prayer_widget_settings_v2';
+  static const String _timeFormatKey = 'prayer_widget_time_format';
 
   static const String _localeKey = 'locale';
 
@@ -76,6 +85,9 @@ class PrayerWidgetService {
       visualTheme: PrayerWidgetVisualTheme.fromStorage(
         cache.getDataString(key: _visualThemeKey),
       ),
+      timeFormat: PrayerWidgetTimeFormat.fromStorage(
+        cache.getDataString(key: _timeFormatKey),
+      ),
     );
   }
 
@@ -91,100 +103,142 @@ class PrayerWidgetService {
     await pushSettings();
   }
 
-  static Future<void> pushSettings({bool triggerNativeUpdate = true}) async {
-    if (!PlatformUtils.isMobile) return;
+  static Future<PrayerWidgetUpdateReport?> pushSettings({
+    bool triggerNativeUpdate = true,
+  }) async {
+    if (!PlatformUtils.isMobile) return null;
 
-    try {
-      final cache = getIt<CacheHelper>();
-      final prefs = await SharedPreferences.getInstance();
+    final cache = getIt<CacheHelper>();
+    await cache.reload();
+    final prefs = await SharedPreferences.getInstance();
+    if (PlatformUtils.isIOS) await HomeWidget.setAppGroupId(_appGroupId);
 
-      if (PlatformUtils.isIOS) {
-        await HomeWidget.setAppGroupId(_appGroupId);
-      }
-
-      final lat = cache.getDataString(key: _latKey);
-      final lon = cache.getDataString(key: _lonKey);
-      await _writeString(prefs, _latKey, lat);
-      await _writeString(prefs, _lonKey, lon);
-
-      await _writeString(
-        prefs,
-        _countryCodeKey,
-        cache.getDataString(key: _countryCodeKey),
-      );
-      await _writeString(
-        prefs,
-        _methodKey,
+    final lat = cache.getDataString(key: _latKey);
+    final lon = cache.getDataString(key: _lonKey);
+    final countryCode = cache.getDataString(key: _countryCodeKey) ?? '';
+    final timeZoneId = cache.getDataString(
+      key: PrayerTimesCalculator.timeZoneIdKey,
+    );
+    final locationMode =
+        cache.getDataString(key: PrayerTimesCalculator.locationModeKey) ??
+        'manual';
+    final method =
         cache.getDataString(key: _methodKey) ??
-            PrayerTimesCalculator.defaultMethodToken,
-      );
-      await _writeString(
-        prefs,
-        _madhabKey,
+        PrayerTimesCalculator.defaultMethodToken;
+    final madhab =
         cache.getDataString(key: _madhabKey) ??
-            PrayerTimesCalculator.defaultMadhabToken,
-      );
-      await _writeString(
-        prefs,
-        _highLatKey,
+        PrayerTimesCalculator.defaultMadhabToken;
+    final highLatitude =
         cache.getDataString(key: _highLatKey) ??
-            PrayerTimesCalculator.defaultHighLatitudeToken,
-      );
+        PrayerTimesCalculator.defaultHighLatitudeToken;
 
-      for (final key in _offsetKeys) {
-        final storageKey = PrayerTimesCalculator.offsetKeyFor(key);
-        final offset = (cache.getData(key: storageKey) as int?) ?? 0;
-        await prefs.setInt(storageKey, offset);
-        if (PlatformUtils.isIOS) {
-          await HomeWidget.saveWidgetData<int>(storageKey, offset);
-        }
-      }
+    await _writeString(prefs, _latKey, lat);
+    await _writeString(prefs, _lonKey, lon);
+    await _writeString(prefs, _countryCodeKey, countryCode);
+    await _writeString(prefs, PrayerTimesCalculator.timeZoneIdKey, timeZoneId);
+    await _writeString(
+      prefs,
+      PrayerTimesCalculator.locationModeKey,
+      locationMode,
+    );
+    await _writeString(prefs, _methodKey, method);
+    await _writeString(prefs, _madhabKey, madhab);
+    await _writeString(prefs, _highLatKey, highLatitude);
 
-      final theme = _resolveTheme(prefs);
-      await _writeString(prefs, _themeNameKey, theme['themeName']);
-      await _writeString(prefs, _themeModeKey, theme['themeMode']);
-
-      final settings = readSettings();
-      final effectiveLocale = settings.language == PrayerWidgetLanguage.auto
-          ? (prefs.getString(_localeKey) ?? 'en')
-          : settings.language.code;
-      await _writeString(prefs, _localeKey, effectiveLocale);
-
-      await _writeString(prefs, _designKey, settings.design.storage);
-      await _writeString(prefs, _languageKey, settings.language.storage);
-      await _writeString(prefs, _numeralsKey, settings.numerals.storage);
-      await prefs.setBool(_bgEnabledKey, settings.backgroundEnabled);
-      await _writeString(prefs, _bgColorKey, settings.backgroundColor);
-      await prefs.setBool(_bgGlassifyKey, settings.glassify);
-      await prefs.setBool(_bgRoundedKey, settings.rounded);
-      await _writeString(prefs, _contentColorKey, settings.contentColor);
-      await _writeString(prefs, _highlightColorKey, settings.highlightColor);
-      await prefs.setInt(_contentSizeKey, settings.contentSize);
-      await _writeString(prefs, _visualThemeKey, settings.visualTheme.storage);
-      if (PlatformUtils.isIOS) {
-        await HomeWidget.saveWidgetData<bool>(
-          _bgEnabledKey,
-          settings.backgroundEnabled,
-        );
-        await HomeWidget.saveWidgetData<bool>(
-          _bgGlassifyKey,
-          settings.glassify,
-        );
-        await HomeWidget.saveWidgetData<bool>(_bgRoundedKey, settings.rounded);
-        await HomeWidget.saveWidgetData<int>(
-          _contentSizeKey,
-          settings.contentSize,
-        );
-      }
-
-      await prefs.setInt(_lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
-
-      if (triggerNativeUpdate) {
-        await _refreshNativeWidget();
-      }
-    } catch (e) {
-      debugPrint('❌ PrayerWidgetService.pushSettings error: $e');
+    final customAngles = PrayerTimesCalculator.customAnglesFromCache(cache);
+    final customAngleValues = <String, String>{
+      PrayerTimesCalculator.customFajrAngleKey: CustomPrayerAngles.canonical(
+        customAngles.fajr,
+      ),
+      PrayerTimesCalculator.customMaghribAngleKey: CustomPrayerAngles.canonical(
+        customAngles.maghrib,
+      ),
+      PrayerTimesCalculator.customIshaAngleKey: CustomPrayerAngles.canonical(
+        customAngles.isha,
+      ),
+    };
+    for (final key in _customAngleKeys) {
+      await _writeString(prefs, key, customAngleValues[key]);
     }
+
+    final offsets = <String, int>{};
+    for (final key in _offsetKeys) {
+      final storageKey = PrayerTimesCalculator.offsetKeyFor(key);
+      final offset = PrayerTimesCalculator.sanitizeOffset(
+        (cache.getData(key: storageKey) as int?) ?? 0,
+      );
+      offsets[key] = offset;
+      await _setInt(prefs, storageKey, offset);
+    }
+
+    final theme = _resolveTheme(prefs);
+    final settings = readSettings();
+    final effectiveLocale = settings.language == PrayerWidgetLanguage.auto
+        ? (prefs.getString(_localeKey) ?? 'en')
+        : settings.language.code;
+    await _writeString(prefs, _themeNameKey, theme['themeName']);
+    await _writeString(prefs, _themeModeKey, theme['themeMode']);
+    await _writeString(prefs, _localeKey, effectiveLocale);
+    await _writeString(prefs, _designKey, settings.design.storage);
+    await _writeString(prefs, _languageKey, settings.language.storage);
+    await _writeString(prefs, _numeralsKey, settings.numerals.storage);
+    await _setBool(prefs, _bgEnabledKey, settings.backgroundEnabled);
+    await _writeString(prefs, _bgColorKey, settings.backgroundColor);
+    await _setBool(prefs, _bgGlassifyKey, settings.glassify);
+    await _setBool(prefs, _bgRoundedKey, settings.rounded);
+    await _writeString(prefs, _contentColorKey, settings.contentColor);
+    await _writeString(prefs, _highlightColorKey, settings.highlightColor);
+    await _setInt(prefs, _contentSizeKey, settings.contentSize);
+    await _writeString(prefs, _visualThemeKey, settings.visualTheme.storage);
+    await _writeString(prefs, _timeFormatKey, settings.timeFormat.storage);
+
+    final committedAt = DateTime.now().toUtc();
+    final payload = jsonEncode(<String, Object?>{
+      'version': 2,
+      'revision': committedAt.microsecondsSinceEpoch,
+      'committedAt': committedAt.toIso8601String(),
+      'coordinates': lat == null || lon == null
+          ? null
+          : <String, String>{'latitude': lat, 'longitude': lon},
+      'locationMode': locationMode,
+      'timeZoneId': timeZoneId,
+      'countryCode': countryCode,
+      'calculationMethod': method,
+      'madhab': madhab,
+      'highLatitudeRule': highLatitude,
+      'customAngles': customAngleValues,
+      'offsets': offsets,
+      'timeFormat': settings.timeFormat.storage,
+      'appearance': <String, Object?>{
+        'themeName': theme['themeName'],
+        'themeMode': theme['themeMode'],
+        'locale': effectiveLocale,
+        'design': settings.design.storage,
+        'language': settings.language.storage,
+        'numerals': settings.numerals.storage,
+        'backgroundEnabled': settings.backgroundEnabled,
+        'backgroundColor': settings.backgroundColor,
+        'glassify': settings.glassify,
+        'rounded': settings.rounded,
+        'contentColor': settings.contentColor,
+        'highlightColor': settings.highlightColor,
+        'contentSize': settings.contentSize,
+      },
+    });
+    await _setInt(
+      prefs,
+      _lastUpdateKey,
+      committedAt.millisecondsSinceEpoch,
+      shareWithWidget: false,
+    );
+    await _writeString(prefs, _settingsPayloadKey, payload);
+
+    if (triggerNativeUpdate) {
+      return _refreshNativeWidget(
+        expectedRevision: committedAt.microsecondsSinceEpoch,
+      );
+    }
+    return null;
   }
 
   static Future<void> updateCustomization(PrayerWidgetSettings next) async {
@@ -212,6 +266,7 @@ class PrayerWidgetService {
     }
     await cache.saveData(key: _contentSizeKey, value: next.contentSize);
     await cache.saveData(key: _visualThemeKey, value: next.visualTheme.storage);
+    await cache.saveData(key: _timeFormatKey, value: next.timeFormat.storage);
     await pushSettings();
   }
 
@@ -228,41 +283,57 @@ class PrayerWidgetService {
     await cache.removeData(key: _highlightColorKey);
     await cache.removeData(key: _contentSizeKey);
     await cache.removeData(key: _visualThemeKey);
+    await cache.removeData(key: _timeFormatKey);
     await pushSettings();
   }
 
-  static Future<void> forceUpdate() async {
-    await pushSettings();
+  static Future<PrayerWidgetUpdateReport?> forceUpdate() async {
+    return pushSettings();
   }
 
   static Future<void> onAppThemeChanged() async {
     await pushSettings();
   }
 
-  static Future<void> _refreshNativeWidget() async {
-    try {
-      if (PlatformUtils.isIOS) {
-        for (final widgetName in _iOSWidgetNames) {
-          await HomeWidget.updateWidget(iOSName: widgetName);
-        }
+  static Future<PrayerWidgetUpdateReport?> _refreshNativeWidget({
+    required int expectedRevision,
+  }) async {
+    if (PlatformUtils.isIOS) {
+      for (final widgetName in _iOSWidgetNames) {
+        await requireSuccessfulPlatformOperation(
+          HomeWidget.updateWidget(iOSName: widgetName),
+          operation: 'reload $widgetName',
+        );
       }
-      if (PlatformUtils.isAndroid) {
-        try {
-          await HomeWidget.updateWidget(
-            qualifiedAndroidName: androidReceiverName,
-          );
-        } catch (e) {
-          debugPrint('⚠️ home_widget broadcast failed: $e');
-        }
-        try {
-          await _channel.invokeMethod('updatePrayerWidget');
-        } catch (e) {
-          debugPrint('⚠️ MethodChannel updatePrayerWidget failed: $e');
-        }
-      }
-    } catch (e) {
-      debugPrint('❌ _refreshNativeWidget error: $e');
     }
+    if (PlatformUtils.isAndroid) {
+      final raw = await _channel.invokeMapMethod<String, Object?>(
+        'updatePrayerWidget',
+      );
+      if (raw == null) {
+        throw StateError('Android prayer widget returned no update result');
+      }
+      final report = PrayerWidgetUpdateReport.fromMap(raw);
+      if (report.revision != expectedRevision) {
+        throw StateError(
+          'Android rendered settings revision ${report.revision}; '
+          'expected $expectedRevision',
+        );
+      }
+      if (report.failedUpdates > 0) {
+        throw StateError(
+          'Failed to update ${report.failedUpdates}/${report.widgetCount} '
+          'prayer widgets: ${report.error}',
+        );
+      }
+      if (report.alarmError != null && report.alarmError!.isNotEmpty) {
+        throw StateError(
+          'Prayer transition scheduling failed: ${report.alarmError}',
+        );
+      }
+      return report;
+    }
+    return null;
   }
 
   static Future<void> _writeString(
@@ -271,16 +342,61 @@ class PrayerWidgetService {
     String? value,
   ) async {
     if (value == null || value.isEmpty) {
-      await prefs.remove(key);
+      final removed = await prefs.remove(key);
+      if (!removed && prefs.containsKey(key)) {
+        throw StateError('Failed to remove $key');
+      }
       if (PlatformUtils.isIOS) {
-        await HomeWidget.saveWidgetData<String>(key, null);
+        await _saveWidgetValue<String>(key, null);
       }
       return;
     }
-    await prefs.setString(key, value);
-    if (PlatformUtils.isIOS) {
-      await HomeWidget.saveWidgetData<String>(key, value);
+    if (!await prefs.setString(key, value)) {
+      throw StateError('Failed to persist $key');
     }
+    if (PlatformUtils.isIOS) {
+      await _saveWidgetValue<String>(key, value);
+    }
+  }
+
+  static Future<void> _setInt(
+    SharedPreferences prefs,
+    String key,
+    int value, {
+    bool shareWithWidget = true,
+  }) async {
+    if (!await prefs.setInt(key, value)) {
+      throw StateError('Failed to persist $key');
+    }
+    if (shareWithWidget && PlatformUtils.isIOS) {
+      await _saveWidgetValue<int>(key, value);
+    }
+  }
+
+  static Future<void> _setBool(
+    SharedPreferences prefs,
+    String key,
+    bool value,
+  ) async {
+    if (!await prefs.setBool(key, value)) {
+      throw StateError('Failed to persist $key');
+    }
+    if (PlatformUtils.isIOS) await _saveWidgetValue<bool>(key, value);
+  }
+
+  static Future<void> _saveWidgetValue<T>(String key, T? value) async {
+    await requireSuccessfulPlatformOperation(
+      HomeWidget.saveWidgetData<T>(key, value),
+      operation: 'write App Group value $key',
+    );
+  }
+
+  @visibleForTesting
+  static Future<void> requireSuccessfulPlatformOperation(
+    Future<bool?> result, {
+    required String operation,
+  }) async {
+    if (await result != true) throw StateError('Failed to $operation');
   }
 
   static Map<String, String> _resolveTheme(SharedPreferences prefs) {
@@ -308,6 +424,59 @@ class PrayerWidgetService {
 }
 
 @immutable
+class PrayerWidgetUpdateReport {
+  const PrayerWidgetUpdateReport({
+    required this.revision,
+    required this.widgetCount,
+    required this.successfulUpdates,
+    required this.failedUpdates,
+    required this.rendererPaths,
+    required this.alarmScheduled,
+    required this.alarmPrecision,
+    this.error,
+    this.alarmError,
+    this.broadcastError,
+  });
+
+  factory PrayerWidgetUpdateReport.fromMap(
+    Map<String, Object?> map, {
+    Object? broadcastError,
+  }) {
+    int integer(String key) => (map[key] as num?)?.toInt() ?? 0;
+    final paths = <String, int>{};
+    final rawPaths = map['rendererPath'];
+    if (rawPaths is Map) {
+      for (final entry in rawPaths.entries) {
+        paths[entry.key.toString()] = (entry.value as num?)?.toInt() ?? 0;
+      }
+    }
+    return PrayerWidgetUpdateReport(
+      revision: integer('revision'),
+      widgetCount: integer('widgetCount'),
+      successfulUpdates: integer('successfulUpdates'),
+      failedUpdates: integer('failedUpdates'),
+      rendererPaths: paths,
+      alarmScheduled: map['alarmScheduled'] == true,
+      alarmPrecision: map['alarmPrecision']?.toString() ?? 'none',
+      error: map['error']?.toString(),
+      alarmError: map['alarmError']?.toString(),
+      broadcastError: broadcastError,
+    );
+  }
+
+  final int revision;
+  final int widgetCount;
+  final int successfulUpdates;
+  final int failedUpdates;
+  final Map<String, int> rendererPaths;
+  final bool alarmScheduled;
+  final String alarmPrecision;
+  final String? error;
+  final String? alarmError;
+  final Object? broadcastError;
+}
+
+@immutable
 class PrayerWidgetSettings {
   final PrayerWidgetDesign design;
   final PrayerWidgetLanguage language;
@@ -325,6 +494,7 @@ class PrayerWidgetSettings {
   final int contentSize;
 
   final PrayerWidgetVisualTheme visualTheme;
+  final PrayerWidgetTimeFormat timeFormat;
 
   const PrayerWidgetSettings({
     this.design = PrayerWidgetDesign.hero,
@@ -338,6 +508,7 @@ class PrayerWidgetSettings {
     this.highlightColor,
     this.contentSize = 100,
     this.visualTheme = PrayerWidgetVisualTheme.auto,
+    this.timeFormat = PrayerWidgetTimeFormat.system,
   });
 
   PrayerWidgetSettings copyWith({
@@ -352,6 +523,7 @@ class PrayerWidgetSettings {
     Object? highlightColor = _unset,
     int? contentSize,
     PrayerWidgetVisualTheme? visualTheme,
+    PrayerWidgetTimeFormat? timeFormat,
   }) {
     final newTheme = visualTheme ?? this.visualTheme;
     return PrayerWidgetSettings(
@@ -378,10 +550,29 @@ class PrayerWidgetSettings {
                 : highlightColor as String?),
       contentSize: contentSize ?? this.contentSize,
       visualTheme: newTheme,
+      timeFormat: timeFormat ?? this.timeFormat,
     );
   }
 
   static const _unset = Object();
+}
+
+enum PrayerWidgetTimeFormat {
+  system,
+  twelveHour,
+  twentyFourHour;
+
+  String get storage => switch (this) {
+    system => 'system',
+    twelveHour => '12h',
+    twentyFourHour => '24h',
+  };
+
+  static PrayerWidgetTimeFormat fromStorage(String? raw) => switch (raw) {
+    '12h' => twelveHour,
+    '24h' => twentyFourHour,
+    _ => system,
+  };
 }
 
 enum PrayerWidgetDesign {
