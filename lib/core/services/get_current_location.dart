@@ -41,3 +41,25 @@ Future<Position> getCurrentLocation() async {
     throw const LocationServiceDisabledFailure();
   }
 }
+
+Future<Position?> getCurrentLocationForTravelValidation() async {
+  if (PlatformUtils.isLinux) return null;
+  if (!await Geolocator.isLocationServiceEnabled()) return null;
+  final permission = await Geolocator.checkPermission();
+  if (permission != LocationPermission.always &&
+      permission != LocationPermission.whileInUse) {
+    return null;
+  }
+  try {
+    return await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.low,
+        timeLimit: Duration(seconds: 15),
+      ),
+    );
+  } on PermissionDeniedException {
+    return null;
+  } on LocationServiceDisabledException {
+    return null;
+  }
+}

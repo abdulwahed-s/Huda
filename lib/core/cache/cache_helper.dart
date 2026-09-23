@@ -14,6 +14,8 @@ class CacheHelper {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
 
+  Future<void> reload() => sharedPreferences.reload();
+
   // Basic data storage
   Future<bool> saveData({required String key, required dynamic value}) async {
     if (value is bool) {

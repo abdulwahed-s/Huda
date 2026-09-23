@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
@@ -72,9 +73,7 @@ class _AppState extends State<App> {
             notificationScheduler: getIt<PrayerNotificationScheduler>(),
           ),
         ),
-        BlocProvider<MiqaatLockCubit>.value(
-          value: getIt<MiqaatLockCubit>(),
-        ),
+        BlocProvider<MiqaatLockCubit>.value(value: getIt<MiqaatLockCubit>()),
         BlocProvider(create: (_) => DownloadProgressCubit()),
         BlocProvider(
           create: (context) => QuranPlayerCubit(
@@ -90,100 +89,154 @@ class _AppState extends State<App> {
           ),
         ),
         BlocProvider(
-          create: (_) => QuranRadioCubit(
-            RadioRepository(radioServices: RadioServices()),
-          ),
+          create: (_) =>
+              QuranRadioCubit(RadioRepository(radioServices: RadioServices())),
         ),
       ],
-      child: BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, themeState) {
-          return BlocBuilder<LocalizationCubit, LocalizationState>(
-            builder: (context, localizationState) {
-              final screenUtilChild = ScreenUtilInit(
-                designSize: ResponsiveUtils.getResponsiveDesignSize(context),
-                minTextAdapt: true,
-                splitScreenMode: true,
-                builder: (_, __) {
-                  return MaterialApp(
-                    navigatorKey: App.navigatorKey,
-                    debugShowCheckedModeBanner: false,
-                    initialRoute: widget.initialRoute,
-                    themeMode: themeState.themeMode,
-                    theme: AppThemeHelper.getLightTheme(
-                        themeState.colorTheme, themeState.fontFamily),
-                    darkTheme: AppThemeHelper.getDarkTheme(
-                      themeState.colorTheme,
-                      themeState.fontFamily,
-                    ),
-                    locale: localizationState.locale,
-                    localizationsDelegates: const [
-                      AppLocalizations.delegate,
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                    ],
-                    supportedLocales: LocalizationCubit.supportedLocales,
-                    localeResolutionCallback: (locale, supportedLocales) {
-                      if (locale != null) {
-                        for (var supportedLocale in supportedLocales) {
-                          if (supportedLocale.languageCode ==
-                              locale.languageCode) {
-                            return supportedLocale;
+      child: _PrayerLocationLifecycle(
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, themeState) {
+            return BlocBuilder<LocalizationCubit, LocalizationState>(
+              builder: (context, localizationState) {
+                final screenUtilChild = ScreenUtilInit(
+                  designSize: ResponsiveUtils.getResponsiveDesignSize(context),
+                  minTextAdapt: true,
+                  splitScreenMode: true,
+                  builder: (_, __) {
+                    return MaterialApp(
+                      navigatorKey: App.navigatorKey,
+                      debugShowCheckedModeBanner: false,
+                      initialRoute: widget.initialRoute,
+                      themeMode: themeState.themeMode,
+                      theme: AppThemeHelper.getLightTheme(
+                        themeState.colorTheme,
+                        themeState.fontFamily,
+                      ),
+                      darkTheme: AppThemeHelper.getDarkTheme(
+                        themeState.colorTheme,
+                        themeState.fontFamily,
+                      ),
+                      locale: localizationState.locale,
+                      localizationsDelegates: const [
+                        AppLocalizations.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                      supportedLocales: LocalizationCubit.supportedLocales,
+                      localeResolutionCallback: (locale, supportedLocales) {
+                        if (locale != null) {
+                          for (var supportedLocale in supportedLocales) {
+                            if (supportedLocale.languageCode ==
+                                locale.languageCode) {
+                              return supportedLocale;
+                            }
                           }
                         }
-                      }
-                      return const Locale('en', '');
-                    },
-                    onGenerateRoute: PageRouter().generateRoute,
-                    builder: (context, child) {
-                      QuickActionsService.updateLocalizedLabels(context);
-                      return MediaQuery(
-                        data: MediaQuery.of(context).copyWith(
-                          textScaler: TextScaler.linear(
-                            themeState.textScaleFactor.isFinite
-                                ? themeState.textScaleFactor.clamp(0.5, 2.0)
-                                : 1.0,
+                        return const Locale('en', '');
+                      },
+                      onGenerateRoute: PageRouter().generateRoute,
+                      builder: (context, child) {
+                        QuickActionsService.updateLocalizedLabels(context);
+                        return MediaQuery(
+                          data: MediaQuery.of(context).copyWith(
+                            textScaler: TextScaler.linear(
+                              themeState.textScaleFactor.isFinite
+                                  ? themeState.textScaleFactor.clamp(0.5, 2.0)
+                                  : 1.0,
+                            ),
                           ),
-                        ),
-                        child: child ?? const SizedBox.shrink(),
-                      );
-                    },
-                  );
-                },
-              );
+                          child: child ?? const SizedBox.shrink(),
+                        );
+                      },
+                    );
+                  },
+                );
 
-              final bool isDesktop =
-                  Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+                final bool isDesktop =
+                    Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
-              if (isDesktop) return screenUtilChild;
+                if (isDesktop) return screenUtilChild;
 
-              return BetterFeedback(
-                themeMode: themeState.themeMode,
-                theme: FeedbackThemeData.light().copyWith(
-                  feedbackSheetHeight: 0.38,
-                  feedbackSheetColor: Colors.white,
-                  background: Colors.black54,
-                  dragHandleColor: Colors.black38,
-                ),
-                darkTheme: FeedbackThemeData.dark().copyWith(
-                  feedbackSheetHeight: 0.38,
-                  feedbackSheetColor: const Color(0xFF1F2937),
-                  background: Colors.black87,
-                  dragHandleColor: Colors.white54,
-                ),
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                localeOverride: localizationState.locale,
-                feedbackBuilder: (context, onSubmit, scrollController) =>
-                    ScreenshotFeedbackWidget(
-                  onSubmit: onSubmit,
-                  scrollController: scrollController,
-                ),
-                child: screenUtilChild,
-              );
-            },
-          );
-        },
+                return BetterFeedback(
+                  themeMode: themeState.themeMode,
+                  theme: FeedbackThemeData.light().copyWith(
+                    feedbackSheetHeight: 0.38,
+                    feedbackSheetColor: Colors.white,
+                    background: Colors.black54,
+                    dragHandleColor: Colors.black38,
+                  ),
+                  darkTheme: FeedbackThemeData.dark().copyWith(
+                    feedbackSheetHeight: 0.38,
+                    feedbackSheetColor: const Color(0xFF1F2937),
+                    background: Colors.black87,
+                    dragHandleColor: Colors.white54,
+                  ),
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  localeOverride: localizationState.locale,
+                  feedbackBuilder: (context, onSubmit, scrollController) =>
+                      ScreenshotFeedbackWidget(
+                        onSubmit: onSubmit,
+                        scrollController: scrollController,
+                      ),
+                  child: screenUtilChild,
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
+}
+
+class _PrayerLocationLifecycle extends StatefulWidget {
+  const _PrayerLocationLifecycle({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_PrayerLocationLifecycle> createState() =>
+      _PrayerLocationLifecycleState();
+}
+
+class _PrayerLocationLifecycleState extends State<_PrayerLocationLifecycle>
+    with WidgetsBindingObserver {
+  Timer? _foregroundValidationTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<PrayerTimesCubit>().refreshAutomaticLocationIfNeeded();
+      }
+    });
+    _foregroundValidationTimer = Timer.periodic(const Duration(minutes: 30), (
+      _,
+    ) {
+      if (mounted) {
+        context.read<PrayerTimesCubit>().refreshAutomaticLocationIfNeeded();
+      }
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context.read<PrayerTimesCubit>().refreshAutomaticLocationIfNeeded();
+    }
+  }
+
+  @override
+  void dispose() {
+    _foregroundValidationTimer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
