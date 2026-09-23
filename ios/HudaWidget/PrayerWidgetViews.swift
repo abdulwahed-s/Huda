@@ -1,10 +1,18 @@
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 private extension PrayerWidgetEntry {
-    var language: String { settings.effectiveLanguage }
-    var arabicNumerals: Bool { settings.useArabicNumerals }
-    var contentScale: CGFloat { CGFloat(settings.contentSize) / 100.0 }
+    var language: String {
+        settings.effectiveLanguage
+    }
+
+    var arabicNumerals: Bool {
+        settings.useArabicNumerals
+    }
+
+    var contentScale: CGFloat {
+        CGFloat(settings.contentSize) / 100.0
+    }
 
     var resolvedTextColor: Color {
         if let custom = PrayerWidgetEntry.parseColor(settings.contentColor) {
@@ -79,21 +87,21 @@ struct PrayerWidgetEmptyView: View {
 
     private var iconSize: CGFloat {
         switch family {
-        case .systemSmall: return 28
-        case .systemMedium: return 32
-        case .systemLarge: return 44
-        case .accessoryCircular: return 18
-        default: return 28
+        case .systemSmall: 28
+        case .systemMedium: 32
+        case .systemLarge: 44
+        case .accessoryCircular: 18
+        default: 28
         }
     }
 
     private var messageFontSize: CGFloat {
         switch family {
-        case .systemSmall: return 11
-        case .systemMedium: return 13
-        case .systemLarge: return 16
-        case .accessoryRectangular: return 11
-        default: return 12
+        case .systemSmall: 11
+        case .systemMedium: 13
+        case .systemLarge: 16
+        case .accessoryRectangular: 11
+        default: 12
         }
     }
 }
@@ -121,7 +129,7 @@ struct PrayerHeroWidgetView: View {
 
     private var smallLayout: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(PrayerWidgetLocalization.string("next_prayer",
+            Text(PrayerWidgetLocalization.string(entry.displayedPrayerLabelKey,
                                                  language: entry.language))
                 .font(.system(size: 11 * entry.contentScale, weight: .medium))
                 .foregroundColor(entry.resolvedSecondaryColor)
@@ -139,13 +147,14 @@ struct PrayerHeroWidgetView: View {
                 Text(PrayerTimeFormatter.format(
                     target,
                     useArabicNumerals: entry.arabicNumerals,
+                    format: entry.settings.timeFormat,
                     timeZone: entry.settings.displayTimeZone
                 ))
-                    .font(.system(size: 22 * entry.contentScale, weight: .bold, design: .rounded))
-                    .foregroundColor(entry.resolvedTextColor)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .monospacedDigit()
+                .font(.system(size: 22 * entry.contentScale, weight: .bold, design: .rounded))
+                .foregroundColor(entry.resolvedTextColor)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .monospacedDigit()
             }
 
             compactCountdownText(fontSize: 16)
@@ -170,12 +179,13 @@ struct PrayerHeroWidgetView: View {
                         Text(PrayerTimeFormatter.format(
                             date,
                             useArabicNumerals: entry.arabicNumerals,
+                            format: entry.settings.timeFormat,
                             timeZone: entry.settings.displayTimeZone
                         ))
-                            .font(.system(size: 11 * entry.contentScale, weight: .semibold, design: .rounded))
-                            .foregroundColor(entry.resolvedSecondaryColor)
-                            .monospacedDigit()
-                            .lineLimit(1)
+                        .font(.system(size: 11 * entry.contentScale, weight: .semibold, design: .rounded))
+                        .foregroundColor(entry.resolvedSecondaryColor)
+                        .monospacedDigit()
+                        .lineLimit(1)
                     }
                     .padding(.horizontal, 2)
                     .padding(.vertical, 1)
@@ -213,7 +223,7 @@ struct PrayerHeroWidgetView: View {
 
     private var mediumHeroBlock: some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(PrayerWidgetLocalization.string("next_prayer",
+            Text(PrayerWidgetLocalization.string(entry.displayedPrayerLabelKey,
                                                  language: entry.language))
                 .font(.system(size: 11 * entry.contentScale, weight: .medium))
                 .foregroundColor(entry.resolvedSecondaryColor)
@@ -234,22 +244,25 @@ struct PrayerHeroWidgetView: View {
                 Text(PrayerTimeFormatter.format(
                     target,
                     useArabicNumerals: entry.arabicNumerals,
+                    format: entry.settings.timeFormat,
                     timeZone: entry.settings.displayTimeZone
                 ))
-                    .font(.system(size: 32 * entry.contentScale,
-                                  weight: .heavy,
-                                  design: .rounded))
-                    .foregroundColor(entry.resolvedTextColor)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .monospacedDigit()
+                .font(.system(size: 32 * entry.contentScale,
+                              weight: .heavy,
+                              design: .rounded))
+                .foregroundColor(entry.resolvedTextColor)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .monospacedDigit()
             }
 
             HStack(spacing: 3) {
-                Text(PrayerWidgetLocalization.string("in_word",
-                                                     language: entry.language))
-                    .font(.system(size: 11 * entry.contentScale, weight: .medium))
-                    .foregroundColor(entry.resolvedSecondaryColor)
+                if entry.countdownMode == .countdown {
+                    Text(PrayerWidgetLocalization.string("in_word",
+                                                         language: entry.language))
+                        .font(.system(size: 11 * entry.contentScale, weight: .medium))
+                        .foregroundColor(entry.resolvedSecondaryColor)
+                }
                 compactCountdownText(fontSize: 11)
                 Spacer(minLength: 0)
             }
@@ -289,26 +302,29 @@ struct PrayerHeroWidgetView: View {
                     Text(PrayerTimeFormatter.format(
                         target,
                         useArabicNumerals: entry.arabicNumerals,
+                        format: entry.settings.timeFormat,
                         timeZone: entry.settings.displayTimeZone
                     ))
-                        .font(.system(size: 48 * entry.contentScale,
-                                      weight: .heavy,
-                                      design: .rounded))
-                        .foregroundColor(entry.resolvedTextColor)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
-                        .monospacedDigit()
+                    .font(.system(size: 48 * entry.contentScale,
+                                  weight: .heavy,
+                                  design: .rounded))
+                    .foregroundColor(entry.resolvedTextColor)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+                    .monospacedDigit()
                 }
 
                 HStack(spacing: 3) {
-                    Text(PrayerWidgetLocalization.string("next_prayer",
+                    Text(PrayerWidgetLocalization.string(entry.displayedPrayerLabelKey,
                                                          language: entry.language))
                         .font(.system(size: 12 * entry.contentScale, weight: .medium))
                         .foregroundColor(entry.resolvedSecondaryColor)
-                    Text(PrayerWidgetLocalization.string("in_word",
-                                                         language: entry.language))
-                        .font(.system(size: 12 * entry.contentScale, weight: .medium))
-                        .foregroundColor(entry.resolvedSecondaryColor)
+                    if entry.countdownMode == .countdown {
+                        Text(PrayerWidgetLocalization.string("in_word",
+                                                             language: entry.language))
+                            .font(.system(size: 12 * entry.contentScale, weight: .medium))
+                            .foregroundColor(entry.resolvedSecondaryColor)
+                    }
                     compactCountdownText(fontSize: 12)
                 }
                 .lineLimit(1)
@@ -330,19 +346,25 @@ struct PrayerHeroWidgetView: View {
 
     @ViewBuilder
     private func compactCountdownText(fontSize: CGFloat) -> some View {
-        if let target = entry.nextPrayerDate, target > entry.date {
+        if let start = entry.countdownStartDate,
+           let target = entry.countdownTargetDate,
+           target > start
+        {
             prayerCountdownTimerText(
-                start: entry.date,
+                start: start,
                 target: target,
-                useArabicNumerals: entry.arabicNumerals
+                useArabicNumerals: entry.arabicNumerals,
+                countsDown: entry.countdownCountsDown,
+                showsHours: entry.countdownShowsHours,
+                prefix: entry.countdownPrefix
             )
-                .font(.system(size: fontSize * entry.contentScale, weight: .medium))
-                .foregroundColor(entry.resolvedSecondaryColor)
-                .monospacedDigit()
-                .environment(
-                    \.locale,
-                    prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
-                )
+            .font(.system(size: fontSize * entry.contentScale, weight: .medium))
+            .foregroundColor(entry.resolvedSecondaryColor)
+            .monospacedDigit()
+            .environment(
+                \.locale,
+                prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
+            )
         }
     }
 
@@ -361,7 +383,8 @@ struct PrayerHeroWidgetView: View {
                           rowSpacing: CGFloat,
                           nameSize: CGFloat,
                           timeSize: CGFloat,
-                          highlightInset: CGFloat) -> some View {
+                          highlightInset: CGFloat) -> some View
+    {
         VStack(alignment: .leading, spacing: rowSpacing) {
             ForEach(Array(entry.dayPrayers.enumerated()), id: \.offset) { _, item in
                 let (prayer, date) = item
@@ -383,7 +406,8 @@ struct PrayerHeroWidgetView: View {
                      showIcon: Bool,
                      nameSize: CGFloat,
                      timeSize: CGFloat,
-                     highlightInset: CGFloat) -> some View {
+                     highlightInset: CGFloat) -> some View
+    {
         let primary = isNext ? entry.resolvedTextColor : entry.resolvedSecondaryColor
         let weight: Font.Weight = isNext ? .semibold : .regular
 
@@ -407,14 +431,15 @@ struct PrayerHeroWidgetView: View {
             Text(PrayerTimeFormatter.format(
                 date,
                 useArabicNumerals: entry.arabicNumerals,
+                format: entry.settings.timeFormat,
                 timeZone: entry.settings.displayTimeZone
             ))
-                .font(.system(size: timeSize * entry.contentScale,
-                              weight: weight,
-                              design: .rounded))
-                .foregroundColor(primary)
-                .monospacedDigit()
-                .lineLimit(1)
+            .font(.system(size: timeSize * entry.contentScale,
+                          weight: weight,
+                          design: .rounded))
+            .foregroundColor(primary)
+            .monospacedDigit()
+            .lineLimit(1)
         }
         .padding(.horizontal, highlightInset)
         .padding(.vertical, max(2, highlightInset - 4))
@@ -428,12 +453,12 @@ struct PrayerHeroWidgetView: View {
 
     static func iconName(for prayer: Prayer, filled: Bool) -> String {
         switch prayer {
-        case .fajr:     return filled ? "sunrise.fill"     : "sunrise"
-        case .sunrise:  return filled ? "sun.horizon.fill" : "sun.horizon"
-        case .dhuhr:    return filled ? "sun.max.fill"     : "sun.max"
-        case .asr:      return filled ? "sun.min.fill"     : "sun.min"
-        case .maghrib:  return filled ? "sunset.fill"      : "sunset"
-        case .isha:     return filled ? "moon.fill"        : "moon"
+        case .fajr: filled ? "sunrise.fill" : "sunrise"
+        case .sunrise: filled ? "sun.horizon.fill" : "sun.horizon"
+        case .dhuhr: filled ? "sun.max.fill" : "sun.max"
+        case .asr: filled ? "sun.min.fill" : "sun.min"
+        case .maghrib: filled ? "sunset.fill" : "sunset"
+        case .isha: filled ? "moon.fill" : "moon"
         }
     }
 }
@@ -443,7 +468,7 @@ private enum ArabicTatweel {
         "ب", "ت", "ث", "ج", "ح", "خ",
         "س", "ش", "ص", "ض", "ط", "ظ",
         "ع", "غ", "ف", "ق", "ك", "ل",
-        "م", "ن", "ه", "ي", "ئ", "ـ"
+        "م", "ن", "ه", "ي", "ئ", "ـ",
     ]
 
     static func elongate(_ text: String, count: Int) -> String {
@@ -454,8 +479,10 @@ private enum ArabicTatweel {
             result.append(ch)
             guard index + 1 < chars.count else { continue }
             let next = chars[index + 1]
-            if connectors.contains(ch) && next.isLetter {
-                for _ in 0..<count { result.append("ـ") }
+            if connectors.contains(ch), next.isLetter {
+                for _ in 0 ..< count {
+                    result.append("ـ")
+                }
             }
         }
         return result
@@ -466,7 +493,7 @@ struct PrayerCompactWidgetView: View {
     let entry: PrayerWidgetEntry
     let family: WidgetFamily
 
-    private static let classicHighlight = Color(red: 208.0/255.0, green: 64.0/255.0, blue: 52.0/255.0)
+    private static let classicHighlight = Color(red: 208.0 / 255.0, green: 64.0 / 255.0, blue: 52.0 / 255.0)
 
     var body: some View {
         Group {
@@ -524,9 +551,9 @@ struct PrayerCompactWidgetView: View {
     private func arabicFontName(for weight: Font.Weight) -> String {
         switch weight {
         case .ultraLight, .thin, .light, .regular, .medium:
-            return "Amiri-Regular"
+            "Amiri-Regular"
         default:
-            return "Amiri-Bold"
+            "Amiri-Bold"
         }
     }
 
@@ -543,18 +570,21 @@ struct PrayerCompactWidgetView: View {
     }
 
     private func time12WithMeridiem(_ date: Date) -> String {
-        PrayerTimeFormatter.format12WithMeridiem(
+        PrayerTimeFormatter.formatDevice(
             date,
             useArabicNumerals: entry.arabicNumerals,
             languageCode: entry.language,
+            format: entry.settings.timeFormat,
             timeZone: entry.settings.displayTimeZone
         )
     }
 
     private func time12(_ date: Date) -> String {
-        PrayerTimeFormatter.format12(
+        PrayerTimeFormatter.formatDevice(
             date,
             useArabicNumerals: entry.arabicNumerals,
+            languageCode: entry.language,
+            format: entry.settings.timeFormat,
             timeZone: entry.settings.displayTimeZone
         )
     }
@@ -596,22 +626,28 @@ struct PrayerCompactWidgetView: View {
                     .minimumScaleFactor(0.5)
             }
 
-            if let target = entry.nextPrayerDate, target > entry.date {
+            if let start = entry.countdownStartDate,
+               let target = entry.countdownTargetDate,
+               target > start
+            {
                 prayerCountdownTimerText(
-                    start: entry.date,
+                    start: start,
                     target: target,
-                    useArabicNumerals: entry.arabicNumerals
+                    useArabicNumerals: entry.arabicNumerals,
+                    countsDown: entry.countdownCountsDown,
+                    showsHours: entry.countdownShowsHours,
+                    prefix: entry.countdownPrefix
                 )
-                    .font(serif(18, weight: .bold))
-                    .foregroundColor(primaryText)
-                    .monospacedDigit()
-                    .environment(
-                        \.locale,
-                        prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
-                    )
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                    .multilineTextAlignment(.center)
+                .font(serif(18, weight: .bold))
+                .foregroundColor(primaryText)
+                .monospacedDigit()
+                .environment(
+                    \.locale,
+                    prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
+                )
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .multilineTextAlignment(.center)
             }
         }
         .multilineTextAlignment(.center)
@@ -691,30 +727,38 @@ struct PrayerCompactWidgetView: View {
     private var mediumCountdownLine: some View {
         HStack(spacing: 4) {
             if let next = entry.nextPrayer {
-                Text(PrayerWidgetLocalization.string("remaining_until",
-                                                     language: entry.language))
-                    .font(serif(13, weight: .semibold))
-                    .foregroundColor(highlight)
+                Text(PrayerWidgetLocalization.string(
+                    entry.countdownMode == .elapsed ? "current" : "remaining_until",
+                    language: entry.language
+                ))
+                .font(serif(13, weight: .semibold))
+                .foregroundColor(highlight)
                 Text(PrayerWidgetLocalization.prayerName(next,
                                                          language: entry.language))
                     .font(serif(13, weight: .bold))
                     .foregroundColor(highlight)
             }
             Spacer(minLength: 6)
-            if let target = entry.nextPrayerDate, target > entry.date {
+            if let start = entry.countdownStartDate,
+               let target = entry.countdownTargetDate,
+               target > start
+            {
                 prayerCountdownTimerText(
-                    start: entry.date,
+                    start: start,
                     target: target,
-                    useArabicNumerals: entry.arabicNumerals
+                    useArabicNumerals: entry.arabicNumerals,
+                    countsDown: entry.countdownCountsDown,
+                    showsHours: entry.countdownShowsHours,
+                    prefix: entry.countdownPrefix
                 )
-                    .font(serif(13, weight: .bold))
-                    .foregroundColor(highlight)
-                    .monospacedDigit()
-                    .environment(
-                        \.locale,
-                        prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
-                    )
-                    .lineLimit(1)
+                .font(serif(13, weight: .bold))
+                .foregroundColor(highlight)
+                .monospacedDigit()
+                .environment(
+                    \.locale,
+                    prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
+                )
+                .lineLimit(1)
             }
         }
     }
@@ -781,21 +825,27 @@ struct PrayerCompactWidgetView: View {
 
     private var largeHeroPill: some View {
         HStack(alignment: .center, spacing: 12) {
-            if let target = entry.nextPrayerDate, target > entry.date {
+            if let start = entry.countdownStartDate,
+               let target = entry.countdownTargetDate,
+               target > start
+            {
                 prayerCountdownTimerText(
-                    start: entry.date,
+                    start: start,
                     target: target,
-                    useArabicNumerals: entry.arabicNumerals
+                    useArabicNumerals: entry.arabicNumerals,
+                    countsDown: entry.countdownCountsDown,
+                    showsHours: entry.countdownShowsHours,
+                    prefix: entry.countdownPrefix
                 )
-                    .font(serif(22, weight: .regular))
-                    .foregroundColor(primaryText)
-                    .monospacedDigit()
-                    .environment(
-                        \.locale,
-                        prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
-                    )
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
+                .font(serif(22, weight: .regular))
+                .foregroundColor(primaryText)
+                .monospacedDigit()
+                .environment(
+                    \.locale,
+                    prayerCountdownTimerLocale(useArabicNumerals: entry.arabicNumerals)
+                )
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
             }
 
             Spacer(minLength: 0)
@@ -830,7 +880,7 @@ struct PrayerCompactWidgetView: View {
         let items = entry.dayPrayers
         let rows: [[(Prayer, Date)]] = [
             Array(items.prefix(3)),
-            Array(items.suffix(from: min(items.count, 3)))
+            Array(items.suffix(from: min(items.count, 3))),
         ]
         return VStack(spacing: 8) {
             ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
@@ -844,7 +894,7 @@ struct PrayerCompactWidgetView: View {
                             .frame(maxWidth: .infinity)
                     }
                     if row.count < 3 {
-                        ForEach(0..<(3 - row.count), id: \.self) { _ in
+                        ForEach(0 ..< (3 - row.count), id: \.self) { _ in
                             Color.clear.frame(maxWidth: .infinity)
                         }
                     }
@@ -908,63 +958,25 @@ private struct AdaptiveCountdownText: View {
     let font: Font
     var compact: Bool = false
 
-    private static let oneHour: TimeInterval = 60 * 60
-
     var body: some View {
-        if target.timeIntervalSince(entry.date) >= Self.oneHour {
-            Text(staticText)
-                .font(font)
-                .monospacedDigit()
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
-        } else if target > entry.date {
-            Text(timerInterval: entry.date...target, countsDown: true)
-                .font(font)
-                .monospacedDigit()
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
+        if let start = entry.countdownStartDate, target > start {
+            prayerCountdownTimerText(
+                start: start,
+                target: target,
+                useArabicNumerals: entry.arabicNumerals,
+                countsDown: entry.countdownCountsDown,
+                showsHours: entry.countdownShowsHours,
+                prefix: entry.countdownPrefix
+            )
+            .font(font)
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
         } else {
             Text("--:--")
                 .font(font)
                 .monospacedDigit()
         }
-    }
-
-    private var staticText: String {
-        if compact {
-            return Self.formatHHMM(
-                from: entry.date,
-                to: target,
-                useArabicNumerals: entry.arabicNumerals
-            )
-        }
-        return PrayerTimeFormatter.formatCompactRelative(
-            from: entry.date,
-            to: target,
-            useArabicNumerals: entry.arabicNumerals,
-            languageCode: entry.language
-        )
-    }
-
-    private static func formatHHMM(
-        from start: Date,
-        to end: Date,
-        useArabicNumerals: Bool
-    ) -> String {
-        let interval = max(0, end.timeIntervalSince(start))
-        let totalMinutes = Int((interval / 60).rounded(.up))
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-
-        let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: useArabicNumerals ? "ar" : "en_US_POSIX")
-        formatter.minimumIntegerDigits = 2
-        formatter.maximumIntegerDigits = 2
-        formatter.usesGroupingSeparator = false
-
-        let h = formatter.string(from: NSNumber(value: hours)) ?? "00"
-        let m = formatter.string(from: NSNumber(value: minutes)) ?? "00"
-        return "\(h):\(m)"
     }
 }
 
@@ -972,13 +984,15 @@ private func prayerCountdownTimerText(
     start: Date,
     target: Date,
     useArabicNumerals: Bool,
+    countsDown: Bool,
+    showsHours: Bool,
     prefix: String = ""
 ) -> Text {
-    if target.timeIntervalSince(start) < 10 * 60 * 60 {
+    if showsHours, target.timeIntervalSince(start) < 10 * 60 * 60 {
         let zero = useArabicNumerals ? "٠" : "0"
-        return Text("\(prefix)\(zero)\(timerInterval: start...target, countsDown: true, showsHours: true)")
+        return Text("\(prefix)\(zero)\(timerInterval: start ... target, countsDown: countsDown, showsHours: true)")
     }
-    return Text("\(prefix)\(timerInterval: start...target, countsDown: true, showsHours: true)")
+    return Text("\(prefix)\(timerInterval: start ... target, countsDown: countsDown, showsHours: showsHours)")
 }
 
 private func prayerCountdownTimerLocale(useArabicNumerals: Bool) -> Locale {
@@ -990,10 +1004,12 @@ private func prayerCountdownTimerLocale(useArabicNumerals: Bool) -> Locale {
 }
 
 private func progressStart(for entry: PrayerWidgetEntry) -> Date? {
-    guard let target = entry.nextPrayerDate else { return nil }
+    if entry.countdownMode == .elapsed { return entry.currentPrayerDate }
+    guard let target = entry.upcomingPrayerDate else { return nil }
     if let current = entry.currentPrayer,
        let date = entry.dayPrayers.first(where: { $0.0 == current })?.1,
-       date < target {
+       date < target
+    {
         return date
     }
     return target.addingTimeInterval(-6 * 60 * 60)
@@ -1017,18 +1033,19 @@ struct PrayerAccessoryCircularView: View {
         ZStack {
             AccessoryWidgetBackground()
 
-            if let target = entry.nextPrayerDate,
+            if let target = entry.countdownTargetDate,
                let start = progressStart(for: entry),
-               target > entry.date {
+               target > start
+            {
                 ProgressView(
-                    timerInterval: start...target,
+                    timerInterval: start ... target,
                     countsDown: false,
                     label: { EmptyView() },
                     currentValueLabel: {
                         VStack(spacing: 0) {
                             if let next = entry.nextPrayer {
                                 Text(PrayerWidgetLocalization
-                                        .prayerName(next, language: entry.language))
+                                    .prayerName(next, language: entry.language))
                                     .font(.system(size: 10, weight: .semibold))
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.5)
@@ -1073,9 +1090,9 @@ enum PrayerAccessoryScheduleSegment {
     var prayers: [Prayer] {
         switch self {
         case .early:
-            return [.fajr, .sunrise, .dhuhr]
+            [.fajr, .sunrise, .dhuhr]
         case .late:
-            return [.asr, .maghrib, .isha]
+            [.asr, .maghrib, .isha]
         }
     }
 }
@@ -1224,12 +1241,13 @@ struct PrayerAccessoryRectangularView: View {
                 date,
                 useArabicNumerals: entry.arabicNumerals,
                 languageCode: entry.language,
+                format: entry.settings.timeFormat,
                 timeZone: entry.settings.displayTimeZone
             ))
-                .font(.system(size: 12, weight: timeWeight, design: .rounded))
-                .monospacedDigit()
-                .lineLimit(1)
-                .minimumScaleFactor(0.72)
+            .font(.system(size: 12, weight: timeWeight, design: .rounded))
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.72)
         }
         .frame(maxWidth: .infinity, minHeight: 18, alignment: .center)
         .foregroundStyle(rowColor)
@@ -1267,18 +1285,28 @@ struct PrayerAccessoryPathView: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 2) {
-            pathStop(entry.currentPrayer, highlighted: false)
-                .frame(maxWidth: .infinity)
+            pathStop(
+                entry.countdownMode == .elapsed
+                    ? entry.previousPrayer
+                    : entry.currentPrayer,
+                highlighted: false
+            )
+            .frame(maxWidth: .infinity)
             pathConnector
             pathStop(
                 entry.nextPrayer,
                 highlighted: true,
-                countdownTarget: entry.nextPrayerDate
+                countdownTarget: entry.countdownTargetDate
             )
-                .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity)
             pathConnector
-            pathStop(entry.followingPrayer, highlighted: false)
-                .frame(maxWidth: .infinity)
+            pathStop(
+                entry.countdownMode == .elapsed
+                    ? entry.upcomingPrayer
+                    : entry.followingPrayer,
+                highlighted: false
+            )
+            .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .environment(
@@ -1315,11 +1343,14 @@ struct PrayerAccessoryPathView: View {
                     prayer,
                     language: entry.language
                 ))
-                    .font(.system(size: 10, weight: highlighted ? .bold : .medium))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.55)
+                .font(.system(size: 10, weight: highlighted ? .bold : .medium))
+                .lineLimit(1)
+                .minimumScaleFactor(0.55)
 
-                if let target = countdownTarget, target > entry.date {
+                if let start = entry.countdownStartDate,
+                   let target = countdownTarget,
+                   target > start
+                {
                     // Text(timerInterval:) reserves its widest possible value
                     // in an installed Lock Screen widget. Give it a bounded
                     // slot; fixedSize() here can collapse the surrounding
@@ -1401,52 +1432,57 @@ struct PrayerAccessoryAlmanacView: View {
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(PrayerWidgetLocalization.string(
-                    "next_prayer",
+                    entry.displayedPrayerLabelKey,
                     language: entry.language
                 ))
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(palette.secondary)
-                    .tracking(1.1)
-                    .textCase(.uppercase)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.55)
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(palette.secondary)
+                .tracking(1.1)
+                .textCase(.uppercase)
+                .lineLimit(1)
+                .minimumScaleFactor(0.55)
 
                 if let next = entry.nextPrayer {
                     Text(PrayerWidgetLocalization.prayerName(
                         next,
                         language: entry.language
                     ))
-                        .font(.system(size: 17, weight: .bold))
-                        .foregroundStyle(palette.primary)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.62)
+                    .font(.system(size: 17, weight: .bold))
+                    .foregroundStyle(palette.primary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.62)
                 }
 
                 HStack(spacing: 4) {
                     if let target = entry.nextPrayerDate {
-                        Text(PrayerTimeFormatter.format12(
+                        Text(PrayerTimeFormatter.formatDevice(
                             target,
                             useArabicNumerals: entry.arabicNumerals,
+                            languageCode: entry.language,
+                            format: entry.settings.timeFormat,
                             timeZone: entry.settings.displayTimeZone
                         ))
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .monospacedDigit()
+                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
 
                         Text("·")
 
-                        if target > entry.date {
+                        if let countdownTarget = entry.countdownTargetDate,
+                           let start = entry.countdownStartDate,
+                           countdownTarget > start
+                        {
                             AdaptiveCountdownText(
                                 entry: entry,
-                                target: target,
+                                target: countdownTarget,
                                 font: .system(size: 12, weight: .bold, design: .rounded),
                                 compact: true
                             )
-                                .environment(
-                                    \.locale,
-                                    prayerCountdownTimerLocale(
-                                        useArabicNumerals: entry.arabicNumerals
-                                    )
+                            .environment(
+                                \.locale,
+                                prayerCountdownTimerLocale(
+                                    useArabicNumerals: entry.arabicNumerals
                                 )
+                            )
                         }
                     }
                 }
@@ -1503,13 +1539,20 @@ struct PrayerAccessoryInlineView: View {
         )
 
         Group {
-            if let next = entry.nextPrayer, let target = entry.nextPrayerDate {
+            if let next = entry.nextPrayer,
+               let start = entry.countdownStartDate,
+               let target = entry.countdownTargetDate,
+               target > start
+            {
                 let name = PrayerWidgetLocalization.prayerName(next, language: entry.language)
-                if target > entry.date {
-                    Text("\(name) • ") + Text(timerInterval: entry.date...target, countsDown: true)
-                } else {
-                    Text(name)
-                }
+                Text("\(name) • ") + prayerCountdownTimerText(
+                    start: start,
+                    target: target,
+                    useArabicNumerals: entry.arabicNumerals,
+                    countsDown: entry.countdownCountsDown,
+                    showsHours: entry.countdownShowsHours,
+                    prefix: entry.countdownPrefix
+                )
             } else {
                 Text(PrayerWidgetLocalization.string("empty_message", language: entry.language))
                     .lineLimit(1)

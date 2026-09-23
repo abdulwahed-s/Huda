@@ -1,6 +1,6 @@
-import WidgetKit
 import SwiftUI
 import UIKit
+import WidgetKit
 
 struct HudaWidgetEntry: TimelineEntry {
     let date: Date
@@ -31,15 +31,15 @@ struct HudaWidgetProvider: TimelineProvider {
         let calendar = Calendar(identifier: .gregorian)
         let nextHour =
             calendar.dateInterval(of: .hour, for: now)?.end
-            ?? now.addingTimeInterval(3600)
+                ?? now.addingTimeInterval(3600)
         let size = context.family.quranWidgetSize
         var entries = [
             HudaWidgetEntry(
                 date: now,
                 snapshot: WidgetDataLoader.snapshot(at: now, size: size)
-            )
+            ),
         ]
-        for hourOffset in 0..<Self.futureEntryCount {
+        for hourOffset in 0 ..< Self.futureEntryCount {
             guard let date = calendar.date(byAdding: .hour, value: hourOffset, to: nextHour) else {
                 continue
             }
@@ -58,11 +58,11 @@ private extension WidgetFamily {
     var quranWidgetSize: QuranWidgetSize {
         switch self {
         case .systemLarge:
-            return .large
+            .large
         case .systemMedium:
-            return .medium
+            .medium
         default:
-            return .small
+            .small
         }
     }
 }
@@ -105,8 +105,8 @@ struct HudaWidgetEntryView: View {
                         .clipped()
 
                     if textLayout.showsTranslation,
-                        let translation = entry.snapshot.translation,
-                        !translation.isEmpty
+                       let translation = entry.snapshot.translation,
+                       !translation.isEmpty
                     {
                         QuranNoorDivider(
                             micro: layout.isMicro,
@@ -157,7 +157,9 @@ struct HudaWidgetEntryView: View {
         .accessibilityLabel(accessibilityLabel)
     }
 
-    private var isFullColor: Bool { renderingMode == .fullColor }
+    private var isFullColor: Bool {
+        renderingMode == .fullColor
+    }
 
     private var ayahFontName: String {
         entry.snapshot.ayahBold ? "Amiri-Bold" : "Amiri-Regular"
@@ -245,11 +247,11 @@ struct HudaWidgetEntryView: View {
             return ayah + dividerHeight + translation.fullHeight
         }
 
-        for _ in 0..<120 {
+        for _ in 0 ..< 120 {
             if totalHeight() <= availableHeight { break }
             if entry.snapshot.translationAutoFit,
-                showsTranslation,
-                translationSize > translationFloor
+               showsTranslation,
+               translationSize > translationFloor
             {
                 translationSize = max(translationFloor, translationSize - 0.5)
             } else if entry.snapshot.ayahAutoFit, ayahSize > 14 {
@@ -267,10 +269,10 @@ struct HudaWidgetEntryView: View {
             return ayah + dividerHeight + translation.height(for: translationLines)
         }
 
-        while showsTranslation && limitedTotalHeight() > availableHeight && translationLines > 1 {
+        while showsTranslation, limitedTotalHeight() > availableHeight, translationLines > 1 {
             translationLines -= 1
         }
-        while limitedTotalHeight() > availableHeight && ayahLines > 1 {
+        while limitedTotalHeight() > availableHeight, ayahLines > 1 {
             ayahLines -= 1
         }
 
@@ -280,7 +282,7 @@ struct HudaWidgetEntryView: View {
         var translationHeight = finalTranslationMetrics?.height(for: translationLines) ?? 0
         let requiredHeight =
             ayahHeight
-            + (showsTranslation ? dividerHeight + translationHeight : 0)
+                + (showsTranslation ? dividerHeight + translationHeight : 0)
         if requiredHeight > availableHeight {
             if showsTranslation {
                 let textHeight = max(2, availableHeight - dividerHeight)
@@ -403,7 +405,9 @@ private struct QuranNoorTextMetrics {
     let lineHeight: CGFloat
     let lineSpacing: CGFloat
 
-    var fullHeight: CGFloat { height(for: lineCount) }
+    var fullHeight: CGFloat {
+        height(for: lineCount)
+    }
 
     func height(for requestedLines: Int) -> CGFloat {
         let lines = max(1, min(requestedLines, lineCount))
@@ -463,7 +467,9 @@ private struct QuranNoorHeader: View {
         .offset(y: compact ? -2 : -4)
     }
 
-    private var isRTL: Bool { appLanguage == "ar" || appLanguage == "ur" }
+    private var isRTL: Bool {
+        appLanguage == "ar" || appLanguage == "ur"
+    }
 }
 
 private struct QuranNoorMedallion: View {
@@ -595,7 +601,9 @@ private struct QuranNoorBackground: View {
         }
     }
 
-    private var fullColor: Bool { renderingMode == .fullColor }
+    private var fullColor: Bool {
+        renderingMode == .fullColor
+    }
 }
 
 private struct QuranNoorSacredGeometry: View {
@@ -653,7 +661,7 @@ private struct QuranNoorSacredGeometry: View {
     private func eightPointStar(center: CGPoint, outerRadius: CGFloat) -> Path {
         var path = Path()
         let innerRadius = outerRadius * 0.46
-        for index in 0..<16 {
+        for index in 0 ..< 16 {
             let angle = -Double.pi / 2 + Double(index) * Double.pi / 8
             let radius = index.isMultiple(of: 2) ? outerRadius : innerRadius
             let point = CGPoint(
@@ -677,7 +685,7 @@ struct HudaWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: HudaWidgetProvider()) { entry in
             HudaWidgetEntryView(entry: entry)
-                .containerBackground(for: .widget) {
+                .quranWidgetContainerBackground {
                     QuranNoorBackground(palette: entry.snapshot.palette)
                 }
         }
@@ -686,5 +694,18 @@ struct HudaWidget: Widget {
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
         .containerBackgroundRemovable(false)
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func quranWidgetContainerBackground(
+        @ViewBuilder background: () -> some View
+    ) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            containerBackground(for: .widget, content: background)
+        } else {
+            self.background(background())
+        }
     }
 }

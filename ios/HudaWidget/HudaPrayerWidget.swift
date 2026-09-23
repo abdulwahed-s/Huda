@@ -1,5 +1,5 @@
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct PrayerWidgetEntry: TimelineEntry {
     let date: Date
@@ -8,14 +8,60 @@ struct PrayerWidgetEntry: TimelineEntry {
 
     let currentPrayer: Prayer?
     let currentPrayerDate: Date?
-    let nextPrayer: Prayer?
-    let nextPrayerDate: Date?
+    let previousPrayer: Prayer?
+    let previousPrayerDate: Date?
+    let upcomingPrayer: Prayer?
+    let upcomingPrayerDate: Date?
     let followingPrayer: Prayer?
     let followingPrayerDate: Date?
     let dayPrayers: [(Prayer, Date)]
     let middleOfNight: Date?
     let lastThirdOfNight: Date?
+    let countdownMode: PrayerWidgetCountdownMode
+    let countdownStateEnd: Date?
     let isEmptyState: Bool
+
+    var nextPrayer: Prayer? {
+        countdownMode == .elapsed ? currentPrayer : upcomingPrayer
+    }
+
+    var nextPrayerDate: Date? {
+        countdownMode == .elapsed ? currentPrayerDate : upcomingPrayerDate
+    }
+
+    var displayedPrayer: Prayer? {
+        nextPrayer
+    }
+
+    var displayedPrayerDate: Date? {
+        nextPrayerDate
+    }
+
+    var countdownStartDate: Date? {
+        countdownMode == .elapsed ? currentPrayerDate : date
+    }
+
+    var countdownTargetDate: Date? {
+        countdownMode == .elapsed ? countdownStateEnd : upcomingPrayerDate
+    }
+
+    var countdownCountsDown: Bool {
+        countdownMode == .countdown
+    }
+
+    var countdownPrefix: String {
+        countdownCountsDown ? "−" : "+"
+    }
+
+    var countdownShowsHours: Bool {
+        guard countdownCountsDown,
+              let target = countdownTargetDate else { return false }
+        return target.timeIntervalSince(date) >= 60 * 60
+    }
+
+    var displayedPrayerLabelKey: String {
+        countdownMode == .elapsed ? "current" : "next_prayer"
+    }
 
     static func placeholder(themeColors: ThemeColors, settings: PrayerWidgetSettings) -> PrayerWidgetEntry {
         let now = Date()
@@ -43,8 +89,10 @@ struct PrayerWidgetEntry: TimelineEntry {
             themeColors: themeColors,
             currentPrayer: .asr,
             currentPrayerDate: asr,
-            nextPrayer: .maghrib,
-            nextPrayerDate: maghrib,
+            previousPrayer: .dhuhr,
+            previousPrayerDate: dhuhr,
+            upcomingPrayer: .maghrib,
+            upcomingPrayerDate: maghrib,
             followingPrayer: .isha,
             followingPrayerDate: isha,
             dayPrayers: [
@@ -53,40 +101,45 @@ struct PrayerWidgetEntry: TimelineEntry {
                 (.dhuhr, dhuhr),
                 (.asr, asr),
                 (.maghrib, maghrib),
-                (.isha, isha)
+                (.isha, isha),
             ],
             middleOfNight: nil,
             lastThirdOfNight: nil,
+            countdownMode: .countdown,
+            countdownStateEnd: maghrib,
             isEmptyState: false
         )
     }
 
     static func empty(themeColors: ThemeColors, settings: PrayerWidgetSettings) -> PrayerWidgetEntry {
-        return PrayerWidgetEntry(
+        PrayerWidgetEntry(
             date: Date(),
             settings: settings,
             themeColors: themeColors,
             currentPrayer: nil,
             currentPrayerDate: nil,
-            nextPrayer: nil,
-            nextPrayerDate: nil,
+            previousPrayer: nil,
+            previousPrayerDate: nil,
+            upcomingPrayer: nil,
+            upcomingPrayerDate: nil,
             followingPrayer: nil,
             followingPrayerDate: nil,
             dayPrayers: [],
             middleOfNight: nil,
             lastThirdOfNight: nil,
+            countdownMode: .countdown,
+            countdownStateEnd: nil,
             isEmptyState: true
         )
     }
 }
 
 struct PrayerWidgetProvider: TimelineProvider {
-
-    private static let timelineHorizon: TimeInterval = 36 * 60 * 60
+    private static let timelineHorizon: TimeInterval = 7 * 24 * 60 * 60
     private static let reloadInterval: TimeInterval = 12 * 60 * 60
-    private static let maximumEntryCount = 24
+    private static let maximumEntryCount = 120
 
-    func placeholder(in context: Context) -> PrayerWidgetEntry {
+    func placeholder(in _: Context) -> PrayerWidgetEntry {
         let settings = PrayerWidgetDataLoader.loadSettings()
         let theme = WidgetThemeColors.getThemeColors(
             themeName: settings.themeName,
@@ -106,10 +159,10 @@ struct PrayerWidgetProvider: TimelineProvider {
         )
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<PrayerWidgetEntry>) -> Void) {
+    func getTimeline(in _: Context, completion: @escaping (Timeline<PrayerWidgetEntry>) -> Void) {
         let now = Date()
         let entries = buildEntries(now: now, maximumEntries: Self.maximumEntryCount)
-        if entries.isEmpty {
+        if entries.isEmpty || entries.allSatisfy(\.isEmptyState) {
             let settings = PrayerWidgetDataLoader.loadSettings()
             let theme = WidgetThemeColors.getThemeColors(
                 themeName: settings.themeName,
@@ -146,7 +199,7 @@ struct PrayerWidgetProvider: TimelineProvider {
             coordinates: coordinates,
             settings: settings,
             startingAt: transitionStart,
-            dayCount: 6
+            dayCount: 10
         )
 
         guard !allTransitions.isEmpty else {
@@ -154,9 +207,12 @@ struct PrayerWidgetProvider: TimelineProvider {
         }
 
         var entries: [PrayerWidgetEntry] = []
-        var timesByDay: [Date: PrayerTimes] = [:]
+        let resolverTransitions = allTransitions.map {
+            PrayerWidgetTransition(prayer: $0.prayer, date: $0.date)
+        }
+        var timesByDay: [Date: PrayerWidgetDayTimes] = [:]
 
-        func cachedTimes(for date: Date) -> PrayerTimes? {
+        func cachedTimes(for date: Date) -> PrayerWidgetDayTimes? {
             let day = calendar.startOfDay(for: date)
             if let cached = timesByDay[day] {
                 return cached
@@ -173,16 +229,28 @@ struct PrayerWidgetProvider: TimelineProvider {
         }
 
         func makeEntry(at activeFrom: Date) -> PrayerWidgetEntry? {
-            guard let nextIndex = allTransitions.firstIndex(where: { $0.date > activeFrom }) else {
-                return nil
+            guard let moment = PrayerWidgetStateResolver.resolve(
+                now: activeFrom,
+                transitions: resolverTransitions
+            ) else { return nil }
+            let currentTransition = moment.latestStartedIndex.map {
+                resolverTransitions[$0]
             }
-            let nextTransition = allTransitions[nextIndex]
-            let currentTransition = nextIndex > 0 ? allTransitions[nextIndex - 1] : nil
-            let followingTransition = allTransitions.indices.contains(nextIndex + 1)
-                ? allTransitions[nextIndex + 1]
-                : nil
+            let previousTransition = moment.latestStartedIndex.flatMap {
+                resolverTransitions.indices.contains($0 - 1)
+                    ? resolverTransitions[$0 - 1]
+                    : nil
+            }
+            let nextTransition = moment.nextIndex.map {
+                resolverTransitions[$0]
+            }
+            let followingTransition = moment.nextIndex.flatMap {
+                resolverTransitions.indices.contains($0 + 1)
+                    ? resolverTransitions[$0 + 1]
+                    : nil
+            }
 
-            let activeDayTimes = cachedTimes(for: nextTransition.date)
+            let activeDayTimes = cachedTimes(for: moment.prayerDate)
 
             let dayPrayers: [(Prayer, Date)] = {
                 guard let times = activeDayTimes else { return [] }
@@ -191,11 +259,17 @@ struct PrayerWidgetProvider: TimelineProvider {
 
             let civilTimes = cachedTimes(for: activeFrom)
             let nightAnchor: Date = {
-                guard let fajr = civilTimes?.fajr, activeFrom < fajr else { return activeFrom }
-                return calendar.date(byAdding: .day, value: -1, to: activeFrom) ?? activeFrom
+                guard let fajr = civilTimes?.fajr, activeFrom < fajr else {
+                    return activeFrom
+                }
+                return calendar.date(byAdding: .day, value: -1, to: activeFrom)
+                    ?? activeFrom
             }()
-            let nightTimes = cachedTimes(for: nightAnchor)
-            let sunnah = nightTimes.map { SunnahTimes(from: $0) }
+            let sunnah = PrayerWidgetCalculator.sunnahTimes(
+                coordinates: coordinates,
+                settings: settings,
+                date: nightAnchor
+            )
 
             return PrayerWidgetEntry(
                 date: activeFrom,
@@ -203,33 +277,27 @@ struct PrayerWidgetProvider: TimelineProvider {
                 themeColors: theme,
                 currentPrayer: currentTransition?.prayer,
                 currentPrayerDate: currentTransition?.date,
-                nextPrayer: nextTransition.prayer,
-                nextPrayerDate: nextTransition.date,
+                previousPrayer: previousTransition?.prayer,
+                previousPrayerDate: previousTransition?.date,
+                upcomingPrayer: nextTransition?.prayer,
+                upcomingPrayerDate: nextTransition?.date,
                 followingPrayer: followingTransition?.prayer,
                 followingPrayerDate: followingTransition?.date,
                 dayPrayers: dayPrayers,
-                middleOfNight: sunnah?.middleOfTheNight,
-                lastThirdOfNight: sunnah?.lastThirdOfTheNight,
+                middleOfNight: sunnah.middle,
+                lastThirdOfNight: sunnah.lastThird,
+                countdownMode: moment.mode,
+                countdownStateEnd: moment.stateEnd,
                 isEmptyState: false
             )
         }
 
-        var activationPoints: [Date] = [now]
         let horizon = now.addingTimeInterval(Self.timelineHorizon)
-
-        for transition in allTransitions
-            where transition.date > now && transition.date <= horizon
-        {
-            let oneHourBefore = transition.date.addingTimeInterval(-(60 * 60) + 1)
-            if oneHourBefore > now {
-                activationPoints.append(oneHourBefore)
-            }
-            activationPoints.append(transition.date)
-        }
-        activationPoints.sort()
-
-        var seen = Set<Date>()
-        let uniquePoints = activationPoints.filter { seen.insert($0).inserted }
+        let uniquePoints = PrayerWidgetStateResolver.activationPoints(
+            now: now,
+            through: horizon,
+            transitions: resolverTransitions
+        )
 
         for at in uniquePoints.prefix(max(1, maximumEntries)) {
             if let entry = makeEntry(at: at) {
@@ -247,7 +315,7 @@ struct HudaPrayerWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: PrayerWidgetProvider()) { entry in
             PrayerWidgetEntryView(entry: entry)
-                .containerBackground(for: .widget) {
+                .prayerWidgetContainerBackground {
                     PrayerWidgetFamilyBackground(entry: entry)
                 }
                 .widgetURL(URL(string: "huda://prayer_times"))
@@ -255,18 +323,17 @@ struct HudaPrayerWidget: Widget {
         .configurationDisplayName("Huda — Prayer Times")
         .description("Prayer times and the next prayer at a glance.")
         .supportedFamilies(supportedFamilies)
-        .contentMarginsDisabled()
     }
 
     private var supportedFamilies: [WidgetFamily] {
         var families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
         #if os(iOS)
-        if #available(iOSApplicationExtension 16.0, *) {
-            families.append(contentsOf: [
-                .accessoryCircular,
-                .accessoryInline
-            ])
-        }
+            if #available(iOSApplicationExtension 16.0, *) {
+                families.append(contentsOf: [
+                    .accessoryCircular,
+                    .accessoryInline,
+                ])
+            }
         #endif
         return families
     }
@@ -286,7 +353,7 @@ struct PrayerWidgetBackground: View {
                     colors: [
                         Color.white.opacity(0.10),
                         Color.clear,
-                        Color.black.opacity(0.04)
+                        Color.black.opacity(0.04),
                     ],
                     startPoint: .top,
                     endPoint: .bottom
@@ -309,7 +376,7 @@ struct PrayerWidgetBackground: View {
             LinearGradient(
                 colors: [
                     entry.themeColors.gradientStart,
-                    entry.themeColors.gradientEnd
+                    entry.themeColors.gradientEnd,
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -339,7 +406,6 @@ private struct PrayerWidgetFamilyBackground: View {
     @Environment(\.widgetFamily) private var widgetFamily
     @Environment(\.widgetRenderingMode) private var renderingMode
 
-    @ViewBuilder
     var body: some View {
         switch widgetFamily {
         case .accessoryCircular:
@@ -365,14 +431,12 @@ private struct PrayerWidgetFamilyBackground: View {
 struct PrayerWidgetEntryView: View {
     var entry: PrayerWidgetEntry
     @Environment(\.widgetFamily) var widgetFamily
-    @Environment(\.widgetContentMargins) private var widgetContentMargins
 
     var body: some View {
         if entry.isEmptyState {
             switch widgetFamily {
             case .accessoryCircular, .accessoryRectangular, .accessoryInline:
                 PrayerWidgetEmptyView(entry: entry, family: widgetFamily)
-                    .padding(widgetContentMargins)
             default:
                 PrayerCelestialEmptyWidgetView(entry: entry, family: widgetFamily)
             }
@@ -380,13 +444,10 @@ struct PrayerWidgetEntryView: View {
             switch widgetFamily {
             case .accessoryCircular:
                 PrayerAccessoryCircularView(entry: entry)
-                    .padding(widgetContentMargins)
             case .accessoryRectangular:
                 PrayerAccessoryRectangularView(entry: entry, segment: .early)
-                    .padding(widgetContentMargins)
             case .accessoryInline:
                 PrayerAccessoryInlineView(entry: entry)
-                    .padding(widgetContentMargins)
             default:
                 PrayerCelestialWidgetView(entry: entry, family: widgetFamily)
             }
@@ -400,7 +461,7 @@ struct HudaEarlyPrayerTimesWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: PrayerWidgetProvider()) { entry in
             PrayerAccessoryScheduleEntryView(entry: entry, segment: .early)
-                .containerBackground(for: .widget) {
+                .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
                 .widgetURL(URL(string: "huda://prayer_times"))
@@ -417,7 +478,7 @@ struct HudaLatePrayerTimesWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: PrayerWidgetProvider()) { entry in
             PrayerAccessoryScheduleEntryView(entry: entry, segment: .late)
-                .containerBackground(for: .widget) {
+                .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
                 .widgetURL(URL(string: "huda://prayer_times"))
@@ -434,7 +495,7 @@ struct HudaPrayerPathWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: PrayerWidgetProvider()) { entry in
             PrayerAccessoryPathEntryView(entry: entry)
-                .containerBackground(for: .widget) {
+                .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
                 .widgetURL(URL(string: "huda://prayer_times"))
@@ -451,7 +512,7 @@ struct HudaPrayerAlmanacWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: PrayerWidgetProvider()) { entry in
             PrayerAccessoryAlmanacEntryView(entry: entry)
-                .containerBackground(for: .widget) {
+                .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
                 .widgetURL(URL(string: "huda://prayer_times"))
@@ -459,6 +520,19 @@ struct HudaPrayerAlmanacWidget: Widget {
         .configurationDisplayName("Huda — Prayer Almanac")
         .description("The date, next prayer, prayer time, and a live countdown.")
         .supportedFamilies([.accessoryRectangular])
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func prayerWidgetContainerBackground(
+        @ViewBuilder background: () -> some View
+    ) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            containerBackground(for: .widget, content: background)
+        } else {
+            self.background(background())
+        }
     }
 }
 
@@ -470,7 +544,6 @@ private struct PrayerAccessoryContainerBackground: View {
 
     @Environment(\.widgetRenderingMode) private var renderingMode
 
-    @ViewBuilder
     var body: some View {
         switch renderingMode {
         case .fullColor:
@@ -528,11 +601,7 @@ private struct PrayerAccessoryAlmanacEntryView: View {
 }
 
 private struct PrayerAccessoryPanel<Content: View>: View {
-    let content: Content
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
+    @ViewBuilder let content: Content
 
     var body: some View {
         // WidgetKit supplies context-appropriate content margins. There must be

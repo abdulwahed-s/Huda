@@ -13,15 +13,17 @@ enum PrayerConceptFamily {
     case large
 }
 
-fileprivate enum PrayerConceptPhase: String {
+private enum PrayerConceptPhase: String {
     case fajr, sunrise, dhuhr, asr, maghrib, isha
 }
 
-fileprivate struct PrayerConceptItem: Identifiable {
+private struct PrayerConceptItem: Identifiable {
     let phase: PrayerConceptPhase
     let name: String
     let time: String
-    var id: String { phase.rawValue }
+    var id: String {
+        phase.rawValue
+    }
 }
 
 struct PrayerConceptSample {
@@ -56,8 +58,9 @@ struct PrayerConceptSample {
     let contentScale: CGFloat
     let countdownStart: Date?
     let countdownTarget: Date?
+    let countdownCountsDown: Bool
+    let countdownShowsHours: Bool
     let localeIdentifier: String
-
 }
 
 private struct PrayerConceptPalette {
@@ -100,7 +103,7 @@ struct PrayerCelestialWidgetView: View {
                 family: conceptFamily,
                 palette: palette
             )
-            if entry.settings.glassify && renderingMode == .fullColor {
+            if entry.settings.glassify, renderingMode == .fullColor {
                 Color.white.opacity(0.08).allowsHitTesting(false)
             }
             switch design {
@@ -128,7 +131,7 @@ struct PrayerCelestialWidgetView: View {
                         colors: [
                             palette.accent.opacity(0.58),
                             palette.text.opacity(0.10),
-                            palette.gold.opacity(0.34)
+                            palette.gold.opacity(0.34),
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -153,9 +156,10 @@ struct PrayerCelestialWidgetView: View {
             date,
             useArabicNumerals: entry.settings.useArabicNumerals,
             languageCode: language,
+            format: entry.settings.timeFormat,
             timeZone: entry.settings.displayTimeZone
         )
-        return "\(PrayerWidgetLocalization.string("next_prayer", language: language)): \(name), \(time)"
+        return "\(PrayerWidgetLocalization.string(entry.displayedPrayerLabelKey, language: language)): \(name), \(time)"
     }
 }
 
@@ -219,7 +223,7 @@ struct PrayerCelestialEmptyWidgetView: View {
                         colors: [
                             palette.accent.opacity(0.58),
                             palette.text.opacity(0.10),
-                            palette.gold.opacity(0.34)
+                            palette.gold.opacity(0.34),
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -350,31 +354,52 @@ private extension PrayerConceptSample {
                 date,
                 useArabicNumerals: usesArabicNumerals,
                 languageCode: language,
+                format: entry.settings.timeFormat,
                 timeZone: timeZone
             )
         }
         func phase(_ prayer: Prayer?) -> PrayerConceptPhase {
             switch prayer {
-            case .fajr: return .fajr
-            case .sunrise: return .sunrise
-            case .dhuhr: return .dhuhr
-            case .asr: return .asr
-            case .maghrib: return .maghrib
-            case .isha: return .isha
-            case nil: return .fajr
+            case .fajr: .fajr
+            case .sunrise: .sunrise
+            case .dhuhr: .dhuhr
+            case .asr: .asr
+            case .maghrib: .maghrib
+            case .isha: .isha
+            case nil: .fajr
             }
         }
 
-        let current = entry.currentPrayer ?? .isha
+        let current = (entry.countdownMode == .elapsed
+            ? entry.previousPrayer
+            : entry.currentPrayer) ?? .isha
+        let currentDate = entry.countdownMode == .elapsed
+            ? entry.previousPrayerDate
+            : entry.currentPrayerDate
         let next = entry.nextPrayer ?? .fajr
-        let following = entry.followingPrayer ?? .dhuhr
-        let target = entry.nextPrayerDate
-        let interval = max(0, target?.timeIntervalSince(entry.date) ?? 0)
+        let following = (entry.countdownMode == .elapsed
+            ? entry.upcomingPrayer
+            : entry.followingPrayer) ?? .dhuhr
+        let followingDate = entry.countdownMode == .elapsed
+            ? entry.upcomingPrayerDate
+            : entry.followingPrayerDate
+        let prayerDate = entry.nextPrayerDate
+        let timerStart = entry.countdownStartDate
+        let timerTarget = entry.countdownTargetDate
+        let interval = entry.countdownMode == .elapsed
+            ? max(0, entry.date.timeIntervalSince(timerStart ?? entry.date))
+            : max(0, (timerTarget ?? entry.date).timeIntervalSince(entry.date))
         let totalSeconds = Int(ceil(interval))
         let hours = totalSeconds / 3600
         let minutes = (totalSeconds % 3600) / 60
         let seconds = totalSeconds % 60
-        var countdown = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        var countdown = String(
+            format: "%@%02d:%02d:%02d",
+            entry.countdownPrefix,
+            hours,
+            minutes,
+            seconds
+        )
         if usesArabicNumerals { countdown = countdown.prayerArabicDigits }
 
         self.init(
@@ -383,18 +408,21 @@ private extension PrayerConceptSample {
             monthYear: dateString("MMM · yyyy", uppercase: true),
             dateLong: dateString("EEEE  •  d MMMM yyyy"),
             currentName: PrayerWidgetLocalization.prayerName(current, language: language),
-            currentTime: clock(entry.currentPrayerDate),
+            currentTime: clock(currentDate),
             currentLabel: PrayerWidgetLocalization.string("current", language: language).uppercased(with: locale),
             currentPhase: phase(current),
             nextName: PrayerWidgetLocalization.prayerName(next, language: language),
-            nextLabel: PrayerWidgetLocalization.string("next_prayer", language: language).uppercased(with: locale),
-            nextTime: clock(target),
+            nextLabel: PrayerWidgetLocalization.string(entry.displayedPrayerLabelKey, language: language).uppercased(with: locale),
+            nextTime: clock(prayerDate),
             nextPhase: phase(next),
             countdown: countdown,
             compactCountdown: countdown,
-            remainingLabel: PrayerWidgetLocalization.string("remaining", language: language).uppercased(with: locale),
+            remainingLabel: PrayerWidgetLocalization.string(
+                entry.countdownMode == .elapsed ? "current" : "remaining",
+                language: language
+            ).uppercased(with: locale),
             afterName: PrayerWidgetLocalization.prayerName(following, language: language),
-            afterTime: clock(entry.followingPrayerDate),
+            afterTime: clock(followingDate),
             afterPhase: phase(following),
             scheduleLabel: PrayerWidgetLocalization.string("schedule", language: language).uppercased(with: locale),
             prayerTableLabel: PrayerWidgetLocalization.string("prayer_table", language: language).uppercased(with: locale),
@@ -413,9 +441,11 @@ private extension PrayerConceptSample {
             isRTL: PrayerWidgetLocalization.isRTL(language: language),
             usesArabicScript: PrayerWidgetLocalization.isRTL(language: language),
             usesArabicNumerals: usesArabicNumerals,
-            contentScale: CGFloat(entry.settings.contentSize.clamped(to: 60...140)) / 100,
-            countdownStart: entry.date,
-            countdownTarget: target,
+            contentScale: CGFloat(entry.settings.contentSize.clamped(to: 60 ... 140)) / 100,
+            countdownStart: timerStart,
+            countdownTarget: timerTarget,
+            countdownCountsDown: entry.countdownCountsDown,
+            countdownShowsHours: entry.countdownShowsHours,
             localeIdentifier: "\(language)-u-nu-\(usesArabicNumerals ? "arab" : "latn")"
         )
     }
@@ -457,7 +487,7 @@ private struct PrayerConceptAtmosphere: View {
                 RadialGradient(
                     colors: [
                         palette.accent.opacity(palette.isLight ? 0.16 : 0.24),
-                        .clear
+                        .clear,
                     ],
                     center: design == .spotlight
                         ? UnitPoint(x: 0.78, y: 0.30)
@@ -508,7 +538,7 @@ private struct PrayerConceptAtmosphere: View {
                         rules.move(to: CGPoint(x: size.width * 0.18, y: 0))
                         rules.addLine(to: CGPoint(x: size.width * 0.18, y: size.height))
                         if family != .small {
-                            for index in 0..<4 {
+                            for index in 0 ..< 4 {
                                 let y = size.height * (0.20 + Double(index) * 0.19)
                                 rules.move(to: CGPoint(x: 0, y: y))
                                 rules.addLine(to: CGPoint(x: size.width, y: y))
@@ -545,7 +575,7 @@ private struct PrayerConceptAtmosphere: View {
     private func eightPointStar(center: CGPoint, radius: CGFloat) -> Path {
         var path = Path()
         let inner = radius * 0.46
-        for index in 0..<16 {
+        for index in 0 ..< 16 {
             let angle = -Double.pi / 2 + Double(index) * Double.pi / 8
             let r = index.isMultiple(of: 2) ? radius : inner
             let point = CGPoint(
@@ -728,9 +758,6 @@ private struct PrayerSpotlightConceptView: View {
     }
 
     private func item(_ phase: PrayerConceptPhase) -> PrayerConceptItem? {
-        if let scheduled = sample.schedule.first(where: { $0.phase == phase }) {
-            return scheduled
-        }
         if phase == sample.currentPhase {
             return PrayerConceptItem(phase: phase, name: sample.currentName, time: sample.currentTime)
         }
@@ -739,6 +766,9 @@ private struct PrayerSpotlightConceptView: View {
         }
         if phase == sample.afterPhase {
             return PrayerConceptItem(phase: phase, name: sample.afterName, time: sample.afterTime)
+        }
+        if let scheduled = sample.schedule.first(where: { $0.phase == phase }) {
+            return scheduled
         }
         return nil
     }
@@ -830,11 +860,11 @@ private struct PrayerCountdownCapsule: View {
 private struct PrayerLiveCountdownText: View {
     let sample: PrayerConceptSample
 
-    @ViewBuilder
     var body: some View {
         if let start = sample.countdownStart,
            let target = sample.countdownTarget,
-           target > start {
+           target > start
+        {
             paddedTimer(start: start, target: target)
                 .monospacedDigit()
                 .environment(\.locale, countdownTimerLocale)
@@ -847,11 +877,14 @@ private struct PrayerLiveCountdownText: View {
     }
 
     private func paddedTimer(start: Date, target: Date) -> Text {
-        if target.timeIntervalSince(start) < 10 * 60 * 60 {
+        let prefix = sample.countdownCountsDown ? "−" : "+"
+        if sample.countdownShowsHours,
+           target.timeIntervalSince(start) < 10 * 60 * 60
+        {
             let zero = sample.usesArabicNumerals ? "٠" : "0"
-            return Text("\(zero)\(timerInterval: start...target, countsDown: true, showsHours: true)")
+            return Text("\(prefix)\(zero)\(timerInterval: start ... target, countsDown: sample.countdownCountsDown, showsHours: true)")
         }
-        return Text("\(timerInterval: start...target, countsDown: true, showsHours: true)")
+        return Text("\(prefix)\(timerInterval: start ... target, countsDown: sample.countdownCountsDown, showsHours: sample.countdownShowsHours)")
     }
 
     private var countdownTimerLocale: Locale {
@@ -922,7 +955,9 @@ private struct PrayerSpotlightScheduleCell: View {
     let sample: PrayerConceptSample
     let palette: PrayerConceptPalette
 
-    var highlighted: Bool { item.phase == sample.nextPhase }
+    var highlighted: Bool {
+        item.phase == sample.nextPhase
+    }
 
     var body: some View {
         HStack(spacing: 6) {
@@ -1043,7 +1078,7 @@ private struct PrayerAlmanacConceptView: View {
         [
             PrayerConceptItem(phase: sample.currentPhase, name: sample.currentName, time: sample.currentTime),
             PrayerConceptItem(phase: sample.nextPhase, name: sample.nextName, time: sample.nextTime),
-            PrayerConceptItem(phase: sample.afterPhase, name: sample.afterName, time: sample.afterTime)
+            PrayerConceptItem(phase: sample.afterPhase, name: sample.afterName, time: sample.afterTime),
         ]
     }
 }
@@ -1110,7 +1145,7 @@ private struct PrayerAlmanacNextBand: View {
                     .foregroundStyle(palette.secondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.56)
-                if compact && !wide {
+                if compact, !wide {
                     Text(sample.nextName)
                         .font(conceptFont(12, sample: sample, weight: .bold, editorial: true, longSafe: true))
                         .foregroundStyle(palette.text)
@@ -1217,10 +1252,14 @@ private struct PrayerAlmanacGridCell: View {
     let compact: Bool
     let inline: Bool
 
-    var highlighted: Bool { item.phase == sample.nextPhase }
-    var sunrise: Bool { item.phase == .sunrise }
+    var highlighted: Bool {
+        item.phase == sample.nextPhase
+    }
 
-    @ViewBuilder
+    var sunrise: Bool {
+        item.phase == .sunrise
+    }
+
     var body: some View {
         if inline {
             HStack(spacing: 4) {
@@ -1307,7 +1346,9 @@ private struct PrayerAlmanacRuleRow: View {
     let sample: PrayerConceptSample
     let palette: PrayerConceptPalette
 
-    var highlighted: Bool { item.phase == sample.nextPhase }
+    var highlighted: Bool {
+        item.phase == sample.nextPhase
+    }
 
     var body: some View {
         HStack(spacing: 5) {
@@ -1488,7 +1529,7 @@ private extension Array {
     func chunked(into size: Int) -> [[Element]] {
         guard size > 0 else { return [] }
         return stride(from: 0, to: count, by: size).map {
-            Array(self[$0..<Swift.min($0 + size, count)])
+            Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
 }
