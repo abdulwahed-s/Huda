@@ -8,9 +8,7 @@ import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/home/continue_reading_card.dart';
-import 'package:huda/presentation/widgets/home/continue_reciter_card.dart';
-import 'package:huda/presentation/widgets/home/continue_radio_card.dart';
+import 'package:huda/presentation/widgets/home/continue_activity_dock.dart';
 
 class _QuranSubItem {
   final String title;
@@ -81,10 +79,7 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
         scale: _expanded ? 0.95 : 1.0,
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOutCubic,
-        child: _buildStackLayers(
-          context,
-          child: _buildFrontCard(context),
-        ),
+        child: _buildStackLayers(context, child: _buildFrontCard(context)),
       ),
     );
   }
@@ -140,8 +135,9 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
       final fillAlpha = widget.isDarkMode
           ? 0.30 - layerIndex * 0.06
           : 0.22 - layerIndex * 0.05;
-      final baseColor =
-          widget.isDarkMode ? const Color(0xFF1E2230) : const Color(0xFFF8FAFF);
+      final baseColor = widget.isDarkMode
+          ? const Color(0xFF1E2230)
+          : const Color(0xFFF8FAFF);
       gradientColors = [
         Color.lerp(baseColor, primary, fillAlpha + 0.04)!,
         Color.lerp(baseColor, primary, fillAlpha)!,
@@ -173,12 +169,21 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
   }
 
   Widget _buildFrontCard(BuildContext context) {
-    final iconSize =
-        context.responsive(mobile: 32.sp, tablet: 50.sp, desktop: 64.sp);
-    final paddingSize =
-        context.responsive(mobile: 12.w, tablet: 20.w, desktop: 24.w);
-    final fontSize =
-        context.responsive(mobile: 12.sp, tablet: 16.sp, desktop: 20.sp);
+    final iconSize = context.responsive(
+      mobile: 32.sp,
+      tablet: 50.sp,
+      desktop: 64.sp,
+    );
+    final paddingSize = context.responsive(
+      mobile: 12.w,
+      tablet: 20.w,
+      desktop: 24.w,
+    );
+    final fontSize = context.responsive(
+      mobile: 12.sp,
+      tablet: 16.sp,
+      desktop: 20.sp,
+    );
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -194,8 +199,9 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
         border: Border.all(
           color: _expanded
               ? context.primaryColor.withValues(alpha: 0.35)
-              : (widget.isDarkMode ? Colors.white : Colors.black)
-                  .withValues(alpha: 0.06),
+              : (widget.isDarkMode ? Colors.white : Colors.black).withValues(
+                  alpha: 0.06,
+                ),
           width: _expanded ? 1.5 : 1.0,
         ),
         borderRadius: BorderRadius.circular(16.r),
@@ -317,44 +323,59 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
   late final List<Animation<double>> _opacityAnims;
 
   List<_QuranSubItem> get _items => [
-        _QuranSubItem(
-            title: widget.quranLabel,
-            svgAsset: 'assets/images/quranicon.svg.vec',
-            onTap: widget.onQuranTap),
-        _QuranSubItem(
-            title: widget.audioLabel,
-            icon: Icons.headphones,
-            onTap: widget.onAudioTap),
-        _QuranSubItem(
-            title: widget.radioLabel,
-            icon: Icons.radio,
-            onTap: widget.onRadioTap),
-        _QuranSubItem(
-            title: widget.bookmarkLabel,
-            icon: Icons.bookmark,
-            onTap: widget.onBookmarkTap),
-      ];
+    _QuranSubItem(
+      title: widget.quranLabel,
+      svgAsset: 'assets/images/quranicon.svg.vec',
+      onTap: widget.onQuranTap,
+    ),
+    _QuranSubItem(
+      title: widget.audioLabel,
+      icon: Icons.headphones,
+      onTap: widget.onAudioTap,
+    ),
+    _QuranSubItem(
+      title: widget.radioLabel,
+      icon: Icons.radio,
+      onTap: widget.onRadioTap,
+    ),
+    _QuranSubItem(
+      title: widget.bookmarkLabel,
+      icon: Icons.bookmark,
+      onTap: widget.onBookmarkTap,
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 550));
+      vsync: this,
+      duration: const Duration(milliseconds: 550),
+    );
     _scaleAnims = [];
     _opacityAnims = [];
     for (int i = 0; i < 5; i++) {
       final s = (i * 50 / 550).clamp(0.0, 1.0);
-      _scaleAnims.add(Tween(begin: 0.85, end: 1.0).animate(
-        CurvedAnimation(
+      _scaleAnims.add(
+        Tween(begin: 0.85, end: 1.0).animate(
+          CurvedAnimation(
             parent: _controller,
-            curve: Interval(s, 1.0, curve: Curves.easeOutBack)),
-      ));
-      _opacityAnims.add(Tween(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
+            curve: Interval(s, 1.0, curve: Curves.easeOutBack),
+          ),
+        ),
+      );
+      _opacityAnims.add(
+        Tween(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(
             parent: _controller,
-            curve:
-                Interval(s, (s + 0.5).clamp(0.0, 1.0), curve: Curves.easeOut)),
-      ));
+            curve: Interval(
+              s,
+              (s + 0.5).clamp(0.0, 1.0),
+              curve: Curves.easeOut,
+            ),
+          ),
+        ),
+      );
     }
     _controller.forward();
   }
@@ -376,8 +397,11 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
   @override
   Widget build(BuildContext context) {
     final items = _items;
-    final iconSize =
-        context.responsive(mobile: 32.sp, tablet: 50.sp, desktop: 64.sp);
+    final iconSize = context.responsive(
+      mobile: 32.sp,
+      tablet: 50.sp,
+      desktop: 64.sp,
+    );
     final pad = context.responsive(mobile: 12.w, tablet: 20.w, desktop: 24.w);
     final fs = context.responsive(mobile: 12.sp, tablet: 16.sp, desktop: 20.sp);
     final l10n = AppLocalizations.of(context)!;
@@ -389,130 +413,98 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
         children: [
           _buildContinueRow(l10n),
           SizedBox(height: 16.h),
-          Row(children: [
-            Expanded(child: _animCard(context, items[0], 1, iconSize, pad, fs)),
-            SizedBox(width: 16.w),
-            Expanded(child: _animCard(context, items[1], 2, iconSize, pad, fs)),
-          ]),
+          Row(
+            children: [
+              Expanded(
+                child: _animCard(context, items[0], 1, iconSize, pad, fs),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: _animCard(context, items[1], 2, iconSize, pad, fs),
+              ),
+            ],
+          ),
           SizedBox(height: 16.h),
-          Row(children: [
-            Expanded(child: _animCard(context, items[2], 3, iconSize, pad, fs)),
-            SizedBox(width: 16.w),
-            Expanded(child: _animCard(context, items[3], 4, iconSize, pad, fs)),
-          ]),
+          Row(
+            children: [
+              Expanded(
+                child: _animCard(context, items[2], 3, iconSize, pad, fs),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: _animCard(context, items[3], 4, iconSize, pad, fs),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   Widget _buildContinueRow(AppLocalizations l10n) {
-    final primary = context.primaryColor;
-    final primaryDark = context.primaryDarkColor;
-    final primaryVariant = context.primaryVariantColor;
-    final primarySurface = context.primarySurfaceColor;
-
-    final readingActive = [primary, primaryDark];
-    final reciterActive = [primaryVariant, primaryDark];
-    final radioActive = [primarySurface, primaryDark];
-
-    const readingInactive = [Color(0xFFCBD5E1), Color(0xFF94A3B8)];
-    const reciterInactive = [Color(0xFFD4D4D4), Color(0xFFA3A3A3)];
-    const radioInactive = [Color(0xFFD6D3D1), Color(0xFFA8A29E)];
-    final cards = <Widget>[
-      if (widget.showReadingContinuation)
-        BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, homeState) {
-            final HomeLoaded? loaded =
-                homeState is HomeLoaded ? homeState : null;
-            final bool hasLastRead = loaded?.hasLastReadPosition ?? false;
-            final VoidCallback? onTap =
-                hasLastRead && widget.openLastReadSurah != null
-                    ? () => widget.openLastReadSurah!(loaded!.lastReadSummary!)
-                    : null;
-
-            return ContinueReadingCard(
-              hasLastRead: hasLastRead,
-              onTap: onTap,
-              continueText: l10n.continueHome,
-              noActivityText: l10n.noRecentActivityHome,
-              resumeText: l10n.resumeReading,
-              noActivityDescription: l10n.noRecentActivityDescription,
-              activeGradient: readingActive,
-              inactiveGradient: readingInactive,
-            );
-          },
-        ),
-      BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, homeState) {
-          final HomeLoaded? loaded = homeState is HomeLoaded ? homeState : null;
-          final hasLastAudio = loaded?.hasLastQuranAudio ?? false;
-          final quranAudio = loaded?.lastQuranAudio;
-          final VoidCallback? onTap =
-              hasLastAudio && widget.openLastReciterAudio != null
-                  ? () => widget.openLastReciterAudio!(quranAudio)
-                  : null;
-
-          return ContinueReciterCard(
-            hasLastPlayed: hasLastAudio,
-            onTap: onTap,
-            continueText: l10n.continueListening,
-            noActivityText: l10n.noRecentActivityHome,
-            resumeText:
-                hasLastAudio ? l10n.resumeReciter(quranAudio!.reciterName) : '',
-            noActivityDescription: l10n.noReciterActivityDescription,
-            activeGradient: reciterActive,
-            inactiveGradient: reciterInactive,
-          );
-        },
-      ),
-      BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, homeState) {
-          final HomeLoaded? loaded = homeState is HomeLoaded ? homeState : null;
-          final hasLastStation = loaded?.hasLastRadioStation ?? false;
-          final radioStation = loaded?.lastRadioStation;
-          final VoidCallback? onTap =
-              hasLastStation && widget.openLastRadioStation != null
-                  ? () => widget.openLastRadioStation!(radioStation)
-                  : null;
-
-          return ContinueRadioCard(
-            hasLastStation: hasLastStation,
-            onTap: onTap,
-            continueText: l10n.continueRadio,
-            noActivityText: l10n.noRecentActivityHome,
-            resumeText: hasLastStation ? radioStation!.stationName : '',
-            noActivityDescription: l10n.noRadioActivityDescription,
-            activeGradient: radioActive,
-            inactiveGradient: radioInactive,
-          );
-        },
-      ),
-    ];
-
     return Transform.scale(
       scale: _scaleAnims[0].value,
       child: Opacity(
         opacity: _opacityAnims[0].value.clamp(0.0, 1.0),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final textScale = MediaQuery.textScalerOf(context).scale(1);
-            final stack = constraints.maxWidth < 330 || textScale > 1.5;
-            if (stack) {
-              return Column(
-                children: [
-                  for (var index = 0; index < cards.length; index++) ...[
-                    if (index > 0) SizedBox(height: 12.h),
-                    SizedBox(width: double.infinity, child: cards[index]),
-                  ],
-                ],
-              );
-            }
-            return Row(
-              children: [
-                for (var index = 0; index < cards.length; index++) ...[
-                  if (index > 0) SizedBox(width: 12.w),
-                  Expanded(child: cards[index]),
-                ],
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, homeState) {
+            final loaded = homeState is HomeLoaded ? homeState : null;
+            final summary = loaded?.lastReadSummary;
+            final audio = loaded?.lastQuranAudio;
+            final station = loaded?.lastRadioStation;
+            final hasReading =
+                widget.showReadingContinuation &&
+                loaded?.hasLastReadPosition == true &&
+                summary != null;
+            final hasListening =
+                loaded?.hasLastQuranAudio == true && audio != null;
+            final hasRadio =
+                loaded?.hasLastRadioStation == true && station != null;
+            final hasAnyActivity = hasReading || hasListening || hasRadio;
+
+            return ContinueActivityDock(
+              title: hasAnyActivity
+                  ? l10n.continueActivityPrompt
+                  : l10n.noRecentActivityHome,
+              isDarkMode: widget.isDarkMode,
+              items: [
+                if (widget.showReadingContinuation)
+                  ContinueActivityDockItem(
+                    label: l10n.continueHome,
+                    icon: Icons.menu_book_rounded,
+                    hasActivity: hasReading,
+                    semanticHint: hasReading
+                        ? l10n.resumeReading
+                        : l10n.noRecentActivityDescription,
+                    unavailableLabel: l10n.noProgress,
+                    onTap: hasReading && widget.openLastReadSurah != null
+                        ? () => widget.openLastReadSurah!(summary)
+                        : null,
+                  ),
+                ContinueActivityDockItem(
+                  label: l10n.continueListening,
+                  icon: Icons.headphones_rounded,
+                  hasActivity: hasListening,
+                  semanticHint: hasListening
+                      ? l10n.resumeReciter(audio.reciterName)
+                      : l10n.noReciterActivityDescription,
+                  unavailableLabel: l10n.noProgress,
+                  onTap: hasListening && widget.openLastReciterAudio != null
+                      ? () => widget.openLastReciterAudio!(audio)
+                      : null,
+                ),
+                ContinueActivityDockItem(
+                  label: l10n.continueRadio,
+                  icon: Icons.radio_rounded,
+                  hasActivity: hasRadio,
+                  semanticHint: hasRadio
+                      ? station.stationName
+                      : l10n.noRadioActivityDescription,
+                  unavailableLabel: l10n.noProgress,
+                  onTap: hasRadio && widget.openLastRadioStation != null
+                      ? () => widget.openLastRadioStation!(station)
+                      : null,
+                ),
               ],
             );
           },
@@ -521,8 +513,14 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
     );
   }
 
-  Widget _animCard(BuildContext ctx, _QuranSubItem item, int i, double iconSz,
-      double pad, double fs) {
+  Widget _animCard(
+    BuildContext ctx,
+    _QuranSubItem item,
+    int i,
+    double iconSz,
+    double pad,
+    double fs,
+  ) {
     return Transform.scale(
       scale: _scaleAnims[i].value,
       child: Opacity(
@@ -533,28 +531,35 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
   }
 
   BoxDecoration _deco(BuildContext context) => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: widget.isDarkMode
-              ? [const Color(0xFF2B2F3A), const Color(0xFF1E2230)]
-              : [const Color(0xFFFFFFFF), const Color(0xFFF8FAFF)],
-        ),
-        border: Border.all(
-          color: (widget.isDarkMode ? Colors.white : Colors.black)
-              .withValues(alpha: 0.06),
-        ),
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 4))
-        ],
-      );
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: widget.isDarkMode
+          ? [const Color(0xFF2B2F3A), const Color(0xFF1E2230)]
+          : [const Color(0xFFFFFFFF), const Color(0xFFF8FAFF)],
+    ),
+    border: Border.all(
+      color: (widget.isDarkMode ? Colors.white : Colors.black).withValues(
+        alpha: 0.06,
+      ),
+    ),
+    borderRadius: BorderRadius.circular(16.r),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.08),
+        blurRadius: 10,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
 
-  Widget _card(BuildContext context, _QuranSubItem item, double iconSz,
-      double pad, double fs) {
+  Widget _card(
+    BuildContext context,
+    _QuranSubItem item,
+    double iconSz,
+    double pad,
+    double fs,
+  ) {
     return Container(
       decoration: _deco(context),
       child: Material(
@@ -577,35 +582,44 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
                     color: context.primaryColor.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12.r),
                     border: Border.all(
-                        color: context.primaryColor.withValues(alpha: 0.12)),
+                      color: context.primaryColor.withValues(alpha: 0.12),
+                    ),
                   ),
                   child: item.svgAsset != null
-                      ? SvgPicture(AssetBytesLoader(item.svgAsset!),
+                      ? SvgPicture(
+                          AssetBytesLoader(item.svgAsset!),
                           width: iconSz,
                           height: iconSz,
                           colorFilter: ColorFilter.mode(
-                              widget.isDarkMode
-                                  ? context.primaryLightColor
-                                  : context.primaryColor,
-                              BlendMode.srcIn))
-                      : Icon(item.icon,
+                            widget.isDarkMode
+                                ? context.primaryLightColor
+                                : context.primaryColor,
+                            BlendMode.srcIn,
+                          ),
+                        )
+                      : Icon(
+                          item.icon,
                           size: iconSz,
                           color: widget.isDarkMode
                               ? context.primaryLightColor
-                              : context.primaryColor),
+                              : context.primaryColor,
+                        ),
                 ),
                 SizedBox(height: 12.h),
-                Text(item.title,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: fs,
-                        fontWeight: FontWeight.w600,
-                        color: widget.isDarkMode
-                            ? Colors.white
-                            : Colors.black.withValues(alpha: 0.85),
-                        height: 1.2)),
+                Text(
+                  item.title,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: fs,
+                    fontWeight: FontWeight.w600,
+                    color: widget.isDarkMode
+                        ? Colors.white
+                        : Colors.black.withValues(alpha: 0.85),
+                    height: 1.2,
+                  ),
+                ),
               ],
             ),
           ),
