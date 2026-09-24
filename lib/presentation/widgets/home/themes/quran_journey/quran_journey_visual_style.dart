@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 
@@ -7,17 +9,76 @@ abstract final class QuranJourneyVisualStyle {
   static const double frameInset = 3;
   static const double regionGap = 18;
 
-  static Color illumination(BuildContext context) => Color.lerp(
-        context.accentColor,
-        const Color(0xFFC59A46),
-        Theme.of(context).brightness == Brightness.dark ? 0.36 : 0.48,
-      )!;
+  static Color ink(BuildContext context) =>
+      foreground(context, context.primaryColor);
+
+  static Color foreground(BuildContext context, Color color) {
+    final scheme = Theme.of(context).colorScheme;
+    return resolveForeground(
+      color: color,
+      brightness: Theme.of(context).brightness,
+      surface: scheme.surface,
+      onSurface: scheme.onSurface,
+    );
+  }
+
+  static Color illumination(BuildContext context) {
+    final color = Color.lerp(
+      context.accentColor,
+      const Color(0xFFC59A46),
+      Theme.of(context).brightness == Brightness.dark ? 0.36 : 0.48,
+    )!;
+    return foreground(context, color);
+  }
 
   static Color rule(BuildContext context, {bool strong = false}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return context.primaryColor.withValues(
-      alpha: strong ? (isDark ? 0.30 : 0.18) : (isDark ? 0.18 : 0.105),
+    return ink(context).withValues(
+      alpha: strong ? (isDark ? 0.40 : 0.18) : (isDark ? 0.25 : 0.105),
     );
+  }
+
+  @visibleForTesting
+  static Color resolveForeground({
+    required Color color,
+    required Brightness brightness,
+    required Color surface,
+    required Color onSurface,
+  }) {
+    if (brightness != Brightness.dark) return color;
+
+    const minimumContrast = 4.5;
+    const maximumBackdropTint = 0.12;
+    Color backdropFor(Color candidate) => Color.alphaBlend(
+      candidate.withValues(alpha: maximumBackdropTint),
+      surface,
+    );
+
+    if (_contrastRatio(color, backdropFor(color)) >= minimumContrast) {
+      return color;
+    }
+
+    var lower = 0.0;
+    var upper = 1.0;
+    for (var iteration = 0; iteration < 12; iteration++) {
+      final amount = (lower + upper) / 2;
+      final candidate = Color.lerp(color, onSurface, amount)!;
+      if (_contrastRatio(candidate, backdropFor(candidate)) >=
+          minimumContrast) {
+        upper = amount;
+      } else {
+        lower = amount;
+      }
+    }
+    return Color.lerp(color, onSurface, upper)!;
+  }
+
+  static double _contrastRatio(Color first, Color second) {
+    final firstLuminance = first.computeLuminance();
+    final secondLuminance = second.computeLuminance();
+    final lighter = math.max(firstLuminance, secondLuminance);
+    final darker = math.min(firstLuminance, secondLuminance);
+    return (lighter + 0.05) / (darker + 0.05);
   }
 }
 
@@ -44,14 +105,13 @@ class QuranJourneyFramedRegion extends StatelessWidget {
     );
     final inner = doubleFrame
         ? Padding(
-            padding: const EdgeInsets.all(
-              QuranJourneyVisualStyle.frameInset,
-            ),
+            padding: const EdgeInsets.all(QuranJourneyVisualStyle.frameInset),
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: QuranJourneyVisualStyle.illumination(context)
-                      .withValues(alpha: isDark ? 0.24 : 0.17),
+                  color: QuranJourneyVisualStyle.illumination(
+                    context,
+                  ).withValues(alpha: isDark ? 0.24 : 0.17),
                   width: QuranJourneyVisualStyle.innerRuleWidth,
                 ),
               ),

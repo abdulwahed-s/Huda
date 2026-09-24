@@ -81,7 +81,6 @@ class _QuranJourneySupportingToolsState
   Widget build(BuildContext context) {
     final byId = {for (final feature in widget.features) feature.id: feature};
     List<HomeFeatureDefinition> resolve(List<HomeFeatureId> ids) => ids
-        .where((id) => !widget.configuration.hiddenFeatures.contains(id))
         .map((id) => byId[id])
         .whereType<HomeFeatureDefinition>()
         .toList(growable: false);
@@ -125,10 +124,7 @@ class _QuranJourneySupportingToolsState
                   visibleCount: primary.length,
                 ),
                 if (primary.isNotEmpty)
-                  _ToolIndex(
-                    features: primary,
-                    startIndex: 0,
-                  ),
+                  _ToolIndex(features: primary, startIndex: 0),
                 if (more.isNotEmpty) ...[
                   _ViewMoreIndexControl(
                     expanded: _moreExpanded,
@@ -205,15 +201,13 @@ class _QuranIndexField extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final topField = Color.alphaBlend(
-      QuranJourneyVisualStyle.illumination(context).withValues(
-        alpha: isDark ? 0.075 : 0.032,
-      ),
+      QuranJourneyVisualStyle.illumination(
+        context,
+      ).withValues(alpha: isDark ? 0.075 : 0.032),
       scheme.surface,
     );
     final lowerField = Color.alphaBlend(
-      context.primaryVariantColor.withValues(
-        alpha: isDark ? 0.10 : 0.038,
-      ),
+      context.primaryVariantColor.withValues(alpha: isDark ? 0.10 : 0.038),
       scheme.surface,
     );
     final animation =
@@ -227,7 +221,7 @@ class _QuranIndexField extends StatelessWidget {
               painter: _QuranIndexFieldPainter(
                 topField: topField,
                 lowerField: lowerField,
-                ink: context.primaryColor,
+                ink: QuranJourneyVisualStyle.ink(context),
                 illumination: QuranJourneyVisualStyle.illumination(context),
                 isDark: isDark,
                 revealAnimation: animation,
@@ -272,7 +266,7 @@ class _IndexHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.primaryColor;
+    final color = QuranJourneyVisualStyle.ink(context);
     return Semantics(
       header: true,
       child: Padding(
@@ -282,19 +276,19 @@ class _IndexHeading extends StatelessWidget {
             Text(
               '${visibleCount.toString().padLeft(2, '0')} /',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: QuranJourneyVisualStyle.illumination(context),
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 0.8,
-                  ),
+                color: QuranJourneyVisualStyle.illumination(context),
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.8,
+              ),
             ),
             const SizedBox(width: 9),
             Expanded(
               child: Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: -0.12,
-                    ),
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.12,
+                ),
               ),
             ),
             Container(
@@ -330,8 +324,8 @@ class _ToolIndex extends StatelessWidget {
         final columns = scale > 1.4 || constraints.maxWidth < 430
             ? 1
             : constraints.maxWidth >= 820
-                ? 3
-                : 2;
+            ? 3
+            : 2;
         final rowCount = (features.length / columns).ceil();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -402,6 +396,7 @@ class _IndexActionState extends State<_IndexAction> {
   Widget build(BuildContext context) {
     final accent = _featureAccent(context, widget.feature.id);
     final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     return Semantics(
       button: true,
@@ -415,8 +410,9 @@ class _IndexActionState extends State<_IndexAction> {
           child: QuranJourneyPressTransform(
             pressed: _pressed,
             child: AnimatedContainer(
-              duration:
-                  reduceMotion ? Duration.zero : QuranJourneyMotion.interaction,
+              duration: reduceMotion
+                  ? Duration.zero
+                  : QuranJourneyMotion.interaction,
               constraints: const BoxConstraints(minHeight: 68),
               decoration: BoxDecoration(
                 color: _highlighted
@@ -459,24 +455,19 @@ class _IndexActionState extends State<_IndexAction> {
                     accent.withValues(alpha: 0.045),
                   ),
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                      9,
-                      11,
-                      8,
-                      10,
-                    ),
+                    padding: const EdgeInsetsDirectional.fromSTEB(9, 11, 8, 10),
                     child: Row(
                       children: [
                         SizedBox(
                           width: 27,
                           child: Text(
                             widget.index.toString().padLeft(2, '0'),
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall
+                            style: Theme.of(context).textTheme.labelSmall
                                 ?.copyWith(
                                   color: accent.withValues(
-                                    alpha: widget.secondary ? 0.58 : 0.78,
+                                    alpha: isDark
+                                        ? (widget.secondary ? 0.78 : 0.92)
+                                        : (widget.secondary ? 0.58 : 0.78),
                                   ),
                                   fontWeight: FontWeight.w900,
                                   letterSpacing: 0.3,
@@ -487,7 +478,9 @@ class _IndexActionState extends State<_IndexAction> {
                         _FeatureGlyph(
                           feature: widget.feature,
                           color: accent.withValues(
-                            alpha: widget.secondary ? 0.68 : 0.92,
+                            alpha: isDark
+                                ? (widget.secondary ? 0.90 : 1)
+                                : (widget.secondary ? 0.68 : 0.92),
                           ),
                         ),
                         const SizedBox(width: 9),
@@ -496,9 +489,7 @@ class _IndexActionState extends State<_IndexAction> {
                             widget.feature.title,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge
+                            style: Theme.of(context).textTheme.labelLarge
                                 ?.copyWith(
                                   color: widget.secondary
                                       ? scheme.onSurfaceVariant
@@ -515,7 +506,11 @@ class _IndexActionState extends State<_IndexAction> {
                           active: _highlighted,
                           child: Icon(
                             Icons.arrow_outward_rounded,
-                            color: accent.withValues(alpha: 0.42),
+                            color: accent.withValues(
+                              alpha: isDark
+                                  ? (widget.secondary ? 0.62 : 0.72)
+                                  : 0.42,
+                            ),
                             size: 16,
                           ),
                         ),
@@ -577,13 +572,14 @@ class _ViewMoreIndexControlState extends State<_ViewMoreIndexControl> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final color = context.primaryColor;
+    final color = QuranJourneyVisualStyle.ink(context);
     final illumination = QuranJourneyVisualStyle.illumination(context);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final label = widget.expanded ? l10n.showLess : l10n.viewMore;
     final focusSide = BorderSide(
-      color:
-          _focused ? illumination.withValues(alpha: 0.72) : Colors.transparent,
+      color: _focused
+          ? illumination.withValues(alpha: 0.72)
+          : Colors.transparent,
       width: QuranJourneyVisualStyle.ruleWidth,
     );
     return Semantics(
@@ -632,15 +628,17 @@ class _ViewMoreIndexControlState extends State<_ViewMoreIndexControl> {
                       color.withValues(alpha: 0.045),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 12, 10, 12),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        10,
+                        12,
+                        10,
+                        12,
+                      ),
                       child: Row(
                         children: [
                           Text(
                             '+${widget.count.toString().padLeft(2, '0')}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
+                            style: Theme.of(context).textTheme.labelMedium
                                 ?.copyWith(
                                   color: illumination,
                                   fontWeight: FontWeight.w900,
@@ -655,9 +653,7 @@ class _ViewMoreIndexControlState extends State<_ViewMoreIndexControl> {
                                 label,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge
+                                style: Theme.of(context).textTheme.labelLarge
                                     ?.copyWith(
                                       color: color,
                                       fontWeight: FontWeight.w900,
@@ -740,9 +736,7 @@ class _QuranIndexFieldPainter extends CustomPainter {
     );
 
     final rule = Paint()
-      ..color = ink.withValues(
-        alpha: (isDark ? 0.27 : 0.16) * edgeReveal,
-      )
+      ..color = ink.withValues(alpha: (isDark ? 0.27 : 0.16) * edgeReveal)
       ..style = PaintingStyle.stroke
       ..strokeWidth = QuranJourneyVisualStyle.ruleWidth;
     final highlight = Paint()
@@ -816,16 +810,15 @@ class _QuranIndexFieldPainter extends CustomPainter {
 }
 
 Color _featureAccent(BuildContext context, HomeFeatureId id) {
-  return switch (id) {
+  final color = switch (id) {
     HomeFeatureId.prayerTimes ||
     HomeFeatureId.hijriCalendar ||
     HomeFeatureId.ramadan ||
-    HomeFeatureId.qiblah =>
-      context.primaryVariantColor,
+    HomeFeatureId.qiblah => context.primaryVariantColor,
     HomeFeatureId.tasbih ||
     HomeFeatureId.checklist ||
-    HomeFeatureId.zakat =>
-      context.accentColor,
+    HomeFeatureId.zakat => context.accentColor,
     _ => context.primaryColor,
   };
+  return QuranJourneyVisualStyle.foreground(context, color);
 }

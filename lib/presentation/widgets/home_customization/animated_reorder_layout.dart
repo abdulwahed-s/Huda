@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 
-typedef ReorderLayoutItemBuilder<T extends Object> = Widget Function(
-  BuildContext context,
-  T item,
-  bool lifted,
-);
+typedef ReorderLayoutItemBuilder<T extends Object> =
+    Widget Function(BuildContext context, T item, bool lifted);
 
 class AnimatedReorderLayout<T extends Object> extends StatefulWidget {
   const AnimatedReorderLayout({
@@ -16,6 +14,8 @@ class AnimatedReorderLayout<T extends Object> extends StatefulWidget {
     required this.itemExtent,
     required this.itemBuilder,
     required this.onReorder,
+    required this.moveUpLabel,
+    required this.moveDownLabel,
     this.spacing = 12,
     this.onDragUpdate,
     this.semanticLabelBuilder,
@@ -29,6 +29,8 @@ class AnimatedReorderLayout<T extends Object> extends StatefulWidget {
   final void Function(T dragged, T target) onReorder;
   final ValueChanged<DragUpdateDetails>? onDragUpdate;
   final String Function(T item)? semanticLabelBuilder;
+  final String moveUpLabel;
+  final String moveDownLabel;
 
   @override
   State<AnimatedReorderLayout<T>> createState() =>
@@ -39,14 +41,15 @@ class _AnimatedReorderLayoutState<T extends Object>
     extends State<AnimatedReorderLayout<T>> {
   T? _dragging;
   T? _lastTarget;
+  Offset? _lastDragOffset;
+  Offset? _lastReorderDirection;
 
   bool get _usesImmediateDrag {
     if (kIsWeb) return true;
     return switch (defaultTargetPlatform) {
       TargetPlatform.macOS ||
       TargetPlatform.windows ||
-      TargetPlatform.linux =>
-        true,
+      TargetPlatform.linux => true,
       _ => false,
     };
   }
@@ -70,12 +73,14 @@ class _AnimatedReorderLayoutState<T extends Object>
         final width = constraints.maxWidth;
         final itemWidth = (width - widget.spacing * (columns - 1)) / columns;
         final rows = (widget.items.length / columns).ceil();
-        final height = rows * widget.itemExtent +
-            (rows - 1).clamp(0, rows) * widget.spacing;
+        final height =
+            rows * widget.itemExtent +
+            (rows > 1 ? (rows - 1) * widget.spacing : 0);
 
         return AnimatedContainer(
-          duration:
-              reduceMotion ? Duration.zero : const Duration(milliseconds: 240),
+          duration: reduceMotion
+              ? Duration.zero
+              : const Duration(milliseconds: 260),
           curve: Curves.easeOutCubic,
           width: width,
           height: height,
@@ -110,43 +115,74 @@ class _AnimatedReorderLayoutState<T extends Object>
     final column = index % columns;
     return AnimatedPositionedDirectional(
       key: ValueKey<T>(item),
-      duration:
-          reduceMotion ? Duration.zero : const Duration(milliseconds: 230),
+      duration: reduceMotion
+          ? Duration.zero
+          : const Duration(milliseconds: 240),
       curve: Curves.easeOutCubic,
       start: column * (width + widget.spacing),
       top: row * (widget.itemExtent + widget.spacing),
       width: width,
       height: widget.itemExtent,
-      child: DragTarget<T>(
-        onWillAcceptWithDetails: (details) {
-          if (details.data == item || _lastTarget == item) return false;
-          _lastTarget = item;
-          widget.onReorder(details.data, item);
-          return true;
-        },
-        onAcceptWithDetails: (_) {},
-        builder: (context, candidates, rejected) {
-          final targeted = candidates.any((candidate) => candidate != item);
-          return AnimatedScale(
-            duration: reduceMotion
-                ? Duration.zero
-                : const Duration(milliseconds: 150),
-            curve: Curves.easeOutBack,
-            scale: targeted ? 1.035 : 1,
-            child: _buildDraggable(context, item, width),
-          );
-        },
+      child: _AppearTransition(
+        reduceMotion: reduceMotion,
+        child: DragTarget<T>(
+          onWillAcceptWithDetails: (details) {
+            if (details.data == item) {
+              _lastDragOffset = details.offset;
+              return false;
+            }
+            _reorderFromDrag(details, item);
+            return true;
+          },
+          onMove: (details) {
+            if (details.data == item) {
+              _lastDragOffset = details.offset;
+              return;
+            }
+            _reorderFromDrag(details, item);
+          },
+          onLeave: (_) {
+            if (_lastTarget == item) _lastTarget = null;
+          },
+          onAcceptWithDetails: (_) {},
+          builder: (context, candidates, rejected) {
+            final targeted = candidates.any((candidate) => candidate != item);
+            return AnimatedScale(
+              duration: reduceMotion
+                  ? Duration.zero
+                  : const Duration(milliseconds: 150),
+              curve: Curves.easeOutBack,
+              scale: targeted ? 1.035 : 1,
+              child: _buildDraggable(context, item, width, index),
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildDraggable(BuildContext context, T item, double width) {
+  Widget _buildDraggable(
+    BuildContext context,
+    T item,
+    double width,
+    int index,
+  ) {
+    final semanticActions = <CustomSemanticsAction, VoidCallback>{
+      if (index > 0)
+        CustomSemanticsAction(label: widget.moveUpLabel): () =>
+            widget.onReorder(item, widget.items[index - 1]),
+      if (index < widget.items.length - 1)
+        CustomSemanticsAction(label: widget.moveDownLabel): () =>
+            widget.onReorder(item, widget.items[index + 1]),
+    };
     final child = MouseRegion(
       cursor: _dragging == item
           ? SystemMouseCursors.grabbing
           : SystemMouseCursors.grab,
       child: Semantics(
+        container: true,
         label: widget.semanticLabelBuilder?.call(item),
+        customSemanticsActions: semanticActions,
         child: widget.itemBuilder(context, item, _dragging == item),
       ),
     );
@@ -156,9 +192,9 @@ class _AnimatedReorderLayoutState<T extends Object>
         width: width,
         height: widget.itemExtent,
         child: Transform.rotate(
-          angle: -0.018,
+          angle: -0.012,
           child: Transform.scale(
-            scale: 1.045,
+            scale: 1.035,
             child: widget.itemBuilder(context, item, true),
           ),
         ),
@@ -166,7 +202,7 @@ class _AnimatedReorderLayoutState<T extends Object>
     );
     final childWhenDragging = IgnorePointer(
       child: Opacity(
-        opacity: 0.22,
+        opacity: 0.24,
         child: widget.itemBuilder(context, item, true),
       ),
     );
@@ -187,6 +223,7 @@ class _AnimatedReorderLayoutState<T extends Object>
 
     return LongPressDraggable<T>(
       data: item,
+      delay: const Duration(milliseconds: 260),
       maxSimultaneousDrags: _dragging == null || _dragging == item ? 1 : 0,
       feedback: feedback,
       childWhenDragging: childWhenDragging,
@@ -204,7 +241,32 @@ class _AnimatedReorderLayoutState<T extends Object>
     setState(() {
       _dragging = item;
       _lastTarget = null;
+      _lastDragOffset = null;
+      _lastReorderDirection = null;
     });
+  }
+
+  void _reorderFromDrag(DragTargetDetails<T> details, T target) {
+    final previousOffset = _lastDragOffset;
+    final movement = previousOffset == null
+        ? null
+        : details.offset - previousOffset;
+    final lastDirection = _lastReorderDirection;
+    final reversed =
+        _lastTarget == target &&
+        movement != null &&
+        movement.distanceSquared > 0.25 &&
+        lastDirection != null &&
+        movement.dx * lastDirection.dx + movement.dy * lastDirection.dy < 0;
+
+    if (_lastTarget != target || reversed) {
+      widget.onReorder(details.data, target);
+      _lastTarget = target;
+      if (movement != null && movement.distanceSquared > 0.25) {
+        _lastReorderDirection = movement;
+      }
+    }
+    _lastDragOffset = details.offset;
   }
 
   void _finishDrag() {
@@ -212,6 +274,30 @@ class _AnimatedReorderLayoutState<T extends Object>
     setState(() {
       _dragging = null;
       _lastTarget = null;
+      _lastDragOffset = null;
+      _lastReorderDirection = null;
     });
+  }
+}
+
+class _AppearTransition extends StatelessWidget {
+  const _AppearTransition({required this.reduceMotion, required this.child});
+
+  final bool reduceMotion;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (reduceMotion) return child;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOutCubic,
+      child: child,
+      builder: (context, value, child) => Opacity(
+        opacity: value,
+        child: Transform.scale(scale: 0.94 + value * 0.06, child: child),
+      ),
+    );
   }
 }

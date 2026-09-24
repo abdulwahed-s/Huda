@@ -9,6 +9,7 @@ import 'package:huda/data/models/home/home_preferences.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/catalog/home_feature_catalog.dart';
 import 'package:huda/presentation/widgets/home/focused_theme_layout.dart';
+import 'package:huda/presentation/widgets/home/shared/andalusian_ornament_geometry.dart';
 import 'package:huda/presentation/widgets/home/shared/home_section_widgets.dart';
 import 'package:huda/presentation/widgets/home/themes/quran_journey/quran_journey_activities.dart';
 import 'package:huda/presentation/widgets/home/themes/quran_journey/quran_journey_focus.dart';
@@ -108,9 +109,9 @@ class _QuranJourneyHomeState extends State<QuranJourneyHome>
     final overlayStyle =
         (widget.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark)
             .copyWith(
-      statusBarColor: Colors.transparent,
-      systemStatusBarContrastEnforced: false,
-    );
+              statusBarColor: Colors.transparent,
+              systemStatusBarContrastEnforced: false,
+            );
     final data = widget.data;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       key: const ValueKey('quran-home-system-overlay'),
@@ -126,25 +127,23 @@ class _QuranJourneyHomeState extends State<QuranJourneyHome>
   Widget _documentForState(HomeState state) {
     final stateBody = switch (state) {
       HomeLoaded() => _QuranJourneyLoadedBody(
-          key: const ValueKey('quran-journey-loaded'),
-          configuration: widget.configuration,
-          data: state,
-          features: widget.features,
-          actions: widget.actions,
-          isDark: widget.isDark,
-          openLastReadSurah: widget.openLastReadSurah,
-          openLastReciterAudio: widget.openLastReciterAudio,
-          openLastRadioStation: widget.openLastRadioStation,
-          entranceAnimation: _entranceController,
-        ),
+        key: const ValueKey('quran-journey-loaded'),
+        configuration: widget.configuration,
+        data: state,
+        features: widget.features,
+        actions: widget.actions,
+        isDark: widget.isDark,
+        openLastReadSurah: widget.openLastReadSurah,
+        openLastReciterAudio: widget.openLastReciterAudio,
+        openLastRadioStation: widget.openLastRadioStation,
+        entranceAnimation: _entranceController,
+      ),
       HomeError(:final message) => _QuranJourneyError(
-          key: const ValueKey('quran-journey-error'),
-          message: message,
-          onRetry: widget.onRetry,
-        ),
-      _ => const _QuranJourneyLoading(
-          key: ValueKey('quran-journey-loading'),
-        ),
+        key: const ValueKey('quran-journey-error'),
+        message: message,
+        onRetry: widget.onRetry,
+      ),
+      _ => const _QuranJourneyLoading(key: ValueKey('quran-journey-loading')),
     };
 
     return Column(
@@ -170,9 +169,9 @@ class _QuranJourneyHomeState extends State<QuranJourneyHome>
               isDark: widget.isDark,
               builder: (context, presentation, onActivate) =>
                   QuranSpecialEventFolio(
-                presentation: presentation,
-                onActivate: onActivate,
-              ),
+                    presentation: presentation,
+                    onActivate: onActivate,
+                  ),
             ),
           ),
           child: _QuranJourneyStateTransition(
@@ -310,10 +309,9 @@ class _QuranJourneyLoading extends StatelessWidget {
                 itemCount: 4,
                 itemBuilder: (_, __) => _QuranSkeletonBlock(
                   height: 72,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.055),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.055),
                 ),
               );
             },
@@ -371,7 +369,7 @@ class _QuranJourneyError extends StatelessWidget {
               Icon(
                 Icons.error_outline_rounded,
                 size: 40,
-                color: context.primaryColor,
+                color: QuranJourneyVisualStyle.ink(context),
               ),
               const SizedBox(height: 12),
               Text(
@@ -421,12 +419,11 @@ class _QuranManuscriptScene extends StatelessWidget {
       paper,
     );
     final illumination = QuranJourneyVisualStyle.illumination(context);
-    final headerBoundary = MediaQuery.paddingOf(context).top +
+    final headerBoundary =
+        MediaQuery.paddingOf(context).top +
         QuranJourneyHeaderSection.contentExtent;
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: MediaQuery.sizeOf(context).height,
-      ),
+      constraints: BoxConstraints(minHeight: MediaQuery.sizeOf(context).height),
       child: Stack(
         key: const ValueKey('quran-journey-canvas'),
         children: [
@@ -437,8 +434,11 @@ class _QuranManuscriptScene extends StatelessWidget {
                 painter: _QuranManuscriptAtmospherePainter(
                   paper: paper,
                   paperEdge: paperEdge,
-                  ink: context.primaryColor,
-                  secondaryInk: context.primaryVariantColor,
+                  ink: QuranJourneyVisualStyle.ink(context),
+                  secondaryInk: QuranJourneyVisualStyle.foreground(
+                    context,
+                    context.primaryVariantColor,
+                  ),
                   illumination: illumination,
                   revealAnimation: entranceAnimation,
                   isDark: isDark,
@@ -492,31 +492,11 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
     if (size.isEmpty) return;
 
     final reveal = revealAnimation.value.clamp(0.0, 1.0);
-    final atmosphere = QuranJourneyMotion.phase(
-      reveal,
-      begin: 0,
-      end: 0.34,
-    );
-    final rules = QuranJourneyMotion.phase(
-      reveal,
-      begin: 0.04,
-      end: 0.50,
-    );
-    final gutter = QuranJourneyMotion.phase(
-      reveal,
-      begin: 0.16,
-      end: 0.62,
-    );
-    final seal = QuranJourneyMotion.phase(
-      reveal,
-      begin: 0.10,
-      end: 0.44,
-    );
-    final pageEdge = QuranJourneyMotion.phase(
-      reveal,
-      begin: 0.56,
-      end: 0.88,
-    );
+    final atmosphere = QuranJourneyMotion.phase(reveal, begin: 0, end: 0.34);
+    final rules = QuranJourneyMotion.phase(reveal, begin: 0.04, end: 0.50);
+    final gutter = QuranJourneyMotion.phase(reveal, begin: 0.16, end: 0.62);
+    final seal = QuranJourneyMotion.phase(reveal, begin: 0.10, end: 0.44);
+    final pageEdge = QuranJourneyMotion.phase(reveal, begin: 0.56, end: 0.88);
 
     canvas
       ..save()
@@ -529,32 +509,20 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
     }
 
     final outerRule = Paint()
-      ..color = ink.withValues(
-        alpha: (isDark ? 0.27 : 0.15) * rules,
-      )
+      ..color = ink.withValues(alpha: (isDark ? 0.27 : 0.15) * rules)
       ..style = PaintingStyle.stroke
       ..strokeWidth = QuranJourneyVisualStyle.ruleWidth;
     final innerRule = Paint()
-      ..color = illumination.withValues(
-        alpha: (isDark ? 0.28 : 0.19) * rules,
-      )
+      ..color = illumination.withValues(alpha: (isDark ? 0.28 : 0.19) * rules)
       ..style = PaintingStyle.stroke
       ..strokeWidth = QuranJourneyVisualStyle.innerRuleWidth;
 
     _drawFrames(canvas, size, outerRule, innerRule, rules);
-    _drawIlluminatedCorners(
-      canvas,
-      size,
-      outerRule,
-      innerRule,
-      headerBoundary,
-    );
+    _drawIlluminatedCorners(canvas, size, outerRule, innerRule, headerBoundary);
     _drawRegistrationSeal(canvas, size, seal, headerBoundary);
 
     final pageOuterRule = Paint()
-      ..color = ink.withValues(
-        alpha: (isDark ? 0.27 : 0.15) * pageEdge,
-      )
+      ..color = ink.withValues(alpha: (isDark ? 0.27 : 0.15) * pageEdge)
       ..style = PaintingStyle.stroke
       ..strokeWidth = QuranJourneyVisualStyle.ruleWidth;
     final pageInnerRule = Paint()
@@ -569,18 +537,12 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
 
   void _drawLayeredPaper(Canvas canvas, Size size, double atmosphere) {
     final pageRect = Offset.zero & size;
-    Color field(Color source, double alpha) => Color.alphaBlend(
-          source.withValues(alpha: alpha * atmosphere),
-          paper,
-        );
+    Color field(Color source, double alpha) =>
+        Color.alphaBlend(source.withValues(alpha: alpha * atmosphere), paper);
 
     final topField = field(ink, isDark ? 0.13 : 0.052);
     final focusField = field(illumination, isDark ? 0.095 : 0.062);
-    final middlePaper = Color.lerp(
-      paper,
-      paperEdge,
-      0.50 * atmosphere,
-    )!;
+    final middlePaper = Color.lerp(paper, paperEdge, 0.50 * atmosphere)!;
     final lowerField = field(secondaryInk, isDark ? 0.10 : 0.038);
     final indexApproach = field(ink, isDark ? 0.12 : 0.045);
 
@@ -625,12 +587,7 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
 
     final readingTop = math.min(size.height * 0.12, 180.0);
     final readingHeight = math.min(size.height * 0.43, 720.0);
-    final readingRect = Rect.fromLTWH(
-      0,
-      readingTop,
-      size.width,
-      readingHeight,
-    );
+    final readingRect = Rect.fromLTWH(0, readingTop, size.width, readingHeight);
     canvas.drawRect(
       readingRect,
       Paint()
@@ -638,9 +595,7 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
           center: Alignment.center,
           radius: 1.02,
           colors: [
-            ink.withValues(
-              alpha: (isDark ? 0.048 : 0.025) * atmosphere,
-            ),
+            ink.withValues(alpha: (isDark ? 0.048 : 0.025) * atmosphere),
             ink.withValues(alpha: 0),
           ],
         ).createShader(readingRect),
@@ -674,15 +629,11 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
         ..shader = LinearGradient(
           colors: [
             Colors.transparent,
-            ink.withValues(
-              alpha: (isDark ? 0.025 : 0.012) * atmosphere,
-            ),
+            ink.withValues(alpha: (isDark ? 0.025 : 0.012) * atmosphere),
             illumination.withValues(
               alpha: (isDark ? 0.032 : 0.016) * atmosphere,
             ),
-            ink.withValues(
-              alpha: (isDark ? 0.025 : 0.012) * atmosphere,
-            ),
+            ink.withValues(alpha: (isDark ? 0.025 : 0.012) * atmosphere),
             Colors.transparent,
           ],
           stops: const [0, 0.32, 0.5, 0.68, 1],
@@ -695,12 +646,8 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
         end: Alignment.bottomCenter,
         colors: [
           Colors.transparent,
-          ink.withValues(
-            alpha: (isDark ? 0.09 : 0.045) * atmosphere,
-          ),
-          illumination.withValues(
-            alpha: (isDark ? 0.08 : 0.04) * atmosphere,
-          ),
+          ink.withValues(alpha: (isDark ? 0.09 : 0.045) * atmosphere),
+          illumination.withValues(alpha: (isDark ? 0.08 : 0.04) * atmosphere),
           Colors.transparent,
         ],
         stops: const [0, 0.18, 0.68, 1],
@@ -756,34 +703,25 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
   ) {
     final span = (size.width * 0.22).clamp(72.0, 148.0);
     final baseline = (headerBoundary - 8)
-        .clamp(
-          52.0,
-          math.max(52.0, size.height - 20),
-        )
+        .clamp(52.0, math.max(52.0, size.height - 20))
         .toDouble();
 
-    void drawCorner({required bool trailing}) {
-      final direction = trailing ? -1.0 : 1.0;
-      final origin = trailing ? size.width - 12 : 12.0;
-      final outer = Path()
-        ..moveTo(origin, baseline - 30)
-        ..lineTo(origin, baseline)
-        ..lineTo(origin + direction * span, baseline);
-      final stepped = Path()
-        ..moveTo(origin + direction * 5, baseline - 26)
-        ..lineTo(origin + direction * 5, baseline - 7)
-        ..lineTo(origin + direction * 34, baseline - 7)
-        ..lineTo(origin + direction * 34, baseline - 1)
-        ..lineTo(origin + direction * (span - 26), baseline - 1)
-        ..lineTo(origin + direction * (span - 26), baseline - 7)
-        ..lineTo(origin + direction * (span - 5), baseline - 7);
-      canvas
-        ..drawPath(outer, outerRule)
-        ..drawPath(stepped, innerRule);
-    }
-
-    drawCorner(trailing: false);
-    drawCorner(trailing: true);
+    AndalusianOrnamentGeometry.drawAtauriqueSpray(
+      canvas,
+      Offset(12, baseline),
+      width: span,
+      height: 34,
+      vine: outerRule,
+      leaf: innerRule,
+    );
+    AndalusianOrnamentGeometry.drawAtauriqueSpray(
+      canvas,
+      Offset(size.width - 12, baseline),
+      width: span,
+      height: 34,
+      vine: outerRule,
+      leaf: innerRule,
+    );
   }
 
   void _drawRegistrationSeal(
@@ -794,30 +732,13 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
   ) {
     if (opacity <= 0) return;
     final centerY = (headerBoundary - 8)
-        .clamp(
-          52.0,
-          math.max(52.0, size.height - 20),
-        )
+        .clamp(52.0, math.max(52.0, size.height - 20))
         .toDouble();
     final center = Offset(size.width / 2, centerY);
     final line = Paint()
-      ..color = illumination.withValues(
-        alpha: (isDark ? 0.38 : 0.28) * opacity,
-      )
+      ..color = illumination.withValues(alpha: (isDark ? 0.38 : 0.28) * opacity)
       ..style = PaintingStyle.stroke
       ..strokeWidth = QuranJourneyVisualStyle.innerRuleWidth;
-    final star = Path();
-    for (var index = 0; index < 16; index++) {
-      final radius = index.isEven ? 8.0 : 3.8;
-      final angle = -math.pi / 2 + index * math.pi / 8;
-      final point = Offset(
-        center.dx + math.cos(angle) * radius,
-        center.dy + math.sin(angle) * radius,
-      );
-      index == 0
-          ? star.moveTo(point.dx, point.dy)
-          : star.lineTo(point.dx, point.dy);
-    }
     final scale = 0.88 + 0.12 * opacity;
     final rotation = (1 - opacity) * -0.07;
     canvas
@@ -825,10 +746,15 @@ class _QuranManuscriptAtmospherePainter extends CustomPainter {
       ..translate(center.dx, center.dy)
       ..rotate(rotation)
       ..scale(scale)
-      ..translate(-center.dx, -center.dy)
-      ..drawPath(star..close(), line)
-      ..drawCircle(center, 2.2, line)
-      ..restore();
+      ..translate(-center.dx, -center.dy);
+    AndalusianOrnamentGeometry.drawEightfoldRosette(
+      canvas,
+      center,
+      8,
+      primary: line,
+      progress: opacity,
+    );
+    canvas.restore();
   }
 
   void _drawPageEdge(

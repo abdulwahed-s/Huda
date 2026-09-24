@@ -8,7 +8,7 @@ import 'home_customization_state.dart';
 
 class HomeCustomizationCubit extends Cubit<HomeCustomizationState> {
   HomeCustomizationCubit(this._service)
-      : super(const HomeCustomizationLoading()) {
+    : super(const HomeCustomizationLoading()) {
     load();
   }
 
@@ -17,12 +17,7 @@ class HomeCustomizationCubit extends Cubit<HomeCustomizationState> {
   void load() {
     try {
       final preferences = _service.load();
-      emit(
-        HomeCustomizationReady(
-          preferences,
-          draft: _copy(preferences),
-        ),
-      );
+      emit(HomeCustomizationReady(preferences, draft: _copy(preferences)));
     } catch (error) {
       emit(HomeCustomizationError(error.toString()));
     }
@@ -60,52 +55,44 @@ class HomeCustomizationCubit extends Cubit<HomeCustomizationState> {
     _emitDraft(current.draft.copyWith(selectedTheme: theme));
   }
 
-  void reorderSections(HomeSectionId dragged, HomeSectionId target) {
+  void reorderSections({required int fromIndex, required int toIndex}) {
     final current = _editingState;
-    if (current == null || dragged == target) return;
+    if (current == null) return;
     final configuration = _configuration(current);
     final sections = List<HomeSectionId>.from(configuration.orderedSections);
-    final oldIndex = sections.indexOf(dragged);
-    final targetIndex = sections.indexOf(target);
-    if (oldIndex < 0 || targetIndex < 0) return;
-    sections
-      ..removeAt(oldIndex)
-      ..insert(targetIndex.clamp(0, sections.length), dragged);
+    if (!_moveAt(sections, fromIndex: fromIndex, toIndex: toIndex)) return;
     _updateConfiguration(
       current,
       configuration.copyWith(orderedSections: sections),
     );
   }
 
-  void setSectionVisibility(HomeSectionId section, {required bool visible}) {
-    final current = _editingState;
-    if (current == null) return;
-    final configuration = _configuration(current);
-    final hidden = Set<HomeSectionId>.from(configuration.hiddenSections);
-    visible ? hidden.remove(section) : hidden.add(section);
-    _updateConfiguration(
-      current,
-      configuration.copyWith(hiddenSections: hidden),
-    );
-  }
-
   void reorderFeature({
     required bool primary,
-    required HomeFeatureId dragged,
-    required HomeFeatureId target,
+    required int fromIndex,
+    required int toIndex,
+    required List<HomeFeatureId> visibleFeatures,
   }) {
     final current = _editingState;
-    if (current == null || dragged == target) return;
+    if (current == null) return;
     final configuration = _configuration(current);
     final features = List<HomeFeatureId>.from(
       primary ? configuration.primaryFeatures : configuration.viewMoreFeatures,
     );
-    final oldIndex = features.indexOf(dragged);
-    final targetIndex = features.indexOf(target);
-    if (oldIndex < 0 || targetIndex < 0) return;
-    features
-      ..removeAt(oldIndex)
-      ..insert(targetIndex.clamp(0, features.length), dragged);
+    final visible = visibleFeatures
+        .where(features.contains)
+        .toList(growable: true);
+    if (visible.length != visibleFeatures.length ||
+        !_moveAt(visible, fromIndex: fromIndex, toIndex: toIndex)) {
+      return;
+    }
+    final visibleSet = visible.toSet();
+    var visibleIndex = 0;
+    for (var index = 0; index < features.length; index++) {
+      if (visibleSet.contains(features[index])) {
+        features[index] = visible[visibleIndex++];
+      }
+    }
     _updateConfiguration(
       current,
       primary
@@ -114,33 +101,18 @@ class HomeCustomizationCubit extends Cubit<HomeCustomizationState> {
     );
   }
 
-  void setFeatureVisibility(HomeFeatureId feature, {required bool visible}) {
-    final current = _editingState;
-    if (current == null) return;
-    final configuration = _configuration(current);
-    final hidden = Set<HomeFeatureId>.from(configuration.hiddenFeatures);
-    visible ? hidden.remove(feature) : hidden.add(feature);
-    _updateConfiguration(
-      current,
-      configuration.copyWith(hiddenFeatures: hidden),
-    );
-  }
-
   void moveFeature(HomeFeatureId feature, {required bool toPrimary}) {
     final current = _editingState;
     if (current == null) return;
     final configuration = _configuration(current);
-    final primary = List<HomeFeatureId>.from(configuration.primaryFeatures)
-      ..remove(feature);
-    final more = List<HomeFeatureId>.from(configuration.viewMoreFeatures)
-      ..remove(feature);
+    final primary = List<HomeFeatureId>.from(configuration.primaryFeatures);
+    final more = List<HomeFeatureId>.from(configuration.viewMoreFeatures);
+    final existed = primary.remove(feature) || more.remove(feature);
+    if (!existed) return;
     (toPrimary ? primary : more).add(feature);
     _updateConfiguration(
       current,
-      configuration.copyWith(
-        primaryFeatures: primary,
-        viewMoreFeatures: more,
-      ),
+      configuration.copyWith(primaryFeatures: primary, viewMoreFeatures: more),
     );
   }
 
@@ -166,8 +138,9 @@ class HomeCustomizationCubit extends Cubit<HomeCustomizationState> {
   Future<bool> apply(HomePreferences preferences) async {
     final previous = state;
     if (previous is HomeCustomizationReady && previous.isSaving) return false;
-    final committed =
-        previous is HomeCustomizationReady ? previous.preferences : preferences;
+    final committed = previous is HomeCustomizationReady
+        ? previous.preferences
+        : preferences;
     emit(
       HomeCustomizationReady(
         committed,
@@ -179,12 +152,7 @@ class HomeCustomizationCubit extends Cubit<HomeCustomizationState> {
     );
     try {
       await _service.save(preferences);
-      emit(
-        HomeCustomizationReady(
-          preferences,
-          draft: _copy(preferences),
-        ),
-      );
+      emit(HomeCustomizationReady(preferences, draft: _copy(preferences)));
       return true;
     } catch (error) {
       emit(
@@ -241,4 +209,21 @@ class HomeCustomizationCubit extends Cubit<HomeCustomizationState> {
 
   static bool _same(HomePreferences a, HomePreferences b) =>
       jsonEncode(a.toJson()) == jsonEncode(b.toJson());
+
+  static bool _moveAt<T>(
+    List<T> items, {
+    required int fromIndex,
+    required int toIndex,
+  }) {
+    if (fromIndex < 0 ||
+        fromIndex >= items.length ||
+        toIndex < 0 ||
+        toIndex >= items.length ||
+        fromIndex == toIndex) {
+      return false;
+    }
+    final item = items.removeAt(fromIndex);
+    items.insert(toIndex, item);
+    return true;
+  }
 }

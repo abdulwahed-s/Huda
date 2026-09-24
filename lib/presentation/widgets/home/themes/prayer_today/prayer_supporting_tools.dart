@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
 import 'package:huda/l10n/app_localizations.dart';
@@ -63,7 +64,6 @@ class _PrayerSupportingToolsState extends State<PrayerSupportingTools> {
     final byId = {for (final feature in widget.features) feature.id: feature};
     List<HomeFeatureDefinition> resolve(List<HomeFeatureId> ids) {
       return ids
-          .where((id) => !widget.configuration.hiddenFeatures.contains(id))
           .map((id) => byId[id])
           .whereType<HomeFeatureDefinition>()
           .toList(growable: false);
@@ -127,8 +127,9 @@ class _PrayerSupportingToolsState extends State<PrayerSupportingTools> {
           ),
           ClipRect(
             child: AnimatedSize(
-              duration:
-                  reduceMotion ? Duration.zero : PrayerTodayMotion.expansion,
+              duration: reduceMotion
+                  ? Duration.zero
+                  : PrayerTodayMotion.expansion,
               curve: PrayerTodayMotion.entranceCurve,
               alignment: Alignment.topCenter,
               child: _moreExpanded
@@ -144,8 +145,9 @@ class _PrayerSupportingToolsState extends State<PrayerSupportingTools> {
                             secondary: true,
                             quranExpanded: _quranExpanded,
                             onQuranTap: _toggleQuranKit,
-                            quranWorkspace:
-                                quranInMore ? _buildQuranWorkspace() : null,
+                            quranWorkspace: quranInMore
+                                ? _buildQuranWorkspace()
+                                : null,
                           ),
                         ],
                       ),
@@ -201,9 +203,9 @@ class _ToolSectionHeading extends StatelessWidget {
           child: Text(
             title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -0.15,
-                ),
+              fontWeight: FontWeight.w900,
+              letterSpacing: -0.15,
+            ),
           ),
         ),
         Container(
@@ -215,9 +217,9 @@ class _ToolSectionHeading extends StatelessWidget {
           child: Text(
             '$visibleCount',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: scheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: scheme.onSurfaceVariant,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ),
       ],
@@ -249,8 +251,8 @@ class _PrayerToolGrid extends StatelessWidget {
         final columns = constraints.maxWidth >= 920
             ? 4
             : constraints.maxWidth >= 610
-                ? 3
-                : 2;
+            ? 3
+            : 2;
         final extent = secondary
             ? (scale > 1.5 ? 102.0 : 78.0)
             : (scale > 1.5 ? 132.0 : 108.0);
@@ -385,8 +387,9 @@ class _PrayerToolTileState extends State<_PrayerToolTile> {
     final radius = BorderRadius.circular(widget.secondary ? 18 : 23);
     return Semantics(
       button: true,
-      expanded:
-          widget.feature.id == HomeFeatureId.quranKit ? widget.expanded : null,
+      expanded: widget.feature.id == HomeFeatureId.quranKit
+          ? widget.expanded
+          : null,
       label: widget.feature.title,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -396,12 +399,14 @@ class _PrayerToolTileState extends State<_PrayerToolTile> {
           onShowFocusHighlight: (value) => setState(() => _active = value),
           child: AnimatedScale(
             scale: _active && !reduceMotion ? 1.018 : 1,
-            duration:
-                reduceMotion ? Duration.zero : PrayerTodayMotion.interaction,
+            duration: reduceMotion
+                ? Duration.zero
+                : PrayerTodayMotion.interaction,
             curve: PrayerTodayMotion.entranceCurve,
             child: AnimatedContainer(
-              duration:
-                  reduceMotion ? Duration.zero : PrayerTodayMotion.stateChange,
+              duration: reduceMotion
+                  ? Duration.zero
+                  : PrayerTodayMotion.stateChange,
               transform: Matrix4.translationValues(
                 0,
                 _active && !reduceMotion ? -3 : 0,
@@ -417,8 +422,8 @@ class _PrayerToolTileState extends State<_PrayerToolTile> {
                         alpha: widget.expanded
                             ? 0.13
                             : _active
-                                ? 0.09
-                                : 0.045,
+                            ? 0.09
+                            : 0.045,
                       ),
                       scheme.surface,
                     ),
@@ -434,8 +439,8 @@ class _PrayerToolTileState extends State<_PrayerToolTile> {
                     alpha: widget.expanded
                         ? 0.34
                         : _active
-                            ? 0.22
-                            : 0.11,
+                        ? 0.22
+                        : 0.11,
                   ),
                 ),
                 boxShadow: _active && !reduceMotion
@@ -555,9 +560,9 @@ class _PrimaryToolContent extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      height: 1.12,
-                    ),
+                  fontWeight: FontWeight.w800,
+                  height: 1.12,
+                ),
               ),
             ],
           ),
@@ -604,9 +609,9 @@ class _SecondaryToolContent extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    height: 1.12,
-                  ),
+                fontWeight: FontWeight.w700,
+                height: 1.12,
+              ),
             ),
           ),
           if (quranKit)
@@ -704,9 +709,9 @@ class _ViewMorePill extends StatelessWidget {
         maxLines: largeText ? 2 : 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: accent,
-              fontWeight: FontWeight.w800,
-            ),
+          color: accent,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
     return Semantics(
@@ -723,8 +728,9 @@ class _ViewMorePill extends StatelessWidget {
             onTap: onTap,
             borderRadius: BorderRadius.circular(99),
             child: AnimatedContainer(
-              duration:
-                  reduceMotion ? Duration.zero : PrayerTodayMotion.stateChange,
+              duration: reduceMotion
+                  ? Duration.zero
+                  : PrayerTodayMotion.stateChange,
               curve: PrayerTodayMotion.entranceCurve,
               padding: const EdgeInsets.fromLTRB(13, 8, 9, 8),
               decoration: BoxDecoration(
@@ -740,8 +746,10 @@ class _ViewMorePill extends StatelessWidget {
                   if (largeText) Expanded(child: label) else label,
                   const SizedBox(width: 8),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: accent.withValues(alpha: 0.11),
                       borderRadius: BorderRadius.circular(99),
@@ -749,9 +757,9 @@ class _ViewMorePill extends StatelessWidget {
                     child: Text(
                       '$count',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: accent,
-                            fontWeight: FontWeight.w900,
-                          ),
+                        color: accent,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 4),
@@ -792,10 +800,7 @@ class _QuranWorkspaceReveal extends StatelessWidget {
         curve: PrayerTodayMotion.entranceCurve,
         alignment: Alignment.topCenter,
         child: visible
-            ? Padding(
-                padding: const EdgeInsets.only(top: 14),
-                child: child,
-              )
+            ? Padding(padding: const EdgeInsets.only(top: 14), child: child)
             : const SizedBox.shrink(),
       ),
     );
@@ -880,10 +885,72 @@ class _ToolEntrance extends StatelessWidget {
 }
 
 Color _featureAccent(BuildContext context, HomeFeatureId id) {
-  return switch (id.index % 4) {
-    0 => context.primaryColor,
-    1 => context.primaryVariantColor,
-    2 => context.accentColor,
-    _ => context.primaryDarkColor,
+  final scheme = Theme.of(context).colorScheme;
+  return resolvePrayerToolAccent(
+    id: id,
+    brightness: Theme.of(context).brightness,
+    colors: context.appColors,
+    surface: scheme.surface,
+    onSurface: scheme.onSurface,
+  );
+}
+
+@visibleForTesting
+Color resolvePrayerToolAccent({
+  required HomeFeatureId id,
+  required Brightness brightness,
+  required AppColorScheme colors,
+  required Color surface,
+  required Color onSurface,
+}) {
+  final accent = switch (id.index % 4) {
+    0 => colors.primary,
+    1 => colors.primaryVariant,
+    2 => colors.accent,
+    _ => colors.primaryDark,
   };
+  if (brightness != Brightness.dark) return accent;
+
+  return _withMinimumPrayerToolContrast(
+    accent: accent,
+    surface: surface,
+    onSurface: onSurface,
+  );
+}
+
+Color _withMinimumPrayerToolContrast({
+  required Color accent,
+  required Color surface,
+  required Color onSurface,
+}) {
+  const minimumContrast = 4.5;
+  const maximumBackdropTint = 0.14;
+
+  Color backdropFor(Color color) =>
+      Color.alphaBlend(color.withValues(alpha: maximumBackdropTint), surface);
+
+  if (_contrastRatio(accent, backdropFor(accent)) >= minimumContrast) {
+    return accent;
+  }
+
+  var lower = 0.0;
+  var upper = 1.0;
+  for (var iteration = 0; iteration < 12; iteration++) {
+    final amount = (lower + upper) / 2;
+    final candidate = Color.lerp(accent, onSurface, amount)!;
+    if (_contrastRatio(candidate, backdropFor(candidate)) >= minimumContrast) {
+      upper = amount;
+    } else {
+      lower = amount;
+    }
+  }
+  return Color.lerp(accent, onSurface, upper)!;
+}
+
+double _contrastRatio(Color first, Color second) {
+  final firstLuminance = first.computeLuminance();
+  final secondLuminance = second.computeLuminance();
+  final lighter = math.max(firstLuminance, secondLuminance);
+  final darker = math.min(firstLuminance, secondLuminance);
+  return (lighter + 0.05) / (darker + 0.05);
 }

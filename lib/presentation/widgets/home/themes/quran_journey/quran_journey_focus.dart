@@ -8,6 +8,7 @@ import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/data/models/home/home_dashboard_data.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/home/shared/andalusian_ornament_geometry.dart';
 import 'package:huda/presentation/widgets/home/shared/home_section_widgets.dart';
 import 'package:huda/presentation/widgets/home/themes/quran_journey/quran_journey_motion.dart';
 import 'package:huda/presentation/widgets/home/themes/quran_journey/quran_journey_visual_style.dart';
@@ -98,8 +99,7 @@ class QuranJourneyFocus extends StatelessWidget {
   }
 
   bool _sectionVisible(HomeSectionId id) =>
-      configuration.orderedSections.contains(id) &&
-      !configuration.hiddenSections.contains(id);
+      configuration.orderedSections.contains(id);
 
   void _openKhatma() {
     HapticFeedback.selectionClick();
@@ -146,10 +146,7 @@ class QuranJourneyFocus extends StatelessWidget {
         eyebrow: l10n.khatmaProgress,
         title: quran.getSurahNameLocalized(khatma.startSurah!, locale),
         reference: l10n.ayahNumber(khatma.startAyah!),
-        description: l10n.khatmaDayOf(
-          _currentDay(khatma),
-          _totalDays(khatma),
-        ),
+        description: l10n.khatmaDayOf(_currentDay(khatma), _totalDays(khatma)),
         actionLabel: l10n.continueHome,
         actionIcon: Icons.auto_stories_rounded,
         onTap: () {
@@ -202,11 +199,7 @@ class _ReadingAnchor {
 }
 
 class _OpeningAyah extends StatefulWidget {
-  const _OpeningAyah({
-    super.key,
-    required this.ayah,
-    required this.onTap,
-  });
+  const _OpeningAyah({super.key, required this.ayah, required this.onTap});
 
   final DailyAyah ayah;
   final VoidCallback onTap;
@@ -226,7 +219,7 @@ class _OpeningAyahState extends State<_OpeningAyah> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
-    final color = context.primaryColor;
+    final color = QuranJourneyVisualStyle.ink(context);
     final illumination = QuranJourneyVisualStyle.illumination(context);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
@@ -305,8 +298,9 @@ class _OpeningAyahState extends State<_OpeningAyah> {
                             const SizedBox(height: 18),
                             Center(
                               child: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 820),
+                                constraints: const BoxConstraints(
+                                  maxWidth: 820,
+                                ),
                                 child: QuranJourneyDataTransition(
                                   transitionKey:
                                       '${widget.ayah.surahNumber}:${widget.ayah.ayahNumber}:${widget.ayah.text}',
@@ -407,10 +401,7 @@ class _ReadingSpread extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  flex: 5,
-                  child: _ContinuationRegion(anchor: anchor),
-                ),
+                Expanded(flex: 5, child: _ContinuationRegion(anchor: anchor)),
                 const QuranJourneyDivider(
                   axis: Axis.vertical,
                   inset: 14,
@@ -435,10 +426,7 @@ class _ReadingSpread extends StatelessWidget {
             children: [
               _ContinuationRegion(anchor: anchor),
               if (khatma != null) ...[
-                const QuranJourneyDivider(
-                  inset: 14,
-                  strong: true,
-                ),
+                const QuranJourneyDivider(inset: 14, strong: true),
                 KeyedSubtree(
                   key: const ValueKey('quran-journey-margin'),
                   child: _KhatmaRegion(
@@ -513,7 +501,7 @@ class _ContinuationLeaf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final ink = context.primaryColor;
+    final ink = QuranJourneyVisualStyle.ink(context);
     return Semantics(
       container: true,
       label: '${anchor.eyebrow}, ${anchor.title}, ${anchor.reference}',
@@ -537,10 +525,10 @@ class _ContinuationLeaf extends StatelessWidget {
                   child: Text(
                     anchor.eyebrow,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: ink,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.15,
-                        ),
+                      color: ink,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.15,
+                    ),
                   ),
                 ),
               ],
@@ -553,10 +541,10 @@ class _ContinuationLeaf extends StatelessWidget {
                 anchor.title,
                 key: const ValueKey('quran-primary-title'),
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: -0.42,
-                      height: 1.08,
-                    ),
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.42,
+                  height: 1.08,
+                ),
               ),
             ),
             const SizedBox(height: 7),
@@ -567,9 +555,9 @@ class _ContinuationLeaf extends StatelessWidget {
                 anchor.reference,
                 key: const ValueKey('quran-primary-reference'),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: ink,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  color: ink,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
             QuranJourneyDataTransition(
@@ -584,11 +572,11 @@ class _ContinuationLeaf extends StatelessWidget {
                         constraints: const BoxConstraints(maxWidth: 500),
                         child: Text(
                           anchor.description!,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: scheme.onSurfaceVariant,
-                                    height: 1.4,
-                                  ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                                height: 1.4,
+                              ),
                         ),
                       ),
                     ),
@@ -655,7 +643,8 @@ class _PrimaryReadingActionState extends State<_PrimaryReadingAction> {
   Widget build(BuildContext context) {
     final states = _statesController.value;
     final pressed = states.contains(WidgetState.pressed);
-    final highlighted = states.contains(WidgetState.hovered) ||
+    final highlighted =
+        states.contains(WidgetState.hovered) ||
         states.contains(WidgetState.focused);
     final illumination = QuranJourneyVisualStyle.illumination(context);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
@@ -664,8 +653,9 @@ class _PrimaryReadingActionState extends State<_PrimaryReadingAction> {
       shape: const BeveledRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(7)),
       ),
-      animationDuration:
-          reduceMotion ? Duration.zero : QuranJourneyMotion.interaction,
+      animationDuration: reduceMotion
+          ? Duration.zero
+          : QuranJourneyMotion.interaction,
     );
 
     return Semantics(
@@ -684,8 +674,8 @@ class _PrimaryReadingActionState extends State<_PrimaryReadingAction> {
                 (states) => states.contains(WidgetState.pressed)
                     ? 0
                     : states.contains(WidgetState.hovered)
-                        ? 3
-                        : 1,
+                    ? 3
+                    : 1,
               ),
               side: WidgetStateProperty.resolveWith(
                 (states) => states.contains(WidgetState.focused)
@@ -753,10 +743,13 @@ class _KhatmaJourneyState extends State<_KhatmaJourney> {
     final status = khatma.isCompleted
         ? l10n.khatmaWirdCompleted
         : khatma.isActive
-            ? l10n.khatmaDayOf(_currentDay(khatma), _totalDays(khatma))
-            : l10n.noActiveKhatma;
+        ? l10n.khatmaDayOf(_currentDay(khatma), _totalDays(khatma))
+        : l10n.noActiveKhatma;
     final percent = '${(progress * 100).round()}%';
-    final color = context.accentColor;
+    final color = QuranJourneyVisualStyle.foreground(
+      context,
+      context.accentColor,
+    );
     final scheme = Theme.of(context).colorScheme;
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     return Semantics(
@@ -782,8 +775,9 @@ class _KhatmaJourneyState extends State<_KhatmaJourney> {
                   color: color.withValues(alpha: _highlighted ? 0.045 : 0),
                   border: Border.all(
                     color: _focused
-                        ? QuranJourneyVisualStyle.illumination(context)
-                            .withValues(alpha: 0.70)
+                        ? QuranJourneyVisualStyle.illumination(
+                            context,
+                          ).withValues(alpha: 0.70)
                         : Colors.transparent,
                     width: QuranJourneyVisualStyle.ruleWidth,
                   ),
@@ -798,8 +792,12 @@ class _KhatmaJourneyState extends State<_KhatmaJourney> {
                       color.withValues(alpha: 0.05),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 8, 10, 12),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        10,
+                        8,
+                        10,
+                        12,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -810,9 +808,7 @@ class _KhatmaJourneyState extends State<_KhatmaJourney> {
                               Expanded(
                                 child: Text(
                                   l10n.khatmaProgress,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge
+                                  style: Theme.of(context).textTheme.labelLarge
                                       ?.copyWith(
                                         color: color,
                                         fontWeight: FontWeight.w900,
@@ -826,9 +822,7 @@ class _KhatmaJourneyState extends State<_KhatmaJourney> {
                             transitionKey: percent,
                             child: Text(
                               percent,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
+                              style: Theme.of(context).textTheme.headlineSmall
                                   ?.copyWith(
                                     color: color,
                                     fontWeight: FontWeight.w900,
@@ -843,9 +837,7 @@ class _KhatmaJourneyState extends State<_KhatmaJourney> {
                               status,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
+                              style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     color: scheme.onSurfaceVariant,
                                     fontWeight: FontWeight.w700,
@@ -1061,22 +1053,16 @@ class _VerseSealPainter extends CustomPainter {
       ..color = color.withValues(alpha: 0.72)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
-    final path = Path();
-    for (var index = 0; index < 16; index++) {
-      final radius = index.isEven ? size.width * 0.45 : size.width * 0.32;
-      final angle = -math.pi / 2 + index * math.pi / 8;
-      final point = Offset(
-        center.dx + math.cos(angle) * radius,
-        center.dy + math.sin(angle) * radius,
-      );
-      index == 0
-          ? path.moveTo(point.dx, point.dy)
-          : path.lineTo(point.dx, point.dy);
-    }
-    canvas
-      ..drawPath(path..close(), line)
-      ..drawCircle(center, size.width * 0.19, line)
-      ..drawCircle(center, 1.8, Paint()..color = color.withValues(alpha: 0.8));
+    AndalusianOrnamentGeometry.drawEightfoldRosette(
+      canvas,
+      center,
+      size.width * 0.45,
+      primary: line,
+      secondary: Paint()
+        ..color = color.withValues(alpha: 0.8)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.8,
+    );
   }
 
   @override

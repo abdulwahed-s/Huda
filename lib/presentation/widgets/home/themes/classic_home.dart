@@ -44,10 +44,8 @@ class _ClassicHomeState extends State<ClassicHome> {
             features: visibleMore,
             isDarkMode: widget.isDark,
             primaryItemCount: visiblePrimary.length,
-            gridBuilder: (trailingCard) => _buildGrid(
-              visiblePrimary,
-              trailingCard: trailingCard,
-            ),
+            gridBuilder: (trailingCard) =>
+                _buildGrid(visiblePrimary, trailingCard: trailingCard),
           );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,17 +66,10 @@ class _ClassicHomeState extends State<ClassicHome> {
 
   List<HomeFeatureId> _visible(List<HomeFeatureId> source) {
     final available = widget.features.map((feature) => feature.id).toSet();
-    return source
-        .where((id) =>
-            available.contains(id) &&
-            !widget.configuration.hiddenFeatures.contains(id))
-        .toList();
+    return source.where(available.contains).toList();
   }
 
-  Widget _buildGrid(
-    List<HomeFeatureId> ids, {
-    Widget? trailingCard,
-  }) {
+  Widget _buildGrid(List<HomeFeatureId> ids, {Widget? trailingCard}) {
     final l10n = AppLocalizations.of(context)!;
     final byId = {for (final feature in widget.features) feature.id: feature};
     final quranIndex = ids.indexOf(HomeFeatureId.quranKit);

@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
+import 'package:huda/presentation/widgets/home/shared/andalusian_ornament_geometry.dart';
+import 'package:huda/presentation/widgets/home/shared/andalusian_star_cross_pattern.dart';
 
 enum HomeThemePreviewDetail { compact, expanded }
 
@@ -37,22 +39,20 @@ class HomeThemePreview extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(radius - 1),
             child: KeyedSubtree(
-              key: ValueKey(
-                'home-theme-preview-${theme.name}-${detail.name}',
-              ),
+              key: ValueKey('home-theme-preview-${theme.name}-${detail.name}'),
               child: switch (theme) {
                 HomeThemeId.classic => _ClassicPreview(
-                    configuration: resolved,
-                    detail: detail,
-                  ),
+                  configuration: resolved,
+                  detail: detail,
+                ),
                 HomeThemeId.prayerToday => _PrayerTodayPreview(
-                    configuration: resolved,
-                    detail: detail,
-                  ),
+                  configuration: resolved,
+                  detail: detail,
+                ),
                 HomeThemeId.quranJourney => _QuranJourneyPreview(
-                    configuration: resolved,
-                    detail: detail,
-                  ),
+                  configuration: resolved,
+                  detail: detail,
+                ),
               },
             ),
           ),
@@ -63,10 +63,7 @@ class HomeThemePreview extends StatelessWidget {
 }
 
 class _ClassicPreview extends StatelessWidget {
-  const _ClassicPreview({
-    required this.configuration,
-    required this.detail,
-  });
+  const _ClassicPreview({required this.configuration, required this.detail});
 
   final HomeThemeConfiguration configuration;
   final HomeThemePreviewDetail detail;
@@ -77,12 +74,8 @@ class _ClassicPreview extends StatelessWidget {
     final primary = context.primaryColor;
     final accent = context.accentColor;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final visiblePrimary = configuration.primaryFeatures
-        .where((id) => !configuration.hiddenFeatures.contains(id))
-        .toList(growable: false);
-    final visibleMore = configuration.viewMoreFeatures
-        .where((id) => !configuration.hiddenFeatures.contains(id))
-        .toList(growable: false);
+    final visiblePrimary = configuration.primaryFeatures;
+    final visibleMore = configuration.viewMoreFeatures;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -118,10 +111,11 @@ class _ClassicPreview extends StatelessWidget {
             Positioned.fill(
               child: CustomPaint(
                 key: const ValueKey('classic-preview-geometry'),
-                painter: _ClassicGeometryPainter(
+                painter: AndalusianStarCrossPatternPainter(
                   primary: primary,
                   accent: accent,
                   isDark: isDark,
+                  bandHeight: math.min(64, height * 0.20),
                 ),
               ),
             ),
@@ -153,7 +147,8 @@ class _ClassicPreview extends StatelessWidget {
                     ),
                     _TuneMark(
                       color: primary,
-                      width: width *
+                      width:
+                          width *
                           (detail == HomeThemePreviewDetail.expanded
                               ? 0.18
                               : 0.16),
@@ -238,7 +233,8 @@ class _ClassicFeatureGrid extends StatelessWidget {
           crossAxisCount: columns,
           crossAxisSpacing: gap,
           mainAxisSpacing: gap,
-          childAspectRatio: (constraints.maxWidth - gap * (columns - 1)) /
+          childAspectRatio:
+              (constraints.maxWidth - gap * (columns - 1)) /
               columns /
               ((constraints.maxHeight - gap) / rows),
           children: cells,
@@ -266,10 +262,7 @@ class _ClassicFeatureCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final tile = DecoratedBox(
       decoration: BoxDecoration(
-        color: Color.alphaBlend(
-          primary.withValues(alpha: 0.035),
-          surface,
-        ),
+        color: Color.alphaBlend(primary.withValues(alpha: 0.035), surface),
         borderRadius: BorderRadius.circular(7),
         border: Border.all(color: primary.withValues(alpha: 0.13)),
       ),
@@ -349,19 +342,14 @@ class _ClassicViewMoreCell extends StatelessWidget {
                   surface,
                 ),
                 borderRadius: BorderRadius.circular(7),
-                border: Border.all(
-                  color: primary.withValues(alpha: 0.10),
-                ),
+                border: Border.all(color: primary.withValues(alpha: 0.10)),
               ),
             ),
           ),
         Positioned.fill(
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Color.alphaBlend(
-                primary.withValues(alpha: 0.11),
-                surface,
-              ),
+              color: Color.alphaBlend(primary.withValues(alpha: 0.11), surface),
               borderRadius: BorderRadius.circular(7),
               border: Border.all(color: primary.withValues(alpha: 0.24)),
             ),
@@ -391,12 +379,8 @@ class _PrayerTodayPreview extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final primary = context.primaryColor;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final visiblePrimary = configuration.primaryFeatures
-        .where((id) => !configuration.hiddenFeatures.contains(id))
-        .length;
-    final visibleMore = configuration.viewMoreFeatures
-        .where((id) => !configuration.hiddenFeatures.contains(id))
-        .length;
+    final visiblePrimary = configuration.primaryFeatures.length;
+    final visibleMore = configuration.viewMoreFeatures.length;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -638,18 +622,14 @@ class _QuranJourneyPreview extends StatelessWidget {
       Theme.of(context).brightness == Brightness.dark ? 0.36 : 0.48,
     )!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final dailyVisible =
-        configuration.orderedSections.contains(HomeSectionId.dailyAyah) &&
-            !configuration.hiddenSections.contains(HomeSectionId.dailyAyah);
-    final khatmaVisible = configuration.orderedSections
-            .contains(HomeSectionId.khatmaProgress) &&
-        !configuration.hiddenSections.contains(HomeSectionId.khatmaProgress);
-    final primaryCount = configuration.primaryFeatures
-        .where((id) => !configuration.hiddenFeatures.contains(id))
-        .length;
-    final moreCount = configuration.viewMoreFeatures
-        .where((id) => !configuration.hiddenFeatures.contains(id))
-        .length;
+    final dailyVisible = configuration.orderedSections.contains(
+      HomeSectionId.dailyAyah,
+    );
+    final khatmaVisible = configuration.orderedSections.contains(
+      HomeSectionId.khatmaProgress,
+    );
+    final primaryCount = configuration.primaryFeatures.length;
+    final moreCount = configuration.viewMoreFeatures.length;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -676,9 +656,7 @@ class _QuranJourneyPreview extends StatelessWidget {
                         scheme.surface,
                       ),
                       Color.alphaBlend(
-                        illumination.withValues(
-                          alpha: isDark ? 0.055 : 0.028,
-                        ),
+                        illumination.withValues(alpha: isDark ? 0.055 : 0.028),
                         scheme.surface,
                       ),
                       scheme.surface,
@@ -833,61 +811,68 @@ class _AyahPreviewRegion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Color.alphaBlend(
-          illumination.withValues(alpha: 0.045),
-          surface,
-        ),
-        border: Border.all(color: primary.withValues(alpha: 0.20)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(3),
+    return FittedBox(
+      fit: BoxFit.fill,
+      child: SizedBox(
+        width: 240,
+        height: 56,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            border: Border.all(color: illumination.withValues(alpha: 0.24)),
+            color: Color.alphaBlend(
+              illumination.withValues(alpha: 0.045),
+              surface,
+            ),
+            border: Border.all(color: primary.withValues(alpha: 0.20)),
           ),
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(7, 5, 7, 5),
-            child: Row(
-              children: [
-                Container(
-                  width: 9,
-                  height: 9,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: illumination),
-                  ),
-                ),
-                const SizedBox(width: 7),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _InkLine(
-                        width: double.infinity,
-                        height: 2.5,
-                        color: primary,
-                        opacity: 0.70,
-                        radius: 0,
+            padding: const EdgeInsets.all(3),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: illumination.withValues(alpha: 0.24)),
+              ),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(7, 5, 7, 5),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 9,
+                      height: 9,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: illumination),
                       ),
-                      const SizedBox(height: 5),
-                      FractionallySizedBox(
-                        widthFactor: 0.72,
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: _InkLine(
-                          width: double.infinity,
-                          height: 2,
-                          color: primary,
-                          opacity: 0.42,
-                          radius: 0,
-                        ),
+                    ),
+                    const SizedBox(width: 7),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _InkLine(
+                            width: double.infinity,
+                            height: 2.5,
+                            color: primary,
+                            opacity: 0.70,
+                            radius: 0,
+                          ),
+                          const SizedBox(height: 5),
+                          FractionallySizedBox(
+                            widthFactor: 0.72,
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: _InkLine(
+                              width: double.infinity,
+                              height: 2,
+                              color: primary,
+                              opacity: 0.42,
+                              radius: 0,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -1006,10 +991,12 @@ class _ReadingPreviewRegion extends StatelessWidget {
                                 child: LinearProgressIndicator(
                                   minHeight: 3,
                                   value: 0.64,
-                                  backgroundColor:
-                                      primary.withValues(alpha: 0.10),
-                                  valueColor:
-                                      AlwaysStoppedAnimation(illumination),
+                                  backgroundColor: primary.withValues(
+                                    alpha: 0.10,
+                                  ),
+                                  valueColor: AlwaysStoppedAnimation(
+                                    illumination,
+                                  ),
                                 ),
                               ),
                             ],
@@ -1338,50 +1325,6 @@ class _InkLine extends StatelessWidget {
   }
 }
 
-class _ClassicGeometryPainter extends CustomPainter {
-  const _ClassicGeometryPainter({
-    required this.primary,
-    required this.accent,
-    required this.isDark,
-  });
-
-  final Color primary;
-  final Color accent;
-  final bool isDark;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = math.max(0.6, size.shortestSide * 0.004)
-      ..color = primary.withValues(alpha: isDark ? 0.11 : 0.07);
-    final center = Offset(size.width * 0.86, size.height * 0.16);
-    final radius = size.shortestSide * 0.17;
-    for (var turn = 0; turn < 2; turn++) {
-      final path = Path();
-      for (var point = 0; point <= 8; point++) {
-        final angle = point * math.pi / 4 + turn * math.pi / 8;
-        final next = center + Offset(math.cos(angle), math.sin(angle)) * radius;
-        point == 0
-            ? path.moveTo(next.dx, next.dy)
-            : path.lineTo(next.dx, next.dy);
-      }
-      canvas.drawPath(path, paint);
-    }
-    canvas.drawCircle(
-      Offset(size.width * 0.12, size.height * 0.92),
-      size.shortestSide * 0.11,
-      paint..color = accent.withValues(alpha: isDark ? 0.06 : 0.035),
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant _ClassicGeometryPainter oldDelegate) =>
-      primary != oldDelegate.primary ||
-      accent != oldDelegate.accent ||
-      isDark != oldDelegate.isDark;
-}
-
 class _PrayerAtmospherePreviewPainter extends CustomPainter {
   const _PrayerAtmospherePreviewPainter({
     required this.primary,
@@ -1416,23 +1359,48 @@ class _PrayerAtmospherePreviewPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = math.max(0.6, size.shortestSide * 0.0038)
       ..color = Colors.white.withValues(alpha: 0.075);
-    final center = Offset(size.width * 0.5, size.height * 0.40);
-    final radius = size.shortestSide * 0.34;
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      math.pi,
-      math.pi,
-      false,
-      ink,
+    AndalusianOrnamentGeometry.drawVegetalFrieze(
+      canvas,
+      Rect.fromLTWH(0, size.height * 0.16, size.width, 14),
+      vine: Paint()
+        ..color = Colors.white.withValues(alpha: 0.045)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = ink.strokeWidth,
+      leaf: Paint()
+        ..color = const Color(0xFFF3D58A).withValues(alpha: 0.055)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = ink.strokeWidth,
     );
-    for (var index = 0; index < 5; index++) {
-      final x = size.width * (0.08 + index * 0.21);
-      canvas.drawLine(
-        Offset(x, size.height * 0.28),
-        Offset(x + size.width * 0.08, size.height * 0.62),
-        ink..color = Colors.white.withValues(alpha: 0.035),
-      );
-    }
+    final archBay = Rect.fromCenter(
+      center: Offset(size.width * 0.5, size.height * 0.48),
+      width: size.width * 0.42,
+      height: size.height * 0.54,
+    );
+    final arch = AndalusianOrnamentGeometry.horseshoeArch(archBay);
+    canvas
+      ..save()
+      ..clipPath(Path.from(arch)..close());
+    AndalusianOrnamentGeometry.drawStarAndCrossField(
+      canvas,
+      Rect.fromLTRB(
+        archBay.left + 12,
+        archBay.top + archBay.height * 0.42,
+        archBay.right - 12,
+        archBay.bottom - 8,
+      ),
+      module: math.max(64, size.shortestSide * 0.24),
+      starStroke: Paint()
+        ..color = Colors.white.withValues(alpha: 0.045)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = ink.strokeWidth,
+      crossStroke: Paint()
+        ..color = const Color(0xFFF3D58A).withValues(alpha: 0.055)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = ink.strokeWidth,
+    );
+    canvas
+      ..restore()
+      ..drawPath(arch, ink);
   }
 
   @override
@@ -1550,22 +1518,22 @@ class _ManuscriptPreviewPainter extends CustomPainter {
       Rect.fromLTWH(6, 6, size.width - 12, size.height - 12),
       inner,
     );
-    final marginX = textDirection == TextDirection.rtl
-        ? size.width * 0.93
-        : size.width * 0.07;
-    canvas.drawLine(
-      Offset(marginX, size.height * 0.23),
-      Offset(marginX, size.height * 0.83),
-      inner,
+    final rootX = textDirection == TextDirection.rtl ? size.width - 8.0 : 8.0;
+    AndalusianOrnamentGeometry.drawAtauriqueSpray(
+      canvas,
+      Offset(rootX, size.height * 0.80),
+      width: size.width * 0.24,
+      height: size.height * 0.42,
+      vine: outer,
+      leaf: inner,
     );
-    for (var index = 0; index < 3; index++) {
-      final y = size.height * (0.29 + index * 0.18);
-      canvas.drawCircle(
-        Offset(marginX, y),
-        size.shortestSide * 0.012,
-        outer,
-      );
-    }
+    AndalusianOrnamentGeometry.drawEightfoldRosette(
+      canvas,
+      Offset(size.width / 2, size.height * 0.10),
+      size.shortestSide * 0.035,
+      primary: outer,
+      secondary: inner,
+    );
   }
 
   @override
@@ -1593,27 +1561,25 @@ class _QuranHandoffPreviewPainter extends CustomPainter {
     final light = Paint()
       ..color = illumination.withValues(alpha: 0.20)
       ..strokeWidth = 0.75;
-    canvas.drawLine(
-      Offset(size.width * 0.08, size.height * 0.32),
-      Offset(size.width * 0.44, size.height * 0.32),
-      strong,
+    strong.style = PaintingStyle.stroke;
+    light.style = PaintingStyle.stroke;
+    AndalusianOrnamentGeometry.drawInterlacedPolygonChain(
+      canvas,
+      Rect.fromLTWH(
+        size.width * 0.08,
+        size.height * 0.12,
+        size.width * 0.84,
+        size.height * 0.40,
+      ),
+      primary: strong,
+      secondary: light,
     );
-    canvas.drawLine(
-      Offset(size.width * 0.56, size.height * 0.32),
-      Offset(size.width * 0.92, size.height * 0.32),
-      strong,
-    );
-    final diamond = Path()
-      ..moveTo(size.width * 0.50, size.height * 0.05)
-      ..lineTo(size.width * 0.54, size.height * 0.32)
-      ..lineTo(size.width * 0.50, size.height * 0.59)
-      ..lineTo(size.width * 0.46, size.height * 0.32)
-      ..close();
-    canvas.drawPath(diamond, light..style = PaintingStyle.stroke);
-    canvas.drawLine(
-      Offset(size.width * 0.16, size.height * 0.68),
-      Offset(size.width * 0.84, size.height * 0.68),
-      light,
+    AndalusianOrnamentGeometry.drawEightfoldRosette(
+      canvas,
+      Offset(size.width / 2, size.height * 0.72),
+      size.shortestSide * 0.055,
+      primary: strong,
+      secondary: light,
     );
   }
 

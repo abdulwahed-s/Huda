@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:huda/core/theme/theme_extension.dart';
@@ -7,157 +5,105 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/catalog/home_feature_catalog.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
-class CustomizationJiggle extends StatelessWidget {
-  const CustomizationJiggle({
-    super.key,
-    required this.animation,
-    required this.seed,
-    required this.child,
-    this.active = true,
-  });
-
-  final Animation<double> animation;
-  final int seed;
-  final Widget child;
-  final bool active;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!active || MediaQuery.disableAnimationsOf(context)) return child;
-    final phase = (seed % 19) / 19 * math.pi * 2;
-    return AnimatedBuilder(
-      animation: animation,
-      child: child,
-      builder: (context, child) {
-        final wave = math.sin(animation.value * math.pi * 2 + phase);
-        return Transform.translate(
-          offset: Offset(wave * 0.55, wave.abs() * -0.35),
-          child: Transform.rotate(angle: wave * 0.0105, child: child),
-        );
-      },
-    );
-  }
-}
-
 class EditableHomeFeatureCard extends StatelessWidget {
   const EditableHomeFeatureCard({
     super.key,
     required this.feature,
-    required this.visible,
     required this.primary,
     required this.lifted,
-    required this.jiggle,
-    required this.onVisibilityChanged,
     required this.onMove,
   });
 
   final HomeFeatureDefinition feature;
-  final bool visible;
   final bool primary;
   final bool lifted;
-  final Animation<double> jiggle;
-  final ValueChanged<bool> onVisibilityChanged;
   final VoidCallback onMove;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accent = context.primaryColor;
     final surface = Color.alphaBlend(
-      accent.withValues(alpha: visible ? (isDark ? 0.09 : 0.025) : 0.015),
-      visible ? scheme.surface : scheme.surfaceContainerHighest,
+      accent.withValues(alpha: isDark ? 0.075 : 0.025),
+      scheme.surface,
     );
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
-    return CustomizationJiggle(
-      animation: jiggle,
-      seed: feature.id.index,
-      active: !lifted,
-      child: Semantics(
-        container: true,
-        label: feature.title,
-        toggled: visible,
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 180),
-          opacity: visible ? 1 : 0.52,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOutCubic,
-            decoration: BoxDecoration(
-              color: surface,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(
-                color: lifted
-                    ? accent.withValues(alpha: 0.55)
-                    : visible
-                        ? accent.withValues(alpha: isDark ? 0.25 : 0.15)
-                        : scheme.outlineVariant,
-                width: lifted ? 1.5 : 1,
+    return AnimatedScale(
+      duration: reduceMotion
+          ? Duration.zero
+          : const Duration(milliseconds: 170),
+      curve: Curves.easeOutBack,
+      scale: lifted ? 1.025 : 1,
+      child: AnimatedContainer(
+        duration: reduceMotion
+            ? Duration.zero
+            : const Duration(milliseconds: 180),
+        curve: Curves.easeOutCubic,
+        decoration: BoxDecoration(
+          color: surface,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(
+            color: lifted
+                ? accent.withValues(alpha: 0.52)
+                : scheme.outlineVariant,
+            width: lifted ? 1.5 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: scheme.shadow.withValues(
+                alpha: lifted ? (isDark ? 0.34 : 0.18) : 0.055,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: lifted ? (isDark ? 0.38 : 0.20) : 0.06,
-                  ),
-                  blurRadius: lifted ? 28 : 12,
-                  offset: Offset(0, lifted ? 14 : 5),
-                ),
-              ],
+              blurRadius: lifted ? 26 : 10,
+              offset: Offset(0, lifted ? 12 : 4),
             ),
-            child: Stack(
+          ],
+        ),
+        child: _CardSplash(
+          key: ValueKey('feature-splash-${feature.id.name}'),
+          borderRadius: 22,
+          color: accent,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 24, 12, 9),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _FeatureGlyph(feature: feature, color: accent),
-                        const SizedBox(height: 8),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              feature.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    height: 1.12,
-                                  ),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.drag_indicator_rounded,
-                          size: 17,
-                          color: scheme.onSurface.withValues(alpha: 0.36),
-                        ),
-                      ],
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _FeatureGlyph(feature: feature, color: accent),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(top: 2, end: 2),
+                      child: Icon(
+                        Icons.drag_indicator_rounded,
+                        size: 22,
+                        color: scheme.onSurfaceVariant.withValues(alpha: 0.58),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 9),
+                Expanded(
+                  child: Align(
+                    alignment: AlignmentDirectional.topStart,
+                    child: Text(
+                      feature.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        height: 1.16,
+                      ),
                     ),
                   ),
                 ),
-                PositionedDirectional(
-                  top: 7,
-                  start: 7,
-                  child: _VisibilityBadge(
-                    visible: visible,
-                    tooltip: visible ? l10n.remove : feature.title,
-                    onPressed: () => onVisibilityChanged(!visible),
-                  ),
-                ),
-                PositionedDirectional(
-                  top: 7,
-                  end: 7,
-                  child: _CardActionButton(
-                    icon: primary ? Icons.south_rounded : Icons.north_rounded,
-                    tooltip: primary ? l10n.moveToViewMore : l10n.moveToPrimary,
-                    onPressed: onMove,
-                  ),
+                const SizedBox(height: 8),
+                _MoveDestinationButton(
+                  feature: feature,
+                  primary: primary,
+                  onPressed: onMove,
                 ),
               ],
             ),
@@ -173,74 +119,61 @@ class EditableHomeSectionCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.icon,
-    required this.visible,
     required this.lifted,
-    required this.seed,
-    required this.jiggle,
-    required this.onVisibilityChanged,
   });
 
   final String title;
   final IconData icon;
-  final bool visible;
   final bool lifted;
-  final int seed;
-  final Animation<double> jiggle;
-  final ValueChanged<bool> onVisibilityChanged;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
     final accent = context.primaryColor;
-    return CustomizationJiggle(
-      animation: jiggle,
-      seed: seed + 31,
-      active: !lifted,
-      child: Semantics(
-        container: true,
-        label: title,
-        toggled: visible,
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 180),
-          opacity: visible ? 1 : 0.52,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 14, 10),
-            decoration: BoxDecoration(
-              color: visible ? scheme.surface : scheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: lifted
-                    ? accent.withValues(alpha: 0.55)
-                    : accent.withValues(alpha: visible ? 0.15 : 0.05),
-                width: lifted ? 1.5 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: lifted ? 0.18 : 0.05),
-                  blurRadius: lifted ? 26 : 10,
-                  offset: Offset(0, lifted ? 12 : 4),
-                ),
-              ],
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    return AnimatedScale(
+      duration: reduceMotion
+          ? Duration.zero
+          : const Duration(milliseconds: 170),
+      curve: Curves.easeOutBack,
+      scale: lifted ? 1.018 : 1,
+      child: AnimatedContainer(
+        duration: reduceMotion
+            ? Duration.zero
+            : const Duration(milliseconds: 180),
+        decoration: BoxDecoration(
+          color: scheme.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: lifted
+                ? accent.withValues(alpha: 0.52)
+                : scheme.outlineVariant,
+            width: lifted ? 1.5 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: scheme.shadow.withValues(alpha: lifted ? 0.18 : 0.05),
+              blurRadius: lifted ? 24 : 9,
+              offset: Offset(0, lifted ? 11 : 3),
             ),
+          ],
+        ),
+        child: _CardSplash(
+          borderRadius: 20,
+          color: accent,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 14, 10),
             child: Row(
               children: [
-                _VisibilityBadge(
-                  visible: visible,
-                  tooltip: visible ? l10n.remove : title,
-                  onPressed: () => onVisibilityChanged(!visible),
-                ),
-                const SizedBox(width: 12),
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 46,
+                  height: 46,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: accent.withValues(alpha: 0.11),
+                    color: accent.withValues(alpha: 0.10),
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Icon(icon, color: accent, size: 23),
+                  child: Icon(icon, color: accent, size: 24),
                 ),
                 const SizedBox(width: 13),
                 Expanded(
@@ -249,14 +182,15 @@ class EditableHomeSectionCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                      fontWeight: FontWeight.w700,
+                      height: 1.2,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Icon(
                   Icons.drag_indicator_rounded,
-                  color: scheme.onSurface.withValues(alpha: 0.42),
+                  color: scheme.onSurfaceVariant.withValues(alpha: 0.58),
                 ),
               ],
             ),
@@ -267,6 +201,109 @@ class EditableHomeSectionCard extends StatelessWidget {
   }
 }
 
+class _CardSplash extends StatelessWidget {
+  const _CardSplash({
+    super.key,
+    required this.borderRadius,
+    required this.color,
+    required this.child,
+  });
+
+  final double borderRadius;
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(borderRadius);
+    return Material(
+      color: Colors.transparent,
+      borderRadius: radius,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: _splashOnly,
+        excludeFromSemantics: true,
+        borderRadius: radius,
+        splashColor: color.withValues(alpha: 0.14),
+        highlightColor: color.withValues(alpha: 0.055),
+        hoverColor: color.withValues(alpha: 0.04),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _MoveDestinationButton extends StatelessWidget {
+  const _MoveDestinationButton({
+    required this.feature,
+    required this.primary,
+    required this.onPressed,
+  });
+
+  final HomeFeatureDefinition feature;
+  final bool primary;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final accent = context.primaryColor;
+    final semanticLabel = primary ? l10n.moveToViewMore : l10n.moveToHome;
+    final visualLabel = primary ? l10n.viewMore : l10n.onHome;
+    return Semantics(
+      button: true,
+      label: '$semanticLabel: ${feature.title}',
+      excludeSemantics: true,
+      child: Material(
+        key: ValueKey('feature-move-${feature.id.name}'),
+        color: primary
+            ? scheme.surfaceContainerHighest.withValues(alpha: 0.78)
+            : accent.withValues(alpha: 0.12),
+        shape: StadiumBorder(
+          side: BorderSide(color: accent.withValues(alpha: 0.18)),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onPressed,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 40),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    primary
+                        ? Icons.keyboard_arrow_down_rounded
+                        : Icons.home_rounded,
+                    size: 19,
+                    color: accent,
+                  ),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      visualLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: accent,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void _splashOnly() {}
+
 class _FeatureGlyph extends StatelessWidget {
   const _FeatureGlyph({required this.feature, required this.color});
 
@@ -276,15 +313,15 @@ class _FeatureGlyph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 46,
-      height: 46,
+      width: 48,
+      height: 48,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            color.withValues(alpha: 0.18),
+            color.withValues(alpha: 0.17),
             color.withValues(alpha: 0.07),
           ],
         ),
@@ -298,82 +335,6 @@ class _FeatureGlyph extends StatelessWidget {
               height: 25,
               colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
             ),
-    );
-  }
-}
-
-class _VisibilityBadge extends StatelessWidget {
-  const _VisibilityBadge({
-    required this.visible,
-    required this.tooltip,
-    required this.onPressed,
-  });
-
-  final bool visible;
-  final String tooltip;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = visible
-        ? Theme.of(context).colorScheme.error
-        : Theme.of(context).colorScheme.primary;
-    return Tooltip(
-      message: tooltip,
-      child: Semantics(
-        button: true,
-        label: tooltip,
-        child: Material(
-          color: color,
-          elevation: 2,
-          shadowColor: Colors.black38,
-          shape: const CircleBorder(),
-          child: InkWell(
-            customBorder: const CircleBorder(),
-            onTap: onPressed,
-            child: SizedBox.square(
-              dimension: 29,
-              child: Icon(
-                visible ? Icons.remove_rounded : Icons.add_rounded,
-                color: Colors.white,
-                size: 19,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CardActionButton extends StatelessWidget {
-  const _CardActionButton({
-    required this.icon,
-    required this.tooltip,
-    required this.onPressed,
-  });
-
-  final IconData icon;
-  final String tooltip;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Tooltip(
-      message: tooltip,
-      child: Material(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.90),
-        shape: const CircleBorder(),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: onPressed,
-          child: SizedBox.square(
-            dimension: 29,
-            child: Icon(icon, size: 17, color: scheme.onSurfaceVariant),
-          ),
-        ),
-      ),
     );
   }
 }

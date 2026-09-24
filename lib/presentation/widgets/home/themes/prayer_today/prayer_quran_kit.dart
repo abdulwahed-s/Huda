@@ -5,6 +5,7 @@ import 'package:huda/core/quran/quran.dart' as quran;
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/home/shared/andalusian_ornament_geometry.dart';
 import 'package:huda/presentation/widgets/home/shared/home_section_widgets.dart';
 import 'package:huda/presentation/widgets/home/themes/prayer_today/prayer_today_motion.dart';
 import 'package:vector_graphics/vector_graphics.dart';
@@ -84,7 +85,7 @@ class _QuranKitCanvas extends StatelessWidget {
         title: l10n.continueHome,
         subtitle: hasRead
             ? '${quran.getSurahNameLocalized(surah!, locale)} · '
-                '${l10n.ayahNumber(ayah!)}'
+                  '${l10n.ayahNumber(ayah!)}'
             : l10n.noRecentActivityHome,
         color: context.primaryColor,
         active: hasRead,
@@ -174,17 +175,13 @@ class _QuranKitCanvas extends StatelessWidget {
                       children: [
                         Text(
                           l10n.quranKit,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w900),
                         ),
                         Text(
                           l10n.quranTools,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: scheme.onSurfaceVariant,
-                                  ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: scheme.onSurfaceVariant),
                         ),
                       ],
                     ),
@@ -193,8 +190,9 @@ class _QuranKitCanvas extends StatelessWidget {
                     tooltip: l10n.showLess,
                     onPressed: onCollapse,
                     style: IconButton.styleFrom(
-                      backgroundColor:
-                          context.primaryColor.withValues(alpha: 0.08),
+                      backgroundColor: context.primaryColor.withValues(
+                        alpha: 0.08,
+                      ),
                       foregroundColor: context.primaryColor,
                     ),
                     icon: const Icon(Icons.keyboard_arrow_up_rounded),
@@ -296,8 +294,9 @@ class _ResumeLaneState extends State<_ResumeLane> {
       enabled: item.active,
       label: item.title,
       child: MouseRegion(
-        cursor:
-            item.active ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        cursor: item.active
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
         onEnter: item.active ? (_) => setState(() => _active = true) : null,
         onExit: item.active ? (_) => setState(() => _active = false) : null,
         child: FocusableActionDetector(
@@ -305,17 +304,19 @@ class _ResumeLaneState extends State<_ResumeLane> {
           onShowFocusHighlight: (value) => setState(() => _active = value),
           child: AnimatedScale(
             scale: _active && !reduceMotion ? 1.012 : 1,
-            duration:
-                reduceMotion ? Duration.zero : PrayerTodayMotion.interaction,
+            duration: reduceMotion
+                ? Duration.zero
+                : PrayerTodayMotion.interaction,
             child: AnimatedContainer(
-              duration:
-                  reduceMotion ? Duration.zero : PrayerTodayMotion.interaction,
+              duration: reduceMotion
+                  ? Duration.zero
+                  : PrayerTodayMotion.interaction,
               decoration: BoxDecoration(
                 color: item.color.withValues(
                   alpha: item.active
                       ? _active
-                          ? 0.11
-                          : 0.075
+                            ? 0.11
+                            : 0.075
                       : 0.025,
                 ),
                 borderRadius: BorderRadius.circular(18),
@@ -356,24 +357,16 @@ class _ResumeLaneState extends State<_ResumeLane> {
                                 item.title,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                    ),
+                                style: Theme.of(context).textTheme.labelLarge
+                                    ?.copyWith(fontWeight: FontWeight.w800),
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 item.subtitle,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: scheme.onSurfaceVariant,
-                                    ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: scheme.onSurfaceVariant),
                               ),
                             ],
                           ),
@@ -469,8 +462,9 @@ class _ShortcutTileState extends State<_ShortcutTile> {
         onShowFocusHighlight: (value) => setState(() => _active = value),
         child: AnimatedScale(
           scale: _active && !reduceMotion ? 1.02 : 1,
-          duration:
-              reduceMotion ? Duration.zero : PrayerTodayMotion.interaction,
+          duration: reduceMotion
+              ? Duration.zero
+              : PrayerTodayMotion.interaction,
           child: Material(
             color: color.withValues(alpha: _active ? 0.11 : 0.065),
             borderRadius: BorderRadius.circular(18),
@@ -479,8 +473,10 @@ class _ShortcutTileState extends State<_ShortcutTile> {
               onTap: widget.item.onTap,
               onHighlightChanged: (value) => setState(() => _active = value),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 11, vertical: 9),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 11,
+                  vertical: 9,
+                ),
                 child: Row(
                   children: [
                     if (widget.item.svgAsset != null)
@@ -499,8 +495,8 @@ class _ShortcutTileState extends State<_ShortcutTile> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ],
@@ -548,8 +544,9 @@ class _QuranStackMark extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: context.primaryColor
-                            .withValues(alpha: 0.16 + index * 0.04),
+                        color: context.primaryColor.withValues(
+                          alpha: 0.16 + index * 0.04,
+                        ),
                       ),
                     ),
                   ),
@@ -620,23 +617,25 @@ class _QuranKitThreadPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
+    final primary = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.1;
-    final path = Path()
-      ..moveTo(size.width * 0.62, 0)
-      ..quadraticBezierTo(
-        size.width * 0.76,
-        size.height * 0.22,
-        size.width,
-        size.height * 0.18,
-      );
-    canvas.drawPath(path, paint);
-    canvas.drawCircle(
-      Offset(size.width * 0.91, size.height * 0.78),
-      42,
-      Paint()..color = color.withValues(alpha: 0.45),
+      ..strokeWidth = 0.9;
+    final secondary = Paint()
+      ..color = color.withValues(alpha: 0.58)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.65;
+    AndalusianOrnamentGeometry.drawSebkaField(
+      canvas,
+      Rect.fromLTWH(
+        size.width * 0.72,
+        0,
+        size.width * 0.28,
+        size.height * 0.56,
+      ),
+      module: 46,
+      primary: primary,
+      secondary: secondary,
     );
   }
 

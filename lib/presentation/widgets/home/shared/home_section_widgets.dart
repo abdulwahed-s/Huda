@@ -6,6 +6,7 @@ import 'package:huda/core/utils/hijri_date_utils.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
+import 'package:huda/core/services/prayer_moment_resolver.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
@@ -218,11 +219,12 @@ abstract final class HomeSpecialEventPreview {
   }
 }
 
-typedef ActiveIslamicEventWidgetBuilder = Widget Function(
-  BuildContext context,
-  IslamicEventPresentation presentation,
-  VoidCallback onActivate,
-);
+typedef ActiveIslamicEventWidgetBuilder =
+    Widget Function(
+      BuildContext context,
+      IslamicEventPresentation presentation,
+      VoidCallback onActivate,
+    );
 
 class ActiveIslamicEventBuilder extends StatefulWidget {
   const ActiveIslamicEventBuilder({
@@ -252,11 +254,7 @@ class _ActiveIslamicEventBuilderState extends State<ActiveIslamicEventBuilder> {
     _dialogPending = true;
     HapticFeedback.lightImpact();
     try {
-      await showSpecialEventDialog(
-        eventContext,
-        event.eventKey,
-        widget.isDark,
-      );
+      await showSpecialEventDialog(eventContext, event.eventKey, widget.isDark);
     } finally {
       _dialogPending = false;
     }
@@ -274,9 +272,7 @@ class _ActiveIslamicEventBuilderState extends State<ActiveIslamicEventBuilder> {
           _ => previewFixture,
         };
         final child = event == null
-            ? const SizedBox.shrink(
-                key: ValueKey('no-active-islamic-event'),
-              )
+            ? const SizedBox.shrink(key: ValueKey('no-active-islamic-event'))
             : KeyedSubtree(
                 key: ValueKey(
                   'active-islamic-event-${event.id}-${event.eventKey}',
@@ -320,8 +316,10 @@ class _ActiveIslamicEventBuilderState extends State<ActiveIslamicEventBuilder> {
                 child: child,
                 builder: (context, transitionedChild) {
                   final exiting = animation.status == AnimationStatus.reverse;
-                  final phase =
-                      ((animation.value - 0.48) / 0.52).clamp(0.0, 1.0);
+                  final phase = ((animation.value - 0.48) / 0.52).clamp(
+                    0.0,
+                    1.0,
+                  );
                   final resolved = exiting
                       ? Curves.easeInCubic.transform(phase)
                       : Curves.easeOutCubic.transform(phase);
@@ -358,15 +356,14 @@ class _EventIdentitySwitchClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     if (progress >= 1) return Path()..addRect(Offset.zero & size);
     final halfHeight = size.height * progress * 0.5;
-    return Path()
-      ..addRect(
-        Rect.fromLTRB(
-          0,
-          size.height * 0.5 - halfHeight,
-          size.width,
-          size.height * 0.5 + halfHeight,
-        ),
-      );
+    return Path()..addRect(
+      Rect.fromLTRB(
+        0,
+        size.height * 0.5 - halfHeight,
+        size.width,
+        size.height * 0.5 + halfHeight,
+      ),
+    );
   }
 
   @override
@@ -440,8 +437,9 @@ class HomeQuranKitFeatureCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.r),
           side: BorderSide(
-            color:
-                context.primaryColor.withValues(alpha: expanded ? 0.34 : 0.16),
+            color: context.primaryColor.withValues(
+              alpha: expanded ? 0.34 : 0.16,
+            ),
             width: expanded ? 1.5 : 1,
           ),
         ),
@@ -518,9 +516,9 @@ class HomeExpandedQuranWorkspace extends StatelessWidget {
               Expanded(
                 child: Text(
                   l10n.quranKit,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
             ],
@@ -656,14 +654,14 @@ class HomeQuranJourneyWorkspace extends StatelessWidget {
                     Text(
                       l10n.themeQuranJourney,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     Text(
                       l10n.quranTools,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: scheme.onSurface.withValues(alpha: 0.62),
-                          ),
+                        color: scheme.onSurface.withValues(alpha: 0.62),
+                      ),
                     ),
                   ],
                 ),
@@ -709,7 +707,8 @@ class _JourneyResumeLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final horizontal = constraints.maxWidth >= 720 &&
+        final horizontal =
+            constraints.maxWidth >= 720 &&
             MediaQuery.textScalerOf(context).scale(1) <= 1.35;
         if (!horizontal) {
           return Column(
@@ -792,8 +791,8 @@ class _JourneyResumeCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       SizedBox(height: 3.h),
                       Text(
@@ -801,9 +800,9 @@ class _JourneyResumeCard extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: scheme.onSurface.withValues(alpha: 0.64),
-                              height: 1.2,
-                            ),
+                          color: scheme.onSurface.withValues(alpha: 0.64),
+                          height: 1.2,
+                        ),
                       ),
                     ],
                   ),
@@ -828,7 +827,8 @@ class _JourneyActionLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = constraints.maxWidth >= 620 &&
+        final columns =
+            constraints.maxWidth >= 620 &&
                 MediaQuery.textScalerOf(context).scale(1) <= 1.4
             ? 4
             : 2;
@@ -895,8 +895,8 @@ class _JourneyActionCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
@@ -971,8 +971,9 @@ class _InlineQuranKitStack extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color: context.primaryColor
-                            .withValues(alpha: 0.16 + index * 0.04),
+                        color: context.primaryColor.withValues(
+                          alpha: 0.16 + index * 0.04,
+                        ),
                       ),
                     ),
                   ),
@@ -1036,25 +1037,19 @@ class HomePrayerOverviewSection extends StatelessWidget {
         final l10n = AppLocalizations.of(context)!;
         final (IconData, String) details = switch (state) {
           PrayerTimesLocationDenied() => (
-              Icons.location_off_outlined,
-              l10n.locationPermissionDenied,
-            ),
+            Icons.location_off_outlined,
+            l10n.locationPermissionDenied,
+          ),
           PrayerTimesLocationPermanentlyDenied() => (
-              Icons.location_off_outlined,
-              l10n.locationPermissionPermanentlyDenied,
-            ),
+            Icons.location_off_outlined,
+            l10n.locationPermissionPermanentlyDenied,
+          ),
           PrayerTimesLocationServiceDisabled() => (
-              Icons.location_disabled_outlined,
-              l10n.locationServicesDisabled,
-            ),
-          PrayerTimesError(:final message) => (
-              Icons.error_outline,
-              message,
-            ),
-          _ => (
-              Icons.add_location_alt_outlined,
-              l10n.prayerSetupRequired,
-            ),
+            Icons.location_disabled_outlined,
+            l10n.locationServicesDisabled,
+          ),
+          PrayerTimesError(:final message) => (Icons.error_outline, message),
+          _ => (Icons.add_location_alt_outlined, l10n.prayerSetupRequired),
         };
         return _PrayerOverviewUnavailable(
           icon: details.$1,
@@ -1190,9 +1185,12 @@ class _PrayerOverviewSummary extends StatelessWidget {
     final duration = value == null
         ? Duration.zero
         : value.isPastPrayer
-            ? Duration(seconds: value.secondsPassed)
-            : value.duration;
-    final countdownText = _formatDuration(duration);
+        ? Duration(seconds: value.secondsPassed)
+        : value.duration;
+    final countdownText = PrayerCountdownFormatter.formatSigned(
+      duration,
+      elapsed: value?.isPastPrayer == true,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1217,9 +1215,9 @@ class _PrayerOverviewSummary extends StatelessWidget {
                   Text(
                     l10n.themePrayerToday,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                        ),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   SizedBox(height: 3.h),
                   Text(
@@ -1227,17 +1225,17 @@ class _PrayerOverviewSummary extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.82),
-                          height: 1.25,
-                        ),
+                      color: Colors.white.withValues(alpha: 0.82),
+                      height: 1.25,
+                    ),
                   ),
                   Text(
                     hijri,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.72),
-                        ),
+                      color: Colors.white.withValues(alpha: 0.72),
+                    ),
                   ),
                 ],
               ),
@@ -1248,18 +1246,20 @@ class _PrayerOverviewSummary extends StatelessWidget {
           SizedBox(height: 12.h),
           Row(
             children: [
-              Icon(Icons.location_on_outlined,
-                  size: 17.sp, color: Colors.white70),
+              Icon(
+                Icons.location_on_outlined,
+                size: 17.sp,
+                color: Colors.white70,
+              ),
               SizedBox(width: 6.w),
               Expanded(
                 child: Text(
                   location!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.white70),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.white70),
                 ),
               ),
             ],
@@ -1271,9 +1271,9 @@ class _PrayerOverviewSummary extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.white.withValues(alpha: 0.82),
-                fontWeight: FontWeight.w600,
-              ),
+            color: Colors.white.withValues(alpha: 0.82),
+            fontWeight: FontWeight.w600,
+          ),
         ),
         SizedBox(height: 2.h),
         Semantics(
@@ -1283,7 +1283,7 @@ class _PrayerOverviewSummary extends StatelessWidget {
             fit: BoxFit.scaleDown,
             alignment: AlignmentDirectional.centerStart,
             child: Text(
-              value?.isPastPrayer == true ? '+$countdownText' : countdownText,
+              countdownText,
               maxLines: 1,
               style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 color: Colors.white,
@@ -1327,16 +1327,19 @@ class _PrayerScheduleGrid extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.schedule_outlined,
-                  color: Colors.white, size: 20),
+              const Icon(
+                Icons.schedule_outlined,
+                color: Colors.white,
+                size: 20,
+              ),
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
                   l10n.prayerTimes,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
@@ -1348,8 +1351,8 @@ class _PrayerScheduleGrid extends StatelessWidget {
               final columns = constraints.maxWidth >= 560 && scale <= 1.2
                   ? 6
                   : constraints.maxWidth >= 290 && scale <= 1.6
-                      ? 3
-                      : 2;
+                  ? 3
+                  : 2;
               final rowHeight = scale > 1.4 ? 86.h : 72.h;
               return GridView.builder(
                 shrinkWrap: true,
@@ -1363,7 +1366,8 @@ class _PrayerScheduleGrid extends StatelessWidget {
                 itemCount: entries.length,
                 itemBuilder: (context, index) {
                   final entry = entries[index];
-                  final highlighted = nextPrayerName != null &&
+                  final highlighted =
+                      nextPrayerName != null &&
                       entry.$1.toLowerCase() == nextPrayerName!.toLowerCase();
                   return _PrayerTimeTile(
                     name: entry.$1,
@@ -1412,8 +1416,9 @@ class _PrayerTimeTile extends StatelessWidget {
             : Colors.white.withValues(alpha: muted ? 0.06 : 0.09),
         borderRadius: BorderRadius.circular(11.r),
         border: Border.all(
-          color:
-              highlighted ? Colors.white : Colors.white.withValues(alpha: 0.12),
+          color: highlighted
+              ? Colors.white
+              : Colors.white.withValues(alpha: 0.12),
         ),
       ),
       child: Column(
@@ -1424,10 +1429,9 @@ class _PrayerTimeTile extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color:
-                      foreground.withValues(alpha: highlighted ? 0.82 : 0.76),
-                  fontWeight: highlighted ? FontWeight.w700 : FontWeight.w500,
-                ),
+              color: foreground.withValues(alpha: highlighted ? 0.82 : 0.76),
+              fontWeight: highlighted ? FontWeight.w700 : FontWeight.w500,
+            ),
           ),
           SizedBox(height: 3.h),
           FittedBox(
@@ -1478,9 +1482,9 @@ class _PrayerOverviewUnavailable extends StatelessWidget {
       children: [
         Text(
           l10n.themePrayerToday,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         SizedBox(height: 4.h),
         Text(message, style: Theme.of(context).textTheme.bodyMedium),
@@ -1497,7 +1501,8 @@ class _PrayerOverviewUnavailable extends StatelessWidget {
       padding: 20.w,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final stack = constraints.maxWidth < 330 ||
+          final stack =
+              constraints.maxWidth < 330 ||
               MediaQuery.textScalerOf(context).scale(1) > 1.5;
           if (stack) {
             return Column(
@@ -1530,13 +1535,13 @@ class _PrayerOverviewLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     Widget bar(double width, double height) => Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            color: scheme.onSurface.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-        );
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: scheme.onSurface.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+    );
     return Semantics(
       label: AppLocalizations.of(context)!.loading,
       child: Container(
@@ -1731,16 +1736,20 @@ class _PrayerCountdown extends StatelessWidget {
           builder: (context, snapshot) {
             final value = snapshot.data;
             final countdown = value == null
-                ? '-${_formatDuration(Duration.zero)}'
-                : value.isPastPrayer
-                    ? '+${_formatDuration(
-                        Duration(seconds: value.secondsPassed),
-                      )}'
-                    : '-${_formatDuration(value.duration)}';
+                ? '−00:00'
+                : PrayerCountdownFormatter.formatSigned(
+                    value.isPastPrayer
+                        ? Duration(seconds: value.secondsPassed)
+                        : value.duration,
+                    elapsed: value.isPastPrayer,
+                  );
             return Row(
               children: [
-                Icon(Icons.schedule,
-                    color: Colors.white, size: compact ? 18 : 24),
+                Icon(
+                  Icons.schedule,
+                  color: Colors.white,
+                  size: compact ? 18 : 24,
+                ),
                 SizedBox(width: 9.w),
                 Flexible(
                   child: Column(
@@ -1833,9 +1842,7 @@ class HomePrayerScheduleSection extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: compact ? 11.sp : 13.sp,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
+                                  color: Theme.of(context).colorScheme.onSurface
                                       .withValues(alpha: 0.7),
                                 ),
                               ),
@@ -1930,8 +1937,11 @@ class HomeDailyAyahSection extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 6.w),
-                Icon(Icons.arrow_forward,
-                    size: 17.sp, color: context.primaryColor),
+                Icon(
+                  Icons.arrow_forward,
+                  size: 17.sp,
+                  color: context.primaryColor,
+                ),
               ],
             ),
           ],
@@ -2023,8 +2033,9 @@ class HomeKhatmaSection extends StatelessWidget {
                     value: khatma.progress,
                     strokeWidth: 6,
                     color: context.primaryColor,
-                    backgroundColor:
-                        context.primaryColor.withValues(alpha: 0.12),
+                    backgroundColor: context.primaryColor.withValues(
+                      alpha: 0.12,
+                    ),
                   ),
                   Center(
                     child: Text(
@@ -2178,7 +2189,8 @@ class _SectionSurface extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: color ??
+      color:
+          color ??
           (isDark
               ? Color.alphaBlend(
                   context.primaryColor.withValues(alpha: 0.035),
@@ -2189,10 +2201,9 @@ class _SectionSurface extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
         side: BorderSide(
-          color: Theme.of(context)
-              .colorScheme
-              .outlineVariant
-              .withValues(alpha: 0.5),
+          color: Theme.of(
+            context,
+          ).colorScheme.outlineVariant.withValues(alpha: 0.5),
         ),
       ),
       child: SizedBox(
@@ -2224,13 +2235,6 @@ class _SectionTitle extends StatelessWidget {
       ],
     );
   }
-}
-
-String _formatDuration(Duration duration) {
-  final hours = duration.inHours.toString().padLeft(2, '0');
-  final minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
-  final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
-  return '$hours:$minutes:$seconds';
 }
 
 String _formatPrayerTime(String locale, DateTime? time, int offset) {

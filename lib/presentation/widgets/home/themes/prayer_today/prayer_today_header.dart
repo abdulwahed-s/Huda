@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/home/shared/home_edit_button.dart';
 import 'package:huda/presentation/widgets/home/themes/prayer_today/prayer_today_motion.dart';
 
 class PrayerTodayHeaderSection extends StatelessWidget {
@@ -59,9 +59,7 @@ class PrayerTodayHeaderSection extends StatelessWidget {
                             l10n.huda,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
+                            style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w800,
@@ -75,22 +73,12 @@ class PrayerTodayHeaderSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              IconButton(
+              HomeEditButton(
                 key: const ValueKey('prayer-home-customize'),
-                tooltip: l10n.customizeHome,
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  onCustomize();
-                },
-                style: IconButton.styleFrom(
-                  minimumSize: const Size.square(48),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.white.withValues(alpha: 0.10),
-                  hoverColor: Colors.white.withValues(alpha: 0.18),
-                  focusColor: Colors.white.withValues(alpha: 0.16),
-                  highlightColor: Colors.white.withValues(alpha: 0.14),
-                ),
-                icon: const Icon(Icons.tune_rounded),
+                onPressed: onCustomize,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.white.withValues(alpha: 0.10),
+                borderColor: Colors.white.withValues(alpha: 0.13),
               ),
             ],
           ),

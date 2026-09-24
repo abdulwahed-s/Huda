@@ -71,7 +71,10 @@ class QuranJourneyActivities extends StatelessWidget {
         subtitle: hasAudio
             ? l10n.resumeReciter(audio.reciterName)
             : l10n.noRecentActivityHome,
-        color: context.primaryVariantColor,
+        color: QuranJourneyVisualStyle.foreground(
+          context,
+          context.primaryVariantColor,
+        ),
         enabled: hasAudio,
         onTap: hasAudio
             ? () {
@@ -85,7 +88,7 @@ class QuranJourneyActivities extends StatelessWidget {
         icon: Icons.podcasts_rounded,
         title: l10n.continueRadio,
         subtitle: hasRadio ? radio.stationName : l10n.noRecentActivityHome,
-        color: context.accentColor,
+        color: QuranJourneyVisualStyle.foreground(context, context.accentColor),
         enabled: hasRadio,
         onTap: hasRadio
             ? () {
@@ -119,10 +122,7 @@ class QuranJourneyActivities extends StatelessWidget {
                 key: ValueKey('quran-reading-tools-boundary'),
               ),
               _ManuscriptCaption(title: l10n.quranTools),
-              _QuranActionRail(
-                actions: shortcuts,
-                isDark: isDark,
-              ),
+              _QuranActionRail(actions: shortcuts, isDark: isDark),
             ],
           ),
         ),
@@ -138,10 +138,7 @@ class QuranJourneyActivities extends StatelessWidget {
           distance: 6,
           beginScale: 0.996,
           startOpacity: 0.80,
-          child: _ResumeRibbon(
-            items: resumes,
-            isDark: isDark,
-          ),
+          child: _ResumeRibbon(items: resumes, isDark: isDark),
         ),
       ],
     );
@@ -155,7 +152,7 @@ class _ManuscriptCaption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.primaryColor;
+    final color = QuranJourneyVisualStyle.ink(context);
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 10),
       child: Row(
@@ -163,24 +160,21 @@ class _ManuscriptCaption extends StatelessWidget {
           Container(
             width: 3,
             height: 22,
-            color: QuranJourneyVisualStyle.illumination(context)
-                .withValues(alpha: 0.72),
+            color: QuranJourneyVisualStyle.illumination(
+              context,
+            ).withValues(alpha: 0.72),
           ),
           const SizedBox(width: 9),
           Expanded(
             child: Text(
               title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.w900,
-                  ),
+                color: color,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ),
-          Container(
-            width: 44,
-            height: 1,
-            color: color.withValues(alpha: 0.15),
-          ),
+          Container(width: 44, height: 1, color: color.withValues(alpha: 0.15)),
         ],
       ),
     );
@@ -241,47 +235,46 @@ class _QuranActionRail extends StatelessWidget {
                 ),
               )
             : compactTabs
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _RailAction(action: actions.first, horizontal: true),
-                      const QuranJourneyDivider(),
-                      IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            for (var index = 1;
-                                index < actions.length;
-                                index++) ...[
-                              if (index > 1)
-                                const QuranJourneyDivider(
-                                  axis: Axis.vertical,
-                                  inset: 8,
-                                ),
-                              Expanded(
-                                child: _RailAction(
-                                  action: actions[index],
-                                  horizontal: false,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      for (var index = 0; index < actions.length; index++) ...[
-                        if (index > 0) const QuranJourneyDivider(),
-                        _RailAction(
-                          action: actions[index],
-                          horizontal: true,
-                        ),
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _RailAction(action: actions.first, horizontal: true),
+                  const QuranJourneyDivider(),
+                  IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (
+                          var index = 1;
+                          index < actions.length;
+                          index++
+                        ) ...[
+                          if (index > 1)
+                            const QuranJourneyDivider(
+                              axis: Axis.vertical,
+                              inset: 8,
+                            ),
+                          Expanded(
+                            child: _RailAction(
+                              action: actions[index],
+                              horizontal: false,
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
-                  );
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (var index = 0; index < actions.length; index++) ...[
+                    if (index > 0) const QuranJourneyDivider(),
+                    _RailAction(action: actions[index], horizontal: true),
+                  ],
+                ],
+              );
         return QuranJourneyFramedRegion(
           key: const ValueKey('quran-shortcuts-workspace'),
           tint: context.primaryColor,
@@ -320,7 +313,7 @@ class _RailActionState extends State<_RailAction> {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.primaryColor;
+    final color = QuranJourneyVisualStyle.ink(context);
     final scheme = Theme.of(context).colorScheme;
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final glyph = _ActionGlyph(
@@ -333,11 +326,10 @@ class _RailActionState extends State<_RailAction> {
       overflow: TextOverflow.ellipsis,
       textAlign: widget.horizontal ? TextAlign.start : TextAlign.center,
       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: widget.action.primary ? color : null,
-            fontWeight:
-                widget.action.primary ? FontWeight.w900 : FontWeight.w700,
-            height: 1.16,
-          ),
+        color: widget.action.primary ? color : null,
+        fontWeight: widget.action.primary ? FontWeight.w900 : FontWeight.w700,
+        height: 1.16,
+      ),
     );
     final content = widget.horizontal
         ? Row(
@@ -388,19 +380,20 @@ class _RailActionState extends State<_RailAction> {
                   minHeight: MediaQuery.textScalerOf(context).scale(1) > 1.4
                       ? 98
                       : widget.horizontal
-                          ? 74
-                          : 91,
+                      ? 74
+                      : 91,
                 ),
                 decoration: BoxDecoration(
                   color: _highlighted
                       ? color.withValues(alpha: 0.055)
                       : widget.action.primary
-                          ? color.withValues(alpha: 0.025)
-                          : Colors.transparent,
+                      ? color.withValues(alpha: 0.025)
+                      : Colors.transparent,
                   border: Border.all(
                     color: _focused
-                        ? QuranJourneyVisualStyle.illumination(context)
-                            .withValues(alpha: 0.68)
+                        ? QuranJourneyVisualStyle.illumination(
+                            context,
+                          ).withValues(alpha: 0.68)
                         : Colors.transparent,
                     width: QuranJourneyVisualStyle.ruleWidth,
                   ),
@@ -492,10 +485,7 @@ class _ResumeRibbon extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(child: _ResumeAction(item: items[0])),
-                    const QuranJourneyDivider(
-                      axis: Axis.vertical,
-                      inset: 8,
-                    ),
+                    const QuranJourneyDivider(axis: Axis.vertical, inset: 8),
                     Expanded(child: _ResumeAction(item: items[1])),
                   ],
                 ),
@@ -523,18 +513,18 @@ class _ResumeRibbon extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.history_rounded,
-                        color: context.primaryColor,
+                        color: QuranJourneyVisualStyle.ink(context),
                         size: 19,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           l10n.continueButton,
-                          style:
-                              Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    color: context.primaryColor,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                          style: Theme.of(context).textTheme.labelLarge
+                              ?.copyWith(
+                                color: QuranJourneyVisualStyle.ink(context),
+                                fontWeight: FontWeight.w900,
+                              ),
                         ),
                       ),
                     ],
@@ -669,9 +659,7 @@ class _ResumeActionState extends State<_ResumeAction> {
                                     item.subtitle,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
+                                    style: Theme.of(context).textTheme.bodySmall
                                         ?.copyWith(
                                           color: scheme.onSurfaceVariant,
                                           height: 1.25,

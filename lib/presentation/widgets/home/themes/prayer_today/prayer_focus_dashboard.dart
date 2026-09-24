@@ -6,11 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:huda/core/utils/hijri_date_utils.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
+import 'package:huda/core/services/prayer_moment_resolver.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/data/models/countdown_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/focused_theme_layout.dart';
+import 'package:huda/presentation/widgets/home/shared/andalusian_ornament_geometry.dart';
 import 'package:huda/presentation/widgets/home/themes/prayer_today/prayer_today_motion.dart';
 import 'package:huda/presentation/widgets/home/themes/prayer_today/prayer_today_visual_style.dart';
 import 'package:huda/presentation/widgets/home/shared/prayer_location_formatter.dart';
@@ -163,25 +165,25 @@ class _PrayerFocusDashboardState extends State<PrayerFocusDashboard>
                   final l10n = AppLocalizations.of(context)!;
                   final details = switch (state) {
                     PrayerTimesLocationDenied() => (
-                        Icons.location_off_rounded,
-                        l10n.locationPermissionDenied,
-                      ),
+                      Icons.location_off_rounded,
+                      l10n.locationPermissionDenied,
+                    ),
                     PrayerTimesLocationPermanentlyDenied() => (
-                        Icons.location_off_rounded,
-                        l10n.locationPermissionPermanentlyDenied,
-                      ),
+                      Icons.location_off_rounded,
+                      l10n.locationPermissionPermanentlyDenied,
+                    ),
                     PrayerTimesLocationServiceDisabled() => (
-                        Icons.location_disabled_rounded,
-                        l10n.locationServicesDisabled,
-                      ),
+                      Icons.location_disabled_rounded,
+                      l10n.locationServicesDisabled,
+                    ),
                     PrayerTimesError(:final message) => (
-                        Icons.error_outline_rounded,
-                        message,
-                      ),
+                      Icons.error_outline_rounded,
+                      message,
+                    ),
                     _ => (
-                        Icons.add_location_alt_rounded,
-                        l10n.prayerSetupRequired,
-                      ),
+                      Icons.add_location_alt_rounded,
+                      l10n.prayerSetupRequired,
+                    ),
                   };
                   canvas = _UnavailablePrayerCanvas(
                     key: ValueKey('prayer-unavailable-${state.runtimeType}'),
@@ -263,7 +265,8 @@ class _LoadedPrayerCanvasState extends State<_LoadedPrayerCanvas>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _motionAllowed = !MediaQuery.disableAnimationsOf(context) &&
+    _motionAllowed =
+        !MediaQuery.disableAnimationsOf(context) &&
         TickerMode.valuesOf(context).enabled;
     _syncPulse();
   }
@@ -338,7 +341,8 @@ class _LoadedPrayerCanvasState extends State<_LoadedPrayerCanvas>
                   distance: 5,
                   child: _IntegratedPrayerContext(
                     gregorian: intl.DateFormat.yMMMMEEEEd(locale).format(now),
-                    hijri: '${hijri.day} '
+                    hijri:
+                        '${hijri.day} '
                         '${_hijriMonth(context, hijri.month)} '
                         '${hijri.year}',
                     location: prayerLocationLabel(context, widget.state),
@@ -442,8 +446,9 @@ class _PrayerCanvasShell extends StatelessWidget {
           end: 0.82,
         );
         final finalColors = _prayerCanvasColors(context, isDark);
-        final quietOverlay =
-            isDark ? const Color(0xFF06131B) : context.primaryDarkColor;
+        final quietOverlay = isDark
+            ? const Color(0xFF06131B)
+            : context.primaryDarkColor;
         final colors = [
           for (final color in finalColors)
             Color.lerp(
@@ -511,7 +516,8 @@ class _PrayerCanvasShell extends StatelessWidget {
                         child: CustomPaint(
                           key: const ValueKey('prayer-canvas-edge-paint'),
                           painter: _PrayerCanvasEdgePainter(
-                            color: color ??
+                            color:
+                                color ??
                                 PrayerTodayVisualStyle.toolsSurfaceTop(
                                   context,
                                   isDark,
@@ -548,7 +554,8 @@ class _IntegratedPrayerContext extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Semantics(
       container: true,
-      label: '${l10n.gregorianDate}: $gregorian. '
+      label:
+          '${l10n.gregorianDate}: $gregorian. '
           '${l10n.hijriDate}: $hijri${location == null ? '' : '. $location'}',
       child: ExcludeSemantics(
         child: AnimatedSwitcher(
@@ -602,9 +609,9 @@ class _ContextDatum extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.68),
-                  fontWeight: FontWeight.w600,
-                ),
+              color: Colors.white.withValues(alpha: 0.68),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
@@ -654,10 +661,14 @@ class _CountdownFocus extends StatelessWidget {
     final duration = value == null
         ? null
         : value.isPastPrayer
-            ? Duration(seconds: value.secondsPassed)
-            : value.duration;
-    final countdownText =
-        duration == null ? '--:--:--' : _formatDuration(duration);
+        ? Duration(seconds: value.secondsPassed)
+        : value.duration;
+    final countdownText = duration == null
+        ? '--:--'
+        : PrayerCountdownFormatter.formatSigned(
+            duration,
+            elapsed: value?.isPastPrayer == true,
+          );
     final matching = _findMoment(moments, value?.prayerName);
     final targetTime = matching?.time == null
         ? null
@@ -686,10 +697,10 @@ class _CountdownFocus extends StatelessWidget {
               Text(
                 l10n.nextPrayerCountDown,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.62),
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5,
-                    ),
+                  color: Colors.white.withValues(alpha: 0.62),
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
+                ),
               ),
               const SizedBox(height: 3),
               Semantics(
@@ -712,15 +723,16 @@ class _CountdownFocus extends StatelessWidget {
                       child: FadeTransition(
                         opacity: animation,
                         child: SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(0, 0.12),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: PrayerTodayMotion.entranceCurve,
-                            ),
-                          ),
+                          position:
+                              Tween<Offset>(
+                                begin: const Offset(0, 0.12),
+                                end: Offset.zero,
+                              ).animate(
+                                CurvedAnimation(
+                                  parent: animation,
+                                  curve: PrayerTodayMotion.entranceCurve,
+                                ),
+                              ),
                           child: child,
                         ),
                       ),
@@ -730,11 +742,11 @@ class _CountdownFocus extends StatelessWidget {
                       key: ValueKey(prayerName),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                              ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                          ),
                     ),
                   ),
                 ),
@@ -755,8 +767,9 @@ class _CountdownFocus extends StatelessWidget {
           beginScale: 0.985,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final diameter =
-                  constraints.maxWidth.clamp(156.0, 186.0).toDouble();
+              final diameter = constraints.maxWidth
+                  .clamp(156.0, 186.0)
+                  .toDouble();
               return SizedBox.square(
                 key: const ValueKey('prayer-countdown-ring'),
                 dimension: diameter,
@@ -765,9 +778,7 @@ class _CountdownFocus extends StatelessWidget {
                   children: [
                     RepaintBoundary(
                       child: AnimatedSwitcher(
-                        key: const ValueKey(
-                          'prayer-countdown-ring-transition',
-                        ),
+                        key: const ValueKey('prayer-countdown-ring-transition'),
                         duration: stateDuration,
                         switchInCurve: PrayerTodayMotion.entranceCurve,
                         switchOutCurve: Curves.easeInCubic,
@@ -791,26 +802,22 @@ class _CountdownFocus extends StatelessWidget {
                             FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Semantics(
-                                label: value?.isPastPrayer == true
-                                    ? '+$countdownText'
-                                    : countdownText,
+                                label: countdownText,
                                 child: ExcludeSemantics(
                                   child: Text(
-                                    value?.isPastPrayer == true
-                                        ? '+$countdownText'
-                                        : countdownText,
+                                    countdownText,
                                     maxLines: 1,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleLarge
                                         ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      letterSpacing: 0.8,
-                                      fontFeatures: const [
-                                        FontFeature.tabularFigures(),
-                                      ],
-                                    ),
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800,
+                                          letterSpacing: 0.8,
+                                          fontFeatures: const [
+                                            FontFeature.tabularFigures(),
+                                          ],
+                                        ),
                                   ),
                                 ),
                               ),
@@ -829,13 +836,14 @@ class _CountdownFocus extends StatelessWidget {
                                           .textTheme
                                           .labelLarge
                                           ?.copyWith(
-                                        color: Colors.white
-                                            .withValues(alpha: 0.62),
-                                        fontWeight: FontWeight.w600,
-                                        fontFeatures: const [
-                                          FontFeature.tabularFigures(),
-                                        ],
-                                      ),
+                                            color: Colors.white.withValues(
+                                              alpha: 0.62,
+                                            ),
+                                            fontWeight: FontWeight.w600,
+                                            fontFeatures: const [
+                                              FontFeature.tabularFigures(),
+                                            ],
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -903,7 +911,8 @@ class _StableCountdownRingState extends State<_StableCountdownRing>
 
     final current = _progressAnimation.value;
     final target = widget.targetProgress;
-    final shouldSettle = MediaQuery.disableAnimationsOf(context) ||
+    final shouldSettle =
+        MediaQuery.disableAnimationsOf(context) ||
         !TickerMode.valuesOf(context).enabled ||
         target < current - 0.015 ||
         (target - current).abs() > 0.24;
@@ -996,9 +1005,9 @@ class _PrayerDaySchedule extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.82),
-                            fontWeight: FontWeight.w800,
-                          ),
+                        color: Colors.white.withValues(alpha: 0.82),
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                   if (showToday) ...[
@@ -1007,8 +1016,8 @@ class _PrayerDaySchedule extends StatelessWidget {
                       l10n.today,
                       maxLines: 1,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.50),
-                          ),
+                        color: Colors.white.withValues(alpha: 0.50),
+                      ),
                     ),
                   ],
                 ],
@@ -1020,8 +1029,9 @@ class _PrayerDaySchedule extends StatelessWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             final scale = MediaQuery.textScalerOf(context).scale(1);
-            final columns =
-                constraints.maxWidth >= 290 && scale <= 1.65 ? 3 : 2;
+            final columns = constraints.maxWidth >= 290 && scale <= 1.65
+                ? 3
+                : 2;
             final extent = scale > 1.45 ? 102.0 : 86.0;
             return GridView.builder(
               shrinkWrap: true,
@@ -1037,19 +1047,29 @@ class _PrayerDaySchedule extends StatelessWidget {
               itemBuilder: (context, index) {
                 final moment = moments[index];
                 final highlighted = index == activeIndex;
-                final past = !highlighted &&
+                final past =
+                    !highlighted &&
                     moment.time != null &&
                     moment.time!.isBefore(now);
-                final distanceFromFocus =
-                    activeIndex < 0 ? index : (index - activeIndex).abs();
-                final rootBegin =
-                    (0.40 + distanceFromFocus * 0.035).clamp(0.40, 0.60);
-                final rootEnd =
-                    (0.66 + distanceFromFocus * 0.035).clamp(0.66, 0.84);
-                final readyBegin =
-                    (0.38 + distanceFromFocus * 0.055).clamp(0.38, 0.66);
-                final readyEnd =
-                    (0.72 + distanceFromFocus * 0.055).clamp(0.72, 0.96);
+                final distanceFromFocus = activeIndex < 0
+                    ? index
+                    : (index - activeIndex).abs();
+                final rootBegin = (0.40 + distanceFromFocus * 0.035).clamp(
+                  0.40,
+                  0.60,
+                );
+                final rootEnd = (0.66 + distanceFromFocus * 0.035).clamp(
+                  0.66,
+                  0.84,
+                );
+                final readyBegin = (0.38 + distanceFromFocus * 0.055).clamp(
+                  0.38,
+                  0.66,
+                );
+                final readyEnd = (0.72 + distanceFromFocus * 0.055).clamp(
+                  0.72,
+                  0.96,
+                );
                 return PrayerTodayMotionReveal(
                   key: ValueKey('prayer-schedule-reveal-${moment.keyName}'),
                   animation: entranceAnimation,
@@ -1093,8 +1113,9 @@ class _PrayerMomentTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final duration =
-        reduceMotion ? Duration.zero : PrayerTodayMotion.stateChange;
+    final duration = reduceMotion
+        ? Duration.zero
+        : PrayerTodayMotion.stateChange;
     const highlightAccent = Color(0xFFF3D58A);
     const foreground = Colors.white;
     final highlightStart = Color.lerp(
@@ -1173,12 +1194,13 @@ class _PrayerMomentTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: foreground.withValues(
-                            alpha: highlighted ? 0.90 : 0.78,
-                          ),
-                          fontWeight:
-                              highlighted ? FontWeight.w800 : FontWeight.w600,
-                        ),
+                      color: foreground.withValues(
+                        alpha: highlighted ? 0.90 : 0.78,
+                      ),
+                      fontWeight: highlighted
+                          ? FontWeight.w800
+                          : FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
@@ -1256,7 +1278,8 @@ class _UnavailablePrayerCanvas extends StatelessWidget {
         children: [
           _IntegratedPrayerContext(
             gregorian: intl.DateFormat.yMMMMEEEEd(locale).format(now),
-            hijri: '${hijri.day} '
+            hijri:
+                '${hijri.day} '
                 '${_hijriMonth(context, hijri.month)} ${hijri.year}',
             location: null,
           ),
@@ -1278,10 +1301,10 @@ class _UnavailablePrayerCanvas extends StatelessWidget {
             message,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  height: 1.3,
-                ),
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              height: 1.3,
+            ),
           ),
           const SizedBox(height: 16),
           Center(
@@ -1340,7 +1363,7 @@ class _PrayerCanvasLoading extends StatelessWidget {
                   mainAxisExtent: 76,
                 ),
                 itemCount: 6,
-                itemBuilder: (_, __) => block(height: 76),
+                itemBuilder: (_, _) => block(height: 76),
               ),
             ),
           ],
@@ -1370,8 +1393,11 @@ class _CountdownRingPainter extends CustomPainter {
     final center = size.center(Offset.zero);
     final radius = math.min(size.width, size.height) / 2 - 8;
     final rect = Rect.fromCircle(center: center, radius: radius);
-    final revealValue =
-        PrayerTodayMotion.phase(reveal.value, begin: 0.10, end: 0.68);
+    final revealValue = PrayerTodayMotion.phase(
+      reveal.value,
+      begin: 0.10,
+      end: 0.68,
+    );
     final pulseValue = pulse.value;
     final background = Paint()
       ..style = PaintingStyle.stroke
@@ -1382,9 +1408,9 @@ class _CountdownRingPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 10 + pulseValue * 0.8
       ..strokeCap = StrokeCap.round
-      ..color = const Color(0xFFF3D58A).withValues(
-        alpha: (0.10 + pulseValue * 0.035) * revealValue,
-      );
+      ..color = const Color(
+        0xFFF3D58A,
+      ).withValues(alpha: (0.10 + pulseValue * 0.035) * revealValue);
     final foreground = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8
@@ -1418,10 +1444,7 @@ class _CountdownRingPainter extends CustomPainter {
 }
 
 class _PrayerCanvasEdgePainter extends CustomPainter {
-  const _PrayerCanvasEdgePainter({
-    required this.color,
-    required this.progress,
-  });
+  const _PrayerCanvasEdgePainter({required this.color, required this.progress});
 
   final Color color;
   final double progress;
@@ -1515,15 +1538,7 @@ class _PrayerAtmospherePainter extends CustomPainter {
 
     _drawEngravedFrieze(canvas, size);
     _drawMihrab(canvas, size);
-    _drawGeometricLattice(canvas, size);
-    _drawRosette(
-      canvas,
-      Offset(size.width - (size.width < 520 ? 44 : 62), 92),
-      size.width < 520 ? 26 : 34,
-    );
     _drawArabesqueVines(canvas, size);
-    if (size.width >= 650) _drawHangingLantern(canvas, size);
-
     canvas.restore();
   }
 
@@ -1537,49 +1552,38 @@ class _PrayerAtmospherePainter extends CustomPainter {
       ..color = accent.withValues(alpha: 0.085 * progress)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.9;
-    canvas
-      ..drawLine(const Offset(0, y - 8), Offset(size.width, y - 8), hairline)
-      ..drawLine(const Offset(0, y + 8), Offset(size.width, y + 8), hairline);
-
-    for (var x = -8.0; x <= size.width + 16; x += 32) {
-      final diamond = Path()
-        ..moveTo(x, y - 8)
-        ..lineTo(x + 12, y)
-        ..lineTo(x, y + 8)
-        ..lineTo(x - 12, y)
-        ..close();
-      final inner = Path()
-        ..moveTo(x, y - 4)
-        ..lineTo(x + 6, y)
-        ..lineTo(x, y + 4)
-        ..lineTo(x - 6, y)
-        ..close();
-      canvas
-        ..drawPath(diamond, hairline)
-        ..drawPath(inner, gold)
-        ..drawCircle(Offset(x, y), 1.25, gold);
-    }
+    AndalusianOrnamentGeometry.drawVegetalFrieze(
+      canvas,
+      Rect.fromLTWH(0, y - 9, size.width, 18),
+      vine: hairline,
+      leaf: gold,
+      progress: progress,
+    );
   }
 
   void _drawMihrab(Canvas canvas, Size size) {
     final compact = size.width < 760;
     final contentMargin = math.max(0.0, (size.width - 1120) / 2);
     final wideMargins = contentMargin >= 140;
+    final tallComposition = size.height >= 620;
     final centerX = compact
         ? size.width * 0.5
         : wideMargins
-            ? contentMargin * 0.5
-            : size.width * 0.19;
+        ? contentMargin * 0.5
+        : size.width * 0.19;
     final halfWidth = math.min(
       compact
           ? size.width * 0.31
           : wideMargins
-              ? contentMargin * 0.34
-              : 145.0,
+          ? contentMargin * 0.34
+          : 145.0,
       146.0,
     );
     final top = compact ? 74.0 : 66.0;
-    final bottom = math.min(size.height - 82, top + (compact ? 285 : 265));
+    final archExtent = tallComposition
+        ? (size.height * 0.57).clamp(390.0, 520.0).toDouble()
+        : (compact ? 285.0 : 265.0);
+    final bottom = math.min(size.height - 82, top + archExtent);
     final line = Paint()
       ..color = ink.withValues(alpha: 0.095 * progress)
       ..style = PaintingStyle.stroke
@@ -1589,122 +1593,73 @@ class _PrayerAtmospherePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.9;
 
-    Path arch(double inset, double topInset) {
-      final left = centerX - halfWidth + inset;
-      final right = centerX + halfWidth - inset;
-      final peak = top + topInset;
-      final shoulder = peak + halfWidth * 0.72;
-      return Path()
-        ..moveTo(left, bottom)
-        ..lineTo(left, shoulder)
-        ..cubicTo(
-          left,
-          peak + halfWidth * 0.30,
-          centerX - halfWidth * 0.24,
-          peak + halfWidth * 0.20,
-          centerX,
-          peak,
-        )
-        ..cubicTo(
-          centerX + halfWidth * 0.24,
-          peak + halfWidth * 0.20,
-          right,
-          peak + halfWidth * 0.30,
-          right,
-          shoulder,
-        )
-        ..lineTo(right, bottom);
-    }
+    Path arch(double inset) => AndalusianOrnamentGeometry.horseshoeArch(
+      Rect.fromLTRB(
+        centerX - halfWidth + inset,
+        top + inset,
+        centerX + halfWidth - inset,
+        bottom,
+      ),
+    );
+
+    final innerArch = arch(17);
+    canvas
+      ..save()
+      ..clipPath(Path.from(innerArch)..close());
+    AndalusianOrnamentGeometry.drawStarAndCrossField(
+      canvas,
+      Rect.fromLTRB(
+        centerX - halfWidth + 22,
+        top + (tallComposition ? 175 : 118),
+        centerX + halfWidth - 22,
+        bottom - (tallComposition ? 28 : 10),
+      ),
+      module: tallComposition ? 124 : (compact ? 82 : 96),
+      starStroke: Paint()
+        ..color = ink.withValues(alpha: 0.060 * progress)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.75,
+      crossStroke: Paint()
+        ..color = accent.withValues(alpha: 0.075 * progress)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.7,
+    );
+    canvas.restore();
 
     canvas
-      ..drawPath(arch(0, 0), line)
-      ..drawPath(arch(9, 11), gold)
-      ..drawPath(arch(17, 21), line);
+      ..drawPath(arch(0), line)
+      ..drawPath(arch(9), gold)
+      ..drawPath(innerArch, line);
 
     final baseY = bottom - 2;
-    canvas
-      ..drawLine(
-        Offset(centerX - halfWidth - 6, baseY),
-        Offset(centerX + halfWidth + 6, baseY),
-        line,
-      )
-      ..drawLine(
-        Offset(centerX - halfWidth + 8, baseY + 7),
-        Offset(centerX + halfWidth - 8, baseY + 7),
-        gold,
-      );
-
-    _drawRosette(canvas, Offset(centerX, top + 58), 18);
-  }
-
-  void _drawGeometricLattice(Canvas canvas, Size size) {
-    final compact = size.width < 760;
-    final line = Paint()
-      ..color = ink.withValues(
-        alpha: (compact ? 0.042 : 0.052) * progress,
-      )
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.75;
-    final gold = Paint()
-      ..color = accent.withValues(alpha: 0.052 * progress)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.7;
-    final startY = compact ? 106.0 : 82.0;
-    final endY = size.height - 92;
-
-    if (compact) {
-      for (var y = startY; y < endY; y += 68) {
-        _drawEightPointStar(canvas, Offset(22, y), 11, 4.8, line);
-        _drawEightPointStar(
-          canvas,
-          Offset(size.width - 22, y + 30),
-          11,
-          4.8,
-          gold,
-        );
-        canvas
-          ..drawLine(Offset(22, y + 11), Offset(22, y + 57), line)
-          ..drawLine(
-            Offset(size.width - 22, y + 41),
-            Offset(size.width - 22, math.min(y + 87, endY)),
-            gold,
-          );
-      }
-      return;
-    }
-
-    final contentMargin = math.max(0.0, (size.width - 1120) / 2);
-    if (contentMargin >= 140) {
-      final leftAnchor = contentMargin * 0.52;
-      final rightAnchor = size.width - leftAnchor;
-      for (var y = startY; y < endY; y += 96) {
-        final stagger = ((y - startY) ~/ 96).isOdd ? 16.0 : 0.0;
-        _drawEightPointStar(
-          canvas,
-          Offset(leftAnchor + stagger, y),
-          11,
-          4.6,
+    if (tallComposition) {
+      final sideRun = math.min(64.0, halfWidth * 0.48);
+      canvas
+        ..drawLine(
+          Offset(centerX - halfWidth - 6, baseY),
+          Offset(centerX - halfWidth + sideRun, baseY),
+          line,
+        )
+        ..drawLine(
+          Offset(centerX + halfWidth - sideRun, baseY),
+          Offset(centerX + halfWidth + 6, baseY),
           line,
         );
-        _drawEightPointStar(
-          canvas,
-          Offset(rightAnchor - stagger, y + 34),
-          11,
-          4.6,
+    } else {
+      canvas
+        ..drawLine(
+          Offset(centerX - halfWidth - 6, baseY),
+          Offset(centerX + halfWidth + 6, baseY),
+          line,
+        )
+        ..drawLine(
+          Offset(centerX - halfWidth + 8, baseY + 7),
+          Offset(centerX + halfWidth - 8, baseY + 7),
           gold,
         );
-      }
-      return;
     }
 
-    final startX = size.width * 0.43;
-    for (var y = startY; y < endY; y += 62) {
-      final stagger = ((y - startY) ~/ 62).isOdd ? 31.0 : 0.0;
-      for (var x = startX + stagger; x < size.width + 24; x += 62) {
-        _drawEightPointStar(canvas, Offset(x, y), 13, 5.4, line);
-        canvas.drawCircle(Offset(x, y), 3.2, gold);
-      }
-    }
+    _drawRosette(canvas, Offset(centerX, top + 58), 18);
   }
 
   void _drawRosette(Canvas canvas, Offset center, double radius) {
@@ -1716,51 +1671,14 @@ class _PrayerAtmospherePainter extends CustomPainter {
       ..color = accent.withValues(alpha: 0.12 * progress)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.9;
-    canvas
-      ..drawCircle(center, radius, line)
-      ..drawCircle(center, radius * 0.72, gold)
-      ..drawCircle(center, radius * 0.20, line);
-    _drawEightPointStar(canvas, center, radius * 0.84, radius * 0.34, gold);
-
-    for (var index = 0; index < 8; index++) {
-      final angle = index * math.pi / 4;
-      final petalCenter = Offset(
-        center.dx + math.cos(angle) * radius * 0.48,
-        center.dy + math.sin(angle) * radius * 0.48,
-      );
-      canvas.save();
-      canvas.translate(petalCenter.dx, petalCenter.dy);
-      canvas.rotate(angle);
-      final petal = Rect.fromCenter(
-        center: Offset.zero,
-        width: radius * 0.52,
-        height: radius * 0.20,
-      );
-      canvas.drawOval(petal, line);
-      canvas.restore();
-    }
-  }
-
-  void _drawEightPointStar(
-    Canvas canvas,
-    Offset center,
-    double outerRadius,
-    double innerRadius,
-    Paint paint,
-  ) {
-    final star = Path();
-    for (var index = 0; index < 16; index++) {
-      final radius = index.isEven ? outerRadius : innerRadius;
-      final angle = -math.pi / 2 + index * math.pi / 8;
-      final point = Offset(
-        center.dx + math.cos(angle) * radius,
-        center.dy + math.sin(angle) * radius,
-      );
-      index == 0
-          ? star.moveTo(point.dx, point.dy)
-          : star.lineTo(point.dx, point.dy);
-    }
-    canvas.drawPath(star..close(), paint);
+    AndalusianOrnamentGeometry.drawEightfoldRosette(
+      canvas,
+      center,
+      radius,
+      primary: line,
+      secondary: gold,
+      progress: progress,
+    );
   }
 
   void _drawArabesqueVines(Canvas canvas, Size size) {
@@ -1775,97 +1693,22 @@ class _PrayerAtmospherePainter extends CustomPainter {
     final baseY = size.height - 58;
     final reach = math.min(size.width * 0.27, 180.0);
 
-    final left = Path()
-      ..moveTo(-8, baseY)
-      ..cubicTo(
-        reach * 0.18,
-        baseY - 74,
-        reach * 0.66,
-        baseY - 94,
-        reach,
-        baseY - 140,
-      )
-      ..cubicTo(
-        reach * 0.70,
-        baseY - 124,
-        reach * 0.42,
-        baseY - 148,
-        reach * 0.58,
-        baseY - 176,
-      );
-    canvas.drawPath(left, line);
-
-    canvas.save();
-    canvas.translate(size.width, 0);
-    canvas.scale(-1, 1);
-    canvas.drawPath(left, gold);
-    canvas.restore();
-
-    for (final leaf in [
-      (Offset(reach * 0.25, baseY - 56), -0.72),
-      (Offset(reach * 0.52, baseY - 89), -0.15),
-      (Offset(reach * 0.78, baseY - 120), -0.92),
-      (Offset(reach * 0.55, baseY - 150), 0.32),
-    ]) {
-      _drawLeaf(canvas, leaf.$1, leaf.$2, 15, line);
-      _drawLeaf(
-        canvas,
-        Offset(size.width - leaf.$1.dx, leaf.$1.dy),
-        math.pi - leaf.$2,
-        15,
-        gold,
-      );
-    }
-  }
-
-  void _drawLeaf(
-    Canvas canvas,
-    Offset center,
-    double angle,
-    double length,
-    Paint paint,
-  ) {
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(angle);
-    final leaf = Path()
-      ..moveTo(0, 0)
-      ..quadraticBezierTo(length * 0.48, -length * 0.30, length, 0)
-      ..quadraticBezierTo(length * 0.48, length * 0.30, 0, 0)
-      ..close();
-    canvas
-      ..drawPath(leaf, paint)
-      ..drawLine(Offset.zero, Offset(length, 0), paint);
-    canvas.restore();
-  }
-
-  void _drawHangingLantern(Canvas canvas, Size size) {
-    final centerX = size.width * 0.92;
-    final line = Paint()
-      ..color = accent.withValues(alpha: 0.11 * progress)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.9;
-    canvas.drawLine(Offset(centerX, 56), Offset(centerX, 112), line);
-    final lantern = Path()
-      ..moveTo(centerX - 8, 112)
-      ..lineTo(centerX + 8, 112)
-      ..lineTo(centerX + 13, 128)
-      ..lineTo(centerX + 7, 150)
-      ..lineTo(centerX - 7, 150)
-      ..lineTo(centerX - 13, 128)
-      ..close();
-    canvas
-      ..drawPath(lantern, line)
-      ..drawLine(
-        Offset(centerX - 9, 128),
-        Offset(centerX + 9, 128),
-        line,
-      )
-      ..drawCircle(
-        Offset(centerX, 133),
-        5,
-        Paint()..color = accent.withValues(alpha: 0.045 * progress),
-      );
+    AndalusianOrnamentGeometry.drawAtauriqueSpray(
+      canvas,
+      Offset(0, baseY),
+      width: reach,
+      height: 176,
+      vine: line,
+      leaf: line,
+    );
+    AndalusianOrnamentGeometry.drawAtauriqueSpray(
+      canvas,
+      Offset(size.width, baseY),
+      width: reach,
+      height: 176,
+      vine: gold,
+      leaf: gold,
+    );
   }
 
   @override
@@ -1990,13 +1833,6 @@ List<Color> _prayerCanvasColors(BuildContext context, bool isDark) {
     context.primaryColor,
     Color.lerp(context.primaryColor, context.primaryLightColor, 0.72)!,
   ];
-}
-
-String _formatDuration(Duration duration) {
-  final hours = duration.inHours.toString().padLeft(2, '0');
-  final minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
-  final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
-  return '$hours:$minutes:$seconds';
 }
 
 String _formatPrayerTime(String locale, DateTime? time) {

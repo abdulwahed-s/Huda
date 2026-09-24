@@ -10,11 +10,8 @@ import 'package:vector_graphics/vector_graphics.dart';
 
 enum HomeFeatureVisual { prayer, quran, compact }
 
-typedef HomeExpandableFeatureCardBuilder = Widget Function(
-  BuildContext context,
-  bool expanded,
-  VoidCallback toggle,
-);
+typedef HomeExpandableFeatureCardBuilder =
+    Widget Function(BuildContext context, bool expanded, VoidCallback toggle);
 
 class HomeFeatureCollection extends StatefulWidget {
   const HomeFeatureCollection({
@@ -43,11 +40,8 @@ class _HomeFeatureCollectionState extends State<HomeFeatureCollection> {
   @override
   Widget build(BuildContext context) {
     final byId = {for (final feature in widget.features) feature.id: feature};
-    List<HomeFeatureDefinition> resolve(List<HomeFeatureId> ids) => ids
-        .where((id) => !widget.configuration.hiddenFeatures.contains(id))
-        .map((id) => byId[id])
-        .whereType<HomeFeatureDefinition>()
-        .toList();
+    List<HomeFeatureDefinition> resolve(List<HomeFeatureId> ids) =>
+        ids.map((id) => byId[id]).whereType<HomeFeatureDefinition>().toList();
 
     final primary = resolve(widget.configuration.primaryFeatures);
     final more = resolve(widget.configuration.viewMoreFeatures);
@@ -57,8 +51,9 @@ class _HomeFeatureCollectionState extends State<HomeFeatureCollection> {
       () => setState(() => _leadingExpanded = !_leadingExpanded),
     );
     final columns = context.responsive(mobile: 2, tablet: 4, desktop: 6);
-    final leadingRowFeatures =
-        leadingCard == null ? primary : primary.take(columns - 1).toList();
+    final leadingRowFeatures = leadingCard == null
+        ? primary
+        : primary.take(columns - 1).toList();
     final remainingPrimaryFeatures = leadingCard == null
         ? const <HomeFeatureDefinition>[]
         : primary.skip(columns - 1).toList();
@@ -81,9 +76,9 @@ class _HomeFeatureCollectionState extends State<HomeFeatureCollection> {
             Expanded(
               child: Text(
                 AppLocalizations.of(context)!.homeMoreTools,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
               ),
             ),
           ],
@@ -256,9 +251,9 @@ class _FeatureActionCard extends StatelessWidget {
             (states) => states.contains(WidgetState.pressed)
                 ? foreground.withValues(alpha: 0.12)
                 : states.contains(WidgetState.hovered) ||
-                        states.contains(WidgetState.focused)
-                    ? foreground.withValues(alpha: 0.07)
-                    : null,
+                      states.contains(WidgetState.focused)
+                ? foreground.withValues(alpha: 0.07)
+                : null,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 8.h),
@@ -270,8 +265,9 @@ class _FeatureActionCard extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: foreground.withValues(alpha: 0.09),
-                    borderRadius:
-                        BorderRadius.circular(quranVisual ? 20.r : 11.r),
+                    borderRadius: BorderRadius.circular(
+                      quranVisual ? 20.r : 11.r,
+                    ),
                   ),
                   child: _FeatureIcon(
                     feature: feature,
@@ -280,9 +276,7 @@ class _FeatureActionCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 9.w),
-                Expanded(
-                  child: _FeatureLabel(feature.title, compact: true),
-                ),
+                Expanded(child: _FeatureLabel(feature.title, compact: true)),
               ],
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/home/shared/home_edit_button.dart';
 import 'package:huda/presentation/widgets/home/themes/quran_journey/quran_journey_motion.dart';
 import 'package:huda/presentation/widgets/home/themes/quran_journey/quran_journey_visual_style.dart';
 
@@ -48,13 +48,11 @@ class QuranJourneyHeaderSection extends StatelessWidget {
                                   l10n.huda,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
+                                  style: Theme.of(context).textTheme.titleSmall
                                       ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         fontWeight: FontWeight.w900,
                                         letterSpacing: 0.15,
                                       ),
@@ -66,30 +64,14 @@ class QuranJourneyHeaderSection extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    IconButton(
+                    HomeEditButton(
                       key: const ValueKey('quran-home-customize'),
-                      tooltip: l10n.customizeHome,
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        onCustomize();
-                      },
-                      style: IconButton.styleFrom(
-                        minimumSize: const Size.square(48),
-                        foregroundColor: context.primaryColor,
-                        backgroundColor:
-                            context.primaryColor.withValues(alpha: 0.075),
-                        hoverColor:
-                            context.primaryColor.withValues(alpha: 0.13),
-                        focusColor:
-                            context.primaryColor.withValues(alpha: 0.12),
-                        highlightColor:
-                            context.primaryColor.withValues(alpha: 0.10),
-                        side: BorderSide(
-                          color: QuranJourneyVisualStyle.rule(context),
-                          width: QuranJourneyVisualStyle.innerRuleWidth,
-                        ),
+                      onPressed: onCustomize,
+                      foregroundColor: QuranJourneyVisualStyle.ink(context),
+                      backgroundColor: context.primaryColor.withValues(
+                        alpha: 0.075,
                       ),
-                      icon: const Icon(Icons.tune_rounded),
+                      borderColor: QuranJourneyVisualStyle.rule(context),
                     ),
                   ],
                 ),
@@ -184,6 +166,7 @@ class _QuranHeaderRule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final illumination = QuranJourneyVisualStyle.illumination(context);
+    final ink = QuranJourneyVisualStyle.ink(context);
     return ExcludeSemantics(
       child: SizedBox(
         key: const ValueKey('quran-home-header-rule'),
@@ -203,7 +186,7 @@ class _QuranHeaderRule extends StatelessWidget {
                     begin: AlignmentDirectional.centerStart,
                     end: AlignmentDirectional.centerEnd,
                     colors: [
-                      context.primaryColor.withValues(alpha: 0.82),
+                      ink.withValues(alpha: 0.82),
                       illumination.withValues(alpha: 0.55),
                       illumination.withValues(alpha: 0),
                     ],

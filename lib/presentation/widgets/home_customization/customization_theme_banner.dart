@@ -1,123 +1,132 @@
 import 'package:flutter/material.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home_customization/home_customization_labels.dart';
-import 'package:huda/presentation/widgets/home_customization/home_theme_preview.dart';
 
 class CustomizationThemeBanner extends StatelessWidget {
   const CustomizationThemeBanner({
     super.key,
     required this.theme,
-    required this.configuration,
+    required this.onEdit,
   });
 
   final HomeThemeId theme;
-  final HomeThemeConfiguration configuration;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
     final accent = context.primaryColor;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final name = homeThemeName(context, theme);
+    final description = homeThemeDescription(context, theme);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final textScale = MediaQuery.textScalerOf(context).scale(1);
-        final stackVertically = constraints.maxWidth < 620 || textScale > 1.35;
-        final copy = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+    return Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 560),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: accent.withValues(alpha: isDark ? 0.16 : 0.09),
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(
-                  color: accent.withValues(alpha: isDark ? 0.26 : 0.14),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(start: 2, bottom: 7),
+              child: Text(
+                l10n.homeStyle,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(homeThemeIcon(theme), color: accent, size: 16),
-                  const SizedBox(width: 6),
-                  Flexible(
-                    child: Text(
-                      homeThemeName(context, theme),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: accent,
-                            fontWeight: FontWeight.w800,
+            ),
+            Semantics(
+              container: true,
+              button: true,
+              label: '${l10n.homeStyle}. $name. $description',
+              excludeSemantics: true,
+              onTap: onEdit,
+              child: Material(
+                key: const ValueKey('home-style-selector'),
+                color: scheme.surfaceContainerLow,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: BorderSide(
+                    color: scheme.outlineVariant.withValues(alpha: 0.82),
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: InkWell(
+                  onTap: onEdit,
+                  splashColor: accent.withValues(alpha: 0.12),
+                  highlightColor: accent.withValues(alpha: 0.045),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(10, 9, 8, 9),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 44,
+                          height: 44,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: accent.withValues(alpha: 0.11),
+                            borderRadius: BorderRadius.circular(13),
                           ),
+                          child: Icon(
+                            homeThemeIcon(theme),
+                            color: accent,
+                            size: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleSmall
+                                    ?.copyWith(fontWeight: FontWeight.w800),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                description,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: scheme.onSurfaceVariant,
+                                      height: 1.25,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          width: 38,
+                          height: 38,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: accent.withValues(alpha: 0.085),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: accent,
+                            size: 23,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              homeThemeDescription(context, theme),
-              maxLines: stackVertically ? 4 : 3,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: scheme.onSurface,
-                    fontWeight: FontWeight.w700,
-                    height: 1.3,
-                  ),
             ),
           ],
-        );
-        final preview = HomeThemePreview(
-          key: ValueKey('selected-theme-preview-${theme.name}'),
-          theme: theme,
-          detail: HomeThemePreviewDetail.expanded,
-          configuration: configuration,
-        );
-
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            color: Color.alphaBlend(
-              accent.withValues(alpha: isDark ? 0.045 : 0.018),
-              scheme.surface,
-            ),
-            borderRadius: BorderRadius.circular(28),
-            border: Border.all(
-              color: accent.withValues(alpha: isDark ? 0.22 : 0.11),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isDark ? 0.20 : 0.07),
-                blurRadius: 28,
-                offset: const Offset(0, 12),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(stackVertically ? 16 : 20),
-            child: stackVertically
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      copy,
-                      const SizedBox(height: 18),
-                      SizedBox(height: 190, child: preview),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      Expanded(flex: 4, child: copy),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        flex: 6,
-                        child: SizedBox(height: 210, child: preview),
-                      ),
-                    ],
-                  ),
-          ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

@@ -33,46 +33,37 @@ enum HomeFeatureId {
 class HomeThemeConfiguration {
   const HomeThemeConfiguration({
     required this.orderedSections,
-    required this.hiddenSections,
     required this.primaryFeatures,
     required this.viewMoreFeatures,
-    required this.hiddenFeatures,
   });
 
   final List<HomeSectionId> orderedSections;
-  final Set<HomeSectionId> hiddenSections;
   final List<HomeFeatureId> primaryFeatures;
   final List<HomeFeatureId> viewMoreFeatures;
-  final Set<HomeFeatureId> hiddenFeatures;
 
   HomeThemeConfiguration copyWith({
     List<HomeSectionId>? orderedSections,
-    Set<HomeSectionId>? hiddenSections,
     List<HomeFeatureId>? primaryFeatures,
     List<HomeFeatureId>? viewMoreFeatures,
-    Set<HomeFeatureId>? hiddenFeatures,
   }) {
     return HomeThemeConfiguration(
       orderedSections: orderedSections ?? this.orderedSections,
-      hiddenSections: hiddenSections ?? this.hiddenSections,
       primaryFeatures: primaryFeatures ?? this.primaryFeatures,
       viewMoreFeatures: viewMoreFeatures ?? this.viewMoreFeatures,
-      hiddenFeatures: hiddenFeatures ?? this.hiddenFeatures,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'sections': orderedSections.map((item) => item.name).toList(),
-        'hiddenSections': hiddenSections.map((item) => item.name).toList(),
-        'primaryFeatures': primaryFeatures.map((item) => item.name).toList(),
-        'viewMoreFeatures': viewMoreFeatures.map((item) => item.name).toList(),
-        'hiddenFeatures': hiddenFeatures.map((item) => item.name).toList(),
-      };
+    'sections': orderedSections.map((item) => item.name).toList(),
+    'primaryFeatures': primaryFeatures.map((item) => item.name).toList(),
+    'viewMoreFeatures': viewMoreFeatures.map((item) => item.name).toList(),
+  };
 
   factory HomeThemeConfiguration.fromJson(
     Map<String, dynamic> json,
-    HomeThemeConfiguration fallback,
-  ) {
+    HomeThemeConfiguration fallback, {
+    bool restoreHiddenFeatures = false,
+  }) {
     final sections = _enumList(
       json['sections'],
       HomeSectionId.values,
@@ -106,20 +97,26 @@ class HomeThemeConfiguration {
       }
     }
 
-    return HomeThemeConfiguration(
-      orderedSections: sections,
-      hiddenSections: _enumList(
-        json['hiddenSections'],
-        HomeSectionId.values,
-        (value) => value.name,
-      ).toSet(),
-      primaryFeatures: primary,
-      viewMoreFeatures: viewMore,
-      hiddenFeatures: _enumList(
+    if (restoreHiddenFeatures) {
+      final hidden = _enumList(
         json['hiddenFeatures'],
         HomeFeatureId.values,
         (value) => value.name,
-      ).toSet(),
+      ).toSet();
+      final hiddenInStoredOrder = <HomeFeatureId>[
+        ...primary,
+        ...viewMore,
+      ].where(hidden.contains).toList(growable: false);
+      primary.removeWhere(hidden.contains);
+      viewMore
+        ..removeWhere(hidden.contains)
+        ..addAll(hiddenInStoredOrder);
+    }
+
+    return HomeThemeConfiguration(
+      orderedSections: sections,
+      primaryFeatures: primary,
+      viewMoreFeatures: viewMore,
     );
   }
 }
@@ -131,7 +128,7 @@ class HomePreferences {
     required this.configurations,
   });
 
-  static const currentSchemaVersion = 2;
+  static const currentSchemaVersion = 3;
 
   final int schemaVersion;
   final HomeThemeId selectedTheme;
@@ -158,22 +155,22 @@ class HomePreferences {
   }
 
   Map<String, dynamic> toJson() => {
-        'schemaVersion': currentSchemaVersion,
-        'selectedTheme': selectedTheme.name,
-        'configurations': {
-          for (final entry in configurations.entries)
-            entry.key.name: entry.value.toJson(),
-        },
-      };
+    'schemaVersion': currentSchemaVersion,
+    'selectedTheme': selectedTheme.name,
+    'configurations': {
+      for (final entry in configurations.entries)
+        entry.key.name: entry.value.toJson(),
+    },
+  };
 
   factory HomePreferences.defaults() => HomePreferences(
-        schemaVersion: currentSchemaVersion,
-        selectedTheme: HomeThemeId.classic,
-        configurations: {
-          for (final theme in HomeThemeId.values)
-            theme: HomeThemeDefaults.configuration(theme),
-        },
-      );
+    schemaVersion: currentSchemaVersion,
+    selectedTheme: HomeThemeId.classic,
+    configurations: {
+      for (final theme in HomeThemeId.values)
+        theme: HomeThemeDefaults.configuration(theme),
+    },
+  );
 
   factory HomePreferences.fromJson(Map<String, dynamic> json) {
     final defaults = HomePreferences.defaults();
@@ -191,18 +188,23 @@ class HomePreferences {
 
     for (final theme in HomeThemeId.values) {
       final fallback = defaults.configurationFor(theme);
-      final raw =
-          rawConfigurations is Map ? rawConfigurations[theme.name] : null;
-      final resetFocusedMode = storedSchemaVersion < currentSchemaVersion &&
-          theme != HomeThemeId.classic;
+      final raw = rawConfigurations is Map
+          ? rawConfigurations[theme.name]
+          : null;
+      final resetFocusedMode =
+          storedSchemaVersion < 2 && theme != HomeThemeId.classic;
       final parsed = !resetFocusedMode && raw is Map
           ? HomeThemeConfiguration.fromJson(
               Map<String, dynamic>.from(raw),
               fallback,
+              restoreHiddenFeatures: storedSchemaVersion < 3,
             )
           : fallback;
-      configurations[theme] =
-          HomeThemePolicy.normalize(theme, parsed, fallback);
+      configurations[theme] = HomeThemePolicy.normalize(
+        theme,
+        parsed,
+        fallback,
+      );
     }
 
     return HomePreferences(
@@ -221,59 +223,49 @@ class HomeThemeDefaults {
   static HomeThemeConfiguration configuration(HomeThemeId theme) {
     return switch (theme) {
       HomeThemeId.classic => const HomeThemeConfiguration(
-          orderedSections: [],
-          hiddenSections: {},
-          primaryFeatures: [
-            HomeFeatureId.quranKit,
-            HomeFeatureId.prayerTimes,
-            HomeFeatureId.hadith,
-            HomeFeatureId.athkar,
-            HomeFeatureId.hijriCalendar,
-            HomeFeatureId.miqaatLock,
-            HomeFeatureId.books,
-            HomeFeatureId.audios,
-            HomeFeatureId.hudaAI,
-            HomeFeatureId.checklist,
-            HomeFeatureId.qiblah,
-            HomeFeatureId.notifications,
-            HomeFeatureId.ramadan,
-            HomeFeatureId.zakat,
-            HomeFeatureId.tasbih,
-            HomeFeatureId.settings,
-            HomeFeatureId.widgetManagement,
-          ],
-          viewMoreFeatures: [],
-          hiddenFeatures: {},
-        ),
+        orderedSections: [],
+        primaryFeatures: [
+          HomeFeatureId.quranKit,
+          HomeFeatureId.prayerTimes,
+          HomeFeatureId.hadith,
+          HomeFeatureId.athkar,
+          HomeFeatureId.hijriCalendar,
+          HomeFeatureId.miqaatLock,
+          HomeFeatureId.books,
+          HomeFeatureId.audios,
+          HomeFeatureId.hudaAI,
+          HomeFeatureId.checklist,
+          HomeFeatureId.qiblah,
+          HomeFeatureId.notifications,
+          HomeFeatureId.ramadan,
+          HomeFeatureId.zakat,
+          HomeFeatureId.tasbih,
+          HomeFeatureId.settings,
+          HomeFeatureId.widgetManagement,
+        ],
+        viewMoreFeatures: [],
+      ),
       HomeThemeId.prayerToday => _withPrimary(
-          sections: const [],
-          primary: const [
-            HomeFeatureId.prayerTimes,
-            HomeFeatureId.quranKit,
-            HomeFeatureId.athkar,
-            HomeFeatureId.hadith,
-            HomeFeatureId.tasbih,
-          ],
-          reserved: const {
-            HomeFeatureId.quran,
-          },
-        ),
+        sections: const [],
+        primary: const [
+          HomeFeatureId.prayerTimes,
+          HomeFeatureId.quranKit,
+          HomeFeatureId.athkar,
+          HomeFeatureId.hadith,
+          HomeFeatureId.tasbih,
+        ],
+        reserved: const {HomeFeatureId.quran},
+      ),
       HomeThemeId.quranJourney => _withPrimary(
-          sections: const [
-            HomeSectionId.dailyAyah,
-            HomeSectionId.khatmaProgress,
-          ],
-          primary: const [
-            HomeFeatureId.athkar,
-            HomeFeatureId.hadith,
-            HomeFeatureId.books,
-            HomeFeatureId.audios,
-          ],
-          reserved: const {
-            HomeFeatureId.quran,
-            HomeFeatureId.quranKit,
-          },
-        ),
+        sections: const [HomeSectionId.dailyAyah, HomeSectionId.khatmaProgress],
+        primary: const [
+          HomeFeatureId.athkar,
+          HomeFeatureId.hadith,
+          HomeFeatureId.books,
+          HomeFeatureId.audios,
+        ],
+        reserved: const {HomeFeatureId.quran, HomeFeatureId.quranKit},
+      ),
     };
   }
 
@@ -282,15 +274,15 @@ class HomeThemeDefaults {
     required List<HomeFeatureId> primary,
     Set<HomeFeatureId> reserved = const {},
   }) {
-    final available =
-        _allFeatures.where((feature) => !reserved.contains(feature));
+    final available = _allFeatures.where(
+      (feature) => !reserved.contains(feature),
+    );
     return HomeThemeConfiguration(
       orderedSections: sections,
-      hiddenSections: const {},
       primaryFeatures: primary,
-      viewMoreFeatures:
-          available.where((feature) => !primary.contains(feature)).toList(),
-      hiddenFeatures: const {},
+      viewMoreFeatures: available
+          .where((feature) => !primary.contains(feature))
+          .toList(),
     );
   }
 }
@@ -302,21 +294,19 @@ class HomeThemePolicy {
       switch (theme) {
         HomeThemeId.classic || HomeThemeId.prayerToday => const {},
         HomeThemeId.quranJourney => const {
-            HomeSectionId.dailyAyah,
-            HomeSectionId.khatmaProgress,
-          },
+          HomeSectionId.dailyAyah,
+          HomeSectionId.khatmaProgress,
+        },
       };
 
   static Set<HomeFeatureId> reservedFeatures(HomeThemeId theme) =>
       switch (theme) {
         HomeThemeId.classic => const {},
-        HomeThemeId.prayerToday => const {
-            HomeFeatureId.quran,
-          },
+        HomeThemeId.prayerToday => const {HomeFeatureId.quran},
         HomeThemeId.quranJourney => const {
-            HomeFeatureId.quran,
-            HomeFeatureId.quranKit,
-          },
+          HomeFeatureId.quran,
+          HomeFeatureId.quranKit,
+        },
       };
 
   static HomeThemeConfiguration normalize(
@@ -326,8 +316,9 @@ class HomeThemePolicy {
   ) {
     final allowedSections = configurableSections(theme);
     final reserved = reservedFeatures(theme);
-    final sections =
-        configuration.orderedSections.where(allowedSections.contains).toList();
+    final sections = configuration.orderedSections
+        .where(allowedSections.contains)
+        .toList();
     for (final section in fallback.orderedSections) {
       if (!sections.contains(section)) sections.add(section);
     }
@@ -351,20 +342,16 @@ class HomeThemePolicy {
       ...fallback.viewMoreFeatures,
     ]) {
       if (!primary.contains(feature) && !more.contains(feature)) {
-        (fallback.primaryFeatures.contains(feature) ? primary : more)
-            .add(feature);
+        (fallback.primaryFeatures.contains(feature) ? primary : more).add(
+          feature,
+        );
       }
     }
 
     return HomeThemeConfiguration(
       orderedSections: sections,
-      hiddenSections:
-          configuration.hiddenSections.where(allowedSections.contains).toSet(),
       primaryFeatures: primary,
       viewMoreFeatures: more,
-      hiddenFeatures: configuration.hiddenFeatures
-          .where((feature) => !reserved.contains(feature))
-          .toSet(),
     );
   }
 }
