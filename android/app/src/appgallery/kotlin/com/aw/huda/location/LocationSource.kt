@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class LocationSource(context: Context) {
     private val lm =
         context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private val streamListeners = ArrayList<LocationListener>()
 
     @SuppressLint("MissingPermission")
     fun getLastKnownPosition(onResult: (Map<String, Any?>?) -> Unit) {
@@ -72,12 +73,64 @@ class LocationSource(context: Context) {
                 override fun onProviderEnabled(provider: String) {}
 
                 @Deprecated("Deprecated in Java")
-                override fun onStatusChanged(p: String?, s: Int, e: Bundle?) {}
+                override fun onStatusChanged(p: String?, s: Int, e: Bundle?) {
+                }
             }
             listeners.add(listener)
             @Suppress("DEPRECATION")
             lm.requestLocationUpdates(provider, 0L, 0f, listener, Looper.getMainLooper())
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun startPositionUpdates(
+        distanceFilterMeters: Float,
+        onResult: (Map<String, Any?>) -> Unit,
+        onError: (String, String) -> Unit,
+    ) {
+        stopPositionUpdates()
+        val providers = lm.getProviders(true).filter {
+            it == LocationManager.GPS_PROVIDER || it == LocationManager.NETWORK_PROVIDER
+        }
+        if (providers.isEmpty()) {
+            onError("UNAVAILABLE", "No location provider enabled")
+            return
+        }
+        try {
+            for (provider in providers) {
+                val listener = object : LocationListener {
+                    override fun onLocationChanged(location: Location) {
+                        onResult(location.toResultMap())
+                    }
+
+                    override fun onProviderDisabled(provider: String) {}
+                    override fun onProviderEnabled(provider: String) {}
+
+                    @Deprecated("Deprecated in Java")
+                    override fun onStatusChanged(p: String?, s: Int, e: Bundle?) {
+                    }
+                }
+                streamListeners.add(listener)
+                @Suppress("DEPRECATION")
+                lm.requestLocationUpdates(
+                    provider,
+                    STREAM_MIN_TIME_MILLIS,
+                    distanceFilterMeters,
+                    listener,
+                    Looper.getMainLooper(),
+                )
+            }
+        } catch (error: Exception) {
+            stopPositionUpdates()
+            onError("UNAVAILABLE", error.message ?: "Location updates unavailable")
+        }
+    }
+
+    fun stopPositionUpdates() {
+        for (listener in streamListeners) {
+            runCatching { lm.removeUpdates(listener) }
+        }
+        streamListeners.clear()
     }
 
     @SuppressLint("MissingPermission")
@@ -92,5 +145,6 @@ class LocationSource(context: Context) {
 
     private companion object {
         const val TIMEOUT_MS = 20_000L
+        const val STREAM_MIN_TIME_MILLIS = 30_000L
     }
 }

@@ -2,6 +2,7 @@ package com.aw.huda
 
 import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 import com.aw.huda.widget.QuranWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerWidgetReliabilityManager
@@ -11,6 +12,7 @@ import com.aw.huda.widget.prayer.PrayerLocationTimeZoneResolver
 import com.aw.huda.miqaat.MiqaatLockMethodHandler
 import com.aw.huda.location.LocationSource
 import com.aw.huda.location.LocationSupport
+import com.aw.huda.location.PrayerTravelReliabilityManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +21,10 @@ import kotlinx.coroutines.withContext
 class MainActivity : AudioServiceActivity() {
     private val CHANNEL = "com.aw.huda/widget"
     private val LOCATION_CHANNEL = "com.aw.huda/location"
+    private val LOCATION_UPDATES_CHANNEL = "com.aw.huda/location_updates"
     private val PRAYER_LOCATION_CHANNEL = "com.aw.huda/prayer_location"
+    private val PRAYER_LOCATION_MONITOR_CHANNEL =
+        "com.aw.huda/prayer_location_monitor"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -56,6 +61,27 @@ class MainActivity : AudioServiceActivity() {
                 }
             }
 
+        EventChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            LOCATION_UPDATES_CHANNEL,
+        ).setStreamHandler(object : EventChannel.StreamHandler {
+            override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
+                val distanceFilter = ((arguments as? Map<*, *>)
+                    ?.get("distanceFilter") as? Number)?.toFloat() ?: 0f
+                locationSource.startPositionUpdates(
+                    distanceFilterMeters = distanceFilter.coerceAtLeast(0f),
+                    onResult = { map -> runOnUiThread { events.success(map) } },
+                    onError = { code, message ->
+                        runOnUiThread { events.error(code, message, null) }
+                    },
+                )
+            }
+
+            override fun onCancel(arguments: Any?) {
+                locationSource.stopPositionUpdates()
+            }
+        })
+
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PRAYER_LOCATION_CHANNEL)
             .setMethodCallHandler { call, result ->
                 if (call.method != "resolveTimeZone") {
@@ -64,12 +90,17 @@ class MainActivity : AudioServiceActivity() {
                 }
                 val latitude = call.argument<Number>("latitude")?.toDouble()
                 val longitude = call.argument<Number>("longitude")?.toDouble()
+                val countryCode = call.argument<String>("countryCode")
                 if (latitude == null || longitude == null) {
                     result.error("INVALID_COORDINATES", "Missing latitude/longitude", null)
                     return@setMethodCallHandler
                 }
                 CoroutineScope(Dispatchers.IO).launch {
-                    val zone = PrayerLocationTimeZoneResolver.resolve(latitude, longitude)
+                    val zone = PrayerLocationTimeZoneResolver.resolve(
+                        latitude,
+                        longitude,
+                        countryCode = countryCode,
+                    )
                     withContext(Dispatchers.Main) {
                         if (zone == null) {
                             result.error(
@@ -83,6 +114,27 @@ class MainActivity : AudioServiceActivity() {
                     }
                 }
             }
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            PRAYER_LOCATION_MONITOR_CHANNEL,
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "sync" -> result.success(
+                    PrayerTravelReliabilityManager.sync(
+                        applicationContext,
+                        requestedEnabled = call.argument<Boolean>("enabled"),
+                        requestedMode = call.argument<String>("locationMode"),
+                    ),
+                )
+
+                "status" -> result.success(
+                    PrayerTravelReliabilityManager.status(applicationContext),
+                )
+
+                else -> result.notImplemented()
+            }
+        }
 
         // Widget channel
         MethodChannel(
@@ -135,6 +187,11 @@ class MainActivity : AudioServiceActivity() {
                     }
                 }
 
+                "syncPrayerTravelMonitoring" -> {
+                    PrayerTravelReliabilityManager.sync(applicationContext)
+                    result.success(true)
+                }
+
                 else -> {
                     result.notImplemented()
                 }
@@ -146,5 +203,7 @@ class MainActivity : AudioServiceActivity() {
             flutterEngine.dartExecutor.binaryMessenger,
             MiqaatLockMethodHandler.CHANNEL_NAME
         ).setMethodCallHandler(MiqaatLockMethodHandler(this))
+
+        PrayerTravelReliabilityManager.sync(applicationContext)
     }
 }

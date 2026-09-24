@@ -42,7 +42,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to your location to calculate accurate prayer times based on your current position.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to your location to calculate accurate prayer times based on your current position.</string>
+	<string>When you enable travel updates, Huda uses your location in the background so prayer times and notifications can follow meaningful travel.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app needs access to the microphone to verify your memorization.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

@@ -25,7 +25,7 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 internal enum class PrayerTravelStatus {
-    UPDATED,
+    CANDIDATE_SUBMITTED,
     NOT_MOVED,
     MANUAL_LOCATION,
     THROTTLED,
@@ -67,14 +67,16 @@ internal object PrayerWidgetTravelManager {
         nowMillis: Long = System.currentTimeMillis(),
         force: Boolean = false,
     ): PrayerTravelResult {
-        val snapshot = PrayerWidgetRepository.readSnapshot(context)
+        val snapshot = PrayerWidgetRepository.readTravelLocation(context)
         if (snapshot.locationMode != PrayerLocationMode.AUTOMATIC) {
             return PrayerTravelResult(PrayerTravelStatus.MANUAL_LOCATION)
         }
         val previousLat = snapshot.latitude
         val previousLon = snapshot.longitude
-        if (!force && nowMillis - PrayerWidgetRepository.lastLocationValidationMillis(context) <
-            VALIDATION_INTERVAL_MILLIS
+        if (!force && shouldThrottle(
+                nowMillis,
+                PrayerWidgetRepository.lastLocationValidationMillis(context),
+            )
         ) {
             return PrayerTravelResult(PrayerTravelStatus.THROTTLED)
         }
@@ -92,9 +94,8 @@ internal object PrayerWidgetTravelManager {
         if (backgroundAllowed && !isFresh(candidate, nowMillis)) {
             candidate = requestBalancedFix(locationManager) ?: candidate
         }
-        PrayerWidgetRepository.markLocationValidated(context, nowMillis)
-        if (candidate == null || candidate.hasAccuracy() &&
-            candidate.accuracy > MAX_ACCEPTED_ACCURACY_METERS
+        if (candidate == null || !candidate.hasAccuracy() ||
+            !acceptableFix(nowMillis, candidate.time, candidate.accuracy)
         ) {
             return PrayerTravelResult(
                 if (backgroundAllowed) PrayerTravelStatus.LOCATION_UNAVAILABLE
@@ -102,10 +103,12 @@ internal object PrayerWidgetTravelManager {
             )
         }
 
+        val geocodedCountryCode = reverseGeocodeCountryCode(context, candidate)
         val zone = PrayerLocationTimeZoneResolver.resolve(
             candidate.latitude,
             candidate.longitude,
             snapshot.timeZoneId,
+            geocodedCountryCode,
         ) ?: return PrayerTravelResult(PrayerTravelStatus.TIME_ZONE_UNAVAILABLE)
         val decision = decide(
             locationMode = snapshot.locationMode,
@@ -116,7 +119,11 @@ internal object PrayerWidgetTravelManager {
             previousTimeZoneId = snapshot.timeZoneId,
             candidateTimeZoneId = zone,
         )
-        if (!decision.shouldUpdate) {
+        if (previousLat == candidate.latitude &&
+            previousLon == candidate.longitude &&
+            snapshot.timeZoneId == zone
+        ) {
+            PrayerWidgetRepository.markLocationValidated(context, nowMillis)
             return PrayerTravelResult(
                 PrayerTravelStatus.NOT_MOVED,
                 decision.distanceMeters,
@@ -125,26 +132,28 @@ internal object PrayerWidgetTravelManager {
             )
         }
 
-        val countryCode = resolveCountryCode(context, candidate, zone)
-        val committed = PrayerWidgetRepository.commitAutomaticLocation(
+        val countryCode = geocodedCountryCode ?: resolveCountryCode(zone)
+        val submitted = PrayerWidgetRepository.submitAutomaticCandidate(
             context = context,
             latitude = candidate.latitude,
             longitude = candidate.longitude,
             timeZoneId = zone,
             countryCode = countryCode,
+            capturedAtMillis = candidate.time,
+            accuracyMeters = candidate.accuracy,
             validatedAtMillis = nowMillis,
         ) ?: return PrayerTravelResult(PrayerTravelStatus.COMMIT_FAILED)
 
         Log.i(
             TAG,
-            "Travel committed revision=${committed.revision} distance=${decision.distanceMeters.toLong()}m " +
-                    "zone=${snapshot.timeZoneId}->${committed.timeZoneId}",
+            "Travel candidate submitted distance=${decision.distanceMeters.toLong()}m " +
+                    "zone=${snapshot.timeZoneId}->${submitted.timeZoneId}",
         )
         return PrayerTravelResult(
-            PrayerTravelStatus.UPDATED,
+            PrayerTravelStatus.CANDIDATE_SUBMITTED,
             decision.distanceMeters,
             zone,
-            committed.revision,
+            null,
         )
     }
 
@@ -186,6 +195,21 @@ internal object PrayerWidgetTravelManager {
         !hasForegroundPermission -> PrayerLocationAccessPlan.NO_PERMISSION
         hasBackgroundPermission -> PrayerLocationAccessPlan.CACHED_OR_ACTIVE
         else -> PrayerLocationAccessPlan.CACHED_ONLY
+    }
+
+    internal fun acceptableFix(
+        nowMillis: Long,
+        capturedAtMillis: Long,
+        accuracyMeters: Float,
+    ): Boolean = capturedAtMillis > 0L &&
+            nowMillis - capturedAtMillis in -120_000L..VALIDATION_INTERVAL_MILLIS &&
+            accuracyMeters.isFinite() &&
+            accuracyMeters >= 0f &&
+            accuracyMeters <= MAX_ACCEPTED_ACCURACY_METERS
+
+    internal fun shouldThrottle(nowMillis: Long, lastValidationMillis: Long): Boolean {
+        if (lastValidationMillis <= 0L || nowMillis < lastValidationMillis) return false
+        return nowMillis - lastValidationMillis < VALIDATION_INTERVAL_MILLIS
     }
 
     internal fun distanceMeters(
@@ -233,7 +257,7 @@ internal object PrayerWidgetTravelManager {
 
     private fun isFresh(location: Location?, nowMillis: Long): Boolean =
         location != null && location.time > 0L &&
-                nowMillis - location.time in 0L..VALIDATION_INTERVAL_MILLIS
+                nowMillis - location.time in -120_000L..VALIDATION_INTERVAL_MILLIS
 
     @SuppressLint("MissingPermission")
     private suspend fun requestBalancedFix(locationManager: LocationManager): Location? {
@@ -275,21 +299,21 @@ internal object PrayerWidgetTravelManager {
     }
 
     @Suppress("DEPRECATION")
-    private fun resolveCountryCode(
-        context: Context,
-        location: Location,
-        timeZoneId: String,
-    ): String? {
-        val zoneRegion = runCatching { IcuTimeZone.getRegion(timeZoneId) }
+    private fun resolveCountryCode(timeZoneId: String): String? =
+        runCatching { IcuTimeZone.getRegion(timeZoneId) }
             .getOrNull()
             ?.takeUnless { it == "001" || it.isBlank() }
-        if (zoneRegion != null) return zoneRegion.uppercase(Locale.ROOT)
-        return runCatching {
-            if (!Geocoder.isPresent()) return@runCatching null
-            Geocoder(context, Locale.US)
-                .getFromLocation(location.latitude, location.longitude, 1)
-                ?.firstOrNull()?.countryCode?.trim()?.uppercase(Locale.ROOT)
-        }.onFailure { Log.w(TAG, "Country reverse geocoding unavailable", it) }
-            .getOrNull()
-    }
+            ?.uppercase(Locale.ROOT)
+
+    @Suppress("DEPRECATION")
+    private fun reverseGeocodeCountryCode(
+        context: Context,
+        location: Location,
+    ): String? = runCatching {
+        if (!Geocoder.isPresent()) return@runCatching null
+        Geocoder(context, Locale.US)
+            .getFromLocation(location.latitude, location.longitude, 1)
+            ?.firstOrNull()?.countryCode?.trim()?.uppercase(Locale.ROOT)
+    }.onFailure { Log.w(TAG, "Country reverse geocoding unavailable", it) }
+        .getOrNull()
 }

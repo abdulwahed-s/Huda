@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.aw.huda.location.PrayerTravelReliabilityManager
 
 class PrayerWidgetSystemReceiver : BroadcastReceiver() {
     companion object {
@@ -25,6 +26,12 @@ class PrayerWidgetSystemReceiver : BroadcastReceiver() {
             else -> false
         }
         if (!handled) return
+
+        PrayerTravelReliabilityManager.sync(context)
+        PrayerTravelReliabilityManager.enqueueReconciliation(
+            context,
+            "android-system-${intent.action ?: "unknown"}",
+        )
 
         val update = PrayerWidgetUpdater.updateAll(context)
         if (update.widgetCount > 0) {

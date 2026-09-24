@@ -78,18 +78,24 @@ class NotificationServices implements PrayerNotificationGateway {
   Future<bool> areNotificationsAllowed() async {
     await initialize();
     if (Platform.isAndroid) {
-      final android = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final android = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       return await android?.areNotificationsEnabled() ?? true;
     }
     if (Platform.isIOS) {
-      final ios = _plugin.resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>();
+      final ios = _plugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >();
       return (await ios?.checkPermissions())?.isEnabled ?? false;
     }
     if (Platform.isMacOS) {
-      final mac = _plugin.resolvePlatformSpecificImplementation<
-          MacOSFlutterLocalNotificationsPlugin>();
+      final mac = _plugin
+          .resolvePlatformSpecificImplementation<
+            MacOSFlutterLocalNotificationsPlugin
+          >();
       return (await mac?.checkPermissions())?.isEnabled ?? false;
     }
     return true;
@@ -98,9 +104,19 @@ class NotificationServices implements PrayerNotificationGateway {
   Future<bool> canScheduleExactNotifications() async {
     await initialize();
     if (!Platform.isAndroid) return true;
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     return await android?.canScheduleExactNotifications() ?? true;
+  }
+
+  @override
+  Future<String> schedulingCapabilitySignature() async {
+    if (!Platform.isAndroid) return 'default';
+    return await canScheduleExactNotifications()
+        ? 'android-exact'
+        : 'android-inexact';
   }
 
   Future<void> _createNotificationChannel() async {
@@ -115,8 +131,10 @@ class NotificationServices implements PrayerNotificationGateway {
       sound: RawResourceAndroidNotificationSound('azan_sound'),
       showBadge: true,
     );
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     await android?.createNotificationChannel(channel);
   }
 
@@ -230,18 +248,20 @@ class NotificationServices implements PrayerNotificationGateway {
   }) async {
     await initialize();
     await refreshTimeZone();
-    await schedulePrayerEvent(PrayerNotificationEvent(
-      id: 2000 + id,
-      prayer: Prayer.none,
-      scheduledTime: scheduledTime,
-      scheduledInstantUtc: PrayerTimeZoneService.fromWallClock(
-        scheduledTime,
-        _timeZoneName,
-      ).toUtc(),
-      timeZoneName: _timeZoneName,
-      title: title,
-      body: body,
-    ));
+    await schedulePrayerEvent(
+      PrayerNotificationEvent(
+        id: 2000 + id,
+        prayer: Prayer.none,
+        scheduledTime: scheduledTime,
+        scheduledInstantUtc: PrayerTimeZoneService.fromWallClock(
+          scheduledTime,
+          _timeZoneName,
+        ).toUtc(),
+        timeZoneName: _timeZoneName,
+        title: title,
+        body: body,
+      ),
+    );
   }
 
   Future<void> schedulePrayerNotificationWithDate({
@@ -253,18 +273,20 @@ class NotificationServices implements PrayerNotificationGateway {
   }) async {
     await initialize();
     await refreshTimeZone();
-    await schedulePrayerEvent(PrayerNotificationEvent(
-      id: PrayerNotificationEvent.idFor(scheduledTime, prayer),
-      prayer: prayer,
-      scheduledTime: scheduledTime,
-      scheduledInstantUtc: PrayerTimeZoneService.fromWallClock(
-        scheduledTime,
-        _timeZoneName,
-      ).toUtc(),
-      timeZoneName: _timeZoneName,
-      title: title,
-      body: body,
-    ));
+    await schedulePrayerEvent(
+      PrayerNotificationEvent(
+        id: PrayerNotificationEvent.idFor(scheduledTime, prayer),
+        prayer: prayer,
+        scheduledTime: scheduledTime,
+        scheduledInstantUtc: PrayerTimeZoneService.fromWallClock(
+          scheduledTime,
+          _timeZoneName,
+        ).toUtc(),
+        timeZoneName: _timeZoneName,
+        title: title,
+        body: body,
+      ),
+    );
   }
 
   @override
@@ -289,14 +311,12 @@ class NotificationServices implements PrayerNotificationGateway {
   Future<void> cancelAllPrayerNotifications() async {
     final pending = await pendingNotificationRequests();
     await cancelNotifications(
-      pending.map((request) => request.id).where(
-            PrayerNotificationEvent.isPrayerId,
-          ),
+      pending
+          .map((request) => request.id)
+          .where(PrayerNotificationEvent.isPrayerId),
     );
 
-    await cancelNotifications([
-      for (var id = 2000; id <= 2599; id++) id,
-    ]);
+    await cancelNotifications([for (var id = 2000; id <= 2599; id++) id]);
   }
 
   Future<void> cancelAllNotifications() => cancelAllPrayerNotifications();

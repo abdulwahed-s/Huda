@@ -2,9 +2,11 @@
 
 #include <optional>
 
+#include <flutter/standard_method_codec.h>
+
 #include "flutter/generated_plugin_registrant.h"
 
-FlutterWindow::FlutterWindow(const flutter::DartProject& project)
+FlutterWindow::FlutterWindow(const flutter::DartProject &project)
     : project_(project) {}
 
 FlutterWindow::~FlutterWindow() {}
@@ -25,11 +27,14 @@ bool FlutterWindow::OnCreate() {
     return false;
   }
   RegisterPlugins(flutter_controller_->engine());
+  prayer_system_channel_ =
+      std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
+          flutter_controller_->engine()->messenger(),
+          "com.aw.huda/prayer_system",
+          &flutter::StandardMethodCodec::GetInstance());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
-  flutter_controller_->engine()->SetNextFrameCallback([&]() {
-    this->Show();
-  });
+  flutter_controller_->engine()->SetNextFrameCallback([&]() { this->Show(); });
 
   // Flutter can complete the first frame before the "show window" callback is
   // registered. The following call ensures a frame is pending to ensure the
@@ -40,6 +45,7 @@ bool FlutterWindow::OnCreate() {
 }
 
 void FlutterWindow::OnDestroy() {
+  prayer_system_channel_.reset();
   if (flutter_controller_) {
     flutter_controller_ = nullptr;
   }
@@ -62,9 +68,28 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
   }
 
   switch (message) {
-    case WM_FONTCHANGE:
-      flutter_controller_->engine()->ReloadSystemFonts();
-      break;
+  case WM_TIMECHANGE:
+    if (prayer_system_channel_) {
+      prayer_system_channel_->InvokeMethod(
+          "systemChanged", std::make_unique<flutter::EncodableValue>("time"));
+    }
+    break;
+  case WM_POWERBROADCAST:
+    if (wparam == PBT_APMRESUMEAUTOMATIC && prayer_system_channel_) {
+      prayer_system_channel_->InvokeMethod(
+          "systemChanged", std::make_unique<flutter::EncodableValue>("resume"));
+    }
+    break;
+  case WM_ACTIVATE:
+    if (LOWORD(wparam) != WA_INACTIVE && prayer_system_channel_) {
+      prayer_system_channel_->InvokeMethod(
+          "systemChanged",
+          std::make_unique<flutter::EncodableValue>("activation"));
+    }
+    break;
+  case WM_FONTCHANGE:
+    flutter_controller_->engine()->ReloadSystemFonts();
+    break;
   }
 
   return Win32Window::MessageHandler(hwnd, message, wparam, lparam);

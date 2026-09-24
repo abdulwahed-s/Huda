@@ -1,1 +1,3 @@
 "CFBundleDisplayName" = "Huda";
+"NSLocationWhenInUseUsageDescription" = "Huda uses your location while the app is open to calculate prayer times for your current position.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "When you enable travel updates, Huda uses your location in the background so prayer times and notifications can follow meaningful travel.";

@@ -10,15 +10,22 @@ import com.google.gson.JsonParser
 import java.time.Instant
 import java.time.ZoneId
 import java.util.TimeZone
-import kotlin.math.max
 
 internal object PrayerWidgetRepository {
     private const val TAG = "PrayerWidgetRepository"
     private const val FLUTTER_PREFS_NAME = "FlutterSharedPreferences"
     private const val PREFIX = "flutter."
+    private const val MAX_SAFE_REVISION = 9_007_199_254_740_991L
 
     internal const val SETTINGS_PAYLOAD_KEY = "prayer_widget_settings_v2"
+    internal const val ACTIVE_LOCATION_PROJECTION_KEY = "prayer_location_generation_v1"
+    internal const val NATIVE_CANDIDATE_KEY = "prayer_location_native_candidate_v1"
+    internal const val BACKGROUND_TRAVEL_ENABLED_KEY = "prayer_background_travel_enabled"
     private const val K_PAYLOAD = "${PREFIX}$SETTINGS_PAYLOAD_KEY"
+    private const val K_ACTIVE_LOCATION = "${PREFIX}$ACTIVE_LOCATION_PROJECTION_KEY"
+    private const val K_NATIVE_CANDIDATE = "${PREFIX}$NATIVE_CANDIDATE_KEY"
+    private const val K_BACKGROUND_TRAVEL_ENABLED =
+        "${PREFIX}$BACKGROUND_TRAVEL_ENABLED_KEY"
     private const val K_LAT = "${PREFIX}latitude"
     private const val K_LON = "${PREFIX}longitude"
     private const val K_COUNTRY = "${PREFIX}country_code"
@@ -68,46 +75,64 @@ internal object PrayerWidgetRepository {
         return readLegacySnapshot(p)
     }
 
-    fun commitAutomaticLocation(
+    fun readTravelLocation(context: Context): PrayerTravelLocationSnapshot {
+        val p = prefs(context)
+        val projected = p.getString(K_ACTIVE_LOCATION, null)
+            ?.let(::decodeActiveLocationProjection)
+        if (projected != null) return projected
+        val fallback = readSnapshot(context)
+        return PrayerTravelLocationSnapshot(
+            latitude = fallback.latitude,
+            longitude = fallback.longitude,
+            timeZoneId = fallback.timeZoneId,
+            countryCode = fallback.countryCode,
+            locationMode = fallback.locationMode,
+            revision = fallback.locationRevision,
+        )
+    }
+
+    fun submitAutomaticCandidate(
         context: Context,
         latitude: Double,
         longitude: Double,
         timeZoneId: String,
         countryCode: String?,
+        capturedAtMillis: Long,
+        accuracyMeters: Float?,
         validatedAtMillis: Long,
-    ): PrayerWidgetSnapshot? {
+    ): PrayerNativeLocationCandidate? {
         if (!validCoordinates(latitude, longitude) || !validZoneId(timeZoneId)) {
             return null
         }
         val p = prefs(context)
-        val current = p.getString(K_PAYLOAD, null)
-            ?.let(PrayerWidgetSettingsPayload::decode)
-            ?: PrayerWidgetSettingsPayload.fromSnapshot(readLegacySnapshot(p))
-        if (current.locationMode != PrayerLocationMode.AUTOMATIC) return null
+        if (readTravelLocation(context).locationMode != PrayerLocationMode.AUTOMATIC) {
+            return null
+        }
 
-        val nowMicros = System.currentTimeMillis() * 1_000L
         val normalizedCountryCode = countryCode?.trim()?.takeIf { it.isNotEmpty() }
-        val next = current.copy(
-            revision = max(nowMicros, current.revision + 1L),
-            committedAt = Instant.ofEpochMilli(validatedAtMillis).toString(),
+        val candidate = PrayerNativeLocationCandidate(
             latitude = latitude,
             longitude = longitude,
             timeZoneId = timeZoneId,
             countryCode = normalizedCountryCode,
+            capturedAtUtc = Instant.ofEpochMilli(capturedAtMillis).toString(),
+            accuracyMeters = accuracyMeters?.toDouble(),
+            submittedAtUtc = Instant.ofEpochMilli(validatedAtMillis).toString(),
+            nonce = "${validatedAtMillis}-${System.nanoTime()}",
         )
-        val editor = p.edit()
-            .putString(K_PAYLOAD, next.encode())
-            .putString(K_LAT, latitude.toString())
-            .putString(K_LON, longitude.toString())
-            .putString(K_TIME_ZONE, timeZoneId)
-            .putString(K_LOCATION_MODE, PrayerLocationMode.AUTOMATIC.storage)
-            .putLong(K_LOCATION_VALIDATED_AT, validatedAtMillis)
-            .remove(K_LOCALITY)
-            .remove(K_COUNTRY_NAME)
-        if (normalizedCountryCode == null) editor.remove(K_COUNTRY)
-        else editor.putString(K_COUNTRY, normalizedCountryCode)
-        if (!editor.commit()) return null
-        return next.toSnapshot()
+        val committed = p.edit()
+            .putString(K_NATIVE_CANDIDATE, gson.toJson(candidate))
+            .commit()
+        return if (committed) candidate else null
+    }
+
+    fun backgroundTravelEnabled(context: Context): Boolean =
+        prefs(context).readBoolCompat(K_BACKGROUND_TRAVEL_ENABLED, false)
+
+    fun shouldEnrollTravel(context: Context): Boolean {
+        val snapshot = readTravelLocation(context)
+        return snapshot.locationMode == PrayerLocationMode.AUTOMATIC &&
+                backgroundTravelEnabled(context)
     }
 
     fun markLocationValidated(context: Context, validatedAtMillis: Long) {
@@ -195,6 +220,51 @@ internal object PrayerWidgetRepository {
         latitude.isFinite() && longitude.isFinite() &&
                 latitude in -90.0..90.0 && longitude in -180.0..180.0
 
+    internal fun decodeActiveLocationProjection(raw: String): PrayerTravelLocationSnapshot? =
+        runCatching {
+            val root = JsonParser.parseString(raw).asJsonObject
+            require(root.requiredInt("schemaVersion") == 1)
+            val revision = root.requiredLong("revision")
+            require(revision in 1L..MAX_SAFE_REVISION)
+            val modeName = root.requiredString("mode")
+            require(modeName == "automatic" || modeName == "manual")
+            require(
+                root.requiredString("timeZoneProvenance") in setOf(
+                    "coordinateResolved",
+                    "legacyApproximate",
+                )
+            )
+            require(
+                root.requiredString("source") in setOf(
+                    "explicit",
+                    "foreground",
+                    "androidBackground",
+                    "iosSignificantChange",
+                    "migration",
+                )
+            )
+            Instant.parse(root.requiredString("capturedAtUtc"))
+            Instant.parse(root.requiredString("committedAtUtc"))
+            val latitude = root.requiredDouble("latitude")
+            val longitude = root.requiredDouble("longitude")
+            require(validCoordinates(latitude, longitude))
+            val zone = root.requiredString("timeZoneId")
+            require(validZoneId(zone))
+            val accuracyElement = root.get("accuracyMeters")
+            val accuracy = accuracyElement
+                ?.takeUnless(JsonElement::isJsonNull)
+                ?.asDouble
+            require(accuracy == null || accuracy.isFinite() && accuracy >= 0.0)
+            PrayerTravelLocationSnapshot(
+                latitude = latitude,
+                longitude = longitude,
+                timeZoneId = zone,
+                countryCode = root.optionalString("countryCode"),
+                locationMode = PrayerLocationMode.fromStorage(modeName),
+                revision = revision,
+            )
+        }.getOrNull()
+
     private fun sanitizeAngle(value: Double?, default: Double, allowsZero: Boolean): Double {
         if (value == null || !value.isFinite() || value > 30.0) return default
         return if (value > 0.0 || allowsZero && value == 0.0) value else default
@@ -208,6 +278,10 @@ internal object PrayerWidgetRepository {
     internal data class PrayerWidgetSettingsPayload(
         val version: Int,
         val revision: Long,
+        val locationRevision: Long,
+        val scheduleRevision: Long,
+        val publicationRevision: Long,
+        val configurationSignature: String,
         val committedAt: String,
         val latitude: Double?,
         val longitude: Double?,
@@ -264,6 +338,10 @@ internal object PrayerWidgetRepository {
             locationMode = locationMode,
             timeFormat = timeFormat,
             revision = revision,
+            locationRevision = locationRevision,
+            scheduleRevision = scheduleRevision,
+            publicationRevision = publicationRevision,
+            configurationSignature = configurationSignature,
             committedAt = committedAt,
             source = PrayerWidgetSettingsSource.COMMITTED_PAYLOAD,
         )
@@ -273,6 +351,10 @@ internal object PrayerWidgetRepository {
         private fun toJson() = JsonObject().apply {
             addProperty("version", version)
             addProperty("revision", revision)
+            addProperty("locationRevision", locationRevision)
+            addProperty("scheduleRevision", scheduleRevision)
+            addProperty("publicationRevision", publicationRevision)
+            addProperty("configurationSignature", configurationSignature)
             addProperty("committedAt", committedAt)
             if (latitude != null && longitude != null) {
                 add("coordinates", JsonObject().apply {
@@ -316,8 +398,30 @@ internal object PrayerWidgetRepository {
                 val version = root.requiredInt("version")
                 val revision = root.requiredLong("revision")
                 val committedAt = root.requiredString("committedAt")
-                require(version >= 2 && revision > 0L && committedAt.isNotBlank())
+                require(version == 2 || version == 3)
+                require(revision in 1L..MAX_SAFE_REVISION && committedAt.isNotBlank())
                 Instant.parse(committedAt)
+                val locationRevision = if (version >= 3) {
+                    root.requiredLong("locationRevision")
+                } else revision
+                val scheduleRevision = if (version >= 3) {
+                    root.requiredLong("scheduleRevision")
+                } else 0L
+                val publicationRevision = if (version >= 3) {
+                    root.requiredLong("publicationRevision")
+                } else revision
+                val configurationSignature = if (version >= 3) {
+                    root.requiredString("configurationSignature")
+                } else "legacy-v2"
+                if (version >= 3) {
+                    require(locationRevision in 1L..MAX_SAFE_REVISION)
+                    require(scheduleRevision in 1L..MAX_SAFE_REVISION)
+                    require(
+                        publicationRevision in 1L..MAX_SAFE_REVISION &&
+                                revision == publicationRevision
+                    )
+                    require(configurationSignature.isNotBlank())
+                }
 
                 val coordinates = root.get("coordinates")
                     ?.takeUnless(JsonElement::isJsonNull)?.asJsonObject
@@ -327,11 +431,15 @@ internal object PrayerWidgetRepository {
                 if (latitude != null && longitude != null) {
                     require(validCoordinates(latitude, longitude))
                 }
-                val locationMode = PrayerLocationMode.fromStorage(
-                    root.requiredString("locationMode"),
-                )
+                val locationModeValue = root.requiredString("locationMode")
+                require(locationModeValue == "automatic" || locationModeValue == "manual")
+                val locationMode = PrayerLocationMode.fromStorage(locationModeValue)
                 val zone = root.optionalString("timeZoneId")?.takeIf { it.isNotBlank() }
                 require(zone == null || validZoneId(zone))
+                if (version >= 3) {
+                    require(latitude != null && longitude != null)
+                    require(zone != null)
+                }
                 val custom = root.requiredObject("customAngles")
                 val offsetsObject = root.requiredObject("offsets")
                 val offsets = OFFSET_KEYS.associateWith {
@@ -342,6 +450,10 @@ internal object PrayerWidgetRepository {
                 PrayerWidgetSettingsPayload(
                     version = version,
                     revision = revision,
+                    locationRevision = locationRevision,
+                    scheduleRevision = scheduleRevision,
+                    publicationRevision = publicationRevision,
+                    configurationSignature = configurationSignature,
                     committedAt = committedAt,
                     latitude = latitude,
                     longitude = longitude,
@@ -388,6 +500,10 @@ internal object PrayerWidgetRepository {
                 PrayerWidgetSettingsPayload(
                     version = 2,
                     revision = snapshot.revision,
+                    locationRevision = snapshot.locationRevision,
+                    scheduleRevision = snapshot.scheduleRevision,
+                    publicationRevision = snapshot.publicationRevision,
+                    configurationSignature = snapshot.configurationSignature,
                     committedAt = snapshot.committedAt ?: Instant.now().toString(),
                     latitude = snapshot.latitude,
                     longitude = snapshot.longitude,
@@ -431,12 +547,12 @@ internal object PrayerWidgetRepository {
         get(key)?.takeUnless(JsonElement::isJsonNull)?.asString
 
     private fun JsonObject.requiredInt(key: String): Int =
-        get(key)?.takeUnless(JsonElement::isJsonNull)?.asInt
-            ?: error("Missing $key")
+        get(key)?.takeUnless(JsonElement::isJsonNull)?.asString?.toIntOrNull()
+            ?: error("Missing or invalid $key")
 
     private fun JsonObject.requiredLong(key: String): Long =
-        get(key)?.takeUnless(JsonElement::isJsonNull)?.asLong
-            ?: error("Missing $key")
+        get(key)?.takeUnless(JsonElement::isJsonNull)?.asString?.toLongOrNull()
+            ?: error("Missing or invalid $key")
 
     private fun JsonObject.requiredDouble(key: String): Double =
         get(key)?.takeUnless(JsonElement::isJsonNull)?.asDouble
@@ -446,6 +562,28 @@ internal object PrayerWidgetRepository {
         get(key)?.takeUnless(JsonElement::isJsonNull)?.asBoolean
             ?: error("Missing $key")
 }
+
+internal data class PrayerTravelLocationSnapshot(
+    val latitude: Double?,
+    val longitude: Double?,
+    val timeZoneId: String?,
+    val countryCode: String?,
+    val locationMode: PrayerLocationMode,
+    val revision: Long,
+)
+
+internal data class PrayerNativeLocationCandidate(
+    val schemaVersion: Int = 1,
+    val latitude: Double,
+    val longitude: Double,
+    val timeZoneId: String,
+    val countryCode: String?,
+    val capturedAtUtc: String,
+    val accuracyMeters: Double?,
+    val submittedAtUtc: String,
+    val source: String = "androidBackground",
+    val nonce: String,
+)
 
 internal enum class PrayerWidgetSettingsSource { COMMITTED_PAYLOAD, LEGACY }
 
@@ -498,6 +636,10 @@ internal data class PrayerWidgetSnapshot(
     val locationMode: PrayerLocationMode = PrayerLocationMode.MANUAL,
     val timeFormat: PrayerWidgetTimeFormat = PrayerWidgetTimeFormat.SYSTEM,
     val revision: Long = 0L,
+    val locationRevision: Long = revision,
+    val scheduleRevision: Long = 0L,
+    val publicationRevision: Long = revision,
+    val configurationSignature: String = "legacy",
     val committedAt: String? = null,
     val source: PrayerWidgetSettingsSource = PrayerWidgetSettingsSource.LEGACY,
 ) {
