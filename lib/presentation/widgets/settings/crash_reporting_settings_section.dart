@@ -42,8 +42,15 @@ class _CrashReportingSettingsSectionState
     try {
       await CrashReporter.setFossConsent(enabled);
     } catch (_) {
-      if (mounted) setState(() => _enabled = previous);
-      rethrow;
+      if (!mounted) return;
+      setState(() => _enabled = previous);
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.somethingWentWrong),
+          ),
+        );
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -64,11 +71,7 @@ class _CrashReportingSettingsSectionState
             children: [
               Container(
                 padding: EdgeInsets.all(
-                  context.responsive(
-                    mobile: 12.w,
-                    tablet: 14.0,
-                    desktop: 14.0,
-                  ),
+                  context.responsive(mobile: 12.w, tablet: 14.0, desktop: 14.0),
                 ),
                 decoration: BoxDecoration(
                   color: primary.withValues(alpha: 0.1),
@@ -96,25 +99,17 @@ class _CrashReportingSettingsSectionState
                       ),
                     ),
                     SizedBox(height: 4.h),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 180),
-                      child: Text(
-                        enabled
-                            ? l10n.crashReportingEnabledLabel
-                            : l10n.crashReportingDisabledLabel,
-                        key: ValueKey(enabled),
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: enabled
-                              ? primary
-                              : theme.colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    Text(
+                      l10n.crashReportingSettingsDescription,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        height: 1.35,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
               ),
-              if (_enabled == null || _saving)
+              if (_enabled == null)
                 SizedBox(
                   width: 24,
                   height: 24,
@@ -124,58 +119,20 @@ class _CrashReportingSettingsSectionState
                   ),
                 )
               else
-                Switch.adaptive(
-                  value: enabled,
-                  onChanged: _setEnabled,
-                ),
-            ],
-          ),
-          SizedBox(height: context.responsive(mobile: 18.h, tablet: 18.0)),
-          Text(
-            l10n.crashReportingSettingsDescription,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              height: 1.45,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          SizedBox(height: context.responsive(mobile: 14.h, tablet: 14.0)),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(
-              context.responsive(mobile: 14.w, tablet: 16.0, desktop: 16.0),
-            ),
-            decoration: BoxDecoration(
-              color: primary.withValues(alpha: 0.07),
-              borderRadius: BorderRadius.circular(14.r),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.data_object_rounded, size: 20, color: primary),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.crashReportingSharedDataTitle,
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        l10n.crashReportingSharedDataDescription,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          height: 1.4,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
+                Semantics(
+                  label: l10n.crashReportingSettingsTitle,
+                  value: enabled
+                      ? l10n.crashReportingEnabledLabel
+                      : l10n.crashReportingDisabledLabel,
+                  toggled: enabled,
+                  child: ExcludeSemantics(
+                    child: Switch.adaptive(
+                      value: enabled,
+                      onChanged: _saving ? null : _setEnabled,
+                    ),
                   ),
                 ),
-              ],
-            ),
+            ],
           ),
         ],
       ),

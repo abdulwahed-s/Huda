@@ -92,7 +92,6 @@ dependencies:
 
   # Sharing & feedback
   share_plus: ^13.1.0
-  feedback: ^3.2.0
   widgets_to_image: ^2.0.1
 
   # PDF
