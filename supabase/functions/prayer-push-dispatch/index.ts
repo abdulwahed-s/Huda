@@ -27,6 +27,9 @@ interface Installation {
   prayer: string;
   title: string;
   body: string;
+  schedule_revision: number | string;
+  location_revision: number | string;
+  lease_token: string;
 }
 
 let cachedProviderToken: { token: string; createdAt: number } | null = null;
@@ -39,12 +42,12 @@ Deno.serve(async (req) => {
   }
 
   try {
-    if (!await isAuthorized(req)) {
+    if (!(await isAuthorized(req))) {
       return response({ error: "unauthorized" }, 401);
     }
     validateConfiguration();
 
-    const { data, error } = await admin.rpc("claim_due_prayer_pushes", {
+    const { data, error } = await admin.rpc("claim_due_prayer_pushes_v3", {
       p_limit: 250,
     });
     if (error) throw error;
@@ -87,6 +90,8 @@ async function processInstallation(
 ): Promise<"delivered" | "skipped" | "failed"> {
   const index = installation.next_event_index;
   const eventEpoch = Number(installation.event_epoch);
+  const scheduleRevision = Number(installation.schedule_revision);
+  const locationRevision = Number(installation.location_revision);
   const event: CompactEvent = [
     eventEpoch,
     installation.notification_id,
@@ -96,12 +101,21 @@ async function processInstallation(
     index === null ||
     index < 0 ||
     !validEvent(event) ||
+    !Number.isSafeInteger(scheduleRevision) ||
+    scheduleRevision < 0 ||
+    !Number.isSafeInteger(locationRevision) ||
+    locationRevision < 0 ||
+    typeof installation.lease_token !== "string" ||
+    !installation.lease_token ||
     typeof installation.title !== "string" ||
     !installation.title ||
     typeof installation.body !== "string" ||
     !installation.body
   ) {
-    await disableMalformed(installation.installation_id, "Malformed schedule");
+    console.error(
+      "Malformed fenced prayer claim",
+      installation.installation_id,
+    );
     return "skipped";
   }
 
@@ -113,55 +127,57 @@ async function processInstallation(
   // stale events after a provider outage instead of presenting a burst.
   const staleBefore = nowEpoch - 10 * 60;
   if (eventEpoch <= coverageEpoch || eventEpoch < staleBefore) {
-    await advance(installation, {
+    await settle(installation, event, {
+      outcome: "suppressed",
       status: null,
       error: null,
-      delivered: false,
     });
     return "skipped";
   }
 
   if (eventEpoch > nowEpoch) {
-    const { error } = await admin
-      .from("prayer_push_installations")
-      .update({
-        next_notification_at: new Date(eventEpoch * 1000).toISOString(),
-        lease_until: null,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("installation_id", installation.installation_id)
-      .eq("next_event_index", index);
-    if (error) throw error;
+    await settle(installation, event, {
+      outcome: "reschedule",
+      status: null,
+      error: null,
+      retryAt: new Date(eventEpoch * 1000),
+    });
     return "skipped";
   }
+
+  const authorized = await authorize(installation, event);
+  if (!authorized) return "skipped";
 
   const apns = await sendApnsWithEnvironmentRecovery(installation, event, {
     title: installation.title,
     body: installation.body,
   });
   if (apns.ok) {
-    await advance(installation, {
+    await settle(installation, event, {
+      outcome: "accepted",
       status: apns.status,
       error: null,
-      delivered: true,
     });
     return "delivered";
   }
 
+  if (apns.status === 0) {
+    await settle(installation, event, {
+      outcome: "uncertain",
+      status: null,
+      error: apns.reason ?? "Ambiguous APNs outcome",
+      failureCount: installation.failure_count + 1,
+    });
+    return "failed";
+  }
+
   if (isPermanentTokenFailure(apns.status, apns.reason)) {
-    const { error } = await admin
-      .from("prayer_push_installations")
-      .update({
-        enabled: false,
-        next_notification_at: null,
-        lease_until: null,
-        last_apns_status: apns.status,
-        last_error: apns.reason,
-        failure_count: installation.failure_count + 1,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("installation_id", installation.installation_id);
-    if (error) throw error;
+    await settle(installation, event, {
+      outcome: "permanent",
+      status: apns.status,
+      error: apns.reason,
+      failureCount: installation.failure_count + 1,
+    });
     return "failed";
   }
 
@@ -169,72 +185,83 @@ async function processInstallation(
   if (failures >= 5) {
     // Preserve later prayers while abandoning one event that could no longer
     // be delivered near its intended time.
-    await advance(installation, {
+    await settle(installation, event, {
+      outcome: "suppressed",
       status: apns.status,
       error: apns.reason,
-      delivered: false,
       failureCount: failures,
     });
   } else {
     const retryMinutes = Math.min(2 ** failures, 10);
-    const { error } = await admin
-      .from("prayer_push_installations")
-      .update({
-        next_event_index: index,
-        next_notification_at: new Date(
-          Date.now() + retryMinutes * 60 * 1000,
-        ).toISOString(),
-        lease_until: null,
-        failure_count: failures,
-        last_apns_status: apns.status,
-        last_error: apns.reason,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("installation_id", installation.installation_id)
-      .eq("next_event_index", index);
-    if (error) throw error;
+    await settle(installation, event, {
+      outcome: "retry",
+      status: apns.status,
+      error: apns.reason,
+      failureCount: failures,
+      retryAt: new Date(Date.now() + retryMinutes * 60 * 1000),
+    });
   }
   return "failed";
 }
 
-async function advance(
+async function authorize(
   installation: Installation,
-  outcome: {
-    status: number | null;
-    error: string | null;
-    delivered: boolean;
-    failureCount?: number;
-  },
-): Promise<void> {
-  if (installation.next_event_index === null) return;
-  const { error } = await admin.rpc("advance_prayer_push", {
+  event: CompactEvent,
+): Promise<boolean> {
+  const { data, error } = await admin.rpc("authorize_prayer_push_delivery", {
     p_installation_id: installation.installation_id,
-    p_expected_event_index: installation.next_event_index,
-    p_apns_status: outcome.status,
-    p_error: outcome.error,
-    p_delivered: outcome.delivered,
-    p_failure_count: outcome.failureCount ?? 0,
+    p_schedule_revision: Number(installation.schedule_revision),
+    p_lease_token: installation.lease_token,
+    p_notification_id: event[1],
+    p_event_epoch: event[0],
   });
   if (error) throw error;
+  return data === true;
+}
+
+async function settle(
+  installation: Installation,
+  event: CompactEvent,
+  outcome: {
+    outcome:
+      | "accepted"
+      | "uncertain"
+      | "suppressed"
+      | "retry"
+      | "reschedule"
+      | "permanent";
+    status: number | null;
+    error: string | null;
+    failureCount?: number;
+    retryAt?: Date;
+  },
+): Promise<void> {
+  const { data, error } = await admin.rpc("settle_prayer_push_claim", {
+    p_installation_id: installation.installation_id,
+    p_schedule_revision: Number(installation.schedule_revision),
+    p_lease_token: installation.lease_token,
+    p_notification_id: event[1],
+    p_event_epoch: event[0],
+    p_outcome: outcome.outcome,
+    p_apns_status: outcome.status,
+    p_error: outcome.error,
+    p_failure_count: outcome.failureCount ?? 0,
+    p_retry_at: outcome.retryAt?.toISOString() ?? null,
+  });
+  if (error) throw error;
+  if (data !== true) {
+    console.warn(
+      "Ignored stale prayer-push completion",
+      installation.installation_id,
+      installation.schedule_revision,
+      event[1],
+    );
+  }
 }
 
 // Keeping each installation's year-long schedule in Postgres avoids sending
 // location data. Only the current compact event reaches this worker; advancing
 // to the next event is performed by the database RPC above.
-
-async function disableMalformed(installationId: string, message: string) {
-  const { error } = await admin
-    .from("prayer_push_installations")
-    .update({
-      enabled: false,
-      next_notification_at: null,
-      lease_until: null,
-      last_error: message,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("installation_id", installationId);
-  if (error) throw error;
-}
 
 async function sendApns(
   installation: Installation,
@@ -242,9 +269,10 @@ async function sendApns(
   content: { title: string; body: string },
 ): Promise<{ ok: boolean; status: number; reason: string | null }> {
   const providerToken = await providerJwt();
-  const host = installation.apns_environment === "development"
-    ? "api.sandbox.push.apple.com"
-    : "api.push.apple.com";
+  const host =
+    installation.apns_environment === "development"
+      ? "api.sandbox.push.apple.com"
+      : "api.push.apple.com";
   const payload = {
     aps: {
       alert: { title: content.title, body: content.body },
@@ -256,6 +284,8 @@ async function sendApns(
     prayer: event[2],
     notificationId: event[1],
     scheduledTime: new Date(event[0] * 1000).toISOString(),
+    scheduleRevision: Number(installation.schedule_revision),
+    locationRevision: Number(installation.location_revision),
   };
 
   try {
@@ -302,9 +332,10 @@ async function sendApnsWithEnvironmentRecovery(
   // custom release/development signing can differ from the build configuration
   // reported by the app. APNs token keys work in both environments, so recover
   // once from that mismatch before treating the token as invalid.
-  const correctedEnvironment = installation.apns_environment === "development"
-    ? "production"
-    : "development";
+  const correctedEnvironment =
+    installation.apns_environment === "development"
+      ? "production"
+      : "development";
   const corrected = await sendApns(
     { ...installation, apns_environment: correctedEnvironment },
     event,
@@ -312,29 +343,18 @@ async function sendApnsWithEnvironmentRecovery(
   );
   if (!corrected.ok) return corrected;
 
-  const now = new Date().toISOString();
-  const { error: duplicateError } = await admin
-    .from("prayer_push_installations")
-    .update({
-      enabled: false,
-      next_notification_at: null,
-      lease_until: null,
-      updated_at: now,
-    })
-    .eq("apns_token", installation.apns_token)
-    .eq("apns_environment", correctedEnvironment)
-    .neq("installation_id", installation.installation_id);
-  if (duplicateError) throw duplicateError;
-
-  const { error: correctionError } = await admin
-    .from("prayer_push_installations")
-    .update({
-      apns_environment: correctedEnvironment,
-      updated_at: now,
-    })
-    .eq("installation_id", installation.installation_id)
-    .eq("apns_token", installation.apns_token);
-  if (correctionError) throw correctionError;
+  const { data, error } = await admin.rpc("correct_prayer_push_environment", {
+    p_installation_id: installation.installation_id,
+    p_schedule_revision: Number(installation.schedule_revision),
+    p_lease_token: installation.lease_token,
+    p_notification_id: event[1],
+    p_apns_token: installation.apns_token,
+    p_corrected_environment: correctedEnvironment,
+  });
+  if (error) throw error;
+  if (data !== true) {
+    console.warn("Ignored stale APNs environment correction");
+  }
   return corrected;
 }
 
@@ -480,18 +500,22 @@ function isPermanentTokenFailure(
   status: number,
   reason: string | null,
 ): boolean {
-  return status === 410 ||
+  return (
+    status === 410 ||
     reason === "BadDeviceToken" ||
     reason === "DeviceTokenNotForTopic" ||
-    reason === "Unregistered";
+    reason === "Unregistered"
+  );
 }
 
 function validEvent(value: unknown): value is CompactEvent {
-  return Array.isArray(value) &&
+  return (
+    Array.isArray(value) &&
     value.length === 3 &&
     Number.isSafeInteger(value[0]) &&
     Number.isSafeInteger(value[1]) &&
-    typeof value[2] === "string";
+    typeof value[2] === "string"
+  );
 }
 
 function validateConfiguration() {

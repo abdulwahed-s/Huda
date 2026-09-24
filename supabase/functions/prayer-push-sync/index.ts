@@ -1,6 +1,14 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { cors } from "../_shared/cors.ts";
-import { isRateLimited } from "../_shared/rate_limit.ts";
+import { isPrayerPushRateLimited } from "../_shared/rate_limit.ts";
+import {
+  canonicalizeLegacyPrayerContent,
+  canonicalPrayerContent,
+  normalizeLocale,
+  PrayerPushInputError,
+  validatePrayerEvents,
+  validatePrayerPushRevisions,
+} from "../_shared/prayer_push_validation.ts";
 
 const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -8,23 +16,15 @@ const admin = createClient(
   { auth: { persistSession: false, autoRefreshToken: false } },
 );
 
-const allowedPrayers = new Set(["fajr", "dhuhr", "asr", "maghrib", "isha"]);
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const tokenPattern = /^(?:[0-9a-f]{2}){16,256}$/i;
-
-type Content = Record<string, { title: string; body: string }>;
-type CompactEvent = [number, number, string];
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
   try {
-    if (await isRateLimited(req, "prayer-push-sync")) {
-      return json({ error: "rate_limited" }, 429);
-    }
-
     const payload = await req.json();
     const installationId = requiredString(payload.installationId, 36);
     const installationSecret = requiredString(payload.installationSecret, 128);
@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
     const secretHash = await sha256(installationSecret);
     const { data: existing, error: lookupError } = await admin
       .from("prayer_push_installations")
-      .select("installation_secret_hash")
+      .select("installation_secret_hash,schedule_revision")
       .eq("installation_id", installationId)
       .maybeSingle();
     if (lookupError) throw lookupError;
@@ -47,18 +47,59 @@ Deno.serve(async (req) => {
     }
 
     if (payload.action === "disable") {
+      const revisions = validatePrayerPushRevisions(
+        payload.locationRevision,
+        payload.scheduleRevision,
+      );
       if (existing) {
-        const { error } = await admin
-          .from("prayer_push_installations")
-          .delete()
-          .eq("installation_id", installationId);
+        const { data, error } = await admin.rpc(
+          "disable_prayer_push_installation_v2",
+          {
+            p_installation_id: installationId,
+            p_installation_secret_hash: secretHash,
+            p_location_revision: revisions.locationRevision,
+            p_schedule_revision: revisions.scheduleRevision,
+          },
+        );
         if (error) throw error;
+        const result = firstRpcRow(data);
+        if (result.status === "invalid_installation") {
+          return json({ error: result.status }, 403);
+        }
+        if (result.status === "stale_revision") {
+          return json(
+            {
+              error: result.status,
+              acceptedScheduleRevision: result.accepted_schedule_revision,
+              acceptedLocationRevision: result.accepted_location_revision,
+            },
+            409,
+          );
+        }
+        if (result.status !== "accepted" && result.status !== "absent") {
+          return json({ error: result.status || "disable_rejected" }, 400);
+        }
+        return json({
+          ok: true,
+          enabled: false,
+          acceptedScheduleRevision: result.accepted_schedule_revision,
+          acceptedLocationRevision: result.accepted_location_revision,
+        });
       }
-      return json({ ok: true, enabled: false });
+      return json({
+        ok: true,
+        enabled: false,
+        acceptedScheduleRevision: revisions.scheduleRevision,
+        acceptedLocationRevision: revisions.locationRevision,
+      });
     }
 
     if (payload.action !== "sync") {
       return json({ error: "invalid_action" }, 400);
+    }
+
+    if (await isPrayerPushRateLimited(req, installationId, existing !== null)) {
+      return json({ error: "rate_limited" }, 429);
     }
 
     const token = requiredString(payload.deviceToken, 512).toLowerCase();
@@ -78,9 +119,19 @@ Deno.serve(async (req) => {
       return json({ error: "invalid_bundle" }, 400);
     }
 
-    const content = validateContent(payload.content);
-    const events = validateEvents(payload.events, content);
+    const requestedLocale = optionalString(payload.locale, 20);
+    const locale =
+      requestedLocale === null ? null : normalizeLocale(requestedLocale);
+    const content =
+      locale === null
+        ? canonicalizeLegacyPrayerContent(payload.content)
+        : canonicalPrayerContent(locale);
+    const events = validatePrayerEvents(payload.events);
     if (events.length === 0) return json({ error: "empty_schedule" }, 400);
+    const revisions = validatePrayerPushRevisions(
+      payload.locationRevision,
+      payload.scheduleRevision,
+    );
 
     const localCoverage = optionalDate(payload.localCoverageUntil);
     const nowEpoch = Math.floor(Date.now() / 1000);
@@ -89,53 +140,57 @@ Deno.serve(async (req) => {
       localCoverage ? Math.floor(localCoverage.getTime() / 1000) : 0,
     );
     const nextIndex = events.findIndex((event) => event[0] > threshold);
-    const nextNotificationAt = nextIndex < 0
-      ? null
-      : new Date(events[nextIndex][0] * 1000).toISOString();
-    const scheduleThrough = new Date(events[events.length - 1][0] * 1000)
-      .toISOString();
+    const nextNotificationAt =
+      nextIndex < 0
+        ? null
+        : new Date(events[nextIndex][0] * 1000).toISOString();
+    const scheduleThrough = new Date(
+      events[events.length - 1][0] * 1000,
+    ).toISOString();
 
-    // A token can survive an app reinstall. Disable stale installation rows so
-    // one physical app installation never receives duplicate pushes.
-    const { error: duplicateError } = await admin
-      .from("prayer_push_installations")
-      .update({
-        enabled: false,
-        next_notification_at: null,
-        lease_until: null,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("apns_token", token)
-      .eq("apns_environment", environment)
-      .neq("installation_id", installationId);
-    if (duplicateError) throw duplicateError;
-
-    const row = {
-      installation_id: installationId,
-      installation_secret_hash: secretHash,
-      apns_token: token,
-      apns_environment: environment,
-      bundle_id: bundleId,
-      enabled: true,
-      app_version: appVersion,
-      time_zone: timeZone,
-      configuration_signature: configurationSignature,
-      local_coverage_until: localCoverage?.toISOString() ?? null,
-      schedule_through: scheduleThrough,
-      schedule: { content, events },
-      next_event_index: nextIndex < 0 ? null : nextIndex,
-      next_notification_at: nextNotificationAt,
-      lease_until: null,
-      failure_count: 0,
-      last_apns_status: null,
-      last_error: null,
-      last_seen_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    const { error: upsertError } = await admin
-      .from("prayer_push_installations")
-      .upsert(row, { onConflict: "installation_id" });
+    const { data: syncResult, error: upsertError } = await admin.rpc(
+      "sync_prayer_push_installation_v2",
+      {
+        p_installation_id: installationId,
+        p_installation_secret_hash: secretHash,
+        p_apns_token: token,
+        p_apns_environment: environment,
+        p_bundle_id: bundleId,
+        p_app_version: appVersion,
+        p_time_zone: timeZone,
+        p_configuration_signature: configurationSignature,
+        p_local_coverage_until: localCoverage?.toISOString() ?? null,
+        p_schedule_through: scheduleThrough,
+        p_schedule: { content, events },
+        p_next_event_index: nextIndex < 0 ? null : nextIndex,
+        p_next_notification_at: nextNotificationAt,
+        p_location_revision: revisions.locationRevision,
+        p_schedule_revision: revisions.scheduleRevision,
+      },
+    );
     if (upsertError) throw upsertError;
+    const accepted = firstRpcRow(syncResult);
+    if (accepted.status === "invalid_installation") {
+      return json({ error: "invalid_installation" }, 403);
+    }
+    if (
+      accepted.status === "stale_revision" ||
+      accepted.status === "revision_conflict"
+    ) {
+      return json(
+        {
+          error: accepted.status,
+          acceptedScheduleRevision: accepted.accepted_schedule_revision,
+          acceptedLocationRevision: accepted.accepted_location_revision,
+          acknowledgedLocalCoverageUntil:
+            accepted.acknowledged_local_coverage_until,
+        },
+        409,
+      );
+    }
+    if (accepted.status !== "accepted" && accepted.status !== "idempotent") {
+      return json({ error: accepted.status || "sync_rejected" }, 400);
+    }
 
     return json({
       ok: true,
@@ -144,66 +199,27 @@ Deno.serve(async (req) => {
       localCoverageUntil: localCoverage?.toISOString() ?? null,
       nextNotificationAt,
       scheduleThrough,
+      acceptedScheduleRevision: accepted.accepted_schedule_revision,
+      acceptedLocationRevision: accepted.accepted_location_revision,
+      acknowledgedLocalCoverageUntil:
+        accepted.acknowledged_local_coverage_until,
+      idempotent: accepted.status === "idempotent",
     });
   } catch (error) {
     console.error("prayer-push-sync failed", safeError(error));
-    if (error instanceof InputError) {
+    if (error instanceof InputError || error instanceof PrayerPushInputError) {
       return json({ error: error.code }, 400);
     }
     return json({ error: "internal_error" }, 500);
   }
 });
 
-function validateContent(value: unknown): Content {
-  if (!value || typeof value !== "object" || Array.isArray(value)) {
-    throw new InputError("invalid_content");
+function firstRpcRow(value: unknown): Record<string, any> {
+  const row = Array.isArray(value) ? value[0] : value;
+  if (!row || typeof row !== "object") {
+    throw new Error("Invalid prayer-push RPC response");
   }
-  const result: Content = {};
-  for (const [prayer, raw] of Object.entries(value)) {
-    if (!allowedPrayers.has(prayer) || !raw || typeof raw !== "object") {
-      throw new InputError("invalid_content");
-    }
-    const item = raw as Record<string, unknown>;
-    result[prayer] = {
-      title: requiredString(item.title, 180),
-      body: requiredString(item.body, 500),
-    };
-  }
-  return result;
-}
-
-function validateEvents(value: unknown, content: Content): CompactEvent[] {
-  if (!Array.isArray(value) || value.length > 1900) {
-    throw new InputError("invalid_events");
-  }
-
-  const earliest = Math.floor(Date.now() / 1000) - 24 * 60 * 60;
-  const latest = Math.floor(Date.now() / 1000) + 380 * 24 * 60 * 60;
-  let previousEpoch = 0;
-  const result: CompactEvent[] = [];
-  for (const raw of value) {
-    if (!Array.isArray(raw) || raw.length !== 3) {
-      throw new InputError("invalid_events");
-    }
-    const [epoch, notificationId, prayer] = raw;
-    if (
-      !Number.isSafeInteger(epoch) ||
-      epoch < earliest ||
-      epoch > latest ||
-      epoch <= previousEpoch ||
-      !Number.isSafeInteger(notificationId) ||
-      notificationId < 0 ||
-      notificationId > 2147483647 ||
-      typeof prayer !== "string" ||
-      !allowedPrayers.has(prayer) ||
-      !content[prayer]
-    ) {
-      throw new InputError("invalid_events");
-    }
-    previousEpoch = epoch;
-    result.push([epoch, notificationId, prayer]);
-  }
-  return result;
+  return row as Record<string, any>;
 }
 
 function requiredString(value: unknown, maxLength: number): string {

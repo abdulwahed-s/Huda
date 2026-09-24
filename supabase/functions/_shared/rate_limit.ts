@@ -17,12 +17,36 @@ function clientIp(req: Request): string {
   return req.headers.get("x-real-ip") ?? "unknown";
 }
 
-export async function isRateLimited(req: Request, scope: string): Promise<boolean> {
+export async function isRateLimited(
+  req: Request,
+  scope: string,
+): Promise<boolean> {
   try {
     const { data, error } = await admin.rpc("check_rate_limit", {
       p_ip: clientIp(req),
       p_scope: scope,
     });
+    if (error) return false;
+    return data === true;
+  } catch (_) {
+    return false;
+  }
+}
+
+export async function isPrayerPushRateLimited(
+  req: Request,
+  installationId: string,
+  existingInstallation: boolean,
+): Promise<boolean> {
+  try {
+    const { data, error } = await admin.rpc(
+      "check_prayer_push_sync_rate_limit",
+      {
+        p_ip: clientIp(req),
+        p_installation_id: installationId,
+        p_existing_installation: existingInstallation,
+      },
+    );
     if (error) return false;
     return data === true;
   } catch (_) {
