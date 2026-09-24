@@ -201,6 +201,75 @@ class PrayerWidgetMomentResolverTest {
     }
 
     @Test
+    fun versionThreeRequiresOneCompleteBoundedRevisionTuple() {
+        val common = """
+            "committedAt":"2026-09-05T00:00:00.123456Z",
+            "coordinates":{"latitude":23.588,"longitude":58.3829},
+            "locationMode":"automatic","timeZoneId":"Asia/Muscat","countryCode":"OM",
+            "calculationMethod":"auto","madhab":"shafi","highLatitudeRule":"automatic",
+            "customAngles":{"custom_fajr_angle":18,"custom_maghrib_angle":0,"custom_isha_angle":17},
+            "offsets":{"fajr":0,"sunrise":0,"dhuhr":0,"asr":0,"maghrib":0,"isha":0},
+            "timeFormat":"system",
+            "appearance":{"themeName":"teal","themeMode":"light","locale":"en",
+              "design":"hero","language":"auto","numerals":"latin","backgroundEnabled":true,
+              "glassify":false,"rounded":false,"contentSize":100}
+        """.trimIndent()
+        val valid = """
+            {"version":3,"revision":13,"publicationRevision":13,
+             "locationRevision":7,"scheduleRevision":11,
+             "configurationSignature":"configuration",$common}
+        """.trimIndent()
+        val decoded = PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(valid)
+        assertNotNull(decoded)
+        assertEquals(7L, decoded?.locationRevision)
+        assertEquals(11L, decoded?.scheduleRevision)
+        assertEquals(13L, decoded?.publicationRevision)
+
+        val missingSchedule = valid.replace("\"scheduleRevision\":11,", "")
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(missingSchedule),
+        )
+        val mixedPublication =
+            valid.replace("\"publicationRevision\":13", "\"publicationRevision\":12")
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(mixedPublication),
+        )
+        val unsafeRevision = valid.replace(
+            "\"locationRevision\":7",
+            "\"locationRevision\":9007199254740992",
+        )
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(unsafeRevision),
+        )
+        val invalidTimestamp = valid.replace(
+            "2026-09-05T00:00:00.123456Z",
+            "not-an-instant",
+        )
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(invalidTimestamp),
+        )
+        val missingCoordinates = valid.replace(
+            "\"coordinates\":{\"latitude\":23.588,\"longitude\":58.3829},",
+            "",
+        )
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(missingCoordinates),
+        )
+        val invalidZone = valid.replace("Asia/Muscat", "Unknown/Nowhere")
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(invalidZone),
+        )
+        val unknownMode = valid.replace("\"automatic\"", "\"unexpected\"")
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(unknownMode),
+        )
+        val fractionalRevision = valid.replace("\"locationRevision\":7", "\"locationRevision\":7.5")
+        assertNull(
+            PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(fractionalRevision),
+        )
+    }
+
+    @Test
     fun committedPayloadSanitizesUnboundedManualOffsets() {
         val offsets = """{"fajr":-999999,"sunrise":0,"dhuhr":0,"asr":0,"maghrib":0,"isha":999999}"""
         val json = """

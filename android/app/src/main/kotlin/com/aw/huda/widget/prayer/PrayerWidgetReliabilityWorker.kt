@@ -27,9 +27,6 @@ internal class PrayerWidgetReliabilityWorker(
                 return Result.success()
             }
 
-            val travel = PrayerWidgetTravelManager.refreshIfNeeded(context)
-            Log.d(TAG, "Native travel validation: ${travel.status}")
-
             Log.d(TAG, "Safety-net tick: refreshing ${ids.size} widget(s)")
             val update = PrayerWidgetUpdater.updateAll(context)
             val alarm = PrayerWidgetScheduler.ensureAlarmsActive(context)
