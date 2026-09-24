@@ -1888,7 +1888,13 @@ class AppLocalizationsMs extends AppLocalizations {
   String get continueHome => 'Teruskan membaca';
 
   @override
+  String get continueActivityPrompt => 'Sambung dari tempat anda berhenti';
+
+  @override
   String get noRecentActivityHome => 'Tiada aktiviti terkini';
+
+  @override
+  String get noProgress => 'Tiada kemajuan';
 
   @override
   String get resumeReading => 'Sambung bacaan Al-Quran anda';
@@ -1956,10 +1962,18 @@ class AppLocalizationsMs extends AppLocalizations {
   String get supportDescription => 'Bantu kami menambah baik aplikasi';
 
   @override
-  String get shareYourThoughts => 'Hantar maklum balas';
+  String get shareYourThoughts => 'Maklum balas umum';
 
   @override
-  String get feedbackDescription => 'Kongsi pendapat anda dengan kami';
+  String get feedbackDescription => 'Kongsi komen tentang pengalaman anda';
+
+  @override
+  String get feedbackAndIssueActionTitle =>
+      'Hantar maklum balas atau laporkan masalah';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'Laporkan masalah, cadangkan penambahbaikan atau kongsi komen';
 
   @override
   String get rateOurApp => 'Nilai Aplikasi Kami';
@@ -2475,11 +2489,11 @@ class AppLocalizationsMs extends AppLocalizations {
       'Bantu kami menambah baik Huda dengan berkongsi pandangan, cadangan atau melaporkan sebarang isu yang anda temui.';
 
   @override
-  String get feedbackFormTitle => 'Maklum Balas Anda';
+  String get feedbackFormTitle => 'Apakah yang ingin anda lakukan?';
 
   @override
   String get feedbackFormSubtitle =>
-      'Sila berikan maklumat sejelas mungkin. Maklum balas anda membantu kami menjadikan Huda lebih baik untuk semua.';
+      'Pilih satu pilihan, kemudian tulis mesej anda.';
 
   @override
   String get feedbackHintText =>
@@ -2496,14 +2510,13 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'Maklum balas anda dihantar dengan selamat dan membantu kami menambah baik aplikasi. Tiada maklumat peribadi dikongsi dengan pihak ketiga.';
+      'Mesej anda dan maklumat asas aplikasi dan peranti dihantar dengan selamat. E-mel anda hanya disertakan jika anda memasukkannya.';
 
   @override
-  String get detailedFeedbackTitle => 'Maklum Balas Terperinci';
+  String get detailedFeedbackTitle => 'Cadangkan penambahbaikan';
 
   @override
-  String get detailedFeedbackSubtitle =>
-      'Kongsi pandangan dan cadangan terperinci';
+  String get detailedFeedbackSubtitle => 'Kongsi idea untuk Huda';
 
   @override
   String get reportAnIssue => 'Laporkan Masalah';
@@ -3281,6 +3294,29 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get whatsNew400Feature5 => 'Pengalaman yang lebih lancar dan intuitif';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'Widget Waktu Solat dan al-Quran direka semula dengan penyesuaian dan kebolehpercayaan yang lebih baik serta pilihan Skrin Kunci iOS baharu';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'Sudut pengiraan tersuai untuk Fajar, Maghrib dan Isyak telah ditambah';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'Waktu solat, pemberitahuan dan widget kini boleh dikemas kini secara automatik semasa dalam perjalanan';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'Huda AI kini menyimpan sejarah perbualan yang boleh dicari secara setempat';
+
+  @override
+  String get whatsNew420Feature5 => 'Penyesuaian skrin utama dipertingkatkan';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'Pengalaman maklum balas dan pelaporan masalah direka semula';
 
   @override
   String get offlineMode => 'Mod Luar Talian';
@@ -4603,7 +4639,13 @@ class AppLocalizationsMs extends AppLocalizations {
   String get customizeHome => 'Sesuaikan Halaman Utama';
 
   @override
+  String get editHome => 'Edit Halaman Utama';
+
+  @override
   String get homeTheme => 'Tema halaman utama';
+
+  @override
+  String get homeStyle => 'Gaya halaman utama';
 
   @override
   String get themeClassic => 'Klasik';
@@ -4615,19 +4657,21 @@ class AppLocalizationsMs extends AppLocalizations {
   String get themeQuranJourney => 'Perjalanan Al-Quran';
 
   @override
-  String get themeClassicDescription =>
-      'Grid Huda yang biasa dengan susunan kad yang fleksibel.';
+  String get themeClassicDescription => 'Grid biasa dengan semua alat anda.';
 
   @override
   String get themePrayerTodayDescription =>
-      'Ikuti setiap solat dengan kira detik yang jelas ke solat seterusnya dan jadual harian lengkap.';
+      'Waktu solat dan solat seterusnya diutamakan.';
 
   @override
   String get themeQuranJourneyDescription =>
-      'Ayat harian, kemajuan bacaan dan Khatma sebagai tumpuan.';
+      'Bacaan Al-Quran dan kemajuan Khatma diutamakan.';
 
   @override
   String get primaryCards => 'Kad utama';
+
+  @override
+  String get onHome => 'Di Halaman Utama';
 
   @override
   String get viewMore => 'Lihat Lagi';
@@ -4639,6 +4683,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get moveToPrimary => 'Pindah ke utama';
 
   @override
+  String get moveToHome => 'Pindah ke Halaman Utama';
+
+  @override
   String get moveToViewMore => 'Pindah ke Lihat Lagi';
 
   @override
@@ -4646,6 +4693,26 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get resetTheme => 'Tetapkan semula tema';
+
+  @override
+  String get reorderHomeItem => 'Susun semula item';
+
+  @override
+  String get moveUp => 'Pindah ke atas';
+
+  @override
+  String get moveDown => 'Pindah ke bawah';
+
+  @override
+  String get restoreDefaultLayout => 'Pulihkan susun atur lalai';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'Ini memulihkan susunan dan meletakkan alat dalam bahagian lalainya untuk gaya halaman utama ini.';
+
+  @override
+  String get viewMoreEmpty =>
+      'Pindahkan alat yang kurang digunakan ke sini supaya Halaman Utama kekal ringkas.';
 
   @override
   String get applyChanges => 'Guna';
@@ -4724,7 +4791,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'Seret untuk menyusun semula. Gunakan kawalan untuk memaparkan kad atau memindahkannya antara Utama dan Lihat Lagi.';
+      'Tekan dan seret mana-mana kad untuk menyusun semula. Gunakan butang untuk memindahkan alat antara Utama dan Lihat Lagi.';
 
   @override
   String get themeResetMessage =>
@@ -4910,4 +4977,97 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'Apabila aplikasi menggunakan bahasa Arab, widget hanya memaparkan ayat Arab.';
+
+  @override
+  String get aiHistory => 'Sejarah Huda AI';
+
+  @override
+  String get newChat => 'Sembang baharu';
+
+  @override
+  String get searchConversations => 'Cari perbualan';
+
+  @override
+  String get noChatHistory => 'Belum ada perbualan disimpan';
+
+  @override
+  String get noHistoryResults => 'Tiada perbualan yang sepadan';
+
+  @override
+  String get clearAllHistory => 'Kosongkan semua sejarah';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'Adakah anda pasti mahu memadam semua perbualan Huda AI? Tindakan ini tidak boleh dibuat asal.';
+
+  @override
+  String get deleteChat => 'Padam perbualan';
+
+  @override
+  String get deleteChatConfirmation =>
+      'Adakah anda pasti mahu memadam perbualan ini? Tindakan ini tidak boleh dibuat asal.';
+
+  @override
+  String get aiResponseGenerating => 'Sedang dijana';
+
+  @override
+  String get aiResponseInterrupted => 'Terganggu';
+
+  @override
+  String get aiResponseFailed => 'Gagal';
+
+  @override
+  String get aiStorageWarning =>
+      'Sejarah Huda AI tidak dapat disimpan pada peranti ini. Perbualan ini akan kekal sehingga aplikasi ditutup.';
+
+  @override
+  String get aiBusyOtherConversation =>
+      'Huda AI sedang menjawab perbualan lain.';
+
+  @override
+  String get chatErrorInterrupted =>
+      'Respons telah terganggu. Cuba lagi untuk meneruskan.';
+
+  @override
+  String get prayerTravelUpdates => 'Kemas kini waktu solat semasa perjalanan';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'Apabila diaktifkan, Huda boleh mengemas kini waktu, pemberitahuan dan widget selepas perjalanan jauh tanpa membuka aplikasi.';
+
+  @override
+  String get prayerLocationMode => 'Mod lokasi';
+
+  @override
+  String get manual => 'Manual';
+
+  @override
+  String get backgroundTravelUpdates => 'Kemas kini perjalanan latar belakang';
+
+  @override
+  String get lastLocationValidation => 'Pengesahan lokasi terakhir';
+
+  @override
+  String get lastPrayerScheduleActivation => 'Pengaktifan jadual terakhir';
+
+  @override
+  String get travelUpdatesEnabled => 'Diaktifkan';
+
+  @override
+  String get travelForegroundOnly => 'Latar depan sahaja';
+
+  @override
+  String get travelPermissionRequired => 'Kebenaran diperlukan';
+
+  @override
+  String get travelUpdatesUnsupported => 'Tidak disokong';
+
+  @override
+  String get travelUpdatesUnavailable => 'Tidak tersedia';
+
+  @override
+  String get travelUpdatesDisabled => 'Dilumpuhkan';
+
+  @override
+  String get notYet => 'Belum lagi';
 }

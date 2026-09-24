@@ -1884,7 +1884,14 @@ class AppLocalizationsBn extends AppLocalizations {
   String get continueHome => 'পড়া চালিয়ে যান';
 
   @override
+  String get continueActivityPrompt =>
+      'আপনি যেখানে থেমেছিলেন সেখান থেকে চালিয়ে যান';
+
+  @override
   String get noRecentActivityHome => 'কোন সাম্প্রতিক কার্যকলাপ নেই';
+
+  @override
+  String get noProgress => 'কোনো অগ্রগতি নেই';
 
   @override
   String get resumeReading => 'আপনার কুরআন পড়া চালিয়ে যান';
@@ -1952,10 +1959,18 @@ class AppLocalizationsBn extends AppLocalizations {
   String get supportDescription => 'অ্যাপ উন্নত করতে আমাদের সাহায্য করুন';
 
   @override
-  String get shareYourThoughts => 'মতামত পাঠান';
+  String get shareYourThoughts => 'সাধারণ মতামত';
 
   @override
-  String get feedbackDescription => 'আমাদের সাথে আপনার চিন্তাভাবনা শেয়ার করুন';
+  String get feedbackDescription =>
+      'আপনার অভিজ্ঞতা সম্পর্কে একটি মন্তব্য শেয়ার করুন';
+
+  @override
+  String get feedbackAndIssueActionTitle => 'মতামত পাঠান বা সমস্যা জানান';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'সমস্যা জানান, উন্নতির প্রস্তাব দিন বা মন্তব্য শেয়ার করুন';
 
   @override
   String get rateOurApp => 'আমাদের অ্যাপ রেট করুন';
@@ -2477,11 +2492,11 @@ class AppLocalizationsBn extends AppLocalizations {
       'আপনার চিন্তা, পরামর্শ শেয়ার করুন বা কোনো সমস্যা জানিয়ে Huda উন্নত করতে আমাদের সাহায্য করুন।';
 
   @override
-  String get feedbackFormTitle => 'আপনার প্রতিক্রিয়া';
+  String get feedbackFormTitle => 'আপনি কী করতে চান?';
 
   @override
   String get feedbackFormSubtitle =>
-      'দয়া করে যতটা সম্ভব বিস্তারিতভাবে লিখুন। আপনার প্রতিক্রিয়া আমাদের Huda সবার জন্য আরও ভালো করতে সাহায্য করে।';
+      'একটি বিকল্প বেছে নিন, তারপর আপনার বার্তা লিখুন।';
 
   @override
   String get feedbackHintText =>
@@ -2498,14 +2513,13 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'আপনার প্রতিক্রিয়া নিরাপদভাবে পাঠানো হয় এবং এটি আমাদের অ্যাপ উন্নত করতে সাহায্য করে। কোনো ব্যক্তিগত তথ্য তৃতীয় পক্ষের সাথে শেয়ার করা হয় না।';
+      'আপনার বার্তা এবং অ্যাপ ও ডিভাইসের মৌলিক তথ্য নিরাপদভাবে পাঠানো হয়। আপনি ইমেল লিখলেই কেবল সেটি অন্তর্ভুক্ত করা হবে।';
 
   @override
-  String get detailedFeedbackTitle => 'বিস্তারিত প্রতিক্রিয়া';
+  String get detailedFeedbackTitle => 'উন্নতির প্রস্তাব দিন';
 
   @override
-  String get detailedFeedbackSubtitle =>
-      'বিস্তারিত মতামত এবং পরামর্শ শেয়ার করুন';
+  String get detailedFeedbackSubtitle => 'Huda-এর জন্য একটি ধারণা শেয়ার করুন';
 
   @override
   String get reportAnIssue => 'সমস্যা রিপোর্ট করুন';
@@ -3278,6 +3292,29 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get whatsNew400Feature5 => 'আরও মসৃণ ও স্বজ্ঞাত অভিজ্ঞতা';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'উন্নত কাস্টমাইজেশন, নির্ভরযোগ্যতা এবং নতুন iOS লক স্ক্রিন বিকল্পসহ নামাজ ও কুরআন উইজেট নতুনভাবে ডিজাইন করা হয়েছে';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'ফজর, মাগরিব ও ইশার জন্য কাস্টম গণনা কোণ যোগ করা হয়েছে';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'ভ্রমণের সময় নামাজের সময়, বিজ্ঞপ্তি ও উইজেট এখন স্বয়ংক্রিয়ভাবে আপডেট হতে পারে';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'Huda AI এখন অনুসন্ধানযোগ্য কথোপকথনের ইতিহাস ডিভাইসে সংরক্ষণ করে';
+
+  @override
+  String get whatsNew420Feature5 => 'হোম কাস্টমাইজেশন উন্নত করা হয়েছে';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'মতামত ও সমস্যা জানানোর অভিজ্ঞতা নতুনভাবে ডিজাইন করা হয়েছে';
 
   @override
   String get offlineMode => 'অফলাইন মোড';
@@ -4600,7 +4637,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get customizeHome => 'হোম কাস্টমাইজ করুন';
 
   @override
+  String get editHome => 'হোম সম্পাদনা করুন';
+
+  @override
   String get homeTheme => 'হোম থিম';
+
+  @override
+  String get homeStyle => 'হোম স্টাইল';
 
   @override
   String get themeClassic => 'ক্লাসিক';
@@ -4612,19 +4655,21 @@ class AppLocalizationsBn extends AppLocalizations {
   String get themeQuranJourney => 'কুরআন যাত্রা';
 
   @override
-  String get themeClassicDescription =>
-      'কার্ডের নমনীয় ক্রমসহ পরিচিত হুদা গ্রিড।';
+  String get themeClassicDescription => 'আপনার সব সরঞ্জামসহ পরিচিত একটি গ্রিড।';
 
   @override
   String get themePrayerTodayDescription =>
-      'পরবর্তী নামাজের স্পষ্ট কাউন্টডাউন ও পূর্ণ দৈনিক সময়সূচি নিয়ে প্রতিটি নামাজের পথে এগিয়ে চলুন।';
+      'নামাজের সময় ও পরবর্তী নামাজ সবার আগে।';
 
   @override
   String get themeQuranJourneyDescription =>
-      'দৈনিক আয়াত, পড়ার অগ্রগতি এবং খতমকে কেন্দ্রে রাখে।';
+      'কুরআন পাঠ ও খতমের অগ্রগতি সবার আগে।';
 
   @override
   String get primaryCards => 'প্রধান কার্ড';
+
+  @override
+  String get onHome => 'হোমে';
 
   @override
   String get viewMore => 'আরও দেখুন';
@@ -4636,6 +4681,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get moveToPrimary => 'প্রধান অংশে নিন';
 
   @override
+  String get moveToHome => 'হোমে নিন';
+
+  @override
   String get moveToViewMore => 'আরও দেখুন অংশে নিন';
 
   @override
@@ -4643,6 +4691,25 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get resetTheme => 'থিম রিসেট করুন';
+
+  @override
+  String get reorderHomeItem => 'আইটেমের ক্রম বদলান';
+
+  @override
+  String get moveUp => 'উপরে নিন';
+
+  @override
+  String get moveDown => 'নিচে নিন';
+
+  @override
+  String get restoreDefaultLayout => 'ডিফল্ট লেআউট ফিরিয়ে আনুন';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'এটি এই হোম স্টাইলের ক্রম ফিরিয়ে আনবে এবং সরঞ্জামগুলোকে তাদের ডিফল্ট বিভাগে রাখবে।';
+
+  @override
+  String get viewMoreEmpty => 'হোম সহজ রাখতে কম ব্যবহৃত সরঞ্জামগুলো এখানে নিন।';
 
   @override
   String get applyChanges => 'প্রয়োগ করুন';
@@ -4721,7 +4788,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'ক্রম বদলাতে টেনে আনুন। কার্ড দেখাতে বা প্রধান ও আরও দেখুন অংশের মধ্যে সরাতে নিয়ন্ত্রণ ব্যবহার করুন।';
+      'ক্রম বদলাতে যেকোনো কার্ড চেপে ধরে টানুন। হোম ও আরও দেখুন-এর মধ্যে টুল সরাতে বোতামটি ব্যবহার করুন।';
 
   @override
   String get themeResetMessage => 'এই থিমটি ডিফল্ট লেআউটে রিসেট করা হয়েছে।';
@@ -4903,4 +4970,97 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'অ্যাপের ভাষা আরবি হলে উইজেটে শুধু আরবি আয়াত দেখানো হয়।';
+
+  @override
+  String get aiHistory => 'Huda AI ইতিহাস';
+
+  @override
+  String get newChat => 'নতুন চ্যাট';
+
+  @override
+  String get searchConversations => 'কথোপকথন খুঁজুন';
+
+  @override
+  String get noChatHistory => 'এখনও কোনো সংরক্ষিত কথোপকথন নেই';
+
+  @override
+  String get noHistoryResults => 'কোনো মিল পাওয়া যায়নি';
+
+  @override
+  String get clearAllHistory => 'সব ইতিহাস মুছুন';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'আপনি কি সব Huda AI কথোপকথন মুছতে চান? এটি পূর্বাবস্থায় ফেরানো যাবে না।';
+
+  @override
+  String get deleteChat => 'কথোপকথন মুছুন';
+
+  @override
+  String get deleteChatConfirmation =>
+      'আপনি কি এই কথোপকথন মুছতে চান? এটি পূর্বাবস্থায় ফেরানো যাবে না।';
+
+  @override
+  String get aiResponseGenerating => 'তৈরি হচ্ছে';
+
+  @override
+  String get aiResponseInterrupted => 'বাধাপ্রাপ্ত';
+
+  @override
+  String get aiResponseFailed => 'ব্যর্থ';
+
+  @override
+  String get aiStorageWarning =>
+      'এই ডিভাইসে Huda AI ইতিহাস সংরক্ষণ করা যায়নি। অ্যাপ বন্ধ না হওয়া পর্যন্ত কথোপকথনটি থাকবে।';
+
+  @override
+  String get aiBusyOtherConversation =>
+      'Huda AI অন্য একটি কথোপকথনের উত্তর দিচ্ছে।';
+
+  @override
+  String get chatErrorInterrupted =>
+      'উত্তর তৈরি বাধাপ্রাপ্ত হয়েছে। চালিয়ে যেতে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerTravelUpdates => 'ভ্রমণের সময় নামাজের সময় আপডেট করুন';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'চালু থাকলে, অ্যাপ না খুলেও বড় ভ্রমণের পর হুদা সময়, বিজ্ঞপ্তি ও উইজেট আপডেট করতে পারে।';
+
+  @override
+  String get prayerLocationMode => 'লোকেশন মোড';
+
+  @override
+  String get manual => 'ম্যানুয়াল';
+
+  @override
+  String get backgroundTravelUpdates => 'ব্যাকগ্রাউন্ড ভ্রমণ আপডেট';
+
+  @override
+  String get lastLocationValidation => 'শেষ লোকেশন যাচাই';
+
+  @override
+  String get lastPrayerScheduleActivation => 'শেষ সময়সূচি সক্রিয়করণ';
+
+  @override
+  String get travelUpdatesEnabled => 'চালু';
+
+  @override
+  String get travelForegroundOnly => 'শুধু অ্যাপ খোলা থাকলে';
+
+  @override
+  String get travelPermissionRequired => 'অনুমতি প্রয়োজন';
+
+  @override
+  String get travelUpdatesUnsupported => 'সমর্থিত নয়';
+
+  @override
+  String get travelUpdatesUnavailable => 'অনুপলব্ধ';
+
+  @override
+  String get travelUpdatesDisabled => 'বন্ধ';
+
+  @override
+  String get notYet => 'এখনও নয়';
 }

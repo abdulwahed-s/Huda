@@ -1888,7 +1888,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueHome => 'Continue Reading';
 
   @override
+  String get continueActivityPrompt => 'Pick up where you left off';
+
+  @override
   String get noRecentActivityHome => 'No Recent Activity';
+
+  @override
+  String get noProgress => 'No progress';
 
   @override
   String get resumeReading => 'Resume your Quran reading';
@@ -1956,10 +1962,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get supportDescription => 'Help us make the app better';
 
   @override
-  String get shareYourThoughts => 'Send Feedback';
+  String get shareYourThoughts => 'General Feedback';
 
   @override
-  String get feedbackDescription => 'Share your thoughts with us';
+  String get feedbackDescription => 'Share a comment about your experience';
+
+  @override
+  String get feedbackAndIssueActionTitle => 'Send feedback or report a problem';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'Report a problem, suggest an improvement, or share a comment';
 
   @override
   String get rateOurApp => 'Rate Our App';
@@ -2472,11 +2485,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Help us improve Huda by sharing your thoughts, suggestions, or reporting any issues you\'ve encountered.';
 
   @override
-  String get feedbackFormTitle => 'Your Feedback';
+  String get feedbackFormTitle => 'What would you like to do?';
 
   @override
   String get feedbackFormSubtitle =>
-      'Please be as detailed as possible. Your feedback helps us make Huda better for everyone.';
+      'Choose one option, then write your message.';
 
   @override
   String get feedbackHintText =>
@@ -2493,14 +2506,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'Your feedback is sent securely and helps us improve the app. No personal information is shared with third parties.';
+      'Your message and basic app and device details are sent securely. Your email is included only if you enter it.';
 
   @override
-  String get detailedFeedbackTitle => 'Detailed Feedback';
+  String get detailedFeedbackTitle => 'Suggest an Improvement';
 
   @override
-  String get detailedFeedbackSubtitle =>
-      'Share detailed thoughts and suggestions';
+  String get detailedFeedbackSubtitle => 'Share an idea for Huda';
 
   @override
   String get reportAnIssue => 'Report an Issue';
@@ -3274,6 +3286,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whatsNew400Feature5 => 'A smoother, more intuitive experience';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'Redesigned Prayer and Quran widgets with improved customization, reliability, and new iOS Lock Screen options';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'Added custom Fajr, Maghrib, and Isha calculation angles';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'Prayer times, notifications, and widgets can now update automatically while traveling';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'Huda AI now saves searchable conversation history locally';
+
+  @override
+  String get whatsNew420Feature5 => 'Improved Home customization';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'Redesigned the feedback and issue-reporting experience';
 
   @override
   String get offlineMode => 'Offline Mode';
@@ -4596,7 +4631,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customizeHome => 'Customize Home';
 
   @override
+  String get editHome => 'Edit Home';
+
+  @override
   String get homeTheme => 'Home theme';
+
+  @override
+  String get homeStyle => 'Home style';
 
   @override
   String get themeClassic => 'Classic';
@@ -4608,19 +4649,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeQuranJourney => 'Quran Journey';
 
   @override
-  String get themeClassicDescription =>
-      'The familiar Huda grid with flexible card ordering.';
+  String get themeClassicDescription => 'A familiar grid with all your tools.';
 
   @override
   String get themePrayerTodayDescription =>
-      'Move through each prayer with a clear countdown to the next and the full daily schedule.';
+      'Prayer times and the next prayer first.';
 
   @override
   String get themeQuranJourneyDescription =>
-      'Daily ayah, reading progress, and Khatma at the center.';
+      'Quran reading and Khatma progress first.';
 
   @override
   String get primaryCards => 'Primary cards';
+
+  @override
+  String get onHome => 'On Home';
 
   @override
   String get viewMore => 'View More';
@@ -4632,6 +4675,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moveToPrimary => 'Move to primary';
 
   @override
+  String get moveToHome => 'Move to Home';
+
+  @override
   String get moveToViewMore => 'Move to View More';
 
   @override
@@ -4639,6 +4685,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetTheme => 'Reset theme';
+
+  @override
+  String get reorderHomeItem => 'Reorder item';
+
+  @override
+  String get moveUp => 'Move up';
+
+  @override
+  String get moveDown => 'Move down';
+
+  @override
+  String get restoreDefaultLayout => 'Restore default layout';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'This restores the order and places tools in their default sections for this home style.';
+
+  @override
+  String get viewMoreEmpty => 'Move less-used tools here to keep Home simple.';
 
   @override
   String get applyChanges => 'Apply';
@@ -4716,7 +4781,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'Drag to reorder. Use the controls to show cards or move them between Primary and View More.';
+      'Press and drag any card to reorder. Use the button to move a tool between Home and View More.';
 
   @override
   String get themeResetMessage => 'This theme was reset to its default layout.';
@@ -4898,4 +4963,97 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'Arabic app language uses an Arabic-only widget.';
+
+  @override
+  String get aiHistory => 'Huda AI history';
+
+  @override
+  String get newChat => 'New chat';
+
+  @override
+  String get searchConversations => 'Search conversations';
+
+  @override
+  String get noChatHistory => 'No saved conversations yet';
+
+  @override
+  String get noHistoryResults => 'No matching conversations';
+
+  @override
+  String get clearAllHistory => 'Clear all history';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'Are you sure you want to delete all Huda AI conversations? This cannot be undone.';
+
+  @override
+  String get deleteChat => 'Delete conversation';
+
+  @override
+  String get deleteChatConfirmation =>
+      'Are you sure you want to delete this conversation? This cannot be undone.';
+
+  @override
+  String get aiResponseGenerating => 'Generating';
+
+  @override
+  String get aiResponseInterrupted => 'Interrupted';
+
+  @override
+  String get aiResponseFailed => 'Failed';
+
+  @override
+  String get aiStorageWarning =>
+      'Huda AI history could not be saved on this device. This conversation will remain available until the app closes.';
+
+  @override
+  String get aiBusyOtherConversation =>
+      'Huda AI is answering another conversation.';
+
+  @override
+  String get chatErrorInterrupted =>
+      'The response was interrupted. Try again to continue.';
+
+  @override
+  String get prayerTravelUpdates => 'Update prayer times while traveling';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'When enabled, Huda can update prayer times, notifications, and widgets after meaningful travel without opening the app.';
+
+  @override
+  String get prayerLocationMode => 'Location mode';
+
+  @override
+  String get manual => 'Manual';
+
+  @override
+  String get backgroundTravelUpdates => 'Background travel updates';
+
+  @override
+  String get lastLocationValidation => 'Last location validation';
+
+  @override
+  String get lastPrayerScheduleActivation => 'Last schedule activation';
+
+  @override
+  String get travelUpdatesEnabled => 'Enabled';
+
+  @override
+  String get travelForegroundOnly => 'Foreground only';
+
+  @override
+  String get travelPermissionRequired => 'Permission required';
+
+  @override
+  String get travelUpdatesUnsupported => 'Unsupported';
+
+  @override
+  String get travelUpdatesUnavailable => 'Unavailable';
+
+  @override
+  String get travelUpdatesDisabled => 'Disabled';
+
+  @override
+  String get notYet => 'Not yet';
 }

@@ -1909,7 +1909,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get continueHome => 'Lesen fortsetzen';
 
   @override
+  String get continueActivityPrompt =>
+      'Machen Sie dort weiter, wo Sie aufgehört haben';
+
+  @override
   String get noRecentActivityHome => 'Keine aktuelle Aktivität';
+
+  @override
+  String get noProgress => 'Kein Fortschritt';
 
   @override
   String get resumeReading => 'Setzen Sie Ihre Koran-Lektüre fort';
@@ -1978,10 +1985,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get supportDescription => 'Helfen Sie uns, die App zu verbessern';
 
   @override
-  String get shareYourThoughts => 'Feedback senden';
+  String get shareYourThoughts => 'Allgemeines Feedback';
 
   @override
-  String get feedbackDescription => 'Teilen Sie Ihre Gedanken mit uns';
+  String get feedbackDescription => 'Teilen Sie uns Ihre Erfahrungen mit';
+
+  @override
+  String get feedbackAndIssueActionTitle =>
+      'Feedback senden oder Problem melden';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'Melden Sie ein Problem, schlagen Sie eine Verbesserung vor oder teilen Sie einen Kommentar';
 
   @override
   String get rateOurApp => 'Bewerte unsere App';
@@ -2517,11 +2532,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Helfen Sie uns, Huda zu verbessern, indem Sie Ihre Gedanken, Vorschläge teilen oder Probleme melden, auf die Sie gestoßen sind.';
 
   @override
-  String get feedbackFormTitle => 'Ihr Feedback';
+  String get feedbackFormTitle => 'Was möchten Sie tun?';
 
   @override
   String get feedbackFormSubtitle =>
-      'Bitte seien Sie so detailliert wie möglich. Ihr Feedback hilft uns, Huda für alle besser zu machen.';
+      'Wählen Sie eine Option und schreiben Sie dann Ihre Nachricht.';
 
   @override
   String get feedbackHintText =>
@@ -2538,14 +2553,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'Ihr Feedback wird sicher übermittelt und hilft uns, die App zu verbessern. Es werden keine persönlichen Informationen an Dritte weitergegeben.';
+      'Ihre Nachricht und grundlegende App- und Gerätedaten werden sicher übermittelt. Ihre E-Mail-Adresse wird nur mitgesendet, wenn Sie sie eingeben.';
 
   @override
-  String get detailedFeedbackTitle => 'Detailliertes Feedback';
+  String get detailedFeedbackTitle => 'Verbesserung vorschlagen';
 
   @override
-  String get detailedFeedbackSubtitle =>
-      'Teilen Sie detaillierte Gedanken und Vorschläge';
+  String get detailedFeedbackSubtitle => 'Teilen Sie eine Idee für Huda';
 
   @override
   String get reportAnIssue => 'Ein Problem melden';
@@ -3328,6 +3342,30 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get whatsNew400Feature5 =>
       'Ein flüssigeres und intuitiveres Nutzungserlebnis';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'Neu gestaltete Gebetszeiten- und Koran-Widgets mit verbesserter Anpassung, Zuverlässigkeit und neuen iOS-Sperrbildschirmoptionen';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'Benutzerdefinierte Berechnungswinkel für Fajr, Maghrib und Isha hinzugefügt';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'Gebetszeiten, Benachrichtigungen und Widgets können jetzt auf Reisen automatisch aktualisiert werden';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'Huda AI speichert jetzt einen durchsuchbaren Gesprächsverlauf lokal';
+
+  @override
+  String get whatsNew420Feature5 =>
+      'Verbesserte Anpassung des Startbildschirms';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'Feedback und Problemmeldungen wurden neu gestaltet';
 
   @override
   String get offlineMode => 'Offline-Modus';
@@ -4661,7 +4699,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get customizeHome => 'Startseite anpassen';
 
   @override
+  String get editHome => 'Startseite bearbeiten';
+
+  @override
   String get homeTheme => 'Startseiten-Design';
+
+  @override
+  String get homeStyle => 'Startseitenstil';
 
   @override
   String get themeClassic => 'Klassisch';
@@ -4674,18 +4718,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get themeClassicDescription =>
-      'Das vertraute Huda-Raster mit flexibler Kartenreihenfolge.';
+      'Ein vertrautes Raster mit all deinen Werkzeugen.';
 
   @override
   String get themePrayerTodayDescription =>
-      'Begleite jedes Gebet mit einem klaren Countdown zum nächsten und dem vollständigen Tagesplan.';
+      'Gebetszeiten und das nächste Gebet zuerst.';
 
   @override
   String get themeQuranJourneyDescription =>
-      'Tägliche Aya, Lesefortschritt und Khatma im Mittelpunkt.';
+      'Koranlesen und Khatma-Fortschritt zuerst.';
 
   @override
   String get primaryCards => 'Primäre Karten';
+
+  @override
+  String get onHome => 'Auf der Startseite';
 
   @override
   String get viewMore => 'Mehr anzeigen';
@@ -4697,6 +4744,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get moveToPrimary => 'Zu Primar verschieben';
 
   @override
+  String get moveToHome => 'Zur Startseite verschieben';
+
+  @override
   String get moveToViewMore => 'Zu Mehr anzeigen verschieben';
 
   @override
@@ -4704,6 +4754,26 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get resetTheme => 'Design zurücksetzen';
+
+  @override
+  String get reorderHomeItem => 'Element neu anordnen';
+
+  @override
+  String get moveUp => 'Nach oben';
+
+  @override
+  String get moveDown => 'Nach unten';
+
+  @override
+  String get restoreDefaultLayout => 'Standardlayout wiederherstellen';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'Dadurch werden die Reihenfolge und die Standardbereiche der Werkzeuge für diesen Startseitenstil wiederhergestellt.';
+
+  @override
+  String get viewMoreEmpty =>
+      'Verschiebe weniger verwendete Werkzeuge hierher, um die Startseite übersichtlich zu halten.';
 
   @override
   String get applyChanges => 'Anwenden';
@@ -4782,7 +4852,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'Zum Sortieren ziehen. Mit den Steuerelementen Karten anzeigen oder zwischen Primär und Mehr anzeigen verschieben.';
+      'Halte eine Karte gedrückt und ziehe sie zum Sortieren. Mit der Schaltfläche verschiebst du Werkzeuge zwischen Startseite und ‚Mehr anzeigen‘.';
 
   @override
   String get themeResetMessage =>
@@ -4969,4 +5039,97 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'Bei arabischer App-Sprache zeigt das Widget nur den arabischen Vers.';
+
+  @override
+  String get aiHistory => 'Huda-AI-Verlauf';
+
+  @override
+  String get newChat => 'Neuer Chat';
+
+  @override
+  String get searchConversations => 'Unterhaltungen durchsuchen';
+
+  @override
+  String get noChatHistory => 'Noch keine gespeicherten Unterhaltungen';
+
+  @override
+  String get noHistoryResults => 'Keine passenden Unterhaltungen';
+
+  @override
+  String get clearAllHistory => 'Gesamten Verlauf löschen';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'Möchtest du wirklich alle Huda-AI-Unterhaltungen löschen? Dies kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get deleteChat => 'Unterhaltung löschen';
+
+  @override
+  String get deleteChatConfirmation =>
+      'Möchtest du diese Unterhaltung wirklich löschen? Dies kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get aiResponseGenerating => 'Wird erstellt';
+
+  @override
+  String get aiResponseInterrupted => 'Unterbrochen';
+
+  @override
+  String get aiResponseFailed => 'Fehlgeschlagen';
+
+  @override
+  String get aiStorageWarning =>
+      'Der Huda-AI-Verlauf konnte auf diesem Gerät nicht gespeichert werden. Diese Unterhaltung bleibt bis zum Schließen der App verfügbar.';
+
+  @override
+  String get aiBusyOtherConversation =>
+      'Huda AI beantwortet gerade eine andere Unterhaltung.';
+
+  @override
+  String get chatErrorInterrupted =>
+      'Die Antwort wurde unterbrochen. Versuche es erneut, um fortzufahren.';
+
+  @override
+  String get prayerTravelUpdates => 'Gebetszeiten auf Reisen aktualisieren';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'Wenn aktiviert, kann Huda nach längeren Reisen Gebetszeiten, Benachrichtigungen und Widgets aktualisieren, ohne die App zu öffnen.';
+
+  @override
+  String get prayerLocationMode => 'Standortmodus';
+
+  @override
+  String get manual => 'Manuell';
+
+  @override
+  String get backgroundTravelUpdates => 'Reiseaktualisierungen im Hintergrund';
+
+  @override
+  String get lastLocationValidation => 'Letzte Standortprüfung';
+
+  @override
+  String get lastPrayerScheduleActivation => 'Letzte Zeitplanaktivierung';
+
+  @override
+  String get travelUpdatesEnabled => 'Aktiviert';
+
+  @override
+  String get travelForegroundOnly => 'Nur im Vordergrund';
+
+  @override
+  String get travelPermissionRequired => 'Berechtigung erforderlich';
+
+  @override
+  String get travelUpdatesUnsupported => 'Nicht unterstützt';
+
+  @override
+  String get travelUpdatesUnavailable => 'Nicht verfügbar';
+
+  @override
+  String get travelUpdatesDisabled => 'Deaktiviert';
+
+  @override
+  String get notYet => 'Noch nicht';
 }

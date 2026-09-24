@@ -1860,7 +1860,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continueHome => 'مواصلة القراءة';
 
   @override
+  String get continueActivityPrompt => 'تابع من حيث توقفت';
+
+  @override
   String get noRecentActivityHome => 'لا توجد أنشطة حديثة';
+
+  @override
+  String get noProgress => 'لا يوجد تقدم';
 
   @override
   String get resumeReading => 'استأنف قراءة القرآن الكريم';
@@ -1926,10 +1932,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get supportDescription => 'ساعدنا على تحسين التطبيق';
 
   @override
-  String get shareYourThoughts => 'أرسل ملاحظة';
+  String get shareYourThoughts => 'ملاحظات عامة';
 
   @override
-  String get feedbackDescription => 'شاركنا آراءك';
+  String get feedbackDescription => 'شاركنا تعليقاً عن تجربتك';
+
+  @override
+  String get feedbackAndIssueActionTitle => 'إرسال ملاحظة أو الإبلاغ عن مشكلة';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'أبلغ عن مشكلة، أو اقترح تحسيناً، أو شاركنا تعليقاً';
 
   @override
   String get rateOurApp => 'قيّم التطبيق';
@@ -2430,11 +2443,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'ساعدنا على تحسين هُدَى بمشاركة أفكارك واقتراحاتك أو الإبلاغ عن أي مشكلات واجهتها.';
 
   @override
-  String get feedbackFormTitle => 'ملاحظاتك';
+  String get feedbackFormTitle => 'ماذا تود أن تفعل؟';
 
   @override
-  String get feedbackFormSubtitle =>
-      'يرجى أن تكون دقيقاً قدر الإمكان، فملاحظاتك تساعدنا على جعل هُدَى أفضل للجميع.';
+  String get feedbackFormSubtitle => 'اختر خياراً واحداً، ثم اكتب رسالتك.';
 
   @override
   String get feedbackHintText =>
@@ -2451,13 +2463,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'تُرسَل ملاحظاتك بأمان وتساعدنا على تحسين التطبيق، ولا تُشارَك أي معلومات شخصية مع جهات خارجية.';
+      'تُرسَل رسالتك ومعلومات أساسية عن التطبيق والجهاز بأمان. لا يُرفق بريدك الإلكتروني إلا إذا أدخلته.';
 
   @override
-  String get detailedFeedbackTitle => 'ملاحظات تفصيلية';
+  String get detailedFeedbackTitle => 'اقتراح تحسين';
 
   @override
-  String get detailedFeedbackSubtitle => 'شارك أفكاراً واقتراحات تفصيلية';
+  String get detailedFeedbackSubtitle => 'شارك فكرة لتحسين هُدَى';
 
   @override
   String get reportAnIssue => 'الإبلاغ عن مشكلة';
@@ -3222,6 +3234,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get whatsNew400Feature5 => 'تجربة أكثر سلاسة وسهولة في الاستخدام';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'إعادة تصميم أدوات مواقيت الصلاة والقرآن مع تحسين التخصيص والموثوقية وخيارات جديدة لشاشة القفل في iOS';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'إضافة زوايا حساب مخصصة للفجر والمغرب والعشاء';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'يمكن الآن تحديث مواقيت الصلاة والإشعارات والأدوات تلقائيًا أثناء السفر';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'يحفظ ذكاء هدى الآن سجل المحادثات محليًا مع إمكانية البحث فيه';
+
+  @override
+  String get whatsNew420Feature5 => 'تحسين تخصيص الشاشة الرئيسية';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'إعادة تصميم تجربة إرسال الملاحظات والإبلاغ عن المشكلات';
 
   @override
   String get offlineMode => 'وضع عدم الاتصال';
@@ -4535,7 +4570,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get customizeHome => 'تخصيص الرئيسية';
 
   @override
+  String get editHome => 'تعديل الرئيسية';
+
+  @override
   String get homeTheme => 'نمط الرئيسية';
+
+  @override
+  String get homeStyle => 'نمط الرئيسية';
 
   @override
   String get themeClassic => 'الكلاسيكي';
@@ -4547,19 +4588,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get themeQuranJourney => 'رحلة القرآن';
 
   @override
-  String get themeClassicDescription =>
-      'شبكة هدى المألوفة مع ترتيب مرن للبطاقات.';
+  String get themeClassicDescription => 'شبكة مألوفة تجمع كل أدواتك.';
 
   @override
   String get themePrayerTodayDescription =>
-      'تنقّل بين الصلوات مع عدّ تنازلي واضح للصلاة القادمة وجدول الصلوات اليومي الكامل.';
+      'مواقيت الصلاة والصلاة القادمة في الواجهة.';
 
   @override
   String get themeQuranJourneyDescription =>
-      'آية اليوم وتقدم القراءة والختمة في الواجهة.';
+      'قراءة القرآن وتقدم الختمة في الواجهة.';
 
   @override
   String get primaryCards => 'البطاقات الرئيسية';
+
+  @override
+  String get onHome => 'في الرئيسية';
 
   @override
   String get viewMore => 'عرض المزيد';
@@ -4571,6 +4614,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get moveToPrimary => 'نقل إلى الرئيسية';
 
   @override
+  String get moveToHome => 'نقل إلى الرئيسية';
+
+  @override
   String get moveToViewMore => 'نقل إلى عرض المزيد';
 
   @override
@@ -4578,6 +4624,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get resetTheme => 'إعادة ضبط النمط';
+
+  @override
+  String get reorderHomeItem => 'إعادة ترتيب العنصر';
+
+  @override
+  String get moveUp => 'نقل لأعلى';
+
+  @override
+  String get moveDown => 'نقل لأسفل';
+
+  @override
+  String get restoreDefaultLayout => 'استعادة التخطيط الافتراضي';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'سيؤدي هذا إلى استعادة الترتيب ووضع الأدوات في أقسامها الافتراضية لهذا النمط.';
+
+  @override
+  String get viewMoreEmpty =>
+      'انقل الأدوات الأقل استخدامًا إلى هنا لتبقى الرئيسية بسيطة.';
 
   @override
   String get applyChanges => 'تطبيق';
@@ -4655,7 +4721,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'اسحب لإعادة الترتيب، واستخدم عناصر التحكم لإظهار البطاقات أو نقلها بين الرئيسية وعرض المزيد.';
+      'اضغط واسحب أي بطاقة لإعادة الترتيب. استخدم الزر لنقل الأداة بين الرئيسية وعرض المزيد.';
 
   @override
   String get themeResetMessage =>
@@ -4836,4 +4902,96 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'عند استخدام العربية يظهر العنصر بالآية العربية فقط.';
+
+  @override
+  String get aiHistory => 'سجل هدى AI';
+
+  @override
+  String get newChat => 'محادثة جديدة';
+
+  @override
+  String get searchConversations => 'البحث في المحادثات';
+
+  @override
+  String get noChatHistory => 'لا توجد محادثات محفوظة بعد';
+
+  @override
+  String get noHistoryResults => 'لا توجد محادثات مطابقة';
+
+  @override
+  String get clearAllHistory => 'مسح السجل بالكامل';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'هل تريد بالتأكيد حذف جميع محادثات هدى AI؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get deleteChat => 'حذف المحادثة';
+
+  @override
+  String get deleteChatConfirmation =>
+      'هل تريد بالتأكيد حذف هذه المحادثة؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get aiResponseGenerating => 'جارٍ الإنشاء';
+
+  @override
+  String get aiResponseInterrupted => 'انقطع الرد';
+
+  @override
+  String get aiResponseFailed => 'فشل الرد';
+
+  @override
+  String get aiStorageWarning =>
+      'تعذر حفظ سجل هدى AI على هذا الجهاز. ستبقى هذه المحادثة متاحة حتى إغلاق التطبيق.';
+
+  @override
+  String get aiBusyOtherConversation => 'هدى AI يجيب الآن في محادثة أخرى.';
+
+  @override
+  String get chatErrorInterrupted =>
+      'انقطع إنشاء الرد. حاول مرة أخرى للمتابعة.';
+
+  @override
+  String get prayerTravelUpdates => 'تحديث مواقيت الصلاة أثناء السفر';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'عند التفعيل، يمكن لهدى تحديث المواقيت والإشعارات والأدوات بعد السفر دون فتح التطبيق.';
+
+  @override
+  String get prayerLocationMode => 'وضع الموقع';
+
+  @override
+  String get manual => 'يدوي';
+
+  @override
+  String get backgroundTravelUpdates => 'تحديثات السفر في الخلفية';
+
+  @override
+  String get lastLocationValidation => 'آخر تحقق من الموقع';
+
+  @override
+  String get lastPrayerScheduleActivation => 'آخر تفعيل لجدول الصلاة';
+
+  @override
+  String get travelUpdatesEnabled => 'مفعّلة';
+
+  @override
+  String get travelForegroundOnly => 'أثناء فتح التطبيق فقط';
+
+  @override
+  String get travelPermissionRequired => 'الإذن مطلوب';
+
+  @override
+  String get travelUpdatesUnsupported => 'غير مدعومة';
+
+  @override
+  String get travelUpdatesUnavailable => 'غير متاحة';
+
+  @override
+  String get travelUpdatesDisabled => 'متوقفة';
+
+  @override
+  String get notYet => 'ليس بعد';
 }

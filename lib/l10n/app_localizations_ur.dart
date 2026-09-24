@@ -1888,7 +1888,14 @@ class AppLocalizationsUr extends AppLocalizations {
   String get continueHome => 'پڑھنا جاری رکھیں';
 
   @override
+  String get continueActivityPrompt =>
+      'جہاں آپ نے چھوڑا تھا وہیں سے جاری رکھیں';
+
+  @override
   String get noRecentActivityHome => 'حالیہ سرگرمی نہیں';
+
+  @override
+  String get noProgress => 'کوئی پیش رفت نہیں';
 
   @override
   String get resumeReading => 'اپنا قرآن پڑھنا دوبارہ شروع کریں';
@@ -1956,10 +1963,17 @@ class AppLocalizationsUr extends AppLocalizations {
   String get supportDescription => 'ایپ کو بہتر بنانے میں ہماری مدد کریں';
 
   @override
-  String get shareYourThoughts => 'رائے بھیجیں';
+  String get shareYourThoughts => 'عمومی رائے';
 
   @override
-  String get feedbackDescription => 'اپنے خیالات ہمارے ساتھ شیئر کریں';
+  String get feedbackDescription => 'اپنے تجربے کے بارے میں رائے دیں';
+
+  @override
+  String get feedbackAndIssueActionTitle => 'رائے بھیجیں یا مسئلہ رپورٹ کریں';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'مسئلہ رپورٹ کریں، بہتری تجویز کریں یا اپنی رائے دیں';
 
   @override
   String get rateOurApp => 'ہماری ایپ کو ریٹ کریں';
@@ -2466,11 +2480,11 @@ class AppLocalizationsUr extends AppLocalizations {
       'اپنے خیالات اور تجاویز شیئر کرکے یا کسی مسئلے کی اطلاع دے کر Huda کو بہتر بنانے میں ہماری مدد کریں۔';
 
   @override
-  String get feedbackFormTitle => 'آپ کی رائے';
+  String get feedbackFormTitle => 'آپ کیا کرنا چاہتے ہیں؟';
 
   @override
   String get feedbackFormSubtitle =>
-      'براہ کرم جتنا ممکن ہو تفصیل سے لکھیں۔ آپ کی رائے Huda کو سب کے لیے بہتر بنانے میں مدد دیتی ہے۔';
+      'ایک آپشن منتخب کریں، پھر اپنا پیغام لکھیں۔';
 
   @override
   String get feedbackHintText =>
@@ -2487,13 +2501,13 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'آپ کی رائے محفوظ طریقے سے بھیجی جاتی ہے اور یہ ہمیں ایپ کو بہتر بنانے میں مدد دیتی ہے۔ کوئی ذاتی معلومات تیسرے فریق سے شیئر نہیں کی جاتی۔';
+      'آپ کا پیغام اور ایپ و ڈیوائس کی بنیادی معلومات محفوظ طریقے سے بھیجی جاتی ہیں۔ آپ کا ای میل صرف درج کرنے پر شامل کیا جائے گا۔';
 
   @override
-  String get detailedFeedbackTitle => 'تفصیلی فیڈبیک';
+  String get detailedFeedbackTitle => 'بہتری کی تجویز دیں';
 
   @override
-  String get detailedFeedbackSubtitle => 'تفصیلی خیالات اور تجاویز شیئر کریں';
+  String get detailedFeedbackSubtitle => 'Huda کے لیے ایک خیال شیئر کریں';
 
   @override
   String get reportAnIssue => 'مسئلہ رپورٹ کریں';
@@ -3268,6 +3282,29 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get whatsNew400Feature5 => 'زیادہ ہموار اور آسان تجربہ';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'بہتر تخصیص، قابلِ اعتماد کارکردگی اور نئے iOS لاک اسکرین اختیارات کے ساتھ نماز اور قرآن وجٹس کو نئے سرے سے ڈیزائن کیا گیا';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'فجر، مغرب اور عشاء کے لیے حسبِ ضرورت حسابی زاویے شامل کیے گئے';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'سفر کے دوران نماز کے اوقات، اطلاعات اور وجٹس اب خودکار طور پر اپ ڈیٹ ہو سکتے ہیں';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'Huda AI اب قابلِ تلاش گفتگو کی تاریخ مقامی طور پر محفوظ کرتا ہے';
+
+  @override
+  String get whatsNew420Feature5 => 'ہوم اسکرین کی تخصیص بہتر بنائی گئی';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'رائے اور مسائل کی اطلاع دینے کے تجربے کو نئے سرے سے ڈیزائن کیا گیا';
 
   @override
   String get offlineMode => 'آف لائن موڈ';
@@ -4589,7 +4626,13 @@ class AppLocalizationsUr extends AppLocalizations {
   String get customizeHome => 'ہوم کو حسب ضرورت بنائیں';
 
   @override
+  String get editHome => 'ہوم میں ترمیم کریں';
+
+  @override
   String get homeTheme => 'ہوم تھیم';
+
+  @override
+  String get homeStyle => 'ہوم کا انداز';
 
   @override
   String get themeClassic => 'کلاسک';
@@ -4602,18 +4645,20 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get themeClassicDescription =>
-      'کارڈز کی لچکدار ترتیب کے ساتھ مانوس ہدیٰ گرڈ۔';
+      'آپ کے تمام ٹولز کے ساتھ ایک مانوس گرڈ۔';
 
   @override
-  String get themePrayerTodayDescription =>
-      'اگلی نماز کی واضح الٹی گنتی اور مکمل یومیہ شیڈول کے ساتھ ہر نماز کی راہ پر چلیں۔';
+  String get themePrayerTodayDescription => 'نماز کے اوقات اور اگلی نماز پہلے۔';
 
   @override
   String get themeQuranJourneyDescription =>
-      'روزانہ آیت، تلاوت کی پیش رفت اور ختم قرآن مرکزی حیثیت میں۔';
+      'قرآن کی تلاوت اور ختم قرآن کی پیش رفت پہلے۔';
 
   @override
   String get primaryCards => 'بنیادی کارڈز';
+
+  @override
+  String get onHome => 'ہوم پر';
 
   @override
   String get viewMore => 'مزید دیکھیں';
@@ -4625,6 +4670,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get moveToPrimary => 'بنیادی حصے میں منتقل کریں';
 
   @override
+  String get moveToHome => 'ہوم پر منتقل کریں';
+
+  @override
   String get moveToViewMore => 'مزید دیکھیں میں منتقل کریں';
 
   @override
@@ -4632,6 +4680,26 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get resetTheme => 'تھیم دوبارہ ترتیب دیں';
+
+  @override
+  String get reorderHomeItem => 'آئٹم کی ترتیب بدلیں';
+
+  @override
+  String get moveUp => 'اوپر منتقل کریں';
+
+  @override
+  String get moveDown => 'نیچے منتقل کریں';
+
+  @override
+  String get restoreDefaultLayout => 'ڈیفالٹ لے آؤٹ بحال کریں';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'یہ اس ہوم انداز کے لیے ترتیب بحال کرکے ٹولز کو ان کے ڈیفالٹ حصوں میں رکھے گا۔';
+
+  @override
+  String get viewMoreEmpty =>
+      'ہوم کو سادہ رکھنے کے لیے کم استعمال ہونے والے ٹولز یہاں منتقل کریں۔';
 
   @override
   String get applyChanges => 'لاگو کریں';
@@ -4710,7 +4778,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'ترتیب بدلنے کے لیے کھینچیں۔ کارڈز دکھانے یا بنیادی اور مزید دیکھیں کے درمیان منتقل کرنے کے لیے کنٹرولز استعمال کریں۔';
+      'ترتیب بدلنے کے لیے کسی بھی کارڈ کو دبا کر کھینچیں۔ ٹول کو ہوم اور مزید دیکھیں کے درمیان منتقل کرنے کے لیے بٹن استعمال کریں۔';
 
   @override
   String get themeResetMessage =>
@@ -4892,4 +4960,97 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'عربی ایپ زبان میں ویجٹ صرف عربی آیت دکھاتا ہے۔';
+
+  @override
+  String get aiHistory => 'Huda AI کی سرگزشت';
+
+  @override
+  String get newChat => 'نئی گفتگو';
+
+  @override
+  String get searchConversations => 'گفتگو تلاش کریں';
+
+  @override
+  String get noChatHistory => 'ابھی کوئی محفوظ گفتگو نہیں ہے';
+
+  @override
+  String get noHistoryResults => 'کوئی مماثل گفتگو نہیں ملی';
+
+  @override
+  String get clearAllHistory => 'تمام سرگزشت صاف کریں';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'کیا آپ واقعی Huda AI کی تمام گفتگو حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں ہو سکتا۔';
+
+  @override
+  String get deleteChat => 'گفتگو حذف کریں';
+
+  @override
+  String get deleteChatConfirmation =>
+      'کیا آپ واقعی یہ گفتگو حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں ہو سکتا۔';
+
+  @override
+  String get aiResponseGenerating => 'تیار ہو رہا ہے';
+
+  @override
+  String get aiResponseInterrupted => 'رک گیا';
+
+  @override
+  String get aiResponseFailed => 'ناکام';
+
+  @override
+  String get aiStorageWarning =>
+      'اس آلے پر Huda AI کی سرگزشت محفوظ نہیں ہو سکی۔ ایپ بند ہونے تک یہ گفتگو دستیاب رہے گی۔';
+
+  @override
+  String get aiBusyOtherConversation =>
+      'Huda AI دوسری گفتگو کا جواب دے رہا ہے۔';
+
+  @override
+  String get chatErrorInterrupted =>
+      'جواب رک گیا تھا۔ جاری رکھنے کے لیے دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerTravelUpdates => 'سفر کے دوران نماز کے اوقات اپ ڈیٹ کریں';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'فعال ہونے پر ہدیٰ ایپ کھولے بغیر اہم سفر کے بعد اوقات، اطلاعات اور وِجٹس اپ ڈیٹ کر سکتا ہے۔';
+
+  @override
+  String get prayerLocationMode => 'مقام کا انداز';
+
+  @override
+  String get manual => 'دستی';
+
+  @override
+  String get backgroundTravelUpdates => 'پس منظر میں سفری اپ ڈیٹس';
+
+  @override
+  String get lastLocationValidation => 'مقام کی آخری تصدیق';
+
+  @override
+  String get lastPrayerScheduleActivation => 'شیڈول کی آخری فعالیت';
+
+  @override
+  String get travelUpdatesEnabled => 'فعال';
+
+  @override
+  String get travelForegroundOnly => 'صرف ایپ کھلی ہونے پر';
+
+  @override
+  String get travelPermissionRequired => 'اجازت درکار ہے';
+
+  @override
+  String get travelUpdatesUnsupported => 'غیر معاون';
+
+  @override
+  String get travelUpdatesUnavailable => 'دستیاب نہیں';
+
+  @override
+  String get travelUpdatesDisabled => 'غیر فعال';
+
+  @override
+  String get notYet => 'ابھی نہیں';
 }

@@ -1910,7 +1910,14 @@ class AppLocalizationsRu extends AppLocalizations {
   String get continueHome => 'Продолжить чтение';
 
   @override
+  String get continueActivityPrompt =>
+      'Продолжите с того места, где остановились';
+
+  @override
   String get noRecentActivityHome => 'Нет недавней активности';
+
+  @override
+  String get noProgress => 'Нет прогресса';
 
   @override
   String get resumeReading => 'Продолжите чтение Корана';
@@ -1978,10 +1985,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get supportDescription => 'Помогите нам улучшить приложение';
 
   @override
-  String get shareYourThoughts => 'Отправить отзыв';
+  String get shareYourThoughts => 'Общий отзыв';
 
   @override
-  String get feedbackDescription => 'Поделитесь своими мыслями с нами';
+  String get feedbackDescription => 'Поделитесь впечатлением о приложении';
+
+  @override
+  String get feedbackAndIssueActionTitle =>
+      'Отправить отзыв или сообщить о проблеме';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'Сообщите о проблеме, предложите улучшение или поделитесь мнением';
 
   @override
   String get rateOurApp => 'Оцените наше приложение';
@@ -2495,11 +2510,11 @@ class AppLocalizationsRu extends AppLocalizations {
       'Помогите нам улучшить Huda, делясь своими мыслями, предложениями или сообщая о найденных проблемах.';
 
   @override
-  String get feedbackFormTitle => 'Ваш отзыв';
+  String get feedbackFormTitle => 'Что вы хотите сделать?';
 
   @override
   String get feedbackFormSubtitle =>
-      'Пожалуйста, будьте максимально подробны. Ваш отзыв помогает сделать Huda лучше для всех.';
+      'Выберите один вариант, затем напишите сообщение.';
 
   @override
   String get feedbackHintText =>
@@ -2516,14 +2531,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'Ваш отзыв отправляется безопасно и помогает нам улучшать приложение. Личная информация не передается третьим лицам.';
+      'Ваше сообщение и основные сведения о приложении и устройстве передаются безопасно. Электронная почта добавляется только в том случае, если вы ее укажете.';
 
   @override
-  String get detailedFeedbackTitle => 'Подробный отзыв';
+  String get detailedFeedbackTitle => 'Предложить улучшение';
 
   @override
-  String get detailedFeedbackSubtitle =>
-      'Поделитесь подробными мыслями и предложениями';
+  String get detailedFeedbackSubtitle => 'Поделитесь идеей для Huda';
 
   @override
   String get reportAnIssue => 'Сообщить о проблеме';
@@ -3301,6 +3315,29 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get whatsNew400Feature5 =>
       'Более плавная и интуитивная работа с приложением';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'Обновлённые виджеты молитв и Корана с улучшенной настройкой, надёжностью и новыми вариантами для экрана блокировки iOS';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'Добавлены пользовательские углы расчёта для Фаджра, Магриба и Иша';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'Время молитв, уведомления и виджеты теперь могут автоматически обновляться во время путешествий';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'Huda AI теперь локально сохраняет историю разговоров с возможностью поиска';
+
+  @override
+  String get whatsNew420Feature5 => 'Улучшена настройка главного экрана';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'Обновлён интерфейс обратной связи и сообщений о проблемах';
 
   @override
   String get offlineMode => 'Автономный режим';
@@ -4625,7 +4662,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get customizeHome => 'Настроить главный экран';
 
   @override
+  String get editHome => 'Изменить главный экран';
+
+  @override
   String get homeTheme => 'Тема главного экрана';
+
+  @override
+  String get homeStyle => 'Стиль главного экрана';
 
   @override
   String get themeClassic => 'Классическая';
@@ -4638,18 +4681,21 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get themeClassicDescription =>
-      'Знакомая сетка Huda с гибким порядком карточек.';
+      'Знакомая сетка со всеми инструментами.';
 
   @override
   String get themePrayerTodayDescription =>
-      'Следуйте от молитвы к молитве с понятным обратным отсчетом и полным расписанием на день.';
+      'Сначала время и следующая молитва.';
 
   @override
   String get themeQuranJourneyDescription =>
-      'Аят дня, прогресс чтения и хатма в центре внимания.';
+      'Сначала чтение Корана и прогресс хатмы.';
 
   @override
   String get primaryCards => 'Основные карточки';
+
+  @override
+  String get onHome => 'На главном экране';
 
   @override
   String get viewMore => 'Показать больше';
@@ -4661,6 +4707,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get moveToPrimary => 'Переместить в основные';
 
   @override
+  String get moveToHome => 'Переместить на главный экран';
+
+  @override
   String get moveToViewMore => 'Переместить в дополнительные';
 
   @override
@@ -4668,6 +4717,26 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get resetTheme => 'Сбросить тему';
+
+  @override
+  String get reorderHomeItem => 'Изменить порядок элемента';
+
+  @override
+  String get moveUp => 'Переместить вверх';
+
+  @override
+  String get moveDown => 'Переместить вниз';
+
+  @override
+  String get restoreDefaultLayout => 'Восстановить стандартный макет';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'Это восстановит порядок и стандартные разделы инструментов для этого стиля главного экрана.';
+
+  @override
+  String get viewMoreEmpty =>
+      'Переместите сюда редко используемые инструменты, чтобы упростить главный экран.';
 
   @override
   String get applyChanges => 'Применить';
@@ -4746,7 +4815,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'Перетаскивайте для сортировки. Используйте элементы управления, чтобы показывать карточки или перемещать их между основными и дополнительными.';
+      'Нажмите и перетащите любую карточку, чтобы изменить порядок. Кнопка перемещает инструмент между главным экраном и дополнительными.';
 
   @override
   String get themeResetMessage =>
@@ -4930,4 +4999,96 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'При арабском языке приложения виджет показывает только арабский аят.';
+
+  @override
+  String get aiHistory => 'История Huda AI';
+
+  @override
+  String get newChat => 'Новый чат';
+
+  @override
+  String get searchConversations => 'Поиск разговоров';
+
+  @override
+  String get noChatHistory => 'Сохранённых разговоров пока нет';
+
+  @override
+  String get noHistoryResults => 'Подходящих разговоров нет';
+
+  @override
+  String get clearAllHistory => 'Очистить всю историю';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'Удалить все разговоры Huda AI? Это действие нельзя отменить.';
+
+  @override
+  String get deleteChat => 'Удалить разговор';
+
+  @override
+  String get deleteChatConfirmation =>
+      'Удалить этот разговор? Это действие нельзя отменить.';
+
+  @override
+  String get aiResponseGenerating => 'Создаётся';
+
+  @override
+  String get aiResponseInterrupted => 'Прерван';
+
+  @override
+  String get aiResponseFailed => 'Ошибка';
+
+  @override
+  String get aiStorageWarning =>
+      'Не удалось сохранить историю Huda AI на этом устройстве. Разговор останется доступен до закрытия приложения.';
+
+  @override
+  String get aiBusyOtherConversation => 'Huda AI отвечает в другом разговоре.';
+
+  @override
+  String get chatErrorInterrupted =>
+      'Ответ был прерван. Попробуйте ещё раз, чтобы продолжить.';
+
+  @override
+  String get prayerTravelUpdates => 'Обновлять время намаза в поездках';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'После включения Huda сможет обновлять время, уведомления и виджеты после значительных поездок без открытия приложения.';
+
+  @override
+  String get prayerLocationMode => 'Режим местоположения';
+
+  @override
+  String get manual => 'Вручную';
+
+  @override
+  String get backgroundTravelUpdates => 'Фоновые обновления в поездках';
+
+  @override
+  String get lastLocationValidation => 'Последняя проверка местоположения';
+
+  @override
+  String get lastPrayerScheduleActivation => 'Последняя активация расписания';
+
+  @override
+  String get travelUpdatesEnabled => 'Включены';
+
+  @override
+  String get travelForegroundOnly => 'Только при открытом приложении';
+
+  @override
+  String get travelPermissionRequired => 'Требуется разрешение';
+
+  @override
+  String get travelUpdatesUnsupported => 'Не поддерживается';
+
+  @override
+  String get travelUpdatesUnavailable => 'Недоступно';
+
+  @override
+  String get travelUpdatesDisabled => 'Отключены';
+
+  @override
+  String get notYet => 'Ещё нет';
 }

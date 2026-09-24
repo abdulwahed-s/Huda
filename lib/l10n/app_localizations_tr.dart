@@ -1885,7 +1885,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get continueHome => 'Okumaya Devam Et';
 
   @override
+  String get continueActivityPrompt => 'Kaldığınız yerden devam edin';
+
+  @override
   String get noRecentActivityHome => 'Son Aktivite Yok';
+
+  @override
+  String get noProgress => 'İlerleme yok';
 
   @override
   String get resumeReading => 'Kuran okumanızı sürdürün';
@@ -1954,10 +1960,18 @@ class AppLocalizationsTr extends AppLocalizations {
       'Uygulamayı daha iyi hale getirmemize yardım edin';
 
   @override
-  String get shareYourThoughts => 'Geri Bildirim Gönder';
+  String get shareYourThoughts => 'Genel geri bildirim';
 
   @override
-  String get feedbackDescription => 'Düşüncelerinizi bizimle paylaşın';
+  String get feedbackDescription => 'Deneyiminiz hakkında bir yorum paylaşın';
+
+  @override
+  String get feedbackAndIssueActionTitle =>
+      'Geri bildirim gönderin veya sorun bildirin';
+
+  @override
+  String get feedbackAndIssueActionSubtitle =>
+      'Bir sorun bildirin, iyileştirme önerin veya yorum paylaşın';
 
   @override
   String get rateOurApp => 'Uygulamamızı Değerlendirin';
@@ -2469,11 +2483,11 @@ class AppLocalizationsTr extends AppLocalizations {
       'Düşüncelerinizi, önerilerinizi paylaşarak veya karşılaştığınız sorunları bildirerek Huda’yı geliştirmemize yardımcı olun.';
 
   @override
-  String get feedbackFormTitle => 'Geri Bildiriminiz';
+  String get feedbackFormTitle => 'Ne yapmak istersiniz?';
 
   @override
   String get feedbackFormSubtitle =>
-      'Lütfen olabildiğince ayrıntılı olun. Geri bildiriminiz, Huda’yı herkes için daha iyi hale getirmemize yardımcı olur.';
+      'Bir seçenek seçin, ardından mesajınızı yazın.';
 
   @override
   String get feedbackHintText =>
@@ -2490,14 +2504,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get feedbackPrivacyDescription =>
-      'Geri bildiriminiz güvenli bir şekilde gönderilir ve uygulamayı geliştirmemize yardımcı olur. Kişisel bilgileriniz üçüncü şahıslarla paylaşılmaz.';
+      'Mesajınız ile temel uygulama ve cihaz bilgileri güvenli şekilde gönderilir. E-posta adresiniz yalnızca girerseniz eklenir.';
 
   @override
-  String get detailedFeedbackTitle => 'Ayrıntılı Geri Bildirim';
+  String get detailedFeedbackTitle => 'Bir iyileştirme önerin';
 
   @override
-  String get detailedFeedbackSubtitle =>
-      'Ayrıntılı düşüncelerinizi ve önerilerinizi paylaşın';
+  String get detailedFeedbackSubtitle => 'Huda için bir fikir paylaşın';
 
   @override
   String get reportAnIssue => 'Sorun Bildir';
@@ -3275,6 +3288,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get whatsNew400Feature5 => 'Daha akıcı ve sezgisel bir deneyim';
+
+  @override
+  String get whatsNew420Feature1 =>
+      'Namaz Vakitleri ve Kur’an widget’ları; geliştirilmiş özelleştirme, güvenilirlik ve yeni iOS Kilit Ekranı seçenekleriyle yeniden tasarlandı';
+
+  @override
+  String get whatsNew420Feature2 =>
+      'Fecr, Akşam ve Yatsı için özel hesaplama açıları eklendi';
+
+  @override
+  String get whatsNew420Feature3 =>
+      'Namaz vakitleri, bildirimler ve widget’lar artık seyahat sırasında otomatik olarak güncellenebilir';
+
+  @override
+  String get whatsNew420Feature4 =>
+      'Huda AI artık aranabilir konuşma geçmişini cihazda saklıyor';
+
+  @override
+  String get whatsNew420Feature5 => 'Ana ekran özelleştirmesi iyileştirildi';
+
+  @override
+  String get whatsNew420Feature6 =>
+      'Geri bildirim ve sorun bildirme deneyimi yeniden tasarlandı';
 
   @override
   String get offlineMode => 'Çevrimdışı Mod';
@@ -4595,7 +4631,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get customizeHome => 'Ana Sayfayı Özelleştir';
 
   @override
+  String get editHome => 'Ana Sayfayı Düzenle';
+
+  @override
   String get homeTheme => 'Ana sayfa teması';
+
+  @override
+  String get homeStyle => 'Ana sayfa stili';
 
   @override
   String get themeClassic => 'Klasik';
@@ -4608,18 +4650,21 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get themeClassicDescription =>
-      'Esnek kart sıralamasıyla tanıdık Huda ızgarası.';
+      'Tüm araçlarınızın bulunduğu tanıdık bir ızgara.';
 
   @override
   String get themePrayerTodayDescription =>
-      'Sıradaki namaza net bir geri sayım ve tam günlük programla her namazı takip edin.';
+      'Önce namaz vakitleri ve sıradaki namaz.';
 
   @override
   String get themeQuranJourneyDescription =>
-      'Günün ayeti, okuma ilerlemesi ve hatim merkezde.';
+      'Önce Kur\'an okuma ve hatim ilerlemesi.';
 
   @override
   String get primaryCards => 'Ana kartlar';
+
+  @override
+  String get onHome => 'Ana Sayfada';
 
   @override
   String get viewMore => 'Daha Fazla';
@@ -4631,6 +4676,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get moveToPrimary => 'Ana bölüme taşı';
 
   @override
+  String get moveToHome => 'Ana Sayfaya taşı';
+
+  @override
   String get moveToViewMore => 'Daha Fazla bölümüne taşı';
 
   @override
@@ -4638,6 +4686,26 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get resetTheme => 'Temayı sıfırla';
+
+  @override
+  String get reorderHomeItem => 'Öğeyi yeniden sırala';
+
+  @override
+  String get moveUp => 'Yukarı taşı';
+
+  @override
+  String get moveDown => 'Aşağı taşı';
+
+  @override
+  String get restoreDefaultLayout => 'Varsayılan düzeni geri yükle';
+
+  @override
+  String get restoreDefaultLayoutMessage =>
+      'Bu, bu ana sayfa stili için sıralamayı geri yükler ve araçları varsayılan bölümlerine yerleştirir.';
+
+  @override
+  String get viewMoreEmpty =>
+      'Ana Sayfayı sade tutmak için daha az kullandığınız araçları buraya taşıyın.';
 
   @override
   String get applyChanges => 'Uygula';
@@ -4716,7 +4784,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get customizeHomeHint =>
-      'Sıralamak için sürükleyin. Kartları göstermek veya Ana ve Daha Fazla arasında taşımak için denetimleri kullanın.';
+      'Yeniden sıralamak için herhangi bir karta basılı tutup sürükleyin. Bir aracı Ana Sayfa ile Daha Fazla arasında taşımak için düğmeyi kullanın.';
 
   @override
   String get themeResetMessage => 'Bu tema varsayılan düzenine sıfırlandı.';
@@ -4898,4 +4966,96 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get arabicTranslationHidden =>
       'Arapça uygulama dilinde widget yalnızca Arapça ayeti gösterir.';
+
+  @override
+  String get aiHistory => 'Huda AI geçmişi';
+
+  @override
+  String get newChat => 'Yeni sohbet';
+
+  @override
+  String get searchConversations => 'Sohbetlerde ara';
+
+  @override
+  String get noChatHistory => 'Henüz kaydedilmiş sohbet yok';
+
+  @override
+  String get noHistoryResults => 'Eşleşen sohbet yok';
+
+  @override
+  String get clearAllHistory => 'Tüm geçmişi temizle';
+
+  @override
+  String get clearAllHistoryConfirmation =>
+      'Tüm Huda AI sohbetlerini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+
+  @override
+  String get deleteChat => 'Sohbeti sil';
+
+  @override
+  String get deleteChatConfirmation =>
+      'Bu sohbeti silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+
+  @override
+  String get aiResponseGenerating => 'Oluşturuluyor';
+
+  @override
+  String get aiResponseInterrupted => 'Kesintiye uğradı';
+
+  @override
+  String get aiResponseFailed => 'Başarısız';
+
+  @override
+  String get aiStorageWarning =>
+      'Huda AI geçmişi bu cihazda kaydedilemedi. Bu sohbet, uygulama kapanana kadar kullanılabilir kalacak.';
+
+  @override
+  String get aiBusyOtherConversation => 'Huda AI başka bir sohbeti yanıtlıyor.';
+
+  @override
+  String get chatErrorInterrupted =>
+      'Yanıt kesintiye uğradı. Devam etmek için tekrar deneyin.';
+
+  @override
+  String get prayerTravelUpdates => 'Seyahatte namaz vakitlerini güncelle';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'Etkinleştirildiğinde Huda, uygulamayı açmadan önemli yolculuklardan sonra vakitleri, bildirimleri ve araç takımlarını güncelleyebilir.';
+
+  @override
+  String get prayerLocationMode => 'Konum modu';
+
+  @override
+  String get manual => 'Elle';
+
+  @override
+  String get backgroundTravelUpdates => 'Arka planda seyahat güncellemeleri';
+
+  @override
+  String get lastLocationValidation => 'Son konum doğrulaması';
+
+  @override
+  String get lastPrayerScheduleActivation => 'Son program etkinleştirmesi';
+
+  @override
+  String get travelUpdatesEnabled => 'Etkin';
+
+  @override
+  String get travelForegroundOnly => 'Yalnızca ön planda';
+
+  @override
+  String get travelPermissionRequired => 'İzin gerekli';
+
+  @override
+  String get travelUpdatesUnsupported => 'Desteklenmiyor';
+
+  @override
+  String get travelUpdatesUnavailable => 'Kullanılamıyor';
+
+  @override
+  String get travelUpdatesDisabled => 'Devre dışı';
+
+  @override
+  String get notYet => 'Henüz değil';
 }

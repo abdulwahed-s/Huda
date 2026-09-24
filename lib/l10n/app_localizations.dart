@@ -3552,11 +3552,23 @@ abstract class AppLocalizations {
   /// **'Continue Reading'**
   String get continueHome;
 
+  /// Heading above the Quran reading, listening, and radio continuation controls
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up where you left off'**
+  String get continueActivityPrompt;
+
   /// No description provided for @noRecentActivityHome.
   ///
   /// In en, this message translates to:
   /// **'No Recent Activity'**
   String get noRecentActivityHome;
+
+  /// Status shown when there is no saved Quran activity to continue
+  ///
+  /// In en, this message translates to:
+  /// **'No progress'**
+  String get noProgress;
 
   /// No description provided for @resumeReading.
   ///
@@ -3687,14 +3699,26 @@ abstract class AppLocalizations {
   /// No description provided for @shareYourThoughts.
   ///
   /// In en, this message translates to:
-  /// **'Send Feedback'**
+  /// **'General Feedback'**
   String get shareYourThoughts;
 
   /// No description provided for @feedbackDescription.
   ///
   /// In en, this message translates to:
-  /// **'Share your thoughts with us'**
+  /// **'Share a comment about your experience'**
   String get feedbackDescription;
+
+  /// No description provided for @feedbackAndIssueActionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback or report a problem'**
+  String get feedbackAndIssueActionTitle;
+
+  /// No description provided for @feedbackAndIssueActionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem, suggest an improvement, or share a comment'**
+  String get feedbackAndIssueActionSubtitle;
 
   /// No description provided for @rateOurApp.
   ///
@@ -4613,13 +4637,13 @@ abstract class AppLocalizations {
   /// No description provided for @feedbackFormTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your Feedback'**
+  /// **'What would you like to do?'**
   String get feedbackFormTitle;
 
   /// No description provided for @feedbackFormSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Please be as detailed as possible. Your feedback helps us make Huda better for everyone.'**
+  /// **'Choose one option, then write your message.'**
   String get feedbackFormSubtitle;
 
   /// No description provided for @feedbackHintText.
@@ -4649,19 +4673,19 @@ abstract class AppLocalizations {
   /// No description provided for @feedbackPrivacyDescription.
   ///
   /// In en, this message translates to:
-  /// **'Your feedback is sent securely and helps us improve the app. No personal information is shared with third parties.'**
+  /// **'Your message and basic app and device details are sent securely. Your email is included only if you enter it.'**
   String get feedbackPrivacyDescription;
 
   /// No description provided for @detailedFeedbackTitle.
   ///
   /// In en, this message translates to:
-  /// **'Detailed Feedback'**
+  /// **'Suggest an Improvement'**
   String get detailedFeedbackTitle;
 
   /// No description provided for @detailedFeedbackSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Share detailed thoughts and suggestions'**
+  /// **'Share an idea for Huda'**
   String get detailedFeedbackSubtitle;
 
   /// No description provided for @reportAnIssue.
@@ -6037,6 +6061,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A smoother, more intuitive experience'**
   String get whatsNew400Feature5;
+
+  /// What's new feature 1 for v4.2.0
+  ///
+  /// In en, this message translates to:
+  /// **'Redesigned Prayer and Quran widgets with improved customization, reliability, and new iOS Lock Screen options'**
+  String get whatsNew420Feature1;
+
+  /// What's new feature 2 for v4.2.0
+  ///
+  /// In en, this message translates to:
+  /// **'Added custom Fajr, Maghrib, and Isha calculation angles'**
+  String get whatsNew420Feature2;
+
+  /// What's new feature 3 for v4.2.0
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer times, notifications, and widgets can now update automatically while traveling'**
+  String get whatsNew420Feature3;
+
+  /// What's new feature 4 for v4.2.0
+  ///
+  /// In en, this message translates to:
+  /// **'Huda AI now saves searchable conversation history locally'**
+  String get whatsNew420Feature4;
+
+  /// What's new feature 5 for v4.2.0
+  ///
+  /// In en, this message translates to:
+  /// **'Improved Home customization'**
+  String get whatsNew420Feature5;
+
+  /// What's new feature 6 for v4.2.0
+  ///
+  /// In en, this message translates to:
+  /// **'Redesigned the feedback and issue-reporting experience'**
+  String get whatsNew420Feature6;
 
   /// Indicates that the app is currently in offline mode
   ///
@@ -8390,11 +8450,23 @@ abstract class AppLocalizations {
   /// **'Customize Home'**
   String get customizeHome;
 
+  /// No description provided for @editHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Home'**
+  String get editHome;
+
   /// No description provided for @homeTheme.
   ///
   /// In en, this message translates to:
   /// **'Home theme'**
   String get homeTheme;
+
+  /// No description provided for @homeStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Home style'**
+  String get homeStyle;
 
   /// No description provided for @themeClassic.
   ///
@@ -8417,19 +8489,19 @@ abstract class AppLocalizations {
   /// No description provided for @themeClassicDescription.
   ///
   /// In en, this message translates to:
-  /// **'The familiar Huda grid with flexible card ordering.'**
+  /// **'A familiar grid with all your tools.'**
   String get themeClassicDescription;
 
   /// No description provided for @themePrayerTodayDescription.
   ///
   /// In en, this message translates to:
-  /// **'Move through each prayer with a clear countdown to the next and the full daily schedule.'**
+  /// **'Prayer times and the next prayer first.'**
   String get themePrayerTodayDescription;
 
   /// No description provided for @themeQuranJourneyDescription.
   ///
   /// In en, this message translates to:
-  /// **'Daily ayah, reading progress, and Khatma at the center.'**
+  /// **'Quran reading and Khatma progress first.'**
   String get themeQuranJourneyDescription;
 
   /// No description provided for @primaryCards.
@@ -8437,6 +8509,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Primary cards'**
   String get primaryCards;
+
+  /// No description provided for @onHome.
+  ///
+  /// In en, this message translates to:
+  /// **'On Home'**
+  String get onHome;
 
   /// No description provided for @viewMore.
   ///
@@ -8456,6 +8534,12 @@ abstract class AppLocalizations {
   /// **'Move to primary'**
   String get moveToPrimary;
 
+  /// No description provided for @moveToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to Home'**
+  String get moveToHome;
+
   /// No description provided for @moveToViewMore.
   ///
   /// In en, this message translates to:
@@ -8473,6 +8557,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset theme'**
   String get resetTheme;
+
+  /// No description provided for @reorderHomeItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder item'**
+  String get reorderHomeItem;
+
+  /// No description provided for @moveUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up'**
+  String get moveUp;
+
+  /// No description provided for @moveDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down'**
+  String get moveDown;
+
+  /// No description provided for @restoreDefaultLayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore default layout'**
+  String get restoreDefaultLayout;
+
+  /// No description provided for @restoreDefaultLayoutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This restores the order and places tools in their default sections for this home style.'**
+  String get restoreDefaultLayoutMessage;
+
+  /// No description provided for @viewMoreEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Move less-used tools here to keep Home simple.'**
+  String get viewMoreEmpty;
 
   /// No description provided for @applyChanges.
   ///
@@ -8621,7 +8741,7 @@ abstract class AppLocalizations {
   /// No description provided for @customizeHomeHint.
   ///
   /// In en, this message translates to:
-  /// **'Drag to reorder. Use the controls to show cards or move them between Primary and View More.'**
+  /// **'Press and drag any card to reorder. Use the button to move a tool between Home and View More.'**
   String get customizeHomeHint;
 
   /// No description provided for @themeResetMessage.
@@ -8947,6 +9067,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Arabic app language uses an Arabic-only widget.'**
   String get arabicTranslationHidden;
+
+  /// No description provided for @aiHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda AI history'**
+  String get aiHistory;
+
+  /// No description provided for @newChat.
+  ///
+  /// In en, this message translates to:
+  /// **'New chat'**
+  String get newChat;
+
+  /// No description provided for @searchConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Search conversations'**
+  String get searchConversations;
+
+  /// No description provided for @noChatHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved conversations yet'**
+  String get noChatHistory;
+
+  /// No description provided for @noHistoryResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching conversations'**
+  String get noHistoryResults;
+
+  /// No description provided for @clearAllHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all history'**
+  String get clearAllHistory;
+
+  /// No description provided for @clearAllHistoryConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete all Huda AI conversations? This cannot be undone.'**
+  String get clearAllHistoryConfirmation;
+
+  /// No description provided for @deleteChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete conversation'**
+  String get deleteChat;
+
+  /// No description provided for @deleteChatConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this conversation? This cannot be undone.'**
+  String get deleteChatConfirmation;
+
+  /// No description provided for @aiResponseGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating'**
+  String get aiResponseGenerating;
+
+  /// No description provided for @aiResponseInterrupted.
+  ///
+  /// In en, this message translates to:
+  /// **'Interrupted'**
+  String get aiResponseInterrupted;
+
+  /// No description provided for @aiResponseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get aiResponseFailed;
+
+  /// No description provided for @aiStorageWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda AI history could not be saved on this device. This conversation will remain available until the app closes.'**
+  String get aiStorageWarning;
+
+  /// No description provided for @aiBusyOtherConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda AI is answering another conversation.'**
+  String get aiBusyOtherConversation;
+
+  /// No description provided for @chatErrorInterrupted.
+  ///
+  /// In en, this message translates to:
+  /// **'The response was interrupted. Try again to continue.'**
+  String get chatErrorInterrupted;
+
+  /// No description provided for @prayerTravelUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Update prayer times while traveling'**
+  String get prayerTravelUpdates;
+
+  /// No description provided for @prayerTravelUpdatesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'When enabled, Huda can update prayer times, notifications, and widgets after meaningful travel without opening the app.'**
+  String get prayerTravelUpdatesDescription;
+
+  /// No description provided for @prayerLocationMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Location mode'**
+  String get prayerLocationMode;
+
+  /// No description provided for @manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get manual;
+
+  /// No description provided for @backgroundTravelUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Background travel updates'**
+  String get backgroundTravelUpdates;
+
+  /// No description provided for @lastLocationValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last location validation'**
+  String get lastLocationValidation;
+
+  /// No description provided for @lastPrayerScheduleActivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last schedule activation'**
+  String get lastPrayerScheduleActivation;
+
+  /// No description provided for @travelUpdatesEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get travelUpdatesEnabled;
+
+  /// No description provided for @travelForegroundOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Foreground only'**
+  String get travelForegroundOnly;
+
+  /// No description provided for @travelPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission required'**
+  String get travelPermissionRequired;
+
+  /// No description provided for @travelUpdatesUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported'**
+  String get travelUpdatesUnsupported;
+
+  /// No description provided for @travelUpdatesUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get travelUpdatesUnavailable;
+
+  /// No description provided for @travelUpdatesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get travelUpdatesDisabled;
+
+  /// No description provided for @notYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get notYet;
 }
 
 class _AppLocalizationsDelegate
