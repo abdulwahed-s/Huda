@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:timezone_finder/timezone_finder.dart' as timezone_finder;
 
 typedef PrayerTimeZoneResolver =
     Future<String> Function(
@@ -20,12 +21,23 @@ abstract final class PrayerLocationTimeZoneService {
     double longitude,
     String countryCode,
   ) async {
-    if (!PlatformUtils.isAndroid && !PlatformUtils.isIOS) {
-      throw UnsupportedError('Coordinate timezone lookup requires Android/iOS');
+    if (PlatformUtils.isWindows) {
+      return resolveOfflineExact(latitude, longitude);
+    }
+    if (!PlatformUtils.isAndroid &&
+        !PlatformUtils.isIOS &&
+        !PlatformUtils.isMacOS) {
+      throw UnsupportedError(
+        'Coordinate timezone lookup is unavailable on this platform',
+      );
     }
     final identifier = await _channel.invokeMethod<String>(
       'resolveTimeZone',
-      <String, double>{'latitude': latitude, 'longitude': longitude},
+      <String, Object?>{
+        'latitude': latitude,
+        'longitude': longitude,
+        'countryCode': countryCode,
+      },
     );
     final normalized = identifier?.trim() ?? '';
     if (normalized.isEmpty) {
@@ -33,6 +45,16 @@ abstract final class PrayerLocationTimeZoneService {
     }
     PrayerTimeZoneService.location(normalized);
     return normalized;
+  }
+
+  static String resolveOfflineExact(double latitude, double longitude) {
+    PrayerTimeZoneService.initializeDatabase();
+    final location = timezone_finder.findLocation(longitude, latitude);
+    if (location == null || location.name.trim().isEmpty) {
+      throw StateError('No IANA timezone boundary covers the coordinates');
+    }
+    PrayerTimeZoneService.location(location.name);
+    return location.name;
   }
 
   static Future<String> resolve(

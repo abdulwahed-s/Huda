@@ -4,11 +4,15 @@ import 'package:permission_handler/permission_handler.dart' as ph;
 
 class HudaAndroidGeolocator extends GeolocatorPlatform {
   static const MethodChannel _channel = MethodChannel('com.aw.huda/location');
+  static const EventChannel _updatesChannel = EventChannel(
+    'com.aw.huda/location_updates',
+  );
 
   @override
   Future<bool> isLocationServiceEnabled() async {
-    final enabled =
-        await _channel.invokeMethod<bool>('isLocationServiceEnabled');
+    final enabled = await _channel.invokeMethod<bool>(
+      'isLocationServiceEnabled',
+    );
     return enabled ?? false;
   }
 
@@ -45,6 +49,21 @@ class HudaAndroidGeolocator extends GeolocatorPlatform {
       throw const LocationServiceDisabledException();
     }
     return _positionFromMap(map);
+  }
+
+  @override
+  Stream<Position> getPositionStream({LocationSettings? locationSettings}) {
+    final settings = locationSettings ?? const LocationSettings();
+    return _updatesChannel
+        .receiveBroadcastStream(<String, Object?>{
+          'distanceFilter': settings.distanceFilter,
+        })
+        .map((event) {
+          if (event is! Map) {
+            throw const FormatException('Invalid Android location update');
+          }
+          return _positionFromMap(Map<String, dynamic>.from(event));
+        });
   }
 
   @override

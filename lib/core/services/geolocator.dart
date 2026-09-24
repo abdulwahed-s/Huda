@@ -16,17 +16,21 @@ class Geolocator {
 
   static Future<Position?> getLastKnownPosition({
     bool forceAndroidLocationManager = false,
-  }) =>
-      GeolocatorPlatform.instance.getLastKnownPosition(
-        forceLocationManager: forceAndroidLocationManager,
-      );
+  }) => GeolocatorPlatform.instance.getLastKnownPosition(
+    forceLocationManager: forceAndroidLocationManager,
+  );
 
   static Future<Position> getCurrentPosition({
     LocationSettings? locationSettings,
-  }) =>
-      GeolocatorPlatform.instance.getCurrentPosition(
-        locationSettings: locationSettings,
-      );
+  }) => GeolocatorPlatform.instance.getCurrentPosition(
+    locationSettings: locationSettings,
+  );
+
+  static Stream<Position> getPositionStream({
+    LocationSettings? locationSettings,
+  }) => GeolocatorPlatform.instance.getPositionStream(
+    locationSettings: locationSettings,
+  );
 
   static Future<bool> openAppSettings() =>
       GeolocatorPlatform.instance.openAppSettings();
