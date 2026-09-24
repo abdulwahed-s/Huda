@@ -7,10 +7,7 @@ class WhatsNewFeature {
   final String Function(BuildContext) title;
   final IconData icon;
 
-  const WhatsNewFeature({
-    required this.title,
-    required this.icon,
-  });
+  const WhatsNewFeature({required this.title, required this.icon});
 }
 
 class WhatsNewContent {
@@ -239,6 +236,37 @@ class WhatsNewContent {
         WhatsNewFeature(
           title: (context) => AppLocalizations.of(context)!.whatsNew400Feature5,
           icon: Icons.touch_app_outlined,
+        ),
+      ],
+      buttonText: (context) => AppLocalizations.of(context)!.gotIt,
+    ),
+    '4.2.0': WhatsNewContent(
+      version: '4.2.0',
+      title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
+      features: [
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew420Feature1,
+          icon: Icons.widgets_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew420Feature2,
+          icon: Icons.wb_twilight_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew420Feature3,
+          icon: Icons.travel_explore_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew420Feature4,
+          icon: Icons.history_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew420Feature5,
+          icon: Icons.home_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew420Feature6,
+          icon: Icons.feedback_outlined,
         ),
       ],
       buttonText: (context) => AppLocalizations.of(context)!.gotIt,
