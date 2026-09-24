@@ -2,7 +2,7 @@ import { cors } from "../_shared/cors.ts";
 import { isRateLimited } from "../_shared/rate_limit.ts";
 
 const GEMINI_KEY = Deno.env.get("GEMINI_API_KEY")!;
-const MODEL = "gemini-3.1-flash-lite";
+const MODEL = "gemini-3.8-flash";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
@@ -10,19 +10,29 @@ Deno.serve(async (req) => {
     if (await isRateLimited(req, "gemini")) {
       return new Response(
         JSON.stringify({ error: { message: "rate limited" } }),
-        { status: 429, headers: { ...cors, "Content-Type": "application/json" } },
+        {
+          status: 429,
+          headers: { ...cors, "Content-Type": "application/json" },
+        },
       );
     }
 
-    const { contents, generationConfig, stream } = await req.json();
+    const { contents, generationConfig, stream, systemInstruction } =
+      await req.json();
     const action = stream ? "streamGenerateContent" : "generateContent";
-    const url =
-      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:${action}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:${action}`;
 
     const upstream = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-goog-api-key": GEMINI_KEY },
-      body: JSON.stringify({ contents, generationConfig }),
+      headers: {
+        "Content-Type": "application/json",
+        "X-goog-api-key": GEMINI_KEY,
+      },
+      body: JSON.stringify({
+        contents,
+        generationConfig,
+        ...(systemInstruction ? { systemInstruction } : {}),
+      }),
     });
 
     // Pipe Gemini's body straight back — same format the Dart parser expects.
@@ -30,7 +40,8 @@ Deno.serve(async (req) => {
       status: upstream.status,
       headers: {
         ...cors,
-        "Content-Type": upstream.headers.get("Content-Type") ?? "application/json",
+        "Content-Type":
+          upstream.headers.get("Content-Type") ?? "application/json",
       },
     });
   } catch (e) {

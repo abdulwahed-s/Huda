@@ -26,6 +26,8 @@ class ChatErrorView extends StatelessWidget {
         return l10n.chatErrorServer;
       case ChatErrorType.safetyFilter:
         return l10n.chatErrorSafety;
+      case ChatErrorType.interrupted:
+        return l10n.chatErrorInterrupted;
       case ChatErrorType.unknown:
         return l10n.chatErrorGeneric;
     }
@@ -41,6 +43,8 @@ class ChatErrorView extends StatelessWidget {
         return Icons.cloud_off_rounded;
       case ChatErrorType.safetyFilter:
         return Icons.shield_outlined;
+      case ChatErrorType.interrupted:
+        return Icons.pause_circle_outline_rounded;
       case ChatErrorType.unknown:
         return Icons.error_outline_rounded;
     }

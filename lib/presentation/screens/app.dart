@@ -1,17 +1,17 @@
 import 'dart:async';
-import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:feedback/feedback.dart';
-import 'package:huda/presentation/widgets/feedback/screenshot_feedback_widget.dart';
 import 'package:huda/core/routes/page_router.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/core/services/prayer_location_repository.dart';
+import 'package:huda/core/services/prayer_location_monitor.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/widget_deep_link_handler.dart';
+import 'package:huda/core/services/gemini_service.dart';
 import 'package:huda/core/theme/app_theme.dart';
 import 'package:huda/cubit/theme/theme_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
@@ -27,9 +27,11 @@ import 'package:huda/core/services/audio_progress_service.dart';
 import 'package:huda/data/services/offline_audiobooks_service.dart';
 import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
+import 'package:huda/cubit/chat/chat_cubit.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/data/api/radio_services.dart';
 import 'package:huda/data/repository/radio_repository.dart';
+import 'package:huda/data/repository/chat_history_repository.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 import 'package:huda/core/utils/responsive_utils.dart';
@@ -68,9 +70,18 @@ class _AppState extends State<App> {
         BlocProvider(create: (_) => NotificationsCubit()),
         BlocProvider(create: (_) => RatingCubit()),
         BlocProvider(
+          lazy: false,
+          create: (_) => ChatCubit(
+            GeminiService(dio: getIt()),
+            getIt<ChatHistoryRepository>(),
+          )..initialize(),
+        ),
+        BlocProvider(
           create: (_) => PrayerTimesCubit(
             getIt<CacheHelper>(),
             notificationScheduler: getIt<PrayerNotificationScheduler>(),
+            locationRepository: getIt<PrayerLocationRepository>(),
+            locationMonitor: getIt<PrayerLocationMonitor>(),
           ),
         ),
         BlocProvider<MiqaatLockCubit>.value(value: getIt<MiqaatLockCubit>()),
@@ -102,7 +113,7 @@ class _AppState extends State<App> {
                   designSize: ResponsiveUtils.getResponsiveDesignSize(context),
                   minTextAdapt: true,
                   splitScreenMode: true,
-                  builder: (_, __) {
+                  builder: (_, _) {
                     return MaterialApp(
                       navigatorKey: App.navigatorKey,
                       debugShowCheckedModeBanner: false,
@@ -153,35 +164,7 @@ class _AppState extends State<App> {
                   },
                 );
 
-                final bool isDesktop =
-                    Platform.isWindows || Platform.isLinux || Platform.isMacOS;
-
-                if (isDesktop) return screenUtilChild;
-
-                return BetterFeedback(
-                  themeMode: themeState.themeMode,
-                  theme: FeedbackThemeData.light().copyWith(
-                    feedbackSheetHeight: 0.38,
-                    feedbackSheetColor: Colors.white,
-                    background: Colors.black54,
-                    dragHandleColor: Colors.black38,
-                  ),
-                  darkTheme: FeedbackThemeData.dark().copyWith(
-                    feedbackSheetHeight: 0.38,
-                    feedbackSheetColor: const Color(0xFF1F2937),
-                    background: Colors.black87,
-                    dragHandleColor: Colors.white54,
-                  ),
-                  localizationsDelegates:
-                      AppLocalizations.localizationsDelegates,
-                  localeOverride: localizationState.locale,
-                  feedbackBuilder: (context, onSubmit, scrollController) =>
-                      ScreenshotFeedbackWidget(
-                        onSubmit: onSubmit,
-                        scrollController: scrollController,
-                      ),
-                  child: screenUtilChild,
-                );
+                return screenUtilChild;
               },
             );
           },
@@ -211,7 +194,22 @@ class _PrayerLocationLifecycleState extends State<_PrayerLocationLifecycle>
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        context.read<PrayerTimesCubit>().refreshAutomaticLocationIfNeeded();
+        final cubit = context.read<PrayerTimesCubit>();
+        final monitor = getIt<PrayerLocationMonitor>();
+        unawaited(
+          monitor.start(
+            mode: cubit.locationMode,
+            onForegroundPosition: cubit.submitForegroundPosition,
+            onNativeCandidate: cubit.consumeQueuedNativeLocationCandidate,
+            onSystemChange: (reason) async {
+              await cubit.consumeQueuedNativeLocationCandidate();
+              await cubit.refreshAutomaticLocationIfNeeded(force: true);
+              await cubit.refreshNotificationSchedule();
+            },
+          ),
+        );
+        unawaited(cubit.consumeQueuedNativeLocationCandidate());
+        unawaited(cubit.refreshAutomaticLocationIfNeeded());
       }
     });
     _foregroundValidationTimer = Timer.periodic(const Duration(minutes: 30), (
@@ -226,7 +224,13 @@ class _PrayerLocationLifecycleState extends State<_PrayerLocationLifecycle>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<PrayerTimesCubit>().refreshAutomaticLocationIfNeeded();
+      final cubit = context.read<PrayerTimesCubit>();
+      unawaited(getIt<PrayerLocationMonitor>().setForegroundActive(true));
+      unawaited(cubit.consumeQueuedNativeLocationCandidate());
+      unawaited(getIt<PrayerLocationMonitor>().sync(cubit.locationMode));
+      unawaited(cubit.refreshAutomaticLocationIfNeeded());
+    } else {
+      unawaited(getIt<PrayerLocationMonitor>().setForegroundActive(false));
     }
   }
 
@@ -234,6 +238,7 @@ class _PrayerLocationLifecycleState extends State<_PrayerLocationLifecycle>
   void dispose() {
     _foregroundValidationTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
+    unawaited(getIt<PrayerLocationMonitor>().dispose());
     super.dispose();
   }
 

@@ -34,44 +34,46 @@ class MessageInput extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? context.darkGradientStart
-                        : context.lightSurface,
-                    borderRadius: BorderRadius.circular(24.r),
-                    border: Border.all(
-                      color: context.primaryColor.withValues(alpha: 0.2),
-                      width: 1,
-                    ),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? context.darkGradientStart
+                      : context.lightSurface,
+                  borderRadius: BorderRadius.circular(24.r),
+                  border: Border.all(
+                    color: context.primaryColor.withValues(alpha: 0.2),
+                    width: 1,
                   ),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 120.h, // limit height before scrolling
-                    ),
-                    child: Scrollbar(
-                      thickness: 0,
-                      child: TextField(
-                        controller: controller,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: isDark ? context.darkText : context.lightText,
+                ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: 120.h, // limit height before scrolling
+                  ),
+                  child: Scrollbar(
+                    thickness: 0,
+                    child: TextField(
+                      controller: controller,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: isDark ? context.darkText : context.lightText,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.typeMessageHint,
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 12.h,
                         ),
-                        decoration: InputDecoration(
-                          hintText:
-                              AppLocalizations.of(context)!.typeMessageHint,
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 12.h),
-                          prefixIcon: Icon(
-                            Icons.chat_bubble_outline,
-                            color: context.primaryColor.withValues(alpha: 0.6),
-                          ),
+                        prefixIcon: Icon(
+                          Icons.chat_bubble_outline,
+                          color: context.primaryColor.withValues(alpha: 0.6),
                         ),
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ),
             SizedBox(width: 12.w),
             _buildSendButton(context),
@@ -86,11 +88,11 @@ class MessageInput extends StatelessWidget {
       builder: (context, state) => Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: state.isLoading
+            colors: state.hasActiveRequest
                 ? [Colors.grey.shade400, Colors.grey.shade500]
                 : [
                     context.primaryColor,
-                    context.primaryColor.withValues(alpha: 0.8)
+                    context.primaryColor.withValues(alpha: 0.8),
                   ],
           ),
           borderRadius: BorderRadius.circular(24.r),
@@ -106,7 +108,7 @@ class MessageInput extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(24.r),
-            onTap: state.isLoading
+            onTap: state.hasActiveRequest
                 ? null
                 : () {
                     final text = controller.text.trim();
@@ -124,11 +126,7 @@ class MessageInput extends StatelessWidget {
               width: 40.h,
               height: 40.h,
               decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: Icon(
-                Icons.send_rounded,
-                color: Colors.white,
-                size: 20.sp,
-              ),
+              child: Icon(Icons.send_rounded, color: Colors.white, size: 20.sp),
             ),
           ),
         ),

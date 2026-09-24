@@ -77,7 +77,7 @@ class MessageList extends StatelessWidget {
             final message = state.messages[index];
             return RepaintBoundary(
               key: message.sender == Sender.user
-                  ? (messageKeys[message.text] ??= GlobalKey())
+                  ? (messageKeys[message.id] ??= GlobalKey())
                   : null,
               child: MessageBubble(
                 message: message,

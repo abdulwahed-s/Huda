@@ -3,6 +3,7 @@ enum ChatErrorType {
   rateLimit,
   server,
   safetyFilter,
+  interrupted,
   unknown,
 }
 

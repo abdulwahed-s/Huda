@@ -7,15 +7,21 @@ import 'package:huda/core/theme/theme_extension.dart';
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isDark;
   final AppLocalizations appLocalizations;
+  final VoidCallback onHistory;
+  final VoidCallback onNewChat;
 
   const ChatAppBar({
     super.key,
     required this.isDark,
     required this.appLocalizations,
+    required this.onHistory,
+    required this.onNewChat,
   });
 
   @override
   Widget build(BuildContext context) {
+    final showNewChatLabel = MediaQuery.sizeOf(context).width >= 700;
+
     return AppBar(
       iconTheme: IconThemeData(
         color: isDark ? context.darkText : context.lightText,
@@ -92,6 +98,24 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
+      actions: [
+        _AppBarAction(
+          tooltip: appLocalizations.aiHistory,
+          onPressed: onHistory,
+          icon: Icons.history_rounded,
+          isDark: isDark,
+        ),
+        SizedBox(width: 8.w),
+        _AppBarAction(
+          tooltip: appLocalizations.newChat,
+          label: showNewChatLabel ? appLocalizations.newChat : null,
+          onPressed: onNewChat,
+          icon: Icons.add_rounded,
+          isDark: isDark,
+          isPrimary: true,
+        ),
+        SizedBox(width: 12.w),
+      ],
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(1.h),
         child: Container(
@@ -113,4 +137,76 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(kIsWeb ? 65.h : 55.h);
+}
+
+class _AppBarAction extends StatelessWidget {
+  const _AppBarAction({
+    required this.tooltip,
+    required this.onPressed,
+    required this.icon,
+    required this.isDark,
+    this.label,
+    this.isPrimary = false,
+  });
+
+  final String tooltip;
+  final VoidCallback onPressed;
+  final IconData icon;
+  final bool isDark;
+  final String? label;
+  final bool isPrimary;
+
+  @override
+  Widget build(BuildContext context) {
+    final foregroundColor = isPrimary
+        ? Colors.white
+        : (isDark ? context.darkText : context.lightText);
+    final backgroundColor = isPrimary
+        ? context.primaryColor
+        : context.primaryColor.withValues(alpha: isDark ? 0.16 : 0.07);
+    final borderColor = isPrimary
+        ? context.primaryColor
+        : context.primaryColor.withValues(alpha: isDark ? 0.28 : 0.14);
+
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(13.r),
+          side: BorderSide(color: borderColor),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onPressed,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: label == null ? 10.w : 14.w,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, size: 21.sp, color: foregroundColor),
+                  if (label != null) ...[
+                    SizedBox(width: 7.w),
+                    Text(
+                      label!,
+                      style: TextStyle(
+                        color: foregroundColor,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

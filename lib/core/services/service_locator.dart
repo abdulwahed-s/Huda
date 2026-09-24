@@ -24,21 +24,32 @@ import 'package:huda/core/services/qcf_font_service.dart';
 import 'package:huda/core/services/home_preferences_service.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/core/services/notification_services.dart';
+import 'package:huda/core/services/prayer_location_repository.dart';
+import 'package:huda/core/services/prayer_location_monitor.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/data/repository/chat_history_repository.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
   getIt.registerSingleton<AudioPlayer>(AudioPlayer());
   getIt.registerSingleton<AudioCoordinator>(AudioCoordinator());
   getIt.registerSingleton<CacheHelper>(CacheHelper());
+  getIt.registerSingleton<ChatHistoryRepository>(HiveChatHistoryRepository());
   getIt.registerSingleton<HijriCalendarService>(
     HijriCalendarService(cache: getIt<CacheHelper>()),
   );
   getIt.registerSingleton<NotificationServices>(NotificationServices());
+  getIt.registerSingleton<PrayerLocationRepository>(
+    PrayerLocationRepository(cacheHelper: getIt<CacheHelper>()),
+  );
+  getIt.registerSingleton<PrayerLocationMonitor>(
+    PrayerLocationMonitor(cacheHelper: getIt<CacheHelper>()),
+  );
   getIt.registerSingleton<PrayerNotificationScheduler>(
     PrayerNotificationScheduler(
       cacheHelper: getIt<CacheHelper>(),
       notifications: getIt<NotificationServices>(),
+      locationRepository: getIt<PrayerLocationRepository>(),
     ),
   );
   getIt.registerSingleton<Dio>(Dio());
@@ -47,24 +58,30 @@ void setupServiceLocator() {
   getIt.registerSingleton<AudioProgressService>(AudioProgressService());
   getIt.registerSingleton<BookProgressService>(BookProgressService());
   getIt.registerSingleton<QuranAudioProgressService>(
-      QuranAudioProgressService());
+    QuranAudioProgressService(),
+  );
   getIt.registerSingleton<QuranRadioProgressService>(
-      QuranRadioProgressService());
+    QuranRadioProgressService(),
+  );
   getIt.registerSingleton<OfflineAudiobooksService>(OfflineAudiobooksService());
   getIt.registerSingleton<AudiobookDownloadService>(AudiobookDownloadService());
   getIt.registerSingleton<BookmarkService>(
-      BookmarkService(cacheHelper: getIt<CacheHelper>()));
+    BookmarkService(cacheHelper: getIt<CacheHelper>()),
+  );
   getIt.registerSingleton<PrayerCountdownService>(PrayerCountdownService());
   getIt.registerSingleton<PersistentPrayerCountdownService>(
-      PersistentPrayerCountdownService());
+    PersistentPrayerCountdownService(),
+  );
 
   getIt.registerSingleton<SpeechService>(SpeechService());
 
   getIt.registerSingleton<SurahScreenSettingsService>(
-      SurahScreenSettingsService());
+    SurahScreenSettingsService(),
+  );
 
   getIt.registerSingleton<KhatmaService>(
-      KhatmaService(cache: getIt<CacheHelper>()));
+    KhatmaService(cache: getIt<CacheHelper>()),
+  );
 
   getIt.registerSingleton<IslamicEventService>(
     IslamicEventService(
@@ -74,17 +91,24 @@ void setupServiceLocator() {
   );
 
   getIt.registerSingleton<HomePreferencesService>(
-      HomePreferencesService(cache: getIt<CacheHelper>()));
+    HomePreferencesService(cache: getIt<CacheHelper>()),
+  );
 
   getIt.registerLazySingleton<QcfFontService>(
-      () => QcfFontService(
-          cache: getIt<CacheHelper>(), packType: FontPackType.qcf4),
-      instanceName: 'qcf4');
+    () => QcfFontService(
+      cache: getIt<CacheHelper>(),
+      packType: FontPackType.qcf4,
+    ),
+    instanceName: 'qcf4',
+  );
 
   getIt.registerLazySingleton<QcfFontService>(
-      () => QcfFontService(
-          cache: getIt<CacheHelper>(), packType: FontPackType.tajweed),
-      instanceName: 'tajweed');
+    () => QcfFontService(
+      cache: getIt<CacheHelper>(),
+      packType: FontPackType.tajweed,
+    ),
+    instanceName: 'tajweed',
+  );
 
   getIt.registerSingletonAsync<MiqaatLockRepository>(
     () => MiqaatLockRepository.create(),

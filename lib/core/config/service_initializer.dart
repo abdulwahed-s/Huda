@@ -10,6 +10,7 @@ import 'package:huda/core/services/notification_boot_service.dart';
 import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:huda/core/services/prayer_notification_background_scheduler.dart';
+import 'package:huda/core/services/prayer_location_repository.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/core/services/service_initialization_tracker.dart';
@@ -17,6 +18,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/utils/performance_utils.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/data/repository/chat_history_repository.dart';
 import 'package:workmanager/workmanager.dart';
 
 Future<void> initializeCriticalServices() async {
@@ -24,10 +26,10 @@ Future<void> initializeCriticalServices() async {
     final tracker = ServiceInitializationTracker();
 
     await getIt<CacheHelper>().init();
+    await getIt<PrayerLocationRepository>().initialize();
+    await getIt<ChatHistoryRepository>().initialize();
     await getIt<HijriCalendarService>().initialize();
-    unawaited(
-      getIt<HijriCalendarService>().refreshAutomaticAdjustmentIfDue(),
-    );
+    unawaited(getIt<HijriCalendarService>().refreshAutomaticAdjustmentIfDue());
     tracker.markServiceReady('cache');
   });
 }
@@ -84,8 +86,9 @@ Future<void> _initializeNotificationServices() async {
   } catch (error) {
     debugPrint('Reminder notification restoration failed: $error');
   }
-  final result = await getIt<PrayerNotificationScheduler>()
-      .reconcile(reason: 'app-startup');
+  final result = await getIt<PrayerNotificationScheduler>().reconcile(
+    reason: 'app-startup',
+  );
   debugPrint(
     'Prayer notification startup status: ${result.status.name}, '
     'coverage: ${result.coverageUntil}',

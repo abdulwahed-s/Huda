@@ -6,8 +6,28 @@ import 'package:huda/data/models/chat_error.dart';
 import 'package:huda/data/models/chat_message_model.dart';
 import 'package:huda/data/models/counseling_response_model.dart';
 
-class GeminiService {
-  final Dio _dio = Dio();
+abstract interface class HudaAiClient {
+  Stream<String> sendMessageStream(
+    String message,
+    List<ChatMessage> history, {
+    CancelToken? cancelToken,
+  });
+
+  Future<CounselingResponse> sendCounselingMessage(
+    String userFeeling, {
+    CancelToken? cancelToken,
+  });
+
+  Future<String> generateSessionTitle(
+    String firstUserText, {
+    CancelToken? cancelToken,
+  });
+}
+
+class GeminiService implements HudaAiClient {
+  GeminiService({Dio? dio}) : _dio = dio ?? Dio();
+
+  final Dio _dio;
   final String _functionUrl = '$supabaseUrl/functions/v1/gemini-proxy';
 
   ChatException _mapDioError(Object error) {
@@ -29,6 +49,8 @@ class GeminiService {
             return const ChatException(ChatErrorType.server);
           }
           return const ChatException(ChatErrorType.unknown);
+        case DioExceptionType.cancel:
+          return const ChatException(ChatErrorType.interrupted);
         default:
           if (error.error is FormatException) {
             return const ChatException(ChatErrorType.unknown);
@@ -57,49 +79,54 @@ class GeminiService {
   }
 
   Map<String, String> get _headers => <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $supabaseAnonKey',
-        'apikey': supabaseAnonKey,
-      };
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $supabaseAnonKey',
+    'apikey': supabaseAnonKey,
+  };
 
   final String prompt =
       "You are Huda AI, a dedicated Islamic assistant. Your sole purpose is to answer questions strictly related to Islam, based only on:\n\nThe Qur’an\n\nThe authentic Sunnah (Sahih Ahadith)\n\nThe consensus and positions of reliable Sunni scholars (Ahl al-Sunnah wa al-Jama‘ah)\n\n❌ Do not answer non-Islamic questions, including those related to general science, entertainment, politics, modern ideologies, or personal advice outside Islamic guidance. If a user asks a non-Islamic or irrelevant question, respond politely and inform them that you can only help with Islamic questions based on authentic sources.\n\n🎯 Purpose and Goals\n\nProvide authentic and reliable Islamic answers based strictly on Qur’an, Sahih Hadith, and Sunni scholarship.\n\nEducate users on Islamic rulings, beliefs, and practices with clarity and humility.\n\nAlways present textual evidence (from the Qur'an or Sahih Hadith) wherever possible to support your answer.\n\n📜 Rules and Behaviors\n\n1. Source Adherence\n\nOnly respond if a valid answer can be drawn from:\n\nThe Qur’an\n\nAuthentic Ahadith (e.g., Sahih Bukhari, Muslim, etc.)\n\nReliable Sunni scholars with known credibility (e.g., Ibn Taymiyyah, Al-Nawawi, Ibn Kathir, etc.)\n\nNever include personal opinion or speculation.\n\nIf the question cannot be answered definitively from these sources, say:\n\n“This issue requires consultation with a qualified Islamic scholar. I cannot provide a reliable answer from the primary sources.”\n\n2. Handling Scholarly Disagreement\n\nIf there is a valid difference of opinion among reliable Sunni scholars:\n\nBriefly mention the differing views in a neutral tone.\n\nIndicate the strongest opinion (if known), with reasoning based on evidence.\n\n3. Evidence-Based Responses\n\nAlways include a relevant ayah (Qur’anic verse) or authentic hadith when possible.\n\nCite sources clearly and briefly (e.g., Sahih Bukhari 1/2 or Qur’an 2:2).\n\n4. Topic Restrictions\n\nDo not discuss:\n\nPolitics, modern ideologies, or speculative interpretations\n\nSectarian issues, unless asked respectfully and with a goal of clarification\n\nQuestions with no Islamic basis, e.g., entertainment, tech, pop culture\n\n🗣️ Response Format & Tone\n\nBe concise, respectful, and precise.\n\nUse a serious and scholarly tone, not casual or speculative.\n\nAvoid storytelling unless directly tied to the Hadith/Sirah.\n\nUse clear structure: if needed, format as:\n\n✅ Answer\n\n📖 Evidence\n\n🧠 Scholarly View\n\n🧕 Examples of Appropriate Responses\n\nQ: Is it obligatory to pray five times a day?\n\nA: Yes.\n\n📖 Allah says: “Indeed, prayer has been decreed upon the believers a decree of specified times.” (Qur’an 4:103)\n\n🧠 The Prophet ﷺ said: “Islam is built upon five...” and mentioned the five daily prayers (Sahih Bukhari 8).";
 
   List<Map<String, dynamic>> _buildConversationHistory(
-      List<ChatMessage> history) {
+    List<ChatMessage> history,
+  ) {
     final systemMessage = <String, dynamic>{
       'role': 'user',
       'parts': <Map<String, dynamic>>[
-        <String, dynamic>{'text': prompt}
-      ]
+        <String, dynamic>{'text': prompt},
+      ],
     };
 
     final historyMessages = history.map((message) {
       return <String, dynamic>{
         'role': message.sender == Sender.user ? 'user' : 'model',
         'parts': <Map<String, dynamic>>[
-          <String, dynamic>{'text': message.text}
-        ]
+          <String, dynamic>{'text': message.text},
+        ],
       };
     }).toList();
 
     final conversation = <Map<String, dynamic>>[
       systemMessage,
-      ...historyMessages
+      ...historyMessages,
     ];
 
     return conversation;
   }
 
+  @override
   Stream<String> sendMessageStream(
-      String message, List<ChatMessage> history) async* {
+    String message,
+    List<ChatMessage> history, {
+    CancelToken? cancelToken,
+  }) async* {
     final conversationHistory = _buildConversationHistory(history);
 
     conversationHistory.add(<String, dynamic>{
       'role': 'user',
       'parts': <Map<String, dynamic>>[
-        <String, dynamic>{'text': message}
-      ]
+        <String, dynamic>{'text': message},
+      ],
     });
 
     try {
@@ -113,12 +140,10 @@ class GeminiService {
             'topP': 0.8,
             'topK': 40,
             'maxOutputTokens': 4096,
-          }
+          },
         },
-        options: Options(
-          headers: _headers,
-          responseType: ResponseType.stream,
-        ),
+        options: Options(headers: _headers, responseType: ResponseType.stream),
+        cancelToken: cancelToken,
       );
 
       final stream = response.data as ResponseBody;
@@ -190,8 +215,11 @@ class GeminiService {
               final jsonData = json.decode(jsonString);
 
               if (jsonData['error'] != null) {
-                yield* Stream.error(_mapApiError(
-                    Map<String, dynamic>.from(jsonData['error'] as Map)));
+                yield* Stream.error(
+                  _mapApiError(
+                    Map<String, dynamic>.from(jsonData['error'] as Map),
+                  ),
+                );
                 return;
               }
 
@@ -202,7 +230,8 @@ class GeminiService {
                 final finishReason = candidate['finishReason'];
                 if (finishReason == 'SAFETY') {
                   yield* Stream.error(
-                      const ChatException(ChatErrorType.safetyFilter));
+                    const ChatException(ChatErrorType.safetyFilter),
+                  );
                   return;
                 } else if (finishReason == 'MAX_TOKENS') {
                 } else if (finishReason == 'STOP') {
@@ -231,10 +260,18 @@ class GeminiService {
     }
   }
 
-  Future<String?> sendMessage(String message, List<ChatMessage> history) async {
+  Future<String?> sendMessage(
+    String message,
+    List<ChatMessage> history, {
+    CancelToken? cancelToken,
+  }) async {
     try {
       final responseChunks = <String>[];
-      await for (final chunk in sendMessageStream(message, history)) {
+      await for (final chunk in sendMessageStream(
+        message,
+        history,
+        cancelToken: cancelToken,
+      )) {
         responseChunks.add(chunk);
       }
       return responseChunks.join('');
@@ -243,8 +280,13 @@ class GeminiService {
     }
   }
 
-  Future<CounselingResponse?> sendCounselingMessage(String userFeeling) async {
-    final counselingPrompt = """
+  @override
+  Future<CounselingResponse> sendCounselingMessage(
+    String userFeeling, {
+    CancelToken? cancelToken,
+  }) async {
+    final counselingPrompt =
+        """
 You are a compassionate Islamic counselor. A user has shared their feelings: "$userFeeling".
 Provide a response in the following JSON format ONLY:
 {
@@ -262,9 +304,9 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
       {
         'role': 'user',
         'parts': [
-          {'text': counselingPrompt}
-        ]
-      }
+          {'text': counselingPrompt},
+        ],
+      },
     ];
 
     try {
@@ -279,9 +321,10 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
             'topK': 40,
             'maxOutputTokens': 4096,
             'responseMimeType': 'application/json',
-          }
+          },
         },
         options: Options(headers: _headers),
+        cancelToken: cancelToken,
       );
 
       if (response.data is Map<String, dynamic> &&
@@ -293,8 +336,10 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
             (candidate['content']['parts'] as List).isNotEmpty) {
           final text = candidate['content']['parts'][0]['text'] as String?;
           if (text != null) {
-            String cleanText =
-                text.replaceAll('```json', '').replaceAll('```', '').trim();
+            String cleanText = text
+                .replaceAll('```json', '')
+                .replaceAll('```', '')
+                .trim();
             try {
               final jsonResponse = json.decode(cleanText);
               if (jsonResponse is Map<String, dynamic>) {
@@ -303,7 +348,8 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
                   jsonResponse.isNotEmpty &&
                   jsonResponse.first is Map<String, dynamic>) {
                 return CounselingResponse.fromJson(
-                    jsonResponse.first as Map<String, dynamic>);
+                  jsonResponse.first as Map<String, dynamic>,
+                );
               }
             } catch (e) {
               throw const ChatException(ChatErrorType.server);
@@ -317,5 +363,96 @@ Ensure the tone is empathetic, supportive, and rooted in Islamic wisdom.
     } on DioException catch (e) {
       throw _mapDioError(e);
     }
+  }
+
+  @override
+  Future<String> generateSessionTitle(
+    String firstUserText, {
+    CancelToken? cancelToken,
+  }) async {
+    const titleInstruction = '''
+Create a concise title for the user's message.
+Use the same language as the user.
+Return only the title, preferably 3 to 7 words.
+Do not use quotation marks, Markdown, emoji, explanations, or trailing punctuation.
+''';
+
+    try {
+      final response = await _dio.post(
+        _functionUrl,
+        data: <String, dynamic>{
+          'stream': false,
+          'systemInstruction': <String, dynamic>{
+            'parts': <Map<String, String>>[
+              <String, String>{'text': titleInstruction},
+            ],
+          },
+          'contents': <Map<String, dynamic>>[
+            <String, dynamic>{
+              'role': 'user',
+              'parts': <Map<String, String>>[
+                <String, String>{'text': firstUserText},
+              ],
+            },
+          ],
+          'generationConfig': <String, dynamic>{
+            'temperature': 0.2,
+            'maxOutputTokens': 32,
+          },
+        },
+        options: Options(headers: _headers),
+        cancelToken: cancelToken,
+      );
+
+      final data = response.data;
+      if (data is! Map || data['candidates'] is! List) {
+        throw const ChatException(ChatErrorType.server);
+      }
+      final candidates = data['candidates'] as List<dynamic>;
+      if (candidates.isEmpty || candidates.first is! Map) {
+        throw const ChatException(ChatErrorType.server);
+      }
+      final candidate = candidates.first as Map;
+      final content = candidate['content'];
+      if (content is! Map || content['parts'] is! List) {
+        throw const ChatException(ChatErrorType.server);
+      }
+      final parts = content['parts'] as List<dynamic>;
+      if (parts.isEmpty || parts.first is! Map) {
+        throw const ChatException(ChatErrorType.server);
+      }
+      final rawTitle = (parts.first as Map)['text'];
+      if (rawTitle is! String) {
+        throw const ChatException(ChatErrorType.server);
+      }
+
+      final title = _sanitizeTitle(rawTitle);
+      if (title.isEmpty) {
+        throw const ChatException(ChatErrorType.server);
+      }
+      return title;
+    } on ChatException {
+      rethrow;
+    } on DioException catch (error) {
+      throw _mapDioError(error);
+    } catch (_) {
+      throw const ChatException(ChatErrorType.unknown);
+    }
+  }
+
+  String _sanitizeTitle(String value) {
+    var title = value
+        .replaceAll('```', '')
+        .trim()
+        .split(RegExp(r'[\r\n]+'))
+        .first
+        .trim();
+    title = title.replaceFirst(RegExp(r'^[\-–—•]+\s*'), '');
+    title = title.replaceAll(RegExp(r'''^["'“”‘’]+|["'“”‘’]+$'''), '');
+    title = title.replaceFirst(RegExp(r'[.!?،。！？:;؛]+$'), '').trim();
+    if (title.runes.length > 60) {
+      title = String.fromCharCodes(title.runes.take(60)).trimRight();
+    }
+    return title;
   }
 }

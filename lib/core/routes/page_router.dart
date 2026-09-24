@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/bookmark_service.dart';
-import 'package:huda/core/services/gemini_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athkar/athkar_cubit.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
@@ -24,7 +23,6 @@ import 'package:huda/data/services/offline_audiobooks_service.dart';
 import 'package:huda/presentation/screens/audios.dart';
 import 'package:huda/presentation/screens/audio_detail.dart';
 import 'package:huda/cubit/chapters/chapters_cubit.dart';
-import 'package:huda/cubit/chat/chat_cubit.dart';
 import 'package:huda/cubit/checklist/checklist_cubit.dart';
 import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
 import 'package:huda/cubit/hadith/hadith_cubit.dart';
@@ -89,23 +87,19 @@ class PageRouter {
   Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoute.onboarding:
-        return MaterialPageRoute(
-          builder: (_) => const OnboardingScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case AppRoute.home:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<HomeCubit>(create: (_) => HomeCubit()),
               BlocProvider<HomeCustomizationCubit>(
-                create: (_) => HomeCustomizationCubit(
-                  getIt<HomePreferencesService>(),
-                ),
+                create: (_) =>
+                    HomeCustomizationCubit(getIt<HomePreferencesService>()),
               ),
               BlocProvider<IslamicEventCubit>(
-                create: (_) => IslamicEventCubit(
-                  service: getIt<IslamicEventService>(),
-                ),
+                create: (_) =>
+                    IslamicEventCubit(service: getIt<IslamicEventService>()),
               ),
             ],
             child: const Home(),
@@ -123,8 +117,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -150,7 +146,8 @@ class PageRouter {
                 ),
                 RepositoryProvider<TranslationRepository>(
                   create: (_) => TranslationRepository(
-                      translationServices: TranslationServices()),
+                    translationServices: TranslationServices(),
+                  ),
                 ),
               ],
               child: MultiBlocProvider(
@@ -181,8 +178,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -202,8 +201,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -216,9 +217,8 @@ class PageRouter {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (_, animation, __) => BlocProvider<BookmarksCubit>(
-            create: (context) => BookmarksCubit(
-              bookmarkService: getIt<BookmarkService>(),
-            ),
+            create: (context) =>
+                BookmarksCubit(bookmarkService: getIt<BookmarkService>()),
             child: const BookmarksPage(),
           ),
           transitionsBuilder: (_, animation, __, child) {
@@ -226,8 +226,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -245,8 +247,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -264,8 +268,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -286,8 +292,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -307,8 +315,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -335,8 +345,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -356,8 +368,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -384,8 +398,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -401,7 +417,10 @@ class PageRouter {
             return BlocProvider<HadithDetailsCubit>(
               create: (context) => HadithDetailsCubit()
                 ..fetchHadithDetails(
-                    args['chapterNumber']!, args['bookName']!, 1),
+                  args['chapterNumber']!,
+                  args['bookName']!,
+                  1,
+                ),
               child: HadithDetails(
                 chapterNumber: args['chapterNumber']!,
                 bookName: args['bookName']!,
@@ -414,8 +433,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -435,8 +456,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -457,8 +480,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -478,8 +503,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -492,9 +519,7 @@ class PageRouter {
           settings: settings,
           pageBuilder: (_, animation, __) => MultiBlocProvider(
             providers: [
-              BlocProvider<BooksCubit>(
-                create: (context) => BooksCubit(),
-              ),
+              BlocProvider<BooksCubit>(create: (context) => BooksCubit()),
               BlocProvider<LanguagesCubit>(
                 create: (context) => LanguagesCubit(),
               ),
@@ -506,8 +531,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -544,8 +571,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -560,7 +589,8 @@ class PageRouter {
             providers: [
               BlocProvider<AudiosCubit>(create: (_) => AudiosCubit()),
               BlocProvider<AudioLanguagesCubit>(
-                  create: (_) => AudioLanguagesCubit()),
+                create: (_) => AudioLanguagesCubit(),
+              ),
               BlocProvider.value(value: context.read<AudiobookPlayerCubit>()),
               BlocProvider.value(value: context.read<AudiobookBarCubit>()),
             ],
@@ -570,10 +600,14 @@ class PageRouter {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
             return SlideTransition(
-                position: animation.drive(tween), child: child);
+              position: animation.drive(tween),
+              child: child,
+            );
           },
         );
       case AppRoute.audioDetail:
@@ -584,7 +618,8 @@ class PageRouter {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<AudioDetailCubit>(
-                    create: (_) => AudioDetailCubit()),
+                  create: (_) => AudioDetailCubit(),
+                ),
                 BlocProvider<AudiobookDownloadCubit>(
                   create: (_) => AudiobookDownloadCubit(
                     downloadService: getIt<AudiobookDownloadService>(),
@@ -605,10 +640,14 @@ class PageRouter {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
             return SlideTransition(
-                position: animation.drive(tween), child: child);
+              position: animation.drive(tween),
+              child: child,
+            );
           },
         );
       case AppRoute.pdfView:
@@ -627,8 +666,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -639,17 +680,16 @@ class PageRouter {
       case AppRoute.hudaAI:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<ChatCubit>(
-            create: (context) => ChatCubit(GeminiService()),
-            child: const ChatScreen(),
-          ),
+          pageBuilder: (_, animation, __) => const ChatScreen(),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -669,8 +709,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -690,8 +732,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -711,8 +755,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -729,8 +775,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -753,8 +801,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -778,8 +828,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -800,8 +852,10 @@ class PageRouter {
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),

@@ -1,39 +1,57 @@
 part of 'chat_cubit.dart';
 
 class ChatState {
-  final List<ChatMessage> messages;
-  final bool isLoading;
-
-  final ChatErrorType? errorType;
-
-  final bool isCounselingMode;
-  final CounselingResponse? counselingResponse;
-
   const ChatState({
-    this.messages = const [],
-    this.isLoading = false,
-    this.errorType,
-    this.isCounselingMode = false,
-    this.counselingResponse,
+    this.summaries = const [],
+    this.activeSession,
+    this.selectedMode = ChatSessionMode.chat,
+    this.activeRequestSessionId,
+    this.isHydrating = true,
+    this.storageWarning = false,
   });
 
+  final List<ChatSessionSummary> summaries;
+  final ChatSession? activeSession;
+  final ChatSessionMode selectedMode;
+  final String? activeRequestSessionId;
+  final bool isHydrating;
+  final bool storageWarning;
+
+  List<ChatMessage> get messages => activeSession?.messages ?? const [];
+
+  bool get isLoading =>
+      activeSession?.generationStatus == ChatGenerationStatus.generating;
+
+  bool get hasActiveRequest => activeRequestSessionId != null;
+
+  ChatErrorType? get errorType => activeSession?.errorType;
+
+  bool get isCounselingMode => selectedMode == ChatSessionMode.counseling;
+
+  CounselingResponse? get counselingResponse =>
+      activeSession?.counselingResponse;
+
   ChatState copyWith({
-    List<ChatMessage>? messages,
-    bool? isLoading,
-    ChatErrorType? errorType,
-    bool clearError = false,
-    bool? isCounselingMode,
-    CounselingResponse? counselingResponse,
-    bool clearCounselingResponse = false,
+    List<ChatSessionSummary>? summaries,
+    ChatSession? activeSession,
+    bool clearActiveSession = false,
+    ChatSessionMode? selectedMode,
+    String? activeRequestSessionId,
+    bool clearActiveRequest = false,
+    bool? isHydrating,
+    bool? storageWarning,
   }) {
     return ChatState(
-      messages: messages ?? this.messages,
-      isLoading: isLoading ?? this.isLoading,
-      errorType: clearError ? null : (errorType ?? this.errorType),
-      isCounselingMode: isCounselingMode ?? this.isCounselingMode,
-      counselingResponse: clearCounselingResponse
+      summaries: summaries ?? this.summaries,
+      activeSession: clearActiveSession
           ? null
-          : (counselingResponse ?? this.counselingResponse),
+          : (activeSession ?? this.activeSession),
+      selectedMode: selectedMode ?? this.selectedMode,
+      activeRequestSessionId: clearActiveRequest
+          ? null
+          : (activeRequestSessionId ?? this.activeRequestSessionId),
+      isHydrating: isHydrating ?? this.isHydrating,
+      storageWarning: storageWarning ?? this.storageWarning,
     );
   }
 
@@ -41,34 +59,29 @@ class ChatState {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is ChatState &&
-        _listEquals(other.messages, messages) &&
-        other.isLoading == isLoading &&
-        other.errorType == errorType &&
-        other.isCounselingMode == isCounselingMode &&
-        other.counselingResponse == counselingResponse;
+        _listEquals(other.summaries, summaries) &&
+        other.activeSession == activeSession &&
+        other.selectedMode == selectedMode &&
+        other.activeRequestSessionId == activeRequestSessionId &&
+        other.isHydrating == isHydrating &&
+        other.storageWarning == storageWarning;
   }
 
   @override
-  int get hashCode =>
-      _listHashCode(messages) ^
-      isLoading.hashCode ^
-      errorType.hashCode ^
-      isCounselingMode.hashCode ^
-      counselingResponse.hashCode;
+  int get hashCode => Object.hash(
+    Object.hashAll(summaries),
+    activeSession,
+    selectedMode,
+    activeRequestSessionId,
+    isHydrating,
+    storageWarning,
+  );
 
   bool _listEquals<T>(List<T> a, List<T> b) {
     if (a.length != b.length) return false;
-    for (int i = 0; i < a.length; i++) {
-      if (a[i] != b[i]) return false;
+    for (var index = 0; index < a.length; index++) {
+      if (a[index] != b[index]) return false;
     }
     return true;
-  }
-
-  int _listHashCode<T>(List<T> list) {
-    int hash = 0;
-    for (T item in list) {
-      hash ^= item.hashCode;
-    }
-    return hash;
   }
 }
