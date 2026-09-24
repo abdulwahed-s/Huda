@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/prayer_location_generation.dart';
+import 'package:huda/core/services/prayer_location_repository.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/app_colors.dart';
@@ -63,8 +65,8 @@ class PrayerWidgetService {
 
   static const String _localeKey = 'locale';
 
-  static PrayerWidgetSettings readSettings() {
-    final cache = getIt<CacheHelper>();
+  static PrayerWidgetSettings readSettings({CacheHelper? cacheHelper}) {
+    final cache = cacheHelper ?? getIt<CacheHelper>();
     return PrayerWidgetSettings(
       design: PrayerWidgetDesign.fromStorage(
         cache.getDataString(key: _designKey),
@@ -105,21 +107,106 @@ class PrayerWidgetService {
 
   static Future<PrayerWidgetUpdateReport?> pushSettings({
     bool triggerNativeUpdate = true,
+    CacheHelper? cacheHelper,
+    PrayerLocationGeneration? activeGeneration,
+    int? scheduleRevision,
+    int? publicationRevision,
+    String? configurationSignature,
   }) async {
     if (!PlatformUtils.isMobile) return null;
 
-    final cache = getIt<CacheHelper>();
+    final suppliedIdentityCount = <Object?>[
+      activeGeneration,
+      scheduleRevision,
+      publicationRevision,
+      configurationSignature,
+    ].where((value) => value != null).length;
+    if (suppliedIdentityCount != 0) {
+      if (suppliedIdentityCount != 4) {
+        throw ArgumentError(
+          'A widget publication requires the complete generation identity.',
+        );
+      }
+      return _pushSettings(
+        triggerNativeUpdate: triggerNativeUpdate,
+        cacheHelper: cacheHelper,
+        activeGeneration: activeGeneration!,
+        scheduleRevision: scheduleRevision!,
+        publicationRevision: publicationRevision!,
+        configurationSignature: configurationSignature!,
+      );
+    }
+
+    if (getIt.isRegistered<PrayerLocationRepository>()) {
+      final publication = await getIt<PrayerLocationRepository>()
+          .synchronized<({bool reserved, PrayerWidgetUpdateReport? report})>((
+            session,
+          ) async {
+            final state = session.state;
+            final active = state.activeLocation;
+            final signature = state.committedConfigurationSignature;
+            if (active == null ||
+                state.scheduleRevision <= 0 ||
+                signature == null ||
+                signature.isEmpty) {
+              return (reserved: false, report: null);
+            }
+            final revision = await session.reserveWidgetPublication();
+            final report = await _pushSettings(
+              triggerNativeUpdate: triggerNativeUpdate,
+              cacheHelper: cacheHelper,
+              activeGeneration: active,
+              scheduleRevision: state.scheduleRevision,
+              publicationRevision: revision,
+              configurationSignature: signature,
+            );
+            await session.markWidgetPublished(revision);
+            return (reserved: true, report: report);
+          });
+      if (publication.reserved) return publication.report;
+    }
+
+    return _pushSettings(
+      triggerNativeUpdate: triggerNativeUpdate,
+      cacheHelper: cacheHelper,
+    );
+  }
+
+  static Future<PrayerWidgetUpdateReport?> _pushSettings({
+    bool triggerNativeUpdate = true,
+    CacheHelper? cacheHelper,
+    PrayerLocationGeneration? activeGeneration,
+    int? scheduleRevision,
+    int? publicationRevision,
+    String? configurationSignature,
+  }) async {
+    if (!PlatformUtils.isMobile) return null;
+
+    final cache = cacheHelper ?? getIt<CacheHelper>();
     await cache.reload();
     final prefs = await SharedPreferences.getInstance();
     if (PlatformUtils.isIOS) await HomeWidget.setAppGroupId(_appGroupId);
 
-    final lat = cache.getDataString(key: _latKey);
-    final lon = cache.getDataString(key: _lonKey);
-    final countryCode = cache.getDataString(key: _countryCodeKey) ?? '';
-    final timeZoneId = cache.getDataString(
-      key: PrayerTimesCalculator.timeZoneIdKey,
-    );
+    final projectedGeneration =
+        activeGeneration ??
+        _decodeLocationGeneration(
+          cache.getDataString(key: 'prayer_location_generation_v1'),
+        );
+    final lat =
+        projectedGeneration?.latitude.toString() ??
+        cache.getDataString(key: _latKey);
+    final lon =
+        projectedGeneration?.longitude.toString() ??
+        cache.getDataString(key: _lonKey);
+    final countryCode =
+        projectedGeneration?.countryCode ??
+        cache.getDataString(key: _countryCodeKey) ??
+        '';
+    final timeZoneId =
+        projectedGeneration?.timeZoneId ??
+        cache.getDataString(key: PrayerTimesCalculator.timeZoneIdKey);
     final locationMode =
+        projectedGeneration?.mode.name ??
         cache.getDataString(key: PrayerTimesCalculator.locationModeKey) ??
         'manual';
     final method =
@@ -172,7 +259,7 @@ class PrayerWidgetService {
     }
 
     final theme = _resolveTheme(prefs);
-    final settings = readSettings();
+    final settings = readSettings(cacheHelper: cache);
     final effectiveLocale = settings.language == PrayerWidgetLanguage.auto
         ? (prefs.getString(_localeKey) ?? 'en')
         : settings.language.code;
@@ -193,9 +280,35 @@ class PrayerWidgetService {
     await _writeString(prefs, _timeFormatKey, settings.timeFormat.storage);
 
     final committedAt = DateTime.now().toUtc();
-    final payload = jsonEncode(<String, Object?>{
-      'version': 2,
-      'revision': committedAt.microsecondsSinceEpoch,
+    final previousPayload = _decodePayload(
+      prefs.getString(_settingsPayloadKey),
+    );
+    final effectivePublicationRevision =
+        publicationRevision ??
+        _nextRevision(previousPayload?['publicationRevision'], committedAt);
+    final effectiveLocationRevision =
+        projectedGeneration?.revision ??
+        _integer(previousPayload?['locationRevision']) ??
+        0;
+    final effectiveScheduleRevision =
+        scheduleRevision ?? _integer(previousPayload?['scheduleRevision']) ?? 0;
+    final effectiveConfigurationSignature =
+        configurationSignature ??
+        previousPayload?['configurationSignature']?.toString() ??
+        '';
+    final writesVersion3 =
+        projectedGeneration != null &&
+        effectiveLocationRevision > 0 &&
+        effectiveLocationRevision <= PrayerLocationGeneration.maxSafeRevision &&
+        effectiveScheduleRevision > 0 &&
+        effectiveScheduleRevision <= PrayerLocationGeneration.maxSafeRevision &&
+        effectivePublicationRevision > 0 &&
+        effectivePublicationRevision <=
+            PrayerLocationGeneration.maxSafeRevision &&
+        effectiveConfigurationSignature.isNotEmpty;
+    final payloadValues = <String, Object?>{
+      'version': writesVersion3 ? 3 : 2,
+      'revision': effectivePublicationRevision,
       'committedAt': committedAt.toIso8601String(),
       'coordinates': lat == null || lon == null
           ? null
@@ -224,7 +337,16 @@ class PrayerWidgetService {
         'highlightColor': settings.highlightColor,
         'contentSize': settings.contentSize,
       },
-    });
+    };
+    if (writesVersion3) {
+      payloadValues.addAll(<String, Object?>{
+        'publicationRevision': effectivePublicationRevision,
+        'locationRevision': effectiveLocationRevision,
+        'scheduleRevision': effectiveScheduleRevision,
+        'configurationSignature': effectiveConfigurationSignature,
+      });
+    }
+    final payload = jsonEncode(payloadValues);
     await _setInt(
       prefs,
       _lastUpdateKey,
@@ -235,7 +357,7 @@ class PrayerWidgetService {
 
     if (triggerNativeUpdate) {
       return _refreshNativeWidget(
-        expectedRevision: committedAt.microsecondsSinceEpoch,
+        expectedRevision: effectivePublicationRevision,
       );
     }
     return null;
@@ -307,9 +429,26 @@ class PrayerWidgetService {
       }
     }
     if (PlatformUtils.isAndroid) {
-      final raw = await _channel.invokeMapMethod<String, Object?>(
-        'updatePrayerWidget',
-      );
+      Map<String, Object?>? raw;
+      try {
+        raw = await _channel.invokeMapMethod<String, Object?>(
+          'updatePrayerWidget',
+        );
+      } on MissingPluginException {
+        await requireSuccessfulPlatformOperation(
+          HomeWidget.updateWidget(qualifiedAndroidName: androidReceiverName),
+          operation: 'reload Android prayer widgets',
+        );
+        return PrayerWidgetUpdateReport(
+          revision: expectedRevision,
+          widgetCount: 0,
+          successfulUpdates: 0,
+          failedUpdates: 0,
+          rendererPaths: const {},
+          alarmScheduled: false,
+          alarmPrecision: 'headless-reload-requested',
+        );
+      }
       if (raw == null) {
         throw StateError('Android prayer widget returned no update result');
       }
@@ -389,6 +528,42 @@ class PrayerWidgetService {
       HomeWidget.saveWidgetData<T>(key, value),
       operation: 'write App Group value $key',
     );
+  }
+
+  static PrayerLocationGeneration? _decodeLocationGeneration(String? raw) {
+    if (raw == null || raw.isEmpty) return null;
+    try {
+      return PrayerLocationGeneration.tryParse(jsonDecode(raw));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Map<String, Object?>? _decodePayload(String? raw) {
+    if (raw == null || raw.isEmpty) return null;
+    try {
+      final decoded = jsonDecode(raw);
+      return decoded is Map ? Map<String, Object?>.from(decoded) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static int? _integer(Object? value) => value is int ? value : null;
+
+  static int _nextRevision(Object? previous, DateTime now) {
+    final old = _integer(previous) ?? 0;
+    final rawWallClock = now.microsecondsSinceEpoch;
+    final wallClock = rawWallClock < 1
+        ? 1
+        : rawWallClock > PrayerLocationGeneration.maxSafeRevision
+        ? PrayerLocationGeneration.maxSafeRevision
+        : rawWallClock;
+    if (wallClock > old) return wallClock;
+    if (old < 0 || old >= PrayerLocationGeneration.maxSafeRevision) {
+      throw StateError('Prayer widget publication revision space exhausted');
+    }
+    return old + 1;
   }
 
   @visibleForTesting

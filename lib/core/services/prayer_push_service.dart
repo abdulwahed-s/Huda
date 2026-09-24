@@ -8,43 +8,81 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/keys/hadith_key.dart';
+import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_notification_planner.dart';
+import 'package:huda/core/services/prayer_push_credential_store.dart';
+import 'package:huda/core/services/prayer_schedule_configuration.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:uuid/uuid.dart';
 
 abstract interface class PrayerPushSynchronizer {
-  Future<void> syncFallback({
+  Future<PrayerPushSyncResult> syncFallback({
     required DateTime? localCoverageUntil,
     required String timeZoneName,
     required String reason,
+    int locationRevision = 0,
+    int scheduleRevision = 0,
+    String configurationSignature = '',
+    PrayerScheduleConfiguration? configuration,
+    Set<int> suppressedOccurrenceIds = const <int>{},
   });
 
-  Future<void> disable({required String reason});
+  Future<PrayerPushSyncResult> disable({
+    required String reason,
+    int locationRevision = 0,
+    int scheduleRevision = 0,
+  });
+}
+
+enum PrayerPushSyncStatus { acknowledged, deferred, unsupported, failed }
+
+class PrayerPushSyncResult {
+  const PrayerPushSyncResult(
+    this.status, {
+    this.acceptedScheduleRevision,
+    this.acceptedLocationRevision,
+    this.ownershipUntilUtc,
+    this.message,
+  });
+
+  final PrayerPushSyncStatus status;
+  final int? acceptedScheduleRevision;
+  final int? acceptedLocationRevision;
+  final DateTime? ownershipUntilUtc;
+  final String? message;
+
+  bool get acknowledged => status == PrayerPushSyncStatus.acknowledged;
 }
 
 class PrayerPushService implements PrayerPushSynchronizer {
   PrayerPushService({
     required this.cacheHelper,
+    PrayerPushCredentialStore? credentialStore,
     DateTime Function()? now,
-  }) : _now = now ?? DateTime.now;
+  }) : credentialStore =
+           credentialStore ??
+           PrayerPushCredentialStore(cacheHelper: cacheHelper),
+       _now = now ?? DateTime.now;
 
   static const _channel = MethodChannel('com.aw.huda/prayer_push');
   static const _functionName = 'prayer-push-sync';
   static const _remoteHorizon = Duration(days: 370);
   static const _remoteEventLimit = 1900;
+  static const _maximumCachedAcknowledgementAge = Duration(hours: 6);
 
-  static const _installationIdKey = 'prayer_push_installation_id';
-  static const _installationSecretKey = 'prayer_push_installation_secret';
   static const _deviceTokenKey = 'prayer_push_apns_token';
   static const _environmentKey = 'prayer_push_apns_environment';
-  static const _lastSyncSignatureKey = 'prayer_push_last_sync_signature';
-  static const _lastSyncAtKey = 'prayer_push_last_sync_at';
+  static const _lastSyncAcknowledgementKey =
+      'prayer_push_last_sync_acknowledgement_v1';
+  static const _legacyLastSyncSignatureKey = 'prayer_push_last_sync_signature';
+  static const _legacyLastSyncAtKey = 'prayer_push_last_sync_at';
 
   static PrayerPushService? _channelOwner;
 
   final CacheHelper cacheHelper;
+  final PrayerPushCredentialStore credentialStore;
   final DateTime Function() _now;
   final Lock _lock = Lock();
 
@@ -54,42 +92,108 @@ class PrayerPushService implements PrayerPushSynchronizer {
   bool get _isSupported => !kIsWeb && Platform.isIOS;
 
   @override
-  Future<void> syncFallback({
+  Future<PrayerPushSyncResult> syncFallback({
     required DateTime? localCoverageUntil,
     required String timeZoneName,
     required String reason,
+    int locationRevision = 0,
+    int scheduleRevision = 0,
+    String configurationSignature = '',
+    PrayerScheduleConfiguration? configuration,
+    Set<int> suppressedOccurrenceIds = const <int>{},
   }) async {
-    if (!_isSupported) return;
+    if (!_isSupported) {
+      return const PrayerPushSyncResult(PrayerPushSyncStatus.unsupported);
+    }
 
     _pendingSync = _PendingSync(
       localCoverageUntil: localCoverageUntil,
       timeZoneName: timeZoneName,
       reason: reason,
+      locationRevision: locationRevision,
+      scheduleRevision: scheduleRevision,
+      configurationSignature: configurationSignature,
+      configuration: configuration,
+      suppressedOccurrenceIds: Set.unmodifiable(suppressedOccurrenceIds),
     );
 
     await _initializeNativeRegistration();
-    await _syncPendingIfPossible();
+    try {
+      return await _syncPendingIfPossible();
+    } on _PrayerPushHttpException catch (error) {
+      return PrayerPushSyncResult(
+        PrayerPushSyncStatus.failed,
+        acceptedScheduleRevision: error.acceptedScheduleRevision,
+        acceptedLocationRevision: error.acceptedLocationRevision,
+        ownershipUntilUtc: error.acknowledgedLocalCoverageUntil,
+        message: error.toString(),
+      );
+    } catch (error) {
+      return PrayerPushSyncResult(
+        PrayerPushSyncStatus.failed,
+        message: error.toString(),
+      );
+    }
   }
 
   @override
-  Future<void> disable({required String reason}) async {
-    if (!_isSupported) return;
+  Future<PrayerPushSyncResult> disable({
+    required String reason,
+    int locationRevision = 0,
+    int scheduleRevision = 0,
+  }) async {
+    if (!_isSupported) {
+      return const PrayerPushSyncResult(PrayerPushSyncStatus.unsupported);
+    }
 
-    final installationId = cacheHelper.getDataString(key: _installationIdKey);
-    final installationSecret =
-        cacheHelper.getDataString(key: _installationSecretKey);
-    if (installationId == null || installationSecret == null) return;
+    final identity = await credentialStore.read();
+    if (identity == null) {
+      return const PrayerPushSyncResult(PrayerPushSyncStatus.deferred);
+    }
 
     try {
-      await _post({
+      await _clearCachedAcknowledgement();
+      final response = await _post({
         'action': 'disable',
-        'installationId': installationId,
-        'installationSecret': installationSecret,
+        'installationId': identity.id,
+        'installationSecret': identity.secret,
         'reason': reason,
+        'locationRevision': locationRevision,
+        'scheduleRevision': scheduleRevision,
       });
-      await cacheHelper.removeData(key: _lastSyncSignatureKey);
+      final acceptedScheduleRevision = _validRevision(
+        response['acceptedScheduleRevision'],
+      );
+      final acceptedLocationRevision = _validRevision(
+        response['acceptedLocationRevision'],
+      );
+      if (response['ok'] != true ||
+          response['enabled'] != false ||
+          acceptedScheduleRevision == null ||
+          acceptedLocationRevision == null) {
+        throw const FormatException(
+          'Prayer push disable acknowledgement is incomplete.',
+        );
+      }
+      return PrayerPushSyncResult(
+        PrayerPushSyncStatus.acknowledged,
+        acceptedScheduleRevision: acceptedScheduleRevision,
+        acceptedLocationRevision: acceptedLocationRevision,
+      );
+    } on _PrayerPushHttpException catch (error) {
+      debugPrint('Unable to disable prayer push fallback: $error');
+      return PrayerPushSyncResult(
+        PrayerPushSyncStatus.failed,
+        acceptedScheduleRevision: error.acceptedScheduleRevision,
+        acceptedLocationRevision: error.acceptedLocationRevision,
+        message: error.toString(),
+      );
     } catch (error) {
       debugPrint('Unable to disable prayer push fallback: $error');
+      return PrayerPushSyncResult(
+        PrayerPushSyncStatus.failed,
+        message: error.toString(),
+      );
     }
   }
 
@@ -126,50 +230,92 @@ class PrayerPushService implements PrayerPushSynchronizer {
       final previous = cacheHelper.getDataString(key: _deviceTokenKey);
       await cacheHelper.saveData(key: _deviceTokenKey, value: token);
       if (previous != token) {
-        await cacheHelper.removeData(key: _lastSyncSignatureKey);
+        await _clearCachedAcknowledgement();
       }
     }
     if (environment == 'development' || environment == 'production') {
       final previous = cacheHelper.getDataString(key: _environmentKey);
       await cacheHelper.saveData(key: _environmentKey, value: environment);
       if (previous != environment) {
-        await cacheHelper.removeData(key: _lastSyncSignatureKey);
+        await _clearCachedAcknowledgement();
       }
     }
   }
 
-  Future<void> _syncPendingIfPossible() {
+  Future<PrayerPushSyncResult> _syncPendingIfPossible() {
     return _lock.synchronized(() async {
       final pending = _pendingSync;
-      if (pending == null) return;
+      if (pending == null) {
+        return const PrayerPushSyncResult(PrayerPushSyncStatus.deferred);
+      }
 
       final token = cacheHelper.getDataString(key: _deviceTokenKey);
       final environment = cacheHelper.getDataString(key: _environmentKey);
-      if (token == null || token.isEmpty || environment == null) return;
+      if (token == null || token.isEmpty || environment == null) {
+        return const PrayerPushSyncResult(
+          PrayerPushSyncStatus.deferred,
+          message: 'APNs registration is unavailable.',
+        );
+      }
 
       final identity = await _installationIdentity();
-      final plan = PrayerNotificationPlanner(cacheHelper).build(
-        now: _now(),
-        maxEvents: _remoteEventLimit,
-        horizon: _remoteHorizon,
-        timeZoneName: pending.timeZoneName,
-      );
-      if (plan == null || plan.events.isEmpty) return;
+      final planner = PrayerNotificationPlanner(cacheHelper);
+      final plan = pending.configuration == null
+          ? planner.build(
+              now: _now(),
+              maxEvents: _remoteEventLimit,
+              horizon: _remoteHorizon,
+              timeZoneName: pending.timeZoneName,
+            )
+          : planner.buildFromConfiguration(
+              now: _now(),
+              maxEvents: _remoteEventLimit,
+              horizon: _remoteHorizon,
+              configuration: pending.configuration!,
+              scheduleRevision: pending.scheduleRevision,
+            );
+      if (plan == null || plan.events.isEmpty) {
+        return const PrayerPushSyncResult(
+          PrayerPushSyncStatus.deferred,
+          message: 'No immutable remote prayer plan is available.',
+        );
+      }
 
+      final remoteEvents = plan.events
+          .where(
+            (event) =>
+                !pending.suppressedOccurrenceIds.contains(event.id) &&
+                (pending.localCoverageUntil == null ||
+                    event.scheduledInstantUtc.isAfter(
+                      pending.localCoverageUntil!.toUtc(),
+                    )),
+          )
+          .toList(growable: false);
+      if (remoteEvents.isEmpty) {
+        return const PrayerPushSyncResult(
+          PrayerPushSyncStatus.deferred,
+          message: 'No remotely owned prayer occurrences are available.',
+        );
+      }
       final content = <String, Map<String, String>>{};
-      for (final event in plan.events) {
+      for (final event in remoteEvents) {
         content.putIfAbsent(
           event.prayer.name,
           () => {'title': event.title, 'body': event.body},
         );
       }
-      final events = encodeScheduleEvents(plan.events);
+      final events = encodeScheduleEvents(remoteEvents);
+      final eventDigest = sha256
+          .convert(utf8.encode(jsonEncode(events)))
+          .toString();
 
       final first = events.first;
       final last = events.last;
-      final opaqueConfigurationSignature =
-          sha256.convert(utf8.encode(plan.configurationSignature)).toString();
-      final localCoverageEpoch = pending.localCoverageUntil
+      final opaqueConfigurationSignature = sha256
+          .convert(utf8.encode(plan.configurationSignature))
+          .toString();
+      final localCoverageEpoch =
+          pending.localCoverageUntil
               ?.toUtc()
               .millisecondsSinceEpoch
               .toString() ??
@@ -178,19 +324,29 @@ class PrayerPushService implements PrayerPushSynchronizer {
         opaqueConfigurationSignature,
         token,
         environment,
+        pending.locationRevision,
+        pending.scheduleRevision,
         localCoverageEpoch,
+        eventDigest,
         first[0],
-        first[1],
         last[0],
-        last[1],
       ].join('|');
-      if (cacheHelper.getDataString(key: _lastSyncSignatureKey) ==
-          syncSignature) {
-        return;
+      final cachedAcknowledgement = decodeCachedAcknowledgement(
+        cacheHelper.getData(key: _lastSyncAcknowledgementKey),
+        expectedSignature: syncSignature,
+        now: _now(),
+      );
+      if (cachedAcknowledgement != null) {
+        if (identical(_pendingSync, pending)) _pendingSync = null;
+        return cachedAcknowledgement;
       }
 
       final packageInfo = await PackageInfo.fromPlatform();
-      await _post({
+      final locale =
+          cacheHelper.getDataString(key: 'app_locale') ??
+          cacheHelper.getDataString(key: 'locale') ??
+          'en';
+      final response = await _post({
         'action': 'sync',
         'installationId': identity.id,
         'installationSecret': identity.secret,
@@ -198,25 +354,127 @@ class PrayerPushService implements PrayerPushSynchronizer {
         'environment': environment,
         'bundleId': 'com.aw.huda',
         'appVersion': '${packageInfo.version}+${packageInfo.buildNumber}',
+        'locale': locale,
         'timeZone': pending.timeZoneName,
         'configurationSignature': opaqueConfigurationSignature,
-        'localCoverageUntil':
-            pending.localCoverageUntil?.toUtc().toIso8601String(),
+        'locationRevision': pending.locationRevision,
+        'scheduleRevision': pending.scheduleRevision,
+        'localCoverageUntil': pending.localCoverageUntil
+            ?.toUtc()
+            .toIso8601String(),
         'scheduleThrough': plan.coverageUntilInstant?.toIso8601String(),
         'content': content,
         'events': events,
         'reason': pending.reason,
       });
 
-      await cacheHelper.saveData(
-        key: _lastSyncSignatureKey,
-        value: syncSignature,
+      final acceptedScheduleRevision = _validRevision(
+        response['acceptedScheduleRevision'],
       );
-      await cacheHelper.saveData(
-        key: _lastSyncAtKey,
-        value: _now().toUtc().toIso8601String(),
+      final acceptedLocationRevision = _validRevision(
+        response['acceptedLocationRevision'],
       );
+      if (response['ok'] != true ||
+          response['enabled'] != true ||
+          acceptedScheduleRevision == null ||
+          acceptedLocationRevision == null ||
+          !response.containsKey('acknowledgedLocalCoverageUntil')) {
+        throw const FormatException(
+          'Prayer push ownership acknowledgement is incomplete.',
+        );
+      }
+      final rawAcknowledgedBoundary =
+          response['acknowledgedLocalCoverageUntil'];
+      final acknowledgedBoundary = rawAcknowledgedBoundary == null
+          ? null
+          : _strictUtcDate(rawAcknowledgedBoundary);
+      if (rawAcknowledgedBoundary != null && acknowledgedBoundary == null) {
+        throw const FormatException(
+          'Prayer push ownership boundary is invalid.',
+        );
+      }
+
+      final result = PrayerPushSyncResult(
+        PrayerPushSyncStatus.acknowledged,
+        acceptedScheduleRevision: acceptedScheduleRevision,
+        acceptedLocationRevision: acceptedLocationRevision,
+        ownershipUntilUtc: acknowledgedBoundary,
+      );
+      final exactAcknowledgement =
+          acceptedScheduleRevision == pending.scheduleRevision &&
+          acceptedLocationRevision == pending.locationRevision &&
+          _sameUtcInstant(acknowledgedBoundary, pending.localCoverageUntil);
+      if (exactAcknowledgement) {
+        await cacheHelper.saveData(
+          key: _lastSyncAcknowledgementKey,
+          value: jsonEncode({
+            'schemaVersion': 1,
+            'signature': syncSignature,
+            'synchronizedAtUtc': _now().toUtc().toIso8601String(),
+            'acceptedScheduleRevision': acceptedScheduleRevision,
+            'acceptedLocationRevision': acceptedLocationRevision,
+            'acknowledgedLocalCoverageUntil': acknowledgedBoundary
+                ?.toUtc()
+                .toIso8601String(),
+          }),
+        );
+        if (identical(_pendingSync, pending)) _pendingSync = null;
+      }
+      return result;
     });
+  }
+
+  Future<void> _clearCachedAcknowledgement() async {
+    await cacheHelper.removeData(key: _lastSyncAcknowledgementKey);
+    await cacheHelper.removeData(key: _legacyLastSyncSignatureKey);
+    await cacheHelper.removeData(key: _legacyLastSyncAtKey);
+  }
+
+  @visibleForTesting
+  static PrayerPushSyncResult? decodeCachedAcknowledgement(
+    Object? encoded, {
+    required String expectedSignature,
+    required DateTime now,
+  }) {
+    if (encoded is! String) return null;
+    try {
+      final decoded = jsonDecode(encoded);
+      if (decoded is! Map ||
+          decoded['schemaVersion'] != 1 ||
+          decoded['signature'] != expectedSignature ||
+          !decoded.containsKey('acknowledgedLocalCoverageUntil')) {
+        return null;
+      }
+      final synchronizedAt = _strictUtcDate(decoded['synchronizedAtUtc']);
+      final acceptedScheduleRevision = _validRevision(
+        decoded['acceptedScheduleRevision'],
+      );
+      final acceptedLocationRevision = _validRevision(
+        decoded['acceptedLocationRevision'],
+      );
+      final rawBoundary = decoded['acknowledgedLocalCoverageUntil'];
+      final boundary = rawBoundary == null ? null : _strictUtcDate(rawBoundary);
+      if (synchronizedAt == null ||
+          acceptedScheduleRevision == null ||
+          acceptedLocationRevision == null ||
+          (rawBoundary != null && boundary == null)) {
+        return null;
+      }
+      final utcNow = now.toUtc();
+      if (utcNow.isBefore(synchronizedAt) ||
+          utcNow.difference(synchronizedAt) >
+              _maximumCachedAcknowledgementAge) {
+        return null;
+      }
+      return PrayerPushSyncResult(
+        PrayerPushSyncStatus.acknowledged,
+        acceptedScheduleRevision: acceptedScheduleRevision,
+        acceptedLocationRevision: acceptedLocationRevision,
+        ownershipUntilUtc: boundary,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   @visibleForTesting
@@ -234,45 +492,88 @@ class PrayerPushService implements PrayerPushSynchronizer {
         .toList(growable: false);
   }
 
-  Future<_InstallationIdentity> _installationIdentity() async {
-    var id = cacheHelper.getDataString(key: _installationIdKey);
-    var secret = cacheHelper.getDataString(key: _installationSecretKey);
-    if (id != null && secret != null) {
-      return _InstallationIdentity(id, secret);
+  Future<PrayerPushInstallationIdentity> _installationIdentity() async {
+    final existing = await credentialStore.read();
+    if (existing != null) {
+      return existing;
     }
 
-    id = const Uuid().v4();
+    final id = const Uuid().v4();
     final bytes = List<int>.generate(32, (_) => Random.secure().nextInt(256));
-    secret = base64UrlEncode(bytes).replaceAll('=', '');
-    await cacheHelper.saveData(key: _installationIdKey, value: id);
-    await cacheHelper.saveData(key: _installationSecretKey, value: secret);
-    return _InstallationIdentity(id, secret);
+    final secret = base64UrlEncode(bytes).replaceAll('=', '');
+    final identity = PrayerPushInstallationIdentity(id, secret);
+    await credentialStore.write(identity);
+    return identity;
   }
 
-  Future<void> _post(Map<String, Object?> body) async {
+  Future<Map<String, Object?>> _post(Map<String, Object?> body) async {
     final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);
     try {
       final uri = Uri.parse('$supabaseUrl/functions/v1/$_functionName');
-      final request = await client.postUrl(uri).timeout(
-            const Duration(seconds: 10),
-          );
+      final request = await client
+          .postUrl(uri)
+          .timeout(const Duration(seconds: 10));
       request.headers.contentType = ContentType.json;
       request.headers.set('apikey', supabaseAnonKey);
       request.headers.set('Authorization', 'Bearer $supabaseAnonKey');
       request.write(jsonEncode(body));
-      final response =
-          await request.close().timeout(const Duration(seconds: 20));
-      final responseBody = await utf8.decoder.bind(response).join();
+      final response = await request.close().timeout(
+        const Duration(seconds: 20),
+      );
+      final responseBody = await utf8.decoder
+          .bind(response)
+          .join()
+          .timeout(const Duration(seconds: 10));
+      Map<String, Object?> decoded = const <String, Object?>{};
+      if (responseBody.isNotEmpty) {
+        try {
+          final value = jsonDecode(responseBody);
+          if (value is Map) decoded = Map<String, Object?>.from(value);
+        } catch (_) {}
+      }
       if (response.statusCode < 200 || response.statusCode >= 300) {
-        throw HttpException(
-          'Prayer push sync returned ${response.statusCode}: '
-          '${responseBody.length > 240 ? responseBody.substring(0, 240) : responseBody}',
+        throw _PrayerPushHttpException(
+          statusCode: response.statusCode,
+          response: decoded,
+          responseBody: responseBody,
           uri: uri,
         );
       }
+      return decoded;
     } finally {
       client.close(force: true);
     }
+  }
+}
+
+class _PrayerPushHttpException implements Exception {
+  const _PrayerPushHttpException({
+    required this.statusCode,
+    required this.response,
+    required this.responseBody,
+    required this.uri,
+  });
+
+  final int statusCode;
+  final Map<String, Object?> response;
+  final String responseBody;
+  final Uri uri;
+
+  int? get acceptedScheduleRevision =>
+      _validRevision(response['acceptedScheduleRevision']);
+
+  int? get acceptedLocationRevision =>
+      _validRevision(response['acceptedLocationRevision']);
+
+  DateTime? get acknowledgedLocalCoverageUntil =>
+      _strictUtcDate(response['acknowledgedLocalCoverageUntil']);
+
+  @override
+  String toString() {
+    final boundedBody = responseBody.length > 240
+        ? responseBody.substring(0, 240)
+        : responseBody;
+    return 'Prayer push sync returned $statusCode: $boundedBody ($uri)';
   }
 }
 
@@ -281,16 +582,40 @@ class _PendingSync {
     required this.localCoverageUntil,
     required this.timeZoneName,
     required this.reason,
+    required this.locationRevision,
+    required this.scheduleRevision,
+    required this.configurationSignature,
+    required this.configuration,
+    required this.suppressedOccurrenceIds,
   });
 
   final DateTime? localCoverageUntil;
   final String timeZoneName;
   final String reason;
+  final int locationRevision;
+  final int scheduleRevision;
+  final String configurationSignature;
+  final PrayerScheduleConfiguration? configuration;
+  final Set<int> suppressedOccurrenceIds;
 }
 
-class _InstallationIdentity {
-  const _InstallationIdentity(this.id, this.secret);
+int? _validRevision(Object? value) {
+  if (value is! num || !value.isFinite || value != value.roundToDouble()) {
+    return null;
+  }
+  final revision = value.toInt();
+  return revision >= 0 && revision <= PrayerLocationGeneration.maxSafeRevision
+      ? revision
+      : null;
+}
 
-  final String id;
-  final String secret;
+DateTime? _strictUtcDate(Object? value) {
+  if (value is! String || !value.endsWith('Z')) return null;
+  final parsed = DateTime.tryParse(value);
+  return parsed != null && parsed.isUtc ? parsed : null;
+}
+
+bool _sameUtcInstant(DateTime? left, DateTime? right) {
+  if (left == null || right == null) return left == null && right == null;
+  return left.toUtc().isAtSameMomentAs(right.toUtc());
 }

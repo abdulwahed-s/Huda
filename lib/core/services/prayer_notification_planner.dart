@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
+import 'package:huda/core/services/prayer_schedule_configuration.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/l10n/app_localizations.dart';
@@ -9,7 +11,8 @@ import 'package:prayer_time_plus/prayer_time_plus.dart';
 class PrayerNotificationPlanner {
   const PrayerNotificationPlanner(this.cacheHelper);
 
-  static const int configurationVersion = 4;
+  static const int configurationVersion =
+      PrayerScheduleConfiguration.signatureVersion;
 
   final CacheHelper cacheHelper;
 
@@ -24,9 +27,6 @@ class PrayerNotificationPlanner {
       return null;
     }
 
-    final localeCode = _localeCode();
-    final localizations = _localizations(localeCode);
-    final offsets = PrayerTimesCalculator.offsetsFromCache(cacheHelper);
     final countryCode = PrayerTimesCalculator.countryCodeFromCache(cacheHelper);
     final scheduleTimeZoneName =
         PrayerTimesCalculator.timeZoneNameFromCache(cacheHelper) ??
@@ -34,6 +34,48 @@ class PrayerNotificationPlanner {
           countryCode: countryCode,
           fallbackTimeZoneName: timeZoneName,
         );
+    final instant = now.toUtc();
+    final legacyLocation = PrayerLocationGeneration(
+      revision: 1,
+      mode: PrayerLocationMode.fromStorage(
+        cacheHelper.getDataString(key: PrayerTimesCalculator.locationModeKey),
+      ),
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      timeZoneId: scheduleTimeZoneName,
+      timeZoneProvenance: PrayerTimeZoneProvenance.legacyApproximate,
+      countryCode: countryCode.isEmpty ? null : countryCode,
+      capturedAtUtc: instant,
+      committedAtUtc: instant,
+      source: PrayerLocationSource.migration,
+    );
+    return buildFromConfiguration(
+      now: now,
+      maxEvents: maxEvents,
+      horizon: horizon,
+      configuration: PrayerScheduleConfiguration.fromCache(
+        cache: cacheHelper,
+        location: legacyLocation,
+        deviceTimeZoneId: timeZoneName,
+      ),
+    );
+  }
+
+  PrayerNotificationPlan? buildFromConfiguration({
+    required DateTime now,
+    required int maxEvents,
+    required Duration horizon,
+    required PrayerScheduleConfiguration configuration,
+    int scheduleRevision = 0,
+  }) {
+    if (maxEvents <= 0 || horizon <= Duration.zero) return null;
+    final location = configuration.location;
+    if (!location.isValid) return null;
+    final coordinates = Coordinates(location.latitude, location.longitude);
+    final localeCode = configuration.localeCode;
+    final localizations = _localizations(localeCode);
+    final offsets = configuration.offsets;
+    final scheduleTimeZoneName = location.timeZoneId;
     final nowUtc = now.toUtc();
     final zonedNow = PrayerTimeZoneService.atInstant(
       nowUtc,
@@ -53,11 +95,19 @@ class PrayerNotificationPlanner {
         zonedNow.day + dayOffset,
       );
       if (_isAfterCalendarDate(date, zonedRequestedThrough)) break;
-      final times = PrayerTimesCalculator.computeFromCache(
-        cacheHelper,
+      final times = PrayerTimesCalculator.compute(
         coordinates,
         date,
+        methodToken: configuration.methodToken,
+        countryCode: location.countryCode ?? '',
         timeZoneName: scheduleTimeZoneName,
+        madhab: PrayerTimesCalculator.madhabFromToken(
+          configuration.madhabToken,
+        ),
+        highLatitudeRule: PrayerTimesCalculator.highLatitudeRuleFromToken(
+          configuration.highLatitudeRuleToken,
+        ),
+        customAngles: configuration.customAngles,
       );
       final adjustedInstants = PrayerTimesCalculator.dailyAdjustedInstants(
         times,
@@ -87,6 +137,9 @@ class PrayerNotificationPlanner {
           timeZoneName: scheduleTimeZoneName,
           title: localizations.notificationPrayerTimeTitle(prayerName),
           body: localizations.notificationPrayerTimeBody(prayerName),
+          locationRevision: location.revision,
+          scheduleRevision: scheduleRevision,
+          configurationSignature: configuration.signature,
         );
         if (!event.scheduledInstantUtc.isAfter(nowUtc) ||
             event.scheduledInstantUtc.isAfter(requestedThrough)) {
@@ -110,13 +163,10 @@ class PrayerNotificationPlanner {
 
     return PrayerNotificationPlan(
       events: List.unmodifiable(events),
-      configurationSignature: _configurationSignature(
-        localeCode: localeCode,
-        deviceTimeZoneName: timeZoneName,
-        scheduleTimeZoneName: scheduleTimeZoneName,
-        offsets: offsets,
-      ),
+      configurationSignature: configuration.signature,
       requestedThrough: requestedThrough,
+      locationRevision: location.revision,
+      scheduleRevision: scheduleRevision,
     );
   }
 
@@ -125,11 +175,6 @@ class PrayerNotificationPlanner {
     if (date.month != other.month) return date.month > other.month;
     return date.day > other.day;
   }
-
-  String _localeCode() =>
-      cacheHelper.getDataString(key: 'app_locale') ??
-      cacheHelper.getDataString(key: 'locale') ??
-      'en';
 
   AppLocalizations _localizations(String localeCode) {
     try {
@@ -155,37 +200,5 @@ class PrayerNotificationPlanner {
       case Prayer.none:
         return prayer.name;
     }
-  }
-
-  String _configurationSignature({
-    required String localeCode,
-    required String deviceTimeZoneName,
-    required String scheduleTimeZoneName,
-    required Map<String, int> offsets,
-  }) {
-    final customAngles = PrayerTimesCalculator.customAnglesFromCache(
-      cacheHelper,
-    );
-    final parts = <String>[
-      'v$configurationVersion',
-      cacheHelper.getDataString(key: PrayerTimesCalculator.latKey) ?? '',
-      cacheHelper.getDataString(key: PrayerTimesCalculator.lonKey) ?? '',
-      PrayerTimesCalculator.countryCodeFromCache(cacheHelper),
-      PrayerTimesCalculator.methodTokenFromCache(cacheHelper),
-      cacheHelper.getDataString(key: PrayerTimesCalculator.madhabKey) ?? '',
-      cacheHelper.getDataString(
-            key: PrayerTimesCalculator.highLatitudeRuleKey,
-          ) ??
-          '',
-      'custom-fajr:${CustomPrayerAngles.canonical(customAngles.fajr)}',
-      'custom-maghrib:${CustomPrayerAngles.canonical(customAngles.maghrib)}',
-      'custom-isha:${CustomPrayerAngles.canonical(customAngles.isha)}',
-      localeCode,
-      'device-zone:$deviceTimeZoneName',
-      'schedule-zone:$scheduleTimeZoneName',
-      for (final key in PrayerTimesCalculator.offsetPrayerKeys)
-        '$key:${offsets[key] ?? 0}',
-    ];
-    return parts.join('|');
   }
 }

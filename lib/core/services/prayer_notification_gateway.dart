@@ -10,6 +10,8 @@ abstract interface class PrayerNotificationGateway {
 
   Future<bool> areNotificationsAllowed();
 
+  Future<String> schedulingCapabilitySignature();
+
   Future<List<PendingNotificationRequest>> pendingNotificationRequests();
 
   Future<bool> schedulePrayerEvent(PrayerNotificationEvent event);
