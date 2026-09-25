@@ -1,6 +1,3 @@
-Neu gestaltete Gebetszeiten- und Koran-Widgets mit verbesserter Anpassung, Zuverlässigkeit und neuen iOS-Sperrbildschirmoptionen
-Benutzerdefinierte Berechnungswinkel für Fajr, Maghrib und Isha hinzugefügt
-Gebetszeiten, Benachrichtigungen und Widgets können jetzt auf Reisen automatisch aktualisiert werden
-Huda AI speichert jetzt einen durchsuchbaren Gesprächsverlauf lokal
-Verbesserte Anpassung des Startbildschirms
-Feedback und Problemmeldungen wurden neu gestaltet
+Die Standortberechtigung für automatische Gebetszeiten-Updates auf Reisen wurde korrigiert.
+Gebetszeiten bleiben sichtbar, wenn die Planung von Benachrichtigungen fehlschlägt; eine Option zum erneuten Versuch ist verfügbar.
+Die Zuverlässigkeit der Gebetsbenachrichtigungen und die Anzeige des geplanten Zeitraums wurden verbessert.

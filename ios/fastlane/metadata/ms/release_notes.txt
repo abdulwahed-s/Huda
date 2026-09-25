@@ -1,6 +1,3 @@
-Widget Waktu Solat dan al-Quran direka semula dengan penyesuaian dan kebolehpercayaan yang lebih baik serta pilihan Skrin Kunci iOS baharu
-Sudut pengiraan tersuai untuk Fajar, Maghrib dan Isyak telah ditambah
-Waktu solat, pemberitahuan dan widget kini boleh dikemas kini secara automatik semasa dalam perjalanan
-Huda AI kini menyimpan sejarah perbualan yang boleh dicari secara setempat
-Penyesuaian skrin utama dipertingkatkan
-Pengalaman maklum balas dan pelaporan masalah direka semula
+Permintaan kebenaran lokasi untuk kemas kini waktu solat secara automatik semasa perjalanan telah dibaiki.
+Waktu solat kekal dipaparkan jika penjadualan pemberitahuan gagal, dengan pilihan untuk mencuba semula.
+Kebolehpercayaan penjadualan pemberitahuan solat dan paparan tarikh akhir jadual telah dipertingkatkan.

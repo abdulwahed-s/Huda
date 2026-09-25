@@ -1,6 +1,3 @@
-Widgets de oración y del Corán rediseñados con mejor personalización, fiabilidad y nuevas opciones para la pantalla de bloqueo de iOS
-Se añadieron ángulos de cálculo personalizados para Fajr, Maghrib e Isha
-Los horarios de oración, las notificaciones y los widgets ahora pueden actualizarse automáticamente durante los viajes
-Huda AI ahora guarda localmente un historial de conversaciones con búsqueda
-Personalización de la pantalla de inicio mejorada
-Se rediseñó la experiencia de comentarios y reporte de problemas
+Se corrigió la solicitud de permiso de ubicación para actualizar automáticamente los horarios de oración durante los viajes.
+Los horarios de oración siguen visibles si falla la programación de notificaciones, con una opción para reintentar.
+Se mejoraron la fiabilidad de la programación de notificaciones y la fecha hasta la que están programadas.

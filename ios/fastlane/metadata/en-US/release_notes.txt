@@ -1,6 +1,3 @@
-Redesigned Prayer and Quran widgets with improved customization, reliability, and new iOS Lock Screen options
-Added custom Fajr, Maghrib, and Isha calculation angles
-Prayer times, notifications, and widgets can now update automatically while traveling
-Huda AI now saves searchable conversation history locally
-Improved Home customization
-Redesigned the feedback and issue-reporting experience
+Fixed location permission handling for automatic prayer time updates while traveling.
+Prayer times stay visible if notification scheduling fails, with a clear Retry option.
+Improved prayer notification scheduling reliability and the displayed scheduled-through date.

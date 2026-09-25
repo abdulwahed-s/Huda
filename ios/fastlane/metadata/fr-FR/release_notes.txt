@@ -1,6 +1,3 @@
-Widgets de prière et du Coran repensés avec une personnalisation et une fiabilité améliorées, ainsi que de nouvelles options pour l’écran verrouillé d’iOS
-Ajout d’angles de calcul personnalisés pour Fajr, Maghrib et Isha
-Les horaires de prière, les notifications et les widgets peuvent désormais se mettre à jour automatiquement pendant vos voyages
-Huda AI enregistre désormais localement un historique des conversations consultable
-Personnalisation de l’accueil améliorée
-L’expérience de retour et de signalement de problèmes a été repensée
+Correction de la demande d’autorisation de localisation pour la mise à jour automatique des horaires de prière en voyage.
+Les horaires de prière restent visibles si la programmation des notifications échoue, avec une option pour réessayer.
+Amélioration de la fiabilité de la programmation des notifications et de l’affichage de la date jusqu’à laquelle elles sont prévues.
