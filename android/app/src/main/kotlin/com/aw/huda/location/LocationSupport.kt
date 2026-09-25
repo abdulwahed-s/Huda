@@ -9,6 +9,13 @@ import android.provider.Settings
 
 object LocationSupport {
 
+    fun backgroundPermissionOptionLabel(context: Context): String? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.packageManager.backgroundPermissionOptionLabel.toString()
+        } else {
+            null
+        }
+
     fun isLocationServiceEnabled(context: Context): Boolean {
         val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

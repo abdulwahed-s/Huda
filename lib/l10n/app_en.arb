@@ -5507,5 +5507,16 @@
     "travelUpdatesUnsupported": "Unsupported",
     "travelUpdatesUnavailable": "Unavailable",
     "travelUpdatesDisabled": "Disabled",
+    "travelAllowLocation": "Allow location",
+    "travelTurnOnLocation": "Turn on location",
+    "travelAllowAllTheTime": "Allow all the time",
+    "travelBackgroundPermissionInstructions": "To update prayer times while Huda is closed, open the app's location permissions and select “{optionLabel}”.",
+    "@travelBackgroundPermissionInstructions": {
+        "placeholders": {
+            "optionLabel": {
+                "type": "String"
+            }
+        }
+    },
     "notYet": "Not yet"
 }

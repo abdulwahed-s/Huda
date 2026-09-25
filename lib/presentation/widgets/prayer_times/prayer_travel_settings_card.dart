@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/geolocator.dart';
 import 'package:huda/core/services/prayer_location_monitor.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/manual_location_search_dialog.dart';
@@ -65,6 +67,7 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
     try {
       await getIt<PrayerLocationMonitor>().setEnabled(enabled);
       await _reload();
+      if (enabled) await _maybeShowAndroidBackgroundPermissionHelp();
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -74,14 +77,77 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
     setState(() => _busy = true);
     try {
       final cubit = context.read<PrayerTimesCubit>();
+      final monitor = getIt<PrayerLocationMonitor>();
+
+      // Retry the actual permission flow as well as the location refresh. This
+      // is needed when travel updates were enabled before location access was
+      // granted, or when iOS has only granted foreground access so far.
+      await monitor.setEnabled(true);
       await cubit.consumeQueuedNativeLocationCandidate();
       await cubit.refreshAutomaticLocationIfNeeded(force: true);
       await cubit.refreshNotificationSchedule();
-      await getIt<PrayerLocationMonitor>().sync(cubit.locationMode);
+      await monitor.sync(cubit.locationMode);
       await _reload();
+      await _maybeShowAndroidBackgroundPermissionHelp();
     } finally {
       if (mounted) setState(() => _busy = false);
     }
+  }
+
+  Future<void> _openRecoverySettings(PrayerBackgroundTravelState state) async {
+    if (state == PrayerBackgroundTravelState.unavailable) {
+      final opened = await Geolocator.openLocationSettings();
+      if (!opened) {
+        await getIt<PrayerLocationMonitor>().openAppSettings();
+      }
+      return;
+    }
+
+    if (PlatformUtils.isAndroid &&
+        state == PrayerBackgroundTravelState.foregroundOnly) {
+      await _showAndroidBackgroundPermissionHelp();
+      return;
+    }
+
+    await getIt<PrayerLocationMonitor>().openAppSettings();
+  }
+
+  Future<void> _maybeShowAndroidBackgroundPermissionHelp() async {
+    if (!PlatformUtils.isAndroid ||
+        _status?.state != PrayerBackgroundTravelState.foregroundOnly) {
+      return;
+    }
+    await _showAndroidBackgroundPermissionHelp();
+  }
+
+  Future<void> _showAndroidBackgroundPermissionHelp() async {
+    final monitor = getIt<PrayerLocationMonitor>();
+    final systemLabel = await monitor.backgroundPermissionOptionLabel();
+    if (!mounted) return;
+
+    final l10n = AppLocalizations.of(context)!;
+    final shouldOpen = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.travelPermissionRequired),
+        content: Text(
+          l10n.travelBackgroundPermissionInstructions(
+            systemLabel ?? l10n.travelAllowAllTheTime,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l10n.openSettings),
+          ),
+        ],
+      ),
+    );
+    if (shouldOpen == true) await monitor.openAppSettings();
   }
 
   Future<void> _selectManualLocation() async {
@@ -117,7 +183,10 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
     final status = _status;
     final visual = _statusVisual(theme, status?.state);
     final needsRecovery = _needsRecovery(status?.state);
-    final isEnabled = status?.preferenceEnabled ?? false;
+    final isSupported =
+        status?.state != PrayerBackgroundTravelState.unsupported;
+    final isEnabled = isSupported && (status?.preferenceEnabled ?? false);
+    final canToggle = !_busy && status != null && isSupported;
 
     return Card(
       elevation: 4,
@@ -283,15 +352,13 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
                             Semantics(
                               excludeSemantics: true,
                               toggled: isEnabled,
-                              enabled: !_busy && status != null,
+                              enabled: canToggle,
                               label:
                                   '${l10n.prayerTravelUpdates}: '
                                   '${_statusLabel(l10n, status?.state)}',
                               child: Switch.adaptive(
                                 value: isEnabled,
-                                onChanged: _busy || status == null
-                                    ? null
-                                    : _toggle,
+                                onChanged: canToggle ? _toggle : null,
                               ),
                             ),
                           ],
@@ -305,11 +372,33 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
                           SizedBox(height: 6.h),
                           _RecoveryPanel(
                             color: visual.color,
-                            settingsLabel: l10n.openSettings,
-                            retryLabel: l10n.retry,
+                            settingsLabel:
+                                status?.state ==
+                                    PrayerBackgroundTravelState.unavailable
+                                ? l10n.travelTurnOnLocation
+                                : l10n.openSettings,
+                            retryLabel:
+                                status?.state ==
+                                    PrayerBackgroundTravelState
+                                        .permissionRequired
+                                ? l10n.travelAllowLocation
+                                : l10n.retry,
+                            retryIcon:
+                                status?.state ==
+                                    PrayerBackgroundTravelState
+                                        .permissionRequired
+                                ? Icons.location_on_outlined
+                                : Icons.refresh_rounded,
                             busy: _busy,
-                            onSettings:
-                                getIt<PrayerLocationMonitor>().openAppSettings,
+                            showRetry:
+                                status?.state !=
+                                PrayerBackgroundTravelState.unavailable,
+                            settingsFirst:
+                                PlatformUtils.isAndroid &&
+                                status?.state ==
+                                    PrayerBackgroundTravelState.foregroundOnly,
+                            onSettings: () =>
+                                _openRecoverySettings(status!.state),
                             onRetry: _retry,
                           ),
                         ],
@@ -477,7 +566,10 @@ class _RecoveryPanel extends StatelessWidget {
     required this.color,
     required this.settingsLabel,
     required this.retryLabel,
+    required this.retryIcon,
     required this.busy,
+    required this.showRetry,
+    required this.settingsFirst,
     required this.onSettings,
     required this.onRetry,
   });
@@ -485,36 +577,43 @@ class _RecoveryPanel extends StatelessWidget {
   final Color color;
   final String settingsLabel;
   final String retryLabel;
+  final IconData retryIcon;
   final bool busy;
+  final bool showRetry;
+  final bool settingsFirst;
   final VoidCallback onSettings;
   final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
+    final settingsButton = TextButton.icon(
+      onPressed: busy ? null : onSettings,
+      style: TextButton.styleFrom(
+        foregroundColor: color,
+        visualDensity: VisualDensity.compact,
+      ),
+      icon: Icon(Icons.settings_outlined, size: 14.sp),
+      label: Text(settingsLabel, style: TextStyle(fontSize: 10.sp)),
+    );
+    final retryButton = TextButton.icon(
+      onPressed: busy ? null : onRetry,
+      style: TextButton.styleFrom(
+        foregroundColor: color,
+        visualDensity: VisualDensity.compact,
+      ),
+      icon: Icon(retryIcon, size: 14.sp),
+      label: Text(retryLabel, style: TextStyle(fontSize: 10.sp)),
+    );
+
     return Align(
       alignment: AlignmentDirectional.centerEnd,
       child: Wrap(
         spacing: 4.w,
         runSpacing: 4.h,
         children: [
-          TextButton.icon(
-            onPressed: busy ? null : onSettings,
-            style: TextButton.styleFrom(
-              foregroundColor: color,
-              visualDensity: VisualDensity.compact,
-            ),
-            icon: Icon(Icons.settings_outlined, size: 14.sp),
-            label: Text(settingsLabel, style: TextStyle(fontSize: 10.sp)),
-          ),
-          TextButton.icon(
-            onPressed: busy ? null : onRetry,
-            style: TextButton.styleFrom(
-              foregroundColor: color,
-              visualDensity: VisualDensity.compact,
-            ),
-            icon: Icon(Icons.refresh_rounded, size: 14.sp),
-            label: Text(retryLabel, style: TextStyle(fontSize: 10.sp)),
-          ),
+          if (showRetry && !settingsFirst) retryButton,
+          settingsButton,
+          if (showRetry && settingsFirst) retryButton,
         ],
       ),
     );

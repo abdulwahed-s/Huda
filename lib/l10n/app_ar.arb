@@ -2389,5 +2389,9 @@
     "travelUpdatesUnsupported": "غير مدعومة",
     "travelUpdatesUnavailable": "غير متاحة",
     "travelUpdatesDisabled": "متوقفة",
+    "travelAllowLocation": "السماح بالموقع",
+    "travelTurnOnLocation": "تشغيل الموقع",
+    "travelAllowAllTheTime": "السماح طوال الوقت",
+    "travelBackgroundPermissionInstructions": "لتحديث أوقات الصلاة أثناء إغلاق هدى، افتح أذونات الموقع للتطبيق واختر «{optionLabel}».",
     "notYet": "ليس بعد"
 }

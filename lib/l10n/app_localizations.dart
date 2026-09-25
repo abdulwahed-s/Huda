@@ -9236,6 +9236,30 @@ abstract class AppLocalizations {
   /// **'Disabled'**
   String get travelUpdatesDisabled;
 
+  /// No description provided for @travelAllowLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location'**
+  String get travelAllowLocation;
+
+  /// No description provided for @travelTurnOnLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location'**
+  String get travelTurnOnLocation;
+
+  /// No description provided for @travelAllowAllTheTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow all the time'**
+  String get travelAllowAllTheTime;
+
+  /// No description provided for @travelBackgroundPermissionInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'To update prayer times while Huda is closed, open the app\'s location permissions and select “{optionLabel}”.'**
+  String travelBackgroundPermissionInstructions(String optionLabel);
+
   /// No description provided for @notYet.
   ///
   /// In en, this message translates to:

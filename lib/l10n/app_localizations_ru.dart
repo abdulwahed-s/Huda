@@ -5090,5 +5090,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get travelUpdatesDisabled => 'Отключены';
 
   @override
+  String get travelAllowLocation => 'Разрешить доступ к геопозиции';
+
+  @override
+  String get travelTurnOnLocation => 'Включить геолокацию';
+
+  @override
+  String get travelAllowAllTheTime => 'Разрешить всегда';
+
+  @override
+  String travelBackgroundPermissionInstructions(String optionLabel) {
+    return 'Чтобы обновлять время намаза, когда Huda закрыта, откройте разрешения приложения на геолокацию и выберите «$optionLabel».';
+  }
+
+  @override
   String get notYet => 'Ещё нет';
 }

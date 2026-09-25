@@ -115,6 +115,7 @@ class PrayerLocationMonitor {
           'locationMode': mode.name,
         });
       } on MissingPluginException {
+        // The native monitor is unavailable on unsupported/test platforms.
       } on PlatformException catch (error) {
         debugPrint('Could not synchronize prayer travel monitoring: $error');
       }
@@ -181,6 +182,19 @@ class PrayerLocationMonitor {
   }
 
   Future<void> openAppSettings() => permissions.openAppSettings();
+
+  Future<String?> backgroundPermissionOptionLabel() async {
+    if (!PlatformUtils.isAndroid) return null;
+    try {
+      return await _nativeChannel.invokeMethod<String>(
+        'backgroundPermissionOptionLabel',
+      );
+    } on MissingPluginException {
+      return null;
+    } on PlatformException {
+      return null;
+    }
+  }
 
   Future<void> _syncForegroundStream(
     PrayerLocationMonitoringStatus status,

@@ -1883,5 +1883,9 @@
     "travelUpdatesUnsupported": "Не поддерживается",
     "travelUpdatesUnavailable": "Недоступно",
     "travelUpdatesDisabled": "Отключены",
+    "travelAllowLocation": "Разрешить доступ к геопозиции",
+    "travelTurnOnLocation": "Включить геолокацию",
+    "travelAllowAllTheTime": "Разрешить всегда",
+    "travelBackgroundPermissionInstructions": "Чтобы обновлять время намаза, когда Huda закрыта, откройте разрешения приложения на геолокацию и выберите «{optionLabel}».",
     "notYet": "Ещё нет"
 }

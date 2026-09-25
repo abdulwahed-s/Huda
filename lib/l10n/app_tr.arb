@@ -1883,5 +1883,9 @@
     "travelUpdatesUnsupported": "Desteklenmiyor",
     "travelUpdatesUnavailable": "Kullanılamıyor",
     "travelUpdatesDisabled": "Devre dışı",
+    "travelAllowLocation": "Konuma izin ver",
+    "travelTurnOnLocation": "Konumu aç",
+    "travelAllowAllTheTime": "Her zaman izin ver",
+    "travelBackgroundPermissionInstructions": "Huda kapalıyken namaz vakitlerini güncellemek için uygulamanın konum izinlerini açın ve “{optionLabel}” seçeneğini belirleyin.",
     "notYet": "Henüz değil"
 }

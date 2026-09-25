@@ -1899,5 +1899,9 @@
     "travelUpdatesUnsupported": "No compatible",
     "travelUpdatesUnavailable": "No disponible",
     "travelUpdatesDisabled": "Desactivadas",
+    "travelAllowLocation": "Permitir ubicación",
+    "travelTurnOnLocation": "Activar ubicación",
+    "travelAllowAllTheTime": "Permitir siempre",
+    "travelBackgroundPermissionInstructions": "Para actualizar los horarios de oración mientras Huda está cerrada, abre los permisos de ubicación de la aplicación y selecciona «{optionLabel}».",
     "notYet": "Todavía no"
 }

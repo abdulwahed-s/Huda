@@ -1860,5 +1860,9 @@
     "travelUpdatesUnsupported": "Nicht unterstützt",
     "travelUpdatesUnavailable": "Nicht verfügbar",
     "travelUpdatesDisabled": "Deaktiviert",
+    "travelAllowLocation": "Standortzugriff erlauben",
+    "travelTurnOnLocation": "Standort aktivieren",
+    "travelAllowAllTheTime": "Immer zulassen",
+    "travelBackgroundPermissionInstructions": "Damit die Gebetszeiten aktualisiert werden, während Huda geschlossen ist, öffne die Standortberechtigungen der App und wähle „{optionLabel}“.",
     "notYet": "Noch nicht"
 }

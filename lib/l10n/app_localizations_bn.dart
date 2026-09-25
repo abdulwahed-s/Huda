@@ -5062,5 +5062,19 @@ class AppLocalizationsBn extends AppLocalizations {
   String get travelUpdatesDisabled => 'বন্ধ';
 
   @override
+  String get travelAllowLocation => 'লোকেশন ব্যবহারের অনুমতি দিন';
+
+  @override
+  String get travelTurnOnLocation => 'লোকেশন চালু করুন';
+
+  @override
+  String get travelAllowAllTheTime => 'সব সময় অনুমতি দিন';
+
+  @override
+  String travelBackgroundPermissionInstructions(String optionLabel) {
+    return 'Huda বন্ধ থাকলেও নামাজের সময় আপডেট করতে, অ্যাপের লোকেশন অনুমতি খুলে “$optionLabel” নির্বাচন করুন।';
+  }
+
+  @override
   String get notYet => 'এখনও নয়';
 }

@@ -1989,5 +1989,9 @@
     "travelUpdatesUnsupported": "সমর্থিত নয়",
     "travelUpdatesUnavailable": "অনুপলব্ধ",
     "travelUpdatesDisabled": "বন্ধ",
+    "travelAllowLocation": "লোকেশন ব্যবহারের অনুমতি দিন",
+    "travelTurnOnLocation": "লোকেশন চালু করুন",
+    "travelAllowAllTheTime": "সব সময় অনুমতি দিন",
+    "travelBackgroundPermissionInstructions": "Huda বন্ধ থাকলেও নামাজের সময় আপডেট করতে, অ্যাপের লোকেশন অনুমতি খুলে “{optionLabel}” নির্বাচন করুন।",
     "notYet": "এখনও নয়"
 }

@@ -5069,5 +5069,19 @@ class AppLocalizationsMs extends AppLocalizations {
   String get travelUpdatesDisabled => 'Dilumpuhkan';
 
   @override
+  String get travelAllowLocation => 'Benarkan lokasi';
+
+  @override
+  String get travelTurnOnLocation => 'Hidupkan lokasi';
+
+  @override
+  String get travelAllowAllTheTime => 'Benarkan sepanjang masa';
+
+  @override
+  String travelBackgroundPermissionInstructions(String optionLabel) {
+    return 'Untuk mengemas kini waktu solat semasa Huda ditutup, buka kebenaran lokasi aplikasi dan pilih “$optionLabel”.';
+  }
+
+  @override
   String get notYet => 'Belum lagi';
 }

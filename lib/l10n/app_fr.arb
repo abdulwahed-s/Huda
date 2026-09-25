@@ -1887,5 +1887,9 @@
     "travelUpdatesUnsupported": "Non pris en charge",
     "travelUpdatesUnavailable": "Indisponible",
     "travelUpdatesDisabled": "Désactivées",
+    "travelAllowLocation": "Autoriser la localisation",
+    "travelTurnOnLocation": "Activer la localisation",
+    "travelAllowAllTheTime": "Toujours autoriser",
+    "travelBackgroundPermissionInstructions": "Pour actualiser les horaires de prière lorsque Huda est fermée, ouvrez les autorisations de localisation de l’application et sélectionnez « {optionLabel} ».",
     "notYet": "Pas encore"
 }

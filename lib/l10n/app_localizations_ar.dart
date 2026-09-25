@@ -4993,5 +4993,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get travelUpdatesDisabled => 'متوقفة';
 
   @override
+  String get travelAllowLocation => 'السماح بالموقع';
+
+  @override
+  String get travelTurnOnLocation => 'تشغيل الموقع';
+
+  @override
+  String get travelAllowAllTheTime => 'السماح طوال الوقت';
+
+  @override
+  String travelBackgroundPermissionInstructions(String optionLabel) {
+    return 'لتحديث أوقات الصلاة أثناء إغلاق هدى، افتح أذونات الموقع للتطبيق واختر «$optionLabel».';
+  }
+
+  @override
   String get notYet => 'ليس بعد';
 }

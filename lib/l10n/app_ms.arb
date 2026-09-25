@@ -1973,5 +1973,9 @@
     "travelUpdatesUnsupported": "Tidak disokong",
     "travelUpdatesUnavailable": "Tidak tersedia",
     "travelUpdatesDisabled": "Dilumpuhkan",
+    "travelAllowLocation": "Benarkan lokasi",
+    "travelTurnOnLocation": "Hidupkan lokasi",
+    "travelAllowAllTheTime": "Benarkan sepanjang masa",
+    "travelBackgroundPermissionInstructions": "Untuk mengemas kini waktu solat semasa Huda ditutup, buka kebenaran lokasi aplikasi dan pilih “{optionLabel}”.",
     "notYet": "Belum lagi"
 }

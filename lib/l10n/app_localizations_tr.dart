@@ -5057,5 +5057,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get travelUpdatesDisabled => 'Devre dışı';
 
   @override
+  String get travelAllowLocation => 'Konuma izin ver';
+
+  @override
+  String get travelTurnOnLocation => 'Konumu aç';
+
+  @override
+  String get travelAllowAllTheTime => 'Her zaman izin ver';
+
+  @override
+  String travelBackgroundPermissionInstructions(String optionLabel) {
+    return 'Huda kapalıyken namaz vakitlerini güncellemek için uygulamanın konum izinlerini açın ve “$optionLabel” seçeneğini belirleyin.';
+  }
+
+  @override
   String get notYet => 'Henüz değil';
 }

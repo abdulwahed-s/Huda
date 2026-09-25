@@ -132,6 +132,10 @@ class MainActivity : AudioServiceActivity() {
                     PrayerTravelReliabilityManager.status(applicationContext),
                 )
 
+                "backgroundPermissionOptionLabel" -> result.success(
+                    LocationSupport.backgroundPermissionOptionLabel(applicationContext),
+                )
+
                 else -> result.notImplemented()
             }
         }

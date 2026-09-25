@@ -5052,5 +5052,19 @@ class AppLocalizationsUr extends AppLocalizations {
   String get travelUpdatesDisabled => 'غیر فعال';
 
   @override
+  String get travelAllowLocation => 'مقام کی اجازت دیں';
+
+  @override
+  String get travelTurnOnLocation => 'مقام آن کریں';
+
+  @override
+  String get travelAllowAllTheTime => 'ہمیشہ اجازت دیں';
+
+  @override
+  String travelBackgroundPermissionInstructions(String optionLabel) {
+    return 'Huda بند ہونے کے دوران نماز کے اوقات اپ ڈیٹ کرنے کے لیے، ایپ کی مقام کی اجازتیں کھولیں اور ”$optionLabel“ منتخب کریں۔';
+  }
+
+  @override
   String get notYet => 'ابھی نہیں';
 }

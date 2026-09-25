@@ -5055,5 +5055,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get travelUpdatesDisabled => 'Disabled';
 
   @override
+  String get travelAllowLocation => 'Allow location';
+
+  @override
+  String get travelTurnOnLocation => 'Turn on location';
+
+  @override
+  String get travelAllowAllTheTime => 'Allow all the time';
+
+  @override
+  String travelBackgroundPermissionInstructions(String optionLabel) {
+    return 'To update prayer times while Huda is closed, open the app\'s location permissions and select “$optionLabel”.';
+  }
+
+  @override
   String get notYet => 'Not yet';
 }
