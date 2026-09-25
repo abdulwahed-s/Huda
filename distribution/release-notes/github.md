@@ -1,6 +1,8 @@
 ## What's new
 
-- Improved the F-Droid experience with F-Droid-aware update checks and crash-report consent controls.
-- Fixed prayer-time setup when location permission is denied.
-- Removed an unused Android permission.
-- Improved recent-activity card readability.
+- Redesigned Prayer and Quran widgets with improved customization, reliability, and new iOS Lock Screen options.
+- Added custom Fajr, Maghrib, and Isha calculation angles.
+- Prayer times, notifications, and widgets can now update automatically while traveling.
+- Huda AI now saves searchable conversation history locally.
+- Improved Home customization.
+- Redesigned the feedback and issue-reporting experience.

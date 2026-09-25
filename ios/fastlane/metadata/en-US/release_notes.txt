@@ -1,1 +1,6 @@
-Fixed an issue that prevented the iOS notification permission prompt from appearing
+Redesigned Prayer and Quran widgets with improved customization, reliability, and new iOS Lock Screen options
+Added custom Fajr, Maghrib, and Isha calculation angles
+Prayer times, notifications, and widgets can now update automatically while traveling
+Huda AI now saves searchable conversation history locally
+Improved Home customization
+Redesigned the feedback and issue-reporting experience
