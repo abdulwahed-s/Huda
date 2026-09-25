@@ -6,10 +6,10 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
-import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/catalog/home_feature_catalog.dart';
+import 'package:huda/presentation/widgets/home/classic_feature_card_metrics.dart';
 import 'package:huda/presentation/widgets/home/feature_card.dart';
 import 'package:huda/presentation/widgets/home/feature_grid.dart';
 
@@ -104,9 +104,7 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
     for (final feature in widget.features) {
       _featureFocusNodes.putIfAbsent(
         feature.id,
-        () => FocusNode(
-          debugLabel: 'Classic View More ${feature.id.name}',
-        ),
+        () => FocusNode(debugLabel: 'Classic View More ${feature.id.name}'),
       );
     }
   }
@@ -144,10 +142,7 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final layout = FeatureGridLayout.resolve(
-          context,
-          constraints.maxWidth,
-        );
+        final layout = FeatureGridLayout.resolve(context, constraints.maxWidth);
         final primaryGrid = widget.gridBuilder(
           CompositedTransformTarget(
             key: const ValueKey('classic-view-more-grid-target'),
@@ -158,11 +153,7 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
         return AnimatedBuilder(
           animation: _controller,
           child: primaryGrid,
-          builder: (context, child) => _buildLayout(
-            context,
-            layout,
-            child!,
-          ),
+          builder: (context, child) => _buildLayout(context, layout, child!),
         );
       },
     );
@@ -182,13 +173,8 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
     final destinations = <Rect>[
       for (var index = 0; index < widget.features.length; index++)
         layout
-            .rectForSlot(
-              anchorSlot + index + 1,
-              direction,
-            )
-            .shift(
-              Offset(0, -absoluteAnchorRect.top),
-            ),
+            .rectForSlot(anchorSlot + index + 1, direction)
+            .shift(Offset(0, -absoluteAnchorRect.top)),
     ];
     final destinationSlots = <int>[
       for (var index = 0; index < widget.features.length; index++)
@@ -336,9 +322,7 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
                   ),
                 ),
                 child: FeatureCard(
-                  key: ValueKey(
-                    'classic-view-more-card-${feature.id.name}',
-                  ),
+                  key: ValueKey('classic-view-more-card-${feature.id.name}'),
                   title: feature.title,
                   svgAsset: feature.svgAsset,
                   icon: feature.icon,
@@ -374,12 +358,6 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
     final scale = 1 - unfoldCompression - interactionCompression;
     final active = _hovered || _focused || _pressed || progress > 0;
     final primary = context.primaryColor;
-    final iconSize =
-        context.responsive(mobile: 32.sp, tablet: 50.sp, desktop: 64.sp);
-    final paddingSize =
-        context.responsive(mobile: 12.w, tablet: 20.w, desktop: 24.w);
-    final fontSize =
-        context.responsive(mobile: 12.sp, tablet: 16.sp, desktop: 20.sp);
     final currentLabel = _expanded ? l10n.showLess : l10n.viewMore;
 
     return Semantics(
@@ -404,21 +382,15 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: widget.isDarkMode
-                      ? [
-                          const Color(0xFF2B2F3A),
-                          const Color(0xFF1E2230),
-                        ]
-                      : [
-                          const Color(0xFFFFFFFF),
-                          const Color(0xFFF8FAFF),
-                        ],
+                      ? [const Color(0xFF2B2F3A), const Color(0xFF1E2230)]
+                      : [const Color(0xFFFFFFFF), const Color(0xFFF8FAFF)],
                 ),
                 borderRadius: BorderRadius.circular(16.r),
                 border: Border.all(
                   color: active
                       ? primary.withValues(alpha: 0.38)
                       : (widget.isDarkMode ? Colors.white : Colors.black)
-                          .withValues(alpha: 0.08),
+                            .withValues(alpha: 0.08),
                   width: active ? 1.4 : 1,
                 ),
                 boxShadow: [
@@ -444,131 +416,141 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
                     (states) => states.contains(WidgetState.pressed)
                         ? primary.withValues(alpha: 0.13)
                         : states.contains(WidgetState.hovered) ||
-                                states.contains(WidgetState.focused)
-                            ? primary.withValues(alpha: 0.07)
-                            : null,
+                              states.contains(WidgetState.focused)
+                        ? primary.withValues(alpha: 0.07)
+                        : null,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          flex: 0,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(paddingSize),
-                                decoration: BoxDecoration(
-                                  color: primary.withValues(alpha: 0.09),
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(
-                                    color: primary.withValues(alpha: 0.16),
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.grid_view_rounded,
-                                  size: iconSize,
-                                  color: widget.isDarkMode
-                                      ? context.primaryLightColor
-                                      : primary,
-                                ),
-                              ),
-                              PositionedDirectional(
-                                top: -5.h,
-                                end: -7.w,
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                    minWidth: 22.w,
-                                    minHeight: 22.w,
-                                  ),
-                                  alignment: Alignment.center,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 5.w),
-                                  decoration: BoxDecoration(
-                                    color: primary,
-                                    borderRadius: BorderRadius.circular(11.r),
-                                    border: Border.all(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final metrics = ClassicFeatureCardMetrics.resolve(
+                        constraints,
+                      );
+                      return Padding(
+                        padding: EdgeInsets.all(metrics.outerPadding),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              flex: 0,
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(
+                                      metrics.iconPadding,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: primary.withValues(alpha: 0.09),
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      border: Border.all(
+                                        color: primary.withValues(alpha: 0.16),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.grid_view_rounded,
+                                      size: metrics.iconSize,
                                       color: widget.isDarkMode
-                                          ? const Color(0xFF1E2230)
-                                          : Colors.white,
-                                      width: 1.5,
+                                          ? context.primaryLightColor
+                                          : primary,
                                     ),
                                   ),
-                                  child: Text(
-                                    '${widget.features.length}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w800,
-                                      height: 1,
+                                  PositionedDirectional(
+                                    top: -5,
+                                    end: -7,
+                                    child: Container(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 22,
+                                        minHeight: 22,
+                                      ),
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: primary,
+                                        borderRadius: BorderRadius.circular(11),
+                                        border: Border.all(
+                                          color: widget.isDarkMode
+                                              ? const Color(0xFF1E2230)
+                                              : Colors.white,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        '${widget.features.length}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w800,
+                                          height: 1,
+                                        ),
+                                      ),
                                     ),
                                   ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: metrics.contentGap),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      height: metrics.fontSize * 1.3,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          if (labelProgress < 1)
+                                            Opacity(
+                                              opacity: 1 - labelProgress,
+                                              child: Text(
+                                                l10n.viewMore,
+                                                textAlign: TextAlign.center,
+                                                maxLines: 1,
+                                                style: _labelStyle(
+                                                  metrics.fontSize,
+                                                  widget.isDarkMode,
+                                                ),
+                                              ),
+                                            ),
+                                          if (labelProgress > 0)
+                                            Opacity(
+                                              opacity: labelProgress,
+                                              child: Text(
+                                                l10n.showLess,
+                                                textAlign: TextAlign.center,
+                                                maxLines: 1,
+                                                style: _labelStyle(
+                                                  metrics.fontSize,
+                                                  widget.isDarkMode,
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Transform.rotate(
+                                      angle: math.pi * progress,
+                                      child: Icon(
+                                        Icons.expand_more_rounded,
+                                        size: 19,
+                                        color: widget.isDarkMode
+                                            ? context.primaryLightColor
+                                            : primary,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        Flexible(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  height: fontSize * 1.3,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      if (labelProgress < 1)
-                                        Opacity(
-                                          opacity: 1 - labelProgress,
-                                          child: Text(
-                                            l10n.viewMore,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 1,
-                                            style: _labelStyle(
-                                              fontSize,
-                                              widget.isDarkMode,
-                                            ),
-                                          ),
-                                        ),
-                                      if (labelProgress > 0)
-                                        Opacity(
-                                          opacity: labelProgress,
-                                          child: Text(
-                                            l10n.showLess,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 1,
-                                            style: _labelStyle(
-                                              fontSize,
-                                              widget.isDarkMode,
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 2.h),
-                                Transform.rotate(
-                                  angle: math.pi * progress,
-                                  child: Icon(
-                                    Icons.expand_more_rounded,
-                                    size: 19.sp,
-                                    color: widget.isDarkMode
-                                        ? context.primaryLightColor
-                                        : primary,
-                                  ),
-                                ),
-                              ],
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -611,11 +593,7 @@ class _ClassicViewMoreCollectionState extends State<ClassicViewMoreCollection>
     );
   }
 
-  Offset _stackOffset(
-    int index,
-    TextDirection direction,
-    int columns,
-  ) {
+  Offset _stackOffset(int index, TextDirection direction, int columns) {
     final depth = math.min(index, 2) + 1;
     final horizontalDirection = direction == TextDirection.ltr ? 1.0 : -1.0;
     return Offset(
