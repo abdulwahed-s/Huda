@@ -5072,4 +5072,54 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notYet => 'Henüz değil';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Namaz bildirimleriyle ilgilenmeniz gerekiyor';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'Namaz bildirimlerinin planlaması tamamlanamadı. Namaz vakitlerini görmeye devam edebilirsiniz.';
+
+  @override
+  String get prayerNotificationRetry => 'Tekrar dene';
+
+  @override
+  String get prayerNotificationRetrying => 'Namaz bildirimleri planlanıyor…';
+
+  @override
+  String get prayerNotificationsScheduledTitle => 'Namaz bildirimleri hazır';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return '$date tarihine kadar planlandı';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'Planı uzatmak için bu tarihten önce Huda’yı açın.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'Namaz bildirimlerinin planlı kalması için Huda’yı ara sıra açın.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'Bildirim planınız sona erdi. Yenilemek için tekrar deneyin.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'Namaz bildirimi ayarlarınız değişti. Planı güncellemek için tekrar deneyin.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'Namaz bildirimlerini planlama hizmeti şu anda meşgul. Lütfen biraz sonra tekrar deneyin.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'Namaz bildirimlerini planlama hizmeti geçici olarak kullanılamıyor.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'Namaz bildirimi planı doğrulanamadı. Lütfen tekrar deneyin.';
 }

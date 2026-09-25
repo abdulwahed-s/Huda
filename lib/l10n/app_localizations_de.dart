@@ -5146,4 +5146,56 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notYet => 'Noch nicht';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Gebetsbenachrichtigungen benötigen Aufmerksamkeit';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'Die Gebetsbenachrichtigungen konnten nicht vollständig geplant werden. Die Gebetszeiten bleiben verfügbar.';
+
+  @override
+  String get prayerNotificationRetry => 'Erneut versuchen';
+
+  @override
+  String get prayerNotificationRetrying =>
+      'Gebetsbenachrichtigungen werden geplant…';
+
+  @override
+  String get prayerNotificationsScheduledTitle =>
+      'Gebetsbenachrichtigungen sind bereit';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return 'Geplant bis $date';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'Öffne Huda vorher, um den Zeitplan zu verlängern.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'Öffne Huda gelegentlich, damit deine Gebetsbenachrichtigungen weiterhin geplant bleiben.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'Dein Benachrichtigungszeitplan ist abgelaufen. Tippe auf „Erneut versuchen“, um ihn zu erneuern.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'Deine Einstellungen für Gebetsbenachrichtigungen haben sich geändert. Versuche es erneut, um den Zeitplan zu aktualisieren.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'Die Planung der Gebetsbenachrichtigungen ist gerade ausgelastet. Bitte versuche es gleich noch einmal.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'Die Planung der Gebetsbenachrichtigungen ist vorübergehend nicht verfügbar.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'Der Zeitplan der Gebetsbenachrichtigungen konnte nicht überprüft werden. Bitte versuche es erneut.';
 }

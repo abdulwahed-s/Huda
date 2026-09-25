@@ -1993,5 +1993,18 @@
     "travelTurnOnLocation": "লোকেশন চালু করুন",
     "travelAllowAllTheTime": "সব সময় অনুমতি দিন",
     "travelBackgroundPermissionInstructions": "Huda বন্ধ থাকলেও নামাজের সময় আপডেট করতে, অ্যাপের লোকেশন অনুমতি খুলে “{optionLabel}” নির্বাচন করুন।",
-    "notYet": "এখনও নয়"
+    "notYet": "এখনও নয়",
+    "prayerNotificationIssueTitle": "নামাজের নোটিফিকেশনে মনোযোগ প্রয়োজন",
+    "prayerNotificationIssueMessage": "নামাজের নোটিফিকেশনের সময়সূচি সম্পন্ন করা যায়নি। আপনি এখনও নামাজের সময় দেখতে পারবেন।",
+    "prayerNotificationRetry": "আবার চেষ্টা করুন",
+    "prayerNotificationRetrying": "নামাজের নোটিফিকেশন নির্ধারণ করা হচ্ছে…",
+    "prayerNotificationsScheduledTitle": "নামাজের নোটিফিকেশন প্রস্তুত",
+    "prayerNotificationsScheduledUntil": "{date} পর্যন্ত নির্ধারিত",
+    "prayerNotificationsCoverageReminder": "সময়সূচি বাড়াতে তার আগে হুদা খুলুন।",
+    "prayerNotificationsIosReminder": "নামাজের নোটিফিকেশন সচল রাখতে মাঝে মাঝে হুদা খুলুন।",
+    "prayerNotificationsCoverageExpired": "আপনার নোটিফিকেশনের সময়সূচি শেষ হয়েছে। নবায়ন করতে আবার চেষ্টা করুন।",
+    "prayerNotificationSettingsChanged": "আপনার নামাজের নোটিফিকেশন সেটিংস বদলেছে। সময়সূচি হালনাগাদ করতে আবার চেষ্টা করুন।",
+    "prayerNotificationSyncBusy": "নামাজের নোটিফিকেশন নির্ধারণ এখন ব্যস্ত। কিছুক্ষণ পর আবার চেষ্টা করুন।",
+    "prayerNotificationSyncUnavailable": "নামাজের নোটিফিকেশন নির্ধারণ সাময়িকভাবে অনুপলব্ধ।",
+    "prayerNotificationSyncVerificationFailed": "নামাজের নোটিফিকেশনের সময়সূচি যাচাই করা যায়নি। আবার চেষ্টা করুন।"
 }

@@ -5077,4 +5077,55 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get notYet => 'এখনও নয়';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'নামাজের নোটিফিকেশনে মনোযোগ প্রয়োজন';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'নামাজের নোটিফিকেশনের সময়সূচি সম্পন্ন করা যায়নি। আপনি এখনও নামাজের সময় দেখতে পারবেন।';
+
+  @override
+  String get prayerNotificationRetry => 'আবার চেষ্টা করুন';
+
+  @override
+  String get prayerNotificationRetrying =>
+      'নামাজের নোটিফিকেশন নির্ধারণ করা হচ্ছে…';
+
+  @override
+  String get prayerNotificationsScheduledTitle => 'নামাজের নোটিফিকেশন প্রস্তুত';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return '$date পর্যন্ত নির্ধারিত';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'সময়সূচি বাড়াতে তার আগে হুদা খুলুন।';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'নামাজের নোটিফিকেশন সচল রাখতে মাঝে মাঝে হুদা খুলুন।';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'আপনার নোটিফিকেশনের সময়সূচি শেষ হয়েছে। নবায়ন করতে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'আপনার নামাজের নোটিফিকেশন সেটিংস বদলেছে। সময়সূচি হালনাগাদ করতে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'নামাজের নোটিফিকেশন নির্ধারণ এখন ব্যস্ত। কিছুক্ষণ পর আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'নামাজের নোটিফিকেশন নির্ধারণ সাময়িকভাবে অনুপলব্ধ।';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'নামাজের নোটিফিকেশনের সময়সূচি যাচাই করা যায়নি। আবার চেষ্টা করুন।';
 }

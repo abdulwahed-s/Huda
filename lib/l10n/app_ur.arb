@@ -1903,5 +1903,18 @@
     "travelTurnOnLocation": "مقام آن کریں",
     "travelAllowAllTheTime": "ہمیشہ اجازت دیں",
     "travelBackgroundPermissionInstructions": "Huda بند ہونے کے دوران نماز کے اوقات اپ ڈیٹ کرنے کے لیے، ایپ کی مقام کی اجازتیں کھولیں اور ”{optionLabel}“ منتخب کریں۔",
-    "notYet": "ابھی نہیں"
+    "notYet": "ابھی نہیں",
+    "prayerNotificationIssueTitle": "نماز کی اطلاعات پر توجہ درکار ہے",
+    "prayerNotificationIssueMessage": "نماز کی اطلاعات کا شیڈول مکمل نہیں ہو سکا۔ آپ اب بھی نماز کے اوقات دیکھ سکتے ہیں۔",
+    "prayerNotificationRetry": "دوبارہ کوشش کریں",
+    "prayerNotificationRetrying": "نماز کی اطلاعات شیڈول کی جا رہی ہیں…",
+    "prayerNotificationsScheduledTitle": "نماز کی اطلاعات تیار ہیں",
+    "prayerNotificationsScheduledUntil": "{date} تک شیڈول ہیں",
+    "prayerNotificationsCoverageReminder": "شیڈول بڑھانے کے لیے اس تاریخ سے پہلے ہدیٰ کھولیں۔",
+    "prayerNotificationsIosReminder": "نماز کی اطلاعات کو شیڈول رکھنے کے لیے وقتاً فوقتاً ہدیٰ کھولیں۔",
+    "prayerNotificationsCoverageExpired": "آپ کی اطلاعات کا شیڈول ختم ہو گیا ہے۔ تجدید کے لیے دوبارہ کوشش کریں۔",
+    "prayerNotificationSettingsChanged": "نماز کی اطلاعات کی ترتیبات بدل گئی ہیں۔ شیڈول اپ ڈیٹ کرنے کے لیے دوبارہ کوشش کریں۔",
+    "prayerNotificationSyncBusy": "نماز کی اطلاعات کی شیڈولنگ ابھی مصروف ہے۔ تھوڑی دیر بعد دوبارہ کوشش کریں۔",
+    "prayerNotificationSyncUnavailable": "نماز کی اطلاعات کی شیڈولنگ عارضی طور پر دستیاب نہیں ہے۔",
+    "prayerNotificationSyncVerificationFailed": "نماز کی اطلاعات کے شیڈول کی تصدیق نہیں ہو سکی۔ دوبارہ کوشش کریں۔"
 }

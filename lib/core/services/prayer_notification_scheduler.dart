@@ -16,6 +16,7 @@ import 'package:huda/core/services/prayer_notification_planner.dart';
 import 'package:huda/core/services/prayer_push_service.dart';
 import 'package:huda/core/services/prayer_reconciliation_state.dart';
 import 'package:huda/core/services/prayer_schedule_configuration.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:synchronized/synchronized.dart';
@@ -175,6 +176,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     required PrayerLocationGeneration target,
     required bool activatesCandidate,
     required String reason,
+    bool allowRemoteRevisionRetry = true,
   }) async {
     await cacheHelper.reload();
     final now = _now().toUtc();
@@ -360,6 +362,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         history: history,
         now: now,
         reason: reason,
+        allowRemoteRevisionRetry: allowRemoteRevisionRetry,
       );
     }
 
@@ -432,13 +435,22 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         remoteAcceptedRequestedRevision && remoteAcceptedRequestedBoundary;
     if (capacityPolicy.platform == HudaNotificationPlatform.ios &&
         !remoteAcknowledged) {
-      await _rebaseJournalAboveServerRevision(
+      final rebasedForRetry = await _rebaseJournalAboveServerRevision(
         session,
         remote.acceptedScheduleRevision,
         'remote-${remote.status.name}',
         acceptedLocationRevision: remote.acceptedLocationRevision,
         candidateLocationRevision: target.revision,
       );
+      if (rebasedForRetry && allowRemoteRevisionRetry) {
+        return _reconcileLocked(
+          session: session,
+          target: target,
+          activatesCandidate: activatesCandidate,
+          reason: reason,
+          allowRemoteRevisionRetry: false,
+        );
+      }
       journal = (session.state.journal ?? journal).copyWith(
         phase: PrayerReconciliationPhase.degraded,
         lastErrorCategory: 'remote-${remote.status.name}',
@@ -454,6 +466,15 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
             'APNs ownership was not acknowledged; the partial handoff is journaled for recovery.',
       );
     }
+    final notificationCoverageUntil = _notificationCoverageUntil(
+      target: target,
+      localEvents: desired,
+      remote: remote,
+    );
+    final notificationCoverageUntilInstant = _notificationCoverageUntilInstant(
+      localEvents: desired,
+      remote: remote,
+    );
     if (remoteAcknowledged) {
       journal = (session.state.journal ?? journal).copyWith(
         acknowledgedRemoteScheduleRevision:
@@ -504,11 +525,17 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       await session.save(
         session.state.copyWith(journal: null, occurrenceHistory: history),
       );
+      await _persistSuccess(
+        configuration.signature,
+        desired,
+        reason,
+        coverageUntilInstant: notificationCoverageUntilInstant,
+      );
       await _publishCommittedWidget(session, target, configuration.signature);
       return PrayerScheduleResult(
         status: PrayerScheduleStatus.upToDate,
         pendingCount: desired.length,
-        coverageUntil: desired.isEmpty ? null : desired.last.scheduledTime,
+        coverageUntil: notificationCoverageUntil,
       );
     }
 
@@ -637,7 +664,12 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       activatedAt: _now().toUtc(),
       publishWidget: true,
     );
-    await _persistSuccess(configuration.signature, desired, reason);
+    await _persistSuccess(
+      configuration.signature,
+      desired,
+      reason,
+      coverageUntilInstant: notificationCoverageUntilInstant,
+    );
     await _publishCommittedWidget(session, target, configuration.signature);
     return PrayerScheduleResult(
       status: scheduledCount == 0
@@ -645,7 +677,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
           : PrayerScheduleStatus.scheduled,
       scheduledCount: scheduledCount,
       pendingCount: desired.length,
-      coverageUntil: desired.isEmpty ? null : desired.last.scheduledTime,
+      coverageUntil: notificationCoverageUntil,
     );
   }
 
@@ -737,6 +769,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     required List<PrayerOccurrenceRecord> history,
     required DateTime now,
     required String reason,
+    required bool allowRemoteRevisionRetry,
   }) async {
     journal = journal.copyWith(
       phase: PrayerReconciliationPhase.transferringOwnership,
@@ -754,13 +787,22 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         (remote.acceptedLocationRevision ?? target.revision) == target.revision;
     if (capacityPolicy.platform == HudaNotificationPlatform.ios &&
         !remoteAcknowledged) {
-      await _rebaseJournalAboveServerRevision(
+      final rebasedForRetry = await _rebaseJournalAboveServerRevision(
         session,
         remote.acceptedScheduleRevision,
         'remote-disable-${remote.status.name}',
         acceptedLocationRevision: remote.acceptedLocationRevision,
         candidateLocationRevision: target.revision,
       );
+      if (rebasedForRetry && allowRemoteRevisionRetry) {
+        return _reconcileLocked(
+          session: session,
+          target: target,
+          activatesCandidate: activatesCandidate,
+          reason: reason,
+          allowRemoteRevisionRetry: false,
+        );
+      }
       await _markDegraded(session, 'remote-disable-${remote.status.name}');
       return PrayerScheduleResult(
         status: PrayerScheduleStatus.deferred,
@@ -955,7 +997,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     );
   }
 
-  Future<void> _rebaseJournalAboveServerRevision(
+  Future<bool> _rebaseJournalAboveServerRevision(
     PrayerLocationRepositorySession session,
     int? acceptedScheduleRevision,
     String category, {
@@ -963,7 +1005,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     required int candidateLocationRevision,
   }) async {
     final journal = session.state.journal;
-    if (journal == null) return;
+    if (journal == null) return false;
     if ((acceptedLocationRevision != null &&
             (acceptedLocationRevision < 0 ||
                 acceptedLocationRevision >
@@ -973,7 +1015,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
                 acceptedScheduleRevision >
                     PrayerLocationGeneration.maxSafeRevision))) {
       await _markDegraded(session, '$category-invalid-server-revision');
-      return;
+      return false;
     }
     if (acceptedLocationRevision != null &&
         acceptedLocationRevision > candidateLocationRevision) {
@@ -989,15 +1031,15 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
           ),
         ),
       );
-      return;
+      return false;
     }
     if (acceptedScheduleRevision == null ||
-        acceptedScheduleRevision <= journal.scheduleRevision) {
-      return;
+        acceptedScheduleRevision < journal.scheduleRevision) {
+      return false;
     }
     if (acceptedScheduleRevision >= PrayerLocationGeneration.maxSafeRevision) {
       await _markDegraded(session, '$category-revision-space-exhausted');
-      return;
+      return false;
     }
     final rebasedRevision = acceptedScheduleRevision + 1;
     final rebasedEvents = journal.desiredEvents
@@ -1020,6 +1062,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         ),
       ),
     );
+    return true;
   }
 
   Future<PrayerScheduleResult> _degradedResult(
@@ -1133,14 +1176,46 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     return first.toUtc().isAtSameMomentAs(second.toUtc());
   }
 
+  DateTime? _notificationCoverageUntil({
+    required PrayerLocationGeneration target,
+    required List<PrayerNotificationEvent> localEvents,
+    required PrayerPushSyncResult remote,
+  }) {
+    final remoteCoverage = remote.scheduledThroughUtc;
+    if (capacityPolicy.platform == HudaNotificationPlatform.ios &&
+        remoteCoverage != null) {
+      return PrayerTimeZoneService.wallClockAtInstant(
+        remoteCoverage,
+        target.timeZoneId,
+      );
+    }
+    return localEvents.isEmpty ? null : localEvents.last.scheduledTime;
+  }
+
+  DateTime? _notificationCoverageUntilInstant({
+    required List<PrayerNotificationEvent> localEvents,
+    required PrayerPushSyncResult remote,
+  }) {
+    if (capacityPolicy.platform == HudaNotificationPlatform.ios &&
+        remote.scheduledThroughUtc != null) {
+      return remote.scheduledThroughUtc;
+    }
+    return localEvents.isEmpty ? null : localEvents.last.scheduledInstantUtc;
+  }
+
   Future<void> _persistSuccess(
     String signature,
     List<PrayerNotificationEvent> retainedEvents,
-    String reason,
-  ) async {
-    final coverage = retainedEvents.isEmpty
-        ? null
-        : retainedEvents.last.scheduledInstantUtc.toIso8601String();
+    String reason, {
+    DateTime? coverageUntilInstant,
+  }) async {
+    final coverage =
+        (coverageUntilInstant ??
+                (retainedEvents.isEmpty
+                    ? null
+                    : retainedEvents.last.scheduledInstantUtc))
+            ?.toUtc()
+            .toIso8601String();
     try {
       await cacheHelper.saveData(key: signatureKey, value: signature);
       if (coverage == null) {

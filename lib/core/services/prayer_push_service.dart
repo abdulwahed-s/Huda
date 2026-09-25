@@ -36,6 +36,14 @@ abstract interface class PrayerPushSynchronizer {
   });
 }
 
+abstract final class PrayerPushErrorCode {
+  static const settingsChanged = 'prayer_notification_settings_changed';
+  static const busy = 'prayer_notification_sync_busy';
+  static const unavailable = 'prayer_notification_sync_unavailable';
+  static const verificationFailed =
+      'prayer_notification_sync_verification_failed';
+}
+
 enum PrayerPushSyncStatus { acknowledged, deferred, unsupported, failed }
 
 class PrayerPushSyncResult {
@@ -44,6 +52,7 @@ class PrayerPushSyncResult {
     this.acceptedScheduleRevision,
     this.acceptedLocationRevision,
     this.ownershipUntilUtc,
+    this.scheduledThroughUtc,
     this.message,
   });
 
@@ -51,6 +60,7 @@ class PrayerPushSyncResult {
   final int? acceptedScheduleRevision;
   final int? acceptedLocationRevision;
   final DateTime? ownershipUntilUtc;
+  final DateTime? scheduledThroughUtc;
   final String? message;
 
   bool get acknowledged => status == PrayerPushSyncStatus.acknowledged;
@@ -121,17 +131,19 @@ class PrayerPushService implements PrayerPushSynchronizer {
     try {
       return await _syncPendingIfPossible();
     } on _PrayerPushHttpException catch (error) {
+      debugPrint('Unable to synchronize prayer push fallback: $error');
       return PrayerPushSyncResult(
         PrayerPushSyncStatus.failed,
         acceptedScheduleRevision: error.acceptedScheduleRevision,
         acceptedLocationRevision: error.acceptedLocationRevision,
         ownershipUntilUtc: error.acknowledgedLocalCoverageUntil,
-        message: error.toString(),
+        message: error.userMessageCode,
       );
     } catch (error) {
-      return PrayerPushSyncResult(
+      debugPrint('Unable to synchronize prayer push fallback: $error');
+      return const PrayerPushSyncResult(
         PrayerPushSyncStatus.failed,
-        message: error.toString(),
+        message: PrayerPushErrorCode.verificationFailed,
       );
     }
   }
@@ -186,13 +198,13 @@ class PrayerPushService implements PrayerPushSynchronizer {
         PrayerPushSyncStatus.failed,
         acceptedScheduleRevision: error.acceptedScheduleRevision,
         acceptedLocationRevision: error.acceptedLocationRevision,
-        message: error.toString(),
+        message: error.userMessageCode,
       );
     } catch (error) {
       debugPrint('Unable to disable prayer push fallback: $error');
-      return PrayerPushSyncResult(
+      return const PrayerPushSyncResult(
         PrayerPushSyncStatus.failed,
-        message: error.toString(),
+        message: PrayerPushErrorCode.verificationFailed,
       );
     }
   }
@@ -393,12 +405,19 @@ class PrayerPushService implements PrayerPushSynchronizer {
           'Prayer push ownership boundary is invalid.',
         );
       }
+      final scheduledThrough = _strictUtcDate(response['scheduleThrough']);
+      if (scheduledThrough == null) {
+        throw const FormatException(
+          'Prayer push schedule coverage is invalid.',
+        );
+      }
 
       final result = PrayerPushSyncResult(
         PrayerPushSyncStatus.acknowledged,
         acceptedScheduleRevision: acceptedScheduleRevision,
         acceptedLocationRevision: acceptedLocationRevision,
         ownershipUntilUtc: acknowledgedBoundary,
+        scheduledThroughUtc: scheduledThrough,
       );
       final exactAcknowledgement =
           acceptedScheduleRevision == pending.scheduleRevision &&
@@ -408,7 +427,7 @@ class PrayerPushService implements PrayerPushSynchronizer {
         await cacheHelper.saveData(
           key: _lastSyncAcknowledgementKey,
           value: jsonEncode({
-            'schemaVersion': 1,
+            'schemaVersion': 2,
             'signature': syncSignature,
             'synchronizedAtUtc': _now().toUtc().toIso8601String(),
             'acceptedScheduleRevision': acceptedScheduleRevision,
@@ -416,6 +435,7 @@ class PrayerPushService implements PrayerPushSynchronizer {
             'acknowledgedLocalCoverageUntil': acknowledgedBoundary
                 ?.toUtc()
                 .toIso8601String(),
+            'scheduledThroughUtc': scheduledThrough.toIso8601String(),
           }),
         );
         if (identical(_pendingSync, pending)) _pendingSync = null;
@@ -440,7 +460,7 @@ class PrayerPushService implements PrayerPushSynchronizer {
     try {
       final decoded = jsonDecode(encoded);
       if (decoded is! Map ||
-          decoded['schemaVersion'] != 1 ||
+          decoded['schemaVersion'] != 2 ||
           decoded['signature'] != expectedSignature ||
           !decoded.containsKey('acknowledgedLocalCoverageUntil')) {
         return null;
@@ -454,9 +474,11 @@ class PrayerPushService implements PrayerPushSynchronizer {
       );
       final rawBoundary = decoded['acknowledgedLocalCoverageUntil'];
       final boundary = rawBoundary == null ? null : _strictUtcDate(rawBoundary);
+      final scheduledThrough = _strictUtcDate(decoded['scheduledThroughUtc']);
       if (synchronizedAt == null ||
           acceptedScheduleRevision == null ||
           acceptedLocationRevision == null ||
+          scheduledThrough == null ||
           (rawBoundary != null && boundary == null)) {
         return null;
       }
@@ -471,6 +493,7 @@ class PrayerPushService implements PrayerPushSynchronizer {
         acceptedScheduleRevision: acceptedScheduleRevision,
         acceptedLocationRevision: acceptedLocationRevision,
         ownershipUntilUtc: boundary,
+        scheduledThroughUtc: scheduledThrough,
       );
     } catch (_) {
       return null;
@@ -568,6 +591,18 @@ class _PrayerPushHttpException implements Exception {
   DateTime? get acknowledgedLocalCoverageUntil =>
       _strictUtcDate(response['acknowledgedLocalCoverageUntil']);
 
+  String get userMessageCode {
+    switch (response['error']) {
+      case 'revision_conflict':
+      case 'stale_revision':
+        return PrayerPushErrorCode.settingsChanged;
+      case 'rate_limited':
+        return PrayerPushErrorCode.busy;
+      default:
+        return PrayerPushErrorCode.unavailable;
+    }
+  }
+
   @override
   String toString() {
     final boundedBody = responseBody.length > 240
@@ -610,7 +645,9 @@ int? _validRevision(Object? value) {
 }
 
 DateTime? _strictUtcDate(Object? value) {
-  if (value is! String || !value.endsWith('Z')) return null;
+  if (value is! String || !RegExp(r'(?:Z|\+00(?::?00)?)$').hasMatch(value)) {
+    return null;
+  }
   final parsed = DateTime.tryParse(value);
   return parsed != null && parsed.isUtc ? parsed : null;
 }

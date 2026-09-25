@@ -5170,4 +5170,56 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get notYet => 'Pas encore';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Les notifications de prière nécessitent votre attention';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'La programmation des notifications de prière n’a pas pu être terminée. Les horaires de prière restent disponibles.';
+
+  @override
+  String get prayerNotificationRetry => 'Réessayer';
+
+  @override
+  String get prayerNotificationRetrying =>
+      'Programmation des notifications de prière…';
+
+  @override
+  String get prayerNotificationsScheduledTitle =>
+      'Les notifications de prière sont prêtes';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return 'Programmées jusqu’au $date';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'Ouvrez Huda avant cette date pour prolonger la programmation.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'Ouvrez Huda de temps en temps afin que vos notifications de prière restent programmées.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'La programmation de vos notifications est terminée. Touchez Réessayer pour la renouveler.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'Les réglages de vos notifications de prière ont changé. Touchez Réessayer pour actualiser la programmation.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'La programmation des notifications de prière est occupée pour le moment. Réessayez dans quelques instants.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'La programmation des notifications de prière est temporairement indisponible.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'La programmation des notifications de prière n’a pas pu être vérifiée. Réessayez.';
 }

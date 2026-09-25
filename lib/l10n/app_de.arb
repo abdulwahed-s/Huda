@@ -1864,5 +1864,18 @@
     "travelTurnOnLocation": "Standort aktivieren",
     "travelAllowAllTheTime": "Immer zulassen",
     "travelBackgroundPermissionInstructions": "Damit die Gebetszeiten aktualisiert werden, während Huda geschlossen ist, öffne die Standortberechtigungen der App und wähle „{optionLabel}“.",
-    "notYet": "Noch nicht"
+    "notYet": "Noch nicht",
+    "prayerNotificationIssueTitle": "Gebetsbenachrichtigungen benötigen Aufmerksamkeit",
+    "prayerNotificationIssueMessage": "Die Gebetsbenachrichtigungen konnten nicht vollständig geplant werden. Die Gebetszeiten bleiben verfügbar.",
+    "prayerNotificationRetry": "Erneut versuchen",
+    "prayerNotificationRetrying": "Gebetsbenachrichtigungen werden geplant…",
+    "prayerNotificationsScheduledTitle": "Gebetsbenachrichtigungen sind bereit",
+    "prayerNotificationsScheduledUntil": "Geplant bis {date}",
+    "prayerNotificationsCoverageReminder": "Öffne Huda vorher, um den Zeitplan zu verlängern.",
+    "prayerNotificationsIosReminder": "Öffne Huda gelegentlich, damit deine Gebetsbenachrichtigungen weiterhin geplant bleiben.",
+    "prayerNotificationsCoverageExpired": "Dein Benachrichtigungszeitplan ist abgelaufen. Tippe auf „Erneut versuchen“, um ihn zu erneuern.",
+    "prayerNotificationSettingsChanged": "Deine Einstellungen für Gebetsbenachrichtigungen haben sich geändert. Versuche es erneut, um den Zeitplan zu aktualisieren.",
+    "prayerNotificationSyncBusy": "Die Planung der Gebetsbenachrichtigungen ist gerade ausgelastet. Bitte versuche es gleich noch einmal.",
+    "prayerNotificationSyncUnavailable": "Die Planung der Gebetsbenachrichtigungen ist vorübergehend nicht verfügbar.",
+    "prayerNotificationSyncVerificationFailed": "Der Zeitplan der Gebetsbenachrichtigungen konnte nicht überprüft werden. Bitte versuche es erneut."
 }

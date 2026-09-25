@@ -10,6 +10,8 @@ import 'package:huda/core/services/get_current_location.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/core/services/prayer_notification_models.dart';
+import 'package:huda/core/services/prayer_push_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/prayer_moment_resolver.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
@@ -90,6 +92,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   PrayerLocationMode _locationMode = PrayerLocationMode.automatic;
   bool _automaticLocationRefreshInProgress = false;
   CustomPrayerAngles _customAngles = CustomPrayerAngles.defaults;
+  PrayerScheduleResult? _notificationScheduleResult;
+  bool _notificationScheduleRetrying = false;
 
   Map<String, int> get prayerOffsets => Map.unmodifiable(_prayerOffsets);
   String get calculationMethodToken => _methodToken;
@@ -130,6 +134,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
        super(PrayerTimesInitial()) {
     _loadOffsets();
     _loadSettings();
+    _restoreNotificationScheduleProjection();
   }
 
   PrayerLocationCoordinator? get _coordinator {
@@ -155,6 +160,58 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         );
       },
     );
+  }
+
+  void _restoreNotificationScheduleProjection() {
+    final rawCoverage = cacheHelper.getDataString(
+      key: PrayerNotificationScheduler.coverageKey,
+    );
+    final coverage = DateTime.tryParse(rawCoverage ?? '');
+    if (coverage == null) return;
+    _notificationScheduleResult = PrayerScheduleResult(
+      status: coverage.isAfter(DateTime.now())
+          ? PrayerScheduleStatus.upToDate
+          : PrayerScheduleStatus.deferred,
+      coverageUntil: coverage,
+    );
+  }
+
+  PrayerTimesLoaded _loadedState(
+    DailyPrayerTimes prayerTimes,
+    List<Placemark> placemarks,
+  ) {
+    return PrayerTimesLoaded(
+      prayerTimes,
+      placemarks,
+      offsets: _prayerOffsets,
+      notificationSchedule: _notificationScheduleResult,
+      notificationScheduleRetrying: _notificationScheduleRetrying,
+    );
+  }
+
+  void _publishNotificationSchedule(
+    PrayerScheduleResult result, {
+    bool retrying = false,
+  }) {
+    _notificationScheduleResult = result;
+    _notificationScheduleRetrying = retrying;
+    final current = state;
+    if (current is PrayerTimesLoaded) {
+      emit(
+        current.copyWith(
+          notificationSchedule: result,
+          notificationScheduleRetrying: retrying,
+        ),
+      );
+    }
+  }
+
+  void _setNotificationScheduleRetrying(bool retrying) {
+    _notificationScheduleRetrying = retrying;
+    final current = state;
+    if (current is PrayerTimesLoaded) {
+      emit(current.copyWith(notificationScheduleRetrying: retrying));
+    }
   }
 
   void _loadOffsets() {
@@ -320,13 +377,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     _prayerOffsets = sanitized;
     if (state is PrayerTimesLoaded) {
       final current = state as PrayerTimesLoaded;
-      emit(
-        PrayerTimesLoaded(
-          current.prayerTimes,
-          current.placemarks,
-          offsets: _prayerOffsets,
-        ),
-      );
+      emit(current.copyWith(offsets: _prayerOffsets));
     }
     if (_coordinator == null) await PrayerWidgetService.pushSettings();
     await _reconcilePrayerNotifications('offsets-changed', force: true);
@@ -375,7 +426,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         coordinates,
         _prayerCivilDate(DateTime.now()),
       );
-      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      emit(_loadedState(prayerTimes, placemarks));
     }
 
     if (_coordinator == null) await PrayerWidgetService.pushSettings();
@@ -468,23 +519,36 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   Future<void> refreshNotificationSchedule() async {
     await _reconcilePrayerNotifications(
-      'notification-permission-granted',
+      'notification-schedule-retry',
       force: true,
     );
   }
 
-  Future<void> _reconcilePrayerNotifications(
+  Future<PrayerScheduleResult> _reconcilePrayerNotifications(
     String reason, {
     bool force = false,
   }) async {
-    final result = await _notificationScheduler.reconcile(
-      reason: reason,
-      force: force,
-    );
-    debugPrint(
-      'Prayer notification status: ${result.status.name}; '
-      'pending=${result.pendingCount}; coverage=${result.coverageUntil}',
-    );
+    _setNotificationScheduleRetrying(true);
+    try {
+      final result = await _notificationScheduler.reconcile(
+        reason: reason,
+        force: force,
+      );
+      debugPrint(
+        'Prayer notification status: ${result.status.name}; '
+        'pending=${result.pendingCount}; coverage=${result.coverageUntil}',
+      );
+      _publishNotificationSchedule(result);
+      return result;
+    } catch (error) {
+      debugPrint('Could not update prayer notifications: $error');
+      const result = PrayerScheduleResult(
+        status: PrayerScheduleStatus.failed,
+        message: PrayerPushErrorCode.unavailable,
+      );
+      _publishNotificationSchedule(result);
+      return result;
+    }
   }
 
   Future<void> loadPrayerTimes() async {
@@ -502,11 +566,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           reason: 'initial-device-location',
           explicitUserAction: true,
         );
-        if (!result.activated) {
-          throw StateError(
-            result.message ?? 'Could not activate the prayer location.',
-          );
-        }
         await _renderCoordinatorResult(result);
         return;
       }
@@ -557,7 +616,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         _prayerCivilDate(DateTime.now()),
       );
 
-      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      emit(_loadedState(prayerTimes, placemarks));
       await _syncLoadedPrayerTimes('location-loaded');
     } catch (e) {
       _emitLocationFailure(e);
@@ -589,7 +648,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       final placemarks = currentPlacemarks.isNotEmpty
           ? currentPlacemarks
           : _cachedPlacemarks();
-      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      emit(_loadedState(prayerTimes, placemarks));
     } catch (error) {
       emit(PrayerTimesError(error.toString()));
     }
@@ -679,7 +738,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         countryCode: country,
       );
 
-      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      emit(_loadedState(prayerTimes, placemarks));
       await _syncLoadedPrayerTimes('manual-location-changed');
     } catch (e) {
       emit(PrayerTimesError(e.toString()));
@@ -734,7 +793,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         _prayerCivilDate(DateTime.now()),
       );
 
-      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      emit(_loadedState(prayerTimes, placemarks));
       await _syncLoadedPrayerTimes('device-location-changed');
     } catch (e) {
       if (previousPrayerTimes != null) {
@@ -782,7 +841,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         if (_isSuccessfulLocationValidation(result)) {
           await _recordSuccessfulLocationValidation(checkTime);
         }
-        if (result.activated) {
+        if (result.activated || result.scheduleResult != null) {
           await _renderCoordinatorResult(result);
         } else if (result.status ==
             PrayerLocationUpdateStatus.ignoredInsignificant) {
@@ -847,7 +906,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         _prayerCivilDate(checkTime),
         countryCode: countryCode,
       );
-      emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
+      emit(_loadedState(prayerTimes, placemarks));
       await _syncLoadedPrayerTimes('automatic-travel-location-changed');
       await _recordSuccessfulLocationValidation(checkTime);
     } catch (error) {
@@ -871,7 +930,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     if (_isSuccessfulLocationValidation(result)) {
       await _recordSuccessfulLocationValidation(DateTime.now());
     }
-    if (result.activated) await _renderCoordinatorResult(result);
+    if (result.activated || result.scheduleResult != null) {
+      await _renderCoordinatorResult(result);
+    }
   }
 
   Future<void> consumeQueuedNativeLocationCandidate() async {
@@ -948,7 +1009,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       if (_isSuccessfulLocationValidation(result)) {
         await _recordSuccessfulLocationValidation(DateTime.now());
       }
-      if (result.activated) await _renderCoordinatorResult(result);
+      if (result.activated || result.scheduleResult != null) {
+        await _renderCoordinatorResult(result);
+      }
       final latest = cacheHelper.getDataString(key: key);
       if (latest == raw && !_retryableNativeCandidate(result.status)) {
         await cacheHelper.removeData(key: key);
@@ -995,10 +1058,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final loaded = state as PrayerTimesLoaded;
     final cachedPlacemarks = _cachedPlacemarks();
     emit(
-      PrayerTimesLoaded(
+      _loadedState(
         _computeWithSettings(coordinates, _prayerCivilDate(now)),
         cachedPlacemarks.isEmpty ? loaded.placemarks : cachedPlacemarks,
-        offsets: _prayerOffsets,
       ),
     );
   }
@@ -1052,7 +1114,15 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     PrayerLocationUpdateResult result, {
     PrayerTimesLoaded? previous,
   }) async {
-    if (!result.activated) {
+    final scheduleResult = result.scheduleResult;
+    if (scheduleResult != null) {
+      _notificationScheduleResult = scheduleResult;
+      _notificationScheduleRetrying = false;
+    }
+    final generation = result.generation;
+    final canRenderDespiteSchedulingIssue =
+        generation != null && scheduleResult != null;
+    if (!result.activated && !canRenderDespiteSchedulingIssue) {
       if (previous != null) {
         emit(previous);
       } else {
@@ -1068,9 +1138,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     await cacheHelper.reload();
     _loadSettings();
     _loadOffsets();
-    final generation = result.generation;
     if (generation != null) {
       _locationMode = generation.mode;
+      _prayerTimeZoneId = generation.timeZoneId;
     }
     final coordinates = generation == null
         ? PrayerTimesCalculator.coordinatesFromCache(cacheHelper)
@@ -1096,8 +1166,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       _prayerCivilDate(DateTime.now()),
       countryCode: generation?.countryCode,
     );
-    emit(PrayerTimesLoaded(prayerTimes, placemarks, offsets: _prayerOffsets));
-    await _locationMonitor?.sync(_locationMode);
+    emit(_loadedState(prayerTimes, placemarks));
+    if (result.activated) {
+      await _locationMonitor?.sync(_locationMode);
+    }
   }
 
   void _emitLocationFailure(Object error) {

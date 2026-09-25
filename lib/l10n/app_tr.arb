@@ -1887,5 +1887,18 @@
     "travelTurnOnLocation": "Konumu aç",
     "travelAllowAllTheTime": "Her zaman izin ver",
     "travelBackgroundPermissionInstructions": "Huda kapalıyken namaz vakitlerini güncellemek için uygulamanın konum izinlerini açın ve “{optionLabel}” seçeneğini belirleyin.",
-    "notYet": "Henüz değil"
+    "notYet": "Henüz değil",
+    "prayerNotificationIssueTitle": "Namaz bildirimleriyle ilgilenmeniz gerekiyor",
+    "prayerNotificationIssueMessage": "Namaz bildirimlerinin planlaması tamamlanamadı. Namaz vakitlerini görmeye devam edebilirsiniz.",
+    "prayerNotificationRetry": "Tekrar dene",
+    "prayerNotificationRetrying": "Namaz bildirimleri planlanıyor…",
+    "prayerNotificationsScheduledTitle": "Namaz bildirimleri hazır",
+    "prayerNotificationsScheduledUntil": "{date} tarihine kadar planlandı",
+    "prayerNotificationsCoverageReminder": "Planı uzatmak için bu tarihten önce Huda’yı açın.",
+    "prayerNotificationsIosReminder": "Namaz bildirimlerinin planlı kalması için Huda’yı ara sıra açın.",
+    "prayerNotificationsCoverageExpired": "Bildirim planınız sona erdi. Yenilemek için tekrar deneyin.",
+    "prayerNotificationSettingsChanged": "Namaz bildirimi ayarlarınız değişti. Planı güncellemek için tekrar deneyin.",
+    "prayerNotificationSyncBusy": "Namaz bildirimlerini planlama hizmeti şu anda meşgul. Lütfen biraz sonra tekrar deneyin.",
+    "prayerNotificationSyncUnavailable": "Namaz bildirimlerini planlama hizmeti geçici olarak kullanılamıyor.",
+    "prayerNotificationSyncVerificationFailed": "Namaz bildirimi planı doğrulanamadı. Lütfen tekrar deneyin."
 }

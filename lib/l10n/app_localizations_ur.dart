@@ -5067,4 +5067,54 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get notYet => 'ابھی نہیں';
+
+  @override
+  String get prayerNotificationIssueTitle => 'نماز کی اطلاعات پر توجہ درکار ہے';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'نماز کی اطلاعات کا شیڈول مکمل نہیں ہو سکا۔ آپ اب بھی نماز کے اوقات دیکھ سکتے ہیں۔';
+
+  @override
+  String get prayerNotificationRetry => 'دوبارہ کوشش کریں';
+
+  @override
+  String get prayerNotificationRetrying =>
+      'نماز کی اطلاعات شیڈول کی جا رہی ہیں…';
+
+  @override
+  String get prayerNotificationsScheduledTitle => 'نماز کی اطلاعات تیار ہیں';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return '$date تک شیڈول ہیں';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'شیڈول بڑھانے کے لیے اس تاریخ سے پہلے ہدیٰ کھولیں۔';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'نماز کی اطلاعات کو شیڈول رکھنے کے لیے وقتاً فوقتاً ہدیٰ کھولیں۔';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'آپ کی اطلاعات کا شیڈول ختم ہو گیا ہے۔ تجدید کے لیے دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'نماز کی اطلاعات کی ترتیبات بدل گئی ہیں۔ شیڈول اپ ڈیٹ کرنے کے لیے دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'نماز کی اطلاعات کی شیڈولنگ ابھی مصروف ہے۔ تھوڑی دیر بعد دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'نماز کی اطلاعات کی شیڈولنگ عارضی طور پر دستیاب نہیں ہے۔';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'نماز کی اطلاعات کے شیڈول کی تصدیق نہیں ہو سکی۔ دوبارہ کوشش کریں۔';
 }

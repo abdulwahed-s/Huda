@@ -2393,5 +2393,18 @@
     "travelTurnOnLocation": "تشغيل الموقع",
     "travelAllowAllTheTime": "السماح طوال الوقت",
     "travelBackgroundPermissionInstructions": "لتحديث أوقات الصلاة أثناء إغلاق هدى، افتح أذونات الموقع للتطبيق واختر «{optionLabel}».",
-    "notYet": "ليس بعد"
+    "notYet": "ليس بعد",
+    "prayerNotificationIssueTitle": "تنبيهات الصلاة تحتاج إلى انتباه",
+    "prayerNotificationIssueMessage": "تعذّر إكمال جدولة تنبيهات الصلاة. لا يزال بإمكانك عرض مواقيت الصلاة.",
+    "prayerNotificationRetry": "إعادة المحاولة",
+    "prayerNotificationRetrying": "جارٍ جدولة تنبيهات الصلاة…",
+    "prayerNotificationsScheduledTitle": "تنبيهات الصلاة جاهزة",
+    "prayerNotificationsScheduledUntil": "مجدولة حتى {date}",
+    "prayerNotificationsCoverageReminder": "افتح هدى قبل ذلك لتمديد جدول التنبيهات.",
+    "prayerNotificationsIosReminder": "افتح هدى من حين لآخر لنواصل جدولة تنبيهات الصلاة.",
+    "prayerNotificationsCoverageExpired": "انتهت مدة جدول تنبيهاتك. اضغط لإعادة الجدولة.",
+    "prayerNotificationSettingsChanged": "تغيّرت إعدادات تنبيهات الصلاة. اضغط لإعادة المحاولة وتحديث الجدول.",
+    "prayerNotificationSyncBusy": "خدمة جدولة تنبيهات الصلاة مشغولة الآن. حاول مرة أخرى بعد قليل.",
+    "prayerNotificationSyncUnavailable": "جدولة تنبيهات الصلاة غير متاحة مؤقتًا.",
+    "prayerNotificationSyncVerificationFailed": "تعذّر التحقق من جدول تنبيهات الصلاة. حاول مرة أخرى."
 }

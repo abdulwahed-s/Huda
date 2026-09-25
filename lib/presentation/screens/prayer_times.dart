@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +8,7 @@ import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/presentation/widgets/prayer_times/persistent_prayer_countdown_control_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/next_prayer_countdown_card_widget.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_notification_schedule_banner.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_card_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_error_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_loading_widget.dart';
@@ -52,8 +55,11 @@ class _PrayerTimesState extends State<PrayerTimes> {
     if (!mounted) return;
     _prayerTimesCubit.loadCachedPrayerTimes();
     final state = _prayerTimesCubit.state;
-    if (state is PrayerTimesLoaded ||
-        state is PrayerTimesLoading ||
+    if (state is PrayerTimesLoaded) {
+      unawaited(_prayerTimesCubit.refreshNotificationSchedule());
+      return;
+    }
+    if (state is PrayerTimesLoading ||
         state is PrayerTimesLocationDenied ||
         state is PrayerTimesLocationPermanentlyDenied ||
         state is PrayerTimesLocationServiceDisabled ||
@@ -110,16 +116,16 @@ class _PrayerTimesState extends State<PrayerTimes> {
                   child: Center(
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 640),
-                      child: Column(
-                        children: [
-                          NotificationRequirementsSection(
-                            feature: NotificationFeature.prayerTimes,
-                            onNotificationEnabled:
-                                _prayerTimesCubit.refreshNotificationSchedule,
-                            bottomSpacing: 12.h,
-                          ),
-                          BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
-                            builder: (context, state) => AnimatedSwitcher(
+                      child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+                        builder: (context, state) => Column(
+                          children: [
+                            NotificationRequirementsSection(
+                              feature: NotificationFeature.prayerTimes,
+                              onNotificationEnabled:
+                                  _prayerTimesCubit.refreshNotificationSchedule,
+                              bottomSpacing: 12.h,
+                            ),
+                            AnimatedSwitcher(
                               duration: const Duration(milliseconds: 280),
                               switchInCurve: Curves.easeOutCubic,
                               switchOutCurve: Curves.easeInCubic,
@@ -128,8 +134,8 @@ class _PrayerTimesState extends State<PrayerTimes> {
                                 child: _buildStateContent(context, state),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -156,6 +162,10 @@ class _PrayerTimesState extends State<PrayerTimes> {
             isDark: Theme.of(context).brightness == Brightness.dark,
           ),
           PrayerTimesCardWidget(state: state),
+          PrayerNotificationScheduleBanner(
+            state: state,
+            onRetry: _prayerTimesCubit.refreshNotificationSchedule,
+          ),
           PrayerTravelSettingsCard(
             locationMode: _prayerTimesCubit.locationMode,
           ),

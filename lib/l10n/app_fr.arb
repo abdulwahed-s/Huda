@@ -1891,5 +1891,18 @@
     "travelTurnOnLocation": "Activer la localisation",
     "travelAllowAllTheTime": "Toujours autoriser",
     "travelBackgroundPermissionInstructions": "Pour actualiser les horaires de prière lorsque Huda est fermée, ouvrez les autorisations de localisation de l’application et sélectionnez « {optionLabel} ».",
-    "notYet": "Pas encore"
+    "notYet": "Pas encore",
+    "prayerNotificationIssueTitle": "Les notifications de prière nécessitent votre attention",
+    "prayerNotificationIssueMessage": "La programmation des notifications de prière n’a pas pu être terminée. Les horaires de prière restent disponibles.",
+    "prayerNotificationRetry": "Réessayer",
+    "prayerNotificationRetrying": "Programmation des notifications de prière…",
+    "prayerNotificationsScheduledTitle": "Les notifications de prière sont prêtes",
+    "prayerNotificationsScheduledUntil": "Programmées jusqu’au {date}",
+    "prayerNotificationsCoverageReminder": "Ouvrez Huda avant cette date pour prolonger la programmation.",
+    "prayerNotificationsIosReminder": "Ouvrez Huda de temps en temps afin que vos notifications de prière restent programmées.",
+    "prayerNotificationsCoverageExpired": "La programmation de vos notifications est terminée. Touchez Réessayer pour la renouveler.",
+    "prayerNotificationSettingsChanged": "Les réglages de vos notifications de prière ont changé. Touchez Réessayer pour actualiser la programmation.",
+    "prayerNotificationSyncBusy": "La programmation des notifications de prière est occupée pour le moment. Réessayez dans quelques instants.",
+    "prayerNotificationSyncUnavailable": "La programmation des notifications de prière est temporairement indisponible.",
+    "prayerNotificationSyncVerificationFailed": "La programmation des notifications de prière n’a pas pu être vérifiée. Réessayez."
 }

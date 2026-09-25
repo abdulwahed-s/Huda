@@ -259,6 +259,10 @@ class PrayerLocationCoordinator {
       return PrayerLocationUpdateResult(
         PrayerLocationUpdateStatus.failed,
         generation: candidate,
+        scheduleResult: PrayerScheduleResult(
+          status: PrayerScheduleStatus.failed,
+          message: error.toString(),
+        ),
         message: error.toString(),
       );
     }

@@ -1977,5 +1977,18 @@
     "travelTurnOnLocation": "Hidupkan lokasi",
     "travelAllowAllTheTime": "Benarkan sepanjang masa",
     "travelBackgroundPermissionInstructions": "Untuk mengemas kini waktu solat semasa Huda ditutup, buka kebenaran lokasi aplikasi dan pilih “{optionLabel}”.",
-    "notYet": "Belum lagi"
+    "notYet": "Belum lagi",
+    "prayerNotificationIssueTitle": "Pemberitahuan solat memerlukan perhatian",
+    "prayerNotificationIssueMessage": "Kami tidak dapat melengkapkan jadual pemberitahuan solat. Waktu solat anda masih boleh dilihat.",
+    "prayerNotificationRetry": "Cuba lagi",
+    "prayerNotificationRetrying": "Menjadualkan pemberitahuan solat…",
+    "prayerNotificationsScheduledTitle": "Pemberitahuan solat sudah sedia",
+    "prayerNotificationsScheduledUntil": "Dijadualkan hingga {date}",
+    "prayerNotificationsCoverageReminder": "Buka Huda sebelum tarikh itu untuk melanjutkan jadual.",
+    "prayerNotificationsIosReminder": "Buka Huda sekali-sekala supaya pemberitahuan solat anda kekal dijadualkan.",
+    "prayerNotificationsCoverageExpired": "Jadual pemberitahuan anda telah tamat. Ketik cuba lagi untuk memperbaharuinya.",
+    "prayerNotificationSettingsChanged": "Tetapan pemberitahuan solat anda telah berubah. Ketik cuba lagi untuk mengemas kini jadual.",
+    "prayerNotificationSyncBusy": "Penjadualan pemberitahuan solat sedang sibuk. Cuba lagi sebentar lagi.",
+    "prayerNotificationSyncUnavailable": "Penjadualan pemberitahuan solat tidak tersedia buat sementara waktu.",
+    "prayerNotificationSyncVerificationFailed": "Kami tidak dapat mengesahkan jadual pemberitahuan solat. Cuba lagi."
 }

@@ -5008,4 +5008,53 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notYet => 'ليس بعد';
+
+  @override
+  String get prayerNotificationIssueTitle => 'تنبيهات الصلاة تحتاج إلى انتباه';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'تعذّر إكمال جدولة تنبيهات الصلاة. لا يزال بإمكانك عرض مواقيت الصلاة.';
+
+  @override
+  String get prayerNotificationRetry => 'إعادة المحاولة';
+
+  @override
+  String get prayerNotificationRetrying => 'جارٍ جدولة تنبيهات الصلاة…';
+
+  @override
+  String get prayerNotificationsScheduledTitle => 'تنبيهات الصلاة جاهزة';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return 'مجدولة حتى $date';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'افتح هدى قبل ذلك لتمديد جدول التنبيهات.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'افتح هدى من حين لآخر لنواصل جدولة تنبيهات الصلاة.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'انتهت مدة جدول تنبيهاتك. اضغط لإعادة الجدولة.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'تغيّرت إعدادات تنبيهات الصلاة. اضغط لإعادة المحاولة وتحديث الجدول.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'خدمة جدولة تنبيهات الصلاة مشغولة الآن. حاول مرة أخرى بعد قليل.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'جدولة تنبيهات الصلاة غير متاحة مؤقتًا.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'تعذّر التحقق من جدول تنبيهات الصلاة. حاول مرة أخرى.';
 }

@@ -5518,5 +5518,25 @@
             }
         }
     },
-    "notYet": "Not yet"
+    "notYet": "Not yet",
+    "prayerNotificationIssueTitle": "Prayer notifications need attention",
+    "prayerNotificationIssueMessage": "We couldn't finish scheduling your prayer notifications. Your prayer times are still available.",
+    "prayerNotificationRetry": "Retry",
+    "prayerNotificationRetrying": "Scheduling prayer notifications…",
+    "prayerNotificationsScheduledTitle": "Prayer notifications are ready",
+    "prayerNotificationsScheduledUntil": "Scheduled through {date}",
+    "@prayerNotificationsScheduledUntil": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "prayerNotificationsCoverageReminder": "Open Huda before then to extend the schedule.",
+    "prayerNotificationsIosReminder": "Open Huda occasionally so we can keep your prayer notifications scheduled.",
+    "prayerNotificationsCoverageExpired": "Your notification schedule has ended. Tap retry to renew it.",
+    "prayerNotificationSettingsChanged": "Your prayer notification settings changed. Tap retry to update the schedule.",
+    "prayerNotificationSyncBusy": "Prayer notification scheduling is busy right now. Please try again shortly.",
+    "prayerNotificationSyncUnavailable": "Prayer notification scheduling is temporarily unavailable.",
+    "prayerNotificationSyncVerificationFailed": "We couldn't verify the prayer notification schedule. Please try again."
 }

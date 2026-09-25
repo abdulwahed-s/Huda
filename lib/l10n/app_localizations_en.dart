@@ -5070,4 +5070,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notYet => 'Not yet';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Prayer notifications need attention';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'We couldn\'t finish scheduling your prayer notifications. Your prayer times are still available.';
+
+  @override
+  String get prayerNotificationRetry => 'Retry';
+
+  @override
+  String get prayerNotificationRetrying => 'Scheduling prayer notifications…';
+
+  @override
+  String get prayerNotificationsScheduledTitle =>
+      'Prayer notifications are ready';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return 'Scheduled through $date';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'Open Huda before then to extend the schedule.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'Open Huda occasionally so we can keep your prayer notifications scheduled.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'Your notification schedule has ended. Tap retry to renew it.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'Your prayer notification settings changed. Tap retry to update the schedule.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'Prayer notification scheduling is busy right now. Please try again shortly.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'Prayer notification scheduling is temporarily unavailable.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'We couldn\'t verify the prayer notification schedule. Please try again.';
 }

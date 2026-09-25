@@ -5084,4 +5084,55 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get notYet => 'Belum lagi';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Pemberitahuan solat memerlukan perhatian';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'Kami tidak dapat melengkapkan jadual pemberitahuan solat. Waktu solat anda masih boleh dilihat.';
+
+  @override
+  String get prayerNotificationRetry => 'Cuba lagi';
+
+  @override
+  String get prayerNotificationRetrying => 'Menjadualkan pemberitahuan solat…';
+
+  @override
+  String get prayerNotificationsScheduledTitle =>
+      'Pemberitahuan solat sudah sedia';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return 'Dijadualkan hingga $date';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'Buka Huda sebelum tarikh itu untuk melanjutkan jadual.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'Buka Huda sekali-sekala supaya pemberitahuan solat anda kekal dijadualkan.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'Jadual pemberitahuan anda telah tamat. Ketik cuba lagi untuk memperbaharuinya.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'Tetapan pemberitahuan solat anda telah berubah. Ketik cuba lagi untuk mengemas kini jadual.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'Penjadualan pemberitahuan solat sedang sibuk. Cuba lagi sebentar lagi.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'Penjadualan pemberitahuan solat tidak tersedia buat sementara waktu.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'Kami tidak dapat mengesahkan jadual pemberitahuan solat. Cuba lagi.';
 }

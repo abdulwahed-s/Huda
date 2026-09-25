@@ -9265,6 +9265,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not yet'**
   String get notYet;
+
+  /// No description provided for @prayerNotificationIssueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications need attention'**
+  String get prayerNotificationIssueTitle;
+
+  /// No description provided for @prayerNotificationIssueMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t finish scheduling your prayer notifications. Your prayer times are still available.'**
+  String get prayerNotificationIssueMessage;
+
+  /// No description provided for @prayerNotificationRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get prayerNotificationRetry;
+
+  /// No description provided for @prayerNotificationRetrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling prayer notifications…'**
+  String get prayerNotificationRetrying;
+
+  /// No description provided for @prayerNotificationsScheduledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications are ready'**
+  String get prayerNotificationsScheduledTitle;
+
+  /// No description provided for @prayerNotificationsScheduledUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled through {date}'**
+  String prayerNotificationsScheduledUntil(String date);
+
+  /// No description provided for @prayerNotificationsCoverageReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda before then to extend the schedule.'**
+  String get prayerNotificationsCoverageReminder;
+
+  /// No description provided for @prayerNotificationsIosReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda occasionally so we can keep your prayer notifications scheduled.'**
+  String get prayerNotificationsIosReminder;
+
+  /// No description provided for @prayerNotificationsCoverageExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your notification schedule has ended. Tap retry to renew it.'**
+  String get prayerNotificationsCoverageExpired;
+
+  /// No description provided for @prayerNotificationSettingsChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Your prayer notification settings changed. Tap retry to update the schedule.'**
+  String get prayerNotificationSettingsChanged;
+
+  /// No description provided for @prayerNotificationSyncBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notification scheduling is busy right now. Please try again shortly.'**
+  String get prayerNotificationSyncBusy;
+
+  /// No description provided for @prayerNotificationSyncUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notification scheduling is temporarily unavailable.'**
+  String get prayerNotificationSyncUnavailable;
+
+  /// No description provided for @prayerNotificationSyncVerificationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t verify the prayer notification schedule. Please try again.'**
+  String get prayerNotificationSyncVerificationFailed;
 }
 
 class _AppLocalizationsDelegate

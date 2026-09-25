@@ -5105,4 +5105,55 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get notYet => 'Ещё нет';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Уведомления о молитве требуют внимания';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'Не удалось завершить расписание уведомлений о молитве. Время молитв по-прежнему доступно.';
+
+  @override
+  String get prayerNotificationRetry => 'Повторить';
+
+  @override
+  String get prayerNotificationRetrying => 'Планируем уведомления о молитве…';
+
+  @override
+  String get prayerNotificationsScheduledTitle =>
+      'Уведомления о молитве готовы';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return 'Запланировано до $date';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'Откройте Huda до этой даты, чтобы продлить расписание.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'Время от времени открывайте Huda, чтобы уведомления о молитве оставались запланированными.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'Срок расписания уведомлений истёк. Нажмите «Повторить», чтобы обновить его.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'Настройки уведомлений о молитве изменились. Нажмите «Повторить», чтобы обновить расписание.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'Сервис планирования уведомлений о молитве сейчас занят. Повторите попытку немного позже.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'Планирование уведомлений о молитве временно недоступно.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'Не удалось проверить расписание уведомлений о молитве. Повторите попытку.';
 }

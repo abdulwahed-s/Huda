@@ -1903,5 +1903,18 @@
     "travelTurnOnLocation": "Activar ubicación",
     "travelAllowAllTheTime": "Permitir siempre",
     "travelBackgroundPermissionInstructions": "Para actualizar los horarios de oración mientras Huda está cerrada, abre los permisos de ubicación de la aplicación y selecciona «{optionLabel}».",
-    "notYet": "Todavía no"
+    "notYet": "Todavía no",
+    "prayerNotificationIssueTitle": "Las notificaciones de oración necesitan atención",
+    "prayerNotificationIssueMessage": "No pudimos terminar de programar las notificaciones de oración. Tus horarios de oración siguen disponibles.",
+    "prayerNotificationRetry": "Reintentar",
+    "prayerNotificationRetrying": "Programando notificaciones de oración…",
+    "prayerNotificationsScheduledTitle": "Las notificaciones de oración están listas",
+    "prayerNotificationsScheduledUntil": "Programadas hasta {date}",
+    "prayerNotificationsCoverageReminder": "Abre Huda antes de esa fecha para ampliar la programación.",
+    "prayerNotificationsIosReminder": "Abre Huda de vez en cuando para que podamos mantener programadas tus notificaciones de oración.",
+    "prayerNotificationsCoverageExpired": "La programación de notificaciones ha finalizado. Toca reintentar para renovarla.",
+    "prayerNotificationSettingsChanged": "La configuración de tus notificaciones de oración cambió. Toca reintentar para actualizar la programación.",
+    "prayerNotificationSyncBusy": "La programación de notificaciones de oración está ocupada en este momento. Inténtalo de nuevo en breve.",
+    "prayerNotificationSyncUnavailable": "La programación de notificaciones de oración no está disponible temporalmente.",
+    "prayerNotificationSyncVerificationFailed": "No pudimos verificar la programación de notificaciones de oración. Inténtalo de nuevo."
 }

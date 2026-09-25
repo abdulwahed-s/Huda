@@ -1887,5 +1887,18 @@
     "travelTurnOnLocation": "Включить геолокацию",
     "travelAllowAllTheTime": "Разрешить всегда",
     "travelBackgroundPermissionInstructions": "Чтобы обновлять время намаза, когда Huda закрыта, откройте разрешения приложения на геолокацию и выберите «{optionLabel}».",
-    "notYet": "Ещё нет"
+    "notYet": "Ещё нет",
+    "prayerNotificationIssueTitle": "Уведомления о молитве требуют внимания",
+    "prayerNotificationIssueMessage": "Не удалось завершить расписание уведомлений о молитве. Время молитв по-прежнему доступно.",
+    "prayerNotificationRetry": "Повторить",
+    "prayerNotificationRetrying": "Планируем уведомления о молитве…",
+    "prayerNotificationsScheduledTitle": "Уведомления о молитве готовы",
+    "prayerNotificationsScheduledUntil": "Запланировано до {date}",
+    "prayerNotificationsCoverageReminder": "Откройте Huda до этой даты, чтобы продлить расписание.",
+    "prayerNotificationsIosReminder": "Время от времени открывайте Huda, чтобы уведомления о молитве оставались запланированными.",
+    "prayerNotificationsCoverageExpired": "Срок расписания уведомлений истёк. Нажмите «Повторить», чтобы обновить его.",
+    "prayerNotificationSettingsChanged": "Настройки уведомлений о молитве изменились. Нажмите «Повторить», чтобы обновить расписание.",
+    "prayerNotificationSyncBusy": "Сервис планирования уведомлений о молитве сейчас занят. Повторите попытку немного позже.",
+    "prayerNotificationSyncUnavailable": "Планирование уведомлений о молитве временно недоступно.",
+    "prayerNotificationSyncVerificationFailed": "Не удалось проверить расписание уведомлений о молитве. Повторите попытку."
 }

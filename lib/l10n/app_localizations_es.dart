@@ -5154,4 +5154,56 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notYet => 'Todavía no';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Las notificaciones de oración necesitan atención';
+
+  @override
+  String get prayerNotificationIssueMessage =>
+      'No pudimos terminar de programar las notificaciones de oración. Tus horarios de oración siguen disponibles.';
+
+  @override
+  String get prayerNotificationRetry => 'Reintentar';
+
+  @override
+  String get prayerNotificationRetrying =>
+      'Programando notificaciones de oración…';
+
+  @override
+  String get prayerNotificationsScheduledTitle =>
+      'Las notificaciones de oración están listas';
+
+  @override
+  String prayerNotificationsScheduledUntil(String date) {
+    return 'Programadas hasta $date';
+  }
+
+  @override
+  String get prayerNotificationsCoverageReminder =>
+      'Abre Huda antes de esa fecha para ampliar la programación.';
+
+  @override
+  String get prayerNotificationsIosReminder =>
+      'Abre Huda de vez en cuando para que podamos mantener programadas tus notificaciones de oración.';
+
+  @override
+  String get prayerNotificationsCoverageExpired =>
+      'La programación de notificaciones ha finalizado. Toca reintentar para renovarla.';
+
+  @override
+  String get prayerNotificationSettingsChanged =>
+      'La configuración de tus notificaciones de oración cambió. Toca reintentar para actualizar la programación.';
+
+  @override
+  String get prayerNotificationSyncBusy =>
+      'La programación de notificaciones de oración está ocupada en este momento. Inténtalo de nuevo en breve.';
+
+  @override
+  String get prayerNotificationSyncUnavailable =>
+      'La programación de notificaciones de oración no está disponible temporalmente.';
+
+  @override
+  String get prayerNotificationSyncVerificationFailed =>
+      'No pudimos verificar la programación de notificaciones de oración. Inténtalo de nuevo.';
 }
