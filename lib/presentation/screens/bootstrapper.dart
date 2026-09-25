@@ -31,14 +31,16 @@ class _BootstrapperState extends State<Bootstrapper> {
       _error = null;
     });
 
-    initCriticalAndGetRoute().then((route) {
-      if (!mounted) return;
-      setCustomErrorWidget();
-      setState(() => _initialRoute = route);
-    }).catchError((Object e) {
-      if (!mounted) return;
-      setState(() => _error = e);
-    });
+    initCriticalAndGetRoute()
+        .then((route) {
+          if (!mounted) return;
+          setCustomErrorWidget();
+          setState(() => _initialRoute = route);
+        })
+        .catchError((Object e) {
+          if (!mounted) return;
+          setState(() => _error = e);
+        });
   }
 
   @override
@@ -50,8 +52,9 @@ class _BootstrapperState extends State<Bootstrapper> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
-      home:
-          _error != null ? _RetryGate(onRetry: _runGate) : const _SplashGate(),
+      home: _error != null
+          ? _RetryGate(onRetry: _runGate)
+          : const _SplashGate(),
     );
   }
 }
@@ -64,21 +67,28 @@ class _SplashGate extends StatelessWidget {
     return Scaffold(
       backgroundColor: _bootBackground,
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const _BootLogo(size: 160),
-            const SizedBox(height: 40),
-            SizedBox(
-              width: 26,
-              height: 26,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white.withValues(alpha: 0.7)),
+        // GTK can report a transient 1x1 surface before the Linux window gets
+        // its first real allocation. Scale the splash during that frame rather
+        // than overflowing its fixed-size column.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const _BootLogo(size: 160),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 26,
+                height: 26,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.white.withValues(alpha: 0.7),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -161,7 +171,7 @@ class _BootLogo extends StatelessWidget {
       _bootLogo,
       width: size,
       height: size,
-      errorBuilder: (_, __, ___) => SizedBox(
+      errorBuilder: (_, _, _) => SizedBox(
         width: size,
         height: size,
         child: Icon(Icons.mosque, size: size * 0.6, color: Colors.white70),
