@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui' show lerpDouble;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,9 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 import 'package:huda/core/theme/theme_extension.dart';
-import 'package:huda/core/utils/responsive_utils.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/home/classic_feature_card_metrics.dart';
 import 'package:huda/presentation/widgets/home/continue_activity_dock.dart';
 
 class _QuranSubItem {
@@ -73,12 +76,15 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
 
   @override
   Widget build(BuildContext context) {
+    final duration = MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : const Duration(milliseconds: 540);
     return GestureDetector(
       onTap: _toggle,
       child: AnimatedScale(
-        scale: _expanded ? 0.95 : 1.0,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOutCubic,
+        scale: _expanded ? 0.975 : 1.0,
+        duration: duration,
+        curve: Curves.easeInOutCubic,
         child: _buildStackLayers(context, child: _buildFrontCard(context)),
       ),
     );
@@ -92,6 +98,7 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
     const fanBottom = 4.0;
 
     return Stack(
+      key: const ValueKey('quran-kit-anchor'),
       clipBehavior: Clip.hardEdge,
       children: [
         for (int i = 0; i < 3; i++)
@@ -169,24 +176,11 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
   }
 
   Widget _buildFrontCard(BuildContext context) {
-    final iconSize = context.responsive(
-      mobile: 32.sp,
-      tablet: 50.sp,
-      desktop: 64.sp,
-    );
-    final paddingSize = context.responsive(
-      mobile: 12.w,
-      tablet: 20.w,
-      desktop: 24.w,
-    );
-    final fontSize = context.responsive(
-      mobile: 12.sp,
-      tablet: 16.sp,
-      desktop: 20.sp,
-    );
-
+    final duration = MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : const Duration(milliseconds: 540);
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: duration,
       curve: Curves.easeInOutCubic,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -220,65 +214,72 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
           onTap: _toggle,
-          child: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(
-                  flex: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(paddingSize),
-                    decoration: BoxDecoration(
-                      color: context.primaryColor.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: context.primaryColor.withValues(alpha: 0.12),
-                      ),
-                    ),
-                    child: SvgPicture(
-                      const AssetBytesLoader('assets/images/qurancard.svg.vec'),
-                      width: iconSize,
-                      height: iconSize,
-                      colorFilter: ColorFilter.mode(
-                        widget.isDarkMode
-                            ? context.primaryLightColor
-                            : context.primaryColor,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                Flexible(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: SizedBox(
-                          width: constraints.maxWidth,
-                          child: Text(
-                            widget.stackLabel,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: fontSize,
-                              fontWeight: FontWeight.w600,
-                              color: widget.isDarkMode
-                                  ? Colors.white
-                                  : Colors.black.withValues(alpha: 0.85),
-                              height: 1.2,
-                            ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final metrics = ClassicFeatureCardMetrics.resolve(constraints);
+              return Padding(
+                padding: EdgeInsets.all(metrics.outerPadding),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      flex: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(metrics.iconPadding),
+                        decoration: BoxDecoration(
+                          color: context.primaryColor.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: context.primaryColor.withValues(alpha: 0.12),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                        child: SvgPicture(
+                          const AssetBytesLoader(
+                            'assets/images/qurancard.svg.vec',
+                          ),
+                          width: metrics.iconSize,
+                          height: metrics.iconSize,
+                          colorFilter: ColorFilter.mode(
+                            widget.isDarkMode
+                                ? context.primaryLightColor
+                                : context.primaryColor,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: metrics.contentGap),
+                    Flexible(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: SizedBox(
+                              width: constraints.maxWidth,
+                              child: Text(
+                                widget.stackLabel,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: metrics.fontSize,
+                                  fontWeight: FontWeight.w600,
+                                  color: widget.isDarkMode
+                                      ? Colors.white
+                                      : Colors.black.withValues(alpha: 0.85),
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
@@ -287,6 +288,8 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
 }
 
 class QuranExpandedSubGrid extends StatefulWidget {
+  final Animation<double>? revealAnimation;
+  final GlobalKey? revealAnchorKey;
   final bool isDarkMode;
   final String quranLabel, audioLabel, radioLabel, bookmarkLabel;
   final VoidCallback onQuranTap, onAudioTap, onRadioTap, onBookmarkTap;
@@ -297,6 +300,8 @@ class QuranExpandedSubGrid extends StatefulWidget {
 
   const QuranExpandedSubGrid({
     super.key,
+    this.revealAnimation,
+    this.revealAnchorKey,
     required this.isDarkMode,
     required this.quranLabel,
     required this.audioLabel,
@@ -319,8 +324,8 @@ class QuranExpandedSubGrid extends StatefulWidget {
 class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final List<Animation<double>> _scaleAnims;
-  late final List<Animation<double>> _opacityAnims;
+
+  Animation<double> get _motion => widget.revealAnimation ?? _controller;
 
   List<_QuranSubItem> get _items => [
     _QuranSubItem(
@@ -350,40 +355,16 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 550),
+      duration: const Duration(milliseconds: 540),
     );
-    _scaleAnims = [];
-    _opacityAnims = [];
-    for (int i = 0; i < 5; i++) {
-      final s = (i * 50 / 550).clamp(0.0, 1.0);
-      _scaleAnims.add(
-        Tween(begin: 0.85, end: 1.0).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: Interval(s, 1.0, curve: Curves.easeOutBack),
-          ),
-        ),
-      );
-      _opacityAnims.add(
-        Tween(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: Interval(
-              s,
-              (s + 0.5).clamp(0.0, 1.0),
-              curve: Curves.easeOut,
-            ),
-          ),
-        ),
-      );
-    }
-    _controller.forward();
+    if (widget.revealAnimation == null) _controller.forward();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context)) {
+    if (widget.revealAnimation == null &&
+        MediaQuery.disableAnimationsOf(context)) {
       _controller.value = 1;
     }
   }
@@ -397,135 +378,162 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
   @override
   Widget build(BuildContext context) {
     final items = _items;
-    final iconSize = context.responsive(
-      mobile: 32.sp,
-      tablet: 50.sp,
-      desktop: 64.sp,
-    );
-    final pad = context.responsive(mobile: 12.w, tablet: 20.w, desktop: 24.w);
-    final fs = context.responsive(mobile: 12.sp, tablet: 16.sp, desktop: 20.sp);
     final l10n = AppLocalizations.of(context)!;
 
+    if (widget.revealAnchorKey != null) {
+      return _buildLayout(context, items, l10n);
+    }
     return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildContinueRow(l10n),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              Expanded(
-                child: _animCard(context, items[0], 1, iconSize, pad, fs),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: _animCard(context, items[1], 2, iconSize, pad, fs),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              Expanded(
-                child: _animCard(context, items[2], 3, iconSize, pad, fs),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: _animCard(context, items[3], 4, iconSize, pad, fs),
-              ),
-            ],
-          ),
-        ],
+      animation: _motion,
+      builder: (context, _) => _buildLayout(context, items, l10n),
+    );
+  }
+
+  Widget _buildLayout(
+    BuildContext context,
+    List<_QuranSubItem> items,
+    AppLocalizations l10n,
+  ) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final textScale = MediaQuery.textScalerOf(context).scale(1);
+        final useFourColumns = constraints.maxWidth >= 650 && textScale <= 1.4;
+        final activity = _buildContinueRow(l10n);
+        final tools = _buildToolGrid(
+          items,
+          columns: useFourColumns ? 4 : 2,
+          textScale: textScale,
+        );
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            activity,
+            SizedBox(height: 16.h),
+            tools,
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildToolGrid(
+    List<_QuranSubItem> items, {
+    required int columns,
+    required double textScale,
+  }) {
+    return GridView.builder(
+      shrinkWrap: true,
+      primary: false,
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: columns,
+        crossAxisSpacing: 16.w,
+        mainAxisSpacing: 16.h,
+        mainAxisExtent: textScale > 1.45 ? 164 : 142,
       ),
+      itemCount: items.length,
+      itemBuilder: (context, index) =>
+          _animCard(context, items[index], index + 1),
     );
   }
 
   Widget _buildContinueRow(AppLocalizations l10n) {
-    return Transform.scale(
-      scale: _scaleAnims[0].value,
-      child: Opacity(
-        opacity: _opacityAnims[0].value.clamp(0.0, 1.0),
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, homeState) {
-            final loaded = homeState is HomeLoaded ? homeState : null;
-            final summary = loaded?.lastReadSummary;
-            final audio = loaded?.lastQuranAudio;
-            final station = loaded?.lastRadioStation;
-            final hasReading =
-                widget.showReadingContinuation &&
-                loaded?.hasLastReadPosition == true &&
-                summary != null;
-            final hasListening =
-                loaded?.hasLastQuranAudio == true && audio != null;
-            final hasRadio =
-                loaded?.hasLastRadioStation == true && station != null;
-            final hasAnyActivity = hasReading || hasListening || hasRadio;
+    return _animatedItem(
+      0,
+      BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, homeState) {
+          final loaded = homeState is HomeLoaded ? homeState : null;
+          final summary = loaded?.lastReadSummary;
+          final audio = loaded?.lastQuranAudio;
+          final station = loaded?.lastRadioStation;
+          final hasReading =
+              widget.showReadingContinuation &&
+              loaded?.hasLastReadPosition == true &&
+              summary != null;
+          final hasListening =
+              loaded?.hasLastQuranAudio == true && audio != null;
+          final hasRadio =
+              loaded?.hasLastRadioStation == true && station != null;
+          final hasAnyActivity = hasReading || hasListening || hasRadio;
 
-            return ContinueActivityDock(
-              title: hasAnyActivity
-                  ? l10n.continueActivityPrompt
-                  : l10n.noRecentActivityHome,
-              isDarkMode: widget.isDarkMode,
-              items: [
-                if (widget.showReadingContinuation)
-                  ContinueActivityDockItem(
-                    label: l10n.continueHome,
-                    icon: Icons.menu_book_rounded,
-                    hasActivity: hasReading,
-                    semanticHint: hasReading
-                        ? l10n.resumeReading
-                        : l10n.noRecentActivityDescription,
-                    unavailableLabel: l10n.noProgress,
-                    onTap: hasReading && widget.openLastReadSurah != null
-                        ? () => widget.openLastReadSurah!(summary)
-                        : null,
-                  ),
+          return ContinueActivityDock(
+            title: hasAnyActivity
+                ? l10n.continueActivityPrompt
+                : l10n.noRecentActivityHome,
+            isDarkMode: widget.isDarkMode,
+            items: [
+              if (widget.showReadingContinuation)
                 ContinueActivityDockItem(
-                  label: l10n.continueListening,
-                  icon: Icons.headphones_rounded,
-                  hasActivity: hasListening,
-                  semanticHint: hasListening
-                      ? l10n.resumeReciter(audio.reciterName)
-                      : l10n.noReciterActivityDescription,
+                  label: l10n.continueHome,
+                  icon: Icons.menu_book_rounded,
+                  hasActivity: hasReading,
+                  semanticHint: hasReading
+                      ? l10n.resumeReading
+                      : l10n.noRecentActivityDescription,
                   unavailableLabel: l10n.noProgress,
-                  onTap: hasListening && widget.openLastReciterAudio != null
-                      ? () => widget.openLastReciterAudio!(audio)
+                  onTap: hasReading && widget.openLastReadSurah != null
+                      ? () => widget.openLastReadSurah!(summary)
                       : null,
                 ),
-                ContinueActivityDockItem(
-                  label: l10n.continueRadio,
-                  icon: Icons.radio_rounded,
-                  hasActivity: hasRadio,
-                  semanticHint: hasRadio
-                      ? station.stationName
-                      : l10n.noRadioActivityDescription,
-                  unavailableLabel: l10n.noProgress,
-                  onTap: hasRadio && widget.openLastRadioStation != null
-                      ? () => widget.openLastRadioStation!(station)
-                      : null,
-                ),
-              ],
-            );
-          },
-        ),
+              ContinueActivityDockItem(
+                label: l10n.continueListening,
+                icon: Icons.headphones_rounded,
+                hasActivity: hasListening,
+                semanticHint: hasListening
+                    ? l10n.resumeReciter(audio.reciterName)
+                    : l10n.noReciterActivityDescription,
+                unavailableLabel: l10n.noProgress,
+                onTap: hasListening && widget.openLastReciterAudio != null
+                    ? () => widget.openLastReciterAudio!(audio)
+                    : null,
+              ),
+              ContinueActivityDockItem(
+                label: l10n.continueRadio,
+                icon: Icons.radio_rounded,
+                hasActivity: hasRadio,
+                semanticHint: hasRadio
+                    ? station.stationName
+                    : l10n.noRadioActivityDescription,
+                unavailableLabel: l10n.noProgress,
+                onTap: hasRadio && widget.openLastRadioStation != null
+                    ? () => widget.openLastRadioStation!(station)
+                    : null,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _animCard(
-    BuildContext ctx,
-    _QuranSubItem item,
-    int i,
-    double iconSz,
-    double pad,
-    double fs,
-  ) {
-    return Transform.scale(
-      scale: _scaleAnims[i].value,
-      child: Opacity(
-        opacity: _opacityAnims[i].value.clamp(0.0, 1.0),
-        child: _card(ctx, item, iconSz, pad, fs),
+  Widget _animCard(BuildContext ctx, _QuranSubItem item, int i) {
+    return _animatedItem(i, _card(ctx, item));
+  }
+
+  Widget _animatedItem(int index, Widget child) {
+    final start = 0.025 + index * 0.035;
+    if (widget.revealAnchorKey != null) {
+      return _QuranAnchoredReveal(
+        anchorKey: widget.revealAnchorKey!,
+        animation: _motion,
+        start: start,
+        depth: index,
+        child: child,
+      );
+    }
+
+    final localProgress = ((_motion.value - start) / (1 - start)).clamp(
+      0.0,
+      1.0,
+    );
+    final progress = Curves.easeOutCubic.transform(localProgress);
+    return Transform.translate(
+      offset: Offset(0, (1 - progress) * 10.h),
+      child: Transform.scale(
+        scale: 0.965 + progress * 0.035,
+        child: Opacity(opacity: progress, child: child),
       ),
     );
   }
@@ -553,13 +561,7 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
     ],
   );
 
-  Widget _card(
-    BuildContext context,
-    _QuranSubItem item,
-    double iconSz,
-    double pad,
-    double fs,
-  ) {
+  Widget _card(BuildContext context, _QuranSubItem item) {
     return Container(
       decoration: _deco(context),
       child: Material(
@@ -570,60 +572,202 @@ class _QuranExpandedSubGridState extends State<QuranExpandedSubGrid>
             HapticFeedback.selectionClick();
             item.onTap();
           },
-          child: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(pad),
-                  decoration: BoxDecoration(
-                    color: context.primaryColor.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(
-                      color: context.primaryColor.withValues(alpha: 0.12),
-                    ),
-                  ),
-                  child: item.svgAsset != null
-                      ? SvgPicture(
-                          AssetBytesLoader(item.svgAsset!),
-                          width: iconSz,
-                          height: iconSz,
-                          colorFilter: ColorFilter.mode(
-                            widget.isDarkMode
-                                ? context.primaryLightColor
-                                : context.primaryColor,
-                            BlendMode.srcIn,
-                          ),
-                        )
-                      : Icon(
-                          item.icon,
-                          size: iconSz,
-                          color: widget.isDarkMode
-                              ? context.primaryLightColor
-                              : context.primaryColor,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final metrics = ClassicFeatureCardMetrics.resolve(constraints);
+              return Padding(
+                padding: EdgeInsets.all(metrics.outerPadding),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(metrics.iconPadding),
+                      decoration: BoxDecoration(
+                        color: context.primaryColor.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: context.primaryColor.withValues(alpha: 0.12),
                         ),
+                      ),
+                      child: item.svgAsset != null
+                          ? SvgPicture(
+                              AssetBytesLoader(item.svgAsset!),
+                              width: metrics.iconSize,
+                              height: metrics.iconSize,
+                              colorFilter: ColorFilter.mode(
+                                widget.isDarkMode
+                                    ? context.primaryLightColor
+                                    : context.primaryColor,
+                                BlendMode.srcIn,
+                              ),
+                            )
+                          : Icon(
+                              item.icon,
+                              size: metrics.iconSize,
+                              color: widget.isDarkMode
+                                  ? context.primaryLightColor
+                                  : context.primaryColor,
+                            ),
+                    ),
+                    SizedBox(height: metrics.contentGap),
+                    Text(
+                      item.title,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: metrics.fontSize,
+                        fontWeight: FontWeight.w600,
+                        color: widget.isDarkMode
+                            ? Colors.white
+                            : Colors.black.withValues(alpha: 0.85),
+                        height: 1.2,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 12.h),
-                Text(
-                  item.title,
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: fs,
-                    fontWeight: FontWeight.w600,
-                    color: widget.isDarkMode
-                        ? Colors.white
-                        : Colors.black.withValues(alpha: 0.85),
-                    height: 1.2,
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _QuranAnchoredReveal extends StatefulWidget {
+  const _QuranAnchoredReveal({
+    required this.anchorKey,
+    required this.animation,
+    required this.start,
+    required this.depth,
+    required this.child,
+  });
+
+  final GlobalKey anchorKey;
+  final Animation<double> animation;
+  final double start;
+  final int depth;
+  final Widget child;
+
+  @override
+  State<_QuranAnchoredReveal> createState() => _QuranAnchoredRevealState();
+}
+
+class _QuranAnchoredRevealState extends State<_QuranAnchoredReveal> {
+  final GlobalKey _destinationKey = GlobalKey();
+
+  Offset _originOffset = Offset.zero;
+  double _originScale = 0.9;
+  bool _hasGeometry = false;
+  bool _measurementScheduled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleMeasurement();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scheduleMeasurement();
+  }
+
+  @override
+  void didUpdateWidget(covariant _QuranAnchoredReveal oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.anchorKey != widget.anchorKey) {
+      _hasGeometry = false;
+      _scheduleMeasurement();
+    }
+  }
+
+  void _scheduleMeasurement() {
+    if (_measurementScheduled) return;
+    _measurementScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _measurementScheduled = false;
+      if (!mounted) return;
+
+      final anchor = widget.anchorKey.currentContext?.findRenderObject();
+      final destination = _destinationKey.currentContext?.findRenderObject();
+      if (anchor is! RenderBox ||
+          destination is! RenderBox ||
+          !anchor.hasSize ||
+          !destination.hasSize) {
+        _scheduleMeasurement();
+        return;
+      }
+
+      final anchorCenter = anchor.localToGlobal(
+        anchor.size.center(Offset.zero),
+      );
+      final destinationCenter = destination.localToGlobal(
+        destination.size.center(Offset.zero),
+      );
+      final nextOffset = anchorCenter - destinationCenter;
+      final nextScale = math
+          .min(
+            anchor.size.width / destination.size.width,
+            anchor.size.height / destination.size.height,
+          )
+          .clamp(0.18, 0.92)
+          .toDouble();
+
+      if (_hasGeometry &&
+          (nextOffset - _originOffset).distance < 0.5 &&
+          (nextScale - _originScale).abs() < 0.005) {
+        return;
+      }
+      setState(() {
+        _originOffset = nextOffset;
+        _originScale = nextScale;
+        _hasGeometry = true;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _scheduleMeasurement();
+    return SizedBox(
+      key: _destinationKey,
+      child: AnimatedBuilder(
+        animation: widget.animation,
+        child: widget.child,
+        builder: (context, child) {
+          final local =
+              ((widget.animation.value - widget.start) / (1 - widget.start))
+                  .clamp(0.0, 1.0);
+          final progress = Curves.easeOutCubic.transform(local);
+          final opacity = _hasGeometry
+              ? Curves.easeOut.transform((local / 0.34).clamp(0.0, 1.0))
+              : 0.0;
+          final direction = Directionality.of(context) == TextDirection.ltr
+              ? 1.0
+              : -1.0;
+          final depth = (widget.depth.clamp(0, 3) + 1).toDouble();
+          final rotation = (1 - progress) * direction * depth * 0.008;
+
+          return Transform.translate(
+            offset: _originOffset * (1 - progress),
+            child: Transform.rotate(
+              angle: rotation,
+              child: Transform.scale(
+                scale: lerpDouble(_originScale, 1, progress)!,
+                child: Opacity(
+                  opacity: opacity,
+                  child: SizedBox(
+                    key: ValueKey('quran-kit-reveal-${widget.depth}'),
+                    child: child,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
