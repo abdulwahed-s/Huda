@@ -136,6 +136,8 @@ dependencies {
     implementation("net.iakovlev:timeshape:2026b.29") {
         exclude group: "com.github.luben", module: "zstd-jni"
     }
+    // TimeShape uses SLF4J; give R8 the optional runtime binder it references.
+    runtimeOnly("org.slf4j:slf4j-nop:1.7.30")
     implementation("com.github.luben:zstd-jni:1.5.7-11@aar")
     testImplementation("com.github.luben:zstd-jni:1.5.7-11")
 
