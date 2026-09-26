@@ -33,17 +33,6 @@ class PrayerWidgetSystemReceiver : BroadcastReceiver() {
             "android-system-${intent.action ?: "unknown"}",
         )
 
-        val update = PrayerWidgetUpdater.updateAll(context)
-        if (update.widgetCount > 0) {
-            PrayerWidgetScheduler.scheduleNext(context)
-            if (intent.action == Intent.ACTION_BOOT_COMPLETED ||
-                intent.action == Intent.ACTION_MY_PACKAGE_REPLACED
-            ) {
-                PrayerWidgetReliabilityManager.start(context)
-            }
-        } else {
-            PrayerWidgetReliabilityManager.stop(context)
-            PrayerWidgetScheduler.cancel(context)
-        }
+        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
     }
 }

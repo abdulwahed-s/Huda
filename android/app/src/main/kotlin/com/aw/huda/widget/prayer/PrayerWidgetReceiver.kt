@@ -18,18 +18,14 @@ class PrayerWidgetReceiver : AppWidgetProvider() {
         appWidgetIds: IntArray,
     ) {
         Log.d(TAG, "onUpdate(${appWidgetIds.size})")
-        for (id in appWidgetIds) {
-            PrayerWidgetUpdater.update(context, appWidgetManager, id)
-        }
-
-        PrayerWidgetScheduler.scheduleNext(context)
+        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
+        PrayerWidgetReliabilityManager.start(context)
     }
 
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
         Log.d(TAG, "onEnabled")
-        PrayerWidgetUpdater.updateAll(context)
-        PrayerWidgetScheduler.scheduleNext(context)
+        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
         PrayerWidgetReliabilityManager.start(context)
     }
 
@@ -53,7 +49,7 @@ class PrayerWidgetReceiver : AppWidgetProvider() {
             appWidgetId,
             newOptions,
         )
-        PrayerWidgetUpdater.update(context, appWidgetManager, appWidgetId)
+        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -63,22 +59,12 @@ class PrayerWidgetReceiver : AppWidgetProvider() {
             ACTION_PRAYER_WIDGET_UPDATE,
             ACTION_HOME_WIDGET_UPDATE -> {
                 PrayerWidgetScheduler.logDelivery(intent)
-                val update = PrayerWidgetUpdater.updateAll(context)
-                if (update.widgetCount > 0) {
-                    PrayerWidgetScheduler.scheduleNext(context)
-                } else {
-                    PrayerWidgetScheduler.cancel(context)
-                }
+                PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
             }
 
             ACTION_PRAYER_WIDGET_MINUTE_TICK -> {
-                val update = PrayerWidgetUpdater.updateAll(context)
                 PrayerWidgetScheduler.cancelMinuteTick(context)
-                if (update.widgetCount > 0) {
-                    PrayerWidgetScheduler.scheduleNext(context)
-                } else {
-                    PrayerWidgetScheduler.cancel(context)
-                }
+                PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
             }
         }
     }

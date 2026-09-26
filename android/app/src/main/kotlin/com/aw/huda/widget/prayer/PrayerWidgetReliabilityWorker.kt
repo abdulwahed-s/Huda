@@ -24,6 +24,7 @@ internal class PrayerWidgetReliabilityWorker(
             )
             if (ids.isEmpty()) {
                 Log.d(TAG, "No prayer widgets pinned; skipping.")
+                PrayerWidgetScheduler.cancel(context)
                 return Result.success()
             }
 

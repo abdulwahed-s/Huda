@@ -68,6 +68,7 @@ internal object PrayerWidgetUpdater {
     private const val TAG = "PrayerWidgetUpdater"
     private const val DEEP_LINK = "huda://prayer_times"
 
+    @Synchronized
     fun updateAll(context: Context): PrayerWidgetUpdateResult {
         val manager = AppWidgetManager.getInstance(context)
         val ids = manager.getAppWidgetIds(

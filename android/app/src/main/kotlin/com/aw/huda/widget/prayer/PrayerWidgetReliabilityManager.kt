@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
@@ -13,6 +14,7 @@ internal object PrayerWidgetReliabilityManager {
     private const val TAG = "PrayerReliability"
     private const val WORK_NAME = "prayer_widget_reliability"
     private const val TRANSITION_WORK_NAME = "prayer_widget_transition_safety"
+    private const val IMMEDIATE_WORK_NAME = "prayer_widget_immediate_update"
     private const val INTERVAL_MINUTES = 15L
 
     fun start(context: Context) {
@@ -36,9 +38,25 @@ internal object PrayerWidgetReliabilityManager {
         try {
             WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
             WorkManager.getInstance(context).cancelUniqueWork(TRANSITION_WORK_NAME)
+            WorkManager.getInstance(context).cancelUniqueWork(IMMEDIATE_WORK_NAME)
             Log.d(TAG, "WorkManager safety net cancelled")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to cancel WorkManager safety net", e)
+        }
+    }
+
+    fun enqueueImmediateUpdate(context: Context) {
+        try {
+            val request = OneTimeWorkRequestBuilder<PrayerWidgetReliabilityWorker>()
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                .build()
+            WorkManager.getInstance(context.applicationContext).enqueueUniqueWork(
+                IMMEDIATE_WORK_NAME,
+                ExistingWorkPolicy.REPLACE,
+                request,
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to enqueue prayer widget update", e)
         }
     }
 
