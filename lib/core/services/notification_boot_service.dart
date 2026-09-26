@@ -26,6 +26,10 @@ class NotificationBootService {
       final quranReminder = cacheHelper.getData(key: 'quranReminder') ?? false;
       final quranReminderTimeStr =
           cacheHelper.getData(key: 'quranReminderTime') ?? '19:30';
+      final checklistReminder =
+          cacheHelper.getData(key: 'checklistReminder') ?? false;
+      final checklistReminderTimeStr =
+          cacheHelper.getData(key: 'checklistReminderTime') ?? '20:00';
 
       final kahfFridayTimeStr =
           cacheHelper.getData(key: 'kahfFridayTime') ?? '09:00';
@@ -38,6 +42,14 @@ class NotificationBootService {
       if (quranReminder) {
         final parts = quranReminderTimeStr.split(':');
         quranTime = TimeOfDay(
+          hour: int.parse(parts[0]),
+          minute: int.parse(parts[1]),
+        );
+      }
+      TimeOfDay? checklistTime;
+      if (checklistReminder) {
+        final parts = checklistReminderTimeStr.split(':');
+        checklistTime = TimeOfDay(
           hour: int.parse(parts[0]),
           minute: int.parse(parts[1]),
         );
@@ -75,6 +87,8 @@ class NotificationBootService {
         randomAthkarFrequency: randomAthkarFrequency,
         quranReminder: quranReminder,
         quranReminderTime: quranTime,
+        checklistReminder: checklistReminder,
+        checklistReminderTime: checklistTime,
         kahfFridayTime: kahfTime,
         morningAthkarTime: morningTime,
         eveningAthkarTime: eveningTime,

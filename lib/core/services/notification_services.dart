@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:huda/core/services/prayer_notification_gateway.dart';
+import 'package:huda/core/services/notification_batch.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/presentation/screens/app.dart';
@@ -303,20 +304,17 @@ class NotificationServices implements PrayerNotificationGateway {
   @override
   Future<void> cancelNotifications(Iterable<int> ids) async {
     await initialize();
-    for (final id in ids.toSet()) {
-      await _plugin.cancel(id: id);
-    }
+    await cancelNotificationIds(_plugin, ids);
   }
 
   Future<void> cancelAllPrayerNotifications() async {
     final pending = await pendingNotificationRequests();
-    await cancelNotifications(
-      pending
+    await cancelNotifications({
+      ...pending
           .map((request) => request.id)
           .where(PrayerNotificationEvent.isPrayerId),
-    );
-
-    await cancelNotifications([for (var id = 2000; id <= 2599; id++) id]);
+      for (var id = 2000; id <= 2599; id++) id,
+    });
   }
 
   Future<void> cancelAllNotifications() => cancelAllPrayerNotifications();

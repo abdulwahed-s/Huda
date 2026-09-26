@@ -28,7 +28,7 @@ void callbackDispatcher() {
           return _reconcilePrayerLocationCandidate(inputData);
         case 'renewAthkarNotifications':
         case 'retryAthkarScheduling':
-          return _renewAthkar(inputData);
+          return _renewAthkar();
         default:
           debugPrint('Unknown Workmanager task: $task');
           return true;
@@ -165,20 +165,15 @@ bool _retryableLocationStatus(PrayerLocationUpdateStatus status) =>
     status == PrayerLocationUpdateStatus.degraded ||
     status == PrayerLocationUpdateStatus.failed;
 
-Future<bool> _renewAthkar(Map<String, dynamic>? inputData) async {
+Future<bool> _renewAthkar() async {
   final cache = CacheHelper();
   await cache.init();
   if (cache.getData(key: 'randomAthkar') != true) return true;
 
   final configured = cache.getData(key: 'randomAthkarFrequency');
-  final inputFrequency = inputData?['frequency'];
-  final frequency = inputFrequency is int
-      ? inputFrequency
-      : configured is int
-      ? configured
-      : 60;
+  final frequency = configured is int ? configured : 60;
   final helper = NotificationPageHelper();
   await helper.init();
-  await helper.scheduleRandomAthkar(true, frequency);
+  await helper.scheduleRandomAthkar(true, frequency, fromBackground: true);
   return true;
 }

@@ -1,13 +1,14 @@
-import 'dart:io';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_macos_permissions/flutter_macos_permissions.dart';
-import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/notification_batch.dart';
+import 'package:huda/core/services/notification_reconciliation_lock.dart';
 import 'package:huda/core/services/notification_capacity_policy.dart';
+import 'package:huda/core/services/random_athkar_schedule_plan.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
-import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:workmanager/workmanager.dart';
@@ -15,6 +16,7 @@ import 'package:workmanager/workmanager.dart';
 class NotificationPageHelper {
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
+  static Future<void>? _initialization;
 
   static const int _kahfNotificationId = 1001;
   static const int _athkarMorningId = 1002;
@@ -29,8 +31,7 @@ class NotificationPageHelper {
   static int get _maxRandomAthkarNotifications =>
       NotificationCapacityPolicy.current.randomAthkarLimit;
 
-  static const String _athkarProgressKey = 'athkarSchedulingProgress';
-  static const String _athkarLastScheduledKey = 'athkarLastScheduledTime';
+  static const String _athkarPayloadVersion = 'huda-athkar-v1';
 
   static final List<String> _athkarList = [
     'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
@@ -40,7 +41,7 @@ class NotificationPageHelper {
     'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ',
     'سُبْحَانَ اللَّهِ الْعَظِيمِ',
     'الْلَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ',
-    'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ'
+    'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
   ];
 
   Future<void> init() async {
@@ -48,7 +49,16 @@ class NotificationPageHelper {
 
     debugPrint('🌍 Timezone initialized: $locationName');
     debugPrint('🕒 Local time: ${tz.TZDateTime.now(tz.local)}');
+    _initialization ??= _initializePlugin();
+    try {
+      await _initialization;
+    } catch (_) {
+      _initialization = null;
+      rethrow;
+    }
+  }
 
+  Future<void> _initializePlugin() async {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const ios = DarwinInitializationSettings(
       requestAlertPermission: false,
@@ -66,15 +76,17 @@ class NotificationPageHelper {
       requestSoundPermission: false,
     );
 
-    const linux =
-        LinuxInitializationSettings(defaultActionName: 'Open notification');
+    const linux = LinuxInitializationSettings(
+      defaultActionName: 'Open notification',
+    );
 
     const settings = InitializationSettings(
-        android: android,
-        iOS: ios,
-        macOS: macOS,
-        windows: windows,
-        linux: linux);
+      android: android,
+      iOS: ios,
+      macOS: macOS,
+      windows: windows,
+      linux: linux,
+    );
 
     final initialized = await _plugin.initialize(settings: settings);
     debugPrint('🔧 Plugin initialized: $initialized');
@@ -83,8 +95,10 @@ class NotificationPageHelper {
   }
 
   Future<bool> checkIOSPermissionStatus() async {
-    final iosPlugin = _plugin.resolvePlatformSpecificImplementation<
-        IOSFlutterLocalNotificationsPlugin>();
+    final iosPlugin = _plugin
+        .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin
+        >();
 
     if (iosPlugin != null) {
       try {
@@ -136,8 +150,10 @@ class NotificationPageHelper {
       sound: RawResourceAndroidNotificationSound('notification'),
     );
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
 
     if (androidPlugin != null) {
       await androidPlugin.createNotificationChannel(islamicRemindersChannel);
@@ -157,12 +173,35 @@ class NotificationPageHelper {
         : AndroidScheduleMode.inexactAllowWhileIdle;
   }
 
+  static String _recurringPayload({
+    required int id,
+    required String recurrence,
+    required TimeOfDay time,
+    required String title,
+    required String body,
+    required AndroidScheduleMode mode,
+    int? weekday,
+  }) => jsonEncode([
+    'huda-reminder-v1',
+    id,
+    recurrence,
+    weekday,
+    time.hour,
+    time.minute,
+    tz.local.name,
+    mode.name,
+    title,
+    body,
+  ]);
+
   Future<bool> canScheduleExactNotifications() async {
     if (!PlatformUtils.isAndroid) return true;
 
     try {
-      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       return await androidPlugin?.canScheduleExactNotifications() ?? true;
     } catch (error) {
       debugPrint('Unable to check exact alarm access: $error');
@@ -176,8 +215,10 @@ class NotificationPageHelper {
     try {
       if (await canScheduleExactNotifications()) return true;
 
-      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       final granted = await androidPlugin?.requestExactAlarmsPermission();
       return granted ?? await canScheduleExactNotifications();
     } catch (error) {
@@ -187,6 +228,15 @@ class NotificationPageHelper {
   }
 
   Future<void> scheduleDaily({
+    required int id,
+    required String title,
+    required String body,
+    required TimeOfDay time,
+  }) => NotificationReconciliationLock.synchronized(
+    () => _scheduleDaily(id: id, title: title, body: body, time: time),
+  );
+
+  Future<void> _scheduleDaily({
     required int id,
     required String title,
     required String body,
@@ -205,15 +255,25 @@ class NotificationPageHelper {
     if (scheduled.isBefore(now)) {
       scheduled = scheduled.add(const Duration(days: 1));
       debugPrint(
-          '⏰ Scheduled time has passed today, scheduling for tomorrow: $scheduled');
+        '⏰ Scheduled time has passed today, scheduling for tomorrow: $scheduled',
+      );
     } else {
       debugPrint('⏰ Scheduling for today: $scheduled');
     }
 
+    final mode = await _androidScheduleMode();
     await _plugin.zonedSchedule(
       id: id,
       title: title,
       body: body,
+      payload: _recurringPayload(
+        id: id,
+        recurrence: 'daily',
+        time: time,
+        title: title,
+        body: body,
+        mode: mode,
+      ),
       scheduledDate: scheduled,
       notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
@@ -252,14 +312,31 @@ class NotificationPageHelper {
         windows: WindowsNotificationDetails(),
       ),
       matchDateTimeComponents: DateTimeComponents.time,
-      androidScheduleMode: await _androidScheduleMode(),
+      androidScheduleMode: mode,
     );
 
     debugPrint(
-        '✅ Daily notification scheduled: $title at ${time.hour}:${time.minute.toString().padLeft(2, '0')}');
+      '✅ Daily notification scheduled: $title at ${time.hour}:${time.minute.toString().padLeft(2, '0')}',
+    );
   }
 
   Future<void> scheduleWeekly({
+    required int id,
+    required String title,
+    required String body,
+    required TimeOfDay time,
+    required int weekday,
+  }) => NotificationReconciliationLock.synchronized(
+    () => _scheduleWeekly(
+      id: id,
+      title: title,
+      body: body,
+      time: time,
+      weekday: weekday,
+    ),
+  );
+
+  Future<void> _scheduleWeekly({
     required int id,
     required String title,
     required String body,
@@ -280,19 +357,32 @@ class NotificationPageHelper {
       scheduled = scheduled.add(const Duration(days: 1));
     }
 
+    final mode = await _androidScheduleMode();
     await _plugin.zonedSchedule(
       id: id,
       title: title,
       body: body,
+      payload: _recurringPayload(
+        id: id,
+        recurrence: 'weekly',
+        time: time,
+        weekday: weekday,
+        title: title,
+        body: body,
+        mode: mode,
+      ),
       scheduledDate: scheduled,
       notificationDetails: const NotificationDetails(
-        android: AndroidNotificationDetails('kahf_friday', 'Al-Kahf Friday',
-            channelDescription: 'Weekly reminder for Surat Al-Kahf on Friday',
-            importance: Importance.high,
-            priority: Priority.high,
-            playSound: true,
-            enableVibration: true,
-            icon: 'ic_notification_jummah'),
+        android: AndroidNotificationDetails(
+          'kahf_friday',
+          'Al-Kahf Friday',
+          channelDescription: 'Weekly reminder for Surat Al-Kahf on Friday',
+          importance: Importance.high,
+          priority: Priority.high,
+          playSound: true,
+          enableVibration: true,
+          icon: 'ic_notification_jummah',
+        ),
         iOS: DarwinNotificationDetails(
           presentAlert: true,
           presentBadge: true,
@@ -308,17 +398,22 @@ class NotificationPageHelper {
         windows: WindowsNotificationDetails(),
       ),
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
-      androidScheduleMode: await _androidScheduleMode(),
+      androidScheduleMode: mode,
     );
   }
 
-  Future<void> scheduleKahfFriday(bool enable,
-      [TimeOfDay? customTime, String? title, String? body]) async {
+  Future<void> scheduleKahfFriday(
+    bool enable, [
+    TimeOfDay? customTime,
+    String? title,
+    String? body,
+  ]) async {
     if (enable && customTime != null) {
       await scheduleWeekly(
         id: _kahfNotificationId,
         title: title ?? '🕌 Surat Al-Kahf Reminder',
-        body: body ??
+        body:
+            body ??
             'Today is Friday! Don\'t forget to read Surat Al-Kahf for blessings and protection.',
         time: customTime,
         weekday: DateTime.friday,
@@ -328,13 +423,18 @@ class NotificationPageHelper {
     }
   }
 
-  Future<void> scheduleAthkarMorning(bool enable,
-      [TimeOfDay? customTime, String? title, String? body]) async {
+  Future<void> scheduleAthkarMorning(
+    bool enable, [
+    TimeOfDay? customTime,
+    String? title,
+    String? body,
+  ]) async {
     if (enable && customTime != null) {
       await scheduleDaily(
         id: _athkarMorningId,
         title: title ?? '🌅 Morning Athkar',
-        body: body ??
+        body:
+            body ??
             'Start your day with morning Athkar and remembrance of Allah.',
         time: customTime,
       );
@@ -343,8 +443,12 @@ class NotificationPageHelper {
     }
   }
 
-  Future<void> scheduleAthkarEvening(bool enable,
-      [TimeOfDay? customTime, String? title, String? body]) async {
+  Future<void> scheduleAthkarEvening(
+    bool enable, [
+    TimeOfDay? customTime,
+    String? title,
+    String? body,
+  ]) async {
     if (enable && customTime != null) {
       await scheduleDaily(
         id: _athkarEveningId,
@@ -358,13 +462,18 @@ class NotificationPageHelper {
     }
   }
 
-  Future<void> scheduleQuranReminder(bool enable, TimeOfDay? time,
-      [String? title, String? body]) async {
+  Future<void> scheduleQuranReminder(
+    bool enable,
+    TimeOfDay? time, [
+    String? title,
+    String? body,
+  ]) async {
     if (enable && time != null) {
       await scheduleDaily(
         id: _quranReminderId,
         title: title ?? '📖 Quran Reading Reminder',
-        body: body ??
+        body:
+            body ??
             'Time to read some verses from the Holy Quran and reflect on its guidance.',
         time: time,
       );
@@ -374,13 +483,18 @@ class NotificationPageHelper {
     }
   }
 
-  Future<void> scheduleKhatmaReminder(bool enable, TimeOfDay? time,
-      [String? title, String? body]) async {
+  Future<void> scheduleKhatmaReminder(
+    bool enable,
+    TimeOfDay? time, [
+    String? title,
+    String? body,
+  ]) async {
     if (enable && time != null) {
       await scheduleDaily(
         id: _khatmaReminderId,
         title: title ?? '📖 Khatma Daily Reminder',
-        body: body ??
+        body:
+            body ??
             'Time to read your daily Quran wird and stay on track with your Khatma.',
         time: time,
       );
@@ -389,13 +503,18 @@ class NotificationPageHelper {
     }
   }
 
-  Future<void> scheduleChecklistReminder(bool enable, TimeOfDay? time,
-      [String? title, String? body]) async {
+  Future<void> scheduleChecklistReminder(
+    bool enable,
+    TimeOfDay? time, [
+    String? title,
+    String? body,
+  ]) async {
     if (enable && time != null) {
       await scheduleDaily(
         id: _checklistReminderId,
         title: title ?? '📋 Daily Checklist Reminder',
-        body: body ??
+        body:
+            body ??
             'Time to fill your daily Islamic checklist and track your spiritual progress.',
         time: time,
       );
@@ -405,48 +524,143 @@ class NotificationPageHelper {
     }
   }
 
-  Future<void> scheduleRandomAthkar(bool enable, int frequencyMinutes) async {
-    await _cancelAllRandomAthkar();
+  Future<void> scheduleRandomAthkar(
+    bool enable,
+    int frequencyMinutes, {
+    bool fromBackground = false,
+  }) async {
+    return NotificationReconciliationLock.synchronized(
+      () => _scheduleRandomAthkarUnlocked(
+        enable,
+        frequencyMinutes,
+        fromBackground: fromBackground,
+      ),
+    );
+  }
 
-    if (!enable) {
+  Future<void> _scheduleRandomAthkarUnlocked(
+    bool enable,
+    int frequencyMinutes, {
+    List<PendingNotificationRequest>? knownPending,
+    bool fromBackground = false,
+  }) async {
+    final pending = knownPending ?? await _plugin.pendingNotificationRequests();
+    final randomPending = pending
+        .where(
+          (request) =>
+              request.id >= _randomAthkarBaseId &&
+              request.id < _randomAthkarBaseId + _historicalRandomAthkarLimit,
+        )
+        .toList(growable: false);
+    if (!enable || _maxRandomAthkarNotifications == 0) {
+      await cancelNotificationIds(
+        _plugin,
+        randomPending.map((request) => request.id),
+      );
       if (PlatformUtils.isAndroid) {
         await Workmanager().cancelByTag('athkar-renewal');
+        await Workmanager().cancelByTag('athkar-retry');
       }
-
-      await _clearSchedulingProgress();
-      debugPrint(
-          '🔔 Random Athkar disabled - random athkar notifications cancelled');
       return;
     }
-
-    if (_maxRandomAthkarNotifications == 0) {
-      await _clearSchedulingProgress();
-      debugPrint(
-          'Random Athkar scheduling is disabled on this platform to preserve notification capacity');
-      return;
+    if (frequencyMinutes <= 0) {
+      throw ArgumentError.value(frequencyMinutes, 'frequencyMinutes');
     }
 
-    debugPrint('🚀 Starting resilient 24/7 athkar scheduling...');
-
-    if (await _shouldResumeBackgroundScheduling(frequencyMinutes)) {
-      debugPrint('🔄 Resuming interrupted background scheduling...');
-      _resumeBackgroundScheduling(frequencyMinutes);
-      return;
+    final now = DateTime.now().toUtc();
+    final mode = await _androidScheduleMode();
+    final interval = Duration(minutes: frequencyMinutes);
+    final retained = <int, DateTime>{};
+    final staleIds = <int>[];
+    for (final request in randomPending) {
+      final time = _readAthkarPayload(request.payload, frequencyMinutes, mode);
+      if (request.id > _randomAthkarBaseId + _maxRandomAthkarNotifications ||
+          time == null ||
+          !time.isAfter(now) ||
+          retained.values.contains(time)) {
+        staleIds.add(request.id);
+      } else {
+        retained[request.id] = time;
+      }
     }
+    await cancelNotificationIds(_plugin, staleIds);
 
-    final startTime = DateTime.now();
+    final freeIds = [
+      for (
+        var id = _randomAthkarBaseId + 1;
+        id <= _randomAthkarBaseId + _maxRandomAthkarNotifications;
+        id++
+      )
+        if (!retained.containsKey(id)) id,
+    ];
+    final times = missingAthkarTimes(
+      now: now,
+      interval: interval,
+      horizon: const Duration(days: 7),
+      capacity: _maxRandomAthkarNotifications,
+      existing: retained.values,
+    );
+    var failed = false;
+    for (var index = 0; index < times.length; index++) {
+      final id = freeIds[index];
+      final time = times[index];
+      try {
+        await _scheduleAthkarAt(id, time, frequencyMinutes, mode);
+        retained[id] = time;
+      } catch (error) {
+        failed = true;
+        debugPrint('Athkar notification $id could not be scheduled: $error');
+        break;
+      }
+    }
+    final lastScheduled = retained.values.fold<DateTime?>(
+      null,
+      (latest, time) => latest == null || time.isAfter(latest) ? time : latest,
+    );
+    if (lastScheduled != null) {
+      await _scheduleAthkarRenewal(frequencyMinutes, lastScheduled);
+    }
+    if (failed || lastScheduled == null) {
+      if (fromBackground) {
+        throw StateError('Athkar schedule is incomplete; retry is required');
+      }
+      await _scheduleRetryAttempt(frequencyMinutes);
+    }
+  }
 
-    await _scheduleImmediateAthkar(frequencyMinutes);
+  String _athkarPayload(
+    DateTime time,
+    int frequencyMinutes,
+    AndroidScheduleMode mode,
+  ) => jsonEncode([
+    _athkarPayloadVersion,
+    frequencyMinutes,
+    tz.local.name,
+    mode.name,
+    time.millisecondsSinceEpoch,
+  ]);
 
-    await _saveSchedulingProgress('immediate_complete', DateTime.now());
-
-    _scheduleRemainingAthkarInBackground(frequencyMinutes);
-
-    await _scheduleAthkarRenewal(frequencyMinutes);
-
-    final duration = DateTime.now().difference(startTime);
-    debugPrint(
-        '⚡ Resilient 24/7 startup completed in ${duration.inMilliseconds}ms');
+  DateTime? _readAthkarPayload(
+    String? payload,
+    int frequencyMinutes,
+    AndroidScheduleMode mode,
+  ) {
+    if (payload == null) return null;
+    try {
+      final values = jsonDecode(payload);
+      if (values is! List ||
+          values.length != 5 ||
+          values[0] != _athkarPayloadVersion ||
+          values[1] != frequencyMinutes ||
+          values[2] != tz.local.name ||
+          values[3] != mode.name ||
+          values[4] is! int) {
+        return null;
+      }
+      return DateTime.fromMillisecondsSinceEpoch(values[4], isUtc: true);
+    } catch (_) {
+      return null;
+    }
   }
 
   String _getRandomAthkar() {
@@ -454,37 +668,30 @@ class NotificationPageHelper {
     return _athkarList[random.nextInt(_athkarList.length)];
   }
 
-  Future<void> _cancelAllRandomAthkar() async {
-    final pending = await _plugin.pendingNotificationRequests();
-    final ids = pending.map((notification) => notification.id).where((id) =>
-        id >= _randomAthkarBaseId &&
-        id < _randomAthkarBaseId + _historicalRandomAthkarLimit);
-    for (final id in ids) {
-      await _plugin.cancel(id: id);
-    }
-
-    debugPrint('🗑️ Cancelled historical random athkar notifications');
-  }
-
-  Future<void> _scheduleAthkarRenewal(int frequencyMinutes) async {
+  Future<void> _scheduleAthkarRenewal(
+    int frequencyMinutes,
+    DateTime lastScheduled,
+  ) async {
     try {
       if (PlatformUtils.isAndroid) {
-        await Workmanager().cancelByTag('athkar-renewal');
-      }
-
-      final totalCoverageDays =
-          (_maxRandomAthkarNotifications * frequencyMinutes / (24 * 60))
-              .floor();
-      final renewalDays = (totalCoverageDays - 1).clamp(1, 6);
-
-      debugPrint(
-          '📊 Actual coverage: $totalCoverageDays days, renewal in: $renewalDays days');
-
-      if (PlatformUtils.isAndroid) {
+        final coverage = lastScheduled.difference(DateTime.now().toUtc());
+        final safetyMs = min(
+          const Duration(hours: 12).inMilliseconds,
+          max(
+            const Duration(minutes: 30).inMilliseconds,
+            coverage.inMilliseconds ~/ 4,
+          ),
+        );
+        final delayMs = max(
+          const Duration(minutes: 5).inMilliseconds,
+          coverage.inMilliseconds - safetyMs,
+        );
         await Workmanager().registerOneOffTask(
-          'athkar-renewal-${DateTime.now().millisecondsSinceEpoch}',
+          'athkar-renewal-${lastScheduled.millisecondsSinceEpoch}',
           _renewalTaskName,
-          initialDelay: Duration(days: renewalDays),
+          initialDelay: Duration(milliseconds: delayMs),
+          existingWorkPolicy: ExistingWorkPolicy.keep,
+          inputData: {'frequency': frequencyMinutes},
           tag: 'athkar-renewal',
           constraints: Constraints(
             requiresBatteryNotLow: true,
@@ -492,48 +699,66 @@ class NotificationPageHelper {
           ),
         );
       }
-
-      debugPrint(
-          '🔄 Athkar renewal scheduled for $renewalDays days from now (before notifications run out)');
     } catch (e) {
-      debugPrint('❌ Error scheduling athkar renewal: $e');
+      debugPrint('Athkar renewal registration failed: $e');
     }
   }
 
-  Future<void> scheduleSabahMasaa(bool enable,
-      [TimeOfDay? morningTime,
-      TimeOfDay? eveningTime,
-      String? morningTitle,
-      String? morningBody,
-      String? eveningTitle,
-      String? eveningBody]) async {
+  Future<void> scheduleSabahMasaa(
+    bool enable, [
+    TimeOfDay? morningTime,
+    TimeOfDay? eveningTime,
+    String? morningTitle,
+    String? morningBody,
+    String? eveningTitle,
+    String? eveningBody,
+  ]) async {
     await scheduleAthkarMorning(enable, morningTime, morningTitle, morningBody);
     await scheduleAthkarEvening(enable, eveningTime, eveningTitle, eveningBody);
   }
 
   Future<void> cancel(int id) async {
-    await _plugin.cancel(id: id);
+    await NotificationReconciliationLock.synchronized(
+      () => _plugin.cancel(id: id),
+    );
   }
 
   Future<void> cancelAll() async {
-    await cancel(_kahfNotificationId);
-    await cancel(_athkarMorningId);
-    await cancel(_athkarEveningId);
-    await cancel(_quranReminderId);
-    await cancel(_quranReminderId + 100);
-    await cancel(_checklistReminderId);
-    await cancel(_checklistReminderId + 100);
-    await cancel(_khatmaReminderId);
-    await _cancelAllRandomAthkar();
+    await NotificationReconciliationLock.synchronized(() async {
+      final pending = await _plugin.pendingNotificationRequests();
+      const reminderIds = {
+        _kahfNotificationId,
+        _athkarMorningId,
+        _athkarEveningId,
+        _quranReminderId,
+        _quranReminderId + 100,
+        _checklistReminderId,
+        _checklistReminderId + 100,
+        _khatmaReminderId,
+      };
+      await cancelNotificationIds(
+        _plugin,
+        pending
+            .map((request) => request.id)
+            .where(
+              (id) =>
+                  reminderIds.contains(id) ||
+                  (id >= _randomAthkarBaseId &&
+                      id < _randomAthkarBaseId + _historicalRandomAthkarLimit),
+            ),
+      );
+    });
 
     debugPrint(
-        '🔔 Cancelled all Islamic reminder notifications (preserving foreground services)');
+      '🔔 Cancelled all Islamic reminder notifications (preserving foreground services)',
+    );
   }
 
   Future<void> cancelAllIncludingForegroundServices() async {
     await _plugin.cancelAll();
     debugPrint(
-        '⚠️ EMERGENCY: Cancelled ALL notifications including foreground services');
+      '⚠️ EMERGENCY: Cancelled ALL notifications including foreground services',
+    );
   }
 
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {
@@ -548,7 +773,8 @@ class NotificationPageHelper {
     }).toList();
 
     debugPrint(
-        '📊 Found ${filteredPending.length} Islamic reminder notifications (${allPending.length} total)');
+      '📊 Found ${filteredPending.length} Islamic reminder notifications (${allPending.length} total)',
+    );
     return filteredPending;
   }
 
@@ -567,28 +793,33 @@ class NotificationPageHelper {
       debugPrint('🌍 Current timezone: ${now.location}');
       debugPrint('🕒 Current time: $now');
 
-      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
 
       if (androidPlugin != null) {
-        final notificationsEnabled =
-            await androidPlugin.areNotificationsEnabled();
-        final exactAlarmsAllowed =
-            await androidPlugin.canScheduleExactNotifications();
+        final notificationsEnabled = await androidPlugin
+            .areNotificationsEnabled();
+        final exactAlarmsAllowed = await androidPlugin
+            .canScheduleExactNotifications();
 
         debugPrint('✅ Notifications enabled: $notificationsEnabled');
         debugPrint('⏰ Exact alarms allowed: $exactAlarmsAllowed');
 
         if (notificationsEnabled == false) {
           debugPrint(
-              '❌ CRITICAL: Notifications are disabled in system settings!');
+            '❌ CRITICAL: Notifications are disabled in system settings!',
+          );
         }
 
         if (exactAlarmsAllowed == false) {
           debugPrint(
-              '❌ CRITICAL: Exact alarms not allowed - notifications won\'t work!');
+            '❌ CRITICAL: Exact alarms not allowed - notifications won\'t work!',
+          );
           debugPrint(
-              '💡 Solution: Go to Settings > Apps > Huda > Special app access > Alarms & reminders > Allow');
+            '💡 Solution: Go to Settings > Apps > Huda > Special app access > Alarms & reminders > Allow',
+          );
         }
       }
 
@@ -646,7 +877,8 @@ class NotificationPageHelper {
         androidScheduleMode: await _androidScheduleMode(),
       );
       debugPrint(
-          '⏰ Scheduled notification for: $testTime (3 seconds from now)');
+        '⏰ Scheduled notification for: $testTime (3 seconds from now)',
+      );
     } catch (e, stackTrace) {
       debugPrint('❌ ERROR in comprehensive debug: $e');
       debugPrint('📋 Stack: $stackTrace');
@@ -659,7 +891,8 @@ class NotificationPageHelper {
     try {
       debugPrint('🧪 Testing reduced athkar scheduling...');
       debugPrint(
-          '📊 Android alarm limit: 500, our limit: $_maxRandomAthkarNotifications');
+        '📊 Android alarm limit: 500, our limit: $_maxRandomAthkarNotifications',
+      );
 
       final notificationsPerDay = (24 * 60) / testFrequency;
       final expectedTotal = (notificationsPerDay * 7).ceil();
@@ -667,17 +900,22 @@ class NotificationPageHelper {
           (_maxRandomAthkarNotifications * testFrequency / (24 * 60));
 
       debugPrint(
-          '📈 Expected notifications for 7 days at ${testFrequency}min frequency: $expectedTotal');
+        '📈 Expected notifications for 7 days at ${testFrequency}min frequency: $expectedTotal',
+      );
       debugPrint(
-          '✅ Within limits: ${expectedTotal <= _maxRandomAthkarNotifications}');
+        '✅ Within limits: ${expectedTotal <= _maxRandomAthkarNotifications}',
+      );
       debugPrint(
-          '📊 Actual coverage with limit: ${actualCoverage.toStringAsFixed(1)} days');
+        '📊 Actual coverage with limit: ${actualCoverage.toStringAsFixed(1)} days',
+      );
 
       if (expectedTotal > _maxRandomAthkarNotifications) {
         debugPrint(
-            '⚠️ Would exceed our limit of $_maxRandomAthkarNotifications notifications');
+          '⚠️ Would exceed our limit of $_maxRandomAthkarNotifications notifications',
+        );
         debugPrint(
-            '💡 Consider increasing frequency to ${((24 * 60 * 7) / _maxRandomAthkarNotifications).ceil()} minutes or higher');
+          '💡 Consider increasing frequency to ${((24 * 60 * 7) / _maxRandomAthkarNotifications).ceil()} minutes or higher',
+        );
       }
     } catch (e) {
       debugPrint('❌ Error in test calculation: $e');
@@ -760,7 +998,8 @@ class NotificationPageHelper {
         androidScheduleMode: await _androidScheduleMode(),
       );
       debugPrint(
-          '⏰ Scheduled notification set for: $testTime (5 seconds from now)');
+        '⏰ Scheduled notification set for: $testTime (5 seconds from now)',
+      );
 
       await _plugin.show(
         id: 9996,
@@ -780,7 +1019,8 @@ class NotificationPageHelper {
 
       debugPrint('✅ All test notifications scheduled successfully!');
       debugPrint(
-          '� You should see 3 immediate notifications now and 1 more in 5 seconds');
+        '� You should see 3 immediate notifications now and 1 more in 5 seconds',
+      );
     } catch (e, stackTrace) {
       debugPrint('❌ Error scheduling test notification: $e');
       debugPrint('📋 Stack trace: $stackTrace');
@@ -810,289 +1050,198 @@ class NotificationPageHelper {
     bool checklistReminder = false,
     TimeOfDay? checklistReminderTime,
   }) async {
-    await cancelAll();
+    return NotificationReconciliationLock.synchronized(() async {
+      final pending = await _plugin.pendingNotificationRequests();
+      final pendingById = {for (final request in pending) request.id: request};
+      final mode = await _androidScheduleMode();
+      final toCancel = <int>{};
+      final toSchedule = <Future<void> Function()>[];
 
-    await scheduleKahfFriday(kahfFriday, kahfFridayTime, kahfTitle, kahfBody);
-    await scheduleSabahMasaa(sabahMasaa, morningAthkarTime, eveningAthkarTime,
-        morningTitle, morningBody, eveningTitle, eveningBody);
-    await scheduleRandomAthkar(randomAthkar, randomAthkarFrequency);
-    await scheduleQuranReminder(
-        quranReminder, quranReminderTime, quranTitle, quranBody);
-    if (checklistReminder && checklistReminderTime != null) {
-      await scheduleChecklistReminder(
-          true, checklistReminderTime, checklistTitle, checklistBody);
-    }
-
-    debugPrint(
-        '✅ All Islamic notifications rescheduled (prayer countdown preserved)');
-  }
-
-  Future<bool> _shouldResumeBackgroundScheduling(int frequencyMinutes) async {
-    try {
-      final cacheHelper = getIt<CacheHelper>();
-      final progress = cacheHelper.getData(key: _athkarProgressKey);
-      final lastScheduled = cacheHelper.getData(key: _athkarLastScheduledKey);
-
-      if (progress == null || lastScheduled == null) return false;
-
-      if (progress == 'immediate_complete' ||
-          progress == 'background_partial') {
-        final lastTime = DateTime.parse(lastScheduled);
-        final timeSinceLastScheduled = DateTime.now().difference(lastTime);
-
-        if (timeSinceLastScheduled.inHours < 2) {
-          debugPrint(
-              '🛡️ Detected ${progress == 'background_partial' ? 'partial' : 'interrupted'} scheduling ${timeSinceLastScheduled.inMinutes} minutes ago');
-          return true;
+      void reconcileReminder({
+        required int id,
+        required bool enabled,
+        required TimeOfDay? time,
+        required String? title,
+        required String? body,
+        required String defaultTitle,
+        required String defaultBody,
+        required String recurrence,
+        required Future<void> Function(String, String) schedule,
+        int? weekday,
+      }) {
+        if (!enabled || time == null) {
+          if (pendingById.containsKey(id)) toCancel.add(id);
+          return;
         }
-      }
-
-      return false;
-    } catch (e) {
-      debugPrint('❌ Error checking scheduling progress: $e');
-      return false;
-    }
-  }
-
-  void _resumeBackgroundScheduling(int frequencyMinutes) {
-    _clearSchedulingProgress();
-    _scheduleRemainingAthkarInBackground(frequencyMinutes);
-  }
-
-  Future<void> _scheduleImmediateAthkar(int frequencyMinutes) async {
-    final now = tz.TZDateTime.now(tz.local);
-    int notificationId = _randomAthkarBaseId + 1;
-    tz.TZDateTime nextTime = now.add(Duration(minutes: frequencyMinutes));
-    final endTime = now.add(const Duration(hours: 12));
-    int scheduledCount = 0;
-
-    final maxImmediateNotifications =
-        _maxRandomAthkarNotifications.clamp(0, 50).toInt();
-
-    while (nextTime.isBefore(endTime) &&
-        scheduledCount < maxImmediateNotifications) {
-      try {
-        final athkarText = _getRandomAthkar();
-
-        await _plugin.zonedSchedule(
-          id: notificationId,
-          title: '📿 Athkar Reminder',
-          body: athkarText,
-          scheduledDate: nextTime,
-          notificationDetails: const NotificationDetails(
-            android: AndroidNotificationDetails(
-              'islamic_reminders',
-              'Islamic Reminders',
-              channelDescription: 'Random Athkar notifications',
-              importance: Importance.max,
-              priority: Priority.max,
-              playSound: true,
-              enableVibration: true,
-              enableLights: false,
-              showWhen: true,
-              fullScreenIntent: false,
-              category: AndroidNotificationCategory.reminder,
-              visibility: NotificationVisibility.public,
-              ticker: 'Athkar Reminder',
-              autoCancel: true,
-              ongoing: false,
-              colorized: false,
-              color: Colors.green,
-              icon: 'ic_notification_random',
-            ),
-            iOS: DarwinNotificationDetails(
-              presentAlert: true,
-              presentBadge: true,
-              presentSound: true,
-              interruptionLevel: InterruptionLevel.active,
-            ),
-            macOS: DarwinNotificationDetails(
-              presentAlert: true,
-              presentBadge: true,
-              presentSound: true,
-              interruptionLevel: InterruptionLevel.active,
-            ),
-            windows: WindowsNotificationDetails(),
-          ),
-          androidScheduleMode: await _androidScheduleMode(),
+        final resolvedTitle = title ?? pendingById[id]?.title ?? defaultTitle;
+        final resolvedBody = body ?? pendingById[id]?.body ?? defaultBody;
+        final expected = _recurringPayload(
+          id: id,
+          recurrence: recurrence,
+          time: time,
+          weekday: weekday,
+          title: resolvedTitle,
+          body: resolvedBody,
+          mode: mode,
         );
-
-        nextTime = nextTime.add(Duration(minutes: frequencyMinutes));
-        notificationId++;
-        scheduledCount++;
-
-        if (Platform.isWindows) {
-          await Future<void>.delayed(const Duration(milliseconds: 10));
-        }
-      } catch (e) {
-        if (e.toString().contains('Maximum limit of concurrent alarms')) {
-          debugPrint(
-              '⚠️ Hit Android alarm limit at $scheduledCount notifications');
-          debugPrint('💡 Will schedule remaining in background with delays');
-          break;
-        } else {
-          debugPrint('❌ Error scheduling notification $notificationId: $e');
-          nextTime = nextTime.add(Duration(minutes: frequencyMinutes));
-          notificationId++;
-          continue;
+        if (pendingById[id]?.payload != expected) {
+          toSchedule.add(() => schedule(resolvedTitle, resolvedBody));
         }
       }
-    }
 
-    debugPrint(
-        '⚡ Ultra-fast scheduled $scheduledCount notifications for immediate coverage (12+ hours)');
-  }
-
-  void _scheduleRemainingAthkarInBackground(int frequencyMinutes) {
-    Future.microtask(() async {
-      try {
-        debugPrint('🔄 Starting resilient background scheduling...');
-
-        final now = tz.TZDateTime.now(tz.local);
-
-        final maxImmediateNotifications =
-            _maxRandomAthkarNotifications.clamp(0, 50).toInt();
-        final startId = _randomAthkarBaseId + 1 + maxImmediateNotifications;
-
-        int notificationId = startId;
-        tz.TZDateTime nextTime = now.add(const Duration(hours: 12));
-        final endTime = now.add(const Duration(days: 7));
-        int scheduledCount = 0;
-        int batchCount = 0;
-        bool hitAlarmLimit = false;
-
-        await _saveSchedulingProgress('background_started', DateTime.now());
-
-        while (nextTime.isBefore(endTime) &&
-            notificationId <
-                _randomAthkarBaseId + _maxRandomAthkarNotifications &&
-            !hitAlarmLimit) {
-          for (int i = 0;
-              i < 10 &&
-                  nextTime.isBefore(endTime) &&
-                  notificationId <
-                      _randomAthkarBaseId + _maxRandomAthkarNotifications;
-              i++) {
-            try {
-              final athkarText = _getRandomAthkar();
-
-              await _plugin.zonedSchedule(
-                id: notificationId,
-                title: '📿 Athkar Reminder',
-                body: athkarText,
-                scheduledDate: nextTime,
-                notificationDetails: const NotificationDetails(
-                  android: AndroidNotificationDetails(
-                    'islamic_reminders',
-                    'Islamic Reminders',
-                    channelDescription: 'Random Athkar notifications',
-                    importance: Importance.max,
-                    priority: Priority.max,
-                    playSound: true,
-                    enableVibration: true,
-                    enableLights: false,
-                    showWhen: true,
-                    fullScreenIntent: false,
-                    category: AndroidNotificationCategory.reminder,
-                    visibility: NotificationVisibility.public,
-                    ticker: 'Athkar Reminder',
-                    autoCancel: true,
-                    ongoing: false,
-                    colorized: false,
-                    color: Colors.green,
-                    icon: 'ic_notification_random',
-                  ),
-                  iOS: DarwinNotificationDetails(
-                    presentAlert: true,
-                    presentBadge: true,
-                    presentSound: true,
-                    interruptionLevel: InterruptionLevel.active,
-                  ),
-                  macOS: DarwinNotificationDetails(
-                    presentAlert: true,
-                    presentBadge: true,
-                    presentSound: true,
-                    interruptionLevel: InterruptionLevel.active,
-                  ),
-                  windows: WindowsNotificationDetails(),
-                ),
-                androidScheduleMode: await _androidScheduleMode(),
-              );
-
-              nextTime = nextTime.add(Duration(minutes: frequencyMinutes));
-              notificationId++;
-              scheduledCount++;
-            } catch (e) {
-              if (e.toString().contains('Maximum limit of concurrent alarms')) {
-                debugPrint(
-                    '⚠️ Background hit alarm limit at $scheduledCount total');
-                debugPrint('🛡️ Partial coverage achieved, will retry later');
-                hitAlarmLimit = true;
-                break;
-              } else {
-                debugPrint(
-                    '❌ Background error for notification $notificationId: $e');
-                nextTime = nextTime.add(Duration(minutes: frequencyMinutes));
-                notificationId++;
-                continue;
-              }
-            }
-          }
-
-          batchCount++;
-
-          if (batchCount % 10 == 0) {
-            await _saveSchedulingProgress(
-                'background_progress_$batchCount', DateTime.now());
-            await Future.delayed(const Duration(milliseconds: 100));
-            debugPrint(
-                '📦 Resilient batch $batchCount completed ($scheduledCount total)');
-          } else {
-            await Future.delayed(const Duration(milliseconds: 50));
-          }
-        }
-
-        await _saveSchedulingProgress(
-            hitAlarmLimit ? 'background_partial' : 'background_complete',
-            DateTime.now());
-
-        if (hitAlarmLimit) {
-          debugPrint(
-              '⚠️ Background scheduling partial: $scheduledCount notifications (alarm limit reached)');
-          debugPrint('🛡️ Partial coverage active, retry will extend coverage');
-        } else {
-          debugPrint(
-              '✅ Resilient background scheduling completed: $scheduledCount notifications');
-          debugPrint('🛡️ Full 7-day coverage guaranteed!');
-        }
-      } catch (e) {
-        debugPrint('❌ Background scheduling error: $e');
-
-        await _scheduleRetryAttempt(frequencyMinutes);
+      reconcileReminder(
+        id: _kahfNotificationId,
+        enabled: kahfFriday,
+        time: kahfFridayTime,
+        title: kahfTitle,
+        body: kahfBody,
+        defaultTitle: '🕌 Surat Al-Kahf Reminder',
+        defaultBody:
+            'Today is Friday! Don\'t forget to read Surat Al-Kahf for blessings and protection.',
+        recurrence: 'weekly',
+        weekday: DateTime.friday,
+        schedule: (title, body) =>
+            scheduleKahfFriday(true, kahfFridayTime, title, body),
+      );
+      reconcileReminder(
+        id: _athkarMorningId,
+        enabled: sabahMasaa,
+        time: morningAthkarTime,
+        title: morningTitle,
+        body: morningBody,
+        defaultTitle: '🌅 Morning Athkar',
+        defaultBody:
+            'Start your day with morning Athkar and remembrance of Allah.',
+        recurrence: 'daily',
+        schedule: (title, body) => scheduleAthkarMorning(
+          true,
+          morningAthkarTime,
+          title,
+          body,
+        ),
+      );
+      reconcileReminder(
+        id: _athkarEveningId,
+        enabled: sabahMasaa,
+        time: eveningAthkarTime,
+        title: eveningTitle,
+        body: eveningBody,
+        defaultTitle: '🌅 Evening Athkar',
+        defaultBody:
+            'End your day with evening Athkar and gratitude to Allah.',
+        recurrence: 'daily',
+        schedule: (title, body) => scheduleAthkarEvening(
+          true,
+          eveningAthkarTime,
+          title,
+          body,
+        ),
+      );
+      reconcileReminder(
+        id: _quranReminderId,
+        enabled: quranReminder,
+        time: quranReminderTime,
+        title: quranTitle,
+        body: quranBody,
+        defaultTitle: '📖 Quran Reading Reminder',
+        defaultBody:
+            'Time to read some verses from the Holy Quran and reflect on its guidance.',
+        recurrence: 'daily',
+        schedule: (title, body) => scheduleQuranReminder(
+          true,
+          quranReminderTime,
+          title,
+          body,
+        ),
+      );
+      reconcileReminder(
+        id: _checklistReminderId,
+        enabled: checklistReminder,
+        time: checklistReminderTime,
+        title: checklistTitle,
+        body: checklistBody,
+        defaultTitle: '📋 Daily Checklist Reminder',
+        defaultBody:
+            'Time to fill your daily Islamic checklist and track your spiritual progress.',
+        recurrence: 'daily',
+        schedule: (title, body) => scheduleChecklistReminder(
+          true,
+          checklistReminderTime,
+          title,
+          body,
+        ),
+      );
+      for (final legacyId in [
+        _quranReminderId + 100,
+        _checklistReminderId + 100,
+      ]) {
+        if (pendingById.containsKey(legacyId)) toCancel.add(legacyId);
       }
+
+      await cancelNotificationIds(_plugin, toCancel);
+      for (final schedule in toSchedule) {
+        await schedule();
+      }
+      await _scheduleRandomAthkarUnlocked(
+        randomAthkar,
+        randomAthkarFrequency,
+        knownPending: pending,
+      );
+      debugPrint(
+        '✅ Islamic reminders reconciled without replacing unchanged schedules',
+      );
     });
   }
 
-  Future<void> _saveSchedulingProgress(
-      String progress, DateTime timestamp) async {
-    try {
-      final cacheHelper = getIt<CacheHelper>();
-      await cacheHelper.saveData(key: _athkarProgressKey, value: progress);
-      await cacheHelper.saveData(
-          key: _athkarLastScheduledKey, value: timestamp.toIso8601String());
-    } catch (e) {
-      debugPrint('❌ Error saving progress: $e');
-    }
-  }
-
-  Future<void> _clearSchedulingProgress() async {
-    try {
-      final cacheHelper = getIt<CacheHelper>();
-      await cacheHelper.removeData(key: _athkarProgressKey);
-      await cacheHelper.removeData(key: _athkarLastScheduledKey);
-    } catch (e) {
-      debugPrint('❌ Error clearing progress: $e');
-    }
+  Future<void> _scheduleAthkarAt(
+    int id,
+    DateTime time,
+    int frequencyMinutes,
+    AndroidScheduleMode mode,
+  ) async {
+    await _plugin.zonedSchedule(
+      id: id,
+      title: '📿 Athkar Reminder',
+      body: _getRandomAthkar(),
+      payload: _athkarPayload(time, frequencyMinutes, mode),
+      scheduledDate: tz.TZDateTime.from(time, tz.local),
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'islamic_reminders',
+          'Islamic Reminders',
+          channelDescription: 'Random Athkar notifications',
+          importance: Importance.max,
+          priority: Priority.max,
+          playSound: true,
+          enableVibration: true,
+          enableLights: false,
+          showWhen: true,
+          fullScreenIntent: false,
+          category: AndroidNotificationCategory.reminder,
+          visibility: NotificationVisibility.public,
+          ticker: 'Athkar Reminder',
+          autoCancel: true,
+          ongoing: false,
+          colorized: false,
+          color: Colors.green,
+          icon: 'ic_notification_random',
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.active,
+        ),
+        macOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.active,
+        ),
+        windows: WindowsNotificationDetails(),
+      ),
+      androidScheduleMode: mode,
+    );
   }
 
   Future<void> _scheduleRetryAttempt(int frequencyMinutes) async {
@@ -1102,9 +1251,10 @@ class NotificationPageHelper {
     }
     try {
       await Workmanager().registerOneOffTask(
-        'athkar-retry-${DateTime.now().millisecondsSinceEpoch}',
+        'athkar-retry',
         'retryAthkarScheduling',
         initialDelay: const Duration(minutes: 5),
+        existingWorkPolicy: ExistingWorkPolicy.keep,
         inputData: {'frequency': frequencyMinutes},
         tag: 'athkar-retry',
       );
@@ -1125,14 +1275,16 @@ class NotificationPageHelper {
       health['prayerCountdownRunning'] =
           'Unknown - foreground service isolation';
 
-      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       if (androidPlugin != null) {
         final permissionGranted = await androidPlugin.areNotificationsEnabled();
         health['permissionGranted'] = permissionGranted ?? false;
 
-        final exactAlarmsAllowed =
-            await androidPlugin.canScheduleExactNotifications();
+        final exactAlarmsAllowed = await androidPlugin
+            .canScheduleExactNotifications();
         health['exactAlarmsAllowed'] = exactAlarmsAllowed ?? false;
       }
 
