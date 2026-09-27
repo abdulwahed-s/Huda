@@ -23,7 +23,9 @@ abstract final class HudaSnackBar {
     bool? dismissible,
     bool replaceCurrent = true,
   }) {
-    final messenger = ScaffoldMessenger.of(context);
+    final messenger =
+        HudaSnackBarScope.messengerFor(context) ??
+        ScaffoldMessenger.of(context);
     if (replaceCurrent) {
       messenger.removeCurrentSnackBar(reason: SnackBarClosedReason.remove);
     }
@@ -31,12 +33,9 @@ abstract final class HudaSnackBar {
     final media = MediaQuery.of(context);
     final shouldDismiss = dismissible ?? kind == HudaSnackBarKind.error;
     final accessibleNavigation = media.accessibleNavigation;
-    final effectiveDuration = duration ??
-        defaultDurationFor(
-          kind,
-          message: message,
-          hasAction: action != null,
-        );
+    final effectiveDuration =
+        duration ??
+        defaultDurationFor(kind, message: message, hasAction: action != null);
 
     return messenger.showSnackBar(
       SnackBar(
@@ -77,8 +76,8 @@ abstract final class HudaSnackBar {
       HudaSnackBarKind.warning => 5,
       HudaSnackBarKind.error => 6,
     };
-    final readingBonus =
-        ((message.runes.length - 44).clamp(0, 180) / 54).ceil();
+    final readingBonus = ((message.runes.length - 44).clamp(0, 180) / 54)
+        .ceil();
     final actionBonus = hasAction ? 2 : 0;
     return Duration(
       seconds: (baseSeconds + readingBonus + actionBonus).clamp(3, 10).toInt(),
@@ -93,17 +92,16 @@ abstract final class HudaSnackBar {
     Duration? duration,
     bool? dismissible,
     bool replaceCurrent = true,
-  }) =>
-      show(
-        context,
-        message: message,
-        kind: HudaSnackBarKind.success,
-        title: title,
-        action: action,
-        duration: duration,
-        dismissible: dismissible,
-        replaceCurrent: replaceCurrent,
-      );
+  }) => show(
+    context,
+    message: message,
+    kind: HudaSnackBarKind.success,
+    title: title,
+    action: action,
+    duration: duration,
+    dismissible: dismissible,
+    replaceCurrent: replaceCurrent,
+  );
 
   static void error(
     BuildContext context, {
@@ -113,17 +111,16 @@ abstract final class HudaSnackBar {
     Duration? duration,
     bool? dismissible,
     bool replaceCurrent = true,
-  }) =>
-      show(
-        context,
-        message: message,
-        kind: HudaSnackBarKind.error,
-        title: title,
-        action: action,
-        duration: duration,
-        dismissible: dismissible,
-        replaceCurrent: replaceCurrent,
-      );
+  }) => show(
+    context,
+    message: message,
+    kind: HudaSnackBarKind.error,
+    title: title,
+    action: action,
+    duration: duration,
+    dismissible: dismissible,
+    replaceCurrent: replaceCurrent,
+  );
 
   static void warning(
     BuildContext context, {
@@ -133,17 +130,16 @@ abstract final class HudaSnackBar {
     Duration? duration,
     bool? dismissible,
     bool replaceCurrent = true,
-  }) =>
-      show(
-        context,
-        message: message,
-        kind: HudaSnackBarKind.warning,
-        title: title,
-        action: action,
-        duration: duration,
-        dismissible: dismissible,
-        replaceCurrent: replaceCurrent,
-      );
+  }) => show(
+    context,
+    message: message,
+    kind: HudaSnackBarKind.warning,
+    title: title,
+    action: action,
+    duration: duration,
+    dismissible: dismissible,
+    replaceCurrent: replaceCurrent,
+  );
 
   static void info(
     BuildContext context, {
@@ -153,17 +149,16 @@ abstract final class HudaSnackBar {
     Duration? duration,
     bool? dismissible,
     bool replaceCurrent = true,
-  }) =>
-      show(
-        context,
-        message: message,
-        kind: HudaSnackBarKind.info,
-        title: title,
-        action: action,
-        duration: duration,
-        dismissible: dismissible,
-        replaceCurrent: replaceCurrent,
-      );
+  }) => show(
+    context,
+    message: message,
+    kind: HudaSnackBarKind.info,
+    title: title,
+    action: action,
+    duration: duration,
+    dismissible: dismissible,
+    replaceCurrent: replaceCurrent,
+  );
 
   static void neutral(
     BuildContext context, {
@@ -173,17 +168,76 @@ abstract final class HudaSnackBar {
     Duration? duration,
     bool? dismissible,
     bool replaceCurrent = true,
-  }) =>
-      show(
-        context,
-        message: message,
-        kind: HudaSnackBarKind.neutral,
-        title: title,
-        action: action,
-        duration: duration,
-        dismissible: dismissible,
-        replaceCurrent: replaceCurrent,
-      );
+  }) => show(
+    context,
+    message: message,
+    kind: HudaSnackBarKind.neutral,
+    title: title,
+    action: action,
+    duration: duration,
+    dismissible: dismissible,
+    replaceCurrent: replaceCurrent,
+  );
+}
+
+class HudaSnackBarScope extends StatefulWidget {
+  const HudaSnackBarScope({super.key, required this.child});
+
+  final Widget child;
+
+  static final _hosts = <_HudaSnackBarScopeState>[];
+
+  static ScaffoldMessengerState? messengerFor(BuildContext context) {
+    final navigator = Navigator.maybeOf(context);
+    for (final host in _hosts.reversed) {
+      if (host.mounted &&
+          host._navigator == navigator &&
+          host._route?.isCurrent == true) {
+        final messenger = host._messengerKey.currentState;
+        if (messenger != null) return messenger;
+      }
+    }
+    return null;
+  }
+
+  @override
+  State<HudaSnackBarScope> createState() => _HudaSnackBarScopeState();
+}
+
+class _HudaSnackBarScopeState extends State<HudaSnackBarScope> {
+  final _messengerKey = GlobalKey<ScaffoldMessengerState>();
+  NavigatorState? _navigator;
+  ModalRoute<dynamic>? _route;
+
+  @override
+  void initState() {
+    super.initState();
+    HudaSnackBarScope._hosts.add(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _navigator = Navigator.maybeOf(context);
+    _route = ModalRoute.of(context);
+  }
+
+  @override
+  void dispose() {
+    HudaSnackBarScope._hosts.remove(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => ScaffoldMessenger(
+    key: _messengerKey,
+    child: Scaffold(
+      primary: false,
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
+      body: widget.child,
+    ),
+  );
 }
 
 class HudaSnackBarPreview extends StatelessWidget {
@@ -204,12 +258,12 @@ class HudaSnackBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _HudaSnackBarSurface(
-        message: message,
-        kind: kind,
-        title: title,
-        action: action,
-        dismissible: dismissible,
-      );
+    message: message,
+    kind: kind,
+    title: title,
+    action: action,
+    dismissible: dismissible,
+  );
 }
 
 class _HudaSnackBarSurface extends StatefulWidget {
@@ -239,14 +293,16 @@ class _HudaSnackBarSurfaceState extends State<_HudaSnackBarSurface> {
     setState(() => _actionTriggered = true);
     widget.action!.onPressed();
     if (mounted) {
-      ScaffoldMessenger.of(context)
-          .hideCurrentSnackBar(reason: SnackBarClosedReason.action);
+      ScaffoldMessenger.of(
+        context,
+      ).hideCurrentSnackBar(reason: SnackBarClosedReason.action);
     }
   }
 
   void _dismiss() {
-    ScaffoldMessenger.of(context)
-        .hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+    ScaffoldMessenger.of(
+      context,
+    ).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
   }
 
   @override
@@ -263,15 +319,18 @@ class _HudaSnackBarSurfaceState extends State<_HudaSnackBarSurface> {
       HudaSnackBarKind.neutral => l10n.snackbarNeutral,
     };
     final closeLabel = l10n.close;
-    final semanticLabel = [statusLabel, widget.title, widget.message]
-        .whereType<String>()
-        .where((value) => value.trim().isNotEmpty)
-        .join('. ');
-    final reduceMotion = MediaQuery.disableAnimationsOf(context) ||
+    final semanticLabel = [
+      statusLabel,
+      widget.title,
+      widget.message,
+    ].whereType<String>().where((value) => value.trim().isNotEmpty).join('. ');
+    final reduceMotion =
+        MediaQuery.disableAnimationsOf(context) ||
         MediaQuery.accessibleNavigationOf(context);
 
-    final snackBarAnimation =
-        context.findAncestorWidgetOfExactType<SnackBar>()?.animation;
+    final snackBarAnimation = context
+        .findAncestorWidgetOfExactType<SnackBar>()
+        ?.animation;
 
     return Semantics(
       key: ValueKey('huda-snackbar-${widget.kind.name}'),
@@ -305,7 +364,8 @@ class _HudaSnackBarSurfaceState extends State<_HudaSnackBarSurface> {
                   padding: const EdgeInsetsDirectional.fromSTEB(14, 12, 10, 12),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      final stackAction = widget.action != null &&
+                      final stackAction =
+                          widget.action != null &&
                           (constraints.maxWidth < 390 || scaledBodySize > 18);
                       return _HudaSnackBarContent(
                         message: widget.message,
@@ -343,11 +403,7 @@ class _HudaSnackBarMotion extends StatelessWidget {
   final bool reduceMotion;
   final Widget child;
 
-  static const _motionCurve = Interval(
-    0.30,
-    1.0,
-    curve: Curves.fastOutSlowIn,
-  );
+  static const _motionCurve = Interval(0.30, 1.0, curve: Curves.fastOutSlowIn);
 
   @override
   Widget build(BuildContext context) {
@@ -362,10 +418,7 @@ class _HudaSnackBarMotion extends StatelessWidget {
         return Transform.translate(
           key: const ValueKey('huda-snackbar-motion'),
           offset: Offset(0, 24 * (1 - progress)),
-          child: Opacity(
-            opacity: 0.96 + (0.04 * progress),
-            child: child,
-          ),
+          child: Opacity(opacity: 0.96 + (0.04 * progress), child: child),
         );
       },
     );
@@ -463,9 +516,13 @@ class _HudaSnackBarContent extends StatelessWidget {
         if (action != null) ...[
           const SizedBox(width: 8),
           SizedBox(
-              height: 42,
-              child: VerticalDivider(
-                  width: 1, thickness: 1, color: palette.divider)),
+            height: 42,
+            child: VerticalDivider(
+              width: 1,
+              thickness: 1,
+              color: palette.divider,
+            ),
+          ),
           const SizedBox(width: 6),
           _HudaSnackBarActionButton(
             action: action!,
@@ -538,22 +595,22 @@ class _HudaSnackBarActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-        button: true,
-        label: action.label,
-        child: TextButton(
-          onPressed: disabled ? null : onPressed,
-          style: TextButton.styleFrom(
-            foregroundColor: color,
-            minimumSize: const Size(48, 48),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.15,
-                ),
-          ),
-          child: Text(action.label, maxLines: 2, textAlign: TextAlign.center),
+    button: true,
+    label: action.label,
+    child: TextButton(
+      onPressed: disabled ? null : onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: color,
+        minimumSize: const Size(48, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.15,
         ),
-      );
+      ),
+      child: Text(action.label, maxLines: 2, textAlign: TextAlign.center),
+    ),
+  );
 }
 
 class _HudaSnackBarDismissButton extends StatelessWidget {
@@ -569,20 +626,20 @@ class _HudaSnackBarDismissButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-        button: true,
-        label: label,
-        child: IconButton(
-          tooltip: label,
-          onPressed: onPressed,
-          icon: const Icon(Icons.close_rounded),
-          color: color,
-          iconSize: 20,
-          style: IconButton.styleFrom(
-            minimumSize: const Size(48, 48),
-            padding: const EdgeInsets.all(12),
-          ),
-        ),
-      );
+    button: true,
+    label: label,
+    child: IconButton(
+      tooltip: label,
+      onPressed: onPressed,
+      icon: const Icon(Icons.close_rounded),
+      color: color,
+      iconSize: 20,
+      style: IconButton.styleFrom(
+        minimumSize: const Size(48, 48),
+        padding: const EdgeInsets.all(12),
+      ),
+    ),
+  );
 }
 
 class _HudaStatusSeal extends StatelessWidget {
@@ -681,7 +738,9 @@ class _HudaSnackBarPalette {
       border: highContrast
           ? accent
           : Color.alphaBlend(
-              accent.withValues(alpha: dark ? 0.7 : 0.52), surface),
+              accent.withValues(alpha: dark ? 0.7 : 0.52),
+              surface,
+            ),
       divider: Color.alphaBlend(
         accent.withValues(alpha: highContrast ? 0.55 : 0.26),
         surface,
@@ -737,8 +796,10 @@ Path _hudaCutCornerPath(Rect rect) {
 }
 
 class _HudaSnackBarSurfacePainter extends CustomPainter {
-  const _HudaSnackBarSurfacePainter(
-      {required this.accent, required this.border});
+  const _HudaSnackBarSurfacePainter({
+    required this.accent,
+    required this.border,
+  });
 
   final Color accent;
   final Color border;
@@ -747,8 +808,10 @@ class _HudaSnackBarSurfacePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
     final hairline = Paint()
-      ..color =
-          Color.alphaBlend(border.withValues(alpha: 0.42), Colors.transparent)
+      ..color = Color.alphaBlend(
+        border.withValues(alpha: 0.42),
+        Colors.transparent,
+      )
       ..strokeWidth = 1;
     final accentLine = Paint()
       ..color = accent.withValues(alpha: 0.42)
@@ -757,7 +820,10 @@ class _HudaSnackBarSurfacePainter extends CustomPainter {
     final end = math.max(start, size.width - 17);
     canvas.drawLine(Offset(start, 7), Offset(end, 7), hairline);
     canvas.drawLine(
-        Offset(start, size.height - 7), Offset(end, size.height - 7), hairline);
+      Offset(start, size.height - 7),
+      Offset(end, size.height - 7),
+      hairline,
+    );
     final registration = size.width * 0.15;
     canvas.drawLine(
       Offset(registration, size.height - 11),
