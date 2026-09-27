@@ -128,6 +128,9 @@ class MainActivity : AudioServiceActivity() {
                     ),
                 )
 
+                "consumeCandidate" -> result.success(
+                    com.aw.huda.widget.prayer.PrayerWidgetRepository.consumeCandidate(applicationContext, call.arguments as? String),
+                )
                 "status" -> result.success(
                     PrayerTravelReliabilityManager.status(applicationContext),
                 )

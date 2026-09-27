@@ -68,7 +68,7 @@ dependencies:
   jiffy: ^6.4.3
   intl: ^0.20.2
   timezone: ^0.11.1
-  timezone_finder: ^0.2.0
+  timezone_finder: 0.2.0
   flutter_timezone: ^4.1.1
 
   # Notifications & background work
@@ -173,6 +173,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/geography/countries_50m.json
     - assets/images/
     - assets/json/
     - assets/audio/

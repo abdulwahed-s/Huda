@@ -53,6 +53,18 @@ class PrayerLocationMonitor {
   bool get preferenceEnabled =>
       cacheHelper.getData(key: backgroundTravelEnabledKey) == true;
 
+  static Future<bool> consumeNativeCandidate(String expected) async {
+    try {
+      return await _nativeChannel.invokeMethod<bool>(
+            'consumeCandidate',
+            expected,
+          ) ??
+          false;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<void> start({
     required PrayerLocationMode mode,
     required Future<void> Function(Position position) onForegroundPosition,

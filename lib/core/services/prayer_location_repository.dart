@@ -1,6 +1,10 @@
+import 'package:huda/core/services/prayer_schedule_configuration.dart';
+import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/prayer_location_coordinator.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_reconciliation_state.dart';
@@ -24,6 +28,8 @@ class PrayerLocationRepository {
   }) : _storage = storage,
        _now = now ?? DateTime.now;
 
+  static const String issuesProjectionKey = 'prayer_workflow_issues_v1';
+  static const String displayProjectionKey = 'prayer_display_snapshot_v1';
   static const String generationProjectionKey = 'prayer_location_generation_v1';
   static const String widgetSettingsProjectionKey = 'prayer_widget_settings_v2';
   static const String localityKey = 'prayer_location_locality';
@@ -77,6 +83,90 @@ class PrayerLocationRepository {
       automaticFixCapturedAtUtc: automaticFixCapturedAtUtc,
     ),
   );
+
+  Future<bool> saveDisplay(
+    PrayerDisplaySnapshot display, {
+    int? expectedDisplayRevision,
+  }) => synchronized((session) async {
+    final previous = session.state.displaySnapshot;
+    if (expectedDisplayRevision != null &&
+        previous?.revision != expectedDisplayRevision) {
+      return false;
+    }
+    if (previous != null &&
+        (previous.location.revision > display.location.revision ||
+            (previous.location.revision == display.location.revision &&
+                previous.revision > display.revision))) {
+      return false;
+    }
+    if (session.state.latestIntentRevision != display.location.revision &&
+        session.state.revisionCounter != display.location.revision &&
+        previous?.location.revision != display.location.revision) {
+      return false;
+    }
+    await session.save(
+      session.state.copyWith(
+        displaySnapshot: display,
+        pendingCandidate:
+            session.state.journal == null &&
+                session.state.pendingCandidate?.revision ==
+                    display.location.revision
+            ? display.location
+            : session.state.pendingCandidate,
+      ),
+    );
+    await _checkedSave(displayProjectionKey, jsonEncode(display.toJson()));
+    return true;
+  });
+
+  Future<void> saveCountryChoice(PrayerCountryChoice choice) =>
+      synchronized((session) async {
+        final kept = session.state.countryChoices.where(
+          (existing) =>
+              PrayerLocationCoordinator.distanceMeters(
+                existing.latitude,
+                existing.longitude,
+                choice.latitude,
+                choice.longitude,
+              ) >
+              PrayerLocationCoordinator.countryChoiceRadiusMeters,
+        );
+        final choices = [...kept, choice];
+        await session.save(
+          session.state.copyWith(
+            countryChoices: List.unmodifiable(
+              choices.skip(math.max(0, choices.length - maxCountryChoices)),
+            ),
+          ),
+        );
+      });
+
+  static const int maxCountryChoices = 20;
+
+  Future<void> updateIssues({
+    Set<PrayerWorkflowIssue> add = const {},
+    Set<PrayerWorkflowIssue> remove = const {},
+  }) => synchronized((session) async {
+    final issues = {...session.state.workflowIssues}
+      ..removeAll(remove)
+      ..addAll(add);
+    final currentDisplay = session.state.displaySnapshot;
+    final display = currentDisplay?.withIssues(
+      {...currentDisplay.issues}
+        ..removeAll(remove)
+        ..addAll(add),
+    );
+    await session.save(
+      session.state.copyWith(workflowIssues: issues, displaySnapshot: display),
+    );
+    await _checkedSave(
+      issuesProjectionKey,
+      jsonEncode(issues.map((e) => e.name).toList()),
+    );
+    if (display != null) {
+      await _checkedSave(displayProjectionKey, jsonEncode(display.toJson()));
+    }
+  });
 
   Future<bool> stageCandidate(PrayerLocationGeneration candidate) =>
       synchronized((session) => session.stageCandidate(candidate));
@@ -242,7 +332,18 @@ class PrayerLocationRepositorySession {
             _state.latestIntentMode == PrayerLocationMode.manual)) {
       return null;
     }
-    final active = _state.activeLocation;
+    if (!allowModeChange &&
+        automaticFixCapturedAtUtc != null &&
+        _state.latestFixCapturedAtUtc != null &&
+        !_state.latestFixCapturedAtUtc!.isBefore(
+          automaticFixCapturedAtUtc.toUtc(),
+        )) {
+      return null;
+    }
+    final active =
+        _state.displaySnapshot?.location ??
+        _state.pendingCandidate ??
+        _state.activeLocation;
     if (!allowModeChange &&
         mode == PrayerLocationMode.automatic &&
         automaticFixCapturedAtUtc != null &&
@@ -265,13 +366,22 @@ class PrayerLocationRepositorySession {
     if (next > PrayerLocationGeneration.maxSafeRevision) {
       throw StateError('Prayer location revision space exhausted');
     }
+    if (_state.journal != null) {
+      await save(
+        _state.copyWith(
+          revisionCounter: next,
+          latestFixCapturedAtUtc: automaticFixCapturedAtUtc,
+        ),
+      );
+      return next;
+    }
     await save(
       _state.copyWith(
         revisionCounter: next,
         latestIntentRevision: next,
         latestIntentMode: mode,
         pendingCandidate: null,
-        journal: null,
+        latestFixCapturedAtUtc: automaticFixCapturedAtUtc,
         occurrenceHistory: _historyAfterSupersedingJournal(intentStartedAtUtc),
       ),
     );
@@ -328,6 +438,8 @@ class PrayerLocationRepositorySession {
     required String desiredEventDigest,
     required List<PrayerNotificationEvent> events,
     required List<PrayerOccurrenceRecord> occurrenceHistory,
+    PrayerScheduleConfiguration? configuration,
+    DateTime? coverageUntilUtc,
     required DateTime activatedAtUtc,
   }) async {
     if (_state.pendingCandidate?.revision != generation.revision ||
@@ -342,6 +454,8 @@ class PrayerLocationRepositorySession {
       _state.copyWith(
         activeLocation: committed,
         pendingCandidate: null,
+        committedConfiguration: configuration,
+        acknowledgedCoverageUntilUtc: coverageUntilUtc,
         scheduleRevision: scheduleRevision,
         committedConfigurationSignature: configurationSignature,
         committedDesiredEventDigest: desiredEventDigest,
@@ -353,9 +467,7 @@ class PrayerLocationRepositorySession {
         lastScheduleActivatedAtUtc: activatedAtUtc.toUtc(),
       ),
     );
-    try {
-      await _repository._mirrorActive(committed);
-    } catch (_) {}
+    await repairProjections();
   }
 
   Future<void> commitScheduleForActive({
@@ -365,6 +477,8 @@ class PrayerLocationRepositorySession {
     required String desiredEventDigest,
     required List<PrayerNotificationEvent> events,
     required List<PrayerOccurrenceRecord> occurrenceHistory,
+    PrayerScheduleConfiguration? configuration,
+    DateTime? coverageUntilUtc,
     required DateTime activatedAtUtc,
     required bool publishWidget,
   }) async {
@@ -378,6 +492,8 @@ class PrayerLocationRepositorySession {
         : _state.widgetPublicationRevision;
     await save(
       _state.copyWith(
+        committedConfiguration: configuration,
+        acknowledgedCoverageUntilUtc: coverageUntilUtc,
         scheduleRevision: scheduleRevision,
         committedConfigurationSignature: configurationSignature,
         committedDesiredEventDigest: desiredEventDigest,
@@ -417,8 +533,42 @@ class PrayerLocationRepositorySession {
     return _nextRevision(floor, 'widget publication');
   }
 
-  Future<void> repairProjections() =>
-      _repository._mirrorActive(_state.activeLocation);
+  Future<void> repairProjections() async {
+    await _repository._checkedSave(
+      PrayerLocationRepository.issuesProjectionKey,
+      jsonEncode(_state.workflowIssues.map((e) => e.name).toList()),
+    );
+    final configuration = _state.committedConfiguration;
+    if (configuration != null) {
+      final settings = <String, Object>{
+        PrayerTimesCalculator.methodKey: configuration.methodToken,
+        PrayerTimesCalculator.madhabKey: configuration.madhabToken,
+        PrayerTimesCalculator.highLatitudeRuleKey:
+            configuration.highLatitudeRuleToken,
+        PrayerTimesCalculator.customFajrAngleKey: CustomPrayerAngles.canonical(
+          configuration.customAngles.fajr,
+        ),
+        PrayerTimesCalculator.customMaghribAngleKey:
+            CustomPrayerAngles.canonical(configuration.customAngles.maghrib),
+        PrayerTimesCalculator.customIshaAngleKey: CustomPrayerAngles.canonical(
+          configuration.customAngles.isha,
+        ),
+        for (final entry in configuration.offsets.entries)
+          PrayerTimesCalculator.offsetKeyFor(entry.key): entry.value,
+      };
+      for (final entry in settings.entries) {
+        await _repository._checkedSave(entry.key, entry.value);
+      }
+    }
+    await _repository._mirrorActive(_state.activeLocation);
+    final display = _state.displaySnapshot;
+    if (display != null) {
+      await _repository._checkedSave(
+        PrayerLocationRepository.displayProjectionKey,
+        jsonEncode(display.toJson()),
+      );
+    }
+  }
 
   static int _nextRevision(int current, String label) {
     if (current < 0 || current >= PrayerLocationGeneration.maxSafeRevision) {

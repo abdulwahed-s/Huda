@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:meta/meta.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -62,10 +63,21 @@ class PrayerLocationGeneration {
     this.locality,
     this.countryName,
     this.accuracyMeters,
+    this.verificationReasons = const [],
+    this.resolutionSource,
+    this.countryCandidates = const [],
   });
 
   static const int schemaVersion = 1;
   static const int maxSafeRevision = 9007199254740991;
+
+  final List<String> verificationReasons;
+  final String? resolutionSource;
+
+  final List<String> countryCandidates;
+  bool get calculationVerified =>
+      timeZoneProvenance != PrayerTimeZoneProvenance.legacyApproximate &&
+      verificationReasons.isEmpty;
 
   final int revision;
   final PrayerLocationMode mode;
@@ -97,6 +109,9 @@ class PrayerLocationGeneration {
           (accuracyMeters!.isFinite && accuracyMeters! >= 0));
 
   PrayerLocationGeneration copyWith({
+    List<String>? verificationReasons,
+    String? resolutionSource,
+    List<String>? countryCandidates,
     int? revision,
     PrayerLocationMode? mode,
     double? latitude,
@@ -112,6 +127,9 @@ class PrayerLocationGeneration {
     PrayerLocationSource? source,
   }) {
     return PrayerLocationGeneration(
+      verificationReasons: verificationReasons ?? this.verificationReasons,
+      resolutionSource: resolutionSource ?? this.resolutionSource,
+      countryCandidates: countryCandidates ?? this.countryCandidates,
       revision: revision ?? this.revision,
       mode: mode ?? this.mode,
       latitude: latitude ?? this.latitude,
@@ -137,6 +155,9 @@ class PrayerLocationGeneration {
   }
 
   Map<String, Object?> toJson() => <String, Object?>{
+    'verificationReasons': verificationReasons,
+    'resolutionSource': resolutionSource,
+    'countryCandidates': countryCandidates,
     'schemaVersion': schemaVersion,
     'revision': revision,
     'mode': mode.name,
@@ -157,6 +178,21 @@ class PrayerLocationGeneration {
     if (value is! Map) return null;
     final json = Map<String, Object?>.from(value);
     if (_integer(json['schemaVersion']) != schemaVersion) return null;
+    final rawReasons = json['verificationReasons'];
+    if (rawReasons != null &&
+        (rawReasons is! List || rawReasons.any((value) => value is! String))) {
+      return null;
+    }
+    final rawCandidates = json['countryCandidates'];
+    if (rawCandidates != null &&
+        (rawCandidates is! List ||
+            rawCandidates.any((value) => value is! String))) {
+      return null;
+    }
+    if (json['resolutionSource'] != null &&
+        json['resolutionSource'] is! String) {
+      return null;
+    }
     final revision = _integer(json['revision']);
     final latitude = _finiteDouble(json['latitude']);
     final longitude = _finiteDouble(json['longitude']);
@@ -186,6 +222,13 @@ class PrayerLocationGeneration {
       return null;
     }
     final generation = PrayerLocationGeneration(
+      verificationReasons: json['verificationReasons'] is List
+          ? List<String>.from(json['verificationReasons'] as List)
+          : const [],
+      resolutionSource: json['resolutionSource'] as String?,
+      countryCandidates: rawCandidates is List
+          ? List<String>.unmodifiable(rawCandidates)
+          : const [],
       revision: revision,
       mode: mode,
       latitude: latitude,
@@ -253,6 +296,9 @@ class PrayerLocationGeneration {
   @override
   bool operator ==(Object other) =>
       other is PrayerLocationGeneration &&
+      listEquals(other.verificationReasons, verificationReasons) &&
+      other.resolutionSource == resolutionSource &&
+      listEquals(other.countryCandidates, countryCandidates) &&
       other.revision == revision &&
       other.mode == mode &&
       other.latitude == latitude &&
@@ -269,6 +315,9 @@ class PrayerLocationGeneration {
 
   @override
   int get hashCode => Object.hash(
+    Object.hashAll(verificationReasons),
+    resolutionSource,
+    Object.hashAll(countryCandidates),
     revision,
     mode,
     latitude,

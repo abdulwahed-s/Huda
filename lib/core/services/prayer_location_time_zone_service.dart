@@ -21,24 +21,20 @@ abstract final class PrayerLocationTimeZoneService {
     double longitude,
     String countryCode,
   ) async {
-    if (PlatformUtils.isWindows) {
+    try {
       return resolveOfflineExact(latitude, longitude);
+    } on StateError {
     }
-    if (!PlatformUtils.isAndroid &&
-        !PlatformUtils.isIOS &&
-        !PlatformUtils.isMacOS) {
-      throw UnsupportedError(
-        'Coordinate timezone lookup is unavailable on this platform',
-      );
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) {
+      throw StateError('No IANA timezone boundary covers the coordinates');
     }
-    final identifier = await _channel.invokeMethod<String>(
-      'resolveTimeZone',
-      <String, Object?>{
-        'latitude': latitude,
-        'longitude': longitude,
-        'countryCode': countryCode,
-      },
-    );
+    final identifier = await _channel
+        .invokeMethod<String>('resolveTimeZone', <String, Object?>{
+          'latitude': latitude,
+          'longitude': longitude,
+          'countryCode': countryCode,
+        })
+        .timeout(const Duration(seconds: 5));
     final normalized = identifier?.trim() ?? '';
     if (normalized.isEmpty) {
       throw StateError('No IANA timezone found for the coordinates');
@@ -62,15 +58,7 @@ abstract final class PrayerLocationTimeZoneService {
     double longitude,
     String countryCode,
   ) async {
-    try {
-      return await resolveExact(latitude, longitude, countryCode);
-    } on PlatformException {
-      return legacyFallback(countryCode);
-    } on MissingPluginException {
-      return legacyFallback(countryCode);
-    } on UnsupportedError {
-      return legacyFallback(countryCode);
-    }
+    return resolveExact(latitude, longitude, countryCode);
   }
 
   static String legacyFallback(String countryCode) {

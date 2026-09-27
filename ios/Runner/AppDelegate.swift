@@ -112,6 +112,8 @@ import workmanager_apple
               enabled: arguments?["enabled"] as? Bool ?? false,
               locationMode: arguments?["locationMode"] as? String ?? "manual"
             ))
+        case "consumeCandidate":
+          result(monitor.consumeCandidate(expected: call.arguments as? String))
         case "status":
           result(monitor.status())
         default:
@@ -248,6 +250,13 @@ private final class PrayerTravelMonitor: NSObject, CLLocationManagerDelegate {
     return status()
   }
 
+  func consumeCandidate(expected: String?) -> Bool {
+    let defaults = UserDefaults.standard
+    guard let expected, defaults.string(forKey: Self.candidateKey) == expected else { return false }
+    defaults.removeObject(forKey: Self.candidateKey)
+    return defaults.synchronize()
+  }
+
   func status() -> [String: Any] {
     guard requestedEnabled, locationMode == "automatic" else {
       return ["state": "disabled", "enrolled": false]
@@ -303,42 +312,27 @@ private final class PrayerTravelMonitor: NSObject, CLLocationManagerDelegate {
       })
     else { return }
 
-    let backgroundTask = PrayerBackgroundTaskLease { [weak self] in
-      self?.locationResolver.cancel()
-    }
-    locationResolver.resolve(fix) { [weak self] resolved, _ in
-      defer { backgroundTask.end() }
-      guard let self,
-        !backgroundTask.expired,
-        self.requestedEnabled,
-        self.locationMode == "automatic",
-        let zone = resolved?.timeZoneId,
-        TimeZone(identifier: zone) != nil
-      else { return }
-      var candidate: [String: Any] = [
-        "schemaVersion": 1,
-        "latitude": fix.coordinate.latitude,
-        "longitude": fix.coordinate.longitude,
-        "timeZoneId": zone,
-        "capturedAtUtc": ISO8601DateFormatter().string(from: fix.timestamp),
-        "accuracyMeters": fix.horizontalAccuracy,
-        "submittedAtUtc": ISO8601DateFormatter().string(from: Date()),
-        "source": "iosSignificantChange",
-        "nonce": UUID().uuidString,
-      ]
-      if let countryCode = resolved?.countryCode,
-        !countryCode.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-      {
-        candidate["countryCode"] = countryCode.uppercased()
-      }
-      guard let data = try? JSONSerialization.data(withJSONObject: candidate),
-        let encoded = String(data: data, encoding: .utf8)
-      else { return }
-      let defaults = UserDefaults.standard
-      defaults.set(encoded, forKey: Self.candidateKey)
-      guard defaults.synchronize() else { return }
-      self.channel?.invokeMethod("candidateAvailable", arguments: nil)
-    }
+    let candidate: [String: Any] = [
+      "schemaVersion": 1,
+      "latitude": fix.coordinate.latitude,
+      "longitude": fix.coordinate.longitude,
+      "capturedAtUtc": ISO8601DateFormatter().string(from: fix.timestamp),
+      "accuracyMeters": fix.horizontalAccuracy,
+      "submittedAtUtc": ISO8601DateFormatter().string(from: now),
+      "source": "iosSignificantChange",
+      "nonce": UUID().uuidString,
+    ]
+    guard let data = try? JSONSerialization.data(withJSONObject: candidate),
+      let encoded = String(data: data, encoding: .utf8) else { return }
+    let defaults = UserDefaults.standard
+    if let previous = defaults.string(forKey: Self.candidateKey),
+      let bytes = previous.data(using: .utf8),
+      let object = try? JSONSerialization.jsonObject(with: bytes) as? [String: Any],
+      let captured = object["capturedAtUtc"] as? String,
+      let timestamp = ISO8601DateFormatter().date(from: captured), timestamp >= fix.timestamp { return }
+    defaults.set(encoded, forKey: Self.candidateKey)
+    guard defaults.synchronize() else { return }
+    channel?.invokeMethod("candidateAvailable", arguments: nil)
   }
 
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

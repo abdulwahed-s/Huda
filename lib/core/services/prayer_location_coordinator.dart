@@ -1,3 +1,7 @@
+import 'package:huda/core/services/prayer_widget_service.dart';
+import 'package:huda/core/services/prayer_display_snapshot.dart';
+import 'package:huda/core/services/prayer_offline_geography.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'dart:math' as math;
 
 import 'package:huda/core/cache/cache_helper.dart';
@@ -5,6 +9,7 @@ import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_location_repository.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_notification_planner.dart';
+import 'package:huda/core/services/prayer_reconciliation_state.dart';
 import 'package:huda/core/services/prayer_schedule_configuration.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 
@@ -87,6 +92,7 @@ class PrayerLocationCoordinator {
     required this.activator,
     required PrayerCoordinateTimeZoneResolver timeZoneResolver,
     required PrayerLocationMetadataResolver metadataResolver,
+    this.onDisplay,
     DateTime Function()? now,
   }) : _timeZoneResolver = timeZoneResolver,
        _metadataResolver = metadataResolver,
@@ -98,6 +104,9 @@ class PrayerLocationCoordinator {
   static const double significantDistanceMeters = 10000;
   static const Duration significantPrayerDelta = Duration(minutes: 1);
 
+  static const double countryChoiceRadiusMeters = 25000;
+
+  final Future<void> Function(PrayerDisplaySnapshot)? onDisplay;
   final CacheHelper cacheHelper;
   final PrayerLocationRepository repository;
   final PrayerLocationActivator activator;
@@ -112,6 +121,9 @@ class PrayerLocationCoordinator {
     required String reason,
     bool explicitUserAction = false,
     PrayerLocationMetadata? suppliedMetadata,
+    bool enrich = false,
+    PrayerDisplaySnapshot? calculationSettings,
+    bool Function()? isCurrent,
   }) async {
     final now = _now().toUtc();
     if (!_validFix(fix)) {
@@ -137,11 +149,21 @@ class PrayerLocationCoordinator {
       }
     }
 
-    final revision = await repository.beginIntent(
-      mode,
-      allowModeChange: explicitUserAction || mode == PrayerLocationMode.manual,
-      automaticFixCapturedAtUtc: isAutomaticMonitor ? fix.capturedAtUtc : null,
-    );
+    var storageUnavailable = false;
+    int? revision;
+    try {
+      revision = await repository.beginIntent(
+        mode,
+        allowModeChange:
+            explicitUserAction || mode == PrayerLocationMode.manual,
+        automaticFixCapturedAtUtc: mode == PrayerLocationMode.automatic
+            ? fix.capturedAtUtc
+            : null,
+      );
+    } catch (_) {
+      storageUnavailable = true;
+      revision = now.microsecondsSinceEpoch;
+    }
     if (revision == null) {
       final current = await repository.readState();
       final active = current.activeLocation;
@@ -159,31 +181,102 @@ class PrayerLocationCoordinator {
       );
     }
 
-    PrayerLocationMetadata metadata =
-        suppliedMetadata ?? const PrayerLocationMetadata();
-    if (suppliedMetadata == null) {
+    var metadata = suppliedMetadata ?? const PrayerLocationMetadata();
+    final issues = <PrayerWorkflowIssue>{
+      if (storageUnavailable) PrayerWorkflowIssue.storage,
+    };
+    var countryChoices = const <PrayerCountryChoice>[];
+    if (!storageUnavailable) {
       try {
-        metadata = await _metadataResolver(fix.latitude, fix.longitude);
+        final stored = await repository.readState();
+        calculationSettings ??= stored.displaySnapshot;
+        countryChoices = stored.countryChoices;
       } catch (_) {}
     }
-    final countryCode = _normalize(metadata.countryCode)?.toUpperCase();
-
-    late final String timeZoneId;
+    PrayerTimeZoneService.initializeDatabase();
+    PrayerGeographicResult? zoneResult;
+    PrayerGeographicResult? countryResult;
     try {
-      timeZoneId = (await _timeZoneResolver(
+      zoneResult = PrayerOfflineGeography.timeZone(
         fix.latitude,
         fix.longitude,
-        countryCode ?? '',
-      )).trim();
-      if (timeZoneId.isEmpty) throw StateError('empty timezone');
-    } catch (error) {
-      return PrayerLocationUpdateResult(
+        accuracyMeters: fix.accuracyMeters,
+        manual: mode == PrayerLocationMode.manual,
+      );
+      countryResult = await PrayerOfflineGeography.resolveCountry(
+        fix.latitude,
+        fix.longitude,
+        accuracyMeters: fix.accuracyMeters,
+        manual: mode == PrayerLocationMode.manual,
+        zone: zoneResult,
+      );
+    } catch (_) {
+    }
+    var countryCode = countryResult?.verified == true
+        ? countryResult!.value
+        : null;
+    String? chosenZone;
+    if (countryCode == null) {
+      final choice = _countryChoiceFor(
+        fix,
+        countryResult?.candidates ?? const {},
+        countryChoices,
+      );
+      if (choice != null) {
+        countryCode = choice.countryCode;
+        chosenZone = PrayerOfflineGeography.soleZoneForCountry(countryCode);
+      }
+    }
+    String timeZoneId;
+    try {
+      timeZoneId =
+          chosenZone ??
+          zoneResult?.value ??
+          await _timeZoneResolver(
+            fix.latitude,
+            fix.longitude,
+            countryCode ?? '',
+          ).timeout(const Duration(seconds: 5));
+      PrayerTimeZoneService.location(timeZoneId);
+    } catch (_) {
+      try {
+        await repository.updateIssues(add: {PrayerWorkflowIssue.location});
+      } catch (_) {}
+      return const PrayerLocationUpdateResult(
         PrayerLocationUpdateStatus.timeZoneUnavailable,
-        message: error.toString(),
       );
     }
+    if (enrich && suppliedMetadata == null) {
+      try {
+        metadata = await _metadataResolver(
+          fix.latitude,
+          fix.longitude,
+        ).timeout(const Duration(seconds: 5));
+      } catch (_) {
+        issues.add(PrayerWorkflowIssue.locality);
+      }
+    }
+    if (_normalize(metadata.locality) == null) {
+      issues.add(PrayerWorkflowIssue.locality);
+    }
+    final reasons = <String>[
+      if (chosenZone == null && zoneResult?.verified != true)
+        zoneResult?.reason ?? 'timezoneUnverified',
+      if (countryCode == null &&
+          PrayerTimesCalculator.requiresCountry(
+            calculationSettings?.method ??
+                PrayerTimesCalculator.methodTokenFromCache(cacheHelper),
+          ))
+        countryResult?.reason ?? 'countryUnknown',
+    ];
+    if (reasons.isNotEmpty) issues.add(PrayerWorkflowIssue.verification);
 
     final candidate = PrayerLocationGeneration(
+      verificationReasons: reasons,
+      resolutionSource: zoneResult?.source,
+      countryCandidates: countryCode == null
+          ? List.unmodifiable(countryResult?.candidates ?? const <String>{})
+          : const [],
       revision: revision,
       mode: mode,
       latitude: fix.latitude,
@@ -192,7 +285,7 @@ class PrayerLocationCoordinator {
       timeZoneProvenance: PrayerTimeZoneProvenance.coordinateResolved,
       countryCode: countryCode,
       locality: _normalize(metadata.locality),
-      countryName: _normalize(metadata.countryName),
+      countryName: _verifiedCountryName(countryCode, metadata),
       capturedAtUtc: fix.capturedAtUtc.toUtc(),
       committedAtUtc: now,
       accuracyMeters: fix.accuracyMeters,
@@ -204,29 +297,40 @@ class PrayerLocationCoordinator {
       );
     }
 
-    final rejection = await repository.synchronized((session) async {
-      await cacheHelper.reload();
-      final state = session.state;
-      if (state.latestIntentRevision != revision ||
-          state.latestIntentMode != mode) {
-        return PrayerLocationUpdateStatus.superseded;
-      }
-      if (PrayerTimesCalculator.methodTokenFromCache(cacheHelper) ==
-              PrayerTimesCalculator.autoMethodToken &&
-          countryCode == null) {
-        return PrayerLocationUpdateStatus.deferredCountry;
-      }
-      final active = state.activeLocation;
-      if (isAutomaticMonitor &&
-          active != null &&
-          !_isSignificant(active, candidate, now)) {
-        return PrayerLocationUpdateStatus.ignoredInsignificant;
-      }
-      return await session.stageCandidate(candidate)
-          ? null
-          : PrayerLocationUpdateStatus.superseded;
-    });
-    if (rejection != null) {
+    if (isCurrent != null && !isCurrent()) {
+      return const PrayerLocationUpdateResult(
+        PrayerLocationUpdateStatus.superseded,
+      );
+    }
+    PrayerLocationUpdateStatus? rejection;
+    try {
+      rejection = await repository.synchronized((session) async {
+        await cacheHelper.reload();
+        final state = session.state;
+        if (state.journal != null &&
+            state.revisionCounter == revision &&
+            state.latestIntentRevision != revision) {
+          return PrayerLocationUpdateStatus.degraded;
+        }
+        if (state.latestIntentRevision != revision ||
+            state.latestIntentMode != mode) {
+          return PrayerLocationUpdateStatus.superseded;
+        }
+        final active = state.activeLocation;
+        if (isAutomaticMonitor &&
+            active != null &&
+            !_isSignificant(active, candidate, now)) {
+          return PrayerLocationUpdateStatus.ignoredInsignificant;
+        }
+        return await session.stageCandidate(candidate)
+            ? null
+            : PrayerLocationUpdateStatus.superseded;
+      });
+    } catch (_) {
+      storageUnavailable = true;
+      issues.add(PrayerWorkflowIssue.storage);
+    }
+    if (rejection != null && rejection != PrayerLocationUpdateStatus.degraded) {
       return PrayerLocationUpdateResult(
         rejection,
         message: rejection == PrayerLocationUpdateStatus.deferredCountry
@@ -235,6 +339,74 @@ class PrayerLocationCoordinator {
       );
     }
 
+    if (rejection == PrayerLocationUpdateStatus.degraded) {
+      issues.add(PrayerWorkflowIssue.notifications);
+    }
+    var display = calculationSettings == null
+        ? PrayerDisplaySnapshot.fromCache(
+            cacheHelper,
+            candidate,
+            issues: issues,
+          )
+        : PrayerDisplaySnapshot(
+            location: candidate,
+            method: calculationSettings.method,
+            madhab: calculationSettings.madhab,
+            highLatitude: calculationSettings.highLatitude,
+            angles: calculationSettings.angles,
+            offsets: calculationSettings.offsets,
+            revision: PrayerDisplaySnapshot.nextRevision(
+              calculationSettings.revision,
+            ),
+            issues: issues,
+          );
+    try {
+      final accepted = await repository.saveDisplay(display);
+      if (!accepted) {
+        return const PrayerLocationUpdateResult(
+          PrayerLocationUpdateStatus.superseded,
+        );
+      }
+    } catch (_) {
+      storageUnavailable = true;
+      display = display.withIssues({
+        ...display.issues,
+        PrayerWorkflowIssue.storage,
+      });
+    }
+    if (isCurrent != null && !isCurrent()) {
+      return const PrayerLocationUpdateResult(
+        PrayerLocationUpdateStatus.superseded,
+      );
+    }
+    await _publishDisplay(display);
+    if (isCurrent != null && !isCurrent()) {
+      return const PrayerLocationUpdateResult(
+        PrayerLocationUpdateStatus.superseded,
+      );
+    }
+    if (storageUnavailable) {
+      return PrayerLocationUpdateResult(
+        PrayerLocationUpdateStatus.failed,
+        generation: candidate,
+      );
+    }
+    if (rejection == PrayerLocationUpdateStatus.degraded) {
+      return PrayerLocationUpdateResult(
+        PrayerLocationUpdateStatus.degraded,
+        generation: candidate,
+        scheduleResult: const PrayerScheduleResult(
+          status: PrayerScheduleStatus.deferred,
+          message: 'ownershipRecoveryPending',
+        ),
+      );
+    }
+    if (!candidate.calculationVerified) {
+      return PrayerLocationUpdateResult(
+        PrayerLocationUpdateStatus.deferredCountry,
+        generation: candidate,
+      );
+    }
     try {
       final schedule = await activator.activateCandidate(
         candidate: candidate,
@@ -243,6 +415,14 @@ class PrayerLocationCoordinator {
       if (schedule.status == PrayerScheduleStatus.degraded ||
           schedule.status == PrayerScheduleStatus.deferred ||
           schedule.status == PrayerScheduleStatus.failed) {
+        display = display.withIssues({
+          ...display.issues,
+          PrayerWorkflowIssue.notifications,
+        });
+        try {
+          await repository.saveDisplay(display);
+        } catch (_) {}
+        await _publishDisplay(display);
         return PrayerLocationUpdateResult(
           PrayerLocationUpdateStatus.degraded,
           generation: candidate,
@@ -256,6 +436,14 @@ class PrayerLocationCoordinator {
         scheduleResult: schedule,
       );
     } catch (error) {
+      display = display.withIssues({
+        ...display.issues,
+        PrayerWorkflowIssue.notifications,
+      });
+      try {
+        await repository.saveDisplay(display);
+      } catch (_) {}
+      await _publishDisplay(display);
       return PrayerLocationUpdateResult(
         PrayerLocationUpdateStatus.failed,
         generation: candidate,
@@ -266,6 +454,78 @@ class PrayerLocationCoordinator {
         message: error.toString(),
       );
     }
+  }
+
+  Future<void> _publishDisplay(PrayerDisplaySnapshot display) async {
+    if (onDisplay != null) {
+      await onDisplay!(display);
+      return;
+    }
+    try {
+      await PrayerWidgetService.publishDisplay(
+        display,
+        cacheHelper: cacheHelper,
+      );
+    } catch (_) {
+      await repository.saveDisplay(
+        display.withIssues({...display.issues, PrayerWorkflowIssue.widget}),
+      );
+    }
+  }
+
+  Future<PrayerDisplaySnapshot> enrichDisplay(
+    PrayerDisplaySnapshot display, {
+    bool Function()? isCurrent,
+  }) async {
+    final metadata = await _metadataResolver(
+      display.location.latitude,
+      display.location.longitude,
+    ).timeout(const Duration(seconds: 5));
+    if (isCurrent != null && !isCurrent()) return display;
+    final locality = _normalize(metadata.locality);
+    if (locality == null) throw StateError('Location details unavailable');
+    final location = display.location.copyWith(
+      locality: locality,
+      countryName: _verifiedCountryName(display.location.countryCode, metadata),
+    );
+    final updated = PrayerDisplaySnapshot(
+      location: location,
+      method: display.method,
+      madhab: display.madhab,
+      highLatitude: display.highLatitude,
+      angles: display.angles,
+      offsets: display.offsets,
+      revision: PrayerDisplaySnapshot.nextRevision(display.revision),
+      issues: {...display.issues}..remove(PrayerWorkflowIssue.locality),
+    );
+    final accepted = await repository.saveDisplay(
+      updated,
+      expectedDisplayRevision: display.revision,
+    );
+    return accepted ? updated : display;
+  }
+
+  static PrayerCountryChoice? _countryChoiceFor(
+    PrayerLocationFix fix,
+    Set<String> candidates,
+    List<PrayerCountryChoice> choices,
+  ) {
+    PrayerCountryChoice? nearest;
+    var nearestDistance = double.infinity;
+    for (final choice in choices) {
+      if (!candidates.contains(choice.countryCode)) continue;
+      final distance = distanceMeters(
+        fix.latitude,
+        fix.longitude,
+        choice.latitude,
+        choice.longitude,
+      );
+      if (distance <= countryChoiceRadiusMeters && distance < nearestDistance) {
+        nearest = choice;
+        nearestDistance = distance;
+      }
+    }
+    return nearest;
   }
 
   bool _validFix(PrayerLocationFix fix) =>
@@ -357,5 +617,15 @@ class PrayerLocationCoordinator {
   static String? _normalize(String? value) {
     final normalized = value?.trim() ?? '';
     return normalized.isEmpty ? null : normalized;
+  }
+
+  static String? _verifiedCountryName(
+    String? countryCode,
+    PrayerLocationMetadata metadata,
+  ) {
+    if (countryCode == null) return null;
+    return metadata.countryCode?.trim().toUpperCase() == countryCode
+        ? _normalize(metadata.countryName) ?? countryCode
+        : countryCode;
   }
 }
