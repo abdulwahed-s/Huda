@@ -268,6 +268,10 @@ class PrayerTimesCalculator {
     return CalculationMethod.ummAlQura;
   }
 
+  static bool requiresCountry(String methodToken) =>
+      methodToken == autoMethodToken ||
+      resolveMethod(methodToken, '') == CalculationMethod.ummAlQura;
+
   static CalculationMethod resolveMethod(
     String methodToken,
     String countryCode,

@@ -1,3 +1,4 @@
+import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
@@ -17,7 +18,7 @@ class PrayerScheduleConfiguration {
          PrayerTimesCalculator.sanitizeOffsets(offsets),
        );
 
-  static const int signatureVersion = 4;
+  static const int signatureVersion = 5;
 
   final PrayerLocationGeneration location;
   final String deviceTimeZoneId;
@@ -51,6 +52,63 @@ class PrayerScheduleConfiguration {
           cache.getDataString(key: 'locale') ??
           'en',
     );
+  }
+
+  factory PrayerScheduleConfiguration.fromDisplay(
+    PrayerDisplaySnapshot display, {
+    required String deviceTimeZoneId,
+    required String localeCode,
+  }) => PrayerScheduleConfiguration(
+    location: display.location,
+    deviceTimeZoneId: deviceTimeZoneId,
+    methodToken: display.method,
+    madhabToken: display.madhab,
+    highLatitudeRuleToken: display.highLatitude,
+    customAngles: display.angles,
+    offsets: display.offsets,
+    localeCode: localeCode,
+  );
+
+  Map<String, Object?> toJson() => {
+    'version': 1,
+    'location': location.toJson(),
+    'deviceTimeZoneId': deviceTimeZoneId,
+    'methodToken': methodToken,
+    'madhabToken': madhabToken,
+    'highLatitudeRuleToken': highLatitudeRuleToken,
+    'customAngles': {
+      'fajr': customAngles.fajr,
+      'maghrib': customAngles.maghrib,
+      'isha': customAngles.isha,
+    },
+    'offsets': offsets,
+    'localeCode': localeCode,
+    'schedulingCapability': schedulingCapability,
+  };
+  static PrayerScheduleConfiguration? tryParse(Object? value) {
+    if (value is! Map || value['version'] != 1) return null;
+    try {
+      final location = PrayerLocationGeneration.tryParse(value['location']);
+      if (location == null) return null;
+      final angles = value['customAngles'] as Map;
+      return PrayerScheduleConfiguration(
+        location: location,
+        deviceTimeZoneId: value['deviceTimeZoneId'] as String,
+        methodToken: value['methodToken'] as String,
+        madhabToken: value['madhabToken'] as String,
+        highLatitudeRuleToken: value['highLatitudeRuleToken'] as String,
+        customAngles: CustomPrayerAngles.fromStoredValues(
+          fajr: angles['fajr'],
+          maghrib: angles['maghrib'],
+          isha: angles['isha'],
+        ),
+        offsets: Map<String, int>.from(value['offsets'] as Map),
+        localeCode: value['localeCode'] as String,
+        schedulingCapability: value['schedulingCapability'] as String,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   PrayerScheduleConfiguration forLocation(
@@ -94,14 +152,13 @@ class PrayerScheduleConfiguration {
   String get signature {
     final parts = <String>[
       'v$signatureVersion',
-      'location:${location.revision}',
       'lat:${location.latitude}',
       'lon:${location.longitude}',
-      'country:${location.countryCode ?? ''}',
+      if (PrayerTimesCalculator.requiresCountry(methodToken))
+        'country:${location.countryCode ?? ''}',
       'zone:${location.timeZoneId}',
-      'zone-provenance:${location.timeZoneProvenance.name}',
       'device-zone:$deviceTimeZoneId',
-      'method:$methodToken',
+      'method:${PrayerTimesCalculator.resolveMethod(methodToken, location.countryCode ?? '').name}',
       'madhab:$madhabToken',
       'high-latitude:$highLatitudeRuleToken',
       'custom-fajr:${CustomPrayerAngles.canonical(customAngles.fajr)}',

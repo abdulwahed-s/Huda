@@ -384,6 +384,8 @@ class PrayerScheduleResult {
   final DateTime? coverageUntil;
   final String? message;
 
+  static const localBridgeMessage = 'localBridge';
+
   bool get isSuccess =>
       status == PrayerScheduleStatus.scheduled ||
       status == PrayerScheduleStatus.upToDate ||

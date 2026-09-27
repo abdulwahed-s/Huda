@@ -1,3 +1,5 @@
+import 'package:huda/core/services/prayer_schedule_configuration.dart';
+import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 
@@ -156,6 +158,7 @@ class PrayerRemoteOwnershipAcknowledgement {
 
 class PrayerScheduleJournal {
   const PrayerScheduleJournal({
+    this.configuration,
     required this.candidateLocationRevision,
     required this.previousLocationRevision,
     required this.scheduleRevision,
@@ -167,12 +170,16 @@ class PrayerScheduleJournal {
     required this.attemptCount,
     this.acknowledgedRemoteScheduleRevision,
     this.acknowledgedRemoteOwnershipUntilUtc,
+    this.remoteOwnershipFloorUtc,
     this.completedOrUncertainOperations = const <String>[],
     this.lastErrorCategory,
   });
 
+  static final DateTime serverOwnsAll = DateTime.utc(1970);
+
   static const int schemaVersion = 1;
 
+  final PrayerScheduleConfiguration? configuration;
   final int candidateLocationRevision;
   final int? previousLocationRevision;
   final int scheduleRevision;
@@ -181,6 +188,8 @@ class PrayerScheduleJournal {
   final PrayerReconciliationPhase phase;
   final int? acknowledgedRemoteScheduleRevision;
   final DateTime? acknowledgedRemoteOwnershipUntilUtc;
+
+  final DateTime? remoteOwnershipFloorUtc;
   final List<PrayerNotificationEvent> desiredEvents;
   final String desiredEventDigest;
   final List<String> completedOrUncertainOperations;
@@ -191,11 +200,13 @@ class PrayerScheduleJournal {
     PrayerReconciliationPhase? phase,
     int? acknowledgedRemoteScheduleRevision,
     Object? acknowledgedRemoteOwnershipUntilUtc = _unset,
+    Object? remoteOwnershipFloorUtc = _unset,
     List<String>? completedOrUncertainOperations,
     int? attemptCount,
     Object? lastErrorCategory = _unset,
   }) {
     return PrayerScheduleJournal(
+      configuration: configuration,
       candidateLocationRevision: candidateLocationRevision,
       previousLocationRevision: previousLocationRevision,
       scheduleRevision: scheduleRevision,
@@ -209,6 +220,9 @@ class PrayerScheduleJournal {
           identical(acknowledgedRemoteOwnershipUntilUtc, _unset)
           ? this.acknowledgedRemoteOwnershipUntilUtc
           : acknowledgedRemoteOwnershipUntilUtc as DateTime?,
+      remoteOwnershipFloorUtc: identical(remoteOwnershipFloorUtc, _unset)
+          ? this.remoteOwnershipFloorUtc
+          : remoteOwnershipFloorUtc as DateTime?,
       desiredEvents: desiredEvents,
       desiredEventDigest: desiredEventDigest,
       completedOrUncertainOperations:
@@ -221,6 +235,7 @@ class PrayerScheduleJournal {
   }
 
   Map<String, Object?> toJson() => <String, Object?>{
+    'configuration': configuration?.toJson(),
     'schemaVersion': schemaVersion,
     'candidateLocationRevision': candidateLocationRevision,
     'previousLocationRevision': previousLocationRevision,
@@ -230,6 +245,9 @@ class PrayerScheduleJournal {
     'phase': phase.name,
     'acknowledgedRemoteScheduleRevision': acknowledgedRemoteScheduleRevision,
     'acknowledgedRemoteOwnershipUntilUtc': acknowledgedRemoteOwnershipUntilUtc
+        ?.toUtc()
+        .toIso8601String(),
+    'remoteOwnershipFloorUtc': remoteOwnershipFloorUtc
         ?.toUtc()
         .toIso8601String(),
     'desiredEvents': desiredEvents.map((event) => event.toJson()).toList(),
@@ -243,6 +261,10 @@ class PrayerScheduleJournal {
     if (value is! Map) return null;
     final json = Map<String, Object?>.from(value);
     if (_integer(json['schemaVersion']) != schemaVersion) return null;
+    final configuration = PrayerScheduleConfiguration.tryParse(
+      json['configuration'],
+    );
+    if (json['configuration'] != null && configuration == null) return null;
     final candidateRevision = _integer(json['candidateLocationRevision']);
     final previousRevision = json['previousLocationRevision'] == null
         ? null
@@ -257,6 +279,9 @@ class PrayerScheduleJournal {
     final remoteBoundary = json['acknowledgedRemoteOwnershipUntilUtc'] == null
         ? null
         : _utcDate(json['acknowledgedRemoteOwnershipUntilUtc']);
+    final ownershipFloor = json['remoteOwnershipFloorUtc'] == null
+        ? null
+        : _utcDate(json['remoteOwnershipFloorUtc']);
     final digest = json['desiredEventDigest'];
     final attempts = _integer(json['attemptCount']);
     final rawEvents = json['desiredEvents'];
@@ -277,6 +302,7 @@ class PrayerScheduleJournal {
                 remoteRevision > PrayerLocationGeneration.maxSafeRevision)) ||
         (json['acknowledgedRemoteOwnershipUntilUtc'] != null &&
             remoteBoundary == null) ||
+        (json['remoteOwnershipFloorUtc'] != null && ownershipFloor == null) ||
         configurationSignature is! String ||
         configurationSignature.isEmpty ||
         cutover == null ||
@@ -306,6 +332,7 @@ class PrayerScheduleJournal {
       operations.add(raw);
     }
     return PrayerScheduleJournal(
+      configuration: configuration,
       candidateLocationRevision: candidateRevision,
       previousLocationRevision: previousRevision,
       scheduleRevision: scheduleRevision,
@@ -314,6 +341,7 @@ class PrayerScheduleJournal {
       phase: phase,
       acknowledgedRemoteScheduleRevision: remoteRevision,
       acknowledgedRemoteOwnershipUntilUtc: remoteBoundary,
+      remoteOwnershipFloorUtc: ownershipFloor,
       desiredEvents: List.unmodifiable(events),
       desiredEventDigest: digest,
       completedOrUncertainOperations: List.unmodifiable(operations),
@@ -325,8 +353,60 @@ class PrayerScheduleJournal {
   }
 }
 
+class PrayerCountryChoice {
+  const PrayerCountryChoice({
+    required this.countryCode,
+    required this.latitude,
+    required this.longitude,
+    required this.chosenAtUtc,
+  });
+
+  final String countryCode;
+  final double latitude;
+  final double longitude;
+  final DateTime chosenAtUtc;
+
+  Map<String, Object?> toJson() => <String, Object?>{
+    'countryCode': countryCode,
+    'latitude': latitude,
+    'longitude': longitude,
+    'chosenAtUtc': chosenAtUtc.toUtc().toIso8601String(),
+  };
+
+  static PrayerCountryChoice? tryParse(Object? value) {
+    if (value is! Map) return null;
+    final code = value['countryCode'];
+    final latitude = value['latitude'];
+    final longitude = value['longitude'];
+    final chosenAt = _utcDate(value['chosenAtUtc']);
+    if (code is! String ||
+        !RegExp(r'^[A-Z]{2}$').hasMatch(code) ||
+        latitude is! num ||
+        longitude is! num ||
+        !latitude.isFinite ||
+        !longitude.isFinite ||
+        latitude.abs() > 90 ||
+        longitude.abs() > 180 ||
+        chosenAt == null) {
+      return null;
+    }
+    return PrayerCountryChoice(
+      countryCode: code,
+      latitude: latitude.toDouble(),
+      longitude: longitude.toDouble(),
+      chosenAtUtc: chosenAt,
+    );
+  }
+}
+
 class PrayerReliabilityState {
   const PrayerReliabilityState({
+    this.workflowIssues = const {},
+    this.committedConfiguration,
+    this.acknowledgedCoverageUntilUtc,
+    this.displaySnapshot,
+    this.latestFixCapturedAtUtc,
+    this.countryChoices = const [],
     this.revisionCounter = 0,
     this.latestIntentRevision = 0,
     this.latestIntentMode,
@@ -344,8 +424,14 @@ class PrayerReliabilityState {
     this.lastScheduleActivatedAtUtc,
   });
 
-  static const int schemaVersion = 1;
+  static const int schemaVersion = 2;
 
+  final Set<PrayerWorkflowIssue> workflowIssues;
+  final PrayerScheduleConfiguration? committedConfiguration;
+  final DateTime? acknowledgedCoverageUntilUtc;
+  final PrayerDisplaySnapshot? displaySnapshot;
+  final DateTime? latestFixCapturedAtUtc;
+  final List<PrayerCountryChoice> countryChoices;
   final int revisionCounter;
   final int latestIntentRevision;
   final PrayerLocationMode? latestIntentMode;
@@ -363,6 +449,12 @@ class PrayerReliabilityState {
   final DateTime? lastScheduleActivatedAtUtc;
 
   PrayerReliabilityState copyWith({
+    Set<PrayerWorkflowIssue>? workflowIssues,
+    Object? committedConfiguration = _unset,
+    Object? acknowledgedCoverageUntilUtc = _unset,
+    Object? displaySnapshot = _unset,
+    DateTime? latestFixCapturedAtUtc,
+    List<PrayerCountryChoice>? countryChoices,
     int? revisionCounter,
     int? latestIntentRevision,
     Object? latestIntentMode = _unset,
@@ -380,6 +472,20 @@ class PrayerReliabilityState {
     Object? lastScheduleActivatedAtUtc = _unset,
   }) {
     return PrayerReliabilityState(
+      workflowIssues: workflowIssues ?? this.workflowIssues,
+      committedConfiguration: identical(committedConfiguration, _unset)
+          ? this.committedConfiguration
+          : committedConfiguration as PrayerScheduleConfiguration?,
+      acknowledgedCoverageUntilUtc:
+          identical(acknowledgedCoverageUntilUtc, _unset)
+          ? this.acknowledgedCoverageUntilUtc
+          : acknowledgedCoverageUntilUtc as DateTime?,
+      displaySnapshot: identical(displaySnapshot, _unset)
+          ? this.displaySnapshot
+          : displaySnapshot as PrayerDisplaySnapshot?,
+      latestFixCapturedAtUtc:
+          latestFixCapturedAtUtc ?? this.latestFixCapturedAtUtc,
+      countryChoices: countryChoices ?? this.countryChoices,
       revisionCounter: revisionCounter ?? this.revisionCounter,
       latestIntentRevision: latestIntentRevision ?? this.latestIntentRevision,
       latestIntentMode: identical(latestIntentMode, _unset)
@@ -421,6 +527,13 @@ class PrayerReliabilityState {
   }
 
   Map<String, Object?> toJson() => <String, Object?>{
+    'workflowIssues': workflowIssues.map((e) => e.name).toList(),
+    'committedConfiguration': committedConfiguration?.toJson(),
+    'acknowledgedCoverageUntilUtc': acknowledgedCoverageUntilUtc
+        ?.toIso8601String(),
+    'displaySnapshot': displaySnapshot?.toJson(),
+    'latestFixCapturedAtUtc': latestFixCapturedAtUtc?.toIso8601String(),
+    'countryChoices': countryChoices.map((choice) => choice.toJson()).toList(),
     'schemaVersion': schemaVersion,
     'revisionCounter': revisionCounter,
     'latestIntentRevision': latestIntentRevision,
@@ -446,7 +559,22 @@ class PrayerReliabilityState {
   static PrayerReliabilityState? tryParse(Object? value) {
     if (value is! Map) return null;
     final json = Map<String, Object?>.from(value);
-    if (_integer(json['schemaVersion']) != schemaVersion) return null;
+    if (![1, schemaVersion].contains(_integer(json['schemaVersion']))) {
+      return null;
+    }
+    final issues = <PrayerWorkflowIssue>{};
+    if (json['workflowIssues'] != null) {
+      if (json['workflowIssues'] is! List) return null;
+      for (final raw in json['workflowIssues'] as List) {
+        final matches = PrayerWorkflowIssue.values.where(
+          (issue) => issue.name == raw,
+        );
+        if (matches.isEmpty) return null;
+        issues.add(matches.single);
+      }
+    }
+    final display = PrayerDisplaySnapshot.tryParse(json['displaySnapshot']);
+    if (json['displaySnapshot'] != null && display == null) return null;
     final revisionCounter = _integer(json['revisionCounter']);
     final latestIntentRevision = _integer(json['latestIntentRevision']);
     final latestIntentMode = json['latestIntentMode'] == null
@@ -511,6 +639,7 @@ class PrayerReliabilityState {
       latestIntentRevision,
       active?.revision ?? 0,
       candidate?.revision ?? 0,
+      display?.location.revision ?? 0,
     ].reduce((a, b) => a > b ? a : b);
     final journalLocationRevision = candidate?.revision ?? active?.revision;
     final committedSignature = json['committedConfigurationSignature'] is String
@@ -545,6 +674,22 @@ class PrayerReliabilityState {
       return null;
     }
     return PrayerReliabilityState(
+      workflowIssues: issues,
+      committedConfiguration: PrayerScheduleConfiguration.tryParse(
+        json['committedConfiguration'],
+      ),
+      acknowledgedCoverageUntilUtc: _utcDate(
+        json['acknowledgedCoverageUntilUtc'],
+      ),
+      displaySnapshot: display,
+      latestFixCapturedAtUtc: _utcDate(json['latestFixCapturedAtUtc']),
+      countryChoices: json['countryChoices'] is List
+          ? List.unmodifiable(
+              (json['countryChoices'] as List)
+                  .map(PrayerCountryChoice.tryParse)
+                  .whereType<PrayerCountryChoice>(),
+            )
+          : const [],
       revisionCounter: revisionCounter,
       latestIntentRevision: latestIntentRevision,
       latestIntentMode: latestIntentMode,

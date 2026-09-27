@@ -1,8 +1,11 @@
+import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'
+    show PendingNotificationRequest;
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/linux_prayer_notification_scheduler.dart';
 import 'package:huda/core/services/notification_capacity_policy.dart';
@@ -66,6 +69,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
 
   static const signatureKey = 'prayer_notification_plan_signature';
   static const coverageKey = 'prayer_notification_coverage_until';
+  static const verificationPendingMessage = 'locationVerificationPending';
   static const lastSuccessKey = 'prayer_notification_last_success';
   static const lastReasonKey = 'prayer_notification_last_reason';
   static const pendingCountKey = 'prayer_notification_pending_count';
@@ -159,13 +163,31 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
   ) {
     return _isolateLock.synchronized(() async {
       try {
-        return await action();
+        final result = await action();
+        final notificationsReady =
+            (result.isSuccess &&
+                result.status != PrayerScheduleStatus.permissionDenied) ||
+            result.message == verificationPendingMessage;
+        await locationRepository.updateIssues(
+          add: notificationsReady ? {} : {PrayerWorkflowIssue.notifications},
+          remove: notificationsReady ? {PrayerWorkflowIssue.notifications} : {},
+        );
+        return result;
       } catch (error, stackTrace) {
         debugPrint('Prayer notification reconciliation failed: $error');
         debugPrintStack(stackTrace: stackTrace);
+        DateTime? coverage;
+        try {
+          coverage = (await locationRepository.readState())
+              .acknowledgedCoverageUntilUtc;
+          await locationRepository.updateIssues(
+            add: {PrayerWorkflowIssue.notifications},
+          );
+        } catch (_) {}
         return PrayerScheduleResult(
           status: PrayerScheduleStatus.failed,
-          message: error.toString(),
+          coverageUntil: coverage,
+          message: PrayerPushErrorCode.unavailable,
         );
       }
     });
@@ -192,12 +214,34 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       disposition: PrayerOccurrenceDisposition.deliveryUncertain,
     );
 
-    if (PrayerTimesCalculator.methodTokenFromCache(cacheHelper) ==
-            PrayerTimesCalculator.autoMethodToken &&
-        (target.countryCode == null || target.countryCode!.trim().isEmpty)) {
-      return const PrayerScheduleResult(
+    final display = session.state.displaySnapshot;
+    final inputConfiguration =
+        session.state.journal?.configuration ??
+        (display?.location.revision == target.revision
+            ? PrayerScheduleConfiguration.fromDisplay(
+                display!,
+                deviceTimeZoneId: target.timeZoneId,
+                localeCode: cacheHelper.getDataString(key: 'locale') ?? 'en',
+              )
+            : session.state.committedConfiguration?.forLocation(target)) ??
+        PrayerScheduleConfiguration.fromCache(
+          cache: cacheHelper,
+          location: target,
+          deviceTimeZoneId: target.timeZoneId,
+        );
+    if (!inputConfiguration.location.calculationVerified ||
+        (PrayerTimesCalculator.requiresCountry(
+              inputConfiguration.methodToken,
+            ) &&
+            (target.countryCode == null || target.countryCode!.isEmpty))) {
+      return PrayerScheduleResult(
         status: PrayerScheduleStatus.deferred,
-        message: 'Country is required for automatic calculation method.',
+        coverageUntil:
+            session.state.acknowledgedCoverageUntilUtc ??
+            DateTime.tryParse(
+              cacheHelper.getDataString(key: coverageKey) ?? '',
+            ),
+        message: verificationPendingMessage,
       );
     }
 
@@ -218,6 +262,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         history: history,
         activatedAt: now,
         publishWidget: true,
+        fallbackConfiguration: inputConfiguration,
       );
       await _publishCommittedWidget(session, target, signature);
       return const PrayerScheduleResult(
@@ -229,12 +274,18 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     await notifications.initialize();
     final deviceTimeZone = await notifications.refreshTimeZone();
     final configuration =
-        PrayerScheduleConfiguration.fromCache(
-          cache: cacheHelper,
+        session.state.journal?.configuration ??
+        PrayerScheduleConfiguration(
           location: target,
           deviceTimeZoneId: deviceTimeZone,
-        ).forSchedulingCapability(
-          await notifications.schedulingCapabilitySignature(),
+          methodToken: inputConfiguration.methodToken,
+          madhabToken: inputConfiguration.madhabToken,
+          highLatitudeRuleToken: inputConfiguration.highLatitudeRuleToken,
+          customAngles: inputConfiguration.customAngles,
+          offsets: inputConfiguration.offsets,
+          localeCode: inputConfiguration.localeCode,
+          schedulingCapability: await notifications
+              .schedulingCapabilitySignature(),
         );
 
     if (capacityPolicy.platform == HudaNotificationPlatform.linux) {
@@ -330,6 +381,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         .toList(growable: false);
 
     var journal = PrayerScheduleJournal(
+      configuration: configuration,
       candidateLocationRevision: target.revision,
       previousLocationRevision: session.state.activeLocation?.revision,
       scheduleRevision: scheduleRevision,
@@ -340,6 +392,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       phase: PrayerReconciliationPhase.preparing,
       desiredEvents: List.unmodifiable(desired),
       desiredEventDigest: digest,
+      remoteOwnershipFloorUtc: existingJournal?.remoteOwnershipFloorUtc,
       completedOrUncertainOperations: continuesExistingAttempt
           ? existingJournal!.completedOrUncertainOperations
           : const [],
@@ -379,8 +432,17 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       );
     }
 
+    final coverage = desired.isEmpty ? null : desired.last.scheduledInstantUtc;
+    final isIos = capacityPolicy.platform == HudaNotificationPlatform.ios;
+    final priorOwnershipFloor = journal.remoteOwnershipFloorUtc;
     journal = journal.copyWith(
       phase: PrayerReconciliationPhase.transferringOwnership,
+      remoteOwnershipFloorUtc: isIos
+          ? _earlier(
+              priorOwnershipFloor,
+              coverage ?? PrayerScheduleJournal.serverOwnsAll,
+            )
+          : priorOwnershipFloor,
     );
     await session.save(session.state.copyWith(journal: journal));
     final desiredById = {for (final event in desired) event.id: event};
@@ -388,30 +450,6 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     var currentAllPending = allPending;
     var currentPendingPrayerById = pendingPrayerById;
 
-    if (capacityPolicy.platform == HudaNotificationPlatform.ios) {
-      final localReleases = currentPendingPrayerById.keys.toSet().difference(
-        desiredIds,
-      );
-      if (!await _cancelIds(session, localReleases)) {
-        return _degradedResult(session, 'remote-handoff-release-failed');
-      }
-      if (localReleases.isNotEmpty) {
-        currentAllPending = await notifications.pendingNotificationRequests();
-        currentPendingPrayerById = {
-          for (final request in currentAllPending)
-            if (PrayerNotificationEvent.isPrayerId(request.id))
-              request.id: request,
-        };
-        if (localReleases.any(currentPendingPrayerById.containsKey)) {
-          return _degradedResult(
-            session,
-            'remote-handoff-release-verification-failed',
-          );
-        }
-      }
-      journal = session.state.journal ?? journal;
-    }
-    final coverage = desired.isEmpty ? null : desired.last.scheduledInstantUtc;
     final remote = await pushSynchronizer.syncFallback(
       localCoverageUntil: coverage,
       timeZoneName: target.timeZoneId,
@@ -433,8 +471,23 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     );
     final remoteAcknowledged =
         remoteAcceptedRequestedRevision && remoteAcceptedRequestedBoundary;
-    if (capacityPolicy.platform == HudaNotificationPlatform.ios &&
-        !remoteAcknowledged) {
+    if (isIos && !remoteAcknowledged) {
+      final outcomeFloor = remote.acknowledged
+          ? _earlier(
+              journal.remoteOwnershipFloorUtc,
+              remote.ownershipUntilUtc ?? PrayerScheduleJournal.serverOwnsAll,
+            )
+          : remote.status == PrayerPushSyncStatus.failed
+          ? journal.remoteOwnershipFloorUtc
+          : priorOwnershipFloor;
+      final current = session.state.journal;
+      if (current != null && current.remoteOwnershipFloorUtc != outcomeFloor) {
+        await session.save(
+          session.state.copyWith(
+            journal: current.copyWith(remoteOwnershipFloorUtc: outcomeFloor),
+          ),
+        );
+      }
       final rebasedForRetry = await _rebaseJournalAboveServerRevision(
         session,
         remote.acceptedScheduleRevision,
@@ -458,9 +511,32 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       if (session.state.journal?.scheduleRevision == journal.scheduleRevision) {
         await session.save(session.state.copyWith(journal: journal));
       }
+      final bridgedThrough = await _bridgeLocalAlerts(
+        session: session,
+        desired: desired,
+        pendingById: currentPendingPrayerById,
+        pendingCount: currentAllPending.length,
+      );
+      if (bridgedThrough != null) {
+        return PrayerScheduleResult(
+          status: PrayerScheduleStatus.deferred,
+          pendingCount: desired
+              .where(
+                (event) => !event.scheduledInstantUtc.isAfter(bridgedThrough),
+              )
+              .length,
+          coverageUntil: bridgedThrough,
+          message: PrayerScheduleResult.localBridgeMessage,
+        );
+      }
       return PrayerScheduleResult(
         status: PrayerScheduleStatus.deferred,
         pendingCount: currentPendingPrayerById.length,
+        coverageUntil:
+            session.state.acknowledgedCoverageUntilUtc ??
+            DateTime.tryParse(
+              cacheHelper.getDataString(key: coverageKey) ?? '',
+            ),
         message:
             remote.message ??
             'APNs ownership was not acknowledged; the partial handoff is journaled for recovery.',
@@ -480,6 +556,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         acknowledgedRemoteScheduleRevision:
             remote.acceptedScheduleRevision ?? scheduleRevision,
         acknowledgedRemoteOwnershipUntilUtc: remote.ownershipUntilUtc,
+        remoteOwnershipFloorUtc: null,
       );
       await session.save(
         session.state.copyWith(
@@ -607,8 +684,12 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         );
       }
       await _recordOperation(session, 'schedule-uncertain:${event.id}');
-      if (!await notifications.schedulePrayerEvent(event)) {
-        return _degradedResult(session, 'schedule-failed:${event.id}');
+      try {
+        if (!await notifications.schedulePrayerEvent(event)) {
+          return _degradedResult(session, 'schedule-failed:${event.id}');
+        }
+      } catch (_) {
+        return _degradedResult(session, 'schedule-uncertain:${event.id}');
       }
       scheduledCount++;
       await _recordOperation(session, 'schedule-complete:${event.id}');
@@ -662,6 +743,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       events: desired,
       history: history,
       activatedAt: _now().toUtc(),
+      coverageUntilUtc: notificationCoverageUntilInstant,
       publishWidget: true,
     );
     await _persistSuccess(
@@ -716,6 +798,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         .map((event) => event.copyWith(scheduleRevision: revision))
         .toList(growable: false);
     final journal = PrayerScheduleJournal(
+      configuration: configuration,
       candidateLocationRevision: target.revision,
       previousLocationRevision: session.state.activeLocation?.revision,
       scheduleRevision: revision,
@@ -878,6 +961,8 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     required List<PrayerOccurrenceRecord> history,
     required DateTime activatedAt,
     required bool publishWidget,
+    DateTime? coverageUntilUtc,
+    PrayerScheduleConfiguration? fallbackConfiguration,
   }) async {
     final current = session.state;
     if (activatesCandidate) {
@@ -892,6 +977,10 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         desiredEventDigest: digest,
         events: events,
         occurrenceHistory: history,
+        configuration: current.journal?.configuration ?? fallbackConfiguration,
+        coverageUntilUtc:
+            coverageUntilUtc ??
+            (events.isEmpty ? null : events.last.scheduledInstantUtc),
         activatedAtUtc: activatedAt,
       );
     } else {
@@ -902,6 +991,10 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         desiredEventDigest: digest,
         events: events,
         occurrenceHistory: history,
+        configuration: current.journal?.configuration ?? fallbackConfiguration,
+        coverageUntilUtc:
+            coverageUntilUtc ??
+            (events.isEmpty ? null : events.last.scheduledInstantUtc),
         activatedAtUtc: activatedAt,
         publishWidget: publishWidget,
       );
@@ -916,6 +1009,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     final state = session.state;
     if (!state.widgetPublicationPending) return;
     try {
+      await session.repairProjections();
       await widgetPublisher(
         generation: state.activeLocation ?? target,
         scheduleRevision: state.scheduleRevision,
@@ -924,6 +1018,11 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       );
       await session.markWidgetPublished(state.widgetPublicationRevision);
     } catch (error) {
+      final issues = {
+        ...session.state.workflowIssues,
+        PrayerWorkflowIssue.widget,
+      };
+      await session.save(session.state.copyWith(workflowIssues: issues));
       debugPrint('Prayer widget publication deferred: $error');
     }
   }
@@ -997,6 +1096,61 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     );
   }
 
+  Future<DateTime?> _bridgeLocalAlerts({
+    required PrayerLocationRepositorySession session,
+    required List<PrayerNotificationEvent> desired,
+    required Map<int, PendingNotificationRequest> pendingById,
+    required int pendingCount,
+  }) async {
+    final until = _localOnlyUntil(session.state);
+    var freeSlots = math.max(
+      0,
+      capacityPolicy.totalPendingLimit - pendingCount,
+    );
+    DateTime? through;
+    for (final event in desired) {
+      if (until != null && event.scheduledInstantUtc.isAfter(until)) break;
+      if (!event.scheduledInstantUtc.isAfter(_now().toUtc())) continue;
+      final pending = pendingById[event.id];
+      if (!event.matchesPendingPayload(pending?.payload)) {
+        if (pending == null) {
+          if (freeSlots == 0) break;
+          freeSlots--;
+        }
+        await _recordOperation(session, 'bridge-uncertain:${event.id}');
+        try {
+          if (!await notifications.schedulePrayerEvent(event)) break;
+        } catch (_) {
+          break;
+        }
+        await _recordOperation(session, 'bridge-complete:${event.id}');
+      }
+      through = event.scheduledInstantUtc;
+    }
+    return through;
+  }
+
+  DateTime? _localOnlyUntil(PrayerReliabilityState state) {
+    final acknowledgement = state.remoteOwnershipAcknowledgement;
+    DateTime? limit;
+    if (acknowledgement == null) {
+      if (state.scheduleRevision > 0 || state.committedEvents.isNotEmpty) {
+        limit = PrayerScheduleJournal.serverOwnsAll;
+      }
+    } else if (acknowledgement.enabled) {
+      limit =
+          acknowledgement.localCoverageUntilUtc ??
+          PrayerScheduleJournal.serverOwnsAll;
+    }
+    return _earlier(limit, state.journal?.remoteOwnershipFloorUtc);
+  }
+
+  static DateTime? _earlier(DateTime? a, DateTime? b) {
+    if (a == null) return b;
+    if (b == null) return a;
+    return a.isBefore(b) ? a : b;
+  }
+
   Future<bool> _rebaseJournalAboveServerRevision(
     PrayerLocationRepositorySession session,
     int? acceptedScheduleRevision,
@@ -1048,6 +1202,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     await session.save(
       session.state.copyWith(
         journal: PrayerScheduleJournal(
+          configuration: journal.configuration,
           candidateLocationRevision: journal.candidateLocationRevision,
           previousLocationRevision: journal.previousLocationRevision,
           scheduleRevision: rebasedRevision,
@@ -1056,6 +1211,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
           phase: PrayerReconciliationPhase.degraded,
           desiredEvents: List.unmodifiable(rebasedEvents),
           desiredEventDigest: journal.desiredEventDigest,
+          remoteOwnershipFloorUtc: journal.remoteOwnershipFloorUtc,
           completedOrUncertainOperations: const [],
           attemptCount: journal.attemptCount,
           lastErrorCategory: '$category-server-newer-rebased',
@@ -1072,6 +1228,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     await _markDegraded(session, category);
     return PrayerScheduleResult(
       status: PrayerScheduleStatus.degraded,
+      coverageUntil: session.state.acknowledgedCoverageUntilUtc,
       message: category,
     );
   }

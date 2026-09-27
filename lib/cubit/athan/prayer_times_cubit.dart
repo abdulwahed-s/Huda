@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:huda/core/services/prayer_display_snapshot.dart';
+import 'package:huda/core/services/prayer_country_names.dart';
 import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/geolocator.dart' show Position;
@@ -19,6 +23,7 @@ import 'package:huda/core/services/prayer_location_time_zone_service.dart';
 import 'package:huda/core/services/prayer_location_coordinator.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_location_repository.dart';
+import 'package:huda/core/services/prayer_reconciliation_state.dart';
 import 'package:huda/core/services/prayer_location_monitor.dart';
 import 'package:huda/data/models/countdown_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
@@ -36,12 +41,14 @@ class NextPrayerInfo {
   final DateTime time;
   final bool isPastPrayer;
   final int secondsPassed;
+  final Prayer? prayer;
 
   NextPrayerInfo({
     required this.name,
     required this.time,
     this.isPastPrayer = false,
     this.secondsPassed = 0,
+    this.prayer,
   });
 }
 
@@ -92,9 +99,31 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   PrayerLocationMode _locationMode = PrayerLocationMode.automatic;
   bool _automaticLocationRefreshInProgress = false;
   CustomPrayerAngles _customAngles = CustomPrayerAngles.defaults;
+  PrayerDisplaySnapshot? _display;
+  final Set<PrayerWorkflowIssue> _issues = {};
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  bool? _online;
+  bool _workflowRetrying = false;
+
+  bool _userRetrying = false;
+
+  int _updates = 0;
+  Timer? _updatesSettling;
+  int _displayEpoch = 0;
+  Timer? _dayRollover;
+  int? _enrichmentAttemptRevision;
+  bool _legacyVerificationAttempted = false;
+  int? _countryQuestionDismissedRevision;
+  final Stream<List<ConnectivityResult>>? _connectivityChanges;
+  final Future<List<ConnectivityResult>> Function()? _connectivityCheck;
+  final Duration _networkRetryDelay;
+  Timer? _networkRetryTimer;
+  DateTime? _lastNetworkRetry;
+  final Set<PrayerWorkflowIssue> _knownPersistedIssues = {};
   PrayerScheduleResult? _notificationScheduleResult;
   bool _notificationScheduleRetrying = false;
 
+  Set<PrayerWorkflowIssue> get workflowIssues => Set.unmodifiable(_issues);
   Map<String, int> get prayerOffsets => Map.unmodifiable(_prayerOffsets);
   String get calculationMethodToken => _methodToken;
   String get madhabToken => _madhabToken;
@@ -103,11 +132,64 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   PrayerLocationMode get locationMode => _locationMode;
   String? get prayerTimeZoneId => _prayerTimeZoneId;
 
+  PrayerDisplaySnapshot? get verifiedExportSnapshot {
+    final display = _display;
+    final current = state;
+    if (current is! PrayerTimesLoaded ||
+        current.provisional ||
+        display == null ||
+        display.provisional ||
+        !display.location.isValid) {
+      return null;
+    }
+    final times = current.prayerTimes;
+    if ([
+      times.fajr,
+      times.sunrise,
+      times.dhuhr,
+      times.asr,
+      times.maghrib,
+      times.isha,
+    ].every((time) => time == null)) {
+      return null;
+    }
+    return PrayerDisplaySnapshot(
+      location: display.location.copyWith(
+        verificationReasons: List.unmodifiable(
+          display.location.verificationReasons,
+        ),
+        countryCandidates: List.unmodifiable(
+          display.location.countryCandidates,
+        ),
+      ),
+      method: display.method,
+      madhab: display.madhab,
+      highLatitude: display.highLatitude,
+      angles: display.angles,
+      offsets: Map.unmodifiable(display.offsets),
+      revision: display.revision,
+      issues: Set.unmodifiable(display.issues),
+    );
+  }
+
   AppLocalizations? _localizations;
 
   void setLocalizations(AppLocalizations localizations) {
+    final changed = _localizations?.localeName != localizations.localeName;
     _localizations = localizations;
+    if (changed && _display != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _renderDisplay());
+    }
   }
+
+  String? _countryDisplayName(String? code, String? fallback) =>
+      PrayerCountryNames.localized(
+        code,
+        _localizations?.localeName ??
+            cacheHelper.getDataString(key: 'locale') ??
+            'en',
+      ) ??
+      fallback;
 
   PrayerTimesCubit(
     this.cacheHelper, {
@@ -119,7 +201,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     Future<Position?> Function()? travelLocationProvider,
     PrayerTimeZoneResolver? timeZoneResolver,
     Future<List<Placemark>> Function(double, double)? placemarkProvider,
-  }) : _notificationScheduler =
+    @visibleForTesting Stream<List<ConnectivityResult>>? connectivityChanges,
+    @visibleForTesting
+    Future<List<ConnectivityResult>> Function()? connectivityCheck,
+    @visibleForTesting Duration networkRetryDelay = const Duration(seconds: 4),
+  }) : _connectivityChanges = connectivityChanges,
+       _connectivityCheck = connectivityCheck,
+       _networkRetryDelay = networkRetryDelay,
+       _notificationScheduler =
            notificationScheduler ??
            PrayerNotificationScheduler(cacheHelper: cacheHelper),
        _locationRepository = locationRepository,
@@ -135,6 +224,60 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     _loadOffsets();
     _loadSettings();
     _restoreNotificationScheduleProjection();
+    final raw = cacheHelper.getDataString(
+      key: PrayerLocationRepository.displayProjectionKey,
+    );
+    if (raw != null) {
+      try {
+        _display = PrayerDisplaySnapshot.tryParse(jsonDecode(raw));
+      } catch (_) {
+        _issues.add(PrayerWorkflowIssue.storage);
+      }
+    }
+    if (_display == null) {
+      try {
+        final generation = PrayerLocationGeneration.tryParse(
+          jsonDecode(
+            cacheHelper.getDataString(
+                  key: PrayerLocationRepository.generationProjectionKey,
+                ) ??
+                'null',
+          ),
+        );
+        if (generation != null) {
+          _display = PrayerDisplaySnapshot.fromCache(
+            cacheHelper,
+            generation,
+            issues: {
+              if (!generation.calculationVerified)
+                PrayerWorkflowIssue.verification,
+            },
+          );
+        }
+      } catch (_) {
+        _issues.add(PrayerWorkflowIssue.storage);
+      }
+    }
+    _issues.addAll(_display?.issues ?? {});
+    try {
+      final pending =
+          jsonDecode(
+                cacheHelper.getDataString(
+                      key: PrayerLocationRepository.issuesProjectionKey,
+                    ) ??
+                    '[]',
+              )
+              as List;
+      _issues.addAll(
+        pending.map(
+          (name) => PrayerWorkflowIssue.values.byName(name as String),
+        ),
+      );
+    } catch (_) {
+      _issues.add(PrayerWorkflowIssue.storage);
+    }
+    _knownPersistedIssues.addAll(_issues);
+    _observeConnectivity();
   }
 
   PrayerLocationCoordinator? get _coordinator {
@@ -145,6 +288,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       repository: repository,
       activator: _notificationScheduler,
       timeZoneResolver: _timeZoneResolver,
+      onDisplay: _acceptDisplay,
       metadataResolver: (latitude, longitude) async {
         final placemarks = await _resolvePlacemarks(
           latitude,
@@ -186,19 +330,69 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       offsets: _prayerOffsets,
       notificationSchedule: _notificationScheduleResult,
       notificationScheduleRetrying: _notificationScheduleRetrying,
+      workflowIssues: Set.unmodifiable(_issues),
+      workflowRetrying: _userRetrying,
+      updating: _isUpdating,
+      online: _online,
+      provisional: _display?.provisional ?? false,
+      previousLocationNotifications:
+          _display != null &&
+          _display!.location.revision != _activeProjectionRevision,
+      countryCandidates: _countryQuestion,
     );
+  }
+
+  List<String> get _countryQuestion {
+    final display = _display;
+    if (display == null ||
+        !display.provisional ||
+        display.location.countryCode != null ||
+        !PrayerTimesCalculator.requiresCountry(display.method) ||
+        _countryQuestionDismissedRevision == display.location.revision) {
+      return const [];
+    }
+    return display.location.countryCandidates;
   }
 
   void _publishNotificationSchedule(
     PrayerScheduleResult result, {
     bool retrying = false,
   }) {
+    if (!result.isSuccess && result.coverageUntil == null) {
+      result = PrayerScheduleResult(
+        status: result.status,
+        scheduledCount: result.scheduledCount,
+        pendingCount: result.pendingCount,
+        coverageUntil: _notificationScheduleResult?.coverageUntil,
+        message: result.message,
+      );
+    }
+    final hadNotificationIssue = _issues.contains(
+      PrayerWorkflowIssue.notifications,
+    );
+    if ((result.isSuccess &&
+            result.status != PrayerScheduleStatus.permissionDenied) ||
+        result.message ==
+            PrayerNotificationScheduler.verificationPendingMessage) {
+      _issues.remove(PrayerWorkflowIssue.notifications);
+    } else {
+      _issues.add(PrayerWorkflowIssue.notifications);
+    }
+    if (hadNotificationIssue !=
+        _issues.contains(PrayerWorkflowIssue.notifications)) {
+      final display = _display;
+      if (display != null) {
+        _display = display.withIssues(_issues, advanceRevision: true);
+        unawaited(_refreshWidgetStatus());
+      }
+    }
     _notificationScheduleResult = result;
     _notificationScheduleRetrying = retrying;
     final current = state;
     if (current is PrayerTimesLoaded) {
       emit(
         current.copyWith(
+          workflowIssues: Set.unmodifiable(_issues),
           notificationSchedule: result,
           notificationScheduleRetrying: retrying,
         ),
@@ -212,6 +406,33 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     if (current is PrayerTimesLoaded) {
       emit(current.copyWith(notificationScheduleRetrying: retrying));
     }
+  }
+
+  bool get _isUpdating => _updates > 0 || (_updatesSettling?.isActive ?? false);
+
+  void _beginUpdate() {
+    _updatesSettling?.cancel();
+    if (_updates++ == 0) _emitUpdating();
+  }
+
+  void _endUpdate() {
+    if (--_updates > 0) return;
+    _updatesSettling = Timer(const Duration(milliseconds: 300), _emitUpdating);
+  }
+
+  Future<T> _whileUpdating<T>(Future<T> Function() work) async {
+    _beginUpdate();
+    try {
+      return await work();
+    } finally {
+      _endUpdate();
+    }
+  }
+
+  void _emitUpdating() {
+    final current = state;
+    if (isClosed || current is! PrayerTimesLoaded) return;
+    emit(current.copyWith(updating: _isUpdating));
   }
 
   void _loadOffsets() {
@@ -256,7 +477,11 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       coordinates,
       date,
       methodToken: _methodToken,
-      countryCode: countryCode ?? _countryCode,
+      countryCode:
+          countryCode ??
+          (_display == null
+              ? _countryCode
+              : _display!.location.countryCode ?? ''),
       timeZoneName: _prayerTimeZoneId,
       madhab: PrayerTimesCalculator.madhabFromToken(_madhabToken),
       highLatitudeRule: PrayerTimesCalculator.highLatitudeRuleFromToken(
@@ -277,18 +502,13 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     double longitude,
     String countryCode,
   ) async {
-    try {
-      final zone = await _timeZoneResolver(latitude, longitude, countryCode);
-      PrayerTimeZoneService.location(zone);
-      return zone;
-    } catch (_) {
-      if (_prayerTimeZoneId != null) rethrow;
-      final fallback = PrayerLocationTimeZoneService.legacyFallback(
-        countryCode,
-      );
-      PrayerTimeZoneService.location(fallback);
-      return fallback;
-    }
+    final zone = await _timeZoneResolver(
+      latitude,
+      longitude,
+      countryCode,
+    ).timeout(const Duration(seconds: 5));
+    PrayerTimeZoneService.location(zone);
+    return zone;
   }
 
   Future<void> _persistTimeZone(String zone) async {
@@ -368,6 +588,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   Future<void> savePrayerOffsets(Map<String, int> offsets) async {
     final sanitized = PrayerTimesCalculator.sanitizeOffsets(offsets);
+    _displayEpoch++;
+    if (_display != null && _locationRepository != null) {
+      await _acceptDisplay(_display!.withSettings(offsets: sanitized));
+      if (!_display!.provisional) {
+        await _reconcilePrayerNotifications('offsets-changed', force: true);
+      }
+      return;
+    }
     final repository = _locationRepository;
     if (repository == null) {
       await _persistOffsets(sanitized);
@@ -380,6 +608,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       emit(current.copyWith(offsets: _prayerOffsets));
     }
     if (_coordinator == null) await PrayerWidgetService.pushSettings();
+    await _refreshDisplaySettings();
     await _reconcilePrayerNotifications('offsets-changed', force: true);
   }
 
@@ -396,6 +625,25 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       isha: customAngles.isha,
     );
     final sanitizedOffsets = PrayerTimesCalculator.sanitizeOffsets(offsets);
+    _displayEpoch++;
+    if (_display != null && _locationRepository != null) {
+      await _acceptDisplay(
+        _display!.withSettings(
+          method: methodToken,
+          madhab: madhabToken,
+          highLatitude: highLatToken,
+          angles: sanitizedCustomAngles,
+          offsets: sanitizedOffsets,
+        ),
+      );
+      if (!_display!.provisional) {
+        await _reconcilePrayerNotifications(
+          'calculation-settings-changed',
+          force: true,
+        );
+      }
+      return;
+    }
     Future<void> persistSettings() async {
       await cacheHelper.saveData(key: _methodKey, value: methodToken);
       await cacheHelper.saveData(key: _madhabKey, value: madhabToken);
@@ -411,6 +659,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await repository.synchronized((_) => persistSettings());
     }
 
+    _displayEpoch++;
     _methodToken = methodToken;
     _madhabToken = madhabToken;
     _highLatToken = highLatToken;
@@ -418,7 +667,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     _prayerOffsets = sanitizedOffsets;
 
     final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
-    if (coordinates != null) {
+    if (coordinates != null && _display == null) {
       final placemarks = state is PrayerTimesLoaded
           ? (state as PrayerTimesLoaded).placemarks
           : <Placemark>[];
@@ -430,6 +679,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
 
     if (_coordinator == null) await PrayerWidgetService.pushSettings();
+    await _refreshDisplaySettings();
     await _reconcilePrayerNotifications(
       'calculation-settings-changed',
       force: true,
@@ -519,16 +769,35 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   Future<void> refreshNotificationSchedule() async {
     await _reconcilePrayerNotifications(
+      'notification-schedule-refresh',
+      force: true,
+    );
+  }
+
+  Future<void> retryNotificationSchedule() async {
+    await _reconcilePrayerNotifications(
       'notification-schedule-retry',
       force: true,
+      userRetry: true,
     );
   }
 
   Future<PrayerScheduleResult> _reconcilePrayerNotifications(
     String reason, {
     bool force = false,
+    bool userRetry = false,
   }) async {
+    if (!userRetry) {
+      return _whileUpdating(() => _reconcile(reason, force: force));
+    }
     _setNotificationScheduleRetrying(true);
+    return _reconcile(reason, force: force);
+  }
+
+  Future<PrayerScheduleResult> _reconcile(
+    String reason, {
+    required bool force,
+  }) async {
     try {
       final result = await _notificationScheduler.reconcile(
         reason: reason,
@@ -539,20 +808,55 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         'pending=${result.pendingCount}; coverage=${result.coverageUntil}',
       );
       _publishNotificationSchedule(result);
+      await _persistDisplayIssues();
       return result;
     } catch (error) {
+      _issues.add(PrayerWorkflowIssue.notifications);
+      _renderDisplay();
       debugPrint('Could not update prayer notifications: $error');
       const result = PrayerScheduleResult(
         status: PrayerScheduleStatus.failed,
         message: PrayerPushErrorCode.unavailable,
       );
       _publishNotificationSchedule(result);
+      await _persistDisplayIssues();
       return result;
     }
   }
 
-  Future<void> loadPrayerTimes() async {
-    emit(PrayerTimesLoading());
+  Future<void> loadPrayerTimes() => _whileUpdating(_loadPrayerTimes);
+
+  Future<void> _loadPrayerTimes() async {
+    if (_workflowRetrying) return;
+    try {
+      final restored = await _locationRepository?.readState();
+      _display = restored?.displaySnapshot ?? _display;
+      _issues.addAll(restored?.workflowIssues ?? {});
+      _knownPersistedIssues.addAll(restored?.workflowIssues ?? {});
+      if (restored?.acknowledgedCoverageUntilUtc != null) {
+        _notificationScheduleResult = PrayerScheduleResult(
+          status: restored!.journal == null
+              ? PrayerScheduleStatus.upToDate
+              : PrayerScheduleStatus.deferred,
+          coverageUntil: restored.acknowledgedCoverageUntilUtc,
+        );
+      }
+      if (restored?.journal != null) {
+        _issues.add(PrayerWorkflowIssue.notifications);
+      }
+      if (restored?.widgetPublicationPending == true) {
+        _issues.add(PrayerWorkflowIssue.widget);
+      }
+      _issues.addAll(_display?.issues ?? {});
+    } catch (_) {
+      _issues.add(PrayerWorkflowIssue.storage);
+    }
+    if (_display != null) {
+      await _acceptDisplay(_display!);
+      await _verifyLegacyManualDisplay();
+      return;
+    }
+    if (state is! PrayerTimesLoaded) emit(PrayerTimesLoading());
 
     try {
       var coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
@@ -624,6 +928,11 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   void loadCachedPrayerTimes() {
+    unawaited(_checkConnectivity());
+    if (_display != null) {
+      _renderDisplay();
+      return;
+    }
     if (state is PrayerTimesLoading) return;
 
     final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
@@ -650,6 +959,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           : _cachedPlacemarks();
       emit(_loadedState(prayerTimes, placemarks));
     } catch (error) {
+      _issues.add(PrayerWorkflowIssue.calculation);
+      unawaited(_persistDisplayIssues());
       emit(PrayerTimesError(error.toString()));
     }
   }
@@ -659,12 +970,28 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     double lon, {
     String? cityName,
     String? countryCode,
+  }) => _whileUpdating(
+    () => _setManualLocation(
+      lat,
+      lon,
+      cityName: cityName,
+      countryCode: countryCode,
+    ),
+  );
+
+  Future<void> _setManualLocation(
+    double lat,
+    double lon, {
+    String? cityName,
+    String? countryCode,
   }) async {
+    final epoch = ++_displayEpoch;
+    _issues.remove(PrayerWorkflowIssue.location);
     if (_coordinator != null) {
       final previous = state is PrayerTimesLoaded
           ? state as PrayerTimesLoaded
           : null;
-      emit(PrayerTimesLoading());
+      if (state is! PrayerTimesLoaded) emit(PrayerTimesLoading());
       final parts = (cityName ?? '')
           .split(',')
           .map((part) => part.trim())
@@ -686,13 +1013,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         mode: PrayerLocationMode.manual,
         source: PrayerLocationSource.explicit,
         reason: 'manual-location-changed',
+        isCurrent: () => !isClosed && epoch == _displayEpoch,
         explicitUserAction: true,
         suppliedMetadata: supplied,
       );
       await _renderCoordinatorResult(result, previous: previous);
       return;
     }
-    emit(PrayerTimesLoading());
+    if (state is! PrayerTimesLoaded) emit(PrayerTimesLoading());
 
     try {
       final List<Placemark> placemarks;
@@ -741,24 +1069,30 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       emit(_loadedState(prayerTimes, placemarks));
       await _syncLoadedPrayerTimes('manual-location-changed');
     } catch (e) {
-      emit(PrayerTimesError(e.toString()));
+      _emitLocationFailure(e);
     }
   }
 
-  Future<void> refreshLocationAndPrayerTimes() async {
+  Future<void> refreshLocationAndPrayerTimes() =>
+      _whileUpdating(_refreshLocationAndPrayerTimes);
+
+  Future<void> _refreshLocationAndPrayerTimes() async {
+    final epoch = ++_displayEpoch;
     final previousPrayerTimes = state is PrayerTimesLoaded
         ? state as PrayerTimesLoaded
         : null;
-    emit(PrayerTimesLoading());
+    if (state is! PrayerTimesLoaded) emit(PrayerTimesLoading());
 
     try {
       final position = await _currentLocationProvider();
+      _issues.remove(PrayerWorkflowIssue.location);
       if (_coordinator != null) {
         final result = await _coordinator!.submit(
           fix: _fixFromPosition(position),
           mode: PrayerLocationMode.automatic,
           source: PrayerLocationSource.explicit,
           reason: 'device-location-changed',
+          isCurrent: () => !isClosed && epoch == _displayEpoch,
           explicitUserAction: true,
         );
         await _renderCoordinatorResult(result, previous: previousPrayerTimes);
@@ -799,7 +1133,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       if (previousPrayerTimes != null) {
         // A refresh failure must not discard an already usable manual or
         // cached schedule. The user can retry precise device location later.
+        _issues.add(PrayerWorkflowIssue.location);
         emit(previousPrayerTimes);
+        await _persistDisplayIssues();
+        _renderDisplay();
       } else {
         _emitLocationFailure(e);
       }
@@ -827,9 +1164,11 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
 
     _automaticLocationRefreshInProgress = true;
+    _beginUpdate();
     try {
       final position = await _travelLocationProvider();
       if (position == null) return;
+      _issues.remove(PrayerWorkflowIssue.location);
 
       if (_coordinator != null) {
         final result = await _coordinator!.submit(
@@ -841,7 +1180,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         if (_isSuccessfulLocationValidation(result)) {
           await _recordSuccessfulLocationValidation(checkTime);
         }
-        if (result.activated || result.scheduleResult != null) {
+        if (result.generation != null) {
           await _renderCoordinatorResult(result);
         } else if (result.status ==
             PrayerLocationUpdateStatus.ignoredInsignificant) {
@@ -910,9 +1249,13 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await _syncLoadedPrayerTimes('automatic-travel-location-changed');
       await _recordSuccessfulLocationValidation(checkTime);
     } catch (error) {
+      _issues.add(PrayerWorkflowIssue.location);
+      _renderDisplay();
+      await _persistDisplayIssues();
       debugPrint('Could not refresh automatic prayer location: $error');
     } finally {
       _automaticLocationRefreshInProgress = false;
+      _endUpdate();
     }
   }
 
@@ -946,13 +1289,17 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           key: PrayerLocationMonitor.backgroundTravelEnabledKey,
         ) !=
         true) {
-      await cacheHelper.removeData(key: key);
+      await PrayerLocationMonitor.consumeNativeCandidate(raw);
       return;
     }
+    _beginUpdate();
     try {
       final decoded = jsonDecode(raw);
       if (decoded is! Map || decoded['schemaVersion'] != 1) {
-        await cacheHelper.removeData(key: key);
+        _issues.add(PrayerWorkflowIssue.nativeCandidate);
+        await _persistDisplayIssues();
+        _renderDisplay();
+        await PrayerLocationMonitor.consumeNativeCandidate(raw);
         return;
       }
       double? number(String field) {
@@ -973,12 +1320,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           longitude == null ||
           accuracy == null ||
           capturedAt == null ||
-          !capturedAt.isUtc ||
-          zone.isEmpty) {
-        await cacheHelper.removeData(key: key);
+          !capturedAt.isUtc) {
+        _issues.add(PrayerWorkflowIssue.nativeCandidate);
+        await _persistDisplayIssues();
+        _renderDisplay();
+        await PrayerLocationMonitor.consumeNativeCandidate(raw);
         return;
       }
-      PrayerTimeZoneService.location(zone);
+      if (zone.isNotEmpty) PrayerTimeZoneService.location(zone);
       final metadata = PrayerLocationMetadata(
         countryCode: decoded['countryCode']?.toString(),
       );
@@ -991,7 +1340,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         cacheHelper: cacheHelper,
         repository: repository,
         activator: _notificationScheduler,
-        timeZoneResolver: (_, _, _) async => zone,
+        timeZoneResolver: _timeZoneResolver,
+        onDisplay: _acceptDisplay,
         metadataResolver: (_, _) async => metadata,
       );
       final result = await coordinator.submit(
@@ -1012,12 +1362,24 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       if (result.activated || result.scheduleResult != null) {
         await _renderCoordinatorResult(result);
       }
+      await cacheHelper.reload();
       final latest = cacheHelper.getDataString(key: key);
       if (latest == raw && !_retryableNativeCandidate(result.status)) {
-        await cacheHelper.removeData(key: key);
+        if (await PrayerLocationMonitor.consumeNativeCandidate(raw)) {
+          _issues.remove(PrayerWorkflowIssue.nativeCandidate);
+        }
+      } else if (_retryableNativeCandidate(result.status)) {
+        _issues.add(PrayerWorkflowIssue.nativeCandidate);
       }
+      await _persistDisplayIssues();
+      _renderDisplay();
     } catch (error) {
+      _issues.add(PrayerWorkflowIssue.nativeCandidate);
+      _renderDisplay();
+      await _persistDisplayIssues();
       debugPrint('Could not consume native prayer location candidate: $error');
+    } finally {
+      _endUpdate();
     }
   }
 
@@ -1028,6 +1390,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       result.status == PrayerLocationUpdateStatus.ignoredInsignificant;
 
   static bool _retryableNativeCandidate(PrayerLocationUpdateStatus status) =>
+      status == PrayerLocationUpdateStatus.timeZoneUnavailable ||
       status == PrayerLocationUpdateStatus.deferredCountry ||
       status == PrayerLocationUpdateStatus.degraded ||
       status == PrayerLocationUpdateStatus.failed;
@@ -1052,6 +1415,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   void _refreshLoadedStateFromCache(DateTime now) {
+    if (_display != null) {
+      _renderDisplay(now: now);
+      return;
+    }
     if (state is! PrayerTimesLoaded) return;
     final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
     if (coordinates == null) return;
@@ -1089,6 +1456,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     try {
       await _reconcilePrayerNotifications(reason, force: true);
     } catch (error) {
+      _issues.add(PrayerWorkflowIssue.notifications);
+      _renderDisplay();
       debugPrint('Could not update prayer notifications: $error');
     }
 
@@ -1096,6 +1465,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       try {
         await PrayerWidgetService.pushSettings();
       } catch (error) {
+        _issues.add(PrayerWorkflowIssue.widget);
+        await _persistDisplayIssues();
+        _renderDisplay();
         debugPrint('Could not update prayer widgets: $error');
       }
     }
@@ -1116,16 +1488,24 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }) async {
     final scheduleResult = result.scheduleResult;
     if (scheduleResult != null) {
-      _notificationScheduleResult = scheduleResult;
-      _notificationScheduleRetrying = false;
+      _publishNotificationSchedule(scheduleResult);
+    }
+    if (result.status == PrayerLocationUpdateStatus.superseded ||
+        result.status == PrayerLocationUpdateStatus.ignoredInsignificant ||
+        result.status == PrayerLocationUpdateStatus.ignoredManualMode) {
+      return;
     }
     final generation = result.generation;
-    final canRenderDespiteSchedulingIssue =
-        generation != null && scheduleResult != null;
+    final canRenderDespiteSchedulingIssue = generation != null;
     if (!result.activated && !canRenderDespiteSchedulingIssue) {
+      _issues.add(PrayerWorkflowIssue.location);
       if (previous != null) {
+        _issues.add(PrayerWorkflowIssue.location);
         emit(previous);
+        await _persistDisplayIssues();
+        _renderDisplay();
       } else {
+        await _persistDisplayIssues();
         emit(
           PrayerTimesError(
             result.message ??
@@ -1133,6 +1513,13 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           ),
         );
       }
+      return;
+    }
+    if (isClosed) return;
+    if (generation != null &&
+        _display?.location.revision == generation.revision) {
+      _renderDisplay();
+      unawaited(_enrichCurrentDisplay());
       return;
     }
     await cacheHelper.reload();
@@ -1157,14 +1544,17 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
                 generation.countryCode != null)
               Placemark(
                 locality: generation.locality,
-                country: generation.countryName,
+                country: _countryDisplayName(
+                  generation.countryCode,
+                  generation.countryName,
+                ),
                 isoCountryCode: generation.countryCode,
               ),
           ];
     final prayerTimes = _computeWithSettings(
       coordinates,
       _prayerCivilDate(DateTime.now()),
-      countryCode: generation?.countryCode,
+      countryCode: generation == null ? null : generation.countryCode ?? '',
     );
     emit(_loadedState(prayerTimes, placemarks));
     if (result.activated) {
@@ -1173,6 +1563,12 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   void _emitLocationFailure(Object error) {
+    _issues.add(PrayerWorkflowIssue.location);
+    unawaited(_persistDisplayIssues());
+    if (state is PrayerTimesLoaded) {
+      _renderDisplay();
+      return;
+    }
     final message = error.toString();
     if (error is LocationServiceDisabledFailure ||
         message == 'Exception: Location services are disabled.') {
@@ -1210,6 +1606,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
             duration: Duration.zero,
             isPastPrayer: true,
             secondsPassed: currentPrayerInfo.secondsPassed,
+            prayer: currentPrayerInfo.prayer,
+            instant: currentPrayerInfo.time,
           );
         } else {
           final duration = currentPrayerInfo.time.difference(now);
@@ -1222,6 +1620,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           yield NextPrayerCountdown(
             prayerName: currentPrayerInfo.name,
             duration: duration,
+            prayer: currentPrayerInfo.prayer,
+            instant: currentPrayerInfo.time,
           );
         }
       } catch (e) {
@@ -1242,7 +1642,12 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       throw Exception('Prayer times not loaded');
     }
 
-    final coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+    final coordinates = _display == null
+        ? PrayerTimesCalculator.coordinatesFromCache(cacheHelper)
+        : Coordinates(
+            _display!.location.latitude,
+            _display!.location.longitude,
+          );
     if (coordinates == null) {
       throw Exception('Location not available');
     }
@@ -1257,7 +1662,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     for (var dayOffset = -1; dayOffset <= 7; dayOffset++) {
       final parts = civilAnchor.add(Duration(days: dayOffset));
       final date = DateTime(parts.year, parts.month, parts.day);
-      final prayerTimes = _computeWithSettings(coordinates, date);
+      final prayerTimes =
+          _display?.computeDate(date) ??
+          _computeWithSettings(coordinates, date);
       for (final entry in PrayerTimesCalculator.dailyAdjustedInstants(
         prayerTimes,
         _prayerOffsets,
@@ -1282,7 +1689,610 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       secondsPassed: moment.isElapsed
           ? now.toUtc().difference(moment.prayerInstant).inSeconds
           : 0,
+      prayer: moment.prayer,
     );
+  }
+
+  int? get _activeProjectionRevision {
+    try {
+      return (jsonDecode(
+                cacheHelper.getDataString(
+                      key: PrayerLocationRepository.generationProjectionKey,
+                    ) ??
+                    '{}',
+              )
+              as Map)['revision']
+          as int?;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void _observeConnectivity() {
+    try {
+      _connectivitySubscription =
+          (_connectivityChanges ?? Connectivity().onConnectivityChanged).listen(
+            (values) {
+              final wasOnline = _online;
+              _online = !values.contains(ConnectivityResult.none);
+              _renderDisplay();
+              if (_online == false) {
+                _networkRetryTimer?.cancel();
+              } else if (wasOnline == false) {
+                _scheduleNetworkRetry(reconnected: true);
+              }
+            },
+            onError: (Object _) {
+              _online = null;
+              _renderDisplay();
+            },
+          );
+    } catch (_) {
+      _online = null;
+    }
+    unawaited(_checkConnectivity());
+  }
+
+  Future<void> _checkConnectivity() async {
+    try {
+      _online =
+          !(await (_connectivityCheck ?? Connectivity().checkConnectivity)()
+                  .timeout(const Duration(seconds: 3)))
+              .contains(ConnectivityResult.none);
+    } catch (_) {
+      _online = null;
+    }
+    if (isClosed) return;
+    _renderDisplay();
+    if (_online == true) _scheduleNetworkRetry();
+  }
+
+  void _scheduleNetworkRetry({bool reconnected = false}) {
+    final minimumInterval = reconnected
+        ? const Duration(seconds: 30)
+        : const Duration(minutes: 5);
+    final last = _lastNetworkRetry;
+    if (last != null && DateTime.now().difference(last) < minimumInterval) {
+      return;
+    }
+    _networkRetryTimer?.cancel();
+    _networkRetryTimer = Timer(_networkRetryDelay, () {
+      unawaited(_retryNetworkIssues());
+    });
+  }
+
+  Future<void> _retryNetworkIssues() async {
+    if (isClosed || _workflowRetrying || _online == false) return;
+    final notifications =
+        _issues.contains(PrayerWorkflowIssue.notifications) &&
+        !_issues.contains(PrayerWorkflowIssue.verification);
+    final locality =
+        _display != null && _issues.contains(PrayerWorkflowIssue.locality);
+    if (!notifications && !locality) return;
+    _lastNetworkRetry = DateTime.now();
+    _workflowRetrying = true;
+    _beginUpdate();
+    final epoch = _displayEpoch;
+    try {
+      if (notifications) {
+        await _reconcilePrayerNotifications('reconnect-retry', force: true);
+      }
+      final display = _display;
+      if (locality && display != null && !isClosed && epoch == _displayEpoch) {
+        try {
+          final enriched = await _coordinator?.enrichDisplay(
+            display,
+            isCurrent: () => !isClosed && epoch == _displayEpoch,
+          );
+          if (enriched != null && !isClosed && epoch == _displayEpoch) {
+            await _acceptDisplay(enriched);
+          }
+        } catch (_) {
+        }
+      }
+    } finally {
+      _workflowRetrying = false;
+      if (!isClosed) {
+        await _persistDisplayIssues();
+        _renderDisplay();
+      }
+      _endUpdate();
+    }
+  }
+
+  void _renderDisplay({DateTime? now}) {
+    if (isClosed) return;
+    final display = _display;
+    if (display == null) {
+      final current = state;
+      if (current is PrayerTimesLoaded) {
+        emit(
+          current.copyWith(
+            workflowIssues: Set.unmodifiable(_issues),
+            workflowRetrying: _userRetrying,
+            updating: _isUpdating,
+            online: _online,
+          ),
+        );
+      }
+      return;
+    }
+    try {
+      _methodToken = display.method;
+      _madhabToken = display.madhab;
+      _highLatToken = display.highLatitude;
+      _customAngles = display.angles;
+      _prayerTimeZoneId = display.location.timeZoneId;
+      _locationMode = display.location.mode;
+      _prayerOffsets = display.offsets;
+      final location = display.location;
+      _dayRollover?.cancel();
+      final instant = now ?? DateTime.now();
+      final civil = PrayerTimeZoneService.wallClockAtInstant(
+        instant,
+        location.timeZoneId,
+      );
+      final midnight = PrayerTimeZoneService.fromWallClock(
+        DateTime(civil.year, civil.month, civil.day + 1),
+        location.timeZoneId,
+      );
+      _dayRollover = Timer(midnight.difference(instant), () {
+        _renderDisplay();
+        final latest = _display;
+        if (latest != null) unawaited(_acceptDisplay(latest));
+      });
+      emit(
+        _loadedState(display.compute(now ?? DateTime.now()), [
+          Placemark(
+            locality:
+                location.locality ??
+                '${location.latitude.toStringAsFixed(3)}, ${location.longitude.toStringAsFixed(3)}',
+            country:
+                _countryDisplayName(
+                  location.countryCode,
+                  location.countryName,
+                ) ??
+                '',
+            isoCountryCode: location.countryCode,
+          ),
+        ]),
+      );
+    } catch (_) {
+      _issues.add(PrayerWorkflowIssue.calculation);
+      final current = state;
+      if (current is PrayerTimesLoaded) {
+        emit(current.copyWith(workflowIssues: Set.unmodifiable(_issues)));
+      } else {
+        emit(PrayerTimesNeedsSetup());
+      }
+    }
+  }
+
+  Future<void> _acceptDisplay(PrayerDisplaySnapshot display) =>
+      _whileUpdating(() => _acceptDisplayNow(display));
+
+  Future<void> _acceptDisplayNow(PrayerDisplaySnapshot display) async {
+    if (isClosed ||
+        (_display != null &&
+            (_display!.location.revision > display.location.revision ||
+                (_display!.location.revision == display.location.revision &&
+                    _display!.revision > display.revision)))) {
+      return;
+    }
+    _display = display;
+    _issues.removeAll({
+      PrayerWorkflowIssue.verification,
+      PrayerWorkflowIssue.locality,
+    });
+    _issues.addAll(display.issues);
+    if (display.provisional) _issues.add(PrayerWorkflowIssue.verification);
+    _renderDisplay();
+    await _persistDisplayIssues();
+    if (isClosed || _display?.revision != display.revision) return;
+    try {
+      await PrayerWidgetService.publishDisplay(
+        display,
+        cacheHelper: cacheHelper,
+      );
+      if (_display?.revision != display.revision) return;
+      _issues.remove(PrayerWorkflowIssue.widget);
+    } catch (_) {
+      if (_display?.revision != display.revision) return;
+      _issues.add(PrayerWorkflowIssue.widget);
+    }
+    await _persistDisplayIssues();
+    _renderDisplay();
+  }
+
+  Future<void> _verifyLegacyManualDisplay() async {
+    final display = _display;
+    final coordinator = _coordinator;
+    if (display == null ||
+        coordinator == null ||
+        _legacyVerificationAttempted) {
+      return;
+    }
+    final location = display.location;
+    final legacyManual =
+        location.mode == PrayerLocationMode.manual &&
+        location.timeZoneProvenance ==
+            PrayerTimeZoneProvenance.legacyApproximate;
+    final needsCandidates =
+        display.provisional &&
+        location.countryCode == null &&
+        location.countryCandidates.isEmpty;
+    if (!legacyManual && !needsCandidates) return;
+    _legacyVerificationAttempted = true;
+    final epoch = ++_displayEpoch;
+    try {
+      final result = await coordinator.submit(
+        fix: PrayerLocationFix(
+          latitude: location.latitude,
+          longitude: location.longitude,
+          capturedAtUtc: location.capturedAtUtc,
+          accuracyMeters: location.accuracyMeters,
+        ),
+        mode: location.mode,
+        source: location.source,
+        reason: 'offline-reevaluation',
+        explicitUserAction: true,
+        calculationSettings: display,
+        suppliedMetadata: PrayerLocationMetadata(
+          countryCode: location.countryCode,
+          locality: location.locality,
+          countryName: location.countryName,
+        ),
+        isCurrent: () => !isClosed && epoch == _displayEpoch,
+      );
+      if (isClosed || epoch != _displayEpoch) return;
+      await _renderCoordinatorResult(
+        result,
+        previous: state is PrayerTimesLoaded
+            ? state as PrayerTimesLoaded
+            : null,
+      );
+    } catch (error) {
+      debugPrint('Could not re-evaluate prayer location: $error');
+    }
+  }
+
+  Future<void> _enrichCurrentDisplay() async {
+    final display = _display;
+    if (display == null ||
+        _online == false ||
+        !display.issues.contains(PrayerWorkflowIssue.locality) ||
+        _enrichmentAttemptRevision == display.location.revision) {
+      return;
+    }
+    _enrichmentAttemptRevision = display.location.revision;
+    final epoch = _displayEpoch;
+    bool current() =>
+        !isClosed &&
+        epoch == _displayEpoch &&
+        _display?.revision == display.revision;
+    try {
+      final updated = await _coordinator?.enrichDisplay(
+        display,
+        isCurrent: current,
+      );
+      if (updated != null && current()) await _acceptDisplay(updated);
+    } catch (_) {
+    }
+  }
+
+  Future<void> _refreshWidgetStatus() async {
+    final revision = _display?.revision;
+    if (revision == null) return;
+    await _persistDisplayIssues();
+    final display = _display;
+    if (isClosed || display?.revision != revision) return;
+    try {
+      await PrayerWidgetService.publishDisplay(
+        display!,
+        cacheHelper: cacheHelper,
+      );
+      if (_display?.revision != revision) return;
+      if (_issues.remove(PrayerWorkflowIssue.widget)) {
+        await _persistDisplayIssues();
+      }
+    } catch (_) {
+      if (_display?.revision != revision) return;
+      _issues.add(PrayerWorkflowIssue.widget);
+      await _persistDisplayIssues();
+      _renderDisplay();
+    }
+  }
+
+  Future<void> _persistDisplayIssues() async {
+    try {
+      await _locationRepository?.updateIssues(
+        add: {..._issues},
+        remove: _knownPersistedIssues.difference(_issues),
+      );
+      _knownPersistedIssues
+        ..clear()
+        ..addAll(_issues);
+    } catch (_) {
+      _issues.add(PrayerWorkflowIssue.storage);
+    }
+    final display = _display;
+    if (display == null) {
+      return;
+    }
+    _display = display.withIssues(_issues);
+    try {
+      final accepted = await _locationRepository?.saveDisplay(_display!);
+      if (accepted == false) {
+        final latest =
+            (await _locationRepository?.readState())?.displaySnapshot;
+        if (latest != null &&
+            (latest.location.revision > display.location.revision ||
+                (latest.location.revision == display.location.revision &&
+                    latest.revision > display.revision))) {
+          _display = latest;
+          _issues.addAll(latest.issues);
+          _renderDisplay();
+        } else {
+          _issues.add(PrayerWorkflowIssue.storage);
+        }
+      }
+    } catch (_) {
+      _issues.add(PrayerWorkflowIssue.storage);
+    }
+  }
+
+  Future<void> _refreshDisplaySettings() async {
+    final display = _display;
+    if (display == null) return;
+    await _acceptDisplay(
+      PrayerDisplaySnapshot.fromCache(
+        cacheHelper,
+        display.location,
+        issues: _issues,
+      ),
+    );
+  }
+
+  Future<void> chooseCountry(String countryCode) =>
+      _whileUpdating(() => _chooseCountry(countryCode));
+
+  Future<void> _chooseCountry(String countryCode) async {
+    final display = _display;
+    final repository = _locationRepository;
+    final coordinator = _coordinator;
+    if (display == null ||
+        repository == null ||
+        coordinator == null ||
+        _workflowRetrying ||
+        isClosed) {
+      return;
+    }
+    _workflowRetrying = true;
+    final epoch = ++_displayEpoch;
+    _renderDisplay();
+    try {
+      final l = display.location;
+      await repository.saveCountryChoice(
+        PrayerCountryChoice(
+          countryCode: countryCode,
+          latitude: l.latitude,
+          longitude: l.longitude,
+          chosenAtUtc: DateTime.now().toUtc(),
+        ),
+      );
+      final result = await coordinator.submit(
+        fix: PrayerLocationFix(
+          latitude: l.latitude,
+          longitude: l.longitude,
+          capturedAtUtc: l.capturedAtUtc,
+          accuracyMeters: l.accuracyMeters,
+        ),
+        mode: l.mode,
+        source: l.source,
+        reason: 'country-chosen',
+        explicitUserAction: true,
+        calculationSettings: display,
+        suppliedMetadata: PrayerLocationMetadata(
+          locality: l.locality,
+          countryName: l.countryName,
+        ),
+        isCurrent: () => !isClosed && epoch == _displayEpoch,
+      );
+      if (epoch == _displayEpoch && !isClosed) {
+        await _renderCoordinatorResult(
+          result,
+          previous: state is PrayerTimesLoaded
+              ? state as PrayerTimesLoaded
+              : null,
+        );
+      }
+    } catch (_) {
+      _issues.add(PrayerWorkflowIssue.storage);
+    } finally {
+      _workflowRetrying = false;
+      await _persistDisplayIssues();
+      _renderDisplay();
+    }
+  }
+
+  void dismissCountryQuestion() {
+    final display = _display;
+    if (display == null) return;
+    _countryQuestionDismissedRevision = display.location.revision;
+    _renderDisplay();
+  }
+
+  Future<void> retryPrayerUpdates() async {
+    if (_workflowRetrying || isClosed) return;
+    _workflowRetrying = true;
+    _userRetrying = true;
+    final epoch = ++_displayEpoch;
+    _renderDisplay();
+    try {
+      final display = _display;
+      if (display == null) {
+        await refreshLocationAndPrayerTimes();
+        return;
+      }
+      if (_issues.contains(PrayerWorkflowIssue.storage)) {
+        await _retryStep('storage', PrayerWorkflowIssue.storage, () async {
+          await _locationRepository?.initialize();
+          _issues.remove(PrayerWorkflowIssue.storage);
+        });
+      }
+      var notificationsRecovered = true;
+      await _retryStep('journal', PrayerWorkflowIssue.storage, () async {
+        final reliability = await _locationRepository?.readState();
+        if (reliability?.journal != null) {
+          final recovery = await _reconcilePrayerNotifications(
+            'offline-recovery',
+            force: true,
+            userRetry: true,
+          );
+          notificationsRecovered = recovery.isSuccess;
+        }
+      });
+      if (!notificationsRecovered) return;
+      final l = display.location;
+      final automatic = l.mode == PrayerLocationMode.automatic;
+      if (!automatic) {
+        _issues.remove(PrayerWorkflowIssue.location);
+      }
+      Position? fresh;
+      if (automatic &&
+          (_issues.contains(PrayerWorkflowIssue.verification) ||
+              _issues.contains(PrayerWorkflowIssue.location) ||
+              _issues.contains(PrayerWorkflowIssue.nativeCandidate))) {
+        try {
+          fresh = await _travelLocationProvider().timeout(
+            const Duration(seconds: 20),
+          );
+        } catch (_) {}
+        if (fresh != null) _issues.remove(PrayerWorkflowIssue.location);
+      }
+      final priorRevision = _display?.location.revision;
+      final resubmitIssue = _issues.contains(PrayerWorkflowIssue.verification)
+          ? PrayerWorkflowIssue.verification
+          : PrayerWorkflowIssue.storage;
+      await _retryStep('location', resubmitIssue, () async {
+        final needsResubmit =
+            _issues.contains(PrayerWorkflowIssue.verification) ||
+            l.revision != (await _locationRepository?.readActive())?.revision;
+        if (needsResubmit || fresh != null) {
+          final result = await _coordinator?.submit(
+            fix: fresh == null
+                ? PrayerLocationFix(
+                    latitude: l.latitude,
+                    longitude: l.longitude,
+                    capturedAtUtc: l.capturedAtUtc,
+                    accuracyMeters: l.accuracyMeters,
+                  )
+                : _fixFromPosition(fresh),
+            mode: l.mode,
+            source: fresh == null ? l.source : PrayerLocationSource.foreground,
+            reason: 'offline-retry',
+            explicitUserAction: true,
+            enrich: true,
+            calculationSettings: display,
+            isCurrent: () => !isClosed && epoch == _displayEpoch,
+          );
+          if (result != null && epoch == _displayEpoch && !isClosed) {
+            await _renderCoordinatorResult(
+              result,
+              previous: state is PrayerTimesLoaded
+                  ? state as PrayerTimesLoaded
+                  : null,
+            );
+          }
+        } else if (_issues.contains(PrayerWorkflowIssue.locality)) {
+          await _retryStep('locality', PrayerWorkflowIssue.locality, () async {
+            final enriched = await _coordinator?.enrichDisplay(
+              display,
+              isCurrent: () => !isClosed && epoch == _displayEpoch,
+            );
+            if (enriched != null && epoch == _displayEpoch && !isClosed) {
+              await _acceptDisplay(enriched);
+            }
+          });
+        }
+      });
+      if (_issues.contains(PrayerWorkflowIssue.notifications) &&
+          !_issues.contains(PrayerWorkflowIssue.verification)) {
+        await _reconcilePrayerNotifications(
+          'offline-retry',
+          force: true,
+          userRetry: true,
+        );
+      }
+      if (_issues.contains(PrayerWorkflowIssue.nativeCandidate)) {
+        await _retryStep(
+          'native candidate',
+          PrayerWorkflowIssue.nativeCandidate,
+          () async {
+            await consumeQueuedNativeLocationCandidate();
+            await cacheHelper.reload();
+            final queued = cacheHelper.getDataString(
+              key: 'prayer_location_native_candidate_v1',
+            );
+            if (_issues.contains(PrayerWorkflowIssue.nativeCandidate) &&
+                (queued == null || queued.isEmpty) &&
+                _display?.location.revision != priorRevision) {
+              _issues.remove(PrayerWorkflowIssue.nativeCandidate);
+            }
+          },
+        );
+      }
+      if (_issues.contains(PrayerWorkflowIssue.calculation)) {
+        await _retryStep(
+          'calculation',
+          PrayerWorkflowIssue.calculation,
+          () async {
+            _display?.compute(DateTime.now());
+            _issues.remove(PrayerWorkflowIssue.calculation);
+          },
+        );
+      }
+      final latest = _display;
+      if (_issues.contains(PrayerWorkflowIssue.widget) && latest != null) {
+        await _retryStep('widget', PrayerWorkflowIssue.widget, () async {
+          await PrayerWidgetService.publishDisplay(
+            latest,
+            cacheHelper: cacheHelper,
+          );
+          _issues.remove(PrayerWorkflowIssue.widget);
+        });
+      }
+    } catch (error, stack) {
+      debugPrint('Prayer updates retry failed: $error\n$stack');
+    } finally {
+      _workflowRetrying = false;
+      _userRetrying = false;
+      await _persistDisplayIssues();
+      _renderDisplay();
+    }
+  }
+
+  Future<void> _retryStep(
+    String step,
+    PrayerWorkflowIssue issue,
+    Future<void> Function() action,
+  ) async {
+    try {
+      await action();
+    } catch (error, stack) {
+      _issues.add(issue);
+      debugPrint('Prayer retry step "$step" failed: $error\n$stack');
+    }
+  }
+
+  @override
+  Future<void> close() async {
+    _displayEpoch++;
+    _dayRollover?.cancel();
+    _networkRetryTimer?.cancel();
+    _updatesSettling?.cancel();
+    await _connectivitySubscription?.cancel();
+    return super.close();
   }
 
   String _getPrayerDisplayName(Prayer prayer) {

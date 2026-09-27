@@ -1,3 +1,6 @@
+import 'package:huda/core/services/prayer_display_snapshot.dart';
+import 'package:huda/core/services/prayer_location_monitor.dart';
+import 'package:huda/core/services/prayer_location_time_zone_service.dart';
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
@@ -63,14 +66,15 @@ Future<bool> _reconcilePrayerLocationCandidate(
   }
 
   if (cache.getData(key: 'prayer_background_travel_enabled') != true) {
-    await cache.removeData(key: key);
+    await PrayerLocationMonitor.consumeNativeCandidate(raw);
     return true;
   }
 
   try {
     final decoded = jsonDecode(raw);
     if (decoded is! Map || decoded['schemaVersion'] != 1) {
-      await cache.removeData(key: key);
+      await repository.updateIssues(add: {PrayerWorkflowIssue.nativeCandidate});
+      await PrayerLocationMonitor.consumeNativeCandidate(raw);
       return true;
     }
     double? number(String field) {
@@ -86,14 +90,13 @@ Future<bool> _reconcilePrayerLocationCandidate(
     final capturedAt = DateTime.tryParse(
       decoded['capturedAtUtc']?.toString() ?? '',
     );
-    final timeZoneId = decoded['timeZoneId']?.toString().trim() ?? '';
     if (latitude == null ||
         longitude == null ||
         accuracy == null ||
         capturedAt == null ||
-        !capturedAt.isUtc ||
-        timeZoneId.isEmpty) {
-      await cache.removeData(key: key);
+        !capturedAt.isUtc) {
+      await repository.updateIssues(add: {PrayerWorkflowIssue.nativeCandidate});
+      await PrayerLocationMonitor.consumeNativeCandidate(raw);
       return true;
     }
     final metadata = PrayerLocationMetadata(
@@ -108,7 +111,7 @@ Future<bool> _reconcilePrayerLocationCandidate(
       cacheHelper: cache,
       repository: repository,
       activator: scheduler,
-      timeZoneResolver: (_, _, _) async => timeZoneId,
+      timeZoneResolver: PrayerLocationTimeZoneService.resolveExact,
       metadataResolver: (_, _) async => metadata,
     );
     final result = await coordinator.submit(
@@ -131,13 +134,23 @@ Future<bool> _reconcilePrayerLocationCandidate(
         value: DateTime.now().millisecondsSinceEpoch,
       );
     }
+    await cache.reload();
     final latest = cache.getDataString(key: key);
     final retryable = _retryableLocationStatus(result.status);
     if (latest == raw && !retryable) {
-      await cache.removeData(key: key);
+      if (await PrayerLocationMonitor.consumeNativeCandidate(raw)) {
+        await repository.updateIssues(
+          remove: {PrayerWorkflowIssue.nativeCandidate},
+        );
+      }
+    } else if (retryable) {
+      await repository.updateIssues(add: {PrayerWorkflowIssue.nativeCandidate});
     }
     return !retryable;
   } catch (error) {
+    try {
+      await repository.updateIssues(add: {PrayerWorkflowIssue.nativeCandidate});
+    } catch (_) {}
     debugPrint('Native prayer candidate recovery failed: $error');
     return false;
   }
@@ -157,10 +170,12 @@ Future<bool> _reconcilePrayerNotifications() async {
   ).reconcile(reason: 'background-refresh');
   return result.isSuccess ||
       result.status == PrayerScheduleStatus.locationUnavailable ||
-      result.status == PrayerScheduleStatus.permissionDenied;
+      result.status == PrayerScheduleStatus.permissionDenied ||
+      result.message == PrayerNotificationScheduler.verificationPendingMessage;
 }
 
 bool _retryableLocationStatus(PrayerLocationUpdateStatus status) =>
+    status == PrayerLocationUpdateStatus.timeZoneUnavailable ||
     status == PrayerLocationUpdateStatus.deferredCountry ||
     status == PrayerLocationUpdateStatus.degraded ||
     status == PrayerLocationUpdateStatus.failed;

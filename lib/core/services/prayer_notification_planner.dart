@@ -70,7 +70,12 @@ class PrayerNotificationPlanner {
   }) {
     if (maxEvents <= 0 || horizon <= Duration.zero) return null;
     final location = configuration.location;
-    if (!location.isValid) return null;
+    if (!location.isValid ||
+        !location.calculationVerified ||
+        (PrayerTimesCalculator.requiresCountry(configuration.methodToken) &&
+            (location.countryCode == null || location.countryCode!.isEmpty))) {
+      return null;
+    }
     final coordinates = Coordinates(location.latitude, location.longitude);
     final localeCode = configuration.localeCode;
     final localizations = _localizations(localeCode);
