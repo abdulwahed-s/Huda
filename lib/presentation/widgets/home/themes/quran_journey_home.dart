@@ -307,7 +307,7 @@ class _QuranJourneyLoading extends StatelessWidget {
                   mainAxisExtent: 72,
                 ),
                 itemCount: 4,
-                itemBuilder: (_, __) => _QuranSkeletonBlock(
+                itemBuilder: (_, _) => _QuranSkeletonBlock(
                   height: 72,
                   color: Theme.of(
                     context,

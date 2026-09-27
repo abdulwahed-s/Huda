@@ -36,10 +36,7 @@ class PdfAppBar extends StatelessWidget implements PreferredSizeWidget {
           foregroundColor: colorScheme.onSurface,
           title: Text(
             AppLocalizations.of(context)!.pdfViewer,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 20.sp,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
           ),
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
@@ -81,8 +78,10 @@ class PdfAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.find_in_page_outlined,
-                  color: colorScheme.onSurface),
+              icon: Icon(
+                Icons.find_in_page_outlined,
+                color: colorScheme.onSurface,
+              ),
               onPressed: isDocumentReady && pdfViewerController.pageCount > 0
                   ? showGoToPageDialog
                   : null,

@@ -19,9 +19,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: isDark ? Colors.grey[900] : Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       title: Row(
         children: [
           Icon(Icons.warning_amber_rounded, color: Colors.red, size: 24.r),
@@ -65,9 +63,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
           ),
           child: Text(
             AppLocalizations.of(context)!.delete,
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
+            style: TextStyle(fontSize: 14.sp),
           ),
         ),
       ],

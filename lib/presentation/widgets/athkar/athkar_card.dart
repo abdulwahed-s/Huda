@@ -7,11 +7,7 @@ class AthkarCard extends StatelessWidget {
   final dynamic item;
   final int index;
 
-  const AthkarCard({
-    super.key,
-    required this.item,
-    required this.index,
-  });
+  const AthkarCard({super.key, required this.item, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +18,15 @@ class AthkarCard extends StatelessWidget {
       curve: Curves.easeOutBack,
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/athkarDetail', arguments: {
-            'athkarId': item.id.toString(),
-            'title': item.titleAr as String,
-            'titleEn': item.titleEn as String,
-          });
+          Navigator.pushNamed(
+            context,
+            '/athkarDetail',
+            arguments: {
+              'athkarId': item.id.toString(),
+              'title': item.titleAr as String,
+              'titleEn': item.titleEn as String,
+            },
+          );
         },
         borderRadius: BorderRadius.circular(16.r),
         child: Container(

@@ -125,7 +125,7 @@ class SelectedDateInfoWidget extends StatelessWidget {
       localizations.ramadan,
       localizations.shawwal,
       localizations.dhuAlQidah,
-      localizations.dhuAlHijjah
+      localizations.dhuAlHijjah,
     ];
     return months[month - 1];
   }
@@ -144,7 +144,7 @@ class SelectedDateInfoWidget extends StatelessWidget {
       localizations.september,
       localizations.october,
       localizations.november,
-      localizations.december
+      localizations.december,
     ];
     return months[month - 1];
   }

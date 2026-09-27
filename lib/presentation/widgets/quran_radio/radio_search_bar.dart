@@ -27,8 +27,9 @@ class RadioSearchBar extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: isDark
-              ? theme.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.35)
+              ? theme.colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.35,
+                )
               : Colors.white,
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
@@ -48,15 +49,22 @@ class RadioSearchBar extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hintText,
             border: InputBorder.none,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 20.w,
+              vertical: 14.h,
+            ),
             prefixIcon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.w),
-              child: Icon(Icons.search_rounded,
-                  color: theme.colorScheme.primary, size: 22.sp),
+              child: Icon(
+                Icons.search_rounded,
+                color: theme.colorScheme.primary,
+                size: 22.sp,
+              ),
             ),
-            prefixIconConstraints:
-                BoxConstraints(minWidth: 48.w, minHeight: 40.h),
+            prefixIconConstraints: BoxConstraints(
+              minWidth: 48.w,
+              minHeight: 40.h,
+            ),
             suffixIcon: showClearButton
                 ? IconButton(
                     icon: Icon(Icons.close_rounded, size: 18.sp),

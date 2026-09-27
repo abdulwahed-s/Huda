@@ -58,7 +58,8 @@ class ProgressIndicatorWidget extends StatelessWidget {
               value: progress,
               backgroundColor: Colors.white.withValues(alpha: 0.3),
               valueColor: AlwaysStoppedAnimation<Color>(
-                  isDark ? colors.darkText : Colors.white),
+                isDark ? colors.darkText : Colors.white,
+              ),
               minHeight: 8.h,
             ),
           ),

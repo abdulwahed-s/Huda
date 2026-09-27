@@ -53,17 +53,18 @@ class BookDetailController {
 
   void fetchInitialData() {
     context.read<BookDetailCubit>().fetchBookDetail(bookId, language);
-    context
-        .read<BookLanguagesCubit>()
-        .fetchBookLanguages(bookId, currentLanguageCode);
+    context.read<BookLanguagesCubit>().fetchBookLanguages(
+      bookId,
+      currentLanguageCode,
+    );
     selectedLanguage = null;
   }
 
   void retryBookDetail() {
     context.read<BookDetailCubit>().fetchBookDetail(
-          bookId,
-          selectedLanguage ?? language,
-        );
+      bookId,
+      selectedLanguage ?? language,
+    );
   }
 
   void handleLanguageSelected(String? language) {
@@ -75,12 +76,13 @@ class BookDetailController {
     } else {
       final translations =
           context.read<BookLanguagesCubit>().state as BookTranslationsLoaded;
-      final translation =
-          translations.translations.firstWhere((t) => t.slang == language);
+      final translation = translations.translations.firstWhere(
+        (t) => t.slang == language,
+      );
       context.read<BookDetailCubit>().fetchBookDetail(
-            translation.id,
-            translation.slang,
-          );
+        translation.id,
+        translation.slang,
+      );
     }
   }
 
@@ -205,7 +207,8 @@ class BookDetailController {
         return AlertDialog(
           title: const Text('Delete Downloaded Book'),
           content: const Text(
-              'Are you sure you want to delete this downloaded book? This action cannot be undone.'),
+            'Are you sure you want to delete this downloaded book? This action cannot be undone.',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -260,9 +263,10 @@ class BookDetailController {
 
       final languageToUse = selectedLanguage ?? language;
 
-      await context
-          .read<DownloadManagerCubit>()
-          .downloadBook(state.bookDetail, languageToUse);
+      await context.read<DownloadManagerCubit>().downloadBook(
+        state.bookDetail,
+        languageToUse,
+      );
 
       final isDownloaded = await _offlineBooksService.isBookDownloaded(bookId);
       if (context.mounted) {
@@ -289,15 +293,17 @@ class BookDetailController {
     final message = '$title\n\n${localizations.sharedViaHuda}';
 
     final screenSize = MediaQuery.of(context).size;
-    SharePlus.instance.share(ShareParams(
-      text: message,
-      subject: localizations.shareBookSubject(title),
-      sharePositionOrigin: Rect.fromCenter(
-        center: Offset(screenSize.width / 2, screenSize.height / 2),
-        width: 1,
-        height: 1,
+    SharePlus.instance.share(
+      ShareParams(
+        text: message,
+        subject: localizations.shareBookSubject(title),
+        sharePositionOrigin: Rect.fromCenter(
+          center: Offset(screenSize.width / 2, screenSize.height / 2),
+          width: 1,
+          height: 1,
+        ),
       ),
-    ));
+    );
   }
 
   Future<void> shareAsPdf() async {
@@ -347,16 +353,18 @@ class BookDetailController {
         if (await file.exists()) {
           if (!context.mounted) return;
           final screenSize = MediaQuery.of(context).size;
-          await SharePlus.instance.share(ShareParams(
-            files: [XFile(pdfAttachment.localPath)],
-            text: '$title\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
-            subject: AppLocalizations.of(context)!.shareBookSubject(title),
-            sharePositionOrigin: Rect.fromCenter(
-              center: Offset(screenSize.width / 2, screenSize.height / 2),
-              width: 1,
-              height: 1,
+          await SharePlus.instance.share(
+            ShareParams(
+              files: [XFile(pdfAttachment.localPath)],
+              text: '$title\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
+              subject: AppLocalizations.of(context)!.shareBookSubject(title),
+              sharePositionOrigin: Rect.fromCenter(
+                center: Offset(screenSize.width / 2, screenSize.height / 2),
+                width: 1,
+                height: 1,
+              ),
             ),
-          ));
+          );
         } else {
           throw Exception('PDF file not found locally');
         }
@@ -414,16 +422,18 @@ class BookDetailController {
 
       if (!context.mounted) return;
       final screenSize = MediaQuery.of(context).size;
-      await SharePlus.instance.share(ShareParams(
-        files: [XFile(filePath)],
-        text: '$title\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
-        subject: AppLocalizations.of(context)!.shareBookSubject(title),
-        sharePositionOrigin: Rect.fromCenter(
-          center: Offset(screenSize.width / 2, screenSize.height / 2),
-          width: 1,
-          height: 1,
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(filePath)],
+          text: '$title\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
+          subject: AppLocalizations.of(context)!.shareBookSubject(title),
+          sharePositionOrigin: Rect.fromCenter(
+            center: Offset(screenSize.width / 2, screenSize.height / 2),
+            width: 1,
+            height: 1,
+          ),
         ),
-      ));
+      );
 
       Future.delayed(const Duration(seconds: 30), () {
         try {

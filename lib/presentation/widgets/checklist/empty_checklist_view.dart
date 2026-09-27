@@ -6,10 +6,7 @@ import 'package:huda/l10n/app_localizations.dart';
 class EmptyChecklistView extends StatelessWidget {
   final bool isDark;
 
-  const EmptyChecklistView({
-    super.key,
-    required this.isDark,
-  });
+  const EmptyChecklistView({super.key, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +57,7 @@ class EmptyChecklistView extends StatelessWidget {
             decoration: BoxDecoration(
               color: colors.accent.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(
-                color: colors.accent.withValues(alpha: 0.3),
-              ),
+              border: Border.all(color: colors.accent.withValues(alpha: 0.3)),
             ),
             child: Text(
               '"وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا"',

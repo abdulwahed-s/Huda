@@ -20,11 +20,7 @@ class QuranErrorState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 64.sp,
-            color: Colors.red[400],
-          ),
+          Icon(Icons.error_outline, size: 64.sp, color: Colors.red[400]),
           SizedBox(height: 12.h),
           Text(
             'Error Loading Quran',
@@ -47,15 +43,14 @@ class QuranErrorState extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onRetry,
             icon: Icon(Icons.refresh, size: 16.sp),
-            label: Text(AppLocalizations.of(context)!.retry,
-                style: TextStyle(fontSize: 13.sp)),
+            label: Text(
+              AppLocalizations.of(context)!.retry,
+              style: TextStyle(fontSize: 13.sp),
+            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 103, 43, 93),
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.w,
-                vertical: 10.h,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.r),
               ),

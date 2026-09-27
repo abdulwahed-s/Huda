@@ -61,13 +61,9 @@ class QiblahScreenState extends State<QiblahScreen>
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.qiblahDirection,
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-          ),
+          style: TextStyle(color: isDark ? Colors.white : Colors.black87),
         ),
-        iconTheme: IconThemeData(
-          color: isDark ? Colors.white : Colors.black87,
-        ),
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black87),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,

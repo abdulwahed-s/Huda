@@ -88,9 +88,9 @@ class QuickSummaryCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      context
-                          .read<ZakatCalculatorCubit>()
-                          .getFormattedAmount(calculation.netAssets),
+                      context.read<ZakatCalculatorCubit>().getFormattedAmount(
+                        calculation.netAssets,
+                      ),
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -100,10 +100,7 @@ class QuickSummaryCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 12.h),
-                Divider(
-                  color: Colors.grey[300],
-                  thickness: 1,
-                ),
+                Divider(color: Colors.grey[300], thickness: 1),
                 SizedBox(height: 12.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,8 +114,10 @@ class QuickSummaryCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 6.h,
+                      ),
                       decoration: BoxDecoration(
                         color: calculation.isZakatDue
                             ? Colors.green.withValues(alpha: 0.1)
@@ -132,9 +131,9 @@ class QuickSummaryCard extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        context
-                            .read<ZakatCalculatorCubit>()
-                            .getFormattedAmount(calculation.zakatAmount),
+                        context.read<ZakatCalculatorCubit>().getFormattedAmount(
+                          calculation.zakatAmount,
+                        ),
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,

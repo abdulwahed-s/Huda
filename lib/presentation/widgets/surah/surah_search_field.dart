@@ -57,8 +57,10 @@ class SurahSearchField extends StatelessWidget {
               width: 1.5,
             ),
           ),
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 14.w,
+            vertical: 10.h,
+          ),
           prefixIcon: Icon(
             Icons.search_rounded,
             size: 18.sp,

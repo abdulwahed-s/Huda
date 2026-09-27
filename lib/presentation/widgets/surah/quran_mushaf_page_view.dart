@@ -277,9 +277,10 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
 
     _currentIsDoubleMode =
         widget.displayMode == HorizontalPageDisplayMode.doublePage &&
-            widget.mode.isMushaf;
+        widget.mode.isMushaf;
     _pageController = PageController(
-        initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode));
+      initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode),
+    );
     _requestFontsForPage(_currentPage);
   }
 
@@ -322,7 +323,8 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
       _currentIsDoubleMode = shouldBeDouble;
       _pageController.dispose();
       _pageController = PageController(
-          initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode));
+        initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode),
+      );
     }
   }
 
@@ -338,7 +340,8 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
       _currentIsDoubleMode = shouldBeDouble;
       _pageController.dispose();
       _pageController = PageController(
-          initialPage: _toControllerPage(savedPage, _currentIsDoubleMode));
+        initialPage: _toControllerPage(savedPage, _currentIsDoubleMode),
+      );
     }
   }
 
@@ -353,37 +356,62 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
     if (_currentIsDoubleMode) {
       final spreadCount = (quran.totalPagesCount / 2).ceil();
       return Listener(
-          onPointerSignal: _handlePointerScroll,
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: PageView.builder(
-              key: const ValueKey('horizontal_double'),
-              scrollDirection: Axis.horizontal,
-              scrollBehavior: ScrollConfiguration.of(context).copyWith(
-                dragDevices: {
-                  PointerDeviceKind.touch,
-                  PointerDeviceKind.mouse,
-                  PointerDeviceKind.trackpad,
-                },
-              ),
-              controller: _pageController,
-              itemCount: spreadCount,
-              onPageChanged: (spreadIndex) {
-                final rightPage =
-                    (spreadIndex * 2 + 1).clamp(1, quran.totalPagesCount);
-                setState(() => _currentPage = rightPage);
-                widget.onPageChanged?.call(rightPage);
-                _requestFontsForPage(rightPage);
+        onPointerSignal: _handlePointerScroll,
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: PageView.builder(
+            key: const ValueKey('horizontal_double'),
+            scrollDirection: Axis.horizontal,
+            scrollBehavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.trackpad,
               },
-              itemBuilder: (context, spreadIndex) {
-                final rightPage = spreadIndex * 2 + 1;
-                final leftPage = spreadIndex * 2 + 2;
-                final isDark = Theme.of(context).brightness == Brightness.dark;
-                return Row(
-                  children: [
+            ),
+            controller: _pageController,
+            itemCount: spreadCount,
+            onPageChanged: (spreadIndex) {
+              final rightPage = (spreadIndex * 2 + 1).clamp(
+                1,
+                quran.totalPagesCount,
+              );
+              setState(() => _currentPage = rightPage);
+              widget.onPageChanged?.call(rightPage);
+              _requestFontsForPage(rightPage);
+            },
+            itemBuilder: (context, spreadIndex) {
+              final rightPage = spreadIndex * 2 + 1;
+              final leftPage = spreadIndex * 2 + 2;
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              return Row(
+                children: [
+                  Expanded(
+                    child: _QuranMushafPage(
+                      pageNumber: rightPage.clamp(1, quran.totalPagesCount),
+                      playingSurahNumber: widget.playingSurahNumber,
+                      playingAyahNumber: widget.playingAyahNumber,
+                      isMemorizationMode: widget.isMemorizationMode,
+                      hiddenAyahIndices: widget.hiddenAyahIndices,
+                      memorizedSurahNumber: widget.memorizedSurahNumber,
+                      onAyahTap: widget.onAyahTap,
+                      onAyahLongPress: widget.onAyahLongPress,
+                      customBgColor: widget.customBgColor,
+                      customTextColor: widget.customTextColor,
+                      displayMode: widget.displayMode,
+                      useTajweedFonts: _useTajweedFonts,
+                    ),
+                  ),
+                  Container(
+                    width: 1.0,
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.1),
+                  ),
+                  if (leftPage <= quran.totalPagesCount)
                     Expanded(
                       child: _QuranMushafPage(
-                        pageNumber: rightPage.clamp(1, quran.totalPagesCount),
+                        pageNumber: leftPage,
                         playingSurahNumber: widget.playingSurahNumber,
                         playingAyahNumber: widget.playingAyahNumber,
                         isMemorizationMode: widget.isMemorizationMode,
@@ -396,82 +424,61 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
                         displayMode: widget.displayMode,
                         useTajweedFonts: _useTajweedFonts,
                       ),
-                    ),
-                    Container(
-                      width: 1.0,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.1),
-                    ),
-                    if (leftPage <= quran.totalPagesCount)
-                      Expanded(
-                        child: _QuranMushafPage(
-                          pageNumber: leftPage,
-                          playingSurahNumber: widget.playingSurahNumber,
-                          playingAyahNumber: widget.playingAyahNumber,
-                          isMemorizationMode: widget.isMemorizationMode,
-                          hiddenAyahIndices: widget.hiddenAyahIndices,
-                          memorizedSurahNumber: widget.memorizedSurahNumber,
-                          onAyahTap: widget.onAyahTap,
-                          onAyahLongPress: widget.onAyahLongPress,
-                          customBgColor: widget.customBgColor,
-                          customTextColor: widget.customTextColor,
-                          displayMode: widget.displayMode,
-                          useTajweedFonts: _useTajweedFonts,
-                        ),
-                      )
-                    else
-                      const Expanded(child: SizedBox()),
-                  ],
-                );
-              },
-            ),
-          ));
-    }
-
-    return Listener(
-        onPointerSignal: _handlePointerScroll,
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: PageView.builder(
-            key: ValueKey(
-                '${widget.mode}_${widget.displayMode}_${widget.flipDirection}'),
-            scrollDirection:
-                widget.flipDirection == MushafFlipDirection.vertical
-                    ? Axis.vertical
-                    : Axis.horizontal,
-            scrollBehavior: ScrollConfiguration.of(context).copyWith(
-              dragDevices: {
-                PointerDeviceKind.touch,
-                PointerDeviceKind.mouse,
-                PointerDeviceKind.trackpad,
-              },
-            ),
-            controller: _pageController,
-            itemCount: quran.totalPagesCount,
-            onPageChanged: (index) {
-              setState(() => _currentPage = index + 1);
-              widget.onPageChanged?.call(index + 1);
-              _requestFontsForPage(index + 1);
-            },
-            itemBuilder: (context, index) {
-              return _QuranMushafPage(
-                pageNumber: index + 1,
-                playingSurahNumber: widget.playingSurahNumber,
-                playingAyahNumber: widget.playingAyahNumber,
-                isMemorizationMode: widget.isMemorizationMode,
-                hiddenAyahIndices: widget.hiddenAyahIndices,
-                memorizedSurahNumber: widget.memorizedSurahNumber,
-                onAyahTap: widget.onAyahTap,
-                onAyahLongPress: widget.onAyahLongPress,
-                customBgColor: widget.customBgColor,
-                customTextColor: widget.customTextColor,
-                displayMode: widget.displayMode,
-                useTajweedFonts: _useTajweedFonts,
+                    )
+                  else
+                    const Expanded(child: SizedBox()),
+                ],
               );
             },
           ),
-        ));
+        ),
+      );
+    }
+
+    return Listener(
+      onPointerSignal: _handlePointerScroll,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: PageView.builder(
+          key: ValueKey(
+            '${widget.mode}_${widget.displayMode}_${widget.flipDirection}',
+          ),
+          scrollDirection: widget.flipDirection == MushafFlipDirection.vertical
+              ? Axis.vertical
+              : Axis.horizontal,
+          scrollBehavior: ScrollConfiguration.of(context).copyWith(
+            dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.trackpad,
+            },
+          ),
+          controller: _pageController,
+          itemCount: quran.totalPagesCount,
+          onPageChanged: (index) {
+            setState(() => _currentPage = index + 1);
+            widget.onPageChanged?.call(index + 1);
+            _requestFontsForPage(index + 1);
+          },
+          itemBuilder: (context, index) {
+            return _QuranMushafPage(
+              pageNumber: index + 1,
+              playingSurahNumber: widget.playingSurahNumber,
+              playingAyahNumber: widget.playingAyahNumber,
+              isMemorizationMode: widget.isMemorizationMode,
+              hiddenAyahIndices: widget.hiddenAyahIndices,
+              memorizedSurahNumber: widget.memorizedSurahNumber,
+              onAyahTap: widget.onAyahTap,
+              onAyahLongPress: widget.onAyahLongPress,
+              customBgColor: widget.customBgColor,
+              customTextColor: widget.customTextColor,
+              displayMode: widget.displayMode,
+              useTajweedFonts: _useTajweedFonts,
+            );
+          },
+        ),
+      ),
+    );
   }
 }
 
@@ -528,9 +535,9 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     _checkFont();
     _loadBookmarks();
     try {
-      _bookmarkSub = getIt<BookmarkService>()
-          .bookmarkChanges
-          .listen((_) => _loadBookmarks());
+      _bookmarkSub = getIt<BookmarkService>().bookmarkChanges.listen(
+        (_) => _loadBookmarks(),
+      );
     } catch (_) {}
     try {
       _khatmaSub = getIt<KhatmaService>().khatmaChanges.listen((_) {
@@ -624,15 +631,21 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
     if (widget.displayMode == HorizontalPageDisplayMode.zoomed) {
       return _buildZoomedLayout(
-          context, pageContent, firstSurah, juzNumber, hizbText, isDark);
+        context,
+        pageContent,
+        firstSurah,
+        juzNumber,
+        hizbText,
+        isDark,
+      );
     }
 
     return Container(
       color: _bgColor(isDark),
       child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: const TextScaler.linear(1),
-        ),
+        data: MediaQuery.of(
+          context,
+        ).copyWith(textScaler: const TextScaler.linear(1)),
         child: SizedBox.expand(
           child: Stack(
             alignment: Alignment.center,
@@ -688,9 +701,9 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     return Container(
       color: _bgColor(isDark),
       child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: const TextScaler.linear(1),
-        ),
+        data: MediaQuery.of(
+          context,
+        ).copyWith(textScaler: const TextScaler.linear(1)),
         child: Stack(
           children: [
             Positioned.fill(
@@ -713,8 +726,11 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
                               right: 4.0,
                               bottom: 50.0,
                             ),
-                            child:
-                                _buildPageContent(context, pageContent, isDark),
+                            child: _buildPageContent(
+                              context,
+                              pageContent,
+                              isDark,
+                            ),
                           ),
                         ),
                       ),
@@ -751,7 +767,9 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final accent = _accentColor(context, isDark);
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: _refW(context, 16), vertical: _refH(context, 10)),
+        horizontal: _refW(context, 16),
+        vertical: _refH(context, 10),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         textDirection: TextDirection.rtl,
@@ -827,9 +845,11 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
       for (int v = startVerse; v <= endVerse; v++) {
         if (v == startVerse && v == 1) {
-          spans.add(WidgetSpan(
-            child: _buildSurahBanner(context, surahNum, accent, textColor),
-          ));
+          spans.add(
+            WidgetSpan(
+              child: _buildSurahBanner(context, surahNum, accent, textColor),
+            ),
+          );
 
           if (pageNumber != 1 && pageNumber != 187) {
             final Paint? bismillahPaint = (isDark && widget.useTajweedFonts)
@@ -851,33 +871,35 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
         final String verseKey = '${surahNum}_$v';
         if (!_verseRecognizers.containsKey(verseKey)) {
-          _verseRecognizers[verseKey] = LongPressGestureRecognizer(
-            duration: const Duration(milliseconds: 400),
-          )
-            ..onLongPressCancel = () {}
-            ..onLongPress = () {
-              setState(() {
-                _pressedSurah = surahNum;
-                _pressedVerse = v;
-              });
-              widget.onAyahLongPress?.call(surahNum, v);
-              Future.delayed(const Duration(milliseconds: 300), () {
-                if (mounted) {
+          _verseRecognizers[verseKey] =
+              LongPressGestureRecognizer(
+                  duration: const Duration(milliseconds: 400),
+                )
+                ..onLongPressCancel = () {}
+                ..onLongPress = () {
                   setState(() {
-                    if (_pressedSurah == surahNum && _pressedVerse == v) {
-                      _pressedSurah = null;
-                      _pressedVerse = null;
+                    _pressedSurah = surahNum;
+                    _pressedVerse = v;
+                  });
+                  widget.onAyahLongPress?.call(surahNum, v);
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    if (mounted) {
+                      setState(() {
+                        if (_pressedSurah == surahNum && _pressedVerse == v) {
+                          _pressedSurah = null;
+                          _pressedVerse = null;
+                        }
+                      });
                     }
                   });
-                }
-              });
-            };
+                };
         }
 
         final recognizer = _verseRecognizers[verseKey]!;
 
         final rawQcf = quran.getVerseQCF(surahNum, v, verseEndSymbol: false);
-        final isFirstVerseOnPage = v == (pageContent[0]['start'] as int) &&
+        final isFirstVerseOnPage =
+            v == (pageContent[0]['start'] as int) &&
             surahNum == (pageContent[0]['surah'] as int);
         final String qcfText = (isFirstVerseOnPage && rawQcf.length > 1)
             ? '${rawQcf.substring(0, 1)}\u200A${rawQcf.substring(1)}'
@@ -907,7 +929,9 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
         if (isKhatmaActive) {
           final details = khatmaService.rangeDetailsForDay(
-              khatmaService.currentDayIndex, khatmaService.planDays);
+            khatmaService.currentDayIndex,
+            khatmaService.planDays,
+          );
           if (surahNum == details.startSurah && v == details.startVerse) {
             isKhatmaStart = true;
           }
@@ -930,7 +954,8 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
         }
 
         final bool isPressed = _pressedSurah == surahNum && _pressedVerse == v;
-        final bool isPlaying = widget.playingSurahNumber == surahNum &&
+        final bool isPlaying =
+            widget.playingSurahNumber == surahNum &&
             widget.playingAyahNumber == v;
 
         final Color? effectiveBgColor = (isPressed || isPlaying)
@@ -938,38 +963,44 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
             : bookmarkBgColor;
 
         final int ayahIndex = v - 1;
-        final bool isHidden = widget.isMemorizationMode &&
+        final bool isHidden =
+            widget.isMemorizationMode &&
             surahNum == widget.memorizedSurahNumber &&
             widget.hiddenAyahIndices.contains(ayahIndex);
-        final Color verseColor =
-            isHidden ? textColor.withValues(alpha: 0) : textColor;
+        final Color verseColor = isHidden
+            ? textColor.withValues(alpha: 0)
+            : textColor;
 
         final Paint? tajweedDarkPaint =
             (!isHidden && isDark && widget.useTajweedFonts)
-                ? tajweedAdaptivePaint
-                : null;
+            ? tajweedAdaptivePaint
+            : null;
 
-        spans.add(TextSpan(
-          text: qcfText,
-          recognizer: recognizer,
-          style: TextStyle(
-            fontFamily: pageFontFamily,
-            fontSize: fontSize,
-            color: tajweedDarkPaint == null ? verseColor : null,
-            foreground: tajweedDarkPaint,
-            height: lineHeight,
-            backgroundColor: isHidden ? null : effectiveBgColor,
+        spans.add(
+          TextSpan(
+            text: qcfText,
+            recognizer: recognizer,
+            style: TextStyle(
+              fontFamily: pageFontFamily,
+              fontSize: fontSize,
+              color: tajweedDarkPaint == null ? verseColor : null,
+              foreground: tajweedDarkPaint,
+              height: lineHeight,
+              backgroundColor: isHidden ? null : effectiveBgColor,
+            ),
           ),
-        ));
+        );
 
-        spans.add(TextSpan(
-          text: quran.getVerseNumberQCF(surahNum, v),
-          style: TextStyle(
-            fontFamily: pageFontFamily,
-            color: accent,
-            height: 1.35,
+        spans.add(
+          TextSpan(
+            text: quran.getVerseNumberQCF(surahNum, v),
+            style: TextStyle(
+              fontFamily: pageFontFamily,
+              color: accent,
+              height: 1.35,
+            ),
           ),
-        ));
+        );
       }
     }
 
@@ -1066,10 +1097,14 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final double baseFontSize = userFontSize * _fontScale;
 
     final bool isFirstPages = page == 1 || page == 2;
-    final double minAllPagesFontSize =
-        (_baselineWidth * 0.045).clamp(18.0, 34.0);
-    final double minFirstPagesFontSize =
-        (_refDesignW * 0.075).clamp(26.0, 36.0);
+    final double minAllPagesFontSize = (_baselineWidth * 0.045).clamp(
+      18.0,
+      34.0,
+    );
+    final double minFirstPagesFontSize = (_refDesignW * 0.075).clamp(
+      26.0,
+      36.0,
+    );
 
     return isFirstPages
         ? baseFontSize.clamp(minFirstPagesFontSize, 44.0)
@@ -1103,8 +1138,9 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
       fontWeight: FontWeight.bold,
     );
 
-    final double bannerWidth =
-        hasHizb ? _refW(context, 180) : _refW(context, 90);
+    final double bannerWidth = hasHizb
+        ? _refW(context, 180)
+        : _refW(context, 90);
     final double bannerHeight = _refH(context, 28);
 
     return Padding(
@@ -1125,17 +1161,13 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
           ),
           child: hasHizb
               ? Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: _refW(context, 16),
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: _refW(context, 16)),
                   child: Row(
                     textDirection: TextDirection.rtl,
                     children: [
                       Expanded(
                         flex: 1,
-                        child: Center(
-                          child: Text(pageStr, style: textStyle),
-                        ),
+                        child: Center(child: Text(pageStr, style: textStyle)),
                       ),
                       Container(
                         width: 1,
@@ -1154,9 +1186,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
                     ],
                   ),
                 )
-              : Center(
-                  child: Text(pageStr, style: textStyle),
-                ),
+              : Center(child: Text(pageStr, style: textStyle)),
         ),
       ),
     );
@@ -1196,7 +1226,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
       'السابع والعشرون',
       'الثامن والعشرون',
       'التاسع والعشرون',
-      'الثلاثون'
+      'الثلاثون',
     ];
     return juzNames[juzNumber - 1];
   }

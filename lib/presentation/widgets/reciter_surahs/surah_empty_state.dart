@@ -6,11 +6,7 @@ class SurahEmptyState extends StatelessWidget {
   final ThemeData theme;
   final AppLocalizations l10n;
 
-  const SurahEmptyState({
-    super.key,
-    required this.theme,
-    required this.l10n,
-  });
+  const SurahEmptyState({super.key, required this.theme, required this.l10n});
 
   @override
   Widget build(BuildContext context) {

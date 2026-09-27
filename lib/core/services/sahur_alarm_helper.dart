@@ -116,24 +116,31 @@ class SahurAlarmHelper {
       if (alarmType == 0) {
         final timeStr = cacheHelper.getData(key: 'sahurExactTime') ?? '04:00';
         final parts = timeStr.toString().split(':');
-        alarmTime =
-            TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+        alarmTime = TimeOfDay(
+          hour: int.parse(parts[0]),
+          minute: int.parse(parts[1]),
+        );
       } else {
         DateTime? nextFajrTime;
         if (coordinates != null) {
           try {
             final prayerTimes = PrayerTimesCalculator.computeFromCache(
-                cacheHelper, coordinates, targetDate);
-            nextFajrTime =
-                prayerTimes.fajr?.add(Duration(minutes: fajrOffsetMinutes));
+              cacheHelper,
+              coordinates,
+              targetDate,
+            );
+            nextFajrTime = prayerTimes.fajr?.add(
+              Duration(minutes: fajrOffsetMinutes),
+            );
           } catch (e) {
             debugPrint('Error calculating Fajr time for $targetDate: $e');
           }
         }
 
         if (nextFajrTime != null) {
-          final targetTime =
-              nextFajrTime.subtract(Duration(minutes: minutesBefore));
+          final targetTime = nextFajrTime.subtract(
+            Duration(minutes: minutesBefore),
+          );
           alarmTime = TimeOfDay.fromDateTime(targetTime);
         } else {
           alarmTime = const TimeOfDay(hour: 04, minute: 00);

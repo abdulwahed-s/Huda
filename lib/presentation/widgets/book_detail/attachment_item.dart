@@ -32,17 +32,11 @@ class AttachmentItem extends StatelessWidget {
       ),
       title: Text(
         attachment.description,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 14.sp,
-        ),
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
       ),
       subtitle: Text(
         attachment.extensionType,
-        style: TextStyle(
-          fontSize: 12.sp,
-          color: Colors.grey[600],
-        ),
+        style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
       ),
       trailing: IconButton(
         onPressed: onTap,

@@ -112,7 +112,7 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
         if (!_isCurrentLoad(generation, source)) return;
         setState(() => _previewDocument = preview);
       } on Object {
-        // 
+        //
       }
     }
 
@@ -154,8 +154,8 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
     if (!_isCurrentLoad(generation, source)) return;
     final displayedDownloaded =
         total == _totalBytes && downloaded < _bytesDownloaded
-            ? _bytesDownloaded
-            : downloaded;
+        ? _bytesDownloaded
+        : downloaded;
     if (displayedDownloaded == _bytesDownloaded && total == _totalBytes) {
       return;
     }
@@ -246,17 +246,18 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
           minZoom: 0.5,
           maxZoom: 8,
           pageSpacing: 12,
-          backgroundColor:
-              widget.isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          backgroundColor: widget.isDark
+              ? const Color(0xFF1E1E1E)
+              : Colors.white,
           pageOverlayBuilder: (context, pageIndex, geometry) =>
               _buildPageOverlays(pageIndex, geometry, search),
           scrollIndicatorBuilder: (context, controller, metrics) =>
               PdfPageScrubber(
-            key: const ValueKey('pdf-page-scrubber'),
-            controller: controller,
-            metrics: metrics,
-            colorScheme: widget.colorScheme,
-          ),
+                key: const ValueKey('pdf-page-scrubber'),
+                controller: controller,
+                metrics: metrics,
+                colorScheme: widget.colorScheme,
+              ),
         ),
         if (!isComplete && loadError == null)
           Positioned.fill(
@@ -312,11 +313,7 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
     for (final marker in widget.markers[pageIndex] ?? const <Marker>[]) {
       for (final rect in marker.rects) {
         overlays.add(
-          _overlayForRect(
-            geometry,
-            rect,
-            marker.color.withValues(alpha: 0.4),
-          ),
+          _overlayForRect(geometry, rect, marker.color.withValues(alpha: 0.4)),
         );
       }
     }

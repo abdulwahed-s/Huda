@@ -147,12 +147,12 @@ class _NotificationsState extends State<Notifications>
                           ),
                           pickRandomAthkarFrequency: () =>
                               _openReminderSettings(
-                            state.randomAthkar,
-                            () => FrequencyDialog.show(
-                              context,
-                              state.randomAthkarFrequency,
-                            ),
-                          ),
+                                state.randomAthkar,
+                                () => FrequencyDialog.show(
+                                  context,
+                                  state.randomAthkarFrequency,
+                                ),
+                              ),
                           pickQuranTime: () => _openReminderSettings(
                             state.quranReminder,
                             () => TimePickers.pickQuranTime(

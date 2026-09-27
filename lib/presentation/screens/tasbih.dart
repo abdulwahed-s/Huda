@@ -27,9 +27,7 @@ class Tasbih extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         backgroundColor: isDark ? context.darkCardBackground : Colors.white,
-        iconTheme: IconThemeData(
-          color: isDark ? Colors.white : Colors.black87,
-        ),
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black87),
       ),
       body: BlocBuilder<TasbihCubit, TasbihState>(
         builder: (context, state) {

@@ -41,8 +41,9 @@ class SurahLoadingStateWidget extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Theme.of(context).brightness == Brightness.dark
-                        ? context.accentColor
-                            .withValues(alpha: 0.2) // Purple glow
+                        ? context.accentColor.withValues(
+                            alpha: 0.2,
+                          ) // Purple glow
                         : context.primaryColor.withValues(alpha: 0.1),
                     blurRadius: 12.r,
                     offset: Offset(0, 4.h),
@@ -67,7 +68,7 @@ class SurahLoadingStateWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? const Color(0xFF1E293B) // Dark slate
-                        .withValues(alpha: 0.8)
+                          .withValues(alpha: 0.8)
                     : Colors.white.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(16.r),
                 boxShadow: [
@@ -85,7 +86,8 @@ class SurahLoadingStateWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13.sp,
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? context.accentColor // Purple text
+                      ? context
+                            .accentColor // Purple text
                       : context.primaryColor,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,

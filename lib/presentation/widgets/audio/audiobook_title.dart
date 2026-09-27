@@ -56,15 +56,18 @@ class AudiobookTitle extends StatelessWidget {
                   ),
                   SizedBox(height: 6.h),
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 3.h,
+                    ),
                     decoration: BoxDecoration(
                       color: context.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Text(
-                      AppLocalizations.of(context)!
-                          .chapterProgress(idx + 1, tracks.length),
+                      AppLocalizations.of(
+                        context,
+                      )!.chapterProgress(idx + 1, tracks.length),
                       style: TextStyle(
                         fontSize: 11.sp,
                         color: context.primaryColor,

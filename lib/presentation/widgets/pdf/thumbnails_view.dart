@@ -58,9 +58,7 @@ class ThumbnailsView extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(6),
                                 color: Colors.white,
                               ),
-                              child: PdfPageView(
-                                page: document!.page(index),
-                              ),
+                              child: PdfPageView(page: document!.page(index)),
                             ),
                           ),
                           Container(

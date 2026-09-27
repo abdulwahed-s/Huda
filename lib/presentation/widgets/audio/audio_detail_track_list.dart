@@ -95,8 +95,11 @@ class _EmptyChapters extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 32.h),
         child: Column(
           children: [
-            Icon(Icons.music_off_rounded,
-                size: 48.sp, color: color.withValues(alpha: 0.3)),
+            Icon(
+              Icons.music_off_rounded,
+              size: 48.sp,
+              color: color.withValues(alpha: 0.3),
+            ),
             SizedBox(height: 12.h),
             Text(
               AppLocalizations.of(context)!.noChapters,

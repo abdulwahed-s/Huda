@@ -26,10 +26,7 @@ class AthkarAudioPlayer {
   StreamSubscription<Duration?>? _durationSubscription;
   StreamSubscription<Duration>? _positionSubscription;
 
-  AthkarAudioPlayer({
-    required this.context,
-    required this.onStateChanged,
-  }) {
+  AthkarAudioPlayer({required this.context, required this.onStateChanged}) {
     _coordinator.register(AudioCoordinator.athkar, () {
       playingIndex = null;
       isPlaying = false;
@@ -109,10 +106,12 @@ class AthkarAudioPlayer {
       } else {
         _coordinator.requestAudio(AudioCoordinator.athkar);
         await audioServiceReady;
-        await _audioPlayer.setAudioSource(AudioSource.uri(
-          Uri.parse(audioUrl),
-          tag: MediaItem(id: audioUrl, title: 'Athkar'),
-        ));
+        await _audioPlayer.setAudioSource(
+          AudioSource.uri(
+            Uri.parse(audioUrl),
+            tag: MediaItem(id: audioUrl, title: 'Athkar'),
+          ),
+        );
         playingIndex = index;
         onStateChanged();
         _audioPlayer.play();

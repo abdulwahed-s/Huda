@@ -31,7 +31,7 @@ class EmptyStateWidget extends StatelessWidget {
               ? [context.darkGradientStart, context.darkGradientEnd]
               : [
                   context.lightSurface,
-                  context.primaryExtraLightColor.withValues(alpha: 0.3)
+                  context.primaryExtraLightColor.withValues(alpha: 0.3),
                 ],
         ),
       ),
@@ -84,7 +84,7 @@ class EmptyStateWidget extends StatelessWidget {
           child: _buildHorizontalInfoCards(context, isTablet),
         ),
         _buildExampleQuestions(context, isTablet),
-        SizedBox(height: isTablet ? 20.0 : 10.h)
+        SizedBox(height: isTablet ? 20.0 : 10.h),
       ],
     );
   }

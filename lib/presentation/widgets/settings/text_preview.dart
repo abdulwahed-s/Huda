@@ -22,9 +22,7 @@ class TextPreview extends StatelessWidget {
             ? Colors.white.withValues(alpha: 0.05)
             : Colors.black.withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: context.primaryColor.withValues(alpha: 0.1),
-        ),
+        border: Border.all(color: context.primaryColor.withValues(alpha: 0.1)),
       ),
       child: Text(
         AppLocalizations.of(context)!.sampleTextPreview,

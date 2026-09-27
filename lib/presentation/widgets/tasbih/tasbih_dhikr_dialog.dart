@@ -105,8 +105,10 @@ class _TasbihDhikrDialogState extends State<TasbihDhikrDialog> {
                     child: ListView.builder(
                       controller: _scrollController,
                       shrinkWrap: true,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
                       itemCount: notes.length,
                       itemBuilder: (_, index) => TasbihDhikrItem(
                         text: notes[index].text,

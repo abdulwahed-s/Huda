@@ -21,7 +21,7 @@ class StatusIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         color: isAligned
             ? (isDark ? context.darkGradientEnd : context.primaryColor)
-                .withValues(alpha: 0.2)
+                  .withValues(alpha: 0.2)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(25.r),
         border: Border.all(

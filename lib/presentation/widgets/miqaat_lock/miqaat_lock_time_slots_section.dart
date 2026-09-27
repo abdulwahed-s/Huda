@@ -56,7 +56,7 @@ class TimeSlotsSection extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 12.h),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: timeSlots.length,
-                  separatorBuilder: (_, __) => Divider(
+                  separatorBuilder: (_, _) => Divider(
                     height: 1.h,
                     indent: 68.w,
                     color: theme.dividerColor.withValues(alpha: 0.3),
@@ -82,8 +82,12 @@ class TimeSlotsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildTimeSlotTile(TimeSlot slot, ThemeData theme,
-      AppLocalizations l10n, BuildContext context) {
+  Widget _buildTimeSlotTile(
+    TimeSlot slot,
+    ThemeData theme,
+    AppLocalizations l10n,
+    BuildContext context,
+  ) {
     final startTime =
         '${slot.startTime.hour.toString().padLeft(2, '0')}:${slot.startTime.minute.toString().padLeft(2, '0')}';
     final endTime =
@@ -121,10 +125,7 @@ class TimeSlotsSection extends StatelessWidget {
                 if (slot.label != null)
                   Text(
                     '$startTime – $endTime',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: theme.hintColor,
-                    ),
+                    style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
                   )
                 else
                   _buildWeekdayChips(slot.weekdays, l10n, theme, context),
@@ -144,8 +145,12 @@ class TimeSlotsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildWeekdayChips(List<int> weekdays, AppLocalizations l10n,
-      ThemeData theme, BuildContext context) {
+  Widget _buildWeekdayChips(
+    List<int> weekdays,
+    AppLocalizations l10n,
+    ThemeData theme,
+    BuildContext context,
+  ) {
     if (weekdays.isEmpty) {
       return Text(
         l10n.everyday,

@@ -50,11 +50,7 @@ class EventsSectionWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.event_busy_outlined,
-            size: 40.w,
-            color: Colors.grey[400],
-          ),
+          Icon(Icons.event_busy_outlined, size: 40.w, color: Colors.grey[400]),
           SizedBox(height: 12.h),
           Text(
             AppLocalizations.of(context)!.noEventsForThisDate,
@@ -67,10 +63,7 @@ class EventsSectionWidget extends StatelessWidget {
           SizedBox(height: 6.h),
           Text(
             AppLocalizations.of(context)!.tapPlusButtonToAddEvent,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.grey[500],
-            ),
+            style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
           ),
         ],
       ),
@@ -130,8 +123,9 @@ class EventsSectionWidget extends StatelessWidget {
                                   children: [
                                     Icon(Icons.edit, size: 16.w),
                                     SizedBox(width: 8.w),
-                                    Text(AppLocalizations.of(context)!
-                                        .editEvent),
+                                    Text(
+                                      AppLocalizations.of(context)!.editEvent,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -139,11 +133,15 @@ class EventsSectionWidget extends StatelessWidget {
                                 value: 'delete',
                                 child: Row(
                                   children: [
-                                    Icon(Icons.delete,
-                                        size: 16.w, color: Colors.red),
+                                    Icon(
+                                      Icons.delete,
+                                      size: 16.w,
+                                      color: Colors.red,
+                                    ),
                                     SizedBox(width: 8.w),
-                                    Text(AppLocalizations.of(context)!
-                                        .deleteEvent),
+                                    Text(
+                                      AppLocalizations.of(context)!.deleteEvent,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -164,8 +162,9 @@ class EventsSectionWidget extends StatelessWidget {
                           event.description,
                           style: TextStyle(
                             fontSize: 11.sp,
-                            color:
-                                isDark ? Colors.white70 : Colors.grey.shade600,
+                            color: isDark
+                                ? Colors.white70
+                                : Colors.grey.shade600,
                           ),
                         ),
                       ],

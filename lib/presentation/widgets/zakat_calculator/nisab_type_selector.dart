@@ -29,10 +29,7 @@ class NisabTypeSelector extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.nisabCalculationBasedOn,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 12.h),
           RadioGroup<NisabType>(
@@ -47,15 +44,11 @@ class NisabTypeSelector extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     title: Text(
                       AppLocalizations.of(context)!.gold,
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                      ),
+                      style: TextStyle(fontSize: 13.sp),
                     ),
                     subtitle: Text(
                       AppLocalizations.of(context)!.goldGrams,
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                      ),
+                      style: TextStyle(fontSize: 11.sp),
                     ),
                     value: NisabType.gold,
                   ),
@@ -65,15 +58,11 @@ class NisabTypeSelector extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     title: Text(
                       AppLocalizations.of(context)!.silver,
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                      ),
+                      style: TextStyle(fontSize: 13.sp),
                     ),
                     subtitle: Text(
                       AppLocalizations.of(context)!.silverGrams,
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                      ),
+                      style: TextStyle(fontSize: 11.sp),
                     ),
                     value: NisabType.silver,
                   ),

@@ -40,11 +40,7 @@ class ResultsTab extends StatelessWidget {
                         context.primaryColor.withValues(alpha: 0.8),
                         context.primaryColor.withValues(alpha: 0.9),
                       ]
-                    : [
-                        Colors.grey[400]!,
-                        Colors.grey[500]!,
-                        Colors.grey[600]!,
-                      ],
+                    : [Colors.grey[400]!, Colors.grey[500]!, Colors.grey[600]!],
               ),
               borderRadius: BorderRadius.circular(20.r),
               boxShadow: [
@@ -96,16 +92,18 @@ class ResultsTab extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Text(
-                    context
-                        .read<ZakatCalculatorCubit>()
-                        .getFormattedAmount(calculation.zakatAmount),
+                    context.read<ZakatCalculatorCubit>().getFormattedAmount(
+                      calculation.zakatAmount,
+                    ),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 28.sp,
@@ -148,8 +146,9 @@ class ResultsTab extends StatelessWidget {
           SizedBox(height: 12.h),
 
           ResultCard(
-            title: AppLocalizations.of(context)!
-                .nisabThreshold(state.nisabType.name.toUpperCase()),
+            title: AppLocalizations.of(
+              context,
+            )!.nisabThreshold(state.nisabType.name.toUpperCase()),
             amount: calculation.nisabValue,
             icon: Icons.insights,
             color: Colors.orange,

@@ -37,8 +37,9 @@ class PdfLoadingWidget extends StatelessWidget {
               width: 60,
               height: 60,
               child: CircularProgressIndicator(
-                value:
-                    totalBytes != null ? bytesDownloaded / totalBytes! : null,
+                value: totalBytes != null
+                    ? bytesDownloaded / totalBytes!
+                    : null,
                 strokeWidth: 4,
                 backgroundColor: colorScheme.outline.withValues(alpha: 0.2),
                 valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
@@ -118,8 +119,9 @@ class PdfPreparingDocumentOverlay extends StatelessWidget {
                     child: CircularProgressIndicator(
                       value: progress,
                       strokeWidth: 3,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        colorScheme.primary,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -138,10 +140,12 @@ class PdfPreparingDocumentOverlay extends StatelessWidget {
                     child: LinearProgressIndicator(
                       value: progress,
                       minHeight: 6,
-                      backgroundColor:
-                          colorScheme.outline.withValues(alpha: 0.18),
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                      backgroundColor: colorScheme.outline.withValues(
+                        alpha: 0.18,
+                      ),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        colorScheme.primary,
+                      ),
                     ),
                   ),
                   if (progress != null) ...[
@@ -188,11 +192,7 @@ class PdfErrorWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.error_outline,
-              color: Colors.white,
-              size: 48,
-            ),
+            const Icon(Icons.error_outline, color: Colors.white, size: 48),
             const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context)!.failedToLoadPdf,

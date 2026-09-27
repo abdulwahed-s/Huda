@@ -43,11 +43,7 @@ class ChecklistHeader extends StatelessWidget {
                   colors.darkGradientMid,
                   colors.darkGradientEnd,
                 ]
-              : [
-                  colors.primary,
-                  colors.primaryVariant,
-                  colors.primaryLight,
-                ],
+              : [colors.primary, colors.primaryVariant, colors.primaryLight],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

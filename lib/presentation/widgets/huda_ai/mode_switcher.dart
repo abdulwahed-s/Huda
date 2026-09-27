@@ -37,10 +37,7 @@ class _ModeSwitcherState extends State<ModeSwitcher>
       curve: Curves.easeInOutCubic,
     );
     _scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOutBack,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
     );
     if (!widget.isCounselingMode) {
       _animationController.value = 1.0;
@@ -87,10 +84,7 @@ class _ModeSwitcherState extends State<ModeSwitcher>
       decoration: BoxDecoration(
         color: containerBgColor,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: containerBorderColor,
-          width: 1.5,
-        ),
+        border: Border.all(color: containerBorderColor, width: 1.5),
         boxShadow: [
           BoxShadow(
             color: shadowColor,
@@ -153,14 +147,16 @@ class _ModeSwitcherState extends State<ModeSwitcher>
                         boxShadow: [
                           BoxShadow(
                             color: primaryColor.withValues(
-                                alpha: widget.isDark ? 0.4 : 0.35),
+                              alpha: widget.isDark ? 0.4 : 0.35,
+                            ),
                             blurRadius: 12,
                             offset: const Offset(0, 3),
                             spreadRadius: 0,
                           ),
                           BoxShadow(
                             color: primaryColor.withValues(
-                                alpha: widget.isDark ? 0.2 : 0.15),
+                              alpha: widget.isDark ? 0.2 : 0.15,
+                            ),
                             blurRadius: 20,
                             offset: const Offset(0, 6),
                             spreadRadius: -2,
@@ -174,7 +170,8 @@ class _ModeSwitcherState extends State<ModeSwitcher>
                           gradient: LinearGradient(
                             colors: [
                               Colors.white.withValues(
-                                  alpha: widget.isDark ? 0.15 : 0.25),
+                                alpha: widget.isDark ? 0.15 : 0.25,
+                              ),
                               Colors.transparent,
                             ],
                             begin: Alignment.topCenter,
@@ -198,8 +195,9 @@ class _ModeSwitcherState extends State<ModeSwitcher>
                     isSelected: !widget.isCounselingMode,
                     isDark: widget.isDark,
                     primaryColor: primaryColor,
-                    onTap:
-                        widget.isCounselingMode ? widget.onModeChanged : null,
+                    onTap: widget.isCounselingMode
+                        ? widget.onModeChanged
+                        : null,
                   ),
                 ),
                 Expanded(
@@ -209,8 +207,9 @@ class _ModeSwitcherState extends State<ModeSwitcher>
                     isSelected: widget.isCounselingMode,
                     isDark: widget.isDark,
                     primaryColor: primaryColor,
-                    onTap:
-                        !widget.isCounselingMode ? widget.onModeChanged : null,
+                    onTap: !widget.isCounselingMode
+                        ? widget.onModeChanged
+                        : null,
                   ),
                 ),
               ],

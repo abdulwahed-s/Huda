@@ -37,10 +37,10 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   late Color _selected = widget.initialColor;
 
   List<Color> get _colors => [
-        if (!ColorPickerDialog._palette.contains(widget.initialColor))
-          widget.initialColor,
-        ...ColorPickerDialog._palette,
-      ];
+    if (!ColorPickerDialog._palette.contains(widget.initialColor))
+      widget.initialColor,
+    ...ColorPickerDialog._palette,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +66,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
         child: Wrap(
           spacing: 12.w,
           runSpacing: 12.w,
-          children: [
-            for (final color in _colors) _swatch(color),
-          ],
+          children: [for (final color in _colors) _swatch(color)],
         ),
       ),
       actions: <Widget>[

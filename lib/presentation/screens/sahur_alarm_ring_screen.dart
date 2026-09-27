@@ -62,9 +62,7 @@ class _SahurAlarmRingScreenState extends State<SahurAlarmRingScreen>
     final snoozeTime = DateTime.now().add(const Duration(minutes: 5));
     await Alarm.stop(widget.alarmSettings.id);
     await Alarm.set(
-      alarmSettings: widget.alarmSettings.copyWith(
-        dateTime: snoozeTime,
-      ),
+      alarmSettings: widget.alarmSettings.copyWith(dateTime: snoozeTime),
     );
     if (mounted) Navigator.pop(context);
   }
@@ -78,8 +76,9 @@ class _SahurAlarmRingScreenState extends State<SahurAlarmRingScreen>
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor:
-            isDark ? const Color(0xFF1A1A2E) : const Color(0xFFF0F4F8),
+        backgroundColor: isDark
+            ? const Color(0xFF1A1A2E)
+            : const Color(0xFFF0F4F8),
         body: SafeArea(
           child: Center(
             child: Column(
@@ -93,10 +92,11 @@ class _SahurAlarmRingScreenState extends State<SahurAlarmRingScreen>
                     height: 120,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: (isDark
-                              ? theme.primaryColor
-                              : theme.primaryColor.withAlpha(30))
-                          .withAlpha(isDark ? 50 : 30),
+                      color:
+                          (isDark
+                                  ? theme.primaryColor
+                                  : theme.primaryColor.withAlpha(30))
+                              .withAlpha(isDark ? 50 : 30),
                     ),
                     child: Icon(
                       Icons.alarm,

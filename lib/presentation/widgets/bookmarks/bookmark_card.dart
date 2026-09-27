@@ -41,10 +41,7 @@ class BookmarkCard extends StatelessWidget {
             : LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Colors.white,
-                  Colors.white.withValues(alpha: 0.95),
-                ],
+                colors: [Colors.white, Colors.white.withValues(alpha: 0.95)],
               ),
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
@@ -55,8 +52,9 @@ class BookmarkCard extends StatelessWidget {
             spreadRadius: 0,
           ),
           BoxShadow(
-            color: (isDark ? Colors.black : Colors.grey)
-                .withValues(alpha: isDark ? 0.4 : 0.08),
+            color: (isDark ? Colors.black : Colors.grey).withValues(
+              alpha: isDark ? 0.4 : 0.08,
+            ),
             blurRadius: 8,
             offset: const Offset(0, 2),
             spreadRadius: 0,
@@ -84,7 +82,9 @@ class BookmarkCard extends StatelessWidget {
                       flex: 2,
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 12.w, vertical: 6.h),
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -149,11 +149,14 @@ class BookmarkCard extends StatelessWidget {
                       flex: 2,
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 4.h),
+                          horizontal: 10.w,
+                          vertical: 4.h,
+                        ),
                         decoration: BoxDecoration(
                           color: isDark
-                              ? appColors.darkTabBackground
-                                  .withValues(alpha: 0.6)
+                              ? appColors.darkTabBackground.withValues(
+                                  alpha: 0.6,
+                                )
                               : appColors.primary.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(8.r),
                           border: Border.all(
@@ -194,10 +197,7 @@ class BookmarkCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                AyahTextWidget(
-                  ayahText: bookmark.ayahText,
-                  isDark: isDark,
-                ),
+                AyahTextWidget(ayahText: bookmark.ayahText, isDark: isDark),
                 if (bookmark.type == BookmarkType.note && bookmark.note != null)
                   NoteWidget(
                     note: bookmark.note!,

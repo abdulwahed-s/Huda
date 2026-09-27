@@ -47,10 +47,7 @@ class _ZakatCalculatorState extends State<ZakatCalculator>
   }
 
   void _showInfoDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => const InfoDialog(),
-    );
+    showDialog(context: context, builder: (context) => const InfoDialog());
   }
 
   void _resetAllFields() {
@@ -89,10 +86,7 @@ class _ZakatCalculatorState extends State<ZakatCalculator>
                   context.darkCardBackground,
                   context.darkCardBackground.withValues(alpha: 0.8),
                 ]
-              : [
-                  Colors.grey[50]!,
-                  Colors.grey[100]!,
-                ],
+              : [Colors.grey[50]!, Colors.grey[100]!],
         ),
       ),
       child: Scaffold(

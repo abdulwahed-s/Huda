@@ -44,17 +44,20 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
 
   Future<void> _loadCachedSurahData() async {
     try {
-      _cachedSurahData = SurahBuilder.buildAllSurahAyahs()
-          .entries
-          .map((entry) => {
-                'number': entry.key,
-                'ayahs': entry.value
-                    .map((ayah) => {
-                          'text': ayah.text,
-                          'numberInSurah': ayah.numberInSurah,
-                        })
-                    .toList(),
-              })
+      _cachedSurahData = SurahBuilder.buildAllSurahAyahs().entries
+          .map(
+            (entry) => {
+              'number': entry.key,
+              'ayahs': entry.value
+                  .map(
+                    (ayah) => {
+                      'text': ayah.text,
+                      'numberInSurah': ayah.numberInSurah,
+                    },
+                  )
+                  .toList(),
+            },
+          )
           .toList();
     } catch (e) {
       debugPrint('Failed to load cached surah data for search: $e');
@@ -88,19 +91,19 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
         List<AyahSearchResult> ayahResults = [];
 
         final langCode = Localizations.localeOf(context).languageCode;
-        final normalizedQuery =
-            TextUtils.removeDiacriticsAndNormalize(query.toLowerCase());
+        final normalizedQuery = TextUtils.removeDiacriticsAndNormalize(
+          query.toLowerCase(),
+        );
 
         List<QuranModel> matchingSurahs = _allSurahs.where((surah) {
           final q = query.toLowerCase();
-          final localizedMatch = surah
-                  .localizedName(langCode)
-                  .toLowerCase()
-                  .contains(q) ||
+          final localizedMatch =
+              surah.localizedName(langCode).toLowerCase().contains(q) ||
               (surah.names?.values.any((n) => n.toLowerCase().contains(q)) ??
                   false) ||
-              (surah.translits?.values
-                      .any((n) => n.toLowerCase().contains(q)) ??
+              (surah.translits?.values.any(
+                    (n) => n.toLowerCase().contains(q),
+                  ) ??
                   false) ||
               (surah.transliteration?.toLowerCase().contains(q) ?? false);
 
@@ -108,8 +111,9 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
               surah.englishName!.toLowerCase().contains(q) ||
               surah.englishNameTranslation!.toLowerCase().contains(q) ||
               surah.number.toString().contains(query) ||
-              TextUtils.removeDiacriticsAndNormalize(surah.name.toString())
-                  .contains(normalizedQuery);
+              TextUtils.removeDiacriticsAndNormalize(
+                surah.name.toString(),
+              ).contains(normalizedQuery);
         }).toList();
 
         for (var surah in matchingSurahs) {
@@ -123,13 +127,15 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
           for (var surah in _allSurahs) {
             if (currentAyahCount >= maxAyahResults) break;
 
-            bool alreadyMatched =
-                matchingSurahs.any((s) => s.number == surah.number);
+            bool alreadyMatched = matchingSurahs.any(
+              (s) => s.number == surah.number,
+            );
             if (alreadyMatched) continue;
 
             try {
-              final surahData = _cachedSurahData!
-                  .firstWhere((s) => s['number'] == surah.number);
+              final surahData = _cachedSurahData!.firstWhere(
+                (s) => s['number'] == surah.number,
+              );
 
               if (surahData['ayahs'] != null) {
                 final ayahs = surahData['ayahs'] as List;
@@ -141,25 +147,27 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
                   if (ayahText != null) {
                     bool matches = false;
 
-                    if (TextUtils.removeDiacriticsAndNormalize(ayahText)
-                        .contains(
-                            TextUtils.removeDiacriticsAndNormalize(query))) {
+                    if (TextUtils.removeDiacriticsAndNormalize(
+                      ayahText,
+                    ).contains(TextUtils.removeDiacriticsAndNormalize(query))) {
                       matches = true;
-                    } else if (ayahText
-                        .toLowerCase()
-                        .contains(query.toLowerCase())) {
+                    } else if (ayahText.toLowerCase().contains(
+                      query.toLowerCase(),
+                    )) {
                       matches = true;
                     }
 
                     if (matches) {
-                      ayahResults.add(AyahSearchResult(
-                        surahNumber: surah.number!,
-                        surahName: surah.name!,
-                        surahEnglishName: surah.englishName!,
-                        ayahNumber: ayah['numberInSurah'] ?? 0,
-                        ayahText: ayahText,
-                        highlightedText: ayahText,
-                      ));
+                      ayahResults.add(
+                        AyahSearchResult(
+                          surahNumber: surah.number!,
+                          surahName: surah.name!,
+                          surahEnglishName: surah.englishName!,
+                          ayahNumber: ayah['numberInSurah'] ?? 0,
+                          ayahText: ayahText,
+                          highlightedText: ayahText,
+                        ),
+                      );
                       currentAyahCount++;
                     }
                   }
@@ -187,21 +195,27 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
   }
 
   void _navigateToSurah(QuranModel surah) {
-    Navigator.pushNamed(context, AppRoute.surahScreen, arguments: {
-      'surahInfo': surah,
-      'shouldRestorePosition': false,
-    });
+    Navigator.pushNamed(
+      context,
+      AppRoute.surahScreen,
+      arguments: {'surahInfo': surah, 'shouldRestorePosition': false},
+    );
   }
 
   void _navigateToAyah(AyahSearchResult ayahResult) {
-    final surah =
-        _allSurahs.firstWhere((s) => s.number == ayahResult.surahNumber);
+    final surah = _allSurahs.firstWhere(
+      (s) => s.number == ayahResult.surahNumber,
+    );
 
-    Navigator.pushNamed(context, AppRoute.surahScreen, arguments: {
-      'surahInfo': surah,
-      'shouldRestorePosition': false,
-      'scrollToAyah': ayahResult.ayahNumber,
-    });
+    Navigator.pushNamed(
+      context,
+      AppRoute.surahScreen,
+      arguments: {
+        'surahInfo': surah,
+        'shouldRestorePosition': false,
+        'scrollToAyah': ayahResult.ayahNumber,
+      },
+    );
   }
 
   @override
@@ -253,19 +267,19 @@ class _HomeQuranState extends State<HomeQuran> with TickerProviderStateMixin {
                   return _isSearching && _searchResults.isEmpty
                       ? const QuranEmptyState()
                       : _isSearching
-                          ? SearchResultList(
-                              searchResults: _searchResults,
-                              animationController: _animationController,
-                              onSurahTap: _navigateToSurah,
-                              onAyahTap: _navigateToAyah,
-                            )
-                          : _filteredSurahs.isEmpty
-                              ? const QuranEmptyState()
-                              : SurahList(
-                                  surahs: _filteredSurahs,
-                                  animationController: _animationController,
-                                  onSurahTap: _navigateToSurah,
-                                );
+                      ? SearchResultList(
+                          searchResults: _searchResults,
+                          animationController: _animationController,
+                          onSurahTap: _navigateToSurah,
+                          onAyahTap: _navigateToAyah,
+                        )
+                      : _filteredSurahs.isEmpty
+                      ? const QuranEmptyState()
+                      : SurahList(
+                          surahs: _filteredSurahs,
+                          animationController: _animationController,
+                          onSurahTap: _navigateToSurah,
+                        );
                 } else if (state is QuranError) {
                   return QuranErrorState(
                     message: state.message,

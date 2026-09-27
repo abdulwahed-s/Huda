@@ -62,11 +62,7 @@ class ChecklistAppBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: IconButton(
-                  icon: Icon(
-                    Icons.today,
-                    size: 18.sp,
-                    color: Colors.white,
-                  ),
+                  icon: Icon(Icons.today, size: 18.sp, color: Colors.white),
                   onPressed: onTodayPressed,
                   tooltip: AppLocalizations.of(context)!.backToToday,
                 ),

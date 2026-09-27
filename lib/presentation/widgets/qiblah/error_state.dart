@@ -6,11 +6,7 @@ class ErrorState extends StatelessWidget {
   final String message;
   final bool isDark;
 
-  const ErrorState({
-    super.key,
-    required this.message,
-    required this.isDark,
-  });
+  const ErrorState({super.key, required this.message, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +16,7 @@ class ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64.w,
-              color: Colors.red.shade400,
-            ),
+            Icon(Icons.error_outline, size: 64.w, color: Colors.red.shade400),
             SizedBox(height: 24.h),
             Text(
               AppLocalizations.of(context)!.somethingWentWrong,

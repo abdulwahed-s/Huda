@@ -15,10 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AppSelectionDialog extends StatefulWidget {
   final List<String> selectedApps;
 
-  const AppSelectionDialog({
-    super.key,
-    required this.selectedApps,
-  });
+  const AppSelectionDialog({super.key, required this.selectedApps});
 
   @override
   State<AppSelectionDialog> createState() => _AppSelectionDialogState();
@@ -73,10 +70,7 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
                     fontSize: 18.sp,
                   ),
                 ),
-                TextButton(
-                  onPressed: _saveSelection,
-                  child: Text(l10n.done),
-                ),
+                TextButton(onPressed: _saveSelection, child: Text(l10n.done)),
               ],
             ),
           ),
@@ -130,11 +124,7 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.apps,
-                          size: 64.sp,
-                          color: theme.hintColor,
-                        ),
+                        Icon(Icons.apps, size: 64.sp, color: theme.hintColor),
                         SizedBox(height: 16.h),
                         Text(
                           l10n.noAppsFound,
@@ -156,13 +146,15 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
                 }
 
                 final filteredApps = state.installedApps
-                    .where((app) =>
-                        app.appName
-                            .toLowerCase()
-                            .contains(_searchQuery.toLowerCase()) ||
-                        app.packageId
-                            .toLowerCase()
-                            .contains(_searchQuery.toLowerCase()))
+                    .where(
+                      (app) =>
+                          app.appName.toLowerCase().contains(
+                            _searchQuery.toLowerCase(),
+                          ) ||
+                          app.packageId.toLowerCase().contains(
+                            _searchQuery.toLowerCase(),
+                          ),
+                    )
                     .toList();
 
                 return ListView.builder(
@@ -170,8 +162,9 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   itemBuilder: (context, index) {
                     final app = filteredApps[index];
-                    final isSelected =
-                        _selectedPackages.contains(app.packageId);
+                    final isSelected = _selectedPackages.contains(
+                      app.packageId,
+                    );
 
                     return _buildAppTile(app, isSelected, theme);
                   },
@@ -192,35 +185,26 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.apps_rounded,
-            size: 64.sp,
-            color: theme.primaryColor,
-          ),
+          Icon(Icons.apps_rounded, size: 64.sp, color: theme.primaryColor),
           SizedBox(height: 24.h),
           Text(
             l10n.iosAppSelectionTitle,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18.sp,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 12.h),
           Text(
             l10n.iosTapToSelectApps,
-            style: TextStyle(
-              color: theme.hintColor,
-              fontSize: 14.sp,
-            ),
+            style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 32.h),
           ElevatedButton.icon(
             onPressed: () async {
               try {
-                final hasApps =
-                    await platform.invokeMethod('showFamilyActivityPicker');
+                final hasApps = await platform.invokeMethod(
+                  'showFamilyActivityPicker',
+                );
                 if (hasApps == true && mounted) {
                   HudaSnackBar.success(
                     context,
@@ -274,7 +258,7 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
             width: 48.w,
             height: 48.h,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => _defaultIcon(theme),
+            errorBuilder: (_, _, _) => _defaultIcon(theme),
           ),
         );
       } catch (e) {
@@ -289,17 +273,11 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
       leading: iconWidget,
       title: Text(
         app.appName,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 14.sp,
-        ),
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
       ),
       subtitle: Text(
         app.packageId,
-        style: TextStyle(
-          fontSize: 11.sp,
-          color: theme.hintColor,
-        ),
+        style: TextStyle(fontSize: 11.sp, color: theme.hintColor),
         overflow: TextOverflow.ellipsis,
       ),
       trailing: Checkbox(
@@ -313,9 +291,7 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
             }
           });
         },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
       ),
       onTap: () {
         setState(() {
@@ -337,11 +313,7 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
         color: theme.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10.r),
       ),
-      child: Icon(
-        Icons.android,
-        color: theme.primaryColor,
-        size: 28.sp,
-      ),
+      child: Icon(Icons.android, color: theme.primaryColor, size: 28.sp),
     );
   }
 

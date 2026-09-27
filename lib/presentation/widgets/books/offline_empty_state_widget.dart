@@ -24,8 +24,9 @@ class OfflineEmptyStateWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color:
-                  isDark ? Colors.black26 : Colors.grey.withValues(alpha: 0.1),
+              color: isDark
+                  ? Colors.black26
+                  : Colors.grey.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -53,8 +54,9 @@ class OfflineEmptyStateWidget extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             Text(
-              AppLocalizations.of(context)!
-                  .downloadBooksWhenOnlineToAccessThemOffline,
+              AppLocalizations.of(
+                context,
+              )!.downloadBooksWhenOnlineToAccessThemOffline,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: isDark

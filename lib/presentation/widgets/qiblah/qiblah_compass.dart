@@ -93,9 +93,9 @@ class QiblahCompassState extends State<QiblahCompass> {
 
       if (currentlyAligned) {
         widget.pulseController.repeat();
-        widget.rotationController
-            .forward()
-            .then((_) => widget.rotationController.reverse());
+        widget.rotationController.forward().then(
+          (_) => widget.rotationController.reverse(),
+        );
       } else {
         widget.pulseController.stop();
       }

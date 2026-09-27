@@ -21,18 +21,16 @@ class PdfGoToPageDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
         AppLocalizations.of(context)!.goToPageTitle,
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 20.sp,
-        ),
+        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context)!
-                .enterPageNumber(pdfViewerController.pageCount.toString()),
+            AppLocalizations.of(
+              context,
+            )!.enterPageNumber(pdfViewerController.pageCount.toString()),
             style: TextStyle(
               fontSize: 14.sp,
               color: colorScheme.onSurface.withValues(alpha: 0.7),
@@ -48,8 +46,10 @@ class PdfGoToPageDialog extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
             ),
           ),
         ],

@@ -33,7 +33,7 @@ class DateHeader extends StatelessWidget {
       localizations.ramadan,
       localizations.shawwal,
       localizations.dhuAlQidah,
-      localizations.dhuAlHijjah
+      localizations.dhuAlHijjah,
     ];
     return months[month - 1];
   }
@@ -42,7 +42,9 @@ class DateHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.appColors;
     final dateFormat = DateFormat(
-        'MMMM d, yyyy', Localizations.localeOf(context).languageCode);
+      'MMMM d, yyyy',
+      Localizations.localeOf(context).languageCode,
+    );
     final hijriDate = hijriDateFromDateTime(currentDate);
 
     return Column(
@@ -56,9 +58,11 @@ class DateHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: IconButton(
-                icon: Icon(Icons.chevron_left,
-                    color: isDark ? colors.darkText : Colors.white,
-                    size: 24.sp),
+                icon: Icon(
+                  Icons.chevron_left,
+                  color: isDark ? colors.darkText : Colors.white,
+                  size: 24.sp,
+                ),
                 onPressed: onPreviousPressed,
               ),
             ),
@@ -66,8 +70,10 @@ class DateHeader extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 6.h,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(16.r),
@@ -75,9 +81,10 @@ class DateHeader extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          DateFormat('EEEE',
-                                  Localizations.localeOf(context).languageCode)
-                              .format(currentDate),
+                          DateFormat(
+                            'EEEE',
+                            Localizations.localeOf(context).languageCode,
+                          ).format(currentDate),
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
@@ -129,9 +136,11 @@ class DateHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: IconButton(
-                icon: Icon(Icons.chevron_right,
-                    color: isDark ? colors.darkText : Colors.white,
-                    size: 24.sp),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: isDark ? colors.darkText : Colors.white,
+                  size: 24.sp,
+                ),
                 onPressed: onNextPressed,
               ),
             ),

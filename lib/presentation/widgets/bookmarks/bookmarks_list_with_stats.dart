@@ -91,8 +91,9 @@ class BookmarksListWithStats extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!
-                                .bookmarksYourCollection,
+                            AppLocalizations.of(
+                              context,
+                            )!.bookmarksYourCollection,
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w800,
@@ -146,12 +147,14 @@ class BookmarksListWithStats extends StatelessWidget {
               ],
             ),
           ),
-        ...bookmarks.map((bookmark) => BookmarkCard(
-              bookmark: bookmark,
-              isDark: isDark,
-              onNavigateToAyah: onNavigateToAyah,
-              onHandleBookmarkAction: onHandleBookmarkAction,
-            )),
+        ...bookmarks.map(
+          (bookmark) => BookmarkCard(
+            bookmark: bookmark,
+            isDark: isDark,
+            onNavigateToAyah: onNavigateToAyah,
+            onHandleBookmarkAction: onHandleBookmarkAction,
+          ),
+        ),
       ],
     );
   }

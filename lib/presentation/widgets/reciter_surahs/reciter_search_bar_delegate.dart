@@ -33,7 +33,10 @@ class ReciterSearchBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return SizedBox.expand(
       child: Material(
         color: theme.scaffoldBackgroundColor,
@@ -47,8 +50,9 @@ class ReciterSearchBarDelegate extends SliverPersistentHeaderDelegate {
             decoration: InputDecoration(
               hintText: l10n.searchSurah,
               filled: true,
-              fillColor: theme.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.5),
+              fillColor: theme.colorScheme.surfaceContainerHighest.withValues(
+                alpha: 0.5,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: BorderSide.none,
@@ -56,8 +60,9 @@ class ReciterSearchBarDelegate extends SliverPersistentHeaderDelegate {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: BorderSide(
-                  color:
-                      theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                  color: theme.colorScheme.outlineVariant.withValues(
+                    alpha: 0.5,
+                  ),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -67,15 +72,21 @@ class ReciterSearchBarDelegate extends SliverPersistentHeaderDelegate {
                   width: 1.5,
                 ),
               ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 20.w,
+                vertical: 14.h,
+              ),
               prefixIcon: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
-                child: Icon(Icons.search_rounded,
-                    color: theme.colorScheme.primary),
+                child: Icon(
+                  Icons.search_rounded,
+                  color: theme.colorScheme.primary,
+                ),
               ),
-              prefixIconConstraints:
-                  BoxConstraints(minWidth: 40.w, minHeight: 40.w),
+              prefixIconConstraints: BoxConstraints(
+                minWidth: 40.w,
+                minHeight: 40.w,
+              ),
               suffixIcon: query.isNotEmpty
                   ? IconButton(
                       icon: const Icon(Icons.close_rounded),

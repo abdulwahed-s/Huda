@@ -25,11 +25,7 @@ class CounselingActionButton extends StatelessWidget {
           onTap: onPressed,
           child: Container(
             padding: EdgeInsets.all(8.w),
-            child: Icon(
-              icon,
-              size: 16.sp,
-              color: Colors.grey[600],
-            ),
+            child: Icon(icon, size: 16.sp, color: Colors.grey[600]),
           ),
         ),
       ),

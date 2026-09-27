@@ -73,20 +73,23 @@ class LinuxPrayerNotificationScheduler implements LinuxPrayerScheduleWriter {
 
   @visibleForTesting
   String serialize(PrayerNotificationPlan plan) {
-    return plan.events.map((event) {
-      final title = base64Encode(utf8.encode(event.title));
-      final body = base64Encode(utf8.encode(event.body));
-      return '${event.scheduledInstantUtc.millisecondsSinceEpoch ~/ 1000}'
-          '\t${event.id}\t$title\t$body';
-    }).join('\n');
+    return plan.events
+        .map((event) {
+          final title = base64Encode(utf8.encode(event.title));
+          final body = base64Encode(utf8.encode(event.body));
+          return '${event.scheduledInstantUtc.millisecondsSinceEpoch ~/ 1000}'
+              '\t${event.id}\t$title\t$body';
+        })
+        .join('\n');
   }
 
   Future<bool> _startSnapService(Map<String, String> environment) async {
     final instance = environment['SNAP_INSTANCE_NAME'] ?? 'huda';
-    final result = await Process.run(
-      'snapctl',
-      ['start', '--enable', '$instance.prayer-notifications'],
-    );
+    final result = await Process.run('snapctl', [
+      'start',
+      '--enable',
+      '$instance.prayer-notifications',
+    ]);
     if (result.exitCode != 0) {
       debugPrint('Unable to start snap prayer service: ${result.stderr}');
     }
@@ -102,11 +105,11 @@ class LinuxPrayerNotificationScheduler implements LinuxPrayerScheduleWriter {
         Platform.environment['XDG_CONFIG_HOME'] ?? path.join(home, '.config');
     final unitDirectory = Directory(path.join(configHome, 'systemd', 'user'));
     await unitDirectory.create(recursive: true);
-    final unit = File(path.join(
-      unitDirectory.path,
-      'huda-prayer-notifications.service',
-    ));
-    await unit.writeAsString('''
+    final unit = File(
+      path.join(unitDirectory.path, 'huda-prayer-notifications.service'),
+    );
+    await unit.writeAsString(
+      '''
 [Unit]
 Description=Huda prayer time notifications
 After=graphical-session.target
@@ -121,26 +124,27 @@ RestartSec=10
 [Install]
 WantedBy=default.target
 '''
-        .trimLeft());
+          .trimLeft(),
+    );
 
     try {
-      final reload =
-          await Process.run('systemctl', ['--user', 'daemon-reload']);
+      final reload = await Process.run('systemctl', [
+        '--user',
+        'daemon-reload',
+      ]);
       if (reload.exitCode != 0) return false;
-      final enable = await Process.run(
-        'systemctl',
-        [
-          '--user',
-          'enable',
-          '--now',
-          'huda-prayer-notifications.service',
-        ],
-      );
+      final enable = await Process.run('systemctl', [
+        '--user',
+        'enable',
+        '--now',
+        'huda-prayer-notifications.service',
+      ]);
       if (enable.exitCode != 0) return false;
-      await Process.run(
-        'systemctl',
-        ['--user', 'restart', 'huda-prayer-notifications.service'],
-      );
+      await Process.run('systemctl', [
+        '--user',
+        'restart',
+        'huda-prayer-notifications.service',
+      ]);
       return true;
     } on ProcessException {
       return false;
@@ -157,7 +161,8 @@ WantedBy=default.target
     final autostart = Directory(path.join(configHome, 'autostart'));
     await autostart.create(recursive: true);
     final desktop = File(path.join(autostart.path, 'huda-prayers.desktop'));
-    await desktop.writeAsString('''
+    await desktop.writeAsString(
+      '''
 [Desktop Entry]
 Type=Application
 Name=Huda Prayer Notifications
@@ -167,7 +172,8 @@ Terminal=false
 NoDisplay=true
 X-GNOME-Autostart-enabled=true
 '''
-        .trimLeft());
+          .trimLeft(),
+    );
   }
 
   String _systemdQuote(String value) =>

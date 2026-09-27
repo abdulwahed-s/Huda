@@ -39,8 +39,11 @@ class _AudiosScreenState extends State<AudiosScreen>
   }
 
   void _loadInitialData() {
-    final languageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
+    final languageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
     selectedLanguage = languageCode;
     context.read<AudiosCubit>().fetchAudios(languageCode, 1, languageCode);
     context.read<AudioLanguagesCubit>().fetchLanguages(languageCode);
@@ -78,12 +81,17 @@ class _AudiosScreenState extends State<AudiosScreen>
               if (state is AudiosLoaded &&
                   state.audiosResponse.data.isEmpty &&
                   selectedLanguage != null) {
-                final languageCode =
-                    context.read<LocalizationCubit>().state.locale.languageCode;
+                final languageCode = context
+                    .read<LocalizationCubit>()
+                    .state
+                    .locale
+                    .languageCode;
                 setState(() => selectedLanguage = null);
-                context
-                    .read<AudiosCubit>()
-                    .fetchAudios('showall', 1, languageCode);
+                context.read<AudiosCubit>().fetchAudios(
+                  'showall',
+                  1,
+                  languageCode,
+                );
               }
             },
             builder: (context, state) {
@@ -92,9 +100,7 @@ class _AudiosScreenState extends State<AudiosScreen>
                 slivers: [
                   AudiosAppBar(isDark: isDark),
                   ..._buildContentForState(context, state, isDark),
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: 152.h),
-                  ),
+                  SliverToBoxAdapter(child: SizedBox(height: 152.h)),
                 ],
               );
             },
@@ -105,7 +111,8 @@ class _AudiosScreenState extends State<AudiosScreen>
           ),
           BlocBuilder<AudiosCubit, AudiosState>(
             builder: (context, audioState) {
-              final isOffline = audioState is AudiosOfflineLoaded ||
+              final isOffline =
+                  audioState is AudiosOfflineLoaded ||
                   audioState is AudiosOfflineEmpty ||
                   audioState is AudiosOffline;
 
@@ -113,12 +120,14 @@ class _AudiosScreenState extends State<AudiosScreen>
 
               return BlocBuilder<AudiobookBarCubit, AudiobookBarVisibility>(
                 builder: (context, barState) {
-                  return BlocBuilder<AudiobookPlayerCubit,
-                      AudiobookPlayerState>(
+                  return BlocBuilder<
+                    AudiobookPlayerCubit,
+                    AudiobookPlayerState
+                  >(
                     builder: (context, playerState) {
                       final playerVisible =
                           barState == AudiobookBarVisibility.visible &&
-                              playerState is AudiobookPlayerPlaying;
+                          playerState is AudiobookPlayerPlaying;
 
                       return AnimatedAlign(
                         duration: const Duration(milliseconds: 250),
@@ -129,7 +138,8 @@ class _AudiosScreenState extends State<AudiosScreen>
                           curve: Curves.easeInOut,
                           padding: EdgeInsetsDirectional.only(
                             end: 16.w,
-                            bottom: (playerVisible ? 84.h : 16.h) +
+                            bottom:
+                                (playerVisible ? 84.h : 16.h) +
                                 MediaQuery.of(context).viewPadding.bottom,
                           ),
                           child: AudioLanguageSelectionFab(
@@ -151,7 +161,10 @@ class _AudiosScreenState extends State<AudiosScreen>
   }
 
   List<Widget> _buildContentForState(
-      BuildContext context, AudiosState state, bool isDark) {
+    BuildContext context,
+    AudiosState state,
+    bool isDark,
+  ) {
     if (state is AudiosLoading || state is AudiosOfflineLoading) {
       return [AudiosLoadingWidget(isDark: isDark)];
     } else if (state is AudiosLoaded) {
@@ -161,26 +174,26 @@ class _AudiosScreenState extends State<AudiosScreen>
           isDark: isDark,
           selectedLanguage: selectedLanguage,
           onLanguageChanged: _handleLanguageChange,
-        )
+        ),
       ];
     } else if (state is AudiosOfflineLoaded) {
-      return [
-        AudiosOfflineWidget(state: state, isDark: isDark),
-      ];
+      return [AudiosOfflineWidget(state: state, isDark: isDark)];
     } else if (state is AudiosOfflineEmpty) {
       return [
         SliverFillRemaining(
           hasScrollBody: false,
           child: OfflineAudioEmptyStateWidget(
-              isDark: isDark, onRetry: _retryLoading),
-        )
+            isDark: isDark,
+            onRetry: _retryLoading,
+          ),
+        ),
       ];
     } else if (state is AudiosOffline) {
       return [
         SliverFillRemaining(
           hasScrollBody: false,
           child: OfflineStateWidget(isDark: isDark, onRetry: _retryLoading),
-        )
+        ),
       ];
     } else if (state is AudiosError) {
       return [
@@ -191,7 +204,7 @@ class _AudiosScreenState extends State<AudiosScreen>
             isDark: isDark,
             onRetry: _retryLoading,
           ),
-        )
+        ),
       ];
     }
     return [const SliverToBoxAdapter(child: SizedBox.shrink())];
@@ -201,19 +214,29 @@ class _AudiosScreenState extends State<AudiosScreen>
     setState(() {
       selectedLanguage = language;
     });
-    final languageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    context
-        .read<AudiosCubit>()
-        .fetchAudios(language ?? 'showall', 1, languageCode);
+    final languageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
+    context.read<AudiosCubit>().fetchAudios(
+      language ?? 'showall',
+      1,
+      languageCode,
+    );
   }
 
   void _retryLoading() {
-    final languageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    context
-        .read<AudiosCubit>()
-        .fetchAudios(selectedLanguage ?? 'showall', 1, languageCode);
+    final languageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
+    context.read<AudiosCubit>().fetchAudios(
+      selectedLanguage ?? 'showall',
+      1,
+      languageCode,
+    );
     context.read<AudioLanguagesCubit>().fetchLanguages(languageCode);
   }
 }

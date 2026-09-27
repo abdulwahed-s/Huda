@@ -14,9 +14,7 @@ class LoadingState extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(
-              context.primaryColor,
-            ),
+            valueColor: AlwaysStoppedAnimation<Color>(context.primaryColor),
           ),
           SizedBox(height: 16.h),
           Text(

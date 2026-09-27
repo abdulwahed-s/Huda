@@ -50,11 +50,7 @@ class QuestionChip extends StatelessWidget {
                     color: context.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
-                  child: Icon(
-                    icon,
-                    color: context.primaryColor,
-                    size: 16.sp,
-                  ),
+                  child: Icon(icon, color: context.primaryColor, size: 16.sp),
                 ),
                 SizedBox(height: 8.h),
                 Text(

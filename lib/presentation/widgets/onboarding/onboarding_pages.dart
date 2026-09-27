@@ -21,8 +21,9 @@ List<OnboardingData> getOnboardingPages(BuildContext context) {
     ),
     OnboardingData(
       title: AppLocalizations.of(context)!.onboardingPrayerTimesTitle,
-      description:
-          AppLocalizations.of(context)!.onboardingPrayerTimesDescription,
+      description: AppLocalizations.of(
+        context,
+      )!.onboardingPrayerTimesDescription,
       icon: Icons.access_time_rounded,
       primaryColor: Colors.indigo,
       secondaryColor: Colors.indigoAccent,
@@ -78,8 +79,9 @@ List<OnboardingData> getOnboardingPages(BuildContext context) {
     ),
     OnboardingData(
       title: AppLocalizations.of(context)!.onboardingMultilingualTitle,
-      description:
-          AppLocalizations.of(context)!.onboardingMultilingualDescription,
+      description: AppLocalizations.of(
+        context,
+      )!.onboardingMultilingualDescription,
       icon: Icons.language_rounded,
       primaryColor: Colors.cyan,
       secondaryColor: Colors.cyanAccent,

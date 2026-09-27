@@ -121,19 +121,15 @@ class _CounselingSkeletonState extends State<CounselingSkeleton>
                       ),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(
-                      icon,
-                      color: Colors.white,
-                      size: 24,
-                    ),
+                    child: Icon(icon, color: Colors.white, size: 24),
                   ),
                   const SizedBox(width: 14),
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: widget.isDark ? Colors.white : Colors.black87,
-                        ),
+                      fontWeight: FontWeight.bold,
+                      color: widget.isDark ? Colors.white : Colors.black87,
+                    ),
                   ),
                 ],
               ),
@@ -143,9 +139,7 @@ class _CounselingSkeletonState extends State<CounselingSkeleton>
                 height: 3,
                 width: 60,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: gradientColors,
-                  ),
+                  gradient: LinearGradient(colors: gradientColors),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),

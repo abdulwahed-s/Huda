@@ -76,8 +76,9 @@ class _PrayerTimeCardsWidgetState extends State<PrayerTimeCardsWidget> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final primary =
-        widget.isDark ? context.primaryLightColor : context.primaryColor;
+    final primary = widget.isDark
+        ? context.primaryLightColor
+        : context.primaryColor;
 
     return Row(
       children: [
@@ -118,14 +119,12 @@ class _PrayerTimeCardsWidgetState extends State<PrayerTimeCardsWidget> {
       padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 14.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color:
-            widget.isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
+        color: widget.isDark
+            ? Colors.white.withValues(alpha: 0.05)
+            : Colors.white,
         border: widget.isDark
             ? null
-            : Border.all(
-                color: Colors.black.withValues(alpha: 0.06),
-                width: 1,
-              ),
+            : Border.all(color: Colors.black.withValues(alpha: 0.06), width: 1),
         boxShadow: widget.isDark
             ? null
             : [
@@ -217,10 +216,6 @@ class _PrayerCardIcon extends StatelessWidget {
       );
     }
 
-    return Icon(
-      icon,
-      color: color,
-      size: size,
-    );
+    return Icon(icon, color: color, size: size);
   }
 }

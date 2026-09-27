@@ -20,8 +20,9 @@ class DownloadService {
 
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
-      final audioDir =
-          Directory('${appDocDir.path}/quran_audio/surah_$surahNumber');
+      final audioDir = Directory(
+        '${appDocDir.path}/quran_audio/surah_$surahNumber',
+      );
 
       if (!await audioDir.exists()) {
         await audioDir.create(recursive: true);
@@ -119,8 +120,9 @@ class DownloadService {
 
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
-      final audioDir =
-          Directory('${appDocDir.path}/quran_audio/surah_$surahNumber');
+      final audioDir = Directory(
+        '${appDocDir.path}/quran_audio/surah_$surahNumber',
+      );
 
       if (!await audioDir.exists()) {
         return 0;

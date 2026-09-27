@@ -42,8 +42,9 @@ class SettingsTab extends StatelessWidget {
           DropdownCard(
             title: AppLocalizations.of(context)!.currency,
             value: state.selectedCurrency,
-            items:
-                context.read<ZakatCalculatorCubit>().getSupportedCurrencies(),
+            items: context
+                .read<ZakatCalculatorCubit>()
+                .getSupportedCurrencies(),
             onChanged: (value) =>
                 context.read<ZakatCalculatorCubit>().changeCurrency(value!),
           ),

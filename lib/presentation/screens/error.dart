@@ -58,7 +58,8 @@ class _SafeErrorBoundary extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bigEnough = constraints.hasBoundedWidth &&
+        final bigEnough =
+            constraints.hasBoundedWidth &&
             constraints.hasBoundedHeight &&
             constraints.maxWidth > 200 &&
             constraints.maxHeight > 200;
@@ -79,7 +80,7 @@ class _SafeErrorBoundary extends StatelessWidget {
           child: ScreenUtilInit(
             designSize: const Size(360, 690),
             minTextAdapt: true,
-            builder: (_, __) => MaterialApp(
+            builder: (_, _) => MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
               localizationsDelegates: const [
@@ -160,37 +161,26 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
 
     _pulseController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
-    _pulseAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.1,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
-    ));
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
 
     _slideController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _slideController,
-      curve: Curves.easeOutBack,
-    ));
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(parent: _slideController, curve: Curves.easeOutBack),
+        );
 
     _animationController.forward();
     _slideController.forward();
@@ -239,20 +229,24 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final backgroundColor =
-        isDark ? context.darkGradientStart : const Color(0xFFF8FAFC);
+    final backgroundColor = isDark
+        ? context.darkGradientStart
+        : const Color(0xFFF8FAFC);
     final cardColor = isDark ? context.darkCardBackground : Colors.white;
     final textColor = isDark ? context.darkText : const Color(0xFF1E293B);
-    final subtitleColor =
-        isDark ? Colors.grey.shade400 : const Color(0xFF64748B);
+    final subtitleColor = isDark
+        ? Colors.grey.shade400
+        : const Color(0xFF64748B);
     final borderColor = isDark ? Colors.grey.shade800 : const Color(0xFFE2E8F0);
     final shadowColor = isDark
         ? Colors.black.withValues(alpha: 0.3)
         : Colors.black.withValues(alpha: 0.08);
-    final errorCodeBg =
-        isDark ? context.darkGradientMid : const Color(0xFFF1F5F9);
-    final errorCodeText =
-        isDark ? Colors.grey.shade300 : const Color(0xFF475569);
+    final errorCodeBg = isDark
+        ? context.darkGradientMid
+        : const Color(0xFFF1F5F9);
+    final errorCodeText = isDark
+        ? Colors.grey.shade300
+        : const Color(0xFF475569);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -282,8 +276,10 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                             flex: 3,
                             child: ActionButton(
                               icon: Icons.refresh_rounded,
-                              label: AppLocalizations.of(context)
-                                      ?.restartAppButton ??
+                              label:
+                                  AppLocalizations.of(
+                                    context,
+                                  )?.restartAppButton ??
                                   'Restart app',
                               onPressed: _restartApp,
                               color: context.primaryColor,
@@ -295,7 +291,8 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                             flex: 2,
                             child: ActionButton(
                               icon: Icons.copy_rounded,
-                              label: AppLocalizations.of(context)?.copyButton ??
+                              label:
+                                  AppLocalizations.of(context)?.copyButton ??
                                   'Copy',
                               onPressed: _copyErrorToClipboard,
                               color: context.accentColor,
@@ -334,10 +331,7 @@ class _ErrorPageState extends State<ErrorPage> with TickerProviderStateMixin {
                     SizedBox(height: 28.h),
                     SlideTransition(
                       position: _slideAnimation,
-                      child: InfoCard(
-                        isDark: isDark,
-                        textColor: textColor,
-                      ),
+                      child: InfoCard(isDark: isDark, textColor: textColor),
                     ),
                     SizedBox(height: 32.h),
                   ]),

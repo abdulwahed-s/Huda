@@ -51,8 +51,11 @@ class DurationPickerSheet extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 16.h),
               child: Row(
                 children: [
-                  Icon(Icons.timer_outlined,
-                      color: context.primaryColor, size: 24.sp),
+                  Icon(
+                    Icons.timer_outlined,
+                    color: context.primaryColor,
+                    size: 24.sp,
+                  ),
                   SizedBox(width: 12.w),
                   Text(
                     l10n.selectDuration,

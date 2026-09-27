@@ -55,16 +55,15 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
       duration: const Duration(milliseconds: 520),
     );
     _fadeAnim = CurvedAnimation(parent: _entranceCtrl, curve: Curves.easeOut);
-    _slideAnim = Tween<Offset>(
-      begin: const Offset(0, 0.06),
-      end: Offset.zero,
-    ).animate(
-        CurvedAnimation(parent: _entranceCtrl, curve: Curves.easeOutCubic));
+    _slideAnim = Tween<Offset>(begin: const Offset(0, 0.06), end: Offset.zero)
+        .animate(
+          CurvedAnimation(parent: _entranceCtrl, curve: Curves.easeOutCubic),
+        );
 
     context.read<AudioDetailCubit>().fetchAudioDetail(
-          widget.audioId,
-          widget.language,
-        );
+      widget.audioId,
+      widget.language,
+    );
     context.read<AudiobookDownloadCubit>().checkStatus(widget.audioId);
   }
 
@@ -112,10 +111,15 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
   }
 
   Widget _buildStateBody(
-      BuildContext context, bool isDark, AudioDetailState state) {
+    BuildContext context,
+    bool isDark,
+    AudioDetailState state,
+  ) {
     if (state is AudioDetailLoading || state is AudioDetailInitial) {
       return AudioDetailSkeletonLoader(
-          key: const ValueKey('skeleton'), isDark: isDark);
+        key: const ValueKey('skeleton'),
+        isDark: isDark,
+      );
     }
     if (state is AudioDetailLoaded) {
       return _buildContent(
@@ -184,8 +188,12 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
     return const SizedBox.shrink(key: ValueKey('empty'));
   }
 
-  Widget _wrapWithAppBar(BuildContext context, bool isDark,
-      {required Key key, required Widget child}) {
+  Widget _wrapWithAppBar(
+    BuildContext context,
+    bool isDark, {
+    required Key key,
+    required Widget child,
+  }) {
     return Scaffold(
       key: key,
       backgroundColor: Colors.transparent,
@@ -212,13 +220,15 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
 
   List<AudioTrack> _offlineToTracks(OfflineAudiobookModel offline) {
     return offline.tracks
-        .map((t) => AudioTrack(
-              order: t.order,
-              size: t.size,
-              extensionType: t.extensionType,
-              description: t.description,
-              url: t.originalUrl,
-            ))
+        .map(
+          (t) => AudioTrack(
+            order: t.order,
+            size: t.size,
+            extensionType: t.extensionType,
+            description: t.description,
+            url: t.originalUrl,
+          ),
+        )
         .toList();
   }
 
@@ -245,7 +255,13 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
           physics: const BouncingScrollPhysics(),
           slivers: [
             _buildSliverAppBar(
-                context, isDark, title, author, artUrl, tracks.length),
+              context,
+              isDark,
+              title,
+              author,
+              artUrl,
+              tracks.length,
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 120.h),
@@ -253,12 +269,22 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 24.h),
-                    _buildActionRow(context, isDark, tracks, title, author,
-                        artUrl, detail, progress),
+                    _buildActionRow(
+                      context,
+                      isDark,
+                      tracks,
+                      title,
+                      author,
+                      artUrl,
+                      detail,
+                      progress,
+                    ),
                     if (progress != null) ...[
                       SizedBox(height: 16.h),
                       AudioDetailProgressBanner(
-                          progress: progress, isDark: isDark),
+                        progress: progress,
+                        isDark: isDark,
+                      ),
                     ],
                     if (description.isNotEmpty) ...[
                       SizedBox(height: 24.h),
@@ -271,10 +297,18 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
                     ],
                     SizedBox(height: 28.h),
                     AudioDetailChaptersHeader(
-                        count: tracks.length, isDark: isDark),
+                      count: tracks.length,
+                      isDark: isDark,
+                    ),
                     SizedBox(height: 12.h),
                     _buildTrackList(
-                        context, isDark, tracks, title, author, artUrl),
+                      context,
+                      isDark,
+                      tracks,
+                      title,
+                      author,
+                      artUrl,
+                    ),
                   ],
                 ),
               ),
@@ -285,8 +319,14 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
     );
   }
 
-  Widget _buildSliverAppBar(BuildContext context, bool isDark, String title,
-      String author, String? artUrl, int chapterCount) {
+  Widget _buildSliverAppBar(
+    BuildContext context,
+    bool isDark,
+    String title,
+    String author,
+    String? artUrl,
+    int chapterCount,
+  ) {
     return SliverAppBar(
       expandedHeight: 340.h,
       pinned: true,
@@ -301,7 +341,7 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
       flexibleSpace: FlexibleSpaceBar(
         stretchModes: const [
           StretchMode.blurBackground,
-          StretchMode.zoomBackground
+          StretchMode.zoomBackground,
         ],
         background: AudioDetailHeroHeader(
           artUrl: artUrl,
@@ -326,7 +366,8 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
   ) {
     return BlocBuilder<AudiobookPlayerCubit, AudiobookPlayerState>(
       builder: (context, playerState) {
-        final playing = playerState is AudiobookPlayerPlaying &&
+        final playing =
+            playerState is AudiobookPlayerPlaying &&
             playerState.audiobookId == widget.audioId;
 
         if (playing) {
@@ -399,25 +440,23 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
             label: isThisAudioActive && isCurrentlyPlaying
                 ? l10n.pause
                 : hasProgress
-                    ? l10n.resumeChapter(progress.trackIndex + 1)
-                    : l10n.play,
+                ? l10n.resumeChapter(progress.trackIndex + 1)
+                : l10n.play,
             onPressed: tracks.isEmpty
                 ? null
                 : isThisAudioActive && isCurrentlyPlaying
-                    ? onPause
-                    : isThisAudioActive && !isCurrentlyPlaying
-                        ? onResume
-                        : () => _play(
-                              context,
-                              tracks,
-                              title,
-                              author,
-                              artUrl,
-                              initialIndex:
-                                  hasProgress ? progress.trackIndex : 0,
-                              initialPosition:
-                                  hasProgress ? progress.position : null,
-                            ),
+                ? onPause
+                : isThisAudioActive && !isCurrentlyPlaying
+                ? onResume
+                : () => _play(
+                    context,
+                    tracks,
+                    title,
+                    author,
+                    artUrl,
+                    initialIndex: hasProgress ? progress.trackIndex : 0,
+                    initialPosition: hasProgress ? progress.position : null,
+                  ),
           ),
         ),
         SizedBox(width: 12.w),
@@ -431,11 +470,18 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
     );
   }
 
-  Widget _buildTrackList(BuildContext context, bool isDark,
-      List<AudioTrack> tracks, String title, String author, String? artUrl) {
+  Widget _buildTrackList(
+    BuildContext context,
+    bool isDark,
+    List<AudioTrack> tracks,
+    String title,
+    String author,
+    String? artUrl,
+  ) {
     return BlocBuilder<AudiobookPlayerCubit, AudiobookPlayerState>(
       builder: (context, playerState) {
-        final activePlayer = playerState is AudiobookPlayerPlaying &&
+        final activePlayer =
+            playerState is AudiobookPlayerPlaying &&
                 playerState.audiobookId == widget.audioId
             ? playerState
             : null;
@@ -454,8 +500,16 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
                     isDark: isDark,
                     currentIndex: currentIdx,
                     isPlaying: isPlaying,
-                    onTrackTap: (idx) => _onTrackTap(context, idx, currentIdx,
-                        isPlaying, tracks, title, author, artUrl),
+                    onTrackTap: (idx) => _onTrackTap(
+                      context,
+                      idx,
+                      currentIdx,
+                      isPlaying,
+                      tracks,
+                      title,
+                      author,
+                      artUrl,
+                    ),
                   );
                 },
               );
@@ -469,7 +523,15 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
           currentIndex: -1,
           isPlaying: false,
           onTrackTap: (idx) => _onTrackTap(
-              context, idx, -1, false, tracks, title, author, artUrl),
+            context,
+            idx,
+            -1,
+            false,
+            tracks,
+            title,
+            author,
+            artUrl,
+          ),
         );
       },
     );
@@ -503,15 +565,15 @@ class _AudioDetailScreenState extends State<AudioDetailScreen>
     Duration? initialPosition,
   }) {
     context.read<AudiobookPlayerCubit>().startPlaying(
-          audiobookId: widget.audioId,
-          tracks: tracks,
-          title: title,
-          author: author,
-          artUrl: artUrl,
-          initialIndex: initialIndex,
-          initialPosition: initialPosition,
-          isOffline: false,
-        );
+      audiobookId: widget.audioId,
+      tracks: tracks,
+      title: title,
+      author: author,
+      artUrl: artUrl,
+      initialIndex: initialIndex,
+      initialPosition: initialPosition,
+      isOffline: false,
+    );
     context.read<AudiobookBarCubit>().show();
   }
 }

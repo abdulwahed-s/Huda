@@ -37,10 +37,12 @@ class _EventDialogState extends State<EventDialog> {
   @override
   void initState() {
     super.initState();
-    _titleController =
-        TextEditingController(text: widget.oldEvent?.title ?? '');
-    _descController =
-        TextEditingController(text: widget.oldEvent?.description ?? '');
+    _titleController = TextEditingController(
+      text: widget.oldEvent?.title ?? '',
+    );
+    _descController = TextEditingController(
+      text: widget.oldEvent?.description ?? '',
+    );
     _isAllDay = widget.oldEvent?.isAllDay ?? true;
     _startTime = widget.oldEvent?.startTime;
     _endTime = widget.oldEvent?.endTime;
@@ -68,7 +70,8 @@ class _EventDialogState extends State<EventDialog> {
 
             return AlertDialog(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.r)),
+                borderRadius: BorderRadius.circular(16.r),
+              ),
               title: Row(
                 children: [
                   Container(
@@ -90,9 +93,7 @@ class _EventDialogState extends State<EventDialog> {
                     widget.isEditMode
                         ? AppLocalizations.of(context)!.editEvent
                         : AppLocalizations.of(context)!.addEvent,
-                    style: TextStyle(
-                      fontSize: isTablet ? 20 : 16.sp,
-                    ),
+                    style: TextStyle(fontSize: isTablet ? 20 : 16.sp),
                   ),
                 ],
               ),
@@ -106,9 +107,7 @@ class _EventDialogState extends State<EventDialog> {
                             Expanded(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  _buildTextFields(isTablet),
-                                ],
+                                children: [_buildTextFields(isTablet)],
                               ),
                             ),
                             SizedBox(width: 24.w),
@@ -147,13 +146,14 @@ class _EventDialogState extends State<EventDialog> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text(AppLocalizations.of(context)!.cancel,
-                      style: TextStyle(
-                        fontSize: isTablet ? 14 : 12.sp,
-                      )),
+                  child: Text(
+                    AppLocalizations.of(context)!.cancel,
+                    style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
+                  ),
                 ),
                 ElevatedButton(
-                  onPressed: _titleController.text.trim().isEmpty ||
+                  onPressed:
+                      _titleController.text.trim().isEmpty ||
                           (!_isAllDay &&
                               (_startTime == null || _endTime == null)) ||
                           (!_isAllDay &&
@@ -163,8 +163,9 @@ class _EventDialogState extends State<EventDialog> {
                       : () async {
                           if (_notify &&
                               !PlatformUtils.isLinux &&
-                              !await PermissionHandlers
-                                  .requestNotificationPermission(context)) {
+                              !await PermissionHandlers.requestNotificationPermission(
+                                context,
+                              )) {
                             return;
                           }
                           if (!mounted) return;
@@ -188,16 +189,16 @@ class _EventDialogState extends State<EventDialog> {
                     ),
                     padding: isTablet
                         ? const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 12)
+                            horizontal: 24,
+                            vertical: 12,
+                          )
                         : EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   ),
                   child: Text(
                     widget.isEditMode
                         ? AppLocalizations.of(context)!.saveChanges
                         : AppLocalizations.of(context)!.saveEvent,
-                    style: TextStyle(
-                      fontSize: isTablet ? 14 : 12.sp,
-                    ),
+                    style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
                   ),
                 ),
               ],
@@ -215,9 +216,7 @@ class _EventDialogState extends State<EventDialog> {
           controller: _titleController,
           decoration: InputDecoration(
             labelText: AppLocalizations.of(context)!.eventTitle,
-            labelStyle: TextStyle(
-              fontSize: isTablet ? 14 : 12.sp,
-            ),
+            labelStyle: TextStyle(fontSize: isTablet ? 14 : 12.sp),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
             ),
@@ -225,9 +224,7 @@ class _EventDialogState extends State<EventDialog> {
                 ? const EdgeInsets.symmetric(vertical: 16, horizontal: 16)
                 : null,
           ),
-          style: TextStyle(
-            fontSize: isTablet ? 14 : 12.sp,
-          ),
+          style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
         ),
         SizedBox(height: 12.h),
         TextField(
@@ -235,9 +232,7 @@ class _EventDialogState extends State<EventDialog> {
           maxLines: 3,
           decoration: InputDecoration(
             labelText: AppLocalizations.of(context)!.description,
-            labelStyle: TextStyle(
-              fontSize: isTablet ? 14 : 12.sp,
-            ),
+            labelStyle: TextStyle(fontSize: isTablet ? 14 : 12.sp),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
             ),
@@ -245,9 +240,7 @@ class _EventDialogState extends State<EventDialog> {
                 ? const EdgeInsets.symmetric(vertical: 16, horizontal: 16)
                 : null,
           ),
-          style: TextStyle(
-            fontSize: isTablet ? 14 : 12.sp,
-          ),
+          style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
         ),
       ],
     );
@@ -259,18 +252,19 @@ class _EventDialogState extends State<EventDialog> {
         if (!kIsWeb && !PlatformUtils.isLinux)
           SwitchListTile(
             value: _notify,
-            title: Text(AppLocalizations.of(context)!.receiveNotification,
-                style: TextStyle(
-                  fontSize: isTablet ? 14 : 12.sp,
-                )),
-            subtitle: Text(AppLocalizations.of(context)!.getNotifiedAboutEvent,
-                style: TextStyle(
-                  fontSize: isTablet ? 12 : 10.sp,
-                )),
+            title: Text(
+              AppLocalizations.of(context)!.receiveNotification,
+              style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
+            ),
+            subtitle: Text(
+              AppLocalizations.of(context)!.getNotifiedAboutEvent,
+              style: TextStyle(fontSize: isTablet ? 12 : 10.sp),
+            ),
             onChanged: (value) async {
               if (value &&
                   !await PermissionHandlers.requestNotificationPermission(
-                      context)) {
+                    context,
+                  )) {
                 return;
               }
               if (mounted) {
@@ -280,10 +274,10 @@ class _EventDialogState extends State<EventDialog> {
             contentPadding: EdgeInsets.zero,
           ),
         CheckboxListTile(
-          title: Text(AppLocalizations.of(context)!.allDayEvent,
-              style: TextStyle(
-                fontSize: isTablet ? 14 : 12.sp,
-              )),
+          title: Text(
+            AppLocalizations.of(context)!.allDayEvent,
+            style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
+          ),
           value: _isAllDay,
           onChanged: (value) => setState(() => _isAllDay = value!),
           contentPadding: EdgeInsets.zero,
@@ -308,12 +302,11 @@ class _EventDialogState extends State<EventDialog> {
             },
             icon: Icon(Icons.access_time, size: isTablet ? 20 : 16.w),
             label: Text(
-                _startTime != null
-                    ? '${AppLocalizations.of(context)!.startPrefix}: ${_startTime!.format(context)}'
-                    : AppLocalizations.of(context)!.startTime,
-                style: TextStyle(
-                  fontSize: isTablet ? 14 : 12.sp,
-                )),
+              _startTime != null
+                  ? '${AppLocalizations.of(context)!.startPrefix}: ${_startTime!.format(context)}'
+                  : AppLocalizations.of(context)!.startTime,
+              style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
+            ),
             style: OutlinedButton.styleFrom(
               padding: isTablet
                   ? const EdgeInsets.symmetric(vertical: 12, horizontal: 16)
@@ -335,12 +328,11 @@ class _EventDialogState extends State<EventDialog> {
             },
             icon: Icon(Icons.access_time_filled, size: isTablet ? 20 : 16.w),
             label: Text(
-                _endTime != null
-                    ? '${AppLocalizations.of(context)!.endPrefix}: ${_endTime!.format(context)}'
-                    : AppLocalizations.of(context)!.endTime,
-                style: TextStyle(
-                  fontSize: isTablet ? 14 : 12.sp,
-                )),
+              _endTime != null
+                  ? '${AppLocalizations.of(context)!.endPrefix}: ${_endTime!.format(context)}'
+                  : AppLocalizations.of(context)!.endTime,
+              style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
+            ),
             style: OutlinedButton.styleFrom(
               padding: isTablet
                   ? const EdgeInsets.symmetric(vertical: 12, horizontal: 16)
@@ -401,13 +393,14 @@ class _EventDialogState extends State<EventDialog> {
                 ),
               ),
               icon: Icon(Icons.palette, size: isTablet ? 20 : 16.w),
-              label: Text(AppLocalizations.of(context)!.chooseColor,
-                  style: TextStyle(
-                    fontSize: isTablet ? 14 : 12.sp,
-                  )),
+              label: Text(
+                AppLocalizations.of(context)!.chooseColor,
+                style: TextStyle(fontSize: isTablet ? 14 : 12.sp),
+              ),
               style: OutlinedButton.styleFrom(
-                padding:
-                    isTablet ? const EdgeInsets.symmetric(vertical: 12) : null,
+                padding: isTablet
+                    ? const EdgeInsets.symmetric(vertical: 12)
+                    : null,
               ),
             ),
           ),

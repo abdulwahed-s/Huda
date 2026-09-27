@@ -39,8 +39,9 @@ class TextSizeHeader extends StatelessWidget {
               ),
               SizedBox(height: 4.h),
               Text(
-                AppLocalizations.of(context)!
-                    .adjustTextSizeForBetterReadability,
+                AppLocalizations.of(
+                  context,
+                )!.adjustTextSizeForBetterReadability,
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: isDark

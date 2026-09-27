@@ -41,22 +41,26 @@ class ReadingModeOptionCard extends StatelessWidget {
     final fontsReady = fontService?.areFontsReady ?? true;
     final previouslyDownloaded = fontService?.wasPreviouslyDownloaded ?? false;
     final currentStatus = fontService?.currentState.status;
-    final fontsBeingProcessed = currentStatus == QcfFontStatus.downloading ||
+    final fontsBeingProcessed =
+        currentStatus == QcfFontStatus.downloading ||
         currentStatus == QcfFontStatus.extracting ||
         currentStatus == QcfFontStatus.loading;
 
-    final needsDownload = requiresFonts &&
+    final needsDownload =
+        requiresFonts &&
         !fontsReady &&
         !previouslyDownloaded &&
         !fontsBeingProcessed;
 
-    final showDownloadProgress = requiresFonts &&
+    final showDownloadProgress =
+        requiresFonts &&
         !fontsReady &&
         fontsBeingProcessed &&
         !previouslyDownloaded &&
         fontService != null;
 
-    final isInitLoading = requiresFonts &&
+    final isInitLoading =
+        requiresFonts &&
         !fontsReady &&
         previouslyDownloaded &&
         fontsBeingProcessed;
@@ -77,8 +81,8 @@ class ReadingModeOptionCard extends StatelessWidget {
             color: isSelected
                 ? accent.withValues(alpha: 0.55)
                 : (isDark
-                    ? Colors.white.withValues(alpha: 0.08)
-                    : Colors.black.withValues(alpha: 0.08)),
+                      ? Colors.white.withValues(alpha: 0.08)
+                      : Colors.black.withValues(alpha: 0.08)),
             width: isSelected ? 1.5 : 1.0,
           ),
           boxShadow: isSelected
@@ -110,8 +114,8 @@ class ReadingModeOptionCard extends StatelessWidget {
                     color: isSelected
                         ? accent.withValues(alpha: 0.12)
                         : (isDark
-                            ? Colors.white.withValues(alpha: 0.06)
-                            : Colors.black.withValues(alpha: 0.04)),
+                              ? Colors.white.withValues(alpha: 0.06)
+                              : Colors.black.withValues(alpha: 0.04)),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Padding(
@@ -225,10 +229,8 @@ class ReadingModeOptionCard extends StatelessWidget {
                         state.status == QcfFontStatus.downloading
                             ? '${(state.progress * 100).toInt()}%'
                             : state.status == QcfFontStatus.extracting
-                                ? AppLocalizations.of(context)!
-                                    .fontExtractingLabel
-                                : AppLocalizations.of(context)!
-                                    .fontLoadingLabel,
+                            ? AppLocalizations.of(context)!.fontExtractingLabel
+                            : AppLocalizations.of(context)!.fontLoadingLabel,
                         style: TextStyle(
                           fontSize: 9.sp,
                           color: isDark ? Colors.white38 : Colors.black38,

@@ -109,8 +109,9 @@ class _ModernMarkersViewState extends State<ModernMarkersView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!
-                                .pageLabel(marker.pageNumber.toString()),
+                            AppLocalizations.of(
+                              context,
+                            )!.pageLabel(marker.pageNumber.toString()),
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,

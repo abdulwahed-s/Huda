@@ -22,69 +22,71 @@ class AssetBreakdown extends StatelessWidget {
           title: AppLocalizations.of(context)!.assetBreakdown,
           icon: Icons.pie_chart,
         ),
-        ...AssetCategory.values.where((category) {
-          return category != AssetCategory.debts &&
-              (calculation.assets[category] ?? 0.0) > 0;
-        }).map((category) {
-          final amount = calculation.assets[category] ?? 0.0;
-          final percentage = calculation.totalAssets > 0
-              ? (amount / calculation.totalAssets * 100)
-              : 0.0;
+        ...AssetCategory.values
+            .where((category) {
+              return category != AssetCategory.debts &&
+                  (calculation.assets[category] ?? 0.0) > 0;
+            })
+            .map((category) {
+              final amount = calculation.assets[category] ?? 0.0;
+              final percentage = calculation.totalAssets > 0
+                  ? (amount / calculation.totalAssets * 100)
+                  : 0.0;
 
-          return Container(
-            margin: EdgeInsets.only(bottom: 8.h),
-            padding: EdgeInsets.all(12.r),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(
-                color: _getAssetColor(category).withValues(alpha: 0.3),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 8.w,
-                  height: 24.h,
-                  decoration: BoxDecoration(
-                    color: _getAssetColor(category),
-                    borderRadius: BorderRadius.circular(4.r),
+              return Container(
+                margin: EdgeInsets.only(bottom: 8.h),
+                padding: EdgeInsets.all(12.r),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(
+                    color: _getAssetColor(category).withValues(alpha: 0.3),
                   ),
                 ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _getLocalizedAssetCategoryName(category, context),
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 8.w,
+                      height: 24.h,
+                      decoration: BoxDecoration(
+                        color: _getAssetColor(category),
+                        borderRadius: BorderRadius.circular(4.r),
                       ),
-                      Text(
-                        '${percentage.toStringAsFixed(1)}%',
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          color: Colors.grey[600],
-                        ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _getLocalizedAssetCategoryName(category, context),
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '${percentage.toStringAsFixed(1)}%',
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      cubit.getFormattedAmount(amount),
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.bold,
+                        color: _getAssetColor(category),
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  cubit.getFormattedAmount(amount),
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.bold,
-                    color: _getAssetColor(category),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
+              );
+            }),
       ],
     );
   }
@@ -109,7 +111,9 @@ class AssetBreakdown extends StatelessWidget {
   }
 
   String _getLocalizedAssetCategoryName(
-      AssetCategory category, BuildContext context) {
+    AssetCategory category,
+    BuildContext context,
+  ) {
     final localizations = AppLocalizations.of(context)!;
     switch (category) {
       case AssetCategory.cash:

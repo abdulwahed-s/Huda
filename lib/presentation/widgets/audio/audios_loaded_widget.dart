@@ -92,14 +92,10 @@ class AudiosLoadedWidget extends StatelessWidget {
               isDark: isDark,
               onPageChanged: (page) {
                 context.read<AudiosCubit>().fetchAudios(
-                      selectedLanguage ?? 'showall',
-                      page,
-                      context
-                          .read<LocalizationCubit>()
-                          .state
-                          .locale
-                          .languageCode,
-                    );
+                  selectedLanguage ?? 'showall',
+                  page,
+                  context.read<LocalizationCubit>().state.locale.languageCode,
+                );
               },
             ),
           ),
@@ -146,10 +142,7 @@ class _MasonryGrid extends StatelessWidget {
                 for (final audio in cols[c])
                   Padding(
                     padding: EdgeInsets.only(bottom: spacing),
-                    child: AudioCard(
-                      audio: audio,
-                      isDark: isDark,
-                    ),
+                    child: AudioCard(audio: audio, isDark: isDark),
                   ),
               ],
             ),

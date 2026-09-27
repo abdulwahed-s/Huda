@@ -48,11 +48,7 @@ class SectionHeader extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(
-              icon,
-              color: context.primaryColor,
-              size: 24.sp,
-            ),
+            child: Icon(icon, color: context.primaryColor, size: 24.sp),
           ),
           SizedBox(width: 16.w),
           Expanded(

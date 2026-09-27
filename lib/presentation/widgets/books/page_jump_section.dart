@@ -44,14 +44,13 @@ class _PageJumpSectionState extends State<PageJumpSection> {
           controller: _pageController,
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             hintText: '${widget.currentPage}',
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 8.w,
+              vertical: 8.h,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.r),
               borderSide: BorderSide(color: Colors.grey.shade300),
@@ -82,10 +81,7 @@ class _PageJumpSectionState extends State<PageJumpSection> {
         ),
         child: Text(
           AppLocalizations.of(context)!.go,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
         ),
       ),
     ];

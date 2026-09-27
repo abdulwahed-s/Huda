@@ -41,7 +41,9 @@ class CalendarHeaderWidget extends StatelessWidget {
               width: double.infinity,
               margin: EdgeInsets.all(margin),
               padding: EdgeInsets.symmetric(
-                  vertical: verticalPadding, horizontal: horizontalPadding),
+                vertical: verticalPadding,
+                horizontal: horizontalPadding,
+              ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -73,8 +75,9 @@ class CalendarHeaderWidget extends StatelessWidget {
                   ),
                   BoxShadow(
                     offset: const Offset(0, 4),
-                    color: context.primaryColor
-                        .withValues(alpha: isDark ? 0.2 : 0.05),
+                    color: context.primaryColor.withValues(
+                      alpha: isDark ? 0.2 : 0.05,
+                    ),
                     blurRadius: 12.r,
                   ),
                 ],
@@ -177,7 +180,7 @@ class CalendarHeaderWidget extends StatelessWidget {
       localizations.ramadan,
       localizations.shawwal,
       localizations.dhuAlQidah,
-      localizations.dhuAlHijjah
+      localizations.dhuAlHijjah,
     ];
     return months[month - 1];
   }

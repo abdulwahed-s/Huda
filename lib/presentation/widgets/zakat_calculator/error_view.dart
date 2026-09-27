@@ -53,10 +53,7 @@ class ErrorView extends StatelessWidget {
             SizedBox(height: 12.h),
             Text(
               message,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),

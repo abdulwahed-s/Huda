@@ -38,7 +38,10 @@ class RecitersSearchBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return SizedBox.expand(
       child: Material(
         color: theme.scaffoldBackgroundColor,
@@ -55,15 +58,19 @@ class RecitersSearchBarDelegate extends SliverPersistentHeaderDelegate {
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Row(
                   children: [
-                    Icon(Icons.wifi_off_rounded,
-                        size: 14.sp, color: Colors.white),
+                    Icon(
+                      Icons.wifi_off_rounded,
+                      size: 14.sp,
+                      color: Colors.white,
+                    ),
                     SizedBox(width: 6.w),
                     Text(
                       l10n.offlineMode,
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500),
+                        color: Colors.white,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
@@ -87,8 +94,9 @@ class RecitersSearchBarDelegate extends SliverPersistentHeaderDelegate {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
                       borderSide: BorderSide(
-                        color: theme.colorScheme.outlineVariant
-                            .withValues(alpha: 0.5),
+                        color: theme.colorScheme.outlineVariant.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -98,15 +106,21 @@ class RecitersSearchBarDelegate extends SliverPersistentHeaderDelegate {
                         width: 1.5,
                       ),
                     ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 20.w,
+                      vertical: 14.h,
+                    ),
                     prefixIcon: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: Icon(Icons.search_rounded,
-                          color: theme.colorScheme.primary),
+                      child: Icon(
+                        Icons.search_rounded,
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
-                    prefixIconConstraints:
-                        BoxConstraints(minWidth: 40.w, minHeight: 40.w),
+                    prefixIconConstraints: BoxConstraints(
+                      minWidth: 40.w,
+                      minHeight: 40.w,
+                    ),
                     suffixIcon: query.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.close_rounded),

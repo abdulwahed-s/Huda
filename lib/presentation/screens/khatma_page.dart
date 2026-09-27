@@ -70,7 +70,9 @@ class _KhatmaPageState extends State<KhatmaPage> {
       }
       _reminderEnabled = _service.reminderEnabled;
       _reminderTime = TimeOfDay(
-          hour: _service.reminderHour, minute: _service.reminderMinute);
+        hour: _service.reminderHour,
+        minute: _service.reminderMinute,
+      );
     });
   }
 
@@ -145,11 +147,15 @@ class _KhatmaPageState extends State<KhatmaPage> {
 
     Navigator.pop(context);
 
-    Navigator.pushReplacementNamed(context, AppRoute.surahScreen, arguments: {
-      'surahInfo': surah,
-      'shouldRestorePosition': false,
-      'scrollToAyah': ayahNum,
-    });
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoute.surahScreen,
+      arguments: {
+        'surahInfo': surah,
+        'shouldRestorePosition': false,
+        'scrollToAyah': ayahNum,
+      },
+    );
   }
 
   String _formatRelativeDay(int diff) {
@@ -213,43 +219,42 @@ class _KhatmaPageState extends State<KhatmaPage> {
   }
 
   Widget _buildEmpty() => KhatmaEmptyView(
-        textDirection: _localeDirection,
-        onStartNew: () => setState(() => _step = _KhatmaStep.newKhatma),
-      );
+    textDirection: _localeDirection,
+    onStartNew: () => setState(() => _step = _KhatmaStep.newKhatma),
+  );
 
   Widget _buildNewKhatma() => KhatmaNewView(
-        textDirection: _localeDirection,
-        onBack: () => setState(() => _step = _KhatmaStep.empty),
-        onRecommendedTap: () {
-          _selectedProgramDays = 29;
-          _fromStep = _KhatmaStep.newKhatma;
-          setState(() => _step = _KhatmaStep.startFrom);
-        },
-        onProgramMeaning: () =>
-            setState(() => _step = _KhatmaStep.programMeaning),
-        onProgramParts: () => setState(() => _step = _KhatmaStep.programParts),
-      );
+    textDirection: _localeDirection,
+    onBack: () => setState(() => _step = _KhatmaStep.empty),
+    onRecommendedTap: () {
+      _selectedProgramDays = 29;
+      _fromStep = _KhatmaStep.newKhatma;
+      setState(() => _step = _KhatmaStep.startFrom);
+    },
+    onProgramMeaning: () => setState(() => _step = _KhatmaStep.programMeaning),
+    onProgramParts: () => setState(() => _step = _KhatmaStep.programParts),
+  );
 
   Widget _buildProgramMeaning() => KhatmaProgramMeaningView(
-        textDirection: _localeDirection,
-        onBack: () => setState(() => _step = _KhatmaStep.newKhatma),
-        onSelectDays: (days) {
-          _selectedProgramDays = days;
-          _fromStep = _KhatmaStep.programMeaning;
-          setState(() => _step = _KhatmaStep.startFrom);
-        },
-        pagesPerDayFn: _service.pagesPerDay,
-      );
+    textDirection: _localeDirection,
+    onBack: () => setState(() => _step = _KhatmaStep.newKhatma),
+    onSelectDays: (days) {
+      _selectedProgramDays = days;
+      _fromStep = _KhatmaStep.programMeaning;
+      setState(() => _step = _KhatmaStep.startFrom);
+    },
+    pagesPerDayFn: _service.pagesPerDay,
+  );
 
   Widget _buildProgramParts() => KhatmaProgramPartsView(
-        textDirection: _localeDirection,
-        onBack: () => setState(() => _step = _KhatmaStep.newKhatma),
-        onSelectDays: (days) {
-          _selectedProgramDays = days;
-          _fromStep = _KhatmaStep.programParts;
-          setState(() => _step = _KhatmaStep.startFrom);
-        },
-      );
+    textDirection: _localeDirection,
+    onBack: () => setState(() => _step = _KhatmaStep.newKhatma),
+    onSelectDays: (days) {
+      _selectedProgramDays = days;
+      _fromStep = _KhatmaStep.programParts;
+      setState(() => _step = _KhatmaStep.startFrom);
+    },
+  );
 
   Widget _buildStartFrom() {
     final daysLocal = _selectedProgramDays;
@@ -272,8 +277,10 @@ class _KhatmaPageState extends State<KhatmaPage> {
     final dayIndex = _service.currentDayIndex;
     final planDays = _service.planDays;
     final todayDetails = _service.rangeDetailsForDay(dayIndex, planDays);
-    final yesterdayLabel =
-        _service.rangeLabelForDay(max(0, dayIndex - 1), planDays);
+    final yesterdayLabel = _service.rangeLabelForDay(
+      max(0, dayIndex - 1),
+      planDays,
+    );
 
     final st = _service.startedAt;
     int diffDays = 0;
@@ -297,9 +304,13 @@ class _KhatmaPageState extends State<KhatmaPage> {
       pagesRemaining: _service.pagesRemaining,
       relativeDay: _formatRelativeDay(diffDays),
       startSurahLabel: l10n.khatmaFromSurah(
-          todayDetails.startSurahName, todayDetails.startVerse),
-      endSurahLabel:
-          l10n.khatmaToSurah(todayDetails.endSurahName, todayDetails.endVerse),
+        todayDetails.startSurahName,
+        todayDetails.startVerse,
+      ),
+      endSurahLabel: l10n.khatmaToSurah(
+        todayDetails.endSurahName,
+        todayDetails.endVerse,
+      ),
       yesterdayLabel: yesterdayLabel,
       reminderEnabled: _reminderEnabled,
       formattedReminderTime: _formatTimeArabic(_reminderTime),
@@ -333,8 +344,9 @@ class _KhatmaPageState extends State<KhatmaPage> {
     final daysLocal = isSetupMode
         ? _selectedProgramDays
         : (_service.enabled ? _service.planDays : _selectedProgramDays);
-    final currentDayIndex =
-        isSetupMode ? -1 : (_service.enabled ? _service.currentDayIndex : -1);
+    final currentDayIndex = isSetupMode
+        ? -1
+        : (_service.enabled ? _service.currentDayIndex : -1);
 
     return KhatmaAllWirdsView(
       textDirection: _localeDirection,
@@ -354,29 +366,29 @@ class _KhatmaPageState extends State<KhatmaPage> {
   }
 
   Widget _buildCompleted() => KhatmaCompletedView(
-        textDirection: _localeDirection,
-        reminderEnabled: _reminderEnabled,
-        formattedReminderTime: _formatTimeArabic(_reminderTime),
-        onRepeat: () async {
-          await _service.startPlan(_selectedProgramDays);
-          _load();
-        },
-        onStartNew: () => setState(() => _step = _KhatmaStep.newKhatma),
-        onAllWirds: () {
-          _allWirdsPrevStep = _KhatmaStep.completed;
-          setState(() => _step = _KhatmaStep.allWirds);
-        },
-        onDelete: () => _confirmResetPlan(context),
-        notificationRequirements: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: NotificationRequirementsSection(
-            feature: NotificationFeature.khatma,
-            onNotificationEnabled: _restoreKhatmaReminder,
-          ),
-        ),
-        onToggleReminder: _toggleReminder,
-        onPickReminderTime: _pickReminderTime,
-      );
+    textDirection: _localeDirection,
+    reminderEnabled: _reminderEnabled,
+    formattedReminderTime: _formatTimeArabic(_reminderTime),
+    onRepeat: () async {
+      await _service.startPlan(_selectedProgramDays);
+      _load();
+    },
+    onStartNew: () => setState(() => _step = _KhatmaStep.newKhatma),
+    onAllWirds: () {
+      _allWirdsPrevStep = _KhatmaStep.completed;
+      setState(() => _step = _KhatmaStep.allWirds);
+    },
+    onDelete: () => _confirmResetPlan(context),
+    notificationRequirements: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: NotificationRequirementsSection(
+        feature: NotificationFeature.khatma,
+        onNotificationEnabled: _restoreKhatmaReminder,
+      ),
+    ),
+    onToggleReminder: _toggleReminder,
+    onPickReminderTime: _pickReminderTime,
+  );
 
   Future<void> _confirmResetPlan(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
@@ -386,22 +398,31 @@ class _KhatmaPageState extends State<KhatmaPage> {
         textDirection: _localeDirection,
         child: AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
-          title: Text(l10n.khatmaDeleteTitle,
-              style: const TextStyle(fontWeight: FontWeight.bold)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          title: Text(
+            l10n.khatmaDeleteTitle,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           content: Text(l10n.khatmaDeleteConfirmContent),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child:
-                  Text(l10n.cancel, style: const TextStyle(color: Colors.grey)),
+              child: Text(
+                l10n.cancel,
+                style: const TextStyle(color: Colors.grey),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: Text(l10n.delete,
-                  style: const TextStyle(
-                      color: Colors.red, fontWeight: FontWeight.bold)),
+              child: Text(
+                l10n.delete,
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),

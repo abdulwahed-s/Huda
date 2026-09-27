@@ -29,10 +29,7 @@ class ResultCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: color.withValues(alpha: 0.2),
-          width: 1.5,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 1.5),
         boxShadow: [
           BoxShadow(
             color: color.withValues(alpha: 0.12),
@@ -67,11 +64,7 @@ class ResultCard extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 28.sp,
-            ),
+            child: Icon(icon, color: color, size: 28.sp),
           ),
           SizedBox(width: 20.w),
           Expanded(

@@ -12,26 +12,16 @@ class EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.search_off,
-            size: 64.sp,
-            color: Colors.grey.shade400,
-          ),
+          Icon(Icons.search_off, size: 64.sp, color: Colors.grey.shade400),
           SizedBox(height: 16.h),
           Text(
             AppLocalizations.of(context)!.noResultsFound,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8.h),
           Text(
             AppLocalizations.of(context)!.tryDifferentSearch,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
           ),
         ],
       ),

@@ -26,7 +26,8 @@ class KhatmaDurationTile extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accent = context.primaryColor;
     final l10n = AppLocalizations.of(context)!;
-    final sub = subtitle ??
+    final sub =
+        subtitle ??
         (pagesPerDay != null ? l10n.khatmaDailyWirdPages(pagesPerDay!) : '');
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),

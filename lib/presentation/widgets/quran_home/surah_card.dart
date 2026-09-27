@@ -59,8 +59,9 @@ class SurahCard extends StatelessWidget {
               offset: Offset(0, 7.h),
             ),
             BoxShadow(
-              color:
-                  context.primaryColor.withValues(alpha: isDark ? 0.0 : 0.035),
+              color: context.primaryColor.withValues(
+                alpha: isDark ? 0.0 : 0.035,
+              ),
               blurRadius: 6.r,
               offset: Offset(0, 2.h),
             ),
@@ -86,8 +87,10 @@ class SurahCard extends StatelessWidget {
                   highlightColor: context.primaryColor.withValues(alpha: 0.04),
                   onTap: onTap,
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 13.h,
+                    ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -193,8 +196,9 @@ class SurahCard extends StatelessWidget {
   Widget _buildMeta(BuildContext context, AppLocalizations l10n, bool isDark) {
     final isMeccan = surah.revelationType == 'Meccan';
 
-    final revAccent =
-        isMeccan ? const Color(0xFFC9941E) : const Color(0xFF2E7D6B);
+    final revAccent = isMeccan
+        ? const Color(0xFFC9941E)
+        : const Color(0xFF2E7D6B);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,

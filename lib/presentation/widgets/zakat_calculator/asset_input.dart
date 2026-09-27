@@ -94,16 +94,10 @@ class AssetInput extends StatelessWidget {
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
             ],
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.hintAmount,
-              hintStyle: TextStyle(
-                color: Colors.grey[400],
-                fontSize: 15.sp,
-              ),
+              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 15.sp),
               prefixIcon: Container(
                 margin: EdgeInsets.only(left: 12.w, right: 8.w),
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -124,10 +118,7 @@ class AssetInput extends StatelessWidget {
               fillColor: _getAssetColor(category).withValues(alpha: 0.03),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
-                borderSide: BorderSide(
-                  color: Colors.grey[300]!,
-                  width: 1.5,
-                ),
+                borderSide: BorderSide(color: Colors.grey[300]!, width: 1.5),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
@@ -143,8 +134,10 @@ class AssetInput extends StatelessWidget {
                   width: 2.5,
                 ),
               ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 16.h,
+              ),
             ),
             onChanged: onChanged,
           ),
@@ -192,7 +185,9 @@ class AssetInput extends StatelessWidget {
   }
 
   String _getLocalizedAssetCategoryName(
-      AssetCategory category, BuildContext context) {
+    AssetCategory category,
+    BuildContext context,
+  ) {
     final localizations = AppLocalizations.of(context)!;
     switch (category) {
       case AssetCategory.cash:
@@ -213,7 +208,9 @@ class AssetInput extends StatelessWidget {
   }
 
   String _getLocalizedAssetCategoryDescription(
-      AssetCategory category, BuildContext context) {
+    AssetCategory category,
+    BuildContext context,
+  ) {
     final localizations = AppLocalizations.of(context)!;
     switch (category) {
       case AssetCategory.cash:

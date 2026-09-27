@@ -47,7 +47,8 @@ class SessionDurationSection extends StatelessWidget {
                   height: 64.h,
                   child: CustomPaint(
                     painter: _DurationRingPainter(
-                      progress: goalDurationMinutes /
+                      progress:
+                          goalDurationMinutes /
                           MiqaatLockSettings.maxCustomDuration,
                       activeColor: primary,
                       trackColor: primary.withValues(alpha: 0.12),
@@ -96,7 +97,9 @@ class SessionDurationSection extends StatelessWidget {
                     onTap: onEditTap,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 14.w, vertical: 10.h),
+                        horizontal: 14.w,
+                        vertical: 10.h,
+                      ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

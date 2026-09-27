@@ -28,12 +28,13 @@ class IslamicEventService {
     DateTime Function()? now,
     RemoteIslamicEventLoader? remoteEventLoader,
     LocalRecurringFastingEventCalculator? localFastingCalculator,
-  })  : _cacheHelper = cacheHelper,
-        _hijriCalendarService = hijriCalendarService,
-        _hijriDateResolver = hijriDateResolver,
-        _now = now ?? DateTime.now {
+  }) : _cacheHelper = cacheHelper,
+       _hijriCalendarService = hijriCalendarService,
+       _hijriDateResolver = hijriDateResolver,
+       _now = now ?? DateTime.now {
     _remoteEventLoader = remoteEventLoader ?? _fetchFromSupabase;
-    _localFastingCalculator = localFastingCalculator ??
+    _localFastingCalculator =
+        localFastingCalculator ??
         LocalRecurringFastingEventCalculator(
           toHijri: _toHijri,
           reminderWindowFor: _fastingReminderWindowFor,
@@ -71,7 +72,8 @@ class IslamicEventService {
 
     try {
       final event = await _remoteEventLoader();
-      final activeEvent = event != null &&
+      final activeEvent =
+          event != null &&
               event.isRemoteConfigured &&
               _isEventActiveOn(event, now)
           ? event
@@ -110,8 +112,9 @@ class IslamicEventService {
   }
 
   FastingReminderWindow? _fastingReminderWindowFor(DateTime targetLocalDate) {
-    final coordinates =
-        PrayerTimesCalculator.coordinatesFromCache(_cacheHelper);
+    final coordinates = PrayerTimesCalculator.coordinatesFromCache(
+      _cacheHelper,
+    );
     if (coordinates == null) return null;
 
     try {

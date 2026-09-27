@@ -25,8 +25,11 @@ class BooksOfflineWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           sliver: SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount:
-                  context.responsive(mobile: 2, tablet: 3, desktop: 6),
+              crossAxisCount: context.responsive(
+                mobile: 2,
+                tablet: 3,
+                desktop: 6,
+              ),
               crossAxisSpacing: 16.w,
               mainAxisSpacing: 16.h,
               childAspectRatio: 0.65,

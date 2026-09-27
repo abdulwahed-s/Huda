@@ -12,20 +12,16 @@ class QuranLoadingState extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(
-              context.primaryColor,
-            ),
+            valueColor: AlwaysStoppedAnimation<Color>(context.primaryColor),
           ),
           SizedBox(height: 12.h),
           Text(
             'Loading Quran...',
             style: TextStyle(
               fontSize: 14.sp,
-              color: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.color
-                  ?.withValues(alpha: 0.7),
+              color: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
             ),
           ),
         ],

@@ -48,8 +48,11 @@ class ContinueReadingCard extends StatelessWidget {
                     color: Colors.white.withValues(alpha: 0.18),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: Icon(Icons.menu_book_rounded,
-                      color: Colors.white, size: 26.sp),
+                  child: Icon(
+                    Icons.menu_book_rounded,
+                    color: Colors.white,
+                    size: 26.sp,
+                  ),
                 ),
                 SizedBox(width: 14.w),
                 Expanded(
@@ -91,8 +94,11 @@ class ContinueReadingCard extends StatelessWidget {
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.arrow_forward_rounded,
-                      color: Colors.blue.shade700, size: 24.sp),
+                  child: Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Colors.blue.shade700,
+                    size: 24.sp,
+                  ),
                 ),
               ],
             ),

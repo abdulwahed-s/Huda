@@ -25,8 +25,9 @@ class OfflineAudioEmptyStateWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color:
-                  isDark ? Colors.black26 : Colors.grey.withValues(alpha: 0.1),
+              color: isDark
+                  ? Colors.black26
+                  : Colors.grey.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -68,8 +69,11 @@ class OfflineAudioEmptyStateWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.refresh_rounded,
-                          color: context.primaryColor, size: 20.sp),
+                      Icon(
+                        Icons.refresh_rounded,
+                        color: context.primaryColor,
+                        size: 20.sp,
+                      ),
                       SizedBox(width: 8.w),
                       Text(
                         l10n.tryAgain,

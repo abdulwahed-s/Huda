@@ -33,11 +33,7 @@ class TasbihCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           stops: const [0.0, 0.6, 1.0],
-          colors: [
-            primaryDark,
-            primary,
-            accent.withValues(alpha: 0.85),
-          ],
+          colors: [primaryDark, primary, accent.withValues(alpha: 0.85)],
         ),
         boxShadow: [
           BoxShadow(
@@ -53,19 +49,28 @@ class TasbihCard extends StatelessWidget {
         child: Stack(
           children: [
             _CardDecorativeCircle(
-                top: -50.h, right: -50.w, size: 180.w, opacity: 0.06),
+              top: -50.h,
+              right: -50.w,
+              size: 180.w,
+              opacity: 0.06,
+            ),
             _CardDecorativeCircle(
-                bottom: -30.h, left: -30.w, size: 140.w, opacity: 0.05),
+              bottom: -30.h,
+              left: -30.w,
+              size: 140.w,
+              opacity: 0.05,
+            ),
             _CardDecorativeCircle(
-                top: 20.h, left: 20.w, size: 60.w, opacity: 0.04),
+              top: 20.h,
+              left: 20.w,
+              size: 60.w,
+              opacity: 0.04,
+            ),
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
-              child: SizedBox(
-                height: 72.h,
-                child: const TasbihWaves(),
-              ),
+              child: SizedBox(height: 72.h, child: const TasbihWaves()),
             ),
             Positioned.fill(
               child: Row(

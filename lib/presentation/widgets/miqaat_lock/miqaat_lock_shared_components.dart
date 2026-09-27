@@ -187,8 +187,11 @@ class AddButtonWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right_rounded,
-                  color: primary.withValues(alpha: 0.5), size: 20.sp),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: primary.withValues(alpha: 0.5),
+                size: 20.sp,
+              ),
             ],
           ),
         ),

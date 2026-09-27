@@ -43,9 +43,10 @@ class CalculateTab extends StatelessWidget {
             controller: controllers[AssetCategory.cash]!,
             onChanged: (value) {
               final amount = double.tryParse(value) ?? 0.0;
-              context
-                  .read<ZakatCalculatorCubit>()
-                  .updateAssetValue(AssetCategory.cash, amount);
+              context.read<ZakatCalculatorCubit>().updateAssetValue(
+                AssetCategory.cash,
+                amount,
+              );
             },
           ),
           SizedBox(height: 12.h),
@@ -57,9 +58,10 @@ class CalculateTab extends StatelessWidget {
             controller: controllers[AssetCategory.gold]!,
             onChanged: (value) {
               final amount = double.tryParse(value) ?? 0.0;
-              context
-                  .read<ZakatCalculatorCubit>()
-                  .updateAssetValue(AssetCategory.gold, amount);
+              context.read<ZakatCalculatorCubit>().updateAssetValue(
+                AssetCategory.gold,
+                amount,
+              );
             },
           ),
           SizedBox(height: 12.h),
@@ -71,9 +73,10 @@ class CalculateTab extends StatelessWidget {
             controller: controllers[AssetCategory.silver]!,
             onChanged: (value) {
               final amount = double.tryParse(value) ?? 0.0;
-              context
-                  .read<ZakatCalculatorCubit>()
-                  .updateAssetValue(AssetCategory.silver, amount);
+              context.read<ZakatCalculatorCubit>().updateAssetValue(
+                AssetCategory.silver,
+                amount,
+              );
             },
           ),
           SizedBox(height: 12.h),
@@ -85,9 +88,10 @@ class CalculateTab extends StatelessWidget {
             controller: controllers[AssetCategory.business]!,
             onChanged: (value) {
               final amount = double.tryParse(value) ?? 0.0;
-              context
-                  .read<ZakatCalculatorCubit>()
-                  .updateAssetValue(AssetCategory.business, amount);
+              context.read<ZakatCalculatorCubit>().updateAssetValue(
+                AssetCategory.business,
+                amount,
+              );
             },
           ),
           SizedBox(height: 12.h),
@@ -99,9 +103,10 @@ class CalculateTab extends StatelessWidget {
             controller: controllers[AssetCategory.investments]!,
             onChanged: (value) {
               final amount = double.tryParse(value) ?? 0.0;
-              context
-                  .read<ZakatCalculatorCubit>()
-                  .updateAssetValue(AssetCategory.investments, amount);
+              context.read<ZakatCalculatorCubit>().updateAssetValue(
+                AssetCategory.investments,
+                amount,
+              );
             },
           ),
           SizedBox(height: 12.h),
@@ -113,9 +118,10 @@ class CalculateTab extends StatelessWidget {
             controller: controllers[AssetCategory.receivables]!,
             onChanged: (value) {
               final amount = double.tryParse(value) ?? 0.0;
-              context
-                  .read<ZakatCalculatorCubit>()
-                  .updateAssetValue(AssetCategory.receivables, amount);
+              context.read<ZakatCalculatorCubit>().updateAssetValue(
+                AssetCategory.receivables,
+                amount,
+              );
             },
           ),
           SizedBox(height: 24.h),
@@ -132,9 +138,10 @@ class CalculateTab extends StatelessWidget {
             controller: controllers[AssetCategory.debts]!,
             onChanged: (value) {
               final amount = double.tryParse(value) ?? 0.0;
-              context
-                  .read<ZakatCalculatorCubit>()
-                  .updateAssetValue(AssetCategory.debts, amount);
+              context.read<ZakatCalculatorCubit>().updateAssetValue(
+                AssetCategory.debts,
+                amount,
+              );
             },
           ),
           SizedBox(height: 24.h),
@@ -170,8 +177,10 @@ class CalculateTab extends StatelessWidget {
                   backgroundColor: Colors.red[50],
                   foregroundColor: Colors.red[700],
                   elevation: 0,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 32.w,
+                    vertical: 16.h,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                     side: BorderSide(

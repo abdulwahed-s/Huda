@@ -9,10 +9,7 @@ import 'package:uuid/uuid.dart';
 class TimeSlotPickerDialog extends StatefulWidget {
   final TimeSlot? existingSlot;
 
-  const TimeSlotPickerDialog({
-    super.key,
-    this.existingSlot,
-  });
+  const TimeSlotPickerDialog({super.key, this.existingSlot});
 
   @override
   State<TimeSlotPickerDialog> createState() => _TimeSlotPickerDialogState();
@@ -129,10 +126,7 @@ class _TimeSlotPickerDialogState extends State<TimeSlotPickerDialog> {
               SizedBox(height: 24.h),
               Text(
                 l10n.timeRange,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.sp,
-                ),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp),
               ),
               SizedBox(height: 12.h),
               Row(
@@ -147,10 +141,7 @@ class _TimeSlotPickerDialogState extends State<TimeSlotPickerDialog> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: theme.hintColor,
-                    ),
+                    child: Icon(Icons.arrow_forward, color: theme.hintColor),
                   ),
                   Expanded(
                     child: _buildTimePicker(
@@ -165,18 +156,12 @@ class _TimeSlotPickerDialogState extends State<TimeSlotPickerDialog> {
               SizedBox(height: 24.h),
               Text(
                 l10n.repeatOn,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.sp,
-                ),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp),
               ),
               SizedBox(height: 4.h),
               Text(
                 l10n.leaveEmptyForEveryday,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: theme.hintColor,
-                ),
+                style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
               ),
               SizedBox(height: 12.h),
               _buildWeekdaySelector(theme, l10n),
@@ -211,10 +196,7 @@ class _TimeSlotPickerDialogState extends State<TimeSlotPickerDialog> {
           children: [
             Text(
               label,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: theme.hintColor,
-              ),
+              style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
             ),
             SizedBox(height: 4.h),
             Text(
@@ -265,8 +247,8 @@ class _TimeSlotPickerDialogState extends State<TimeSlotPickerDialog> {
               color: isSelected
                   ? (isDark ? theme.colorScheme.primary : theme.primaryColor)
                   : (isDark
-                      ? Colors.white.withValues(alpha: 0.05)
-                      : theme.primaryColor.withValues(alpha: 0.1)),
+                        ? Colors.white.withValues(alpha: 0.05)
+                        : theme.primaryColor.withValues(alpha: 0.1)),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Center(

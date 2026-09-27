@@ -36,7 +36,10 @@ class RadioNowPlayingBar extends StatelessWidget {
           colors: [
             theme.colorScheme.primary,
             Color.lerp(
-                theme.colorScheme.primary, theme.colorScheme.secondary, 0.45)!,
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
+              0.45,
+            )!,
           ],
         ),
         boxShadow: [
@@ -83,8 +86,9 @@ class RadioNowPlayingBar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w500,
-                      color:
-                          theme.colorScheme.onPrimary.withValues(alpha: 0.75),
+                      color: theme.colorScheme.onPrimary.withValues(
+                        alpha: 0.75,
+                      ),
                       letterSpacing: 0.4,
                     ),
                   ),

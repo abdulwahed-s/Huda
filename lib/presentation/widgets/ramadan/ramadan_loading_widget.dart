@@ -52,8 +52,10 @@ class RamadanLoadingWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 18.h, horizontal: 14.w),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 18.h,
+                    horizontal: 14.w,
+                  ),
                   decoration: BoxDecoration(
                     color: cardColor,
                     borderRadius: BorderRadius.circular(20.r),
@@ -74,8 +76,10 @@ class RamadanLoadingWidget extends StatelessWidget {
               SizedBox(width: 12.w),
               Expanded(
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 18.h, horizontal: 14.w),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 18.h,
+                    horizontal: 14.w,
+                  ),
                   decoration: BoxDecoration(
                     color: cardColor,
                     borderRadius: BorderRadius.circular(20.r),
@@ -162,12 +166,20 @@ class RamadanLoadingWidget extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                        child: _buildSkeletonBox(double.infinity, 48.h,
-                            radius: 12.r)),
+                      child: _buildSkeletonBox(
+                        double.infinity,
+                        48.h,
+                        radius: 12.r,
+                      ),
+                    ),
                     SizedBox(width: 10.w),
                     Expanded(
-                        child: _buildSkeletonBox(double.infinity, 48.h,
-                            radius: 12.r)),
+                      child: _buildSkeletonBox(
+                        double.infinity,
+                        48.h,
+                        radius: 12.r,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 16.h),

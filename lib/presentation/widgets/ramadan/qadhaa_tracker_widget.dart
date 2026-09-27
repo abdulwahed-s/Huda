@@ -49,7 +49,10 @@ class QadhaaTrackerWidget extends StatelessWidget {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final dayDate = DateTime(
-        day.gregorianDate.year, day.gregorianDate.month, day.gregorianDate.day);
+      day.gregorianDate.year,
+      day.gregorianDate.month,
+      day.gregorianDate.day,
+    );
     return !dayDate.isAfter(today);
   }
 
@@ -116,9 +119,7 @@ class QadhaaTrackerWidget extends StatelessWidget {
                           title: l10n.qadhaaInfoQ1Title,
                           icon: Icons.help_outline_rounded,
                           iconColor: Colors.blue.shade400,
-                          children: [
-                            _buildSectionBody(l10n.qadhaaInfoQ1Body),
-                          ],
+                          children: [_buildSectionBody(l10n.qadhaaInfoQ1Body)],
                         ),
                         _buildInfoCard(
                           context: context,
@@ -158,9 +159,7 @@ class QadhaaTrackerWidget extends StatelessWidget {
                           title: l10n.qadhaaInfoQ3Title,
                           icon: Icons.event_available_rounded,
                           iconColor: Colors.green.shade400,
-                          children: [
-                            _buildSectionBody(l10n.qadhaaInfoQ3Body),
-                          ],
+                          children: [_buildSectionBody(l10n.qadhaaInfoQ3Body)],
                         ),
                         _buildInfoCard(
                           context: context,
@@ -197,8 +196,9 @@ class QadhaaTrackerWidget extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color:
-            isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.05)
+            : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: isDark
@@ -218,11 +218,7 @@ class QadhaaTrackerWidget extends StatelessWidget {
                   color: iconColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                child: Icon(
-                  icon,
-                  color: iconColor,
-                  size: 18.sp,
-                ),
+                child: Icon(icon, color: iconColor, size: 18.sp),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -267,10 +263,7 @@ class QadhaaTrackerWidget extends StatelessWidget {
         color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
         border: isDark
             ? null
-            : Border.all(
-                color: Colors.black.withValues(alpha: 0.06),
-                width: 1,
-              ),
+            : Border.all(color: Colors.black.withValues(alpha: 0.06), width: 1),
         boxShadow: isDark
             ? null
             : [
@@ -315,7 +308,9 @@ class QadhaaTrackerWidget extends StatelessWidget {
                     if (missedCount > 0)
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 8.w, vertical: 2.h),
+                          horizontal: 8.w,
+                          vertical: 2.h,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.orange.shade700,
                           borderRadius: BorderRadius.circular(10.r),
@@ -389,8 +384,8 @@ class QadhaaTrackerWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isCurrentDay
                     ? (isDark
-                        ? primary.withValues(alpha: 0.12)
-                        : primary.withValues(alpha: 0.05))
+                          ? primary.withValues(alpha: 0.12)
+                          : primary.withValues(alpha: 0.05))
                     : null,
                 border: Border(
                   bottom: BorderSide(
@@ -411,23 +406,24 @@ class QadhaaTrackerWidget extends StatelessWidget {
                       color: isCurrentDay
                           ? primary.withValues(alpha: 0.15)
                           : isFuture
-                              ? Colors.transparent
-                              : (isDark
-                                  ? Colors.white.withValues(alpha: 0.05)
-                                  : Colors.black.withValues(alpha: 0.03)),
+                          ? Colors.transparent
+                          : (isDark
+                                ? Colors.white.withValues(alpha: 0.05)
+                                : Colors.black.withValues(alpha: 0.03)),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Text(
                       '${day.dayNumber}',
                       style: TextStyle(
                         fontSize: 13.sp,
-                        fontWeight:
-                            isCurrentDay ? FontWeight.bold : FontWeight.w600,
+                        fontWeight: isCurrentDay
+                            ? FontWeight.bold
+                            : FontWeight.w600,
                         color: isCurrentDay
                             ? primary
                             : isFuture
-                                ? (isDark ? Colors.white24 : Colors.black26)
-                                : (isDark ? Colors.white70 : Colors.black54),
+                            ? (isDark ? Colors.white24 : Colors.black26)
+                            : (isDark ? Colors.white70 : Colors.black54),
                       ),
                     ),
                   ),
@@ -446,8 +442,8 @@ class QadhaaTrackerWidget extends StatelessWidget {
                             color: isCurrentDay
                                 ? primary
                                 : isFuture
-                                    ? (isDark ? Colors.white38 : Colors.black38)
-                                    : (isDark ? Colors.white : Colors.black87),
+                                ? (isDark ? Colors.white38 : Colors.black38)
+                                : (isDark ? Colors.white : Colors.black87),
                           ),
                         ),
                         SizedBox(height: 2.h),
@@ -458,18 +454,19 @@ class QadhaaTrackerWidget extends StatelessWidget {
                             color: isCurrentDay
                                 ? primary.withValues(alpha: 0.7)
                                 : isFuture
-                                    ? (isDark ? Colors.white24 : Colors.black26)
-                                    : (isDark
-                                        ? Colors.white38
-                                        : Colors.black38),
+                                ? (isDark ? Colors.white24 : Colors.black26)
+                                : (isDark ? Colors.white38 : Colors.black38),
                           ),
                         ),
                       ],
                     ),
                   ),
                   if (isFuture)
-                    _buildStatusIcon(day.status,
-                        enabled: false, primary: primary)
+                    _buildStatusIcon(
+                      day.status,
+                      enabled: false,
+                      primary: primary,
+                    )
                   else
                     PopupMenuButton<String>(
                       onSelected: (status) =>
@@ -484,8 +481,11 @@ class QadhaaTrackerWidget extends StatelessWidget {
                           value: 'fasted',
                           child: Row(
                             children: [
-                              Icon(Icons.check_circle_rounded,
-                                  color: const Color(0xFF22C55E), size: 20.sp),
+                              Icon(
+                                Icons.check_circle_rounded,
+                                color: const Color(0xFF22C55E),
+                                size: 20.sp,
+                              ),
                               SizedBox(width: 8.w),
                               Text(l10n.fastedStatus),
                             ],
@@ -495,16 +495,22 @@ class QadhaaTrackerWidget extends StatelessWidget {
                           value: 'missed',
                           child: Row(
                             children: [
-                              Icon(Icons.cancel_rounded,
-                                  color: const Color(0xFFEF4444), size: 20.sp),
+                              Icon(
+                                Icons.cancel_rounded,
+                                color: const Color(0xFFEF4444),
+                                size: 20.sp,
+                              ),
                               SizedBox(width: 8.w),
                               Text(l10n.missedStatus),
                             ],
                           ),
                         ),
                       ],
-                      icon: _buildStatusIcon(day.status,
-                          enabled: true, primary: primary),
+                      icon: _buildStatusIcon(
+                        day.status,
+                        enabled: true,
+                        primary: primary,
+                      ),
                     ),
                 ],
               ),
@@ -552,8 +558,11 @@ class QadhaaTrackerWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusIcon(String status,
-      {required bool enabled, required Color primary}) {
+  Widget _buildStatusIcon(
+    String status, {
+    required bool enabled,
+    required Color primary,
+  }) {
     final double opacity = enabled ? 1.0 : 0.35;
     switch (status) {
       case 'fasted':

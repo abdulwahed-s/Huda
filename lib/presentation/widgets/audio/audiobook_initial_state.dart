@@ -24,9 +24,10 @@ class _AudiobookInitialStateState extends State<AudiobookInitialState>
       vsync: this,
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
-    _opacity = Tween<double>(begin: 0.3, end: 0.75).animate(
-      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut),
-    );
+    _opacity = Tween<double>(
+      begin: 0.3,
+      end: 0.75,
+    ).animate(CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -45,7 +46,7 @@ class _AudiobookInitialStateState extends State<AudiobookInitialState>
           children: [
             AnimatedBuilder(
               animation: _opacity,
-              builder: (_, __) => Opacity(
+              builder: (_, _) => Opacity(
                 opacity: _opacity.value,
                 child: Container(
                   width: 200.w,

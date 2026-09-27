@@ -24,8 +24,11 @@ class AudiobookTopBar extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.keyboard_arrow_down_rounded,
-                size: 30.sp, color: textColor),
+            icon: Icon(
+              Icons.keyboard_arrow_down_rounded,
+              size: 30.sp,
+              color: textColor,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           const Spacer(),
@@ -51,12 +54,14 @@ class AudiobookTopBar extends StatelessWidget {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
-              color: (isDark ? Colors.black : Colors.white)
-                  .withValues(alpha: 0.15),
+              color: (isDark ? Colors.black : Colors.white).withValues(
+                alpha: 0.15,
+              ),
               border: Border(
                 bottom: BorderSide(
-                  color: (isDark ? Colors.white : Colors.black)
-                      .withValues(alpha: 0.08),
+                  color: (isDark ? Colors.white : Colors.black).withValues(
+                    alpha: 0.08,
+                  ),
                   width: 0.5,
                 ),
               ),

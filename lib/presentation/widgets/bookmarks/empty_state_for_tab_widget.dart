@@ -96,8 +96,9 @@ class EmptyStateForTabWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w500,
-                        color:
-                            isDark ? appColors.darkText : appColors.lightText,
+                        color: isDark
+                            ? appColors.darkText
+                            : appColors.lightText,
                       ),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.visible,

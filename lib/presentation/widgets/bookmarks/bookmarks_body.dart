@@ -43,19 +43,26 @@ class BookmarksBody extends StatelessWidget {
           return ErrorStateWidget(state: state);
         }
 
-        final allBookmarks =
-            state is BookmarksLoaded ? state.bookmarks : <BookmarkModel>[];
+        final allBookmarks = state is BookmarksLoaded
+            ? state.bookmarks
+            : <BookmarkModel>[];
         final stats = state is BookmarksLoaded
             ? state.stats
             : {'total': 0, 'bookmarks': 0, 'notes': 0, 'stars': 0};
 
         final searchFilteredBookmarks = _filterBookmarksBySearch(allBookmarks);
         final filteredBookmarks = _filterBookmarksByType(
-            searchFilteredBookmarks, BookmarkType.bookmark);
-        final noteBookmarks =
-            _filterBookmarksByType(searchFilteredBookmarks, BookmarkType.note);
-        final starBookmarks =
-            _filterBookmarksByType(searchFilteredBookmarks, BookmarkType.star);
+          searchFilteredBookmarks,
+          BookmarkType.bookmark,
+        );
+        final noteBookmarks = _filterBookmarksByType(
+          searchFilteredBookmarks,
+          BookmarkType.note,
+        );
+        final starBookmarks = _filterBookmarksByType(
+          searchFilteredBookmarks,
+          BookmarkType.star,
+        );
 
         return Column(
           children: [
@@ -75,10 +82,12 @@ class BookmarksBody extends StatelessWidget {
                         filteredBookmarks.isEmpty
                             ? EmptyStateForTabWidget(
                                 isDark: isDark,
-                                title: AppLocalizations.of(context)!
-                                    .noBookmarksYet,
-                                subtitle: AppLocalizations.of(context)!
-                                    .startBookmarkingFavoriteVerses,
+                                title: AppLocalizations.of(
+                                  context,
+                                )!.noBookmarksYet,
+                                subtitle: AppLocalizations.of(
+                                  context,
+                                )!.startBookmarkingFavoriteVerses,
                               )
                             : BookmarksList(
                                 bookmarks: filteredBookmarks,
@@ -90,8 +99,9 @@ class BookmarksBody extends StatelessWidget {
                             ? EmptyStateForTabWidget(
                                 isDark: isDark,
                                 title: AppLocalizations.of(context)!.noNotesYet,
-                                subtitle: AppLocalizations.of(context)!
-                                    .addNotesToFavoriteVerses,
+                                subtitle: AppLocalizations.of(
+                                  context,
+                                )!.addNotesToFavoriteVerses,
                               )
                             : BookmarksList(
                                 bookmarks: noteBookmarks,
@@ -102,10 +112,12 @@ class BookmarksBody extends StatelessWidget {
                         starBookmarks.isEmpty
                             ? EmptyStateForTabWidget(
                                 isDark: isDark,
-                                title: AppLocalizations.of(context)!
-                                    .noStarredVersesYet,
-                                subtitle: AppLocalizations.of(context)!
-                                    .starImportantVerses,
+                                title: AppLocalizations.of(
+                                  context,
+                                )!.noStarredVersesYet,
+                                subtitle: AppLocalizations.of(
+                                  context,
+                                )!.starImportantVerses,
                               )
                             : BookmarksList(
                                 bookmarks: starBookmarks,
@@ -127,14 +139,18 @@ class BookmarksBody extends StatelessWidget {
         ? bookmarks
         : bookmarks.where((bookmark) {
             final normalizedQuery = TextUtils.removeDiacriticsAndNormalize(
-                searchQuery.toLowerCase());
+              searchQuery.toLowerCase(),
+            );
             final normalizedAyahText = TextUtils.removeDiacriticsAndNormalize(
-                bookmark.ayahText.toLowerCase());
+              bookmark.ayahText.toLowerCase(),
+            );
             final normalizedSurahName = TextUtils.removeDiacriticsAndNormalize(
-                bookmark.surahName.toLowerCase());
+              bookmark.surahName.toLowerCase(),
+            );
             final normalizedNote = bookmark.note != null
                 ? TextUtils.removeDiacriticsAndNormalize(
-                    bookmark.note!.toLowerCase())
+                    bookmark.note!.toLowerCase(),
+                  )
                 : '';
 
             return normalizedAyahText.contains(normalizedQuery) ||
@@ -145,7 +161,9 @@ class BookmarksBody extends StatelessWidget {
   }
 
   List<BookmarkModel> _filterBookmarksByType(
-      List<BookmarkModel> bookmarks, BookmarkType type) {
+    List<BookmarkModel> bookmarks,
+    BookmarkType type,
+  ) {
     return bookmarks.where((b) => b.type == type).toList();
   }
 }

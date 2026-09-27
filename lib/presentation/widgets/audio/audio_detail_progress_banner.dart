@@ -24,8 +24,10 @@ class AudioDetailProgressBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fraction = (progress.trackCount ?? 1) > 1
-        ? ((progress.trackIndex) / ((progress.trackCount ?? 1) - 1))
-            .clamp(0.0, 1.0)
+        ? ((progress.trackIndex) / ((progress.trackCount ?? 1) - 1)).clamp(
+            0.0,
+            1.0,
+          )
         : 0.0;
 
     return Container(
@@ -33,17 +35,18 @@ class AudioDetailProgressBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.primaryColor.withValues(alpha: isDark ? 0.12 : 0.07),
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: context.primaryColor.withValues(alpha: 0.2),
-        ),
+        border: Border.all(color: context.primaryColor.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.history_rounded,
-                  size: 14.sp, color: context.primaryColor),
+              Icon(
+                Icons.history_rounded,
+                size: 14.sp,
+                color: context.primaryColor,
+              ),
               SizedBox(width: 6.w),
               Text(
                 AppLocalizations.of(context)!.continueListening,

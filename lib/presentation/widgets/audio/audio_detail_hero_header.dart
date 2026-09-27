@@ -35,7 +35,7 @@ class AudioDetailHeroHeader extends StatelessWidget {
               fit: BoxFit.cover,
               color: Colors.black.withValues(alpha: isDark ? 0.55 : 0.35),
               colorBlendMode: BlendMode.darken,
-              errorBuilder: (_, __, ___) => _solidBg(context),
+              errorBuilder: (_, _, _) => _solidBg(context),
             ),
           )
         else
@@ -91,8 +91,11 @@ class AudioDetailHeroHeader extends StatelessWidget {
                         : null,
                   ),
                   child: !hasArt
-                      ? Icon(Icons.graphic_eq_rounded,
-                          color: Colors.white, size: 52.sp)
+                      ? Icon(
+                          Icons.graphic_eq_rounded,
+                          color: Colors.white,
+                          size: 52.sp,
+                        )
                       : null,
                 ),
                 SizedBox(height: 16.h),
@@ -171,8 +174,11 @@ class _ChapterCountPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.headphones_rounded,
-              size: 13.sp, color: Colors.white.withValues(alpha: 0.9)),
+          Icon(
+            Icons.headphones_rounded,
+            size: 13.sp,
+            color: Colors.white.withValues(alpha: 0.9),
+          ),
           SizedBox(width: 5.w),
           Text(
             '$count ${AppLocalizations.of(context)!.chapters}',

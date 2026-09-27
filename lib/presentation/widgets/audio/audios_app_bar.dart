@@ -16,18 +16,13 @@ class AudiosAppBar extends StatelessWidget {
     return SliverAppBar(
       elevation: 0,
       backgroundColor: bgColor,
-      iconTheme: IconThemeData(
-        color: isDark ? Colors.white : Colors.black,
-      ),
+      iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
       surfaceTintColor: Colors.transparent,
       pinned: true,
       floating: false,
       expandedHeight: 140.h,
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsetsDirectional.only(
-          start: 50.w,
-          bottom: 5.h,
-        ),
+        titlePadding: EdgeInsetsDirectional.only(start: 50.w, bottom: 5.h),
         title: Text(
           AppLocalizations.of(context)!.audios,
           style: TextStyle(

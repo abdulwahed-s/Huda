@@ -52,8 +52,9 @@ class _AudioDetailExpandableDescriptionState
         SizedBox(height: 10.h),
         AnimatedCrossFade(
           duration: const Duration(milliseconds: 300),
-          crossFadeState:
-              _expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState: _expanded
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
           firstChild: Text(
             widget.text,
             maxLines: _collapsedLines,
@@ -81,9 +82,10 @@ class _AudioDetailExpandableDescriptionState
   }
 
   TextStyle _textStyle(BuildContext context) => TextStyle(
-        fontSize: 14.sp,
-        height: 1.65,
-        color: (widget.isDark ? context.darkText : context.lightText)
-            .withValues(alpha: 0.75),
-      );
+    fontSize: 14.sp,
+    height: 1.65,
+    color: (widget.isDark ? context.darkText : context.lightText).withValues(
+      alpha: 0.75,
+    ),
+  );
 }

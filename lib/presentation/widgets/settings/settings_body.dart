@@ -32,44 +32,78 @@ class SettingsBody extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal:
-                  context.responsive(mobile: 20.w, tablet: 24.0, desktop: 24.0),
-              vertical:
-                  context.responsive(mobile: 8.h, tablet: 12.0, desktop: 12.0),
+              horizontal: context.responsive(
+                mobile: 20.w,
+                tablet: 24.0,
+                desktop: 24.0,
+              ),
+              vertical: context.responsive(
+                mobile: 8.h,
+                tablet: 12.0,
+                desktop: 12.0,
+              ),
             ),
             child: ListView(
               physics: const BouncingScrollPhysics(),
               children: [
                 ThemeToggleSection(isDark: isDark),
                 SizedBox(
-                    height: context.responsive(
-                        mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                  height: context.responsive(
+                    mobile: 24.h,
+                    tablet: 24.0,
+                    desktop: 24.0,
+                  ),
+                ),
                 TextSizeSection(isDark: isDark),
                 SizedBox(
-                    height: context.responsive(
-                        mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                  height: context.responsive(
+                    mobile: 24.h,
+                    tablet: 24.0,
+                    desktop: 24.0,
+                  ),
+                ),
                 const LanguageSelectionSection(),
                 SizedBox(
-                    height: context.responsive(
-                        mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                  height: context.responsive(
+                    mobile: 24.h,
+                    tablet: 24.0,
+                    desktop: 24.0,
+                  ),
+                ),
                 const ColorThemeSelectionSection(),
                 SizedBox(
-                    height: context.responsive(
-                        mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                  height: context.responsive(
+                    mobile: 24.h,
+                    tablet: 24.0,
+                    desktop: 24.0,
+                  ),
+                ),
                 const FontSelectionSection(),
                 SizedBox(
-                    height: context.responsive(
-                        mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                  height: context.responsive(
+                    mobile: 24.h,
+                    tablet: 24.0,
+                    desktop: 24.0,
+                  ),
+                ),
                 if (DistributionChannel.isFoss) ...[
                   const CrashReportingSettingsSection(),
                   SizedBox(
-                      height: context.responsive(
-                          mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+                    height: context.responsive(
+                      mobile: 24.h,
+                      tablet: 24.0,
+                      desktop: 24.0,
+                    ),
+                  ),
                 ],
                 const SupportCard(),
                 SizedBox(
-                    height: context.responsive(
-                        mobile: 32.h, tablet: 32.0, desktop: 32.0)),
+                  height: context.responsive(
+                    mobile: 32.h,
+                    tablet: 32.0,
+                    desktop: 32.0,
+                  ),
+                ),
               ],
             ),
           ),

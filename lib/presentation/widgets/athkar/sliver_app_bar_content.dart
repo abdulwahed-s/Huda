@@ -30,8 +30,9 @@ class SliverAppBarContent extends StatelessWidget {
       floating: false,
       pinned: true,
       elevation: 0,
-      backgroundColor:
-          isDark ? context.darkGradientStart : context.primaryColor,
+      backgroundColor: isDark
+          ? context.darkGradientStart
+          : context.primaryColor,
       flexibleSpace: FlexibleSpaceBar(
         title: showSearch
             ? null
@@ -96,21 +97,13 @@ class SliverAppBarContent extends StatelessWidget {
         if (!showSearch)
           IconButton(
             key: const ValueKey('search'),
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-              size: 24.sp,
-            ),
+            icon: Icon(Icons.search, color: Colors.white, size: 24.sp),
             onPressed: toggleSearch,
           ),
         if (showSearch)
           IconButton(
             key: const ValueKey('close'),
-            icon: Icon(
-              Icons.close,
-              color: Colors.white,
-              size: 24.sp,
-            ),
+            icon: Icon(Icons.close, color: Colors.white, size: 24.sp),
             onPressed: toggleSearch,
           ),
       ],
@@ -118,13 +111,16 @@ class SliverAppBarContent extends StatelessWidget {
           ? PreferredSize(
               preferredSize: Size.fromHeight(60.h),
               child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, -1),
-                  end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: searchAnimationController,
-                  curve: Curves.easeInOut,
-                )),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(0, -1),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(
+                        parent: searchAnimationController,
+                        curve: Curves.easeInOut,
+                      ),
+                    ),
                 child: Container(
                   padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
                   child: Container(
@@ -140,13 +136,11 @@ class SliverAppBarContent extends StatelessWidget {
                     child: TextField(
                       controller: searchController,
                       autofocus: true,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.sp,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 15.sp),
                       decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context)!.searchAthkarHint,
+                        hintText: AppLocalizations.of(
+                          context,
+                        )!.searchAthkarHint,
                         hintStyle: TextStyle(
                           color: Colors.white.withValues(alpha: 0.7),
                           fontSize: 14.sp,

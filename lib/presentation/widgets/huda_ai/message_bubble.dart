@@ -35,14 +35,12 @@ class MessageBubble extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!isUser) ...[
-            _buildAIIcon(context),
-            SizedBox(width: 12.w),
-          ],
+          if (!isUser) ...[_buildAIIcon(context), SizedBox(width: 12.w)],
           Expanded(
             child: Column(
-              crossAxisAlignment:
-                  isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: isUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 if (!isUser) _buildAITitle(context),
                 _buildMessageContent(context, isUser),
@@ -55,10 +53,7 @@ class MessageBubble extends StatelessWidget {
               ],
             ),
           ),
-          if (isUser) ...[
-            SizedBox(width: 12.w),
-            _buildUserIcon(context),
-          ],
+          if (isUser) ...[SizedBox(width: 12.w), _buildUserIcon(context)],
         ],
       ),
     );
@@ -72,11 +67,7 @@ class MessageBubble extends StatelessWidget {
         shape: BoxShape.circle,
         color: Theme.of(context).primaryColor,
       ),
-      child: Icon(
-        Icons.auto_awesome,
-        color: Colors.white,
-        size: 20.sp,
-      ),
+      child: Icon(Icons.auto_awesome, color: Colors.white, size: 20.sp),
     );
   }
 
@@ -112,23 +103,23 @@ class MessageBubble extends StatelessWidget {
 
   Widget _buildMessageContent(BuildContext context, bool isUser) {
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: 0.8.sw,
-      ),
+      constraints: BoxConstraints(maxWidth: 0.8.sw),
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
         color: isUser
             ? Theme.of(context).primaryColor
             : isDark
-                ? const Color(0xFF1A1F2E)
-                : Colors.white,
+            ? const Color(0xFF1A1F2E)
+            : Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20.r),
           topRight: Radius.circular(20.r),
           bottomLeft: Radius.circular(
-              isUser ? (isRTL ? 4.r : 20.r) : (isRTL ? 20.r : 4.r)),
+            isUser ? (isRTL ? 4.r : 20.r) : (isRTL ? 20.r : 4.r),
+          ),
           bottomRight: Radius.circular(
-              isUser ? (isRTL ? 20.r : 4.r) : (isRTL ? 4.r : 20.r)),
+            isUser ? (isRTL ? 20.r : 4.r) : (isRTL ? 4.r : 20.r),
+          ),
         ),
         boxShadow: [
           BoxShadow(
@@ -145,8 +136,8 @@ class MessageBubble extends StatelessWidget {
                 color: isUser
                     ? Colors.white
                     : isDark
-                        ? Colors.white
-                        : Colors.black87,
+                    ? Colors.white
+                    : Colors.black87,
                 fontSize: 14.sp,
                 height: 1.5,
               ),
@@ -182,11 +173,7 @@ class MessageBubble extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.info_outline,
-            size: 16.sp,
-            color: Colors.orange[700],
-          ),
+          Icon(Icons.info_outline, size: 16.sp, color: Colors.orange[700]),
           SizedBox(width: 8.w),
           Expanded(
             child: Text(
@@ -206,10 +193,7 @@ class MessageBubble extends StatelessWidget {
   Widget _buildActionButtons() {
     return Row(
       children: [
-        ActionButton(
-          icon: Icons.copy_outlined,
-          onPressed: onCopy,
-        ),
+        ActionButton(icon: Icons.copy_outlined, onPressed: onCopy),
         SizedBox(width: 8.w),
         if (!PlatformUtils.isLinux)
           ActionButton(
@@ -227,11 +211,7 @@ class ActionButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback? onPressed;
 
-  const ActionButton({
-    super.key,
-    required this.icon,
-    required this.onPressed,
-  });
+  const ActionButton({super.key, required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -247,11 +227,7 @@ class ActionButton extends StatelessWidget {
           onTap: onPressed,
           child: Container(
             padding: EdgeInsets.all(8.w),
-            child: Icon(
-              icon,
-              size: 16.sp,
-              color: Colors.grey[600],
-            ),
+            child: Icon(icon, size: 16.sp, color: Colors.grey[600]),
           ),
         ),
       ),

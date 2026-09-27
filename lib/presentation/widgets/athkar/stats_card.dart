@@ -6,10 +6,7 @@ import 'package:huda/l10n/app_localizations.dart';
 class StatsCard extends StatelessWidget {
   final int totalCount;
 
-  const StatsCard({
-    super.key,
-    required this.totalCount,
-  });
+  const StatsCard({super.key, required this.totalCount});
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +38,7 @@ class StatsCard extends StatelessWidget {
               color: context.primaryColor,
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Icon(
-              Icons.auto_stories,
-              color: Colors.white,
-              size: 24.sp,
-            ),
+            child: Icon(Icons.auto_stories, color: Colors.white, size: 24.sp),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -62,8 +55,9 @@ class StatsCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  AppLocalizations.of(context)!
-                      .selectedAthkarGroups(totalCount),
+                  AppLocalizations.of(
+                    context,
+                  )!.selectedAthkarGroups(totalCount),
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: Colors.grey.shade600,

@@ -38,8 +38,11 @@ class OnboardingPageContent extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal:
-            context.responsive(mobile: 24.w, tablet: 32.0, desktop: 32.0),
+        horizontal: context.responsive(
+          mobile: 24.w,
+          tablet: 32.0,
+          desktop: 32.0,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +82,10 @@ class OnboardingPageContent extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(
                             context.responsive(
-                                mobile: 18.w, tablet: 22.0, desktop: 24.0),
+                              mobile: 18.w,
+                              tablet: 22.0,
+                              desktop: 24.0,
+                            ),
                           ),
                           decoration: BoxDecoration(
                             color: data.primaryColor.withValues(alpha: 0.1),
@@ -103,14 +109,21 @@ class OnboardingPageContent extends StatelessWidget {
           _buildAnimatedTitle(context, data.title, titleFontSize),
           SizedBox(height: 8.h),
           _buildAnimatedDescription(
-              context, data.description, descFontSize, descMaxWidth),
+            context,
+            data.description,
+            descFontSize,
+            descMaxWidth,
+          ),
         ],
       ),
     );
   }
 
   Widget _buildAnimatedTitle(
-      BuildContext context, String title, double fontSize) {
+    BuildContext context,
+    String title,
+    double fontSize,
+  ) {
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 800),
       tween: Tween(begin: 0.0, end: 1.0),
@@ -136,8 +149,12 @@ class OnboardingPageContent extends StatelessWidget {
     );
   }
 
-  Widget _buildAnimatedDescription(BuildContext context, String description,
-      double fontSize, double maxWidth) {
+  Widget _buildAnimatedDescription(
+    BuildContext context,
+    String description,
+    double fontSize,
+    double maxWidth,
+  ) {
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 1000),
       tween: Tween(begin: 0.0, end: 1.0),
@@ -152,10 +169,9 @@ class OnboardingPageContent extends StatelessWidget {
                 description,
                 style: TextStyle(
                   fontSize: fontSize,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.7),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.4,
                   fontWeight: FontWeight.w400,
                 ),

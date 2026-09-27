@@ -83,13 +83,16 @@ class _WavesPainter extends CustomPainter {
 
       final baseY = size.height * layer.heightFactor;
       final phase = t * layer.speed * 2 * math.pi;
-      final wavelength =
-          (size.width / layer.wavelengthFactor).clamp(1.0, double.infinity);
+      final wavelength = (size.width / layer.wavelengthFactor).clamp(
+        1.0,
+        double.infinity,
+      );
 
       final path = Path()..moveTo(0, size.height);
       path.lineTo(0, baseY);
       for (double x = 0; x <= size.width; x += 1) {
-        final y = baseY +
+        final y =
+            baseY +
             layer.amplitude * math.sin((x / wavelength * 2 * math.pi) + phase);
         path.lineTo(x, y);
       }

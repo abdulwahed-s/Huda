@@ -25,12 +25,13 @@ class DownloadButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-            color: isBookDownloaded
-                ? Colors.green
-                : isDownloading
-                    ? context.primaryColor.withValues(alpha: 0.5)
-                    : context.primaryColor,
-            width: 1.5),
+          color: isBookDownloaded
+              ? Colors.green
+              : isDownloading
+              ? context.primaryColor.withValues(alpha: 0.5)
+              : context.primaryColor,
+          width: 1.5,
+        ),
         color: isBookDownloaded ? Colors.green.withValues(alpha: 0.1) : null,
       ),
       child: Material(
@@ -79,8 +80,8 @@ class DownloadButton extends StatelessWidget {
                         color: isBookDownloaded
                             ? Colors.green
                             : onPressed != null
-                                ? context.primaryColor
-                                : context.primaryColor.withValues(alpha: 0.5),
+                            ? context.primaryColor
+                            : context.primaryColor.withValues(alpha: 0.5),
                         size: 20.sp,
                       ),
                     SizedBox(width: 8.w),
@@ -90,8 +91,8 @@ class DownloadButton extends StatelessWidget {
                         color: isBookDownloaded
                             ? Colors.green
                             : onPressed != null
-                                ? context.primaryColor
-                                : context.primaryColor.withValues(alpha: 0.5),
+                            ? context.primaryColor
+                            : context.primaryColor.withValues(alpha: 0.5),
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
                       ),

@@ -128,9 +128,9 @@ abstract final class IslamicCalendarEvents {
       for (var day = event.hijriDayStart; day <= endDay; day++) {
         final date = HijriDate(focusedMonth.year, event.hijriMonth, day);
         final key = HijriCalendarService.eventKey(date);
-        eventsByDate.putIfAbsent(key, () => <HijriEvent>[]).add(
-              event.markerFor(date),
-            );
+        eventsByDate
+            .putIfAbsent(key, () => <HijriEvent>[])
+            .add(event.markerFor(date));
       }
     }
 

@@ -7,10 +7,7 @@ import 'package:huda/l10n/app_localizations.dart';
 class ErrorState extends StatelessWidget {
   final String message;
 
-  const ErrorState({
-    super.key,
-    required this.message,
-  });
+  const ErrorState({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -19,26 +16,16 @@ class ErrorState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 64.sp,
-            color: Colors.red.shade400,
-          ),
+          Icon(Icons.error_outline, size: 64.sp, color: Colors.red.shade400),
           SizedBox(height: 16.h),
           Text(
             AppLocalizations.of(context)!.athkarLoadingError,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8.h),
           Text(
             message,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 24.h),

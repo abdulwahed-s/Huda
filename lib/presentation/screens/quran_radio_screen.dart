@@ -43,7 +43,8 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
   }
 
   void _onScroll() {
-    final collapsed = _scrollController.hasClients &&
+    final collapsed =
+        _scrollController.hasClients &&
         _scrollController.offset > (180.h - kToolbarHeight);
     if (collapsed != _isCollapsed) setState(() => _isCollapsed = collapsed);
   }
@@ -92,15 +93,18 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? context.darkGradientStart : context.lightSurface,
+      backgroundColor: isDark
+          ? context.darkGradientStart
+          : context.lightSurface,
       body: BlocBuilder<QuranRadioCubit, QuranRadioState>(
         builder: (context, state) {
-          final currentStation =
-              state is QuranRadioLoaded ? state.currentlyPlaying : null;
+          final currentStation = state is QuranRadioLoaded
+              ? state.currentlyPlaying
+              : null;
           final isPlaying = state is QuranRadioLoaded ? state.isPlaying : false;
-          final isBuffering =
-              state is QuranRadioLoaded ? state.isBuffering : false;
+          final isBuffering = state is QuranRadioLoaded
+              ? state.isBuffering
+              : false;
 
           return Stack(
             children: [
@@ -121,11 +125,18 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
                       },
                     ),
                   ),
-                  _buildBodySliver(state, theme, l10n, currentStation,
-                      isPlaying, isBuffering),
+                  _buildBodySliver(
+                    state,
+                    theme,
+                    l10n,
+                    currentStation,
+                    isPlaying,
+                    isBuffering,
+                  ),
                   SliverToBoxAdapter(
-                    child:
-                        SizedBox(height: currentStation != null ? 110.h : 24.h),
+                    child: SizedBox(
+                      height: currentStation != null ? 110.h : 24.h,
+                    ),
                   ),
                 ],
               ),
@@ -136,11 +147,16 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 380),
                   transitionBuilder: (child, animation) => SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, 1.5),
-                      end: Offset.zero,
-                    ).animate(CurvedAnimation(
-                        parent: animation, curve: Curves.easeOutCubic)),
+                    position:
+                        Tween<Offset>(
+                          begin: const Offset(0, 1.5),
+                          end: Offset.zero,
+                        ).animate(
+                          CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeOutCubic,
+                          ),
+                        ),
                     child: FadeTransition(opacity: animation, child: child),
                   ),
                   child: currentStation != null
@@ -167,9 +183,13 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
   }
 
   SliverAppBar _buildSliverAppBar(
-      ThemeData theme, AppLocalizations l10n, QuranRadioState state) {
-    final int? stationCount =
-        state is QuranRadioLoaded ? state.radios.length : null;
+    ThemeData theme,
+    AppLocalizations l10n,
+    QuranRadioState state,
+  ) {
+    final int? stationCount = state is QuranRadioLoaded
+        ? state.radios.length
+        : null;
 
     return SliverAppBar(
       expandedHeight: 180.h,
@@ -226,10 +246,11 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
 
     if (state is QuranRadioLoaded) {
       final radios = state.radios
-          .where((r) => r.name
-              .toString()
-              .toLowerCase()
-              .contains(_searchQuery.toLowerCase()))
+          .where(
+            (r) => r.name.toString().toLowerCase().contains(
+              _searchQuery.toLowerCase(),
+            ),
+          )
           .toList();
 
       if (radios.isEmpty) {
@@ -241,21 +262,18 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
         sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final station = radios[index];
-              return RadioStationCard(
-                station: station,
-                isActive: currentStation?.id == station.id,
-                isPlaying: isPlaying,
-                isBuffering: isBuffering,
-                pulseController: _pulseController,
-                onTap: () => _playStation(station),
-                index: index,
-              );
-            },
-            childCount: radios.length,
-          ),
+          delegate: SliverChildBuilderDelegate((context, index) {
+            final station = radios[index];
+            return RadioStationCard(
+              station: station,
+              isActive: currentStation?.id == station.id,
+              isPlaying: isPlaying,
+              isBuffering: isBuffering,
+              pulseController: _pulseController,
+              onTap: () => _playStation(station),
+              index: index,
+            );
+          }, childCount: radios.length),
         ),
       );
     }

@@ -79,8 +79,8 @@ class QuranFontOptionTile extends StatelessWidget {
                     color: isSelected
                         ? accent.withValues(alpha: 0.12)
                         : (isDark
-                            ? Colors.white.withValues(alpha: 0.07)
-                            : Colors.black.withValues(alpha: 0.05)),
+                              ? Colors.white.withValues(alpha: 0.07)
+                              : Colors.black.withValues(alpha: 0.05)),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Text(

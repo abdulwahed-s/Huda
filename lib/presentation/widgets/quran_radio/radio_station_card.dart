@@ -40,11 +40,17 @@ class _RadioStationCardState extends State<RadioStationCard>
       vsync: this,
       duration: const Duration(milliseconds: 280),
     );
-    _fadeAnim =
-        CurvedAnimation(parent: _entranceController, curve: Curves.easeOut);
+    _fadeAnim = CurvedAnimation(
+      parent: _entranceController,
+      curve: Curves.easeOut,
+    );
     _slideAnim = Tween<Offset>(begin: const Offset(0.06, 0), end: Offset.zero)
-        .animate(CurvedAnimation(
-            parent: _entranceController, curve: Curves.easeOutCubic));
+        .animate(
+          CurvedAnimation(
+            parent: _entranceController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
 
     final delay = (widget.index * 30).clamp(0, 120);
     Future.delayed(Duration(milliseconds: delay), () {
@@ -82,22 +88,25 @@ class _RadioStationCardState extends State<RadioStationCard>
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18.r),
                   color: widget.isActive
-                      ? theme.colorScheme.primary
-                          .withValues(alpha: isDark ? 0.18 : 0.07)
+                      ? theme.colorScheme.primary.withValues(
+                          alpha: isDark ? 0.18 : 0.07,
+                        )
                       : (isDark ? const Color(0xFF1E1E1E) : Colors.white),
                   border: Border.all(
                     color: widget.isActive
                         ? theme.colorScheme.primary.withValues(alpha: 0.5)
-                        : theme.colorScheme.outlineVariant
-                            .withValues(alpha: 0.35),
+                        : theme.colorScheme.outlineVariant.withValues(
+                            alpha: 0.35,
+                          ),
                     width: widget.isActive ? 1.5 : 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: widget.isActive
                           ? theme.colorScheme.primary.withValues(alpha: 0.13)
-                          : Colors.black
-                              .withValues(alpha: isDark ? 0.12 : 0.04),
+                          : Colors.black.withValues(
+                              alpha: isDark ? 0.12 : 0.04,
+                            ),
                       blurRadius: widget.isActive ? 18 : 8,
                       offset: const Offset(0, 4),
                     ),
@@ -222,25 +231,24 @@ class _RadioStationCardState extends State<RadioStationCard>
                                     ),
                                   )
                                 : (widget.isActive && widget.isPlaying)
-                                    ? AnimatedBuilder(
-                                        key: const ValueKey('eq'),
-                                        animation: widget.pulseController,
-                                        builder: (_, __) => Icon(
-                                          Icons.graphic_eq_rounded,
-                                          color: theme.colorScheme.primary,
-                                          size: 28.sp,
-                                        ),
-                                      )
-                                    : Icon(
-                                        Icons.play_circle_filled_rounded,
-                                        key:
-                                            ValueKey('play_${widget.isActive}'),
-                                        color: widget.isActive
-                                            ? theme.colorScheme.primary
-                                            : theme.colorScheme.secondary
-                                                .withValues(alpha: 0.45),
-                                        size: 32.sp,
-                                      ),
+                                ? AnimatedBuilder(
+                                    key: const ValueKey('eq'),
+                                    animation: widget.pulseController,
+                                    builder: (_, _) => Icon(
+                                      Icons.graphic_eq_rounded,
+                                      color: theme.colorScheme.primary,
+                                      size: 28.sp,
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.play_circle_filled_rounded,
+                                    key: ValueKey('play_${widget.isActive}'),
+                                    color: widget.isActive
+                                        ? theme.colorScheme.primary
+                                        : theme.colorScheme.secondary
+                                              .withValues(alpha: 0.45),
+                                    size: 32.sp,
+                                  ),
                           ),
                         ),
                       ],

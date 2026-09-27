@@ -71,8 +71,9 @@ class _CalibrationBannerState extends State<CalibrationBanner>
                     end: Alignment.bottomRight,
                     colors: [
                       Color.alphaBlend(
-                          accent.withValues(alpha: isDark ? 0.10 : 0.07),
-                          surface),
+                        accent.withValues(alpha: isDark ? 0.10 : 0.07),
+                        surface,
+                      ),
                       surface.withValues(alpha: isDark ? 0.92 : 0.96),
                     ],
                   ),
@@ -115,8 +116,9 @@ class _CalibrationBannerState extends State<CalibrationBanner>
                           ),
                           SizedBox(height: 5.h),
                           Text(
-                            AppLocalizations.of(context)!
-                                .calibrateCompassInstruction,
+                            AppLocalizations.of(
+                              context,
+                            )!.calibrateCompassInstruction,
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
@@ -210,10 +212,7 @@ class _FigureEightPainter extends CustomPainter {
   _FigureEightPainter({required this.progress, required this.accent});
 
   Offset _pointAt(double t, double cx, double cy, double a, double b) {
-    return Offset(
-      cx + a * math.cos(t),
-      cy + b * math.sin(t) * math.cos(t),
-    );
+    return Offset(cx + a * math.cos(t), cy + b * math.sin(t) * math.cos(t));
   }
 
   @override

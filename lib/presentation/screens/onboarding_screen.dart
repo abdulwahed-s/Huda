@@ -49,10 +49,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await cacheHelper.saveData(key: 'onboarding_completed', value: true);
 
     if (mounted) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRoute.home,
-        (route) => false,
-      );
+      Navigator.of(
+        context,
+      ).pushNamedAndRemoveUntil(AppRoute.home, (route) => false);
     }
   }
 
@@ -76,12 +75,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              getOnboardingPages(context)[_currentPage]
-                  .primaryColor
-                  .withValues(alpha: 0.1),
-              getOnboardingPages(context)[_currentPage]
-                  .secondaryColor
-                  .withValues(alpha: 0.05),
+              getOnboardingPages(
+                context,
+              )[_currentPage].primaryColor.withValues(alpha: 0.1),
+              getOnboardingPages(
+                context,
+              )[_currentPage].secondaryColor.withValues(alpha: 0.05),
               Theme.of(context).scaffoldBackgroundColor,
             ],
           ),

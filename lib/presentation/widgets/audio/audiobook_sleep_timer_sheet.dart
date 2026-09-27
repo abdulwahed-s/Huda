@@ -60,17 +60,19 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
                 crossAxisSpacing: 10.w,
                 childAspectRatio: 1.25,
                 children: [
-                  ..._minutes.map((m) => _buildTimeCard(
-                        context,
-                        isDark,
-                        icon: Icons.timer_rounded,
-                        label: l10n.sleepTimerMinutes(m),
-                        isActive: selectedMinutes == m,
-                        onTap: () {
-                          cubit.startSleepTimer(Duration(minutes: m));
-                          Navigator.pop(context);
-                        },
-                      )),
+                  ..._minutes.map(
+                    (m) => _buildTimeCard(
+                      context,
+                      isDark,
+                      icon: Icons.timer_rounded,
+                      label: l10n.sleepTimerMinutes(m),
+                      isActive: selectedMinutes == m,
+                      onTap: () {
+                        cubit.startSleepTimer(Duration(minutes: m));
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                   _buildTimeCard(
                     context,
                     isDark,
@@ -89,8 +91,9 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
           SizedBox(height: 12.h),
           Divider(
             height: 1,
-            color:
-                (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
+            color: (isDark ? Colors.white : Colors.black).withValues(
+              alpha: 0.08,
+            ),
           ),
           SizedBox(height: 4.h),
           _buildCancelRow(context, isDark),
@@ -117,8 +120,8 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
           color: isActive
               ? primaryColor.withValues(alpha: 0.15)
               : (isDark
-                  ? Colors.white.withValues(alpha: 0.05)
-                  : Colors.grey.shade100),
+                    ? Colors.white.withValues(alpha: 0.05)
+                    : Colors.grey.shade100),
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: isActive ? primaryColor : Colors.transparent,
@@ -137,8 +140,8 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
                     color: isActive
                         ? primaryColor
                         : (isDark
-                            ? context.darkText.withValues(alpha: 0.65)
-                            : context.lightText.withValues(alpha: 0.55)),
+                              ? context.darkText.withValues(alpha: 0.65)
+                              : context.lightText.withValues(alpha: 0.55)),
                   ),
                   SizedBox(height: 6.h),
                   Text(
@@ -186,8 +189,11 @@ class AudiobookSleepTimerSheet extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 8.w),
           child: Row(
             children: [
-              Icon(Icons.timer_off_rounded,
-                  size: 22.sp, color: Colors.red.shade400),
+              Icon(
+                Icons.timer_off_rounded,
+                size: 22.sp,
+                color: Colors.red.shade400,
+              ),
               SizedBox(width: 16.w),
               Text(
                 l10n.cancel,

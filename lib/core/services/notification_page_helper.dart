@@ -1113,12 +1113,8 @@ class NotificationPageHelper {
         defaultBody:
             'Start your day with morning Athkar and remembrance of Allah.',
         recurrence: 'daily',
-        schedule: (title, body) => scheduleAthkarMorning(
-          true,
-          morningAthkarTime,
-          title,
-          body,
-        ),
+        schedule: (title, body) =>
+            scheduleAthkarMorning(true, morningAthkarTime, title, body),
       );
       reconcileReminder(
         id: _athkarEveningId,
@@ -1127,15 +1123,10 @@ class NotificationPageHelper {
         title: eveningTitle,
         body: eveningBody,
         defaultTitle: '🌅 Evening Athkar',
-        defaultBody:
-            'End your day with evening Athkar and gratitude to Allah.',
+        defaultBody: 'End your day with evening Athkar and gratitude to Allah.',
         recurrence: 'daily',
-        schedule: (title, body) => scheduleAthkarEvening(
-          true,
-          eveningAthkarTime,
-          title,
-          body,
-        ),
+        schedule: (title, body) =>
+            scheduleAthkarEvening(true, eveningAthkarTime, title, body),
       );
       reconcileReminder(
         id: _quranReminderId,
@@ -1147,12 +1138,8 @@ class NotificationPageHelper {
         defaultBody:
             'Time to read some verses from the Holy Quran and reflect on its guidance.',
         recurrence: 'daily',
-        schedule: (title, body) => scheduleQuranReminder(
-          true,
-          quranReminderTime,
-          title,
-          body,
-        ),
+        schedule: (title, body) =>
+            scheduleQuranReminder(true, quranReminderTime, title, body),
       );
       reconcileReminder(
         id: _checklistReminderId,
@@ -1164,12 +1151,8 @@ class NotificationPageHelper {
         defaultBody:
             'Time to fill your daily Islamic checklist and track your spiritual progress.',
         recurrence: 'daily',
-        schedule: (title, body) => scheduleChecklistReminder(
-          true,
-          checklistReminderTime,
-          title,
-          body,
-        ),
+        schedule: (title, body) =>
+            scheduleChecklistReminder(true, checklistReminderTime, title, body),
       );
       for (final legacyId in [
         _quranReminderId + 100,

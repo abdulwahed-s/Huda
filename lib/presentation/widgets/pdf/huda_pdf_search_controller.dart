@@ -34,14 +34,14 @@ class HudaPdfSearchController extends ChangeNotifier {
     required PdfViewerController viewerController,
     PdfPageText Function(PdfDocument document, int pageIndex)? extractPageText,
     this.debounceDuration = const Duration(milliseconds: 180),
-  })  : _document = document,
-        _viewerController = viewerController,
-        _extractPageText = extractPageText ?? PdfTextExtractor.extract;
+  }) : _document = document,
+       _viewerController = viewerController,
+       _extractPageText = extractPageText ?? PdfTextExtractor.extract;
 
   final PdfDocument _document;
   final PdfViewerController _viewerController;
   final PdfPageText Function(PdfDocument document, int pageIndex)
-      _extractPageText;
+  _extractPageText;
   final Duration debounceDuration;
 
   Timer? _debounce;
@@ -121,7 +121,8 @@ class HudaPdfSearchController extends ChangeNotifier {
         hits.addAll(_hitsFromPage(pageText, query));
       } on Object catch (error) {
         debugPrint(
-            'Could not extract PDF text from page ${pageIndex + 1}: $error');
+          'Could not extract PDF text from page ${pageIndex + 1}: $error',
+        );
       }
 
       if (!_isCurrentSession(session)) return;
@@ -143,9 +144,9 @@ class HudaPdfSearchController extends ChangeNotifier {
   bool _isCurrentSession(int session) => session == _searchSession;
 
   Iterable<HudaPdfSearchHit> _hitsFromPage(PdfPageText pageText, String query) {
-    return pageText.findAll(query).map(
-          (match) => _hitFromMatch(pageText, match),
-        );
+    return pageText
+        .findAll(query)
+        .map((match) => _hitFromMatch(pageText, match));
   }
 
   HudaPdfSearchHit _hitFromMatch(PdfPageText pageText, PdfTextMatch match) {

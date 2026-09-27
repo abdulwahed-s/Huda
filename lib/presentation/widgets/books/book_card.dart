@@ -6,11 +6,7 @@ class BookCard extends StatelessWidget {
   final dynamic book;
   final bool isDark;
 
-  const BookCard({
-    super.key,
-    required this.book,
-    required this.isDark,
-  });
+  const BookCard({super.key, required this.book, required this.isDark});
 
   Color _getBookColor() {
     final colors = [
@@ -66,10 +62,7 @@ class BookCard extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  bookColor.withValues(alpha: 0.8),
-                  bookColor,
-                ],
+                colors: [bookColor.withValues(alpha: 0.8), bookColor],
               ),
             ),
             child: Stack(
@@ -114,7 +107,11 @@ class BookCard extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 20.w, right: 12.w, top: 16.h, bottom: 12.h),
+                    left: 20.w,
+                    right: 12.w,
+                    top: 16.h,
+                    bottom: 12.h,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +120,9 @@ class BookCard extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 6.w, vertical: 2.h),
+                            horizontal: 6.w,
+                            vertical: 2.h,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(4.r),

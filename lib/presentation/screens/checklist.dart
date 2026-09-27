@@ -47,8 +47,9 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
       if (_currentLocale != currentLocale) {
         _currentLocale = currentLocale;
         try {
-          await _checklistCubit
-              .updateLocalizedTitles(AppLocalizations.of(context)!);
+          await _checklistCubit.updateLocalizedTitles(
+            AppLocalizations.of(context)!,
+          );
           if (isFirstTime && _checklistCubit.state is ChecklistInitial) {
             _checklistCubit.loadChecklist();
           }
@@ -159,8 +160,9 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     return BlocProvider.value(
       value: _checklistCubit,
       child: Scaffold(
-        backgroundColor:
-            isDark ? colors.darkCardBackground : colors.primaryExtraLight,
+        backgroundColor: isDark
+            ? colors.darkCardBackground
+            : colors.primaryExtraLight,
         body: Stack(
           children: [
             Column(
@@ -168,9 +170,11 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
                 ChecklistAppBar(
                   onTodayPressed: () {
                     _checklistCubit.navigateToToday();
-                    _pageController.animateToPage(1000,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut);
+                    _pageController.animateToPage(
+                      1000,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
                   },
                   isDark: isDark,
                 ),
@@ -196,17 +200,18 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
                                 physics: const BouncingScrollPhysics(),
                                 onPageChanged: (index) {
                                   final today = DateTime.now();
-                                  final targetDate =
-                                      today.add(Duration(days: index - 1000));
+                                  final targetDate = today.add(
+                                    Duration(days: index - 1000),
+                                  );
                                   _checklistCubit.navigateToDate(targetDate);
                                 },
-                                itemBuilder: (_, __) {
+                                itemBuilder: (_, _) {
                                   return AnimatedSwitcher(
                                     duration: const Duration(milliseconds: 300),
                                     child: ChecklistView(
                                       bottomPadding:
                                           MediaQuery.paddingOf(context).bottom +
-                                              25.h,
+                                          25.h,
                                       state: state,
                                       isToday: _isToday(state.currentDate),
                                       onToggle: (id, value) => _checklistCubit
@@ -221,8 +226,8 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
                         );
                       }
                       return Center(
-                          child:
-                              Text(AppLocalizations.of(context)!.unknownState));
+                        child: Text(AppLocalizations.of(context)!.unknownState),
+                      );
                     },
                   ),
                 ),

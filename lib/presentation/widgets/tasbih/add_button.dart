@@ -90,8 +90,9 @@ class _AddButtonState extends State<AddButton> with TickerProviderStateMixin {
                   _rippleController,
                 ]),
                 builder: (context, _) {
-                  final glow =
-                      Curves.easeInOut.transform(_glowController.value);
+                  final glow = Curves.easeInOut.transform(
+                    _glowController.value,
+                  );
                   final scale = 1 - _press.value * 0.09;
 
                   return Stack(
@@ -177,8 +178,9 @@ class _AddButtonState extends State<AddButton> with TickerProviderStateMixin {
                                   shadows: [
                                     Shadow(
                                       blurRadius: 10,
-                                      color:
-                                          Colors.black.withValues(alpha: 0.25),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.25,
+                                      ),
                                       offset: const Offset(0, 3),
                                     ),
                                   ],

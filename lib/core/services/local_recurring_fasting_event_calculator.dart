@@ -2,15 +2,11 @@ import 'package:hijri_plus/hijri_plus.dart';
 import 'package:huda/data/models/islamic_event_config.dart';
 
 typedef HijriDateResolver = HijriDate Function(DateTime localDate);
-typedef FastingReminderWindowResolver = FastingReminderWindow? Function(
-  DateTime targetLocalDate,
-);
+typedef FastingReminderWindowResolver =
+    FastingReminderWindow? Function(DateTime targetLocalDate);
 
 class FastingReminderWindow {
-  const FastingReminderWindow({
-    required this.startsAt,
-    required this.endsAt,
-  });
+  const FastingReminderWindow({required this.startsAt, required this.endsAt});
 
   final DateTime startsAt;
   final DateTime endsAt;
@@ -23,8 +19,8 @@ class LocalRecurringFastingEventCalculator {
   LocalRecurringFastingEventCalculator({
     required HijriDateResolver toHijri,
     required FastingReminderWindowResolver reminderWindowFor,
-  })  : _toHijri = toHijri,
-        _reminderWindowFor = reminderWindowFor;
+  }) : _toHijri = toHijri,
+       _reminderWindowFor = reminderWindowFor;
 
   static const whiteDaysFastingKey = 'white_days_fasting';
   static const mondayThursdayFastingKey = 'monday_thursday_fasting';
@@ -74,10 +70,7 @@ class LocalRecurringFastingEventCalculator {
     return candidates.first;
   }
 
-  IslamicEventConfig? _mondayThursdayEvent(
-    DateTime now,
-    DateTime localDay,
-  ) {
+  IslamicEventConfig? _mondayThursdayEvent(DateTime now, DateTime localDay) {
     for (final targetDay in _todayAndTomorrow(localDay)) {
       if (targetDay.weekday != DateTime.monday &&
           targetDay.weekday != DateTime.thursday) {
@@ -105,19 +98,13 @@ class LocalRecurringFastingEventCalculator {
     return null;
   }
 
-  IslamicEventConfig? _whiteDaysEvent(
-    DateTime now,
-    DateTime localDay,
-  ) {
+  IslamicEventConfig? _whiteDaysEvent(DateTime now, DateTime localDay) {
     for (final targetDay in _todayAndTomorrow(localDay)) {
       final targetHijri = _toHijri(targetDay);
       if (_isWhiteDay(targetHijri) &&
           _isVoluntaryFastingAllowed(targetHijri) &&
           _isWithinReminderWindow(now, targetDay)) {
-        return _whiteDaysConfig(
-          displayDay: localDay,
-          hijri: targetHijri,
-        );
+        return _whiteDaysConfig(displayDay: localDay, hijri: targetHijri);
       }
     }
     return null;

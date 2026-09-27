@@ -34,10 +34,7 @@ class SurahIndexGridTile extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: isSelected
               ? LinearGradient(
-                  colors: [
-                    accent,
-                    accent.withValues(alpha: 0.7),
-                  ],
+                  colors: [accent, accent.withValues(alpha: 0.7)],
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                 )
@@ -89,15 +86,19 @@ class SurahIndexGridTile extends StatelessWidget {
                       Flexible(
                         child: Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 1.5.h),
+                            horizontal: 5.w,
+                            vertical: 1.5.h,
+                          ),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Colors.white.withValues(alpha: 0.25)
                                 : (isMakki
-                                    ? Colors.teal
-                                        .withValues(alpha: isDark ? 0.25 : 0.12)
-                                    : Colors.indigo.withValues(
-                                        alpha: isDark ? 0.25 : 0.12)),
+                                      ? Colors.teal.withValues(
+                                          alpha: isDark ? 0.25 : 0.12,
+                                        )
+                                      : Colors.indigo.withValues(
+                                          alpha: isDark ? 0.25 : 0.12,
+                                        )),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
@@ -108,12 +109,12 @@ class SurahIndexGridTile extends StatelessWidget {
                               color: isSelected
                                   ? Colors.white
                                   : (isMakki
-                                      ? (isDark
-                                          ? Colors.teal.shade200
-                                          : Colors.teal.shade700)
-                                      : (isDark
-                                          ? Colors.indigo.shade200
-                                          : Colors.indigo.shade700)),
+                                        ? (isDark
+                                              ? Colors.teal.shade200
+                                              : Colors.teal.shade700)
+                                        : (isDark
+                                              ? Colors.indigo.shade200
+                                              : Colors.indigo.shade700)),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),

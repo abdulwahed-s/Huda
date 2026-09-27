@@ -26,9 +26,7 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Dialog(
       backgroundColor: isDarkMode ? Colors.grey[900] : null,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 8,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.85,
@@ -49,9 +47,9 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: isDarkMode ? 0.2 : 0.1),
+                        color: Theme.of(context).primaryColor.withValues(
+                          alpha: isDarkMode ? 0.2 : 0.1,
+                        ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(
@@ -82,9 +80,10 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                     color: isDarkMode ? Colors.grey[800] : Colors.grey.shade50,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                        color: isDarkMode
-                            ? Colors.grey[700]!
-                            : Colors.grey.shade200),
+                      color: isDarkMode
+                          ? Colors.grey[700]!
+                          : Colors.grey.shade200,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,31 +104,34 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                           TextField(
                             controller: _titleController,
                             decoration: InputDecoration(
-                              hintText:
-                                  AppLocalizations.of(context)!.enterItemTitle,
-                              hintStyle: TextStyle(
-                                color: Colors.grey.shade500,
-                              ),
+                              hintText: AppLocalizations.of(
+                                context,
+                              )!.enterItemTitle,
+                              hintStyle: TextStyle(color: Colors.grey.shade500),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade300),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade300,
+                                ),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
-                                    color: isDarkMode
-                                        ? Colors.grey[600]!
-                                        : Colors.grey.shade300),
+                                  color: isDarkMode
+                                      ? Colors.grey[600]!
+                                      : Colors.grey.shade300,
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor),
+                                  color: Theme.of(context).primaryColor,
+                                ),
                               ),
                               filled: true,
-                              fillColor:
-                                  isDarkMode ? Colors.grey[700] : Colors.white,
+                              fillColor: isDarkMode
+                                  ? Colors.grey[700]
+                                  : Colors.white,
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                                 vertical: 14,
@@ -161,11 +163,13 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                  color: isDarkMode
-                                      ? Colors.grey[600]!
-                                      : Colors.grey.shade300),
-                              color:
-                                  isDarkMode ? Colors.grey[700] : Colors.white,
+                                color: isDarkMode
+                                    ? Colors.grey[600]!
+                                    : Colors.grey.shade300,
+                              ),
+                              color: isDarkMode
+                                  ? Colors.grey[700]
+                                  : Colors.white,
                             ),
                             child: DropdownButtonFormField<ChecklistItemType>(
                               initialValue: _selectedType,
@@ -176,8 +180,9 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                                   vertical: 14,
                                 ),
                               ),
-                              dropdownColor:
-                                  isDarkMode ? Colors.grey[800] : Colors.white,
+                              dropdownColor: isDarkMode
+                                  ? Colors.grey[800]
+                                  : Colors.white,
                               items: ChecklistItemType.values.map((type) {
                                 return DropdownMenuItem(
                                   value: type,
@@ -224,11 +229,13 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                  color: isDarkMode
-                                      ? Colors.grey[600]!
-                                      : Colors.grey.shade300),
-                              color:
-                                  isDarkMode ? Colors.grey[700] : Colors.white,
+                                color: isDarkMode
+                                    ? Colors.grey[600]!
+                                    : Colors.grey.shade300,
+                              ),
+                              color: isDarkMode
+                                  ? Colors.grey[700]
+                                  : Colors.white,
                             ),
                             child: DropdownButtonFormField<RepetitionFrequency>(
                               initialValue: _selectedFrequency,
@@ -239,10 +246,12 @@ class _AddCustomItemDialogState extends State<AddCustomItemDialog> {
                                   vertical: 14,
                                 ),
                               ),
-                              dropdownColor:
-                                  isDarkMode ? Colors.grey[800] : Colors.white,
-                              items:
-                                  RepetitionFrequency.values.map((frequency) {
+                              dropdownColor: isDarkMode
+                                  ? Colors.grey[800]
+                                  : Colors.white,
+                              items: RepetitionFrequency.values.map((
+                                frequency,
+                              ) {
                                 return DropdownMenuItem(
                                   value: frequency,
                                   child: Text(

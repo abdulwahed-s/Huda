@@ -43,26 +43,21 @@ class _AppRatingDialogState extends State<AppRatingDialog>
       vsync: this,
     );
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.85,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutBack,
-    ));
+    _scaleAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
+    );
 
     _fadeAnimation = CurvedAnimation(
       parent: _animationController,
       curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
     );
 
-    _starScaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.15,
-    ).animate(CurvedAnimation(
-      parent: _starAnimationController,
-      curve: Curves.easeOutBack,
-    ));
+    _starScaleAnimation = Tween<double>(begin: 1.0, end: 1.15).animate(
+      CurvedAnimation(
+        parent: _starAnimationController,
+        curve: Curves.easeOutBack,
+      ),
+    );
 
     _animationController.forward();
   }
@@ -111,10 +106,10 @@ class _AppRatingDialogState extends State<AppRatingDialog>
     HapticFeedback.mediumImpact();
     final email = _emailController.text.trim();
     context.read<RatingCubit>().handleRating(
-          _rating.toInt(),
-          comment: _feedbackController.text.trim(),
-          contactEmail: email.isNotEmpty ? email : null,
-        );
+      _rating.toInt(),
+      comment: _feedbackController.text.trim(),
+      contactEmail: email.isNotEmpty ? email : null,
+    );
   }
 
   void _dismiss() {
@@ -144,16 +139,10 @@ class _AppRatingDialogState extends State<AppRatingDialog>
               ? AppLocalizations.of(context)!.thankYouRedirect
               : AppLocalizations.of(context)!.thankYouFeedback;
 
-          HudaSnackBar.success(
-            context,
-            message: message,
-          );
+          HudaSnackBar.success(context, message: message);
         } else if (state is RatingFailure) {
           HapticFeedback.heavyImpact();
-          HudaSnackBar.error(
-            context,
-            message: state.message,
-          );
+          HudaSnackBar.error(context, message: state.message);
         }
       },
       child: FadeTransition(
@@ -182,10 +171,7 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [
-                            context.primaryColor,
-                            context.accentColor,
-                          ],
+                          colors: [context.primaryColor, context.accentColor],
                         ),
                         borderRadius: BorderRadius.circular(30.r),
                       ),
@@ -200,8 +186,9 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                       AppLocalizations.of(context)!.rateAppTitle,
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color:
-                            isDark ? context.darkText : const Color(0xFF1E293B),
+                        color: isDark
+                            ? context.darkText
+                            : const Color(0xFF1E293B),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -272,16 +259,18 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                     maxLines: 2,
                                     maxLength: 200,
                                     decoration: InputDecoration(
-                                      hintText: AppLocalizations.of(context)!
-                                          .feedbackHint,
+                                      hintText: AppLocalizations.of(
+                                        context,
+                                      )!.feedbackHint,
                                       hintStyle: TextStyle(
                                         color: isDark
                                             ? Colors.grey.shade500
                                             : Colors.grey.shade600,
                                       ),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.r),
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
                                         borderSide: BorderSide(
                                           color: isDark
                                               ? Colors.grey.shade700
@@ -289,8 +278,9 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.r),
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
                                         borderSide: BorderSide(
                                           color: context.primaryColor,
                                           width: 2,
@@ -317,8 +307,9 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                     controller: _emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
-                                      hintText: AppLocalizations.of(context)!
-                                          .emailOptional,
+                                      hintText: AppLocalizations.of(
+                                        context,
+                                      )!.emailOptional,
                                       hintStyle: TextStyle(
                                         color: isDark
                                             ? Colors.grey.shade500
@@ -332,8 +323,9 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                         size: 18.sp,
                                       ),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.r),
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
                                         borderSide: BorderSide(
                                           color: isDark
                                               ? Colors.grey.shade700
@@ -341,8 +333,9 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.r),
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
                                         borderSide: BorderSide(
                                           color: context.primaryColor,
                                           width: 2,
@@ -400,12 +393,14 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                           strokeWidth: 2,
                                           valueColor:
                                               AlwaysStoppedAnimation<Color>(
-                                                  Colors.white),
+                                                Colors.white,
+                                              ),
                                         ),
                                       )
                                     : Text(
-                                        AppLocalizations.of(context)!
-                                            .rateButton,
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.rateButton,
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
@@ -421,8 +416,9 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                     child: TextButton(
                                       onPressed: isLoading ? null : _dismiss,
                                       child: Text(
-                                        AppLocalizations.of(context)!
-                                            .maybeLater,
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.maybeLater,
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           color: isDark
@@ -434,11 +430,13 @@ class _AppRatingDialogState extends State<AppRatingDialog>
                                   ),
                                   Expanded(
                                     child: TextButton(
-                                      onPressed:
-                                          isLoading ? null : _neverAskAgain,
+                                      onPressed: isLoading
+                                          ? null
+                                          : _neverAskAgain,
                                       child: Text(
-                                        AppLocalizations.of(context)!
-                                            .dontAskAgain,
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.dontAskAgain,
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           color: isDark

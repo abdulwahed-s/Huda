@@ -68,10 +68,7 @@ class _ShimmerCassetteCard extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _circle(8.w, fill),
-              _circle(8.w, fill),
-            ],
+            children: [_circle(8.w, fill), _circle(8.w, fill)],
           ),
           SizedBox(height: 4.h),
           Container(
@@ -86,8 +83,9 @@ class _ShimmerCassetteCard extends StatelessWidget {
                   height: 14.h,
                   decoration: BoxDecoration(
                     color: fill,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(4.r)),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(4.r),
+                    ),
                   ),
                 ),
                 Padding(
@@ -127,10 +125,7 @@ class _ShimmerCassetteCard extends StatelessWidget {
           SizedBox(height: 4.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _circle(8.w, fill),
-              _circle(8.w, fill),
-            ],
+            children: [_circle(8.w, fill), _circle(8.w, fill)],
           ),
         ],
       ),
@@ -138,17 +133,17 @@ class _ShimmerCassetteCard extends StatelessWidget {
   }
 
   Widget _circle(double size, Color color) => Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-      );
+    width: size,
+    height: size,
+    decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+  );
 
   Widget _rect(double width, double height, Color color) => Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(3.r),
-        ),
-      );
+    width: width,
+    height: height,
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(3.r),
+    ),
+  );
 }

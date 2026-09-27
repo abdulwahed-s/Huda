@@ -43,16 +43,17 @@ class AyahTextWidget extends StatelessWidget {
     return BlocBuilder<AudioCubit, AudioState>(
       builder: (context, audioState) {
         // Determine if we're in offline mode
-        bool isOfflineMode = audioState is AudioOfflineWithDownloads ||
+        bool isOfflineMode =
+            audioState is AudioOfflineWithDownloads ||
             audioState is ReaderOffline;
 
         return FutureBuilder<bool>(
           future: isOfflineMode && selectedReaderId != null
               ? context.read<AudioCubit>().isAyahDownloaded(
-                    surahNumber: surahNumber.toString(),
-                    ayahNumber: ayah.numberInSurah.toString(),
-                    readerId: selectedReaderId!,
-                  )
+                  surahNumber: surahNumber.toString(),
+                  ayahNumber: ayah.numberInSurah.toString(),
+                  readerId: selectedReaderId!,
+                )
               : Future.value(true), // Always available in online mode
           builder: (context, downloadSnapshot) {
             bool isAyahAvailable = downloadSnapshot.data ?? false;
@@ -73,8 +74,8 @@ class AyahTextWidget extends StatelessWidget {
                     color: isPlaying
                         ? const Color(0xFF10B981) // Bright green for playing
                         : (Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFFF8FAFC) // Pure white
-                            : Colors.black87),
+                              ? const Color(0xFFF8FAFC) // Pure white
+                              : Colors.black87),
                     height: 2.0,
                     fontWeight: FontWeight.w400,
                   ),

@@ -82,10 +82,7 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
       appBar: AppBar(
         title: Text(
           l10n.miqaatLock,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
         backgroundColor: isDark ? theme.scaffoldBackgroundColor : primary,
         foregroundColor: isDark ? theme.iconTheme.color : Colors.white,
@@ -112,8 +109,8 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
           final needsPermissions = Platform.isAndroid
               ? !state.permissions.isAndroidReady
               : Platform.isIOS
-                  ? !state.permissions.isIOSReady
-                  : false;
+              ? !state.permissions.isIOSReady
+              : false;
 
           return ListView(
             padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 32.h),
@@ -163,7 +160,9 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
                 child: SessionDurationSection(
                   goalDurationMinutes: state.settings.goalDurationMinutes,
                   onEditTap: () => _showDurationPicker(
-                      context, state.settings.goalDurationMinutes),
+                    context,
+                    state.settings.goalDurationMinutes,
+                  ),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -187,8 +186,9 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
       builder: (dialogContext) => BlocProvider.value(
         value: cubit,
         child: AppSelectionDialog(
-          selectedApps:
-              state.settings.lockedApps.map((a) => a.packageId).toList(),
+          selectedApps: state.settings.lockedApps
+              .map((a) => a.packageId)
+              .toList(),
         ),
       ),
     ).then((_) {
@@ -204,10 +204,8 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (dialogContext) => BlocProvider.value(
-        value: cubit,
-        child: const TimeSlotPickerDialog(),
-      ),
+      builder: (dialogContext) =>
+          BlocProvider.value(value: cubit, child: const TimeSlotPickerDialog()),
     );
   }
 
@@ -233,7 +231,9 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
   }
 
   void _showCustomDurationPicker(
-      BuildContext blocContext, int currentDuration) {
+    BuildContext blocContext,
+    int currentDuration,
+  ) {
     final cubit = blocContext.read<MiqaatLockCubit>();
     int selectedDuration = currentDuration;
     final theme = Theme.of(blocContext);

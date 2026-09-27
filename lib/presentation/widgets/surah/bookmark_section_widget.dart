@@ -280,7 +280,9 @@ class _BookmarkSectionState extends State<BookmarkSection> {
                         onTap: _showNoteDialog,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.orange.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(6),
@@ -358,15 +360,15 @@ class _BookmarkSectionState extends State<BookmarkSection> {
             color: isActive
                 ? color.withValues(alpha: 0.12)
                 : (isDark
-                    ? Colors.grey[850]
-                    : Colors.grey.withValues(alpha: 0.05)),
+                      ? Colors.grey[850]
+                      : Colors.grey.withValues(alpha: 0.05)),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isActive
                   ? color.withValues(alpha: 0.4)
                   : (isDark
-                      ? Colors.grey[700]!
-                      : Colors.grey.withValues(alpha: 0.2)),
+                        ? Colors.grey[700]!
+                        : Colors.grey.withValues(alpha: 0.2)),
               width: isActive ? 1.5 : 1,
             ),
           ),
@@ -440,11 +442,7 @@ class _BookmarkSectionState extends State<BookmarkSection> {
                     ],
             ),
             child: isSelected
-                ? const Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 18,
-                  )
+                ? const Icon(Icons.check, color: Colors.white, size: 18)
                 : null,
           ),
         );
@@ -535,9 +533,7 @@ class _BookmarkSectionState extends State<BookmarkSection> {
       barrierDismissible: true,
       builder: (context) => Dialog(
         backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 8,
         child: Container(
           padding: const EdgeInsets.all(24),
@@ -573,8 +569,9 @@ class _BookmarkSectionState extends State<BookmarkSection> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color:
-                                isDark ? Colors.white : const Color(0xFF2C2C2C),
+                            color: isDark
+                                ? Colors.white
+                                : const Color(0xFF2C2C2C),
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -638,7 +635,9 @@ class _BookmarkSectionState extends State<BookmarkSection> {
                     onPressed: () => Navigator.pop(context),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -663,7 +662,9 @@ class _BookmarkSectionState extends State<BookmarkSection> {
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                         backgroundColor: Colors.red.withValues(alpha: 0.1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -695,23 +696,20 @@ class _BookmarkSectionState extends State<BookmarkSection> {
                       backgroundColor: Colors.orange,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                       elevation: 2,
                     ),
-                    icon: const Icon(
-                      Icons.save_outlined,
-                      size: 18,
-                    ),
+                    icon: const Icon(Icons.save_outlined, size: 18),
                     label: Text(
                       _hasNote
                           ? AppLocalizations.of(context)!.update
                           : AppLocalizations.of(context)!.save,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],

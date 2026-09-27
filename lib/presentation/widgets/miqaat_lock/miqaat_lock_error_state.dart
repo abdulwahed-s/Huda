@@ -29,8 +29,11 @@ class MiqaatLockErrorState extends StatelessWidget {
                 color: Colors.red.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.error_outline_rounded,
-                  size: 48.sp, color: Colors.red),
+              child: Icon(
+                Icons.error_outline_rounded,
+                size: 48.sp,
+                color: Colors.red,
+              ),
             ),
             SizedBox(height: 20.h),
             Text(

@@ -79,10 +79,7 @@ class _RamadanScreenState extends State<RamadanScreen>
         foregroundColor: isDark ? theme.iconTheme.color : Colors.white,
         title: Text(
           AppLocalizations.of(context)!.ramadan,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
@@ -116,8 +113,11 @@ class _RamadanScreenState extends State<RamadanScreen>
                 color: primary.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.error_outline,
-                  size: 40.sp, color: primary.withValues(alpha: 0.6)),
+              child: Icon(
+                Icons.error_outline,
+                size: 40.sp,
+                color: primary.withValues(alpha: 0.6),
+              ),
             ),
             SizedBox(height: 20.h),
             Text(
@@ -150,7 +150,11 @@ class _RamadanScreenState extends State<RamadanScreen>
   }
 
   Widget _buildLoadedContent(
-      RamadanLoaded state, bool isDark, Color primary, ThemeData theme) {
+    RamadanLoaded state,
+    bool isDark,
+    Color primary,
+    ThemeData theme,
+  ) {
     return ListView(
       padding: EdgeInsets.fromLTRB(
         16.w,

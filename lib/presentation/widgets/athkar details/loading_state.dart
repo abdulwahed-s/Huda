@@ -13,10 +13,7 @@ class LoadingState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
-            color: colorScheme.primary,
-            strokeWidth: 3,
-          ),
+          CircularProgressIndicator(color: colorScheme.primary, strokeWidth: 3),
           SizedBox(height: 16.h),
           Text(
             AppLocalizations.of(context)!.loading,

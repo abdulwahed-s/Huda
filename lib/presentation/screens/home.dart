@@ -59,21 +59,20 @@ class _HomeState extends State<Home>
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.0, 0.8, curve: Curves.easeOut),
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.0, 0.8, curve: Curves.easeOut),
+      ),
+    );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
-    ));
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
+          ),
+        );
 
     context.read<HomeCubit>().loadHomeData();
     context.read<PrayerTimesCubit>().loadCachedPrayerTimes();
@@ -220,7 +219,8 @@ class _HomeState extends State<Home>
                 BlocProvider.value(value: context.read<QuranPlayerCubit>()),
                 BlocProvider.value(value: context.read<PlayerBarCubit>()),
                 BlocProvider.value(
-                    value: context.read<DownloadProgressCubit>()),
+                  value: context.read<DownloadProgressCubit>(),
+                ),
               ],
               child: ReciterSurahsScreen(
                 reciter: reciter,
@@ -291,10 +291,7 @@ class _HomeState extends State<Home>
         await Navigator.pushNamed(
           context,
           AppRoute.surahScreen,
-          arguments: {
-            'surahInfo': surah,
-            'shouldRestorePosition': true,
-          },
+          arguments: {'surahInfo': surah, 'shouldRestorePosition': true},
         );
 
         if (mounted) {
@@ -348,10 +345,12 @@ class _HomeState extends State<Home>
     await Navigator.push(
       context,
       PageRouteBuilder<void>(
-        transitionDuration:
-            reduceMotion ? Duration.zero : const Duration(milliseconds: 420),
-        reverseTransitionDuration:
-            reduceMotion ? Duration.zero : const Duration(milliseconds: 300),
+        transitionDuration: reduceMotion
+            ? Duration.zero
+            : const Duration(milliseconds: 420),
+        reverseTransitionDuration: reduceMotion
+            ? Duration.zero
+            : const Duration(milliseconds: 300),
         pageBuilder: (_, animation, secondaryAnimation) => MultiBlocProvider(
           providers: [
             BlocProvider.value(value: customization),
@@ -438,9 +437,8 @@ class _HomeState extends State<Home>
                       slideAnimation: _slideAnimation,
                       refreshHomeData: _refreshHomeData,
                       openLastReadSurah: _openLastReadSurah,
-                      openLastReciterAudio: (progress) => _openLastReciterAudio(
-                        progress as QuranAudioProgress,
-                      ),
+                      openLastReciterAudio: (progress) =>
+                          _openLastReciterAudio(progress as QuranAudioProgress),
                       openLastRadioStation: (progress) => _openLastRadioStation(
                         progress as RadioStationProgress,
                       ),

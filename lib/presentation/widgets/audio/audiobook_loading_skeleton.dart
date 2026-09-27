@@ -11,8 +11,9 @@ class AudiobookLoadingSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final shimmerBase = isDark ? Colors.grey.shade800 : Colors.grey.shade300;
-    final shimmerHighlight =
-        isDark ? Colors.grey.shade700 : Colors.grey.shade100;
+    final shimmerHighlight = isDark
+        ? Colors.grey.shade700
+        : Colors.grey.shade100;
 
     return SafeArea(
       child: Column(

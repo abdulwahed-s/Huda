@@ -15,8 +15,11 @@ class RecitersSearchEmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.search_off_rounded,
-              size: 52.sp, color: theme.colorScheme.outline),
+          Icon(
+            Icons.search_off_rounded,
+            size: 52.sp,
+            color: theme.colorScheme.outline,
+          ),
           SizedBox(height: 12.h),
           Text(
             l10n.noResultsFound,

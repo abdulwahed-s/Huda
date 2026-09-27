@@ -20,8 +20,10 @@ class ModeButton extends StatefulWidget {
     required this.isDark,
     required this.primaryColor,
     this.onTap,
-  }) : assert(icon != null || svgPath != null,
-            'Either icon or svgPath must be provided');
+  }) : assert(
+         icon != null || svgPath != null,
+         'Either icon or svgPath must be provided',
+       );
 
   @override
   State<ModeButton> createState() => _ModeButtonState();
@@ -89,14 +91,16 @@ class _ModeButtonState extends State<ModeButton>
             animation: _hoverAnimation,
             builder: (context, child) {
               return Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 8,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   color: !widget.isSelected && _isHovered
                       ? (widget.isDark
-                          ? Colors.white.withValues(alpha: 0.03)
-                          : Colors.black.withValues(alpha: 0.02))
+                            ? Colors.white.withValues(alpha: 0.03)
+                            : Colors.black.withValues(alpha: 0.02))
                       : Colors.transparent,
                 ),
                 child: Row(

@@ -49,8 +49,9 @@ class _PdfPageScrubberState extends State<PdfPageScrubber> {
         height: horizontal ? _trackBreadth : null,
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final trackMain =
-                horizontal ? constraints.maxWidth : constraints.maxHeight;
+            final trackMain = horizontal
+                ? constraints.maxWidth
+                : constraints.maxHeight;
             final thumbMain = (metrics.extent * trackMain)
                 .clamp(_minimumThumbExtent, trackMain)
                 .toDouble();
@@ -68,24 +69,20 @@ class _PdfPageScrubberState extends State<PdfPageScrubber> {
             }
 
             void update(DragUpdateDetails details) => _scrubTo(
-                  horizontal
-                      ? details.localPosition.dx
-                      : details.localPosition.dy,
-                  trackMain,
-                  thumbMain,
-                );
+              horizontal ? details.localPosition.dx : details.localPosition.dy,
+              trackMain,
+              thumbMain,
+            );
 
             void end() {
               if (mounted) setState(() => _isDragging = false);
             }
 
             void tap(TapDownDetails details) => _scrubTo(
-                  horizontal
-                      ? details.localPosition.dx
-                      : details.localPosition.dy,
-                  trackMain,
-                  thumbMain,
-                );
+              horizontal ? details.localPosition.dx : details.localPosition.dy,
+              trackMain,
+              thumbMain,
+            );
 
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -139,10 +136,12 @@ class _ScrubberTrack extends StatelessWidget {
     final pageNumber = metrics.currentPage + 1;
     final pageLabel =
         '${AppLocalizations.of(context)!.resumePage(pageNumber)} / ${metrics.pageCount}';
-    final horizontalBubbleLimit =
-        (trackMain - 136).clamp(0.0, double.infinity).toDouble();
-    final verticalBubbleLimit =
-        (trackMain - 36).clamp(0.0, double.infinity).toDouble();
+    final horizontalBubbleLimit = (trackMain - 136)
+        .clamp(0.0, double.infinity)
+        .toDouble();
+    final verticalBubbleLimit = (trackMain - 36)
+        .clamp(0.0, double.infinity)
+        .toDouble();
     final thumbColor = isDragging
         ? colorScheme.primary
         : colorScheme.primary.withValues(alpha: 0.86);
@@ -210,21 +209,23 @@ class _ScrubberTrack extends StatelessWidget {
             bottom: horizontal ? 50 : null,
             left: horizontal
                 ? (thumbLead + thumbMain / 2 - 68)
-                    .clamp(0.0, horizontalBubbleLimit)
-                    .toDouble()
+                      .clamp(0.0, horizontalBubbleLimit)
+                      .toDouble()
                 : null,
             top: horizontal
                 ? null
                 : (thumbLead + thumbMain / 2 - 18)
-                    .clamp(0.0, verticalBubbleLimit)
-                    .toDouble(),
+                      .clamp(0.0, verticalBubbleLimit)
+                      .toDouble(),
             child: Material(
               color: colorScheme.inverseSurface,
               elevation: 4,
               borderRadius: BorderRadius.circular(8),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 7,
+                ),
                 child: Text(
                   pageLabel,
                   style: TextStyle(

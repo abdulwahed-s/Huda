@@ -172,7 +172,7 @@ class _ProgressBanner extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               accent.withValues(alpha: 0.85),
-              accent.withValues(alpha: 0.6)
+              accent.withValues(alpha: 0.6),
             ],
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
@@ -189,9 +189,10 @@ class _ProgressBanner extends StatelessWidget {
                   Text(
                     l10n.khatmaDayOf(dayIndex, planDays),
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w900),
+                      color: Colors.white,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                   SizedBox(height: 6.h),
                   ClipRRect(
@@ -210,9 +211,10 @@ class _ProgressBanner extends StatelessWidget {
             Text(
               '${(percentTotal * 100).toInt()}%',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w900),
+                color: Colors.white,
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ],
         ),
@@ -264,19 +266,22 @@ class _ConcentricRingsCard extends StatelessWidget {
               runSpacing: 8.h,
               children: [
                 KhatmaLegendItem(
-                    color: Colors.green,
-                    label: l10n.khatmaLegendKhatma,
-                    value: '${(percentTotal * 100).toInt()}%'),
+                  color: Colors.green,
+                  label: l10n.khatmaLegendKhatma,
+                  value: '${(percentTotal * 100).toInt()}%',
+                ),
                 KhatmaLegendItem(
-                    color: Colors.deepOrange,
-                    label: l10n.today,
-                    value: percentDaily >= 1.0
-                        ? l10n.khatmaWirdCompleted
-                        : l10n.khatmaWirdInProgress),
+                  color: Colors.deepOrange,
+                  label: l10n.today,
+                  value: percentDaily >= 1.0
+                      ? l10n.khatmaWirdCompleted
+                      : l10n.khatmaWirdInProgress,
+                ),
                 KhatmaLegendItem(
-                    color: Colors.blue,
-                    label: l10n.khatmaCommitment,
-                    value: '${(percentPacing * 100).toInt()}%'),
+                  color: Colors.blue,
+                  label: l10n.khatmaCommitment,
+                  value: '${(percentPacing * 100).toInt()}%',
+                ),
               ],
             ),
             SizedBox(height: 24.h),
@@ -284,26 +289,31 @@ class _ConcentricRingsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 KhatmaStatItem(
-                    title: l10n.khatmaDaysRemaining,
-                    value: '$daysRemaining',
-                    icon: Icons.calendar_today_rounded),
+                  title: l10n.khatmaDaysRemaining,
+                  value: '$daysRemaining',
+                  icon: Icons.calendar_today_rounded,
+                ),
                 Container(
-                    width: 1,
-                    height: 44.h,
-                    color: isDark ? Colors.white10 : Colors.black12),
+                  width: 1,
+                  height: 44.h,
+                  color: isDark ? Colors.white10 : Colors.black12,
+                ),
                 KhatmaStatItem(
-                    title: l10n.khatmaPagesRead,
-                    value: '$totalPagesRead',
-                    icon: Icons.menu_book_rounded),
+                  title: l10n.khatmaPagesRead,
+                  value: '$totalPagesRead',
+                  icon: Icons.menu_book_rounded,
+                ),
                 Container(
-                    width: 1,
-                    height: 44.h,
-                    color: isDark ? Colors.white10 : Colors.black12),
+                  width: 1,
+                  height: 44.h,
+                  color: isDark ? Colors.white10 : Colors.black12,
+                ),
                 KhatmaStatItem(
-                    title: l10n.khatmaPagesRemaining,
-                    value: '$pagesRemaining',
-                    color: accent,
-                    icon: Icons.hourglass_bottom_rounded),
+                  title: l10n.khatmaPagesRemaining,
+                  value: '$pagesRemaining',
+                  color: accent,
+                  icon: Icons.hourglass_bottom_rounded,
+                ),
               ],
             ),
           ],
@@ -347,9 +357,10 @@ class _TodayWirdHeader extends StatelessWidget {
                 Text(
                   l10n.khatmaDailyWirdOf(dayIndex + 1),
                   style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 13.sp,
-                      color: accent),
+                    fontWeight: FontWeight.w900,
+                    fontSize: 13.sp,
+                    color: accent,
+                  ),
                 ),
               ],
             ),
@@ -406,8 +417,10 @@ class _TodayWirdCard extends StatelessWidget {
                   onTap: onNavigateToStart,
                   borderRadius: BorderRadius.circular(4.r),
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 4.h, horizontal: 4.w),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 4.h,
+                      horizontal: 4.w,
+                    ),
                     child: Text(
                       startSurahLabel,
                       style: TextStyle(
@@ -423,8 +436,10 @@ class _TodayWirdCard extends StatelessWidget {
                   onTap: onNavigateToEnd,
                   borderRadius: BorderRadius.circular(4.r),
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 4.h, horizontal: 4.w),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 4.h,
+                      horizontal: 4.w,
+                    ),
                     child: Text(
                       endSurahLabel,
                       style: TextStyle(
@@ -453,8 +468,9 @@ class _TodayWirdCard extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      isDark ? context.primaryColor : context.primaryDarkColor,
+                  backgroundColor: isDark
+                      ? context.primaryColor
+                      : context.primaryDarkColor,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: 14.h),
                   shape: RoundedRectangleBorder(

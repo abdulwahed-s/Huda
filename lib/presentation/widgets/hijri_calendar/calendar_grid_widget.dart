@@ -82,7 +82,9 @@ class CalendarGridWidget extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding, vertical: verticalPadding),
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -158,10 +160,7 @@ class CalendarGridWidget extends StatelessWidget {
 
   Widget _buildHijriCalendarGrid(BuildContext context) {
     return Column(
-      children: [
-        _buildDaysOfWeekHeader(),
-        _buildHijriMonthGrid(context),
-      ],
+      children: [_buildDaysOfWeekHeader(), _buildHijriMonthGrid(context)],
     );
   }
 
@@ -208,8 +207,8 @@ class CalendarGridWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isWeekend
                       ? (isDark
-                          ? Colors.orange.withValues(alpha: 0.1)
-                          : Colors.orange.withValues(alpha: 0.08))
+                            ? Colors.orange.withValues(alpha: 0.1)
+                            : Colors.orange.withValues(alpha: 0.08))
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(6.r),
                 ),
@@ -218,8 +217,8 @@ class CalendarGridWidget extends StatelessWidget {
                   style: TextStyle(
                     color: isWeekend
                         ? (isDark
-                            ? Colors.orange.shade300
-                            : Colors.orange.shade700)
+                              ? Colors.orange.shade300
+                              : Colors.orange.shade700)
                         : (isDark ? Colors.white : Colors.grey.shade700),
                     fontWeight: FontWeight.w700,
                     fontSize: 10.sp,
@@ -235,17 +234,16 @@ class CalendarGridWidget extends StatelessWidget {
   }
 
   Widget _buildHijriMonthGrid(BuildContext context) {
-    final daysInMonth =
-        calendarService.daysInMonth(focusedHijri.year, focusedHijri.month);
-    final firstDayHijri = HijriDate(
+    final daysInMonth = calendarService.daysInMonth(
       focusedHijri.year,
       focusedHijri.month,
-      1,
     );
+    final firstDayHijri = HijriDate(focusedHijri.year, focusedHijri.month, 1);
 
     final firstDayGregorian = _getGregorianDateFromHijri(firstDayHijri);
-    final firstDayWeekday =
-        firstDayGregorian.weekday == 7 ? 0 : firstDayGregorian.weekday;
+    final firstDayWeekday = firstDayGregorian.weekday == 7
+        ? 0
+        : firstDayGregorian.weekday;
 
     final weeks = <Widget>[];
     final days = <Widget>[];
@@ -265,11 +263,13 @@ class CalendarGridWidget extends StatelessWidget {
       final events =
           state.events[HijriCalendarService.eventKey(currentHijri)] ?? [];
 
-      days.add(_buildCurrentMonthDay(
-        currentHijri,
-        gregorianDateTime,
-        events.cast<HijriEvent>(),
-      ));
+      days.add(
+        _buildCurrentMonthDay(
+          currentHijri,
+          gregorianDateTime,
+          events.cast<HijriEvent>(),
+        ),
+      );
 
       if (days.length == 7) {
         weeks.add(Row(children: days.map((d) => Expanded(child: d)).toList()));
@@ -301,7 +301,8 @@ class CalendarGridWidget extends StatelessWidget {
   ) {
     final isSelected = selectedHijri == hijriDate;
     final isToday = _isSameDay(gregorianDate, DateTime.now());
-    final isWeekend = gregorianDate.weekday == DateTime.friday ||
+    final isWeekend =
+        gregorianDate.weekday == DateTime.friday ||
         gregorianDate.weekday == DateTime.saturday;
 
     return GestureDetector(
@@ -379,10 +380,11 @@ class CalendarGridWidget extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: (events.length == 1
-                                ? Color(events.first.colorValue)
-                                : context.primaryColor)
-                            .withValues(alpha: 0.6),
+                        color:
+                            (events.length == 1
+                                    ? Color(events.first.colorValue)
+                                    : context.primaryColor)
+                                .withValues(alpha: 0.6),
                         blurRadius: 4.r,
                         spreadRadius: 1.r,
                       ),
@@ -564,7 +566,7 @@ class CalendarGridWidget extends StatelessWidget {
       localizations.ramadan,
       localizations.shawwal,
       localizations.dhuAlQidah,
-      localizations.dhuAlHijjah
+      localizations.dhuAlHijjah,
     ];
     return months[month - 1];
   }
@@ -583,7 +585,7 @@ class CalendarGridWidget extends StatelessWidget {
       localizations.september,
       localizations.october,
       localizations.november,
-      localizations.december
+      localizations.december,
     ];
     return months[month - 1];
   }

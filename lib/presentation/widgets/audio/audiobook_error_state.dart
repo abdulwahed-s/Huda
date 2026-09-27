@@ -25,8 +25,11 @@ class AudiobookErrorState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded,
-                  size: 72.sp, color: Colors.red.shade400),
+              Icon(
+                Icons.error_outline_rounded,
+                size: 72.sp,
+                color: Colors.red.shade400,
+              ),
               SizedBox(height: 20.h),
               Text(
                 l10n.oopsSomethingWentWrong,
@@ -54,8 +57,10 @@ class AudiobookErrorState extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.primaryColor,
                   foregroundColor: Colors.white,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 28.w, vertical: 14.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 28.w,
+                    vertical: 14.h,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.r),
                   ),

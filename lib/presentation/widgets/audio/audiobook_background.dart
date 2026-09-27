@@ -22,15 +22,16 @@ class AudiobookBackground extends StatelessWidget {
           Image.network(
             artUrl!,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => _GradientBackground(isDark: isDark),
+            errorBuilder: (_, _, _) => _GradientBackground(isDark: isDark),
           ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
             child: const SizedBox.expand(),
           ),
           Container(
-            color: (isDark ? Colors.black : Colors.white)
-                .withValues(alpha: isDark ? 0.62 : 0.72),
+            color: (isDark ? Colors.black : Colors.white).withValues(
+              alpha: isDark ? 0.62 : 0.72,
+            ),
           ),
           Container(
             color: context.primaryColor.withValues(alpha: isDark ? 0.14 : 0.07),

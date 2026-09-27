@@ -87,8 +87,9 @@ class SurahScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                             borderRadius: BorderRadius.circular(6.r),
                           ),
                           child: Text(
-                            AppLocalizations.of(context)!
-                                .surahNumberBadge(surahNumber),
+                            AppLocalizations.of(
+                              context,
+                            )!.surahNumberBadge(surahNumber),
                             style: TextStyle(
                               fontSize: 9.sp,
                               color: Colors.white,
@@ -115,10 +116,7 @@ class SurahScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               SizedBox(width: 10.w),
-              _CircleIconButton(
-                icon: Icons.menu_rounded,
-                onPressed: onMenu,
-              ),
+              _CircleIconButton(icon: Icons.menu_rounded, onPressed: onMenu),
             ],
           ),
         ),
@@ -142,11 +140,7 @@ class _CircleIconButton extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: onPressed,
-        icon: Icon(
-          icon,
-          color: Colors.white,
-          size: 16.sp,
-        ),
+        icon: Icon(icon, color: Colors.white, size: 16.sp),
       ),
     );
   }

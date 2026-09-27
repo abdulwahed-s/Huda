@@ -43,22 +43,26 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
             if (downloadState is DownloadInProgress &&
                 downloadState.progress.bookId == widget.bookId) {
               widget.onDownloadStateChanged(
-                  true, downloadState.progress.progress);
+                true,
+                downloadState.progress.progress,
+              );
             } else if (downloadState is DownloadCompleted &&
                 downloadState.bookId == widget.bookId) {
               widget.onDownloadStateChanged(false, 1.0);
               HudaSnackBar.success(
                 context,
-                message:
-                    AppLocalizations.of(context)!.bookDownloadedSuccessfully,
+                message: AppLocalizations.of(
+                  context,
+                )!.bookDownloadedSuccessfully,
               );
             } else if (downloadState is DownloadError &&
                 downloadState.bookId == widget.bookId) {
               widget.onDownloadStateChanged(false, 0.0);
               HudaSnackBar.error(
                 context,
-                message: AppLocalizations.of(context)!
-                    .downloadFailed(downloadState.message),
+                message: AppLocalizations.of(
+                  context,
+                )!.downloadFailed(downloadState.message),
               );
             }
           },
@@ -71,8 +75,8 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                       : Icons.file_download_rounded,
                   label:
                       widget.bookDetail.attachments![0].extensionType == 'PDF'
-                          ? AppLocalizations.of(context)!.readPdf
-                          : AppLocalizations.of(context)!.openFile,
+                      ? AppLocalizations.of(context)!.readPdf
+                      : AppLocalizations.of(context)!.openFile,
                   onPressed: widget.onPrimaryAction,
                   isPrimary: true,
                 ),
@@ -89,8 +93,8 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                   label: widget.isBookDownloaded
                       ? AppLocalizations.of(context)!.downloaded
                       : widget.isDownloading
-                          ? '${(widget.downloadProgress * 100).toInt()}%'
-                          : AppLocalizations.of(context)!.download,
+                      ? '${(widget.downloadProgress * 100).toInt()}%'
+                      : AppLocalizations.of(context)!.download,
                 ),
               ),
             ],

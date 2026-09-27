@@ -21,10 +21,10 @@ String homeThemeDescription(BuildContext context, HomeThemeId theme) {
 }
 
 IconData homeThemeIcon(HomeThemeId theme) => switch (theme) {
-      HomeThemeId.classic => Icons.grid_view_rounded,
-      HomeThemeId.prayerToday => Icons.mosque_rounded,
-      HomeThemeId.quranJourney => Icons.auto_stories_rounded,
-    };
+  HomeThemeId.classic => Icons.grid_view_rounded,
+  HomeThemeId.prayerToday => Icons.mosque_rounded,
+  HomeThemeId.quranJourney => Icons.auto_stories_rounded,
+};
 
 String homeSectionName(BuildContext context, HomeSectionId section) {
   final l10n = AppLocalizations.of(context)!;
@@ -39,10 +39,10 @@ String homeSectionName(BuildContext context, HomeSectionId section) {
 }
 
 IconData homeSectionIcon(HomeSectionId section) => switch (section) {
-      HomeSectionId.dateAndPrayer => Icons.today_rounded,
-      HomeSectionId.prayerSchedule => Icons.schedule_rounded,
-      HomeSectionId.dailyAyah => Icons.format_quote_rounded,
-      HomeSectionId.continueReading => Icons.menu_book_rounded,
-      HomeSectionId.khatmaProgress => Icons.donut_large_rounded,
-      HomeSectionId.quranTools => Icons.auto_stories_rounded,
-    };
+  HomeSectionId.dateAndPrayer => Icons.today_rounded,
+  HomeSectionId.prayerSchedule => Icons.schedule_rounded,
+  HomeSectionId.dailyAyah => Icons.format_quote_rounded,
+  HomeSectionId.continueReading => Icons.menu_book_rounded,
+  HomeSectionId.khatmaProgress => Icons.donut_large_rounded,
+  HomeSectionId.quranTools => Icons.auto_stories_rounded,
+};

@@ -35,8 +35,8 @@ class DurationSelectionTile extends StatelessWidget {
           color: isSelected
               ? activeColor.withValues(alpha: 0.3)
               : (isDark
-                  ? Colors.transparent
-                  : theme.dividerColor.withValues(alpha: 0.5)),
+                    ? Colors.transparent
+                    : theme.dividerColor.withValues(alpha: 0.5)),
           width: 1,
         ),
       ),
@@ -56,8 +56,9 @@ class DurationSelectionTile extends StatelessWidget {
                         : '$duration ${l10n.minutes}',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      fontWeight:
-                          isSelected ? FontWeight.w700 : FontWeight.w500,
+                      fontWeight: isSelected
+                          ? FontWeight.w700
+                          : FontWeight.w500,
                       color: isSelected
                           ? activeColor
                           : theme.textTheme.bodyLarge?.color,
@@ -74,9 +75,11 @@ class DurationSelectionTile extends StatelessWidget {
                     child: Icon(Icons.check, color: Colors.white, size: 14.sp),
                   )
                 else if (isCustom)
-                  Icon(Icons.chevron_right_rounded,
-                      color: theme.hintColor.withValues(alpha: 0.5),
-                      size: 20.sp),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: theme.hintColor.withValues(alpha: 0.5),
+                    size: 20.sp,
+                  ),
               ],
             ),
           ),

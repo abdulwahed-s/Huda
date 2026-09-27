@@ -23,7 +23,10 @@ class RadioHeaderBackground extends StatelessWidget {
           colors: [
             theme.colorScheme.primary,
             Color.lerp(
-                theme.colorScheme.primary, theme.colorScheme.secondary, 0.5)!,
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
+              0.5,
+            )!,
           ],
         ),
       ),
@@ -93,18 +96,24 @@ class RadioHeaderBackground extends StatelessWidget {
                   SizedBox(height: 8.h),
                   if (stationCount != null)
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 4.h,
+                      ),
                       decoration: BoxDecoration(
-                        color:
-                            theme.colorScheme.onPrimary.withValues(alpha: 0.18),
+                        color: theme.colorScheme.onPrimary.withValues(
+                          alpha: 0.18,
+                        ),
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.radio_rounded,
-                              size: 13.sp, color: theme.colorScheme.onPrimary),
+                          Icon(
+                            Icons.radio_rounded,
+                            size: 13.sp,
+                            color: theme.colorScheme.onPrimary,
+                          ),
                           SizedBox(width: 4.w),
                           Text(
                             '$stationCount',

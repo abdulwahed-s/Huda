@@ -19,11 +19,7 @@ class ErrorState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 64.w,
-            color: colorScheme.error,
-          ),
+          Icon(Icons.error_outline, size: 64.w, color: colorScheme.error),
           SizedBox(height: 16.h),
           Text(
             'حدث خطأ',

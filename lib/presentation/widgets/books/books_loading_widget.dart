@@ -19,21 +19,18 @@ class BooksLoadingWidget extends StatelessWidget {
           mainAxisSpacing: 16.h,
           childAspectRatio: 0.65,
         ),
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            return AppShimmer(
-              baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
-              highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: isDark ? Colors.grey[800] : Colors.white,
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
+        delegate: SliverChildBuilderDelegate((context, index) {
+          return AppShimmer(
+            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+            highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+            child: Container(
+              decoration: BoxDecoration(
+                color: isDark ? Colors.grey[800] : Colors.white,
+                borderRadius: BorderRadius.circular(16.r),
               ),
-            );
-          },
-          childCount: 25,
-        ),
+            ),
+          );
+        }, childCount: 25),
       ),
     );
   }

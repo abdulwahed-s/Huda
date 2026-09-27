@@ -27,8 +27,11 @@ class SurahCardNumberBadge extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [
                   theme.colorScheme.primary,
-                  Color.lerp(theme.colorScheme.primary,
-                      theme.colorScheme.secondary, 0.5)!,
+                  Color.lerp(
+                    theme.colorScheme.primary,
+                    theme.colorScheme.secondary,
+                    0.5,
+                  )!,
                 ],
               )
             : null,

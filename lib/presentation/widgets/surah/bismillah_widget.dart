@@ -34,7 +34,8 @@ class BismillahWidget extends StatelessWidget {
             '\u{FDFD}',
             style: TextStyle(
               fontSize: 28.sp,
-              color: customTextColor ??
+              color:
+                  customTextColor ??
                   (Theme.of(context).brightness == Brightness.dark
                       ? context.accentColor
                       : context.primaryColor),
@@ -45,8 +46,8 @@ class BismillahWidget extends StatelessWidget {
                   color: customTextColor != null
                       ? customTextColor!.withValues(alpha: 0.2)
                       : (Theme.of(context).brightness == Brightness.dark
-                          ? context.primaryDarkColor.withValues(alpha: 0.5)
-                          : Colors.black12),
+                            ? context.primaryDarkColor.withValues(alpha: 0.5)
+                            : Colors.black12),
                 ),
               ],
             ),

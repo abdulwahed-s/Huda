@@ -102,7 +102,9 @@ class OutlineView extends StatelessWidget {
   }
 
   Iterable<({PdfOutlineItem node, int level})> _getOutlineList(
-      PdfOutline? outline, int level) sync* {
+    PdfOutline? outline,
+    int level,
+  ) sync* {
     if (outline == null) return;
     for (final node in outline.items) {
       yield (node: node, level: level);
@@ -111,7 +113,9 @@ class OutlineView extends StatelessWidget {
   }
 
   Iterable<({PdfOutlineItem node, int level})> _getOutlineItems(
-      List<PdfOutlineItem> items, int level) sync* {
+    List<PdfOutlineItem> items,
+    int level,
+  ) sync* {
     for (final node in items) {
       yield (node: node, level: level);
       yield* _getOutlineItems(node.children, level + 1);

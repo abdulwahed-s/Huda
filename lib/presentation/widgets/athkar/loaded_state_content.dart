@@ -67,10 +67,7 @@ class LoadedStateContent extends StatelessWidget {
               itemCount: filteredList.length,
               separatorBuilder: (context, index) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
-                return AthkarCard(
-                  item: filteredList[index],
-                  index: index,
-                );
+                return AthkarCard(item: filteredList[index], index: index);
               },
             ),
           ],

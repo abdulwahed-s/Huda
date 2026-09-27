@@ -53,8 +53,10 @@ class ReaderSelectionWidget extends StatelessWidget {
           Column(
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -95,8 +97,9 @@ class ReaderSelectionWidget extends StatelessWidget {
                             Icon(
                               Icons.language,
                               size: 20,
-                              color:
-                                  context.primaryColor.withValues(alpha: 0.7),
+                              color: context.primaryColor.withValues(
+                                alpha: 0.7,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Text(
@@ -120,8 +123,9 @@ class ReaderSelectionWidget extends StatelessWidget {
                               Icon(
                                 Icons.language,
                                 size: 20,
-                                color:
-                                    context.primaryColor.withValues(alpha: 0.7),
+                                color: context.primaryColor.withValues(
+                                  alpha: 0.7,
+                                ),
                               ),
                               const SizedBox(width: 8),
                               Text(
@@ -145,9 +149,7 @@ class ReaderSelectionWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  context.primaryColor,
-                ),
+                valueColor: AlwaysStoppedAnimation<Color>(context.primaryColor),
               ),
             ),
           )
@@ -170,8 +172,9 @@ class ReaderSelectionWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 final reader = readers[index];
                 final isSelected = reader.identifier == selectedReaderId;
-                Locale locale =
-                    Locale.fromSubtags(languageCode: readers[index].language!);
+                Locale locale = Locale.fromSubtags(
+                  languageCode: readers[index].language!,
+                );
 
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
@@ -190,8 +193,8 @@ class ReaderSelectionWidget extends StatelessWidget {
                     color: isSelected
                         ? null
                         : (Theme.of(context).brightness == Brightness.dark
-                            ? context.darkCardBackground
-                            : Colors.white),
+                              ? context.darkCardBackground
+                              : Colors.white),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
@@ -224,14 +227,16 @@ class ReaderSelectionWidget extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? Colors.white.withValues(alpha: 0.2)
-                                    : context.primaryColor
-                                        .withValues(alpha: 0.1),
+                                    : context.primaryColor.withValues(
+                                        alpha: 0.1,
+                                      ),
                                 borderRadius: BorderRadius.circular(25),
                                 border: Border.all(
                                   color: isSelected
                                       ? Colors.white.withValues(alpha: 0.3)
-                                      : context.primaryColor
-                                          .withValues(alpha: 0.3),
+                                      : context.primaryColor.withValues(
+                                          alpha: 0.3,
+                                        ),
                                   width: 2,
                                 ),
                               ),
@@ -250,19 +255,20 @@ class ReaderSelectionWidget extends StatelessWidget {
                                 children: [
                                   Text(
                                     reader.name ??
-                                        AppLocalizations.of(context)!
-                                            .unknownReader,
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.unknownReader,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16,
                                       color: isSelected
                                           ? Colors.white
                                           : Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                                  .withValues(alpha: 0.9)
-                                              : context.primaryColor
-                                                  .withValues(alpha: 0.8),
+                                                Brightness.dark
+                                          ? Colors.white.withValues(alpha: 0.9)
+                                          : context.primaryColor.withValues(
+                                              alpha: 0.8,
+                                            ),
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -274,22 +280,26 @@ class ReaderSelectionWidget extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       color: isSelected
                                           ? Colors.white.withValues(alpha: 0.2)
-                                          : context.primaryColor
-                                              .withValues(alpha: 0.1),
+                                          : context.primaryColor.withValues(
+                                              alpha: 0.1,
+                                            ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
                                       locale.nativeDisplayLanguage,
                                       style: TextStyle(
                                         color: isSelected
-                                            ? Colors.white
-                                                .withValues(alpha: 0.9)
+                                            ? Colors.white.withValues(
+                                                alpha: 0.9,
+                                              )
                                             : Theme.of(context).brightness ==
-                                                    Brightness.dark
-                                                ? Colors.white
-                                                    .withValues(alpha: 0.9)
-                                                : context.primaryColor
-                                                    .withValues(alpha: 0.8),
+                                                  Brightness.dark
+                                            ? Colors.white.withValues(
+                                                alpha: 0.9,
+                                              )
+                                            : context.primaryColor.withValues(
+                                                alpha: 0.8,
+                                              ),
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -318,8 +328,9 @@ class ReaderSelectionWidget extends StatelessWidget {
                                 height: 32,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: context.primaryColor
-                                        .withValues(alpha: 0.3),
+                                    color: context.primaryColor.withValues(
+                                      alpha: 0.3,
+                                    ),
                                     width: 2,
                                   ),
                                   borderRadius: BorderRadius.circular(16),

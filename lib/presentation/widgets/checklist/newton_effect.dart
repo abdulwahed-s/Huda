@@ -8,10 +8,7 @@ class NewtonEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Newton(
-      effectConfigurations: [
-        _createSparkleEffect(),
-        _createPulseEffect(),
-      ],
+      effectConfigurations: [_createSparkleEffect(), _createPulseEffect()],
     );
   }
 
@@ -29,7 +26,9 @@ class NewtonEffect extends StatelessWidget {
       minVelocity: const newton.Velocity(8),
       maxVelocity: const newton.Velocity(20),
       origin: const Offset(
-          0.5, 1.1), // Start from bottom center (slightly below screen)
+        0.5,
+        1.1,
+      ), // Start from bottom center (slightly below screen)
       solidEdges: newton.SolidEdges.none,
       particleCount: 60,
       particlesPerEmit: 8,
@@ -54,11 +53,14 @@ class NewtonEffect extends StatelessWidget {
     return RelativisticEffectConfiguration(
       configurationOverrider: (effect) {
         final particlesPerEmit = effect.effectConfiguration.particlesPerEmit;
-        final angle = 360 /
+        final angle =
+            360 /
             particlesPerEmit *
             (effect.activeParticles.length % particlesPerEmit);
-        return effect.effectConfiguration
-            .copyWith(maxAngle: angle, minAngle: angle);
+        return effect.effectConfiguration.copyWith(
+          maxAngle: angle,
+          minAngle: angle,
+        );
       },
       gravity: Gravity.zero,
       emitDuration: const Duration(seconds: 1),

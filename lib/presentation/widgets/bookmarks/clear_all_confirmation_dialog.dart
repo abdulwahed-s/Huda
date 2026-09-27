@@ -4,10 +4,7 @@ import 'package:huda/l10n/app_localizations.dart';
 class ClearAllConfirmationDialog extends StatelessWidget {
   final VoidCallback onClearAll;
 
-  const ClearAllConfirmationDialog({
-    super.key,
-    required this.onClearAll,
-  });
+  const ClearAllConfirmationDialog({super.key, required this.onClearAll});
 
   @override
   Widget build(BuildContext context) {

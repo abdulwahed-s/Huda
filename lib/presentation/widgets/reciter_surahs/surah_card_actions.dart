@@ -82,26 +82,26 @@ class SurahCardActions extends StatelessWidget {
                   ),
                 )
               : isPlaying
-                  ? Padding(
-                      key: const ValueKey('eq'),
-                      padding: EdgeInsets.all(4.r),
-                      child: Icon(
-                        Icons.graphic_eq_rounded,
-                        color: theme.colorScheme.primary,
-                        size: 26.sp,
-                      ),
-                    )
-                  : IconButton(
-                      key: const ValueKey('play'),
-                      icon: Icon(
-                        Icons.play_circle_fill_rounded,
-                        size: 30.sp,
-                        color: theme.colorScheme.primary,
-                      ),
-                      onPressed: onPlay,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                    ),
+              ? Padding(
+                  key: const ValueKey('eq'),
+                  padding: EdgeInsets.all(4.r),
+                  child: Icon(
+                    Icons.graphic_eq_rounded,
+                    color: theme.colorScheme.primary,
+                    size: 26.sp,
+                  ),
+                )
+              : IconButton(
+                  key: const ValueKey('play'),
+                  icon: Icon(
+                    Icons.play_circle_fill_rounded,
+                    size: 30.sp,
+                    color: theme.colorScheme.primary,
+                  ),
+                  onPressed: onPlay,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
         ),
         SizedBox(width: 2.w),
         AnimatedSwitcher(

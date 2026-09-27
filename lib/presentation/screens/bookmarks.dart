@@ -52,16 +52,17 @@ class _BookmarksPageState extends State<BookmarksPage>
 
   void _setupBookmarkChangeListener() {
     final bookmarkService = getIt<BookmarkService>();
-    _bookmarkChangesSubscription =
-        bookmarkService.bookmarkChanges.listen((change) {
+    _bookmarkChangesSubscription = bookmarkService.bookmarkChanges.listen((
+      change,
+    ) {
       if (mounted) {
         HudaSnackBar.success(
           context,
           message: change.action == BookmarkChangeAction.added
               ? AppLocalizations.of(context)!.bookmarkAdded
               : change.action == BookmarkChangeAction.removed
-                  ? AppLocalizations.of(context)!.bookmarkRemoved
-                  : AppLocalizations.of(context)!.bookmarkUpdated,
+              ? AppLocalizations.of(context)!.bookmarkRemoved
+              : AppLocalizations.of(context)!.bookmarkUpdated,
         );
         context.read<BookmarksCubit>().loadBookmarks();
       }
@@ -73,7 +74,7 @@ class _BookmarksPageState extends State<BookmarksPage>
       null,
       BookmarkType.bookmark,
       BookmarkType.note,
-      BookmarkType.star
+      BookmarkType.star,
     ];
     final newFilter = filterTypes[_tabController.index];
 
@@ -116,11 +117,15 @@ class _BookmarksPageState extends State<BookmarksPage>
       revelationType: 'Meccan',
     );
 
-    Navigator.pushNamed(context, AppRoute.surahScreen, arguments: {
-      'surahInfo': surahInfo,
-      'scrollToAyah': bookmark.ayahNumber,
-      'shouldRestorePosition': true,
-    });
+    Navigator.pushNamed(
+      context,
+      AppRoute.surahScreen,
+      arguments: {
+        'surahInfo': surahInfo,
+        'scrollToAyah': bookmark.ayahNumber,
+        'shouldRestorePosition': true,
+      },
+    );
   }
 
   void _handleBookmarkAction(String action, BookmarkModel bookmark) {

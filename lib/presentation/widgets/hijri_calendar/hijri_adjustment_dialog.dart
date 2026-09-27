@@ -80,9 +80,7 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
         key: const ValueKey('hijri-adjustment-dialog'),
         insetPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 24),
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: 520,
@@ -101,9 +99,9 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
                       Text(
                         localizations.hijriAdjustmentDescription,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: colors.onSurfaceVariant,
-                              height: 1.45,
-                            ),
+                          color: colors.onSurfaceVariant,
+                          height: 1.45,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       _AutomaticChoiceCard(
@@ -116,16 +114,16 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
                       Text(
                         localizations.hijriManualAdjustment,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         localizations.hijriManualAdjustmentDescription,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: colors.onSurfaceVariant,
-                              height: 1.35,
-                            ),
+                          color: colors.onSurfaceVariant,
+                          height: 1.35,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       LayoutBuilder(
@@ -211,7 +209,8 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
                       flex: widget.canDismiss ? 1 : 2,
                       child: FilledButton(
                         key: const ValueKey('save-hijri-adjustment'),
-                        onPressed: _selectedChoice == null ||
+                        onPressed:
+                            _selectedChoice == null ||
                                 _isSaving ||
                                 (widget.canDismiss &&
                                     _selectedChoice == widget.initialChoice)
@@ -248,10 +247,7 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
     );
   }
 
-  Widget _buildHeader(
-    BuildContext context,
-    AppLocalizations localizations,
-  ) {
+  Widget _buildHeader(BuildContext context, AppLocalizations localizations) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(22, 20, 14, 20),
@@ -259,10 +255,7 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
         gradient: LinearGradient(
           begin: AlignmentDirectional.topStart,
           end: AlignmentDirectional.bottomEnd,
-          colors: [
-            context.primaryColor,
-            context.primaryVariantColor,
-          ],
+          colors: [context.primaryColor, context.primaryVariantColor],
         ),
       ),
       child: Row(
@@ -273,9 +266,7 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.24),
-              ),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
             ),
             child: const Icon(
               Icons.calendar_month_rounded,
@@ -288,9 +279,9 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
             child: Text(
               localizations.hijriAdjustmentTitle,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
           if (widget.canDismiss)
@@ -369,19 +360,17 @@ class _AutomaticChoiceCard extends StatelessWidget {
                       children: [
                         Text(
                           localizations.automatic,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 3),
                         Text(
                           localizations.hijriAutomaticAdjustmentDescription,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: colors.onSurfaceVariant,
-                                    height: 1.35,
-                                  ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: colors.onSurfaceVariant,
+                                height: 1.35,
+                              ),
                         ),
                       ],
                     ),
@@ -432,9 +421,7 @@ class _ManualChoiceButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected ? primary : colors.surfaceContainerLow,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? primary : colors.outlineVariant,
-          ),
+          border: Border.all(color: selected ? primary : colors.outlineVariant),
           boxShadow: selected
               ? [
                   BoxShadow(
@@ -456,9 +443,9 @@ class _ManualChoiceButton extends StatelessWidget {
                 choice.label,
                 textDirection: TextDirection.ltr,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: selected ? colors.onPrimary : colors.onSurface,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  color: selected ? colors.onPrimary : colors.onSurface,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ),

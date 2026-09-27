@@ -34,8 +34,11 @@ class _BooksScreenState extends State<BooksScreen>
   }
 
   void _loadInitialData() {
-    final languageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
+    final languageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
     selectedLanguage = languageCode;
     context.read<BooksCubit>().fetchBooks(languageCode, 1, languageCode);
     context.read<LanguagesCubit>().fetchLanguages(languageCode);
@@ -71,8 +74,11 @@ class _BooksScreenState extends State<BooksScreen>
           if (state is BooksLoaded &&
               state.booksResponse.data.isEmpty &&
               selectedLanguage != null) {
-            final languageCode =
-                context.read<LocalizationCubit>().state.locale.languageCode;
+            final languageCode = context
+                .read<LocalizationCubit>()
+                .state
+                .locale
+                .languageCode;
             setState(() => selectedLanguage = null);
             context.read<BooksCubit>().fetchBooks('showall', 1, languageCode);
           }
@@ -89,7 +95,8 @@ class _BooksScreenState extends State<BooksScreen>
       ),
       floatingActionButton: BlocBuilder<BooksCubit, BooksState>(
         builder: (context, state) {
-          final isOffline = state is BooksOfflineLoaded ||
+          final isOffline =
+              state is BooksOfflineLoaded ||
               state is BooksOfflineEmpty ||
               state is BooksOffline;
 
@@ -106,7 +113,10 @@ class _BooksScreenState extends State<BooksScreen>
   }
 
   List<Widget> _buildContentForState(
-      BuildContext context, BooksState state, bool isDark) {
+    BuildContext context,
+    BooksState state,
+    bool isDark,
+  ) {
     if (state is BooksLoading || state is BooksOfflineLoading) {
       return [BooksLoadingWidget(isDark: isDark)];
     } else if (state is BooksLoaded) {
@@ -116,7 +126,7 @@ class _BooksScreenState extends State<BooksScreen>
           isDark: isDark,
           selectedLanguage: selectedLanguage,
           onLanguageChanged: _handleLanguageChange,
-        )
+        ),
       ];
     } else if (state is BooksOfflineLoaded) {
       return [
@@ -124,22 +134,24 @@ class _BooksScreenState extends State<BooksScreen>
           state: state,
           isDark: isDark,
           onRetry: _retryLoading,
-        )
+        ),
       ];
     } else if (state is BooksOfflineEmpty) {
       return [
         SliverFillRemaining(
           hasScrollBody: false,
-          child:
-              OfflineEmptyStateWidget(isDark: isDark, onRetry: _retryLoading),
-        )
+          child: OfflineEmptyStateWidget(
+            isDark: isDark,
+            onRetry: _retryLoading,
+          ),
+        ),
       ];
     } else if (state is BooksOffline) {
       return [
         SliverFillRemaining(
           hasScrollBody: false,
           child: OfflineStateWidget(isDark: isDark, onRetry: _retryLoading),
-        )
+        ),
       ];
     } else if (state is BooksError) {
       return [
@@ -150,7 +162,7 @@ class _BooksScreenState extends State<BooksScreen>
             isDark: isDark,
             onRetry: _retryLoading,
           ),
-        )
+        ),
       ];
     }
     return [const SliverToBoxAdapter(child: SizedBox.shrink())];
@@ -160,19 +172,29 @@ class _BooksScreenState extends State<BooksScreen>
     setState(() {
       selectedLanguage = language;
     });
-    final languageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    context
-        .read<BooksCubit>()
-        .fetchBooks(language ?? 'showall', 1, languageCode);
+    final languageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
+    context.read<BooksCubit>().fetchBooks(
+      language ?? 'showall',
+      1,
+      languageCode,
+    );
   }
 
   void _retryLoading() {
-    final languageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    context
-        .read<BooksCubit>()
-        .fetchBooks(selectedLanguage ?? 'showall', 1, languageCode);
+    final languageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
+    context.read<BooksCubit>().fetchBooks(
+      selectedLanguage ?? 'showall',
+      1,
+      languageCode,
+    );
     context.read<LanguagesCubit>().fetchLanguages(languageCode);
   }
 }

@@ -13,18 +13,13 @@ class BooksAppBar extends StatelessWidget {
     return SliverAppBar(
       elevation: 0,
       backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-      iconTheme: IconThemeData(
-        color: isDark ? Colors.white : Colors.black,
-      ),
+      iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
       surfaceTintColor: Colors.transparent,
       pinned: true,
       floating: false,
       expandedHeight: 140.h,
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsetsDirectional.only(
-          start: 50.w,
-          bottom: 5.h,
-        ),
+        titlePadding: EdgeInsetsDirectional.only(start: 50.w, bottom: 5.h),
         title: Text(
           AppLocalizations.of(context)!.library,
           style: TextStyle(
@@ -55,8 +50,9 @@ class BooksAppBar extends StatelessWidget {
               child: Icon(
                 Icons.menu_book_rounded,
                 size: 140.sp,
-                color: (isDark ? Colors.white : Colors.black)
-                    .withValues(alpha: 0.03),
+                color: (isDark ? Colors.white : Colors.black).withValues(
+                  alpha: 0.03,
+                ),
               ),
             ),
           ],

@@ -86,8 +86,11 @@ class PdfFloatingButtons extends StatelessWidget {
         onPressed: onPressed,
         backgroundColor: color,
         mini: true,
-        child:
-            const Icon(Icons.format_color_fill, color: Colors.white, size: 16),
+        child: const Icon(
+          Icons.format_color_fill,
+          color: Colors.white,
+          size: 16,
+        ),
       ),
     );
   }

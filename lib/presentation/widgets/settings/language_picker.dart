@@ -37,12 +37,19 @@ class LanguagePicker extends StatelessWidget {
                 Icons.language_outlined,
                 color: context.primaryColor,
                 size: context.responsive(
-                    mobile: 24.sp, tablet: 26.0, desktop: 26.0),
+                  mobile: 24.sp,
+                  tablet: 26.0,
+                  desktop: 26.0,
+                ),
               ),
             ),
             SizedBox(
-                width: context.responsive(
-                    mobile: 16.w, tablet: 16.0, desktop: 16.0)),
+              width: context.responsive(
+                mobile: 16.w,
+                tablet: 16.0,
+                desktop: 16.0,
+              ),
+            ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +58,10 @@ class LanguagePicker extends StatelessWidget {
                     l10n.language,
                     style: TextStyle(
                       fontSize: context.responsive(
-                          mobile: 18.sp, tablet: 20.0, desktop: 20.0),
+                        mobile: 18.sp,
+                        tablet: 20.0,
+                        desktop: 20.0,
+                      ),
                       fontWeight: FontWeight.w600,
                       color: isDark ? context.darkText : context.lightText,
                     ),
@@ -61,7 +71,10 @@ class LanguagePicker extends StatelessWidget {
                     _getLanguageDisplayName(selectedLocale.languageCode, l10n),
                     style: TextStyle(
                       fontSize: context.responsive(
-                          mobile: 14.sp, tablet: 15.0, desktop: 15.0),
+                        mobile: 14.sp,
+                        tablet: 15.0,
+                        desktop: 15.0,
+                      ),
                       color: isDark
                           ? context.darkText.withValues(alpha: 0.7)
                           : context.lightText.withValues(alpha: 0.7),
@@ -73,14 +86,20 @@ class LanguagePicker extends StatelessWidget {
           ],
         ),
         SizedBox(
-            height:
-                context.responsive(mobile: 24.h, tablet: 24.0, desktop: 24.0)),
+          height: context.responsive(mobile: 24.h, tablet: 24.0, desktop: 24.0),
+        ),
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal:
-                context.responsive(mobile: 16.w, tablet: 16.0, desktop: 16.0),
-            vertical:
-                context.responsive(mobile: 4.h, tablet: 4.0, desktop: 4.0),
+            horizontal: context.responsive(
+              mobile: 16.w,
+              tablet: 16.0,
+              desktop: 16.0,
+            ),
+            vertical: context.responsive(
+              mobile: 4.h,
+              tablet: 4.0,
+              desktop: 4.0,
+            ),
           ),
           decoration: BoxDecoration(
             color: isDark
@@ -108,7 +127,10 @@ class LanguagePicker extends StatelessWidget {
               Icons.expand_more_rounded,
               color: context.primaryColor,
               size: context.responsive(
-                  mobile: 24.sp, tablet: 24.0, desktop: 24.0),
+                mobile: 24.sp,
+                tablet: 24.0,
+                desktop: 24.0,
+              ),
             ),
             items: LocalizationCubit.supportedLocales.map((locale) {
               final isCurrentSelected = selectedLocale == locale;
@@ -117,9 +139,15 @@ class LanguagePicker extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: context.responsive(
-                        mobile: 8.w, tablet: 10.0, desktop: 10.0),
+                      mobile: 8.w,
+                      tablet: 10.0,
+                      desktop: 10.0,
+                    ),
                     vertical: context.responsive(
-                        mobile: 8.h, tablet: 10.0, desktop: 10.0),
+                      mobile: 8.h,
+                      tablet: 10.0,
+                      desktop: 10.0,
+                    ),
                   ),
                   decoration: BoxDecoration(
                     color: isCurrentSelected
@@ -131,9 +159,15 @@ class LanguagePicker extends StatelessWidget {
                     children: [
                       Container(
                         width: context.responsive(
-                            mobile: 36.w, tablet: 36.0, desktop: 36.0),
+                          mobile: 36.w,
+                          tablet: 36.0,
+                          desktop: 36.0,
+                        ),
                         height: context.responsive(
-                            mobile: 24.h, tablet: 24.0, desktop: 24.0),
+                          mobile: 24.h,
+                          tablet: 24.0,
+                          desktop: 24.0,
+                        ),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: _getLanguageGradient(locale.languageCode),
@@ -153,26 +187,37 @@ class LanguagePicker extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: context.responsive(
-                                  mobile: 10.sp, tablet: 11.0, desktop: 11.0),
+                                mobile: 10.sp,
+                                tablet: 11.0,
+                                desktop: 11.0,
+                              ),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
                       SizedBox(
-                          width: context.responsive(
-                              mobile: 16.w, tablet: 16.0, desktop: 16.0)),
+                        width: context.responsive(
+                          mobile: 16.w,
+                          tablet: 16.0,
+                          desktop: 16.0,
+                        ),
+                      ),
                       Expanded(
                         child: Text(
                           _getLanguageDisplayName(locale.languageCode, l10n),
                           style: TextStyle(
                             fontSize: context.responsive(
-                                mobile: 15.sp, tablet: 16.0, desktop: 16.0),
+                              mobile: 15.sp,
+                              tablet: 16.0,
+                              desktop: 16.0,
+                            ),
                             fontWeight: isCurrentSelected
                                 ? FontWeight.w600
                                 : FontWeight.w500,
-                            color:
-                                isDark ? context.darkText : context.lightText,
+                            color: isDark
+                                ? context.darkText
+                                : context.lightText,
                           ),
                         ),
                       ),
@@ -180,7 +225,10 @@ class LanguagePicker extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(
                             context.responsive(
-                                mobile: 4.w, tablet: 5.0, desktop: 5.0),
+                              mobile: 4.w,
+                              tablet: 5.0,
+                              desktop: 5.0,
+                            ),
                           ),
                           decoration: BoxDecoration(
                             color: context.primaryColor,
@@ -190,7 +238,10 @@ class LanguagePicker extends StatelessWidget {
                             Icons.check_rounded,
                             color: Colors.white,
                             size: context.responsive(
-                                mobile: 16.sp, tablet: 16.0, desktop: 16.0),
+                              mobile: 16.sp,
+                              tablet: 16.0,
+                              desktop: 16.0,
+                            ),
                           ),
                         ),
                     ],

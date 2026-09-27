@@ -32,9 +32,10 @@ class _AudiobookArtworkState extends State<AudiobookArtwork>
       vsync: this,
       duration: const Duration(milliseconds: 2500),
     );
-    _breathScale = Tween<double>(begin: 1.0, end: 1.03).animate(
-      CurvedAnimation(parent: _breathCtrl, curve: Curves.easeInOut),
-    );
+    _breathScale = Tween<double>(
+      begin: 1.0,
+      end: 1.03,
+    ).animate(CurvedAnimation(parent: _breathCtrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -69,10 +70,8 @@ class _AudiobookArtworkState extends State<AudiobookArtwork>
         return Center(
           child: AnimatedBuilder(
             animation: _breathScale,
-            builder: (_, child) => Transform.scale(
-              scale: _breathScale.value,
-              child: child,
-            ),
+            builder: (_, child) =>
+                Transform.scale(scale: _breathScale.value, child: child),
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 16.h),
               width: 240.w,
@@ -100,7 +99,8 @@ class _AudiobookArtworkState extends State<AudiobookArtwork>
                           boxShadow: [
                             BoxShadow(
                               color: primaryColor.withValues(
-                                  alpha: 0.25 + 0.2 * t),
+                                alpha: 0.25 + 0.2 * t,
+                              ),
                               blurRadius: 30 + 20 * t,
                               offset: const Offset(0, 12),
                               spreadRadius: t * 2,
@@ -117,8 +117,11 @@ class _AudiobookArtworkState extends State<AudiobookArtwork>
                       );
                     },
                     child: !hasArt
-                        ? Icon(Icons.graphic_eq_rounded,
-                            size: 96.sp, color: Colors.white)
+                        ? Icon(
+                            Icons.graphic_eq_rounded,
+                            size: 96.sp,
+                            color: Colors.white,
+                          )
                         : null,
                   ),
                   if (widget.isOffline)

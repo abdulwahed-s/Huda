@@ -70,8 +70,9 @@ class PdfSidebar extends StatelessWidget {
                       ),
                       child: TabBar(
                         labelColor: colorScheme.primary,
-                        unselectedLabelColor:
-                            colorScheme.onSurface.withValues(alpha: 0.6),
+                        unselectedLabelColor: colorScheme.onSurface.withValues(
+                          alpha: 0.6,
+                        ),
                         indicatorColor: colorScheme.primary,
                         indicatorWeight: 3,
                         labelStyle: TextStyle(

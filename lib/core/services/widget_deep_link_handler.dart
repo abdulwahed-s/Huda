@@ -49,10 +49,7 @@ class WidgetDeepLinkHandler {
     final route = _routeForUri(uri);
     if (route == null) return;
 
-    navigator.pushNamedAndRemoveUntil(
-      route,
-      (r) => r.isFirst,
-    );
+    navigator.pushNamedAndRemoveUntil(route, (r) => r.isFirst);
   }
 
   static String? _routeForUri(Uri uri) {

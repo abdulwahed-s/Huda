@@ -25,7 +25,10 @@ class RecitersHeaderBackground extends StatelessWidget {
           colors: [
             theme.colorScheme.primary,
             Color.lerp(
-                theme.colorScheme.primary, theme.colorScheme.secondary, 0.5)!,
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
+              0.5,
+            )!,
           ],
         ),
       ),
@@ -95,11 +98,14 @@ class RecitersHeaderBackground extends StatelessWidget {
                   SizedBox(height: 8.h),
                   if (reciterCount > 0)
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 4.h,
+                      ),
                       decoration: BoxDecoration(
-                        color:
-                            theme.colorScheme.onPrimary.withValues(alpha: 0.18),
+                        color: theme.colorScheme.onPrimary.withValues(
+                          alpha: 0.18,
+                        ),
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Row(

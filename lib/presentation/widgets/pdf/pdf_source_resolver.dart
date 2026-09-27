@@ -1,7 +1,8 @@
 import 'package:dart_pdf_editor/dart_pdf_editor.dart';
 
 import 'pdf_local_byte_source_stub.dart'
-    if (dart.library.io) 'pdf_local_byte_source_io.dart' as local;
+    if (dart.library.io) 'pdf_local_byte_source_io.dart'
+    as local;
 
 PdfByteSource createPdfByteSource(String location) {
   final uri = Uri.tryParse(location);

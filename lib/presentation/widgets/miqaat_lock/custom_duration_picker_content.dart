@@ -41,10 +41,7 @@ class CustomDurationPickerContent extends StatelessWidget {
             SizedBox(width: 12.w),
             Text(
               l10n.customDuration,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -88,7 +85,10 @@ class CustomDurationPickerContent extends StatelessWidget {
             inactiveTrackColor: primaryColor.withValues(alpha: 0.15),
             thumbColor: Colors.white,
             thumbShape: RoundSliderThumbShape(
-                enabledThumbRadius: 12.r, elevation: 4, pressedElevation: 8),
+              enabledThumbRadius: 12.r,
+              elevation: 4,
+              pressedElevation: 8,
+            ),
             overlayColor: primaryColor.withValues(alpha: 0.2),
             overlayShape: RoundSliderOverlayShape(overlayRadius: 24.r),
           ),
@@ -96,7 +96,8 @@ class CustomDurationPickerContent extends StatelessWidget {
             value: selectedDuration.toDouble(),
             min: MiqaatLockSettings.minCustomDuration.toDouble(),
             max: MiqaatLockSettings.maxCustomDuration.toDouble(),
-            divisions: MiqaatLockSettings.maxCustomDuration -
+            divisions:
+                MiqaatLockSettings.maxCustomDuration -
                 MiqaatLockSettings.minCustomDuration,
             onChanged: (value) => onChanged(value.round()),
           ),

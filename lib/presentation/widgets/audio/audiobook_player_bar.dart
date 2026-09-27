@@ -98,8 +98,8 @@ class _MiniPill extends StatelessWidget {
                           final idx = snap.data ?? 0;
                           final chapter =
                               (idx >= 0 && idx < state.tracks.length)
-                                  ? state.tracks[idx].description
-                                  : state.title;
+                              ? state.tracks[idx].description
+                              : state.title;
                           return Text(
                             chapter.isNotEmpty ? chapter : state.title,
                             maxLines: 1,
@@ -107,8 +107,9 @@ class _MiniPill extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
-                              color:
-                                  isDark ? context.darkText : context.lightText,
+                              color: isDark
+                                  ? context.darkText
+                                  : context.lightText,
                             ),
                           );
                         },
@@ -127,15 +128,19 @@ class _MiniPill extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.forward_30_rounded,
-                      color: context.primaryColor),
+                  icon: Icon(
+                    Icons.forward_30_rounded,
+                    color: context.primaryColor,
+                  ),
                   onPressed: () =>
                       context.read<AudiobookPlayerCubit>().skipForward(),
                 ),
                 IconButton(
-                  icon: Icon(Icons.close_rounded,
-                      color: (isDark ? context.darkText : context.lightText)
-                          .withValues(alpha: 0.6)),
+                  icon: Icon(
+                    Icons.close_rounded,
+                    color: (isDark ? context.darkText : context.lightText)
+                        .withValues(alpha: 0.6),
+                  ),
                   onPressed: () {
                     context.read<AudiobookPlayerCubit>().closePlayer();
                     context.read<AudiobookBarCubit>().hide();

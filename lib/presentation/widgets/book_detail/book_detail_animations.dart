@@ -19,15 +19,14 @@ class BookDetailAnimations {
       vsync: vsync,
     );
 
-    fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: fadeController, curve: Curves.easeInOut),
-    );
-    slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: slideController, curve: Curves.easeOutBack),
-    );
+    fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: fadeController, curve: Curves.easeInOut));
+    slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(parent: slideController, curve: Curves.easeOutBack),
+        );
 
     fadeController.forward();
     slideController.forward();

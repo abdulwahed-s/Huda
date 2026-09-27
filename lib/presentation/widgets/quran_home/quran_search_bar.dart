@@ -56,11 +56,7 @@ class QuranSearchBar extends StatelessWidget {
           ),
           suffixIcon: controller.text.isNotEmpty
               ? IconButton(
-                  icon: Icon(
-                    Icons.clear,
-                    color: Colors.grey[400],
-                    size: 16.sp,
-                  ),
+                  icon: Icon(Icons.clear, color: Colors.grey[400], size: 16.sp),
                   onPressed: onClear,
                 )
               : null,

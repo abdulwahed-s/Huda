@@ -29,11 +29,11 @@ class StreakCounter extends StatelessWidget {
           colors: isDark
               ? [
                   colors.accent.withValues(alpha: 0.8),
-                  colors.accent.withValues(alpha: 0.6)
+                  colors.accent.withValues(alpha: 0.6),
                 ]
               : [
                   colors.accent.withValues(alpha: 0.8),
-                  colors.accentDark.withValues(alpha: 0.8)
+                  colors.accentDark.withValues(alpha: 0.8),
                 ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,

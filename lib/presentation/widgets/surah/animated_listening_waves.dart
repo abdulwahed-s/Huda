@@ -79,14 +79,8 @@ class _AnimatedListeningWavesState extends State<AnimatedListeningWaves>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: isDark
-              ? [
-                  const Color(0xFF1A1A1A),
-                  const Color(0xFF0F0F0F),
-                ]
-              : [
-                  const Color(0xFFF8F9FA),
-                  const Color(0xFFE8EAF0),
-                ],
+              ? [const Color(0xFF1A1A1A), const Color(0xFF0F0F0F)]
+              : [const Color(0xFFF8F9FA), const Color(0xFFE8EAF0)],
         ),
         borderRadius: BorderRadius.circular(12.r),
       ),
@@ -128,8 +122,8 @@ class _AnimatedListeningWavesState extends State<AnimatedListeningWaves>
                         color: widget.isListening
                             ? primaryColor
                             : (isDark
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade600),
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade600),
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -172,10 +166,12 @@ class WavesPainter extends CustomPainter {
       final paint = Paint()
         ..shader = RadialGradient(
           colors: [
-            (i % 2 == 0 ? primaryColor : accentColor)
-                .withValues(alpha: opacity),
-            (i % 2 == 0 ? primaryColor : accentColor)
-                .withValues(alpha: opacity * 0.5),
+            (i % 2 == 0 ? primaryColor : accentColor).withValues(
+              alpha: opacity,
+            ),
+            (i % 2 == 0 ? primaryColor : accentColor).withValues(
+              alpha: opacity * 0.5,
+            ),
           ],
           stops: const [0.7, 1.0],
         ).createShader(Rect.fromCircle(center: center, radius: radius))

@@ -62,7 +62,7 @@ class LockedAppsSection extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: lockedApps.length,
-                  separatorBuilder: (_, __) => Divider(
+                  separatorBuilder: (_, _) => Divider(
                     height: 1.h,
                     indent: 68.w,
                     color: theme.dividerColor.withValues(alpha: 0.3),
@@ -86,7 +86,10 @@ class LockedAppsSection extends StatelessWidget {
   }
 
   Widget _buildIOSLockedAppsInfo(
-      BuildContext context, ThemeData theme, AppLocalizations l10n) {
+    BuildContext context,
+    ThemeData theme,
+    AppLocalizations l10n,
+  ) {
     const platform = MethodChannel('com.aw.huda/miqaat_lock');
 
     return FutureBuilder<dynamic>(
@@ -95,8 +98,9 @@ class LockedAppsSection extends StatelessWidget {
       builder: (context, snapshot) {
         final data = snapshot.data;
         final int appCount = data is Map ? (data['appCount'] as int? ?? 0) : 0;
-        final int categoryCount =
-            data is Map ? (data['categoryCount'] as int? ?? 0) : 0;
+        final int categoryCount = data is Map
+            ? (data['categoryCount'] as int? ?? 0)
+            : 0;
         final int total = appCount + categoryCount;
 
         if (total == 0) {
@@ -140,14 +144,13 @@ class LockedAppsSection extends StatelessWidget {
                     Text(
                       categoryCount > 0
                           ? l10n.iosAppsAndCategoriesSelected(
-                              appCount, categoryCount)
+                              appCount,
+                              categoryCount,
+                            )
                           : (appCount == 1
-                              ? l10n.iosAppSelected(1)
-                              : l10n.iosAppsSelected(appCount)),
-                      style: TextStyle(
-                        color: theme.hintColor,
-                        fontSize: 12.sp,
-                      ),
+                                ? l10n.iosAppSelected(1)
+                                : l10n.iosAppsSelected(appCount)),
+                      style: TextStyle(color: theme.hintColor, fontSize: 12.sp),
                     ),
                   ],
                 ),
@@ -187,7 +190,7 @@ class LockedAppsSection extends StatelessWidget {
               width: 42.w,
               height: 42.h,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => _defaultAppIcon(theme, context),
+              errorBuilder: (_, _, _) => _defaultAppIcon(theme, context),
             ),
           ),
         );
@@ -207,10 +210,7 @@ class LockedAppsSection extends StatelessWidget {
           Expanded(
             child: Text(
               app.appName,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 14.sp,
-              ),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
             ),
           ),
           IconButton(
@@ -234,11 +234,7 @@ class LockedAppsSection extends StatelessWidget {
         color: context.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10.r),
       ),
-      child: Icon(
-        Icons.android,
-        color: context.primaryColor,
-        size: 22.sp,
-      ),
+      child: Icon(Icons.android, color: context.primaryColor, size: 22.sp),
     );
   }
 }

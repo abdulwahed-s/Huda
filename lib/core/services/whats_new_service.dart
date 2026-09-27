@@ -55,6 +55,8 @@ class WhatsNewService {
     );
 
     await cacheHelper.saveData(
-        key: _lastSeenVersionKey, value: content.version);
+      key: _lastSeenVersionKey,
+      value: content.version,
+    );
   }
 }

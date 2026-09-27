@@ -31,9 +31,7 @@ class OptionsMenu extends StatelessWidget {
             leading: const Icon(Icons.clear_all, color: Colors.red),
             title: Text(
               AppLocalizations.of(context)!.clearAllBookmarks,
-              style: const TextStyle(
-                color: Colors.red,
-              ),
+              style: const TextStyle(color: Colors.red),
             ),
             onTap: onClearAll,
           ),

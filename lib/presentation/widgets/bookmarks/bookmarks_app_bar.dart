@@ -45,10 +45,7 @@ class BookmarksAppBar extends StatelessWidget implements PreferredSizeWidget {
               controller: searchController,
               onChanged: onSearchChanged,
             ),
-            TabBarWidget(
-              isDark: isDark,
-              tabController: tabController,
-            ),
+            TabBarWidget(isDark: isDark, tabController: tabController),
             SizedBox(height: 8.h),
           ],
         ),

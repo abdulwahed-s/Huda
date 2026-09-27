@@ -11,10 +11,7 @@ import 'package:huda/presentation/widgets/huda_ai/question_chip.dart';
 class CounselingEmptyState extends StatelessWidget {
   final bool isDark;
 
-  const CounselingEmptyState({
-    super.key,
-    required this.isDark,
-  });
+  const CounselingEmptyState({super.key, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +24,7 @@ class CounselingEmptyState extends StatelessWidget {
               ? [context.darkGradientStart, context.darkGradientEnd]
               : [
                   context.lightSurface,
-                  context.primaryExtraLightColor.withValues(alpha: 0.3)
+                  context.primaryExtraLightColor.withValues(alpha: 0.3),
                 ],
         ),
       ),
@@ -276,11 +273,7 @@ class CounselingEmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: iconSize,
-            color: color,
-          ),
+          Icon(icon, size: iconSize, color: color),
           SizedBox(height: spacing1),
           Text(
             title,
@@ -296,8 +289,9 @@ class CounselingEmptyState extends StatelessWidget {
             subtitle,
             style: TextStyle(
               fontSize: subtitleSize,
-              color:
-                  isDark ? Colors.white.withValues(alpha: 0.6) : Colors.black54,
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.6)
+                  : Colors.black54,
             ),
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -314,7 +308,7 @@ class CounselingEmptyState extends StatelessWidget {
       {'text': l10n.exampleFeelAnxious, 'icon': Icons.health_and_safety},
       {
         'text': l10n.exampleFeelOverwhelmed,
-        'icon': Icons.sentiment_dissatisfied
+        'icon': Icons.sentiment_dissatisfied,
       },
       {'text': l10n.exampleFeelingGrateful, 'icon': Icons.favorite},
       {'text': l10n.exampleSeekingPeace, 'icon': Icons.spa},
@@ -356,9 +350,9 @@ class CounselingEmptyState extends StatelessWidget {
                   icon: example['icon'] as IconData,
                   isDark: isDark,
                   onPressed: () {
-                    context
-                        .read<ChatCubit>()
-                        .sendCounselingRequest(example['text'] as String);
+                    context.read<ChatCubit>().sendCounselingRequest(
+                      example['text'] as String,
+                    );
                   },
                 ),
               );

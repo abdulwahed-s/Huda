@@ -169,7 +169,7 @@ class _HomeThemeLoading extends StatelessWidget {
                   mainAxisExtent: 74.h,
                 ),
                 itemCount: columns,
-                itemBuilder: (_, __) => _SkeletonBlock(
+                itemBuilder: (_, _) => _SkeletonBlock(
                   height: 74.h,
                   color: scheme.onSurface.withValues(alpha: 0.06),
                 ),

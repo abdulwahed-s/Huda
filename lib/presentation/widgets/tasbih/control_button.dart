@@ -25,21 +25,14 @@ class ControlButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(
-              color: color.withValues(alpha: 0.3),
-              width: 1.5,
-            ),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 1.5),
           ),
           child: Material(
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(16.r),
               onTap: onPressed,
-              child: Icon(
-                icon,
-                color: color,
-                size: 28.sp,
-              ),
+              child: Icon(icon, color: color, size: 28.sp),
             ),
           ),
         ),

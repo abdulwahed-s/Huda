@@ -64,8 +64,11 @@ class BooksLoadedWidget extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               sliver: SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:
-                      context.responsive(mobile: 2, tablet: 3, desktop: 6),
+                  crossAxisCount: context.responsive(
+                    mobile: 2,
+                    tablet: 3,
+                    desktop: 6,
+                  ),
                   crossAxisSpacing: 16.w,
                   mainAxisSpacing: 16.h,
                   childAspectRatio: 0.65,
@@ -88,13 +91,14 @@ class BooksLoadedWidget extends StatelessWidget {
                   isDark: isDark,
                   onPageChanged: (page) {
                     context.read<BooksCubit>().fetchBooks(
-                        selectedLanguage ?? 'showall',
-                        page,
-                        context
-                            .read<LocalizationCubit>()
-                            .state
-                            .locale
-                            .languageCode);
+                      selectedLanguage ?? 'showall',
+                      page,
+                      context
+                          .read<LocalizationCubit>()
+                          .state
+                          .locale
+                          .languageCode,
+                    );
                   },
                 ),
               ),
@@ -124,7 +128,8 @@ class BooksLoadedWidget extends StatelessWidget {
           'fallbackPdfUrl': source.remoteUrl,
           'bookId': progress.bookId,
           'bookTitle': progress.title ?? '',
-          'language': progress.language ??
+          'language':
+              progress.language ??
               context.read<LocalizationCubit>().state.locale.languageCode,
         },
       );
@@ -139,7 +144,8 @@ class BooksLoadedWidget extends StatelessWidget {
       AppRoute.bookDetail,
       arguments: {
         'bookId': progress.bookId.toString(),
-        'language': progress.language ??
+        'language':
+            progress.language ??
             context.read<LocalizationCubit>().state.locale.languageCode,
         'title': progress.title ?? '',
       },

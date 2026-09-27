@@ -8,9 +8,7 @@ void showTasbihResetDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (dialogContext) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       title: Row(
         children: [
           const Icon(Icons.warning_amber_rounded, color: Colors.red),

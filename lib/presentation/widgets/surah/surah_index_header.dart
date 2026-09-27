@@ -55,11 +55,7 @@ class SurahIndexHeader extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.my_location_rounded,
-                    size: 11.sp,
-                    color: accent,
-                  ),
+                  Icon(Icons.my_location_rounded, size: 11.sp, color: accent),
                   SizedBox(width: 5.w),
                   Text(
                     currentSurahArabicName!,

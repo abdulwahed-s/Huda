@@ -65,9 +65,10 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
               } else if (downloaded) {
                 _showDeleteDialog(context);
               } else if (widget.detail != null) {
-                context
-                    .read<AudiobookDownloadCubit>()
-                    .download(widget.detail!, widget.language);
+                context.read<AudiobookDownloadCubit>().download(
+                  widget.detail!,
+                  widget.language,
+                );
               }
             },
             onTapCancel: () => _scaleCtrl.forward(),
@@ -78,13 +79,17 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
     );
   }
 
-  Widget _buildButtonContent(BuildContext context, AudiobookDownloadState state,
-      bool downloaded, bool downloading) {
+  Widget _buildButtonContent(
+    BuildContext context,
+    AudiobookDownloadState state,
+    bool downloaded,
+    bool downloading,
+  ) {
     final borderColor = downloaded
         ? Colors.green
         : downloading
-            ? context.primaryColor
-            : context.primaryColor;
+        ? context.primaryColor
+        : context.primaryColor;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -95,8 +100,10 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
         color: downloaded
             ? Colors.green.withValues(alpha: 0.12)
             : context.primaryColor.withValues(alpha: 0.1),
-        border:
-            Border.all(color: borderColor.withValues(alpha: 0.5), width: 1.5),
+        border: Border.all(
+          color: borderColor.withValues(alpha: 0.5),
+          width: 1.5,
+        ),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -115,10 +122,12 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             child: downloading
-                ? Icon(Icons.close_rounded,
+                ? Icon(
+                    Icons.close_rounded,
                     key: const ValueKey('cancel'),
                     size: 14.sp,
-                    color: context.primaryColor)
+                    color: context.primaryColor,
+                  )
                 : Icon(
                     downloaded
                         ? Icons.download_done_rounded
@@ -139,8 +148,9 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
       context: context,
       builder: (dialogCtx) => AlertDialog(
         backgroundColor: isDark ? const Color(0xFF1E1E2E) : Colors.white,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
         title: Text(
           AppLocalizations.of(context)!.delete,
           style: TextStyle(
@@ -152,23 +162,28 @@ class _AudioDetailDownloadButtonState extends State<AudioDetailDownloadButton>
           AppLocalizations.of(context)!.deleteConfirmation,
           style: TextStyle(
             fontSize: 13.sp,
-            color:
-                isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.7)
+                : Colors.black54,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogCtx),
-            child: Text(AppLocalizations.of(context)!.cancel,
-                style: TextStyle(color: context.primaryColor)),
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
+              style: TextStyle(color: context.primaryColor),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(dialogCtx);
               context.read<AudiobookDownloadCubit>().delete(widget.audioId);
             },
-            child: Text(AppLocalizations.of(context)!.delete,
-                style: const TextStyle(color: Colors.red)),
+            child: Text(
+              AppLocalizations.of(context)!.delete,
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),

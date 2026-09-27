@@ -125,19 +125,26 @@ class _TasbihNotesWheelState extends State<TasbihNotesWheel> {
               return AnimatedBuilder(
                 animation: _controller,
                 builder: (context, _) {
-                  final double fractional = (_controller.hasClients &&
+                  final double fractional =
+                      (_controller.hasClients &&
                           _controller.position.hasContentDimensions)
                       ? _controller.offset / _itemExtent
                       : widget.selectedIndex.toDouble();
 
-                  final double dist =
-                      (index.toDouble() - fractional).clamp(-3.0, 3.0);
+                  final double dist = (index.toDouble() - fractional).clamp(
+                    -3.0,
+                    3.0,
+                  );
                   final double distAbs = dist.abs();
 
-                  final double textAlpha =
-                      (1.0 - distAbs * 0.40).clamp(0.08, 1.0);
-                  final double pillAlpha =
-                      (1.0 - distAbs * 2.8).clamp(0.0, 1.0);
+                  final double textAlpha = (1.0 - distAbs * 0.40).clamp(
+                    0.08,
+                    1.0,
+                  );
+                  final double pillAlpha = (1.0 - distAbs * 2.8).clamp(
+                    0.0,
+                    1.0,
+                  );
                   final double scale = (1.0 - distAbs * 0.055).clamp(0.80, 1.0);
 
                   final bool isSelected = index == widget.selectedIndex;
@@ -153,19 +160,22 @@ class _TasbihNotesWheelState extends State<TasbihNotesWheel> {
                         ),
                         decoration: pillAlpha > 0.02
                             ? BoxDecoration(
-                                color: Colors.white
-                                    .withValues(alpha: 0.19 * pillAlpha),
+                                color: Colors.white.withValues(
+                                  alpha: 0.19 * pillAlpha,
+                                ),
                                 borderRadius: BorderRadius.circular(50.r),
                                 border: Border.all(
-                                  color: Colors.white
-                                      .withValues(alpha: 0.46 * pillAlpha),
+                                  color: Colors.white.withValues(
+                                    alpha: 0.46 * pillAlpha,
+                                  ),
                                   width: 1.5,
                                 ),
                                 boxShadow: pillAlpha > 0.6
                                     ? [
                                         BoxShadow(
                                           color: Colors.black.withValues(
-                                              alpha: 0.12 * pillAlpha),
+                                            alpha: 0.12 * pillAlpha,
+                                          ),
                                           blurRadius: 12,
                                           spreadRadius: -2,
                                           offset: const Offset(0, 4),
@@ -182,8 +192,9 @@ class _TasbihNotesWheelState extends State<TasbihNotesWheel> {
                           style: TextStyle(
                             fontSize: isSelected ? 14.sp : 11.5.sp,
                             color: Colors.white.withValues(alpha: textAlpha),
-                            fontWeight:
-                                isSelected ? FontWeight.w700 : FontWeight.w400,
+                            fontWeight: isSelected
+                                ? FontWeight.w700
+                                : FontWeight.w400,
                             height: 1.55,
                           ),
                         ),

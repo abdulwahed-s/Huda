@@ -17,8 +17,9 @@ class AudiobookNowPlayingScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? context.darkGradientStart : context.lightSurface,
+      backgroundColor: isDark
+          ? context.darkGradientStart
+          : context.lightSurface,
       body: BlocBuilder<AudiobookPlayerCubit, AudiobookPlayerState>(
         builder: (context, state) {
           final artUrl = state is AudiobookPlayerPlaying ? state.artUrl : null;

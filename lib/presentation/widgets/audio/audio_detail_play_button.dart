@@ -73,10 +73,7 @@ class _AudioDetailPlayButtonState extends State<AudioDetailPlayButton>
             height: 52.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  context.primaryColor,
-                  context.accentColor,
-                ],
+                colors: [context.primaryColor, context.accentColor],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
@@ -100,8 +97,8 @@ class _AudioDetailPlayButtonState extends State<AudioDetailPlayButton>
                     widget.isThisAudioActive && widget.isCurrentlyPlaying
                         ? Icons.pause_rounded
                         : widget.hasProgress
-                            ? Icons.play_circle_fill_rounded
-                            : Icons.play_arrow_rounded,
+                        ? Icons.play_circle_fill_rounded
+                        : Icons.play_arrow_rounded,
                     key: ValueKey(widget.isCurrentlyPlaying),
                     color: Colors.white,
                     size: 22.sp,

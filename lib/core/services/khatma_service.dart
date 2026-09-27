@@ -66,7 +66,7 @@ class KhatmaService {
     final end = ((safeDayIndex + 1) * totalPages) ~/ days;
     return (
       startPage: start.clamp(1, totalPages),
-      endPage: end.clamp(1, totalPages)
+      endPage: end.clamp(1, totalPages),
     );
   }
 
@@ -107,20 +107,25 @@ class KhatmaService {
     int endSurah,
     int endVerse,
     String endSurahName,
-  }) rangeDetailsForDay(int dayIndex, int days) {
+  })
+  rangeDetailsForDay(int dayIndex, int days) {
     final r = rangeForDay(dayIndex, days);
 
     final startPageData = quran.getPageData(r.startPage);
-    final startSurah =
-        startPageData.isNotEmpty ? startPageData.first['surah'] as int : 1;
-    final startVerse =
-        startPageData.isNotEmpty ? startPageData.first['start'] as int : 1;
+    final startSurah = startPageData.isNotEmpty
+        ? startPageData.first['surah'] as int
+        : 1;
+    final startVerse = startPageData.isNotEmpty
+        ? startPageData.first['start'] as int
+        : 1;
 
     final endPageData = quran.getPageData(r.endPage);
-    final endSurah =
-        endPageData.isNotEmpty ? endPageData.last['surah'] as int : 114;
-    final endVerse =
-        endPageData.isNotEmpty ? endPageData.last['end'] as int : 6;
+    final endSurah = endPageData.isNotEmpty
+        ? endPageData.last['surah'] as int
+        : 114;
+    final endVerse = endPageData.isNotEmpty
+        ? endPageData.last['end'] as int
+        : 6;
 
     final startSurahName = quran.getSurahNameArabic(startSurah);
     final endSurahName = quran.getSurahNameArabic(endSurah);

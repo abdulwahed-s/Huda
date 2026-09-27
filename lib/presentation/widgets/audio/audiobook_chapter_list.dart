@@ -37,8 +37,10 @@ class _AudiobookChapterListState extends State<AudiobookChapterList> {
   void _scrollToIndex(int index) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || !_scrollCtrl.hasClients) return;
-      final target =
-          (index * _itemH).clamp(0.0, _scrollCtrl.position.maxScrollExtent);
+      final target = (index * _itemH).clamp(
+        0.0,
+        _scrollCtrl.position.maxScrollExtent,
+      );
       _scrollCtrl.animateTo(
         target,
         duration: const Duration(milliseconds: 350),
@@ -91,7 +93,11 @@ class _AudiobookChapterListState extends State<AudiobookChapterList> {
   }
 
   Widget _buildChapterItem(
-      BuildContext context, int index, int currentIndex, bool isDark) {
+    BuildContext context,
+    int index,
+    int currentIndex,
+    bool isDark,
+  ) {
     final track = widget.tracks[index];
     final isCurrent = index == currentIndex;
     final primaryColor = context.primaryColor;
@@ -141,8 +147,11 @@ class _AudiobookChapterListState extends State<AudiobookChapterList> {
                       : primaryColor.withValues(alpha: 0.10),
                 ),
                 child: isCurrent
-                    ? Icon(Icons.graphic_eq_rounded,
-                        size: 16.sp, color: Colors.white)
+                    ? Icon(
+                        Icons.graphic_eq_rounded,
+                        size: 16.sp,
+                        color: Colors.white,
+                      )
                     : Text(
                         '${index + 1}',
                         style: TextStyle(

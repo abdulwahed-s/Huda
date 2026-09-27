@@ -45,11 +45,11 @@ class BookReadingViewport {
   }
 
   Map<String, dynamic> toJson() => {
-        'page': pageIndex,
-        if (top != 0) 'top': top,
-        if (left != 0) 'left': left,
-        'zoom': zoom,
-      };
+    'page': pageIndex,
+    if (top != 0) 'top': top,
+    if (left != 0) 'left': left,
+    'zoom': zoom,
+  };
 }
 
 class BookProgress {
@@ -139,10 +139,12 @@ class BookProgressService extends ChangeNotifier {
       updatedAt: DateTime.now(),
       title: title ?? (existing != null ? existing['title'] : null),
       author: author ?? (existing != null ? existing['author'] : null),
-      attachmentUrl: attachmentUrl ??
+      attachmentUrl:
+          attachmentUrl ??
           (existing != null ? existing['attachmentUrl'] : null),
       language: language ?? (existing != null ? existing['language'] : null),
-      viewport: viewport ??
+      viewport:
+          viewport ??
           (existing != null
               ? BookReadingViewport.tryFromJson(existing['viewport'])
               : null),

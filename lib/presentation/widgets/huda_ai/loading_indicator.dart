@@ -38,11 +38,7 @@ class LoadingIndicator extends StatelessWidget {
               shape: BoxShape.circle,
               color: context.primaryColor,
             ),
-            child: Icon(
-              Icons.auto_awesome,
-              color: Colors.white,
-              size: 20.sp,
-            ),
+            child: Icon(Icons.auto_awesome, color: Colors.white, size: 20.sp),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -53,8 +49,9 @@ class LoadingIndicator extends StatelessWidget {
                   appLocalizations.hudaAIThinking,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color:
-                        !isDark ? Theme.of(context).primaryColor : Colors.white,
+                    color: !isDark
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
                     fontSize: 14.sp,
                   ),
                 ),
@@ -76,9 +73,7 @@ class LoadingIndicator extends StatelessWidget {
             height: 20.h,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                context.primaryColor,
-              ),
+              valueColor: AlwaysStoppedAnimation<Color>(context.primaryColor),
             ),
           ),
         ],

@@ -51,19 +51,13 @@ class ActionButton extends StatelessWidget {
             if (isPrimary)
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
               ),
             if (!isPrimary) SizedBox(width: 6.w),
             if (!isPrimary)
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
               ),
           ],
         ),

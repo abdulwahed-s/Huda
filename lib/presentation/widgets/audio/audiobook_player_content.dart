@@ -99,8 +99,9 @@ class _AudiobookPlayerContentState extends State<AudiobookPlayerContent> {
               height: 1,
               indent: 24.w,
               endIndent: 24.w,
-              color: (isDark ? Colors.white : Colors.black)
-                  .withValues(alpha: 0.10),
+              color: (isDark ? Colors.white : Colors.black).withValues(
+                alpha: 0.10,
+              ),
             ),
           ),
           SliverToBoxAdapter(child: SizedBox(height: 8.h)),

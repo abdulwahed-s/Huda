@@ -33,10 +33,7 @@ class CounselingResponseCard extends StatelessWidget {
       builder: (context, value, child) {
         return Transform.translate(
           offset: Offset(0, 20 * (1 - value)),
-          child: Opacity(
-            opacity: value,
-            child: child,
-          ),
+          child: Opacity(opacity: value, child: child),
         );
       },
       child: Container(
@@ -99,19 +96,13 @@ class CounselingResponseCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: Icon(
-                            icon,
-                            color: Colors.white,
-                            size: 24,
-                          ),
+                          child: Icon(icon, color: Colors.white, size: 24),
                         ),
                         const SizedBox(width: 14),
                         Expanded(
                           child: Text(
                             title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
+                            style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: colorScheme.onSurface,
@@ -127,9 +118,7 @@ class CounselingResponseCard extends StatelessWidget {
                       height: 3,
                       width: 60,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: gradientColors,
-                        ),
+                        gradient: LinearGradient(colors: gradientColors),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -138,11 +127,11 @@ class CounselingResponseCard extends StatelessWidget {
                     Text(
                       content,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            height: 1.8,
-                            fontSize: 16,
-                            color: colorScheme.onSurface.withValues(alpha: 0.9),
-                            letterSpacing: 0.2,
-                          ),
+                        height: 1.8,
+                        fontSize: 16,
+                        color: colorScheme.onSurface.withValues(alpha: 0.9),
+                        letterSpacing: 0.2,
+                      ),
                     ),
                     // Translation / subcontent
                     if (subContent != null) ...[
@@ -171,15 +160,14 @@ class CounselingResponseCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 subContent!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
+                                style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       height: 1.7,
                                       fontSize: 15,
                                       fontStyle: FontStyle.italic,
-                                      color: colorScheme.onSurface
-                                          .withValues(alpha: 0.8),
+                                      color: colorScheme.onSurface.withValues(
+                                        alpha: 0.8,
+                                      ),
                                     ),
                               ),
                             ),
@@ -209,9 +197,7 @@ class CounselingResponseCard extends StatelessWidget {
                             ),
                             child: Text(
                               footer!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
+                              style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     fontStyle: FontStyle.italic,
                                     fontWeight: FontWeight.w600,

@@ -11,8 +11,9 @@ class Settings extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? context.darkCardBackground : context.lightSurface,
+      backgroundColor: isDark
+          ? context.darkCardBackground
+          : context.lightSurface,
       appBar: SettingsAppBar(isDark: isDark),
       body: SettingsBody(isDark: isDark),
     );

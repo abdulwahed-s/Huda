@@ -12,7 +12,8 @@ class ThemeToggleButton extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, themeState) {
         final themeMode = themeState.themeMode;
-        final isDark = themeMode == ThemeMode.dark ||
+        final isDark =
+            themeMode == ThemeMode.dark ||
             (themeMode == ThemeMode.system &&
                 MediaQuery.of(context).platformBrightness == Brightness.dark);
 

@@ -7,10 +7,7 @@ import 'package:home_widget/home_widget.dart';
 class AddWidgetSection extends StatefulWidget {
   final bool isDark;
 
-  const AddWidgetSection({
-    super.key,
-    required this.isDark,
-  });
+  const AddWidgetSection({super.key, required this.isDark});
 
   @override
   State<AddWidgetSection> createState() => _AddWidgetSectionState();
@@ -99,10 +96,7 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
               SizedBox(width: 10.w),
               Text(
                 AppLocalizations.of(context)!.addWidgetToHomeScreen,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -232,8 +226,9 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
       width: double.infinity,
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color:
-            widget.isDark ? Colors.grey[800]!.withAlpha(128) : Colors.grey[100],
+        color: widget.isDark
+            ? Colors.grey[800]!.withAlpha(128)
+            : Colors.grey[100],
         borderRadius: BorderRadius.circular(10.r),
         border: Border.all(
           color: widget.isDark ? Colors.grey[700]! : Colors.grey[300]!,
@@ -269,8 +264,9 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
                     width: 20.w,
                     height: 20.h,
                     decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).colorScheme.primary.withAlpha(26),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withAlpha(26),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -290,8 +286,9 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
                       step,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        color:
-                            widget.isDark ? Colors.grey[300] : Colors.grey[700],
+                        color: widget.isDark
+                            ? Colors.grey[300]
+                            : Colors.grey[700],
                         height: 1.4,
                       ),
                     ),

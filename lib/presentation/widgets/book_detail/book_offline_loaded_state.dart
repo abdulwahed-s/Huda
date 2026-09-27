@@ -69,8 +69,9 @@ class BookOfflineLoadedState extends StatelessWidget {
                     ),
                     SizedBox(width: 8.w),
                     Text(
-                      AppLocalizations.of(context)!
-                          .filesCount(offlineBook.attachments.length),
+                      AppLocalizations.of(
+                        context,
+                      )!.filesCount(offlineBook.attachments.length),
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,

@@ -108,11 +108,11 @@ class PageRouter {
       case AppRoute.homeQuran:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<QuranCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<QuranCubit>(
             create: (context) => (QuranCubit()),
             child: const HomeQuran(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -132,7 +132,7 @@ class PageRouter {
       case AppRoute.surahScreen:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) {
+          pageBuilder: (_, animation, _) {
             final args = settings.arguments as Map<String, dynamic>;
             return MultiRepositoryProvider(
               providers: [
@@ -173,7 +173,7 @@ class PageRouter {
               ),
             );
           },
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -192,11 +192,11 @@ class PageRouter {
       case AppRoute.settings:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<SettingsCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<SettingsCubit>(
             create: (context) => SettingsCubit(),
             child: const Settings(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -216,12 +216,12 @@ class PageRouter {
       case AppRoute.bookmarks:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<BookmarksCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<BookmarksCubit>(
             create: (context) =>
                 BookmarksCubit(bookmarkService: getIt<BookmarkService>()),
             child: const BookmarksPage(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -241,8 +241,8 @@ class PageRouter {
       case AppRoute.widgetManagement:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => const WidgetManagementScreen(),
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (_, animation, _) => const WidgetManagementScreen(),
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -262,8 +262,8 @@ class PageRouter {
       case AppRoute.prayerTimes:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => const PrayerTimes(),
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (_, animation, _) => const PrayerTimes(),
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -283,11 +283,11 @@ class PageRouter {
       case AppRoute.notification:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<NotificationsCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<NotificationsCubit>(
             create: (context) => NotificationsCubit(),
             child: const Notifications(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -306,11 +306,11 @@ class PageRouter {
       case AppRoute.athkar:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<AthkarCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<AthkarCubit>(
             create: (context) => AthkarCubit(),
             child: const AthkarScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -329,7 +329,7 @@ class PageRouter {
       case AppRoute.athkarDetail:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) {
+          pageBuilder: (_, animation, _) {
             final args = settings.arguments as Map<String, String>;
             return BlocProvider<AthkarDetailsCubit>(
               create: (context) => AthkarDetailsCubit(),
@@ -340,7 +340,7 @@ class PageRouter {
               ),
             );
           },
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -359,11 +359,11 @@ class PageRouter {
       case AppRoute.hadith:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<HadithCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<HadithCubit>(
             create: (context) => HadithCubit()..fetchHadithBooks(),
             child: const Hadith(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -382,7 +382,7 @@ class PageRouter {
       case AppRoute.hadithChapters:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) {
+          pageBuilder: (_, animation, _) {
             final args = settings.arguments as Map<String, String>;
             return BlocProvider<ChaptersCubit>(
               create: (context) =>
@@ -393,7 +393,7 @@ class PageRouter {
               ),
             );
           },
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -412,7 +412,7 @@ class PageRouter {
       case AppRoute.hadithDetails:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) {
+          pageBuilder: (_, animation, _) {
             final args = settings.arguments as Map<String, String>;
             return BlocProvider<HadithDetailsCubit>(
               create: (context) => HadithDetailsCubit()
@@ -428,7 +428,7 @@ class PageRouter {
               ),
             );
           },
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -447,11 +447,11 @@ class PageRouter {
       case AppRoute.qiblah:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<QiblahCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<QiblahCubit>(
             create: (context) => QiblahCubit()..loadQiblah(),
             child: const QiblahScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -471,11 +471,11 @@ class PageRouter {
       case AppRoute.tasbih:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<TasbihCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<TasbihCubit>(
             create: (context) => TasbihCubit()..loadTasbih(),
             child: const Tasbih(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -494,11 +494,11 @@ class PageRouter {
       case AppRoute.hijriCalendar:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<HijriCalendarCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<HijriCalendarCubit>(
             create: (context) => HijriCalendarCubit(),
             child: const HijriCalendarScreenNew(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -517,7 +517,7 @@ class PageRouter {
       case AppRoute.books:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => MultiBlocProvider(
+          pageBuilder: (_, animation, _) => MultiBlocProvider(
             providers: [
               BlocProvider<BooksCubit>(create: (context) => BooksCubit()),
               BlocProvider<LanguagesCubit>(
@@ -526,7 +526,7 @@ class PageRouter {
             ],
             child: const BooksScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -545,7 +545,7 @@ class PageRouter {
       case AppRoute.bookDetail:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) {
+          pageBuilder: (_, animation, _) {
             final args = settings.arguments as Map<String, String>;
             return MultiBlocProvider(
               providers: [
@@ -566,7 +566,7 @@ class PageRouter {
               ),
             );
           },
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -585,7 +585,7 @@ class PageRouter {
       case AppRoute.audios:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (context, animation, __) => MultiBlocProvider(
+          pageBuilder: (context, animation, _) => MultiBlocProvider(
             providers: [
               BlocProvider<AudiosCubit>(create: (_) => AudiosCubit()),
               BlocProvider<AudioLanguagesCubit>(
@@ -596,7 +596,7 @@ class PageRouter {
             ],
             child: const AudiosScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -613,7 +613,7 @@ class PageRouter {
       case AppRoute.audioDetail:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (context, animation, __) {
+          pageBuilder: (context, animation, _) {
             final args = settings.arguments as Map<String, dynamic>;
             return MultiBlocProvider(
               providers: [
@@ -636,7 +636,7 @@ class PageRouter {
               ),
             );
           },
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -654,14 +654,14 @@ class PageRouter {
         final args = settings.arguments as Map<String, dynamic>;
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => PdfView(
+          pageBuilder: (_, animation, _) => PdfView(
             pdfUrl: args['url'] as String,
             bookId: args['bookId'] as int?,
             bookTitle: args['bookTitle'] as String?,
             language: args['language'] as String?,
             fallbackPdfUrl: args['fallbackPdfUrl'] as String?,
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -680,8 +680,8 @@ class PageRouter {
       case AppRoute.hudaAI:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => const ChatScreen(),
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (_, animation, _) => const ChatScreen(),
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -700,11 +700,11 @@ class PageRouter {
       case AppRoute.islamicChecklist:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<ChecklistCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<ChecklistCubit>(
             create: (context) => ChecklistCubit(),
             child: const IslamicChecklistScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -723,11 +723,11 @@ class PageRouter {
       case AppRoute.feedback:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<RatingCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<RatingCubit>(
             create: (context) => RatingCubit(),
             child: const FeedbackScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -746,11 +746,11 @@ class PageRouter {
       case AppRoute.zakatCalculator:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<ZakatCalculatorCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<ZakatCalculatorCubit>(
             create: (context) => ZakatCalculatorCubit(),
             child: const ZakatCalculator(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -769,8 +769,8 @@ class PageRouter {
       case AppRoute.miqaatLock:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => const MiqaatLockScreen(),
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (_, animation, _) => const MiqaatLockScreen(),
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -789,14 +789,14 @@ class PageRouter {
       case AppRoute.ramadan:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, __) => BlocProvider<RamadanCubit>(
+          pageBuilder: (_, animation, _) => BlocProvider<RamadanCubit>(
             create: (context) => RamadanCubit(
               getIt<CacheHelper>(),
               hijriCalendarService: getIt<HijriCalendarService>(),
             ),
             child: const RamadanScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -815,7 +815,7 @@ class PageRouter {
       case AppRoute.quranAudio:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (context, animation, __) => MultiBlocProvider(
+          pageBuilder: (context, animation, _) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: context.read<DownloadProgressCubit>()),
               BlocProvider.value(value: context.read<QuranPlayerCubit>()),
@@ -823,7 +823,7 @@ class PageRouter {
             ],
             child: const RecitersScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
@@ -843,11 +843,11 @@ class PageRouter {
       case AppRoute.quranRadio:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (context, animation, __) => BlocProvider.value(
+          pageBuilder: (context, animation, _) => BlocProvider.value(
             value: context.read<QuranRadioCubit>(),
             child: const QuranRadioScreen(),
           ),
-          transitionsBuilder: (_, animation, __, child) {
+          transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;

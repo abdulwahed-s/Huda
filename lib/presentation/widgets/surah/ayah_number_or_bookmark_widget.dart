@@ -73,8 +73,9 @@ class _AyahNumberOrBookmarkWidgetState
 
   void _subscribeToKhatmaChanges() {
     try {
-      _khatmaChangesSubscription =
-          getIt<KhatmaService>().khatmaChanges.listen((_) {
+      _khatmaChangesSubscription = getIt<KhatmaService>().khatmaChanges.listen((
+        _,
+      ) {
         _checkKhatmaStatus();
       });
     } catch (_) {}
@@ -82,8 +83,9 @@ class _AyahNumberOrBookmarkWidgetState
 
   void _subscribeToBookmarkChanges() {
     final bookmarkService = getIt<BookmarkService>();
-    _bookmarkChangesSubscription =
-        bookmarkService.bookmarkChanges.listen((change) {
+    _bookmarkChangesSubscription = bookmarkService.bookmarkChanges.listen((
+      change,
+    ) {
       if (change.surahNumber == widget.surahNumber &&
           change.ayahNumber == widget.ayahNumber) {
         _checkBookmarkStatus();
@@ -109,7 +111,9 @@ class _AyahNumberOrBookmarkWidgetState
       final khatmaService = getIt<KhatmaService>();
       if (khatmaService.enabled && !khatmaService.isCompleted) {
         final details = khatmaService.rangeDetailsForDay(
-            khatmaService.currentDayIndex, khatmaService.planDays);
+          khatmaService.currentDayIndex,
+          khatmaService.planDays,
+        );
         if (widget.surahNumber == details.startSurah &&
             widget.ayahNumber == details.startVerse) {
           isStart = true;
@@ -180,17 +184,9 @@ class _AyahNumberOrBookmarkWidgetState
 
   Widget _buildContent() {
     if (_hasStar) {
-      return Icon(
-        Icons.star,
-        size: widget.size,
-        color: Colors.amber,
-      );
+      return Icon(Icons.star, size: widget.size, color: Colors.amber);
     } else if (_hasNote) {
-      return Icon(
-        Icons.edit_note,
-        size: widget.size,
-        color: Colors.orange,
-      );
+      return Icon(Icons.edit_note, size: widget.size, color: Colors.orange);
     } else if (_hasBookmark) {
       return Icon(
         Icons.bookmark,

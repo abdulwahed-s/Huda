@@ -36,10 +36,7 @@ class DropdownCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 12.h),
           DropdownButtonFormField<String>(
@@ -52,14 +49,13 @@ class DropdownCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.r),
                 borderSide: BorderSide(color: context.primaryColor, width: 2),
               ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 12.w,
+                vertical: 12.h,
+              ),
             ),
             items: items
-                .map((item) => DropdownMenuItem(
-                      value: item,
-                      child: Text(item),
-                    ))
+                .map((item) => DropdownMenuItem(value: item, child: Text(item)))
                 .toList(),
             onChanged: onChanged,
           ),

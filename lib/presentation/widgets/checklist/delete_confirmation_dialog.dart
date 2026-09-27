@@ -30,22 +30,19 @@ class DeleteConfirmationDialog extends StatelessWidget {
           SizedBox(width: 10.w),
           Text(
             AppLocalizations.of(context)!.deleteTask,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
         ],
       ),
       content: Container(
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-            color: Colors.grey[50], borderRadius: BorderRadius.circular(10.r)),
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(10.r),
+        ),
         child: Text(
           '${AppLocalizations.of(context)!.deleteTaskConfirmation} "${item.title}"؟',
-          style: TextStyle(
-            fontSize: 14.sp,
-          ),
+          style: TextStyle(fontSize: 14.sp),
         ),
       ),
       actions: [
@@ -54,7 +51,8 @@ class DeleteConfirmationDialog extends StatelessWidget {
           style: TextButton.styleFrom(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r)),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
           ),
           child: Text(
             AppLocalizations.of(context)!.cancel,
@@ -75,14 +73,12 @@ class DeleteConfirmationDialog extends StatelessWidget {
             foregroundColor: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r)),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
           ),
           child: Text(
             AppLocalizations.of(context)!.delete,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12.sp,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp),
           ),
         ),
       ],

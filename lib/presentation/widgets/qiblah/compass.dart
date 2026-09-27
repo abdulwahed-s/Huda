@@ -44,8 +44,8 @@ class Compass extends StatelessWidget {
                 colorFilter: ColorFilter.mode(
                   isAligned
                       ? (isDark
-                          ? context.darkGradientEnd
-                          : context.primaryColor)
+                            ? context.darkGradientEnd
+                            : context.primaryColor)
                       : (isDark ? Colors.white70 : Colors.black54),
                   BlendMode.srcIn,
                 ),
@@ -79,8 +79,8 @@ class Compass extends StatelessWidget {
                     size: 60.w,
                     color: isAligned
                         ? (isDark
-                            ? context.darkGradientEnd
-                            : context.primaryColor)
+                              ? context.darkGradientEnd
+                              : context.primaryColor)
                         : (isDark ? Colors.white : Colors.black87),
                   ),
                 ),
@@ -92,8 +92,9 @@ class Compass extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               decoration: BoxDecoration(
-                color: (isDark ? Colors.black : Colors.white)
-                    .withValues(alpha: 0.8),
+                color: (isDark ? Colors.black : Colors.white).withValues(
+                  alpha: 0.8,
+                ),
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(

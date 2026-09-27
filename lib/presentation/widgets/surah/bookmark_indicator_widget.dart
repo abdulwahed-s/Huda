@@ -124,17 +124,9 @@ class _BookmarkIndicatorState extends State<BookmarkIndicator> {
             color: _bookmarkColor ?? context.primaryColor,
           ),
         if (_hasNote)
-          Icon(
-            Icons.note,
-            size: widget.size - 2,
-            color: Colors.orange,
-          ),
+          Icon(Icons.note, size: widget.size - 2, color: Colors.orange),
         if (_hasStar)
-          Icon(
-            Icons.star,
-            size: widget.size - 2,
-            color: Colors.amber,
-          ),
+          Icon(Icons.star, size: widget.size - 2, color: Colors.amber),
       ],
     );
 

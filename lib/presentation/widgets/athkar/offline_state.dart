@@ -24,10 +24,7 @@ class OfflineState extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.grey.shade300,
-                  width: 2,
-                ),
+                border: Border.all(color: Colors.grey.shade300, width: 2),
               ),
               child: Icon(
                 Icons.wifi_off_rounded,
@@ -73,10 +70,7 @@ class OfflineState extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => context.read<AthkarCubit>().loadAthkar(),
-                icon: Icon(
-                  Icons.refresh_rounded,
-                  size: 20.sp,
-                ),
+                icon: Icon(Icons.refresh_rounded, size: 20.sp),
                 label: Text(
                   AppLocalizations.of(context)!.retryArabic,
                   style: TextStyle(

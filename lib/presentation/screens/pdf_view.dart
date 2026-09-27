@@ -39,8 +39,9 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
   final PdfViewerController _pdfViewerController = PdfViewerController();
   final ValueNotifier<bool> showLeftPane = ValueNotifier<bool>(false);
   final ValueNotifier<PdfOutline?> outline = ValueNotifier<PdfOutline?>(null);
-  final ValueNotifier<PdfDocument?> document =
-      ValueNotifier<PdfDocument?>(null);
+  final ValueNotifier<PdfDocument?> document = ValueNotifier<PdfDocument?>(
+    null,
+  );
   final ValueNotifier<HudaPdfSearchController?> textSearcher =
       ValueNotifier<HudaPdfSearchController?>(null);
   final TextEditingController _goToPageController = TextEditingController();
@@ -301,7 +302,9 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
     for (final pageIndex in _pdfViewerController.selectionPages) {
       final rects = _pdfViewerController.selectionRectsOn(pageIndex);
       if (rects.isEmpty) continue;
-      _markers.putIfAbsent(pageIndex, () => []).add(
+      _markers
+          .putIfAbsent(pageIndex, () => [])
+          .add(
             Marker(
               color: color,
               pageIndex: pageIndex,
@@ -320,8 +323,9 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF1A1A1A) : const Color(0xFFF5F5F5),
+      backgroundColor: isDark
+          ? const Color(0xFF1A1A1A)
+          : const Color(0xFFF5F5F5),
       appBar: PdfAppBar(
         isDark: isDark,
         colorScheme: colorScheme,

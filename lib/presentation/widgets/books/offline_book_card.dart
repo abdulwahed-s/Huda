@@ -6,11 +6,7 @@ class OfflineBookCard extends StatelessWidget {
   final dynamic book;
   final bool isDark;
 
-  const OfflineBookCard({
-    super.key,
-    required this.book,
-    required this.isDark,
-  });
+  const OfflineBookCard({super.key, required this.book, required this.isDark});
 
   Color _getBookColor() {
     final colors = [
@@ -66,10 +62,7 @@ class OfflineBookCard extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  bookColor.withValues(alpha: 0.8),
-                  bookColor,
-                ],
+                colors: [bookColor.withValues(alpha: 0.8), bookColor],
               ),
             ),
             child: Stack(
@@ -114,7 +107,11 @@ class OfflineBookCard extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 20.w, right: 12.w, top: 12.h, bottom: 12.h),
+                    left: 20.w,
+                    right: 12.w,
+                    top: 12.h,
+                    bottom: 12.h,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +122,9 @@ class OfflineBookCard extends StatelessWidget {
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 6.w, vertical: 2.h),
+                              horizontal: 6.w,
+                              vertical: 2.h,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(4.r),
@@ -138,7 +137,9 @@ class OfflineBookCard extends StatelessWidget {
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 6.w, vertical: 2.h),
+                              horizontal: 6.w,
+                              vertical: 2.h,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(4.r),

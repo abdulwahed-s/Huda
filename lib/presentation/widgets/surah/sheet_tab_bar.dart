@@ -62,10 +62,7 @@ class SurahSheetTabBar extends StatelessWidget {
             splashFactory: NoSplash.splashFactory,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
             labelPadding: EdgeInsets.symmetric(horizontal: 4.w),
-            labelStyle: TextStyle(
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w700,
-            ),
+            labelStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w700),
             unselectedLabelStyle: TextStyle(
               fontSize: 10.sp,
               fontWeight: FontWeight.w400,

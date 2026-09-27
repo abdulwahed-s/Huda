@@ -18,11 +18,7 @@ class OfflineState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.signal_wifi_off,
-            size: 64.w,
-            color: colorScheme.primary,
-          ),
+          Icon(Icons.signal_wifi_off, size: 64.w, color: colorScheme.primary),
           SizedBox(height: 16.h),
           Text(
             AppLocalizations.of(context)!.noInternetConnection,

@@ -46,8 +46,11 @@ class OnboardingBottomControls extends StatelessWidget {
         children: [
           _buildPageIndicators(context),
           SizedBox(
-            height:
-                context.responsive(mobile: 24.h, tablet: 24.0, desktop: 24.0),
+            height: context.responsive(
+              mobile: 24.h,
+              tablet: 24.0,
+              desktop: 24.0,
+            ),
           ),
           _buildNavigationButtons(context),
         ],
@@ -84,9 +87,9 @@ class OnboardingBottomControls extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: onboardingPages[currentPage]
-                .primaryColor
-                .withValues(alpha: 0.3),
+            color: onboardingPages[currentPage].primaryColor.withValues(
+              alpha: 0.3,
+            ),
             width: 1.5,
           ),
         ),
@@ -94,8 +97,11 @@ class OnboardingBottomControls extends StatelessWidget {
           onPressed: onPreviousPressed,
           style: TextButton.styleFrom(
             padding: EdgeInsets.symmetric(
-              vertical:
-                  context.responsive(mobile: 16.h, tablet: 16.0, desktop: 16.0),
+              vertical: context.responsive(
+                mobile: 16.h,
+                tablet: 16.0,
+                desktop: 16.0,
+              ),
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.r),
@@ -107,7 +113,10 @@ class OnboardingBottomControls extends StatelessWidget {
               Icon(
                 Icons.arrow_back_ios_rounded,
                 size: context.responsive(
-                    mobile: 16.sp, tablet: 18.0, desktop: 18.0),
+                  mobile: 16.sp,
+                  tablet: 18.0,
+                  desktop: 18.0,
+                ),
                 color: onboardingPages[currentPage].primaryColor,
               ),
               SizedBox(width: 8.w),
@@ -115,7 +124,10 @@ class OnboardingBottomControls extends StatelessWidget {
                 AppLocalizations.of(context)!.previous,
                 style: TextStyle(
                   fontSize: context.responsive(
-                      mobile: 16.sp, tablet: 18.0, desktop: 18.0),
+                    mobile: 16.sp,
+                    tablet: 18.0,
+                    desktop: 18.0,
+                  ),
                   color: onboardingPages[currentPage].primaryColor,
                   fontWeight: FontWeight.w600,
                 ),
@@ -140,9 +152,9 @@ class OnboardingBottomControls extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: onboardingPages[currentPage]
-                  .primaryColor
-                  .withValues(alpha: 0.3),
+              color: onboardingPages[currentPage].primaryColor.withValues(
+                alpha: 0.3,
+              ),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -154,8 +166,11 @@ class OnboardingBottomControls extends StatelessWidget {
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             padding: EdgeInsets.symmetric(
-              vertical:
-                  context.responsive(mobile: 16.h, tablet: 16.0, desktop: 16.0),
+              vertical: context.responsive(
+                mobile: 16.h,
+                tablet: 16.0,
+                desktop: 16.0,
+              ),
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.r),
@@ -170,7 +185,10 @@ class OnboardingBottomControls extends StatelessWidget {
                     : AppLocalizations.of(context)!.next,
                 style: TextStyle(
                   fontSize: context.responsive(
-                      mobile: 16.sp, tablet: 18.0, desktop: 18.0),
+                    mobile: 16.sp,
+                    tablet: 18.0,
+                    desktop: 18.0,
+                  ),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
@@ -181,7 +199,10 @@ class OnboardingBottomControls extends StatelessWidget {
                     ? Icons.rocket_launch_rounded
                     : Icons.arrow_forward_ios_rounded,
                 size: context.responsive(
-                    mobile: 16.sp, tablet: 18.0, desktop: 18.0),
+                  mobile: 16.sp,
+                  tablet: 18.0,
+                  desktop: 18.0,
+                ),
                 color: Colors.white,
               ),
             ],

@@ -91,8 +91,8 @@ class _WirdDayTile extends StatelessWidget {
     final badgeColor = isDone
         ? Colors.green.shade500
         : isCurrent
-            ? accent
-            : (isDark ? Colors.white24 : Colors.black12);
+        ? accent
+        : (isDark ? Colors.white24 : Colors.black12);
 
     final badgeChild = isDone
         ? Icon(Icons.check_rounded, color: Colors.white, size: 14.sp)
@@ -118,8 +118,8 @@ class _WirdDayTile extends StatelessWidget {
           color: isCurrent
               ? accent.withValues(alpha: 0.3)
               : (isDark
-                  ? Colors.white10
-                  : Colors.black.withValues(alpha: 0.06)),
+                    ? Colors.white10
+                    : Colors.black.withValues(alpha: 0.06)),
         ),
       ),
       child: ListTile(
@@ -135,8 +135,9 @@ class _WirdDayTile extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.w900,
             fontSize: 13.sp,
-            color:
-                isCurrent ? accent : (isDark ? Colors.white : Colors.black87),
+            color: isCurrent
+                ? accent
+                : (isDark ? Colors.white : Colors.black87),
           ),
         ),
         subtitle: Text(

@@ -48,14 +48,8 @@ class _MemorizationCompletedDialogState
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: isDark
-                ? [
-                    const Color(0xFF1A1A1A),
-                    const Color(0xFF0F0F0F),
-                  ]
-                : [
-                    const Color(0xFFF8F9FA),
-                    const Color(0xFFE8EAF0),
-                  ],
+                ? [const Color(0xFF1A1A1A), const Color(0xFF0F0F0F)]
+                : [const Color(0xFFF8F9FA), const Color(0xFFE8EAF0)],
           ),
           borderRadius: BorderRadius.circular(24.r),
           boxShadow: [
@@ -180,8 +174,9 @@ class _CelebrationPainter extends CustomPainter {
       );
 
       final paint = Paint()
-        ..color =
-            (i % 2 == 0 ? primaryColor : accentColor).withValues(alpha: 0.2)
+        ..color = (i % 2 == 0 ? primaryColor : accentColor).withValues(
+          alpha: 0.2,
+        )
         ..style = PaintingStyle.fill;
 
       canvas.drawCircle(offset, 3.0, paint);

@@ -21,10 +21,7 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
 
 class HijriCalendarScreenNew extends StatefulWidget {
-  const HijriCalendarScreenNew({
-    super.key,
-    this.calendarService,
-  });
+  const HijriCalendarScreenNew({super.key, this.calendarService});
 
   final HijriCalendarService? calendarService;
 
@@ -91,8 +88,9 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
       final previousYear = _focusedHijri.month == 1
           ? _focusedHijri.year - 1
           : _focusedHijri.year;
-      final previousMonth =
-          _focusedHijri.month == 1 ? 12 : _focusedHijri.month - 1;
+      final previousMonth = _focusedHijri.month == 1
+          ? 12
+          : _focusedHijri.month - 1;
       _focusedHijri = HijriDate(previousYear, previousMonth, 1);
     });
   }
@@ -158,8 +156,9 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
       create: (_) => HijriCalendarCubit(calendarService: _calendarService),
       child: Builder(
         builder: (parentContext) => Scaffold(
-          backgroundColor:
-              isDark ? context.darkGradientStart : context.lightSurface,
+          backgroundColor: isDark
+              ? context.darkGradientStart
+              : context.lightSurface,
           appBar: CustomAppBar(
             isDark: isDark,
             isTablet: isTablet,
@@ -175,9 +174,10 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
           body: BlocBuilder<HijriCalendarCubit, HijriCalendarState>(
             builder: (context, state) {
               final List<HijriEvent> userEvents = _selectedHijri != null
-                  ? state.events[
-                          HijriCalendarService.eventKey(_selectedHijri!)] ??
-                      const <HijriEvent>[]
+                  ? state.events[HijriCalendarService.eventKey(
+                          _selectedHijri!,
+                        )] ??
+                        const <HijriEvent>[]
                   : const <HijriEvent>[];
               final islamicEvents = _selectedHijri == null
                   ? const <IslamicCalendarEvent>[]
@@ -276,8 +276,9 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
                                   isDark: isDark,
                                 ),
                                 Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
                                   child: const NotificationRequirementsSection(
                                     feature: NotificationFeature.hijriCalendar,
                                   ),
@@ -405,16 +406,20 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
   }
 
   void _showEditEventDialog(
-      BuildContext context, DateTime selectedGregorian, HijriEvent oldEvent) {
+    BuildContext context,
+    DateTime selectedGregorian,
+    HijriEvent oldEvent,
+  ) {
     showDialog(
       context: context,
       builder: (dialogContext) => EventDialog(
         isEditMode: true,
         oldEvent: oldEvent,
         onSave: (newEvent) {
-          context
-              .read<HijriCalendarCubit>()
-              .editEvent(selectedGregorian, newEvent);
+          context.read<HijriCalendarCubit>().editEvent(
+            selectedGregorian,
+            newEvent,
+          );
           Navigator.pop(dialogContext);
         },
       ),

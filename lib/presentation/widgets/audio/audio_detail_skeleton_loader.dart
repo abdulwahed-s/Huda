@@ -8,10 +8,12 @@ class AudioDetailSkeletonLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shimmerBase =
-        isDark ? Colors.white.withValues(alpha: 0.06) : Colors.grey.shade200;
-    final shimmerHighlight =
-        isDark ? Colors.white.withValues(alpha: 0.14) : Colors.grey.shade100;
+    final shimmerBase = isDark
+        ? Colors.white.withValues(alpha: 0.06)
+        : Colors.grey.shade200;
+    final shimmerHighlight = isDark
+        ? Colors.white.withValues(alpha: 0.14)
+        : Colors.grey.shade100;
 
     return AppShimmer(
       baseColor: shimmerBase,
@@ -63,8 +65,8 @@ class AudioDetailSkeletonLoader extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                          child:
-                              _shimmerBar(double.infinity, 52.h, radius: 16.r)),
+                        child: _shimmerBar(double.infinity, 52.h, radius: 16.r),
+                      ),
                       SizedBox(width: 12.w),
                       _shimmerBar(52.w, 52.h, radius: 16.r),
                     ],
@@ -90,7 +92,9 @@ class AudioDetailSkeletonLoader extends StatelessWidget {
                         5,
                         (i) => Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 16.h),
+                            horizontal: 16.w,
+                            vertical: 16.h,
+                          ),
                           child: Row(
                             children: [
                               _shimmerCircle(36.w),

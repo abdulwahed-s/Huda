@@ -29,12 +29,19 @@ class ThemeToggleSection extends StatelessWidget {
               Icons.brightness_6_outlined,
               color: context.primaryColor,
               size: context.responsive(
-                  mobile: 24.sp, tablet: 26.0, desktop: 26.0),
+                mobile: 24.sp,
+                tablet: 26.0,
+                desktop: 26.0,
+              ),
             ),
           ),
           SizedBox(
-              width: context.responsive(
-                  mobile: 16.w, tablet: 16.0, desktop: 16.0)),
+            width: context.responsive(
+              mobile: 16.w,
+              tablet: 16.0,
+              desktop: 16.0,
+            ),
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +50,10 @@ class ThemeToggleSection extends StatelessWidget {
                   AppLocalizations.of(context)!.theme,
                   style: TextStyle(
                     fontSize: context.responsive(
-                        mobile: 18.sp, tablet: 20.0, desktop: 20.0),
+                      mobile: 18.sp,
+                      tablet: 20.0,
+                      desktop: 20.0,
+                    ),
                     fontWeight: FontWeight.w600,
                     color: isDark ? context.darkText : context.lightText,
                   ),

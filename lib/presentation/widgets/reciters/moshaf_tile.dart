@@ -44,7 +44,8 @@ class MoshafTile extends StatelessWidget {
                     BlocProvider.value(value: context.read<QuranPlayerCubit>()),
                     BlocProvider.value(value: context.read<PlayerBarCubit>()),
                     BlocProvider.value(
-                        value: context.read<DownloadProgressCubit>()),
+                      value: context.read<DownloadProgressCubit>(),
+                    ),
                   ],
                   child: ReciterSurahsScreen(
                     reciter: reciter,
@@ -59,8 +60,9 @@ class MoshafTile extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.r),
-              color: theme.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: isDark ? 0.25 : 0.45),
+              color: theme.colorScheme.surfaceContainerHighest.withValues(
+                alpha: isDark ? 0.25 : 0.45,
+              ),
               border: Border.all(
                 color: theme.colorScheme.outlineVariant.withValues(alpha: 0.25),
               ),
@@ -72,8 +74,9 @@ class MoshafTile extends StatelessWidget {
                   height: 32.r,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: theme.colorScheme.primaryContainer
-                        .withValues(alpha: 0.55),
+                    color: theme.colorScheme.primaryContainer.withValues(
+                      alpha: 0.55,
+                    ),
                   ),
                   child: Icon(
                     Icons.library_music_rounded,
@@ -97,8 +100,10 @@ class MoshafTile extends StatelessWidget {
                       ),
                       BlocBuilder<DownloadProgressCubit, DownloadProgressState>(
                         builder: (context, dlState) {
-                          final batch =
-                              dlState.getBatchProgress(reciter.id, moshaf.id);
+                          final batch = dlState.getBatchProgress(
+                            reciter.id,
+                            moshaf.id,
+                          );
                           if (batch == null) return const SizedBox.shrink();
                           return Padding(
                             padding: EdgeInsets.only(top: 4.h),
@@ -111,7 +116,8 @@ class MoshafTile extends StatelessWidget {
                                     value: batch.fraction,
                                     minHeight: 3.h,
                                     backgroundColor: theme
-                                        .colorScheme.surfaceContainerHighest,
+                                        .colorScheme
+                                        .surfaceContainerHighest,
                                     color: theme.colorScheme.primary,
                                   ),
                                 ),
@@ -119,8 +125,9 @@ class MoshafTile extends StatelessWidget {
                                 Text(
                                   '${batch.completed}/${batch.total}',
                                   style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color: theme.colorScheme.outline),
+                                    fontSize: 10.sp,
+                                    color: theme.colorScheme.outline,
+                                  ),
                                 ),
                               ],
                             ),
@@ -132,7 +139,8 @@ class MoshafTile extends StatelessWidget {
                 ),
                 BlocBuilder<QuranPlayerCubit, QuranPlayerState>(
                   builder: (context, playerState) {
-                    final isLoadingThis = playerState is QuranPlayerLoading &&
+                    final isLoadingThis =
+                        playerState is QuranPlayerLoading &&
                         playerState.reciterId == reciter.id &&
                         playerState.moshafId == moshaf.id;
                     return AnimatedSwitcher(
@@ -161,17 +169,19 @@ class MoshafTile extends StatelessWidget {
                               ),
                               onPressed: () {
                                 context.read<QuranPlayerCubit>().startPlaying(
-                                      moshaf: moshaf,
-                                      reciter: reciter,
-                                      suraNumber: -1,
-                                      initialIndex: 0,
-                                      jsonData: suwar,
-                                    );
+                                  moshaf: moshaf,
+                                  reciter: reciter,
+                                  suraNumber: -1,
+                                  initialIndex: 0,
+                                  jsonData: suwar,
+                                );
                                 context.read<PlayerBarCubit>().show();
                               },
                               padding: EdgeInsets.zero,
                               constraints: BoxConstraints(
-                                  minWidth: 32.w, minHeight: 32.w),
+                                minWidth: 32.w,
+                                minHeight: 32.w,
+                              ),
                               visualDensity: VisualDensity.compact,
                             ),
                     );
@@ -181,8 +191,10 @@ class MoshafTile extends StatelessWidget {
                   SizedBox(width: 2.w),
                   BlocBuilder<DownloadProgressCubit, DownloadProgressState>(
                     builder: (context, dlState) {
-                      final batch =
-                          dlState.getBatchProgress(reciter.id, moshaf.id);
+                      final batch = dlState.getBatchProgress(
+                        reciter.id,
+                        moshaf.id,
+                      );
                       final isDownloading = batch != null && !batch.isDone;
                       return IconButton(
                         icon: isDownloading
@@ -211,8 +223,10 @@ class MoshafTile extends StatelessWidget {
                                     );
                               },
                         padding: EdgeInsets.zero,
-                        constraints:
-                            BoxConstraints(minWidth: 32.w, minHeight: 32.w),
+                        constraints: BoxConstraints(
+                          minWidth: 32.w,
+                          minHeight: 32.w,
+                        ),
                         visualDensity: VisualDensity.compact,
                       );
                     },

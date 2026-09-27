@@ -16,10 +16,7 @@ class MemorizationStopFab extends StatelessWidget {
       onPressed: onPressed,
       backgroundColor: Colors.red,
       icon: const Icon(Icons.stop_rounded, color: Colors.white),
-      label: Text(
-        label,
-        style: const TextStyle(color: Colors.white),
-      ),
+      label: Text(label, style: const TextStyle(color: Colors.white)),
     );
   }
 }

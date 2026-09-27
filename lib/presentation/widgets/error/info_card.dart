@@ -6,11 +6,7 @@ class InfoCard extends StatelessWidget {
   final bool isDark;
   final Color textColor;
 
-  const InfoCard({
-    required this.isDark,
-    required this.textColor,
-    super.key,
-  });
+  const InfoCard({required this.isDark, required this.textColor, super.key});
 
   @override
   Widget build(BuildContext context) {

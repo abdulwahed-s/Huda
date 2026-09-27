@@ -33,10 +33,12 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
         final position = snap.data ?? Duration.zero;
         final duration = widget.player.duration ?? Duration.zero;
         final maxMs = duration.inMilliseconds.toDouble();
-        final currentMs = _dragValue ??
-            position.inMilliseconds
-                .toDouble()
-                .clamp(0.0, maxMs > 0 ? maxMs : 0.0);
+        final currentMs =
+            _dragValue ??
+            position.inMilliseconds.toDouble().clamp(
+              0.0,
+              maxMs > 0 ? maxMs : 0.0,
+            );
 
         return Column(
           children: [
@@ -44,9 +46,10 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
               stream: widget.player.bufferedPositionStream,
               builder: (context, bufSnap) {
                 final buffered = bufSnap.data ?? Duration.zero;
-                final bufferedMs = buffered.inMilliseconds
-                    .toDouble()
-                    .clamp(0.0, maxMs > 0 ? maxMs : 0.0);
+                final bufferedMs = buffered.inMilliseconds.toDouble().clamp(
+                  0.0,
+                  maxMs > 0 ? maxMs : 0.0,
+                );
 
                 return Stack(
                   alignment: Alignment.center,
@@ -56,10 +59,14 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
                         builder: (ctx, constraints) {
                           final thumbPad = 8.r * 2;
                           final trackWidth =
-                              (constraints.maxWidth - thumbPad * 2)
-                                  .clamp(0.0, double.infinity);
-                          final bufferedFraction =
-                              (bufferedMs / maxMs).clamp(0.0, 1.0);
+                              (constraints.maxWidth - thumbPad * 2).clamp(
+                                0.0,
+                                double.infinity,
+                              );
+                          final bufferedFraction = (bufferedMs / maxMs).clamp(
+                            0.0,
+                            1.0,
+                          );
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: thumbPad),
                             child: Align(
@@ -80,8 +87,9 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
                       data: SliderThemeData(
                         trackHeight: 6.h,
                         activeTrackColor: primaryColor,
-                        inactiveTrackColor:
-                            primaryColor.withValues(alpha: 0.08),
+                        inactiveTrackColor: primaryColor.withValues(
+                          alpha: 0.08,
+                        ),
                         thumbColor: primaryColor,
                         overlayColor: primaryColor.withValues(alpha: 0.18),
                         thumbShape: RoundSliderThumbShape(
@@ -102,8 +110,9 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
                             : null,
                         onChangeEnd: maxMs > 0
                             ? (v) {
-                                widget
-                                    .onSeek(Duration(milliseconds: v.round()));
+                                widget.onSeek(
+                                  Duration(milliseconds: v.round()),
+                                );
                                 setState(() => _dragValue = null);
                               }
                             : null,
@@ -120,7 +129,8 @@ class _AudiobookScrubberState extends State<AudiobookScrubber> {
                 children: [
                   Text(
                     formatAudioDuration(
-                        Duration(milliseconds: currentMs.round())),
+                      Duration(milliseconds: currentMs.round()),
+                    ),
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: primaryColor,

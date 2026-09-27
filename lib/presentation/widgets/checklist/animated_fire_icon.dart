@@ -37,25 +37,17 @@ class _AnimatedFireIconState extends State<AnimatedFireIcon>
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    _pulseAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.3,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.elasticOut,
-    ));
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.3).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.elasticOut),
+    );
 
     _flickerController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _flickerAnimation = Tween<double>(
-      begin: 0.8,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _flickerController,
-      curve: Curves.easeInOut,
-    ));
+    _flickerAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _flickerController, curve: Curves.easeInOut),
+    );
 
     _particleController = AnimationController(
       duration: const Duration(seconds: 2),

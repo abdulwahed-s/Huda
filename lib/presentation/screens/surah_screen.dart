@@ -116,8 +116,9 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   void _preloadFontsForInitialPage(int pageNumber) {
     if (!_readingMode.isMushaf) return;
-    final instanceName =
-        _readingMode == QuranReadingMode.tajweed ? 'tajweed' : 'qcf4';
+    final instanceName = _readingMode == QuranReadingMode.tajweed
+        ? 'tajweed'
+        : 'qcf4';
     try {
       final fontService = getIt<QcfFontService>(instanceName: instanceName);
       if (fontService.areFontsReady) {
@@ -174,8 +175,9 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     final mode = QuranReadingMode.fromStorageValue(saved);
     final savedDisplay =
         cache.getData(key: HorizontalPageDisplayMode.key) as String?;
-    final displayMode =
-        HorizontalPageDisplayMode.fromStorageValue(savedDisplay);
+    final displayMode = HorizontalPageDisplayMode.fromStorageValue(
+      savedDisplay,
+    );
     final savedFlip = cache.getData(key: MushafFlipDirection.key) as String?;
     final flipMode = MushafFlipDirection.fromStorageValue(savedFlip);
     setState(() {
@@ -233,14 +235,15 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     double initialOffset = rowIndex * rowHeight - rowHeight * 1.5;
     if (initialOffset < 0) initialOffset = 0;
 
-    final gridScrollController =
-        ScrollController(initialScrollOffset: initialOffset);
+    final gridScrollController = ScrollController(
+      initialScrollOffset: initialOffset,
+    );
 
     const rtlLanguages = {'ar', 'ur'};
     final sheetDirection =
         rtlLanguages.contains(Localizations.localeOf(context).languageCode)
-            ? TextDirection.rtl
-            : TextDirection.ltr;
+        ? TextDirection.rtl
+        : TextDirection.ltr;
 
     showModalBottomSheet<void>(
       context: context,
@@ -296,19 +299,21 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
                                 mushafFlipDirection: _mushafFlipDirection,
                                 quranFont: _quranFont,
                                 fontOptions: _fontOptions,
-                                qcf4FontService:
-                                    getIt<QcfFontService>(instanceName: 'qcf4'),
+                                qcf4FontService: getIt<QcfFontService>(
+                                  instanceName: 'qcf4',
+                                ),
                                 tajweedFontService: getIt<QcfFontService>(
-                                    instanceName: 'tajweed'),
+                                  instanceName: 'tajweed',
+                                ),
                                 onReadingModeTap:
                                     (mode, fontService, requiresFonts) =>
                                         _handleReadingModeSelection(
-                                  mode: mode,
-                                  fontService: fontService,
-                                  requiresFonts: requiresFonts,
-                                  sheetCtx: sheetCtx,
-                                  setSheetState: setSheetState,
-                                ),
+                                          mode: mode,
+                                          fontService: fontService,
+                                          requiresFonts: requiresFonts,
+                                          sheetCtx: sheetCtx,
+                                          setSheetState: setSheetState,
+                                        ),
                                 onHorizontalDisplayModeSelected: (dm) {
                                   setSheetState(() {});
                                   _setHorizontalDisplayMode(dm);
@@ -385,7 +390,8 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     final fontsReady = fontService?.areFontsReady ?? true;
     final previouslyDownloaded = fontService?.wasPreviouslyDownloaded ?? false;
     final currentStatus = fontService?.currentState.status;
-    final fontsBeingProcessed = currentStatus == QcfFontStatus.downloading ||
+    final fontsBeingProcessed =
+        currentStatus == QcfFontStatus.downloading ||
         currentStatus == QcfFontStatus.extracting ||
         currentStatus == QcfFontStatus.loading;
 
@@ -396,12 +402,12 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
       fontService!.stateStream
           .firstWhere((s) => s.status == QcfFontStatus.ready)
           .then((_) {
-        if (!mounted) return;
-        if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
-          Navigator.pop(sheetCtx);
-        }
-        _setMode(mode);
-      });
+            if (!mounted) return;
+            if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
+              Navigator.pop(sheetCtx);
+            }
+            _setMode(mode);
+          });
     } else if (!fontsBeingProcessed) {
       setSheetState(() {});
       fontService!.downloadAndInstall().then((_) {
@@ -432,9 +438,10 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
       verseCount,
       (i) => quran.getVerse(activeSurahNumber, i + 1),
     );
-    sheetCtx
-        .read<MemorizationCubit>()
-        .toggleMemorizationMode(ayahTexts, activeSurahNumber);
+    sheetCtx.read<MemorizationCubit>().toggleMemorizationMode(
+      ayahTexts,
+      activeSurahNumber,
+    );
     Navigator.pop(sheetCtx);
   }
 
@@ -502,12 +509,14 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
             create: (_) => SurahCubit()..loadSurah(widget.surahInfo.number!),
           ),
           BlocProvider(
-            create: (_) => context.read<AudioCubit>()
-              ..fetchAudioInfo(widget.surahInfo.number.toString()),
+            create: (_) =>
+                context.read<AudioCubit>()
+                  ..fetchAudioInfo(widget.surahInfo.number.toString()),
           ),
           BlocProvider(
-            create: (_) => TafsirCubit(context.read<TafsirRepository>())
-              ..fetchTafsirInfo(),
+            create: (_) =>
+                TafsirCubit(context.read<TafsirRepository>())
+                  ..fetchTafsirInfo(),
           ),
           BlocProvider(
             create: (_) =>
@@ -515,21 +524,18 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
                   ..fetchTranslationInfo(),
           ),
           BlocProvider(
-            create: (_) => BookmarksCubit(
-              bookmarkService: getIt<BookmarkService>(),
-            ),
+            create: (_) =>
+                BookmarksCubit(bookmarkService: getIt<BookmarkService>()),
           ),
-          BlocProvider(
-            create: (_) => MemorizationCubit(),
-          ),
+          BlocProvider(create: (_) => MemorizationCubit()),
         ],
         child: Builder(
           builder: (innerContext) => Scaffold(
             backgroundColor: isMushafMode
                 ? (_customBgColor ??
-                    (Theme.of(context).brightness == Brightness.dark
-                        ? const Color(0xFF0F0F0F)
-                        : const Color(0xFFFFF9E8)))
+                      (Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF0F0F0F)
+                          : const Color(0xFFFFF9E8)))
                 : null,
             appBar: isMushafMode
                 ? null
@@ -554,7 +560,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
                     builder: (context, state) {
                       final isMemorizationMode =
                           state is MemorizationModeUpdated &&
-                              state.isMemorizationMode;
+                          state.isMemorizationMode;
 
                       if (!isMemorizationMode) return const SizedBox.shrink();
 
@@ -612,7 +618,8 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
           if (state is SurahLoaded) {
             return MushafInteractiveWrapper(
               key: ValueKey(
-                  '${_readingMode}_${_horizontalDisplayMode}_$_mushafFlipDirection'),
+                '${_readingMode}_${_horizontalDisplayMode}_$_mushafFlipDirection',
+              ),
               surah: state.surah,
               surahNumber: widget.surahInfo.number!,
               initialPageNumber: _currentMushafPage,
@@ -628,7 +635,8 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
           return QuranMushafPageView(
             key: ValueKey(
-                '${_readingMode}_${_horizontalDisplayMode}_$_mushafFlipDirection'),
+              '${_readingMode}_${_horizontalDisplayMode}_$_mushafFlipDirection',
+            ),
             initialPageNumber: _currentMushafPage,
             mode: _readingMode,
             displayMode: _horizontalDisplayMode,

@@ -65,10 +65,7 @@ class _AudioDetailTrackTileState extends State<AudioDetailTrackTile>
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
             child: Row(
               children: [
-                _TrackNumber(
-                  index: widget.index,
-                  isDark: widget.isDark,
-                ),
+                _TrackNumber(index: widget.index, isDark: widget.isDark),
                 SizedBox(width: 14.w),
                 Expanded(
                   child: Column(
@@ -77,8 +74,9 @@ class _AudioDetailTrackTileState extends State<AudioDetailTrackTile>
                       Text(
                         widget.track.description.isNotEmpty
                             ? widget.track.description
-                            : AppLocalizations.of(context)!
-                                .chapter(widget.index + 1),
+                            : AppLocalizations.of(
+                                context,
+                              )!.chapter(widget.index + 1),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -96,10 +94,11 @@ class _AudioDetailTrackTileState extends State<AudioDetailTrackTile>
                           style: TextStyle(
                             fontSize: 11.sp,
                             fontFeatures: const [FontFeature.tabularFigures()],
-                            color: (widget.isDark
-                                    ? context.darkText
-                                    : context.lightText)
-                                .withValues(alpha: 0.45),
+                            color:
+                                (widget.isDark
+                                        ? context.darkText
+                                        : context.lightText)
+                                    .withValues(alpha: 0.45),
                           ),
                         ),
                       ],

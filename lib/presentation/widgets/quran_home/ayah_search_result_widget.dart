@@ -18,9 +18,7 @@ class AyahSearchResultWidget extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12.r),
@@ -32,8 +30,10 @@ class AyahSearchResultWidget extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 4.h,
+                    ),
                     decoration: BoxDecoration(
                       color: context.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8.r),
@@ -64,10 +64,9 @@ class AyahSearchResultWidget extends StatelessWidget {
                           ayahResult.surahEnglishName,
                           style: TextStyle(
                             fontSize: 11.sp,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.7),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.7),
                           ),
                         ),
                       ],
@@ -77,18 +76,19 @@ class AyahSearchResultWidget extends StatelessWidget {
                     'آية ${ayahResult.ayahNumber}',
                     style: TextStyle(
                       fontSize: 11.sp,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.6),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 12.h),
               RichText(
-                text:
-                    _buildHighlightedText(context, ayahResult.highlightedText),
+                text: _buildHighlightedText(
+                  context,
+                  ayahResult.highlightedText,
+                ),
                 textAlign: TextAlign.right,
                 textDirection: TextDirection.rtl,
               ),

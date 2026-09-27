@@ -13,15 +13,13 @@ class BookPdfSource {
   final bool isDownloaded;
 }
 
-typedef DownloadedPdfLookup = Future<OfflineAttachment?> Function(
-  int bookId, {
-  String? originalUrl,
-});
+typedef DownloadedPdfLookup =
+    Future<OfflineAttachment?> Function(int bookId, {String? originalUrl});
 
 class BookPdfSourceResolver {
   BookPdfSourceResolver({DownloadedPdfLookup? downloadedPdfLookup})
-      : _downloadedPdfLookup =
-            downloadedPdfLookup ?? _lookupDownloadedPdfAttachment;
+    : _downloadedPdfLookup =
+          downloadedPdfLookup ?? _lookupDownloadedPdfAttachment;
 
   final DownloadedPdfLookup _downloadedPdfLookup;
 
@@ -53,11 +51,10 @@ class BookPdfSourceResolver {
   static Future<OfflineAttachment?> _lookupDownloadedPdfAttachment(
     int bookId, {
     String? originalUrl,
-  }) =>
-      OfflineBooksService().getDownloadedPdfAttachment(
-        bookId,
-        originalUrl: originalUrl,
-      );
+  }) => OfflineBooksService().getDownloadedPdfAttachment(
+    bookId,
+    originalUrl: originalUrl,
+  );
 
   static String? _normalizedRemoteUrl(String? value) {
     final candidate = value?.trim();

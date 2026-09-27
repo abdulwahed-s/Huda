@@ -32,10 +32,7 @@ class TabBarWidget extends StatelessWidget {
         controller: tabController,
         labelColor: Colors.white,
         unselectedLabelColor: isDark ? Colors.grey[600] : Colors.grey[600],
-        labelStyle: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 14.sp,
-        ),
+        labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.sp),
         unselectedLabelStyle: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 14.sp,

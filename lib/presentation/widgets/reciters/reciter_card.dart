@@ -84,14 +84,18 @@ class ReciterCard extends StatelessWidget {
                         end: Alignment.bottomRight,
                         colors: [
                           theme.colorScheme.primary,
-                          Color.lerp(theme.colorScheme.primary,
-                              theme.colorScheme.secondary, 0.6)!,
+                          Color.lerp(
+                            theme.colorScheme.primary,
+                            theme.colorScheme.secondary,
+                            0.6,
+                          )!,
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              theme.colorScheme.primary.withValues(alpha: 0.28),
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.28,
+                          ),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -152,18 +156,21 @@ class ReciterCard extends StatelessWidget {
                 Divider(
                   height: 1,
                   thickness: 1,
-                  color:
-                      theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+                  color: theme.colorScheme.outlineVariant.withValues(
+                    alpha: 0.4,
+                  ),
                 ),
                 SizedBox(height: 6.h),
-                ...reciter.moshaf.map((moshaf) => MoshafTile(
-                      reciter: reciter,
-                      moshaf: moshaf,
-                      suwar: suwar,
-                      isDark: isDark,
-                      theme: theme,
-                      isOffline: isOffline,
-                    )),
+                ...reciter.moshaf.map(
+                  (moshaf) => MoshafTile(
+                    reciter: reciter,
+                    moshaf: moshaf,
+                    suwar: suwar,
+                    isDark: isDark,
+                    theme: theme,
+                    isOffline: isOffline,
+                  ),
+                ),
               ],
             ],
           ),

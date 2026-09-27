@@ -57,8 +57,10 @@ class UpdateService {
         return false;
       }
 
-      final hasUpdate =
-          VersionUtils.isNewer(latest!.version!, packageInfo.version);
+      final hasUpdate = VersionUtils.isNewer(
+        latest!.version!,
+        packageInfo.version,
+      );
       if (!hasUpdate) return false;
 
       if (_recentlyShown(latest.version!)) {
@@ -93,7 +95,9 @@ class UpdateService {
   }
 
   static Future<_UpdateInfo?> _resolveLatest(
-      AppStoreInfo info, Locale locale) async {
+    AppStoreInfo info,
+    Locale locale,
+  ) async {
     final cached = _getCached();
     if (cached != null && cached.store == info.target.name && _isCacheFresh()) {
       return cached;
@@ -110,15 +114,18 @@ class UpdateService {
   }
 
   static Future<_UpdateInfo> _fetchFromEdge(
-      AppStoreInfo info, Locale locale) async {
+    AppStoreInfo info,
+    Locale locale,
+  ) async {
     if (info.target == AppStoreTarget.fdroid) {
       return _fetchFromFdroid(info);
     }
 
-    final country = (locale.countryCode ??
-            PlatformDispatcher.instance.locale.countryCode ??
-            'us')
-        .toLowerCase();
+    final country =
+        (locale.countryCode ??
+                PlatformDispatcher.instance.locale.countryCode ??
+                'us')
+            .toLowerCase();
 
     final response = await _dio.post(
       '$supabaseUrl/functions/v1/version-check',
@@ -206,8 +213,9 @@ class UpdateService {
   }
 
   static bool _isCacheFresh() {
-    final tsString =
-        getIt<CacheHelper>().getDataString(key: _cacheTimestampKey);
+    final tsString = getIt<CacheHelper>().getDataString(
+      key: _cacheTimestampKey,
+    );
     final ts = int.tryParse(tsString ?? '');
     if (ts == null) return false;
     final cachedAt = DateTime.fromMillisecondsSinceEpoch(ts);
@@ -261,9 +269,9 @@ class UpdateService {
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
                 child: Text(
                   l10n.chooseUpdateSource,
-                  style: Theme.of(sheetContext).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    sheetContext,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               ListTile(
@@ -303,16 +311,16 @@ class _UpdateInfo {
   const _UpdateInfo({this.version, this.url, this.releaseNotes, this.store});
 
   factory _UpdateInfo.fromJson(Map<String, dynamic> json) => _UpdateInfo(
-        version: json['version'] as String?,
-        url: json['url'] as String?,
-        releaseNotes: json['releaseNotes'] as String?,
-        store: json['store'] as String?,
-      );
+    version: json['version'] as String?,
+    url: json['url'] as String?,
+    releaseNotes: json['releaseNotes'] as String?,
+    store: json['store'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'version': version,
-        'url': url,
-        'releaseNotes': releaseNotes,
-        'store': store,
-      };
+    'version': version,
+    'url': url,
+    'releaseNotes': releaseNotes,
+    'store': store,
+  };
 }

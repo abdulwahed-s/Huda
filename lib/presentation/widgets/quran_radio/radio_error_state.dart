@@ -30,8 +30,11 @@ class RadioErrorState extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: theme.colorScheme.errorContainer,
               ),
-              child: Icon(Icons.wifi_off_rounded,
-                  size: 38.sp, color: theme.colorScheme.error),
+              child: Icon(
+                Icons.wifi_off_rounded,
+                size: 38.sp,
+                color: theme.colorScheme.error,
+              ),
             ),
             SizedBox(height: 20.h),
             Text(

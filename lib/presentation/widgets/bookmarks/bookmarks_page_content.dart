@@ -60,16 +60,17 @@ class _BookmarksPageContentState extends State<BookmarksPageContent>
 
   void _setupBookmarkChangeListener() {
     final bookmarkService = getIt<BookmarkService>();
-    _bookmarkChangesSubscription =
-        bookmarkService.bookmarkChanges.listen((change) {
+    _bookmarkChangesSubscription = bookmarkService.bookmarkChanges.listen((
+      change,
+    ) {
       if (mounted) {
         HudaSnackBar.success(
           context,
           message: change.action == BookmarkChangeAction.added
               ? AppLocalizations.of(context)!.bookmarkAdded
               : change.action == BookmarkChangeAction.removed
-                  ? AppLocalizations.of(context)!.bookmarkRemoved
-                  : AppLocalizations.of(context)!.bookmarkUpdated,
+              ? AppLocalizations.of(context)!.bookmarkRemoved
+              : AppLocalizations.of(context)!.bookmarkUpdated,
         );
         context.read<BookmarksCubit>().loadBookmarks();
       }
@@ -81,7 +82,7 @@ class _BookmarksPageContentState extends State<BookmarksPageContent>
       null,
       BookmarkType.bookmark,
       BookmarkType.note,
-      BookmarkType.star
+      BookmarkType.star,
     ];
     final newFilter = filterTypes[_tabController.index];
 
@@ -137,7 +138,8 @@ class _BookmarksPageContentState extends State<BookmarksPageContent>
             ),
             RepositoryProvider<TranslationRepository>(
               create: (_) => TranslationRepository(
-                  translationServices: TranslationServices()),
+                translationServices: TranslationServices(),
+              ),
             ),
           ],
           child: MultiBlocProvider(
@@ -147,11 +149,13 @@ class _BookmarksPageContentState extends State<BookmarksPageContent>
                     AudioCubit(context.read<AudioRepository>()),
               ),
               BlocProvider<TafsirCubit>(
-                  create: (context) =>
-                      TafsirCubit(context.read<TafsirRepository>())),
+                create: (context) =>
+                    TafsirCubit(context.read<TafsirRepository>()),
+              ),
               BlocProvider<TranslationCubit>(
-                  create: (context) =>
-                      TranslationCubit(context.read<TranslationRepository>())),
+                create: (context) =>
+                    TranslationCubit(context.read<TranslationRepository>()),
+              ),
             ],
             child: SurahScreen(
               surahInfo: surahInfo,

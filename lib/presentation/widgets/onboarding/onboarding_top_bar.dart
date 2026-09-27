@@ -29,10 +29,16 @@ class OnboardingTopBar extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal:
-                  context.responsive(mobile: 12.w, tablet: 14.0, desktop: 14.0),
-              vertical:
-                  context.responsive(mobile: 6.h, tablet: 8.0, desktop: 8.0),
+              horizontal: context.responsive(
+                mobile: 12.w,
+                tablet: 14.0,
+                desktop: 14.0,
+              ),
+              vertical: context.responsive(
+                mobile: 6.h,
+                tablet: 8.0,
+                desktop: 8.0,
+              ),
             ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -51,7 +57,10 @@ class OnboardingTopBar extends StatelessWidget {
               '${currentPage + 1} / $totalPages',
               style: TextStyle(
                 fontSize: context.responsive(
-                    mobile: 13.sp, tablet: 15.0, desktop: 15.0),
+                  mobile: 13.sp,
+                  tablet: 15.0,
+                  desktop: 15.0,
+                ),
                 color: currentPageData.primaryColor,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.5,
@@ -95,10 +104,16 @@ class OnboardingTopBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(25.r),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal:
-                  context.responsive(mobile: 18.w, tablet: 20.0, desktop: 20.0),
-              vertical:
-                  context.responsive(mobile: 10.h, tablet: 12.0, desktop: 12.0),
+              horizontal: context.responsive(
+                mobile: 18.w,
+                tablet: 20.0,
+                desktop: 20.0,
+              ),
+              vertical: context.responsive(
+                mobile: 10.h,
+                tablet: 12.0,
+                desktop: 12.0,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -107,11 +122,13 @@ class OnboardingTopBar extends StatelessWidget {
                   AppLocalizations.of(context)!.skip,
                   style: TextStyle(
                     fontSize: context.responsive(
-                        mobile: 13.sp, tablet: 15.0, desktop: 15.0),
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.8),
+                      mobile: 13.sp,
+                      tablet: 15.0,
+                      desktop: 15.0,
+                    ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5,
                   ),
@@ -120,11 +137,13 @@ class OnboardingTopBar extends StatelessWidget {
                 Icon(
                   Icons.arrow_forward_rounded,
                   size: context.responsive(
-                      mobile: 14.sp, tablet: 16.0, desktop: 16.0),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.6),
+                    mobile: 14.sp,
+                    tablet: 16.0,
+                    desktop: 16.0,
+                  ),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ],
             ),

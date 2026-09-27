@@ -5,10 +5,7 @@ import 'package:huda/presentation/widgets/pdf/huda_pdf_search_controller.dart';
 import 'package:huda/presentation/widgets/pdf/search_result_tile.dart';
 
 class TextSearchView extends StatefulWidget {
-  const TextSearchView({
-    required this.textSearcher,
-    super.key,
-  });
+  const TextSearchView({required this.textSearcher, super.key});
 
   final HudaPdfSearchController textSearcher;
 
@@ -61,8 +58,9 @@ class _TextSearchViewState extends State<TextSearchView> {
             decoration: BoxDecoration(
               color: colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
-              border:
-                  Border.all(color: colorScheme.outline.withValues(alpha: 0.2)),
+              border: Border.all(
+                color: colorScheme.outline.withValues(alpha: 0.2),
+              ),
             ),
             child: TextField(
               focusNode: focusNode,
@@ -81,8 +79,10 @@ class _TextSearchViewState extends State<TextSearchView> {
                       )
                     : null,
                 border: InputBorder.none,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
               ),
               textInputAction: TextInputAction.search,
             ),
@@ -100,8 +100,9 @@ class _TextSearchViewState extends State<TextSearchView> {
                 child: LinearProgressIndicator(
                   value: widget.textSearcher.progress,
                   backgroundColor: Colors.transparent,
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    colorScheme.primary,
+                  ),
                 ),
               ),
             )
@@ -141,7 +142,8 @@ class _TextSearchViewState extends State<TextSearchView> {
                     iconSize: 20,
                   ),
                   IconButton(
-                    onPressed: widget.textSearcher.currentIndex >= 0 &&
+                    onPressed:
+                        widget.textSearcher.currentIndex >= 0 &&
                             widget.textSearcher.currentIndex <
                                 widget.textSearcher.matches.length - 1
                         ? () async {
@@ -181,11 +183,14 @@ class _TextSearchViewState extends State<TextSearchView> {
                 return Container(
                   height: 40,
                   alignment: Alignment.centerLeft,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Text(
-                    AppLocalizations.of(context)!
-                        .pageLabel(item.pageNumber.toString()),
+                    AppLocalizations.of(
+                      context,
+                    )!.pageLabel(item.pageNumber.toString()),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,

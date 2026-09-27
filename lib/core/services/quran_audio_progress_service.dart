@@ -99,7 +99,9 @@ class QuranAudioProgressService {
       updatedAt: DateTime.now(),
     );
     await _cacheHelper.saveData(
-        key: _progressKey, value: jsonEncode(progress.toJson()));
+      key: _progressKey,
+      value: jsonEncode(progress.toJson()),
+    );
   }
 
   QuranAudioProgress? getLastPlayed() {
@@ -107,7 +109,8 @@ class QuranAudioProgressService {
       final data = _cacheHelper.getDataString(key: _progressKey);
       if (data == null) return null;
       return QuranAudioProgress.fromJson(
-          Map<String, dynamic>.from(jsonDecode(data)));
+        Map<String, dynamic>.from(jsonDecode(data)),
+      );
     } catch (e) {
       return null;
     }

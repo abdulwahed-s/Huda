@@ -28,13 +28,18 @@ class KhatmaEmptyView extends StatelessWidget {
           height: 100.r,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: RadialGradient(colors: [
-              accent.withValues(alpha: 0.18),
-              accent.withValues(alpha: 0.04),
-            ]),
+            gradient: RadialGradient(
+              colors: [
+                accent.withValues(alpha: 0.18),
+                accent.withValues(alpha: 0.04),
+              ],
+            ),
           ),
-          child: Icon(Icons.menu_book_rounded,
-              size: 46.sp, color: accent.withValues(alpha: 0.75)),
+          child: Icon(
+            Icons.menu_book_rounded,
+            size: 46.sp,
+            color: accent.withValues(alpha: 0.75),
+          ),
         ),
         SizedBox(height: 18.h),
         Text(

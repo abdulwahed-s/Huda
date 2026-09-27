@@ -56,11 +56,7 @@ class InfoCard extends StatelessWidget {
               color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(iconBorderRadius),
             ),
-            child: Icon(
-              icon,
-              size: iconSize,
-              color: color,
-            ),
+            child: Icon(icon, size: iconSize, color: color),
           ),
           SizedBox(height: spacing1),
           Flexible(

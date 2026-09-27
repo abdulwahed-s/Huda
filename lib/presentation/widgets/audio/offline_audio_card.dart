@@ -63,14 +63,14 @@ class OfflineAudioCard extends StatelessWidget {
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                        Colors.green.shade500,
-                        Colors.green.shade700,
-                      ],
+                      colors: [Colors.green.shade500, Colors.green.shade700],
                     ),
                   ),
-                  child: Icon(Icons.download_done_rounded,
-                      color: Colors.white, size: 30.sp),
+                  child: Icon(
+                    Icons.download_done_rounded,
+                    color: Colors.white,
+                    size: 30.sp,
+                  ),
                 ),
                 SizedBox(width: 14.w),
                 Expanded(

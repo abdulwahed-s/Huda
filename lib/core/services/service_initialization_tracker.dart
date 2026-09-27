@@ -24,8 +24,9 @@ class ServiceInitializationTracker extends ChangeNotifier {
   bool get allServicesReady => _serviceStatus.values.every((status) => status);
 
   double get progress {
-    final completedServices =
-        _serviceStatus.values.where((status) => status).length;
+    final completedServices = _serviceStatus.values
+        .where((status) => status)
+        .length;
     return completedServices / _serviceStatus.length;
   }
 

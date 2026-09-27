@@ -15,9 +15,7 @@ class InfoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: context.primaryColor.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: context.primaryColor.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,13 +39,7 @@ class InfoCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8.h),
-          Text(
-            content,
-            style: TextStyle(
-              fontSize: 12.sp,
-              height: 1.4,
-            ),
-          ),
+          Text(content, style: TextStyle(fontSize: 12.sp, height: 1.4)),
         ],
       ),
     );

@@ -221,8 +221,8 @@ class _MicrophoneStatusCard extends StatelessWidget {
         color: isListening
             ? Colors.red.withValues(alpha: 0.1)
             : (isDark
-                ? Colors.white.withValues(alpha: 0.05)
-                : Colors.grey.withValues(alpha: 0.1)),
+                  ? Colors.white.withValues(alpha: 0.05)
+                  : Colors.grey.withValues(alpha: 0.1)),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: isListening
@@ -236,11 +236,7 @@ class _MicrophoneStatusCard extends StatelessWidget {
             _PulseGlow(
               glowColor: Colors.red,
               duration: const Duration(milliseconds: 2000),
-              child: Icon(
-                Icons.mic,
-                color: Colors.red,
-                size: 24.sp,
-              ),
+              child: Icon(Icons.mic, color: Colors.red, size: 24.sp),
             )
           else
             Icon(

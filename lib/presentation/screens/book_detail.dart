@@ -83,7 +83,8 @@ class _BookDetailScreenState extends State<BookDetailScreen>
                       onLanguageSelected: controller.handleLanguageSelected,
                     ),
                     SizedBox(
-                        height: 32.h + MediaQuery.paddingOf(context).bottom),
+                      height: 32.h + MediaQuery.paddingOf(context).bottom,
+                    ),
                   ],
                 ),
               ),

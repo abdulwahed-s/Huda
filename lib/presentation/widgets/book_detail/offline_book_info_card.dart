@@ -6,10 +6,7 @@ import 'package:intl/intl.dart';
 class OfflineBookInfoCard extends StatelessWidget {
   final dynamic offlineBook;
 
-  const OfflineBookInfoCard({
-    super.key,
-    required this.offlineBook,
-  });
+  const OfflineBookInfoCard({super.key, required this.offlineBook});
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +91,9 @@ class OfflineBookInfoCard extends StatelessWidget {
                             preparedBy.type.toUpperCase(),
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color:
-                                  context.primaryColor.withValues(alpha: 0.7),
+                              color: context.primaryColor.withValues(
+                                alpha: 0.7,
+                              ),
                               fontWeight: FontWeight.w600,
                             ),
                           ),

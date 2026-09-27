@@ -50,9 +50,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
     HapticFeedback.mediumImpact();
     final email = _emailController.text.trim();
     context.read<ErrorCubit>().submitFeedback(
-          message,
-          contactEmail: email.isNotEmpty ? email : null,
-        );
+      message,
+      contactEmail: email.isNotEmpty ? email : null,
+    );
     _messageController.clear();
     _emailController.clear();
     _focusNode.unfocus();
@@ -74,10 +74,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
       listener: (context, state) {
         if (state is ErrorFailure) {
           HapticFeedback.heavyImpact();
-          HudaSnackBar.error(
-            context,
-            message: state.message,
-          );
+          HudaSnackBar.error(context, message: state.message);
         } else if (state is ErrorSubmitted) {
           HapticFeedback.lightImpact();
         }
@@ -98,8 +95,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
-                    AppLocalizations.of(context)!
-                        .crashReportingDisabledDescription,
+                    AppLocalizations.of(
+                      context,
+                    )!.crashReportingDisabledDescription,
                     style: TextStyle(color: widget.subtitleColor),
                   ),
                 ),
@@ -140,8 +138,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                           Container(
                             padding: EdgeInsets.all(8.w),
                             decoration: BoxDecoration(
-                              color:
-                                  context.primaryColor.withValues(alpha: 0.1),
+                              color: context.primaryColor.withValues(
+                                alpha: 0.1,
+                              ),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Icon(
@@ -193,8 +192,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             height: 1.4,
                           ),
                           decoration: InputDecoration(
-                            hintText:
-                                AppLocalizations.of(context)!.errorFeedbackHint,
+                            hintText: AppLocalizations.of(
+                              context,
+                            )!.errorFeedbackHint,
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
                               color: widget.subtitleColor,
@@ -217,7 +217,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             filled: true,
                             fillColor: widget.errorCodeBg,
                             contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 16.h),
+                              horizontal: 16.w,
+                              vertical: 16.h,
+                            ),
                             counterStyle: TextStyle(
                               fontSize: 12.sp,
                               color: widget.subtitleColor,
@@ -245,8 +247,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             color: widget.textColor,
                           ),
                           decoration: InputDecoration(
-                            hintText:
-                                AppLocalizations.of(context)!.emailOptional,
+                            hintText: AppLocalizations.of(
+                              context,
+                            )!.emailOptional,
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
                               color: widget.subtitleColor,
@@ -274,7 +277,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             filled: true,
                             fillColor: widget.errorCodeBg,
                             contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 14.h),
+                              horizontal: 16.w,
+                              vertical: 14.h,
+                            ),
                           ),
                         ),
                       ),
@@ -291,8 +296,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             elevation: 4,
-                            shadowColor:
-                                context.primaryColor.withValues(alpha: 0.3),
+                            shadowColor: context.primaryColor.withValues(
+                              alpha: 0.3,
+                            ),
                             disabledBackgroundColor: widget.subtitleColor,
                           ),
                           child: isSubmitting
@@ -306,13 +312,15 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                         strokeWidth: 2,
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
-                                                Colors.white),
+                                              Colors.white,
+                                            ),
                                       ),
                                     ),
                                     SizedBox(width: 12.w),
                                     Text(
-                                      AppLocalizations.of(context)!
-                                          .feedbackSending,
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.feedbackSending,
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
@@ -326,8 +334,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                                     Icon(Icons.send_rounded, size: 18.sp),
                                     SizedBox(width: 8.w),
                                     Text(
-                                      AppLocalizations.of(context)!
-                                          .feedbackSendButton,
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.feedbackSendButton,
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
@@ -345,10 +354,7 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                   padding: EdgeInsets.all(24.w),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
-                        Colors.green.shade50,
-                        Colors.green.shade100,
-                      ],
+                      colors: [Colors.green.shade50, Colors.green.shade100],
                     ),
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
@@ -385,8 +391,9 @@ class _FeedbackSectionState extends State<FeedbackSection> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              AppLocalizations.of(context)!
-                                  .feedbackThankYouMessage,
+                              AppLocalizations.of(
+                                context,
+                              )!.feedbackThankYouMessage,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: Colors.green.shade700,
                                 fontSize: 14.sp,

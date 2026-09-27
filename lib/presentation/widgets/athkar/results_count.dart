@@ -6,10 +6,7 @@ import 'package:huda/l10n/app_localizations.dart';
 class ResultsCount extends StatelessWidget {
   final int count;
 
-  const ResultsCount({
-    super.key,
-    required this.count,
-  });
+  const ResultsCount({super.key, required this.count});
 
   @override
   Widget build(BuildContext context) {

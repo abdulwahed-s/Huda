@@ -35,7 +35,9 @@ class ChecklistItemCard extends StatelessWidget {
   }
 
   String _getFrequencyDisplayName(
-      RepetitionFrequency frequency, BuildContext context) {
+    RepetitionFrequency frequency,
+    BuildContext context,
+  ) {
     switch (frequency) {
       case RepetitionFrequency.daily:
         return AppLocalizations.of(context)!.frequencyDaily;
@@ -113,8 +115,10 @@ class ChecklistItemCard extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.r),
             ),
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 6.h,
+            ),
             title: Text(
               item.title,
               style: TextStyle(
@@ -132,8 +136,10 @@ class ChecklistItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.w,
+                      vertical: 3.h,
+                    ),
                     decoration: BoxDecoration(
                       color: itemColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),

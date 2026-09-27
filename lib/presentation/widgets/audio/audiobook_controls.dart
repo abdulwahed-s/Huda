@@ -31,9 +31,10 @@ class _AudiobookControlsState extends State<AudiobookControls>
       duration: const Duration(milliseconds: 80),
       reverseDuration: const Duration(milliseconds: 120),
     );
-    _pressScale = Tween<double>(begin: 1.0, end: 0.91).animate(
-      CurvedAnimation(parent: _pressCtrl, curve: Curves.easeOut),
-    );
+    _pressScale = Tween<double>(
+      begin: 1.0,
+      end: 0.91,
+    ).animate(CurvedAnimation(parent: _pressCtrl, curve: Curves.easeOut));
   }
 
   @override
@@ -45,8 +46,8 @@ class _AudiobookControlsState extends State<AudiobookControls>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final secondaryColor =
-        (isDark ? context.darkText : context.lightText).withValues(alpha: 0.75);
+    final secondaryColor = (isDark ? context.darkText : context.lightText)
+        .withValues(alpha: 0.75);
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     return Row(
@@ -112,7 +113,8 @@ class _AudiobookControlsState extends State<AudiobookControls>
         final playerState = snap.data;
         final processing = playerState?.processingState;
         final playing = playerState?.playing ?? false;
-        final isLoading = processing == ProcessingState.loading ||
+        final isLoading =
+            processing == ProcessingState.loading ||
             processing == ProcessingState.buffering;
 
         return GestureDetector(

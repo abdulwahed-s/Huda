@@ -23,23 +23,20 @@ class DeleteConfirmationDialog extends StatelessWidget {
           SizedBox(width: 6.w),
           Text(
             AppLocalizations.of(context)!.deleteEvent,
-            style: TextStyle(
-              fontSize: 16.sp,
-            ),
+            style: TextStyle(fontSize: 16.sp),
           ),
         ],
       ),
       content: Text(
-          '${AppLocalizations.of(context)!.deleteConfirmation} "${event.title}"?',
-          style: TextStyle(fontSize: 12.sp)),
+        '${AppLocalizations.of(context)!.deleteConfirmation} "${event.title}"?',
+        style: TextStyle(fontSize: 12.sp),
+      ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
             AppLocalizations.of(context)!.cancel,
-            style: TextStyle(
-              fontSize: 12.sp,
-            ),
+            style: TextStyle(fontSize: 12.sp),
           ),
         ),
         ElevatedButton(
@@ -47,10 +44,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           child: Text(
             AppLocalizations.of(context)!.delete,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 12.sp,
-            ),
+            style: TextStyle(color: Colors.white, fontSize: 12.sp),
           ),
         ),
       ],

@@ -123,8 +123,11 @@ class _RecommendedCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child:
-                    Icon(Icons.star_rounded, color: Colors.white, size: 26.sp),
+                child: Icon(
+                  Icons.star_rounded,
+                  color: Colors.white,
+                  size: 26.sp,
+                ),
               ),
               SizedBox(width: 14.w),
               Expanded(
@@ -132,39 +135,51 @@ class _RecommendedCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 2.h,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.25),
                         borderRadius: BorderRadius.circular(20.r),
                       ),
-                      child: Text(l10n.khatmaSuggested,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w700)),
+                      child: Text(
+                        l10n.khatmaSuggested,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
                     SizedBox(height: 6.h),
-                    Text(l10n.khatmaOneMonthProgram,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w900)),
+                    Text(
+                      l10n.khatmaOneMonthProgram,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
                     SizedBox(height: 3.h),
-                    Text(l10n.khatmaDailyWird21Pages,
-                        style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.85),
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600)),
+                    Text(
+                      l10n.khatmaDailyWird21Pages,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.85),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
               Icon(
-                  textDirection == TextDirection.rtl
-                      ? Icons.arrow_back_ios_new_rounded
-                      : Icons.arrow_forward_ios_rounded,
-                  color: Colors.white.withValues(alpha: 0.7),
-                  size: 16.sp),
+                textDirection == TextDirection.rtl
+                    ? Icons.arrow_back_ios_new_rounded
+                    : Icons.arrow_forward_ios_rounded,
+                color: Colors.white.withValues(alpha: 0.7),
+                size: 16.sp,
+              ),
             ],
           ),
         ),

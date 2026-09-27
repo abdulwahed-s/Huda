@@ -6,10 +6,7 @@ import 'package:huda/core/utils/responsive_utils.dart';
 class SettingsCard extends StatelessWidget {
   final Widget child;
 
-  const SettingsCard({
-    super.key,
-    required this.child,
-  });
+  const SettingsCard({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

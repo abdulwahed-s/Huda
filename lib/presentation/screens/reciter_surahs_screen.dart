@@ -61,7 +61,8 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
   }
 
   void _onScroll() {
-    final collapsed = _scrollController.hasClients &&
+    final collapsed =
+        _scrollController.hasClients &&
         _scrollController.offset > (190.h - kToolbarHeight);
     if (collapsed != _isCollapsed) setState(() => _isCollapsed = collapsed);
   }
@@ -94,13 +95,13 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
 
     final surahNumber = int.parse(numbers[index]);
     context.read<QuranPlayerCubit>().startPlaying(
-          moshaf: widget.moshaf,
-          reciter: widget.reciter,
-          suraNumber: surahNumber,
-          initialIndex: index,
-          jsonData: widget.jsonData,
-          initialPositionMs: widget.initialPositionMs,
-        );
+      moshaf: widget.moshaf,
+      reciter: widget.reciter,
+      suraNumber: surahNumber,
+      initialIndex: index,
+      jsonData: widget.jsonData,
+      initialPositionMs: widget.initialPositionMs,
+    );
     context.read<PlayerBarCubit>().show();
   }
 
@@ -143,11 +144,11 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
   bool _isDownloaded(String surahNumber) {
     if (_downloadDirPath == null) return false;
     return context.read<QuranPlayerCubit>().isDownloaded(
-          widget.reciter,
-          widget.moshaf,
-          surahNumber,
-          _downloadDirPath!,
-        );
+      widget.reciter,
+      widget.moshaf,
+      surahNumber,
+      _downloadDirPath!,
+    );
   }
 
   @override
@@ -218,15 +219,29 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
             if (playerState is QuranPlayerLoading &&
                 playerState.reciterId == widget.reciter.id &&
                 playerState.moshafId == widget.moshaf.id) {
-              return _buildSliverList(l10n, theme, isDark, isArabic, dlState,
-                  -1, playerState.initialIndex ?? -1);
+              return _buildSliverList(
+                l10n,
+                theme,
+                isDark,
+                isArabic,
+                dlState,
+                -1,
+                playerState.initialIndex ?? -1,
+              );
             }
 
             if (playerState is! QuranPlayerPlaying ||
                 playerState.reciter.id != widget.reciter.id ||
                 playerState.moshaf.id != widget.moshaf.id) {
               return _buildSliverList(
-                  l10n, theme, isDark, isArabic, dlState, -1, -1);
+                l10n,
+                theme,
+                isDark,
+                isArabic,
+                dlState,
+                -1,
+                -1,
+              );
             }
 
             return StreamBuilder<int?>(
@@ -237,12 +252,21 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
                   stream: playerState.audioPlayer.playerStateStream,
                   builder: (context, psSnapshot) {
                     final ps = psSnapshot.data?.processingState;
-                    final isBuffering = ps == ProcessingState.loading ||
+                    final isBuffering =
+                        ps == ProcessingState.loading ||
                         ps == ProcessingState.buffering;
-                    final loadingIndex =
-                        isBuffering && currentIndex >= 0 ? currentIndex : -1;
-                    return _buildSliverList(l10n, theme, isDark, isArabic,
-                        dlState, currentIndex, loadingIndex);
+                    final loadingIndex = isBuffering && currentIndex >= 0
+                        ? currentIndex
+                        : -1;
+                    return _buildSliverList(
+                      l10n,
+                      theme,
+                      isDark,
+                      isArabic,
+                      dlState,
+                      currentIndex,
+                      loadingIndex,
+                    );
                   },
                 );
               },
@@ -263,56 +287,55 @@ class _ReciterSurahsScreenState extends State<ReciterSurahsScreen>
     int loadingIndex,
   ) {
     return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final surah = filteredSurahs[index];
-          final surahNum = surah['surahNumber'].toString();
-          final intNum = int.parse(surahNum);
-          final downloaded = _isDownloaded(surahNum);
-          final progress = dlState.getSurahProgress(
-              widget.reciter.id, widget.moshaf.id, surahNum);
-          final isDownloading = progress != null && progress < 1.0;
-          final surahIndex = surahs.indexOf(surah);
-          final isPlaying =
-              currentPlayingIndex >= 0 && currentPlayingIndex == surahIndex;
+      delegate: SliverChildBuilderDelegate((context, index) {
+        final surah = filteredSurahs[index];
+        final surahNum = surah['surahNumber'].toString();
+        final intNum = int.parse(surahNum);
+        final downloaded = _isDownloaded(surahNum);
+        final progress = dlState.getSurahProgress(
+          widget.reciter.id,
+          widget.moshaf.id,
+          surahNum,
+        );
+        final isDownloading = progress != null && progress < 1.0;
+        final surahIndex = surahs.indexOf(surah);
+        final isPlaying =
+            currentPlayingIndex >= 0 && currentPlayingIndex == surahIndex;
 
-          return SurahCard(
-            surahNum: surahNum,
-            intNum: intNum,
-            surahName: surah['suraName'].toString(),
-            downloaded: downloaded,
-            progress: progress,
-            isDownloading: isDownloading,
-            isPlaying: isPlaying,
-            isLoading: loadingIndex == surahIndex,
-            theme: theme,
-            isArabic: isArabic,
-            l10n: l10n,
-            listAnimController: _listAnimController,
-            itemIndex: index,
-            onPlay: () {
-              context.read<QuranPlayerCubit>().startPlaying(
-                    moshaf: widget.moshaf,
-                    reciter: widget.reciter,
-                    suraNumber: intNum,
-                    initialIndex: surahIndex,
-                    jsonData: widget.jsonData,
-                  );
-              context.read<PlayerBarCubit>().show();
-            },
-            onDownload: () {
-              context.read<QuranPlayerCubit>().downloadSurah(
-                    reciter: widget.reciter,
-                    moshaf: widget.moshaf,
-                    suraNumber: surahNum,
-                    url:
-                        '${widget.moshaf.server}/${surahNum.padLeft(3, "0")}.mp3',
-                  );
-            },
-          );
-        },
-        childCount: filteredSurahs.length,
-      ),
+        return SurahCard(
+          surahNum: surahNum,
+          intNum: intNum,
+          surahName: surah['suraName'].toString(),
+          downloaded: downloaded,
+          progress: progress,
+          isDownloading: isDownloading,
+          isPlaying: isPlaying,
+          isLoading: loadingIndex == surahIndex,
+          theme: theme,
+          isArabic: isArabic,
+          l10n: l10n,
+          listAnimController: _listAnimController,
+          itemIndex: index,
+          onPlay: () {
+            context.read<QuranPlayerCubit>().startPlaying(
+              moshaf: widget.moshaf,
+              reciter: widget.reciter,
+              suraNumber: intNum,
+              initialIndex: surahIndex,
+              jsonData: widget.jsonData,
+            );
+            context.read<PlayerBarCubit>().show();
+          },
+          onDownload: () {
+            context.read<QuranPlayerCubit>().downloadSurah(
+              reciter: widget.reciter,
+              moshaf: widget.moshaf,
+              suraNumber: surahNum,
+              url: '${widget.moshaf.server}/${surahNum.padLeft(3, "0")}.mp3',
+            );
+          },
+        );
+      }, childCount: filteredSurahs.length),
     );
   }
 }

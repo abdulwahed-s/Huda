@@ -24,10 +24,7 @@ class AudiobookActionBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _buildSpeedChip(context),
-        _buildSleepTimer(context),
-      ],
+      children: [_buildSpeedChip(context), _buildSleepTimer(context)],
     );
   }
 
@@ -126,8 +123,8 @@ class AudiobookActionBar extends StatelessWidget {
                       color: selected
                           ? primaryColor.withValues(alpha: 0.15)
                           : (isDark
-                              ? Colors.white.withValues(alpha: 0.05)
-                              : Colors.grey.shade100),
+                                ? Colors.white.withValues(alpha: 0.05)
+                                : Colors.grey.shade100),
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
                         color: selected ? primaryColor : Colors.transparent,
@@ -141,13 +138,14 @@ class AudiobookActionBar extends StatelessWidget {
                           '${s}x',
                           style: TextStyle(
                             fontSize: 15.sp,
-                            fontWeight:
-                                selected ? FontWeight.bold : FontWeight.w500,
+                            fontWeight: selected
+                                ? FontWeight.bold
+                                : FontWeight.w500,
                             color: selected
                                 ? primaryColor
                                 : (isDark
-                                    ? context.darkText
-                                    : context.lightText),
+                                      ? context.darkText
+                                      : context.lightText),
                           ),
                         ),
                         if (selected)
@@ -206,8 +204,8 @@ class AudiobookActionBar extends StatelessWidget {
             color: highlighted
                 ? context.primaryColor.withValues(alpha: 0.12)
                 : (isDark
-                    ? Colors.white.withValues(alpha: 0.05)
-                    : Colors.grey.withValues(alpha: 0.08)),
+                      ? Colors.white.withValues(alpha: 0.05)
+                      : Colors.grey.withValues(alpha: 0.08)),
             borderRadius: BorderRadius.circular(20.r),
             border: highlighted
                 ? Border.all(
@@ -261,8 +259,10 @@ class _PulsingDotState extends State<_PulsingDot>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     )..repeat(reverse: true);
-    _size = Tween<double>(begin: 5.0, end: 8.0)
-        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
+    _size = Tween<double>(
+      begin: 5.0,
+      end: 8.0,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -275,13 +275,10 @@ class _PulsingDotState extends State<_PulsingDot>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _size,
-      builder: (_, __) => Container(
+      builder: (_, _) => Container(
         width: _size.value,
         height: _size.value,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: widget.color,
-        ),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: widget.color),
       ),
     );
   }

@@ -40,11 +40,7 @@ class ErrorStateWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 48.sp,
-              color: Colors.red.shade400,
-            ),
+            Icon(icon, size: 48.sp, color: Colors.red.shade400),
             SizedBox(height: 16.h),
             Text(
               title,

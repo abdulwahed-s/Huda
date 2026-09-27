@@ -22,8 +22,11 @@ class OnboardingIndicator extends StatelessWidget {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           margin: EdgeInsets.symmetric(
-            horizontal:
-                context.responsive(mobile: 6.w, tablet: 4.0, desktop: 4.0),
+            horizontal: context.responsive(
+              mobile: 6.w,
+              tablet: 4.0,
+              desktop: 4.0,
+            ),
           ),
           height: context.responsive(mobile: 8.h, tablet: 8.0, desktop: 8.0),
           width: isActive
@@ -32,10 +35,7 @@ class OnboardingIndicator extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: isActive
                 ? LinearGradient(
-                    colors: [
-                      data.primaryColor,
-                      data.secondaryColor,
-                    ],
+                    colors: [data.primaryColor, data.secondaryColor],
                   )
                 : null,
             color: isActive ? null : data.primaryColor.withValues(alpha: 0.3),

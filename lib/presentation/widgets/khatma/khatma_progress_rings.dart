@@ -69,7 +69,7 @@ class KhatmaProgressRings extends StatelessWidget {
       tween: Tween<double>(begin: 0, end: end),
       duration: Duration(milliseconds: milliseconds),
       curve: Curves.easeOutCubic,
-      builder: (_, value, __) => builder(value),
+      builder: (_, value, _) => builder(value),
     );
   }
 }

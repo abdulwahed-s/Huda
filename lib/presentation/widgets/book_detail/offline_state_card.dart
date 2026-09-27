@@ -25,11 +25,7 @@ class OfflineStateCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Icon(
-              Icons.wifi_off_rounded,
-              color: Colors.orange,
-              size: 48.sp,
-            ),
+            Icon(Icons.wifi_off_rounded, color: Colors.orange, size: 48.sp),
             SizedBox(height: 16.h),
             Text(
               'You\'re Offline',
@@ -54,9 +50,7 @@ class OfflineStateCard extends StatelessWidget {
               icon: Icon(Icons.refresh_rounded, size: 18.sp),
               label: const Text(
                 'Try Again',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(fontWeight: FontWeight.w500),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,

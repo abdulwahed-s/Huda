@@ -34,11 +34,7 @@ class CounterBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (isCompleted)
-            Icon(
-              Icons.check_circle,
-              color: Colors.green,
-              size: 20.w,
-            )
+            Icon(Icons.check_circle, color: Colors.green, size: 20.w)
           else
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),

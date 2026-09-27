@@ -26,10 +26,7 @@ class LanguageSearchField extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           labelText: AppLocalizations.of(context)!.searchLanguages,
-          prefixIcon: Icon(
-            Icons.search_rounded,
-            color: context.primaryColor,
-          ),
+          prefixIcon: Icon(Icons.search_rounded, color: context.primaryColor),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
             horizontal: 16.w,
@@ -41,9 +38,7 @@ class LanguageSearchField extends StatelessWidget {
                 : context.lightText.withValues(alpha: 0.7),
           ),
         ),
-        style: TextStyle(
-          color: isDark ? context.darkText : context.lightText,
-        ),
+        style: TextStyle(color: isDark ? context.darkText : context.lightText),
         onChanged: onChanged,
       ),
     );

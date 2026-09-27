@@ -61,8 +61,9 @@ class SurahCardInfo extends StatelessWidget {
                     value: progress,
                     minHeight: 3.h,
                     backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                    valueColor:
-                        AlwaysStoppedAnimation(theme.colorScheme.primary),
+                    valueColor: AlwaysStoppedAnimation(
+                      theme.colorScheme.primary,
+                    ),
                   ),
                 ),
               ),

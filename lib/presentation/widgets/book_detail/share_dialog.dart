@@ -24,9 +24,7 @@ class ShareDialog extends StatelessWidget {
           SizedBox(width: 12.w),
           const Text(
             'Share Book',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),

@@ -68,8 +68,9 @@ class MasterToggleSection extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: isEnabled ? activeColor : theme.hintColor,
-                      fontWeight:
-                          isEnabled ? FontWeight.w600 : FontWeight.normal,
+                      fontWeight: isEnabled
+                          ? FontWeight.w600
+                          : FontWeight.normal,
                     ),
                     child: Text(
                       isEnabled ? l10n.active : l10n.miqaatLockDescription,

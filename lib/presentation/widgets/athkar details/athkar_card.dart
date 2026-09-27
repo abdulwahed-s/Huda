@@ -46,8 +46,11 @@ class AthkarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentLanguageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
+    final currentLanguageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -64,14 +67,8 @@ class AthkarCard extends StatelessWidget {
               )
             : LinearGradient(
                 colors: isDark
-                    ? [
-                        const Color(0xFF1A1A1A),
-                        const Color(0xFF252525),
-                      ]
-                    : [
-                        Colors.white,
-                        const Color(0xFFFAFAFA),
-                      ],
+                    ? [const Color(0xFF1A1A1A), const Color(0xFF252525)]
+                    : [Colors.white, const Color(0xFFFAFAFA)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -103,10 +100,7 @@ class AthkarCard extends StatelessWidget {
                 repeatCount: repeatCount,
                 onResetCounter: onResetCounter,
               ),
-              ShareButton(
-                colorScheme: colorScheme,
-                onShare: onShare,
-              ),
+              ShareButton(colorScheme: colorScheme, onShare: onShare),
             ],
           ),
           SizedBox(height: 20.h),

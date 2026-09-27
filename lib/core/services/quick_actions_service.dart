@@ -60,23 +60,25 @@ class QuickActionsService {
 
     initialize();
 
-    unawaited(_setShortcutItems(locale, <ShortcutItem>[
-      ShortcutItem(
-        type: _quranAction,
-        localizedTitle: localizations.quran,
-        icon: Platform.isAndroid ? 'quranicon' : 'QuranIcon',
-      ),
-      ShortcutItem(
-        type: _prayerTimeAction,
-        localizedTitle: localizations.prayerTimes,
-        icon: Platform.isAndroid ? 'prayertimeicon' : 'PrayerTimeIcon',
-      ),
-      ShortcutItem(
-        type: _athkarAction,
-        localizedTitle: localizations.athkar,
-        icon: Platform.isAndroid ? 'athkaricon' : 'AthkarIcon',
-      ),
-    ]));
+    unawaited(
+      _setShortcutItems(locale, <ShortcutItem>[
+        ShortcutItem(
+          type: _quranAction,
+          localizedTitle: localizations.quran,
+          icon: Platform.isAndroid ? 'quranicon' : 'QuranIcon',
+        ),
+        ShortcutItem(
+          type: _prayerTimeAction,
+          localizedTitle: localizations.prayerTimes,
+          icon: Platform.isAndroid ? 'prayertimeicon' : 'PrayerTimeIcon',
+        ),
+        ShortcutItem(
+          type: _athkarAction,
+          localizedTitle: localizations.athkar,
+          icon: Platform.isAndroid ? 'athkaricon' : 'AthkarIcon',
+        ),
+      ]),
+    );
   }
 
   static Future<void> _setShortcutItems(

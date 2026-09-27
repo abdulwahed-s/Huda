@@ -50,10 +50,7 @@ abstract final class PrayerTimeZoneService {
   }
 
   /// Interprets [wallClock] components in [timeZoneName].
-  static tz.TZDateTime fromWallClock(
-    DateTime wallClock,
-    String timeZoneName,
-  ) {
+  static tz.TZDateTime fromWallClock(DateTime wallClock, String timeZoneName) {
     return tz.TZDateTime(
       location(timeZoneName),
       wallClock.year,
@@ -72,10 +69,7 @@ abstract final class PrayerTimeZoneService {
     return tz.TZDateTime.from(instant, location(timeZoneName));
   }
 
-  static DateTime wallClockAtInstant(
-    DateTime instant,
-    String timeZoneName,
-  ) {
+  static DateTime wallClockAtInstant(DateTime instant, String timeZoneName) {
     final zoned = atInstant(instant, timeZoneName);
     return DateTime(
       zoned.year,

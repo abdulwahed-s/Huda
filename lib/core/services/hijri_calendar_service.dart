@@ -15,22 +15,22 @@ enum HijriAdjustmentChoice {
   bool get isAutomatic => this == HijriAdjustmentChoice.automatic;
 
   DayAdjustment get dayAdjustment => switch (this) {
-        HijriAdjustmentChoice.automatic => DayAdjustment.none,
-        HijriAdjustmentChoice.plusTwo => DayAdjustment.plusTwo,
-        HijriAdjustmentChoice.plusOne => DayAdjustment.plusOne,
-        HijriAdjustmentChoice.none => DayAdjustment.none,
-        HijriAdjustmentChoice.minusOne => DayAdjustment.minusOne,
-        HijriAdjustmentChoice.minusTwo => DayAdjustment.minusTwo,
-      };
+    HijriAdjustmentChoice.automatic => DayAdjustment.none,
+    HijriAdjustmentChoice.plusTwo => DayAdjustment.plusTwo,
+    HijriAdjustmentChoice.plusOne => DayAdjustment.plusOne,
+    HijriAdjustmentChoice.none => DayAdjustment.none,
+    HijriAdjustmentChoice.minusOne => DayAdjustment.minusOne,
+    HijriAdjustmentChoice.minusTwo => DayAdjustment.minusTwo,
+  };
 
   String get label => switch (this) {
-        HijriAdjustmentChoice.automatic => 'auto',
-        HijriAdjustmentChoice.plusTwo => '+2',
-        HijriAdjustmentChoice.plusOne => '+1',
-        HijriAdjustmentChoice.none => '0',
-        HijriAdjustmentChoice.minusOne => '-1',
-        HijriAdjustmentChoice.minusTwo => '-2',
-      };
+    HijriAdjustmentChoice.automatic => 'auto',
+    HijriAdjustmentChoice.plusTwo => '+2',
+    HijriAdjustmentChoice.plusOne => '+1',
+    HijriAdjustmentChoice.none => '0',
+    HijriAdjustmentChoice.minusOne => '-1',
+    HijriAdjustmentChoice.minusTwo => '-2',
+  };
 
   static HijriAdjustmentChoice? fromStorage(String? value) {
     for (final choice in values) {
@@ -45,10 +45,10 @@ class HijriCalendarService extends ChangeNotifier {
     required CacheHelper cache,
     VerifiedMonthStartProvider? automaticProvider,
     DateTime Function()? now,
-  })  : _cache = cache,
-        _automaticProvider =
-            automaticProvider ?? OfficialUmmAlQuraTodayProvider(),
-        _now = now ?? DateTime.now {
+  }) : _cache = cache,
+       _automaticProvider =
+           automaticProvider ?? OfficialUmmAlQuraTodayProvider(),
+       _now = now ?? DateTime.now {
     _calendar = UmmAlQuraCalendar();
   }
 
@@ -159,8 +159,8 @@ class _SharedPreferencesVerifiedCalendarStore implements VerifiedCalendarStore {
   const _SharedPreferencesVerifiedCalendarStore({
     required CacheHelper cache,
     required String cacheKey,
-  })  : _cache = cache,
-        _cacheKey = cacheKey;
+  }) : _cache = cache,
+       _cacheKey = cacheKey;
 
   final CacheHelper _cache;
   final String _cacheKey;

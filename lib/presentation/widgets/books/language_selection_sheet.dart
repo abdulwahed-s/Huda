@@ -75,13 +75,17 @@ class _LanguageSelectionSheetState extends State<LanguageSelectionSheet> {
                     setState(() {
                       _filteredLanguages = List<MapEntry<String, dynamic>>.from(
                         widget.languages
-                            .where((lang) =>
-                                (lang.langtranslation?.toLowerCase() ?? '')
-                                    .contains(value.toLowerCase()) ||
-                                (lang.langsymbol?.toLowerCase() ?? '')
-                                    .contains(value.toLowerCase()))
-                            .map((lang) =>
-                                MapEntry(lang.langsymbol as String, lang)),
+                            .where(
+                              (lang) =>
+                                  (lang.langtranslation?.toLowerCase() ?? '')
+                                      .contains(value.toLowerCase()) ||
+                                  (lang.langsymbol?.toLowerCase() ?? '')
+                                      .contains(value.toLowerCase()),
+                            )
+                            .map(
+                              (lang) =>
+                                  MapEntry(lang.langsymbol as String, lang),
+                            ),
                       );
                     });
                   },

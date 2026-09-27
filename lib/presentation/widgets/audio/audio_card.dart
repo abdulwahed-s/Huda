@@ -34,8 +34,9 @@ class AudioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final author =
-        audio.preparedBy.isNotEmpty ? (audio.preparedBy.first.title ?? '') : '';
+    final author = audio.preparedBy.isNotEmpty
+        ? (audio.preparedBy.first.title ?? '')
+        : '';
     final cassetteColor = _getCassetteColor();
 
     return Container(
@@ -43,8 +44,9 @@ class AudioCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
         boxShadow: [
           BoxShadow(
-            color:
-                isDark ? Colors.black54 : Colors.grey.withValues(alpha: 0.35),
+            color: isDark
+                ? Colors.black54
+                : Colors.grey.withValues(alpha: 0.35),
             blurRadius: 10,
             offset: const Offset(2, 4),
           ),
@@ -86,10 +88,7 @@ class AudioCard extends StatelessWidget {
                     cassetteColor: cassetteColor,
                   ),
                   SizedBox(height: 6.h),
-                  SizedBox(
-                    height: 62.h,
-                    child: _TapeWindow(),
-                  ),
+                  SizedBox(height: 62.h, child: _TapeWindow()),
                   SizedBox(height: 6.h),
                   _HeadGap(),
                   SizedBox(height: 4.h),
@@ -188,10 +187,7 @@ class _LabelSticker extends StatelessWidget {
         decoration: BoxDecoration(
           color: const Color(0xFFFAF6EF),
           borderRadius: BorderRadius.circular(4.r),
-          border: Border.all(
-            color: const Color(0xFFE0D5C0),
-            width: 0.5,
-          ),
+          border: Border.all(color: const Color(0xFFE0D5C0), width: 0.5),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.08),
@@ -202,9 +198,7 @@ class _LabelSticker extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            Positioned.fill(
-              child: CustomPaint(painter: _RuledLinesPainter()),
-            ),
+            Positioned.fill(child: CustomPaint(painter: _RuledLinesPainter())),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -219,9 +213,9 @@ class _LabelSticker extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            AppLocalizations.of(context)!.audioInLanguage(
-                              _languageName(context),
-                            ),
+                            AppLocalizations.of(
+                              context,
+                            )!.audioInLanguage(_languageName(context)),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -382,10 +376,7 @@ class _TapeWindowPainter extends CustomPainter {
       ..strokeWidth = 1.2
       ..style = PaintingStyle.stroke;
 
-    for (final entry in [
-      (leftCenter, leftTapeR),
-      (rightCenter, rightTapeR),
-    ]) {
+    for (final entry in [(leftCenter, leftTapeR), (rightCenter, rightTapeR)]) {
       final (center, tapeR) = entry;
       for (int i = 0; i < 3; i++) {
         final angle = i * 2 * math.pi / 3;

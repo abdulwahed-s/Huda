@@ -19,9 +19,7 @@ class NavigateConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: isDark ? Colors.grey[900] : Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       title: Row(
         children: [
           Icon(Icons.navigation, color: Colors.green, size: 24.r),
@@ -97,9 +95,7 @@ class NavigateConfirmationDialog extends StatelessWidget {
           ),
           child: Text(
             AppLocalizations.of(context)!.goToVerse,
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
+            style: TextStyle(fontSize: 14.sp),
           ),
         ),
       ],

@@ -95,18 +95,14 @@ class ZakatCalculatorAppBar extends StatelessWidget
           child: TabBar(
             controller: tabController,
             splashFactory: NoSplash.splashFactory,
-            overlayColor:
-                WidgetStateProperty.all(Colors.white.withValues(alpha: 0.1)),
+            overlayColor: WidgetStateProperty.all(
+              Colors.white.withValues(alpha: 0.1),
+            ),
             indicatorColor: Colors.white,
             indicatorWeight: 3,
             indicatorSize: TabBarIndicatorSize.label,
             indicator: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.white,
-                  width: 3,
-                ),
-              ),
+              border: Border(bottom: BorderSide(color: Colors.white, width: 3)),
             ),
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white.withValues(alpha: 0.65),
@@ -120,8 +116,10 @@ class ZakatCalculatorAppBar extends StatelessWidget
               fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
             ),
-            labelPadding:
-                EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+            labelPadding: EdgeInsets.symmetric(
+              horizontal: 20.w,
+              vertical: 14.h,
+            ),
             tabs: [
               Tab(text: AppLocalizations.of(context)!.calculate),
               Tab(text: AppLocalizations.of(context)!.results),

@@ -19,10 +19,7 @@ class SearchResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final style = TextStyle(
-      fontSize: 13.sp,
-      color: colorScheme.onSurface,
-    );
+    final style = TextStyle(fontSize: 13.sp, color: colorScheme.onSurface);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -53,8 +50,9 @@ class SearchResultTile extends StatelessWidget {
                   TextSpan(
                     text: match.match,
                     style: style.copyWith(
-                      backgroundColor:
-                          colorScheme.primary.withValues(alpha: 0.3),
+                      backgroundColor: colorScheme.primary.withValues(
+                        alpha: 0.3,
+                      ),
                       fontWeight: FontWeight.bold,
                     ),
                   ),

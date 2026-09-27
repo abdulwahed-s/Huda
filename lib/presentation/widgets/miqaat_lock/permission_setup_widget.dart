@@ -25,10 +25,12 @@ class PermissionSetupWidget extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     const warningColor = Color(0xFFF59E0B);
-    final warningBg =
-        isDark ? warningColor.withValues(alpha: 0.08) : const Color(0xFFFFFBEB);
-    final warningBorder =
-        isDark ? warningColor.withValues(alpha: 0.25) : const Color(0xFFFDE68A);
+    final warningBg = isDark
+        ? warningColor.withValues(alpha: 0.08)
+        : const Color(0xFFFFFBEB);
+    final warningBorder = isDark
+        ? warningColor.withValues(alpha: 0.25)
+        : const Color(0xFFFDE68A);
 
     return Container(
       decoration: BoxDecoration(
@@ -88,8 +90,9 @@ class PermissionSetupWidget extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
-                          color:
-                              isDark ? Colors.white : const Color(0xFF92400E),
+                          color: isDark
+                              ? Colors.white
+                              : const Color(0xFF92400E),
                         ),
                       ),
                       SizedBox(height: 2.h),
@@ -165,8 +168,9 @@ class PermissionSetupWidget extends StatelessWidget {
                   ),
                 ),
                 style: TextButton.styleFrom(
-                  foregroundColor:
-                      isDark ? warningColor : const Color(0xFF92400E),
+                  foregroundColor: isDark
+                      ? warningColor
+                      : const Color(0xFF92400E),
                   backgroundColor: isDark
                       ? warningColor.withValues(alpha: 0.1)
                       : warningColor.withValues(alpha: 0.12),
@@ -191,10 +195,12 @@ class PermissionSetupWidget extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     final dialogBg = isDark ? const Color(0xFF1C1C1E) : Colors.white;
-    final subtleBg =
-        isDark ? Colors.white.withValues(alpha: 0.04) : const Color(0xFFFFFBEB);
-    final dividerColor =
-        isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFFDE68A);
+    final subtleBg = isDark
+        ? Colors.white.withValues(alpha: 0.04)
+        : const Color(0xFFFFFBEB);
+    final dividerColor = isDark
+        ? Colors.white.withValues(alpha: 0.08)
+        : const Color(0xFFFDE68A);
 
     showDialog(
       context: context,
@@ -268,10 +274,7 @@ class PermissionSetupWidget extends StatelessWidget {
               ),
               SizedBox(height: 14.h),
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14.w,
-                  vertical: 12.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
                 decoration: BoxDecoration(
                   color: subtleBg,
                   borderRadius: BorderRadius.circular(14.r),
@@ -299,8 +302,9 @@ class PermissionSetupWidget extends StatelessWidget {
                         l10n.accessibilityServiceRequiredDialogPrivacy,
                         style: TextStyle(
                           fontSize: 11.5.sp,
-                          color:
-                              isDark ? Colors.white60 : const Color(0xFF92400E),
+                          color: isDark
+                              ? Colors.white60
+                              : const Color(0xFF92400E),
                           height: 1.4,
                         ),
                       ),
@@ -380,8 +384,9 @@ class PermissionSetupWidget extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final grantedColor = const Color(0xFF10B981);
-    final pendingColor =
-        isDark ? Colors.white.withValues(alpha: 0.06) : Colors.white;
+    final pendingColor = isDark
+        ? Colors.white.withValues(alpha: 0.06)
+        : Colors.white;
     final grantedBg = isDark
         ? grantedColor.withValues(alpha: 0.1)
         : grantedColor.withValues(alpha: 0.06);
@@ -402,8 +407,8 @@ class PermissionSetupWidget extends StatelessWidget {
               color: isGranted
                   ? grantedColor.withValues(alpha: 0.3)
                   : (isDark
-                      ? Colors.white.withValues(alpha: 0.08)
-                      : const Color(0xFFE5E7EB)),
+                        ? Colors.white.withValues(alpha: 0.08)
+                        : const Color(0xFFE5E7EB)),
               width: 1,
             ),
           ),
@@ -416,8 +421,8 @@ class PermissionSetupWidget extends StatelessWidget {
                   color: isGranted
                       ? grantedColor.withValues(alpha: 0.15)
                       : (isDark
-                          ? Colors.white.withValues(alpha: 0.06)
-                          : const Color(0xFFF3F4F6)),
+                            ? Colors.white.withValues(alpha: 0.06)
+                            : const Color(0xFFF3F4F6)),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Icon(

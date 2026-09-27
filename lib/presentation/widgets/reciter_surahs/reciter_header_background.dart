@@ -29,7 +29,10 @@ class ReciterHeaderBackground extends StatelessWidget {
           colors: [
             theme.colorScheme.primary,
             Color.lerp(
-                theme.colorScheme.primary, theme.colorScheme.secondary, 0.55)!,
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
+              0.55,
+            )!,
           ],
         ),
       ),
@@ -81,12 +84,14 @@ class ReciterHeaderBackground extends StatelessWidget {
                     width: 66.r,
                     height: 66.r,
                     decoration: BoxDecoration(
-                      color:
-                          theme.colorScheme.onPrimary.withValues(alpha: 0.18),
+                      color: theme.colorScheme.onPrimary.withValues(
+                        alpha: 0.18,
+                      ),
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color:
-                            theme.colorScheme.onPrimary.withValues(alpha: 0.35),
+                        color: theme.colorScheme.onPrimary.withValues(
+                          alpha: 0.35,
+                        ),
                         width: 2,
                       ),
                     ),
@@ -122,18 +127,22 @@ class ReciterHeaderBackground extends StatelessWidget {
                           moshaf.name.toString(),
                           style: TextStyle(
                             fontSize: 13.sp,
-                            color: theme.colorScheme.onPrimary
-                                .withValues(alpha: 0.85),
+                            color: theme.colorScheme.onPrimary.withValues(
+                              alpha: 0.85,
+                            ),
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 10.h),
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 4.h),
+                            horizontal: 10.w,
+                            vertical: 4.h,
+                          ),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.onPrimary
-                                .withValues(alpha: 0.2),
+                            color: theme.colorScheme.onPrimary.withValues(
+                              alpha: 0.2,
+                            ),
                             borderRadius: BorderRadius.circular(20.r),
                           ),
                           child: Row(

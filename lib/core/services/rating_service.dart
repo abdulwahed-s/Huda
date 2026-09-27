@@ -50,8 +50,10 @@ class RatingService {
     });
   }
 
-  Future<void> _showRatingDialog(BuildContext context,
-      {bool showDismissActions = true}) async {
+  Future<void> _showRatingDialog(
+    BuildContext context, {
+    bool showDismissActions = true,
+  }) async {
     if (!context.mounted) return;
 
     final ratingCubit = context.read<RatingCubit>();

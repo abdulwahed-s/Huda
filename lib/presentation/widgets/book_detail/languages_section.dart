@@ -64,7 +64,9 @@ class LanguagesSection extends StatelessWidget {
   }
 
   Widget _buildLanguagesLoaded(
-      BuildContext context, BookTranslationsLoaded state) {
+    BuildContext context,
+    BookTranslationsLoaded state,
+  ) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(

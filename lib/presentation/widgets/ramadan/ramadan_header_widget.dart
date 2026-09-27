@@ -41,10 +41,7 @@ class RamadanHeaderWidget extends StatelessWidget {
         ),
         border: isDark
             ? null
-            : Border.all(
-                color: primary.withValues(alpha: 0.08),
-                width: 1,
-              ),
+            : Border.all(color: primary.withValues(alpha: 0.08), width: 1),
       ),
       child: Column(
         children: [
@@ -54,10 +51,7 @@ class RamadanHeaderWidget extends StatelessWidget {
               color: primary.withValues(alpha: isDark ? 0.2 : 0.12),
               shape: BoxShape.circle,
             ),
-            child: Text(
-              '🌙',
-              style: TextStyle(fontSize: 28.sp),
-            ),
+            child: Text('🌙', style: TextStyle(fontSize: 28.sp)),
           ),
           SizedBox(height: 14.h),
           Text(

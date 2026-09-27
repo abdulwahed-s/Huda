@@ -34,13 +34,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.05,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -55,7 +51,8 @@ class _ColorThemePickerState extends State<ColorThemePicker>
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isTablet = !ResponsiveUtils.isMobile(context) ||
+        final isTablet =
+            !ResponsiveUtils.isMobile(context) ||
             kIsWeb ||
             PlatformUtils.isDesktop;
 
@@ -76,8 +73,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                       padding: EdgeInsets.all(isTablet ? 14 : 12.w),
                       decoration: BoxDecoration(
                         color: context.primaryColor.withValues(alpha: 0.1),
-                        borderRadius:
-                            BorderRadius.circular(isTablet ? 14 : 12.r),
+                        borderRadius: BorderRadius.circular(
+                          isTablet ? 14 : 12.r,
+                        ),
                       ),
                       child: Icon(
                         Icons.palette_outlined,
@@ -95,8 +93,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                             style: TextStyle(
                               fontSize: isTablet ? 22 : 18.sp,
                               fontWeight: FontWeight.w600,
-                              color:
-                                  isDark ? context.darkText : context.lightText,
+                              color: isDark
+                                  ? context.darkText
+                                  : context.lightText,
                             ),
                           ),
                           SizedBox(height: isTablet ? 6 : 4.h),
@@ -178,8 +177,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
 
     final borderRadius = isTablet ? 20.0 : 16.r;
     final innerBorderRadius = isTablet ? 18.0 : 14.r;
-    final borderWidth =
-        isSelected ? (isTablet ? 3.5 : 3.0) : (isTablet ? 2.5 : 2.0);
+    final borderWidth = isSelected
+        ? (isTablet ? 3.5 : 3.0)
+        : (isTablet ? 2.5 : 2.0);
     final checkSize = isTablet ? 36.0 : 24.w;
     final checkIconSize = isTablet ? 22.0 : 16.sp;
     final badgeFontSize = isTablet ? 13.0 : 8.sp;
@@ -213,8 +213,8 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                     color: isSelected
                         ? colorScheme.primary
                         : isHovered
-                            ? colorScheme.primary.withValues(alpha: 0.4)
-                            : colorScheme.primary.withValues(alpha: 0.1),
+                        ? colorScheme.primary.withValues(alpha: 0.4)
+                        : colorScheme.primary.withValues(alpha: 0.1),
                     width: borderWidth,
                   ),
                   boxShadow: [
@@ -232,10 +232,7 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                        colorScheme.primary,
-                        colorScheme.primaryVariant,
-                      ],
+                      colors: [colorScheme.primary, colorScheme.primaryVariant],
                     ),
                   ),
                   child: Stack(
@@ -247,8 +244,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                             height: checkSize,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.circular(checkSize / 2),
+                              borderRadius: BorderRadius.circular(
+                                checkSize / 2,
+                              ),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.2),
@@ -275,8 +273,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.4),
-                            borderRadius:
-                                BorderRadius.circular(isTablet ? 8 : 6.r),
+                            borderRadius: BorderRadius.circular(
+                              isTablet ? 8 : 6.r,
+                            ),
                           ),
                           child: Text(
                             AppColors.getThemeName(theme, context),
@@ -295,8 +294,9 @@ class _ColorThemePickerState extends State<ColorThemePicker>
                         Positioned.fill(
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(innerBorderRadius),
+                              borderRadius: BorderRadius.circular(
+                                innerBorderRadius,
+                              ),
                               color: Colors.white.withValues(alpha: 0.15),
                             ),
                           ),

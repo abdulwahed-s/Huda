@@ -38,8 +38,10 @@ class KhatmaReminderSection extends StatelessWidget {
         ],
         KhatmaCard(
           child: ListTile(
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 14.w,
+              vertical: 6.h,
+            ),
             leading: Container(
               width: 38.r,
               height: 38.r,
@@ -47,8 +49,11 @@ class KhatmaReminderSection extends StatelessWidget {
                 color: accent.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10.r),
               ),
-              child:
-                  Icon(Icons.notifications_rounded, color: accent, size: 20.sp),
+              child: Icon(
+                Icons.notifications_rounded,
+                color: accent,
+                size: 20.sp,
+              ),
             ),
             title: Text(
               l10n.khatmaDailyWirdTitle,

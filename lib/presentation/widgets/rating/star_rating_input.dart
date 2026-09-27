@@ -125,7 +125,11 @@ class _FractionClipper extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) => fromRight
       ? Rect.fromLTWH(
-          size.width * (1 - fraction), 0, size.width * fraction, size.height)
+          size.width * (1 - fraction),
+          0,
+          size.width * fraction,
+          size.height,
+        )
       : Rect.fromLTWH(0, 0, size.width * fraction, size.height);
 
   @override

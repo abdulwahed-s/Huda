@@ -24,7 +24,8 @@ class SettingsTab extends StatelessWidget {
     QuranReadingMode mode,
     QcfFontService? fontService,
     bool requiresFonts,
-  ) onReadingModeTap;
+  )
+  onReadingModeTap;
 
   final ValueChanged<HorizontalPageDisplayMode> onHorizontalDisplayModeSelected;
   final ValueChanged<MushafFlipDirection> onMushafFlipDirectionSelected;
@@ -86,8 +87,9 @@ class SettingsTab extends StatelessWidget {
                 Expanded(
                   child: ReadingModeOptionCard(
                     icon: QuranReadingMode.horizontalPages.icon,
-                    label: QuranReadingMode.horizontalPages
-                        .localizedLabel(context),
+                    label: QuranReadingMode.horizontalPages.localizedLabel(
+                      context,
+                    ),
                     isSelected: readingMode == QuranReadingMode.horizontalPages,
                     requiresFonts: true,
                     isDark: isDark,

@@ -79,17 +79,17 @@ class QcfFontDownloadState {
   const QcfFontDownloadState.idle() : this();
 
   const QcfFontDownloadState.downloading(double p)
-      : this(status: QcfFontStatus.downloading, progress: p);
+    : this(status: QcfFontStatus.downloading, progress: p);
 
   const QcfFontDownloadState.extracting()
-      : this(status: QcfFontStatus.extracting);
+    : this(status: QcfFontStatus.extracting);
 
   const QcfFontDownloadState.loading() : this(status: QcfFontStatus.loading);
 
   const QcfFontDownloadState.ready() : this(status: QcfFontStatus.ready);
 
   QcfFontDownloadState.error(String message)
-      : this(status: QcfFontStatus.error, errorMessage: message);
+    : this(status: QcfFontStatus.error, errorMessage: message);
 }
 
 class QcfFontService {
@@ -119,9 +119,10 @@ class QcfFontService {
 
   bool isPageFontLoaded(int pageNumber) => _loadedPages.contains(pageNumber);
 
-  QcfFontService(
-      {required CacheHelper cache, this.packType = FontPackType.qcf4})
-      : _cache = cache;
+  QcfFontService({
+    required CacheHelper cache,
+    this.packType = FontPackType.qcf4,
+  }) : _cache = cache;
 
   Future<void> init() async {
     if (kIsWeb) return;
@@ -170,8 +171,11 @@ class QcfFontService {
         part1File.path,
         onReceiveProgress: (received, total) {
           if (total > 0) {
-            _emit(QcfFontDownloadState.downloading(
-                (received / total * 0.5).clamp(0.0, 0.5)));
+            _emit(
+              QcfFontDownloadState.downloading(
+                (received / total * 0.5).clamp(0.0, 0.5),
+              ),
+            );
           }
         },
       );
@@ -181,8 +185,11 @@ class QcfFontService {
         part2File.path,
         onReceiveProgress: (received, total) {
           if (total > 0) {
-            _emit(QcfFontDownloadState.downloading(
-                (0.5 + received / total * 0.5).clamp(0.5, 1.0)));
+            _emit(
+              QcfFontDownloadState.downloading(
+                (0.5 + received / total * 0.5).clamp(0.5, 1.0),
+              ),
+            );
           }
         },
       );
@@ -220,10 +227,12 @@ class QcfFontService {
 
   Future<void> ensurePagesLoaded(List<int> pageNumbers) async {
     final toLoad = pageNumbers
-        .where((p) =>
-            !_loadedPages.contains(p) &&
-            !_loadingPages.contains(p) &&
-            _pageFileIndex.containsKey(p))
+        .where(
+          (p) =>
+              !_loadedPages.contains(p) &&
+              !_loadingPages.contains(p) &&
+              _pageFileIndex.containsKey(p),
+        )
         .toList();
 
     if (toLoad.isEmpty) return;
@@ -262,7 +271,8 @@ class QcfFontService {
     } catch (e) {
       _loadingPages.remove(pageNumber);
       debugPrint(
-          'QcfFontService(${packType.name}): failed to load font for page $pageNumber: $e');
+        'QcfFontService(${packType.name}): failed to load font for page $pageNumber: $e',
+      );
     }
   }
 
@@ -298,8 +308,10 @@ class QcfFontService {
         return 'QCF_P${match.group(1)}';
 
       case FontPackType.tajweed:
-        final match =
-            RegExp(r'^p(\d+)\.ttf$', caseSensitive: false).firstMatch(name);
+        final match = RegExp(
+          r'^p(\d+)\.ttf$',
+          caseSensitive: false,
+        ).firstMatch(name);
         if (match == null) return null;
         final num = int.tryParse(match.group(1)!);
         if (num == null) return null;

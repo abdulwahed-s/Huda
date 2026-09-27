@@ -34,8 +34,9 @@ class CalendarNotificationService {
       guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
     );
 
-    const linux =
-        LinuxInitializationSettings(defaultActionName: 'Open notification');
+    const linux = LinuxInitializationSettings(
+      defaultActionName: 'Open notification',
+    );
 
     const settings = InitializationSettings(
       android: android,
@@ -55,8 +56,10 @@ class CalendarNotificationService {
     required DateTime dateTime,
     required Color color,
   }) async {
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     final canScheduleExact =
         await android?.canScheduleExactNotifications() ?? true;
 
@@ -97,8 +100,9 @@ class CalendarNotificationService {
       id: 0,
       title: "Immediate Notification",
       body: "This shows immediately on Windows",
-      notificationDetails:
-          const NotificationDetails(windows: WindowsNotificationDetails()),
+      notificationDetails: const NotificationDetails(
+        windows: WindowsNotificationDetails(),
+      ),
     );
   }
 

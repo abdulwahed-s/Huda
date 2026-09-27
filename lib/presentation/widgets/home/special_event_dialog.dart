@@ -27,7 +27,7 @@ Future<void> showSpecialEventDialog(
       barrierColor: Colors.black.withValues(alpha: isDarkMode ? 0.72 : 0.64),
       transitionDuration:
           reduceMotion ? Duration.zero : const Duration(milliseconds: 460),
-      pageBuilder: (_, __, ___) => SpecialEventDialogPreview(
+      pageBuilder: (_, _, _) => SpecialEventDialogPreview(
         eventKey: eventKey,
       ),
       transitionBuilder: (context, animation, secondaryAnimation, child) {

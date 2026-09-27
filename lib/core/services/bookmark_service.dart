@@ -16,7 +16,7 @@ class BookmarkService {
       _bookmarkChangesController.stream;
 
   BookmarkService({required CacheHelper cacheHelper})
-      : _cacheHelper = cacheHelper;
+    : _cacheHelper = cacheHelper;
 
   Future<List<BookmarkModel>> getAllBookmarks() async {
     try {
@@ -47,28 +47,40 @@ class BookmarkService {
 
   Future<bool> isAyahBookmarked(int surahNumber, int ayahNumber) async {
     final allBookmarks = await getAllBookmarks();
-    return allBookmarks.any((bookmark) =>
-        bookmark.surahNumber == surahNumber &&
-        bookmark.ayahNumber == ayahNumber);
+    return allBookmarks.any(
+      (bookmark) =>
+          bookmark.surahNumber == surahNumber &&
+          bookmark.ayahNumber == ayahNumber,
+    );
   }
 
   Future<bool> hasBookmarkType(
-      int surahNumber, int ayahNumber, BookmarkType type) async {
+    int surahNumber,
+    int ayahNumber,
+    BookmarkType type,
+  ) async {
     final allBookmarks = await getAllBookmarks();
-    return allBookmarks.any((bookmark) =>
-        bookmark.surahNumber == surahNumber &&
-        bookmark.ayahNumber == ayahNumber &&
-        bookmark.type == type);
+    return allBookmarks.any(
+      (bookmark) =>
+          bookmark.surahNumber == surahNumber &&
+          bookmark.ayahNumber == ayahNumber &&
+          bookmark.type == type,
+    );
   }
 
   Future<BookmarkModel?> getBookmark(
-      int surahNumber, int ayahNumber, BookmarkType type) async {
+    int surahNumber,
+    int ayahNumber,
+    BookmarkType type,
+  ) async {
     final allBookmarks = await getAllBookmarks();
     try {
-      return allBookmarks.firstWhere((bookmark) =>
-          bookmark.surahNumber == surahNumber &&
-          bookmark.ayahNumber == ayahNumber &&
-          bookmark.type == type);
+      return allBookmarks.firstWhere(
+        (bookmark) =>
+            bookmark.surahNumber == surahNumber &&
+            bookmark.ayahNumber == ayahNumber &&
+            bookmark.type == type,
+      );
     } catch (e) {
       return null;
     }
@@ -78,10 +90,12 @@ class BookmarkService {
     try {
       final allBookmarks = await getAllBookmarks();
 
-      final existingIndex = allBookmarks.indexWhere((b) =>
-          b.surahNumber == bookmark.surahNumber &&
-          b.ayahNumber == bookmark.ayahNumber &&
-          b.type == bookmark.type);
+      final existingIndex = allBookmarks.indexWhere(
+        (b) =>
+            b.surahNumber == bookmark.surahNumber &&
+            b.ayahNumber == bookmark.ayahNumber &&
+            b.type == bookmark.type,
+      );
 
       final isUpdate = existingIndex != -1;
 
@@ -95,14 +109,16 @@ class BookmarkService {
 
       await _saveBookmarks(allBookmarks);
 
-      _bookmarkChangesController.add(BookmarkChange(
-        surahNumber: bookmark.surahNumber,
-        ayahNumber: bookmark.ayahNumber,
-        type: bookmark.type,
-        action: isUpdate
-            ? BookmarkChangeAction.updated
-            : BookmarkChangeAction.added,
-      ));
+      _bookmarkChangesController.add(
+        BookmarkChange(
+          surahNumber: bookmark.surahNumber,
+          ayahNumber: bookmark.ayahNumber,
+          type: bookmark.type,
+          action: isUpdate
+              ? BookmarkChangeAction.updated
+              : BookmarkChangeAction.added,
+        ),
+      );
 
       return true;
     } catch (e) {
@@ -112,27 +128,34 @@ class BookmarkService {
   }
 
   Future<bool> removeBookmark(
-      int surahNumber, int ayahNumber, BookmarkType type) async {
+    int surahNumber,
+    int ayahNumber,
+    BookmarkType type,
+  ) async {
     try {
       final allBookmarks = await getAllBookmarks();
       final originalLength = allBookmarks.length;
 
-      allBookmarks.removeWhere((bookmark) =>
-          bookmark.surahNumber == surahNumber &&
-          bookmark.ayahNumber == ayahNumber &&
-          bookmark.type == type);
+      allBookmarks.removeWhere(
+        (bookmark) =>
+            bookmark.surahNumber == surahNumber &&
+            bookmark.ayahNumber == ayahNumber &&
+            bookmark.type == type,
+      );
 
       final wasRemoved = allBookmarks.length < originalLength;
 
       await _saveBookmarks(allBookmarks);
 
       if (wasRemoved) {
-        _bookmarkChangesController.add(BookmarkChange(
-          surahNumber: surahNumber,
-          ayahNumber: ayahNumber,
-          type: type,
-          action: BookmarkChangeAction.removed,
-        ));
+        _bookmarkChangesController.add(
+          BookmarkChange(
+            surahNumber: surahNumber,
+            ayahNumber: ayahNumber,
+            type: type,
+            action: BookmarkChangeAction.removed,
+          ),
+        );
       }
 
       return true;
@@ -143,12 +166,16 @@ class BookmarkService {
   }
 
   Future<bool> removeAllBookmarksForAyah(
-      int surahNumber, int ayahNumber) async {
+    int surahNumber,
+    int ayahNumber,
+  ) async {
     try {
       final allBookmarks = await getAllBookmarks();
-      allBookmarks.removeWhere((bookmark) =>
-          bookmark.surahNumber == surahNumber &&
-          bookmark.ayahNumber == ayahNumber);
+      allBookmarks.removeWhere(
+        (bookmark) =>
+            bookmark.surahNumber == surahNumber &&
+            bookmark.ayahNumber == ayahNumber,
+      );
 
       await _saveBookmarks(allBookmarks);
       return true;
@@ -172,8 +199,9 @@ class BookmarkService {
     final allBookmarks = await getAllBookmarks();
     return {
       'total': allBookmarks.length,
-      'bookmarks':
-          allBookmarks.where((b) => b.type == BookmarkType.bookmark).length,
+      'bookmarks': allBookmarks
+          .where((b) => b.type == BookmarkType.bookmark)
+          .length,
       'notes': allBookmarks.where((b) => b.type == BookmarkType.note).length,
       'stars': allBookmarks.where((b) => b.type == BookmarkType.star).length,
     };
@@ -241,7 +269,10 @@ class BookmarkService {
   }
 
   static String generateBookmarkId(
-      int surahNumber, int ayahNumber, BookmarkType type) {
+    int surahNumber,
+    int ayahNumber,
+    BookmarkType type,
+  ) {
     return '${surahNumber}_${ayahNumber}_${type.name}_${DateTime.now().millisecondsSinceEpoch}';
   }
 

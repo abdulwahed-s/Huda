@@ -15,7 +15,8 @@ class ThemeModeDescription extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, themeState) {
         final themeMode = themeState.themeMode;
-        final isDarkMode = themeMode == ThemeMode.dark ||
+        final isDarkMode =
+            themeMode == ThemeMode.dark ||
             (themeMode == ThemeMode.system &&
                 MediaQuery.of(context).platformBrightness == Brightness.dark);
 

@@ -78,8 +78,9 @@ class _AthkarScreenState extends State<AthkarScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? context.darkCardBackground : context.lightSurface,
+      backgroundColor: isDark
+          ? context.darkCardBackground
+          : context.lightSurface,
       body: CustomScrollView(
         slivers: [
           SliverAppBarContent(

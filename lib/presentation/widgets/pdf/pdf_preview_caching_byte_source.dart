@@ -68,7 +68,8 @@ class PdfPreviewCachingByteSource implements PdfByteSource {
 
       if (cached.start > cursor) {
         gaps.add(
-            _RequestedRange(cursor, cached.start < end ? cached.start : end));
+          _RequestedRange(cursor, cached.start < end ? cached.start : end),
+        );
       }
       if (cached.end > cursor) {
         cursor = cached.end < end ? cached.end : end;
@@ -80,11 +81,7 @@ class PdfPreviewCachingByteSource implements PdfByteSource {
     return gaps;
   }
 
-  Uint8List _assembleRange(
-    List<_CachedRange> available,
-    int start,
-    int end,
-  ) {
+  Uint8List _assembleRange(List<_CachedRange> available, int start, int end) {
     available.sort((left, right) => left.start.compareTo(right.start));
     final chunks = <Uint8List>[];
     var cursor = start;
@@ -96,7 +93,10 @@ class PdfPreviewCachingByteSource implements PdfByteSource {
       final chunkEnd = range.end < end ? range.end : end;
       chunks.add(
         Uint8List.sublistView(
-            range.bytes, cursor - range.start, chunkEnd - range.start),
+          range.bytes,
+          cursor - range.start,
+          chunkEnd - range.start,
+        ),
       );
       cursor = chunkEnd;
     }
