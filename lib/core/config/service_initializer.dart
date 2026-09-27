@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/cache/quran_content_store.dart';
 import 'package:huda/core/services/app_lifecycle_manager.dart';
 import 'package:huda/core/services/background_task.dart';
 import 'package:huda/core/services/calendar_notification_service.dart';
@@ -106,6 +107,7 @@ Future<void> _initializePrayerServices() async {
 
 Future<void> _initializeDataServices() async {
   await SurahCubit.preloadSurahData();
+  await getIt<QuranContentStore>().migrateLegacyContent();
 }
 
 Future<void> _initializeBackgroundServices() async {

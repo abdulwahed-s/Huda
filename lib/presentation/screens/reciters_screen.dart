@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/connection/network_info.dart';
+import 'package:huda/core/cache/quran_content_store.dart';
+import 'package:huda/core/services/service_locator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,7 +56,8 @@ class _RecitersScreenState extends State<RecitersScreen>
   }
 
   void _onScroll() {
-    final collapsed = _scrollController.hasClients &&
+    final collapsed =
+        _scrollController.hasClients &&
         _scrollController.offset > (160.h - kToolbarHeight);
     if (collapsed != _isCollapsed) setState(() => _isCollapsed = collapsed);
   }
@@ -114,15 +117,19 @@ class _RecitersScreenState extends State<RecitersScreen>
       ]);
 
       if (responses[0].data != null) {
-        prefs.setString(
-            'huda_reciters_$lang', json.encode(responses[0].data['reciters']));
+        await getIt<QuranContentStore>().saveReciterCatalog(
+          lang,
+          json.encode(responses[0].data['reciters']),
+        );
       }
       if (responses[1].data != null) {
         prefs.setString('huda_moshaf_$lang', json.encode(responses[1].data));
       }
       if (responses[2].data != null) {
         prefs.setString(
-            'huda_suwar_$lang', json.encode(responses[2].data['suwar']));
+          'huda_suwar_$lang',
+          json.encode(responses[2].data['suwar']),
+        );
       }
     } catch (e) {
       debugPrint('Error storing reciters data: $e');
@@ -134,15 +141,17 @@ class _RecitersScreenState extends State<RecitersScreen>
       final lang = _langCode(context);
       final prefs = await SharedPreferences.getInstance();
 
-      if (prefs.getString('huda_reciters_$lang') == null) {
+      final contentStore = getIt<QuranContentStore>();
+      var recitersJson = await contentStore.readReciterCatalog(lang);
+      if (recitersJson == null) {
         if (isOffline) {
           setState(() => isLoading = false);
           return;
         }
         await _fetchAndStoreData();
+        recitersJson = await contentStore.readReciterCatalog(lang);
       }
 
-      final recitersJson = prefs.getString('huda_reciters_$lang');
       final moshafJson = prefs.getString('huda_moshaf_$lang');
       final suwarJson = prefs.getString('huda_suwar_$lang');
 
@@ -152,8 +161,9 @@ class _RecitersScreenState extends State<RecitersScreen>
         final data3 = json.decode(suwarJson!) as List<dynamic>;
 
         var allReciters = data.map((r) => Reciter.fromJson(r)).toList();
-        allReciters
-            .sort((a, b) => a.letter.toString().compareTo(b.letter.toString()));
+        allReciters.sort(
+          (a, b) => a.letter.toString().compareTo(b.letter.toString()),
+        );
 
         setState(() {
           reciters = allReciters;
@@ -197,12 +207,14 @@ class _RecitersScreenState extends State<RecitersScreen>
         if (hasAny) downloadedMoshafs.add(moshaf);
       }
       if (downloadedMoshafs.isNotEmpty) {
-        result.add(Reciter(
-          id: reciter.id,
-          name: reciter.name,
-          letter: reciter.letter,
-          moshaf: downloadedMoshafs,
-        ));
+        result.add(
+          Reciter(
+            id: reciter.id,
+            name: reciter.name,
+            letter: reciter.letter,
+            moshaf: downloadedMoshafs,
+          ),
+        );
       }
     }
     return result;
@@ -213,8 +225,10 @@ class _RecitersScreenState extends State<RecitersScreen>
       searchQuery = query;
       var base = isOffline ? _filterToDownloadedOnly(reciters) : reciters;
       filteredReciters = base
-          .where((r) =>
-              r.name.toString().toLowerCase().contains(query.toLowerCase()))
+          .where(
+            (r) =>
+                r.name.toString().toLowerCase().contains(query.toLowerCase()),
+          )
           .toList();
     });
     _listAnimController.forward(from: 0);
@@ -308,21 +322,18 @@ class _RecitersScreenState extends State<RecitersScreen>
     }
 
     return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final reciter = filteredReciters[index];
-          return ReciterCard(
-            reciter: reciter,
-            suwar: suwar,
-            isDark: isDark,
-            theme: theme,
-            isOffline: isOffline,
-            listAnimController: _listAnimController,
-            itemIndex: index,
-          );
-        },
-        childCount: filteredReciters.length,
-      ),
+      delegate: SliverChildBuilderDelegate((context, index) {
+        final reciter = filteredReciters[index];
+        return ReciterCard(
+          reciter: reciter,
+          suwar: suwar,
+          isDark: isDark,
+          theme: theme,
+          isOffline: isOffline,
+          listAnimController: _listAnimController,
+          itemIndex: index,
+        );
+      }, childCount: filteredReciters.length),
     );
   }
 }

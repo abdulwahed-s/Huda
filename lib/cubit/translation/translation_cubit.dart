@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/cache/quran_content_store.dart';
 import 'package:huda/core/connection/network_info.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
@@ -15,7 +16,7 @@ class TranslationCubit extends Cubit<TranslationState> {
   final CacheHelper _cacheHelper = getIt<CacheHelper>();
 
   static const String _translationListCacheKey = 'translation_list';
-  static const String _surahTranslationCachePrefix = 'surah_translation_';
+  final QuranContentStore _contentStore = getIt<QuranContentStore>();
 
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
   static const int _cacheExpirationHours = 24;
@@ -60,12 +61,14 @@ class TranslationCubit extends Cubit<TranslationState> {
   Future<void> fetchTranslationInfo() async {
     emit(TranslationLoading());
     try {
-      final cachedData =
-          _cacheHelper.getDataString(key: _translationListCacheKey);
+      final cachedData = _cacheHelper.getDataString(
+        key: _translationListCacheKey,
+      );
 
       if (cachedData != null && !_isCacheExpired(_translationListCacheKey)) {
-        final translationReaders =
-            edition.EditionModel.fromJson(jsonDecode(cachedData));
+        final translationReaders = edition.EditionModel.fromJson(
+          jsonDecode(cachedData),
+        );
 
         if (await isOffline()) {
           _lastKnownSources = translationReaders.data ?? [];
@@ -79,23 +82,30 @@ class TranslationCubit extends Cubit<TranslationState> {
       } else {
         final translationReaders = await translationRepository.getTranslation();
         await _saveCacheWithTimestamp(
-            _translationListCacheKey, jsonEncode(translationReaders.toJson()));
+          _translationListCacheKey,
+          jsonEncode(translationReaders.toJson()),
+        );
         _lastKnownSources = translationReaders.data ?? [];
         emit(TranslationLoaded(translationReaders));
       }
     } catch (e) {
-      final cachedData =
-          _cacheHelper.getDataString(key: _translationListCacheKey);
+      final cachedData = _cacheHelper.getDataString(
+        key: _translationListCacheKey,
+      );
       if (cachedData != null) {
-        final translationReaders =
-            edition.EditionModel.fromJson(jsonDecode(cachedData));
+        final translationReaders = edition.EditionModel.fromJson(
+          jsonDecode(cachedData),
+        );
         _lastKnownSources = translationReaders.data ?? [];
         emit(TranslationOffline(translationReaders));
       } else if (await isOffline()) {
         emit(TranslationOfflineNoContent());
       } else {
-        emit(TranslationError(
-            "Failed to load translation sources: ${e.toString()}"));
+        emit(
+          TranslationError(
+            "Failed to load translation sources: ${e.toString()}",
+          ),
+        );
       }
     }
   }
@@ -104,7 +114,9 @@ class TranslationCubit extends Cubit<TranslationState> {
     try {
       final translationReaders = await translationRepository.getTranslation();
       await _saveCacheWithTimestamp(
-          _translationListCacheKey, jsonEncode(translationReaders.toJson()));
+        _translationListCacheKey,
+        jsonEncode(translationReaders.toJson()),
+      );
     } catch (e) {
       // print the error if needed
     }
@@ -113,36 +125,42 @@ class TranslationCubit extends Cubit<TranslationState> {
   Future<void> fetchSurahTranslation(String identifier, int surahNumber) async {
     emit(SurahTranslationLoading());
     try {
-      final cacheKey =
-          '$_surahTranslationCachePrefix${identifier}_$surahNumber';
-      final cachedData = _cacheHelper.getDataString(key: cacheKey);
+      final cachedContent = await getCachedSurahTranslation(
+        identifier,
+        surahNumber,
+      );
+      if (cachedContent != null) {
+        emit(SurahTranslationLoaded(cachedContent));
+        return;
+      }
 
       final isConnected = await NetworkInfo.checkInternetConnectivity();
 
       if (!isConnected) {
-        if (cachedData != null) {
-          final Map<String, dynamic> decodedData = jsonDecode(cachedData);
-          final surahTranslation =
-              translation.TafsirModel.fromJson(decodedData);
-          emit(SurahTranslationLoaded(surahTranslation));
-        } else {
-          emit(TranslationError(
-              'No internet connection and no cached translation available'));
-        }
+        emit(
+          TranslationError(
+            'No internet connection and no cached translation available',
+          ),
+        );
         return;
       }
 
       final surahTranslation = await translationRepository.getSurahTranslation(
-          identifier, surahNumber);
+        identifier,
+        surahNumber,
+      );
       emit(SurahTranslationLoaded(surahTranslation));
     } catch (e) {
-      emit(TranslationError(
-          "Failed to load surah translation: ${e.toString()}"));
+      emit(
+        TranslationError("Failed to load surah translation: ${e.toString()}"),
+      );
     }
   }
 
   Future<void> downloadSurahTranslation(
-      String identifier, int surahNumber) async {
+    String identifier,
+    int surahNumber,
+  ) async {
     emit(SurahTranslationDownloadInProgress(identifier, surahNumber));
     try {
       final isConnected = await NetworkInfo.checkInternetConnectivity();
@@ -153,73 +171,97 @@ class TranslationCubit extends Cubit<TranslationState> {
       }
 
       final surahTranslation = await translationRepository.getSurahTranslation(
-          identifier, surahNumber);
-      final cacheKey =
-          '$_surahTranslationCachePrefix${identifier}_$surahNumber';
-      await _saveCacheWithTimestamp(
-          cacheKey, jsonEncode(surahTranslation.toJson()));
+        identifier,
+        surahNumber,
+      );
+      await _contentStore.saveSurah(
+        QuranContentKind.translation,
+        identifier,
+        surahNumber,
+        surahTranslation.toJson(),
+      );
+
       emit(TranslationDownloadCompleted());
     } catch (e) {
-      emit(TranslationError(
-          "Failed to download surah translation: ${e.toString()}"));
+      emit(
+        TranslationError(
+          "Failed to download surah translation: ${e.toString()}",
+        ),
+      );
     }
   }
 
   Future<bool> isSurahTranslationDownloaded(
-      String identifier, int surahNumber) async {
-    final cacheKey = '$_surahTranslationCachePrefix${identifier}_$surahNumber';
-    return _cacheHelper.getDataString(key: cacheKey) != null;
+    String identifier,
+    int surahNumber,
+  ) async {
+    return _contentStore.hasSurah(
+      QuranContentKind.translation,
+      identifier,
+      surahNumber,
+    );
   }
 
   Future<void> deleteSurahTranslation(
-      String identifier, int surahNumber) async {
+    String identifier,
+    int surahNumber,
+  ) async {
     try {
-      final cacheKey =
-          '$_surahTranslationCachePrefix${identifier}_$surahNumber';
-      final timestampKey = '$_cacheTimestampPrefix$cacheKey';
-
-      await _cacheHelper.removeData(key: cacheKey);
-      await _cacheHelper.removeData(key: timestampKey);
-
+      await _contentStore.deleteSurah(
+        QuranContentKind.translation,
+        identifier,
+        surahNumber,
+      );
       emit(TranslationDownloadDeleted());
     } catch (e) {
-      emit(TranslationError(
-          "Failed to delete surah translation: ${e.toString()}"));
+      emit(
+        TranslationError("Failed to delete surah translation: ${e.toString()}"),
+      );
     }
   }
 
   Future<void> downloadFullQuranTranslation(String identifier) async {
     emit(FullQuranTranslationDownloadInProgress(identifier));
     try {
-      final fullQuranTranslation =
-          await translationRepository.getFullQuranTranslation(identifier);
-      final cacheKey = 'full_quran_translation_$identifier';
-      await _saveCacheWithTimestamp(
-          cacheKey, jsonEncode(fullQuranTranslation.toJson()));
+      final fullQuranTranslation = await translationRepository
+          .getFullQuranTranslation(identifier);
+      await _contentStore.saveFullEdition(
+        QuranContentKind.translation,
+        identifier,
+        fullQuranTranslation.toJson(),
+      );
+
       emit(TranslationDownloadCompleted());
     } catch (e) {
-      emit(TranslationError(
-          "Failed to download full Quran translation: ${e.toString()}"));
+      emit(
+        TranslationError(
+          "Failed to download full Quran translation: ${e.toString()}",
+        ),
+      );
     }
   }
 
   Future<bool> isFullQuranTranslationDownloaded(String identifier) async {
-    final cacheKey = 'full_quran_translation_$identifier';
-    return _cacheHelper.getDataString(key: cacheKey) != null;
+    return _contentStore.hasFullEdition(
+      QuranContentKind.translation,
+      identifier,
+    );
   }
 
   Future<void> deleteFullQuranTranslation(String identifier) async {
     try {
-      final cacheKey = 'full_quran_translation_$identifier';
-      final timestampKey = '$_cacheTimestampPrefix$cacheKey';
-
-      await _cacheHelper.removeData(key: cacheKey);
-      await _cacheHelper.removeData(key: timestampKey);
+      await _contentStore.deleteFullEdition(
+        QuranContentKind.translation,
+        identifier,
+      );
 
       emit(TranslationDownloadDeleted());
     } catch (e) {
-      emit(TranslationError(
-          "Failed to delete full Quran translation: ${e.toString()}"));
+      emit(
+        TranslationError(
+          "Failed to delete full Quran translation: ${e.toString()}",
+        ),
+      );
     }
   }
 
@@ -236,8 +278,9 @@ class TranslationCubit extends Cubit<TranslationState> {
 
       emit(TranslationCacheCleared());
     } catch (e) {
-      emit(TranslationError(
-          "Failed to clear translation cache: ${e.toString()}"));
+      emit(
+        TranslationError("Failed to clear translation cache: ${e.toString()}"),
+      );
     }
   }
 
@@ -262,51 +305,33 @@ class TranslationCubit extends Cubit<TranslationState> {
     await _cacheHelper.saveData(key: key, value: value);
     final timestampKey = '$_cacheTimestampPrefix$key';
     await _cacheHelper.saveData(
-        key: timestampKey, value: DateTime.now().millisecondsSinceEpoch);
+      key: timestampKey,
+      value: DateTime.now().millisecondsSinceEpoch,
+    );
   }
 
   Future<translation.TafsirModel?> getCachedSurahTranslation(
-      String identifier, int surahNumber) async {
-    final surahCacheKey =
-        '$_surahTranslationCachePrefix${identifier}_$surahNumber';
-    final cachedSurahData = _cacheHelper.getDataString(key: surahCacheKey);
-
-    if (cachedSurahData != null) {
-      return translation.TafsirModel.fromJson(jsonDecode(cachedSurahData));
-    }
-
-    final fullQuranCacheKey = 'full_quran_translation_$identifier';
-    final cachedFullQuranData =
-        _cacheHelper.getDataString(key: fullQuranCacheKey);
-
-    if (cachedFullQuranData != null) {
-      final fullQuranTranslation =
-          translation.TafsirModel.fromJson(jsonDecode(cachedFullQuranData));
-
-      if (fullQuranTranslation.data?.surahs != null) {
-        final targetSurah = fullQuranTranslation.data!.surahs!
-            .firstWhere((surah) => surah.number == surahNumber);
-
-        final singleSurahTranslation = translation.TafsirModel(
-          code: fullQuranTranslation.code,
-          status: fullQuranTranslation.status,
-          data: translation.Data(
-            surahs: [targetSurah],
-            edition: fullQuranTranslation.data!.edition,
-          ),
-        );
-
-        return singleSurahTranslation;
-      }
-    }
-
-    return null;
+    String identifier,
+    int surahNumber,
+  ) async {
+    final content = await _contentStore.readSurah(
+      QuranContentKind.translation,
+      identifier,
+      surahNumber,
+    );
+    return content == null
+        ? null
+        : translation.TafsirModel.fromJson(content.response);
   }
 
   Future<void> fetchSurahTranslationWithCacheCheck(
-      String identifier, int surahNumber) async {
-    final cachedTranslation =
-        await getCachedSurahTranslation(identifier, surahNumber);
+    String identifier,
+    int surahNumber,
+  ) async {
+    final cachedTranslation = await getCachedSurahTranslation(
+      identifier,
+      surahNumber,
+    );
 
     if (cachedTranslation != null) {
       emit(SurahTranslationLoaded(cachedTranslation));

@@ -1,5 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/cache/quran_content_store.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/download_service.dart';
 import 'package:huda/core/services/reading_position_service.dart';
@@ -34,6 +35,9 @@ void setupServiceLocator() {
   getIt.registerSingleton<AudioPlayer>(AudioPlayer());
   getIt.registerSingleton<AudioCoordinator>(AudioCoordinator());
   getIt.registerSingleton<CacheHelper>(CacheHelper());
+  getIt.registerSingleton<QuranContentStore>(
+    QuranContentStore(cache: getIt<CacheHelper>()),
+  );
   getIt.registerSingleton<ChatHistoryRepository>(HiveChatHistoryRepository());
   getIt.registerSingleton<HijriCalendarService>(
     HijriCalendarService(cache: getIt<CacheHelper>()),

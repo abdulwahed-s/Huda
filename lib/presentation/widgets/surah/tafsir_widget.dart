@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'download_action_button.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
@@ -146,8 +147,9 @@ class TafsirWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: CircularProgressIndicator(
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(context.accentColor),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    context.accentColor,
+                  ),
                 ),
               ),
             )
@@ -191,9 +193,14 @@ class TafsirWidget extends StatelessWidget {
                     child: Text(
                       currentTafsir!.data!.surahs!.first.ayahs!
                               .firstWhere(
-                                  (ayah) => ayah.numberInSurah == ayahNumber,
-                                  orElse: () => currentTafsir!
-                                      .data!.surahs!.first.ayahs!.first)
+                                (ayah) => ayah.numberInSurah == ayahNumber,
+                                orElse: () => currentTafsir!
+                                    .data!
+                                    .surahs!
+                                    .first
+                                    .ayahs!
+                                    .first,
+                              )
                               .text ??
                           AppLocalizations.of(context)!.tafsirNotAvailable,
                       textAlign: TextAlign.right,
@@ -210,145 +217,52 @@ class TafsirWidget extends StatelessWidget {
               ),
             ),
           if (canDownload) ...[
-            const SizedBox(height: 8),
-            Row(
+            const SizedBox(height: 12),
+            DownloadActionsLayout(
               children: [
                 if (onDownloadTafsir != null)
-                  Expanded(
-                    child: FutureBuilder<List<bool>>(
-                      future: Future.wait([
-                        checkSurahDownloaded(),
-                        checkAllDownloaded(),
-                      ]),
-                      builder: (context, snapshot) {
-                        final results = snapshot.data ?? [false, false];
-                        final surahDownloaded = results[0];
-                        final allDownloaded = results[1];
-                        final isDownloaded = surahDownloaded || allDownloaded;
-
-                        return ElevatedButton.icon(
-                          onPressed: canDownload &&
-                                  !isDownloadingSurah &&
-                                  !isDownloadingAll &&
-                                  !isDownloaded
-                              ? onDownloadTafsir
-                              : null,
-                          icon: isDownloaded
-                              ? const Icon(Icons.check_circle, size: 16)
-                              : isDownloadingSurah
-                                  ? const SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 2, color: Colors.white),
-                                    )
-                                  : const Icon(Icons.download, size: 16),
-                          label: Text(
-                            isDownloaded
-                                ? allDownloaded
-                                    ? AppLocalizations.of(context)!
-                                        .includedInAll
-                                    : AppLocalizations.of(context)!
-                                        .surahDownloaded
-                                : isDownloadingSurah
-                                    ? AppLocalizations.of(context)!.downloading
-                                    : AppLocalizations.of(context)!
-                                        .downloadSurah,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w600),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isDownloaded
-                                ? const Color(0xFF4CAF50)
-                                : canDownload
-                                    ? null
-                                    : Colors.grey,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: isDownloaded ? 2 : 4,
-                          ).copyWith(
-                            backgroundColor: canDownload && !isDownloaded
-                                ? WidgetStateProperty.resolveWith<Color>(
-                                    (states) {
-                                    if (states.contains(WidgetState.pressed)) {
-                                      return context.primaryColor;
-                                    }
-                                    return context.primaryColor
-                                        .withValues(alpha: 0.8);
-                                  })
-                                : null,
-                          ),
-                        );
-                      },
-                    ),
+                  FutureBuilder<List<bool>>(
+                    future: Future.wait([
+                      checkSurahDownloaded(),
+                      checkAllDownloaded(),
+                    ]),
+                    builder: (context, snapshot) {
+                      final results = snapshot.data ?? [false, false];
+                      final l10n = AppLocalizations.of(context)!;
+                      return DownloadActionButton(
+                        label: l10n.downloadSurah,
+                        completedLabel: results[1]
+                            ? l10n.includedInAll
+                            : l10n.surahDownloaded,
+                        icon: Icons.download_rounded,
+                        downloaded: results[0] || results[1],
+                        downloading: isDownloadingSurah,
+                        enabled:
+                            !isDownloadingSurah &&
+                            !isDownloadingAll &&
+                            snapshot.connectionState != ConnectionState.waiting,
+                        onPressed: onDownloadTafsir,
+                      );
+                    },
                   ),
-                if (onDownloadTafsir != null && onDownloadFullTafsir != null)
-                  const SizedBox(width: 8),
                 if (onDownloadFullTafsir != null)
-                  Expanded(
-                    child: FutureBuilder<bool>(
-                      future: checkAllDownloaded(),
-                      builder: (context, snapshot) {
-                        final allDownloaded = snapshot.data ?? false;
-
-                        return ElevatedButton.icon(
-                          onPressed: canDownload &&
-                                  !isDownloadingSurah &&
-                                  !isDownloadingAll &&
-                                  !allDownloaded
-                              ? onDownloadFullTafsir
-                              : null,
-                          icon: allDownloaded
-                              ? const Icon(Icons.check_circle, size: 16)
-                              : isDownloadingAll
-                                  ? const SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 2, color: Colors.white),
-                                    )
-                                  : const Icon(Icons.download_for_offline,
-                                      size: 16),
-                          label: Text(
-                            allDownloaded
-                                ? AppLocalizations.of(context)!.allDownloaded
-                                : isDownloadingAll
-                                    ? AppLocalizations.of(context)!.downloading
-                                    : AppLocalizations.of(context)!.downloadAll,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w600),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: allDownloaded
-                                ? const Color(0xFF4CAF50)
-                                : canDownload
-                                    ? null
-                                    : Colors.grey,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: allDownloaded ? 2 : 4,
-                          ).copyWith(
-                            backgroundColor: canDownload && !allDownloaded
-                                ? WidgetStateProperty.resolveWith<Color>(
-                                    (states) {
-                                    if (states.contains(WidgetState.pressed)) {
-                                      return context.primaryColor;
-                                    }
-                                    return const Color(0xFFA688A6);
-                                  })
-                                : null,
-                          ),
-                        );
-                      },
-                    ),
+                  FutureBuilder<bool>(
+                    future: checkAllDownloaded(),
+                    builder: (context, snapshot) {
+                      final l10n = AppLocalizations.of(context)!;
+                      return DownloadActionButton(
+                        label: l10n.downloadAll,
+                        completedLabel: l10n.allDownloaded,
+                        icon: Icons.download_for_offline_outlined,
+                        downloaded: snapshot.data ?? false,
+                        downloading: isDownloadingAll,
+                        enabled:
+                            !isDownloadingSurah &&
+                            !isDownloadingAll &&
+                            snapshot.connectionState != ConnectionState.waiting,
+                        onPressed: onDownloadFullTafsir,
+                      );
+                    },
                   ),
               ],
             ),

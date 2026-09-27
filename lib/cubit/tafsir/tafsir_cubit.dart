@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/cache/quran_content_store.dart';
 import 'package:huda/core/connection/network_info.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
@@ -15,7 +16,7 @@ class TafsirCubit extends Cubit<TafsirState> {
   final CacheHelper _cacheHelper = getIt<CacheHelper>();
 
   static const String _tafsirListCacheKey = 'tafsir_list';
-  static const String _surahTafsirCachePrefix = 'surah_tafsir_';
+  final QuranContentStore _contentStore = getIt<QuranContentStore>();
 
   List<edition.Data> _lastKnownSources = [];
   List<edition.Data> get lastKnownSources => _lastKnownSources;
@@ -129,25 +130,25 @@ class TafsirCubit extends Cubit<TafsirState> {
   Future<void> fetchSurahTafsir(String identifier, int surahNumber) async {
     emit(SurahTafsirLoading());
     try {
-      final cacheKey = '$_surahTafsirCachePrefix${identifier}_$surahNumber';
-      final cachedData = _cacheHelper.getDataString(key: cacheKey);
+      final cachedContent = await getCachedSurahTafsir(identifier, surahNumber);
+      if (cachedContent != null) {
+        emit(SurahTafsirLoaded(cachedContent));
+        return;
+      }
 
       final isConnected = await NetworkInfo.checkInternetConnectivity();
 
       if (!isConnected) {
-        if (cachedData != null) {
-          final Map<String, dynamic> decodedData = jsonDecode(cachedData);
-          final surahTafsir = tafsir.TafsirModel.fromJson(decodedData);
-          emit(SurahTafsirLoaded(surahTafsir));
-        } else {
-          emit(TafsirError(
-              'No internet connection and no cached tafsir available'));
-        }
+        emit(
+          TafsirError('No internet connection and no cached tafsir available'),
+        );
         return;
       }
 
-      final surahTafsir =
-          await tafsirRepository.getSurahTafsir(identifier, surahNumber);
+      final surahTafsir = await tafsirRepository.getSurahTafsir(
+        identifier,
+        surahNumber,
+      );
       emit(SurahTafsirLoaded(surahTafsir));
     } catch (e) {
       emit(TafsirError(e.toString()));
@@ -164,13 +165,16 @@ class TafsirCubit extends Cubit<TafsirState> {
         return;
       }
 
-      final surahTafsir =
-          await tafsirRepository.getSurahTafsir(identifier, surahNumber);
+      final surahTafsir = await tafsirRepository.getSurahTafsir(
+        identifier,
+        surahNumber,
+      );
 
-      final cacheKey = '$_surahTafsirCachePrefix${identifier}_$surahNumber';
-      await _cacheHelper.saveData(
-        key: cacheKey,
-        value: jsonEncode(surahTafsir.toJson()),
+      await _contentStore.saveSurah(
+        QuranContentKind.tafsir,
+        identifier,
+        surahNumber,
+        surahTafsir.toJson(),
       );
 
       emit(TafsirDownloadCompleted());
@@ -180,15 +184,23 @@ class TafsirCubit extends Cubit<TafsirState> {
   }
 
   Future<bool> isSurahTafsirDownloaded(
-      String identifier, int surahNumber) async {
-    final cacheKey = '$_surahTafsirCachePrefix${identifier}_$surahNumber';
-    return _cacheHelper.getDataString(key: cacheKey) != null;
+    String identifier,
+    int surahNumber,
+  ) async {
+    return _contentStore.hasSurah(
+      QuranContentKind.tafsir,
+      identifier,
+      surahNumber,
+    );
   }
 
   Future<void> deleteSurahTafsir(String identifier, int surahNumber) async {
     try {
-      final cacheKey = '$_surahTafsirCachePrefix${identifier}_$surahNumber';
-      await _cacheHelper.removeData(key: cacheKey);
+      await _contentStore.deleteSurah(
+        QuranContentKind.tafsir,
+        identifier,
+        surahNumber,
+      );
       emit(TafsirDownloadDeleted());
     } catch (e) {
       emit(TafsirError('Failed to delete tafsir: ${e.toString()}'));
@@ -205,31 +217,35 @@ class TafsirCubit extends Cubit<TafsirState> {
         return;
       }
 
-      final fullQuranTafsir =
-          await tafsirRepository.getFullQuranTafsir(identifier);
+      final fullQuranTafsir = await tafsirRepository.getFullQuranTafsir(
+        identifier,
+      );
 
-      final cacheKey = 'full_quran_tafsir_$identifier';
-      await _cacheHelper.saveData(
-        key: cacheKey,
-        value: jsonEncode(fullQuranTafsir.toJson()),
+      await _contentStore.saveFullEdition(
+        QuranContentKind.tafsir,
+        identifier,
+        fullQuranTafsir.toJson(),
       );
 
       emit(TafsirDownloadCompleted());
     } catch (e) {
       emit(
-          TafsirError('Failed to download full Quran tafsir: ${e.toString()}'));
+        TafsirError('Failed to download full Quran tafsir: ${e.toString()}'),
+      );
     }
   }
 
   Future<bool> isFullQuranTafsirDownloaded(String identifier) async {
-    final cacheKey = 'full_quran_tafsir_$identifier';
-    return _cacheHelper.getDataString(key: cacheKey) != null;
+    return _contentStore.hasFullEdition(QuranContentKind.tafsir, identifier);
   }
 
   Future<void> deleteFullQuranTafsir(String identifier) async {
     try {
-      final cacheKey = 'full_quran_tafsir_$identifier';
-      await _cacheHelper.removeData(key: cacheKey);
+      await _contentStore.deleteFullEdition(
+        QuranContentKind.tafsir,
+        identifier,
+      );
+
       emit(TafsirDownloadDeleted());
     } catch (e) {
       emit(TafsirError('Failed to delete full Quran tafsir: ${e.toString()}'));
@@ -273,51 +289,23 @@ class TafsirCubit extends Cubit<TafsirState> {
   }
 
   Future<tafsir.TafsirModel?> getCachedSurahTafsir(
-      String identifier, int surahNumber) async {
-    final surahCacheKey = '$_surahTafsirCachePrefix${identifier}_$surahNumber';
-    final cachedSurahData = _cacheHelper.getDataString(key: surahCacheKey);
-
-    if (cachedSurahData != null) {
-      final Map<String, dynamic> decodedData = jsonDecode(cachedSurahData);
-      return tafsir.TafsirModel.fromJson(decodedData);
-    }
-
-    final fullQuranCacheKey = 'full_quran_tafsir_$identifier';
-    final cachedFullQuranData =
-        _cacheHelper.getDataString(key: fullQuranCacheKey);
-
-    if (cachedFullQuranData != null) {
-      try {
-        final Map<String, dynamic> decodedData =
-            jsonDecode(cachedFullQuranData);
-        final fullQuranTafsir = tafsir.TafsirModel.fromJson(decodedData);
-
-        final targetSurah = fullQuranTafsir.data?.surahs?.firstWhere(
-          (surah) => surah.number == surahNumber,
-          orElse: () => throw Exception('Surah not found'),
-        );
-
-        if (targetSurah != null) {
-          final extractedTafsir = tafsir.TafsirModel(
-            code: fullQuranTafsir.code,
-            status: fullQuranTafsir.status,
-            data: tafsir.Data(
-              surahs: [targetSurah],
-              edition: fullQuranTafsir.data?.edition,
-            ),
-          );
-          return extractedTafsir;
-        }
-      } catch (e) {
-        // print the error if needed
-      }
-    }
-
-    return null;
+    String identifier,
+    int surahNumber,
+  ) async {
+    final content = await _contentStore.readSurah(
+      QuranContentKind.tafsir,
+      identifier,
+      surahNumber,
+    );
+    return content == null
+        ? null
+        : tafsir.TafsirModel.fromJson(content.response);
   }
 
   Future<void> fetchSurahTafsirWithCacheCheck(
-      String identifier, int surahNumber) async {
+    String identifier,
+    int surahNumber,
+  ) async {
     final cachedTafsir = await getCachedSurahTafsir(identifier, surahNumber);
 
     if (cachedTafsir != null) {
