@@ -93,7 +93,6 @@ dependencies:
 
   # Sharing & feedback
   share_plus: ^13.1.0
-  widgets_to_image: ^2.0.1
 
   # PDF
   dart_pdf_editor: 4.0.0

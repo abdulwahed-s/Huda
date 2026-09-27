@@ -17,9 +17,7 @@ class ShareButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.2),
-        ),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.2)),
       ),
       child: IconButton(
         onPressed: onShare,
@@ -29,10 +27,7 @@ class ShareButton extends StatelessWidget {
           size: 20.w,
         ),
         padding: EdgeInsets.all(8.w),
-        constraints: BoxConstraints(
-          minWidth: 40.w,
-          minHeight: 40.w,
-        ),
+        constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
       ),
     );
   }

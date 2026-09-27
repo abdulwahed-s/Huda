@@ -45,6 +45,7 @@ class _AthkarDetailsState extends State<AthkarDetails>
       athkarCardKeys: _athkarCardKeys,
       onGeneratingStateChanged: (isGenerating) => setState(() {}),
       title: widget.title,
+      titleEn: widget.titleEn,
     );
     super.initState();
   }
@@ -61,8 +62,9 @@ class _AthkarDetailsState extends State<AthkarDetails>
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF0F0A1A) : const Color(0xFFFFFDF7),
+      backgroundColor: isDark
+          ? const Color(0xFF0F0A1A)
+          : const Color(0xFFFFFDF7),
       appBar: AthkarDetailsAppBar(
         title: widget.title,
         colorScheme: colorScheme,

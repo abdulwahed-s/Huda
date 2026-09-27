@@ -1,27 +1,20 @@
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
-import 'package:huda/data/models/athkar_detail_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_image_arabic_text.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_image_footer.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_image_header.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_image_translation.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_options_bottom_sheet.dart';
+import 'package:huda/presentation/widgets/athkar%20details/athkar_share_card.dart';
+import 'package:huda/presentation/widgets/share/share_image_capture.dart';
+import 'package:huda/presentation/widgets/share/share_options_bottom_sheet.dart';
 
 class AthkarShareHandler {
   final BuildContext context;
   final Map<int, GlobalKey> athkarCardKeys;
   final ValueChanged<bool> onGeneratingStateChanged;
   final String title;
+  final String titleEn;
 
   bool isGeneratingImage = false;
 
@@ -30,10 +23,14 @@ class AthkarShareHandler {
     required this.athkarCardKeys,
     required this.onGeneratingStateChanged,
     required this.title,
+    required this.titleEn,
   });
 
   String get currentLanguageCode =>
       context.read<LocalizationCubit>().state.locale.languageCode;
+
+  String get localizedTitle =>
+      currentLanguageCode == 'ar' || titleEn.trim().isEmpty ? title : titleEn;
 
   void showShareOptions(int index) {
     showModalBottomSheet<void>(
@@ -61,7 +58,8 @@ class AthkarShareHandler {
 
     final athkar = state.athkarCategory.details[index];
     final localizations = AppLocalizations.of(context)!;
-    final shareText = """
+    final shareText =
+        """
 ${athkar.arabicText ?? ''}
 
 ${athkar.translatedText ?? ''}
@@ -72,14 +70,16 @@ ${localizations.sharedViaHuda}
 """;
 
     final screenSize = MediaQuery.of(context).size;
-    await SharePlus.instance.share(ShareParams(
-      text: shareText,
-      sharePositionOrigin: Rect.fromCenter(
-        center: Offset(screenSize.width / 2, screenSize.height / 2),
-        width: 1,
-        height: 1,
+    await SharePlus.instance.share(
+      ShareParams(
+        text: shareText,
+        sharePositionOrigin: Rect.fromCenter(
+          center: Offset(screenSize.width / 2, screenSize.height / 2),
+          width: 1,
+          height: 1,
+        ),
       ),
-    ));
+    );
   }
 
   Future<void> _shareAsImage(int index) async {
@@ -90,125 +90,25 @@ ${localizations.sharedViaHuda}
       if (state is! AthkarDetailsLoaded) return;
 
       final athkar = state.athkarCategory.details[index];
-      final colorScheme = Theme.of(context).colorScheme;
-      final isDark = Theme.of(context).brightness == Brightness.dark;
-
-      final imageBytes = await _captureShareImage(
-          athkar: athkar,
-          colorScheme: colorScheme,
-          isDark: isDark,
-          title: title);
-
-      final file = await _saveImageToTempFile(imageBytes, index);
-
-      if (!context.mounted) return;
-      final screenSize = MediaQuery.of(context).size;
-      await SharePlus.instance.share(ShareParams(
-          files: [XFile(file.path)],
-          text:
-              '${state.athkarCategory.title}\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
-          sharePositionOrigin: Rect.fromCenter(
-            center: Offset(screenSize.width / 2, screenSize.height / 2),
-            width: 1,
-            height: 1,
-          )));
+      await ShareImageCapture.share(
+        context: context,
+        card: AthkarShareCard(
+          title: localizedTitle,
+          arabicText: athkar.arabicText ?? '',
+          translatedText: currentLanguageCode == 'ar'
+              ? null
+              : athkar.translatedText,
+          repeatCount: athkar.repeat ?? 1,
+        ),
+        fileName: 'athkar_$index.png',
+        text:
+            '$localizedTitle\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
+      );
     } catch (e) {
       _showShareErrorSnackbar(e.toString());
     } finally {
       _updateGeneratingState(false);
     }
-  }
-
-  Future<Uint8List> _captureShareImage({
-    required String title,
-    required AthkarDetailModel athkar,
-    required ColorScheme colorScheme,
-    required bool isDark,
-  }) async {
-    final GlobalKey shareKey = GlobalKey();
-    OverlayEntry? overlayEntry;
-
-    overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        top: -2000,
-        left: 0,
-        child: RepaintBoundary(
-          key: shareKey,
-          child: Material(
-            color: Colors.transparent,
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Container(
-                width: 400,
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: isDark
-                        ? [
-                            const Color(0xFF1A1A2E),
-                            const Color(0xFF16213E),
-                          ]
-                        : [
-                            colorScheme.primary,
-                            colorScheme.primary.withValues(alpha: 0.8),
-                          ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ShareImageHeader(title: title),
-                    const SizedBox(height: 24),
-                    ShareImageArabicText(
-                      arabicText: athkar.arabicText ?? '',
-                      isDark: isDark,
-                      colorScheme: colorScheme,
-                    ),
-                    if (athkar.translatedText != null &&
-                        athkar.translatedText!.isNotEmpty &&
-                        currentLanguageCode != "ar")
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: ShareImageTranslation(
-                          translatedText: athkar.translatedText ?? '',
-                          isDark: isDark,
-                          colorScheme: colorScheme,
-                        ),
-                      ),
-                    const SizedBox(height: 20),
-                    ShareImageFooter(
-                      repeatCount: athkar.repeat ?? 1,
-                      colorScheme: colorScheme,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    Overlay.of(context).insert(overlayEntry);
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    final RenderRepaintBoundary boundary =
-        shareKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    overlayEntry.remove();
-
-    return byteData!.buffer.asUint8List();
-  }
-
-  Future<File> _saveImageToTempFile(Uint8List pngBytes, int index) async {
-    final Directory tempDir = await getTemporaryDirectory();
-    final String fileName = 'athkar_$index.png';
-    final File file = File('${tempDir.path}/$fileName');
-    await file.writeAsBytes(pngBytes);
-    return file;
   }
 
   void _updateGeneratingState(bool isGenerating) {

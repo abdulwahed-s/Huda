@@ -11,21 +11,13 @@ import 'package:huda/presentation/widgets/athkar%20details/error_state.dart';
 import 'package:huda/presentation/widgets/athkar%20details/loaded_state.dart';
 import 'package:huda/presentation/widgets/athkar%20details/loading_state.dart';
 import 'package:huda/presentation/widgets/athkar%20details/offline_state.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_image_footer.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_image_header.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_image_translation.dart';
-import 'package:huda/presentation/widgets/athkar%20details/share_options_bottom_sheet.dart';
+import 'package:huda/presentation/widgets/athkar%20details/athkar_share_card.dart';
+import 'package:huda/presentation/widgets/share/share_image_capture.dart';
+import 'package:huda/presentation/widgets/share/share_options_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
-import 'dart:ui' as ui;
-import 'dart:typed_data';
 import 'dart:async';
-import 'package:flutter/rendering.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
-
-import 'share_image_arabic_text.dart';
 
 class AthkarDetailsContent extends StatefulWidget {
   final String athkarId;
@@ -156,8 +148,9 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF0F0A1A) : const Color(0xFFFFFDF7),
+      backgroundColor: isDark
+          ? const Color(0xFF0F0A1A)
+          : const Color(0xFFFFFDF7),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -263,10 +256,12 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
       } else {
         _coordinator.requestAudio(AudioCoordinator.athkar);
         await audioServiceReady;
-        await _audioPlayer.setAudioSource(AudioSource.uri(
-          Uri.parse(audioUrl),
-          tag: MediaItem(id: audioUrl, title: 'Athkar'),
-        ));
+        await _audioPlayer.setAudioSource(
+          AudioSource.uri(
+            Uri.parse(audioUrl),
+            tag: MediaItem(id: audioUrl, title: 'Athkar'),
+          ),
+        );
         if (mounted) {
           setState(() {
             _playingIndex = index;
@@ -314,7 +309,8 @@ class _AthkarDetailsContentState extends State<AthkarDetailsContent>
 
     final athkar = state.athkarCategory.details[index];
     final localizations = AppLocalizations.of(context)!;
-    final shareText = """
+    final shareText =
+        """
 ${athkar.arabicText ?? ''}
 
 ${athkar.languageArabicTranslatedText ?? ''}
@@ -325,14 +321,16 @@ ${localizations.sharedViaHuda}
 """;
 
     final screenSize = MediaQuery.of(context).size;
-    await SharePlus.instance.share(ShareParams(
-      text: shareText,
-      sharePositionOrigin: Rect.fromCenter(
-        center: Offset(screenSize.width / 2, screenSize.height / 2),
-        width: 1,
-        height: 1,
+    await SharePlus.instance.share(
+      ShareParams(
+        text: shareText,
+        sharePositionOrigin: Rect.fromCenter(
+          center: Offset(screenSize.width / 2, screenSize.height / 2),
+          width: 1,
+          height: 1,
+        ),
       ),
-    ));
+    );
   }
 
   Future<void> _shareAsImage(int index) async {
@@ -347,103 +345,21 @@ ${localizations.sharedViaHuda}
       if (state is! AthkarDetailsLoaded) return;
 
       final athkar = state.athkarCategory.details[index];
-      final colorScheme = Theme.of(context).colorScheme;
-      final isDark = Theme.of(context).brightness == Brightness.dark;
-
-      final GlobalKey shareKey = GlobalKey();
-      OverlayEntry? overlayEntry;
-
-      overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: -2000,
-          left: 0,
-          child: RepaintBoundary(
-            key: shareKey,
-            child: Material(
-              color: Colors.transparent,
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  width: 400,
-                  padding: const EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isDark
-                          ? [
-                              const Color(0xFF1A1A2E),
-                              const Color(0xFF16213E),
-                            ]
-                          : [
-                              colorScheme.primary,
-                              colorScheme.primary.withValues(alpha: 0.8),
-                            ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ShareImageHeader(title: widget.title),
-                      const SizedBox(height: 24),
-                      ShareImageArabicText(
-                        arabicText: athkar.arabicText ?? '',
-                        isDark: isDark,
-                        colorScheme: colorScheme,
-                      ),
-                      if (athkar.translatedText != null &&
-                          athkar.translatedText!.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: ShareImageTranslation(
-                            translatedText: athkar.translatedText ?? '',
-                            isDark: isDark,
-                            colorScheme: colorScheme,
-                          ),
-                        ),
-                      const SizedBox(height: 20),
-                      ShareImageFooter(
-                        repeatCount: athkar.repeat ?? 1,
-                        colorScheme: colorScheme,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+      final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+      final title = isArabic || widget.titleEn.trim().isEmpty
+          ? widget.title
+          : widget.titleEn;
+      await ShareImageCapture.share(
+        context: context,
+        card: AthkarShareCard(
+          title: title,
+          arabicText: athkar.arabicText ?? '',
+          translatedText: athkar.translatedText,
+          repeatCount: athkar.repeat ?? 1,
         ),
+        fileName: 'athkar_${widget.athkarId}_$index.png',
+        text: '$title\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
       );
-
-      Overlay.of(context).insert(overlayEntry);
-      await Future.delayed(const Duration(milliseconds: 200));
-
-      final RenderRepaintBoundary boundary =
-          shareKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-      overlayEntry.remove();
-
-      final Directory tempDir = await getTemporaryDirectory();
-      final String fileName = 'athkar_${widget.athkarId}_$index.png';
-      final File file = File('${tempDir.path}/$fileName');
-      await file.writeAsBytes(pngBytes);
-
-      if (!mounted) return;
-      final screenSize = MediaQuery.of(context).size;
-      await SharePlus.instance.share(ShareParams(
-        files: [XFile(file.path)],
-        text:
-            '${widget.title}\n\n${AppLocalizations.of(context)!.sharedViaHuda}',
-        sharePositionOrigin: Rect.fromCenter(
-          center: Offset(screenSize.width / 2, screenSize.height / 2),
-          width: 1,
-          height: 1,
-        ),
-      ));
     } catch (e) {
       if (mounted) {
         HudaSnackBar.error(

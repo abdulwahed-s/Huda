@@ -28,9 +28,7 @@ class ShareOption extends StatelessWidget {
               ? colorScheme.primary.withValues(alpha: 0.05)
               : colorScheme.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(
-            color: colorScheme.primary.withValues(alpha: 0.2),
-          ),
+          border: Border.all(color: colorScheme.primary.withValues(alpha: 0.2)),
         ),
         child: Column(
           children: [
@@ -51,11 +49,7 @@ class ShareOption extends StatelessWidget {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : Icon(
-                      icon,
-                      color: Colors.white,
-                      size: 24.w,
-                    ),
+                  : Icon(icon, color: Colors.white, size: 24.w),
             ),
             SizedBox(height: 12.h),
             Text(
