@@ -343,7 +343,7 @@ class _LoadedPrayerCanvasState extends State<_LoadedPrayerCanvas>
                     gregorian: intl.DateFormat.yMMMMEEEEd(locale).format(now),
                     hijri:
                         '${hijri.day} '
-                        '${_hijriMonth(context, hijri.month)} '
+                        '${hijriMonthName(AppLocalizations.of(context)!, hijri.month)} '
                         '${hijri.year}',
                     location: prayerLocationLabel(context, widget.state),
                   ),
@@ -1280,7 +1280,7 @@ class _UnavailablePrayerCanvas extends StatelessWidget {
             gregorian: intl.DateFormat.yMMMMEEEEd(locale).format(now),
             hijri:
                 '${hijri.day} '
-                '${_hijriMonth(context, hijri.month)} ${hijri.year}',
+                '${hijriMonthName(AppLocalizations.of(context)!, hijri.month)} ${hijri.year}',
             location: null,
           ),
           const SizedBox(height: 34),
@@ -1838,22 +1838,4 @@ List<Color> _prayerCanvasColors(BuildContext context, bool isDark) {
 String _formatPrayerTime(String locale, DateTime? time) {
   if (time == null) return '--:--';
   return intl.DateFormat.jm(locale).format(time);
-}
-
-String _hijriMonth(BuildContext context, int month) {
-  final l10n = AppLocalizations.of(context)!;
-  return [
-    l10n.muharram,
-    l10n.safar,
-    l10n.rabiAlAwwal,
-    l10n.rabiAlThani,
-    l10n.jumadaAlAwwal,
-    l10n.jumadaAlThani,
-    l10n.rajab,
-    l10n.shaban,
-    l10n.ramadan,
-    l10n.shawwal,
-    l10n.dhuAlQidah,
-    l10n.dhuAlHijjah,
-  ][month - 1];
 }

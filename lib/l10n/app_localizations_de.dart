@@ -1217,6 +1217,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hudaQuranApp => 'Huda - Ihr islamischer Begleiter';
 
   @override
+  String get shareImageTagline => 'Ihr islamischer Begleiter';
+
+  @override
   String get translationNotAvailable => 'Übersetzung nicht verfügbar';
 
   @override
@@ -5198,4 +5201,379 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get prayerNotificationSyncVerificationFailed =>
       'Der Zeitplan der Gebetsbenachrichtigungen konnte nicht überprüft werden. Bitte versuche es erneut.';
+
+  @override
+  String get ayahAudioRange => 'Verse auswählen';
+
+  @override
+  String get audioFromAyah => 'Ab Vers';
+
+  @override
+  String get audioToAyah => 'Bis Vers';
+
+  @override
+  String get audioRepeatRange => 'Auswahl wiederholen';
+
+  @override
+  String get audioRangeEndHint =>
+      'Die Wiedergabe endet nach dem letzten ausgewählten Vers.';
+
+  @override
+  String get audioPlayRange => 'Auswahl abspielen';
+
+  @override
+  String get downloadAyah => 'Vers herunterladen';
+
+  @override
+  String get ayahDownloaded => 'Vers heruntergeladen';
+
+  @override
+  String get audioRangeRepeatHint =>
+      'Die ausgewählten Verse werden wiederholt, bis du die Wiedergabe stoppst.';
+
+  @override
+  String playingAyahOfTotal(int current, int total) {
+    return 'Vers $current von $total';
+  }
+
+  @override
+  String get prayerVerificationPending => 'Standortprüfung ausstehend';
+
+  @override
+  String get prayerVerificationGuidance =>
+      'Einige Standortdaten müssen noch geprüft werden. Kehre mit Internet zurück und versuche es erneut, um Gebetszeiten und Benachrichtigungen zuverlässiger zu machen.';
+
+  @override
+  String get prayerUpdatesIncomplete => 'Gebetsaktualisierungen unvollständig';
+
+  @override
+  String get prayerUpdatesGuidance =>
+      'Einige Aktualisierungen konnten nicht abgeschlossen werden. Versuche es mit Internet erneut. Lokale Wiederherstellung ist auch offline möglich.';
+
+  @override
+  String get prayerDetailsPending => 'Standortdetails ausstehend';
+
+  @override
+  String get prayerSavingPending =>
+      'Speichern fehlgeschlagen. Versuche erneut, diese Gebetsaktualisierungen zu speichern.';
+
+  @override
+  String get prayerWidgetPending => 'Gebetswidget-Aktualisierung ausstehend';
+
+  @override
+  String get prayerLocationPending =>
+      'Standortaktualisierung ausstehend. Prüfe Standortberechtigung und Ortungsdienste und versuche es erneut.';
+
+  @override
+  String get prayerCalculationPending =>
+      'Berechnung der Gebetszeiten ausstehend';
+
+  @override
+  String get prayerNativePending =>
+      'Standortaktualisierung im Hintergrund ausstehend';
+
+  @override
+  String get prayerPreviousCoverage =>
+      'Zuvor bestätigte Benachrichtigungen können noch dem vorherigen Standort folgen; die aktuelle Zustellung ist nicht bestätigt.';
+
+  @override
+  String get prayerVerificationRetryGuidance =>
+      'Einige Standortangaben müssen noch geprüft werden. Versuche es erneut, um Gebetszeiten und Benachrichtigungen zu aktualisieren.';
+
+  @override
+  String prayerNotificationsBridgedUntil(String date) {
+    return 'Benachrichtigungen sind bis $date aktualisiert. Spätere folgen möglicherweise noch deinen vorherigen Einstellungen oder deinem vorherigen Standort. Komm mit Internetverbindung zurück, um sie zu aktualisieren.';
+  }
+
+  @override
+  String get prayerIssueLocationAccess => 'Standortzugriff';
+
+  @override
+  String get prayerIssuePlaceName => 'Ortsname';
+
+  @override
+  String get prayerIssueSaving => 'Speichern';
+
+  @override
+  String get prayerIssueCalculation => 'Berechnung';
+
+  @override
+  String get prayerIssueBackgroundLocation => 'Hintergrundstandort';
+
+  @override
+  String get prayerIssueWidget => 'Startbildschirm-Widget';
+
+  @override
+  String get prayerIssueRetrying => 'Erneuter Versuch…';
+
+  @override
+  String get prayerUpdatingTitle => 'Gebetszeiten werden aktualisiert…';
+
+  @override
+  String get prayerUpdatingMessage => 'Das dauert nur ein paar Sekunden.';
+
+  @override
+  String get prayerCountryQuestion => 'In welchem Land bist du?';
+
+  @override
+  String get prayerCountryQuestionHint =>
+      'Dein Land konnte nicht automatisch bestätigt werden, zum Beispiel in Grenznähe. Wähle es, damit die richtige Berechnungsmethode verwendet wird.';
+
+  @override
+  String get prayerCountryNotSure => 'Nicht sicher';
+
+  @override
+  String get prayerCalendarShare => 'Gebetskalender teilen';
+
+  @override
+  String get prayerCalendarOneDay => 'Ein Tag';
+
+  @override
+  String get prayerCalendarOneMonth => 'Ein Monat';
+
+  @override
+  String get prayerCalendarWholeYear => 'Ganzes Jahr';
+
+  @override
+  String get prayerCalendarChooseDate => 'Datum wählen';
+
+  @override
+  String get prayerCalendarChooseMonth => 'Monat wählen';
+
+  @override
+  String get prayerCalendarChooseYear => 'Jahr wählen';
+
+  @override
+  String get prayerCalendarGenerate => 'Erstellen und teilen';
+
+  @override
+  String prayerCalendarPreparing(Object current, Object total) {
+    return 'Seite $current von $total wird erstellt…';
+  }
+
+  @override
+  String get prayerCalendarError =>
+      'Der Gebetskalender konnte nicht erstellt oder geteilt werden. Bitte erneut versuchen.';
+
+  @override
+  String get prayerCalendarUnavailable =>
+      'Zum Teilen werden bestätigte Gebetszeiten benötigt.';
+
+  @override
+  String get prayerCalendarTitle => 'Gebetszeitenkalender';
+
+  @override
+  String get prayerCalendarDate => 'Datum';
+
+  @override
+  String get prayerCalendarDay => 'Tag';
+
+  @override
+  String get prayerCalendarTimeZone => 'Zeitzone';
+
+  @override
+  String prayerCalendarGenerated(Object date) {
+    return 'Erstellt am $date';
+  }
+
+  @override
+  String prayerCalendarPage(Object page, Object total) {
+    return 'Seite $page von $total';
+  }
+
+  @override
+  String prayerCalendarShareText(Object location, Object period) {
+    return 'Gebetszeiten für $period in $location';
+  }
+
+  @override
+  String get prayerCalendarSunriseColumn => 'Sonnenaufg.';
+
+  @override
+  String get prayerNotificationsOffTitle => 'Gebetsbenachrichtigungen sind aus';
+
+  @override
+  String get prayerNotificationsOffMessage =>
+      'Benachrichtigungen sind ausgeschaltet, daher sind keine Gebetserinnerungen geplant. Schalte sie ein, um zu jeder Gebetszeit erinnert zu werden.';
+
+  @override
+  String get prayerNotificationsTurnOn => 'Einschalten';
+
+  @override
+  String get prayerNotificationsWaitingTitle =>
+      'Gebetsbenachrichtigungen warten';
+
+  @override
+  String get prayerNotificationsWaitingMessage =>
+      'Gebetserinnerungen werden geplant, sobald dein Standort bestätigt ist.';
+
+  @override
+  String get prayerNotificationsNoneScheduled =>
+      'Es sind noch keine Gebetsbenachrichtigungen geplant. Tippe auf Erneut versuchen, um sie zu planen.';
+
+  @override
+  String get prayerNotificationsUnsupported =>
+      'Gebetsbenachrichtigungen sind auf diesem Gerät nicht verfügbar.';
+
+  @override
+  String get prayerUpdatesLocalGuidance =>
+      'Einige Aktualisierungen konnten nicht abgeschlossen werden. Tippe auf Erneut versuchen, um sie abzuschließen.';
+
+  @override
+  String get prayerSetupTitle => 'Gebetszeiten einrichten';
+
+  @override
+  String get prayerSetupSubtitle =>
+      'Schließe diese Schritte ab, um genaue Zeiten zu sehen und zu jedem Gebet benachrichtigt zu werden.';
+
+  @override
+  String prayerSetupStepLabel(int step, int total) {
+    return 'Schritt $step von $total';
+  }
+
+  @override
+  String get prayerSetupLocationTitle => 'Dein Standort';
+
+  @override
+  String get prayerSetupLocationIntro =>
+      'Huda benötigt deinen Standort, um die Gebetszeiten für deinen Ort zu berechnen.';
+
+  @override
+  String get prayerSetupLocationDeclined =>
+      'Der Standortzugriff wurde abgelehnt. Erlaube ihn, um die Zeiten automatisch zu berechnen, oder suche nach deiner Stadt.';
+
+  @override
+  String get prayerSetupLocationBlocked =>
+      'Der Standortzugriff ist für Huda deaktiviert. Aktiviere ihn in den Einstellungen – die Gebetszeiten laden automatisch, wenn du zurückkehrst.';
+
+  @override
+  String get prayerSetupLocationServicesOff =>
+      'Die Standortdienste sind auf diesem Gerät deaktiviert. Aktiviere sie – die Gebetszeiten laden automatisch, wenn du zurückkehrst.';
+
+  @override
+  String get prayerSetupLocationFailed =>
+      'Huda konnte deinen Standort nicht ermitteln. Versuche es erneut oder suche stattdessen nach deiner Stadt.';
+
+  @override
+  String get prayerSetupUseMyLocation => 'Meinen Standort verwenden';
+
+  @override
+  String get prayerSetupSearchCity => 'Nach einer Stadt suchen';
+
+  @override
+  String get prayerSetupAlertsTitle => 'Gebetsbenachrichtigungen';
+
+  @override
+  String get prayerSetupAlertsHint =>
+      'Eine Benachrichtigung zu jeder Gebetszeit, auch wenn Huda geschlossen ist.';
+
+  @override
+  String get prayerSetupReliableTitle => 'Zuverlässige Erinnerungen';
+
+  @override
+  String get prayerSetupReliableHint =>
+      'Verhindere, dass Android Gebetsbenachrichtigungen verzögert.';
+
+  @override
+  String prayerAttentionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Punkte erfordern Aufmerksamkeit',
+      one: '1 Punkt erfordert Aufmerksamkeit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerAttentionMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count weitere',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get prayerTimelineNext => 'Nächstes';
+
+  @override
+  String get prayerTimelineNow => 'Jetzt';
+
+  @override
+  String get prayerHeroStarted => 'Gebetszeit hat begonnen';
+
+  @override
+  String get prayerTimesProvisional => 'Vorläufige Zeiten';
+
+  @override
+  String get prayerMoreOptions => 'Weitere Optionen';
+
+  @override
+  String prayerOffsetBadge(String offset) {
+    return '$offset Min.';
+  }
+
+  @override
+  String get prayerSetupAlertsIntro =>
+      'Erhalte zu jeder Gebetszeit eine dezente Benachrichtigung – auch wenn Huda geschlossen ist.';
+
+  @override
+  String get prayerSetupAlertsAllow => 'Gebetsbenachrichtigungen erlauben';
+
+  @override
+  String get prayerSetupAlertsDeclined =>
+      'Ohne Benachrichtigungen kann Huda dich nicht an die Gebetszeit erinnern. Die Gebetszeiten werden trotzdem hier angezeigt, und du kannst die Benachrichtigungen später aktivieren.';
+
+  @override
+  String get prayerSetupContinueWithoutAlerts =>
+      'Ohne Benachrichtigungen fortfahren';
+
+  @override
+  String get prayerSetupAlertsOn => 'Benachrichtigungen sind aktiv';
+
+  @override
+  String get prayerSetupAlertsSkipped =>
+      'Aus – du kannst sie jederzeit auf dieser Seite aktivieren';
+
+  @override
+  String get prayerSetupReliableIntro =>
+      'Android kann Benachrichtigungen zurückhalten, um Akku zu sparen. Lass Huda ohne Akkubeschränkungen laufen, damit jede Benachrichtigung pünktlich ankommt.';
+
+  @override
+  String get prayerSetupReliableOn => 'Benachrichtigungen kommen pünktlich an';
+
+  @override
+  String get prayerSetupSkip => 'Vorerst überspringen';
+
+  @override
+  String get prayerSetupSkipped => 'Übersprungen';
+
+  @override
+  String get prayerSetupLocationHint => 'Zeiten, berechnet für deinen Ort.';
+
+  @override
+  String get prayerHeroRemaining => 'übrig';
+
+  @override
+  String get prayerSunriseLabel => 'Sonnenaufgang';
+
+  @override
+  String get prayerCalendarFormatImage => 'Wird als Bild geteilt';
+
+  @override
+  String get prayerCalendarFormatPdf => 'Wird als PDF-Dokument geteilt';
+
+  @override
+  String prayerHeroStartedAgo(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'Vor $minutes Min. begonnen',
+      one: 'Vor 1 Min. begonnen',
+      zero: 'Gerade begonnen',
+    );
+    return '$_temp0';
+  }
 }

@@ -151,9 +151,9 @@ class _ManualLocationSearchDialogState
 
   void _showSelectionError(LocationSearchErrorType type) {
     final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(_errorMessage(l10n, type))),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(_errorMessage(l10n, type))));
   }
 
   void _clearSearch() {
@@ -303,20 +303,11 @@ class _ManualLocationSearchDialogState
       textInputAction: TextInputAction.search,
       onChanged: _onSearchChanged,
       onSubmitted: _onSearchSubmitted,
-      style: TextStyle(
-        color: colors.onSurface,
-        fontSize: 16.sp,
-      ),
+      style: TextStyle(color: colors.onSurface, fontSize: 16.sp),
       decoration: InputDecoration(
         hintText: l10n.searchCityHint,
-        hintStyle: TextStyle(
-          color: colors.onSurfaceVariant,
-          fontSize: 14.sp,
-        ),
-        prefixIcon: Icon(
-          Icons.search_rounded,
-          color: context.primaryColor,
-        ),
+        hintStyle: TextStyle(color: colors.onSurfaceVariant, fontSize: 14.sp),
+        prefixIcon: Icon(Icons.search_rounded, color: context.primaryColor),
         suffixIcon: _isLoading
             ? Padding(
                 padding: EdgeInsets.all(14.w),
@@ -330,15 +321,15 @@ class _ManualLocationSearchDialogState
                 ),
               )
             : _searchController.text.isEmpty
-                ? null
-                : IconButton(
-                    tooltip: l10n.clear,
-                    onPressed: _clearSearch,
-                    icon: Icon(
-                      Icons.cancel_rounded,
-                      color: colors.onSurfaceVariant,
-                    ),
-                  ),
+            ? null
+            : IconButton(
+                tooltip: l10n.clear,
+                onPressed: _clearSearch,
+                icon: Icon(
+                  Icons.cancel_rounded,
+                  color: colors.onSurfaceVariant,
+                ),
+              ),
         filled: true,
         fillColor: fieldColor,
         contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
@@ -396,7 +387,7 @@ class _ManualLocationSearchDialogState
       child: ListView.separated(
         padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
         itemCount: _searchResults.length,
-        separatorBuilder: (_, __) => SizedBox(height: 8.h),
+        separatorBuilder: (_, _) => SizedBox(height: 8.h),
         itemBuilder: (context, index) =>
             _buildSuggestionTile(_searchResults[index], isDark),
       ),
@@ -426,9 +417,7 @@ class _ManualLocationSearchDialogState
               width: 124.w,
               height: 8.h,
               decoration: BoxDecoration(
-                color: colors.onSurface.withValues(
-                  alpha: isDark ? 0.12 : 0.08,
-                ),
+                color: colors.onSurface.withValues(alpha: isDark ? 0.12 : 0.08),
                 borderRadius: BorderRadius.circular(99.r),
               ),
             ),
@@ -462,11 +451,7 @@ class _ManualLocationSearchDialogState
                   ),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  icon,
-                  size: 34.sp,
-                  color: context.primaryColor,
-                ),
+                child: Icon(icon, size: 34.sp, color: context.primaryColor),
               ),
               SizedBox(height: 16.h),
               Text(
@@ -478,10 +463,7 @@ class _ManualLocationSearchDialogState
                   height: 1.4,
                 ),
               ),
-              if (action != null) ...[
-                SizedBox(height: 18.h),
-                action,
-              ],
+              if (action != null) ...[SizedBox(height: 18.h), action],
             ],
           ),
         ),

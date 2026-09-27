@@ -1205,6 +1205,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get hudaQuranApp => 'হুদা - আপনার ইসলামিক সঙ্গী';
 
   @override
+  String get shareImageTagline => 'আপনার ইসলামিক সঙ্গী';
+
+  @override
   String get translationNotAvailable => 'অনুবাদ উপলব্ধ নেই';
 
   @override
@@ -5128,4 +5131,373 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get prayerNotificationSyncVerificationFailed =>
       'নামাজের নোটিফিকেশনের সময়সূচি যাচাই করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get ayahAudioRange => 'আয়াত বেছে নিন';
+
+  @override
+  String get audioFromAyah => 'শুরুর আয়াত';
+
+  @override
+  String get audioToAyah => 'শেষের আয়াত';
+
+  @override
+  String get audioRepeatRange => 'নির্বাচিত অংশ পুনরাবৃত্তি';
+
+  @override
+  String get audioRangeEndHint => 'শেষ নির্বাচিত আয়াতের পর তিলাওয়াত থামবে।';
+
+  @override
+  String get audioPlayRange => 'নির্বাচিত অংশ চালান';
+
+  @override
+  String get downloadAyah => 'আয়াত ডাউনলোড করুন';
+
+  @override
+  String get ayahDownloaded => 'আয়াত ডাউনলোড হয়েছে';
+
+  @override
+  String get audioRangeRepeatHint =>
+      'আপনি বন্ধ না করা পর্যন্ত নির্বাচিত আয়াতগুলো পুনরাবৃত্তি হবে।';
+
+  @override
+  String playingAyahOfTotal(int current, int total) {
+    return 'আয়াত $current / $total';
+  }
+
+  @override
+  String get prayerVerificationPending => 'অবস্থান যাচাই বাকি';
+
+  @override
+  String get prayerVerificationGuidance =>
+      'অবস্থানের কিছু তথ্য এখনও যাচাই করা দরকার। নামাজের সময় ও বিজ্ঞপ্তির নির্ভরযোগ্যতা বাড়াতে ইন্টারনেট পাওয়া গেলে ফিরে এসে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerUpdatesIncomplete => 'নামাজের হালনাগাদ অসম্পূর্ণ';
+
+  @override
+  String get prayerUpdatesGuidance =>
+      'কিছু হালনাগাদ সম্পূর্ণ করা যায়নি। ইন্টারনেট পেলে আবার চেষ্টা করুন। স্থানীয় পুনরুদ্ধার অফলাইনেও আবার চেষ্টা করা যায়।';
+
+  @override
+  String get prayerDetailsPending => 'অবস্থানের বিবরণ বাকি';
+
+  @override
+  String get prayerSavingPending =>
+      'সংরক্ষণ করা যায়নি। নামাজের এই হালনাগাদগুলো সংরক্ষণ করতে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerWidgetPending => 'নামাজের উইজেট হালনাগাদ বাকি';
+
+  @override
+  String get prayerLocationPending =>
+      'অবস্থান হালনাগাদ বাকি। অবস্থানের অনুমতি ও ডিভাইসের অবস্থান পরিষেবা পরীক্ষা করে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerCalculationPending => 'নামাজের হিসাব হালনাগাদ বাকি';
+
+  @override
+  String get prayerNativePending => 'পটভূমিতে অবস্থান হালনাগাদ বাকি';
+
+  @override
+  String get prayerPreviousCoverage =>
+      'আগে নিশ্চিত করা বিজ্ঞপ্তিগুলো এখনও আগের অবস্থান অনুসরণ করতে পারে; বর্তমান সরবরাহ নিশ্চিত নয়।';
+
+  @override
+  String get prayerVerificationRetryGuidance =>
+      'অবস্থানের কিছু তথ্য এখনও যাচাই করা প্রয়োজন। নামাজের সময় ও বিজ্ঞপ্তি আপডেট করতে আবার চেষ্টা করুন।';
+
+  @override
+  String prayerNotificationsBridgedUntil(String date) {
+    return '$date পর্যন্ত বিজ্ঞপ্তি হালনাগাদ করা হয়েছে। পরবর্তী বিজ্ঞপ্তিগুলো এখনও আপনার আগের সেটিংস বা অবস্থান অনুসরণ করতে পারে। সেগুলো হালনাগাদ করতে ইন্টারনেট সংযোগ পেলে আবার আসুন।';
+  }
+
+  @override
+  String get prayerIssueLocationAccess => 'অবস্থান অ্যাক্সেস';
+
+  @override
+  String get prayerIssuePlaceName => 'স্থানের নাম';
+
+  @override
+  String get prayerIssueSaving => 'সংরক্ষণ';
+
+  @override
+  String get prayerIssueCalculation => 'গণনা';
+
+  @override
+  String get prayerIssueBackgroundLocation => 'পটভূমিতে অবস্থান';
+
+  @override
+  String get prayerIssueWidget => 'হোম উইজেট';
+
+  @override
+  String get prayerIssueRetrying => 'আবার চেষ্টা করা হচ্ছে…';
+
+  @override
+  String get prayerUpdatingTitle => 'নামাজের সময় আপডেট হচ্ছে…';
+
+  @override
+  String get prayerUpdatingMessage => 'এতে মাত্র কয়েক সেকেন্ড লাগে।';
+
+  @override
+  String get prayerCountryQuestion => 'আপনি কোন দেশে আছেন?';
+
+  @override
+  String get prayerCountryQuestionHint =>
+      'আপনার দেশ স্বয়ংক্রিয়ভাবে নিশ্চিত করা যায়নি, যেমন সীমান্তের কাছে। সঠিক গণনা পদ্ধতি ব্যবহার করতে দেশটি বেছে নিন।';
+
+  @override
+  String get prayerCountryNotSure => 'নিশ্চিত নই';
+
+  @override
+  String get prayerCalendarShare => 'নামাজের ক্যালেন্ডার শেয়ার করুন';
+
+  @override
+  String get prayerCalendarOneDay => 'এক দিন';
+
+  @override
+  String get prayerCalendarOneMonth => 'এক মাস';
+
+  @override
+  String get prayerCalendarWholeYear => 'পুরো বছর';
+
+  @override
+  String get prayerCalendarChooseDate => 'তারিখ বেছে নিন';
+
+  @override
+  String get prayerCalendarChooseMonth => 'মাস বেছে নিন';
+
+  @override
+  String get prayerCalendarChooseYear => 'বছর বেছে নিন';
+
+  @override
+  String get prayerCalendarGenerate => 'তৈরি করে শেয়ার করুন';
+
+  @override
+  String prayerCalendarPreparing(Object current, Object total) {
+    return 'পৃষ্ঠা $current/$total তৈরি হচ্ছে…';
+  }
+
+  @override
+  String get prayerCalendarError =>
+      'নামাজের ক্যালেন্ডার তৈরি বা শেয়ার করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerCalendarUnavailable =>
+      'শেয়ার করার আগে যাচাইকৃত নামাজের সময় প্রয়োজন।';
+
+  @override
+  String get prayerCalendarTitle => 'নামাজের সময়ের ক্যালেন্ডার';
+
+  @override
+  String get prayerCalendarDate => 'তারিখ';
+
+  @override
+  String get prayerCalendarDay => 'দিন';
+
+  @override
+  String get prayerCalendarTimeZone => 'সময় অঞ্চল';
+
+  @override
+  String prayerCalendarGenerated(Object date) {
+    return 'তৈরি হয়েছে $date';
+  }
+
+  @override
+  String prayerCalendarPage(Object page, Object total) {
+    return 'পৃষ্ঠা $page/$total';
+  }
+
+  @override
+  String prayerCalendarShareText(Object location, Object period) {
+    return '$location-এ $period-এর নামাজের সময়';
+  }
+
+  @override
+  String get prayerCalendarSunriseColumn => 'সূর্যোদয়';
+
+  @override
+  String get prayerNotificationsOffTitle => 'নামাজের বিজ্ঞপ্তি বন্ধ';
+
+  @override
+  String get prayerNotificationsOffMessage =>
+      'বিজ্ঞপ্তি বন্ধ আছে, তাই কোনো নামাজের সতর্কতা নির্ধারিত নেই। প্রতিটি নামাজের সময় সতর্কতা পেতে এটি চালু করুন।';
+
+  @override
+  String get prayerNotificationsTurnOn => 'চালু করুন';
+
+  @override
+  String get prayerNotificationsWaitingTitle => 'নামাজের বিজ্ঞপ্তি অপেক্ষায়';
+
+  @override
+  String get prayerNotificationsWaitingMessage =>
+      'আপনার অবস্থান যাচাই হলে নামাজের সতর্কতা নির্ধারণ করা হবে।';
+
+  @override
+  String get prayerNotificationsNoneScheduled =>
+      'এখনও কোনো নামাজের বিজ্ঞপ্তি নির্ধারিত নেই। নির্ধারণ করতে আবার চেষ্টা করুন চাপুন।';
+
+  @override
+  String get prayerNotificationsUnsupported =>
+      'এই ডিভাইসে নামাজের বিজ্ঞপ্তি উপলব্ধ নয়।';
+
+  @override
+  String get prayerUpdatesLocalGuidance =>
+      'কিছু আপডেট সম্পূর্ণ করা যায়নি। সম্পূর্ণ করতে আবার চেষ্টা করুন চাপুন।';
+
+  @override
+  String get prayerSetupTitle => 'নামাজের সময় সেট আপ করুন';
+
+  @override
+  String get prayerSetupSubtitle =>
+      'সঠিক সময় দেখতে এবং প্রতিটি নামাজে সতর্কতা পেতে এই ধাপগুলো সম্পন্ন করুন।';
+
+  @override
+  String prayerSetupStepLabel(int step, int total) {
+    return 'ধাপ $step/$total';
+  }
+
+  @override
+  String get prayerSetupLocationTitle => 'আপনার অবস্থান';
+
+  @override
+  String get prayerSetupLocationIntro =>
+      'আপনি যেখানে আছেন সেখানকার নামাজের সময় হিসাব করতে হুদার আপনার অবস্থান প্রয়োজন।';
+
+  @override
+  String get prayerSetupLocationDeclined =>
+      'অবস্থানের অনুমতি প্রত্যাখ্যান করা হয়েছে। স্বয়ংক্রিয়ভাবে সময় হিসাব করতে অনুমতি দিন, অথবা আপনার শহর খুঁজুন।';
+
+  @override
+  String get prayerSetupLocationBlocked =>
+      'হুদার জন্য অবস্থানের অনুমতি বন্ধ আছে। সেটিংসে চালু করুন — ফিরে এলে নামাজের সময় স্বয়ংক্রিয়ভাবে লোড হবে।';
+
+  @override
+  String get prayerSetupLocationServicesOff =>
+      'এই ডিভাইসে লোকেশন সার্ভিস বন্ধ আছে। চালু করুন — ফিরে এলে নামাজের সময় স্বয়ংক্রিয়ভাবে লোড হবে।';
+
+  @override
+  String get prayerSetupLocationFailed =>
+      'হুদা আপনার অবস্থান খুঁজে পায়নি। আবার চেষ্টা করুন, অথবা এর বদলে আপনার শহর খুঁজুন।';
+
+  @override
+  String get prayerSetupUseMyLocation => 'আমার অবস্থান ব্যবহার করুন';
+
+  @override
+  String get prayerSetupSearchCity => 'শহর খুঁজুন';
+
+  @override
+  String get prayerSetupAlertsTitle => 'নামাজের সতর্কতা';
+
+  @override
+  String get prayerSetupAlertsHint =>
+      'হুদা বন্ধ থাকলেও প্রতিটি নামাজের সময়ে একটি সতর্কতা।';
+
+  @override
+  String get prayerSetupReliableTitle => 'নির্ভরযোগ্য রিমাইন্ডার';
+
+  @override
+  String get prayerSetupReliableHint =>
+      'অ্যান্ড্রয়েড যেন নামাজের সতর্কতা দেরি না করে।';
+
+  @override
+  String prayerAttentionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countটি বিষয়ে মনোযোগ প্রয়োজন',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerAttentionMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'আরও +$count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get prayerTimelineNext => 'পরবর্তী';
+
+  @override
+  String get prayerTimelineNow => 'এখন';
+
+  @override
+  String get prayerHeroStarted => 'নামাজের সময় শুরু হয়েছে';
+
+  @override
+  String get prayerTimesProvisional => 'প্রাথমিক সময়';
+
+  @override
+  String get prayerMoreOptions => 'আরও বিকল্প';
+
+  @override
+  String prayerOffsetBadge(String offset) {
+    return '$offset মি.';
+  }
+
+  @override
+  String get prayerSetupAlertsIntro =>
+      'হুদা বন্ধ থাকলেও প্রতিটি নামাজের সময়ে একটি কোমল সতর্কতা পান।';
+
+  @override
+  String get prayerSetupAlertsAllow => 'নামাজের সতর্কতার অনুমতি দিন';
+
+  @override
+  String get prayerSetupAlertsDeclined =>
+      'বিজ্ঞপ্তি ছাড়া নামাজের সময় হলে হুদা আপনাকে মনে করিয়ে দিতে পারবে না। নামাজের সময় এখানে দেখা যাবে, আর পরে সতর্কতা চালু করতে পারবেন।';
+
+  @override
+  String get prayerSetupContinueWithoutAlerts => 'সতর্কতা ছাড়াই চালিয়ে যান';
+
+  @override
+  String get prayerSetupAlertsOn => 'সতর্কতা চালু আছে';
+
+  @override
+  String get prayerSetupAlertsSkipped =>
+      'বন্ধ — এই পৃষ্ঠা থেকে যেকোনো সময় চালু করতে পারবেন';
+
+  @override
+  String get prayerSetupReliableIntro =>
+      'ব্যাটারি বাঁচাতে অ্যান্ড্রয়েড সতর্কতা আটকে রাখতে পারে। প্রতিটি সতর্কতা সময়মতো পেতে হুদাকে ব্যাটারি সীমাবদ্ধতা ছাড়া চলতে দিন।';
+
+  @override
+  String get prayerSetupReliableOn => 'সতর্কতা সময়মতো পৌঁছাবে';
+
+  @override
+  String get prayerSetupSkip => 'এখন বাদ দিন';
+
+  @override
+  String get prayerSetupSkipped => 'বাদ দেওয়া হয়েছে';
+
+  @override
+  String get prayerSetupLocationHint =>
+      'আপনার অবস্থান অনুযায়ী হিসাব করা সময়।';
+
+  @override
+  String get prayerHeroRemaining => 'বাকি';
+
+  @override
+  String get prayerSunriseLabel => 'সূর্যোদয়';
+
+  @override
+  String get prayerCalendarFormatImage => 'ছবি হিসেবে শেয়ার হবে';
+
+  @override
+  String get prayerCalendarFormatPdf => 'PDF ডকুমেন্ট হিসেবে শেয়ার হবে';
+
+  @override
+  String prayerHeroStartedAgo(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes মিনিট আগে শুরু হয়েছে',
+      zero: 'এইমাত্র শুরু হয়েছে',
+    );
+    return '$_temp0';
+  }
 }

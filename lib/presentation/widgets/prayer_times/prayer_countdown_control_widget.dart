@@ -105,8 +105,9 @@ class _PrayerCountdownControlWidgetState
       if (mounted) {
         HudaSnackBar.error(
           context,
-          message:
-              AppLocalizations.of(context)!.failedStartService(e.toString()),
+          message: AppLocalizations.of(
+            context,
+          )!.failedStartService(e.toString()),
         );
       }
     }
@@ -126,8 +127,9 @@ class _PrayerCountdownControlWidgetState
       if (mounted) {
         HudaSnackBar.error(
           context,
-          message:
-              AppLocalizations.of(context)!.failedStopService(e.toString()),
+          message: AppLocalizations.of(
+            context,
+          )!.failedStopService(e.toString()),
         );
       }
     }
@@ -149,8 +151,9 @@ class _PrayerCountdownControlWidgetState
       if (mounted) {
         HudaSnackBar.error(
           context,
-          message:
-              AppLocalizations.of(context)!.failedRestartService(e.toString()),
+          message: AppLocalizations.of(
+            context,
+          )!.failedRestartService(e.toString()),
         );
       }
     }

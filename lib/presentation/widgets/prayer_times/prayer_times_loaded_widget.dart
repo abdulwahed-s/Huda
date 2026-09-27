@@ -7,20 +7,13 @@ import 'package:huda/l10n/app_localizations.dart';
 class PrayerTimesLoadedWidget extends StatelessWidget {
   final PrayerTimesLoaded state;
 
-  const PrayerTimesLoadedWidget({
-    super.key,
-    required this.state,
-  });
+  const PrayerTimesLoadedWidget({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          Icons.location_on,
-          color: context.primaryColor,
-          size: 20.sp,
-        ),
+        Icon(Icons.location_on, color: context.primaryColor, size: 20.sp),
         SizedBox(width: 10.w),
         Expanded(
           child: Column(

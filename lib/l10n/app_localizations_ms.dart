@@ -1207,6 +1207,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get hudaQuranApp => 'Huda - Teman Islam anda';
 
   @override
+  String get shareImageTagline => 'Teman Islam anda';
+
+  @override
   String get translationNotAvailable => 'Terjemahan tidak tersedia';
 
   @override
@@ -5135,4 +5138,375 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get prayerNotificationSyncVerificationFailed =>
       'Kami tidak dapat mengesahkan jadual pemberitahuan solat. Cuba lagi.';
+
+  @override
+  String get ayahAudioRange => 'Pilih ayat';
+
+  @override
+  String get audioFromAyah => 'Dari ayat';
+
+  @override
+  String get audioToAyah => 'Hingga ayat';
+
+  @override
+  String get audioRepeatRange => 'Ulang pilihan';
+
+  @override
+  String get audioRangeEndHint =>
+      'Bacaan berhenti selepas ayat terakhir yang dipilih.';
+
+  @override
+  String get audioPlayRange => 'Mainkan pilihan';
+
+  @override
+  String get downloadAyah => 'Muat turun ayat';
+
+  @override
+  String get ayahDownloaded => 'Ayat dimuat turun';
+
+  @override
+  String get audioRangeRepeatHint =>
+      'Ayat yang dipilih diulang sehingga anda menghentikan bacaan.';
+
+  @override
+  String playingAyahOfTotal(int current, int total) {
+    return 'Ayat $current daripada $total';
+  }
+
+  @override
+  String get prayerVerificationPending => 'Pengesahan lokasi tertunda';
+
+  @override
+  String get prayerVerificationGuidance =>
+      'Sesetengah butiran lokasi masih perlu disahkan. Kembali apabila ada internet dan cuba lagi untuk meningkatkan ketepatan waktu solat dan kebolehpercayaan pemberitahuan.';
+
+  @override
+  String get prayerUpdatesIncomplete => 'Kemas kini solat belum lengkap';
+
+  @override
+  String get prayerUpdatesGuidance =>
+      'Sesetengah kemas kini tidak dapat diselesaikan. Kembali dengan internet untuk mencuba lagi. Pemulihan setempat juga boleh dicuba semula di luar talian.';
+
+  @override
+  String get prayerDetailsPending => 'Butiran lokasi tertunda';
+
+  @override
+  String get prayerSavingPending =>
+      'Gagal menyimpan. Cuba lagi untuk menyimpan kemas kini solat ini.';
+
+  @override
+  String get prayerWidgetPending => 'Kemas kini widget solat tertunda';
+
+  @override
+  String get prayerLocationPending =>
+      'Kemas kini lokasi tertunda. Semak kebenaran dan perkhidmatan lokasi peranti, kemudian cuba lagi.';
+
+  @override
+  String get prayerCalculationPending =>
+      'Kemas kini pengiraan waktu solat tertunda';
+
+  @override
+  String get prayerNativePending => 'Kemas kini lokasi latar belakang tertunda';
+
+  @override
+  String get prayerPreviousCoverage =>
+      'Pemberitahuan yang disahkan sebelum ini mungkin masih mengikut lokasi lama; penghantaran semasa belum disahkan.';
+
+  @override
+  String get prayerVerificationRetryGuidance =>
+      'Sesetengah butiran lokasi masih perlu disahkan. Cuba lagi untuk mengemas kini waktu solat dan pemberitahuan.';
+
+  @override
+  String prayerNotificationsBridgedUntil(String date) {
+    return 'Pemberitahuan telah dikemas kini sehingga $date. Pemberitahuan seterusnya mungkin masih mengikut tetapan atau lokasi anda yang sebelumnya. Kembali apabila anda mempunyai internet untuk mengemas kininya.';
+  }
+
+  @override
+  String get prayerIssueLocationAccess => 'Akses lokasi';
+
+  @override
+  String get prayerIssuePlaceName => 'Nama tempat';
+
+  @override
+  String get prayerIssueSaving => 'Penyimpanan';
+
+  @override
+  String get prayerIssueCalculation => 'Pengiraan';
+
+  @override
+  String get prayerIssueBackgroundLocation => 'Lokasi latar belakang';
+
+  @override
+  String get prayerIssueWidget => 'Widget skrin utama';
+
+  @override
+  String get prayerIssueRetrying => 'Mencuba semula…';
+
+  @override
+  String get prayerUpdatingTitle => 'Mengemas kini waktu solat…';
+
+  @override
+  String get prayerUpdatingMessage => 'Ini hanya mengambil beberapa saat.';
+
+  @override
+  String get prayerCountryQuestion => 'Anda berada di negara mana?';
+
+  @override
+  String get prayerCountryQuestionHint =>
+      'Negara anda tidak dapat disahkan secara automatik, contohnya berhampiran sempadan. Pilih negara anda untuk menggunakan kaedah pengiraan yang betul.';
+
+  @override
+  String get prayerCountryNotSure => 'Tidak pasti';
+
+  @override
+  String get prayerCalendarShare => 'Kongsi kalendar waktu solat';
+
+  @override
+  String get prayerCalendarOneDay => 'Satu hari';
+
+  @override
+  String get prayerCalendarOneMonth => 'Satu bulan';
+
+  @override
+  String get prayerCalendarWholeYear => 'Setahun';
+
+  @override
+  String get prayerCalendarChooseDate => 'Pilih tarikh';
+
+  @override
+  String get prayerCalendarChooseMonth => 'Pilih bulan';
+
+  @override
+  String get prayerCalendarChooseYear => 'Pilih tahun';
+
+  @override
+  String get prayerCalendarGenerate => 'Jana dan kongsi';
+
+  @override
+  String prayerCalendarPreparing(Object current, Object total) {
+    return 'Menyediakan halaman $current daripada $total…';
+  }
+
+  @override
+  String get prayerCalendarError =>
+      'Tidak dapat menjana atau berkongsi kalendar solat. Sila cuba lagi.';
+
+  @override
+  String get prayerCalendarUnavailable =>
+      'Waktu solat yang disahkan diperlukan sebelum berkongsi.';
+
+  @override
+  String get prayerCalendarTitle => 'Kalendar waktu solat';
+
+  @override
+  String get prayerCalendarDate => 'Tarikh';
+
+  @override
+  String get prayerCalendarDay => 'Hari';
+
+  @override
+  String get prayerCalendarTimeZone => 'Zon waktu';
+
+  @override
+  String prayerCalendarGenerated(Object date) {
+    return 'Dijana pada $date';
+  }
+
+  @override
+  String prayerCalendarPage(Object page, Object total) {
+    return 'Halaman $page daripada $total';
+  }
+
+  @override
+  String prayerCalendarShareText(Object location, Object period) {
+    return 'Waktu solat untuk $period di $location';
+  }
+
+  @override
+  String get prayerCalendarSunriseColumn => 'Syuruk';
+
+  @override
+  String get prayerNotificationsOffTitle => 'Pemberitahuan solat dimatikan';
+
+  @override
+  String get prayerNotificationsOffMessage =>
+      'Pemberitahuan dimatikan, jadi tiada peringatan solat dijadualkan. Hidupkannya untuk menerima peringatan pada setiap waktu solat.';
+
+  @override
+  String get prayerNotificationsTurnOn => 'Hidupkan';
+
+  @override
+  String get prayerNotificationsWaitingTitle =>
+      'Pemberitahuan solat sedang menunggu';
+
+  @override
+  String get prayerNotificationsWaitingMessage =>
+      'Peringatan solat akan dijadualkan selepas lokasi anda disahkan.';
+
+  @override
+  String get prayerNotificationsNoneScheduled =>
+      'Belum ada pemberitahuan solat dijadualkan. Ketik Cuba Lagi untuk menjadualkannya.';
+
+  @override
+  String get prayerNotificationsUnsupported =>
+      'Pemberitahuan solat tidak tersedia pada peranti ini.';
+
+  @override
+  String get prayerUpdatesLocalGuidance =>
+      'Sesetengah kemas kini tidak dapat diselesaikan. Ketik Cuba Lagi untuk menyelesaikannya.';
+
+  @override
+  String get prayerSetupTitle => 'Sediakan waktu solat';
+
+  @override
+  String get prayerSetupSubtitle =>
+      'Lengkapkan langkah ini untuk melihat waktu yang tepat dan menerima peringatan bagi setiap solat.';
+
+  @override
+  String prayerSetupStepLabel(int step, int total) {
+    return 'Langkah $step daripada $total';
+  }
+
+  @override
+  String get prayerSetupLocationTitle => 'Lokasi anda';
+
+  @override
+  String get prayerSetupLocationIntro =>
+      'Huda memerlukan lokasi anda untuk mengira waktu solat di tempat anda berada.';
+
+  @override
+  String get prayerSetupLocationDeclined =>
+      'Akses lokasi telah ditolak. Benarkan untuk mengira waktu secara automatik, atau cari bandar anda.';
+
+  @override
+  String get prayerSetupLocationBlocked =>
+      'Akses lokasi dimatikan untuk Huda. Hidupkan dalam Tetapan — waktu solat dimuatkan secara automatik apabila anda kembali.';
+
+  @override
+  String get prayerSetupLocationServicesOff =>
+      'Perkhidmatan lokasi dimatikan pada peranti ini. Hidupkannya — waktu solat dimuatkan secara automatik apabila anda kembali.';
+
+  @override
+  String get prayerSetupLocationFailed =>
+      'Huda tidak dapat mencari lokasi anda. Cuba lagi, atau cari bandar anda.';
+
+  @override
+  String get prayerSetupUseMyLocation => 'Guna lokasi saya';
+
+  @override
+  String get prayerSetupSearchCity => 'Cari bandar';
+
+  @override
+  String get prayerSetupAlertsTitle => 'Peringatan solat';
+
+  @override
+  String get prayerSetupAlertsHint =>
+      'Peringatan pada setiap waktu solat, walaupun Huda ditutup.';
+
+  @override
+  String get prayerSetupReliableTitle => 'Peringatan yang boleh diharap';
+
+  @override
+  String get prayerSetupReliableHint =>
+      'Elakkan Android daripada melewatkan peringatan solat.';
+
+  @override
+  String prayerAttentionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count perkara memerlukan perhatian',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerAttentionMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count lagi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get prayerTimelineNext => 'Seterusnya';
+
+  @override
+  String get prayerTimelineNow => 'Sekarang';
+
+  @override
+  String get prayerHeroStarted => 'Waktu solat telah masuk';
+
+  @override
+  String get prayerTimesProvisional => 'Waktu sementara';
+
+  @override
+  String get prayerMoreOptions => 'Lagi pilihan';
+
+  @override
+  String prayerOffsetBadge(String offset) {
+    return '$offset min';
+  }
+
+  @override
+  String get prayerSetupAlertsIntro =>
+      'Terima peringatan lembut pada setiap waktu solat, walaupun Huda ditutup.';
+
+  @override
+  String get prayerSetupAlertsAllow => 'Benarkan peringatan solat';
+
+  @override
+  String get prayerSetupAlertsDeclined =>
+      'Tanpa pemberitahuan, Huda tidak dapat mengingatkan anda apabila masuk waktu solat. Waktu solat tetap dipaparkan di sini, dan anda boleh menghidupkan peringatan kemudian.';
+
+  @override
+  String get prayerSetupContinueWithoutAlerts => 'Teruskan tanpa peringatan';
+
+  @override
+  String get prayerSetupAlertsOn => 'Peringatan dihidupkan';
+
+  @override
+  String get prayerSetupAlertsSkipped =>
+      'Dimatikan — anda boleh menghidupkannya bila-bila masa dari halaman ini';
+
+  @override
+  String get prayerSetupReliableIntro =>
+      'Android mungkin menahan peringatan untuk menjimatkan bateri. Benarkan Huda berjalan tanpa sekatan bateri supaya setiap peringatan tiba tepat pada masanya.';
+
+  @override
+  String get prayerSetupReliableOn => 'Peringatan akan tiba tepat pada masanya';
+
+  @override
+  String get prayerSetupSkip => 'Langkau buat masa ini';
+
+  @override
+  String get prayerSetupSkipped => 'Dilangkau';
+
+  @override
+  String get prayerSetupLocationHint => 'Waktu dikira untuk lokasi anda.';
+
+  @override
+  String get prayerHeroRemaining => 'lagi';
+
+  @override
+  String get prayerSunriseLabel => 'Syuruk';
+
+  @override
+  String get prayerCalendarFormatImage => 'Dikongsi sebagai imej';
+
+  @override
+  String get prayerCalendarFormatPdf => 'Dikongsi sebagai dokumen PDF';
+
+  @override
+  String prayerHeroStartedAgo(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'Bermula $minutes min yang lalu',
+      zero: 'Baru bermula',
+    );
+    return '$_temp0';
+  }
 }

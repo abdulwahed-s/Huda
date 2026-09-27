@@ -10,6 +10,7 @@ import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/manual_location_search_dialog.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
 class PrayerTravelSettingsCard extends StatefulWidget {
   const PrayerTravelSettingsCard({super.key, required this.locationMode});
@@ -180,6 +181,7 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final palette = PrayerPalette.of(context);
     final status = _status;
     final visual = _statusVisual(theme, status?.state);
     final needsRecovery = _needsRecovery(status?.state);
@@ -188,317 +190,271 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
     final isEnabled = isSupported && (status?.preferenceEnabled ?? false);
     final canToggle = !_busy && status != null && isSupported;
 
-    return Card(
-      elevation: 4,
+    return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: theme.brightness == Brightness.dark
-                ? [
-                    Colors.grey[800]!.withValues(alpha: 0.8),
-                    Colors.grey[850]!.withValues(alpha: 0.9),
-                  ]
-                : [Colors.white, Colors.grey[50]!],
+      decoration: BoxDecoration(
+        color: palette.card,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: palette.border),
+      ),
+      child: Column(
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 160),
+            child: _busy
+                ? LinearProgressIndicator(
+                    key: const ValueKey('busy'),
+                    minHeight: 2.h,
+                    color: context.primaryColor,
+                  )
+                : SizedBox(height: 2.h, key: const ValueKey('idle')),
           ),
-          border: Border.all(
-            color: context.primaryColor.withValues(alpha: 0.2),
-          ),
-        ),
-        child: Column(
-          children: [
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 160),
-              child: _busy
-                  ? LinearProgressIndicator(
-                      key: const ValueKey('busy'),
-                      minHeight: 2.h,
-                      color: context.primaryColor,
-                    )
-                  : SizedBox(height: 2.h, key: const ValueKey('idle')),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 16.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(6.w),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                context.primaryColor,
-                                context.primaryColor.withValues(alpha: 0.72),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(10.r),
-                            boxShadow: [
-                              BoxShadow(
-                                color: context.primaryColor.withValues(
-                                  alpha: 0.3,
-                                ),
-                                blurRadius: 6,
-                                offset: const Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            Icons.travel_explore_rounded,
-                            color: Colors.white,
-                            size: 18.sp,
-                          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 16.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4.h),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.w),
+                        decoration: BoxDecoration(
+                          color: context.primaryColor.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
-                        SizedBox(width: 10.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                l10n.prayerTravelUpdates,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: colors.onSurface,
-                                ),
-                              ),
-                              SizedBox(height: 1.h),
-                              Text(
-                                l10n.prayerTravelUpdatesDescription,
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  height: 1.3,
-                                  color: colors.onSurfaceVariant,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                            ],
-                          ),
+                        child: Icon(
+                          Icons.travel_explore_rounded,
+                          color: context.primaryColor,
+                          size: 20.sp,
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(12.w),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          visual.color.withValues(alpha: 0.1),
-                          visual.color.withValues(alpha: 0.04),
-                        ],
                       ),
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                        color: visual.color.withValues(alpha: 0.35),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: EdgeInsets.all(4.w),
-                              decoration: BoxDecoration(
-                                color: visual.color,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: visual.color.withValues(alpha: 0.35),
-                                    blurRadius: 4,
-                                    spreadRadius: 1,
-                                  ),
-                                ],
-                              ),
-                              child: Icon(
-                                visual.icon,
-                                color: Colors.white,
-                                size: 11.sp,
+                            Text(
+                              l10n.prayerTravelUpdates,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold,
+                                color: colors.onSurface,
                               ),
                             ),
-                            SizedBox(width: 10.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _statusLabel(l10n, status?.state),
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: visual.color,
-                                    ),
-                                  ),
-                                  SizedBox(height: 1.h),
-                                  Text(
-                                    l10n.backgroundTravelUpdates,
-                                    style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color: colors.onSurfaceVariant,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Semantics(
-                              excludeSemantics: true,
-                              toggled: isEnabled,
-                              enabled: canToggle,
-                              label:
-                                  '${l10n.prayerTravelUpdates}: '
-                                  '${_statusLabel(l10n, status?.state)}',
-                              child: Switch.adaptive(
-                                value: isEnabled,
-                                onChanged: canToggle ? _toggle : null,
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (needsRecovery) ...[
-                          SizedBox(height: 8.h),
-                          Divider(
-                            height: 1,
-                            color: visual.color.withValues(alpha: 0.2),
-                          ),
-                          SizedBox(height: 6.h),
-                          _RecoveryPanel(
-                            color: visual.color,
-                            settingsLabel:
-                                status?.state ==
-                                    PrayerBackgroundTravelState.unavailable
-                                ? l10n.travelTurnOnLocation
-                                : l10n.openSettings,
-                            retryLabel:
-                                status?.state ==
-                                    PrayerBackgroundTravelState
-                                        .permissionRequired
-                                ? l10n.travelAllowLocation
-                                : l10n.retry,
-                            retryIcon:
-                                status?.state ==
-                                    PrayerBackgroundTravelState
-                                        .permissionRequired
-                                ? Icons.location_on_outlined
-                                : Icons.refresh_rounded,
-                            busy: _busy,
-                            showRetry:
-                                status?.state !=
-                                PrayerBackgroundTravelState.unavailable,
-                            settingsFirst:
-                                PlatformUtils.isAndroid &&
-                                status?.state ==
-                                    PrayerBackgroundTravelState.foregroundOnly,
-                            onSettings: () =>
-                                _openRecoverySettings(status!.state),
-                            onRetry: _retry,
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Container(
-                    padding: EdgeInsets.all(10.w),
-                    decoration: BoxDecoration(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.grey[800]!.withValues(alpha: 0.3)
-                          : Colors.grey[100],
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              widget.locationMode ==
-                                      PrayerLocationMode.automatic
-                                  ? Icons.my_location_rounded
-                                  : Icons.location_on_outlined,
-                              color: colors.onSurfaceVariant,
-                              size: 14.sp,
-                            ),
-                            SizedBox(width: 6.w),
-                            Expanded(
-                              child: Text(
-                                l10n.prayerLocationMode,
-                                style: TextStyle(
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: colors.onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 7.w,
-                                vertical: 3.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: context.primaryColor.withValues(
-                                  alpha: 0.12,
-                                ),
-                                borderRadius: BorderRadius.circular(6.r),
-                              ),
-                              child: Text(
-                                widget.locationMode ==
-                                        PrayerLocationMode.automatic
-                                    ? l10n.automatic
-                                    : l10n.manual,
-                                style: TextStyle(
-                                  fontSize: 9.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: context.primaryColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10.h),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: _busy ? null : _selectManualLocation,
-                            icon: Icon(Icons.search_rounded, size: 14.sp),
-                            label: Text(
-                              l10n.searchManually,
+                            SizedBox(height: 1.h),
+                            Text(
+                              l10n.prayerTravelUpdatesDescription,
                               style: TextStyle(
                                 fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
+                                height: 1.3,
+                                color: palette.muted,
                               ),
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: context.primaryColor,
-                              foregroundColor: Colors.white,
-                              disabledBackgroundColor: colors.onSurface
-                                  .withValues(alpha: 0.12),
-                              padding: EdgeInsets.symmetric(vertical: 9.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              elevation: 2,
-                              shadowColor: context.primaryColor.withValues(
-                                alpha: 0.3,
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        visual.color.withValues(alpha: 0.1),
+                        visual.color.withValues(alpha: 0.04),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(
+                      color: visual.color.withValues(alpha: 0.35),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(4.w),
+                            decoration: BoxDecoration(
+                              color: visual.color,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: visual.color.withValues(alpha: 0.35),
+                                  blurRadius: 4,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              visual.icon,
+                              color: Colors.white,
+                              size: 11.sp,
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _statusLabel(l10n, status?.state),
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: visual.color,
+                                  ),
+                                ),
+                                SizedBox(height: 1.h),
+                                Text(
+                                  l10n.backgroundTravelUpdates,
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: palette.muted,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Semantics(
+                            excludeSemantics: true,
+                            toggled: isEnabled,
+                            enabled: canToggle,
+                            label:
+                                '${l10n.prayerTravelUpdates}: '
+                                '${_statusLabel(l10n, status?.state)}',
+                            child: Switch.adaptive(
+                              value: isEnabled,
+                              onChanged: canToggle ? _toggle : null,
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (needsRecovery) ...[
+                        SizedBox(height: 8.h),
+                        Divider(
+                          height: 1,
+                          color: visual.color.withValues(alpha: 0.2),
+                        ),
+                        SizedBox(height: 6.h),
+                        _RecoveryPanel(
+                          color: visual.color,
+                          settingsLabel:
+                              status?.state ==
+                                  PrayerBackgroundTravelState.unavailable
+                              ? l10n.travelTurnOnLocation
+                              : l10n.openSettings,
+                          retryLabel:
+                              status?.state ==
+                                  PrayerBackgroundTravelState.permissionRequired
+                              ? l10n.travelAllowLocation
+                              : l10n.retry,
+                          retryIcon:
+                              status?.state ==
+                                  PrayerBackgroundTravelState.permissionRequired
+                              ? Icons.location_on_outlined
+                              : Icons.refresh_rounded,
+                          busy: _busy,
+                          showRetry:
+                              status?.state !=
+                              PrayerBackgroundTravelState.unavailable,
+                          settingsFirst:
+                              PlatformUtils.isAndroid &&
+                              status?.state ==
+                                  PrayerBackgroundTravelState.foregroundOnly,
+                          onSettings: () =>
+                              _openRecoverySettings(status!.state),
+                          onRetry: _retry,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                Container(
+                  padding: EdgeInsets.all(10.w),
+                  decoration: BoxDecoration(
+                    color: palette.tint,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            widget.locationMode == PrayerLocationMode.automatic
+                                ? Icons.my_location_rounded
+                                : Icons.location_on_outlined,
+                            color: palette.muted,
+                            size: 14.sp,
+                          ),
+                          SizedBox(width: 6.w),
+                          Expanded(
+                            child: Text(
+                              l10n.prayerLocationMode,
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w600,
+                                color: palette.muted,
                               ),
                             ),
                           ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 7.w,
+                              vertical: 3.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.primaryColor.withValues(
+                                alpha: 0.12,
+                              ),
+                              borderRadius: BorderRadius.circular(6.r),
+                            ),
+                            child: Text(
+                              widget.locationMode ==
+                                      PrayerLocationMode.automatic
+                                  ? l10n.automatic
+                                  : l10n.manual,
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                fontWeight: FontWeight.bold,
+                                color: context.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.tonalIcon(
+                          onPressed: _busy ? null : _selectManualLocation,
+                          icon: Icon(Icons.search_rounded, size: 16.sp),
+                          label: Text(
+                            l10n.searchManually,
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          style: FilledButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -547,15 +503,15 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
       icon: Icons.error_rounded,
     ),
     PrayerBackgroundTravelState.unsupported => _TravelStatusVisual(
-      color: theme.colorScheme.onSurfaceVariant,
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
       icon: Icons.block_rounded,
     ),
     PrayerBackgroundTravelState.disabled => _TravelStatusVisual(
-      color: theme.colorScheme.onSurfaceVariant,
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
       icon: Icons.pause_circle_rounded,
     ),
     null => _TravelStatusVisual(
-      color: theme.colorScheme.onSurfaceVariant,
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
       icon: Icons.hourglass_top_rounded,
     ),
   };

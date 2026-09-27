@@ -660,6 +660,7 @@
     "@hudaQuranApp": {
         "description": "App name for sharing"
     },
+    "shareImageTagline": "رفيقك الإسلامي",
     "translationNotAvailable": "الترجمة غير متاحة",
     "@translationNotAvailable": {
         "description": "Translation not available message"
@@ -714,7 +715,7 @@
             }
         }
     },
-    "loadingAudio": "جارٍ تحميل الصوت...",
+    "loadingAudio": "جارٍ تحميل التلاوة…",
     "@loadingAudio": {
         "description": "Loading audio status"
     },
@@ -806,7 +807,7 @@
     "@ayahText": {
         "description": "Ayah text section title"
     },
-    "audioControls": "عناصر التحكم في الصوت",
+    "audioControls": "الاستماع",
     "@audioControls": {
         "description": "Audio controls section title"
     },
@@ -818,11 +819,11 @@
     "@readerSelection": {
         "description": "Reader selection section title"
     },
-    "audioDownloads": "تنزيلات الصوت",
+    "audioDownloads": "تنزيل التلاوة",
     "@audioDownloads": {
         "description": "Audio downloads section title"
     },
-    "audioSettings": "إعدادات الصوت",
+    "audioSettings": "خيارات التشغيل",
     "@audioSettings": {
         "description": "Audio settings section title"
     },
@@ -830,11 +831,11 @@
     "@includedInAll": {
         "description": "Included in all downloads status"
     },
-    "surahDownloaded": "نُزِّلت السورة",
+    "surahDownloaded": "تم تنزيل السورة",
     "@surahDownloaded": {
         "description": "Surah downloaded status"
     },
-    "downloading": "جارٍ التنزيل...",
+    "downloading": "جارٍ التنزيل…",
     "@downloading": {
         "description": "Downloading status"
     },
@@ -2406,5 +2407,106 @@
     "prayerNotificationSettingsChanged": "تغيّرت إعدادات تنبيهات الصلاة. اضغط لإعادة المحاولة وتحديث الجدول.",
     "prayerNotificationSyncBusy": "خدمة جدولة تنبيهات الصلاة مشغولة الآن. حاول مرة أخرى بعد قليل.",
     "prayerNotificationSyncUnavailable": "جدولة تنبيهات الصلاة غير متاحة مؤقتًا.",
-    "prayerNotificationSyncVerificationFailed": "تعذّر التحقق من جدول تنبيهات الصلاة. حاول مرة أخرى."
+    "prayerNotificationSyncVerificationFailed": "تعذّر التحقق من جدول تنبيهات الصلاة. حاول مرة أخرى.",
+    "ayahAudioRange": "تحديد الآيات",
+    "audioFromAyah": "من الآية",
+    "audioToAyah": "إلى الآية",
+    "audioRepeatRange": "تكرار المقطع",
+    "audioRangeEndHint": "يتوقف التشغيل عند نهاية الآيات المحددة.",
+    "audioPlayRange": "تشغيل المقطع",
+    "downloadAyah": "تنزيل الآية",
+    "ayahDownloaded": "تم تنزيل الآية",
+    "audioRangeRepeatHint": "تتكرر الآيات المحددة حتى توقف التشغيل.",
+    "playingAyahOfTotal": "الآية {current} من {total}",
+    "prayerVerificationPending": "التحقق من الموقع قيد الانتظار",
+    "prayerVerificationGuidance": "ما زالت بعض تفاصيل الموقع بحاجة إلى التحقق. عُد عند توفر الإنترنت وأعد المحاولة لتحسين دقة مواقيت الصلاة وموثوقية التنبيهات.",
+    "prayerUpdatesIncomplete": "تحديثات الصلاة غير مكتملة",
+    "prayerUpdatesGuidance": "تعذر إكمال بعض التحديثات. عُد عند توفر الإنترنت للمحاولة مجددًا. يمكنك أيضًا إعادة محاولة الاستعادة المحلية دون اتصال.",
+    "prayerDetailsPending": "تفاصيل الموقع قيد الانتظار",
+    "prayerSavingPending": "تعذر الحفظ. أعد المحاولة لحفظ تحديثات الصلاة.",
+    "prayerWidgetPending": "تحديث أداة الصلاة قيد الانتظار",
+    "prayerLocationPending": "تحديث الموقع قيد الانتظار. تحقق من إذن الموقع وخدمات الموقع في الجهاز ثم أعد المحاولة.",
+    "prayerCalculationPending": "تحديث حساب مواقيت الصلاة قيد الانتظار",
+    "prayerNativePending": "تحديث الموقع في الخلفية قيد الانتظار",
+    "prayerPreviousCoverage": "قد تظل التنبيهات المؤكدة سابقًا مرتبطة بالموقع السابق؛ لم يُؤكد التسليم الحالي.",
+    "prayerVerificationRetryGuidance": "لا تزال بعض تفاصيل الموقع بحاجة إلى التحقق. أعد المحاولة لتحديث أوقات الصلاة والإشعارات.",
+    "prayerNotificationsBridgedUntil": "تم تحديث الإشعارات حتى {date}. قد تظل الإشعارات اللاحقة تتبع إعداداتك أو موقعك السابق. عد عندما يتوفر لديك اتصال بالإنترنت لتحديثها.",
+    "prayerIssueLocationAccess": "الوصول إلى الموقع",
+    "prayerIssuePlaceName": "اسم المكان",
+    "prayerIssueSaving": "الحفظ",
+    "prayerIssueCalculation": "الحساب",
+    "prayerIssueBackgroundLocation": "الموقع في الخلفية",
+    "prayerIssueWidget": "أداة الشاشة الرئيسية",
+    "prayerIssueRetrying": "جارٍ إعادة المحاولة…",
+    "prayerUpdatingTitle": "جارٍ تحديث أوقات الصلاة…",
+    "prayerUpdatingMessage": "يستغرق ذلك بضع ثوانٍ فقط.",
+    "prayerCountryQuestion": "في أي دولة أنت؟",
+    "prayerCountryQuestionHint": "تعذّر تأكيد دولتك تلقائيًا، مثلًا بالقرب من الحدود. اخترها لاستخدام طريقة الحساب الصحيحة.",
+    "prayerCountryNotSure": "لست متأكدًا",
+    "prayerCalendarShare": "مشاركة تقويم الصلاة",
+    "prayerCalendarOneDay": "يوم واحد",
+    "prayerCalendarOneMonth": "شهر واحد",
+    "prayerCalendarWholeYear": "سنة كاملة",
+    "prayerCalendarChooseDate": "اختر التاريخ",
+    "prayerCalendarChooseMonth": "اختر الشهر",
+    "prayerCalendarChooseYear": "اختر السنة",
+    "prayerCalendarGenerate": "إنشاء ومشاركة",
+    "prayerCalendarPreparing": "جارٍ إعداد الصفحة {current} من {total}…",
+    "prayerCalendarError": "تعذّر إنشاء تقويم الصلاة أو مشاركته. حاول مرة أخرى.",
+    "prayerCalendarUnavailable": "يلزم التحقق من أوقات الصلاة قبل مشاركتها.",
+    "prayerCalendarTitle": "تقويم أوقات الصلاة",
+    "prayerCalendarDate": "التاريخ",
+    "prayerCalendarDay": "اليوم",
+    "prayerCalendarTimeZone": "المنطقة الزمنية",
+    "prayerCalendarGenerated": "أُنشئ في {date}",
+    "prayerCalendarPage": "الصفحة {page} من {total}",
+    "prayerCalendarShareText": "أوقات الصلاة لـ {period} في {location}",
+    "prayerCalendarSunriseColumn": "الشروق",
+    "prayerNotificationsOffTitle": "إشعارات الصلاة متوقفة",
+    "prayerNotificationsOffMessage": "الإشعارات متوقفة، لذلك لا توجد تنبيهات صلاة مجدولة. فعّلها لتصلك تنبيهات عند كل وقت صلاة.",
+    "prayerNotificationsTurnOn": "تفعيل",
+    "prayerNotificationsWaitingTitle": "إشعارات الصلاة بالانتظار",
+    "prayerNotificationsWaitingMessage": "ستُجدول تنبيهات الصلاة بعد التحقق من موقعك.",
+    "prayerNotificationsNoneScheduled": "لا توجد إشعارات صلاة مجدولة بعد. اضغط إعادة المحاولة لجدولتها.",
+    "prayerNotificationsUnsupported": "إشعارات الصلاة غير متاحة على هذا الجهاز.",
+    "prayerUpdatesLocalGuidance": "تعذّر إكمال بعض التحديثات. اضغط إعادة المحاولة لإكمالها.",
+    "prayerSetupTitle": "إعداد مواقيت الصلاة",
+    "prayerSetupSubtitle": "أكمل هذه الخطوات لعرض مواقيت دقيقة وتلقي تنبيه عند كل صلاة.",
+    "prayerSetupStepLabel": "الخطوة {step} من {total}",
+    "prayerSetupLocationTitle": "موقعك",
+    "prayerSetupLocationIntro": "يحتاج هدى إلى موقعك لحساب مواقيت الصلاة في مكانك.",
+    "prayerSetupLocationDeclined": "تم رفض الوصول إلى الموقع. اسمح به لحساب المواقيت تلقائيًا، أو ابحث عن مدينتك.",
+    "prayerSetupLocationBlocked": "الوصول إلى الموقع متوقف لتطبيق هدى. فعّله من الإعدادات، وستُحمَّل المواقيت تلقائيًا عند عودتك.",
+    "prayerSetupLocationServicesOff": "خدمات الموقع متوقفة على هذا الجهاز. فعّلها، وستُحمَّل المواقيت تلقائيًا عند عودتك.",
+    "prayerSetupLocationFailed": "تعذّر على هدى تحديد موقعك. حاول مرة أخرى، أو ابحث عن مدينتك بدلًا من ذلك.",
+    "prayerSetupUseMyLocation": "استخدم موقعي",
+    "prayerSetupSearchCity": "ابحث عن مدينة",
+    "prayerSetupAlertsTitle": "تنبيهات الصلاة",
+    "prayerSetupAlertsHint": "تنبيه عند كل وقت صلاة، حتى عند إغلاق تطبيق هدى.",
+    "prayerSetupReliableTitle": "تذكيرات موثوقة",
+    "prayerSetupReliableHint": "امنع أندرويد من تأخير تنبيهات الصلاة.",
+    "prayerAttentionCount": "{count, plural, =1{أمر واحد يحتاج إلى انتباهك} =2{أمران يحتاجان إلى انتباهك} few{{count} أمور تحتاج إلى انتباهك} many{{count} أمرًا يحتاج إلى انتباهك} other{{count} أمر يحتاج إلى انتباهك}}",
+    "prayerAttentionMore": "{count, plural, other{+{count} أخرى}}",
+    "prayerTimelineNext": "التالية",
+    "prayerTimelineNow": "الآن",
+    "prayerHeroStarted": "دخل وقت الصلاة",
+    "prayerTimesProvisional": "مواقيت مبدئية",
+    "prayerMoreOptions": "خيارات إضافية",
+    "prayerOffsetBadge": "{offset} د",
+    "prayerSetupAlertsIntro": "احصل على تنبيه لطيف عند كل وقت صلاة، حتى عند إغلاق تطبيق هدى.",
+    "prayerSetupAlertsAllow": "السماح بتنبيهات الصلاة",
+    "prayerSetupAlertsDeclined": "بدون الإشعارات لن يتمكن هدى من تذكيرك بدخول وقت الصلاة. ستظل المواقيت ظاهرة هنا، ويمكنك تفعيل التنبيهات لاحقًا.",
+    "prayerSetupContinueWithoutAlerts": "المتابعة بدون تنبيهات",
+    "prayerSetupAlertsOn": "التنبيهات مفعّلة",
+    "prayerSetupAlertsSkipped": "متوقفة — يمكنك تفعيلها في أي وقت من هذه الصفحة",
+    "prayerSetupReliableIntro": "قد يؤخر أندرويد التنبيهات لتوفير البطارية. اسمح لهدى بالعمل دون قيود البطارية ليصلك كل تنبيه في وقته.",
+    "prayerSetupReliableOn": "ستصلك التنبيهات في وقتها",
+    "prayerSetupSkip": "تخطٍّ الآن",
+    "prayerSetupSkipped": "تم التخطي",
+    "prayerSetupLocationHint": "مواقيت محسوبة لمكانك.",
+    "prayerHeroRemaining": "متبقٍ",
+    "prayerSunriseLabel": "الشروق",
+    "prayerCalendarFormatImage": "تُشارك كصورة",
+    "prayerCalendarFormatPdf": "تُشارك كمستند PDF",
+    "prayerHeroStartedAgo": "{minutes, plural, =0{بدأ الآن} =1{بدأ قبل دقيقة} =2{بدأ قبل دقيقتين} few{بدأ قبل {minutes} دقائق} other{بدأ قبل {minutes} دقيقة}}"
 }

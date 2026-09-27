@@ -1577,6 +1577,10 @@
     "@hudaQuranApp": {
         "description": "App name for sharing"
     },
+    "shareImageTagline": "Islamic Companion App",
+    "@shareImageTagline": {
+        "description": "Tagline shown under the app name in shared images"
+    },
     "translationNotAvailable": "Translation not available",
     "@translationNotAvailable": {
         "description": "Translation not available message"
@@ -5417,13 +5421,21 @@
     "themeResetMessage": "This theme was reset to its default layout.",
     "homeChangesSaveFailed": "We couldn't save your home changes. Try again.",
     "eventSpecialOccasion": "A Blessed Occasion",
-    "@eventSpecialOccasion": {"description": "Fallback title for an unknown configured Islamic occasion"},
+    "@eventSpecialOccasion": {
+        "description": "Fallback title for an unknown configured Islamic occasion"
+    },
     "eventSpecialOccasionSubtitle": "A meaningful day in the Islamic calendar",
-    "@eventSpecialOccasionSubtitle": {"description": "Fallback subtitle for an unknown configured Islamic occasion"},
+    "@eventSpecialOccasionSubtitle": {
+        "description": "Fallback subtitle for an unknown configured Islamic occasion"
+    },
     "eventSpecialOccasionGuidance": "Mark this day with remembrance, gratitude, and reliable guidance specific to the occasion.",
-    "@eventSpecialOccasionGuidance": {"description": "Respectful generic guidance for an unknown configured Islamic occasion"},
+    "@eventSpecialOccasionGuidance": {
+        "description": "Respectful generic guidance for an unknown configured Islamic occasion"
+    },
     "snackbarNeutral": "Notice",
-    "@snackbarNeutral": {"description": "Accessible status label for routine neutral feedback"},
+    "@snackbarNeutral": {
+        "description": "Accessible status label for routine neutral feedback"
+    },
     "notificationPermissionDescription": "Turn on notifications to receive the reminders you choose, right when they matter.",
     "enableNotifications": "Turn on notifications",
     "batteryOptimizationDescription": "Android battery optimization can delay reminders. Allow Huda to run without optimization for more reliable alerts.",
@@ -5538,5 +5550,162 @@
     "prayerNotificationSettingsChanged": "Your prayer notification settings changed. Tap retry to update the schedule.",
     "prayerNotificationSyncBusy": "Prayer notification scheduling is busy right now. Please try again shortly.",
     "prayerNotificationSyncUnavailable": "Prayer notification scheduling is temporarily unavailable.",
-    "prayerNotificationSyncVerificationFailed": "We couldn't verify the prayer notification schedule. Please try again."
+    "prayerNotificationSyncVerificationFailed": "We couldn't verify the prayer notification schedule. Please try again.",
+    "ayahAudioRange": "Choose ayahs",
+    "audioFromAyah": "From ayah",
+    "audioToAyah": "To ayah",
+    "audioRepeatRange": "Repeat selection",
+    "audioRangeEndHint": "Playback stops after the last selected ayah.",
+    "audioPlayRange": "Play selection",
+    "downloadAyah": "Download ayah",
+    "ayahDownloaded": "Ayah downloaded",
+    "audioRangeRepeatHint": "The selected ayahs repeat until you stop playback.",
+    "playingAyahOfTotal": "Ayah {current} of {total}",
+    "@playingAyahOfTotal": {
+        "description": "Current ayah and total number of ayahs in the mini audio player",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "prayerVerificationPending": "Location verification pending",
+    "prayerVerificationGuidance": "Some location details still need verification. Come back when you have internet and retry to improve prayer-time and notification reliability.",
+    "prayerUpdatesIncomplete": "Prayer updates incomplete",
+    "prayerUpdatesGuidance": "Some updates could not be completed. Come back when you have internet to retry. Local recovery can also be retried offline.",
+    "prayerDetailsPending": "Location details pending",
+    "prayerSavingPending": "Saving failed. Retry to save these prayer updates.",
+    "prayerWidgetPending": "Prayer widget update pending",
+    "prayerLocationPending": "Location update pending. Check location permission and device location services, then retry.",
+    "prayerCalculationPending": "Prayer calculation update pending",
+    "prayerNativePending": "Background location update pending",
+    "prayerPreviousCoverage": "Previously acknowledged notifications may still follow the previous location; current delivery is not confirmed.",
+    "prayerVerificationRetryGuidance": "Some location details still need verification. Retry to update prayer times and notifications.",
+    "prayerNotificationsBridgedUntil": "Notifications are updated through {date}. Later ones may still follow your previous settings or location. Come back when you have internet to update them.",
+    "@prayerNotificationsBridgedUntil": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "prayerIssueLocationAccess": "Location access",
+    "prayerIssuePlaceName": "Place name",
+    "prayerIssueSaving": "Saving",
+    "prayerIssueCalculation": "Calculation",
+    "prayerIssueBackgroundLocation": "Background location",
+    "prayerIssueWidget": "Home widget",
+    "prayerIssueRetrying": "Retrying…",
+    "prayerUpdatingTitle": "Updating prayer times…",
+    "prayerUpdatingMessage": "This only takes a few seconds.",
+    "prayerCountryQuestion": "Which country are you in?",
+    "prayerCountryQuestionHint": "Your country couldn't be confirmed automatically, for example near a border. Choose it to use the right calculation method.",
+    "prayerCountryNotSure": "Not sure",
+    "prayerCalendarShare": "Share prayer calendar",
+    "prayerCalendarOneDay": "One day",
+    "prayerCalendarOneMonth": "One month",
+    "prayerCalendarWholeYear": "Whole year",
+    "prayerCalendarChooseDate": "Choose date",
+    "prayerCalendarChooseMonth": "Choose month",
+    "prayerCalendarChooseYear": "Choose year",
+    "prayerCalendarGenerate": "Generate and share",
+    "prayerCalendarPreparing": "Preparing page {current} of {total}…",
+    "prayerCalendarError": "Could not generate or share the prayer calendar. Please try again.",
+    "prayerCalendarUnavailable": "Verified prayer times are needed before sharing.",
+    "prayerCalendarTitle": "Prayer time calendar",
+    "prayerCalendarDate": "Date",
+    "prayerCalendarDay": "Day",
+    "prayerCalendarTimeZone": "Time zone",
+    "prayerCalendarGenerated": "Generated {date}",
+    "prayerCalendarPage": "Page {page} of {total}",
+    "prayerCalendarShareText": "Prayer times for {period} in {location}",
+    "prayerCalendarSunriseColumn": "Sunrise",
+    "prayerNotificationsOffTitle": "Prayer notifications are off",
+    "prayerNotificationsOffMessage": "Notifications are turned off, so no prayer alerts are scheduled. Turn them on to get an alert at each prayer time.",
+    "prayerNotificationsTurnOn": "Turn on",
+    "prayerNotificationsWaitingTitle": "Prayer notifications are waiting",
+    "prayerNotificationsWaitingMessage": "Prayer alerts will be scheduled once your location is verified.",
+    "prayerNotificationsNoneScheduled": "No prayer notifications are scheduled yet. Tap retry to schedule them.",
+    "prayerNotificationsUnsupported": "Prayer notifications aren't available on this device.",
+    "prayerUpdatesLocalGuidance": "Some updates couldn't be completed. Tap Retry to finish them.",
+    "prayerSetupTitle": "Set up prayer times",
+    "prayerSetupSubtitle": "Finish these steps to see accurate times and get an alert at each prayer.",
+    "prayerSetupStepLabel": "Step {step} of {total}",
+    "@prayerSetupStepLabel": {
+        "placeholders": {
+            "step": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "prayerSetupLocationTitle": "Your location",
+    "prayerSetupLocationIntro": "Huda needs your location to calculate prayer times for where you are.",
+    "prayerSetupLocationDeclined": "Location access was declined. Allow it to calculate times automatically, or search for your city.",
+    "prayerSetupLocationBlocked": "Location access is off for Huda. Turn it on in Settings — prayer times load automatically when you come back.",
+    "prayerSetupLocationServicesOff": "Location services are off on this device. Turn them on — prayer times load automatically when you come back.",
+    "prayerSetupLocationFailed": "Huda couldn't find your location. Try again, or search for your city instead.",
+    "prayerSetupUseMyLocation": "Use my location",
+    "prayerSetupSearchCity": "Search for a city",
+    "prayerSetupAlertsTitle": "Prayer alerts",
+    "prayerSetupAlertsHint": "An alert at each prayer time, even when Huda is closed.",
+    "prayerSetupReliableTitle": "Reliable reminders",
+    "prayerSetupReliableHint": "Keep Android from delaying prayer alerts.",
+    "prayerAttentionCount": "{count, plural, =1{1 thing needs attention} other{{count} things need attention}}",
+    "@prayerAttentionCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "prayerAttentionMore": "{count, plural, other{+{count} more}}",
+    "@prayerAttentionMore": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "prayerTimelineNext": "Next",
+    "prayerTimelineNow": "Now",
+    "prayerHeroStarted": "Prayer time started",
+    "prayerTimesProvisional": "Provisional times",
+    "prayerMoreOptions": "More options",
+    "prayerOffsetBadge": "{offset} min",
+    "@prayerOffsetBadge": {
+        "placeholders": {
+            "offset": {
+                "type": "String"
+            }
+        }
+    },
+    "prayerSetupAlertsIntro": "Get a gentle alert at every prayer time, even when Huda is closed.",
+    "prayerSetupAlertsAllow": "Allow prayer alerts",
+    "prayerSetupAlertsDeclined": "Without notifications, Huda can't remind you when it's time to pray. Prayer times still show here, and you can turn alerts on later.",
+    "prayerSetupContinueWithoutAlerts": "Continue without alerts",
+    "prayerSetupAlertsOn": "Alerts are on",
+    "prayerSetupAlertsSkipped": "Off — you can turn them on anytime from this page",
+    "prayerSetupReliableIntro": "Android can hold back alerts to save battery. Let Huda run without battery restrictions so every alert arrives on time.",
+    "prayerSetupReliableOn": "Alerts will arrive on time",
+    "prayerSetupSkip": "Skip for now",
+    "prayerSetupSkipped": "Skipped",
+    "prayerSetupLocationHint": "Times calculated for where you are.",
+    "prayerHeroRemaining": "left",
+    "prayerSunriseLabel": "Sunrise",
+    "prayerCalendarFormatImage": "Shared as an image",
+    "prayerCalendarFormatPdf": "Shared as a PDF document",
+    "prayerHeroStartedAgo": "{minutes, plural, =0{Started just now} =1{Started 1 min ago} other{Started {minutes} min ago}}",
+    "@prayerHeroStartedAgo": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    }
 }

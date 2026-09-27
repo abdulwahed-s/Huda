@@ -1188,6 +1188,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hudaQuranApp => 'هُدَى - رفيقك الإسلامي';
 
   @override
+  String get shareImageTagline => 'رفيقك الإسلامي';
+
+  @override
   String get translationNotAvailable => 'الترجمة غير متاحة';
 
   @override
@@ -1226,7 +1229,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get loadingAudio => 'جارٍ تحميل الصوت...';
+  String get loadingAudio => 'جارٍ تحميل التلاوة…';
 
   @override
   String get unableToLoadAudio => 'تعذّر تحميل الصوت لهذا القارئ';
@@ -1296,7 +1299,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ayahText => 'نص الآية';
 
   @override
-  String get audioControls => 'عناصر التحكم في الصوت';
+  String get audioControls => 'الاستماع';
 
   @override
   String get unableLoadAudio => 'تعذّر تحميل الصوت لهذا القارئ';
@@ -1305,19 +1308,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get readerSelection => 'اختيار القارئ';
 
   @override
-  String get audioDownloads => 'تنزيلات الصوت';
+  String get audioDownloads => 'تنزيل التلاوة';
 
   @override
-  String get audioSettings => 'إعدادات الصوت';
+  String get audioSettings => 'خيارات التشغيل';
 
   @override
   String get includedInAll => 'مشمول في الكل';
 
   @override
-  String get surahDownloaded => 'نُزِّلت السورة';
+  String get surahDownloaded => 'تم تنزيل السورة';
 
   @override
-  String get downloading => 'جارٍ التنزيل...';
+  String get downloading => 'جارٍ التنزيل…';
 
   @override
   String get downloadSurah => 'تنزيل السورة';
@@ -5057,4 +5060,378 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get prayerNotificationSyncVerificationFailed =>
       'تعذّر التحقق من جدول تنبيهات الصلاة. حاول مرة أخرى.';
+
+  @override
+  String get ayahAudioRange => 'تحديد الآيات';
+
+  @override
+  String get audioFromAyah => 'من الآية';
+
+  @override
+  String get audioToAyah => 'إلى الآية';
+
+  @override
+  String get audioRepeatRange => 'تكرار المقطع';
+
+  @override
+  String get audioRangeEndHint => 'يتوقف التشغيل عند نهاية الآيات المحددة.';
+
+  @override
+  String get audioPlayRange => 'تشغيل المقطع';
+
+  @override
+  String get downloadAyah => 'تنزيل الآية';
+
+  @override
+  String get ayahDownloaded => 'تم تنزيل الآية';
+
+  @override
+  String get audioRangeRepeatHint => 'تتكرر الآيات المحددة حتى توقف التشغيل.';
+
+  @override
+  String playingAyahOfTotal(int current, int total) {
+    return 'الآية $current من $total';
+  }
+
+  @override
+  String get prayerVerificationPending => 'التحقق من الموقع قيد الانتظار';
+
+  @override
+  String get prayerVerificationGuidance =>
+      'ما زالت بعض تفاصيل الموقع بحاجة إلى التحقق. عُد عند توفر الإنترنت وأعد المحاولة لتحسين دقة مواقيت الصلاة وموثوقية التنبيهات.';
+
+  @override
+  String get prayerUpdatesIncomplete => 'تحديثات الصلاة غير مكتملة';
+
+  @override
+  String get prayerUpdatesGuidance =>
+      'تعذر إكمال بعض التحديثات. عُد عند توفر الإنترنت للمحاولة مجددًا. يمكنك أيضًا إعادة محاولة الاستعادة المحلية دون اتصال.';
+
+  @override
+  String get prayerDetailsPending => 'تفاصيل الموقع قيد الانتظار';
+
+  @override
+  String get prayerSavingPending =>
+      'تعذر الحفظ. أعد المحاولة لحفظ تحديثات الصلاة.';
+
+  @override
+  String get prayerWidgetPending => 'تحديث أداة الصلاة قيد الانتظار';
+
+  @override
+  String get prayerLocationPending =>
+      'تحديث الموقع قيد الانتظار. تحقق من إذن الموقع وخدمات الموقع في الجهاز ثم أعد المحاولة.';
+
+  @override
+  String get prayerCalculationPending =>
+      'تحديث حساب مواقيت الصلاة قيد الانتظار';
+
+  @override
+  String get prayerNativePending => 'تحديث الموقع في الخلفية قيد الانتظار';
+
+  @override
+  String get prayerPreviousCoverage =>
+      'قد تظل التنبيهات المؤكدة سابقًا مرتبطة بالموقع السابق؛ لم يُؤكد التسليم الحالي.';
+
+  @override
+  String get prayerVerificationRetryGuidance =>
+      'لا تزال بعض تفاصيل الموقع بحاجة إلى التحقق. أعد المحاولة لتحديث أوقات الصلاة والإشعارات.';
+
+  @override
+  String prayerNotificationsBridgedUntil(String date) {
+    return 'تم تحديث الإشعارات حتى $date. قد تظل الإشعارات اللاحقة تتبع إعداداتك أو موقعك السابق. عد عندما يتوفر لديك اتصال بالإنترنت لتحديثها.';
+  }
+
+  @override
+  String get prayerIssueLocationAccess => 'الوصول إلى الموقع';
+
+  @override
+  String get prayerIssuePlaceName => 'اسم المكان';
+
+  @override
+  String get prayerIssueSaving => 'الحفظ';
+
+  @override
+  String get prayerIssueCalculation => 'الحساب';
+
+  @override
+  String get prayerIssueBackgroundLocation => 'الموقع في الخلفية';
+
+  @override
+  String get prayerIssueWidget => 'أداة الشاشة الرئيسية';
+
+  @override
+  String get prayerIssueRetrying => 'جارٍ إعادة المحاولة…';
+
+  @override
+  String get prayerUpdatingTitle => 'جارٍ تحديث أوقات الصلاة…';
+
+  @override
+  String get prayerUpdatingMessage => 'يستغرق ذلك بضع ثوانٍ فقط.';
+
+  @override
+  String get prayerCountryQuestion => 'في أي دولة أنت؟';
+
+  @override
+  String get prayerCountryQuestionHint =>
+      'تعذّر تأكيد دولتك تلقائيًا، مثلًا بالقرب من الحدود. اخترها لاستخدام طريقة الحساب الصحيحة.';
+
+  @override
+  String get prayerCountryNotSure => 'لست متأكدًا';
+
+  @override
+  String get prayerCalendarShare => 'مشاركة تقويم الصلاة';
+
+  @override
+  String get prayerCalendarOneDay => 'يوم واحد';
+
+  @override
+  String get prayerCalendarOneMonth => 'شهر واحد';
+
+  @override
+  String get prayerCalendarWholeYear => 'سنة كاملة';
+
+  @override
+  String get prayerCalendarChooseDate => 'اختر التاريخ';
+
+  @override
+  String get prayerCalendarChooseMonth => 'اختر الشهر';
+
+  @override
+  String get prayerCalendarChooseYear => 'اختر السنة';
+
+  @override
+  String get prayerCalendarGenerate => 'إنشاء ومشاركة';
+
+  @override
+  String prayerCalendarPreparing(Object current, Object total) {
+    return 'جارٍ إعداد الصفحة $current من $total…';
+  }
+
+  @override
+  String get prayerCalendarError =>
+      'تعذّر إنشاء تقويم الصلاة أو مشاركته. حاول مرة أخرى.';
+
+  @override
+  String get prayerCalendarUnavailable =>
+      'يلزم التحقق من أوقات الصلاة قبل مشاركتها.';
+
+  @override
+  String get prayerCalendarTitle => 'تقويم أوقات الصلاة';
+
+  @override
+  String get prayerCalendarDate => 'التاريخ';
+
+  @override
+  String get prayerCalendarDay => 'اليوم';
+
+  @override
+  String get prayerCalendarTimeZone => 'المنطقة الزمنية';
+
+  @override
+  String prayerCalendarGenerated(Object date) {
+    return 'أُنشئ في $date';
+  }
+
+  @override
+  String prayerCalendarPage(Object page, Object total) {
+    return 'الصفحة $page من $total';
+  }
+
+  @override
+  String prayerCalendarShareText(Object location, Object period) {
+    return 'أوقات الصلاة لـ $period في $location';
+  }
+
+  @override
+  String get prayerCalendarSunriseColumn => 'الشروق';
+
+  @override
+  String get prayerNotificationsOffTitle => 'إشعارات الصلاة متوقفة';
+
+  @override
+  String get prayerNotificationsOffMessage =>
+      'الإشعارات متوقفة، لذلك لا توجد تنبيهات صلاة مجدولة. فعّلها لتصلك تنبيهات عند كل وقت صلاة.';
+
+  @override
+  String get prayerNotificationsTurnOn => 'تفعيل';
+
+  @override
+  String get prayerNotificationsWaitingTitle => 'إشعارات الصلاة بالانتظار';
+
+  @override
+  String get prayerNotificationsWaitingMessage =>
+      'ستُجدول تنبيهات الصلاة بعد التحقق من موقعك.';
+
+  @override
+  String get prayerNotificationsNoneScheduled =>
+      'لا توجد إشعارات صلاة مجدولة بعد. اضغط إعادة المحاولة لجدولتها.';
+
+  @override
+  String get prayerNotificationsUnsupported =>
+      'إشعارات الصلاة غير متاحة على هذا الجهاز.';
+
+  @override
+  String get prayerUpdatesLocalGuidance =>
+      'تعذّر إكمال بعض التحديثات. اضغط إعادة المحاولة لإكمالها.';
+
+  @override
+  String get prayerSetupTitle => 'إعداد مواقيت الصلاة';
+
+  @override
+  String get prayerSetupSubtitle =>
+      'أكمل هذه الخطوات لعرض مواقيت دقيقة وتلقي تنبيه عند كل صلاة.';
+
+  @override
+  String prayerSetupStepLabel(int step, int total) {
+    return 'الخطوة $step من $total';
+  }
+
+  @override
+  String get prayerSetupLocationTitle => 'موقعك';
+
+  @override
+  String get prayerSetupLocationIntro =>
+      'يحتاج هدى إلى موقعك لحساب مواقيت الصلاة في مكانك.';
+
+  @override
+  String get prayerSetupLocationDeclined =>
+      'تم رفض الوصول إلى الموقع. اسمح به لحساب المواقيت تلقائيًا، أو ابحث عن مدينتك.';
+
+  @override
+  String get prayerSetupLocationBlocked =>
+      'الوصول إلى الموقع متوقف لتطبيق هدى. فعّله من الإعدادات، وستُحمَّل المواقيت تلقائيًا عند عودتك.';
+
+  @override
+  String get prayerSetupLocationServicesOff =>
+      'خدمات الموقع متوقفة على هذا الجهاز. فعّلها، وستُحمَّل المواقيت تلقائيًا عند عودتك.';
+
+  @override
+  String get prayerSetupLocationFailed =>
+      'تعذّر على هدى تحديد موقعك. حاول مرة أخرى، أو ابحث عن مدينتك بدلًا من ذلك.';
+
+  @override
+  String get prayerSetupUseMyLocation => 'استخدم موقعي';
+
+  @override
+  String get prayerSetupSearchCity => 'ابحث عن مدينة';
+
+  @override
+  String get prayerSetupAlertsTitle => 'تنبيهات الصلاة';
+
+  @override
+  String get prayerSetupAlertsHint =>
+      'تنبيه عند كل وقت صلاة، حتى عند إغلاق تطبيق هدى.';
+
+  @override
+  String get prayerSetupReliableTitle => 'تذكيرات موثوقة';
+
+  @override
+  String get prayerSetupReliableHint => 'امنع أندرويد من تأخير تنبيهات الصلاة.';
+
+  @override
+  String prayerAttentionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count أمر يحتاج إلى انتباهك',
+      many: '$count أمرًا يحتاج إلى انتباهك',
+      few: '$count أمور تحتاج إلى انتباهك',
+      two: 'أمران يحتاجان إلى انتباهك',
+      one: 'أمر واحد يحتاج إلى انتباهك',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerAttentionMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count أخرى',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get prayerTimelineNext => 'التالية';
+
+  @override
+  String get prayerTimelineNow => 'الآن';
+
+  @override
+  String get prayerHeroStarted => 'دخل وقت الصلاة';
+
+  @override
+  String get prayerTimesProvisional => 'مواقيت مبدئية';
+
+  @override
+  String get prayerMoreOptions => 'خيارات إضافية';
+
+  @override
+  String prayerOffsetBadge(String offset) {
+    return '$offset د';
+  }
+
+  @override
+  String get prayerSetupAlertsIntro =>
+      'احصل على تنبيه لطيف عند كل وقت صلاة، حتى عند إغلاق تطبيق هدى.';
+
+  @override
+  String get prayerSetupAlertsAllow => 'السماح بتنبيهات الصلاة';
+
+  @override
+  String get prayerSetupAlertsDeclined =>
+      'بدون الإشعارات لن يتمكن هدى من تذكيرك بدخول وقت الصلاة. ستظل المواقيت ظاهرة هنا، ويمكنك تفعيل التنبيهات لاحقًا.';
+
+  @override
+  String get prayerSetupContinueWithoutAlerts => 'المتابعة بدون تنبيهات';
+
+  @override
+  String get prayerSetupAlertsOn => 'التنبيهات مفعّلة';
+
+  @override
+  String get prayerSetupAlertsSkipped =>
+      'متوقفة — يمكنك تفعيلها في أي وقت من هذه الصفحة';
+
+  @override
+  String get prayerSetupReliableIntro =>
+      'قد يؤخر أندرويد التنبيهات لتوفير البطارية. اسمح لهدى بالعمل دون قيود البطارية ليصلك كل تنبيه في وقته.';
+
+  @override
+  String get prayerSetupReliableOn => 'ستصلك التنبيهات في وقتها';
+
+  @override
+  String get prayerSetupSkip => 'تخطٍّ الآن';
+
+  @override
+  String get prayerSetupSkipped => 'تم التخطي';
+
+  @override
+  String get prayerSetupLocationHint => 'مواقيت محسوبة لمكانك.';
+
+  @override
+  String get prayerHeroRemaining => 'متبقٍ';
+
+  @override
+  String get prayerSunriseLabel => 'الشروق';
+
+  @override
+  String get prayerCalendarFormatImage => 'تُشارك كصورة';
+
+  @override
+  String get prayerCalendarFormatPdf => 'تُشارك كمستند PDF';
+
+  @override
+  String prayerHeroStartedAgo(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'بدأ قبل $minutes دقيقة',
+      few: 'بدأ قبل $minutes دقائق',
+      two: 'بدأ قبل دقيقتين',
+      one: 'بدأ قبل دقيقة',
+      zero: 'بدأ الآن',
+    );
+    return '$_temp0';
+  }
 }

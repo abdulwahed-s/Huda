@@ -2334,6 +2334,8 @@ abstract class AppLocalizations {
   /// **'Huda - Islamic Companion App'**
   String get hudaQuranApp;
 
+  String get shareImageTagline;
+
   /// Translation not available message
   ///
   /// In en, this message translates to:
@@ -9343,6 +9345,208 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'t verify the prayer notification schedule. Please try again.'**
   String get prayerNotificationSyncVerificationFailed;
+
+  String get ayahAudioRange;
+
+  String get audioFromAyah;
+
+  String get audioToAyah;
+
+  String get audioRepeatRange;
+
+  String get audioRangeEndHint;
+
+  String get audioPlayRange;
+
+  String get downloadAyah;
+
+  String get ayahDownloaded;
+
+  String get audioRangeRepeatHint;
+
+  String playingAyahOfTotal(int current, int total);
+
+  String get prayerVerificationPending;
+
+  String get prayerVerificationGuidance;
+
+  String get prayerUpdatesIncomplete;
+
+  String get prayerUpdatesGuidance;
+
+  String get prayerDetailsPending;
+
+  String get prayerSavingPending;
+
+  String get prayerWidgetPending;
+
+  String get prayerLocationPending;
+
+  String get prayerCalculationPending;
+
+  String get prayerNativePending;
+
+  String get prayerPreviousCoverage;
+
+  String get prayerVerificationRetryGuidance;
+
+  String prayerNotificationsBridgedUntil(String date);
+
+  String get prayerIssueLocationAccess;
+
+  String get prayerIssuePlaceName;
+
+  String get prayerIssueSaving;
+
+  String get prayerIssueCalculation;
+
+  String get prayerIssueBackgroundLocation;
+
+  String get prayerIssueWidget;
+
+  String get prayerIssueRetrying;
+
+  String get prayerUpdatingTitle;
+
+  String get prayerUpdatingMessage;
+
+  String get prayerCountryQuestion;
+
+  String get prayerCountryQuestionHint;
+
+  String get prayerCountryNotSure;
+
+  String get prayerCalendarShare;
+
+  String get prayerCalendarOneDay;
+
+  String get prayerCalendarOneMonth;
+
+  String get prayerCalendarWholeYear;
+
+  String get prayerCalendarChooseDate;
+
+  String get prayerCalendarChooseMonth;
+
+  String get prayerCalendarChooseYear;
+
+  String get prayerCalendarGenerate;
+
+  String prayerCalendarPreparing(Object current, Object total);
+
+  String get prayerCalendarError;
+
+  String get prayerCalendarUnavailable;
+
+  String get prayerCalendarTitle;
+
+  String get prayerCalendarDate;
+
+  String get prayerCalendarDay;
+
+  String get prayerCalendarTimeZone;
+
+  String prayerCalendarGenerated(Object date);
+
+  String prayerCalendarPage(Object page, Object total);
+
+  String prayerCalendarShareText(Object location, Object period);
+
+  String get prayerCalendarSunriseColumn;
+
+  String get prayerNotificationsOffTitle;
+
+  String get prayerNotificationsOffMessage;
+
+  String get prayerNotificationsTurnOn;
+
+  String get prayerNotificationsWaitingTitle;
+
+  String get prayerNotificationsWaitingMessage;
+
+  String get prayerNotificationsNoneScheduled;
+
+  String get prayerNotificationsUnsupported;
+
+  String get prayerUpdatesLocalGuidance;
+
+  String get prayerSetupTitle;
+
+  String get prayerSetupSubtitle;
+
+  String prayerSetupStepLabel(int step, int total);
+
+  String get prayerSetupLocationTitle;
+
+  String get prayerSetupLocationIntro;
+
+  String get prayerSetupLocationDeclined;
+
+  String get prayerSetupLocationBlocked;
+
+  String get prayerSetupLocationServicesOff;
+
+  String get prayerSetupLocationFailed;
+
+  String get prayerSetupUseMyLocation;
+
+  String get prayerSetupSearchCity;
+
+  String get prayerSetupAlertsTitle;
+
+  String get prayerSetupAlertsHint;
+
+  String get prayerSetupReliableTitle;
+
+  String get prayerSetupReliableHint;
+
+  String prayerAttentionCount(int count);
+
+  String prayerAttentionMore(int count);
+
+  String get prayerTimelineNext;
+
+  String get prayerTimelineNow;
+
+  String get prayerHeroStarted;
+
+  String get prayerTimesProvisional;
+
+  String get prayerMoreOptions;
+
+  String prayerOffsetBadge(String offset);
+
+  String get prayerSetupAlertsIntro;
+
+  String get prayerSetupAlertsAllow;
+
+  String get prayerSetupAlertsDeclined;
+
+  String get prayerSetupContinueWithoutAlerts;
+
+  String get prayerSetupAlertsOn;
+
+  String get prayerSetupAlertsSkipped;
+
+  String get prayerSetupReliableIntro;
+
+  String get prayerSetupReliableOn;
+
+  String get prayerSetupSkip;
+
+  String get prayerSetupSkipped;
+
+  String get prayerSetupLocationHint;
+
+  String get prayerHeroRemaining;
+
+  String get prayerSunriseLabel;
+
+  String get prayerCalendarFormatImage;
+
+  String get prayerCalendarFormatPdf;
+
+  String prayerHeroStartedAgo(int minutes);
 }
 
 class _AppLocalizationsDelegate

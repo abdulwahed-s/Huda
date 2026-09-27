@@ -73,10 +73,7 @@ class PrayerTimesLoadingWidget extends StatelessWidget {
                       SizedBox(height: 3.h),
                       Text(
                         l10n.prayerCountdownLoadingText,
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          color: secondaryText,
-                        ),
+                        style: TextStyle(fontSize: 13.sp, color: secondaryText),
                       ),
                     ],
                   ),
@@ -168,11 +165,7 @@ class _PrayerTimePreview extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 8.h),
       child: Row(
         children: [
-          Icon(
-            Icons.access_time_rounded,
-            color: textColor,
-            size: 16.sp,
-          ),
+          Icon(Icons.access_time_rounded, color: textColor, size: 16.sp),
           SizedBox(width: 8.w),
           Expanded(
             child: Text(

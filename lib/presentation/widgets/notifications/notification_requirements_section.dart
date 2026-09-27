@@ -4,8 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:huda/presentation/widgets/notifications/notification_access_controller.dart';
 
 enum NotificationFeature {
   prayerTimes,
@@ -39,107 +38,46 @@ class NotificationRequirementsSection extends StatefulWidget {
 }
 
 class _NotificationRequirementsSectionState
-    extends State<NotificationRequirementsSection> with WidgetsBindingObserver {
-  bool _hasLoaded = false;
-  bool _notificationsEnabled = false;
-  bool _exactAlarmsAllowed = true;
-  bool _batteryOptimizationExempted = true;
-  bool _notificationNeedsSettings = false;
-  bool _isRequestInProgress = false;
+    extends State<NotificationRequirementsSection> {
+  late final NotificationAccessController _controller;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    PermissionHandlers.accessSettingsChanges.addListener(_refresh);
-    _refresh();
+    _controller = NotificationAccessController(
+      cubit: context.read<NotificationsCubit>(),
+      onAccessGained: widget.onNotificationEnabled,
+    )..addListener(_onAccessChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant NotificationRequirementsSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _controller.onAccessGained = widget.onNotificationEnabled;
   }
 
   @override
   void dispose() {
-    PermissionHandlers.accessSettingsChanges.removeListener(_refresh);
-    WidgetsBinding.instance.removeObserver(this);
+    _controller
+      ..removeListener(_onAccessChanged)
+      ..dispose();
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _refresh();
-    }
-  }
-
-  Future<void> _refresh() async {
-    final cubit = context.read<NotificationsCubit>();
-    final notificationsEnabled = await cubit.getIsNotificationEnabled();
-    final exactAlarmsAllowed = PlatformUtils.isAndroid
-        ? await cubit.canScheduleExactNotifications()
-        : true;
-    final batteryOptimizationExempted = PlatformUtils.isAndroid
-        ? await cubit.getIsBatteryOptimizationExempted()
-        : true;
-
-    var notificationNeedsSettings = false;
-    if (!notificationsEnabled &&
-        (PlatformUtils.isAndroid || PlatformUtils.isIOS)) {
-      final status = await Permission.notification.status;
-      notificationNeedsSettings =
-          status.isPermanentlyDenied || status.isRestricted;
-    }
-
-    if (!mounted) return;
-
-    final shouldReschedule = _hasLoaded &&
-        ((!_notificationsEnabled && notificationsEnabled) ||
-            (!_exactAlarmsAllowed && exactAlarmsAllowed));
-    setState(() {
-      _hasLoaded = true;
-      _notificationsEnabled = notificationsEnabled;
-      _exactAlarmsAllowed = exactAlarmsAllowed;
-      _batteryOptimizationExempted = batteryOptimizationExempted;
-      _notificationNeedsSettings = notificationNeedsSettings;
-      _isRequestInProgress = false;
-    });
-
-    if (shouldReschedule && mounted) {
-      await widget.onNotificationEnabled?.call();
-    }
-  }
-
-  Future<void> _requestNotificationPermission() async {
-    if (_isRequestInProgress) return;
-    setState(() => _isRequestInProgress = true);
-    await PermissionHandlers.requestNotificationPermission(context);
-    if (!mounted) return;
-    await _refresh();
-  }
-
-  Future<void> _requestBatteryOptimizationExemption() async {
-    if (_isRequestInProgress) return;
-    setState(() => _isRequestInProgress = true);
-    await PermissionHandlers.requestBatteryOptimization(context);
-    if (!mounted) return;
-    await _refresh();
-  }
-
-  Future<void> _requestExactAlarmsPermission() async {
-    if (_isRequestInProgress) return;
-    setState(() => _isRequestInProgress = true);
-    await PermissionHandlers.requestExactAlarmsPermission(context);
-    if (!mounted) return;
-    await _refresh();
+  void _onAccessChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_hasLoaded) return const SizedBox.shrink();
+    final access = _controller.access;
+    if (access == null) return const SizedBox.shrink();
 
-    final needsNotification = !_notificationsEnabled;
-    final needsExactAlarms = PlatformUtils.isAndroid && !_exactAlarmsAllowed;
-    final needsBatteryOptimization =
-        PlatformUtils.isAndroid && !_batteryOptimizationExempted;
+    final needsNotification = access.needsNotification;
+    final needsExactAlarms = access.needsExactAlarms;
+    final needsBatteryOptimization = access.needsBatteryOptimization;
 
-    if (!needsNotification && !needsExactAlarms && !needsBatteryOptimization) {
+    if (access.isReady) {
       if (!widget.showConfiguredStatus) return const SizedBox.shrink();
       return _StatusSection(
         child: _ConfiguredNotificationStatus(
@@ -162,14 +100,14 @@ class _NotificationRequirementsSectionState
           description: feature.description,
           icon: feature.icon,
           accent: feature.accent,
-          actionLabel: _notificationNeedsSettings
+          actionLabel: access.notificationNeedsSettings
               ? l10n.openSettings
               : l10n.enableNotifications,
-          actionIcon: _notificationNeedsSettings
+          actionIcon: access.notificationNeedsSettings
               ? Icons.settings_outlined
               : Icons.notifications_active_outlined,
           foregroundColor: theme.colorScheme.onPrimary,
-          onPressed: _requestNotificationPermission,
+          onPressed: () => _controller.requestNotifications(context),
         ),
       if (needsBatteryOptimization)
         _SetupRequirement(
@@ -182,7 +120,7 @@ class _NotificationRequirementsSectionState
           actionLabel: l10n.keepRemindersReliable,
           actionIcon: Icons.battery_saver_outlined,
           foregroundColor: theme.colorScheme.onSecondary,
-          onPressed: _requestBatteryOptimizationExemption,
+          onPressed: () => _controller.requestBatteryOptimization(context),
         ),
       if (needsExactAlarms)
         _SetupRequirement(
@@ -193,14 +131,14 @@ class _NotificationRequirementsSectionState
           actionLabel: l10n.allowExactAlarms,
           actionIcon: Icons.alarm_add_outlined,
           foregroundColor: theme.colorScheme.onPrimary,
-          onPressed: _requestExactAlarmsPermission,
+          onPressed: () => _controller.requestExactAlarms(context),
         ),
     ];
 
     final panel = _NotificationSetupPanel(
       primaryRequirement: requirements.first,
       additionalRequirements: requirements.skip(1).toList(),
-      isLoading: _isRequestInProgress,
+      isLoading: _controller.isRequestInProgress,
     );
 
     if (!widget.showConfiguredStatus) {

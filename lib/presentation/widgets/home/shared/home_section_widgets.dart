@@ -1080,7 +1080,7 @@ class _LoadedPrayerOverview extends StatelessWidget {
     final locale = Localizations.localeOf(context).toString();
     final hijri = hijriDateFromDateTime(now);
     final hijriText =
-        '${hijri.day} ${_hijriMonth(context, hijri.month)} ${hijri.year}';
+        '${hijri.day} ${hijriMonthName(AppLocalizations.of(context)!, hijri.month)} ${hijri.year}';
     final entries = <(String, DateTime?, String)>[
       (l10n.fajr, state.prayerTimes.fajr, 'fajr'),
       (l10n.sunrise, state.prayerTimes.sunrise, 'sunrise'),
@@ -1586,7 +1586,7 @@ class HomeDatePrayerSection extends StatelessWidget {
     final locale = Localizations.localeOf(context).toString();
     final hijri = hijriDateFromDateTime(now);
     final hijriText =
-        '${hijri.day} ${_hijriMonth(context, hijri.month)} ${hijri.year}';
+        '${hijri.day} ${hijriMonthName(AppLocalizations.of(context)!, hijri.month)} ${hijri.year}';
 
     return Container(
       padding: EdgeInsets.all(compact ? 14.w : 20.w),
@@ -2240,22 +2240,4 @@ class _SectionTitle extends StatelessWidget {
 String _formatPrayerTime(String locale, DateTime? time, int offset) {
   if (time == null) return '--:--';
   return intl.DateFormat.jm(locale).format(time.add(Duration(minutes: offset)));
-}
-
-String _hijriMonth(BuildContext context, int month) {
-  final l10n = AppLocalizations.of(context)!;
-  return [
-    l10n.muharram,
-    l10n.safar,
-    l10n.rabiAlAwwal,
-    l10n.rabiAlThani,
-    l10n.jumadaAlAwwal,
-    l10n.jumadaAlThani,
-    l10n.rajab,
-    l10n.shaban,
-    l10n.ramadan,
-    l10n.shawwal,
-    l10n.dhuAlQidah,
-    l10n.dhuAlHijjah,
-  ][month - 1];
 }

@@ -1207,6 +1207,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hudaQuranApp => 'Huda - İslami Yol Arkadaşınız';
 
   @override
+  String get shareImageTagline => 'İslami Yol Arkadaşınız';
+
+  @override
   String get translationNotAvailable => 'Çeviri mevcut değil';
 
   @override
@@ -5122,4 +5125,374 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get prayerNotificationSyncVerificationFailed =>
       'Namaz bildirimi planı doğrulanamadı. Lütfen tekrar deneyin.';
+
+  @override
+  String get ayahAudioRange => 'Ayetleri seç';
+
+  @override
+  String get audioFromAyah => 'Başlangıç ayeti';
+
+  @override
+  String get audioToAyah => 'Bitiş ayeti';
+
+  @override
+  String get audioRepeatRange => 'Seçimi tekrarla';
+
+  @override
+  String get audioRangeEndHint => 'Son seçilen ayetten sonra oynatma durur.';
+
+  @override
+  String get audioPlayRange => 'Seçimi oynat';
+
+  @override
+  String get downloadAyah => 'Ayeti indir';
+
+  @override
+  String get ayahDownloaded => 'Ayet indirildi';
+
+  @override
+  String get audioRangeRepeatHint =>
+      'Siz durdurana kadar seçilen ayetler tekrarlanır.';
+
+  @override
+  String playingAyahOfTotal(int current, int total) {
+    return 'Ayet $current / $total';
+  }
+
+  @override
+  String get prayerVerificationPending => 'Konum doğrulaması bekleniyor';
+
+  @override
+  String get prayerVerificationGuidance =>
+      'Bazı konum bilgileri hâlâ doğrulanmalı. Namaz vakitlerinin ve bildirimlerin güvenilirliğini artırmak için internet olduğunda dönüp yeniden deneyin.';
+
+  @override
+  String get prayerUpdatesIncomplete => 'Namaz güncellemeleri tamamlanmadı';
+
+  @override
+  String get prayerUpdatesGuidance =>
+      'Bazı güncellemeler tamamlanamadı. İnternet olduğunda yeniden deneyin. Yerel kurtarma çevrimdışı da yeniden denenebilir.';
+
+  @override
+  String get prayerDetailsPending => 'Konum ayrıntıları bekleniyor';
+
+  @override
+  String get prayerSavingPending =>
+      'Kaydedilemedi. Bu namaz güncellemelerini kaydetmek için yeniden deneyin.';
+
+  @override
+  String get prayerWidgetPending => 'Namaz widget güncellemesi bekleniyor';
+
+  @override
+  String get prayerLocationPending =>
+      'Konum güncellemesi bekleniyor. Konum iznini ve cihazın konum hizmetlerini kontrol edip yeniden deneyin.';
+
+  @override
+  String get prayerCalculationPending =>
+      'Namaz hesaplama güncellemesi bekleniyor';
+
+  @override
+  String get prayerNativePending => 'Arka plan konum güncellemesi bekleniyor';
+
+  @override
+  String get prayerPreviousCoverage =>
+      'Önceden onaylanan bildirimler hâlâ önceki konumu izliyor olabilir; mevcut teslimat onaylanmadı.';
+
+  @override
+  String get prayerVerificationRetryGuidance =>
+      'Bazı konum bilgileri hâlâ doğrulanmalı. Namaz vakitlerini ve bildirimleri güncellemek için yeniden deneyin.';
+
+  @override
+  String prayerNotificationsBridgedUntil(String date) {
+    return 'Bildirimler $date tarihine kadar güncellendi. Sonrakiler hâlâ önceki ayarlarınızı veya konumunuzu izliyor olabilir. Güncellemek için internete bağlandığınızda geri dönün.';
+  }
+
+  @override
+  String get prayerIssueLocationAccess => 'Konum erişimi';
+
+  @override
+  String get prayerIssuePlaceName => 'Yer adı';
+
+  @override
+  String get prayerIssueSaving => 'Kaydetme';
+
+  @override
+  String get prayerIssueCalculation => 'Hesaplama';
+
+  @override
+  String get prayerIssueBackgroundLocation => 'Arka plan konumu';
+
+  @override
+  String get prayerIssueWidget => 'Ana ekran widget\'ı';
+
+  @override
+  String get prayerIssueRetrying => 'Yeniden deneniyor…';
+
+  @override
+  String get prayerUpdatingTitle => 'Namaz vakitleri güncelleniyor…';
+
+  @override
+  String get prayerUpdatingMessage => 'Bu yalnızca birkaç saniye sürer.';
+
+  @override
+  String get prayerCountryQuestion => 'Hangi ülkedesiniz?';
+
+  @override
+  String get prayerCountryQuestionHint =>
+      'Ülkeniz otomatik olarak doğrulanamadı; örneğin bir sınıra yakınsınız. Doğru hesaplama yöntemini kullanmak için ülkenizi seçin.';
+
+  @override
+  String get prayerCountryNotSure => 'Emin değilim';
+
+  @override
+  String get prayerCalendarShare => 'Namaz takvimini paylaş';
+
+  @override
+  String get prayerCalendarOneDay => 'Bir gün';
+
+  @override
+  String get prayerCalendarOneMonth => 'Bir ay';
+
+  @override
+  String get prayerCalendarWholeYear => 'Tüm yıl';
+
+  @override
+  String get prayerCalendarChooseDate => 'Tarih seç';
+
+  @override
+  String get prayerCalendarChooseMonth => 'Ay seç';
+
+  @override
+  String get prayerCalendarChooseYear => 'Yıl seç';
+
+  @override
+  String get prayerCalendarGenerate => 'Oluştur ve paylaş';
+
+  @override
+  String prayerCalendarPreparing(Object current, Object total) {
+    return '$current/$total. sayfa hazırlanıyor…';
+  }
+
+  @override
+  String get prayerCalendarError =>
+      'Namaz takvimi oluşturulamadı veya paylaşılamadı. Tekrar deneyin.';
+
+  @override
+  String get prayerCalendarUnavailable =>
+      'Paylaşmak için doğrulanmış namaz vakitleri gereklidir.';
+
+  @override
+  String get prayerCalendarTitle => 'Namaz vakitleri takvimi';
+
+  @override
+  String get prayerCalendarDate => 'Tarih';
+
+  @override
+  String get prayerCalendarDay => 'Gün';
+
+  @override
+  String get prayerCalendarTimeZone => 'Saat dilimi';
+
+  @override
+  String prayerCalendarGenerated(Object date) {
+    return 'Oluşturulma: $date';
+  }
+
+  @override
+  String prayerCalendarPage(Object page, Object total) {
+    return 'Sayfa $page/$total';
+  }
+
+  @override
+  String prayerCalendarShareText(Object location, Object period) {
+    return '$location için $period namaz vakitleri';
+  }
+
+  @override
+  String get prayerCalendarSunriseColumn => 'Gün doğ.';
+
+  @override
+  String get prayerNotificationsOffTitle => 'Namaz bildirimleri kapalı';
+
+  @override
+  String get prayerNotificationsOffMessage =>
+      'Bildirimler kapalı olduğu için planlanmış namaz uyarısı yok. Her namaz vaktinde uyarı almak için bildirimleri açın.';
+
+  @override
+  String get prayerNotificationsTurnOn => 'Aç';
+
+  @override
+  String get prayerNotificationsWaitingTitle => 'Namaz bildirimleri bekliyor';
+
+  @override
+  String get prayerNotificationsWaitingMessage =>
+      'Namaz uyarıları konumunuz doğrulandığında planlanacak.';
+
+  @override
+  String get prayerNotificationsNoneScheduled =>
+      'Henüz planlanmış namaz bildirimi yok. Planlamak için Yeniden dene\'ye dokunun.';
+
+  @override
+  String get prayerNotificationsUnsupported =>
+      'Namaz bildirimleri bu cihazda kullanılamıyor.';
+
+  @override
+  String get prayerUpdatesLocalGuidance =>
+      'Bazı güncellemeler tamamlanamadı. Tamamlamak için Yeniden dene\'ye dokunun.';
+
+  @override
+  String get prayerSetupTitle => 'Namaz vakitlerini ayarla';
+
+  @override
+  String get prayerSetupSubtitle =>
+      'Doğru vakitleri görmek ve her namazda uyarı almak için bu adımları tamamlayın.';
+
+  @override
+  String prayerSetupStepLabel(int step, int total) {
+    return 'Adım $step/$total';
+  }
+
+  @override
+  String get prayerSetupLocationTitle => 'Konumunuz';
+
+  @override
+  String get prayerSetupLocationIntro =>
+      'Huda, bulunduğunuz yerin namaz vakitlerini hesaplamak için konumunuza ihtiyaç duyar.';
+
+  @override
+  String get prayerSetupLocationDeclined =>
+      'Konum erişimi reddedildi. Vakitleri otomatik hesaplamak için izin verin veya şehrinizi arayın.';
+
+  @override
+  String get prayerSetupLocationBlocked =>
+      'Huda için konum erişimi kapalı. Ayarlar\'dan açın — geri döndüğünüzde namaz vakitleri otomatik olarak yüklenir.';
+
+  @override
+  String get prayerSetupLocationServicesOff =>
+      'Bu cihazda konum servisleri kapalı. Açın — geri döndüğünüzde namaz vakitleri otomatik olarak yüklenir.';
+
+  @override
+  String get prayerSetupLocationFailed =>
+      'Huda konumunuzu bulamadı. Tekrar deneyin veya bunun yerine şehrinizi arayın.';
+
+  @override
+  String get prayerSetupUseMyLocation => 'Konumumu kullan';
+
+  @override
+  String get prayerSetupSearchCity => 'Şehir ara';
+
+  @override
+  String get prayerSetupAlertsTitle => 'Namaz uyarıları';
+
+  @override
+  String get prayerSetupAlertsHint =>
+      'Huda kapalıyken bile her namaz vaktinde bir uyarı.';
+
+  @override
+  String get prayerSetupReliableTitle => 'Güvenilir hatırlatmalar';
+
+  @override
+  String get prayerSetupReliableHint =>
+      'Android\'in namaz uyarılarını geciktirmesini önleyin.';
+
+  @override
+  String prayerAttentionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count konu ilgilenmenizi bekliyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerAttentionMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count daha',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get prayerTimelineNext => 'Sıradaki';
+
+  @override
+  String get prayerTimelineNow => 'Şimdi';
+
+  @override
+  String get prayerHeroStarted => 'Namaz vakti girdi';
+
+  @override
+  String get prayerTimesProvisional => 'Geçici vakitler';
+
+  @override
+  String get prayerMoreOptions => 'Diğer seçenekler';
+
+  @override
+  String prayerOffsetBadge(String offset) {
+    return '$offset dk';
+  }
+
+  @override
+  String get prayerSetupAlertsIntro =>
+      'Huda kapalıyken bile her namaz vaktinde nazik bir uyarı alın.';
+
+  @override
+  String get prayerSetupAlertsAllow => 'Namaz uyarılarına izin ver';
+
+  @override
+  String get prayerSetupAlertsDeclined =>
+      'Bildirimler olmadan Huda namaz vaktini size hatırlatamaz. Namaz vakitleri burada görünmeye devam eder ve uyarıları daha sonra açabilirsiniz.';
+
+  @override
+  String get prayerSetupContinueWithoutAlerts => 'Uyarılar olmadan devam et';
+
+  @override
+  String get prayerSetupAlertsOn => 'Uyarılar açık';
+
+  @override
+  String get prayerSetupAlertsSkipped =>
+      'Kapalı — bu sayfadan istediğiniz zaman açabilirsiniz';
+
+  @override
+  String get prayerSetupReliableIntro =>
+      'Android, pil tasarrufu için uyarıları geciktirebilir. Her uyarının zamanında gelmesi için Huda\'nın pil kısıtlaması olmadan çalışmasına izin verin.';
+
+  @override
+  String get prayerSetupReliableOn => 'Uyarılar zamanında gelecek';
+
+  @override
+  String get prayerSetupSkip => 'Şimdilik atla';
+
+  @override
+  String get prayerSetupSkipped => 'Atlandı';
+
+  @override
+  String get prayerSetupLocationHint =>
+      'Bulunduğunuz yere göre hesaplanan vakitler.';
+
+  @override
+  String get prayerHeroRemaining => 'kaldı';
+
+  @override
+  String get prayerSunriseLabel => 'Güneş';
+
+  @override
+  String get prayerCalendarFormatImage => 'Görsel olarak paylaşılır';
+
+  @override
+  String get prayerCalendarFormatPdf => 'PDF belgesi olarak paylaşılır';
+
+  @override
+  String prayerHeroStartedAgo(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes dk önce girdi',
+      zero: 'Az önce girdi',
+    );
+    return '$_temp0';
+  }
 }
