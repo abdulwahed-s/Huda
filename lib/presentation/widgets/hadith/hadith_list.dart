@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/utils/hadith_text_formatter.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/data/models/hadith_books_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
@@ -23,9 +24,12 @@ class HadithList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentLanguageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    int ind = currentLanguageCode == "ar" ? 1 : 0;
+    final currentLanguageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
+    final books = hadithBooks.data ?? const <Data>[];
     return Column(
       children: [
         HeaderBanner(isDark: isDark),
@@ -33,9 +37,9 @@ class HadithList extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0.w),
             child: ListView.builder(
-              itemCount: hadithBooks.data!.length,
+              itemCount: books.length,
               itemBuilder: (context, index) {
-                final book = hadithBooks.data![index];
+                final book = books[index];
                 return HadithBookCard(
                   book: book,
                   isDark: isDark,
@@ -48,7 +52,15 @@ class HadithList extends StatelessWidget {
                             AppRoute.hadithChapters,
                             arguments: {
                               'bookName': book.name!,
-                              'fullBookName': book.collection![ind].title!,
+                              'fullBookName': HadithTextFormatter.format(
+                                book
+                                        .collectionForLanguage(
+                                          currentLanguageCode,
+                                        )
+                                        ?.title ??
+                                    book.name ??
+                                    '',
+                              ).plainText,
                             },
                           );
                         },

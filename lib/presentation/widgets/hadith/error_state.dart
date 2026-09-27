@@ -5,11 +5,7 @@ class ErrorState extends StatelessWidget {
   final String message;
   final bool isDark;
 
-  const ErrorState({
-    super.key,
-    required this.message,
-    required this.isDark,
-  });
+  const ErrorState({super.key, required this.message, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -17,28 +13,22 @@ class ErrorState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 64.sp,
-            color: Colors.red[400],
-          ),
+          Icon(Icons.error_outline, size: 64.sp, color: Colors.red[400]),
           SizedBox(height: 16.0.h),
           Text(
             'Error loading hadith books',
             style: TextStyle(
               fontSize: 18.sp,
-              color:
-                  isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.7)
+                  : Colors.black54,
             ),
           ),
           SizedBox(height: 8.0.h),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.red[400],
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.red[400]),
           ),
         ],
       ),

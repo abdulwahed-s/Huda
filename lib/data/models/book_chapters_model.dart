@@ -2,11 +2,16 @@ class BookChaptersModel {
   List<Data>? data;
   int? total;
   int? limit;
-  Null previous;
-  Null next;
+  int? previous;
+  int? next;
 
-  BookChaptersModel(
-      {this.data, this.total, this.limit, this.previous, this.next});
+  BookChaptersModel({
+    this.data,
+    this.total,
+    this.limit,
+    this.previous,
+    this.next,
+  });
 
   BookChaptersModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -41,12 +46,13 @@ class Data {
   int? hadithEndNumber;
   int? numberOfHadith;
 
-  Data(
-      {this.bookNumber,
-      this.book,
-      this.hadithStartNumber,
-      this.hadithEndNumber,
-      this.numberOfHadith});
+  Data({
+    this.bookNumber,
+    this.book,
+    this.hadithStartNumber,
+    this.hadithEndNumber,
+    this.numberOfHadith,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     bookNumber = json['bookNumber'];
@@ -59,6 +65,22 @@ class Data {
     hadithStartNumber = json['hadithStartNumber'];
     hadithEndNumber = json['hadithEndNumber'];
     numberOfHadith = json['numberOfHadith'];
+  }
+
+  Book? bookForLanguage(String languageCode) {
+    final entries = book;
+    if (entries == null || entries.isEmpty) return null;
+    final preferredLanguage = languageCode == 'ar' ? 'ar' : 'en';
+    for (final entry in entries) {
+      if (entry.lang == preferredLanguage &&
+          entry.name?.trim().isNotEmpty == true) {
+        return entry;
+      }
+    }
+    for (final entry in entries) {
+      if (entry.name?.trim().isNotEmpty == true) return entry;
+    }
+    return entries.first;
   }
 
   Map<String, dynamic> toJson() {

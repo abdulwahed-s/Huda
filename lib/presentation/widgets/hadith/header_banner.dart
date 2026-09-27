@@ -31,11 +31,7 @@ class HeaderBanner extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(
-            Icons.auto_stories,
-            size: 32.sp,
-            color: context.primaryColor,
-          ),
+          Icon(Icons.auto_stories, size: 32.sp, color: context.primaryColor),
           SizedBox(height: 12.0.h),
           Text(
             AppLocalizations.of(context)!.hadithCollections,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/utils/hadith_text_formatter.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/data/models/book_chapters_model.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/chapter_card.dart';
@@ -20,8 +21,11 @@ class ChaptersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentLanguageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
+    final currentLanguageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
 
     final sortedChapters = List<Data>.from(chapters)
       ..sort((a, b) {
@@ -70,9 +74,11 @@ class ChaptersList extends StatelessWidget {
                       arguments: {
                         'chapterNumber': chapter.bookNumber!,
                         'bookName': bookName,
-                        'chapterName': currentLanguageCode == "ar"
-                            ? chapter.book![1].name!.toString()
-                            : chapter.book![0].name.toString(),
+                        'chapterName': HadithTextFormatter.format(
+                          chapter.bookForLanguage(currentLanguageCode)?.name ??
+                              chapter.bookNumber ??
+                              '',
+                        ).plainText,
                       },
                     );
                   },

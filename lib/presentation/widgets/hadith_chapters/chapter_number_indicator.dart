@@ -4,10 +4,7 @@ import 'package:huda/core/theme/theme_extension.dart';
 class ChapterNumberIndicator extends StatelessWidget {
   final String chapterNumber;
 
-  const ChapterNumberIndicator({
-    super.key,
-    required this.chapterNumber,
-  });
+  const ChapterNumberIndicator({super.key, required this.chapterNumber});
 
   @override
   Widget build(BuildContext context) {

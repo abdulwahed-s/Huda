@@ -28,11 +28,7 @@ class BookIcon extends StatelessWidget {
           ),
         ],
       ),
-      child: Icon(
-        Icons.menu_book_rounded,
-        color: Colors.white,
-        size: 24.sp,
-      ),
+      child: Icon(Icons.menu_book_rounded, color: Colors.white, size: 24.sp),
     );
   }
 }

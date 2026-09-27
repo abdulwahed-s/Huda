@@ -16,28 +16,22 @@ class OfflineState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.wifi_off,
-            size: 64.sp,
-            color: Colors.red[400],
-          ),
+          Icon(Icons.wifi_off, size: 64.sp, color: Colors.red[400]),
           SizedBox(height: 16.0.h),
           Text(
             'Error loading hadith books',
             style: TextStyle(
               fontSize: 18.sp,
-              color:
-                  isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.7)
+                  : Colors.black54,
             ),
           ),
           SizedBox(height: 8.0.h),
           Text(
             'No Internet Connection.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.red[400],
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.red[400]),
           ),
           SizedBox(height: 8.0.h),
           ElevatedButton.icon(
@@ -54,16 +48,10 @@ class OfflineState extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
               ),
             ),
-            icon: Icon(
-              Icons.refresh,
-              size: 20.sp,
-            ),
+            icon: Icon(Icons.refresh, size: 20.sp),
             label: Text(
               AppLocalizations.of(context)!.tryAgain,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
             ),
           ),
         ],

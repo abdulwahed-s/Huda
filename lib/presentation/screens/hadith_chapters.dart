@@ -24,10 +24,7 @@ class HadithChapters extends StatelessWidget {
         foregroundColor: isDark ? Colors.white : Colors.black87,
         title: Text(
           fullBookName,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
         ),
         centerTitle: true,
       ),
@@ -38,7 +35,7 @@ class HadithChapters extends StatelessWidget {
           } else if (state is ChaptersLoaded) {
             return ChaptersList(
               bookName: bookName,
-              chapters: state.bookChapters.data!,
+              chapters: state.bookChapters.data ?? const [],
               isDark: isDark,
             );
           } else if (state is ChaptersError) {

@@ -38,10 +38,7 @@ class ActionButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
           child: Container(
             padding: EdgeInsets.all(10.0.w),
-            constraints: BoxConstraints(
-              minWidth: 44.w,
-              minHeight: 44.h,
-            ),
+            constraints: BoxConstraints(minWidth: 44.w, minHeight: 44.h),
             child: Icon(
               icon,
               size: 20.sp,

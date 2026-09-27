@@ -34,10 +34,7 @@ class NavigationButton extends StatelessWidget {
       icon: Icon(icon, size: 18.sp),
       label: Text(
         label,
-        style: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
       ),
     );
   }

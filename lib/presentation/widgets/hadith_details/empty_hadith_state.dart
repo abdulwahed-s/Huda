@@ -5,10 +5,7 @@ import 'package:huda/l10n/app_localizations.dart';
 class EmptyHadithState extends StatelessWidget {
   final bool isDark;
 
-  const EmptyHadithState({
-    super.key,
-    required this.isDark,
-  });
+  const EmptyHadithState({super.key, required this.isDark});
 
   @override
   Widget build(BuildContext context) {

@@ -22,18 +22,31 @@ class HadithCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentLanguageCode =
-        context.read<LocalizationCubit>().state.locale.languageCode;
-    int index = currentLanguageCode == "ar" ? 1 : 0;
+    final currentLanguageCode = context
+        .read<LocalizationCubit>()
+        .state
+        .locale
+        .languageCode;
+    final selectedHadith = hadith.hadithForLanguage(currentLanguageCode);
+    if (selectedHadith == null) return const SizedBox.shrink();
+
+    final body = selectedHadith.body ?? '';
+    final entries = hadith.hadith ?? const <Hadith>[];
+    String status = '';
+    for (final entry in entries) {
+      for (final grade in entry.grades ?? const <Grades>[]) {
+        if (grade.grade?.trim().isNotEmpty == true) {
+          status = grade.grade!;
+          break;
+        }
+      }
+      if (status.isNotEmpty) break;
+    }
 
     return Column(
       children: [
-        if (hadith.hadith![0].chapterTitle != "" &&
-            hadith.hadith![0].chapterTitle != null)
-          HadithHeading(
-            heading: hadith.hadith![index].chapterTitle!,
-            isDark: isDark,
-          ),
+        if (selectedHadith.chapterTitle?.trim().isNotEmpty == true)
+          HadithHeading(heading: selectedHadith.chapterTitle!, isDark: isDark),
         Container(
           margin: EdgeInsets.only(bottom: 16.0.h),
           decoration: BoxDecoration(
@@ -58,24 +71,23 @@ class HadithCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActionButtonsRow(
-                hadith: hadith,
+                hadithBody: body,
+                status: status,
                 isDark: isDark,
                 chapterName: chapterName,
-                context: context,
+                languageCode: selectedHadith.lang ?? currentLanguageCode,
               ),
-              HadithText(
-                text: hadith.hadith![index].body ?? "",
-                isDark: isDark,
-                currentLanguageCode: currentLanguageCode,
-              ),
-              if (hadith.hadith?.isNotEmpty == true &&
-                  hadith.hadith![0].grades?.isNotEmpty == true &&
-                  hadith.hadith![0].grades![0].grade != null &&
-                  hadith.hadith![0].grades![0].grade!.isNotEmpty)
-                HadithStatusBadge(
-                  status: hadith.hadith![0].grades![0].grade!,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                child: HadithText(
+                  text: body,
                   isDark: isDark,
+                  currentLanguageCode:
+                      selectedHadith.lang ?? currentLanguageCode,
                 ),
+              ),
+              if (status.isNotEmpty)
+                HadithStatusBadge(status: status, isDark: isDark),
             ],
           ),
         ),

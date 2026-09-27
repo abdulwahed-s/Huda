@@ -1,42 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/theme/theme_extension.dart';
-import 'package:html/parser.dart' as html_parser;
+import 'package:huda/core/utils/hadith_text_formatter.dart';
 
 class HadithHeading extends StatelessWidget {
   final String heading;
   final bool isDark;
 
-  const HadithHeading({
-    super.key,
-    required this.heading,
-    required this.isDark,
-  });
-
-  String _cleanHeading(String input) {
-    String cleaned = input;
-
-    cleaned = cleaned
-        .replaceAll('<br>', '\n')
-        .replaceAll('</p>', '\n')
-        .replaceAll('<p>', '\n');
-
-    final document = html_parser.parse(cleaned);
-    cleaned = document.body?.text ?? '';
-
-    cleaned = cleaned.replaceAll(
-      RegExp(r'\[/?[a-zA-Z0-9_\-]+(=[^\]]+)?\]'),
-      '',
-    );
-
-    cleaned = cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
-
-    return cleaned;
-  }
+  const HadithHeading({super.key, required this.heading, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
-    final cleanedHeading = _cleanHeading(heading);
+    final cleanedHeading = HadithTextFormatter.format(heading).plainText;
 
     return Container(
       width: double.infinity,

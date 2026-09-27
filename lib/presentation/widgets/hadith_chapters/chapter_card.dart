@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:huda/core/utils/hadith_text_formatter.dart';
 import 'package:huda/data/models/book_chapters_model.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/chapter_number_indicator.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/forward_arrow_icon.dart';
@@ -19,6 +20,11 @@ class ChapterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final title = HadithTextFormatter.format(
+      chapter.bookForLanguage(currentLanguageCode)?.name ??
+          chapter.bookNumber ??
+          '',
+    ).plainText;
     return Material(
       color: Colors.transparent,
       child: Container(
@@ -48,15 +54,11 @@ class ChapterCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                ChapterNumberIndicator(
-                  chapterNumber: chapter.bookNumber!,
-                ),
+                ChapterNumberIndicator(chapterNumber: chapter.bookNumber!),
                 const SizedBox(width: 16.0),
                 Expanded(
                   child: Text(
-                    currentLanguageCode == "ar"
-                        ? chapter.book![1].name!
-                        : chapter.book![0].name!,
+                    title,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -65,7 +67,8 @@ class ChapterCard extends StatelessWidget {
                           : Colors.black87,
                       height: 1.4,
                     ),
-                    textAlign: currentLanguageCode == "ar" ||
+                    textAlign:
+                        currentLanguageCode == "ar" ||
                             currentLanguageCode == "ur"
                         ? TextAlign.right
                         : TextAlign.left,

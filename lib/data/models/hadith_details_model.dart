@@ -5,8 +5,13 @@ class HadithDetailsModel {
   int? previous;
   int? next;
 
-  HadithDetailsModel(
-      {this.data, this.total, this.limit, this.previous, this.next});
+  HadithDetailsModel({
+    this.data,
+    this.total,
+    this.limit,
+    this.previous,
+    this.next,
+  });
 
   HadithDetailsModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -41,12 +46,13 @@ class Data {
   String? hadithNumber;
   List<Hadith>? hadith;
 
-  Data(
-      {this.collection,
-      this.bookNumber,
-      this.chapterId,
-      this.hadithNumber,
-      this.hadith});
+  Data({
+    this.collection,
+    this.bookNumber,
+    this.chapterId,
+    this.hadithNumber,
+    this.hadith,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     collection = json['collection'];
@@ -59,6 +65,23 @@ class Data {
         hadith!.add(Hadith.fromJson(v));
       });
     }
+  }
+
+  Hadith? hadithForLanguage(String languageCode) {
+    final entries = hadith;
+    if (entries == null || entries.isEmpty) return null;
+
+    final preferredLanguage = languageCode == 'ar' ? 'ar' : 'en';
+    for (final entry in entries) {
+      if (entry.lang == preferredLanguage &&
+          entry.body?.trim().isNotEmpty == true) {
+        return entry;
+      }
+    }
+    for (final entry in entries) {
+      if (entry.body?.trim().isNotEmpty == true) return entry;
+    }
+    return entries.first;
   }
 
   Map<String, dynamic> toJson() {
@@ -82,13 +105,14 @@ class Hadith {
   String? body;
   List<Grades>? grades;
 
-  Hadith(
-      {this.lang,
-      this.chapterNumber,
-      this.chapterTitle,
-      this.urn,
-      this.body,
-      this.grades});
+  Hadith({
+    this.lang,
+    this.chapterNumber,
+    this.chapterTitle,
+    this.urn,
+    this.body,
+    this.grades,
+  });
 
   Hadith.fromJson(Map<String, dynamic> json) {
     lang = json['lang'];

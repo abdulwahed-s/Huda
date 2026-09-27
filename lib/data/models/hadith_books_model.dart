@@ -2,11 +2,16 @@ class HadithBooksModel {
   List<Data>? data;
   int? total;
   int? limit;
-  Null previous;
-  Null next;
+  int? previous;
+  int? next;
 
-  HadithBooksModel(
-      {this.data, this.total, this.limit, this.previous, this.next});
+  HadithBooksModel({
+    this.data,
+    this.total,
+    this.limit,
+    this.previous,
+    this.next,
+  });
 
   HadithBooksModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -42,13 +47,14 @@ class Data {
   int? totalHadith;
   int? totalAvailableHadith;
 
-  Data(
-      {this.name,
-      this.hasBooks,
-      this.hasChapters,
-      this.collection,
-      this.totalHadith,
-      this.totalAvailableHadith});
+  Data({
+    this.name,
+    this.hasBooks,
+    this.hasChapters,
+    this.collection,
+    this.totalHadith,
+    this.totalAvailableHadith,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -62,6 +68,22 @@ class Data {
     }
     totalHadith = json['totalHadith'];
     totalAvailableHadith = json['totalAvailableHadith'];
+  }
+
+  Collection? collectionForLanguage(String languageCode) {
+    final entries = collection;
+    if (entries == null || entries.isEmpty) return null;
+    final preferredLanguage = languageCode == 'ar' ? 'ar' : 'en';
+    for (final entry in entries) {
+      if (entry.lang == preferredLanguage &&
+          entry.title?.trim().isNotEmpty == true) {
+        return entry;
+      }
+    }
+    for (final entry in entries) {
+      if (entry.title?.trim().isNotEmpty == true) return entry;
+    }
+    return entries.first;
   }
 
   static bool? _parseBool(dynamic value) {

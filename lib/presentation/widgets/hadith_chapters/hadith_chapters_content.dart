@@ -24,10 +24,7 @@ class HadithChaptersContent extends StatelessWidget {
         foregroundColor: isDark ? Colors.white : Colors.black87,
         title: Text(
           bookName,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
         ),
         centerTitle: true,
       ),

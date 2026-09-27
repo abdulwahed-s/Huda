@@ -23,7 +23,11 @@ class HadithList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return hadithDetail.data!.isEmpty
+    final entries = hadithDetail.data ?? const <Data>[];
+    final limit = hadithDetail.limit ?? entries.length;
+    final total = hadithDetail.total ?? entries.length;
+
+    return entries.isEmpty
         ? EmptyHadithState(isDark: isDark)
         : Stack(
             children: [
@@ -33,9 +37,9 @@ class HadithList extends StatelessWidget {
                   padding: EdgeInsets.only(
                     bottom: 150.h + MediaQuery.paddingOf(context).bottom,
                   ),
-                  itemCount: hadithDetail.data!.length,
+                  itemCount: entries.length,
                   itemBuilder: (context, index) {
-                    final hadith = hadithDetail.data![index];
+                    final hadith = entries[index];
                     return HadithCard(
                       hadith: hadith,
                       isDark: isDark,
@@ -52,8 +56,8 @@ class HadithList extends StatelessWidget {
                   currentPage: hadithDetail.previous == null
                       ? 1
                       : hadithDetail.previous! + 1,
-                  lastPage: hadithDetail.total! > hadithDetail.limit!
-                      ? (hadithDetail.total! / hadithDetail.limit!).ceil()
+                  lastPage: limit > 0 && total > limit
+                      ? (total / limit).ceil()
                       : 1,
                   isDark: isDark,
                   chapterNumber: chapterNumber,

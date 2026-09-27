@@ -22,10 +22,7 @@ class Hadith extends StatelessWidget {
         foregroundColor: isDark ? Colors.white : Colors.black87,
         title: Text(
           AppLocalizations.of(context)!.hadith,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 20.sp,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
         ),
         centerTitle: true,
       ),

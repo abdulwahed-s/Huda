@@ -31,9 +31,11 @@ class NavigationButtons extends StatelessWidget {
             label: AppLocalizations.of(context)!.back,
             isEnabled: currentPage != 1,
             onPressed: () {
-              context
-                  .read<HadithDetailsCubit>()
-                  .fetchHadithDetails(chapterNumber, bookName, currentPage - 1);
+              context.read<HadithDetailsCubit>().fetchHadithDetails(
+                chapterNumber,
+                bookName,
+                currentPage - 1,
+              );
             },
             isDark: isDark,
           ),
@@ -45,9 +47,11 @@ class NavigationButtons extends StatelessWidget {
             label: AppLocalizations.of(context)!.next,
             isEnabled: currentPage != lastPage,
             onPressed: () {
-              context
-                  .read<HadithDetailsCubit>()
-                  .fetchHadithDetails(chapterNumber, bookName, currentPage + 1);
+              context.read<HadithDetailsCubit>().fetchHadithDetails(
+                chapterNumber,
+                bookName,
+                currentPage + 1,
+              );
             },
             isDark: isDark,
           ),

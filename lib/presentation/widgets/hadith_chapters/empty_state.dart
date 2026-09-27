@@ -34,9 +34,9 @@ class EmptyState extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.noChapters,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.grey[300] : Colors.grey[800],
-                  ),
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.grey[300] : Colors.grey[800],
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
@@ -45,9 +45,9 @@ class EmptyState extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.newContent,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isDark ? Colors.grey[500] : Colors.grey[600],
-                    height: 1.5,
-                  ),
+                color: isDark ? Colors.grey[500] : Colors.grey[600],
+                height: 1.5,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),

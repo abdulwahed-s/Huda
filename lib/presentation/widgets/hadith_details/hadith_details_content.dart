@@ -28,10 +28,7 @@ class HadithDetails extends StatelessWidget {
         foregroundColor: isDark ? Colors.white : Colors.black87,
         title: Text(
           chapterName,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 20.sp,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
         ),
         centerTitle: true,
       ),
@@ -49,7 +46,8 @@ class HadithDetails extends StatelessWidget {
             );
           } else if (state is HadithDetailsError) {
             return Center(
-                child: Text('Error loading hadith details: ${state.message}'));
+              child: Text('Error loading hadith details: ${state.message}'),
+            );
           } else {
             return const SizedBox.shrink();
           }

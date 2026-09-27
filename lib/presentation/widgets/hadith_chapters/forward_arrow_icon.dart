@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class ForwardArrowIcon extends StatelessWidget {
   final bool isDark;
 
-  const ForwardArrowIcon({
-    super.key,
-    required this.isDark,
-  });
+  const ForwardArrowIcon({super.key, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
