@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
@@ -34,7 +33,10 @@ mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
   void safeModalSetState();
 
   Future<void> downloadSingleAyah(
-      int index, Ayahs ayah, StateSetter setModalState) async {
+    int index,
+    Ayahs ayah,
+    StateSetter setModalState,
+  ) async {
     if (selectedReaderId == null || currentSurahAudio == null) return;
 
     setState(() => isDownloadingSingleAyah = true);
@@ -53,11 +55,11 @@ mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
 
       if (targetAyah?.audio != null) {
         await context.read<AudioCubit>().downloadAyahAudio(
-              ayahAudioUrl: targetAyah!.audio!,
-              surahNumber: surah.number.toString(),
-              ayahNumber: ayah.numberInSurah.toString(),
-              readerId: selectedReaderId!,
-            );
+          ayahAudioUrl: targetAyah!.audio!,
+          surahNumber: surah.number.toString(),
+          ayahNumber: ayah.numberInSurah.toString(),
+          readerId: selectedReaderId!,
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -80,10 +82,10 @@ mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
 
     try {
       await context.read<AudioCubit>().downloadAllSurahAyahs(
-            surahAudioModel: currentSurahAudio!,
-            surahNumber: surah.number.toString(),
-            readerId: selectedReaderId!,
-          );
+        surahAudioModel: currentSurahAudio!,
+        surahNumber: surah.number.toString(),
+        readerId: selectedReaderId!,
+      );
     } catch (e) {
       if (mounted) {
         HudaSnackBar.error(
@@ -122,7 +124,9 @@ mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
     });
     safeModalSetState();
     await translationCubit.downloadSurahTranslation(
-        selectedTranslationId!, surahNumber);
+      selectedTranslationId!,
+      surahNumber,
+    );
   }
 
   Future<void> downloadFullQuranTranslation() async {
@@ -137,24 +141,11 @@ mixin DownloadManagerMixin<T extends StatefulWidget> on State<T> {
   Future<List<edition.Data>> getDownloadedReaders() async {
     final List<edition.Data> downloadedReaders = [];
 
+    final readerIds = await context
+        .read<AudioCubit>()
+        .getDownloadedReadersForSurah(surah.number.toString());
     for (final reader in availableReaders) {
-      bool hasAnyDownloadedAyah = false;
-
-      for (int i = 1; i <= min(surah.ayahs?.length ?? 0, 3); i++) {
-        final isDownloaded = await context.read<AudioCubit>().isAyahDownloaded(
-              surahNumber: surah.number.toString(),
-              ayahNumber: i.toString(),
-              readerId: reader.identifier!,
-            );
-        if (isDownloaded) {
-          hasAnyDownloadedAyah = true;
-          break;
-        }
-      }
-
-      if (hasAnyDownloadedAyah) {
-        downloadedReaders.add(reader);
-      }
+      if (readerIds.contains(reader.identifier)) downloadedReaders.add(reader);
     }
 
     return downloadedReaders;

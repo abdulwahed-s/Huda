@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'package:huda/data/models/ayah_audio_range.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/bootstrap/audio_service_ready.dart';
@@ -17,6 +17,8 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   int? playingAyahIndex;
   bool autoplayEnabled = true;
   bool loopEnabled = false;
+  AyahAudioRange? audioRange;
+  bool _handlingCompletion = false;
   audio.SurahAudioModel? currentSurahAudio;
   bool isLoadingAudio = false;
   String? selectedReaderId;
@@ -31,7 +33,8 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   StreamSubscription<Duration?>? _durationSubscription;
 
   static final Uri _notificationArtUri = Uri.parse(
-      'https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?auto=compress&cs=tinysrgb&w=600');
+    'https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?auto=compress&cs=tinysrgb&w=600',
+  );
 
   SurahModel get surah;
   int get surahNumber;
@@ -47,6 +50,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
         setState(() {
           isAudioPlaying = false;
           playingAyahIndex = null;
+          audioRange = null;
           currentPosition = Duration.zero;
           totalDuration = Duration.zero;
         });
@@ -60,7 +64,9 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
         setState(() => isAudioPlaying = state.playing);
         safeModalSetState();
       }
-      if (state.processingState == ProcessingState.completed) {
+      if (state.playing &&
+          state.processingState == ProcessingState.completed &&
+          !_handlingCompletion) {
         playNextAyah();
       }
     });
@@ -88,18 +94,34 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
     });
   }
 
+  Future<void> configureAudioRange(AyahAudioRange? range) async {
+    if (range != null && range.endIndex >= (surah.ayahs?.length ?? 0)) return;
+    await audioPlayer.pause();
+    if (!mounted) return;
+    setState(() {
+      audioRange = range;
+      if (range != null) {
+        loopEnabled = false;
+        autoplayEnabled = false;
+      }
+      playingAyahIndex = null;
+      isAudioPlaying = false;
+      currentPosition = Duration.zero;
+      totalDuration = Duration.zero;
+    });
+    safeModalSetState();
+  }
+
   Future<void> playPauseAudio(int index) async {
     final isPlaying = isAudioPlaying && playingAyahIndex == index;
 
     if (isPlaying) {
       await audioPlayer.pause();
     } else {
-      if (currentSurahAudio != null) {
-        if (playingAyahIndex == index && !isAudioPlaying) {
-          audioPlayer.play();
-        } else {
-          await playAyahAudio(index);
-        }
+      if (playingAyahIndex == index && !isAudioPlaying) {
+        audioPlayer.play();
+      } else {
+        await playAyahAudio(index);
       }
     }
 
@@ -107,77 +129,55 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
   }
 
   Future<void> playAyahAudio(int index) async {
-    if (currentSurahAudio?.data?.surahs?.isNotEmpty == true) {
-      final targetSurah = currentSurahAudio!.data!.surahs!.firstWhere(
-        (surah) => surah.number == this.surah.number,
-        orElse: () => currentSurahAudio!.data!.surahs!.first,
-      );
-
-      final AudioCubit cubit = context.read<AudioCubit>();
-
-      final ayahFromCurrentScreen = surah.ayahs![index];
-      final targetAyah = targetSurah.ayahs?.firstWhere(
-        (ayah) => ayah.numberInSurah == ayahFromCurrentScreen.numberInSurah,
-        orElse: () => targetSurah.ayahs!.first,
-      );
-
-      if (targetAyah?.audio != null && selectedReaderId != null) {
-        if (mounted) {
-          setState(() {
-            currentPosition = Duration.zero;
-            totalDuration = Duration.zero;
-            isUserSeeking = false;
-          });
+    final readerId = selectedReaderId;
+    final ayahs = surah.ayahs;
+    if (readerId == null ||
+        ayahs == null ||
+        index < 0 ||
+        index >= ayahs.length) {
+      return;
+    }
+    if (audioRange != null && !audioRange!.contains(index)) {
+      setState(() => audioRange = null);
+    }
+    final ayah = ayahs[index];
+    final cubit = context.read<AudioCubit>();
+    String? remoteUrl;
+    for (final audioSurah
+        in currentSurahAudio?.data?.surahs ?? <audio.Surahs>[]) {
+      if (audioSurah.number != surah.number) continue;
+      for (final audioAyah in audioSurah.ayahs ?? <audio.Ayahs>[]) {
+        if (audioAyah.numberInSurah == ayah.numberInSurah) {
+          remoteUrl = audioAyah.audio;
         }
-
-        final downloadedPath = await cubit.getDownloadedAyahPath(
-          surahNumber: surah.number.toString(),
-          ayahNumber: ayahFromCurrentScreen.numberInSurah.toString(),
-          readerId: selectedReaderId!,
-        );
-
-        final mediaId =
-            'surah_${surah.number}_ayah_${ayahFromCurrentScreen.numberInSurah}';
-        final mediaTitle =
-            '${surah.name ?? 'Surah'} - Ayah ${ayahFromCurrentScreen.numberInSurah}';
-        final mediaItem = MediaItem(
-          id: mediaId,
-          title: mediaTitle,
-          album: surah.name,
-          artist: _reciterNameForId(cubit, selectedReaderId!),
-          artUri: _notificationArtUri,
-        );
-
-        await audioServiceReady;
-        _audioCoordinator.requestAudio(AudioCoordinator.surahAyah);
-
-        if (downloadedPath != null) {
-          await audioPlayer.setAudioSource(AudioSource.uri(
-            Uri.file(downloadedPath),
-            tag: mediaItem,
-          ));
-        } else {
-          if (kIsWeb) {
-            final proxyUrl =
-                'https://corsproxy.io/?${Uri.encodeComponent(targetAyah!.audio!)}';
-            await audioPlayer.setAudioSource(AudioSource.uri(
-              Uri.parse(proxyUrl),
-              tag: mediaItem,
-            ));
-          } else {
-            await audioPlayer.setAudioSource(AudioSource.uri(
-              Uri.parse(targetAyah!.audio!),
-              tag: mediaItem,
-            ));
-          }
-        }
-
-        if (mounted) {
-          setState(() => playingAyahIndex = index);
-        }
-        audioPlayer.play();
       }
     }
+    final uri = await cubit.resolveAyahAudioUri(
+      readerId: readerId,
+      surahNumber: surah.number!,
+      ayahNumber: ayah.numberInSurah!,
+      globalAyahNumber: ayah.number,
+      remoteUrl: remoteUrl,
+    );
+    if (uri == null || !mounted || selectedReaderId != readerId) return;
+    setState(() {
+      currentPosition = Duration.zero;
+      totalDuration = Duration.zero;
+      isUserSeeking = false;
+    });
+    final mediaItem = MediaItem(
+      id: 'surah_${surah.number}_ayah_${ayah.numberInSurah}',
+      title: '${surah.name ?? 'Surah'} - Ayah ${ayah.numberInSurah}',
+      album: surah.name,
+      artist: _reciterNameForId(cubit, readerId),
+      artUri: _notificationArtUri,
+    );
+    await audioServiceReady;
+    if (!mounted || selectedReaderId != readerId) return;
+    _audioCoordinator.requestAudio(AudioCoordinator.surahAyah);
+    await audioPlayer.setAudioSource(AudioSource.uri(uri, tag: mediaItem));
+    if (mounted) setState(() => playingAyahIndex = index);
+    audioPlayer.play();
   }
 
   String? _reciterNameForId(AudioCubit cubit, String readerId) {
@@ -189,47 +189,70 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
     return null;
   }
 
-  void playNextAyah() async {
-    if (playingAyahIndex == null) return;
-
-    if (loopEnabled) {
-      await playAyahAudio(playingAyahIndex!);
-      return;
-    }
-
-    if (autoplayEnabled) {
-      final nextIndex = playingAyahIndex! + 1;
-      if (nextIndex < surah.ayahs!.length) {
-        final wasBottomSheetOpen = isBottomSheetOpen;
-
-        if (isBottomSheetOpen && Navigator.canPop(context)) {
-          Navigator.pop(context);
+  Future<void> playNextAyah() async {
+    if (playingAyahIndex == null || _handlingCompletion) return;
+    _handlingCompletion = true;
+    try {
+      final range = audioRange;
+      if (range != null) {
+        final next = range.nextIndex(playingAyahIndex!);
+        if (next != null) {
+          await playAyahAudio(next);
+        } else {
+          await audioPlayer.pause();
+          if (mounted) {
+            setState(() {
+              playingAyahIndex = null;
+              isAudioPlaying = false;
+            });
+          }
         }
+        safeModalSetState();
+        return;
+      }
 
-        await playAyahAudio(nextIndex);
+      if (loopEnabled) {
+        await playAyahAudio(playingAyahIndex!);
+        return;
+      }
 
-        if (wasBottomSheetOpen) {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            if (mounted) {
-              onAyahTap(nextIndex);
-            }
-          });
+      if (autoplayEnabled) {
+        final nextIndex = playingAyahIndex! + 1;
+        if (nextIndex < surah.ayahs!.length) {
+          final wasBottomSheetOpen = isBottomSheetOpen;
+
+          if (isBottomSheetOpen && Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+
+          await playAyahAudio(nextIndex);
+
+          if (wasBottomSheetOpen) {
+            Future.delayed(const Duration(milliseconds: 100), () {
+              if (mounted) {
+                onAyahTap(nextIndex);
+              }
+            });
+          }
+        } else {
+          if (mounted) {
+            setState(() => playingAyahIndex = null);
+          }
         }
       } else {
         if (mounted) {
           setState(() => playingAyahIndex = null);
         }
       }
-    } else {
-      if (mounted) {
-        setState(() => playingAyahIndex = null);
-      }
+    } finally {
+      _handlingCompletion = false;
     }
   }
 
   Future<void> seekToPosition(double value) async {
-    final position =
-        Duration(milliseconds: (value * totalDuration.inMilliseconds).round());
+    final position = Duration(
+      milliseconds: (value * totalDuration.inMilliseconds).round(),
+    );
     await audioPlayer.seek(position);
     if (mounted) {
       setState(() {
@@ -246,6 +269,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
 
     if (mounted) {
       setState(() {
+        audioRange = null;
         selectedReaderId = newReaderId;
         isLoadingAudio = true;
         currentSurahAudio = null;
@@ -257,7 +281,7 @@ mixin AudioManagerMixin<T extends StatefulWidget> on State<T> {
     }
 
     setModalState?.call(() {});
-    context.read<AudioCubit>().fetchSurahAudio(newReaderId);
+    context.read<AudioCubit>().fetchSurahAudio(newReaderId, surah);
   }
 
   void onAyahTap(int index);

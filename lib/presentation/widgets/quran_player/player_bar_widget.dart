@@ -105,15 +105,18 @@ class _MiniPlayer extends StatelessWidget {
                   final pos = snap.data ?? Duration.zero;
                   final dur = state.audioPlayer.duration ?? Duration.zero;
                   final frac = dur.inMilliseconds > 0
-                      ? (pos.inMilliseconds / dur.inMilliseconds)
-                          .clamp(0.0, 1.0)
+                      ? (pos.inMilliseconds / dur.inMilliseconds).clamp(
+                          0.0,
+                          1.0,
+                        )
                       : 0.0;
                   return LinearProgressIndicator(
                     value: frac,
                     minHeight: 2.5,
                     backgroundColor: theme.colorScheme.primaryContainer,
-                    valueColor:
-                        AlwaysStoppedAnimation(theme.colorScheme.primary),
+                    valueColor: AlwaysStoppedAnimation(
+                      theme.colorScheme.primary,
+                    ),
                   );
                 },
               ),
@@ -133,12 +136,16 @@ class _MiniPlayer extends StatelessWidget {
                         width: 42.w,
                         height: 42.w,
                         decoration: BoxDecoration(
-                          color:
-                              theme.colorScheme.primary.withValues(alpha: 0.15),
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.15,
+                          ),
                           borderRadius: BorderRadius.circular(10.r),
                         ),
-                        child: Icon(Icons.library_music_rounded,
-                            color: theme.colorScheme.primary, size: 22.sp),
+                        child: Icon(
+                          Icons.library_music_rounded,
+                          color: theme.colorScheme.primary,
+                          size: 22.sp,
+                        ),
                       ),
                       SizedBox(width: 10.w),
                       Expanded(
@@ -174,9 +181,11 @@ class _MiniPlayer extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.skip_previous_rounded,
-                            size: 24.sp,
-                            color: theme.colorScheme.onPrimaryContainer),
+                        icon: Icon(
+                          Icons.skip_previous_rounded,
+                          size: 24.sp,
+                          color: theme.colorScheme.onPrimaryContainer,
+                        ),
                         onPressed: () => state.audioPlayer.seekToPrevious(),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -207,9 +216,11 @@ class _MiniPlayer extends StatelessWidget {
                       ),
                       SizedBox(width: 4.w),
                       IconButton(
-                        icon: Icon(Icons.skip_next_rounded,
-                            size: 24.sp,
-                            color: theme.colorScheme.onPrimaryContainer),
+                        icon: Icon(
+                          Icons.skip_next_rounded,
+                          size: 24.sp,
+                          color: theme.colorScheme.onPrimaryContainer,
+                        ),
                         onPressed: () => state.audioPlayer.seekToNext(),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -217,10 +228,12 @@ class _MiniPlayer extends StatelessWidget {
                       ),
                       SizedBox(width: 2.w),
                       IconButton(
-                        icon: Icon(Icons.close_rounded,
-                            size: 18.sp,
-                            color: theme.colorScheme.onPrimaryContainer
-                                .withValues(alpha: 0.6)),
+                        icon: Icon(
+                          Icons.close_rounded,
+                          size: 18.sp,
+                          color: theme.colorScheme.onPrimaryContainer
+                              .withValues(alpha: 0.6),
+                        ),
                         onPressed: () {
                           state.audioPlayer.stop();
                           context.read<PlayerBarCubit>().hide();
@@ -283,8 +296,10 @@ class _ExpandedPlayerSheet extends StatelessWidget {
                   ),
                   Text(
                     l10n.quranAudio,
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   IconButton(
                     icon: Icon(Icons.close_rounded, size: 22.sp),
@@ -320,8 +335,11 @@ class _ExpandedPlayerSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(Icons.library_music_rounded,
-                  size: 80.sp, color: theme.colorScheme.primary),
+              child: Icon(
+                Icons.library_music_rounded,
+                size: 80.sp,
+                color: theme.colorScheme.primary,
+              ),
             ),
             const Spacer(flex: 2),
             StreamBuilder<int?>(
@@ -337,7 +355,9 @@ class _ExpandedPlayerSheet extends StatelessWidget {
                       child: Text(
                         title,
                         style: TextStyle(
-                            fontSize: 24.sp, fontWeight: FontWeight.bold),
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -356,7 +376,9 @@ class _ExpandedPlayerSheet extends StatelessWidget {
                     Text(
                       trackInfo,
                       style: TextStyle(
-                          fontSize: 12.sp, color: theme.colorScheme.outline),
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.outline,
+                      ),
                     ),
                   ],
                 );
@@ -402,8 +424,8 @@ class _SeekBar extends StatelessWidget {
                 child: Slider(
                   value: duration.inMilliseconds > 0
                       ? position.inMilliseconds
-                          .clamp(0, duration.inMilliseconds)
-                          .toDouble()
+                            .clamp(0, duration.inMilliseconds)
+                            .toDouble()
                       : 0,
                   max: duration.inMilliseconds > 0
                       ? duration.inMilliseconds.toDouble()
@@ -417,12 +439,20 @@ class _SeekBar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(_formatDuration(position),
-                        style: TextStyle(
-                            fontSize: 12.sp, color: theme.colorScheme.outline)),
-                    Text(_formatDuration(duration),
-                        style: TextStyle(
-                            fontSize: 12.sp, color: theme.colorScheme.outline)),
+                    Text(
+                      _formatDuration(position),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
+                    Text(
+                      _formatDuration(duration),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -539,11 +569,13 @@ class _SecondaryControls extends StatelessWidget {
             builder: (context, snapshot) {
               final on = snapshot.data ?? false;
               return IconButton(
-                icon: Icon(Icons.shuffle_rounded,
-                    size: 22.sp,
-                    color: on
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.outline),
+                icon: Icon(
+                  Icons.shuffle_rounded,
+                  size: 22.sp,
+                  color: on
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.outline,
+                ),
                 onPressed: () => audioPlayer.setShuffleModeEnabled(!on),
               );
             },
@@ -563,13 +595,10 @@ class _SecondaryControls extends StatelessWidget {
                       : theme.colorScheme.outline,
                 ),
                 onPressed: () {
-                  const modes = [
-                    LoopMode.off,
-                    LoopMode.all,
-                    LoopMode.one,
-                  ];
+                  const modes = [LoopMode.off, LoopMode.all, LoopMode.one];
                   audioPlayer.setLoopMode(
-                      modes[(modes.indexOf(mode) + 1) % modes.length]);
+                    modes[(modes.indexOf(mode) + 1) % modes.length],
+                  );
                 },
               );
             },
@@ -606,17 +635,20 @@ class _SpeedChip extends StatelessWidget {
       onSelected: onChanged,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       itemBuilder: (_) => _speeds
-          .map((s) => PopupMenuItem(
-                value: s,
-                child: Text(
-                  '${s}x',
-                  style: TextStyle(
-                    fontWeight:
-                        s == currentSpeed ? FontWeight.bold : FontWeight.normal,
-                    color: s == currentSpeed ? theme.colorScheme.primary : null,
-                  ),
+          .map(
+            (s) => PopupMenuItem(
+              value: s,
+              child: Text(
+                '${s}x',
+                style: TextStyle(
+                  fontWeight: s == currentSpeed
+                      ? FontWeight.bold
+                      : FontWeight.normal,
+                  color: s == currentSpeed ? theme.colorScheme.primary : null,
                 ),
-              ))
+              ),
+            ),
+          )
           .toList(),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),

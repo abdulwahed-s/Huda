@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/cache/quran_content_store.dart';
+import 'package:huda/core/services/quran_audio_catalog.dart';
+import 'package:huda/data/models/surah_model.dart' as quran;
 import 'package:huda/core/connection/network_info.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/download_service.dart';
@@ -21,7 +24,9 @@ class AudioCubit extends Cubit<AudioState> {
   final DownloadService _downloadService = getIt<DownloadService>();
 
   static const String _readersListCacheKey = 'audio_readers_list';
-  static const String _surahAudioCachePrefix = 'surah_audio_';
+  final QuranContentStore _contentStore = getIt<QuranContentStore>();
+  final Future<bool> Function() _isConnected;
+  int _audioRequest = 0;
 
   static const String _cacheTimestampPrefix = 'cache_timestamp_';
   static const int _cacheExpirationHours = 24;
@@ -33,214 +38,161 @@ class AudioCubit extends Cubit<AudioState> {
   List<edition.Data> get lastKnownReaders => _lastKnownReaders;
 
   Future<bool> isOffline() async {
-    return !(await NetworkInfo.checkInternetConnectivity());
+    return !(await _isConnected());
   }
 
-  AudioCubit(this.audioRepository) : super(AudioInitial());
+  AudioCubit(this.audioRepository, {Future<bool> Function()? isConnected})
+    : _isConnected = isConnected ?? NetworkInfo.checkInternetConnectivity,
+      super(AudioInitial());
 
   Future<void> fetchAudioInfo([String? surahNumber]) async {
     emit(ReaderLoading());
     try {
+      edition.EditionModel? readers;
       final cachedData = _cacheHelper.getDataString(key: _readersListCacheKey);
-
-      if (cachedData != null && !_isCacheExpired(_readersListCacheKey)) {
-        final Map<String, dynamic> jsonData = jsonDecode(cachedData);
-        final audiosReaders = edition.EditionModel.fromJson(jsonData);
-
-        final isOnline = await NetworkInfo.checkInternetConnectivity();
-
-        if (isOnline) {
-          _lastKnownReaders = audiosReaders.data ?? [];
-          emit(AudioLoaded(surahAudioModel: audiosReaders));
-          _updateReadersCache();
-        } else {
-          if (surahNumber != null) {
-            final downloadedReaderIds =
-                await getDownloadedReadersForSurah(surahNumber);
-
-            if (downloadedReaderIds.isNotEmpty) {
-              _lastKnownReaders = audiosReaders.data ?? [];
-              emit(AudioOfflineWithDownloads(
-                surahAudioModel: audiosReaders,
-                downloadedReaderIds: downloadedReaderIds,
-                surahNumber: surahNumber,
-              ));
-            } else {
-              emit(ReaderOffline());
-            }
-          } else {
-            _lastKnownReaders = audiosReaders.data ?? [];
-            emit(AudioLoaded(surahAudioModel: audiosReaders));
-          }
+      if (cachedData != null) {
+        try {
+          readers = edition.EditionModel.fromJson(jsonDecode(cachedData));
+        } catch (_) {
         }
-      } else {
-        if (await NetworkInfo.checkInternetConnectivity()) {
-          final audiosReaders = await audioRepository.getAudio();
-
+      }
+      final online = await _isConnected();
+      if (online &&
+          (readers == null || _isCacheExpired(_readersListCacheKey))) {
+        try {
+          readers = await audioRepository.getAudio();
           await _saveCacheWithTimestamp(
             _readersListCacheKey,
-            jsonEncode(audiosReaders.toJson()),
+            jsonEncode(readers.toJson()),
           );
-
-          _lastKnownReaders = audiosReaders.data ?? [];
-          emit(AudioLoaded(surahAudioModel: audiosReaders));
-        } else {
-          if (cachedData != null) {
-            final Map<String, dynamic> jsonData = jsonDecode(cachedData);
-            final audiosReaders = edition.EditionModel.fromJson(jsonData);
-
-            if (surahNumber != null) {
-              final downloadedReaderIds =
-                  await getDownloadedReadersForSurah(surahNumber);
-
-              if (downloadedReaderIds.isNotEmpty) {
-                _lastKnownReaders = audiosReaders.data ?? [];
-                emit(AudioOfflineWithDownloads(
-                  surahAudioModel: audiosReaders,
-                  downloadedReaderIds: downloadedReaderIds,
-                  surahNumber: surahNumber,
-                ));
-              } else {
-                emit(ReaderOffline());
-              }
-            } else {
-              _lastKnownReaders = audiosReaders.data ?? [];
-              emit(AudioLoaded(surahAudioModel: audiosReaders));
-            }
-          } else {
-            if (surahNumber != null) {
-              final downloadedReaderIds =
-                  await getDownloadedReadersForSurah(surahNumber);
-              if (downloadedReaderIds.isNotEmpty) {
-                emit(ReaderOffline());
-              } else {
-                emit(ReaderOffline());
-              }
-            } else {
-              emit(ReaderOffline());
-            }
+        } catch (_) {
+          if (readers == null) rethrow;
+        }
+      }
+      if (isClosed) return;
+      if (!online && surahNumber != null) {
+        final ids = await getDownloadedReadersForSurah(surahNumber);
+        if (isClosed) return;
+        if (ids.isEmpty) {
+          emit(ReaderOffline());
+          return;
+        }
+        final entries = [...?readers?.data];
+        for (final id in ids) {
+          if (!entries.any((reader) => reader.identifier == id)) {
+            entries.add(
+              edition.Data(
+                identifier: id,
+                name: id,
+                englishName: id,
+                language: id.split('.').first,
+                format: 'audio',
+              ),
+            );
           }
         }
-      }
-    } catch (e) {
-      emit(ReaderError(e.toString()));
-    }
-  }
-
-  Future<void> _updateReadersCache() async {
-    try {
-      final audiosReaders = await audioRepository.getAudio();
-      await _saveCacheWithTimestamp(
-        _readersListCacheKey,
-        jsonEncode(audiosReaders.toJson()),
-      );
-    } catch (e) {
-      // print the error if needed
-    }
-  }
-
-  Future<void> fetchSurahAudio(String identifier) async {
-    try {
-      final cacheKey = '$_surahAudioCachePrefix$identifier';
-      final cachedData = _cacheHelper.getDataString(key: cacheKey);
-
-      final isCached = cachedData != null && !_isCacheExpired(cacheKey);
-
-      if (state is AudioLoaded) {
-        final currentState = state as AudioLoaded;
-        emit(currentState.copyWith(clearAudio: true));
+        readers = edition.EditionModel(data: entries);
+        _lastKnownReaders = entries;
+        emit(
+          AudioOfflineWithDownloads(
+            surahAudioModel: readers,
+            downloadedReaderIds: ids,
+            surahNumber: surahNumber,
+          ),
+        );
+      } else if (readers != null) {
+        _lastKnownReaders = readers.data ?? [];
+        emit(AudioLoaded(surahAudioModel: readers));
       } else {
-        emit(SurahAudioLoading());
-      }
-
-      if (isCached) {
-        final Map<String, dynamic> jsonData = jsonDecode(cachedData);
-        final audio = SurahAudioModel.fromJson(jsonData);
-
-        if (state is AudioLoaded) {
-          final currentState = state as AudioLoaded;
-          emit(currentState.copyWith(currentSurahAudio: audio));
-        } else {
-          emit(SurahAudioLoaded(audioModel: audio));
-        }
-
-        if (await NetworkInfo.checkInternetConnectivity()) {
-          _updateSurahAudioCache(identifier);
-        }
-      } else {
-        if (await NetworkInfo.checkInternetConnectivity()) {
-          final audio = await audioRepository.getSurahAudio(identifier);
-
-          await _saveCacheWithTimestamp(
-            cacheKey,
-            jsonEncode(audio.toJson()),
-          );
-
-          if (state is AudioLoaded) {
-            final currentState = state as AudioLoaded;
-            emit(currentState.copyWith(currentSurahAudio: audio));
-          } else {
-            emit(SurahAudioLoaded(audioModel: audio));
-          }
-        } else {
-          emit(AudioOffline());
-        }
+        emit(ReaderOffline());
       }
     } catch (e) {
-      emit(AudioError(e.toString()));
+      if (!isClosed) emit(ReaderError(e.toString()));
     }
   }
 
-  Future<void> _updateSurahAudioCache(String identifier) async {
+  Future<void> fetchSurahAudio(
+    String identifier,
+    quran.SurahModel surah,
+  ) async {
+    final request = ++_audioRequest;
+    bool isCurrent() => !isClosed && request == _audioRequest;
+    SurahAudioModel? cachedAudio;
+    emit(SurahAudioLoading());
     try {
-      final audio = await audioRepository.getSurahAudio(identifier);
-      final cacheKey = '$_surahAudioCachePrefix$identifier';
-      await _saveCacheWithTimestamp(
-        cacheKey,
-        jsonEncode(audio.toJson()),
-      );
-
-      if (state is AudioLoaded) {
-        final currentState = state as AudioLoaded;
-        emit(currentState.copyWith(currentSurahAudio: audio));
+      final generated = QuranAudioCatalog.forSurah(identifier, surah);
+      if (generated != null) {
+        emit(SurahAudioLoaded(audioModel: generated));
+        return;
       }
+
+      final cached = await _contentStore.readSurah(
+        QuranContentKind.audio,
+        identifier,
+        surah.number!,
+      );
+      if (!isCurrent()) return;
+      if (cached != null) {
+        cachedAudio = SurahAudioModel.fromJson(cached.response);
+        emit(SurahAudioLoaded(audioModel: cachedAudio));
+        if (!cached.isExpired) return;
+      }
+      final online = await _isConnected();
+      if (!isCurrent()) return;
+      if (!online) {
+        if (cachedAudio == null) emit(AudioOffline());
+        return;
+      }
+      final audio = await audioRepository.getSurahAudio(
+        identifier,
+        surah.number!,
+      );
+      await _contentStore.saveSurah(
+        QuranContentKind.audio,
+        identifier,
+        surah.number!,
+        audio.toJson(),
+      );
+      if (isCurrent()) emit(SurahAudioLoaded(audioModel: audio));
     } catch (e) {
-      // print the error if needed
+      if (isCurrent() && cachedAudio == null) emit(AudioError(e.toString()));
     }
+  }
+
+  Future<Uri?> resolveAyahAudioUri({
+    required String readerId,
+    required int surahNumber,
+    required int ayahNumber,
+    int? globalAyahNumber,
+    String? remoteUrl,
+  }) async {
+    final downloadedPath = await getDownloadedAyahPath(
+      surahNumber: surahNumber.toString(),
+      ayahNumber: ayahNumber.toString(),
+      readerId: readerId,
+    );
+    if (downloadedPath != null) return Uri.file(downloadedPath);
+    final url =
+        remoteUrl ?? QuranAudioCatalog.ayahUrl(readerId, globalAyahNumber);
+    if (url == null) return null;
+    return Uri.parse(
+      kIsWeb ? 'https://corsproxy.io/?${Uri.encodeComponent(url)}' : url,
+    );
   }
 
   Future<void> clearAudioCache() async {
-    try {
-      await _cacheHelper.removeData(key: _readersListCacheKey);
-
-      final keys = CacheHelper.sharedPreferences.getKeys();
-      for (final key in keys) {
-        if (key.startsWith(_surahAudioCachePrefix)) {
-          await _cacheHelper.removeData(key: key);
-        }
-      }
-    } catch (e) {
-      // print the error if needed
-    }
+    await _contentStore.clearAudio();
+    await _cacheHelper.removeData(key: _readersListCacheKey);
+    await _cacheHelper.removeData(
+      key: '$_cacheTimestampPrefix$_readersListCacheKey',
+    );
   }
 
-  Future<void> clearReaderCache(String identifier) async {
-    try {
-      final cacheKey = '$_surahAudioCachePrefix$identifier';
-      await _cacheHelper.removeData(key: cacheKey);
-    } catch (e) {
-      // print the error if needed
-    }
-  }
+  Future<void> clearReaderCache(String identifier) =>
+      _contentStore.clearAudio(identifier);
 
-  bool get hasReadersCache {
-    return _cacheHelper.getDataString(key: _readersListCacheKey) != null;
-  }
-
-  bool hasReaderAudioCache(String identifier) {
-    final cacheKey = '$_surahAudioCachePrefix$identifier';
-    return _cacheHelper.getDataString(key: cacheKey) != null;
-  }
+  bool get hasReadersCache =>
+      _cacheHelper.getDataString(key: _readersListCacheKey) != null;
 
   bool _isCacheExpired(String key) {
     final timestampKey = '$_cacheTimestampPrefix$key';
@@ -265,7 +217,7 @@ class AudioCubit extends Cubit<AudioState> {
   }
 
   List<String> getAvailableLanguages() {
-    List<edition.Data> allReaders = [];
+    List<edition.Data> allReaders = _lastKnownReaders;
 
     if (state is AudioLoaded) {
       final audioState = state as AudioLoaded;
@@ -287,7 +239,7 @@ class AudioCubit extends Cubit<AudioState> {
   }
 
   List<edition.Data> getReadersByLanguage(String? selectedLanguage) {
-    List<edition.Data> allReaders = [];
+    List<edition.Data> allReaders = _lastKnownReaders;
 
     if (state is AudioLoaded) {
       final audioState = state as AudioLoaded;
@@ -328,11 +280,13 @@ class AudioCubit extends Cubit<AudioState> {
           ayahNumber: ayahNumber,
           fileName: fileName,
         );
-        emit(DownloadCompleted(
-          ayahId: ayahId,
-          filePath: localPath!,
-          fileName: fileName,
-        ));
+        emit(
+          DownloadCompleted(
+            ayahId: ayahId,
+            filePath: localPath!,
+            fileName: fileName,
+          ),
+        );
         return;
       }
 
@@ -342,32 +296,32 @@ class AudioCubit extends Cubit<AudioState> {
         surahNumber: surahNumber,
         ayahNumber: ayahNumber,
         onProgress: (progress) {
-          emit(DownloadInProgress(
-            ayahId: ayahId,
-            progress: progress,
-            fileName: fileName,
-          ));
+          emit(
+            DownloadInProgress(
+              ayahId: ayahId,
+              progress: progress,
+              fileName: fileName,
+            ),
+          );
         },
       );
 
       if (filePath != null) {
-        emit(DownloadCompleted(
-          ayahId: ayahId,
-          filePath: filePath,
-          fileName: fileName,
-        ));
+        emit(
+          DownloadCompleted(
+            ayahId: ayahId,
+            filePath: filePath,
+            fileName: fileName,
+          ),
+        );
       } else {
-        emit(DownloadError(
-          ayahId: ayahId,
-          error: 'Failed to download audio file',
-        ));
+        emit(
+          DownloadError(ayahId: ayahId, error: 'Failed to download audio file'),
+        );
       }
     } catch (e) {
       final ayahId = '${surahNumber}_${ayahNumber}_$readerId';
-      emit(DownloadError(
-        ayahId: ayahId,
-        error: e.toString(),
-      ));
+      emit(DownloadError(ayahId: ayahId, error: e.toString()));
     }
   }
 
@@ -383,10 +337,12 @@ class AudioCubit extends Cubit<AudioState> {
       );
 
       if (targetSurah?.ayahs == null || targetSurah!.ayahs!.isEmpty) {
-        emit(DownloadError(
-          ayahId: 'surah_$surahNumber',
-          error: 'No ayahs found in surah',
-        ));
+        emit(
+          DownloadError(
+            ayahId: 'surah_$surahNumber',
+            error: 'No ayahs found in surah',
+          ),
+        );
         return;
       }
 
@@ -406,12 +362,14 @@ class AudioCubit extends Cubit<AudioState> {
         );
 
         if (!isDownloaded) {
-          emit(SurahDownloadInProgress(
-            totalAyahs: totalAyahs,
-            downloadedAyahs: downloadedCount,
-            overallProgress: downloadedCount / totalAyahs,
-            currentAyahFileName: fileName,
-          ));
+          emit(
+            SurahDownloadInProgress(
+              totalAyahs: totalAyahs,
+              downloadedAyahs: downloadedCount,
+              overallProgress: downloadedCount / totalAyahs,
+              currentAyahFileName: fileName,
+            ),
+          );
 
           final filePath = await _downloadService.downloadAudioFile(
             url: ayah.audio!,
@@ -421,33 +379,36 @@ class AudioCubit extends Cubit<AudioState> {
           );
 
           if (filePath == null) {
-            emit(DownloadError(
-              ayahId: 'surah_$surahNumber',
-              error: 'Failed to download ayah ${ayah.numberInSurah}',
-            ));
+            emit(
+              DownloadError(
+                ayahId: 'surah_$surahNumber',
+                error: 'Failed to download ayah ${ayah.numberInSurah}',
+              ),
+            );
             return;
           }
         }
 
         downloadedCount++;
 
-        emit(SurahDownloadInProgress(
-          totalAyahs: totalAyahs,
-          downloadedAyahs: downloadedCount,
-          overallProgress: downloadedCount / totalAyahs,
-          currentAyahFileName: fileName,
-        ));
+        emit(
+          SurahDownloadInProgress(
+            totalAyahs: totalAyahs,
+            downloadedAyahs: downloadedCount,
+            overallProgress: downloadedCount / totalAyahs,
+            currentAyahFileName: fileName,
+          ),
+        );
       }
 
-      emit(SurahDownloadCompleted(
-        totalAyahs: totalAyahs,
-        surahNumber: surahNumber,
-      ));
+      emit(
+        SurahDownloadCompleted(
+          totalAyahs: totalAyahs,
+          surahNumber: surahNumber,
+        ),
+      );
     } catch (e) {
-      emit(DownloadError(
-        ayahId: 'surah_$surahNumber',
-        error: e.toString(),
-      ));
+      emit(DownloadError(ayahId: 'surah_$surahNumber', error: e.toString()));
     }
   }
 
@@ -491,58 +452,24 @@ class AudioCubit extends Cubit<AudioState> {
   }
 
   Future<List<String>> getDownloadedReadersForSurah(String surahNumber) async {
-    final downloadedReaders = <String>[];
-
-    final cachedData = _cacheHelper.getDataString(key: _readersListCacheKey);
-    if (cachedData != null) {
-      final Map<String, dynamic> jsonData = jsonDecode(cachedData);
-      final audiosReaders = edition.EditionModel.fromJson(jsonData);
-      final readers = audiosReaders.data ?? [];
-
-      for (final reader in readers) {
-        if (reader.identifier != null) {
-          final hasDownloads = await _hasAnyDownloadedAyahsForReader(
-            surahNumber: surahNumber,
-            readerId: reader.identifier!,
-          );
-          if (hasDownloads) {
-            downloadedReaders.add(reader.identifier!);
-          }
-        }
-      }
-    }
-
-    return downloadedReaders;
-  }
-
-  Future<bool> _hasAnyDownloadedAyahsForReader({
-    required String surahNumber,
-    required String readerId,
-  }) async {
-    // Downloads not supported on web
-    if (kIsWeb) return false;
-
+    if (kIsWeb) return [];
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
       final audioDir = Directory(
-          path.join(appDocDir.path, 'quran_audio', 'surah_$surahNumber'));
-
-      if (!await audioDir.exists()) {
-        return false;
-      }
-
-      await for (FileSystemEntity entity in audioDir.list()) {
+        path.join(appDocDir.path, 'quran_audio', 'surah_$surahNumber'),
+      );
+      if (!await audioDir.exists()) return [];
+      final readers = <String>{};
+      final filePattern = RegExp(r'^ayah_\d+_(.+)\.mp3$');
+      await for (final entity in audioDir.list()) {
         if (entity is File) {
-          final fileName = path.basename(entity.path);
-          if (fileName.contains('_$readerId.mp3')) {
-            return true;
-          }
+          final match = filePattern.firstMatch(path.basename(entity.path));
+          if (match != null) readers.add(match[1]!);
         }
       }
-
-      return false;
-    } catch (e) {
-      return false;
+      return readers.toList()..sort();
+    } catch (_) {
+      return [];
     }
   }
 }

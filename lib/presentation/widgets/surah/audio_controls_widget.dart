@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:huda/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:huda/core/theme/theme_extension.dart';
@@ -42,6 +43,8 @@ class AudioControlsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return Column(
       children: [
         // Progress bar
@@ -51,8 +54,8 @@ class AudioControlsWidget extends StatelessWidget {
               Slider(
                 value: totalDuration.inMilliseconds > 0
                     ? (currentPosition.inMilliseconds /
-                            totalDuration.inMilliseconds)
-                        .clamp(0.0, 1.0)
+                              totalDuration.inMilliseconds)
+                          .clamp(0.0, 1.0)
                     : 0.0,
                 onChanged: (value) {
                   onUserSeekingChanged(true);
@@ -106,19 +109,20 @@ class AudioControlsWidget extends StatelessWidget {
                 color: currentIndex > 0
                     ? context.primaryColor.withValues(alpha: 0.1)
                     : (Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.grey.withValues(alpha: 0.1)),
+                          ? Colors.white.withValues(alpha: 0.1)
+                          : Colors.grey.withValues(alpha: 0.1)),
                 borderRadius: BorderRadius.circular(16.r),
               ),
               child: IconButton(
+                tooltip: l10n.previous,
                 onPressed: currentIndex > 0 ? onPrevious : null,
                 icon: Icon(
-                  Icons.skip_previous,
+                  isRtl ? Icons.skip_next_rounded : Icons.skip_previous_rounded,
                   color: currentIndex > 0
                       ? context.primaryColor
                       : (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white.withValues(alpha: 0.5)
-                          : Colors.grey),
+                            ? Colors.white.withValues(alpha: 0.5)
+                            : Colors.grey),
                   size: 22.sp,
                 ),
               ),
@@ -137,8 +141,8 @@ class AudioControlsWidget extends StatelessWidget {
                 color: isPlayButtonEnabled
                     ? null
                     : (Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white.withValues(alpha: 0.3)
-                        : Colors.grey),
+                          ? Colors.white.withValues(alpha: 0.3)
+                          : Colors.grey),
                 shape: BoxShape.circle,
                 boxShadow: isPlayButtonEnabled
                     ? [
@@ -151,6 +155,8 @@ class AudioControlsWidget extends StatelessWidget {
                     : null,
               ),
               child: IconButton(
+                tooltip: isPlaying ? l10n.pause : l10n.play,
+                constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
                 onPressed: isPlayButtonEnabled ? onPlayPause : null,
                 icon: Icon(
                   isPlaying ? Icons.pause : Icons.play_arrow,
@@ -165,19 +171,20 @@ class AudioControlsWidget extends StatelessWidget {
                 color: currentIndex < totalAyahs - 1
                     ? context.primaryColor.withValues(alpha: 0.1)
                     : (Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.grey.withValues(alpha: 0.1)),
+                          ? Colors.white.withValues(alpha: 0.1)
+                          : Colors.grey.withValues(alpha: 0.1)),
                 borderRadius: BorderRadius.circular(16.r),
               ),
               child: IconButton(
+                tooltip: l10n.next,
                 onPressed: currentIndex < totalAyahs - 1 ? onNext : null,
                 icon: Icon(
-                  Icons.skip_next,
+                  isRtl ? Icons.skip_previous_rounded : Icons.skip_next_rounded,
                   color: currentIndex < totalAyahs - 1
                       ? context.primaryColor
                       : (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white.withValues(alpha: 0.5)
-                          : Colors.grey),
+                            ? Colors.white.withValues(alpha: 0.5)
+                            : Colors.grey),
                   size: 22.sp,
                 ),
               ),

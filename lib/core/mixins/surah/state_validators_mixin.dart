@@ -20,7 +20,7 @@ mixin StateValidatorsMixin<T extends StatefulWidget> on State<T> {
   Future<bool> isCurrentAyahPlayable(int ayahIndex) async {
     if (!isOfflineMode) return true;
 
-    if (selectedReaderId == null || currentSurahAudio == null) return false;
+    if (selectedReaderId == null || !isValidAyahIndex(ayahIndex)) return false;
 
     final ayah = surah.ayahs![ayahIndex];
     return await context.read<AudioCubit>().isAyahDownloaded(

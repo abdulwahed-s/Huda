@@ -35,6 +35,9 @@ class Data {
         surahs!.add(Surahs.fromJson(v));
       });
     }
+    if (surahs == null && json['number'] != null && json['ayahs'] != null) {
+      surahs = [Surahs.fromJson(json)];
+    }
     edition =
         json['edition'] != null ? Edition.fromJson(json['edition']) : null;
   }

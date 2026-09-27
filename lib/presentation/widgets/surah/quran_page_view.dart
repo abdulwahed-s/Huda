@@ -192,10 +192,7 @@ class _QuranPageViewState extends State<QuranPageView>
     if (!widget.isBookmarkVisit &&
         _previousPlayingAyahIndex != playingAyahIndex &&
         playingAyahIndex != null) {
-      updateReadingPosition(
-        ayahNumber: playingAyahIndex! + 1,
-        position: 0.0,
-      );
+      updateReadingPosition(ayahNumber: playingAyahIndex! + 1, position: 0.0);
     }
   }
 
@@ -215,7 +212,8 @@ class _QuranPageViewState extends State<QuranPageView>
         _scrollToBookmarkedAyah();
       } else if (widget.shouldRestorePosition) {
         debugPrint(
-            '📍 Auto-restoring reading position (Continue Reading flow)');
+          '📍 Auto-restoring reading position (Continue Reading flow)',
+        );
         _restoreScrollPosition();
       } else {
         debugPrint('🚫 Skipping auto-restore (fresh start from Surah list)');
@@ -227,23 +225,22 @@ class _QuranPageViewState extends State<QuranPageView>
       if (!widget.isBookmarkVisit &&
           (lastRead == null || lastRead['surahNumber'] != widget.surahNumber)) {
         debugPrint('🆕 Setting initial reading position for new surah');
-        updateReadingPosition(
-          ayahNumber: 1,
-          position: 0.0,
-        );
+        updateReadingPosition(ayahNumber: 1, position: 0.0);
       } else if (widget.isBookmarkVisit) {
         debugPrint('🔖 Bookmark visit - skipping reading position updates');
       } else {
         debugPrint(
-            '🔄 Skipping initial position - will restore saved position');
+          '🔄 Skipping initial position - will restore saved position',
+        );
       }
     });
   }
 
   void _syncSourcesFromCubits() {
     final tafsirSources = context.read<TafsirCubit>().lastKnownSources;
-    final translationSources =
-        context.read<TranslationCubit>().lastKnownSources;
+    final translationSources = context
+        .read<TranslationCubit>()
+        .lastKnownSources;
     final audioReaders = context.read<AudioCubit>().lastKnownReaders;
 
     if (_availableTafsirSources.isEmpty && tafsirSources.isNotEmpty) {
@@ -443,18 +440,25 @@ class _QuranPageViewState extends State<QuranPageView>
                         decoration: BoxDecoration(
                           color: widget.customBgColor != null
                               ? (widget.customBgColor!.computeLuminance() > 0.5
-                                  ? Color.lerp(
-                                      widget.customBgColor, Colors.black, 0.04)!
-                                  : Color.lerp(widget.customBgColor,
-                                      Colors.white, 0.08)!)
+                                    ? Color.lerp(
+                                        widget.customBgColor,
+                                        Colors.black,
+                                        0.04,
+                                      )!
+                                    : Color.lerp(
+                                        widget.customBgColor,
+                                        Colors.white,
+                                        0.08,
+                                      )!)
                               : (Theme.of(context).brightness == Brightness.dark
-                                  ? Theme.of(context).cardColor
-                                  : Colors.white),
+                                    ? Theme.of(context).cardColor
+                                    : Colors.white),
                           borderRadius: BorderRadius.circular(16.r),
                           border: widget.customTextColor != null
                               ? Border.all(
-                                  color: widget.customTextColor!
-                                      .withValues(alpha: 0.1),
+                                  color: widget.customTextColor!.withValues(
+                                    alpha: 0.1,
+                                  ),
                                   width: 1,
                                 )
                               : null,
@@ -463,7 +467,8 @@ class _QuranPageViewState extends State<QuranPageView>
                               color: widget.customBgColor != null
                                   ? Colors.black.withValues(alpha: 0.08)
                                   : context.primaryColor.withValues(
-                                      alpha: Theme.of(context).brightness ==
+                                      alpha:
+                                          Theme.of(context).brightness ==
                                               Brightness.dark
                                           ? 0.2
                                           : 0.1,
@@ -486,8 +491,9 @@ class _QuranPageViewState extends State<QuranPageView>
                       builder: (context, memState) {
                         final isMemorizationMode =
                             memState is MemorizationModeUpdated &&
-                                memState.isMemorizationMode;
-                        final isHidden = isMemorizationMode &&
+                            memState.isMemorizationMode;
+                        final isHidden =
+                            isMemorizationMode &&
                             memState.hiddenAyahIndices.contains(ayahIndex);
                         final isListening =
                             isMemorizationMode && memState.isListening;
@@ -498,26 +504,34 @@ class _QuranPageViewState extends State<QuranPageView>
                           decoration: BoxDecoration(
                             color: playingAyahIndex == ayahIndex
                                 ? (Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? const Color(0xFF2A1B3D)
-                                        .withValues(alpha: 0.6)
-                                    : const Color(0xFFE8F5E8))
+                                          Brightness.dark
+                                      ? const Color(
+                                          0xFF2A1B3D,
+                                        ).withValues(alpha: 0.6)
+                                      : const Color(0xFFE8F5E8))
                                 : (widget.customBgColor != null
-                                    ? (widget.customBgColor!
-                                                .computeLuminance() >
-                                            0.5
-                                        ? Color.lerp(widget.customBgColor,
-                                            Colors.black, 0.04)!
-                                        : Color.lerp(widget.customBgColor,
-                                            Colors.white, 0.08)!)
-                                    : (Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? const Color(0xFF1A1A1A)
-                                        : Colors.white)),
+                                      ? (widget.customBgColor!
+                                                    .computeLuminance() >
+                                                0.5
+                                            ? Color.lerp(
+                                                widget.customBgColor,
+                                                Colors.black,
+                                                0.04,
+                                              )!
+                                            : Color.lerp(
+                                                widget.customBgColor,
+                                                Colors.white,
+                                                0.08,
+                                              )!)
+                                      : (Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? const Color(0xFF1A1A1A)
+                                            : Colors.white)),
                             borderRadius: BorderRadius.circular(10.r),
                             border: playingAyahIndex == ayahIndex
                                 ? Border.all(
-                                    color: Theme.of(context).brightness ==
+                                    color:
+                                        Theme.of(context).brightness ==
                                             Brightness.dark
                                         ? context.accentColor
                                         : context.primaryColor,
@@ -525,33 +539,39 @@ class _QuranPageViewState extends State<QuranPageView>
                                   )
                                 : Border.all(
                                     color: widget.customTextColor != null
-                                        ? widget.customTextColor!
-                                            .withValues(alpha: 0.1)
+                                        ? widget.customTextColor!.withValues(
+                                            alpha: 0.1,
+                                          )
                                         : (Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? const Color(0xFF2A2A2A)
-                                            : Colors.transparent),
+                                                  Brightness.dark
+                                              ? const Color(0xFF2A2A2A)
+                                              : Colors.transparent),
                                     width: 1,
                                   ),
                             boxShadow: [
                               BoxShadow(
                                 color: playingAyahIndex == ayahIndex
                                     ? (Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? context.accentColor
-                                            .withValues(alpha: 0.3)
-                                        : context.primaryColor
-                                            .withValues(alpha: 0.15))
+                                              Brightness.dark
+                                          ? context.accentColor.withValues(
+                                              alpha: 0.3,
+                                            )
+                                          : context.primaryColor.withValues(
+                                              alpha: 0.15,
+                                            ))
                                     : (widget.customBgColor != null
-                                        ? Colors.black.withValues(alpha: 0.08)
-                                        : (Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? const Color(0xFF0A0A0A)
-                                                .withValues(alpha: 0.5)
-                                            : Colors.black
-                                                .withValues(alpha: 0.05))),
-                                blurRadius:
-                                    playingAyahIndex == ayahIndex ? 14.r : 6.r,
+                                          ? Colors.black.withValues(alpha: 0.08)
+                                          : (Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? const Color(
+                                                    0xFF0A0A0A,
+                                                  ).withValues(alpha: 0.5)
+                                                : Colors.black.withValues(
+                                                    alpha: 0.05,
+                                                  ))),
+                                blurRadius: playingAyahIndex == ayahIndex
+                                    ? 14.r
+                                    : 6.r,
                                 offset: Offset(0, 2.h),
                               ),
                             ],
@@ -587,11 +607,12 @@ class _QuranPageViewState extends State<QuranPageView>
                                           decoration: BoxDecoration(
                                             color:
                                                 Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? context.accentColor
-                                                    : context.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
+                                                    Brightness.dark
+                                                ? context.accentColor
+                                                : context.primaryColor,
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
+                                            ),
                                           ),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
@@ -603,7 +624,9 @@ class _QuranPageViewState extends State<QuranPageView>
                                               ),
                                               SizedBox(width: 3.w),
                                               Text(
-                                                'Playing',
+                                                AppLocalizations.of(
+                                                  context,
+                                                )!.playing,
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 10.sp,
@@ -622,29 +645,37 @@ class _QuranPageViewState extends State<QuranPageView>
                                           decoration: BoxDecoration(
                                             color:
                                                 Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? const Color(0xFF2A2A2A)
-                                                    : Colors.white,
+                                                    Brightness.dark
+                                                ? const Color(0xFF2A2A2A)
+                                                : Colors.white,
                                             shape: BoxShape.circle,
                                             border: Border.all(
-                                              color: Theme.of(context)
-                                                          .brightness ==
+                                              color:
+                                                  Theme.of(
+                                                        context,
+                                                      ).brightness ==
                                                       Brightness.dark
                                                   ? context.accentColor
-                                                      .withValues(alpha: 0.6)
+                                                        .withValues(alpha: 0.6)
                                                   : context.primaryColor
-                                                      .withValues(alpha: 0.3),
+                                                        .withValues(alpha: 0.3),
                                               width: 1.5,
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Theme.of(context)
-                                                            .brightness ==
+                                                color:
+                                                    Theme.of(
+                                                          context,
+                                                        ).brightness ==
                                                         Brightness.dark
                                                     ? context.accentColor
-                                                        .withValues(alpha: 0.2)
+                                                          .withValues(
+                                                            alpha: 0.2,
+                                                          )
                                                     : context.primaryColor
-                                                        .withValues(alpha: 0.1),
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          ),
                                                 blurRadius: 4.r,
                                                 offset: Offset(0, 1.h),
                                               ),
@@ -664,11 +695,13 @@ class _QuranPageViewState extends State<QuranPageView>
                                                       colors: [
                                                         context.primaryColor
                                                             .withValues(
-                                                                alpha: 0.1),
+                                                              alpha: 0.1,
+                                                            ),
                                                         context
                                                             .primaryVariantColor
                                                             .withValues(
-                                                                alpha: 0.1),
+                                                              alpha: 0.1,
+                                                            ),
                                                       ],
                                                     ),
                                                     shape: BoxShape.circle,
@@ -679,10 +712,12 @@ class _QuranPageViewState extends State<QuranPageView>
                                                 surahNumber: widget.surahNumber,
                                                 ayahNumber:
                                                     ayah.numberInSurah ??
-                                                        (index + 1),
+                                                    (index + 1),
                                                 size: 14.sp,
-                                                textColor: Theme.of(context)
-                                                            .brightness ==
+                                                textColor:
+                                                    Theme.of(
+                                                          context,
+                                                        ).brightness ==
                                                         Brightness.dark
                                                     ? context.accentColor
                                                     : context.primaryColor,
@@ -726,21 +761,29 @@ class _QuranPageViewState extends State<QuranPageView>
                                             style: TextStyle(
                                               fontFamily: getQuranFonts(),
                                               fontSize: 20.sp,
-                                              color: playingAyahIndex ==
-                                                      ayahIndex
-                                                  ? (Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
-                                                      ? const Color(0xFF10B981)
-                                                      : const Color(0xFF2E7D32))
+                                              color:
+                                                  playingAyahIndex == ayahIndex
+                                                  ? (Theme.of(
+                                                              context,
+                                                            ).brightness ==
+                                                            Brightness.dark
+                                                        ? const Color(
+                                                            0xFF10B981,
+                                                          )
+                                                        : const Color(
+                                                            0xFF2E7D32,
+                                                          ))
                                                   : (widget.customTextColor ??
-                                                      (Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.dark
-                                                          ? const Color(
-                                                              0xFFF8FAFC)
-                                                          : const Color(
-                                                              0xFF2C3E50))),
+                                                        (Theme.of(
+                                                                  context,
+                                                                ).brightness ==
+                                                                Brightness.dark
+                                                            ? const Color(
+                                                                0xFFF8FAFC,
+                                                              )
+                                                            : const Color(
+                                                                0xFF2C3E50,
+                                                              ))),
                                               height: 2.0,
                                               fontWeight: FontWeight.w500,
                                               letterSpacing: 0.3,
@@ -755,21 +798,26 @@ class _QuranPageViewState extends State<QuranPageView>
                                         margin: EdgeInsets.only(top: 12.h),
                                         padding: EdgeInsets.all(12.r),
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness ==
+                                          color:
+                                              Theme.of(context).brightness ==
                                                   Brightness.dark
-                                              ? const Color(0xFF1E293B)
-                                                  .withValues(alpha: 0.8)
+                                              ? const Color(
+                                                  0xFF1E293B,
+                                                ).withValues(alpha: 0.8)
                                               : const Color(0xFFF8F9FA),
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
                                           border: Border.all(
                                             color:
                                                 Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? const Color(0xFF4C1D95)
-                                                        .withValues(alpha: 0.3)
-                                                    : const Color(0xFF674B5D)
-                                                        .withValues(alpha: 0.1),
+                                                    Brightness.dark
+                                                ? const Color(
+                                                    0xFF4C1D95,
+                                                  ).withValues(alpha: 0.3)
+                                                : const Color(
+                                                    0xFF674B5D,
+                                                  ).withValues(alpha: 0.1),
                                             width: 1,
                                           ),
                                         ),
@@ -782,8 +830,10 @@ class _QuranPageViewState extends State<QuranPageView>
                                                 Icon(
                                                   Icons.translate,
                                                   size: 12.sp,
-                                                  color: Theme.of(context)
-                                                              .brightness ==
+                                                  color:
+                                                      Theme.of(
+                                                            context,
+                                                          ).brightness ==
                                                           Brightness.dark
                                                       ? context.accentColor
                                                       : context.primaryColor,
@@ -794,12 +844,14 @@ class _QuranPageViewState extends State<QuranPageView>
                                                     _getTranslationSourceName(),
                                                     style: TextStyle(
                                                       fontSize: 10.sp,
-                                                      color: Theme.of(context)
-                                                                  .brightness ==
+                                                      color:
+                                                          Theme.of(
+                                                                context,
+                                                              ).brightness ==
                                                               Brightness.dark
                                                           ? context.accentColor
                                                           : context
-                                                              .primaryColor,
+                                                                .primaryColor,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
@@ -814,11 +866,14 @@ class _QuranPageViewState extends State<QuranPageView>
                                               _getTranslationTextForAyah(index),
                                               style: TextStyle(
                                                 fontSize: 13.sp,
-                                                color: Theme.of(context)
-                                                            .brightness ==
+                                                color:
+                                                    Theme.of(
+                                                          context,
+                                                        ).brightness ==
                                                         Brightness.dark
-                                                    ? const Color(0xFFE2E8F0)
-                                                        .withValues(alpha: 0.9)
+                                                    ? const Color(
+                                                        0xFFE2E8F0,
+                                                      ).withValues(alpha: 0.9)
                                                     : const Color(0xFF2C3E50),
                                                 height: 1.5,
                                                 fontWeight: FontWeight.w400,
@@ -839,7 +894,7 @@ class _QuranPageViewState extends State<QuranPageView>
                 );
               },
             ),
-            if (playingAyahIndex != null && currentSurahAudio != null)
+            if (playingAyahIndex != null)
               Positioned(
                 left: 12.w,
                 right: 12.w,
@@ -854,14 +909,8 @@ class _QuranPageViewState extends State<QuranPageView>
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: Theme.of(context).brightness == Brightness.dark
-                            ? [
-                                colors.primaryDark,
-                                colors.primary,
-                              ]
-                            : [
-                                colors.primary,
-                                colors.primaryVariant,
-                              ],
+                            ? [colors.primaryDark, colors.primary]
+                            : [colors.primary, colors.primaryVariant],
                       ),
                       borderRadius: BorderRadius.circular(16.r),
                       boxShadow: [
@@ -885,7 +934,12 @@ class _QuranPageViewState extends State<QuranPageView>
                             SizedBox(width: 6.w),
                             Expanded(
                               child: Text(
-                                'Ayah ${playingAyahIndex! + 1} of ${widget.surah.ayahs!.length}',
+                                AppLocalizations.of(
+                                  context,
+                                )!.playingAyahOfTotal(
+                                  playingAyahIndex! + 1,
+                                  widget.surah.ayahs!.length,
+                                ),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.sp,
@@ -919,7 +973,9 @@ class _QuranPageViewState extends State<QuranPageView>
                                   ? () => _previousAyah()
                                   : null,
                               icon: Icon(
-                                Icons.skip_previous,
+                                Directionality.of(context) == TextDirection.rtl
+                                    ? Icons.skip_next
+                                    : Icons.skip_previous,
                                 color: playingAyahIndex! > 0
                                     ? Colors.white
                                     : Colors.white.withValues(alpha: 0.5),
@@ -943,13 +999,17 @@ class _QuranPageViewState extends State<QuranPageView>
                               ),
                             ),
                             IconButton(
-                              onPressed: playingAyahIndex! <
+                              onPressed:
+                                  playingAyahIndex! <
                                       widget.surah.ayahs!.length - 1
                                   ? () => _nextAyah()
                                   : null,
                               icon: Icon(
-                                Icons.skip_next,
-                                color: playingAyahIndex! <
+                                Directionality.of(context) == TextDirection.rtl
+                                    ? Icons.skip_previous
+                                    : Icons.skip_next,
+                                color:
+                                    playingAyahIndex! <
                                         widget.surah.ayahs!.length - 1
                                     ? Colors.white
                                     : Colors.white.withValues(alpha: 0.5),
@@ -1122,6 +1182,9 @@ class _QuranPageViewState extends State<QuranPageView>
         isLoadingAudio = false;
       });
       safeModalSetState();
+    } else if (state is AudioOffline || state is AudioError) {
+      setState(() => isLoadingAudio = false);
+      safeModalSetState();
     } else if (state is SurahAudioLoading) {
       setState(() {
         isLoadingAudio = true;
@@ -1203,7 +1266,9 @@ class _QuranPageViewState extends State<QuranPageView>
   }
 
   void _handleTranslationStateChanges(
-      BuildContext context, TranslationState state) {
+    BuildContext context,
+    TranslationState state,
+  ) {
     if (state is TranslationLoaded) {
       setState(() {
         _availableTranslationSources = state.translationModel.data ?? [];
@@ -1316,8 +1381,9 @@ class _QuranPageViewState extends State<QuranPageView>
                     } else if (cachedDownloadedReaders.isEmpty &&
                         cachedDownloadedTafsirSources.isEmpty &&
                         cachedDownloadedTranslationSources.isEmpty) {
-                      offlineMessage =
-                          AppLocalizations.of(context)!.offlineAudioUnavailable;
+                      offlineMessage = AppLocalizations.of(
+                        context,
+                      )!.offlineAudioUnavailable;
                     }
 
                     if (!isOfflineMode) {
@@ -1418,11 +1484,15 @@ class _QuranPageViewState extends State<QuranPageView>
                               selectedTranslationLanguage,
                           currentTranslation: currentTranslation,
                           isLoadingTranslation: isLoadingTranslation,
+                          audioRange: audioRange,
+                          onAudioRangeChanged: configureAudioRange,
                           onPlayPause: playPauseAudio,
                           onPrevious: (currentIndex) =>
                               skipToPreviousAyah(currentIndex),
                           onNext: (currentIndex) => skipToNextAyah(
-                              currentIndex, widget.surah.ayahs?.length ?? 0),
+                            currentIndex,
+                            widget.surah.ayahs?.length ?? 0,
+                          ),
                           onSeek: seekToPosition,
                           onUserSeekingChanged: (seeking) =>
                               setState(() => isUserSeeking = seeking),
@@ -1433,7 +1503,8 @@ class _QuranPageViewState extends State<QuranPageView>
                           onLoopChanged: (value) =>
                               setModalState(() => loopEnabled = value ?? false),
                           onAutoplayChanged: (value) => setModalState(
-                              () => autoplayEnabled = value ?? true),
+                            () => autoplayEnabled = value ?? true,
+                          ),
                           onDownloadSingle: () =>
                               downloadSingleAyah(index, ayah, setModalState),
                           onDownloadAll: () =>
@@ -1447,7 +1518,9 @@ class _QuranPageViewState extends State<QuranPageView>
                               switchTranslation(translationId, setModalState),
                           onTranslationLanguageSelected: (language) =>
                               switchTranslationLanguage(
-                                  language, setModalState),
+                                language,
+                                setModalState,
+                              ),
                           onDownloadTafsir: downloadSurahTafsir,
                           onDownloadFullTafsir: downloadFullQuranTafsir,
                           onDownloadTranslation: downloadSurahTranslation,
@@ -1513,8 +1586,9 @@ class _QuranPageViewState extends State<QuranPageView>
     final int nextSurahNumber = currentSurahNumber + 1;
     final int previousSurahNumber = currentSurahNumber - 1;
 
-    final String nextSurahName =
-        nextSurahNumber <= 114 ? quran.getSurahNameArabic(nextSurahNumber) : '';
+    final String nextSurahName = nextSurahNumber <= 114
+        ? quran.getSurahNameArabic(nextSurahNumber)
+        : '';
     final String previousSurahName = previousSurahNumber >= 1
         ? quran.getSurahNameArabic(previousSurahNumber)
         : '';
@@ -1523,8 +1597,8 @@ class _QuranPageViewState extends State<QuranPageView>
 
     Color buttonBgColor = widget.customBgColor != null
         ? (widget.customBgColor!.computeLuminance() > 0.5
-            ? Color.lerp(widget.customBgColor, Colors.black, 0.04)!
-            : Color.lerp(widget.customBgColor, Colors.white, 0.08)!)
+              ? Color.lerp(widget.customBgColor, Colors.black, 0.04)!
+              : Color.lerp(widget.customBgColor, Colors.white, 0.08)!)
         : (isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5));
 
     Color textColor =
@@ -1538,24 +1612,24 @@ class _QuranPageViewState extends State<QuranPageView>
           children: [
             Expanded(
               flex: 5,
-              child: nextSurahNumber <= 114
+              child: previousSurahNumber >= 1
                   ? _buildNavigationButton(
                       context,
-                      title: nextSurahName,
-                      subtitle: l10n.nextSurah,
-                      icon: Icons.arrow_back_ios_new_rounded,
+                      title: previousSurahName,
+                      subtitle: l10n.previousSurah,
+                      icon: Icons.arrow_forward_ios_rounded,
                       isLeftButton: false,
                       onTap: () {
-                        final nextSurah = QuranModel(
-                          number: nextSurahNumber,
-                          name: nextSurahName,
-                          englishName: quran.getSurahName(nextSurahNumber),
+                        final prevSurah = QuranModel(
+                          number: previousSurahNumber,
+                          name: previousSurahName,
+                          englishName: quran.getSurahName(previousSurahNumber),
                         );
                         Navigator.pushReplacementNamed(
                           context,
                           AppRoute.surahScreen,
                           arguments: {
-                            'surahInfo': nextSurah,
+                            'surahInfo': prevSurah,
                             'scrollToAyah': null,
                             'shouldRestorePosition': false,
                           },
@@ -1589,24 +1663,24 @@ class _QuranPageViewState extends State<QuranPageView>
             SizedBox(width: 8.w),
             Expanded(
               flex: 5,
-              child: previousSurahNumber >= 1
+              child: nextSurahNumber <= 114
                   ? _buildNavigationButton(
                       context,
-                      title: previousSurahName,
-                      subtitle: l10n.previousSurah,
-                      icon: Icons.arrow_forward_ios_rounded,
+                      title: nextSurahName,
+                      subtitle: l10n.nextSurah,
+                      icon: Icons.arrow_back_ios_new_rounded,
                       isLeftButton: true,
                       onTap: () {
-                        final prevSurah = QuranModel(
-                          number: previousSurahNumber,
-                          name: previousSurahName,
-                          englishName: quran.getSurahName(previousSurahNumber),
+                        final nextSurah = QuranModel(
+                          number: nextSurahNumber,
+                          name: nextSurahName,
+                          englishName: quran.getSurahName(nextSurahNumber),
                         );
                         Navigator.pushReplacementNamed(
                           context,
                           AppRoute.surahScreen,
                           arguments: {
-                            'surahInfo': prevSurah,
+                            'surahInfo': nextSurah,
                             'scrollToAyah': null,
                             'shouldRestorePosition': false,
                           },
@@ -1688,8 +1762,14 @@ class _QuranPageViewState extends State<QuranPageView>
                       : MainAxisAlignment.start,
                   children: [
                     if (!isLeftButton)
-                      Icon(icon,
-                          color: textColor.withValues(alpha: 0.4), size: 11.sp),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Icon(
+                          icon,
+                          color: textColor.withValues(alpha: 0.4),
+                          size: 11.sp,
+                        ),
+                      ),
                     if (!isLeftButton) SizedBox(width: 4.w),
                     Flexible(
                       child: Text(
@@ -1701,14 +1781,21 @@ class _QuranPageViewState extends State<QuranPageView>
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        textAlign:
-                            isLeftButton ? TextAlign.end : TextAlign.start,
+                        textAlign: isLeftButton
+                            ? TextAlign.end
+                            : TextAlign.start,
                       ),
                     ),
                     if (isLeftButton) SizedBox(width: 4.w),
                     if (isLeftButton)
-                      Icon(icon,
-                          color: textColor.withValues(alpha: 0.4), size: 11.sp),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Icon(
+                          icon,
+                          color: textColor.withValues(alpha: 0.4),
+                          size: 11.sp,
+                        ),
+                      ),
                   ],
                 ),
                 SizedBox(height: 6.h),

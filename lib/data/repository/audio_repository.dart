@@ -18,9 +18,15 @@ class AudioRepository {
     }
   }
 
-  Future<SurahAudioModel> getSurahAudio(String identifier) async {
+  Future<SurahAudioModel> getSurahAudio(
+    String identifier,
+    int surahNumber,
+  ) async {
     try {
-      final response = await audioServices.getSuraAudio(identifier);
+      final response = await audioServices.getSuraAudio(
+        identifier,
+        surahNumber,
+      );
       return SurahAudioModel.fromJson(response);
     } on DioException catch (e) {
       throw getDioErrorMessage(e);

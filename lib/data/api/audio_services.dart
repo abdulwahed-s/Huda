@@ -17,9 +17,7 @@ class AudioServices {
     try {
       final Response response = await dio.get(
         EndPoints.edition,
-        queryParameters: {
-          'format': 'audio',
-        },
+        queryParameters: {'format': 'audio'},
       );
 
       if (response.statusCode != 200) {
@@ -36,10 +34,13 @@ class AudioServices {
     }
   }
 
-  Future<Map<String, dynamic>> getSuraAudio(String identifier) async {
+  Future<Map<String, dynamic>> getSuraAudio(
+    String identifier,
+    int surahNumber,
+  ) async {
     try {
       final Response response = await dio.get(
-        EndPoints.surahEdition(identifier),
+        EndPoints.oneSurahEdition(identifier, surahNumber),
       );
 
       if (response.statusCode != 200) {

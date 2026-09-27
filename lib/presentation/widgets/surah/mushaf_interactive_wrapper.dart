@@ -166,8 +166,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
     if (!mounted) return;
 
     final tafsirSources = context.read<TafsirCubit>().lastKnownSources;
-    final translationSources =
-        context.read<TranslationCubit>().lastKnownSources;
+    final translationSources = context
+        .read<TranslationCubit>()
+        .lastKnownSources;
     final audioReaders = context.read<AudioCubit>().lastKnownReaders;
 
     setState(() {
@@ -214,23 +215,26 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
               builder: (context, memState) {
                 final isMemorizationMode =
                     memState is MemorizationModeUpdated &&
-                        memState.isMemorizationMode;
+                    memState.isMemorizationMode;
                 final hiddenAyahIndices = isMemorizationMode
                     ? memState.hiddenAyahIndices
                     : const <int>{};
-                final memSurahNumber =
-                    isMemorizationMode ? memState.surahNumber : 0;
+                final memSurahNumber = isMemorizationMode
+                    ? memState.surahNumber
+                    : 0;
 
                 return QuranMushafPageView(
                   key: ValueKey(
-                      '${widget.mode}_${widget.displayMode}_${widget.flipDirection}'),
+                    '${widget.mode}_${widget.displayMode}_${widget.flipDirection}',
+                  ),
                   initialPageNumber: widget.initialPageNumber,
                   mode: widget.mode,
                   displayMode: widget.displayMode,
                   flipDirection: widget.flipDirection,
                   playingSurahNumber: widget.surahNumber,
-                  playingAyahNumber:
-                      playingAyahIndex != null ? playingAyahIndex! + 1 : null,
+                  playingAyahNumber: playingAyahIndex != null
+                      ? playingAyahIndex! + 1
+                      : null,
                   isMemorizationMode: isMemorizationMode,
                   hiddenAyahIndices: hiddenAyahIndices,
                   memorizedSurahNumber: memSurahNumber,
@@ -259,7 +263,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
             ),
           ),
           _buildOverlayAppBar(context),
-          if (playingAyahIndex != null && currentSurahAudio != null)
+          if (playingAyahIndex != null)
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
@@ -271,14 +275,8 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: Theme.of(context).brightness == Brightness.dark
-                        ? [
-                            colors.primaryDark,
-                            colors.primary,
-                          ]
-                        : [
-                            colors.primary,
-                            colors.primaryVariant,
-                          ],
+                        ? [colors.primaryDark, colors.primary]
+                        : [colors.primary, colors.primaryVariant],
                   ),
                   borderRadius: BorderRadius.circular(16.r),
                   boxShadow: [
@@ -302,7 +300,10 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                         SizedBox(width: 6.w),
                         Expanded(
                           child: Text(
-                            'Ayah ${playingAyahIndex! + 1} of ${widget.surah.ayahs?.length ?? 0}',
+                            AppLocalizations.of(context)!.playingAyahOfTotal(
+                              playingAyahIndex! + 1,
+                              widget.surah.ayahs?.length ?? 0,
+                            ),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12.sp,
@@ -335,7 +336,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                               ? () => _previousAyah()
                               : null,
                           icon: Icon(
-                            Icons.skip_previous,
+                            Directionality.of(context) == TextDirection.rtl
+                                ? Icons.skip_next
+                                : Icons.skip_previous,
                             color: playingAyahIndex! > 0
                                 ? Colors.white
                                 : Colors.white.withValues(alpha: 0.5),
@@ -357,13 +360,17 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                           ),
                         ),
                         IconButton(
-                          onPressed: playingAyahIndex! <
+                          onPressed:
+                              playingAyahIndex! <
                                   (widget.surah.ayahs?.length ?? 1) - 1
                               ? () => _nextAyah()
                               : null,
                           icon: Icon(
-                            Icons.skip_next,
-                            color: playingAyahIndex! <
+                            Directionality.of(context) == TextDirection.rtl
+                                ? Icons.skip_previous
+                                : Icons.skip_next,
+                            color:
+                                playingAyahIndex! <
                                     (widget.surah.ayahs?.length ?? 1) - 1
                                 ? Colors.white
                                 : Colors.white.withValues(alpha: 0.5),
@@ -570,8 +577,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                   } else if (cachedDownloadedReaders.isEmpty &&
                       cachedDownloadedTafsirSources.isEmpty &&
                       cachedDownloadedTranslationSources.isEmpty) {
-                    offlineMessage =
-                        AppLocalizations.of(context)!.offlineAudioUnavailable;
+                    offlineMessage = AppLocalizations.of(
+                      context,
+                    )!.offlineAudioUnavailable;
                   }
                   if (!isOfflineMode) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -664,11 +672,15 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                             selectedTranslationLanguage,
                         currentTranslation: currentTranslation,
                         isLoadingTranslation: isLoadingTranslation,
+                        audioRange: audioRange,
+                        onAudioRangeChanged: configureAudioRange,
                         onPlayPause: playPauseAudio,
                         onPrevious: (currentIndex) =>
                             skipToPreviousAyah(currentIndex),
                         onNext: (currentIndex) => skipToNextAyah(
-                            currentIndex, widget.surah.ayahs?.length ?? 0),
+                          currentIndex,
+                          widget.surah.ayahs?.length ?? 0,
+                        ),
                         onSeek: seekToPosition,
                         onUserSeekingChanged: (seeking) =>
                             setState(() => isUserSeeking = seeking),
@@ -679,7 +691,8 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                         onLoopChanged: (value) =>
                             setModalState(() => loopEnabled = value ?? false),
                         onAutoplayChanged: (value) => setModalState(
-                            () => autoplayEnabled = value ?? true),
+                          () => autoplayEnabled = value ?? true,
+                        ),
                         onDownloadSingle: () =>
                             downloadSingleAyah(index, ayah, setModalState),
                         onDownloadAll: () =>
@@ -826,7 +839,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                       context
                           .read<TranslationCubit>()
                           .fetchSurahTranslationWithCacheCheck(
-                              translationId, surahNum);
+                            translationId,
+                            surahNum,
+                          );
                     },
                     onTranslationLanguageSelected: (language) =>
                         switchTranslationLanguage(language, setModalState),
@@ -920,6 +935,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
         isLoadingAudio = false;
       });
       safeModalSetState();
+    } else if (state is AudioOffline || state is AudioError) {
+      setState(() => isLoadingAudio = false);
+      safeModalSetState();
     } else if (state is SurahAudioLoading) {
       setState(() => isLoadingAudio = true);
       safeModalSetState();
@@ -984,7 +1002,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
   }
 
   void _handleTranslationStateChanges(
-      BuildContext context, TranslationState state) {
+    BuildContext context,
+    TranslationState state,
+  ) {
     if (state is TranslationLoaded) {
       setState(() {
         _availableTranslationSources = state.translationModel.data ?? [];
