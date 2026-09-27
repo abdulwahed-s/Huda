@@ -12,6 +12,7 @@ import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/classic_feature_card_metrics.dart';
 import 'package:huda/presentation/widgets/home/continue_activity_dock.dart';
+import 'package:huda/presentation/widgets/home/classic_feature_card_content.dart';
 
 class _QuranSubItem {
   final String title;
@@ -214,72 +215,32 @@ class _QuranFeatureStackCardState extends State<QuranFeatureStackCard> {
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
           onTap: _toggle,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final metrics = ClassicFeatureCardMetrics.resolve(constraints);
-              return Padding(
-                padding: EdgeInsets.all(metrics.outerPadding),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      flex: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(metrics.iconPadding),
-                        decoration: BoxDecoration(
-                          color: context.primaryColor.withValues(alpha: 0.08),
-                          borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(
-                            color: context.primaryColor.withValues(alpha: 0.12),
-                          ),
-                        ),
-                        child: SvgPicture(
-                          const AssetBytesLoader(
-                            'assets/images/qurancard.svg.vec',
-                          ),
-                          width: metrics.iconSize,
-                          height: metrics.iconSize,
-                          colorFilter: ColorFilter.mode(
-                            widget.isDarkMode
-                                ? context.primaryLightColor
-                                : context.primaryColor,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: metrics.contentGap),
-                    Flexible(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: SizedBox(
-                              width: constraints.maxWidth,
-                              child: Text(
-                                widget.stackLabel,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: metrics.fontSize,
-                                  fontWeight: FontWeight.w600,
-                                  color: widget.isDarkMode
-                                      ? Colors.white
-                                      : Colors.black.withValues(alpha: 0.85),
-                                  height: 1.2,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+          child: ClassicFeatureCardContent(
+            title: widget.stackLabel,
+            titleColor: widget.isDarkMode
+                ? Colors.white
+                : Colors.black.withValues(alpha: 0.85),
+            iconBuilder: (metrics) => Container(
+              padding: EdgeInsets.all(metrics.iconPadding),
+              decoration: BoxDecoration(
+                color: context.primaryColor.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: context.primaryColor.withValues(alpha: 0.12),
                 ),
-              );
-            },
+              ),
+              child: SvgPicture(
+                const AssetBytesLoader('assets/images/qurancard.svg.vec'),
+                width: metrics.iconSize,
+                height: metrics.iconSize,
+                colorFilter: ColorFilter.mode(
+                  widget.isDarkMode
+                      ? context.primaryLightColor
+                      : context.primaryColor,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
           ),
         ),
       ),

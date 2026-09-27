@@ -27,9 +27,9 @@ class ClassicFeatureCardMetrics {
 
     return ClassicFeatureCardMetrics(
       outerPadding: (basis * 0.07).clamp(6.0, 16.0),
-      iconSize: (basis * 0.25).clamp(22.0, 48.0),
-      iconPadding: (basis * 0.07).clamp(5.0, 13.0),
-      fontSize: (basis * 0.085).clamp(10.0, 17.0),
+      iconSize: (basis * 0.30).clamp(22.0, 72.0),
+      iconPadding: (basis * 0.13).clamp(5.0, 30.0),
+      fontSize: (basis * 0.10).clamp(10.0, 22.0),
       contentGap: (basis * 0.055).clamp(5.0, 11.0),
     );
   }

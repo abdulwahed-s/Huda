@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 import 'package:huda/core/theme/theme_extension.dart';
-import 'package:huda/presentation/widgets/home/classic_feature_card_metrics.dart';
+import 'package:huda/presentation/widgets/home/classic_feature_card_content.dart';
 
 class FeatureCard extends StatelessWidget {
   final String title;
@@ -73,107 +73,40 @@ class FeatureCard extends StatelessWidget {
                   ? context.primaryColor.withValues(alpha: 0.07)
                   : null,
             ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final metrics = ClassicFeatureCardMetrics.resolve(constraints);
-                return Padding(
-                  padding: EdgeInsets.all(metrics.outerPadding),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (svgAsset != null)
-                        Flexible(
-                          flex: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(metrics.iconPadding),
-                            decoration: BoxDecoration(
-                              color: context.primaryColor.withValues(
-                                alpha: 0.08,
-                              ),
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: context.primaryColor.withValues(
-                                  alpha: 0.12,
-                                ),
-                              ),
-                            ),
-                            child: SvgPicture(
-                              AssetBytesLoader(svgAsset!),
-                              width: metrics.iconSize,
-                              height: metrics.iconSize,
-                              colorFilter: ColorFilter.mode(
-                                isDarkMode
-                                    ? context.primaryLightColor
-                                    : context.primaryColor,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
-                        )
-                      else
-                        Flexible(
-                          flex: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(metrics.iconPadding),
-                            decoration: BoxDecoration(
-                              color: context.primaryColor.withValues(
-                                alpha: 0.08,
-                              ),
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: context.primaryColor.withValues(
-                                  alpha: 0.12,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              icon,
-                              size: metrics.iconSize,
-                              color: isDarkMode
-                                  ? context.primaryLightColor
-                                  : context.primaryColor,
-                            ),
-                          ),
-                        ),
-                      SizedBox(height: metrics.contentGap),
-                      Flexible(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final textStyle = TextStyle(
-                              fontSize: metrics.fontSize,
-                              fontWeight: FontWeight.w600,
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : Colors.black.withValues(alpha: 0.85),
-                              height: 1.2,
-                            );
-
-                            final isSingleWord = !title.trim().contains(' ');
-                            final displayTitle = isSingleWord
-                                ? title
-                                : balancedTwoLineTitle(title);
-                            return FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: SizedBox(
-                                width: constraints.maxWidth,
-                                child: Text(
-                                  displayTitle,
-                                  textAlign: TextAlign.center,
-                                  maxLines: isSingleWord ? 1 : 2,
-                                  softWrap: false,
-                                  overflow: TextOverflow.visible,
-                                  style: textStyle,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+            child: ClassicFeatureCardContent(
+              title: title,
+              titleColor: isDarkMode
+                  ? Colors.white
+                  : Colors.black.withValues(alpha: 0.85),
+              iconBuilder: (metrics) => Container(
+                padding: EdgeInsets.all(metrics.iconPadding),
+                decoration: BoxDecoration(
+                  color: context.primaryColor.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: context.primaryColor.withValues(alpha: 0.12),
                   ),
-                );
-              },
+                ),
+                child: svgAsset != null
+                    ? SvgPicture(
+                        AssetBytesLoader(svgAsset!),
+                        width: metrics.iconSize,
+                        height: metrics.iconSize,
+                        colorFilter: ColorFilter.mode(
+                          isDarkMode
+                              ? context.primaryLightColor
+                              : context.primaryColor,
+                          BlendMode.srcIn,
+                        ),
+                      )
+                    : Icon(
+                        icon,
+                        size: metrics.iconSize,
+                        color: isDarkMode
+                            ? context.primaryLightColor
+                            : context.primaryColor,
+                      ),
+              ),
             ),
           ),
         ),
@@ -202,25 +135,4 @@ class FeatureCard extends StatelessWidget {
       },
     );
   }
-}
-
-@visibleForTesting
-String balancedTwoLineTitle(String title) {
-  final words = title.trim().split(RegExp(r'\s+'));
-  if (words.length < 2) return title.trim();
-
-  var bestSplit = 1;
-  var bestDifference = double.infinity;
-  for (var split = 1; split < words.length; split++) {
-    final firstLength = words.take(split).join(' ').length;
-    final secondLength = words.skip(split).join(' ').length;
-    final difference = (firstLength - secondLength).abs().toDouble();
-    if (difference < bestDifference) {
-      bestDifference = difference;
-      bestSplit = split;
-    }
-  }
-
-  return '${words.take(bestSplit).join(' ')}\n'
-      '${words.skip(bestSplit).join(' ')}';
 }
