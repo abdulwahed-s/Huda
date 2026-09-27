@@ -1,4 +1,5 @@
 import Foundation
+import CoreFoundation
 
 enum PrayerWidgetDataLoader {
   private static let appGroupId = "group.hudaHomeApp"
@@ -49,7 +50,9 @@ enum PrayerWidgetDataLoader {
   }
 
   static func loadSettings(from defaults: UserDefaults?) -> PrayerWidgetSettings {
-    let payload = settingsPayload(defaults)
+    let committed = settingsPayload(defaults)
+    let display = settingsPayload(defaults, key: "prayer_widget_display_v1")
+    let payload = (readInt(display?["locationRevision"]) ?? -1) >= (readInt(committed?["locationRevision"]) ?? 0) ? display : committed
     let payloadCoordinates = payload?["coordinates"] as? [String: Any]
     let payloadOffsets = payload?["offsets"] as? [String: Any]
     let payloadAngles = payload?["customAngles"] as? [String: Any]
@@ -221,18 +224,19 @@ enum PrayerWidgetDataLoader {
       publicationRevision: readInt(payload?["publicationRevision"])
         ?? readInt(payload?["revision"]) ?? 0,
       configurationSignature: readString(payload?["configurationSignature"])
-        ?? "legacy-v2"
+        ?? "legacy-v2",
+      precomputedDays: payload?["precomputedDays"] as? [String: [String: Double]] ?? [:]
     )
   }
 
-  private static func settingsPayload(_ defaults: UserDefaults?) -> [String: Any]? {
+  private static func settingsPayload(_ defaults: UserDefaults?, key: String = keySettingsPayload) -> [String: Any]? {
     guard
-      let raw = defaults?.string(forKey: keySettingsPayload),
+      let raw = defaults?.string(forKey: key),
       let data = raw.data(using: .utf8),
       let object = try? JSONSerialization.jsonObject(with: data),
       let payload = object as? [String: Any],
       let version = readInt(payload["version"]),
-      version == 2 || version == 3,
+      version == 2 || version == 3 || version == 4,
       let revision = readInt(payload["revision"]),
       revision > 0,
       revision <= maximumSafeRevision,
@@ -250,14 +254,14 @@ enum PrayerWidgetDataLoader {
         TimeZone(identifier: identifier) != nil
       else { return nil }
     }
-    if version == 3 {
+    if version >= 3 {
       guard
         let locationRevision = readInt(payload["locationRevision"]),
         let scheduleRevision = readInt(payload["scheduleRevision"]),
         let publicationRevision = readInt(payload["publicationRevision"]),
         locationRevision > 0,
         locationRevision <= maximumSafeRevision,
-        scheduleRevision > 0,
+        scheduleRevision >= (version == 4 ? 0 : 1),
         scheduleRevision <= maximumSafeRevision,
         publicationRevision > 0,
         publicationRevision <= maximumSafeRevision,
@@ -321,8 +325,10 @@ enum PrayerWidgetDataLoader {
   }
 
   private static func readInt(_ value: Any?) -> Int? {
-    if value is Bool { return nil }
-    if let number = value as? NSNumber { return Int(number.stringValue) }
+    if let number = value as? NSNumber {
+      guard CFGetTypeID(number) != CFBooleanGetTypeID() else { return nil }
+      return Int(number.stringValue)
+    }
     if let string = value as? String {
       return Int(string.trimmingCharacters(in: .whitespacesAndNewlines))
     }
@@ -415,6 +421,7 @@ struct PrayerWidgetSettings {
   let scheduleRevision: Int
   let publicationRevision: Int
   let configurationSignature: String
+  var precomputedDays: [String: [String: Double]] = [:]
 
   var effectiveLanguage: String {
     if language == "auto" || language.isEmpty {

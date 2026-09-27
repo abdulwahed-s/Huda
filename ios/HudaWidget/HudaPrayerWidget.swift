@@ -323,6 +323,7 @@ struct HudaPrayerWidget: Widget {
         .configurationDisplayName("Huda — Prayer Times")
         .description("Prayer times and the next prayer at a glance.")
         .supportedFamilies(supportedFamilies)
+        .contentMarginsDisabled()
     }
 
     private var supportedFamilies: [WidgetFamily] {

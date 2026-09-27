@@ -56,6 +56,12 @@ internal object PrayerWidgetCalculator {
     )
 
     fun computeDay(snapshot: PrayerWidgetSnapshot, day: Calendar): DayTimes? {
+        val key = String.format(java.util.Locale.ROOT, "%04d-%02d-%02d", day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1, day.get(Calendar.DAY_OF_MONTH))
+        snapshot.precomputedDays[key]?.let { values ->
+            return DayTimes(DateComponents(day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1, day.get(Calendar.DAY_OF_MONTH)),
+                values["fajr"]?.let(::Date), values["sunrise"]?.let(::Date), values["dhuhr"]?.let(::Date),
+                values["asr"]?.let(::Date), values["maghrib"]?.let(::Date), values["isha"]?.let(::Date))
+        }
         val raw = rawTimes(snapshot, day) ?: return null
         val date = DateComponents(
             day.get(Calendar.YEAR),

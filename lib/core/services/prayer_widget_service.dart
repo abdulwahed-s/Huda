@@ -1,3 +1,5 @@
+import 'package:huda/core/services/prayer_display_snapshot.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -93,6 +95,127 @@ class PrayerWidgetService {
     );
   }
 
+  static const displayPayloadKey = 'prayer_widget_display_v1';
+
+  static Future<void> publishDisplay(
+    PrayerDisplaySnapshot display, {
+    required CacheHelper cacheHelper,
+  }) async {
+    if (!PlatformUtils.isMobile) return;
+    final repository = PrayerLocationRepository(cacheHelper: cacheHelper);
+    await repository.synchronized((session) async {
+      final latest = session.state.displaySnapshot;
+      if (latest != null &&
+          (latest.location.revision > display.location.revision ||
+              (latest.location.revision == display.location.revision &&
+                  latest.revision > display.revision))) {
+        return;
+      }
+      await _publishDisplayLocked(display, cacheHelper);
+    });
+  }
+
+  static Future<void> _publishDisplayLocked(
+    PrayerDisplaySnapshot display,
+    CacheHelper cacheHelper,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
+    if (PlatformUtils.isIOS) await HomeWidget.setAppGroupId(_appGroupId);
+    final prior = _decodePayload(prefs.getString(displayPayloadKey));
+    final previousLocation = _integer(prior?['locationRevision']) ?? 0;
+    final previousRevision = _integer(prior?['revision']) ?? 0;
+    if (previousLocation > display.location.revision ||
+        (previousLocation == display.location.revision &&
+            previousRevision > display.revision)) {
+      return;
+    }
+    final payload = displayPayload(display, cacheHelper: cacheHelper);
+    await _writeString(prefs, displayPayloadKey, jsonEncode(payload));
+    final report = await _refreshNativeWidget(
+      expectedRevision: display.revision,
+    );
+    if (report != null &&
+        (report.failedUpdates > 0 ||
+            report.error != null ||
+            report.broadcastError != null)) {
+      throw StateError('Prayer widget refresh incomplete');
+    }
+  }
+
+  @visibleForTesting
+  static Map<String, Object?> displayPayload(
+    PrayerDisplaySnapshot display, {
+    required CacheHelper cacheHelper,
+  }) {
+    final settings = readSettings(cacheHelper: cacheHelper);
+    final language = settings.language == PrayerWidgetLanguage.auto
+        ? (cacheHelper.getDataString(key: 'locale') ?? 'en')
+        : settings.language.code;
+    final location = display.location;
+    final civil = PrayerTimeZoneService.wallClockAtInstant(
+      DateTime.now(),
+      location.timeZoneId,
+    );
+    final days = <String, Object?>{};
+    for (var offset = -8; offset <= 16; offset++) {
+      final day = DateTime(civil.year, civil.month, civil.day + offset);
+      final values = PrayerTimesCalculator.dailyAdjustedInstants(
+        display.computeDate(day),
+        display.offsets,
+      );
+      days['${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}'] =
+          {
+            for (final entry in values.entries)
+              entry.key.name: entry.value.millisecondsSinceEpoch,
+          };
+    }
+    return {
+      'version': 4,
+      'revision': display.revision,
+      'publicationRevision': display.revision,
+      'locationRevision': location.revision,
+      'scheduleRevision': 0,
+      'configurationSignature': 'display:${display.revision}',
+      'committedAt': DateTime.now().toUtc().toIso8601String(),
+      'coordinates': {
+        'latitude': location.latitude,
+        'longitude': location.longitude,
+      },
+      'timeZoneId': location.timeZoneId,
+      'locationMode': location.mode.name,
+      'countryCode': location.countryCode ?? '',
+      'calculationMethod': display.method,
+      'madhab': display.madhab,
+      'highLatitudeRule': display.highLatitude,
+      'customAngles': {
+        'custom_fajr_angle': display.angles.fajr,
+        'custom_maghrib_angle': display.angles.maghrib,
+        'custom_isha_angle': display.angles.isha,
+      },
+      'offsets': display.offsets,
+      'timeFormat': settings.timeFormat.storage,
+      'provisional': display.provisional,
+      'verificationReasons': location.verificationReasons,
+      'precomputedDays': days,
+      'appearance': {
+        'themeName': cacheHelper.getDataString(key: 'themeName') ?? 'teal',
+        'themeMode': cacheHelper.getDataString(key: 'themeMode') ?? 'light',
+        'locale': language,
+        'design': settings.design.storage,
+        'language': settings.language.storage,
+        'numerals': settings.numerals.storage,
+        'backgroundEnabled': settings.backgroundEnabled,
+        'backgroundColor': settings.backgroundColor,
+        'glassify': settings.glassify,
+        'rounded': settings.rounded,
+        'contentColor': settings.contentColor,
+        'highlightColor': settings.highlightColor,
+        'contentSize': settings.contentSize,
+      },
+    };
+  }
+
   static Future<void> initialize() async {
     if (!PlatformUtils.isMobile) return;
     if (PlatformUtils.isIOS) {
@@ -138,6 +261,15 @@ class PrayerWidgetService {
     }
 
     if (getIt.isRegistered<PrayerLocationRepository>()) {
+      final repository = getIt<PrayerLocationRepository>();
+      final display = (await repository.readState()).displaySnapshot;
+      if (display != null) {
+        await publishDisplay(
+          display,
+          cacheHelper: cacheHelper ?? getIt<CacheHelper>(),
+        );
+        return null;
+      }
       final publication = await getIt<PrayerLocationRepository>()
           .synchronized<({bool reserved, PrayerWidgetUpdateReport? report})>((
             session,
@@ -198,10 +330,9 @@ class PrayerWidgetService {
     final lon =
         projectedGeneration?.longitude.toString() ??
         cache.getDataString(key: _lonKey);
-    final countryCode =
-        projectedGeneration?.countryCode ??
-        cache.getDataString(key: _countryCodeKey) ??
-        '';
+    final countryCode = projectedGeneration != null
+        ? projectedGeneration.countryCode ?? ''
+        : cache.getDataString(key: _countryCodeKey) ?? '';
     final timeZoneId =
         projectedGeneration?.timeZoneId ??
         cache.getDataString(key: PrayerTimesCalculator.timeZoneIdKey);
@@ -356,8 +487,12 @@ class PrayerWidgetService {
     await _writeString(prefs, _settingsPayloadKey, payload);
 
     if (triggerNativeUpdate) {
+      final displayRevision = _integer(
+        _decodePayload(prefs.getString(displayPayloadKey))?['revision'],
+      );
       return _refreshNativeWidget(
         expectedRevision: effectivePublicationRevision,
+        alsoAccepted: displayRevision,
       );
     }
     return null;
@@ -419,6 +554,7 @@ class PrayerWidgetService {
 
   static Future<PrayerWidgetUpdateReport?> _refreshNativeWidget({
     required int expectedRevision,
+    int? alsoAccepted,
   }) async {
     if (PlatformUtils.isIOS) {
       for (final widgetName in _iOSWidgetNames) {
@@ -453,7 +589,8 @@ class PrayerWidgetService {
         throw StateError('Android prayer widget returned no update result');
       }
       final report = PrayerWidgetUpdateReport.fromMap(raw);
-      if (report.revision != expectedRevision) {
+      if (report.revision != expectedRevision &&
+          report.revision != alsoAccepted) {
         throw StateError(
           'Android rendered settings revision ${report.revision}; '
           'expected $expectedRevision',
@@ -618,6 +755,11 @@ class PrayerWidgetUpdateReport {
     Object? broadcastError,
   }) {
     int integer(String key) => (map[key] as num?)?.toInt() ?? 0;
+    String? message(String key) {
+      final value = map[key]?.toString();
+      return value == null || value.isEmpty ? null : value;
+    }
+
     final paths = <String, int>{};
     final rawPaths = map['rendererPath'];
     if (rawPaths is Map) {
@@ -633,8 +775,8 @@ class PrayerWidgetUpdateReport {
       rendererPaths: paths,
       alarmScheduled: map['alarmScheduled'] == true,
       alarmPrecision: map['alarmPrecision']?.toString() ?? 'none',
-      error: map['error']?.toString(),
-      alarmError: map['alarmError']?.toString(),
+      error: message('error'),
+      alarmError: message('alarmError'),
       broadcastError: broadcastError,
     );
   }

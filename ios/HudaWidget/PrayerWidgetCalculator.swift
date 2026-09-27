@@ -4,8 +4,10 @@ struct PrayerWidgetDayTimes {
     let base: PrayerTimes
     let offsets: [Prayer: Int]
     let timeZone: TimeZone
+    var precomputed: [String: Double]? = nil
 
     func time(for prayer: Prayer) -> Date? {
+        if let precomputed { return precomputed[String(describing: prayer)].map { Date(timeIntervalSince1970: $0 / 1000) } }
         guard let date = base.time(for: prayer) else { return nil }
         var fixedCalendar = Calendar(identifier: .gregorian)
         fixedCalendar.timeZone = TimeZone(
@@ -95,7 +97,8 @@ enum PrayerWidgetCalculator {
         return PrayerWidgetDayTimes(
             base: base,
             offsets: settings.offsets,
-            timeZone: settings.displayTimeZone
+            timeZone: settings.displayTimeZone,
+            precomputed: settings.precomputedDays[String(format: "%04d-%02d-%02d", components.year!, components.month!, components.day!)]
         )
     }
 

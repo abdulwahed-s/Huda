@@ -68,6 +68,9 @@ internal object PrayerWidgetRepository {
         val p = prefs(context)
         val committed = p.getString(K_PAYLOAD, null)
             ?.let(PrayerWidgetSettingsPayload::decode)
+        val display = p.getString("${PREFIX}prayer_widget_display_v1", null)
+            ?.let(PrayerWidgetSettingsPayload::decode)
+        if (display != null && (committed == null || display.locationRevision >= committed.locationRevision)) return display.toSnapshot()
         if (committed != null) return committed.toSnapshot()
         if (!p.getString(K_PAYLOAD, null).isNullOrBlank()) {
             Log.w(TAG, "Ignoring invalid committed settings payload; using legacy generation")
@@ -80,7 +83,7 @@ internal object PrayerWidgetRepository {
         val projected = p.getString(K_ACTIVE_LOCATION, null)
             ?.let(::decodeActiveLocationProjection)
         if (projected != null) return projected
-        val fallback = readSnapshot(context)
+        val fallback = readLegacySnapshot(p)
         return PrayerTravelLocationSnapshot(
             latitude = fallback.latitude,
             longitude = fallback.longitude,
@@ -91,6 +94,7 @@ internal object PrayerWidgetRepository {
         )
     }
 
+    @Synchronized
     fun submitAutomaticCandidate(
         context: Context,
         latitude: Double,
@@ -124,6 +128,13 @@ internal object PrayerWidgetRepository {
             .putString(K_NATIVE_CANDIDATE, gson.toJson(candidate))
             .commit()
         return if (committed) candidate else null
+    }
+
+    @Synchronized
+    fun consumeCandidate(context: Context, expected: String?): Boolean {
+        val p = prefs(context)
+        if (expected == null || p.getString(K_NATIVE_CANDIDATE, null) != expected) return false
+        return p.edit().remove(K_NATIVE_CANDIDATE).commit()
     }
 
     fun backgroundTravelEnabled(context: Context): Boolean =
@@ -309,8 +320,10 @@ internal object PrayerWidgetRepository {
         val contentColor: String?,
         val highlightColor: String?,
         val contentSize: Int,
+        val precomputedDays: Map<String, Map<String, Long>> = emptyMap(),
     ) {
         fun toSnapshot() = PrayerWidgetSnapshot(
+            precomputedDays = precomputedDays,
             latitude = latitude,
             longitude = longitude,
             countryCode = countryCode,
@@ -398,7 +411,7 @@ internal object PrayerWidgetRepository {
                 val version = root.requiredInt("version")
                 val revision = root.requiredLong("revision")
                 val committedAt = root.requiredString("committedAt")
-                require(version == 2 || version == 3)
+                require(version == 2 || version == 3 || version == 4)
                 require(revision in 1L..MAX_SAFE_REVISION && committedAt.isNotBlank())
                 Instant.parse(committedAt)
                 val locationRevision = if (version >= 3) {
@@ -415,7 +428,7 @@ internal object PrayerWidgetRepository {
                 } else "legacy-v2"
                 if (version >= 3) {
                     require(locationRevision in 1L..MAX_SAFE_REVISION)
-                    require(scheduleRevision in 1L..MAX_SAFE_REVISION)
+                    require(scheduleRevision in (if (version == 4) 0L else 1L)..MAX_SAFE_REVISION)
                     require(
                         publicationRevision in 1L..MAX_SAFE_REVISION &&
                                 revision == publicationRevision
@@ -448,6 +461,9 @@ internal object PrayerWidgetRepository {
                 val appearance = root.requiredObject("appearance")
 
                 PrayerWidgetSettingsPayload(
+                    precomputedDays = root.getAsJsonObject("precomputedDays")?.entrySet()?.associate { day ->
+                        day.key to day.value.asJsonObject.entrySet().associate { prayer -> prayer.key to prayer.value.asLong }
+                    } ?: emptyMap(),
                     version = version,
                     revision = revision,
                     locationRevision = locationRevision,
@@ -641,6 +657,7 @@ internal data class PrayerWidgetSnapshot(
     val publicationRevision: Long = revision,
     val configurationSignature: String = "legacy",
     val committedAt: String? = null,
+    val precomputedDays: Map<String, Map<String, Long>> = emptyMap(),
     val source: PrayerWidgetSettingsSource = PrayerWidgetSettingsSource.LEGACY,
 ) {
     val hasCoordinates: Boolean get() = latitude != null && longitude != null
