@@ -1,3 +1,5 @@
-Die Standortberechtigung für automatische Gebetszeiten-Updates auf Reisen wurde korrigiert.
-Gebetszeiten bleiben sichtbar, wenn die Planung von Benachrichtigungen fehlschlägt; eine Option zum erneuten Versuch ist verfügbar.
-Die Zuverlässigkeit der Gebetsbenachrichtigungen und die Anzeige des geplanten Zeitraums wurden verbessert.
+Gebetszeiten, Benachrichtigungen und Widgets sind zuverlässiger; Standorte lassen sich offline prüfen.
+Überarbeitete Gebetseinrichtung und Zeitübersicht mit teilbarem Gebetskalender.
+Koran offline lesen und hören wurde verbessert, einschließlich Übersetzungen, Tafsir und der Wiedergabe ausgewählter Ayahs.
+Hadithe sind besser lesbar und lassen sich jetzt als Bild teilen.
+Verbesserungen an Oberfläche und Bedienung in der gesamten App.

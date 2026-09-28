@@ -1,6 +1,5 @@
-Redesigned Prayer and Quran widgets with improved customization, reliability, and new iOS Lock Screen options
-Added custom Fajr, Maghrib, and Isha calculation angles
-Prayer times, notifications, and widgets can now update automatically while traveling
-Huda AI now saves searchable conversation history locally
-Improved Home customization
-Redesigned the feedback and issue-reporting experience
+Prayer times, notifications, and widgets are more reliable, with offline location verification.
+A refreshed prayer setup and timeline make it easier to review times and share a prayer calendar.
+Improved offline Quran reading and audio, including translations, tafsir, and selected ayah playback ranges.
+Hadith text is easier to read and can now be shared as an image.
+UI and UX improvements throughout the app.

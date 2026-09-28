@@ -1,6 +1,5 @@
-Namaz Vakitleri ve Kur’an widget’ları; geliştirilmiş özelleştirme, güvenilirlik ve yeni iOS Kilit Ekranı seçenekleriyle yeniden tasarlandı
-Fecr, Akşam ve Yatsı için özel hesaplama açıları eklendi
-Namaz vakitleri, bildirimler ve widget’lar artık seyahat sırasında otomatik olarak güncellenebilir
-Huda AI artık aranabilir konuşma geçmişini cihazda saklıyor
-Ana ekran özelleştirmesi iyileştirildi
-Geri bildirim ve sorun bildirme deneyimi yeniden tasarlandı
+Namaz vakitleri, bildirimler ve widget’lar daha güvenilir; konum çevrimdışı doğrulanabiliyor.
+Namaz kurulumu ve zaman çizelgesi yenilendi; namaz takvimini paylaşabilirsiniz.
+Çeviriler, tefsir ve seçili ayetleri oynatma dâhil çevrimdışı Kur’an okuma ve dinleme iyileştirildi.
+Hadis metinleri daha okunaklı; artık görsel olarak paylaşılabilir.
+Uygulama genelinde arayüz ve kullanım deneyimi iyileştirildi.

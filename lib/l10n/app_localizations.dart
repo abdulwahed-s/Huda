@@ -6100,6 +6100,18 @@ abstract class AppLocalizations {
   /// **'Redesigned the feedback and issue-reporting experience'**
   String get whatsNew420Feature6;
 
+  /// What's new feature 1 for v4.3.0
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer times and widgets are more reliable.'**
+  String get whatsNew430Feature1;
+
+  /// What's new feature 2 for v4.3.0
+  ///
+  /// In en, this message translates to:
+  /// **'A smoother, more polished experience throughout the app.'**
+  String get whatsNew430Feature2;
+
   /// Indicates that the app is currently in offline mode
   ///
   /// In en, this message translates to:

@@ -3391,6 +3391,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'L’expérience de retour et de signalement de problèmes a été repensée';
 
   @override
+  String get whatsNew430Feature1 =>
+      'Horaires de prière et widgets plus fiables.';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'Une expérience plus fluide et soignée dans toute l’application.';
+
+  @override
   String get offlineMode => 'Mode hors ligne';
 
   @override

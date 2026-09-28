@@ -271,6 +271,21 @@ class WhatsNewContent {
       ],
       buttonText: (context) => AppLocalizations.of(context)!.gotIt,
     ),
+    '4.3.0': WhatsNewContent(
+      version: '4.3.0',
+      title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
+      features: [
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew430Feature1,
+          icon: Icons.notifications_active_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew430Feature2,
+          icon: Icons.menu_book_outlined,
+        ),
+      ],
+      buttonText: (context) => AppLocalizations.of(context)!.gotIt,
+    ),
   };
 
   static WhatsNewContent? getForVersion(String version) {

@@ -3316,6 +3316,14 @@ class AppLocalizationsTr extends AppLocalizations {
       'Geri bildirim ve sorun bildirme deneyimi yeniden tasarlandı';
 
   @override
+  String get whatsNew430Feature1 =>
+      'Namaz vakitleri ve widget’lar daha güvenilir.';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'Uygulama genelinde daha akıcı ve özenli bir deneyim.';
+
+  @override
   String get offlineMode => 'Çevrimdışı Mod';
 
   @override

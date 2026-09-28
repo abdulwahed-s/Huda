@@ -1,3 +1,5 @@
-Seyahat sırasında namaz vakitlerinin otomatik güncellenmesi için konum izni isteme sorunu düzeltildi.
-Bildirimler planlanamazsa namaz vakitleri görünür kalır ve yeniden deneme seçeneği sunulur.
-Namaz bildirimi planlamasının güvenilirliği ve bildirimlerin hangi tarihe kadar planlandığını gösteren bilgi iyileştirildi.
+Namaz vakitleri, bildirimler ve widget’lar daha güvenilir; konum çevrimdışı doğrulanabiliyor.
+Namaz kurulumu ve zaman çizelgesi yenilendi; namaz takvimini paylaşabilirsiniz.
+Çeviriler, tefsir ve seçili ayetleri oynatma dâhil çevrimdışı Kur’an okuma ve dinleme iyileştirildi.
+Hadis metinleri daha okunaklı; artık görsel olarak paylaşılabilir.
+Uygulama genelinde arayüz ve kullanım deneyimi iyileştirildi.

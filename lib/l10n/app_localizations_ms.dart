@@ -3322,6 +3322,14 @@ class AppLocalizationsMs extends AppLocalizations {
       'Pengalaman maklum balas dan pelaporan masalah direka semula';
 
   @override
+  String get whatsNew430Feature1 =>
+      'Waktu solat dan widget lebih boleh dipercayai.';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'Pengalaman yang lebih lancar dan kemas di seluruh aplikasi.';
+
+  @override
   String get offlineMode => 'Mod Luar Talian';
 
   @override

@@ -3371,6 +3371,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Feedback und Problemmeldungen wurden neu gestaltet';
 
   @override
+  String get whatsNew430Feature1 =>
+      'Gebetszeiten und Widgets sind zuverlässiger.';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'Ein flüssigeres, ausgereifteres Erlebnis in der gesamten App.';
+
+  @override
   String get offlineMode => 'Offline-Modus';
 
   @override

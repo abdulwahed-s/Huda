@@ -3383,6 +3383,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Se rediseñó la experiencia de comentarios y reporte de problemas';
 
   @override
+  String get whatsNew430Feature1 =>
+      'Los horarios de oración y los widgets son más fiables.';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'Una experiencia más fluida y cuidada en toda la aplicación.';
+
+  @override
   String get offlineMode => 'Modo sin conexión';
 
   @override

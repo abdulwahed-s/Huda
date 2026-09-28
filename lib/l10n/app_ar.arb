@@ -1765,6 +1765,8 @@
     "whatsNew420Feature4": "يحفظ ذكاء هدى الآن سجل المحادثات محليًا مع إمكانية البحث فيه",
     "whatsNew420Feature5": "تحسين تخصيص الشاشة الرئيسية",
     "whatsNew420Feature6": "إعادة تصميم تجربة إرسال الملاحظات والإبلاغ عن المشكلات",
+    "whatsNew430Feature1": "مواقيت الصلاة والأدوات أكثر موثوقية.",
+    "whatsNew430Feature2": "تجربة أكثر سلاسة وتحسينًا في أنحاء التطبيق.",
     "offlineMode": "وضع عدم الاتصال",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"

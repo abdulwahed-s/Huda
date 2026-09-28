@@ -3343,6 +3343,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Обновлён интерфейс обратной связи и сообщений о проблемах';
 
   @override
+  String get whatsNew430Feature1 => 'Время молитв и виджеты стали надёжнее.';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'Более плавная и продуманная работа во всём приложении.';
+
+  @override
   String get offlineMode => 'Автономный режим';
 
   @override

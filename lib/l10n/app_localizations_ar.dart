@@ -3262,6 +3262,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'إعادة تصميم تجربة إرسال الملاحظات والإبلاغ عن المشكلات';
 
   @override
+  String get whatsNew430Feature1 => 'مواقيت الصلاة والأدوات أكثر موثوقية.';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'تجربة أكثر سلاسة وتحسينًا في أنحاء التطبيق.';
+
+  @override
   String get offlineMode => 'وضع عدم الاتصال';
 
   @override

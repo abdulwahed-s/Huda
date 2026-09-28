@@ -3310,6 +3310,13 @@ class AppLocalizationsUr extends AppLocalizations {
       'رائے اور مسائل کی اطلاع دینے کے تجربے کو نئے سرے سے ڈیزائن کیا گیا';
 
   @override
+  String get whatsNew430Feature1 =>
+      'نماز کے اوقات اور وجٹس زیادہ قابلِ اعتماد ہیں۔';
+
+  @override
+  String get whatsNew430Feature2 => 'پوری ایپ میں زیادہ ہموار اور بہتر تجربہ۔';
+
+  @override
   String get offlineMode => 'آف لائن موڈ';
 
   @override

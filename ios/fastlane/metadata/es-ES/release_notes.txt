@@ -1,3 +1,5 @@
-Se corrigió la solicitud de permiso de ubicación para actualizar automáticamente los horarios de oración durante los viajes.
-Los horarios de oración siguen visibles si falla la programación de notificaciones, con una opción para reintentar.
-Se mejoraron la fiabilidad de la programación de notificaciones y la fecha hasta la que están programadas.
+Horarios de oración, notificaciones y widgets más fiables, con verificación de ubicación sin conexión.
+Nueva configuración y cronología de oración, con un calendario que puedes compartir.
+Mejoras en la lectura y el audio del Corán sin conexión, incluidas traducciones, tafsir y reproducción de aleyas seleccionadas.
+Los hadices son más fáciles de leer y ahora se pueden compartir como imagen.
+Mejoras de interfaz y experiencia de uso en toda la aplicación.

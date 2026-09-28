@@ -3320,6 +3320,13 @@ class AppLocalizationsBn extends AppLocalizations {
       'মতামত ও সমস্যা জানানোর অভিজ্ঞতা নতুনভাবে ডিজাইন করা হয়েছে';
 
   @override
+  String get whatsNew430Feature1 => 'নামাজের সময় ও উইজেট আরও নির্ভরযোগ্য।';
+
+  @override
+  String get whatsNew430Feature2 =>
+      'অ্যাপজুড়ে আরও মসৃণ ও পরিমার্জিত অভিজ্ঞতা।';
+
+  @override
   String get offlineMode => 'অফলাইন মোড';
 
   @override

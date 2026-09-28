@@ -3678,6 +3678,10 @@
     "@whatsNew420Feature6": {
         "description": "What's new feature 6 for v4.2.0"
     },
+    "whatsNew430Feature1": "Prayer times and widgets are more reliable.",
+    "@whatsNew430Feature1": {"description": "What's new feature 1 for v4.3.0"},
+    "whatsNew430Feature2": "A smoother, more polished experience throughout the app.",
+    "@whatsNew430Feature2": {"description": "What's new feature 2 for v4.3.0"},
     "offlineMode": "Offline Mode",
     "@offlineMode": {
         "description": "Indicates that the app is currently in offline mode"
