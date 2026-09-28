@@ -2334,6 +2334,10 @@ abstract class AppLocalizations {
   /// **'Huda - Islamic Companion App'**
   String get hudaQuranApp;
 
+  /// Tagline shown under the app name in shared images
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Companion App'**
   String get shareImageTagline;
 
   /// Translation not available message
@@ -9358,206 +9362,610 @@ abstract class AppLocalizations {
   /// **'We couldn\'t verify the prayer notification schedule. Please try again.'**
   String get prayerNotificationSyncVerificationFailed;
 
+  /// No description provided for @ayahAudioRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose ayahs'**
   String get ayahAudioRange;
 
+  /// No description provided for @audioFromAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'From ayah'**
   String get audioFromAyah;
 
+  /// No description provided for @audioToAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'To ayah'**
   String get audioToAyah;
 
+  /// No description provided for @audioRepeatRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat selection'**
   String get audioRepeatRange;
 
+  /// No description provided for @audioRangeEndHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback stops after the last selected ayah.'**
   String get audioRangeEndHint;
 
+  /// No description provided for @audioPlayRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Play selection'**
   String get audioPlayRange;
 
+  /// No description provided for @downloadAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Download ayah'**
   String get downloadAyah;
 
+  /// No description provided for @ayahDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah downloaded'**
   String get ayahDownloaded;
 
+  /// No description provided for @audioRangeRepeatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected ayahs repeat until you stop playback.'**
   String get audioRangeRepeatHint;
 
+  /// Current ayah and total number of ayahs in the mini audio player
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah {current} of {total}'**
   String playingAyahOfTotal(int current, int total);
 
+  /// No description provided for @prayerVerificationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Location verification pending'**
   String get prayerVerificationPending;
 
+  /// No description provided for @prayerVerificationGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some location details still need verification. Come back when you have internet and retry to improve prayer-time and notification reliability.'**
   String get prayerVerificationGuidance;
 
+  /// No description provided for @prayerUpdatesIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer updates incomplete'**
   String get prayerUpdatesIncomplete;
 
+  /// No description provided for @prayerUpdatesGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some updates could not be completed. Come back when you have internet to retry. Local recovery can also be retried offline.'**
   String get prayerUpdatesGuidance;
 
+  /// No description provided for @prayerDetailsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Location details pending'**
   String get prayerDetailsPending;
 
+  /// No description provided for @prayerSavingPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving failed. Retry to save these prayer updates.'**
   String get prayerSavingPending;
 
+  /// No description provided for @prayerWidgetPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer widget update pending'**
   String get prayerWidgetPending;
 
+  /// No description provided for @prayerLocationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Location update pending. Check location permission and device location services, then retry.'**
   String get prayerLocationPending;
 
+  /// No description provided for @prayerCalculationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer calculation update pending'**
   String get prayerCalculationPending;
 
+  /// No description provided for @prayerNativePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Background location update pending'**
   String get prayerNativePending;
 
+  /// No description provided for @prayerPreviousCoverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previously acknowledged notifications may still follow the previous location; current delivery is not confirmed.'**
   String get prayerPreviousCoverage;
 
+  /// No description provided for @prayerVerificationRetryGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some location details still need verification. Retry to update prayer times and notifications.'**
   String get prayerVerificationRetryGuidance;
 
+  /// No description provided for @prayerNotificationsBridgedUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are updated through {date}. Later ones may still follow your previous settings or location. Come back when you have internet to update them.'**
   String prayerNotificationsBridgedUntil(String date);
 
+  /// No description provided for @prayerIssueLocationAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access'**
   String get prayerIssueLocationAccess;
 
+  /// No description provided for @prayerIssuePlaceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Place name'**
   String get prayerIssuePlaceName;
 
+  /// No description provided for @prayerIssueSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
   String get prayerIssueSaving;
 
+  /// No description provided for @prayerIssueCalculation.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation'**
   String get prayerIssueCalculation;
 
+  /// No description provided for @prayerIssueBackgroundLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Background location'**
   String get prayerIssueBackgroundLocation;
 
+  /// No description provided for @prayerIssueWidget.
+  ///
+  /// In en, this message translates to:
+  /// **'Home widget'**
   String get prayerIssueWidget;
 
+  /// No description provided for @prayerIssueRetrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Retrying…'**
   String get prayerIssueRetrying;
 
+  /// No description provided for @prayerUpdatingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating prayer times…'**
   String get prayerUpdatingTitle;
 
+  /// No description provided for @prayerUpdatingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This only takes a few seconds.'**
   String get prayerUpdatingMessage;
 
+  /// No description provided for @prayerCountryQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Which country are you in?'**
   String get prayerCountryQuestion;
 
+  /// No description provided for @prayerCountryQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your country couldn\'t be confirmed automatically, for example near a border. Choose it to use the right calculation method.'**
   String get prayerCountryQuestionHint;
 
+  /// No description provided for @prayerCountryNotSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
   String get prayerCountryNotSure;
 
+  /// No description provided for @prayerCalendarShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share prayer calendar'**
   String get prayerCalendarShare;
 
+  /// No description provided for @prayerCalendarOneDay.
+  ///
+  /// In en, this message translates to:
+  /// **'One day'**
   String get prayerCalendarOneDay;
 
+  /// No description provided for @prayerCalendarOneMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'One month'**
   String get prayerCalendarOneMonth;
 
+  /// No description provided for @prayerCalendarWholeYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole year'**
   String get prayerCalendarWholeYear;
 
+  /// No description provided for @prayerCalendarChooseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose date'**
   String get prayerCalendarChooseDate;
 
+  /// No description provided for @prayerCalendarChooseMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose month'**
   String get prayerCalendarChooseMonth;
 
+  /// No description provided for @prayerCalendarChooseYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose year'**
   String get prayerCalendarChooseYear;
 
+  /// No description provided for @prayerCalendarGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate and share'**
   String get prayerCalendarGenerate;
 
+  /// No description provided for @prayerCalendarPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing page {current} of {total}…'**
   String prayerCalendarPreparing(Object current, Object total);
 
+  /// No description provided for @prayerCalendarError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not generate or share the prayer calendar. Please try again.'**
   String get prayerCalendarError;
 
+  /// No description provided for @prayerCalendarUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified prayer times are needed before sharing.'**
   String get prayerCalendarUnavailable;
 
+  /// No description provided for @prayerCalendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer time calendar'**
   String get prayerCalendarTitle;
 
+  /// No description provided for @prayerCalendarDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
   String get prayerCalendarDate;
 
+  /// No description provided for @prayerCalendarDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
   String get prayerCalendarDay;
 
+  /// No description provided for @prayerCalendarTimeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
   String get prayerCalendarTimeZone;
 
+  /// No description provided for @prayerCalendarGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated {date}'**
   String prayerCalendarGenerated(Object date);
 
+  /// No description provided for @prayerCalendarPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
   String prayerCalendarPage(Object page, Object total);
 
+  /// No description provided for @prayerCalendarShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer times for {period} in {location}'**
   String prayerCalendarShareText(Object location, Object period);
 
+  /// No description provided for @prayerCalendarSunriseColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
   String get prayerCalendarSunriseColumn;
 
+  /// No description provided for @prayerNotificationsOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications are off'**
   String get prayerNotificationsOffTitle;
 
+  /// No description provided for @prayerNotificationsOffMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are turned off, so no prayer alerts are scheduled. Turn them on to get an alert at each prayer time.'**
   String get prayerNotificationsOffMessage;
 
+  /// No description provided for @prayerNotificationsTurnOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
   String get prayerNotificationsTurnOn;
 
+  /// No description provided for @prayerNotificationsWaitingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications are waiting'**
   String get prayerNotificationsWaitingTitle;
 
+  /// No description provided for @prayerNotificationsWaitingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts will be scheduled once your location is verified.'**
   String get prayerNotificationsWaitingMessage;
 
+  /// No description provided for @prayerNotificationsNoneScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'No prayer notifications are scheduled yet. Tap retry to schedule them.'**
   String get prayerNotificationsNoneScheduled;
 
+  /// No description provided for @prayerNotificationsUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications aren\'t available on this device.'**
   String get prayerNotificationsUnsupported;
 
+  /// No description provided for @prayerUpdatesLocalGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some updates couldn\'t be completed. Tap Retry to finish them.'**
   String get prayerUpdatesLocalGuidance;
 
+  /// No description provided for @prayerSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up prayer times'**
   String get prayerSetupTitle;
 
+  /// No description provided for @prayerSetupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish these steps to see accurate times and get an alert at each prayer.'**
   String get prayerSetupSubtitle;
 
+  /// No description provided for @prayerSetupStepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {total}'**
   String prayerSetupStepLabel(int step, int total);
 
+  /// No description provided for @prayerSetupLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your location'**
   String get prayerSetupLocationTitle;
 
+  /// No description provided for @prayerSetupLocationIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda needs your location to calculate prayer times for where you are.'**
   String get prayerSetupLocationIntro;
 
+  /// No description provided for @prayerSetupLocationDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access was declined. Allow it to calculate times automatically, or search for your city.'**
   String get prayerSetupLocationDeclined;
 
+  /// No description provided for @prayerSetupLocationBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access is off for Huda. Turn it on in Settings — prayer times load automatically when you come back.'**
   String get prayerSetupLocationBlocked;
 
+  /// No description provided for @prayerSetupLocationServicesOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are off on this device. Turn them on — prayer times load automatically when you come back.'**
   String get prayerSetupLocationServicesOff;
 
+  /// No description provided for @prayerSetupLocationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t find your location. Try again, or search for your city instead.'**
   String get prayerSetupLocationFailed;
 
+  /// No description provided for @prayerSetupUseMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my location'**
   String get prayerSetupUseMyLocation;
 
+  /// No description provided for @prayerSetupSearchCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a city'**
   String get prayerSetupSearchCity;
 
+  /// No description provided for @prayerSetupAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts'**
   String get prayerSetupAlertsTitle;
 
+  /// No description provided for @prayerSetupAlertsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'An alert at each prayer time, even when Huda is closed.'**
   String get prayerSetupAlertsHint;
 
+  /// No description provided for @prayerSetupReliableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reliable reminders'**
   String get prayerSetupReliableTitle;
 
+  /// No description provided for @prayerSetupReliableHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Android from delaying prayer alerts.'**
   String get prayerSetupReliableHint;
 
+  /// No description provided for @prayerAttentionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 thing needs attention} other{{count} things need attention}}'**
   String prayerAttentionCount(int count);
 
+  /// No description provided for @prayerAttentionMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, other{+{count} more}}'**
   String prayerAttentionMore(int count);
 
+  /// No description provided for @prayerTimelineNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
   String get prayerTimelineNext;
 
+  /// No description provided for @prayerTimelineNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
   String get prayerTimelineNow;
 
+  /// No description provided for @prayerHeroStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer time started'**
   String get prayerHeroStarted;
 
+  /// No description provided for @prayerTimesProvisional.
+  ///
+  /// In en, this message translates to:
+  /// **'Provisional times'**
   String get prayerTimesProvisional;
 
+  /// No description provided for @prayerMoreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
   String get prayerMoreOptions;
 
+  /// No description provided for @prayerOffsetBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{offset} min'**
   String prayerOffsetBadge(String offset);
 
+  /// No description provided for @prayerSetupAlertsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a gentle alert at every prayer time, even when Huda is closed.'**
   String get prayerSetupAlertsIntro;
 
+  /// No description provided for @prayerSetupAlertsAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow prayer alerts'**
   String get prayerSetupAlertsAllow;
 
+  /// No description provided for @prayerSetupAlertsDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Without notifications, Huda can\'t remind you when it\'s time to pray. Prayer times still show here, and you can turn alerts on later.'**
   String get prayerSetupAlertsDeclined;
 
+  /// No description provided for @prayerSetupContinueWithoutAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue without alerts'**
   String get prayerSetupContinueWithoutAlerts;
 
+  /// No description provided for @prayerSetupAlertsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts are on'**
   String get prayerSetupAlertsOn;
 
+  /// No description provided for @prayerSetupAlertsSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Off — you can turn them on anytime from this page'**
   String get prayerSetupAlertsSkipped;
 
+  /// No description provided for @prayerSetupReliableIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Android can hold back alerts to save battery. Let Huda run without battery restrictions so every alert arrives on time.'**
   String get prayerSetupReliableIntro;
 
+  /// No description provided for @prayerSetupReliableOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts will arrive on time'**
   String get prayerSetupReliableOn;
 
+  /// No description provided for @prayerSetupSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
   String get prayerSetupSkip;
 
+  /// No description provided for @prayerSetupSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
   String get prayerSetupSkipped;
 
+  /// No description provided for @prayerSetupLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Times calculated for where you are.'**
   String get prayerSetupLocationHint;
 
+  /// No description provided for @prayerHeroRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'left'**
   String get prayerHeroRemaining;
 
+  /// No description provided for @prayerSunriseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
   String get prayerSunriseLabel;
 
+  /// No description provided for @prayerCalendarFormatImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared as an image'**
   String get prayerCalendarFormatImage;
 
+  /// No description provided for @prayerCalendarFormatPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared as a PDF document'**
   String get prayerCalendarFormatPdf;
 
+  /// No description provided for @prayerHeroStartedAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =0{Started just now} =1{Started 1 min ago} other{Started {minutes} min ago}}'**
   String prayerHeroStartedAgo(int minutes);
 }
 
