@@ -3,34 +3,23 @@
   
 # Huda - Islamic Companion App
 
-[![Version](https://img.shields.io/github/v/release/abdulwahed-s/huda?include_prereleases&sort=semver)](https://github.com/abdulwahed-s/huda/releases/latest)
-[![Github Downloads](https://img.shields.io/github/downloads/abdulwahed-s/huda/total?logo=Github)](https://github.com/abdulwahed-s/huda/releases)
-[![Badge](https://img.shields.io/badge/May%20Allah%20accept%20[good%20deeds]%20from%20us%20and%20you-8A2BE2)]()
+<p align="center">
+  <a href="https://github.com/abdulwahed-s/huda/releases/latest"><img src="https://img.shields.io/github/v/release/abdulwahed-s/huda?include_prereleases&amp;sort=semver" alt="Latest release"></a>
+  <a href="https://github.com/abdulwahed-s/huda/releases"><img src="https://img.shields.io/github/downloads/abdulwahed-s/huda/total?logo=Github" alt="GitHub downloads"></a>
+  <img src="https://img.shields.io/badge/May%20Allah%20accept%20[good%20deeds]%20from%20us%20and%20you-8A2BE2" alt="May Allah accept good deeds from us and you">
+</p>
 
-[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-      alt='Get it on Google Play'
-      height="80"
-      style="vertical-align: middle;">](https://play.google.com/store/apps/details?id=com.aw.huda)
-[<img src="assets\dev\github\appgallery.png"
-      alt="Get it at IzzyOnDroid"
-      height="80"
-      style="vertical-align: middle;">](https://appgallery.huawei.com/app/C115050257?sharePrepath=ag&channelId=github&id=5522aff111f141d5a6acb26dca07ea6a&s=A18C3E4E69C7626366049CEE3F09F3E0246CB1DFBDB3D27FD30C12F48B5BB14F&detailType=0&v=&callType=AGDLINK&installType=0000&shareTo=qrcode)
-[<img src="https://user-images.githubusercontent.com/69304392/148696068-0cfea65d-b18f-4685-82b5-329a330b1c0d.png"
-      alt='Get it on GitHub'
-      height="80"
-      style="vertical-align: middle;">](https://github.com/abdulwahed-s/huda/releases/latest)
-[<img src="assets\dev\github\microsoftStore.png"
-      alt='Get it on Microsoft Store'
-      height="60"
-      style="vertical-align: middle; margin-right: 10px;">](https://apps.microsoft.com/detail/9P68H8M1G92B)
-[<img src="assets\dev\github\appstore.png"
-      alt='Get it on App Store'
-      height="60"
-      style="vertical-align: middle;">](https://apps.apple.com/us/app/huda-islamic-companion-app/id6757343816)
-[<img src="assets\dev\github\snapstore.png"
-      alt='Get it on App Store'
-      height="60"
-      style="vertical-align: middle;">](https://snapcraft.io/huda)
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.aw.huda"><img src="assets/dev/github/google-play-badge.png" alt="Get it on Google Play" height="54"></a>
+  <a href="https://f-droid.org/en/packages/com.aw.huda/"><img src="assets/dev/github/fdroid-badge.png" alt="Get it on F-Droid" height="54"></a>
+  <a href="https://appgallery.huawei.com/app/C115050257?sharePrepath=ag&amp;channelId=github&amp;id=5522aff111f141d5a6acb26dca07ea6a&amp;s=A18C3E4E69C7626366049CEE3F09F3E0246CB1DFBDB3D27FD30C12F48B5BB14F&amp;detailType=0&amp;v=&amp;callType=AGDLINK&amp;installType=0000&amp;shareTo=qrcode"><img src="assets/dev/github/appgallery-badge.png" alt="Explore it on Huawei AppGallery" height="54"></a>
+  <a href="https://github.com/abdulwahed-s/huda/releases/latest"><img src="assets/dev/github/github-badge.png" alt="Get it on GitHub" height="54"></a>
+</p>
+<p align="center">
+  <a href="https://apps.microsoft.com/detail/9P68H8M1G92B"><img src="assets/dev/github/microsoftStore.png" alt="Get it from Microsoft" height="54"></a>
+  <a href="https://apps.apple.com/us/app/huda-islamic-companion-app/id6757343816"><img src="assets/dev/github/appstore.png" alt="Download on the App Store" height="54"></a>
+  <a href="https://snapcraft.io/huda"><img src="assets/dev/github/snapstore.png" alt="Get it from the Snap Store" height="54"></a>
+</p>
 
 </div>
 
@@ -65,8 +54,8 @@
 
 ### Prerequisites
 
-* **Flutter SDK:** `3.44.2` (pinned in `.fvmrc`)
-* **Dart SDK:** `3.12.2` (bundled with Flutter 3.44.2)
+* **Flutter SDK:** `3.44.7` (pinned in `.fvmrc`)
+* **Dart SDK:** Bundled with the pinned Flutter SDK
 * **Android builds:** JDK 17, Android SDK Platform 37.0, and Build Tools 37.0.0
 
 ### Installation
