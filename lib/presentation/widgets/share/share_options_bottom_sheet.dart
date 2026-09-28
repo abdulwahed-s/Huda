@@ -24,60 +24,65 @@ class ShareOptionsBottomSheet extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.all(24.w),
         decoration: BoxDecoration(
           color: colorScheme.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: colorScheme.onSurface.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(2.r),
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              title ?? AppLocalizations.of(context)!.shareDhikr,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
-                color: colorScheme.onSurface,
-              ),
-            ),
-            SizedBox(height: 24.h),
-            Row(
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.all(24.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: ShareOption(
-                    icon: Icons.text_fields,
-                    title: AppLocalizations.of(context)!.shareAsText,
-                    isLoading: false,
-                    onTap: onShareText,
-                    colorScheme: colorScheme,
+                Container(
+                  width: 40.w,
+                  height: 4.h,
+                  decoration: BoxDecoration(
+                    color: colorScheme.onSurface.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(2.r),
                   ),
                 ),
-                SizedBox(width: 16.w),
-                if (!PlatformUtils.isLinux)
-                  Expanded(
-                    child: ShareOption(
-                      icon: Icons.image,
-                      title: isGeneratingImage
-                          ? AppLocalizations.of(context)!.generatingImage
-                          : AppLocalizations.of(context)!.shareAsImage,
-                      isLoading: isGeneratingImage,
-                      onTap: onShareImage,
-                      colorScheme: colorScheme,
-                    ),
+                SizedBox(height: 20.h),
+                Text(
+                  title ?? AppLocalizations.of(context)!.shareDhikr,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurface,
                   ),
+                ),
+                SizedBox(height: 24.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ShareOption(
+                        icon: Icons.text_fields,
+                        title: AppLocalizations.of(context)!.shareAsText,
+                        isLoading: false,
+                        onTap: onShareText,
+                        colorScheme: colorScheme,
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    if (!PlatformUtils.isLinux)
+                      Expanded(
+                        child: ShareOption(
+                          icon: Icons.image,
+                          title: isGeneratingImage
+                              ? AppLocalizations.of(context)!.generatingImage
+                              : AppLocalizations.of(context)!.shareAsImage,
+                          isLoading: isGeneratingImage,
+                          onTap: onShareImage,
+                          colorScheme: colorScheme,
+                        ),
+                      ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
               ],
             ),
-            SizedBox(height: 16.h),
-          ],
+          ),
         ),
       ),
     );
