@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "audio_version": "v1",
+  "sounds": [
+    {
+      "reciter_id": "huda-default",
+      "source_sha256": "168b31f27dac656ebc247ee0cf727c71fb51006fa59368abfc8b3cb7849649d2",
+      "filename": "huda-short-1b75aaee82b858c7.wav",
+      "sha256": "1b75aaee82b858c75bcdbd86c602b2a7622e7aa93366f7e9b15265dbcd09ce01",
+      "bytes": 2489572,
+      "duration_ms": 28180,
+      "sample_rate_hz": 44100,
+      "channels": 1
+    },
+    {
+      "reciter_id": "mishary-rashid-alafasy",
+      "source_sha256": "fb0abd70425148687bc7971193578a43cfe94be13a8306f97460f7149d35a634",
+      "filename": "huda-short-fb0abd7042514868.wav",
+      "sha256": "fb0abd70425148687bc7971193578a43cfe94be13a8306f97460f7149d35a634",
+      "bytes": 724716,
+      "duration_ms": 22646,
+      "sample_rate_hz": 16000,
+      "channels": 1
+    },
+    {
+      "reciter_id": "ahmad-al-nafees",
+      "source_sha256": "4fb836680ded6b279974d7f5ff41a0562eaee6a0951d4e1391b05a1db1f8c509",
+      "filename": "huda-short-4fb836680ded6b27.wav",
+      "sha256": "4fb836680ded6b279974d7f5ff41a0562eaee6a0951d4e1391b05a1db1f8c509",
+      "bytes": 576844,
+      "duration_ms": 18025,
+      "sample_rate_hz": 16000,
+      "channels": 1
+    },
+    {
+      "reciter_id": "ali-hassan-abd-al-khaliq",
+      "source_sha256": "86fe2cb32feed182a6ccadcfecda5ba6fccb17dbb572b527384eb6c74bf4560e",
+      "filename": "huda-short-86fe2cb32feed182.wav",
+      "sha256": "86fe2cb32feed182a6ccadcfecda5ba6fccb17dbb572b527384eb6c74bf4560e",
+      "bytes": 867788,
+      "duration_ms": 27117,
+      "sample_rate_hz": 16000,
+      "channels": 1
+    },
+    {
+      "reciter_id": "nasser-al-qatami",
+      "source_sha256": "5573355a0d79dd9c3ada80cba39e17a5c0bbb8bfd1da8a5cd9307568d91627e1",
+      "filename": "huda-short-5573355a0d79dd9c.wav",
+      "sha256": "5573355a0d79dd9c3ada80cba39e17a5c0bbb8bfd1da8a5cd9307568d91627e1",
+      "bytes": 928044,
+      "duration_ms": 29000,
+      "sample_rate_hz": 16000,
+      "channels": 1
+    },
+    {
+      "reciter_id": "muhammad-siddiq-al-minshawi",
+      "source_sha256": "a9870b18adf439b2c3796900bf4f2efd3b335807cb7c54ba6e3116d8f67996a7",
+      "filename": "huda-short-a9870b18adf439b2.wav",
+      "sha256": "a9870b18adf439b2c3796900bf4f2efd3b335807cb7c54ba6e3116d8f67996a7",
+      "bytes": 928044,
+      "duration_ms": 29000,
+      "sample_rate_hz": 16000,
+      "channels": 1
+    }
+  ]
+}
