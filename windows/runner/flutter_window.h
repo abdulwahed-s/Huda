@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "win32_window.h"
+#include "windows_notification_bridge.h"
 
 // A window that does nothing but host a Flutter view.
 class FlutterWindow : public Win32Window {
@@ -31,6 +32,10 @@ private:
   std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
   std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>>
       prayer_system_channel_;
+  // Toast clicks: "tapped" to Flutter, "takeTap" from it.
+  std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>>
+      notification_taps_;
+  std::unique_ptr<WindowsNotificationBridge> notification_bridge_;
 };
 
 #endif // RUNNER_FLUTTER_WINDOW_H_

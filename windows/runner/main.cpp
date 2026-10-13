@@ -4,6 +4,7 @@
 
 #include "flutter_window.h"
 #include "utils.h"
+#include "windows_notification_activator.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command) {
@@ -17,6 +18,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   // plugins.
   ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
+  // Before the window, so a toast click that started Huda is received.
+  WindowsNotificationActivator::Register();
+
   flutter::DartProject project(L"data");
   project.set_dart_entrypoint_arguments({"--enable-notifications"});
 
@@ -29,6 +33,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
   if (!window.Create(L"huda", origin, size)) {
+    WindowsNotificationActivator::Unregister();
+    ::CoUninitialize();
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);
@@ -39,6 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
     ::DispatchMessage(&msg);
   }
 
+  WindowsNotificationActivator::Unregister();
   ::CoUninitialize();
   return EXIT_SUCCESS;
 }

@@ -5,6 +5,7 @@
 #include <flutter/standard_method_codec.h>
 
 #include "flutter/generated_plugin_registrant.h"
+#include "windows_notification_activator.h"
 
 FlutterWindow::FlutterWindow(const flutter::DartProject &project)
     : project_(project) {}
@@ -27,6 +28,25 @@ bool FlutterWindow::OnCreate() {
     return false;
   }
   RegisterPlugins(flutter_controller_->engine());
+  notification_bridge_ = std::make_unique<WindowsNotificationBridge>(
+      flutter_controller_->engine()->messenger(), GetHandle());
+  notification_taps_ =
+      std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
+          flutter_controller_->engine()->messenger(),
+          "com.aw.huda/windows_notification_taps",
+          &flutter::StandardMethodCodec::GetInstance());
+  notification_taps_->SetMethodCallHandler(
+      [](const flutter::MethodCall<flutter::EncodableValue>& call,
+         std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        if (call.method_name() != "takeTap") {
+          result->NotImplemented();
+          return;
+        }
+        const auto payload = WindowsNotificationActivator::TakePayload();
+        result->Success(payload ? flutter::EncodableValue(*payload)
+                                : flutter::EncodableValue());
+      });
+  WindowsNotificationActivator::SetWindow(GetHandle());
   prayer_system_channel_ =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
           flutter_controller_->engine()->messenger(),
@@ -45,6 +65,9 @@ bool FlutterWindow::OnCreate() {
 }
 
 void FlutterWindow::OnDestroy() {
+  WindowsNotificationActivator::SetWindow(nullptr);
+  notification_taps_.reset();
+  notification_bridge_.reset();
   prayer_system_channel_.reset();
   if (flutter_controller_) {
     flutter_controller_ = nullptr;
@@ -57,6 +80,16 @@ LRESULT
 FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
                               WPARAM const wparam,
                               LPARAM const lparam) noexcept {
+  if (notification_bridge_ && notification_bridge_->HandleMessage(message)) {
+    return 0;
+  }
+  if (message == WindowsNotificationActivator::kMessage) {
+    // A toast was clicked: bring Huda forward, then Flutter takes the payload.
+    ShowWindow(hwnd, SW_RESTORE);
+    SetForegroundWindow(hwnd);
+    if (notification_taps_) notification_taps_->InvokeMethod("tapped", nullptr);
+    return 0;
+  }
   // Give Flutter, including plugins, an opportunity to handle window messages.
   if (flutter_controller_) {
     std::optional<LRESULT> result =
