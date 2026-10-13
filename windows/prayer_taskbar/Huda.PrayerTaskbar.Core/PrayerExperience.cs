@@ -97,3 +97,96 @@ public sealed record PrayerNotificationContract
             throw new InvalidDataException("Invalid prayer notification identity.");
     }
 }
+
+public static class PrayerOccurrence
+{
+    public static int Id(PrayerEvent prayer, string timeZoneId)
+    {
+        var date = prayer.Time.InZone(DateTimeZoneProviders.Tzdb[timeZoneId]).Date;
+        var index = prayer.Key switch { "fajr" => 1, "dhuhr" => 2, "asr" => 3, "maghrib" => 4, "isha" => 5,
+            _ => throw new ArgumentException("Not an obligatory prayer.") };
+        return 300000000 + (date.Year * 10000 + date.Month * 100 + date.Day - 20000000) * 10 + index;
+    }
+}
+
+/// Warm-up and UTC interval selection are independent of the taskbar countdown.
+public sealed class PrayerDueEvents
+{
+    private Instant? _previous;
+    private Instant? _advancePrevious;
+    private Instant _activeFrom;
+    public void Apply(Instant now, DateTimeOffset? cutover)
+    {
+        _previous = now;
+        _advancePrevious = now;
+        _activeFrom = cutover is { } value ? Instant.FromDateTimeOffset(value) : now;
+    }
+    public IReadOnlyList<PrayerEvent> Poll(TaskbarConfiguration config, ScheduleSnapshot? schedule, Instant now)
+    {
+        var previous = _previous;
+        _previous = now;
+        if (previous is null || now <= previous || config.Location is not { Verified: true } ||
+            schedule is null || schedule.Error is not null ||
+            config.PrayerExperience is not { Configured: true, Enabled: true } experience) return [];
+        // Silent prayers are only toasts, which Windows shows by itself.
+        return schedule.Events.Where(item => item.Time > previous && item.Time >= _activeFrom &&
+            item.Time <= now && now - item.Time <= Duration.FromSeconds(60) &&
+            item.Key != "sunrise" && experience.For(item.Key) is { Enabled: true, Mode: not "silent" }).ToArray();
+    }
+
+    /// Reminders due before a prayer, with the same window as prayers.
+    public IReadOnlyList<(PrayerEvent Prayer, int Minutes)> PollAdvance(TaskbarConfiguration config,
+        ScheduleSnapshot? schedule, Instant now)
+    {
+        var previous = _advancePrevious;
+        _advancePrevious = now;
+        if (previous is null || now <= previous || config.Location is not { Verified: true } ||
+            schedule is not { Error: null } ||
+            config.PrayerExperience is not { Configured: true, Enabled: true } experience) return [];
+        return schedule.Events.Where(item => item.Key != "sunrise")
+            .Select(item => (Prayer: item, Settings: experience.For(item.Key)))
+            .Where(item => item.Settings is { Enabled: true, AdvanceMinutes: > 0 })
+            .Select(item => (item.Prayer, Minutes: item.Settings.AdvanceMinutes,
+                At: item.Prayer.Time - Duration.FromMinutes(item.Settings.AdvanceMinutes)))
+            .Where(item => item.At > previous && item.At >= _activeFrom && item.At <= now &&
+                now - item.At <= Duration.FromSeconds(60))
+            .Select(item => (item.Prayer, item.Minutes)).ToArray();
+    }
+}
+
+/// Persist before dispatch; after an interrupted dispatch prefer a missed alert to replay.
+public sealed class PrayerOccurrenceLedger(string path)
+{
+    private readonly Dictionary<int, long> _handled = Load(path);
+    private readonly bool _unreadable = File.Exists(path) && !Readable(path);
+    private static bool Readable(string path)
+    {
+        try { return System.Text.Json.JsonSerializer.Deserialize<Dictionary<int, long>>(File.ReadAllText(path)) is not null; }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or System.Text.Json.JsonException) { return false; }
+    }
+    private static Dictionary<int, long> Load(string path)
+    {
+        try { return System.Text.Json.JsonSerializer.Deserialize<Dictionary<int, long>>(File.ReadAllText(path)) ?? []; }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or System.Text.Json.JsonException)
+        { return []; }
+    }
+    public bool Claim(int id, Instant now)
+    {
+        if (_unreadable) throw new InvalidDataException("Prayer occurrence history could not be verified; playback is suppressed.");
+        if (_handled.ContainsKey(id)) return false;
+        var next = _handled.Where(pair => pair.Value >= (now - Duration.FromDays(400)).ToUnixTimeSeconds())
+            .ToDictionary(pair => pair.Key, pair => pair.Value);
+        next[id] = now.ToUnixTimeSeconds();
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
+        var temporary = path + ".tmp";
+        using (var stream = new FileStream(temporary, FileMode.Create, FileAccess.Write, FileShare.None))
+        {
+            System.Text.Json.JsonSerializer.Serialize(stream, next);
+            stream.Flush(flushToDisk: true);
+        }
+        File.Move(temporary, path, overwrite: true);
+        _handled.Clear();
+        foreach (var pair in next) _handled.Add(pair.Key, pair.Value);
+        return true;
+    }
+}
