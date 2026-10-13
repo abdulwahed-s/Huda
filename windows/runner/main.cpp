@@ -4,6 +4,7 @@
 
 #include "flutter_window.h"
 #include "utils.h"
+#include "prayer_taskbar_bridge.h"
 #include "windows_notification_activator.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
@@ -17,6 +18,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   // Initialize COM, so that it is available for use in the library and/or
   // plugins.
   ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+
+  const auto mutex_name = L"Local\\Huda.App." + PrayerTaskbarBridge::UserSid();
+  HANDLE app_guard = CreateMutexW(nullptr, TRUE, mutex_name.c_str());
+  if (!app_guard) return EXIT_FAILURE;
+  const auto acquisition = GetLastError() == ERROR_ALREADY_EXISTS
+      ? WaitForSingleObject(app_guard, 0) : WAIT_OBJECT_0;
+  if (acquisition != WAIT_OBJECT_0 && acquisition != WAIT_ABANDONED) {
+    const auto action = PrayerTaskbarBridge::ActivationAction(GetCommandLineArguments());
+    const bool activated = PrayerTaskbarBridge::ActivateExisting(action.empty() ? "home" : action);
+    CloseHandle(app_guard);
+    ::CoUninitialize();
+    return activated ? EXIT_SUCCESS : EXIT_FAILURE;
+  }
 
   // Before the window, so a toast click that started Huda is received.
   WindowsNotificationActivator::Register();
@@ -34,6 +48,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   Win32Window::Size size(1280, 720);
   if (!window.Create(L"huda", origin, size)) {
     WindowsNotificationActivator::Unregister();
+    ReleaseMutex(app_guard);
+    CloseHandle(app_guard);
     ::CoUninitialize();
     return EXIT_FAILURE;
   }
@@ -47,5 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   WindowsNotificationActivator::Unregister();
   ::CoUninitialize();
+  ReleaseMutex(app_guard);
+  CloseHandle(app_guard);
   return EXIT_SUCCESS;
 }

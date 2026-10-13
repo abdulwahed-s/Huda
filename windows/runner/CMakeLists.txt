@@ -8,6 +8,7 @@ project(runner LANGUAGES CXX)
 # Any new source files that you add to the application should be added here.
 add_executable(${BINARY_NAME} WIN32
   "flutter_window.cpp"
+  "prayer_taskbar_bridge.cpp"
   "windows_notification_activator.cpp"
   "windows_notification_bridge.cpp"
   "windows_notification_worker.cpp"

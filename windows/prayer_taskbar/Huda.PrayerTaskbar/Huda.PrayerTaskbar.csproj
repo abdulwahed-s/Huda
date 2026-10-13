@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWinUI>true</UseWinUI>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <ProjectPriFileName>resources.pri</ProjectPriFileName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>../../runner/resources/app_icon.ico</ApplicationIcon>
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
+    <PackageReference Include="H.NotifyIcon.WinUI" Version="2.4.1" />
+    <ProjectReference Include="../Huda.PrayerTaskbar.Core/Huda.PrayerTaskbar.Core.csproj" />
+    <Content Include="../../runner/resources/app_icon.ico" Link="Assets/app.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="Assets/huda-logo.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets/Adhan/**/*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../../assets/fonts/Amiri-Regular.ttf" Link="Assets/Fonts/Amiri-Regular.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../../assets/fonts/Amiri-Bold.ttf" Link="Assets/Fonts/Amiri-Bold.ttf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <!-- WinUI's unpackaged build copies these to bin, but dotnet publish does
+       not include them automatically. Styles must travel with the helper. -->
+  <Target Name="PublishXamlResources" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <_PrayerXaml Include="$(TargetDir)**\*.xbf" />
+      <ResolvedFileToPublish Include="$(TargetDir)resources.pri">
+        <RelativePath>resources.pri</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+      <ResolvedFileToPublish Include="@(_PrayerXaml)">
+        <RelativePath>%(_PrayerXaml.RecursiveDir)%(_PrayerXaml.Filename)%(_PrayerXaml.Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+</Project>

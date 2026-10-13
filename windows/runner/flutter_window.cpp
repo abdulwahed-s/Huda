@@ -30,6 +30,8 @@ bool FlutterWindow::OnCreate() {
   RegisterPlugins(flutter_controller_->engine());
   notification_bridge_ = std::make_unique<WindowsNotificationBridge>(
       flutter_controller_->engine()->messenger(), GetHandle());
+  prayer_taskbar_bridge_ = std::make_unique<PrayerTaskbarBridge>(
+      flutter_controller_->engine()->messenger(), GetHandle());
   notification_taps_ =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
           flutter_controller_->engine()->messenger(),
@@ -68,6 +70,7 @@ void FlutterWindow::OnDestroy() {
   WindowsNotificationActivator::SetWindow(nullptr);
   notification_taps_.reset();
   notification_bridge_.reset();
+  prayer_taskbar_bridge_.reset();
   prayer_system_channel_.reset();
   if (flutter_controller_) {
     flutter_controller_ = nullptr;
@@ -81,6 +84,9 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
                               WPARAM const wparam,
                               LPARAM const lparam) noexcept {
   if (notification_bridge_ && notification_bridge_->HandleMessage(message)) {
+    return 0;
+  }
+  if (prayer_taskbar_bridge_ && prayer_taskbar_bridge_->HandleMessage(message)) {
     return 0;
   }
   if (message == WindowsNotificationActivator::kMessage) {

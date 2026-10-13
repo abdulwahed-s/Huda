@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "win32_window.h"
+#include "prayer_taskbar_bridge.h"
 #include "windows_notification_bridge.h"
 
 // A window that does nothing but host a Flutter view.
@@ -35,6 +36,7 @@ private:
   // Toast clicks: "tapped" to Flutter, "takeTap" from it.
   std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>>
       notification_taps_;
+  std::unique_ptr<PrayerTaskbarBridge> prayer_taskbar_bridge_;
   std::unique_ptr<WindowsNotificationBridge> notification_bridge_;
 };
 

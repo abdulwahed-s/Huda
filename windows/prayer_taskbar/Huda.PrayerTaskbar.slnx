@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="Huda.PrayerTaskbar.Core/Huda.PrayerTaskbar.Core.csproj" />
+  <Project Path="Huda.PrayerTaskbar/Huda.PrayerTaskbar.csproj" />
   <Project Path="Huda.PrayerTaskbar.Tests/Huda.PrayerTaskbar.Tests.csproj" />
 </Solution>
