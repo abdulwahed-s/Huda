@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <Deterministic>true</Deterministic>
+    <Version Condition="'$(HudaVersion)' == ''">4.3.0</Version>
+    <Version Condition="'$(HudaVersion)' != ''">$(HudaVersion)</Version>
+  </PropertyGroup>
+</Project>

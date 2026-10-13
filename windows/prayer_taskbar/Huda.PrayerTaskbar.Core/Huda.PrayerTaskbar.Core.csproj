@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="PrayerTimePlus" Version="0.3.0" />
+    <PackageReference Include="NodaTime" Version="3.3.5" />
+  </ItemGroup>
+</Project>
