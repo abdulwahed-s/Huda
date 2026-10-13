@@ -32,6 +32,22 @@
 		C2DE99EB2F09B8A00043A5D8 /* huda_icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C2DE99EA2F09B8A00043A5D8 /* huda_icon.icon */; };
 		ADFEED100000000000000002 /* adhan.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADFEED100000000000000001 /* adhan.caf */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
+		0057E530DC07D6FC5E526116 /* PrayerTimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */; };
+		00BBF8E0AC1A6175EC223EA0 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */; };
+		1841B6CD3A2F840BFD05AD45 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81B5001F94B3D391CA50341 /* PrayerTimes.swift */; };
+		57438B7ED5188AA87F9B0E09 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */; };
+		5A13CDD8632377CC05940DCE /* MacPrayerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8BFD15E09C21DAD8DBAF6A /* MacPrayerCore.swift */; };
+		5B0BA036FE255FB9DD5B4F94 /* DegreeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9195629AF1AA1F05E295CDB /* DegreeMath.swift */; };
+		65E2280A31F277C71BB29728 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4393F48CD4E7258865E3F4 /* Madhab.swift */; };
+		68BE0FC909BBE1B013A87C8F /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91324C2EA2373CB712EE5242 /* CalculationParameters.swift */; };
+		6B5A12E9CA0EA3ECEDC4DDA3 /* PrayerAdjustments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */; };
+		81C541ED21CBA93F9FC2B5A1 /* GeneratedMethodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */; };
+		88CD928D8CF1D2856C4A331E /* SunnahTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */; };
+		9559337D830B6F834ADE5591 /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1444F54725384CF88FDBBE0E /* SolarTime.swift */; };
+		9B1F4C6CF75B4D505C854594 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68047E8E0D48EC388C462F3 /* Prayer.swift */; };
+		B58A5B555B39ED1C53E9FCC0 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */; };
+		BC7C47F96B78A955796B3FBA /* AutoMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D517D9293CCD181BDC68CB /* AutoMethod.swift */; };
+		E581D12678198B284CC703CE /* GeneratedAutoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +110,22 @@
 		EAA2890595C63A0B709E0EAE /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		EB9F3E09C25118CEA3A46249 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
+		1444F54725384CF88FDBBE0E /* SolarTime.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SolarTime.swift; path = PrayerTimePlus/Math/SolarTime.swift; sourceTree = "<group>"; };
+		1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = PrayerTimePlus/Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
+		67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedMethodData.swift; path = PrayerTimePlus/Data/GeneratedMethodData.swift; sourceTree = "<group>"; };
+		6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationMethod.swift; path = PrayerTimePlus/Methods/CalculationMethod.swift; sourceTree = "<group>"; };
+		6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coordinates.swift; path = PrayerTimePlus/Model/Coordinates.swift; sourceTree = "<group>"; };
+		91324C2EA2373CB712EE5242 /* CalculationParameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationParameters.swift; path = PrayerTimePlus/Methods/CalculationParameters.swift; sourceTree = "<group>"; };
+		96D517D9293CCD181BDC68CB /* AutoMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AutoMethod.swift; path = PrayerTimePlus/Auto/AutoMethod.swift; sourceTree = "<group>"; };
+		CE4393F48CD4E7258865E3F4 /* Madhab.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Madhab.swift; path = PrayerTimePlus/Model/Madhab.swift; sourceTree = "<group>"; };
+		CF8BFD15E09C21DAD8DBAF6A /* MacPrayerCore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerCore.swift; sourceTree = "<group>"; };
+		D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HighLatitudeRule.swift; path = PrayerTimePlus/Model/HighLatitudeRule.swift; sourceTree = "<group>"; };
+		D68047E8E0D48EC388C462F3 /* Prayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Prayer.swift; path = PrayerTimePlus/Model/Prayer.swift; sourceTree = "<group>"; };
+		D9195629AF1AA1F05E295CDB /* DegreeMath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DegreeMath.swift; path = PrayerTimePlus/Math/DegreeMath.swift; sourceTree = "<group>"; };
+		D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SunnahTimes.swift; path = PrayerTimePlus/SunnahTimes.swift; sourceTree = "<group>"; };
+		DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerTimeEngine.swift; path = PrayerTimePlus/Engine/PrayerTimeEngine.swift; sourceTree = "<group>"; };
+		F81B5001F94B3D391CA50341 /* PrayerTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerTimes.swift; path = PrayerTimePlus/PrayerTimes.swift; sourceTree = "<group>"; };
+		FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerAdjustments.swift; path = PrayerTimePlus/Model/PrayerAdjustments.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +190,7 @@
 				33CC10EE2044A3C60003C045 /* Products */,
 				D73912EC22F37F3D000D13A0 /* Frameworks */,
 				222F77E7B996AD0FB9874991 /* Pods */,
+				21C177E4ACDC1A4367661A9E /* Shared iOS Widget Sources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,11 +219,11 @@
 		33CEB47122A05771004F2AC0 /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
-				78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */,
 				335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */,
 				33CEB47222A05771004F2AC0 /* Flutter-Debug.xcconfig */,
 				33CEB47422A05771004F2AC0 /* Flutter-Release.xcconfig */,
 				33CEB47722A0578A004F2AC0 /* Flutter-Generated.xcconfig */,
+				78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */,
 			);
 			path = Flutter;
 			sourceTree = "<group>";
@@ -204,6 +237,7 @@
 				33E51914231749380026EE4D /* Release.entitlements */,
 				33CC11242044D66E0003C045 /* Resources */,
 				33BA886A226E78AF003329D5 /* Configs */,
+				CF8BFD15E09C21DAD8DBAF6A /* MacPrayerCore.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -215,6 +249,29 @@
 				918E7B1444A6594F9A96506B /* Pods_RunnerTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		21C177E4ACDC1A4367661A9E /* Shared iOS Widget Sources */ = {
+			isa = PBXGroup;
+			children = (
+				96D517D9293CCD181BDC68CB /* AutoMethod.swift */,
+				1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */,
+				67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */,
+				DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */,
+				D9195629AF1AA1F05E295CDB /* DegreeMath.swift */,
+				1444F54725384CF88FDBBE0E /* SolarTime.swift */,
+				6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */,
+				91324C2EA2373CB712EE5242 /* CalculationParameters.swift */,
+				6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */,
+				D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */,
+				CE4393F48CD4E7258865E3F4 /* Madhab.swift */,
+				D68047E8E0D48EC388C462F3 /* Prayer.swift */,
+				FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */,
+				F81B5001F94B3D391CA50341 /* PrayerTimes.swift */,
+				D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */,
+			);
+			name = "Shared iOS Widget Sources";
+			path = ../ios/HudaWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -457,6 +514,22 @@
 				33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
 				335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */,
+				5A13CDD8632377CC05940DCE /* MacPrayerCore.swift in Sources */,
+				BC7C47F96B78A955796B3FBA /* AutoMethod.swift in Sources */,
+				E581D12678198B284CC703CE /* GeneratedAutoData.swift in Sources */,
+				81C541ED21CBA93F9FC2B5A1 /* GeneratedMethodData.swift in Sources */,
+				0057E530DC07D6FC5E526116 /* PrayerTimeEngine.swift in Sources */,
+				5B0BA036FE255FB9DD5B4F94 /* DegreeMath.swift in Sources */,
+				9559337D830B6F834ADE5591 /* SolarTime.swift in Sources */,
+				57438B7ED5188AA87F9B0E09 /* CalculationMethod.swift in Sources */,
+				68BE0FC909BBE1B013A87C8F /* CalculationParameters.swift in Sources */,
+				B58A5B555B39ED1C53E9FCC0 /* Coordinates.swift in Sources */,
+				00BBF8E0AC1A6175EC223EA0 /* HighLatitudeRule.swift in Sources */,
+				65E2280A31F277C71BB29728 /* Madhab.swift in Sources */,
+				9B1F4C6CF75B4D505C854594 /* Prayer.swift in Sources */,
+				6B5A12E9CA0EA3ECEDC4DDA3 /* PrayerAdjustments.swift in Sources */,
+				1841B6CD3A2F840BFD05AD45 /* PrayerTimes.swift in Sources */,
+				88CD928D8CF1D2856C4A331E /* SunnahTimes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
