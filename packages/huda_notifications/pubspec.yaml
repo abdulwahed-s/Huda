@@ -1,0 +1,21 @@
+name: huda_notifications
+description: "Huda's Android notification engine: prayer alarms, offline Adhan playback and reminders."
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+  flutter: '>=3.44.0'
+dependencies:
+  flutter:
+    sdk: flutter
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  pigeon: 26.3.1
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.aw.huda.prayer
+        pluginClass: HudaPrayerNotificationsPlugin
