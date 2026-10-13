@@ -6,5 +6,6 @@
   <ItemGroup>
     <PackageReference Include="PrayerTimePlus" Version="0.3.0" />
     <PackageReference Include="NodaTime" Version="3.3.5" />
+    <EmbeddedResource Include="Resources/ramadan.json" />
   </ItemGroup>
 </Project>
