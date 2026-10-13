@@ -66,6 +66,27 @@ include(flutter/generated_plugins.cmake)
 # run in place. This is done instead of making a separate bundle (as on Linux)
 # so that building and running from within Visual Studio will work.
 set(BUILD_BUNDLE_DIR "$<TARGET_FILE_DIR:${BINARY_NAME}>")
+option(HUDA_BUILD_PRAYER_TASKBAR "Build the bundled Windows prayer companion" ON)
+if(HUDA_BUILD_PRAYER_TASKBAR AND NOT CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
+  if(POLICY CMP0112)
+    cmake_policy(SET CMP0112 NEW)
+  endif()
+  find_program(HUDA_DOTNET_EXECUTABLE NAMES dotnet REQUIRED)
+  find_program(HUDA_POWERSHELL_EXECUTABLE NAMES pwsh powershell REQUIRED)
+  # TARGET_FILE_DIR adds a dependency on huda in custom commands, which would
+  # cycle with huda's dependency on this publishing target.
+  add_custom_target(huda_prayer_taskbar ALL
+    COMMAND "${HUDA_POWERSHELL_EXECUTABLE}" -NoProfile -ExecutionPolicy Bypass
+      -File "${CMAKE_CURRENT_SOURCE_DIR}/prayer_taskbar/publish.ps1"
+      -DotnetPath "${HUDA_DOTNET_EXECUTABLE}"
+      -OutputDirectory "${CMAKE_BINARY_DIR}/runner/$<CONFIG>/prayer_taskbar"
+      -Version "${FLUTTER_VERSION_MAJOR}.${FLUTTER_VERSION_MINOR}.${FLUTTER_VERSION_PATCH}"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/prayer_taskbar"
+    COMMENT "Publishing Huda's Windows prayer companion"
+    VERBATIM
+  )
+  add_dependencies(${BINARY_NAME} huda_prayer_taskbar)
+endif()
 # Make the "install" step default, as it's required to run.
 set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD 1)
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -74,6 +95,22 @@ endif()
 
 set(INSTALL_BUNDLE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
 set(INSTALL_BUNDLE_LIB_DIR "${CMAKE_INSTALL_PREFIX}")
+
+# Keep native runtime dependencies beside both executables for standalone
+# installs on machines without Visual Studio or the VC++ redistributable.
+if(MSVC)
+  set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+  include(InstallRequiredSystemLibraries)
+  if(NOT CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
+    message(FATAL_ERROR "The Visual C++ redistributable libraries are missing.")
+  endif()
+  install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}" COMPONENT Runtime)
+  if(HUDA_BUILD_PRAYER_TASKBAR)
+    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+      DESTINATION "${INSTALL_BUNDLE_LIB_DIR}/prayer_taskbar" COMPONENT Runtime)
+  endif()
+endif()
 
 install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
   COMPONENT Runtime)
