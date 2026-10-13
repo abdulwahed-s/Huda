@@ -1,0 +1,147 @@
+<Application
+    x:Class="Huda.PrayerTaskbar.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+      </ResourceDictionary.MergedDictionaries>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+          <LinearGradientBrush x:Key="PrayerFocusBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#111317" Offset="0" />
+            <GradientStop Color="#23262C" Offset="1" />
+          </LinearGradientBrush>
+          <SolidColorBrush x:Key="PrayerFocusCardBrush" Color="#25282E" />
+          <SolidColorBrush x:Key="PrayerFocusBorderBrush" Color="#555B66" />
+          <SolidColorBrush x:Key="PrayerFocusTextBrush" Color="#F8FAFC" />
+          <SolidColorBrush x:Key="PrayerFocusSecondaryBrush" Color="#B0B4BC" />
+          <SolidColorBrush x:Key="PrayerFocusAccentBrush" Color="#D0D4DC" />
+          <SolidColorBrush x:Key="PrayerFocusPrimaryBrush" Color="#D0D4DC" />
+          <SolidColorBrush x:Key="PrayerFocusPrimaryTextBrush" Color="#111317" />
+          <SolidColorBrush x:Key="PrayerFocusTrackBrush" Color="#454A54" />
+          <SolidColorBrush x:Key="PrayerPopupBackgroundBrush" Color="#252525" />
+          <SolidColorBrush x:Key="PrayerPopupBorderBrush" Color="#414141" />
+          <SolidColorBrush x:Key="PrayerPopupTextBrush" Color="#F5F5F5" />
+          <SolidColorBrush x:Key="PrayerPopupSecondaryBrush" Color="#B0B0B0" />
+          <SolidColorBrush x:Key="PrayerPopupFooterBrush" Color="#2D2D2D" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+          <LinearGradientBrush x:Key="PrayerFocusBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFDF7" Offset="0" />
+            <GradientStop Color="#F2F3F5" Offset="1" />
+          </LinearGradientBrush>
+          <SolidColorBrush x:Key="PrayerFocusCardBrush" Color="#BAFFFFFF" />
+          <SolidColorBrush x:Key="PrayerFocusBorderBrush" Color="#CBD0D8" />
+          <SolidColorBrush x:Key="PrayerFocusTextBrush" Color="#2C2C2C" />
+          <SolidColorBrush x:Key="PrayerFocusSecondaryBrush" Color="#626770" />
+          <SolidColorBrush x:Key="PrayerFocusAccentBrush" Color="#4A5260" />
+          <SolidColorBrush x:Key="PrayerFocusPrimaryBrush" Color="#4A5260" />
+          <SolidColorBrush x:Key="PrayerFocusPrimaryTextBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="PrayerFocusTrackBrush" Color="#D2D6DD" />
+          <SolidColorBrush x:Key="PrayerPopupBackgroundBrush" Color="#FAFAFA" />
+          <SolidColorBrush x:Key="PrayerPopupBorderBrush" Color="#DDDDDD" />
+          <SolidColorBrush x:Key="PrayerPopupTextBrush" Color="#202020" />
+          <SolidColorBrush x:Key="PrayerPopupSecondaryBrush" Color="#626262" />
+          <SolidColorBrush x:Key="PrayerPopupFooterBrush" Color="#EFEFEF" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+          <SolidColorBrush x:Key="PrayerFocusBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+          <SolidColorBrush x:Key="PrayerFocusCardBrush" Color="{ThemeResource SystemColorWindowColor}" />
+          <SolidColorBrush x:Key="PrayerFocusBorderBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+          <SolidColorBrush x:Key="PrayerFocusTextBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+          <SolidColorBrush x:Key="PrayerFocusSecondaryBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+          <SolidColorBrush x:Key="PrayerFocusAccentBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+          <SolidColorBrush x:Key="PrayerFocusPrimaryBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+          <SolidColorBrush x:Key="PrayerFocusPrimaryTextBrush" Color="{ThemeResource SystemColorHighlightTextColor}" />
+          <SolidColorBrush x:Key="PrayerFocusTrackBrush" Color="{ThemeResource SystemColorWindowColor}" />
+          <SolidColorBrush x:Key="PrayerPopupBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+          <SolidColorBrush x:Key="PrayerPopupBorderBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+          <SolidColorBrush x:Key="PrayerPopupTextBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+          <SolidColorBrush x:Key="PrayerPopupSecondaryBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+          <SolidColorBrush x:Key="PrayerPopupFooterBrush" Color="{ThemeResource SystemColorWindowColor}" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+      <Style x:Key="PrayerFocusSurfaceStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource PrayerFocusBackgroundBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource PrayerFocusCardBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource PrayerFocusBorderBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerFocusTextBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusSecondaryTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerFocusSecondaryBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusAccentTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerFocusAccentBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusBrandStyle" TargetType="BitmapIcon">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerFocusTextBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusIconStyle" TargetType="FontIcon">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerFocusAccentBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusMotifStyle" TargetType="Rectangle">
+        <Setter Property="Stroke" Value="{ThemeResource PrayerFocusBorderBrush}" />
+        <Setter Property="StrokeThickness" Value="1" />
+      </Style>
+      <Style x:Key="PrayerFocusRuleStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource PrayerFocusBorderBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusProgressStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource PrayerFocusTrackBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusProgressFillStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource PrayerFocusAccentBrush}" />
+      </Style>
+      <Style x:Key="PrayerFocusPrimaryButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{ThemeResource PrayerFocusPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource PrayerFocusPrimaryTextBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+      </Style>
+      <Style x:Key="PrayerFocusSecondaryButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{ThemeResource PrayerFocusTextBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource PrayerFocusBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+      </Style>
+      <Style x:Key="PrayerPopupSurfaceStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource PrayerPopupBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource PrayerPopupBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+      </Style>
+      <Style x:Key="PrayerPopupTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerPopupTextBrush}" />
+      </Style>
+      <Style x:Key="PrayerPopupSecondaryTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerPopupSecondaryBrush}" />
+      </Style>
+      <Style x:Key="PrayerPopupIconStyle" TargetType="FontIcon">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerPopupSecondaryBrush}" />
+      </Style>
+      <Style x:Key="PrayerPopupBrandStyle" TargetType="BitmapIcon">
+        <Setter Property="Foreground" Value="{ThemeResource PrayerPopupTextBrush}" />
+      </Style>
+      <Style x:Key="PrayerPopupFooterStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource PrayerPopupFooterBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource PrayerPopupBorderBrush}" />
+      </Style>
+      <Style x:Key="PrayerPopupActionStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{ThemeResource PrayerPopupSecondaryBrush}" />
+        <Setter Property="Padding" Value="7" />
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinWidth" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="CornerRadius" Value="6" />
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>
