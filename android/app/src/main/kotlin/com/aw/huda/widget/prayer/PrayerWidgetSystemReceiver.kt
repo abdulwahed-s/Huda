@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.aw.huda.widget.WidgetBroadcastDispatcher
 import com.aw.huda.location.PrayerTravelReliabilityManager
 
 class PrayerWidgetSystemReceiver : BroadcastReceiver() {
@@ -33,6 +34,12 @@ class PrayerWidgetSystemReceiver : BroadcastReceiver() {
             "android-system-${intent.action ?: "unknown"}",
         )
 
-        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
+        WidgetBroadcastDispatcher.launch(
+            context, goAsync(), TAG, "system ${intent.action}",
+            PrayerWidgetReliabilityManager::enqueueImmediateUpdate,
+        ) { appContext ->
+            val report = PrayerWidgetUpdater.updateAll(appContext)
+            PrayerWidgetScheduler.ensureAlarmsActive(appContext)
+        }
     }
 }
