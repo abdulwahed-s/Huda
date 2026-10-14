@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Android 16 Live Updates for the prayer countdown (Minimal and Progress). -->
+    <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.USE_EXACT_ALARM"
         tools:node="remove" />
@@ -91,6 +93,11 @@
                 <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <!-- The native countdown receives alarms and dismissal without a service. -->
+        <receiver
+            android:name="com.aw.huda.countdown.PrayerCountdownReceiver"
+            android:exported="false" />
 
         <!-- 🔧 FLUTTER_FOREGROUND_TASK Service -->
         <service
