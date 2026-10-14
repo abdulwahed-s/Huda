@@ -39,6 +39,7 @@
 		380107333D14FE97CD517961 /* MacPrayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FC3D87D21F3C831CEC3AA0 /* MacPrayerService.swift */; };
 		3E581FC6D47CCEE0575D89BE /* huda-short-5573355a0d79dd9c.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */; };
 		41596CF6226C8884D4296D1B /* MacPrayerLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888D26039945E8C20FE03820 /* MacPrayerLifecycle.swift */; };
+		441B4FB387E534C81BAEAE35 /* MacPrayerDeviceVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */; };
 		514E35EA280C852CF7056F4D /* huda-short-1b75aaee82b858c7.wav in Resources */ = {isa = PBXBuildFile; fileRef = 857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */; };
 		52E0411A781BA401137CC540 /* MacPrayerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365624C544A7F353C8CB70FF /* MacPrayerServiceTests.swift */; };
 		534E970E7C1EEE78C8624E73 /* MacPrayerNotificationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21223A58E72D3DDD9C1A325 /* MacPrayerNotificationRouter.swift */; };
@@ -130,6 +131,7 @@
 		1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-86fe2cb32feed182.wav; sourceTree = "<group>"; };
 		1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = PrayerTimePlus/Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
 		27DD1033BE7F47027CF4D7CD /* Adhan */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = Adhan; sourceTree = "<group>"; };
+		29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacPrayerDeviceVerification.swift; path = ../../xv/macos/Runner/MacPrayerDeviceVerification.swift; sourceTree = "<group>"; };
 		3238E0AACF65975B63B34B18 /* MacPrayerAudio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerAudio.swift; sourceTree = "<group>"; };
 		365624C544A7F353C8CB70FF /* MacPrayerServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerServiceTests.swift; sourceTree = "<group>"; };
 		5867570058EB66DFE2D096D6 /* MacPrayerPanelController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerPanelController.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				18FC3D87D21F3C831CEC3AA0 /* MacPrayerService.swift */,
 				27DD1033BE7F47027CF4D7CD /* Adhan */,
 				F8F1C624516404506C56CB9E /* NotificationSounds */,
+				29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -598,6 +601,7 @@
 				6B5A12E9CA0EA3ECEDC4DDA3 /* PrayerAdjustments.swift in Sources */,
 				1841B6CD3A2F840BFD05AD45 /* PrayerTimes.swift in Sources */,
 				88CD928D8CF1D2856C4A331E /* SunnahTimes.swift in Sources */,
+				441B4FB387E534C81BAEAE35 /* MacPrayerDeviceVerification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

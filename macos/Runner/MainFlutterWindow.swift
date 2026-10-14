@@ -5,19 +5,88 @@ import MapKit
 import UserNotifications
 
 class MainFlutterWindow: NSWindow {
-  private var notificationsChannel: FlutterMethodChannel?
+  var allowPresentation = false
+  #if DEBUG
+  private(set) var verificationPresentationOrders = 0
+  #endif
+  private var prayerServiceChannel: FlutterMethodChannel?
+
+  override func order(_ place: NSWindow.OrderingMode, relativeTo otherWindowNumber: Int) {
+    if place != .out && !allowPresentation { return }
+    #if DEBUG
+    if place != .out { verificationPresentationOrders += 1 }
+    #endif
+    super.order(place, relativeTo: otherWindowNumber)
+  }
+
+  override func close() {
+    super.close()
+    if let delegate = NSApp.delegate as? AppDelegate, !delegate.prayerService.backgroundEnabled {
+      NSApp.terminate(nil)
+    }
+  }
   private let prayerLocationResolver = PrayerAppleLocationResolver()
   private var prayerLocationChannel: FlutterMethodChannel?
   private var prayerSystemChannel: FlutterMethodChannel?
+  private var prayerMenuChannel: FlutterMethodChannel?
+  private var notificationsChannel: FlutterMethodChannel?
   private var prayerSystemObservers: [NSObjectProtocol] = []
 
   override func awakeFromNib() {
+    isRestorable = false
+    // Load the last valid native configuration before Flutter/plugin readiness.
+    (NSApp.delegate as? AppDelegate)?.prayerService.start()
     let flutterViewController = FlutterViewController()
     let windowFrame = self.frame
     self.contentViewController = flutterViewController
     self.setFrame(windowFrame, display: true)
 
     RegisterGeneratedPlugins(registry: flutterViewController)
+
+    let serviceChannel = FlutterMethodChannel(name: "com.aw.huda/mac_prayer_service",
+      binaryMessenger: flutterViewController.engine.binaryMessenger)
+    serviceChannel.setMethodCallHandler { call, result in
+      (NSApp.delegate as? AppDelegate)?.prayerService.handle(call, result: result)
+    }
+    prayerServiceChannel = serviceChannel
+    if let service = (NSApp.delegate as? AppDelegate)?.prayerService {
+      service.channel = serviceChannel
+      service.router.install()
+    }
+
+    let menuChannel = FlutterMethodChannel(
+      name: "com.aw.huda/mac_prayer_menu",
+      binaryMessenger: flutterViewController.engine.binaryMessenger
+    )
+    menuChannel.setMethodCallHandler { call, result in
+      guard let menu = (NSApp.delegate as? AppDelegate)?.prayerMenuBar else {
+        result(FlutterError(code: "menu_unavailable", message: "Prayer menu is unavailable.", details: nil))
+        return
+      }
+      switch call.method {
+      case "getPreferences":
+        result(menu.preferences())
+      case "setPreferences":
+        guard let arguments = call.arguments as? [String: Any], menu.setPreferences(arguments) else {
+          result(FlutterError(code: "invalid_preferences", message: "Invalid prayer menu preferences.", details: nil))
+          return
+        }
+        result(nil)
+      case "setPresentation":
+        guard let arguments = call.arguments as? [String: Any], menu.setPresentation(arguments) else {
+          result(FlutterError(code: "invalid_presentation", message: "Invalid prayer menu labels.", details: nil))
+          return
+        }
+        result(nil)
+      case "ready":
+        menu.markFlutterReady()
+        result(nil)
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    prayerMenuChannel = menuChannel
+    (NSApp.delegate as? AppDelegate)?.prayerMenuBar.start(channel: menuChannel)
 
     notificationsChannel = ReminderNotificationsChannel.register(
       messenger: flutterViewController.engine.binaryMessenger
@@ -123,6 +192,14 @@ class MainFlutterWindow: NSWindow {
     for observer in prayerSystemObservers {
       NotificationCenter.default.removeObserver(observer)
       NSWorkspace.shared.notificationCenter.removeObserver(observer)
+    }
+  }
+
+  override func performClose(_ sender: Any?) {
+    if (NSApp.delegate as? AppDelegate)?.prayerService.backgroundEnabled == true {
+      orderOut(sender)
+    } else {
+      super.performClose(sender)
     }
   }
 }
