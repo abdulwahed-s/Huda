@@ -124,6 +124,7 @@
 		1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = PrayerTimePlus/Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
 		27DD1033BE7F47027CF4D7CD /* Adhan */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = Adhan; sourceTree = "<group>"; };
 		3238E0AACF65975B63B34B18 /* MacPrayerAudio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerAudio.swift; sourceTree = "<group>"; };
+		5867570058EB66DFE2D096D6 /* MacPrayerPanelController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerPanelController.swift; sourceTree = "<group>"; };
 		67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedMethodData.swift; path = PrayerTimePlus/Data/GeneratedMethodData.swift; sourceTree = "<group>"; };
 		6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationMethod.swift; path = PrayerTimePlus/Methods/CalculationMethod.swift; sourceTree = "<group>"; };
 		6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coordinates.swift; path = PrayerTimePlus/Model/Coordinates.swift; sourceTree = "<group>"; };
@@ -257,6 +258,7 @@
 				33BA886A226E78AF003329D5 /* Configs */,
 				3238E0AACF65975B63B34B18 /* MacPrayerAudio.swift */,
 				CF8BFD15E09C21DAD8DBAF6A /* MacPrayerCore.swift */,
+				5867570058EB66DFE2D096D6 /* MacPrayerPanelController.swift */,
 				27DD1033BE7F47027CF4D7CD /* Adhan */,
 				F8F1C624516404506C56CB9E /* NotificationSounds */,
 			);
