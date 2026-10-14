@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
@@ -47,8 +46,10 @@ internal object PrayerWidgetReliabilityManager {
 
     fun enqueueImmediateUpdate(context: Context) {
         try {
+            // Expedited work uses a foreground service before Android 12 and requires
+            // CoroutineWorker.getForegroundInfo(). A regular one-time job can refresh
+            // the widget without that foreground-service requirement.
             val request = OneTimeWorkRequestBuilder<PrayerWidgetReliabilityWorker>()
-                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .build()
             WorkManager.getInstance(context.applicationContext).enqueueUniqueWork(
                 IMMEDIATE_WORK_NAME,

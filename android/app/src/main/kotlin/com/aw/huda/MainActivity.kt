@@ -5,8 +5,6 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 import com.aw.huda.widget.QuranWidgetUpdater
-import com.aw.huda.widget.prayer.PrayerWidgetReliabilityManager
-import com.aw.huda.widget.prayer.PrayerWidgetScheduler
 import com.aw.huda.widget.prayer.PrayerWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerLocationTimeZoneResolver
 import com.aw.huda.miqaat.MiqaatLockMethodHandler
@@ -166,23 +164,7 @@ class MainActivity : AudioServiceActivity() {
                         try {
                             val appCtx = applicationContext
                             val update = PrayerWidgetUpdater.updateAll(appCtx)
-                            val alarm = if (update.widgetCount > 0) {
-                                PrayerWidgetReliabilityManager.start(appCtx)
-                                PrayerWidgetScheduler.scheduleNext(appCtx)
-                            } else {
-                                PrayerWidgetScheduler.cancel(appCtx)
-                                PrayerWidgetReliabilityManager.stop(appCtx)
-                                null
-                            }
-                            val response = update.toPlatformMap().toMutableMap().apply {
-                                put("alarmScheduled", alarm?.scheduled == true)
-                                put("alarmTriggerAt", alarm?.triggerAtMillis ?: 0L)
-                                put(
-                                    "alarmPrecision",
-                                    alarm?.precision?.name?.lowercase() ?: "none",
-                                )
-                                if (alarm?.error != null) put("alarmError", alarm.error)
-                            }
+                            val response = update.toPlatformMap()
                             withContext(Dispatchers.Main) { result.success(response) }
                         } catch (e: Exception) {
                             println("❌ Failed to update prayer widget: ${e.message}")

@@ -46,6 +46,7 @@ internal data class PrayerWidgetUpdateResult(
     val failedUpdates: Int,
     val rendererPaths: Map<String, Int>,
     val errors: List<String>,
+    val alarm: PrayerAlarmScheduleResult? = null,
 ) {
     fun toPlatformMap(): Map<String, Any> = mapOf(
         "revision" to revision,
@@ -54,10 +55,25 @@ internal data class PrayerWidgetUpdateResult(
         "failedUpdates" to failedUpdates,
         "rendererPath" to rendererPaths,
         "error" to errors.joinToString("; "),
+        "alarmScheduled" to (alarm?.scheduled == true),
+        "alarmTriggerAt" to (alarm?.triggerAtMillis ?: 0L),
+        "alarmPrecision" to (alarm?.precision?.name?.lowercase() ?: "none"),
+        "alarmError" to (alarm?.error ?: ""),
     )
+
+    companion object {
+        fun fromUpdates(
+            revision: Long,
+            results: List<SingleWidgetUpdateResult>,
+            alarm: PrayerAlarmScheduleResult? = null,
+        ) = PrayerWidgetUpdateResult(
+            revision, results.size, results.count { it.success }, results.count { !it.success },
+            results.groupingBy { it.rendererPath }.eachCount(), results.mapNotNull { it.error }, alarm,
+        )
+    }
 }
 
-private data class SingleWidgetUpdateResult(
+internal data class SingleWidgetUpdateResult(
     val widgetId: Int,
     val success: Boolean,
     val rendererPath: String,
@@ -77,25 +93,14 @@ internal object PrayerWidgetUpdater {
         val snapshot = PrayerWidgetRepository.readSnapshot(context)
         if (ids.isEmpty()) {
             Log.d(TAG, "No prayer widgets pinned; skipping update.")
-            return PrayerWidgetUpdateResult(
-                revision = snapshot.revision,
-                widgetCount = 0,
-                successfulUpdates = 0,
-                failedUpdates = 0,
-                rendererPaths = emptyMap(),
-                errors = emptyList(),
-            )
-        } else {
-            val results = ids.map { update(context, manager, it, snapshot) }
-            return PrayerWidgetUpdateResult(
-                revision = snapshot.revision,
-                widgetCount = ids.size,
-                successfulUpdates = results.count { it.success },
-                failedUpdates = results.count { !it.success },
-                rendererPaths = results.groupingBy { it.rendererPath }.eachCount(),
-                errors = results.mapNotNull { it.error },
-            )
+            PrayerWidgetScheduler.cancel(context)
+            PrayerWidgetReliabilityManager.stop(context)
+            return PrayerWidgetUpdateResult.fromUpdates(snapshot.revision, emptyList())
         }
+        val results = ids.map { update(context, manager, it, snapshot) }
+        PrayerWidgetReliabilityManager.start(context)
+        val alarm = PrayerWidgetScheduler.scheduleNext(context)
+        return PrayerWidgetUpdateResult.fromUpdates(snapshot.revision, results, alarm)
     }
 
     fun update(

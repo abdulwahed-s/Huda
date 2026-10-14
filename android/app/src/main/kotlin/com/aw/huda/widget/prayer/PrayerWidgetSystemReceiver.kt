@@ -39,7 +39,9 @@ class PrayerWidgetSystemReceiver : BroadcastReceiver() {
             PrayerWidgetReliabilityManager::enqueueImmediateUpdate,
         ) { appContext ->
             val report = PrayerWidgetUpdater.updateAll(appContext)
-            PrayerWidgetScheduler.ensureAlarmsActive(appContext)
+            if (report.failedUpdates > 0 || report.alarm?.error != null) {
+                PrayerWidgetReliabilityManager.enqueueImmediateUpdate(appContext)
+            }
         }
     }
 }

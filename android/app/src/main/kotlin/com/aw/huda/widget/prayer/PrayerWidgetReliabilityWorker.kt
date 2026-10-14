@@ -1,11 +1,10 @@
 package com.aw.huda.widget.prayer
 
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.CancellationException
 
 internal class PrayerWidgetReliabilityWorker(
     appContext: Context,
@@ -18,23 +17,13 @@ internal class PrayerWidgetReliabilityWorker(
     override suspend fun doWork(): Result {
         return try {
             val context = applicationContext
-            val manager = AppWidgetManager.getInstance(context)
-            val ids = manager.getAppWidgetIds(
-                ComponentName(context, PrayerWidgetReceiver::class.java)
-            )
-            if (ids.isEmpty()) {
-                Log.d(TAG, "No prayer widgets pinned; skipping.")
-                PrayerWidgetScheduler.cancel(context)
-                return Result.success()
-            }
-
-            Log.d(TAG, "Safety-net tick: refreshing ${ids.size} widget(s)")
             val update = PrayerWidgetUpdater.updateAll(context)
-            val alarm = PrayerWidgetScheduler.ensureAlarmsActive(context)
-
-            if (update.failedUpdates > 0 || alarm.error != null) return Result.retry()
+            Log.d(TAG, "Safety-net tick: refreshed ${update.widgetCount} widget(s)")
+            if (update.failedUpdates > 0 || update.alarm?.error != null) return Result.retry()
 
             Result.success()
+        } catch (cancelled: CancellationException) {
+            throw cancelled
         } catch (e: Exception) {
             Log.e(TAG, "Safety-net worker failed", e)
             Result.retry()

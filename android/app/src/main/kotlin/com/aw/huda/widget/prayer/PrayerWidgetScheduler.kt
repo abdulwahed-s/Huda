@@ -106,7 +106,7 @@ internal object PrayerWidgetScheduler {
         PrayerAlarmPrecision.INEXACT_IDLE
     }
 
-    private fun scheduleAt(
+    internal fun scheduleAt(
         alarmManager: AlarmManager,
         triggerAtMillis: Long,
         pendingIntent: PendingIntent,
