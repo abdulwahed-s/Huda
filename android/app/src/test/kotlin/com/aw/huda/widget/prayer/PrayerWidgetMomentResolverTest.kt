@@ -270,6 +270,33 @@ class PrayerWidgetMomentResolverTest {
     }
 
     @Test
+    fun versionFourDisplayPayloadAcceptsZeroScheduleAndExactUtcDay() {
+        val json = """
+            {"version":4,"revision":100,"publicationRevision":100,
+             "locationRevision":90,"scheduleRevision":0,
+             "configurationSignature":"display:100","committedAt":"2026-09-25T00:00:00Z",
+             "coordinates":{"latitude":51.5074,"longitude":-0.1278},
+             "locationMode":"automatic","timeZoneId":"Europe/London","countryCode":"",
+             "calculationMethod":"muslimWorldLeague","madhab":"shafi","highLatitudeRule":"automatic",
+             "customAngles":{"custom_fajr_angle":18,"custom_maghrib_angle":0,"custom_isha_angle":17},
+             "offsets":{"fajr":7,"sunrise":0,"dhuhr":0,"asr":0,"maghrib":0,"isha":0},
+             "statusText":"Verification pending",
+             "precomputedDays":{"2026-03-29":{"fajr":1774755000000}},
+             "timeFormat":"system",
+             "appearance":{"themeName":"teal","themeMode":"light","locale":"en",
+               "design":"hero","language":"auto","numerals":"latin","backgroundEnabled":true,
+               "glassify":false,"rounded":false,"contentSize":100}}
+        """.trimIndent()
+        val display = requireNotNull(PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(json)).toSnapshot()
+        assertEquals(0L, display.scheduleRevision)
+        assertEquals("", display.countryCode)
+        assertEquals(1774755000000L, display.precomputedDays["2026-03-29"]?.get("fajr"))
+        assertNull(PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(
+            json.replace("\"version\":4", "\"version\":3"),
+        ))
+    }
+
+    @Test
     fun committedPayloadSanitizesUnboundedManualOffsets() {
         val offsets = """{"fajr":-999999,"sunrise":0,"dhuhr":0,"asr":0,"maghrib":0,"isha":999999}"""
         val json = """

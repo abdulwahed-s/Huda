@@ -189,6 +189,18 @@ class PrayerWidgetCalculationResilienceTest {
         )
     }
 
+    @Test
+    fun displayedUtcInstantsOverrideNativeCalculationWithoutApplyingOffsetsTwice() {
+        val expected = 1_774_755_000_000L
+        val display = snapshot().copy(
+            offsets = mapOf("fajr" to 7),
+            precomputedDays = mapOf("2026-03-29" to mapOf("fajr" to expected)),
+        )
+        val day = requireNotNull(PrayerWidgetCalculator.computeDay(display, calendar(display, 2026, 3, 29)))
+        assertEquals(expected, requireNotNull(day.fajr).time)
+        assertNull(day.isha)
+    }
+
     private fun calendar(
         snapshot: PrayerWidgetSnapshot,
         year: Int,

@@ -74,45 +74,18 @@ internal object PrayerWidgetCalculator {
     private fun rawTimes(snapshot: PrayerWidgetSnapshot, day: Calendar): PrayerTimes? {
         val lat = snapshot.latitude ?: return null
         val lon = snapshot.longitude ?: return null
-        val countryCode = snapshot.countryCode?.trim().orEmpty()
-        val method = methodFrom(snapshot.calculationMethod, countryCode)
-        val isRamadan = isRamadan(snapshot, day)
-        var params = method.parameters().copy(
-            madhab = madhabFrom(snapshot.madhab),
-            highLatitudeRule = highLatitudeRuleFrom(snapshot.highLatitudeRule),
-            isRamadan = isRamadan,
-        )
-        if (method == CalculationMethod.UMM_AL_QURA &&
-            isRamadan && countryCode.uppercase() != "SA"
-        ) {
-            params = params.copy(ishaValue = 120.0)
-        }
-        if (method == CalculationMethod.OTHER) {
-            params = params.copy(
-                fajrAngle = snapshot.customFajrAngle,
-                maghribIsInterval = false,
-                maghribValue = snapshot.customMaghribAngle,
-                ishaIsInterval = false,
-                ishaValue = snapshot.customIshaAngle,
+        val date = LocalDate.of(day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1, day.get(Calendar.DAY_OF_MONTH))
+        return try {
+            com.aw.huda.prayer.core.NativePrayerCalculator.rawTimes(
+                com.aw.huda.prayer.core.PrayerCalculationInput(
+                    latitude = lat, longitude = lon, countryCode = snapshot.countryCode?.trim().orEmpty(),
+                    timeZoneId = snapshot.displayTimeZone.id, method = snapshot.calculationMethod ?: "auto",
+                    madhab = snapshot.madhab ?: "shafi", highLatitude = snapshot.highLatitudeRule ?: "automatic",
+                    fajrAngle = snapshot.customFajrAngle, maghribAngle = snapshot.customMaghribAngle,
+                    ishaAngle = snapshot.customIshaAngle,
+                ), date,
             )
-        }
-
-        val date = DateComponents(
-            day.get(Calendar.YEAR),
-            day.get(Calendar.MONTH) + 1,
-            day.get(Calendar.DAY_OF_MONTH),
-        )
-        val utcOffset = LocalDate.of(date.year, date.month, date.day)
-            .atTime(LocalTime.NOON)
-            .atZone(snapshot.displayTimeZone.toZoneId())
-            .offset
-        return PrayerTimes(
-            Coordinates(lat, lon),
-            date,
-            params,
-            utcOffset,
-            countryCode = countryCode,
-        )
+        } catch (_: Exception) { null }
     }
 
     private fun rawToDay(
@@ -210,22 +183,8 @@ internal object PrayerWidgetCalculator {
         else -> HighLatitudeRule.AUTOMATIC
     }
 
-    internal fun methodFrom(token: String?, countryCode: String): CalculationMethod {
-        if (token.isNullOrBlank() || token == "auto") {
-            return if (countryCode.isBlank()) CalculationMethod.UMM_AL_QURA
-            else AutoMethod.forCountry(countryCode)
-        }
-        val methodKey = when (token) {
-            "muslimWorldLeague" -> "mwl"
-            "egyptian" -> "egypt"
-            "ummAlQura" -> "makkah"
-            "northAmerica" -> "isna"
-            "southKorea" -> "southkorea"
-            "other" -> "custom"
-            else -> token
-        }
-        return CalculationMethod.fromKey(methodKey) ?: CalculationMethod.UMM_AL_QURA
-    }
+    internal fun methodFrom(token: String?, countryCode: String): CalculationMethod =
+        com.aw.huda.prayer.core.NativePrayerCalculator.methodFrom(token, countryCode)
 
     private fun offset(snapshot: PrayerWidgetSnapshot, key: String): Int =
         (snapshot.offsets[key] ?: 0).coerceIn(-MAX_OFFSET_MINUTES, MAX_OFFSET_MINUTES)
