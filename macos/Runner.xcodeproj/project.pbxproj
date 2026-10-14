@@ -134,6 +134,7 @@
 		91324C2EA2373CB712EE5242 /* CalculationParameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationParameters.swift; path = PrayerTimePlus/Methods/CalculationParameters.swift; sourceTree = "<group>"; };
 		96D517D9293CCD181BDC68CB /* AutoMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AutoMethod.swift; path = PrayerTimePlus/Auto/AutoMethod.swift; sourceTree = "<group>"; };
 		9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-a9870b18adf439b2.wav; sourceTree = "<group>"; };
+		B72E4F1BFF129D2000000002 /* PrayerMenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerMenuBarController.swift; sourceTree = "<group>"; };
 		CE4393F48CD4E7258865E3F4 /* Madhab.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Madhab.swift; path = PrayerTimePlus/Model/Madhab.swift; sourceTree = "<group>"; };
 		CF8BFD15E09C21DAD8DBAF6A /* MacPrayerCore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerCore.swift; sourceTree = "<group>"; };
 		D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-fb0abd7042514868.wav; sourceTree = "<group>"; };
@@ -252,6 +253,7 @@
 			children = (
 				33CC10F02044A3C60003C045 /* AppDelegate.swift */,
 				33CC11122044BFA00003C045 /* MainFlutterWindow.swift */,
+				B72E4F1BFF129D2000000002 /* PrayerMenuBarController.swift */,
 				33E51913231747F40026EE4D /* DebugProfile.entitlements */,
 				33E51914231749380026EE4D /* Release.entitlements */,
 				33CC11242044D66E0003C045 /* Resources */,
