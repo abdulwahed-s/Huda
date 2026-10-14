@@ -1,10 +1,14 @@
 import Cocoa
 import FlutterMacOS
+import app_links
 
 @main
 class AppDelegate: FlutterAppDelegate {
+  weak var widgetChannel: FlutterMethodChannel?
   lazy var prayerMenuBar = PrayerMenuBarController()
   lazy var prayerService = MacPrayerService()
+  private var pendingWidgetURL: String?
+  private var initialLinkRequested = false
   private let prayerURLHandler = MacPrayerURLHandler()
   #if DEBUG
   private var deviceVerification: MacPrayerDeviceVerification?
@@ -34,6 +38,7 @@ class AppDelegate: FlutterAppDelegate {
     prayerURLHandler.onOpenURL = { [weak self] url in
       guard url.scheme == "huda", let self else { return }
       self.revealMainWindow()
+      self.forwardWidgetURL(url)
     }
     prayerURLHandler.install()
     #if DEBUG
@@ -48,7 +53,32 @@ class AppDelegate: FlutterAppDelegate {
 
   override func application(_ application: NSApplication, open urls: [URL]) {
     revealMainWindow()
+    for url in urls where url.scheme == "huda" {
+      forwardWidgetURL(url)
+    }
     super.application(application, open: urls)
+  }
+
+  private func forwardWidgetURL(_ url: URL) {
+    if initialLinkRequested {
+      widgetChannel?.invokeMethod("widgetClicked", arguments: url.absoluteString)
+    } else {
+      pendingWidgetURL = url.absoluteString
+    }
+  }
+
+  func takeInitialWidgetURL() -> String? {
+    guard !initialLinkRequested else { return nil }
+    initialLinkRequested = true
+    defer { pendingWidgetURL = nil }
+    if let pendingWidgetURL { return pendingWidgetURL }
+    // A cold-launch URL can arrive before our forwarding handler is installed.
+    // app_links retains that event; its public initial-link method replies synchronously.
+    var initialURL: String?
+    AppLinks.shared.handle(FlutterMethodCall(methodName: "getInitialLink", arguments: nil)) { value in
+      if let text = value as? String, URL(string: text)?.scheme == "huda" { initialURL = text }
+    }
+    return initialURL
   }
 
   override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

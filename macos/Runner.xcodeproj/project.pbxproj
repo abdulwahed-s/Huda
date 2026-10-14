@@ -21,48 +21,79 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0057E530DC07D6FC5E526116 /* PrayerTimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */; };
+		00BBF8E0AC1A6175EC223EA0 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */; };
+		00FE63F648052F152F567A0B /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1444F54725384CF88FDBBE0E /* SolarTime.swift */; };
+		02DBDFD22C028581E85861DD /* MacPrayerAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3238E0AACF65975B63B34B18 /* MacPrayerAudio.swift */; };
+		13B3DDEA953D8B17B10AF9E4 /* WidgetThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2F8223F051B87F05C015BB /* WidgetThemeColors.swift */; };
+		15B7D94983BCE05E1D0588D7 /* Amiri-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10BA46EB3A6A6DD4BA5CEEEA /* Amiri-Bold.ttf */; };
+		166E3541F684AC54F47DCF57 /* WidgetDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B376BC5A97299C3C2015D7C2 /* WidgetDataLoader.swift */; };
+		1841B6CD3A2F840BFD05AD45 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81B5001F94B3D391CA50341 /* PrayerTimes.swift */; };
+		1F2CB4456CBA9033A5AB6A7A /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81B5001F94B3D391CA50341 /* PrayerTimes.swift */; };
+		2D49C660E27862D7FEB2F374 /* PrayerWidgetCelestialViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519495F76C83666F63604870 /* PrayerWidgetCelestialViews.swift */; };
 		331C80D8294CF71000263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C80D7294CF71000263BE5 /* RunnerTests.swift */; };
 		335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */; };
 		33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC10F02044A3C60003C045 /* AppDelegate.swift */; };
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
-		A853B973C0642748794900AC /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918E7B1444A6594F9A96506B /* Pods_RunnerTests.framework */; };
-		BE9FB7AF446E1ABF5BB1EB6C /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D8909FBDFE93DA39EADD0 /* Pods_Runner.framework */; };
-		C2DE99EB2F09B8A00043A5D8 /* huda_icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C2DE99EA2F09B8A00043A5D8 /* huda_icon.icon */; };
-		ADFEED100000000000000002 /* adhan.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADFEED100000000000000001 /* adhan.caf */; };
-		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
-		0057E530DC07D6FC5E526116 /* PrayerTimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */; };
-		00BBF8E0AC1A6175EC223EA0 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */; };
-		02DBDFD22C028581E85861DD /* MacPrayerAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3238E0AACF65975B63B34B18 /* MacPrayerAudio.swift */; };
-		1841B6CD3A2F840BFD05AD45 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81B5001F94B3D391CA50341 /* PrayerTimes.swift */; };
+		34DCF804DE13C6D30215B8FC /* HudaWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD6860C050F45EA93F21DD /* HudaWidgetBundle.swift */; };
 		380107333D14FE97CD517961 /* MacPrayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FC3D87D21F3C831CEC3AA0 /* MacPrayerService.swift */; };
-		3E581FC6D47CCEE0575D89BE /* huda-short-5573355a0d79dd9c.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */; };
+		38B46C3E0819CDBDCAC3C165 /* HudaWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F59B639F3FDF119435BC395 /* HudaWidget.swift */; };
+		3E36EF94EA748740B35C9EAA /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4393F48CD4E7258865E3F4 /* Madhab.swift */; };
+		40BD28BEFA1A41D87B716C9F /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */; };
 		41596CF6226C8884D4296D1B /* MacPrayerLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888D26039945E8C20FE03820 /* MacPrayerLifecycle.swift */; };
 		441B4FB387E534C81BAEAE35 /* MacPrayerDeviceVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */; };
-		514E35EA280C852CF7056F4D /* huda-short-1b75aaee82b858c7.wav in Resources */ = {isa = PBXBuildFile; fileRef = 857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */; };
+		4C0B8ED4E36C48F2BD1652C3 /* Amiri-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BA64EC945C1F13EB59EECA4 /* Amiri-Regular.ttf */; };
 		52E0411A781BA401137CC540 /* MacPrayerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365624C544A7F353C8CB70FF /* MacPrayerServiceTests.swift */; };
 		534E970E7C1EEE78C8624E73 /* MacPrayerNotificationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21223A58E72D3DDD9C1A325 /* MacPrayerNotificationRouter.swift */; };
 		57438B7ED5188AA87F9B0E09 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */; };
-		57E587C82CC28895B034FB05 /* huda-short-4fb836680ded6b27.wav in Resources */ = {isa = PBXBuildFile; fileRef = 75CD7F391FBA2598E7305671 /* huda-short-4fb836680ded6b27.wav */; };
+		58EC19259BDB830DEC6688F6 /* quran_widget_verses.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B04BF01CDFBB7D81469A99E /* quran_widget_verses.json */; };
 		5A13CDD8632377CC05940DCE /* MacPrayerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8BFD15E09C21DAD8DBAF6A /* MacPrayerCore.swift */; };
 		5B0BA036FE255FB9DD5B4F94 /* DegreeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9195629AF1AA1F05E295CDB /* DegreeMath.swift */; };
+		5DE529F53A30001AC4F7F481 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 781266649EB54F96DE00B93E /* Assets.xcassets */; };
 		65E2280A31F277C71BB29728 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4393F48CD4E7258865E3F4 /* Madhab.swift */; };
+		66FD1ABA065D49520F49431E /* AutoMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D517D9293CCD181BDC68CB /* AutoMethod.swift */; };
 		68BE0FC909BBE1B013A87C8F /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91324C2EA2373CB712EE5242 /* CalculationParameters.swift */; };
+		69244601E003546FF6EA33AE /* PrayerWidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F036913D81D7C79BF6DED41 /* PrayerWidgetViews.swift */; };
 		6B5A12E9CA0EA3ECEDC4DDA3 /* PrayerAdjustments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */; };
+		70F278AAE96107F3A68FA3E7 /* PrayerWidgetCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6447825D9A003DD88A26CBFA /* PrayerWidgetCalculator.swift */; };
+		74108DC073B8D58DF52B8CEF /* SunnahTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */; };
+		777772A764B0C12E1CA0C290 /* HudaPrayerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8459018384E0C7EBECB6C128 /* HudaPrayerWidget.swift */; };
 		81C541ED21CBA93F9FC2B5A1 /* GeneratedMethodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */; };
-		82AFDB4827F0F01B33957A99 /* huda-short-fb0abd7042514868.wav in Resources */ = {isa = PBXBuildFile; fileRef = D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */; };
+		8394B37DE7819F25B2F95438 /* DegreeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9195629AF1AA1F05E295CDB /* DegreeMath.swift */; };
 		88CD928D8CF1D2856C4A331E /* SunnahTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */; };
+		8C1AD1C839F52222176980C6 /* HudaMacWidgetExtension.appex in Embed Widget Extension */ = {isa = PBXBuildFile; fileRef = 6BAB2345E373FFAAA8213154 /* HudaMacWidgetExtension.appex */; };
 		8D07BC9FF6F3BC8AFD721E79 /* MacPrayerPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5867570058EB66DFE2D096D6 /* MacPrayerPanelController.swift */; };
-		92C2B6ABA07B51E2716CE6EF /* huda-short-86fe2cb32feed182.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */; };
+		8F00429F2A9C32450F5DA37E /* PrayerTimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */; };
+		927885C26755F7D0EE3D3E25 /* PrayerAdjustments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */; };
 		9559337D830B6F834ADE5591 /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1444F54725384CF88FDBBE0E /* SolarTime.swift */; };
+		98E407CA25E4B2531AEEF93A /* PrayerWidgetLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49817FEA0B9638A7632636F /* PrayerWidgetLocalization.swift */; };
+		9A80F1E3C554084A3CB72DC4 /* PrayerWidgetStateResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CFD0B1AB2B2931C6D46B11 /* PrayerWidgetStateResolver.swift */; };
 		9B1F4C6CF75B4D505C854594 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68047E8E0D48EC388C462F3 /* Prayer.swift */; };
-		B1ADCEB0368529781C3D5752 /* huda-short-a9870b18adf439b2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */; };
+		A853B973C0642748794900AC /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918E7B1444A6594F9A96506B /* Pods_RunnerTests.framework */; };
+		ADFEED100000000000000002 /* adhan.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADFEED100000000000000001 /* adhan.caf */; };
+		B043364F08BCE5B34FE36B95 /* PrayerWidgetDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A79CC8DAA662C10B1897B0 /* PrayerWidgetDataLoader.swift */; };
 		B58A5B555B39ED1C53E9FCC0 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */; };
 		B72E4F1BFF129D2000000001 /* PrayerMenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72E4F1BFF129D2000000002 /* PrayerMenuBarController.swift */; };
 		BC7C47F96B78A955796B3FBA /* AutoMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D517D9293CCD181BDC68CB /* AutoMethod.swift */; };
+		BE9FB7AF446E1ABF5BB1EB6C /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D8909FBDFE93DA39EADD0 /* Pods_Runner.framework */; };
+		C2DE99EB2F09B8A00043A5D8 /* huda_icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C2DE99EA2F09B8A00043A5D8 /* huda_icon.icon */; };
+		CD140C6595EE04FB2E7A0948 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */; };
+		CEAC6CF3887567591E1AF70C /* MacWidgetFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AF428645E9ACBE9F2B4C99 /* MacWidgetFonts.swift */; };
 		D599BBC5B69C71E9F50C899D /* Adhan in Resources */ = {isa = PBXBuildFile; fileRef = 27DD1033BE7F47027CF4D7CD /* Adhan */; };
+		D62A883E6225C85BFDC432E0 /* GeneratedAutoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */; };
 		E581D12678198B284CC703CE /* GeneratedAutoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */; };
+		E7DE947A581EE881C1C0F429 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68047E8E0D48EC388C462F3 /* Prayer.swift */; };
+		ED7CEB09A608B721879D8B07 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */; };
+		F28AD719EFC3909D348B22A8 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91324C2EA2373CB712EE5242 /* CalculationParameters.swift */; };
+		F34B9D34F899EE31B864902E /* GeneratedMethodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */; };
+		514E35EA280C852CF7056F4D /* huda-short-1b75aaee82b858c7.wav in Resources */ = {isa = PBXBuildFile; fileRef = 857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */; };
+		57E587C82CC28895B034FB05 /* huda-short-4fb836680ded6b27.wav in Resources */ = {isa = PBXBuildFile; fileRef = 75CD7F391FBA2598E7305671 /* huda-short-4fb836680ded6b27.wav */; };
+		3E581FC6D47CCEE0575D89BE /* huda-short-5573355a0d79dd9c.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */; };
+		92C2B6ABA07B51E2716CE6EF /* huda-short-86fe2cb32feed182.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */; };
+		B1ADCEB0368529781C3D5752 /* huda-short-a9870b18adf439b2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */; };
+		82AFDB4827F0F01B33957A99 /* huda-short-fb0abd7042514868.wav in Resources */ = {isa = PBXBuildFile; fileRef = D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */; };
 		F14977736CB11CD780FFACBA /* huda_notification_sounds.json in Resources */ = {isa = PBXBuildFile; fileRef = FEAC91F62BF7AEEFD5230755 /* huda_notification_sounds.json */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +112,13 @@
 			remoteGlobalIDString = 33CC111A2044C6BA0003C045;
 			remoteInfo = FLX;
 		};
+		7CC53AFDAADF5B89719CCA6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33CC10E52044A3C60003C045 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 963A5985AB2F7C35A5EE4C43;
+			remoteInfo = HudaMacWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -94,9 +132,32 @@
 			name = "Bundle Framework";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E0B2F14C7B4CF79228ACF5CB /* Embed Widget Extension */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8C1AD1C839F52222176980C6 /* HudaMacWidgetExtension.appex in Embed Widget Extension */,
+			);
+			name = "Embed Widget Extension";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02A79CC8DAA662C10B1897B0 /* PrayerWidgetDataLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerWidgetDataLoader.swift; sourceTree = "<group>"; };
+		0F2F8223F051B87F05C015BB /* WidgetThemeColors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetThemeColors.swift; sourceTree = "<group>"; };
+		10BA46EB3A6A6DD4BA5CEEEA /* Amiri-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "Amiri-Bold.ttf"; sourceTree = "<group>"; };
+		1444F54725384CF88FDBBE0E /* SolarTime.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SolarTime.swift; path = PrayerTimePlus/Math/SolarTime.swift; sourceTree = "<group>"; };
+		18FC3D87D21F3C831CEC3AA0 /* MacPrayerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerService.swift; sourceTree = "<group>"; };
+		1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = PrayerTimePlus/Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
+		27DD1033BE7F47027CF4D7CD /* Adhan */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = Adhan; sourceTree = "<group>"; };
+		29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacPrayerDeviceVerification.swift; path = ../../xv/macos/Runner/MacPrayerDeviceVerification.swift; sourceTree = "<group>"; };
+		2BA64EC945C1F13EB59EECA4 /* Amiri-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "Amiri-Regular.ttf"; sourceTree = "<group>"; };
+		2F59B639F3FDF119435BC395 /* HudaWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HudaWidget.swift; sourceTree = "<group>"; };
+		30F9B57F15BC9C1D1682A2BE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		3238E0AACF65975B63B34B18 /* MacPrayerAudio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerAudio.swift; sourceTree = "<group>"; };
 		331C80D5294CF71000263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		331C80D7294CF71000263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		333000ED22D3DE5D00554162 /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
@@ -113,54 +174,68 @@
 		33E51913231747F40026EE4D /* DebugProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DebugProfile.entitlements; sourceTree = "<group>"; };
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
+		365624C544A7F353C8CB70FF /* MacPrayerServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerServiceTests.swift; sourceTree = "<group>"; };
+		4B04BF01CDFBB7D81469A99E /* quran_widget_verses.json */ = {isa = PBXFileReference; includeInIndex = 1; name = quran_widget_verses.json; path = ../assets/json/quran_widget_verses.json; sourceTree = "<group>"; };
+		519495F76C83666F63604870 /* PrayerWidgetCelestialViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerWidgetCelestialViews.swift; sourceTree = "<group>"; };
+		5867570058EB66DFE2D096D6 /* MacPrayerPanelController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerPanelController.swift; sourceTree = "<group>"; };
+		5F036913D81D7C79BF6DED41 /* PrayerWidgetViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerWidgetViews.swift; sourceTree = "<group>"; };
+		6447825D9A003DD88A26CBFA /* PrayerWidgetCalculator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerWidgetCalculator.swift; sourceTree = "<group>"; };
+		67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedMethodData.swift; path = PrayerTimePlus/Data/GeneratedMethodData.swift; sourceTree = "<group>"; };
+		6BAB2345E373FFAAA8213154 /* HudaMacWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HudaMacWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationMethod.swift; path = PrayerTimePlus/Methods/CalculationMethod.swift; sourceTree = "<group>"; };
+		6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coordinates.swift; path = PrayerTimePlus/Model/Coordinates.swift; sourceTree = "<group>"; };
+		781266649EB54F96DE00B93E /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		7D4DC44F13745C2745934B3B /* HudaWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = HudaWidget.entitlements; sourceTree = "<group>"; };
+		8459018384E0C7EBECB6C128 /* HudaPrayerWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HudaPrayerWidget.swift; sourceTree = "<group>"; };
+		86CFD0B1AB2B2931C6D46B11 /* PrayerWidgetStateResolver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerWidgetStateResolver.swift; sourceTree = "<group>"; };
 		879D8909FBDFE93DA39EADD0 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		888D26039945E8C20FE03820 /* MacPrayerLifecycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerLifecycle.swift; sourceTree = "<group>"; };
+		89AF428645E9ACBE9F2B4C99 /* MacWidgetFonts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacWidgetFonts.swift; sourceTree = "<group>"; };
+		91324C2EA2373CB712EE5242 /* CalculationParameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationParameters.swift; path = PrayerTimePlus/Methods/CalculationParameters.swift; sourceTree = "<group>"; };
 		918E7B1444A6594F9A96506B /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96D517D9293CCD181BDC68CB /* AutoMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AutoMethod.swift; path = PrayerTimePlus/Auto/AutoMethod.swift; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		A49817FEA0B9638A7632636F /* PrayerWidgetLocalization.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerWidgetLocalization.swift; sourceTree = "<group>"; };
+		A9CD6860C050F45EA93F21DD /* HudaWidgetBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HudaWidgetBundle.swift; sourceTree = "<group>"; };
+		ADFEED100000000000000001 /* adhan.caf */ = {isa = PBXFileReference; lastKnownFileType = audio.caf; path = ../ios/Runner/adhan.caf; sourceTree = "<group>"; };
+		B21223A58E72D3DDD9C1A325 /* MacPrayerNotificationRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerNotificationRouter.swift; sourceTree = "<group>"; };
+		B376BC5A97299C3C2015D7C2 /* WidgetDataLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetDataLoader.swift; sourceTree = "<group>"; };
 		B67BDBA4EF1622F12ED87EDB /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B72E4F1BFF129D2000000002 /* PrayerMenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerMenuBarController.swift; sourceTree = "<group>"; };
 		B7BA0AFF748628CB6AF8B838 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		B9287DA1D34C8B366CC150BB /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		C2DE99EA2F09B8A00043A5D8 /* huda_icon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = huda_icon.icon; sourceTree = "<group>"; };
-		ADFEED100000000000000001 /* adhan.caf */ = {isa = PBXFileReference; lastKnownFileType = audio.caf; path = ../ios/Runner/adhan.caf; sourceTree = "<group>"; };
-		E9B5EFF2919E5C6763993BB5 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
-		EAA2890595C63A0B709E0EAE /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
-		EB9F3E09C25118CEA3A46249 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
-		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
-		1444F54725384CF88FDBBE0E /* SolarTime.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SolarTime.swift; path = PrayerTimePlus/Math/SolarTime.swift; sourceTree = "<group>"; };
-		18FC3D87D21F3C831CEC3AA0 /* MacPrayerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerService.swift; sourceTree = "<group>"; };
-		1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-86fe2cb32feed182.wav; sourceTree = "<group>"; };
-		1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = PrayerTimePlus/Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
-		27DD1033BE7F47027CF4D7CD /* Adhan */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = Adhan; sourceTree = "<group>"; };
-		29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacPrayerDeviceVerification.swift; path = ../../xv/macos/Runner/MacPrayerDeviceVerification.swift; sourceTree = "<group>"; };
-		3238E0AACF65975B63B34B18 /* MacPrayerAudio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerAudio.swift; sourceTree = "<group>"; };
-		365624C544A7F353C8CB70FF /* MacPrayerServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerServiceTests.swift; sourceTree = "<group>"; };
-		5867570058EB66DFE2D096D6 /* MacPrayerPanelController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerPanelController.swift; sourceTree = "<group>"; };
-		67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedMethodData.swift; path = PrayerTimePlus/Data/GeneratedMethodData.swift; sourceTree = "<group>"; };
-		6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationMethod.swift; path = PrayerTimePlus/Methods/CalculationMethod.swift; sourceTree = "<group>"; };
-		6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coordinates.swift; path = PrayerTimePlus/Model/Coordinates.swift; sourceTree = "<group>"; };
-		75CD7F391FBA2598E7305671 /* huda-short-4fb836680ded6b27.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-4fb836680ded6b27.wav; sourceTree = "<group>"; };
-		7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-5573355a0d79dd9c.wav; sourceTree = "<group>"; };
-		857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-1b75aaee82b858c7.wav; sourceTree = "<group>"; };
-		888D26039945E8C20FE03820 /* MacPrayerLifecycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerLifecycle.swift; sourceTree = "<group>"; };
-		91324C2EA2373CB712EE5242 /* CalculationParameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationParameters.swift; path = PrayerTimePlus/Methods/CalculationParameters.swift; sourceTree = "<group>"; };
-		96D517D9293CCD181BDC68CB /* AutoMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AutoMethod.swift; path = PrayerTimePlus/Auto/AutoMethod.swift; sourceTree = "<group>"; };
-		9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-a9870b18adf439b2.wav; sourceTree = "<group>"; };
-		B21223A58E72D3DDD9C1A325 /* MacPrayerNotificationRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerNotificationRouter.swift; sourceTree = "<group>"; };
-		B72E4F1BFF129D2000000002 /* PrayerMenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerMenuBarController.swift; sourceTree = "<group>"; };
 		CE4393F48CD4E7258865E3F4 /* Madhab.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Madhab.swift; path = PrayerTimePlus/Model/Madhab.swift; sourceTree = "<group>"; };
 		CF8BFD15E09C21DAD8DBAF6A /* MacPrayerCore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerCore.swift; sourceTree = "<group>"; };
-		D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-fb0abd7042514868.wav; sourceTree = "<group>"; };
 		D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HighLatitudeRule.swift; path = PrayerTimePlus/Model/HighLatitudeRule.swift; sourceTree = "<group>"; };
 		D68047E8E0D48EC388C462F3 /* Prayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Prayer.swift; path = PrayerTimePlus/Model/Prayer.swift; sourceTree = "<group>"; };
 		D9195629AF1AA1F05E295CDB /* DegreeMath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DegreeMath.swift; path = PrayerTimePlus/Math/DegreeMath.swift; sourceTree = "<group>"; };
 		D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SunnahTimes.swift; path = PrayerTimePlus/SunnahTimes.swift; sourceTree = "<group>"; };
 		DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerTimeEngine.swift; path = PrayerTimePlus/Engine/PrayerTimeEngine.swift; sourceTree = "<group>"; };
+		E9B5EFF2919E5C6763993BB5 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		EAA2890595C63A0B709E0EAE /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
+		EB9F3E09C25118CEA3A46249 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		F51247FAF91BD0D19B3D3F20 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F81B5001F94B3D391CA50341 /* PrayerTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerTimes.swift; path = PrayerTimePlus/PrayerTimes.swift; sourceTree = "<group>"; };
 		FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerAdjustments.swift; path = PrayerTimePlus/Model/PrayerAdjustments.swift; sourceTree = "<group>"; };
+		857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-1b75aaee82b858c7.wav; sourceTree = "<group>"; };
+		75CD7F391FBA2598E7305671 /* huda-short-4fb836680ded6b27.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-4fb836680ded6b27.wav; sourceTree = "<group>"; };
+		7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-5573355a0d79dd9c.wav; sourceTree = "<group>"; };
+		1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-86fe2cb32feed182.wav; sourceTree = "<group>"; };
+		9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-a9870b18adf439b2.wav; sourceTree = "<group>"; };
+		D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-fb0abd7042514868.wav; sourceTree = "<group>"; };
 		FEAC91F62BF7AEEFD5230755 /* huda_notification_sounds.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = huda_notification_sounds.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		14DCF69D83FCC1B7EF39779D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		331C80D2294CF70F00263BE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -173,7 +248,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 				BE9FB7AF446E1ABF5BB1EB6C /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,6 +255,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		21C177E4ACDC1A4367661A9E /* Shared iOS Widget Sources */ = {
+			isa = PBXGroup;
+			children = (
+				2F59B639F3FDF119435BC395 /* HudaWidget.swift */,
+				8459018384E0C7EBECB6C128 /* HudaPrayerWidget.swift */,
+				B376BC5A97299C3C2015D7C2 /* WidgetDataLoader.swift */,
+				0F2F8223F051B87F05C015BB /* WidgetThemeColors.swift */,
+				6447825D9A003DD88A26CBFA /* PrayerWidgetCalculator.swift */,
+				519495F76C83666F63604870 /* PrayerWidgetCelestialViews.swift */,
+				02A79CC8DAA662C10B1897B0 /* PrayerWidgetDataLoader.swift */,
+				A49817FEA0B9638A7632636F /* PrayerWidgetLocalization.swift */,
+				86CFD0B1AB2B2931C6D46B11 /* PrayerWidgetStateResolver.swift */,
+				5F036913D81D7C79BF6DED41 /* PrayerWidgetViews.swift */,
+				96D517D9293CCD181BDC68CB /* AutoMethod.swift */,
+				1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */,
+				67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */,
+				DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */,
+				D9195629AF1AA1F05E295CDB /* DegreeMath.swift */,
+				1444F54725384CF88FDBBE0E /* SolarTime.swift */,
+				6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */,
+				91324C2EA2373CB712EE5242 /* CalculationParameters.swift */,
+				6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */,
+				D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */,
+				CE4393F48CD4E7258865E3F4 /* Madhab.swift */,
+				D68047E8E0D48EC388C462F3 /* Prayer.swift */,
+				FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */,
+				F81B5001F94B3D391CA50341 /* PrayerTimes.swift */,
+				D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */,
+				2BA64EC945C1F13EB59EECA4 /* Amiri-Regular.ttf */,
+				10BA46EB3A6A6DD4BA5CEEEA /* Amiri-Bold.ttf */,
+				781266649EB54F96DE00B93E /* Assets.xcassets */,
+			);
+			name = "Shared iOS Widget Sources";
+			path = ../ios/HudaWidget;
+			sourceTree = "<group>";
+		};
 		222F77E7B996AD0FB9874991 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,7 +333,9 @@
 				33CC10EE2044A3C60003C045 /* Products */,
 				D73912EC22F37F3D000D13A0 /* Frameworks */,
 				222F77E7B996AD0FB9874991 /* Pods */,
+				848BBAE4155ECE1C80E66F05 /* HudaWidget */,
 				21C177E4ACDC1A4367661A9E /* Shared iOS Widget Sources */,
+				4B04BF01CDFBB7D81469A99E /* quran_widget_verses.json */,
 			);
 			sourceTree = "<group>";
 		};
@@ -232,6 +344,7 @@
 			children = (
 				33CC10ED2044A3C60003C045 /* huda.app */,
 				331C80D5294CF71000263BE5 /* RunnerTests.xctest */,
+				6BAB2345E373FFAAA8213154 /* HudaMacWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -256,7 +369,6 @@
 				33CEB47222A05771004F2AC0 /* Flutter-Debug.xcconfig */,
 				33CEB47422A05771004F2AC0 /* Flutter-Release.xcconfig */,
 				33CEB47722A0578A004F2AC0 /* Flutter-Generated.xcconfig */,
-				78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */,
 			);
 			path = Flutter;
 			sourceTree = "<group>";
@@ -284,36 +396,34 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
+		848BBAE4155ECE1C80E66F05 /* HudaWidget */ = {
+			isa = PBXGroup;
+			children = (
+				A9CD6860C050F45EA93F21DD /* HudaWidgetBundle.swift */,
+				89AF428645E9ACBE9F2B4C99 /* MacWidgetFonts.swift */,
+				F51247FAF91BD0D19B3D3F20 /* Info.plist */,
+				7D4DC44F13745C2745934B3B /* HudaWidget.entitlements */,
+			);
+			name = HudaWidget;
+			path = HudaWidget;
+			sourceTree = "<group>";
+		};
+		8EAC77C504DDCCC328E39DB7 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				30F9B57F15BC9C1D1682A2BE /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				879D8909FBDFE93DA39EADD0 /* Pods_Runner.framework */,
 				918E7B1444A6594F9A96506B /* Pods_RunnerTests.framework */,
+				8EAC77C504DDCCC328E39DB7 /* OS X */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		21C177E4ACDC1A4367661A9E /* Shared iOS Widget Sources */ = {
-			isa = PBXGroup;
-			children = (
-				96D517D9293CCD181BDC68CB /* AutoMethod.swift */,
-				1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */,
-				67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */,
-				DD394EA4663D9A736D688339 /* PrayerTimeEngine.swift */,
-				D9195629AF1AA1F05E295CDB /* DegreeMath.swift */,
-				1444F54725384CF88FDBBE0E /* SolarTime.swift */,
-				6CC8FFCEBC3A56306B51B288 /* CalculationMethod.swift */,
-				91324C2EA2373CB712EE5242 /* CalculationParameters.swift */,
-				6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */,
-				D3D3DA3ACA7B9149C6D93C28 /* HighLatitudeRule.swift */,
-				CE4393F48CD4E7258865E3F4 /* Madhab.swift */,
-				D68047E8E0D48EC388C462F3 /* Prayer.swift */,
-				FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */,
-				F81B5001F94B3D391CA50341 /* PrayerTimes.swift */,
-				D99F1360FFD3329F4C5057B4 /* SunnahTimes.swift */,
-			);
-			name = "Shared iOS Widget Sources";
-			path = ../ios/HudaWidget;
 			sourceTree = "<group>";
 		};
 		F8F1C624516404506C56CB9E /* NotificationSounds */ = {
@@ -353,9 +463,6 @@
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		33CC10EC2044A3C60003C045 /* Runner */ = {
-			packageProductDependencies = (
-				78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */,
-			);
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
@@ -366,24 +473,40 @@
 				33CC110E2044A8840003C045 /* Bundle Framework */,
 				3399D490228B24CF009A79C7 /* ShellScript */,
 				2156EF0BFB4101E676581E2A /* [CP] Embed Pods Frameworks */,
+				E0B2F14C7B4CF79228ACF5CB /* Embed Widget Extension */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				33CC11202044C79F0003C045 /* PBXTargetDependency */,
+				B61F5A53C1A92589A74F5927 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
 			productReference = 33CC10ED2044A3C60003C045 /* huda.app */;
 			productType = "com.apple.product-type.application";
 		};
+		963A5985AB2F7C35A5EE4C43 /* HudaMacWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3AAA0135A135F5456D0C1082 /* Build configuration list for PBXNativeTarget "HudaMacWidgetExtension" */;
+			buildPhases = (
+				641E107883BC912FBB5F3B4B /* Sources */,
+				14DCF69D83FCC1B7EF39779D /* Frameworks */,
+				B930113D90CDA23E43A226EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HudaMacWidgetExtension;
+			productName = HudaMacWidgetExtension;
+			productReference = 6BAB2345E373FFAAA8213154 /* HudaMacWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		33CC10E52044A3C60003C045 /* Project object */ = {
-			packageReferences = (
-				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage" */,
-			);
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
@@ -400,7 +523,13 @@
 						LastSwiftMigration = 1100;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.Sandbox = {
+								enabled = 1;
+							};
+							com.apple.TimeSensitiveNotifications = {
 								enabled = 1;
 							};
 						};
@@ -408,6 +537,18 @@
 					33CC111A2044C6BA0003C045 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Manual;
+					};
+					963A5985AB2F7C35A5EE4C43 = {
+						CreatedOnToolsVersion = 26.5;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -427,6 +568,7 @@
 				33CC10EC2044A3C60003C045 /* Runner */,
 				331C80D4294CF70F00263BE5 /* RunnerTests */,
 				33CC111A2044C6BA0003C045 /* Flutter Assemble */,
+				963A5985AB2F7C35A5EE4C43 /* HudaMacWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -455,6 +597,17 @@
 				B1ADCEB0368529781C3D5752 /* huda-short-a9870b18adf439b2.wav in Resources */,
 				82AFDB4827F0F01B33957A99 /* huda-short-fb0abd7042514868.wav in Resources */,
 				F14977736CB11CD780FFACBA /* huda_notification_sounds.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B930113D90CDA23E43A226EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C0B8ED4E36C48F2BD1652C3 /* Amiri-Regular.ttf in Resources */,
+				15B7D94983BCE05E1D0588D7 /* Amiri-Bold.ttf in Resources */,
+				5DE529F53A30001AC4F7F481 /* Assets.xcassets in Resources */,
+				58EC19259BDB830DEC6688F6 /* quran_widget_verses.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +758,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		641E107883BC912FBB5F3B4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DCF804DE13C6D30215B8FC /* HudaWidgetBundle.swift in Sources */,
+				CEAC6CF3887567591E1AF70C /* MacWidgetFonts.swift in Sources */,
+				38B46C3E0819CDBDCAC3C165 /* HudaWidget.swift in Sources */,
+				777772A764B0C12E1CA0C290 /* HudaPrayerWidget.swift in Sources */,
+				166E3541F684AC54F47DCF57 /* WidgetDataLoader.swift in Sources */,
+				13B3DDEA953D8B17B10AF9E4 /* WidgetThemeColors.swift in Sources */,
+				70F278AAE96107F3A68FA3E7 /* PrayerWidgetCalculator.swift in Sources */,
+				2D49C660E27862D7FEB2F374 /* PrayerWidgetCelestialViews.swift in Sources */,
+				B043364F08BCE5B34FE36B95 /* PrayerWidgetDataLoader.swift in Sources */,
+				98E407CA25E4B2531AEEF93A /* PrayerWidgetLocalization.swift in Sources */,
+				9A80F1E3C554084A3CB72DC4 /* PrayerWidgetStateResolver.swift in Sources */,
+				69244601E003546FF6EA33AE /* PrayerWidgetViews.swift in Sources */,
+				66FD1ABA065D49520F49431E /* AutoMethod.swift in Sources */,
+				D62A883E6225C85BFDC432E0 /* GeneratedAutoData.swift in Sources */,
+				F34B9D34F899EE31B864902E /* GeneratedMethodData.swift in Sources */,
+				8F00429F2A9C32450F5DA37E /* PrayerTimeEngine.swift in Sources */,
+				8394B37DE7819F25B2F95438 /* DegreeMath.swift in Sources */,
+				00FE63F648052F152F567A0B /* SolarTime.swift in Sources */,
+				40BD28BEFA1A41D87B716C9F /* CalculationMethod.swift in Sources */,
+				F28AD719EFC3909D348B22A8 /* CalculationParameters.swift in Sources */,
+				ED7CEB09A608B721879D8B07 /* Coordinates.swift in Sources */,
+				CD140C6595EE04FB2E7A0948 /* HighLatitudeRule.swift in Sources */,
+				3E36EF94EA748740B35C9EAA /* Madhab.swift in Sources */,
+				E7DE947A581EE881C1C0F429 /* Prayer.swift in Sources */,
+				927885C26755F7D0EE3D3E25 /* PrayerAdjustments.swift in Sources */,
+				1F2CB4456CBA9033A5AB6A7A /* PrayerTimes.swift in Sources */,
+				74108DC073B8D58DF52B8CEF /* SunnahTimes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -617,6 +804,12 @@
 			isa = PBXTargetDependency;
 			target = 33CC111A2044C6BA0003C045 /* Flutter Assemble */;
 			targetProxy = 33CC111F2044C79F0003C045 /* PBXContainerItemProxy */;
+		};
+		B61F5A53C1A92589A74F5927 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HudaMacWidgetExtension;
+			target = 963A5985AB2F7C35A5EE4C43 /* HudaMacWidgetExtension */;
+			targetProxy = 7CC53AFDAADF5B89719CCA6D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -633,6 +826,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		05EF0B1560EF12A45459274E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HudaWidget/HudaWidget.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = HudaWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Huda;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaMacWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1ED531C69B80BB9BE56ECF94 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HudaWidget/HudaWidget.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = HudaWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Huda;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaMacWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Profile;
+		};
 		331C80DB294CF71000263BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B67BDBA4EF1622F12ED87EDB /* Pods-RunnerTests.debug.xcconfig */;
@@ -733,11 +980,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = huda_icon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(HUDA_PRAYER_ENTITLEMENTS_FILE)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				HUDA_PRAYER_ENTITLEMENTS_FILE = Runner/DebugProfile.entitlements;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -869,11 +1117,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = huda_icon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(HUDA_PRAYER_ENTITLEMENTS_FILE)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				HUDA_PRAYER_ENTITLEMENTS_FILE = Runner/DebugProfile.entitlements;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -893,11 +1142,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = huda_icon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(HUDA_PRAYER_ENTITLEMENTS_FILE)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				HUDA_PRAYER_ENTITLEMENTS_FILE = Runner/Release.entitlements;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -923,6 +1173,33 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		A3A32A2B16040C998D6259CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HudaWidget/HudaWidget.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = TLUQZ3NR53;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = HudaWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Huda;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.aw.huda.HudaMacWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -969,19 +1246,17 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		3AAA0135A135F5456D0C1082 /* Build configuration list for PBXNativeTarget "HudaMacWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3A32A2B16040C998D6259CC /* Release */,
+				05EF0B1560EF12A45459274E /* Debug */,
+				1ED531C69B80BB9BE56ECF94 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
-/* Begin XCLocalSwiftPackageReference section */
-		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
-		};
-/* End XCLocalSwiftPackageReference section */
-/* Begin XCSwiftPackageProductDependency section */
-		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FlutterGeneratedPluginSwiftPackage;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 33CC10E52044A3C60003C045 /* Project object */;
 }

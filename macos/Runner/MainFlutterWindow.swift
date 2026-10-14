@@ -3,6 +3,7 @@ import CoreLocation
 import FlutterMacOS
 import MapKit
 import UserNotifications
+import WidgetKit
 
 class MainFlutterWindow: NSWindow {
   var allowPresentation = false
@@ -28,6 +29,7 @@ class MainFlutterWindow: NSWindow {
   private let prayerLocationResolver = PrayerAppleLocationResolver()
   private var prayerLocationChannel: FlutterMethodChannel?
   private var prayerSystemChannel: FlutterMethodChannel?
+  private var widgetChannel: FlutterMethodChannel?
   private var prayerMenuChannel: FlutterMethodChannel?
   private var notificationsChannel: FlutterMethodChannel?
   private var prayerSystemObservers: [NSObjectProtocol] = []
@@ -53,6 +55,49 @@ class MainFlutterWindow: NSWindow {
       service.channel = serviceChannel
       service.router.install()
     }
+
+    let widgets = FlutterMethodChannel(
+      name: "com.aw.huda/mac_widgets",
+      binaryMessenger: flutterViewController.engine.binaryMessenger
+    )
+    widgets.setMethodCallHandler { call, result in
+      switch call.method {
+      case "initialLink":
+        result((NSApp.delegate as? AppDelegate)?.takeInitialWidgetURL())
+      case "publish":
+        guard
+          let arguments = call.arguments as? [String: Any],
+          let values = arguments["values"] as? [String: Any],
+          let kinds = arguments["kinds"] as? [String],
+          let defaults = UserDefaults(suiteName: "group.hudaHomeApp")
+        else {
+          result(FlutterError(code: "invalid_widget_data", message: "Widget App Group or values unavailable.", details: nil))
+          return
+        }
+        for (key, value) in values {
+          if value is NSNull {
+            defaults.removeObject(forKey: key)
+          } else {
+            defaults.set(value, forKey: key)
+          }
+        }
+        (NSApp.delegate as? AppDelegate)?.prayerMenuBar.reloadSnapshot()
+        if #available(macOS 14.0, *) {
+          if !kinds.isEmpty {
+            DispatchQueue.main.async {
+              for kind in Set(kinds) {
+                WidgetCenter.shared.reloadTimelines(ofKind: kind)
+              }
+            }
+          }
+        }
+        result(nil)
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    widgetChannel = widgets
+    (NSApp.delegate as? AppDelegate)?.widgetChannel = widgets
 
     let menuChannel = FlutterMethodChannel(
       name: "com.aw.huda/mac_prayer_menu",
