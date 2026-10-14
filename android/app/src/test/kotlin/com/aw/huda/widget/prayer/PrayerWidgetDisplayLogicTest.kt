@@ -15,6 +15,9 @@ class PrayerWidgetDisplayLogicTest {
         assertEquals(WidgetFamily.SMALL, PrayerWidgetUpdater.classifySize(170f, 170f))
         assertEquals(WidgetFamily.MEDIUM, PrayerWidgetUpdater.classifySize(364f, 170f))
         assertEquals(WidgetFamily.LARGE, PrayerWidgetUpdater.classifySize(364f, 360f))
+        // Huawei reports 304dp portrait width even when the widget fills the page.
+        assertEquals(WidgetFamily.MEDIUM, PrayerWidgetUpdater.classifySize(304f, 184f))
+        assertEquals(WidgetFamily.LARGE, PrayerWidgetUpdater.classifySize(304f, 584f))
     }
 
     @Test

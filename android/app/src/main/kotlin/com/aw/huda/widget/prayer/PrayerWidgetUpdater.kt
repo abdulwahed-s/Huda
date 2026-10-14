@@ -225,7 +225,7 @@ internal object PrayerWidgetUpdater {
             w <= 0 || h <= 0 -> WidgetFamily.MEDIUM
             w < 120 -> WidgetFamily.CIRCULAR
             h < 150 -> WidgetFamily.RECTANGULAR
-            w >= 340 && h >= 340 -> WidgetFamily.LARGE
+            w >= 280 && h >= 340 -> WidgetFamily.LARGE
             w >= 240 -> WidgetFamily.MEDIUM
             else -> WidgetFamily.SMALL
         }
@@ -1612,9 +1612,15 @@ internal object PrayerWidgetUpdater {
         views: RemoteViews,
         overlay: PrayerWidgetCanvasRenderer.CountdownOverlay?,
     ) {
-        val id = R.id.prayer_widget_live_countdown
+        // Gravity is fixed in XML: Chronometer.setGravity is not a RemoteViews
+        // method on Android 10, so selecting a pre-aligned view keeps all actions valid.
+        val countdownIds = intArrayOf(
+            R.id.prayer_widget_live_countdown,
+            R.id.prayer_widget_live_countdown_left,
+            R.id.prayer_widget_live_countdown_right,
+        )
+        countdownIds.forEach { views.setViewVisibility(it, View.GONE) }
         if (overlay == null) {
-            views.setViewVisibility(id, View.GONE)
             return
         }
         val nowMillis = System.currentTimeMillis()
@@ -1626,8 +1632,18 @@ internal object PrayerWidgetUpdater {
             overlay.counterMode == PrayerWidgetCounterMode.ELAPSED &&
             durationMillis >= PRAYER_GRACE_MILLIS
         ) {
-            views.setViewVisibility(id, View.GONE)
             return
+        }
+
+        val id = when (overlay.alignment) {
+            PrayerWidgetCanvasRenderer.CountdownAlignment.START ->
+                if (overlay.rtl) R.id.prayer_widget_live_countdown_right
+                else R.id.prayer_widget_live_countdown_left
+            PrayerWidgetCanvasRenderer.CountdownAlignment.CENTER ->
+                R.id.prayer_widget_live_countdown
+            PrayerWidgetCanvasRenderer.CountdownAlignment.END ->
+                if (overlay.rtl) R.id.prayer_widget_live_countdown_left
+                else R.id.prayer_widget_live_countdown_right
         }
 
         val layoutDensity = if (DisplayMetrics.DENSITY_DEVICE_STABLE > 0) {
@@ -1651,13 +1667,6 @@ internal object PrayerWidgetUpdater {
             px(rightDp),
             px(bottomDp),
         )
-        val horizontalGravity = when (overlay.alignment) {
-            PrayerWidgetCanvasRenderer.CountdownAlignment.CENTER -> Gravity.CENTER_HORIZONTAL
-            PrayerWidgetCanvasRenderer.CountdownAlignment.END -> {
-                if (overlay.rtl) Gravity.LEFT else Gravity.RIGHT
-            }
-        }
-        views.setInt(id, "setGravity", Gravity.CENTER_VERTICAL or horizontalGravity)
         views.setTextViewTextSize(
             id,
             TypedValue.COMPLEX_UNIT_PX,

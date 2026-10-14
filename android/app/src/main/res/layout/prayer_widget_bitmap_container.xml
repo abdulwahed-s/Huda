@@ -23,6 +23,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fontFamily="monospace"
+        android:gravity="center_vertical|center_horizontal"
+        android:includeFontPadding="false"
+        android:importantForAccessibility="no"
+        android:singleLine="true"
+        android:textDirection="ltr"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <Chronometer
+        android:id="@+id/prayer_widget_live_countdown_left"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="monospace"
+        android:gravity="center_vertical|left"
+        android:includeFontPadding="false"
+        android:importantForAccessibility="no"
+        android:singleLine="true"
+        android:textDirection="ltr"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <Chronometer
+        android:id="@+id/prayer_widget_live_countdown_right"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="monospace"
+        android:gravity="center_vertical|right"
         android:includeFontPadding="false"
         android:importantForAccessibility="no"
         android:singleLine="true"

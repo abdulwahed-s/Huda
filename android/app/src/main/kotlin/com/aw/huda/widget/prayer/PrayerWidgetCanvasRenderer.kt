@@ -32,7 +32,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 internal object PrayerWidgetCanvasRenderer {
-    enum class CountdownAlignment { CENTER, END }
+    enum class CountdownAlignment { START, CENTER, END }
 
     data class CountdownOverlay(
         val leftDp: Float,
@@ -325,6 +325,11 @@ internal object PrayerWidgetCanvasRenderer {
                 scale = scale,
             )
         }
+
+        // Tall full-page widgets (e.g. 304x584dp) would otherwise leave ~80dp empty
+        // above and below the 360dp reference layout. Text keeps its base size; only
+        // boxes and spacing grow.
+        private val LARGE_MAX_SCALE = 1.40f
 
         private data class VerticalFrame(
             val top: Float,
@@ -658,7 +663,7 @@ internal object PrayerWidgetCanvasRenderer {
 
         private fun drawSpotlightLarge() {
             val next = state.next ?: return
-            val frame = verticalFrame(360f, minScale = 0.90f, maxScale = 1.16f)
+            val frame = verticalFrame(360f, minScale = 0.90f, maxScale = LARGE_MAX_SCALE)
             drawSpotlightHeader(16f, frame.y(14f), compact = false)
             label(
                 PrayerWidgetLocalization.string(state.primaryLabelKey, state.locale),
@@ -983,7 +988,7 @@ internal object PrayerWidgetCanvasRenderer {
         }
 
         private fun drawAlmanacLarge() {
-            val frame = verticalFrame(360f, minScale = 0.90f, maxScale = 1.16f)
+            val frame = verticalFrame(360f, minScale = 0.90f, maxScale = LARGE_MAX_SCALE)
             drawDateHeader(16f, frame.y(16f), compact = false)
             drawNextBand(16f, frame.y(91f), widthDp - 32f, frame.h(59f), compact = false)
             label(
@@ -1170,16 +1175,34 @@ internal object PrayerWidgetCanvasRenderer {
                 if (compact) 12f else 16f,
                 strokeAlpha = 0.25f
             )
-            if (compact && w < 132f) {
-                circle(x + 12f, y + h / 2f, 2.4f, palette.gold)
+            val counterLabel = PrayerWidgetLocalization.string(state.counterLabelKey, state.locale)
+            // The live Chronometer grows from its gravity edge between bitmap renders
+            // (e.g. "−1:00:00" -> "−59:59"), and pre-S launchers may stretch the bitmap
+            // wider than the size they report while the Chronometer padding stays fixed.
+            // Anchoring the counter to the band edge nearest the widget edge keeps
+            // both effects small, so bands on the leading half flow label -> counter.
+            val leadingBand = x + w <= widthDp * 0.7f
+            if (compact && w < 112f) {
+                label(counterLabel, x + 8f, y + 1f, w - 16f, h * 0.38f, 6.5f)
                 countdownText(
-                    state.countdown,
-                    x + 21f,
-                    y,
-                    w - 30f,
-                    h,
-                    13f,
-                    Align.END,
+                    state.countdown, x + 8f, y + h * 0.38f,
+                    w - 16f, h * 0.62f, 13f, Align.START,
+                )
+                return
+            }
+            if (compact && (w < 132f || leadingBand)) {
+                val showDot = w >= 132f
+                if (showDot) circle(x + 13f, y + h / 2f, 2.4f, palette.gold)
+                val labelX = x + if (showDot) 21f else 8f
+                val labelWidth = min(
+                    labelWidth(counterLabel, 6.5f) + 1f,
+                    w * if (showDot) 0.42f else 0.38f,
+                )
+                val countdownX = labelX + labelWidth + 7f
+                label(counterLabel, labelX, y, labelWidth, h, 6.5f)
+                countdownText(
+                    state.countdown, countdownX, y,
+                    x + w - 8f - countdownX, h, if (showDot) 14f else 13f, Align.START,
                 )
                 return
             }
@@ -1738,6 +1761,19 @@ internal object PrayerWidgetCanvasRenderer {
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
                     )
                 }
+                if (includeTimeSeparators) {
+                    // A monospace space is ~0.6em, which splits "4:27 AM" into two words.
+                    value.forEachIndexed { index, char ->
+                        if (Character.isWhitespace(char) || Character.isSpaceChar(char)) {
+                            setSpan(
+                                WidgetTypefaceSpan(sans),
+                                index,
+                                index + 1,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+                            )
+                        }
+                    }
+                }
             }
             val paint = TextPaint(Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG).apply {
                 this.color = color
@@ -1847,7 +1883,11 @@ internal object PrayerWidgetCanvasRenderer {
                     canvasHeightDp = heightDp,
                     textSizeDp = resolvedSize,
                     color = palette.countdownAccent,
-                    alignment = if (align == Align.CENTER) CountdownAlignment.CENTER else CountdownAlignment.END,
+                    alignment = when (align) {
+                        Align.START -> CountdownAlignment.START
+                        Align.CENTER -> CountdownAlignment.CENTER
+                        Align.END -> CountdownAlignment.END
+                    },
                     rtl = state.rtl,
                     counterMode = counter.mode,
                     anchorEpochMillis = counter.anchorEpochMillis,
@@ -1877,6 +1917,15 @@ internal object PrayerWidgetCanvasRenderer {
                 align,
                 letterSpacing = 0.09f
             )
+        }
+
+        private fun labelWidth(text: String, size: Float): Float {
+            val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                typeface = medium
+                letterSpacing = 0.09f
+                textSize = dp(size * contentScale)
+            }
+            return paint.measureText(text.uppercase(locale())) / scale
         }
 
         private fun text(
