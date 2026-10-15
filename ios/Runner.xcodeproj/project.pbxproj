@@ -37,6 +37,7 @@
 		1056A823DE11C405DF354691 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5F75EC26B4B6E3A6578EAE /* Prayer.swift */; };
 		168989E9E3A43F6F0F213A4F /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F129C2E1E0EA58C39DD417F /* Madhab.swift */; };
 		25ACDF13734678E42DDAEFBF /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDB040B42FDB6BFF290D258 /* SolarTime.swift */; };
+		3109A61DC94CBE5995DEDC62 /* IOSPrayerPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B58E0E600F643EA389422E6 /* IOSPrayerPolicy.swift */; };
 		68A4731B843B550C63DC0115 /* DegreeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24947388CECF8388D7D13ADA /* DegreeMath.swift */; };
 		6C9BCE00D5917B1379040B8F /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB3CC35A13347DC6E11AE59 /* CalculationParameters.swift */; };
 		6DE9D97AA18E9C009351A38C /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A73EFBEA64D76CEA89E448E /* CalculationMethod.swift */; };
@@ -176,6 +177,7 @@
 		7BDB040B42FDB6BFF290D258 /* SolarTime.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SolarTime.swift; path = Math/SolarTime.swift; sourceTree = "<group>"; };
 		8B4BD853E543E43DFF4A31A4 /* PrayerTimeEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerTimeEngine.swift; path = Engine/PrayerTimeEngine.swift; sourceTree = "<group>"; };
 		8FD4D8E7D6394AEE2B8B7719 /* PrayerTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerTimes.swift; sourceTree = "<group>"; };
+		9B58E0E600F643EA389422E6 /* IOSPrayerPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerPolicy.swift; sourceTree = "<group>"; };
 		9BB3CC35A13347DC6E11AE59 /* CalculationParameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationParameters.swift; path = Methods/CalculationParameters.swift; sourceTree = "<group>"; };
 		AB5F75EC26B4B6E3A6578EAE /* Prayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Prayer.swift; path = Model/Prayer.swift; sourceTree = "<group>"; };
 		ACC2A6D7214693ABBF7E0F2D /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 			isa = PBXGroup;
 			children = (
 				68985B39C01DF8C9E188C5BA /* IOSPrayerCore.swift */,
+				9B58E0E600F643EA389422E6 /* IOSPrayerPolicy.swift */,
 			);
 			name = SharedPrayer;
 			path = SharedPrayer;
@@ -800,6 +803,7 @@
 				C3FAMACT12345678901234 /* FamilyActivityPickerView.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				F860836922DDFEAF505E2DB7 /* IOSPrayerCore.swift in Sources */,
+				3109A61DC94CBE5995DEDC62 /* IOSPrayerPolicy.swift in Sources */,
 				971E8AD2075472F330CCBD1F /* AutoMethod.swift in Sources */,
 				865DBABEB5063A896AB2BC98 /* GeneratedAutoData.swift in Sources */,
 				DBFD72C1E72486B8F7340974 /* GeneratedMethodData.swift in Sources */,
