@@ -81,5 +81,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSAlarmKitUsageDescription</key>
+	<string>Huda schedules prayer alarms only when you select Prayer Alarm. Alarms can sound through Silent mode and Focus.</string>
 </dict>
 </plist>
