@@ -38,6 +38,7 @@
 		168989E9E3A43F6F0F213A4F /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F129C2E1E0EA58C39DD417F /* Madhab.swift */; };
 		25ACDF13734678E42DDAEFBF /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDB040B42FDB6BFF290D258 /* SolarTime.swift */; };
 		3109A61DC94CBE5995DEDC62 /* IOSPrayerPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B58E0E600F643EA389422E6 /* IOSPrayerPolicy.swift */; };
+		4F1891C0E25C0946EA6A2B83 /* IOSPrayerNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589DED33B156022891431852 /* IOSPrayerNotificationScheduler.swift */; };
 		68A4731B843B550C63DC0115 /* DegreeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24947388CECF8388D7D13ADA /* DegreeMath.swift */; };
 		6C9BCE00D5917B1379040B8F /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB3CC35A13347DC6E11AE59 /* CalculationParameters.swift */; };
 		6DE9D97AA18E9C009351A38C /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A73EFBEA64D76CEA89E448E /* CalculationMethod.swift */; };
@@ -53,6 +54,7 @@
 		D20E26F874D08AB6453FD2D6 /* PrayerTimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4BD853E543E43DFF4A31A4 /* PrayerTimeEngine.swift */; };
 		DBFD72C1E72486B8F7340974 /* GeneratedMethodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BFFA837CAD9024D40C2A0C /* GeneratedMethodData.swift */; };
 		E05EB1AEC1DA3D504519D51A /* IOSPrayerAudioStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821AC1D3296116A220055A95 /* IOSPrayerAudioStore.swift */; };
+		E51EFDD6EAF182E21412380A /* IOSPrayerNotificationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF64DF97F52D707235C570 /* IOSPrayerNotificationRouter.swift */; };
 		F860836922DDFEAF505E2DB7 /* IOSPrayerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68985B39C01DF8C9E188C5BA /* IOSPrayerCore.swift */; };
 		FE8ED02D14B9D71E0A31276A /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9160CA3C9839F7153A1EF3 /* HighLatitudeRule.swift */; };
 /* End PBXBuildFile section */
@@ -176,6 +178,7 @@
 		24947388CECF8388D7D13ADA /* DegreeMath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DegreeMath.swift; path = Math/DegreeMath.swift; sourceTree = "<group>"; };
 		2DD1A96EBF42047DE30F71D1 /* Coordinates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coordinates.swift; path = Model/Coordinates.swift; sourceTree = "<group>"; };
 		574D6CE64BB8D64599CD6535 /* Adhan */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = Adhan; sourceTree = "<group>"; };
+		589DED33B156022891431852 /* IOSPrayerNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerNotificationScheduler.swift; sourceTree = "<group>"; };
 		5A73EFBEA64D76CEA89E448E /* CalculationMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationMethod.swift; path = Methods/CalculationMethod.swift; sourceTree = "<group>"; };
 		68985B39C01DF8C9E188C5BA /* IOSPrayerCore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerCore.swift; sourceTree = "<group>"; };
 		69BFFA837CAD9024D40C2A0C /* GeneratedMethodData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedMethodData.swift; path = Data/GeneratedMethodData.swift; sourceTree = "<group>"; };
@@ -185,6 +188,7 @@
 		8B4BD853E543E43DFF4A31A4 /* PrayerTimeEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerTimeEngine.swift; path = Engine/PrayerTimeEngine.swift; sourceTree = "<group>"; };
 		8FD4D8E7D6394AEE2B8B7719 /* PrayerTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerTimes.swift; sourceTree = "<group>"; };
 		9B58E0E600F643EA389422E6 /* IOSPrayerPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerPolicy.swift; sourceTree = "<group>"; };
+		9BAF64DF97F52D707235C570 /* IOSPrayerNotificationRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerNotificationRouter.swift; sourceTree = "<group>"; };
 		9BB3CC35A13347DC6E11AE59 /* CalculationParameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalculationParameters.swift; path = Methods/CalculationParameters.swift; sourceTree = "<group>"; };
 		AB5F75EC26B4B6E3A6578EAE /* Prayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Prayer.swift; path = Model/Prayer.swift; sourceTree = "<group>"; };
 		ACC2A6D7214693ABBF7E0F2D /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 				ADFEED000000000000000001 /* adhan.caf */,
 				ADFEED000000000000000003 /* adhan_full.caf */,
 				821AC1D3296116A220055A95 /* IOSPrayerAudioStore.swift */,
+				9BAF64DF97F52D707235C570 /* IOSPrayerNotificationRouter.swift */,
+				589DED33B156022891431852 /* IOSPrayerNotificationScheduler.swift */,
 				574D6CE64BB8D64599CD6535 /* Adhan */,
 			);
 			path = Runner;
@@ -820,6 +826,8 @@
 				3109A61DC94CBE5995DEDC62 /* IOSPrayerPolicy.swift in Sources */,
 				BDF8EC0A200CE42D1B8D628D /* IOSPrayerStore.swift in Sources */,
 				E05EB1AEC1DA3D504519D51A /* IOSPrayerAudioStore.swift in Sources */,
+				E51EFDD6EAF182E21412380A /* IOSPrayerNotificationRouter.swift in Sources */,
+				4F1891C0E25C0946EA6A2B83 /* IOSPrayerNotificationScheduler.swift in Sources */,
 				971E8AD2075472F330CCBD1F /* AutoMethod.swift in Sources */,
 				865DBABEB5063A896AB2BC98 /* GeneratedAutoData.swift in Sources */,
 				DBFD72C1E72486B8F7340974 /* GeneratedMethodData.swift in Sources */,
