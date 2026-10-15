@@ -46,6 +46,14 @@ android {
         compose = true
     }
 
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.all {
+            maxHeapSize = "2g"
+            systemProperty "huda.widget.previewDir", project.layout.buildDirectory.dir("widget-previews").get().asFile.absolutePath
+        }
+    }
+
     packaging {
         jniLibs {
             useLegacyPackaging = useLegacyNativeLibraryPackaging
@@ -118,6 +126,16 @@ flutter {
     source = "../.."
 }
 
+// AGP's host test package needs Flutter's generated assets, including the Quran
+// catalog. Flutter wires APK packaging but does not wire this host test task.
+tasks.configureEach { task ->
+    if (task.name.startsWith("package") && task.name.endsWith("UnitTestForUnitTest")) {
+        def variantName = task.name.substring(
+                "package".length(), task.name.length() - "UnitTestForUnitTest".length())
+        task.dependsOn("copyFlutterAssets${variantName}")
+    }
+}
+
 dependencies {
     implementation project(':prayer_core')
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
@@ -144,6 +162,8 @@ dependencies {
     testImplementation("com.github.luben:zstd-jni:1.5.7-11")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.16")
+    testImplementation("androidx.work:work-testing:2.12.0")
 
     gplayImplementation("com.google.android.gms:play-services-location:21.2.0")
 }

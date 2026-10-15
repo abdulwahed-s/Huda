@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="samsung_prayer_compact_label">Отсчёт до молитвы</string>
+    <string name="samsung_prayer_expanded_label">Отсчёт с временем молитвы</string>
+    <string name="samsung_verse_label">Аят Корана</string>
+    <string name="samsung_prayer_compact_description">Время до следующей молитвы</string>
+    <string name="samsung_prayer_expanded_description">Следующая молитва, её время и отсчёт</string>
+    <string name="samsung_verse_description">Короткий полный аят и ссылка на него</string>
+    <string name="samsung_lock_setup">Укажите место</string>
+    <string name="samsung_lock_open_prayer">Открыть время молитв</string>
+    <string name="samsung_lock_open_quran">Открыть Коран</string>
+    <string name="samsung_lock_prayer_preview_name">Аср</string>
+</resources>

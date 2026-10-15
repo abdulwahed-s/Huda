@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- OEM metadata contract from the pinned blur-widget-demo example.
+         Values are Samsung host flags, not Android widget category constants. -->
+    <attr name="targetHost" format="integer">
+        <flag name="lock_and_aod" value="0x2" />
+    </attr>
+    <attr name="widgetStyle" format="integer">
+        <flag name="monotone" value="0x2" />
+    </attr>
+    <attr name="widgetSize" format="integer">
+        <flag name="tiny" value="0x1" />
+        <flag name="small" value="0x2" />
+        <flag name="medium" value="0x8" />
+    </attr>
+    <attr name="allowMultipleSizes" format="boolean" />
+    <attr name="initialLayoutTiny" format="reference" />
+    <attr name="initialLayoutSmall" format="reference" />
+    <attr name="initialLayoutMedium" format="reference" />
+    <attr name="previewLayoutTiny" format="reference" />
+    <attr name="previewLayoutSmall" format="reference" />
+    <attr name="previewLayoutMedium" format="reference" />
+    <attr name="monotonePreviewLayoutSmall" format="reference" />
+    <attr name="monotonePreviewLayoutMedium" format="reference" />
+</resources>

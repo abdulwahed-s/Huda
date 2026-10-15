@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="samsung_prayer_compact_label">Cuenta atrás de oración</string>
+    <string name="samsung_prayer_expanded_label">Oración con hora</string>
+    <string name="samsung_verse_label">Versículo del Corán</string>
+    <string name="samsung_prayer_compact_description">Tiempo restante hasta la próxima oración</string>
+    <string name="samsung_prayer_expanded_description">Próxima oración, hora y tiempo restante</string>
+    <string name="samsung_verse_description">Un versículo breve completo y su referencia</string>
+    <string name="samsung_lock_setup">Establecer ubicación</string>
+    <string name="samsung_lock_open_prayer">Abrir horarios de oración</string>
+    <string name="samsung_lock_open_quran">Abrir el Corán</string>
+    <string name="samsung_lock_prayer_preview_name">Asr</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="samsung_prayer_compact_label">Prayer countdown</string>
+    <string name="samsung_prayer_expanded_label">Prayer countdown with time</string>
+    <string name="samsung_verse_label">Quran verse</string>
+    <string name="samsung_prayer_compact_description">Time remaining until the next prayer</string>
+    <string name="samsung_prayer_expanded_description">Next prayer, prayer time, and time remaining</string>
+    <string name="samsung_verse_description">A complete short ayah and its reference</string>
+    <string name="samsung_lock_setup">Set location</string>
+    <string name="samsung_lock_open_prayer">Open prayer times</string>
+    <string name="samsung_lock_open_quran">Open Quran</string>
+    <string name="samsung_lock_prayer_preview_name">Asr</string>
+    <string name="samsung_lock_prayer_preview_time" translatable="false">15:23</string>
+    <string name="samsung_lock_prayer_preview_countdown" translatable="false">42:18</string>
+    <string name="samsung_lock_verse_preview" translatable="false">وَإِلَىٰ رَبِّكَ فَٱرۡغَب</string>
+    <string name="samsung_lock_verse_preview_reference" translatable="false">94:8</string>
+</resources>
