@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.aw.huda.countdown.PrayerCountdownController
 
 class PrayerWidgetReceiver : AppWidgetProvider() {
     companion object {
@@ -53,6 +54,10 @@ class PrayerWidgetReceiver : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
+            runCatching { PrayerCountdownController.refresh(context) }
+                .onFailure { Log.w("PrayerCountdown", "refresh failed", it) }
+        }
         super.onReceive(context, intent)
 
         when (intent.action) {

@@ -5,8 +5,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.aw.huda.widget.WidgetBroadcastDispatcher
+import com.aw.huda.countdown.PrayerCountdownController
 import com.aw.huda.location.PrayerTravelReliabilityManager
+import com.aw.huda.widget.QuranWidgetUpdater
+import com.aw.huda.widget.WidgetBroadcastDispatcher
 
 class PrayerWidgetSystemReceiver : BroadcastReceiver() {
     companion object {
@@ -34,13 +36,22 @@ class PrayerWidgetSystemReceiver : BroadcastReceiver() {
             "android-system-${intent.action ?: "unknown"}",
         )
 
-        WidgetBroadcastDispatcher.launch(
-            context, goAsync(), TAG, "system ${intent.action}",
-            PrayerWidgetReliabilityManager::enqueueImmediateUpdate,
-        ) { appContext ->
-            val report = PrayerWidgetUpdater.updateAll(appContext)
-            if (report.failedUpdates > 0 || report.alarm?.error != null) {
+        WidgetBroadcastDispatcher.launch(context, goAsync(), TAG,
+            "system ${intent.action}", { appContext ->
                 PrayerWidgetReliabilityManager.enqueueImmediateUpdate(appContext)
+            }) { appContext ->
+            // Boot, an update or a clock change: bring the countdown back without Huda.
+            runCatching { PrayerCountdownController.refresh(appContext) }
+                .onFailure { Log.w(TAG, "Countdown refresh failed", it) }
+            try {
+                val report = PrayerWidgetUpdater.updateAll(appContext)
+                if (report.failedUpdates > 0 || report.alarm?.error != null) {
+                    PrayerWidgetReliabilityManager.enqueueImmediateUpdate(appContext)
+                }
+            } finally {
+                if (intent.action != AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED) {
+                    QuranWidgetUpdater.refreshAll(appContext)
+                }
             }
         }
     }

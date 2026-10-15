@@ -4,6 +4,8 @@ import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
+import com.aw.huda.countdown.PrayerCountdownController
+import com.aw.huda.countdown.PrayerCountdownSettingsIntents
 import com.aw.huda.widget.QuranWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerLocationTimeZoneResolver
@@ -23,6 +25,7 @@ class MainActivity : AudioServiceActivity() {
     private val PRAYER_LOCATION_CHANNEL = "com.aw.huda/prayer_location"
     private val PRAYER_LOCATION_MONITOR_CHANNEL =
         "com.aw.huda/prayer_location_monitor"
+    private val PRAYER_COUNTDOWN_CHANNEL = "com.aw.huda/prayer_countdown"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -163,6 +166,9 @@ class MainActivity : AudioServiceActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
                             val appCtx = applicationContext
+                            // Every committed prayer setting comes through here.
+                            runCatching { PrayerCountdownController.refresh(appCtx) }
+                                .onFailure { android.util.Log.w("PrayerCountdown", "refresh failed", it) }
                             val update = PrayerWidgetUpdater.updateAll(appCtx)
                             val response = update.toPlatformMap()
                             withContext(Dispatchers.Main) { result.success(response) }
@@ -184,6 +190,43 @@ class MainActivity : AudioServiceActivity() {
                 else -> {
                     result.notImplemented()
                 }
+            }
+        }
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            PRAYER_COUNTDOWN_CHANNEL,
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "apply" -> CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        PrayerCountdownController.refresh(applicationContext)
+                        val status = PrayerCountdownController.status(applicationContext)
+                        withContext(Dispatchers.Main) { result.success(status) }
+                    } catch (e: Exception) {
+                        android.util.Log.e("PrayerCountdown", "apply failed", e)
+                        withContext(Dispatchers.Main) {
+                            result.error("COUNTDOWN_ERROR", e.message, null)
+                        }
+                    }
+                }
+
+                "status" -> CoroutineScope(Dispatchers.IO).launch {
+                    val status = PrayerCountdownController.status(applicationContext)
+                    withContext(Dispatchers.Main) { result.success(status) }
+                }
+
+                "openSettings" -> {
+                    val intent = PrayerCountdownSettingsIntents.forTarget(
+                        applicationContext,
+                        call.argument<String>("target"),
+                    )
+                    result.success(
+                        runCatching { startActivity(intent); true }.getOrDefault(false),
+                    )
+                }
+
+                else -> result.notImplemented()
             }
         }
 
