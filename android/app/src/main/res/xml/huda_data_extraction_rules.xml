@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="device_database" path="huda_prayer_execution.db" />
+        <exclude domain="device_database" path="huda_prayer_execution.db-wal" />
+        <exclude domain="device_database" path="huda_prayer_execution.db-shm" />
+        <exclude domain="device_database" path="huda_prayer_execution.db-journal" />
+        <exclude domain="device_file" path="PrayerAudio/" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="device_database" path="huda_prayer_execution.db" />
+        <exclude domain="device_database" path="huda_prayer_execution.db-wal" />
+        <exclude domain="device_database" path="huda_prayer_execution.db-shm" />
+        <exclude domain="device_database" path="huda_prayer_execution.db-journal" />
+        <exclude domain="device_file" path="PrayerAudio/" />
+    </device-transfer>
+</data-extraction-rules>

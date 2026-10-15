@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude domain="device_database" path="huda_prayer_execution.db" />
+    <exclude domain="device_database" path="huda_prayer_execution.db-wal" />
+    <exclude domain="device_database" path="huda_prayer_execution.db-shm" />
+    <exclude domain="device_database" path="huda_prayer_execution.db-journal" />
+    <exclude domain="device_file" path="PrayerAudio/" />
+</full-backup-content>
