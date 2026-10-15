@@ -46,6 +46,7 @@
 		865DBABEB5063A896AB2BC98 /* GeneratedAutoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC2A6D7214693ABBF7E0F2D /* GeneratedAutoData.swift */; };
 		971E8AD2075472F330CCBD1F /* AutoMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23EE39C498B44117B48EB6E /* AutoMethod.swift */; };
 		A11B8E93BF418DB4713B945A /* PrayerAdjustments.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9DBC1637DD7804F3747EA0 /* PrayerAdjustments.swift */; };
+		BDF8EC0A200CE42D1B8D628D /* IOSPrayerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A628DA45BB723A83652D14 /* IOSPrayerStore.swift */; };
 		C8220D2D4C0C31715F7286C4 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD1A96EBF42047DE30F71D1 /* Coordinates.swift */; };
 		D20E26F874D08AB6453FD2D6 /* PrayerTimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4BD853E543E43DFF4A31A4 /* PrayerTimeEngine.swift */; };
 		DBFD72C1E72486B8F7340974 /* GeneratedMethodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BFFA837CAD9024D40C2A0C /* GeneratedMethodData.swift */; };
@@ -167,6 +168,7 @@
 		DA0DEVMON00000000000009 /* HudaDeviceMonitor.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; name = HudaDeviceMonitor.entitlements; path = HudaDeviceMonitor/HudaDeviceMonitor.entitlements; sourceTree = SOURCE_ROOT; };
 		E8F920056622282DF91FA306 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		E9775525352A82D85379A19F /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
+		17A628DA45BB723A83652D14 /* IOSPrayerStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerStore.swift; sourceTree = "<group>"; };
 		1F129C2E1E0EA58C39DD417F /* Madhab.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Madhab.swift; path = Model/Madhab.swift; sourceTree = "<group>"; };
 		24947388CECF8388D7D13ADA /* DegreeMath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DegreeMath.swift; path = Math/DegreeMath.swift; sourceTree = "<group>"; };
 		2DD1A96EBF42047DE30F71D1 /* Coordinates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coordinates.swift; path = Model/Coordinates.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 			children = (
 				68985B39C01DF8C9E188C5BA /* IOSPrayerCore.swift */,
 				9B58E0E600F643EA389422E6 /* IOSPrayerPolicy.swift */,
+				17A628DA45BB723A83652D14 /* IOSPrayerStore.swift */,
 			);
 			name = SharedPrayer;
 			path = SharedPrayer;
@@ -804,6 +807,7 @@
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				F860836922DDFEAF505E2DB7 /* IOSPrayerCore.swift in Sources */,
 				3109A61DC94CBE5995DEDC62 /* IOSPrayerPolicy.swift in Sources */,
+				BDF8EC0A200CE42D1B8D628D /* IOSPrayerStore.swift in Sources */,
 				971E8AD2075472F330CCBD1F /* AutoMethod.swift in Sources */,
 				865DBABEB5063A896AB2BC98 /* GeneratedAutoData.swift in Sources */,
 				DBFD72C1E72486B8F7340974 /* GeneratedMethodData.swift in Sources */,

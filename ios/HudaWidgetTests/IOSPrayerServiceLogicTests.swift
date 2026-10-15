@@ -104,4 +104,21 @@ final class IOSPrayerServiceLogicTests: XCTestCase {
     p.advanceMinutes = 0; p.overrides["sunrise"] = IOSPrayerOverride(mode: .short, reciterId: nil, advanceMinutes: nil, advanceMode: nil)
     XCTAssertThrowsError(try p.validate())
   }
+  func testStoreRecoversBackupAndFencesConcurrentWriter() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let store = IOSPrayerStore(directory: directory)
+    let second = IOSPrayerStore(directory: directory)
+    try store.beginExclusive(); defer { store.endExclusive() }
+    XCTAssertThrowsError(try second.beginExclusive())
+    var state = IOSPrayerState(); state.configuration.schedule = try schedule()
+    state.configuration.revision = 1; state.configuration.migration = "native"
+    try store.save(state)
+    state.configuration.revision = 2; try store.save(state)
+    try Data("corrupt".utf8).write(to: directory.appendingPathComponent("state.json"))
+    XCTAssertEqual(try store.load().configuration.revision, 1)
+    try FileManager.default.removeItem(at: directory.appendingPathComponent("state.json"))
+    XCTAssertEqual(try store.load().configuration.revision, 1)
+    store.endExclusive(); try second.beginExclusive(); second.endExclusive()
+  }
 }
