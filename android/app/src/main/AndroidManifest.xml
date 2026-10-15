@@ -67,6 +67,9 @@
                 android:resource="@xml/huda_widget_info" />
         </receiver>
 
+        <!-- Prayer Times Home Screen Widget -->
+        <!-- Samsung's native compact lock/AOD picker. These are separate from
+             launcher widgets and do not advertise cover-screen support. -->
         <receiver
             android:name=".widget.lockscreen.SamsungPrayerCompactReceiver"
             android:exported="true"
@@ -79,7 +82,6 @@
             <meta-data android:name="samsung.appwidget.monotone.info"
                 android:resource="@xml/samsung_prayer_compact_monotone_info" />
         </receiver>
-
         <receiver
             android:name=".widget.lockscreen.SamsungPrayerExpandedReceiver"
             android:exported="true"
@@ -92,7 +94,6 @@
             <meta-data android:name="samsung.appwidget.monotone.info"
                 android:resource="@xml/samsung_prayer_expanded_monotone_info" />
         </receiver>
-
         <receiver
             android:name=".widget.lockscreen.SamsungVerseReceiver"
             android:exported="true"
@@ -135,55 +136,14 @@
             </intent-filter>
         </receiver>
 
-        <!-- The native countdown receives alarms and dismissal without a service. -->
+        <!-- The prayer countdown: no service. Its alarms and dismissal land here;
+             boot and clock changes reach it through PrayerWidgetSystemReceiver. -->
         <receiver
             android:name="com.aw.huda.countdown.PrayerCountdownReceiver"
             android:exported="false" />
 
-        <!-- 🔧 FLUTTER_FOREGROUND_TASK Service -->
-        <service
-            android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
-            android:foregroundServiceType="specialUse"
-            android:exported="false"
-            tools:node="replace">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Prayer countdown persistent notification that updates every second at user request" />
-        </service>
-
-        <!-- Custom notification icon for foreground service -->
-        <meta-data
-            android:name="com.aw.huda.service.PRAYER_ICON"
-            android:resource="@drawable/ic_stat_name" />
-
-        <!-- 🔧 FLUTTER_LOCAL_NOTIFICATIONS Service -->
-        <service
-            android:name="com.dexterous.flutterlocalnotifications.ForegroundService"
-            android:exported="false"
-            android:stopWithTask="false"
-            android:foregroundServiceType="specialUse"
-            tools:node="replace">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="To show reliable scheduled notifications for prayer times and alarms" />
-        </service>
-
-        <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
-            android:exported="false" />
-        <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
-            android:exported="false" />
-        <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-            </intent-filter>
-        </receiver>
+        <!-- flutter_local_notifications is gone. huda_notifications declares a
+             receiver under its old class name for alarms older releases set. -->
 
         <!-- 🔧 WORKMANAGER Services (override to specialUse) -->
         <receiver
