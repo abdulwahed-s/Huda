@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samsung-appwidget-info xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:allowMultipleSizes="true"
+    app:initialLayoutTiny="@layout/samsung_prayer_compact"
+    app:previewLayoutTiny="@layout/samsung_prayer_compact_preview"
+    app:targetHost="lock_and_aod" app:widgetSize="tiny" />

@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import com.aw.huda.widget.lockscreen.PrayerWidgetPresence
+import com.aw.huda.widget.lockscreen.SamsungLockWidgetRegistry
 import java.util.Date
 
 internal enum class PrayerAlarmPrecision { EXACT_IDLE, INEXACT_IDLE, NONE }
@@ -28,10 +30,12 @@ internal object PrayerWidgetScheduler {
     fun scheduleNext(
         context: Context,
         now: Date = Date(),
+        snapshot: PrayerWidgetSnapshot = PrayerWidgetRepository.readSnapshot(context),
+        presence: PrayerWidgetPresence = SamsungLockWidgetRegistry.prayers(context).presence,
+        events: List<PrayerWidgetCalculator.PrayerEvent>? = null,
     ): PrayerAlarmScheduleResult {
         return try {
-            val snapshot = PrayerWidgetRepository.readSnapshot(context)
-            val target = computeTargetTimeMillis(snapshot, now) ?: run {
+            val target = computeTargetTimeMillis(snapshot, now, presence, events) ?: run {
                 cancel(context)
                 Log.d(TAG, "No future prayer-state transition; alarm cancelled")
                 return PrayerAlarmScheduleResult(false, null, PrayerAlarmPrecision.NONE)
@@ -91,10 +95,16 @@ internal object PrayerWidgetScheduler {
     internal fun computeTargetTimeMillis(
         snapshot: PrayerWidgetSnapshot,
         now: Date,
+        presence: PrayerWidgetPresence = PrayerWidgetPresence(home = 1),
+        events: List<PrayerWidgetCalculator.PrayerEvent>? = null,
     ): Long? {
-        val target = PrayerWidgetMomentResolver.resolve(snapshot, now)?.stateEnd?.time
-            ?: return null
-        return target.takeIf { it > now.time }
+        if (presence.count == 0) return null
+        val timeline = events ?: PrayerWidgetCalculator.eventTimeline(snapshot, now)
+        val homeTransition = if (presence.hasHome)
+            PrayerWidgetMomentResolver.resolve(now, timeline)?.stateEnd?.time else null
+        val lockTransition = if (presence.hasLock)
+            timeline.firstOrNull { it.time.after(now) }?.time?.time else null
+        return listOfNotNull(homeTransition, lockTransition).filter { it > now.time }.minOrNull()
     }
 
     internal fun desiredPrecision(

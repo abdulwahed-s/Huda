@@ -31,6 +31,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.aw.huda.MainActivity
 import com.aw.huda.R
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
+import com.aw.huda.widget.lockscreen.SamsungLockWidgetRegistry
+import com.aw.huda.widget.lockscreen.SamsungPrayerWidgetUpdater
 import java.util.Calendar
 import java.util.Date
 import kotlin.math.roundToInt
@@ -87,19 +89,34 @@ internal object PrayerWidgetUpdater {
     @Synchronized
     fun updateAll(context: Context): PrayerWidgetUpdateResult {
         val manager = AppWidgetManager.getInstance(context)
-        val ids = manager.getAppWidgetIds(
-            ComponentName(context, PrayerWidgetReceiver::class.java),
-        )
+        val instances = SamsungLockWidgetRegistry.prayers(context)
         val snapshot = PrayerWidgetRepository.readSnapshot(context)
-        if (ids.isEmpty()) {
+        if (instances.presence.count == 0) {
             Log.d(TAG, "No prayer widgets pinned; skipping update.")
             PrayerWidgetScheduler.cancel(context)
             PrayerWidgetReliabilityManager.stop(context)
             return PrayerWidgetUpdateResult.fromUpdates(snapshot.revision, emptyList())
         }
-        val results = ids.map { update(context, manager, it, snapshot) }
+        val events = PrayerWidgetCalculator.eventTimeline(snapshot, Date())
+        val results = instances.home.map { update(context, manager, it, snapshot) }.toMutableList()
+        var nativeNow = Date()
+        var target = SamsungPrayerWidgetUpdater.futurePrayer(events, nativeNow)
+        fun renderNative(): List<SingleWidgetUpdateResult> =
+            instances.compact.map { SamsungPrayerWidgetUpdater.update(context, manager, it,
+                false, snapshot, target, nativeNow) } +
+            instances.expanded.map { SamsungPrayerWidgetUpdater.update(context, manager, it,
+                true, snapshot, target, nativeNow) }
+        var nativeResults = renderNative()
+        // A batch straddling a prayer boundary must not leave an expired target behind.
+        if (target != null && target!!.time.time <= System.currentTimeMillis()) {
+            nativeNow = Date()
+            target = SamsungPrayerWidgetUpdater.futurePrayer(events, nativeNow)
+            nativeResults = renderNative()
+        }
+        results += nativeResults
         PrayerWidgetReliabilityManager.start(context)
-        val alarm = PrayerWidgetScheduler.scheduleNext(context)
+        val alarm = PrayerWidgetScheduler.scheduleNext(context, Date(), snapshot,
+            instances.presence, events)
         return PrayerWidgetUpdateResult.fromUpdates(snapshot.revision, results, alarm)
     }
 

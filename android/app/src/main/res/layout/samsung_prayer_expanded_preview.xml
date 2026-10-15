@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/samsung_lock_root"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/transparent" android:gravity="center_vertical"
+    android:orientation="vertical" android:paddingHorizontal="6dp" android:paddingVertical="4dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical">
+        <TextView android:id="@+id/samsung_prayer_name"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="@string/samsung_lock_prayer_preview_name" android:textSize="11sp"
+            android:fontFamily="sans-serif-medium" android:textColor="@android:color/white"
+            android:gravity="start" android:maxLines="1" android:includeFontPadding="true" />
+        <TextView android:id="@+id/samsung_prayer_time"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginStart="4dp" android:text="@string/samsung_lock_prayer_preview_time"
+            android:textSize="10sp" android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/white" android:alpha="0.8"
+            android:gravity="end" android:maxLines="1" android:includeFontPadding="true" />
+    </LinearLayout>
+    <TextView android:id="@+id/samsung_prayer_countdown" android:text="@string/samsung_lock_prayer_preview_countdown"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="1dp" android:textSize="21sp"
+        android:fontFamily="sans-serif-condensed" android:textStyle="bold"
+        android:textColor="@android:color/white" android:gravity="start"
+        android:textDirection="ltr" android:maxLines="1" android:includeFontPadding="true" />
+    <TextView android:id="@+id/samsung_prayer_static_counter"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textSize="13sp" android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-condensed" android:breakStrategy="simple" android:hyphenationFrequency="none"
+        android:gravity="start" android:maxLines="2" android:visibility="gone" />
+</LinearLayout>

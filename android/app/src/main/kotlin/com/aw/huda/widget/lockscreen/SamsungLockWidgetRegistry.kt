@@ -35,8 +35,8 @@ internal data class QuranWidgetInstances(val home: IntArray, val lock: IntArray)
 internal object SamsungLockWidgetRegistry {
     fun prayers(context: Context): PrayerWidgetInstances = PrayerWidgetInstances(
         ids(context, PrayerWidgetReceiver::class.java),
-        intArrayOf(),
-        intArrayOf(),
+        ids(context, SamsungPrayerCompactReceiver::class.java),
+        ids(context, SamsungPrayerExpandedReceiver::class.java),
     )
 
     fun quran(context: Context): QuranWidgetInstances = QuranWidgetInstances(

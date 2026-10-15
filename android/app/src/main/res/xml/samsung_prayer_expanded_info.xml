@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:initialLayout="@layout/samsung_prayer_expanded_preview"
+    android:previewLayout="@layout/samsung_prayer_expanded_preview"
+    android:minWidth="124dp" android:minHeight="56dp"
+    android:minResizeWidth="124dp" android:minResizeHeight="56dp"
+    android:targetCellWidth="2" android:targetCellHeight="1"
+    android:resizeMode="none" android:updatePeriodMillis="1800000"
+    android:description="@string/samsung_prayer_expanded_description"
+    android:widgetCategory="0x2000"
+    app:monotonePreviewLayoutSmall="@layout/samsung_prayer_expanded_preview"
+    app:monotonePreviewLayoutMedium="@layout/samsung_prayer_expanded_preview"
+    app:targetHost="lock_and_aod" app:widgetSize="small|medium" app:widgetStyle="monotone" />

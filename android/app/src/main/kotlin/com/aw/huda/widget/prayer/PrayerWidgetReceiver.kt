@@ -1,76 +1,31 @@
 package com.aw.huda.widget.prayer
 
 import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import com.aw.huda.countdown.PrayerCountdownController
+import com.aw.huda.widget.lockscreen.SamsungPrayerReceiver
 
-class PrayerWidgetReceiver : AppWidgetProvider() {
-    companion object {
-        private const val TAG = "PrayerWidgetReceiver"
-    }
-
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray,
-    ) {
-        Log.d(TAG, "onUpdate(${appWidgetIds.size})")
-        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
-        PrayerWidgetReliabilityManager.start(context)
-    }
-
-    override fun onEnabled(context: Context) {
-        super.onEnabled(context)
-        Log.d(TAG, "onEnabled")
-        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
-        PrayerWidgetReliabilityManager.start(context)
-    }
-
-    override fun onDisabled(context: Context) {
-        super.onDisabled(context)
-        Log.d(TAG, "onDisabled")
-        PrayerWidgetScheduler.cancel(context)
-        PrayerWidgetScheduler.cancelMinuteTick(context)
-        PrayerWidgetReliabilityManager.stop(context)
-    }
-
-    override fun onAppWidgetOptionsChanged(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetId: Int,
-        newOptions: Bundle?,
-    ) {
-        super.onAppWidgetOptionsChanged(
-            context,
-            appWidgetManager,
-            appWidgetId,
-            newOptions,
-        )
-        PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
-    }
-
+class PrayerWidgetReceiver : SamsungPrayerReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
-            runCatching { PrayerCountdownController.refresh(context) }
-                .onFailure { Log.w("PrayerCountdown", "refresh failed", it) }
-        }
-        super.onReceive(context, intent)
-
         when (intent.action) {
-            ACTION_PRAYER_WIDGET_UPDATE,
-            ACTION_HOME_WIDGET_UPDATE -> {
-                PrayerWidgetScheduler.logDelivery(intent)
-                PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
+            // HomeWidget also sends this with an empty home-ID array in headless
+            // engines. Native lock widgets must still receive that refresh.
+            AppWidgetManager.ACTION_APPWIDGET_UPDATE -> {
+                // Settings committed by a headless engine arrive here, not on MainActivity.
+                runCatching { PrayerCountdownController.refresh(context) }
+                    .onFailure { android.util.Log.w("PrayerCountdown", "refresh failed", it) }
+                refresh(context, "home/bridge update")
             }
-
+            ACTION_PRAYER_WIDGET_UPDATE, ACTION_HOME_WIDGET_UPDATE -> {
+                PrayerWidgetScheduler.logDelivery(intent)
+                refresh(context, "transition expected=${intent.getLongExtra(PrayerWidgetScheduler.EXTRA_EXPECTED_TRIGGER, 0L)}")
+            }
             ACTION_PRAYER_WIDGET_MINUTE_TICK -> {
                 PrayerWidgetScheduler.cancelMinuteTick(context)
-                PrayerWidgetReliabilityManager.enqueueImmediateUpdate(context)
+                refresh(context, "legacy minute alarm recovery")
             }
+            else -> super.onReceive(context, intent)
         }
     }
 }
