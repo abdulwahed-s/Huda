@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/samsung_lock_root"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/transparent" android:gravity="center"
+    android:orientation="vertical" android:paddingHorizontal="6dp" android:paddingVertical="2dp">
+    <TextView android:id="@+id/samsung_verse_text"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:fontFamily="@font/amiri" android:text="@string/samsung_lock_verse_preview"
+        android:textSize="14sp" android:textColor="@android:color/white"
+        android:textDirection="rtl" android:gravity="center" android:includeFontPadding="true"
+        android:breakStrategy="simple" android:hyphenationFrequency="none" android:maxLines="2" />
+    <TextView android:id="@+id/samsung_verse_reference"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/samsung_lock_verse_preview_reference" android:textSize="9sp"
+        android:textColor="@android:color/white" android:alpha="0.8"
+        android:fontFamily="sans-serif" android:gravity="center" android:maxLines="1"
+        android:includeFontPadding="true" />
+    <TextView android:id="@+id/samsung_verse_empty"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textSize="11sp" android:fontFamily="sans-serif" android:gravity="center"
+        android:textColor="@android:color/white" android:includeFontPadding="true"
+        android:breakStrategy="simple" android:hyphenationFrequency="none"
+        android:maxLines="2" android:visibility="gone" />
+</LinearLayout>

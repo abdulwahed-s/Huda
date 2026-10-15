@@ -91,6 +91,19 @@
                 android:resource="@xml/samsung_prayer_expanded_monotone_info" />
         </receiver>
 
+        <receiver
+            android:name=".widget.lockscreen.SamsungVerseReceiver"
+            android:exported="true"
+            android:label="@string/samsung_verse_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/samsung_verse_info" />
+            <meta-data android:name="samsung.appwidget.monotone.info"
+                android:resource="@xml/samsung_verse_monotone_info" />
+        </receiver>
+
         <!-- Prayer Times Home Screen Widget -->
         <receiver
             android:name="com.aw.huda.widget.prayer.PrayerWidgetReceiver"

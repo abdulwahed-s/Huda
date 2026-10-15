@@ -39,6 +39,7 @@ class PrayerWidgetSystemReceiver : BroadcastReceiver() {
         WidgetBroadcastDispatcher.launch(context, goAsync(), TAG,
             "system ${intent.action}", { appContext ->
                 PrayerWidgetReliabilityManager.enqueueImmediateUpdate(appContext)
+                QuranWidgetUpdater.enqueueImmediateUpdate(appContext)
             }) { appContext ->
             // Boot, an update or a clock change: bring the countdown back without Huda.
             runCatching { PrayerCountdownController.refresh(appContext) }

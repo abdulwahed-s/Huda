@@ -41,7 +41,7 @@ internal object SamsungLockWidgetRegistry {
 
     fun quran(context: Context): QuranWidgetInstances = QuranWidgetInstances(
         ids(context, HudaGlanceWidgetReceiver::class.java),
-        intArrayOf(),
+        ids(context, SamsungVerseReceiver::class.java),
     )
 
     private fun ids(context: Context, provider: Class<*>): IntArray =

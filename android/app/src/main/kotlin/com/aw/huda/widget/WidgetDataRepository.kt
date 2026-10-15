@@ -94,6 +94,26 @@ internal object WidgetDataRepository {
             listOf(data.verses.firstOrNull { it.id == "94:6" } ?: data.verses.first())
         }
         val verse = verses[floorMod(hour + offset, verses.size.toLong()).toInt()]
+        return snapshotForVerse(context, data, verse, configuration)
+    }
+
+    /** Catalog order is retained so compact-host fitting has stable hourly rotation. */
+    fun candidates(
+        context: Context,
+        size: QuranWidgetSize,
+        configuration: QuranWidgetConfiguration,
+    ): List<Snapshot> {
+        val data = loadCatalog(context)
+        return data.verses.filter { size in it.widgetSizes }
+            .map { snapshotForVerse(context, data, it, configuration) }
+    }
+
+    private fun snapshotForVerse(
+        context: Context,
+        data: Catalog,
+        verse: Verse,
+        configuration: QuranWidgetConfiguration,
+    ): Snapshot {
         val language = resolveLanguage(configuration)
         val appLanguage = resolveAppLanguage(configuration)
         val surahName = data.surahs[verse.surah]
