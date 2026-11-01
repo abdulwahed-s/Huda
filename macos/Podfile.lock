@@ -48,6 +48,8 @@ PODS:
     - FlutterMacOS
   - wakelock_plus (0.0.1):
     - FlutterMacOS
+  - workmanager_apple (0.0.1):
+    - FlutterMacOS
 
 DEPENDENCIES:
   - app_links (from `Flutter/ephemeral/.symlinks/plugins/app_links/macos`)
@@ -69,6 +71,7 @@ DEPENDENCIES:
   - sqflite_darwin (from `Flutter/ephemeral/.symlinks/plugins/sqflite_darwin/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
   - wakelock_plus (from `Flutter/ephemeral/.symlinks/plugins/wakelock_plus/macos`)
+  - workmanager_apple (from `Flutter/ephemeral/.symlinks/plugins/workmanager_apple/macos`)
 
 SPEC REPOS:
   trunk:
@@ -114,6 +117,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
   wakelock_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/wakelock_plus/macos
+  workmanager_apple:
+    :path: Flutter/ephemeral/.symlinks/plugins/workmanager_apple/macos
 
 SPEC CHECKSUMS:
   app_links: 05a6ec2341985eb05e9f97dc63f5837c39895c3f
@@ -137,6 +142,7 @@ SPEC CHECKSUMS:
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   url_launcher_macos: 0fba8ddabfc33ce0a9afe7c5fef5aab3d8d2d673
   wakelock_plus: 917609be14d812ddd9e9528876538b2263aaa03b
+  workmanager_apple: 573f1503f9752eadd70a35bb478dfd2a103c4d18
 
 PODFILE CHECKSUM: 049ff95020814803ae232437a10211a2c9ba3bcc
 
