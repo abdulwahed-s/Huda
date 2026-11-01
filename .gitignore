@@ -4,6 +4,7 @@
 *.pyc
 *.swp
 .DS_Store
+._*
 .atom/
 .build/
 .buildlog/
@@ -68,3 +69,15 @@ supabase/.temp/
 supabase/migrations
 
 docs/
+
+# Local Windows countdown toolchain and downloaded package references.
+/output/windows-taskbar-toolchain/
+/output/windows-taskbar-reference/
+
+# Local on-device evidence includes private settings backups and system screenshots.
+/output/macos-prayer-device-verification-*/
+
+# Linux prayer display build products and isolated desktop validation evidence.
+/linux/prayer_tray/**/bin/
+/linux/prayer_tray/**/obj/
+/output/linux-prayer-tray/
