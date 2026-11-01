@@ -64,18 +64,25 @@ class AppThemeHelper {
     );
   }
 
-  static ThemeData getDarkTheme(AppColorTheme colorTheme, String fontFamily) {
+  /// [pureBlack]: the "Pure black" setting (see `HudaTheme.build`).
+  static ThemeData getDarkTheme(
+    AppColorTheme colorTheme,
+    String fontFamily, {
+    bool pureBlack = false,
+  }) {
     final colorScheme = AppColors.getColorScheme(colorTheme);
 
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      scaffoldBackgroundColor: pureBlack ? Colors.black : null,
+      canvasColor: pureBlack ? Colors.black : null,
       colorScheme: ColorScheme.dark(
         primary: colorScheme.accent,
         primaryContainer: colorScheme.primaryDark,
         secondary: colorScheme.primaryVariant,
         secondaryContainer: colorScheme.accentDark,
-        surface: const Color(0xFF1A1A1A),
+        surface: pureBlack ? Colors.black : const Color(0xFF1A1A1A),
         error: Colors.redAccent,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
