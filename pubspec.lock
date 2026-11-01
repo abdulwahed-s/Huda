@@ -1144,10 +1144,10 @@ packages:
     dependency: "direct main"
     description:
       name: quick_actions
-      sha256: "7e35dd6a21f5bbd21acf6899039eaf85001a5ac26d52cbd6a8a2814505b90798"
+      sha256: "1d3397c1ce5cd91b732c675bc82571d316d6de8241d774927b4ea3680c860e1a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   quick_actions_android:
     dependency: transitive
     description:
@@ -1160,10 +1160,10 @@ packages:
     dependency: transitive
     description:
       name: quick_actions_ios
-      sha256: a2e08ceb01f9d26e1b1826b1c4f5da6b7b6bbf61bcbaacd8e93dfff58b91f996
+      sha256: fe090ae5b9673c7031ca307371f611061a731adda6a5c9574aed9439475218cf
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.5"
   quick_actions_platform_interface:
     dependency: transitive
     description:
