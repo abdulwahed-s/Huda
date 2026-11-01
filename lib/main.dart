@@ -8,12 +8,15 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 import 'package:huda/core/services/crash_reporter.dart';
 import 'package:huda/core/services/huda_android_geolocator.dart';
+import 'package:huda/core/theme/huda_system_ui.dart';
 import 'package:huda/presentation/screens/bootstrapper.dart';
 
 void main() {
   runZonedGuarded(() {
     WidgetsFlutterBinding.ensureInitialized();
     registerBundledEditorAssets();
+    // Draw behind the system bars (design/RESPONSIVE.md, "The bottom edge").
+    unawaited(HudaSystemUi.enableEdgeToEdge());
 
     if (!kIsWeb && Platform.isAndroid) {
       GeolocatorPlatform.instance = HudaAndroidGeolocator();
