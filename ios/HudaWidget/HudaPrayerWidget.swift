@@ -341,7 +341,7 @@ struct HudaPrayerWidget: Widget {
                 .prayerWidgetContainerBackground {
                     PrayerWidgetFamilyBackground(entry: entry)
                 }
-                .widgetURL(URL(string: "huda://prayer_times"))
+                .widgetURL(URL(string: "huda://prayer_times?homeWidget"))
         }
         .configurationDisplayName("Huda — Prayer Times")
         .description("Prayer times and the next prayer at a glance.")
@@ -489,7 +489,7 @@ struct HudaEarlyPrayerTimesWidget: Widget {
                 .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
-                .widgetURL(URL(string: "huda://prayer_times"))
+                .widgetURL(URL(string: "huda://prayer_times?homeWidget"))
         }
         .configurationDisplayName("Huda — Fajr to Dhuhr")
         .description("Fajr, Shurooq, and Dhuhr in a compact three-row schedule.")
@@ -506,7 +506,7 @@ struct HudaLatePrayerTimesWidget: Widget {
                 .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
-                .widgetURL(URL(string: "huda://prayer_times"))
+                .widgetURL(URL(string: "huda://prayer_times?homeWidget"))
         }
         .configurationDisplayName("Huda — Asr to Isha")
         .description("Asr, Maghrib, and Isha in a compact three-row schedule.")
@@ -523,7 +523,7 @@ struct HudaPrayerPathWidget: Widget {
                 .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
-                .widgetURL(URL(string: "huda://prayer_times"))
+                .widgetURL(URL(string: "huda://prayer_times?homeWidget"))
         }
         .configurationDisplayName("Huda — Today's Path")
         .description("The current, next, and following prayers with a live countdown.")
@@ -540,7 +540,7 @@ struct HudaPrayerAlmanacWidget: Widget {
                 .prayerWidgetContainerBackground {
                     PrayerAccessoryContainerBackground(entry: entry)
                 }
-                .widgetURL(URL(string: "huda://prayer_times"))
+                .widgetURL(URL(string: "huda://prayer_times?homeWidget"))
         }
         .configurationDisplayName("Huda — Prayer Almanac")
         .description("The date, next prayer, prayer time, and a live countdown.")

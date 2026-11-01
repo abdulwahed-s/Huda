@@ -83,7 +83,7 @@ dependencies:
   # Device & platform integration
   device_info_plus: ^13.1.0
   package_info_plus: ^10.1.0
-  home_widget: ^0.9.1
+  home_widget: ^0.10.0
   quick_actions: ^1.1.0
   restart_app: ^1.7.3
   wakelock_plus: ^1.6.1

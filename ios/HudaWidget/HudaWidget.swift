@@ -180,7 +180,7 @@ struct HudaWidgetEntryView: View {
                 .inset(by: 1.5)
                 .stroke(ayahColor.opacity(0.09), lineWidth: 0.75)
         }
-        .widgetURL(URL(string: "huda://quran"))
+        .widgetURL(URL(string: "huda://quran?homeWidget"))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
     }
