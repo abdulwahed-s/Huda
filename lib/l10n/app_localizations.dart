@@ -210,29 +210,11 @@ abstract class AppLocalizations {
   /// **'Nothing is sent until you allow it. You can change this anytime in Settings.'**
   String get crashReportingPrivacyNote;
 
-  /// Label shown when automatic crash reporting is enabled
-  ///
-  /// In en, this message translates to:
-  /// **'On'**
-  String get crashReportingEnabledLabel;
-
-  /// Label shown when automatic crash reporting is disabled
-  ///
-  /// In en, this message translates to:
-  /// **'Off'**
-  String get crashReportingDisabledLabel;
-
   /// Message shown on the error screen when FOSS crash reporting is disabled
   ///
   /// In en, this message translates to:
   /// **'Automatic crash reporting is disabled. You can enable it in Settings.'**
   String get crashReportingDisabledDescription;
-
-  /// Title of the manual location search dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Search Location'**
-  String get searchLocationTitle;
 
   /// Hint text for the city search field
   ///
@@ -363,7 +345,7 @@ abstract class AppLocalizations {
   /// Qiblah direction screen title
   ///
   /// In en, this message translates to:
-  /// **'Qiblah Direction'**
+  /// **'Qibla Direction'**
   String get qiblahDirection;
 
   /// Tasbih screen title
@@ -371,12 +353,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tasbih'**
   String get tasbih;
-
-  /// Title for Islamic notifications screen
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Notifications'**
-  String get islamicNotifications;
 
   /// Hadith screen title
   ///
@@ -407,12 +383,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bookmarks'**
   String get bookmarks;
-
-  /// Widget management screen title
-  ///
-  /// In en, this message translates to:
-  /// **'Home Screen Widget Management'**
-  String get homeScreenWidgetManagement;
 
   /// Loading text
   ///
@@ -498,53 +468,11 @@ abstract class AppLocalizations {
   /// **'Copy Text'**
   String get copyText;
 
-  /// Button label for sharing text
-  ///
-  /// In en, this message translates to:
-  /// **'Share Text'**
-  String get shareText;
-
-  /// Refresh location button text
-  ///
-  /// In en, this message translates to:
-  /// **'Refresh Location'**
-  String get refreshLocation;
-
-  /// Auto-update setting description
-  ///
-  /// In en, this message translates to:
-  /// **'Auto-update when app is closed'**
-  String get autoUpdateWhenAppClosed;
-
-  /// Background updates status message
-  ///
-  /// In en, this message translates to:
-  /// **'Background updates disabled.'**
-  String get backgroundUpdatesDisabled;
-
-  /// Clear custom verses button text
-  ///
-  /// In en, this message translates to:
-  /// **'Clear All Custom Verses'**
-  String get clearAllCustomVerses;
-
   /// Clear all bookmarks action
   ///
   /// In en, this message translates to:
   /// **'Clear All Bookmarks'**
   String get clearAllBookmarks;
-
-  /// Success message for verse removal
-  ///
-  /// In en, this message translates to:
-  /// **'Verse removed from widget'**
-  String get verseRemovedFromWidget;
-
-  /// Success message for clearing all verses
-  ///
-  /// In en, this message translates to:
-  /// **'All custom verses cleared'**
-  String get allCustomVersesCleared;
 
   /// Download feature coming soon message
   ///
@@ -552,41 +480,11 @@ abstract class AppLocalizations {
   /// **'Download feature coming soon!'**
   String get downloadFeatureComingSoon;
 
-  /// Failed to share text error message
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to share text'**
-  String get failedToShareText;
-
   /// Failed to share image error message
   ///
   /// In en, this message translates to:
   /// **'Failed to share image'**
   String get failedToShareImage;
-
-  /// Tafsir downloaded success message
-  ///
-  /// In en, this message translates to:
-  /// **'Tafsir downloaded successfully!'**
-  String get tafsirDownloadedSuccessfully;
-
-  /// Translation downloaded success message
-  ///
-  /// In en, this message translates to:
-  /// **'Translation downloaded successfully!'**
-  String get translationDownloadedSuccessfully;
-
-  /// Unknown state error message
-  ///
-  /// In en, this message translates to:
-  /// **'Unknown state'**
-  String get unknownState;
-
-  /// Delete event dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Delete Event'**
-  String get deleteEvent;
 
   /// Add event dialog title
   ///
@@ -617,12 +515,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All Day Event'**
   String get allDayEvent;
-
-  /// Choose color button text
-  ///
-  /// In en, this message translates to:
-  /// **'Choose Color'**
-  String get chooseColor;
 
   /// Hijri Calendar screen title
   ///
@@ -677,12 +569,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No events for this date'**
   String get noEventsForThisDate;
-
-  /// Instruction to add events
-  ///
-  /// In en, this message translates to:
-  /// **'Tap the + button to add an event'**
-  String get tapPlusButtonToAddEvent;
 
   /// First Islamic month
   ///
@@ -756,77 +642,11 @@ abstract class AppLocalizations {
   /// **'Dhu al-Hijjah'**
   String get dhuAlHijjah;
 
-  /// First Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'January'**
-  String get january;
-
-  /// Second Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'February'**
-  String get february;
-
-  /// Third Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'March'**
-  String get march;
-
-  /// Fourth Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'April'**
-  String get april;
-
   /// Fifth Gregorian month
   ///
   /// In en, this message translates to:
   /// **'May'**
   String get may;
-
-  /// Sixth Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'June'**
-  String get june;
-
-  /// Seventh Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'July'**
-  String get july;
-
-  /// Eighth Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'August'**
-  String get august;
-
-  /// Ninth Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'September'**
-  String get september;
-
-  /// Tenth Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'October'**
-  String get october;
-
-  /// Eleventh Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'November'**
-  String get november;
-
-  /// Twelfth Gregorian month
-  ///
-  /// In en, this message translates to:
-  /// **'December'**
-  String get december;
 
   /// Event title label
   ///
@@ -839,12 +659,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Description'**
   String get description;
-
-  /// Event color label
-  ///
-  /// In en, this message translates to:
-  /// **'Event Color:'**
-  String get eventColor;
 
   /// Start time label
   ///
@@ -912,12 +726,6 @@ abstract class AppLocalizations {
   /// **'All'**
   String get all;
 
-  /// Filtered results label
-  ///
-  /// In en, this message translates to:
-  /// **'Filtered'**
-  String get filtered;
-
   /// Read more button text
   ///
   /// In en, this message translates to:
@@ -984,12 +792,6 @@ abstract class AppLocalizations {
   /// **'Go'**
   String get go;
 
-  /// Error message title
-  ///
-  /// In en, this message translates to:
-  /// **'Oops! Something went wrong'**
-  String get oopsSomethingWentWrong;
-
   /// Language selection title
   ///
   /// In en, this message translates to:
@@ -1013,12 +815,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save Changes'**
   String get saveChanges;
-
-  /// Pick color dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Pick a color'**
-  String get pickColor;
 
   /// Select button text
   ///
@@ -1068,12 +864,6 @@ abstract class AppLocalizations {
   /// **'Reset Counter'**
   String get resetCounter;
 
-  /// Reset counter confirmation message
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to reset the counter to 0?'**
-  String get resetCounterConfirmation;
-
   /// Note type label and dialog field label
   ///
   /// In en, this message translates to:
@@ -1122,11 +912,53 @@ abstract class AppLocalizations {
   /// **'Silent'**
   String get silent;
 
-  /// Loading message for qiblah direction
+  /// Tasbih: screen-reader hint on the counter; the whole counter area counts a tap
   ///
   /// In en, this message translates to:
-  /// **'Finding Qiblah Direction...'**
-  String get findingQiblahDirection;
+  /// **'Tap anywhere to count'**
+  String get tasbihTapToCount;
+
+  /// Tasbih: screen-reader hint on the counter on desktop (mouse and keyboard)
+  ///
+  /// In en, this message translates to:
+  /// **'Click or press Space to count'**
+  String get tasbihClickToCount;
+
+  /// Tasbih: title of the dhikr list (sheet and side pane)
+  ///
+  /// In en, this message translates to:
+  /// **'Your dhikr'**
+  String get tasbihYourDhikr;
+
+  /// Tasbih: message when the dhikr list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Add a dhikr to start counting.'**
+  String get tasbihEmptyMessage;
+
+  /// Tasbih: error when the saved dhikr list cannot be read
+  ///
+  /// In en, this message translates to:
+  /// **'Your dhikr list couldn\'t be loaded.'**
+  String get tasbihLoadError;
+
+  /// Tasbih: shown in place of a dhikr that was just removed, next to Undo
+  ///
+  /// In en, this message translates to:
+  /// **'Dhikr removed'**
+  String get tasbihDhikrRemoved;
+
+  /// Button that brings back something just removed
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// Tasbih: reset dialog message; only the selected dhikr's count is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Its count goes back to 0. Your other dhikr keep their counts.'**
+  String get tasbihResetMessage;
 
   /// Error message title
   ///
@@ -1134,41 +966,11 @@ abstract class AppLocalizations {
   /// **'Something went wrong'**
   String get somethingWentWrong;
 
-  /// Location permission dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Location Permission Required'**
-  String get locationPermissionRequired;
-
   /// Open settings button text
   ///
   /// In en, this message translates to:
   /// **'Open Settings'**
   String get openSettings;
-
-  /// Status when aligned with qiblah
-  ///
-  /// In en, this message translates to:
-  /// **'Aligned with Qiblah'**
-  String get alignedWithQiblah;
-
-  /// Status when finding direction
-  ///
-  /// In en, this message translates to:
-  /// **'Finding Direction...'**
-  String get findingDirection;
-
-  /// Message when perfectly aligned with qiblah
-  ///
-  /// In en, this message translates to:
-  /// **'🕋 Perfect! You are facing the Qiblah direction'**
-  String get perfectQiblahAlignment;
-
-  /// Instruction for aligning with qiblah
-  ///
-  /// In en, this message translates to:
-  /// **'Rotate your device until the arrow points toward Mecca'**
-  String get rotateDeviceInstruction;
 
   /// Title shown when compass accuracy is low
   ///
@@ -1182,47 +984,11 @@ abstract class AppLocalizations {
   /// **'Move your phone in a figure-8 motion to improve accuracy'**
   String get calibrateCompassInstruction;
 
-  /// Athkar collection title
-  ///
-  /// In en, this message translates to:
-  /// **'Athkar Collection'**
-  String get athkarCollection;
-
-  /// Number of selected athkar groups
-  ///
-  /// In en, this message translates to:
-  /// **'{count} selected athkar groups'**
-  String selectedAthkarGroups(int count);
-
-  /// Retry button text
-  ///
-  /// In en, this message translates to:
-  /// **'Retry'**
-  String get retryArabic;
-
-  /// Error message when verse removal fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error removing verse'**
-  String get errorRemovingVerse;
-
   /// Clear all confirmation button
   ///
   /// In en, this message translates to:
   /// **'Clear All'**
   String get clearAll;
-
-  /// Error message for clearing verses
-  ///
-  /// In en, this message translates to:
-  /// **'Error clearing verses'**
-  String get errorClearingVerses;
-
-  /// Test now button label
-  ///
-  /// In en, this message translates to:
-  /// **'Test Now'**
-  String get testNow;
 
   /// Continue reading button
   ///
@@ -1236,29 +1002,11 @@ abstract class AppLocalizations {
   /// **'Huda'**
   String get huda;
 
-  /// Quran surahs screen title
-  ///
-  /// In en, this message translates to:
-  /// **'Quran Surahs'**
-  String get quranSurahs;
-
   /// Widget management title
   ///
   /// In en, this message translates to:
   /// **'Widget Management'**
   String get widgetManagement;
-
-  /// Current widgets section title
-  ///
-  /// In en, this message translates to:
-  /// **'Current Widgets'**
-  String get currentWidgets;
-
-  /// Available widgets section title
-  ///
-  /// In en, this message translates to:
-  /// **'Available Widgets'**
-  String get availableWidgets;
 
   /// Label above the next-prayer name
   ///
@@ -1272,12 +1020,6 @@ abstract class AppLocalizations {
   /// **'Hijri Date'**
   String get hijriDate;
 
-  /// Athkar counter widget title
-  ///
-  /// In en, this message translates to:
-  /// **'Athkar Counter'**
-  String get athkarCounter;
-
   /// Remove button text
   ///
   /// In en, this message translates to:
@@ -1290,12 +1032,6 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get today;
 
-  /// No prayer times message
-  ///
-  /// In en, this message translates to:
-  /// **'No prayer times available'**
-  String get noPrayerTimesAvailable;
-
   /// Sunrise prayer time label
   ///
   /// In en, this message translates to:
@@ -1307,24 +1043,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Internet Connection'**
   String get noInternetConnection;
-
-  /// Connection check message
-  ///
-  /// In en, this message translates to:
-  /// **'Please check your connection and try again.'**
-  String get pleaseCheckConnection;
-
-  /// Offline content loading error
-  ///
-  /// In en, this message translates to:
-  /// **'Cannot load {section} while offline.\nPlease check your internet connection.'**
-  String cannotLoadOffline(String section);
-
-  /// No internet and no offline content message
-  ///
-  /// In en, this message translates to:
-  /// **'No internet connection. No offline content available.'**
-  String get noInternetOfflineUnavailable;
 
   /// Audio tab: offline and no audio downloaded
   ///
@@ -1344,53 +1062,11 @@ abstract class AppLocalizations {
   /// **'No internet connection. No offline translation available.'**
   String get offlineTranslationUnavailable;
 
-  /// Loading athkar message
-  ///
-  /// In en, this message translates to:
-  /// **'Loading Athkar...'**
-  String get loadingAthkar;
-
-  /// Press for details text
-  ///
-  /// In en, this message translates to:
-  /// **'Press for details'**
-  String get pressForDetails;
-
-  /// Connection timeout error message
-  ///
-  /// In en, this message translates to:
-  /// **'Connection timed out. Please check your internet connection and try again.'**
-  String get connectionTimedOut;
-
-  /// Server timeout error message
-  ///
-  /// In en, this message translates to:
-  /// **'Server took too long to respond. Please try again.'**
-  String get serverTimeout;
-
-  /// Response timeout error message
-  ///
-  /// In en, this message translates to:
-  /// **'Response timeout. Please check your connection and try again.'**
-  String get responseTimeout;
-
-  /// SSL certificate error message
-  ///
-  /// In en, this message translates to:
-  /// **'There\'s a problem with the security certificate. Please try again later or contact support.'**
-  String get certificateError;
-
   /// No internet connection with settings instruction
   ///
   /// In en, this message translates to:
   /// **'No internet connection. Please check your network settings and try again.'**
   String get noInternetSettings;
-
-  /// Network error message
-  ///
-  /// In en, this message translates to:
-  /// **'Network error. Please check your internet connection.'**
-  String get networkError;
 
   /// Unexpected error message
   ///
@@ -1398,65 +1074,11 @@ abstract class AppLocalizations {
   /// **'An unexpected error occurred. Please try again.'**
   String get unexpectedError;
 
-  /// Bad request error message
-  ///
-  /// In en, this message translates to:
-  /// **'Bad request. Please check your input.'**
-  String get badRequest;
-
-  /// Request timeout error message
-  ///
-  /// In en, this message translates to:
-  /// **'Request timeout. Please try again.'**
-  String get requestTimeout;
-
-  /// Conflict error message
-  ///
-  /// In en, this message translates to:
-  /// **'Conflict occurred. Please resolve and try again.'**
-  String get conflictError;
-
-  /// Validation failed error message
-  ///
-  /// In en, this message translates to:
-  /// **'Validation failed. Please check your input.'**
-  String get validationFailed;
-
   /// Too many requests error message
   ///
   /// In en, this message translates to:
   /// **'Too many requests. Please wait and try again later.'**
   String get tooManyRequests;
-
-  /// No internet and no cached translation error
-  ///
-  /// In en, this message translates to:
-  /// **'No internet connection and no cached translation available'**
-  String get noInternetCachedTranslation;
-
-  /// No internet and no cached data error
-  ///
-  /// In en, this message translates to:
-  /// **'No internet connection and no cached data available'**
-  String get noInternetCachedData;
-
-  /// No internet and no cached tafsir error
-  ///
-  /// In en, this message translates to:
-  /// **'No internet connection and no cached tafsir available'**
-  String get noInternetCachedTafsir;
-
-  /// Confirmation message for clearing all custom verses
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to remove all custom verses from your widget? This action cannot be undone.'**
-  String get clearAllCustomVersesConfirmation;
-
-  /// Chat error message
-  ///
-  /// In en, this message translates to:
-  /// **'Sorry, I encountered an error. Please try again.'**
-  String get chatError;
 
   /// Success message when tafsir is downloaded
   ///
@@ -1482,71 +1104,17 @@ abstract class AppLocalizations {
   /// **'Translation error: {message}'**
   String translationError(String message);
 
-  /// Generic error message with details
-  ///
-  /// In en, this message translates to:
-  /// **'Error: {message}'**
-  String unknownError(String message);
-
-  /// Error message when text sharing fails
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to share text'**
-  String get failedShareText;
-
-  /// Error message when image sharing fails
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to share image'**
-  String get failedShareImage;
-
-  /// Error message when service fails to start
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to start service: {error}'**
-  String failedStartService(String error);
-
-  /// Error message when service fails to stop
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to stop service: {error}'**
-  String failedStopService(String error);
-
-  /// Error message when service fails to restart
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to restart service: {error}'**
-  String failedRestartService(String error);
-
-  /// Section header for Islamic reminders
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Reminders'**
-  String get islamicReminders;
-
   /// Surat Al-Kahf title
   ///
   /// In en, this message translates to:
   /// **'Surat Al-Kahf'**
   String get suratAlKahf;
 
-  /// Friday notification subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'Every Friday at {time}'**
-  String everyFridayAt(String time);
-
   /// Morning and evening athkar notification title
   ///
   /// In en, this message translates to:
   /// **'Morning & Evening Athkar'**
   String get morningEveningAthkar;
-
-  /// Daily athkar times subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'{morningTime} & {eveningTime} daily'**
-  String dailyAthkarTimes(String morningTime, String eveningTime);
 
   /// Random athkar notification title
   ///
@@ -1566,41 +1134,11 @@ abstract class AppLocalizations {
   /// **'Quran Reading Reminder'**
   String get quranReadingReminder;
 
-  /// Daily notification time
-  ///
-  /// In en, this message translates to:
-  /// **'Daily at {time}'**
-  String dailyAt(String time);
-
   /// Debug button label
   ///
   /// In en, this message translates to:
   /// **'Debug'**
   String get debug;
-
-  /// Reinitialize button label
-  ///
-  /// In en, this message translates to:
-  /// **'Reinit'**
-  String get reinit;
-
-  /// Test limits button label
-  ///
-  /// In en, this message translates to:
-  /// **'Test Limits'**
-  String get testLimits;
-
-  /// Loading message for coverage check
-  ///
-  /// In en, this message translates to:
-  /// **'Checking coverage...'**
-  String get checkingCoverage;
-
-  /// Refresh coverage button label
-  ///
-  /// In en, this message translates to:
-  /// **'Refresh Coverage'**
-  String get refreshCoverage;
 
   /// Acknowledgment button in dialogs
   ///
@@ -1620,36 +1158,6 @@ abstract class AppLocalizations {
   /// **'How often would you like to receive random Athkar?'**
   String get howOftenReceiveAthkar;
 
-  /// Test notification message
-  ///
-  /// In en, this message translates to:
-  /// **'Test notification scheduled for 10 seconds from now!'**
-  String get testNotificationScheduled;
-
-  /// Debug info message
-  ///
-  /// In en, this message translates to:
-  /// **'Check console for debug info'**
-  String get checkConsoleDebugInfo;
-
-  /// Force reinit success message
-  ///
-  /// In en, this message translates to:
-  /// **'Force re-initialized notifications'**
-  String get forceReInitializedNotifications;
-
-  /// Test limits result message
-  ///
-  /// In en, this message translates to:
-  /// **'Check console for limit test results'**
-  String get checkConsoleLimitTestResults;
-
-  /// Coverage display with days and count
-  ///
-  /// In en, this message translates to:
-  /// **'Coverage: ~{days} days ({count} notifications)'**
-  String coverageDaysNotifications(String days, String count);
-
   /// Shown when the system did not accept a scheduled reminder
   ///
   /// In en, this message translates to:
@@ -1661,18 +1169,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications Enabled'**
   String get notificationsEnabled;
-
-  /// Status when notifications are disabled
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications Disabled'**
-  String get notificationsDisabled;
-
-  /// Instruction to enable notifications
-  ///
-  /// In en, this message translates to:
-  /// **'Tap to enable notification permissions'**
-  String get tapToEnableNotifications;
 
   /// Notifications screen title
   ///
@@ -1686,161 +1182,17 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
-  /// Books screen title
-  ///
-  /// In en, this message translates to:
-  /// **'Books'**
-  String get booksScreen;
-
-  /// PDF screen title
-  ///
-  /// In en, this message translates to:
-  /// **'PDF'**
-  String get pdfScreen;
-
-  /// Tooltip for prayer times button
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer Times'**
-  String get prayerTimesTooltip;
-
-  /// Tooltip for qiblah direction button
-  ///
-  /// In en, this message translates to:
-  /// **'Qiblah Direction'**
-  String get qiblahTooltip;
-
-  /// Tooltip for tasbih counter button
-  ///
-  /// In en, this message translates to:
-  /// **'Tasbih Counter'**
-  String get tasbihTooltip;
-
-  /// Tooltip for islamic notifications button
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Notifications'**
-  String get islamicNotificationsTooltip;
-
-  /// Tooltip for hadith button
-  ///
-  /// In en, this message translates to:
-  /// **'Hadith'**
-  String get hadithTooltip;
-
-  /// Tooltip for hadith chapters button
-  ///
-  /// In en, this message translates to:
-  /// **'Hadith Chapters'**
-  String get hadithChaptersTooltip;
-
-  /// Tooltip for hadith details button
-  ///
-  /// In en, this message translates to:
-  /// **'Hadith Details'**
-  String get hadithDetailsTooltip;
-
-  /// Tooltip for books button
-  ///
-  /// In en, this message translates to:
-  /// **'Books'**
-  String get booksTooltip;
-
-  /// Tooltip for bookmarks button
-  ///
-  /// In en, this message translates to:
-  /// **'Bookmarks'**
-  String get bookmarksTooltip;
-
-  /// Tooltip for hijri calendar button
-  ///
-  /// In en, this message translates to:
-  /// **'Hijri Calendar'**
-  String get hijriCalendarTooltip;
-
-  /// Tooltip for home screen widget management button
-  ///
-  /// In en, this message translates to:
-  /// **'Home Screen Widget Management'**
-  String get homeScreenWidgetManagementTooltip;
-
-  /// Tooltip for quran surahs button
-  ///
-  /// In en, this message translates to:
-  /// **'Quran Surahs'**
-  String get quranSurahsTooltip;
-
-  /// Tooltip for settings button
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settingsTooltip;
-
-  /// Tooltip for athkar details button
-  ///
-  /// In en, this message translates to:
-  /// **'Athkar Details'**
-  String get athkarDetailsTooltip;
-
-  /// Tooltip for zoom in button
-  ///
-  /// In en, this message translates to:
-  /// **'Zoom In'**
-  String get zoomInTooltip;
-
-  /// Tooltip for zoom out button
-  ///
-  /// In en, this message translates to:
-  /// **'Zoom Out'**
-  String get zoomOutTooltip;
-
   /// Search field hint text
   ///
   /// In en, this message translates to:
   /// **'Search...'**
   String get searchHint;
 
-  /// Book name input hint
-  ///
-  /// In en, this message translates to:
-  /// **'Enter book name'**
-  String get enterBookNameHint;
-
-  /// Author name input hint
-  ///
-  /// In en, this message translates to:
-  /// **'Enter author name'**
-  String get enterAuthorNameHint;
-
-  /// Description input hint
-  ///
-  /// In en, this message translates to:
-  /// **'Enter description'**
-  String get enterDescriptionHint;
-
-  /// Notes input hint
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your notes here...'**
-  String get enterNotesHint;
-
-  /// Search books hint
-  ///
-  /// In en, this message translates to:
-  /// **'Search books...'**
-  String get searchBooksHint;
-
   /// Search bookmarks hint
   ///
   /// In en, this message translates to:
   /// **'Search bookmarks...'**
   String get searchBookmarksHint;
-
-  /// Search hadith hint
-  ///
-  /// In en, this message translates to:
-  /// **'Search hadith...'**
-  String get searchHadithHint;
 
   /// Chat message input hint
   ///
@@ -1854,42 +1206,6 @@ abstract class AppLocalizations {
   /// **'Search athkar...'**
   String get searchAthkarHint;
 
-  /// Confirm delete dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Delete'**
-  String get confirmDelete;
-
-  /// Delete confirmation message
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete this item?'**
-  String get deleteConfirmation;
-
-  /// Delete bookmark dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Delete Bookmark'**
-  String get deleteBookmark;
-
-  /// Delete bookmark confirmation message
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete this bookmark? This action cannot be undone.'**
-  String get deleteBookmarkConfirmation;
-
-  /// Confirm clear all dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Clear All'**
-  String get confirmClearAll;
-
-  /// Clear all confirmation message
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to clear all items? This action cannot be undone.'**
-  String get clearAllConfirmation;
-
   /// Exit application dialog title
   ///
   /// In en, this message translates to:
@@ -1901,18 +1217,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to exit?'**
   String get exitConfirmation;
-
-  /// Permission dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Permission Required'**
-  String get permissionDialog;
-
-  /// Permission dialog message
-  ///
-  /// In en, this message translates to:
-  /// **'This feature requires permission to access your device. Please grant permission to continue.'**
-  String get permissionMessage;
 
   /// OK button text
   ///
@@ -1968,18 +1272,6 @@ abstract class AppLocalizations {
   /// **'Connection Error'**
   String get connectionError;
 
-  /// Loading failed error message
-  ///
-  /// In en, this message translates to:
-  /// **'Loading failed. Please try again.'**
-  String get loadingFailed;
-
-  /// File not found error message
-  ///
-  /// In en, this message translates to:
-  /// **'File not found'**
-  String get fileNotFound;
-
   /// Permission denied error message
   ///
   /// In en, this message translates to:
@@ -1992,41 +1284,11 @@ abstract class AppLocalizations {
   /// **'Book Name'**
   String get bookName;
 
-  /// Author name form label
-  ///
-  /// In en, this message translates to:
-  /// **'Author Name'**
-  String get authorName;
-
-  /// Download started status message
-  ///
-  /// In en, this message translates to:
-  /// **'Download started'**
-  String get downloadStarted;
-
-  /// Download complete status message
-  ///
-  /// In en, this message translates to:
-  /// **'Download complete'**
-  String get downloadComplete;
-
-  /// Operation complete status message
-  ///
-  /// In en, this message translates to:
-  /// **'Operation completed successfully'**
-  String get operationComplete;
-
   /// Athkar screen title
   ///
   /// In en, this message translates to:
   /// **'Athkar'**
   String get athkar;
-
-  /// Error message when athkar fails to load
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading Athkar'**
-  String get athkarLoadingError;
 
   /// Number of search results found
   ///
@@ -2046,53 +1308,17 @@ abstract class AppLocalizations {
   /// **'Try different search terms'**
   String get tryDifferentSearch;
 
-  /// Click for details action text
-  ///
-  /// In en, this message translates to:
-  /// **'Click for details'**
-  String get clickForDetails;
-
-  /// Subtitle for Huda AI
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Assistant'**
-  String get islamicAssistant;
-
   /// Welcome message for Huda AI in English
   ///
   /// In en, this message translates to:
   /// **'Welcome to Huda AI'**
   String get welcomeToHudaAI;
 
-  /// Welcome message for Huda AI
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome to Huda'**
-  String get welcomeToHudaArabic;
-
   /// Introduction message explaining AI capabilities
   ///
   /// In en, this message translates to:
   /// **'Ask me any question about Islam, and I\'ll provide answers based on the Qur\'an and authentic Sunnah.'**
   String get aiIntroMessage;
-
-  /// AI Assistant info card title
-  ///
-  /// In en, this message translates to:
-  /// **'AI Assistant'**
-  String get aiAssistantTitle;
-
-  /// AI Assistant disclaimer
-  ///
-  /// In en, this message translates to:
-  /// **'Provides answers based on Islamic teachings but should not be considered a definitive source.'**
-  String get aiAssistantSubtitle;
-
-  /// Verification info card title
-  ///
-  /// In en, this message translates to:
-  /// **'Verify with authentic sources'**
-  String get verifySourcesTitle;
 
   /// Verification advice
   ///
@@ -2154,47 +1380,11 @@ abstract class AppLocalizations {
   /// **'Message copied to clipboard'**
   String get messageCopied;
 
-  /// Share message header
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Q&A from Huda AI'**
-  String get islamicQAFromHuda;
-
-  /// Attribution in shared content
-  ///
-  /// In en, this message translates to:
-  /// **'Generated by Huda AI - Islamic Assistant'**
-  String get generatedByHudaAI;
-
-  /// Verification reminder in shared content
-  ///
-  /// In en, this message translates to:
-  /// **'Please verify with authentic Islamic sources.'**
-  String get verifyWithSources;
-
-  /// Header for shared Q&A content
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Q&A from Huda AI'**
-  String get shareQAFromHuda;
-
-  /// Subject line for shared content
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Knowledge from Huda AI'**
-  String get islamicKnowledgeSubject;
-
   /// App name for Huda AI
   ///
   /// In en, this message translates to:
   /// **'Huda AI'**
   String get hudaAI;
-
-  /// Title for bookmark section
-  ///
-  /// In en, this message translates to:
-  /// **'Bookmark Ayah'**
-  String get bookmarkAyah;
 
   /// Bookmark type label
   ///
@@ -2232,12 +1422,6 @@ abstract class AppLocalizations {
   /// **'Add Note'**
   String get addNote;
 
-  /// Reference format for surah and ayah
-  ///
-  /// In en, this message translates to:
-  /// **'Surah {surahName} - Ayah {ayahNumber}'**
-  String surahAyahReference(String surahName, String ayahNumber);
-
   /// Placeholder text for note input
   ///
   /// In en, this message translates to:
@@ -2250,35 +1434,11 @@ abstract class AppLocalizations {
   /// **'Update'**
   String get update;
 
-  /// Share and copy section title
-  ///
-  /// In en, this message translates to:
-  /// **'Share & Copy'**
-  String get shareCopy;
-
-  /// Share options title
-  ///
-  /// In en, this message translates to:
-  /// **'Share Options'**
-  String get shareOptions;
-
-  /// Include translation option
-  ///
-  /// In en, this message translates to:
-  /// **'Include Translation'**
-  String get includeTranslation;
-
   /// Include tafsir option
   ///
   /// In en, this message translates to:
   /// **'Include Tafsir'**
   String get includeTafsir;
-
-  /// Include reference option
-  ///
-  /// In en, this message translates to:
-  /// **'Include Reference'**
-  String get includeReference;
 
   /// Generating content status
   ///
@@ -2297,12 +1457,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tafsir:'**
   String get tafsirLabel;
-
-  /// App name for sharing
-  ///
-  /// In en, this message translates to:
-  /// **'Huda - Islamic Companion App'**
-  String get hudaQuranApp;
 
   /// Tagline shown under the app name in shared images
   ///
@@ -2328,12 +1482,6 @@ abstract class AppLocalizations {
   /// **'Unknown Surah'**
   String get unknownSurah;
 
-  /// Translation section label
-  ///
-  /// In en, this message translates to:
-  /// **'Translation:'**
-  String get translationLabel;
-
   /// Localized attribution and download link appended to all shared content
   ///
   /// In en, this message translates to:
@@ -2345,24 +1493,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copied to clipboard'**
   String get copiedToClipboard;
-
-  /// Error message for copy failure
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to copy to clipboard'**
-  String get failedToCopy;
-
-  /// Subject line for sharing
-  ///
-  /// In en, this message translates to:
-  /// **'Ayah from {surahName}'**
-  String ayahFromSurah(String surahName);
-
-  /// Fallback subject for sharing
-  ///
-  /// In en, this message translates to:
-  /// **'Ayah from Quran'**
-  String get ayahFromQuran;
 
   /// Unknown location text
   ///
@@ -2382,18 +1512,6 @@ abstract class AppLocalizations {
   /// **'Loading audio...'**
   String get loadingAudio;
 
-  /// Audio loading error message
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to load audio for this reader'**
-  String get unableToLoadAudio;
-
-  /// Reader selection title
-  ///
-  /// In en, this message translates to:
-  /// **'Select Reader'**
-  String get selectReader;
-
   /// Language filter hint
   ///
   /// In en, this message translates to:
@@ -2405,12 +1523,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All languages'**
   String get allLanguages;
-
-  /// No readers available message
-  ///
-  /// In en, this message translates to:
-  /// **'No readers available'**
-  String get noReadersAvailable;
 
   /// Unknown reader name
   ///
@@ -2466,18 +1578,6 @@ abstract class AppLocalizations {
   /// **'Filter translation language'**
   String get filterTranslationLanguage;
 
-  /// Add to home widget button
-  ///
-  /// In en, this message translates to:
-  /// **'Add to Home Widget'**
-  String get addToHomeWidget;
-
-  /// Widget tab description
-  ///
-  /// In en, this message translates to:
-  /// **'Add this ayah to your home screen widget collection'**
-  String get addToWidgetDescription;
-
   /// Preview label
   ///
   /// In en, this message translates to:
@@ -2519,12 +1619,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Audio Controls'**
   String get audioControls;
-
-  /// Unable to load audio message
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to load audio for this reader'**
-  String get unableLoadAudio;
 
   /// Reader selection section title
   ///
@@ -2586,24 +1680,6 @@ abstract class AppLocalizations {
   /// **'Checking...'**
   String get checking;
 
-  /// Already in widget status
-  ///
-  /// In en, this message translates to:
-  /// **'Already in Widget'**
-  String get alreadyInWidget;
-
-  /// Add to widget button
-  ///
-  /// In en, this message translates to:
-  /// **'Add to Widget'**
-  String get addToWidget;
-
-  /// Widget tab info message
-  ///
-  /// In en, this message translates to:
-  /// **'This will add the selected ayah to your home screen widget collection for easy access.'**
-  String get addToWidgetInfo;
-
   /// Button text for reading PDF files
   ///
   /// In en, this message translates to:
@@ -2628,59 +1704,17 @@ abstract class AppLocalizations {
   /// **'Book Details'**
   String get bookDetails;
 
-  /// Default text for books without titles
-  ///
-  /// In en, this message translates to:
-  /// **'Untitled'**
-  String get untitled;
-
-  /// Default text when book description is missing
-  ///
-  /// In en, this message translates to:
-  /// **'No description available'**
-  String get noDescriptionAvailable;
-
   /// Attachments section title
   ///
   /// In en, this message translates to:
   /// **'Attachments'**
   String get attachments;
 
-  /// Default text when attachment description is missing
-  ///
-  /// In en, this message translates to:
-  /// **'No Description'**
-  String get noDescription;
-
-  /// Section title for language selection
-  ///
-  /// In en, this message translates to:
-  /// **'Other Languages'**
-  String get otherLanguages;
-
   /// Offline status message
   ///
   /// In en, this message translates to:
   /// **'You\'re Offline'**
   String get youreOffline;
-
-  /// Error message for unavailable language
-  ///
-  /// In en, this message translates to:
-  /// **'The selected language is not available'**
-  String get theSelectedLanguageNotAvailable;
-
-  /// Share dialog title
-  ///
-  /// In en, this message translates to:
-  /// **'Share Book'**
-  String get shareBook;
-
-  /// Share confirmation question
-  ///
-  /// In en, this message translates to:
-  /// **'Share \"{title}\" with others?'**
-  String shareBookQuestion(String title);
 
   /// Share as PDF option
   ///
@@ -2718,12 +1752,6 @@ abstract class AppLocalizations {
   /// **'Repeat count: {count}'**
   String athkarShareRepeatCount(int count);
 
-  /// Error message for language loading failure
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading languages: {error}'**
-  String errorLoadingLanguages(String error);
-
   /// Friday schedule with time
   ///
   /// In en, this message translates to:
@@ -2741,12 +1769,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Morning & Evening Athkar'**
   String get morningEveningAthkarTitle;
-
-  /// Daily schedule with morning and evening times
-  ///
-  /// In en, this message translates to:
-  /// **'{morningTime} & {eveningTime} daily'**
-  String dailyTimesSchedule(String morningTime, String eveningTime);
 
   /// Morning evening athkar description
   ///
@@ -2783,42 +1805,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Daily reminder to read and reflect on the Holy Quran.'**
   String get dailyReminderQuran;
-
-  /// Debug section title
-  ///
-  /// In en, this message translates to:
-  /// **'Debug & Testing'**
-  String get debugTesting;
-
-  /// Number of pending notifications
-  ///
-  /// In en, this message translates to:
-  /// **'Pending notifications: {count}'**
-  String pendingNotificationsCount(String count);
-
-  /// Background notifications info
-  ///
-  /// In en, this message translates to:
-  /// **'All notifications work in background and survive app restarts.'**
-  String get notificationsWorkBackground;
-
-  /// Coverage section title
-  ///
-  /// In en, this message translates to:
-  /// **'Notification Coverage'**
-  String get notificationCoverage;
-
-  /// Auto renewal active status
-  ///
-  /// In en, this message translates to:
-  /// **'Auto-renewal: Active'**
-  String get autoRenewalActive;
-
-  /// Auto renewal inactive status
-  ///
-  /// In en, this message translates to:
-  /// **'Auto-renewal: Inactive'**
-  String get autoRenewalInactive;
 
   /// Minutes unit
   ///
@@ -2892,35 +1878,11 @@ abstract class AppLocalizations {
   /// **'Select Evening Athkar Time'**
   String get selectEveningAthkarTime;
 
-  /// Customization info
-  ///
-  /// In en, this message translates to:
-  /// **'All notification times are fully customizable. Tap the settings button next to each notification type to set your preferred time.'**
-  String get notificationTimesCustomizable;
-
-  /// Smart scheduling info
-  ///
-  /// In en, this message translates to:
-  /// **'Random Athkar uses smart scheduling: immediate coverage for 12+ hours, then background completion for full 7-day coverage.'**
-  String get randomAthkarSmartScheduling;
-
-  /// Background work info
-  ///
-  /// In en, this message translates to:
-  /// **'All notifications work when the app is closed and survive device reboots.'**
-  String get notificationsWorkClosed;
-
   /// PDF viewer title
   ///
   /// In en, this message translates to:
   /// **'PDF Viewer'**
   String get pdfViewer;
-
-  /// Layout toggle tooltip
-  ///
-  /// In en, this message translates to:
-  /// **'Switch layout'**
-  String get switchLayout;
 
   /// Go to page tooltip
   ///
@@ -2988,53 +1950,11 @@ abstract class AppLocalizations {
   /// **'Page {pageNumber}'**
   String pageLabel(String pageNumber);
 
-  /// PDF loading message
-  ///
-  /// In en, this message translates to:
-  /// **'Loading PDF...'**
-  String get loadingPdf;
-
-  /// PDF loading error message
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to load PDF'**
-  String get failedToLoadPdf;
-
   /// Empty table of contents message
   ///
   /// In en, this message translates to:
   /// **'No table of contents'**
   String get noTableOfContents;
-
-  /// Empty markers message
-  ///
-  /// In en, this message translates to:
-  /// **'No markers yet'**
-  String get noMarkersYet;
-
-  /// Markers instruction message
-  ///
-  /// In en, this message translates to:
-  /// **'Select text and use the color buttons to add markers'**
-  String get selectTextForMarkers;
-
-  /// Bookmarks page title
-  ///
-  /// In en, this message translates to:
-  /// **'My Bookmarks'**
-  String get myBookmarks;
-
-  /// Bookmark added success message
-  ///
-  /// In en, this message translates to:
-  /// **'Bookmark added'**
-  String get bookmarkAdded;
-
-  /// Bookmark removed success message
-  ///
-  /// In en, this message translates to:
-  /// **'Bookmark removed'**
-  String get bookmarkRemoved;
 
   /// Bookmark updated success message
   ///
@@ -3102,18 +2022,6 @@ abstract class AppLocalizations {
   /// **'Browse Quran'**
   String get browseQuran;
 
-  /// Navigate to verse button text
-  ///
-  /// In en, this message translates to:
-  /// **'Go to Verse'**
-  String get goToVerse;
-
-  /// Navigate to verse confirmation question
-  ///
-  /// In en, this message translates to:
-  /// **'Navigate to this verse in the Quran reader?'**
-  String get navigateToVerseQuestion;
-
   /// Total stats label
   ///
   /// In en, this message translates to:
@@ -3132,107 +2040,17 @@ abstract class AppLocalizations {
   /// **'Location'**
   String get location;
 
-  /// Next prayer countdown format
-  ///
-  /// In en, this message translates to:
-  /// **'Next: {prayerName} in {time}'**
-  String nextPrayerCountdown(String prayerName, String time);
-
   /// Status when countdown is stopped
   ///
   /// In en, this message translates to:
   /// **'Stopped'**
   String get stopped;
 
-  /// Title for home screen widget section
-  ///
-  /// In en, this message translates to:
-  /// **'Home Screen Widget'**
-  String get homeScreenWidget;
-
-  /// Description of home screen widget functionality
-  ///
-  /// In en, this message translates to:
-  /// **'Display inspiring Islamic verses on your home screen'**
-  String get displayInspiringVerses;
-
-  /// Title for widget control section
-  ///
-  /// In en, this message translates to:
-  /// **'Widget Control'**
-  String get widgetControl;
-
-  /// Description for immediate widget update
-  ///
-  /// In en, this message translates to:
-  /// **'Update your widget content immediately'**
-  String get updateWidgetContentImmediately;
-
-  /// Text shown while widget is being updated
-  ///
-  /// In en, this message translates to:
-  /// **'Updating Widget...'**
-  String get updatingWidget;
-
-  /// Button text to force update widget
-  ///
-  /// In en, this message translates to:
-  /// **'Force Update Widget'**
-  String get forceUpdateWidget;
-
-  /// Success message when widget is updated
-  ///
-  /// In en, this message translates to:
-  /// **'Home screen widget updated successfully!'**
-  String get homeScreenWidgetUpdatedSuccessfully;
-
   /// Error message when widget update fails
   ///
   /// In en, this message translates to:
   /// **'Error updating widget: {error}'**
   String errorUpdatingWidget(String error);
-
-  /// Title for custom verses section
-  ///
-  /// In en, this message translates to:
-  /// **'Custom Verses'**
-  String get customVerses;
-
-  /// Tooltip for refresh verses button
-  ///
-  /// In en, this message translates to:
-  /// **'Refresh verses'**
-  String get refreshVerses;
-
-  /// Text showing number of verses added
-  ///
-  /// In en, this message translates to:
-  /// **'{count} verse{count, plural, one{} other{s}} added'**
-  String versesAdded(int count);
-
-  /// Text shown while loading verses
-  ///
-  /// In en, this message translates to:
-  /// **'Loading verses...'**
-  String get loadingVerses;
-
-  /// Title when no custom verses are found
-  ///
-  /// In en, this message translates to:
-  /// **'No Custom Verses Yet'**
-  String get noCustomVersesYet;
-
-  /// Instructions for adding verses to widget
-  ///
-  /// In en, this message translates to:
-  /// **'Visit the Surah screen to add verses to your widget'**
-  String get visitSurahScreenToAddVerses;
-
-  /// Success message when ayah is added to widget
-  ///
-  /// In en, this message translates to:
-  /// **'Ayah added to widget'**
-  String get ayahAddedToWidget;
 
   /// sahih
   ///
@@ -3270,41 +2088,11 @@ abstract class AppLocalizations {
   /// **'Jami\' at-Tirmidhi'**
   String get tirmidhi;
 
-  /// No description provided for @dawood.
-  ///
-  /// In en, this message translates to:
-  /// **'Sunan Abi Dawud'**
-  String get dawood;
-
-  /// No description provided for @majah.
-  ///
-  /// In en, this message translates to:
-  /// **'Sahih Ibn Majah'**
-  String get majah;
-
-  /// No description provided for @nasa.
-  ///
-  /// In en, this message translates to:
-  /// **'Sunan an-Nasa\'i'**
-  String get nasa;
-
-  /// No description provided for @masabih.
-  ///
-  /// In en, this message translates to:
-  /// **'Mishkat al-Masabih'**
-  String get masabih;
-
   /// No description provided for @ahmad.
   ///
   /// In en, this message translates to:
   /// **'Musnad Ahmad'**
   String get ahmad;
-
-  /// No description provided for @sahiha.
-  ///
-  /// In en, this message translates to:
-  /// **'Silsilah al-Sahihah'**
-  String get sahiha;
 
   /// No description provided for @contains.
   ///
@@ -3323,18 +2111,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hadith Collections'**
   String get hadithCollections;
-
-  /// No description provided for @hadithBanner.
-  ///
-  /// In en, this message translates to:
-  /// **'Explore authentic sayings and teachings of Prophet Muhammad ﷺ'**
-  String get hadithBanner;
-
-  /// No description provided for @nextPrayerCountDown.
-  ///
-  /// In en, this message translates to:
-  /// **'Next Prayer'**
-  String get nextPrayerCountDown;
 
   /// No description provided for @success.
   ///
@@ -3359,24 +2135,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'notification'**
   String get notification;
-
-  /// No description provided for @bookmarksYourCollection.
-  ///
-  /// In en, this message translates to:
-  /// **'Your Collection'**
-  String get bookmarksYourCollection;
-
-  /// No description provided for @bookmarksSavedVerses.
-  ///
-  /// In en, this message translates to:
-  /// **'saved verses'**
-  String get bookmarksSavedVerses;
-
-  /// No description provided for @adjustTextSizeForBetterReadability.
-  ///
-  /// In en, this message translates to:
-  /// **'Adjust text size for better readability'**
-  String get adjustTextSizeForBetterReadability;
 
   /// No description provided for @sampleTextPreview.
   ///
@@ -3420,12 +2178,6 @@ abstract class AppLocalizations {
   /// **'Quran Kit'**
   String get quranKit;
 
-  /// No description provided for @homeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your Islamic Companion'**
-  String get homeTitle;
-
   /// No description provided for @continueHome.
   ///
   /// In en, this message translates to:
@@ -3443,42 +2195,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Recent Activity'**
   String get noRecentActivityHome;
-
-  /// Status shown when there is no saved Quran activity to continue
-  ///
-  /// In en, this message translates to:
-  /// **'No progress'**
-  String get noProgress;
-
-  /// No description provided for @resumeReading.
-  ///
-  /// In en, this message translates to:
-  /// **'Resume your Quran reading'**
-  String get resumeReading;
-
-  /// No description provided for @noRecentActivityDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Start reading the quran to see your progress'**
-  String get noRecentActivityDescription;
-
-  /// No description provided for @bookmarkTip.
-  ///
-  /// In en, this message translates to:
-  /// **'Tap verses to bookmark them'**
-  String get bookmarkTip;
-
-  /// No description provided for @darkmode.
-  ///
-  /// In en, this message translates to:
-  /// **'Dark Mode'**
-  String get darkmode;
-
-  /// No description provided for @lightmode.
-  ///
-  /// In en, this message translates to:
-  /// **'Light Mode'**
-  String get lightmode;
 
   /// No description provided for @chooseThemeColor.
   ///
@@ -3564,17 +2280,29 @@ abstract class AppLocalizations {
   /// **'cream'**
   String get cream;
 
+  /// No description provided for @goldTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'gold'**
+  String get goldTheme;
+
+  /// No description provided for @settingsPureBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Pure black'**
+  String get settingsPureBlack;
+
+  /// No description provided for @settingsPureBlackDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A black background in dark mode, for OLED screens'**
+  String get settingsPureBlackDescription;
+
   /// No description provided for @supportAndFeedback.
   ///
   /// In en, this message translates to:
   /// **'Support & Feedback'**
   String get supportAndFeedback;
-
-  /// No description provided for @supportDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Help us make the app better'**
-  String get supportDescription;
 
   /// No description provided for @shareYourThoughts.
   ///
@@ -3624,35 +2352,11 @@ abstract class AppLocalizations {
   /// **'Battery optimization exemption denied'**
   String get batteryOptimizationExemptionDenied;
 
-  /// No description provided for @batteryOptimizationExemptionActive.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery Optimization Disabled'**
-  String get batteryOptimizationExemptionActive;
-
-  /// No description provided for @batteryOptimizationExemptionInactive.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery Optimization Active'**
-  String get batteryOptimizationExemptionInactive;
-
   /// No description provided for @notificationsWillWorkReliably.
   ///
   /// In en, this message translates to:
   /// **'Notifications will work reliably'**
   String get notificationsWillWorkReliably;
-
-  /// No description provided for @notificationsMayBeDelayedOrMissed.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications may be delayed or missed'**
-  String get notificationsMayBeDelayedOrMissed;
-
-  /// No description provided for @notificationsActive.
-  ///
-  /// In en, this message translates to:
-  /// **'All notifications are working properly'**
-  String get notificationsActive;
 
   /// No description provided for @playing.
   ///
@@ -3672,47 +2376,17 @@ abstract class AppLocalizations {
   /// **'Back to Today'**
   String get backToToday;
 
-  /// No description provided for @addTask.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Task'**
-  String get addTask;
-
   /// No description provided for @dailyProgress.
   ///
   /// In en, this message translates to:
   /// **'Daily Progress'**
   String get dailyProgress;
 
-  /// No description provided for @consecutiveDays.
-  ///
-  /// In en, this message translates to:
-  /// **'consecutive days'**
-  String get consecutiveDays;
-
   /// No description provided for @noTasksForDay.
   ///
   /// In en, this message translates to:
   /// **'No tasks for this day'**
   String get noTasksForDay;
-
-  /// No description provided for @deleteTask.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete Task'**
-  String get deleteTask;
-
-  /// No description provided for @deleteTaskConfirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete'**
-  String get deleteTaskConfirmation;
-
-  /// No description provided for @completedPercentage.
-  ///
-  /// In en, this message translates to:
-  /// **'completed'**
-  String get completedPercentage;
 
   /// No description provided for @fajrPrayer.
   ///
@@ -3762,30 +2436,6 @@ abstract class AppLocalizations {
   /// **'Evening Athkar'**
   String get athkarMasaa;
 
-  /// No description provided for @itemTypePrayer.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer'**
-  String get itemTypePrayer;
-
-  /// No description provided for @itemTypeQuran.
-  ///
-  /// In en, this message translates to:
-  /// **'Quran Reading'**
-  String get itemTypeQuran;
-
-  /// No description provided for @itemTypeAthkar.
-  ///
-  /// In en, this message translates to:
-  /// **'Athkar & Dhikr'**
-  String get itemTypeAthkar;
-
-  /// No description provided for @itemTypeCustom.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom'**
-  String get itemTypeCustom;
-
   /// No description provided for @frequencyDaily.
   ///
   /// In en, this message translates to:
@@ -3834,71 +2484,11 @@ abstract class AppLocalizations {
   /// **'Morning Athkar'**
   String get morningAthkar;
 
-  /// No description provided for @nightAthkar.
-  ///
-  /// In en, this message translates to:
-  /// **'Night Athkar'**
-  String get nightAthkar;
-
   /// No description provided for @addCustomItem.
   ///
   /// In en, this message translates to:
   /// **'Add Custom Item'**
   String get addCustomItem;
-
-  /// No description provided for @itemTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Item Title'**
-  String get itemTitle;
-
-  /// No description provided for @enterItemTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter item title...'**
-  String get enterItemTitle;
-
-  /// No description provided for @itemType.
-  ///
-  /// In en, this message translates to:
-  /// **'Item Type'**
-  String get itemType;
-
-  /// No description provided for @repetitionFrequency.
-  ///
-  /// In en, this message translates to:
-  /// **'Repetition Frequency'**
-  String get repetitionFrequency;
-
-  /// No description provided for @addItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Item'**
-  String get addItem;
-
-  /// No description provided for @itemTypePrayerShort.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer'**
-  String get itemTypePrayerShort;
-
-  /// No description provided for @itemTypeQuranShort.
-  ///
-  /// In en, this message translates to:
-  /// **'Quran'**
-  String get itemTypeQuranShort;
-
-  /// No description provided for @itemTypeAthkarShort.
-  ///
-  /// In en, this message translates to:
-  /// **'Athkar'**
-  String get itemTypeAthkarShort;
-
-  /// No description provided for @dayStreakSuffix.
-  ///
-  /// In en, this message translates to:
-  /// **'-Day Streak!'**
-  String dayStreakSuffix(num count);
 
   /// No description provided for @congratsMessage1.
   ///
@@ -4013,18 +2603,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Status'**
   String get status;
-
-  /// No description provided for @optimize.
-  ///
-  /// In en, this message translates to:
-  /// **'Optimize'**
-  String get optimize;
-
-  /// No description provided for @loadingPreferences.
-  ///
-  /// In en, this message translates to:
-  /// **'Loading preferences...'**
-  String get loadingPreferences;
 
   /// No description provided for @enableNotificationsSettings.
   ///
@@ -4200,12 +2778,6 @@ abstract class AppLocalizations {
   /// **'Nisab Threshold ({type})'**
   String nisabThreshold(String type);
 
-  /// Currency settings section title
-  ///
-  /// In en, this message translates to:
-  /// **'Currency Settings'**
-  String get currencySettings;
-
   /// Currency label
   ///
   /// In en, this message translates to:
@@ -4217,12 +2789,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nisab Settings'**
   String get nisabSettings;
-
-  /// Metal prices section title
-  ///
-  /// In en, this message translates to:
-  /// **'Metal Prices'**
-  String get metalPrices;
 
   /// Gold price input label
   ///
@@ -4236,29 +2802,11 @@ abstract class AppLocalizations {
   /// **'Silver Price per Gram'**
   String get silverPricePerGram;
 
-  /// Nisab info card title
-  ///
-  /// In en, this message translates to:
-  /// **'What is Nisab?'**
-  String get whatIsNisab;
-
   /// Nisab description text
   ///
   /// In en, this message translates to:
   /// **'Nisab is the minimum threshold of wealth that makes Zakat obligatory. It can be calculated based on either gold (87.48g) or silver (612.36g) values.'**
   String get nisabDescription;
-
-  /// Quick summary section title
-  ///
-  /// In en, this message translates to:
-  /// **'Quick Summary'**
-  String get quickSummary;
-
-  /// Zakat due label in summary
-  ///
-  /// In en, this message translates to:
-  /// **'Zakat Due:'**
-  String get zakatDue;
 
   /// Asset breakdown section title
   ///
@@ -4305,7 +2853,7 @@ abstract class AppLocalizations {
   /// Full Zakat description in info dialog
   ///
   /// In en, this message translates to:
-  /// **'Zakat is one of the five pillars of Islam and is an obligatory charity. It is calculated as 2.5% of qualifying wealth that has been held for at least one lunar year (hawl).\\n\\nNisab is the minimum threshold of wealth that makes Zakat obligatory. It can be calculated based on either:\\n• Gold: 87.48 grams (20 mithqal)\\n• Silver: 612.36 grams (200 dirhams)\\n\\nThis calculator helps you determine if your wealth reaches the nisab threshold and calculates the exact amount of Zakat due.'**
+  /// **'Zakat is one of the five pillars of Islam and is an obligatory charity. It is calculated as 2.5% of qualifying wealth that has been held for at least one lunar year (hawl).\n\nNisab is the minimum threshold of wealth that makes Zakat obligatory. It can be calculated based on either:\n• Gold: 87.48 grams (20 mithqal)\n• Silver: 612.36 grams (200 dirhams)\n\nThis calculator helps you determine if your wealth reaches the nisab threshold and calculates the exact amount of Zakat due.'**
   String get zakatDescription;
 
   /// Cash and bank balances asset category
@@ -4392,12 +2940,6 @@ abstract class AppLocalizations {
   /// **'Credit card debts, loans, bills due within the year'**
   String get debtsDescription;
 
-  /// Hint text for amount input fields
-  ///
-  /// In en, this message translates to:
-  /// **'0.00'**
-  String get hintAmount;
-
   /// No description provided for @feedbackAppBarTitle.
   ///
   /// In en, this message translates to:
@@ -4415,12 +2957,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thank you! Your feedback has been sent.'**
   String get feedbackSuccessMessage;
-
-  /// No description provided for @feedbackHeroTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'We Value Your Opinion'**
-  String get feedbackHeroTitle;
 
   /// No description provided for @feedbackHeroSubtitle.
   ///
@@ -4494,150 +3030,6 @@ abstract class AppLocalizations {
   /// **'Help us improve by reporting any problems'**
   String get issueDescription;
 
-  /// No description provided for @onboardingWelcomeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome to Huda'**
-  String get onboardingWelcomeTitle;
-
-  /// No description provided for @onboardingWelcomeDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Huda - Your all-in-one Islamic app with everything a Muslim needs in a single place.'**
-  String get onboardingWelcomeDescription;
-
-  /// No description provided for @onboardingPrayerTimesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer Times'**
-  String get onboardingPrayerTimesTitle;
-
-  /// No description provided for @onboardingPrayerTimesDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Never miss a prayer with precise prayer times based on your location. Get notifications and track your daily prayers.'**
-  String get onboardingPrayerTimesDescription;
-
-  /// No description provided for @onboardingQuranTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Holy Quran'**
-  String get onboardingQuranTitle;
-
-  /// No description provided for @onboardingQuranDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Read, listen, and memorize the Holy Quran with beautiful recitations, translations, and tafsir.'**
-  String get onboardingQuranDescription;
-
-  /// No description provided for @onboardingAthkarTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Athkar & Duas'**
-  String get onboardingAthkarTitle;
-
-  /// No description provided for @onboardingAthkarDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily remembrance and supplications to strengthen your faith.'**
-  String get onboardingAthkarDescription;
-
-  /// No description provided for @onboardingQiblahTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Qiblah Direction'**
-  String get onboardingQiblahTitle;
-
-  /// No description provided for @onboardingQiblahDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Find the accurate direction of the Holy Kaaba from anywhere in the world.'**
-  String get onboardingQiblahDescription;
-
-  /// No description provided for @onboardingMultilingualTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Multilingual Support'**
-  String get onboardingMultilingualTitle;
-
-  /// No description provided for @onboardingMultilingualDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Access the app in multiple languages to make your Islamic journey more personal and easy to understand.'**
-  String get onboardingMultilingualDescription;
-
-  /// No description provided for @onboardingBooksTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Books'**
-  String get onboardingBooksTitle;
-
-  /// No description provided for @onboardingBooksDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Explore a vast library of authentic Islamic books for deep knowledge and spiritual growth.'**
-  String get onboardingBooksDescription;
-
-  /// No description provided for @onboardingHadithTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hadith Collection'**
-  String get onboardingHadithTitle;
-
-  /// No description provided for @onboardingHadithDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Read from trusted sources including Sahih Bukhari, Sahih Muslim, Sunan Abu Dawood, and more.'**
-  String get onboardingHadithDescription;
-
-  /// No description provided for @onboardingAITitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Huda AI Assistant'**
-  String get onboardingAITitle;
-
-  /// No description provided for @onboardingAIDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Ask Islamic questions and get reliable answers with our AI-powered assistant for Islamic guidance.'**
-  String get onboardingAIDescription;
-
-  /// No description provided for @onboardingHijriTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hijri Calendar'**
-  String get onboardingHijriTitle;
-
-  /// No description provided for @onboardingHijriDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'View the full Islamic calendar with Gregorian date conversion to stay connected with important dates.'**
-  String get onboardingHijriDescription;
-
-  /// No description provided for @onboardingChecklistTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic Daily Checklist'**
-  String get onboardingChecklistTitle;
-
-  /// No description provided for @onboardingChecklistDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Track your daily prayers, worship, and good deeds with an easy-to-use checklist.'**
-  String get onboardingChecklistDescription;
-
-  /// No description provided for @onboardingJourneyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Begin Your Journey'**
-  String get onboardingJourneyTitle;
-
-  /// No description provided for @onboardingJourneyDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Everything you need for your Islamic journey is here. Start exploring and strengthen your connection with Allah.'**
-  String get onboardingJourneyDescription;
-
   /// No description provided for @skip.
   ///
   /// In en, this message translates to:
@@ -4667,12 +3059,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Generating image...'**
   String get generatingImage;
-
-  /// No description provided for @locationServicesDisabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Location services are disabled. Please enable them in your device settings.'**
-  String get locationServicesDisabled;
 
   /// No description provided for @rateAppTitle.
   ///
@@ -4739,18 +3125,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thank you for your feedback! We\'ll work on improvements.'**
   String get thankYouFeedback;
-
-  /// No description provided for @noHadithsFound.
-  ///
-  /// In en, this message translates to:
-  /// **'No Hadiths Found'**
-  String get noHadithsFound;
-
-  /// No description provided for @noHadithsFoundChapter.
-  ///
-  /// In en, this message translates to:
-  /// **'This chapter doesn\'t contain any hadiths at the moment.'**
-  String get noHadithsFoundChapter;
 
   /// No description provided for @mawdu.
   ///
@@ -4902,12 +3276,6 @@ abstract class AppLocalizations {
   /// **'Chat'**
   String get chat;
 
-  /// Title for counseling mode
-  ///
-  /// In en, this message translates to:
-  /// **'Counseling Mode'**
-  String get counselingMode;
-
   /// Introduction text for counseling mode
   ///
   /// In en, this message translates to:
@@ -4920,41 +3288,17 @@ abstract class AppLocalizations {
   /// **'Guidance'**
   String get guidanceTitle;
 
-  /// Guidance card subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'Personalized Islamic guidance'**
-  String get guidanceSubtitle;
-
   /// Quran card title
   ///
   /// In en, this message translates to:
   /// **'Quran'**
   String get quranTitle;
 
-  /// Quran card subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'Relevant Quranic wisdom'**
-  String get quranSubtitle;
-
   /// Duaa card title
   ///
   /// In en, this message translates to:
   /// **'Duaa'**
   String get duaaTitle;
-
-  /// Duaa card subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'Heartfelt supplications'**
-  String get duaaSubtitle;
-
-  /// Text prompting users to try example questions
-  ///
-  /// In en, this message translates to:
-  /// **'Try expressing:'**
-  String get tryExpressing;
 
   /// Example question for anxiety
   ///
@@ -5004,35 +3348,11 @@ abstract class AppLocalizations {
   /// **'Add Widget to Home Screen'**
   String get addWidgetToHomeScreen;
 
-  /// Instructions for adding widget
-  ///
-  /// In en, this message translates to:
-  /// **'Tap the button below to add the Huda widget directly to your home screen. This displays beautiful Quranic verses that update automatically.'**
-  String get addWidgetInstructions;
-
   /// Add widget button text
   ///
   /// In en, this message translates to:
   /// **'Add Widget'**
   String get addWidget;
-
-  /// Message for non-Android platforms
-  ///
-  /// In en, this message translates to:
-  /// **'This feature is only available on Android'**
-  String get featureOnlyAvailableOnAndroid;
-
-  /// Message when pin widget is not supported
-  ///
-  /// In en, this message translates to:
-  /// **'Pin widget is not supported on this device'**
-  String get pinWidgetNotSupported;
-
-  /// Error message for adding widget
-  ///
-  /// In en, this message translates to:
-  /// **'Error adding widget'**
-  String get errorAddingWidget;
 
   /// Title for widget instructions section
   ///
@@ -5142,12 +3462,6 @@ abstract class AppLocalizations {
   /// **'Minutes before Fajr'**
   String get minutesBeforeFajr;
 
-  /// Placeholder for minutes input
-  ///
-  /// In en, this message translates to:
-  /// **'Minutes (e.g., 30)'**
-  String get sahurMinutesPlaceholder;
-
   /// Subtitle for exact time sahur alarm
   ///
   /// In en, this message translates to:
@@ -5159,12 +3473,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes} mins before Fajr'**
   String minsBeforeFajr(int minutes);
-
-  /// Subtitle when Sahur alarm is disabled
-  ///
-  /// In en, this message translates to:
-  /// **'Not Set'**
-  String get sahurAlarmNotSet;
 
   /// Title shown on the alarm ring screen when Sahur alarm is ringing
   ///
@@ -5184,12 +3492,6 @@ abstract class AppLocalizations {
   /// **'Time to wake up for Sahur'**
   String get sahurAlarmNotificationBody;
 
-  /// Button label to snooze the ringing alarm for 5 minutes
-  ///
-  /// In en, this message translates to:
-  /// **'Snooze'**
-  String get snoozeAlarm;
-
   /// Miqaat Lock feature title
   ///
   /// In en, this message translates to:
@@ -5201,12 +3503,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable Miqaat Lock'**
   String get enableMiqaatLock;
-
-  /// Feature description
-  ///
-  /// In en, this message translates to:
-  /// **'Lock apps during times of worship to minimize distractions.'**
-  String get miqaatLockDescription;
 
   /// Locked apps section title
   ///
@@ -5262,12 +3558,6 @@ abstract class AppLocalizations {
   /// **'Required time to spend in Huda (e.g., reading Quran) to unlock your apps.'**
   String get sessionDurationDescription;
 
-  /// Duration picker title
-  ///
-  /// In en, this message translates to:
-  /// **'Select Duration'**
-  String get selectDuration;
-
   /// Custom duration option
   ///
   /// In en, this message translates to:
@@ -5303,18 +3593,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No apps found'**
   String get noAppsFound;
-
-  /// iOS app selection title
-  ///
-  /// In en, this message translates to:
-  /// **'iOS App Selection'**
-  String get iosAppSelectionTitle;
-
-  /// iOS app selection explanation
-  ///
-  /// In en, this message translates to:
-  /// **'Due to iOS privacy restrictions, app selection is managed through Screen Time settings. Enable Screen Time access to manage app restrictions.'**
-  String get iosAppSelectionDescription;
 
   /// Label input label
   ///
@@ -5448,48 +3726,6 @@ abstract class AppLocalizations {
   /// **'Check Permissions'**
   String get checkPermissions;
 
-  /// Start session button
-  ///
-  /// In en, this message translates to:
-  /// **'Start Session'**
-  String get startSession;
-
-  /// Active session indicator
-  ///
-  /// In en, this message translates to:
-  /// **'Session Active'**
-  String get sessionActive;
-
-  /// Remaining time label
-  ///
-  /// In en, this message translates to:
-  /// **'Remaining Time'**
-  String get remainingTime;
-
-  /// Lock screen title
-  ///
-  /// In en, this message translates to:
-  /// **'App Locked'**
-  String get appLocked;
-
-  /// Lock screen message
-  ///
-  /// In en, this message translates to:
-  /// **'This app is locked during your focus time. Start a session to unlock temporarily.'**
-  String get focusTimeMessage;
-
-  /// Go back button
-  ///
-  /// In en, this message translates to:
-  /// **'Go Back Home'**
-  String get goBackHome;
-
-  /// Ramadan page title
-  ///
-  /// In en, this message translates to:
-  /// **'Ramadan Qadhaa'**
-  String get ramadanTracker;
-
   /// Days remaining until Ramadan starts
   ///
   /// In en, this message translates to:
@@ -5514,18 +3750,6 @@ abstract class AppLocalizations {
   /// **'Duration of iftar: {hours} hours and {minutes} minutes'**
   String durationOfIftar(int hours, int minutes);
 
-  /// Remaining time for iftar
-  ///
-  /// In en, this message translates to:
-  /// **'remaining for Iftar Less than {hours} hours'**
-  String remainingForIftar(int hours);
-
-  /// Remaining time for imsaak
-  ///
-  /// In en, this message translates to:
-  /// **'remaining for Imsaak Less than {hours} hours'**
-  String remainingForImsaak(int hours);
-
   /// Imsaak label on progress bar
   ///
   /// In en, this message translates to:
@@ -5549,12 +3773,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'missed'**
   String get missedStatus;
-
-  /// Qadhaa days section title
-  ///
-  /// In en, this message translates to:
-  /// **'Qadhaa Days'**
-  String get qadhaaDays;
 
   /// Qadhaa info dialog title
   ///
@@ -5910,12 +4128,6 @@ abstract class AppLocalizations {
   /// **'A smoother, more polished experience throughout the app.'**
   String get whatsNew430Feature2;
 
-  /// Indicates that the app is currently in offline mode
-  ///
-  /// In en, this message translates to:
-  /// **'Offline Mode'**
-  String get offlineMode;
-
   /// Shows the number of available downloaded books
   ///
   /// In en, this message translates to:
@@ -5928,18 +4140,6 @@ abstract class AppLocalizations {
   /// **'Book downloaded successfully!'**
   String get bookDownloadedSuccessfully;
 
-  /// Message shown when a book download fails
-  ///
-  /// In en, this message translates to:
-  /// **'Download failed: {error}'**
-  String downloadFailed(String error);
-
-  /// Instruction to select apps using Screen Time on iOS
-  ///
-  /// In en, this message translates to:
-  /// **'Tap below to select apps using Screen Time'**
-  String get iosTapToSelectApps;
-
   /// Success message when apps are selected
   ///
   /// In en, this message translates to:
@@ -5951,12 +4151,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error: {error}'**
   String iosAppSelectionError(String error);
-
-  /// Button text to select apps using Screen Time on iOS
-  ///
-  /// In en, this message translates to:
-  /// **'Select Apps (Screen Time)'**
-  String get iosSelectAppsScreenTime;
 
   /// Title for Screen Time Protection on iOS
   ///
@@ -5994,18 +4188,6 @@ abstract class AppLocalizations {
   /// **'Download books when online to access them offline'**
   String get downloadBooksWhenOnlineToAccessThemOffline;
 
-  /// Button to check connection
-  ///
-  /// In en, this message translates to:
-  /// **'Check Connection'**
-  String get checkConnection;
-
-  /// Number of files for offline book
-  ///
-  /// In en, this message translates to:
-  /// **'Files ({count})'**
-  String filesCount(int count);
-
   /// Title for accessibility service dialog
   ///
   /// In en, this message translates to:
@@ -6042,23 +4224,11 @@ abstract class AppLocalizations {
   /// **'Search reciters...'**
   String get searchReciters;
 
-  /// Search surah placeholder
-  ///
-  /// In en, this message translates to:
-  /// **'Search surah...'**
-  String get searchSurah;
-
   /// Verses count label
   ///
   /// In en, this message translates to:
   /// **'verses'**
   String get verses;
-
-  /// Offline empty state title when no audio is downloaded
-  ///
-  /// In en, this message translates to:
-  /// **'No downloaded content'**
-  String get noDownloadedContent;
 
   /// Offline empty state description
   ///
@@ -6077,12 +4247,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search radio stations...'**
   String get searchRadio;
-
-  /// Now playing label in radio player bar
-  ///
-  /// In en, this message translates to:
-  /// **'Now Playing'**
-  String get nowPlaying;
 
   /// Title for the Khatma (Quran completion) page
   ///
@@ -6114,95 +4278,11 @@ abstract class AppLocalizations {
   /// **'Suggested'**
   String get khatmaSuggested;
 
-  /// One month Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'One Month Khatma (29 days)'**
-  String get khatmaOneMonthProgram;
-
-  /// Subtitle for the one-month Khatma program
-  ///
-  /// In en, this message translates to:
-  /// **'Daily portion: ~21 pages'**
-  String get khatmaDailyWird21Pages;
-
-  /// Section label for other programs
-  ///
-  /// In en, this message translates to:
-  /// **'Other Programs'**
-  String get khatmaOtherPrograms;
-
-  /// Title for meaning-based Khatma program
-  ///
-  /// In en, this message translates to:
-  /// **'Khatma by Meaning'**
-  String get khatmaBySemanticTitle;
-
-  /// Subtitle for meaning-based Khatma program
-  ///
-  /// In en, this message translates to:
-  /// **'Portions with complete meaning'**
-  String get khatmaBySemanticSubtitle;
-
-  /// Title for parts-based Khatma program
-  ///
-  /// In en, this message translates to:
-  /// **'Khatma by Juz and Rub\''**
-  String get khatmaByPartsTitle;
-
-  /// Subtitle for parts-based Khatma program
-  ///
-  /// In en, this message translates to:
-  /// **'Portions by Juz and Ahzab'**
-  String get khatmaByPartsSubtitle;
-
-  /// Title for the program selection step
-  ///
-  /// In en, this message translates to:
-  /// **'Khatma Program'**
-  String get khatmaProgramTitle;
-
-  /// Two-month Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'Two-Month Khatma (60 days)'**
-  String get khatmaTwoMonthsProgram;
-
-  /// One-week Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'One-Week Khatma (7 days)'**
-  String get khatmaOneWeekProgram;
-
-  /// Section label for monthly Khatma programs
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly'**
-  String get khatmaMonthsSection;
-
-  /// 30-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'30-Day Khatma'**
-  String get khatma30DaysTitle;
-
   /// Daily portion subtitle: one Juz
   ///
   /// In en, this message translates to:
   /// **'Daily portion: one Juz'**
   String get khatmaDailyWirdJuz;
-
-  /// Section label for other Khatma programs
-  ///
-  /// In en, this message translates to:
-  /// **'Other'**
-  String get khatmaOtherSection;
-
-  /// 240-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'240-Day Khatma'**
-  String get khatma240DaysTitle;
 
   /// Daily portion subtitle: one Rub'
   ///
@@ -6210,23 +4290,11 @@ abstract class AppLocalizations {
   /// **'Daily portion: one Rub\''**
   String get khatmaDailyWirdRubu;
 
-  /// 120-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'120-Day Khatma'**
-  String get khatma120DaysTitle;
-
   /// Daily portion subtitle: two Rub'
   ///
   /// In en, this message translates to:
   /// **'Daily portion: two Rub\''**
   String get khatmaDailyWirdTwoRubu;
-
-  /// 80-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'80-Day Khatma'**
-  String get khatma80DaysTitle;
 
   /// Daily portion subtitle: 3 Rub'
   ///
@@ -6234,23 +4302,11 @@ abstract class AppLocalizations {
   /// **'Daily portion: 3 Rub\''**
   String get khatmaDailyWird3Rubu;
 
-  /// 60-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'60-Day Khatma'**
-  String get khatma60DaysTitle;
-
   /// Daily portion subtitle: one Hizb
   ///
   /// In en, this message translates to:
   /// **'Daily portion: one Hizb'**
   String get khatmaDailyWirdHizb;
-
-  /// 40-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'40-Day Khatma'**
-  String get khatma40DaysTitle;
 
   /// Daily portion subtitle: 1.5 Hizb
   ///
@@ -6258,23 +4314,11 @@ abstract class AppLocalizations {
   /// **'Daily portion: 1.5 Hizb'**
   String get khatmaDailyWirdHizbAndHalf;
 
-  /// 20-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'20-Day Khatma'**
-  String get khatma20DaysTitle;
-
   /// Daily portion subtitle: 1.5 Juz
   ///
   /// In en, this message translates to:
   /// **'Daily portion: 1.5 Juz'**
   String get khatmaDailyWirdJuzAndHalf;
-
-  /// 15-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'15-Day Khatma'**
-  String get khatma15DaysTitle;
 
   /// Daily portion subtitle: two Juz
   ///
@@ -6282,35 +4326,17 @@ abstract class AppLocalizations {
   /// **'Daily portion: two Juz'**
   String get khatmaDailyWirdTwoJuz;
 
-  /// 10-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'10-Day Khatma'**
-  String get khatma10DaysTitle;
-
   /// Daily portion subtitle: 3 Juz
   ///
   /// In en, this message translates to:
   /// **'Daily portion: 3 Juz'**
   String get khatmaDailyWird3Juz;
 
-  /// 6-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'6-Day Khatma'**
-  String get khatma6DaysTitle;
-
   /// Daily portion subtitle: 5 Juz
   ///
   /// In en, this message translates to:
   /// **'Daily portion: 5 Juz'**
   String get khatmaDailyWird5Juz;
-
-  /// 3-day Khatma program title
-  ///
-  /// In en, this message translates to:
-  /// **'3-Day Khatma'**
-  String get khatma3DaysTitle;
 
   /// Daily portion subtitle: 10 Juz
   ///
@@ -6324,35 +4350,17 @@ abstract class AppLocalizations {
   /// **'Start Khatma From'**
   String get khatmaStartFromTitle;
 
-  /// Option to start from the beginning of the Quran
-  ///
-  /// In en, this message translates to:
-  /// **'Beginning of the Quran'**
-  String get khatmaFromBeginning;
-
   /// Subtitle for starting from the beginning
   ///
   /// In en, this message translates to:
   /// **'Start from Al-Fatihah'**
   String get khatmaFromBeginningSubtitle;
 
-  /// Option to start from a specific portion
-  ///
-  /// In en, this message translates to:
-  /// **'Specific Portion'**
-  String get khatmaSpecificWird;
-
   /// Subtitle for starting from a specific portion
   ///
   /// In en, this message translates to:
   /// **'Choose a day from the portions list'**
   String get khatmaSpecificWirdSubtitle;
-
-  /// Title for the active Khatma statistics page
-  ///
-  /// In en, this message translates to:
-  /// **'Khatma Statistics'**
-  String get khatmaStatsTitle;
 
   /// Progress indicator showing current day out of total days
   ///
@@ -6413,18 +4421,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Khatma'**
   String get khatmaLegendKhatma;
-
-  /// Status: wird completed for today
-  ///
-  /// In en, this message translates to:
-  /// **'Completed'**
-  String get khatmaWirdCompleted;
-
-  /// Status: wird in progress for today
-  ///
-  /// In en, this message translates to:
-  /// **'In Progress'**
-  String get khatmaWirdInProgress;
 
   /// Legend label for commitment ring
   ///
@@ -6492,12 +4488,6 @@ abstract class AppLocalizations {
   /// **'All Portions'**
   String get khatmaAllWirds;
 
-  /// Subtitle for the all wirds tile
-  ///
-  /// In en, this message translates to:
-  /// **'View all portions'**
-  String get khatmaViewAllWirds;
-
   /// Title for delete Khatma option and dialog
   ///
   /// In en, this message translates to:
@@ -6533,18 +4523,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete the current Khatma and erase all your progress data?'**
   String get khatmaDeleteConfirmContent;
-
-  /// AM time indicator used in reminder time display
-  ///
-  /// In en, this message translates to:
-  /// **'AM'**
-  String get khatmaAmIndicator;
-
-  /// PM time indicator used in reminder time display
-  ///
-  /// In en, this message translates to:
-  /// **'PM'**
-  String get khatmaPmIndicator;
 
   /// Daily portion subtitle with pages count
   ///
@@ -6642,12 +4620,6 @@ abstract class AppLocalizations {
   /// **'Zoomed'**
   String get mushafDisplayZoomed;
 
-  /// Mushaf page header surah label
-  ///
-  /// In en, this message translates to:
-  /// **'Surah {name}'**
-  String mushafSurahHeader(String name);
-
   /// Mushaf page header juz label
   ///
   /// In en, this message translates to:
@@ -6665,12 +4637,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reading Mode'**
   String get settingsReadingMode;
-
-  /// Settings section header for horizontal layout
-  ///
-  /// In en, this message translates to:
-  /// **'Horizontal Layout'**
-  String get settingsHorizontalLayout;
 
   /// Settings section header for flip direction
   ///
@@ -6756,12 +4722,6 @@ abstract class AppLocalizations {
   /// **'Previous Surah'**
   String get previousSurah;
 
-  /// Scroll to top navigation button label
-  ///
-  /// In en, this message translates to:
-  /// **'To Top'**
-  String get scrollToTop;
-
   /// Message when no similar ayahs are found
   ///
   /// In en, this message translates to:
@@ -6792,41 +4752,11 @@ abstract class AppLocalizations {
   /// **'Prayer Times'**
   String get prayerTimesWidget;
 
-  /// Header subtitle for the prayer-widget tab
-  ///
-  /// In en, this message translates to:
-  /// **'Stay on time for every prayer'**
-  String get prayerWidgetTagline;
-
-  /// Title of the section that adds the prayer widget to the home screen
-  ///
-  /// In en, this message translates to:
-  /// **'Add Prayer Widget'**
-  String get addPrayerWidgetTitle;
-
-  /// Body of the prayer widget add section
-  ///
-  /// In en, this message translates to:
-  /// **'Pin the Huda Prayer widget to your home screen to see the next prayer with a live countdown. Calculations run on-device using your saved location.'**
-  String get addPrayerWidgetDescription;
-
   /// Button text to add the prayer widget
   ///
   /// In en, this message translates to:
   /// **'Add to home screen'**
   String get addPrayerWidget;
-
-  /// Button text to open the prayer widget customization page
-  ///
-  /// In en, this message translates to:
-  /// **'Customize'**
-  String get customizePrayerWidget;
-
-  /// Title of the prayer widget customization screen
-  ///
-  /// In en, this message translates to:
-  /// **'Customize prayer widget'**
-  String get prayerWidgetCustomization;
 
   /// No description provided for @prayerWidgetTimeFormat.
   ///
@@ -6845,12 +4775,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'24-hour'**
   String get prayerWidgetTwentyFourHour;
-
-  /// Label above the in-app preview
-  ///
-  /// In en, this message translates to:
-  /// **'Live preview'**
-  String get prayerWidgetPreview;
 
   /// Section title for design picker
   ///
@@ -6906,12 +4830,6 @@ abstract class AppLocalizations {
   /// **'Background'**
   String get background;
 
-  /// Toggle for showing background fill
-  ///
-  /// In en, this message translates to:
-  /// **'Show background'**
-  String get enableBackground;
-
   /// Custom background color picker label
   ///
   /// In en, this message translates to:
@@ -6966,18 +4884,6 @@ abstract class AppLocalizations {
   /// **'Automatic'**
   String get automatic;
 
-  /// Latin/Arabic-numeral option
-  ///
-  /// In en, this message translates to:
-  /// **'Latin (1, 2, 3)'**
-  String get latinNumerals;
-
-  /// Arabic-numeral option
-  ///
-  /// In en, this message translates to:
-  /// **'Arabic (١, ٢, ٣)'**
-  String get arabicNumerals;
-
   /// Section title for advanced settings
   ///
   /// In en, this message translates to:
@@ -6989,48 +4895,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset to defaults'**
   String get resetWidgetCustomization;
-
-  /// Confirmation prompt for resetting customization
-  ///
-  /// In en, this message translates to:
-  /// **'Reset all prayer widget customization to defaults?'**
-  String get resetWidgetCustomizationConfirm;
-
-  /// Hint shown when no custom color is selected
-  ///
-  /// In en, this message translates to:
-  /// **'Follow app theme'**
-  String get followAppTheme;
-
-  /// Empty-state title shown when no coordinates are saved
-  ///
-  /// In en, this message translates to:
-  /// **'Set your location'**
-  String get prayerWidgetEmptyTitle;
-
-  /// Empty-state body
-  ///
-  /// In en, this message translates to:
-  /// **'Open Huda and grant location access so the widget can compute prayer times for you.'**
-  String get prayerWidgetEmptyBody;
-
-  /// Empty-state CTA
-  ///
-  /// In en, this message translates to:
-  /// **'Open Prayer Times'**
-  String get prayerWidgetEmptyAction;
-
-  /// Label above the previous-prayer time
-  ///
-  /// In en, this message translates to:
-  /// **'Previous prayer'**
-  String get previousPrayer;
-
-  /// Label above the countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Time until next prayer'**
-  String get timeUntilNextPrayer;
 
   /// Button to manually refresh the prayer widget
   ///
@@ -7578,12 +5442,6 @@ abstract class AppLocalizations {
   /// **'Chapter {number}'**
   String chapter(int number);
 
-  /// No description provided for @narratedBy.
-  ///
-  /// In en, this message translates to:
-  /// **'Narrated by'**
-  String get narratedBy;
-
   /// No description provided for @continueListening.
   ///
   /// In en, this message translates to:
@@ -7613,24 +5471,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue Radio'**
   String get continueRadio;
-
-  /// resumeReciter
-  ///
-  /// In en, this message translates to:
-  /// **'Resume {reciterName}'**
-  String resumeReciter(String reciterName);
-
-  /// No description provided for @noReciterActivityDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Start listening to Quran audio to see your progress'**
-  String get noReciterActivityDescription;
-
-  /// No description provided for @noRadioActivityDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Listen to Quran radio to see your progress'**
-  String get noRadioActivityDescription;
 
   /// No description provided for @playbackSpeed.
   ///
@@ -7692,12 +5532,6 @@ abstract class AppLocalizations {
   /// **'Chapter {current} of {total}'**
   String chapterProgress(int current, int total);
 
-  /// Label on audio card showing the language of the audio content
-  ///
-  /// In en, this message translates to:
-  /// **'In {language}'**
-  String audioInLanguage(String language);
-
   /// AI chat error shown when there is no internet connection
   ///
   /// In en, this message translates to:
@@ -7734,24 +5568,6 @@ abstract class AppLocalizations {
   /// **'Email (optional — for a reply)'**
   String get emailOptional;
 
-  /// Button to manually search for a location
-  ///
-  /// In en, this message translates to:
-  /// **'Search Manually'**
-  String get searchManually;
-
-  /// Message shown when location permission is denied
-  ///
-  /// In en, this message translates to:
-  /// **'Location permission denied. Please allow location access in your device settings.'**
-  String get locationPermissionDenied;
-
-  /// Message shown when location permission is permanently denied
-  ///
-  /// In en, this message translates to:
-  /// **'Location permission permanently denied. Please allow location access in your device settings.'**
-  String get locationPermissionPermanentlyDenied;
-
   /// Snackbar shown when error details are copied to clipboard
   ///
   /// In en, this message translates to:
@@ -7769,12 +5585,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copy'**
   String get copyButton;
-
-  /// Fallback error summary when no message is available
-  ///
-  /// In en, this message translates to:
-  /// **'Unknown error occurred'**
-  String get unknownErrorOccurred;
 
   /// Validation message when the feedback message is empty
   ///
@@ -7811,12 +5621,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your feedback has been sent. We\'ll use it to improve the app.'**
   String get feedbackThankYouMessage;
-
-  /// Title for the screenshot feedback description field
-  ///
-  /// In en, this message translates to:
-  /// **'What happened?'**
-  String get whatHappened;
 
   /// Hint for the screenshot feedback description field
   ///
@@ -8340,12 +6144,6 @@ abstract class AppLocalizations {
   /// **'Quran reading and Khatma progress first.'**
   String get themeQuranJourneyDescription;
 
-  /// No description provided for @primaryCards.
-  ///
-  /// In en, this message translates to:
-  /// **'Primary cards'**
-  String get primaryCards;
-
   /// No description provided for @onHome.
   ///
   /// In en, this message translates to:
@@ -8364,12 +6162,6 @@ abstract class AppLocalizations {
   /// **'Show Less'**
   String get showLess;
 
-  /// No description provided for @moveToPrimary.
-  ///
-  /// In en, this message translates to:
-  /// **'Move to primary'**
-  String get moveToPrimary;
-
   /// No description provided for @moveToHome.
   ///
   /// In en, this message translates to:
@@ -8387,18 +6179,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sections'**
   String get homeSections;
-
-  /// No description provided for @resetTheme.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset theme'**
-  String get resetTheme;
-
-  /// No description provided for @reorderHomeItem.
-  ///
-  /// In en, this message translates to:
-  /// **'Reorder item'**
-  String get reorderHomeItem;
 
   /// No description provided for @moveUp.
   ///
@@ -8429,12 +6209,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Move less-used tools here to keep Home simple.'**
   String get viewMoreEmpty;
-
-  /// No description provided for @applyChanges.
-  ///
-  /// In en, this message translates to:
-  /// **'Apply'**
-  String get applyChanges;
 
   /// No description provided for @discardChanges.
   ///
@@ -8477,12 +6251,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Set your location to show prayer times'**
   String get prayerSetupRequired;
-
-  /// No description provided for @setUpPrayerTimes.
-  ///
-  /// In en, this message translates to:
-  /// **'Set up prayer times'**
-  String get setUpPrayerTimes;
 
   /// No description provided for @gregorianDate.
   ///
@@ -8532,24 +6300,6 @@ abstract class AppLocalizations {
   /// **'Quran tools'**
   String get sectionQuranTools;
 
-  /// No description provided for @homeMoreTools.
-  ///
-  /// In en, this message translates to:
-  /// **'More tools'**
-  String get homeMoreTools;
-
-  /// No description provided for @saveHomeChangesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Save your home changes?'**
-  String get saveHomeChangesTitle;
-
-  /// No description provided for @homeChangesNotApplied.
-  ///
-  /// In en, this message translates to:
-  /// **'The current layout and theme changes have not been applied.'**
-  String get homeChangesNotApplied;
-
   /// No description provided for @keepEditing.
   ///
   /// In en, this message translates to:
@@ -8562,12 +6312,6 @@ abstract class AppLocalizations {
   /// **'Discard changes'**
   String get discardChangesAction;
 
-  /// No description provided for @unsaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Unsaved'**
-  String get unsaved;
-
   /// No description provided for @saving.
   ///
   /// In en, this message translates to:
@@ -8579,12 +6323,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Press and drag any card to reorder. Use the button to move a tool between Home and View More.'**
   String get customizeHomeHint;
-
-  /// No description provided for @themeResetMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'This theme was reset to its default layout.'**
-  String get themeResetMessage;
 
   /// No description provided for @homeChangesSaveFailed.
   ///
@@ -8615,12 +6353,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notice'**
   String get snackbarNeutral;
-
-  /// No description provided for @notificationPermissionDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on notifications to receive the reminders you choose, right when they matter.'**
-  String get notificationPermissionDescription;
 
   /// No description provided for @enableNotifications.
   ///
@@ -8754,18 +6486,6 @@ abstract class AppLocalizations {
   /// **'Huda can schedule prayer alerts and reminders for their exact time.'**
   String get exactAlarmsReadyDescription;
 
-  /// No description provided for @quranWidgetTagline.
-  ///
-  /// In en, this message translates to:
-  /// **'A new ayah and translation every hour'**
-  String get quranWidgetTagline;
-
-  /// No description provided for @quranWidgetCustomization.
-  ///
-  /// In en, this message translates to:
-  /// **'Quran widget customization'**
-  String get quranWidgetCustomization;
-
   /// No description provided for @quranWidgetTypography.
   ///
   /// In en, this message translates to:
@@ -8808,12 +6528,6 @@ abstract class AppLocalizations {
   /// **'Bold translation'**
   String get boldTranslation;
 
-  /// No description provided for @quranWidgetPreview.
-  ///
-  /// In en, this message translates to:
-  /// **'Live preview'**
-  String get quranWidgetPreview;
-
   /// No description provided for @translationLanguage.
   ///
   /// In en, this message translates to:
@@ -8832,41 +6546,11 @@ abstract class AppLocalizations {
   /// **'Translation by {source}'**
   String translationSource(String source);
 
-  /// No description provided for @customColors.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom colors'**
-  String get customColors;
-
-  /// No description provided for @customColorsDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Fine-tune the widget while keeping every line readable.'**
-  String get customColorsDescription;
-
-  /// No description provided for @ayahColor.
-  ///
-  /// In en, this message translates to:
-  /// **'Ayah color'**
-  String get ayahColor;
-
-  /// No description provided for @translationColor.
-  ///
-  /// In en, this message translates to:
-  /// **'Translation color'**
-  String get translationColor;
-
   /// No description provided for @accentColor.
   ///
   /// In en, this message translates to:
   /// **'Accent color'**
   String get accentColor;
-
-  /// No description provided for @customizeColors.
-  ///
-  /// In en, this message translates to:
-  /// **'Customize colors'**
-  String get customizeColors;
 
   /// No description provided for @quranWidgetUpdated.
   ///
@@ -8885,18 +6569,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Refreshing widget…'**
   String get quranWidgetUpdating;
-
-  /// No description provided for @customTheme.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom'**
-  String get customTheme;
-
-  /// No description provided for @colorContrastTooLow.
-  ///
-  /// In en, this message translates to:
-  /// **'This color does not have enough contrast.'**
-  String get colorContrastTooLow;
 
   /// No description provided for @arabicTranslationHidden.
   ///
@@ -8994,83 +6666,17 @@ abstract class AppLocalizations {
   /// **'The response was interrupted. Try again to continue.'**
   String get chatErrorInterrupted;
 
-  /// No description provided for @prayerTravelUpdates.
-  ///
-  /// In en, this message translates to:
-  /// **'Update prayer times while traveling'**
-  String get prayerTravelUpdates;
-
-  /// No description provided for @prayerTravelUpdatesDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'When enabled, Huda can update prayer times, notifications, and widgets after meaningful travel without opening the app.'**
-  String get prayerTravelUpdatesDescription;
-
-  /// No description provided for @prayerLocationMode.
-  ///
-  /// In en, this message translates to:
-  /// **'Location mode'**
-  String get prayerLocationMode;
-
   /// No description provided for @manual.
   ///
   /// In en, this message translates to:
   /// **'Manual'**
   String get manual;
 
-  /// No description provided for @backgroundTravelUpdates.
-  ///
-  /// In en, this message translates to:
-  /// **'Background travel updates'**
-  String get backgroundTravelUpdates;
-
-  /// No description provided for @lastLocationValidation.
-  ///
-  /// In en, this message translates to:
-  /// **'Last location validation'**
-  String get lastLocationValidation;
-
-  /// No description provided for @lastPrayerScheduleActivation.
-  ///
-  /// In en, this message translates to:
-  /// **'Last schedule activation'**
-  String get lastPrayerScheduleActivation;
-
-  /// No description provided for @travelUpdatesEnabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Enabled'**
-  String get travelUpdatesEnabled;
-
-  /// No description provided for @travelForegroundOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'Foreground only'**
-  String get travelForegroundOnly;
-
   /// No description provided for @travelPermissionRequired.
   ///
   /// In en, this message translates to:
   /// **'Permission required'**
   String get travelPermissionRequired;
-
-  /// No description provided for @travelUpdatesUnsupported.
-  ///
-  /// In en, this message translates to:
-  /// **'Unsupported'**
-  String get travelUpdatesUnsupported;
-
-  /// No description provided for @travelUpdatesUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Unavailable'**
-  String get travelUpdatesUnavailable;
-
-  /// No description provided for @travelUpdatesDisabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Disabled'**
-  String get travelUpdatesDisabled;
 
   /// No description provided for @travelAllowLocation.
   ///
@@ -9096,18 +6702,6 @@ abstract class AppLocalizations {
   /// **'To update prayer times while Huda is closed, open the app\'s location permissions and select “{optionLabel}”.'**
   String travelBackgroundPermissionInstructions(String optionLabel);
 
-  /// No description provided for @notYet.
-  ///
-  /// In en, this message translates to:
-  /// **'Not yet'**
-  String get notYet;
-
-  /// No description provided for @prayerNotificationIssueTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer notifications need attention'**
-  String get prayerNotificationIssueTitle;
-
   /// No description provided for @prayerNotificationIssueMessage.
   ///
   /// In en, this message translates to:
@@ -9119,12 +6713,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get prayerNotificationRetry;
-
-  /// No description provided for @prayerNotificationRetrying.
-  ///
-  /// In en, this message translates to:
-  /// **'Scheduling prayer notifications…'**
-  String get prayerNotificationRetrying;
 
   /// No description provided for @prayerNotificationsScheduledTitle.
   ///
@@ -9210,12 +6798,6 @@ abstract class AppLocalizations {
   /// **'Playback stops after the last selected ayah.'**
   String get audioRangeEndHint;
 
-  /// No description provided for @audioPlayRange.
-  ///
-  /// In en, this message translates to:
-  /// **'Play selection'**
-  String get audioPlayRange;
-
   /// No description provided for @downloadAyah.
   ///
   /// In en, this message translates to:
@@ -9240,78 +6822,6 @@ abstract class AppLocalizations {
   /// **'Ayah {current} of {total}'**
   String playingAyahOfTotal(int current, int total);
 
-  /// No description provided for @prayerVerificationPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Location verification pending'**
-  String get prayerVerificationPending;
-
-  /// No description provided for @prayerVerificationGuidance.
-  ///
-  /// In en, this message translates to:
-  /// **'Some location details still need verification. Come back when you have internet and retry to improve prayer-time and notification reliability.'**
-  String get prayerVerificationGuidance;
-
-  /// No description provided for @prayerUpdatesIncomplete.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer updates incomplete'**
-  String get prayerUpdatesIncomplete;
-
-  /// No description provided for @prayerUpdatesGuidance.
-  ///
-  /// In en, this message translates to:
-  /// **'Some updates could not be completed. Come back when you have internet to retry. Local recovery can also be retried offline.'**
-  String get prayerUpdatesGuidance;
-
-  /// No description provided for @prayerDetailsPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Location details pending'**
-  String get prayerDetailsPending;
-
-  /// No description provided for @prayerSavingPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Saving failed. Retry to save these prayer updates.'**
-  String get prayerSavingPending;
-
-  /// No description provided for @prayerWidgetPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer widget update pending'**
-  String get prayerWidgetPending;
-
-  /// No description provided for @prayerLocationPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Location update pending. Check location permission and device location services, then retry.'**
-  String get prayerLocationPending;
-
-  /// No description provided for @prayerCalculationPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer calculation update pending'**
-  String get prayerCalculationPending;
-
-  /// No description provided for @prayerNativePending.
-  ///
-  /// In en, this message translates to:
-  /// **'Background location update pending'**
-  String get prayerNativePending;
-
-  /// No description provided for @prayerPreviousCoverage.
-  ///
-  /// In en, this message translates to:
-  /// **'Previously acknowledged notifications may still follow the previous location; current delivery is not confirmed.'**
-  String get prayerPreviousCoverage;
-
-  /// No description provided for @prayerVerificationRetryGuidance.
-  ///
-  /// In en, this message translates to:
-  /// **'Some location details still need verification. Retry to update prayer times and notifications.'**
-  String get prayerVerificationRetryGuidance;
-
   /// No description provided for @prayerNotificationsBridgedUntil.
   ///
   /// In en, this message translates to:
@@ -9323,54 +6833,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Location access'**
   String get prayerIssueLocationAccess;
-
-  /// No description provided for @prayerIssuePlaceName.
-  ///
-  /// In en, this message translates to:
-  /// **'Place name'**
-  String get prayerIssuePlaceName;
-
-  /// No description provided for @prayerIssueSaving.
-  ///
-  /// In en, this message translates to:
-  /// **'Saving'**
-  String get prayerIssueSaving;
-
-  /// No description provided for @prayerIssueCalculation.
-  ///
-  /// In en, this message translates to:
-  /// **'Calculation'**
-  String get prayerIssueCalculation;
-
-  /// No description provided for @prayerIssueBackgroundLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'Background location'**
-  String get prayerIssueBackgroundLocation;
-
-  /// No description provided for @prayerIssueWidget.
-  ///
-  /// In en, this message translates to:
-  /// **'Home widget'**
-  String get prayerIssueWidget;
-
-  /// No description provided for @prayerIssueRetrying.
-  ///
-  /// In en, this message translates to:
-  /// **'Retrying…'**
-  String get prayerIssueRetrying;
-
-  /// No description provided for @prayerUpdatingTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Updating prayer times…'**
-  String get prayerUpdatingTitle;
-
-  /// No description provided for @prayerUpdatingMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'This only takes a few seconds.'**
-  String get prayerUpdatingMessage;
 
   /// No description provided for @prayerCountryQuestion.
   ///
@@ -9413,24 +6875,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Whole year'**
   String get prayerCalendarWholeYear;
-
-  /// No description provided for @prayerCalendarChooseDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose date'**
-  String get prayerCalendarChooseDate;
-
-  /// No description provided for @prayerCalendarChooseMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose month'**
-  String get prayerCalendarChooseMonth;
-
-  /// No description provided for @prayerCalendarChooseYear.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose year'**
-  String get prayerCalendarChooseYear;
 
   /// No description provided for @prayerCalendarGenerate.
   ///
@@ -9540,30 +6984,6 @@ abstract class AppLocalizations {
   /// **'No prayer notifications are scheduled yet. Tap retry to schedule them.'**
   String get prayerNotificationsNoneScheduled;
 
-  /// No description provided for @prayerNotificationsUnsupported.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer notifications aren\'t available on this device.'**
-  String get prayerNotificationsUnsupported;
-
-  /// No description provided for @prayerUpdatesLocalGuidance.
-  ///
-  /// In en, this message translates to:
-  /// **'Some updates couldn\'t be completed. Tap Retry to finish them.'**
-  String get prayerUpdatesLocalGuidance;
-
-  /// No description provided for @prayerSetupTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Set up prayer times'**
-  String get prayerSetupTitle;
-
-  /// No description provided for @prayerSetupSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Finish these steps to see accurate times and get an alert at each prayer.'**
-  String get prayerSetupSubtitle;
-
   /// No description provided for @prayerSetupStepLabel.
   ///
   /// In en, this message translates to:
@@ -9582,29 +7002,11 @@ abstract class AppLocalizations {
   /// **'Huda needs your location to calculate prayer times for where you are.'**
   String get prayerSetupLocationIntro;
 
-  /// No description provided for @prayerSetupLocationDeclined.
-  ///
-  /// In en, this message translates to:
-  /// **'Location access was declined. Allow it to calculate times automatically, or search for your city.'**
-  String get prayerSetupLocationDeclined;
-
-  /// No description provided for @prayerSetupLocationBlocked.
-  ///
-  /// In en, this message translates to:
-  /// **'Location access is off for Huda. Turn it on in Settings — prayer times load automatically when you come back.'**
-  String get prayerSetupLocationBlocked;
-
   /// No description provided for @prayerSetupLocationServicesOff.
   ///
   /// In en, this message translates to:
   /// **'Location services are off on this device. Turn them on — prayer times load automatically when you come back.'**
   String get prayerSetupLocationServicesOff;
-
-  /// No description provided for @prayerSetupLocationFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Huda couldn\'t find your location. Try again, or search for your city instead.'**
-  String get prayerSetupLocationFailed;
 
   /// No description provided for @prayerSetupUseMyLocation.
   ///
@@ -9635,24 +7037,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reliable reminders'**
   String get prayerSetupReliableTitle;
-
-  /// No description provided for @prayerSetupReliableHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Keep Android from delaying prayer alerts.'**
-  String get prayerSetupReliableHint;
-
-  /// No description provided for @prayerAttentionCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 thing needs attention} other{{count} things need attention}}'**
-  String prayerAttentionCount(int count);
-
-  /// No description provided for @prayerAttentionMore.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, other{+{count} more}}'**
-  String prayerAttentionMore(int count);
 
   /// No description provided for @prayerTimelineNext.
   ///
@@ -9720,12 +7104,6 @@ abstract class AppLocalizations {
   /// **'Alerts are on'**
   String get prayerSetupAlertsOn;
 
-  /// No description provided for @prayerSetupAlertsSkipped.
-  ///
-  /// In en, this message translates to:
-  /// **'Off — you can turn them on anytime from this page'**
-  String get prayerSetupAlertsSkipped;
-
   /// No description provided for @prayerSetupReliableIntro.
   ///
   /// In en, this message translates to:
@@ -9737,24 +7115,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Alerts will arrive on time'**
   String get prayerSetupReliableOn;
-
-  /// No description provided for @prayerSetupSkip.
-  ///
-  /// In en, this message translates to:
-  /// **'Skip for now'**
-  String get prayerSetupSkip;
-
-  /// No description provided for @prayerSetupSkipped.
-  ///
-  /// In en, this message translates to:
-  /// **'Skipped'**
-  String get prayerSetupSkipped;
-
-  /// No description provided for @prayerSetupLocationHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Times calculated for where you are.'**
-  String get prayerSetupLocationHint;
 
   /// No description provided for @prayerHeroRemaining.
   ///
@@ -9834,12 +7194,6 @@ abstract class AppLocalizations {
   /// **'{prayer} in {time}'**
   String macPrayerMenuNameCountdown(String prayer, String time);
 
-  /// No description provided for @macPrayerMenuCountdownOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'in {time}'**
-  String macPrayerMenuCountdownOnly(String time);
-
   /// No description provided for @macPrayerMenuIconOnly.
   ///
   /// In en, this message translates to:
@@ -9881,12 +7235,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show taskbar countdown'**
   String get windowsPrayerShowTaskbar;
-
-  /// No description provided for @windowsPrayerShowTray.
-  ///
-  /// In en, this message translates to:
-  /// **'Show tray icon'**
-  String get windowsPrayerShowTray;
 
   /// No description provided for @windowsPrayerStartup.
   ///
@@ -10056,12 +7404,6 @@ abstract class AppLocalizations {
   /// **'Could not update the Windows countdown. Try again.'**
   String get windowsPrayerError;
 
-  /// No description provided for @windowsPrayerEnabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable prayer reminders'**
-  String get windowsPrayerEnabled;
-
   /// No description provided for @windowsPrayerFocusMode.
   ///
   /// In en, this message translates to:
@@ -10092,18 +7434,6 @@ abstract class AppLocalizations {
   /// **'Dismiss or press Escape at any time.'**
   String get windowsPrayerFocusExitHint;
 
-  /// No description provided for @windowsPrayerAudioPlaying.
-  ///
-  /// In en, this message translates to:
-  /// **'Adhan is playing'**
-  String get windowsPrayerAudioPlaying;
-
-  /// No description provided for @windowsPrayerFocusActive.
-  ///
-  /// In en, this message translates to:
-  /// **'Focus Mode is active'**
-  String get windowsPrayerFocusActive;
-
   /// No description provided for @windowsPrayerNextNotification.
   ///
   /// In en, this message translates to:
@@ -10127,12 +7457,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time remaining'**
   String get windowsPrayerFocusTimeRemaining;
-
-  /// No description provided for @androidAdhanDownload.
-  ///
-  /// In en, this message translates to:
-  /// **'Download'**
-  String get androidAdhanDownload;
 
   /// No description provided for @macPrayerLoginSettings.
   ///
@@ -10872,12 +8196,6 @@ abstract class AppLocalizations {
   /// **'{minutes} min'**
   String prayerAlertLengthMinutes(String minutes);
 
-  /// No description provided for @prayerAlertLengthCustom.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom'**
-  String get prayerAlertLengthCustom;
-
   /// No description provided for @prayerAlertFadeIn.
   ///
   /// In en, this message translates to:
@@ -10973,12 +8291,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stop'**
   String get prayerAlertSoundStop;
-
-  /// No description provided for @prayerAlertSoundWhole.
-  ///
-  /// In en, this message translates to:
-  /// **'Listen to the whole adhan'**
-  String get prayerAlertSoundWhole;
 
   /// No description provided for @prayerAlertSoundSelectAfter.
   ///
@@ -11081,12 +8393,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'When an alarm can\'t be set'**
   String get prayerAlertFallback;
-
-  /// No description provided for @prayerAlertTestTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Send a test'**
-  String get prayerAlertTestTitle;
 
   /// No description provided for @prayerAlertTestHint.
   ///
@@ -11705,6 +9011,5400 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'On iOS before 26, Sahur plays a notification sound for about 30 seconds, once. It does not loop.'**
   String get sahurNotificationOnlyDescription;
+
+  /// Shown on a retry button after the person taps it, while the retry runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Retrying…'**
+  String get stateRetrying;
+
+  /// Shown while automatic background work (a refresh or sync) runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating…'**
+  String get stateUpdating;
+
+  /// Under the offline message when the screen still shows content saved on the device.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing what\'s saved on this device.'**
+  String get stateOfflineSaved;
+
+  /// Athkar: eyebrow above the list title, the book the athkar come from (Hisn al-Muslim)
+  ///
+  /// In en, this message translates to:
+  /// **'Hisn al-Muslim'**
+  String get athkarSource;
+
+  /// Athkar: section of the chapters read every day (waking, morning and evening, after prayer, sleep)
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get athkarDaily;
+
+  /// Athkar: section with all the other chapters
+  ///
+  /// In en, this message translates to:
+  /// **'For every occasion'**
+  String get athkarOccasions;
+
+  /// Athkar chapter: how many of its dhikr are done
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} done'**
+  String athkarProgress(int done, int total);
+
+  /// Athkar: how many times a dhikr is said, before counting starts
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Once} other{{count} times}}'**
+  String athkarRepeatTimes(int count);
+
+  /// Athkar: repetitions left for a dhikr while counting
+  ///
+  /// In en, this message translates to:
+  /// **'{count} left'**
+  String athkarLeft(int count);
+
+  /// Athkar: screen-reader hint on a dhikr card
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to count'**
+  String get athkarTapToCount;
+
+  /// Athkar: title when every dhikr of a chapter is done
+  ///
+  /// In en, this message translates to:
+  /// **'All done'**
+  String get athkarAllDone;
+
+  /// Athkar: message under 'All done'
+  ///
+  /// In en, this message translates to:
+  /// **'May Allah accept it from you.'**
+  String get athkarAllDoneMessage;
+
+  /// Athkar: button that resets every dhikr of the chapter
+  ///
+  /// In en, this message translates to:
+  /// **'Start again'**
+  String get athkarStartAgain;
+
+  /// Athkar: toast after a dhikr's count is reset, next to Undo
+  ///
+  /// In en, this message translates to:
+  /// **'Count reset'**
+  String get athkarCountReset;
+
+  /// Athkar: error message when the athkar can't be loaded
+  ///
+  /// In en, this message translates to:
+  /// **'The athkar couldn\'t be loaded.'**
+  String get athkarLoadError;
+
+  /// Athkar: toast when a dhikr's audio can't play
+  ///
+  /// In en, this message translates to:
+  /// **'This recitation couldn\'t be played.'**
+  String get athkarAudioError;
+
+  /// Athkar: clears the chapter search
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get athkarClearSearch;
+
+  /// Athkar: label of a dhikr's play button
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get athkarListen;
+
+  /// Share sheet: saves the share image to the device's photos
+  ///
+  /// In en, this message translates to:
+  /// **'Save image'**
+  String get shareSaveImage;
+
+  /// Share sheet: toast after the image is saved
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to your photos'**
+  String get shareImageSaved;
+
+  /// Share sheet: toast when saving images isn't implemented on this platform yet
+  ///
+  /// In en, this message translates to:
+  /// **'Saving images isn\'t available on this device yet.'**
+  String get shareSaveUnavailable;
+
+  /// Share sheet: Save image tile after the image is saved on a desktop (Downloads folder)
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to Downloads'**
+  String get shareImageSavedDownloads;
+
+  /// Share sheet: banner when saving the image failed on a platform that supports saving
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save the image. Try again.'**
+  String get shareSaveFailed;
+
+  /// Share sheet: tick box that adds the dhikr's translation to the share image and text
+  ///
+  /// In en, this message translates to:
+  /// **'Include translation'**
+  String get shareIncludeTranslation;
+
+  /// Hadith: section heading for the Kutub al-Sittah (Bukhari, Muslim, Nasa'i, Abu Dawud, Tirmidhi, Ibn Majah)
+  ///
+  /// In en, this message translates to:
+  /// **'The Six Books'**
+  String get hadithSixBooks;
+
+  /// Hadith: section heading for the other collections
+  ///
+  /// In en, this message translates to:
+  /// **'More collections'**
+  String get hadithMoreCollections;
+
+  /// Hadith: how many hadith a collection or book has
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hadith} other{{count} hadith}}'**
+  String hadithCount(int count);
+
+  /// Hadith: how many books a collection has
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 book} other{{count} books}}'**
+  String hadithBookCount(int count);
+
+  /// Hadith: the hadith numbers a book covers
+  ///
+  /// In en, this message translates to:
+  /// **'Hadith {start}–{end}'**
+  String hadithRange(String start, String end);
+
+  /// Hadith: a hadith's number, read out by screen readers
+  ///
+  /// In en, this message translates to:
+  /// **'Hadith {number}'**
+  String hadithNumber(String number);
+
+  /// Hadith: hint in the field that filters a collection's books
+  ///
+  /// In en, this message translates to:
+  /// **'Search books'**
+  String get hadithSearchBooks;
+
+  /// Hadith: wide windows, the reader pane before a book is chosen
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a book to start reading'**
+  String get hadithChooseBook;
+
+  /// Hadith: which page of a book's hadith is shown
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
+  String hadithPageOf(int page, int total);
+
+  /// Hadith: error message when collections, books or hadith can't be loaded
+  ///
+  /// In en, this message translates to:
+  /// **'The hadith couldn\'t be loaded.'**
+  String get hadithLoadError;
+
+  /// Hadith: title of the share sheet for one hadith
+  ///
+  /// In en, this message translates to:
+  /// **'Share hadith'**
+  String get hadithShare;
+
+  /// Hadith: eyebrow over an open book's title, its number in the collection
+  ///
+  /// In en, this message translates to:
+  /// **'Book {number}'**
+  String hadithBookNumber(String number);
+
+  /// Hadith: an open book with no hadith
+  ///
+  /// In en, this message translates to:
+  /// **'This book has no hadith yet.'**
+  String get hadithBookEmpty;
+
+  /// Hadith: error message when a collection's books can't be loaded
+  ///
+  /// In en, this message translates to:
+  /// **'This collection\'s books couldn\'t be loaded.'**
+  String get hadithBooksLoadError;
+
+  /// Hadith: wide windows, the index row that shows the collection's title page and introduction
+  ///
+  /// In en, this message translates to:
+  /// **'About this collection'**
+  String get hadithAbout;
+
+  /// Zakat: eyebrow above the amount of zakat to pay
+  ///
+  /// In en, this message translates to:
+  /// **'Zakat due'**
+  String get zakatDueLabel;
+
+  /// Zakat: label under the nisab pan of the balance
+  ///
+  /// In en, this message translates to:
+  /// **'Nisab'**
+  String get zakatNisab;
+
+  /// Zakat: how the amount due was found (2.5% of net assets)
+  ///
+  /// In en, this message translates to:
+  /// **'2.5% of {amount}'**
+  String zakatRateOf(String amount);
+
+  /// Zakat: how far net assets are above the nisab
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} above the nisab'**
+  String zakatAboveNisab(String amount);
+
+  /// Zakat: how far net assets are below the nisab
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} below the nisab'**
+  String zakatBelowNisab(String amount);
+
+  /// Zakat: result title before any amount is entered
+  ///
+  /// In en, this message translates to:
+  /// **'Enter what you own'**
+  String get zakatEmptyTitle;
+
+  /// Zakat: result message before any amount is entered
+  ///
+  /// In en, this message translates to:
+  /// **'Add your savings, gold and other assets to see whether they reach the nisab.'**
+  String get zakatEmptyMessage;
+
+  /// Zakat: app bar action that clears every entered amount (with Undo)
+  ///
+  /// In en, this message translates to:
+  /// **'Clear amounts'**
+  String get zakatClearAmounts;
+
+  /// Zakat: toast after clearing the amounts, with Undo
+  ///
+  /// In en, this message translates to:
+  /// **'Amounts cleared'**
+  String get zakatAmountsCleared;
+
+  /// Zakat: phones, the result strip at the bottom that scrolls back to the result
+  ///
+  /// In en, this message translates to:
+  /// **'Show result'**
+  String get zakatShowResult;
+
+  /// Zakat: under the metal price, the nisab weight (e.g. 87.48 grams)
+  ///
+  /// In en, this message translates to:
+  /// **'Nisab is {weight}'**
+  String zakatNisabIs(String weight);
+
+  /// Zakat: error message when the calculation fails
+  ///
+  /// In en, this message translates to:
+  /// **'The calculation couldn\'t be completed.'**
+  String get zakatCalcError;
+
+  /// Zakat: where the metal price comes from (the market feed) and its day
+  ///
+  /// In en, this message translates to:
+  /// **'Market price · {date}'**
+  String zakatPriceMarket(String date);
+
+  /// Zakat: the metal price was typed by the person, not the market price
+  ///
+  /// In en, this message translates to:
+  /// **'Your price'**
+  String get zakatPriceYours;
+
+  /// Zakat: while the market prices update automatically
+  ///
+  /// In en, this message translates to:
+  /// **'Updating gold and silver prices…'**
+  String get zakatPriceUpdating;
+
+  /// Zakat: the market prices could not be updated; the date of the prices still used
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update gold and silver prices. Using prices from {date}.'**
+  String zakatPriceFailed(String date);
+
+  /// Zakat: button that replaces a typed metal price with the market price
+  ///
+  /// In en, this message translates to:
+  /// **'Use market price'**
+  String get zakatUseMarketPrice;
+
+  /// Zakat: note for currencies whose world rate can be far from the local gold market
+  ///
+  /// In en, this message translates to:
+  /// **'Gold prices in {currency} can differ from world prices. Check your local price and enter it if needed.'**
+  String zakatLocalPriceNote(String currency);
+
+  /// Zakat: a metal price per gram
+  ///
+  /// In en, this message translates to:
+  /// **'{price} per gram'**
+  String zakatPerGram(String price);
+
+  /// Zakat: hint of the search field in the currency picker
+  ///
+  /// In en, this message translates to:
+  /// **'Search currencies'**
+  String get zakatCurrencySearch;
+
+  /// Zakat: currency picker section of suggested currencies
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested'**
+  String get zakatCurrencySuggested;
+
+  /// Zakat: currency picker section of every other currency
+  ///
+  /// In en, this message translates to:
+  /// **'All currencies'**
+  String get zakatCurrencyAll;
+
+  /// Zakat: currency picker search found nothing
+  ///
+  /// In en, this message translates to:
+  /// **'No currency matches “{query}”'**
+  String zakatCurrencyNoMatch(String query);
+
+  /// Zakat: toast after a currency change replaced the gold or silver price the person typed
+  ///
+  /// In en, this message translates to:
+  /// **'Your prices were replaced with market prices in {currency}.'**
+  String zakatTypedPricesReplaced(String currency);
+
+  /// Onboarding: welcome step title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Huda'**
+  String get setupWelcomeTitle;
+
+  /// Onboarding: welcome step sentence
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s set Huda up for you. It takes about a minute.'**
+  String get setupWelcomeMessage;
+
+  /// Onboarding: appearance step title
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your look'**
+  String get setupLookTitle;
+
+  /// Onboarding: appearance step explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Light or dark, and a color. You can change both later in Settings.'**
+  String get setupLookMessage;
+
+  /// Onboarding: light theme option
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get setupThemeLight;
+
+  /// Onboarding: dark theme option
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get setupThemeDark;
+
+  /// Onboarding: theme follows the device setting
+  ///
+  /// In en, this message translates to:
+  /// **'Match device'**
+  String get setupThemeSystem;
+
+  /// Onboarding: focus step title (sets the Home theme)
+  ///
+  /// In en, this message translates to:
+  /// **'What will you use Huda for most?'**
+  String get setupFocusTitle;
+
+  /// Onboarding: focus step explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Home puts it first. You can change this anytime from Home.'**
+  String get setupFocusMessage;
+
+  /// Onboarding: focus option
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer'**
+  String get setupFocusPrayer;
+
+  /// Onboarding: focus option
+  ///
+  /// In en, this message translates to:
+  /// **'Quran'**
+  String get setupFocusQuran;
+
+  /// Onboarding: focus option
+  ///
+  /// In en, this message translates to:
+  /// **'Everything'**
+  String get setupFocusEverything;
+
+  /// Onboarding: shown while the location is being found
+  ///
+  /// In en, this message translates to:
+  /// **'Locating…'**
+  String get setupLocating;
+
+  /// Onboarding: proof that prayer times loaded
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {prayer} at {time}'**
+  String setupNextPrayer(String prayer, String time);
+
+  /// Onboarding: Asr step explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Schools differ on when Asr begins. Choose the one you follow.'**
+  String get setupAsrMessage;
+
+  /// Onboarding: the majority Asr calculation
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get setupAsrStandard;
+
+  /// Onboarding: schools that use the standard Asr
+  ///
+  /// In en, this message translates to:
+  /// **'Shafi\'i, Maliki and Hanbali'**
+  String get setupAsrStandardSchools;
+
+  /// Onboarding: what the Hanafi Asr means
+  ///
+  /// In en, this message translates to:
+  /// **'Asr begins later'**
+  String get setupAsrHanafiNote;
+
+  /// Onboarding: marks the pre-selected suggestion
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested'**
+  String get setupSuggested;
+
+  /// Onboarding summary: alerts stay off
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts are off'**
+  String get setupAlertsOff;
+
+  /// Onboarding: reliability step title
+  ///
+  /// In en, this message translates to:
+  /// **'Make alerts reliable'**
+  String get setupReliableTitle;
+
+  /// Onboarding: which reliability item of how many
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String setupReliableCount(int current, int total);
+
+  /// Onboarding: Quran reading mode step title
+  ///
+  /// In en, this message translates to:
+  /// **'How do you read the Quran?'**
+  String get setupMushafTitle;
+
+  /// Onboarding: Quran reading mode explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a layout. You can switch anytime in the reader\'s settings.'**
+  String get setupMushafMessage;
+
+  /// Onboarding: what the scroll list reading mode is
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah by ayah, with translation'**
+  String get setupScrollListHint;
+
+  /// Onboarding: download size of a Mushaf
+  ///
+  /// In en, this message translates to:
+  /// **'{size} download'**
+  String setupMushafSize(String size);
+
+  /// Onboarding: this Mushaf is already downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'On this device'**
+  String get setupMushafReady;
+
+  /// Onboarding: switch to download the chosen Mushaf now
+  ///
+  /// In en, this message translates to:
+  /// **'Download now'**
+  String get setupDownloadNow;
+
+  /// Onboarding: the Mushaf downloads in the background
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads in the background ({size}).'**
+  String setupDownloadWifi(String size);
+
+  /// Onboarding: on mobile data the Mushaf waits
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re on mobile data, so it will download when you open the Quran.'**
+  String get setupDownloadCellular;
+
+  /// Onboarding: daily reminders step title
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminders'**
+  String get setupRemindersTitle;
+
+  /// Onboarding: daily reminders explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle reminders at the usual times. Each stays off until you turn it on.'**
+  String get setupRemindersMessage;
+
+  /// Onboarding: a reminder could not be scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'That reminder couldn\'t be turned on. Try again from Reminders.'**
+  String get setupReminderFailed;
+
+  /// Onboarding summary: how many reminders are on
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 3 on'**
+  String setupRemindersOn(int count);
+
+  /// Onboarding: summary step title
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set'**
+  String get setupSummaryTitle;
+
+  /// Onboarding: summary explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a step to change it.'**
+  String get setupSummaryMessage;
+
+  /// Onboarding summary: a step that was skipped
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped · set it up anytime'**
+  String get setupSkippedLater;
+
+  /// Onboarding: finishes setup and opens Home
+  ///
+  /// In en, this message translates to:
+  /// **'Start using Huda'**
+  String get setupStart;
+
+  /// Onboarding: the location could not be found (not a permission problem)
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t find your location'**
+  String get setupLocationFailedTitle;
+
+  /// Onboarding: title of the permissions step (location and notifications)
+  ///
+  /// In en, this message translates to:
+  /// **'What Huda needs'**
+  String get setupPermissionsTitle;
+
+  /// Onboarding: short name of the permissions step in the summary
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get setupPermissionsLabel;
+
+  /// Onboarding: explanation at the top of the permissions step
+  ///
+  /// In en, this message translates to:
+  /// **'Two permissions let Huda work for you. You can change them anytime in your device\'s settings.'**
+  String get setupPermissionsMessage;
+
+  /// Onboarding: why Huda needs location
+  ///
+  /// In en, this message translates to:
+  /// **'To calculate prayer times and the Qibla for where you are.'**
+  String get setupPermissionLocationWhy;
+
+  /// Onboarding: why Huda needs notifications
+  ///
+  /// In en, this message translates to:
+  /// **'To call the adhan at each prayer time and send the reminders you choose.'**
+  String get setupPermissionNotificationsWhy;
+
+  /// Onboarding: button that opens the system notification prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications'**
+  String get setupAllowNotifications;
+
+  /// Onboarding: a permission was granted
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get setupPermissionAllowed;
+
+  /// Onboarding: a permission was refused
+  ///
+  /// In en, this message translates to:
+  /// **'Not allowed'**
+  String get setupPermissionNotAllowed;
+
+  /// Onboarding: a permission hasn't been requested yet
+  ///
+  /// In en, this message translates to:
+  /// **'Not asked yet'**
+  String get setupPermissionNotAsked;
+
+  /// Onboarding: the system permission prompt is open
+  ///
+  /// In en, this message translates to:
+  /// **'Asking…'**
+  String get setupPermissionAsking;
+
+  /// Onboarding: title of the location step, which shows today's prayer times
+  ///
+  /// In en, this message translates to:
+  /// **'Your prayer times'**
+  String get setupTimesTitle;
+
+  /// Onboarding: line under the city with today's five prayer times
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s prayer times, calculated for where you are.'**
+  String get setupTimesToday;
+
+  /// Onboarding: title of the prayer alerts (adhan) step
+  ///
+  /// In en, this message translates to:
+  /// **'The call to prayer'**
+  String get setupAdhanTitle;
+
+  /// Onboarding: adhan step explanation once alerts are on
+  ///
+  /// In en, this message translates to:
+  /// **'At each prayer time Huda calls the adhan, even when the app is closed.'**
+  String get setupAdhanMessage;
+
+  /// Onboarding: how Asr is told for the majority schools (shadow length = object)
+  ///
+  /// In en, this message translates to:
+  /// **'When a shadow equals its object'**
+  String get setupAsrShadowOnce;
+
+  /// Onboarding: how Asr is told in the Hanafi school (shadow length = twice the object)
+  ///
+  /// In en, this message translates to:
+  /// **'When a shadow is twice its object'**
+  String get setupAsrShadowTwice;
+
+  /// Onboarding: time stamp on the preview of a prayer alert
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get setupNow;
+
+  /// Onboarding: skips only the current step; the app asks again later
+  ///
+  /// In en, this message translates to:
+  /// **'Skip this step'**
+  String get setupSkipStep;
+
+  /// Onboarding: ends setup now and opens Home; skipped steps are asked later
+  ///
+  /// In en, this message translates to:
+  /// **'Skip all'**
+  String get setupSkipAll;
+
+  /// Onboarding: title of the step that picks the calculation method and the Asr school
+  ///
+  /// In en, this message translates to:
+  /// **'How are your prayer times calculated?'**
+  String get setupCalcTitle;
+
+  /// Onboarding: short name of the calculation step in the summary
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation'**
+  String get setupCalcLabel;
+
+  /// Onboarding: explanation on the calculation step
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic uses your country\'s method. Choose another only if your mosque follows it.'**
+  String get setupCalcMessage;
+
+  /// Onboarding: label above the common calculation methods
+  ///
+  /// In en, this message translates to:
+  /// **'Or choose a method'**
+  String get setupMethodOther;
+
+  /// Onboarding: label above the alert styles (notification, short adhan, full adhan)
+  ///
+  /// In en, this message translates to:
+  /// **'How each prayer alerts you'**
+  String get setupAlertStyleLabel;
+
+  /// Onboarding: note under the alert styles
+  ///
+  /// In en, this message translates to:
+  /// **'You can choose the adhan voice and more later in Prayer settings.'**
+  String get setupAdhanVoiceLater;
+
+  /// Onboarding: the alert style could not be saved
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save this choice.'**
+  String get setupAlertSaveFailed;
+
+  /// Onboarding: confirmation title before Skip all ends setup
+  ///
+  /// In en, this message translates to:
+  /// **'Skip the rest of setup?'**
+  String get setupSkipAllTitle;
+
+  /// Onboarding: confirmation message before Skip all ends setup
+  ///
+  /// In en, this message translates to:
+  /// **'Huda opens now. It will ask about anything skipped later, where it\'s needed.'**
+  String get setupSkipAllMessage;
+
+  /// Onboarding: cancels Skip all and stays in setup
+  ///
+  /// In en, this message translates to:
+  /// **'Keep setting up'**
+  String get setupKeepSettingUp;
+
+  /// Onboarding: the method Automatic resolves to for the person's country
+  ///
+  /// In en, this message translates to:
+  /// **'Uses {method}'**
+  String setupMethodUses(String method);
+
+  /// Onboarding: hint of the field that filters the calculation methods
+  ///
+  /// In en, this message translates to:
+  /// **'Search methods'**
+  String get setupMethodSearch;
+
+  /// Hint in the Quran home search field; it finds surahs by name or number and ayat by their words
+  ///
+  /// In en, this message translates to:
+  /// **'Search surahs or ayat'**
+  String get quranSearchHint;
+
+  /// Error on Quran home when the surah index fails to build
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the surah index.'**
+  String get quranLoadError;
+
+  /// Section label above ayat found by their words in the Quran search
+  ///
+  /// In en, this message translates to:
+  /// **'Ayat'**
+  String get quranAyatSection;
+
+  /// Reader button and sheet title for how the Quran is shown: reading mode, Mushaf layout, font
+  ///
+  /// In en, this message translates to:
+  /// **'Display'**
+  String get quranDisplay;
+
+  /// Reader overflow button (Memorize, Khatma)
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get quranMore;
+
+  /// Ayah sheet tab listing ayat with similar wording (mutashabihat)
+  ///
+  /// In en, this message translates to:
+  /// **'Similar'**
+  String get quranSimilarTab;
+
+  /// Error in the Quran reader when a surah fails to build
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open this surah.'**
+  String get quranSurahLoadError;
+
+  /// Toast after deleting a bookmark, with an Undo action
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark deleted'**
+  String get quranBookmarkDeleted;
+
+  /// Button in the ayah sheet when the ayah ends today's khatma portion (wird)
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve finished today\'s wird'**
+  String get quranWirdDone;
+
+  /// Ayah sheet status while offline content is read from the device
+  ///
+  /// In en, this message translates to:
+  /// **'Loading what\'s saved on this device…'**
+  String get quranOfflineLoading;
+
+  /// Mark beside the ayah where today's khatma portion starts (read out by screen readers)
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s wird starts here'**
+  String get quranWirdStartsHere;
+
+  /// Mark beside the ayah where today's khatma portion ends (read out by screen readers)
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s wird ends here'**
+  String get quranWirdEndsHere;
+
+  /// Ayah sheet, Audio tab: the list of reciters failed to load; a Retry follows
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the reciters.'**
+  String get quranRecitersError;
+
+  /// Quran Display sheet, under the Zoomed switch for Mushaf pages
+  ///
+  /// In en, this message translates to:
+  /// **'Pages fill the width and scroll; two pages scroll together.'**
+  String get quranZoomHint;
+
+  /// Quran Display sheet: heading over the Mushaf page choices (one or two pages, Zoomed)
+  ///
+  /// In en, this message translates to:
+  /// **'Pages'**
+  String get quranPages;
+
+  /// Under the Zoomed switch on a portrait screen: one page already fills the width, so zoom changes little here; it helps on wider screens
+  ///
+  /// In en, this message translates to:
+  /// **'One page already fills this screen\'s width; Zoomed helps on wider screens.'**
+  String get quranZoomFillsAlready;
+
+  /// Quran Display sheet, under the One/Two pages choice on a portrait screen: Two pages is off here and opens in landscape
+  ///
+  /// In en, this message translates to:
+  /// **'Two pages open when the screen is turned sideways.'**
+  String get quranTwoPagesSideways;
+
+  /// Khatma setup: heading above the pace tiles (how many days the khatma takes)
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your pace'**
+  String get khatmaChoosePace;
+
+  /// Khatma setup: button to pick the day (portion) to start from instead of Al-Fatihah
+  ///
+  /// In en, this message translates to:
+  /// **'Start from another day'**
+  String get khatmaStartFromDay;
+
+  /// Khatma pace tile: the unit after the large number of days (the number is shown separately)
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{day} other{days}}'**
+  String khatmaPaceUnit(int count);
+
+  /// Khatma pace tile: how many pages a day the pace reads
+  ///
+  /// In en, this message translates to:
+  /// **'{pages, plural, =1{1 page a day} other{{pages} pages a day}}'**
+  String khatmaPagesADay(int pages);
+
+  /// Khatma daily reminder: the row that shows and changes the reminder time
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder time'**
+  String get khatmaReminderTime;
+
+  /// Khatma setup: the day the chosen plan would finish if started today (date already formatted, e.g. "Tue, Dec 2")
+  ///
+  /// In en, this message translates to:
+  /// **'Finish on {date}'**
+  String khatmaFinishOn(String date);
+
+  /// Khatma completed: the unit under the number of juz read (30); the number is shown separately
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, other{juz}}'**
+  String khatmaStatJuz(int count);
+
+  /// Khatma completed: the unit under the number of pages read (604); the number is shown separately
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{page} other{pages}}'**
+  String khatmaStatPages(int count);
+
+  /// Number of surahs in a recitation
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 surah} other{{count} surahs}}'**
+  String quranAudioSurahCount(int count);
+
+  /// How many surahs of a recitation are saved on the device
+  ///
+  /// In en, this message translates to:
+  /// **'{count} downloaded'**
+  String quranAudioDownloadedCount(int count);
+
+  /// Progress of downloading a whole recitation
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading {done} of {total}'**
+  String quranAudioDownloadingCount(int done, int total);
+
+  /// Tooltip: play a recitation from its first surah
+  ///
+  /// In en, this message translates to:
+  /// **'Play from the beginning'**
+  String get quranAudioPlayFromStart;
+
+  /// Banner while offline: only downloaded recitations are listed
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Showing downloaded recitations.'**
+  String get quranAudioOfflineNote;
+
+  /// Title when the reciters couldn't be loaded
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the reciters'**
+  String get quranAudioLoadFailed;
+
+  /// Wide windows: the pane before a recitation is chosen
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a recitation'**
+  String get quranAudioChooseTitle;
+
+  /// Wide windows: what to do in the empty recitation pane
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a reciter\'s recitation to see its surahs and play them.'**
+  String get quranAudioChooseMessage;
+
+  /// Player: which surah of the recitation is playing
+  ///
+  /// In en, this message translates to:
+  /// **'Surah {index} of {total}'**
+  String quranAudioSurahOfTotal(int index, int total);
+
+  /// Player: shuffle the surahs
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle'**
+  String get quranAudioShuffle;
+
+  /// Player: repeat is off (tap to repeat all)
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat off'**
+  String get quranAudioRepeatOff;
+
+  /// Player: repeating the whole recitation
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat all'**
+  String get quranAudioRepeatAll;
+
+  /// Player: repeating the current surah
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat this surah'**
+  String get quranAudioRepeatOne;
+
+  /// Player: jump back 10 seconds
+  ///
+  /// In en, this message translates to:
+  /// **'Back 10 seconds'**
+  String get quranAudioBack10;
+
+  /// Player: jump forward 10 seconds
+  ///
+  /// In en, this message translates to:
+  /// **'Forward 10 seconds'**
+  String get quranAudioForward10;
+
+  /// Player: label of the seek control
+  ///
+  /// In en, this message translates to:
+  /// **'Playback position'**
+  String get quranAudioPosition;
+
+  /// Mini player: open the full player
+  ///
+  /// In en, this message translates to:
+  /// **'Open player'**
+  String get quranAudioOpenPlayer;
+
+  /// A surah is being prepared to play
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing…'**
+  String get quranAudioPreparing;
+
+  /// Player: go back to the list, playback continues
+  ///
+  /// In en, this message translates to:
+  /// **'Hide player'**
+  String get quranAudioHidePlayer;
+
+  /// Every surah of the recitation is saved on the device
+  ///
+  /// In en, this message translates to:
+  /// **'All downloaded'**
+  String get quranAudioAllDownloaded;
+
+  /// A radio station is playing live
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get radioLive;
+
+  /// The radio station is paused
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get radioPaused;
+
+  /// The radio station is connecting
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting…'**
+  String get radioConnecting;
+
+  /// Title when the radio stations couldn't be loaded
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the stations'**
+  String get radioLoadFailed;
+
+  /// Tooltip of a prayer's bell on Prayer Times; opens that prayer's alert settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts for {prayer}'**
+  String prayerAlertFor(String prayer);
+
+  /// Prayer Times problem card title: settings couldn't be saved on the device.
+  ///
+  /// In en, this message translates to:
+  /// **'Your latest changes weren\'t saved'**
+  String get prayerFixSavingTitle;
+
+  /// Prayer Times problem card message for a save failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t save your prayer settings on this device. Tap Retry to save them again.'**
+  String get prayerFixSavingMessage;
+
+  /// Prayer Times problem card title: calculation failed after a change.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s times couldn\'t be recalculated'**
+  String get prayerFixCalculationTitle;
+
+  /// Prayer Times problem card message for a calculation failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The times shown may not include your latest change. Tap Retry to calculate them again.'**
+  String get prayerFixCalculationMessage;
+
+  /// Prayer Times info card title: the place's rules couldn't be confirmed (e.g. near a border).
+  ///
+  /// In en, this message translates to:
+  /// **'Times may differ by a few minutes'**
+  String get prayerFixCheckTitle;
+
+  /// Prayer Times info card message when the place isn't verified.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t confirm which local rules apply here, for example near a border or the coast. The times are calculated, but may differ slightly from your local mosque.'**
+  String get prayerFixCheckMessage;
+
+  /// Button: try verifying the place again.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get prayerFixCheckAction;
+
+  /// Prayer Times info card title: the home widget didn't get the new times.
+  ///
+  /// In en, this message translates to:
+  /// **'Home screen widget not updated'**
+  String get prayerFixWidgetTitle;
+
+  /// Prayer Times info card message for a widget update failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The times here are correct, but your widget may still show older ones. Tap Retry to update it.'**
+  String get prayerFixWidgetMessage;
+
+  /// Title while a retry the user tapped is running.
+  ///
+  /// In en, this message translates to:
+  /// **'Trying again…'**
+  String get prayerRetryingTitle;
+
+  /// Added to an alert status message when older alerts still use the previous place.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts already scheduled may follow your previous place until they\'re replaced.'**
+  String get prayerAlertsPreviousPlace;
+
+  /// Alert status message while the user's retry runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling your prayer alerts again.'**
+  String get prayerAlertsRetryingMessage;
+
+  /// Alert status title while Huda reschedules alerts on its own.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating your alerts…'**
+  String get prayerAlertsUpdatingTitle;
+
+  /// Alert status message while Huda reschedules alerts on its own.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling the next prayer alerts. Your times are already up to date.'**
+  String get prayerAlertsUpdatingMessage;
+
+  /// Alert status title after scheduling failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts aren\'t scheduled'**
+  String get prayerAlertsNotScheduledTitle;
+
+  /// Alert status message: scheduled, but Android may deliver late without exact alarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts may arrive a few minutes late. Allow exact alarms to get each one on time.'**
+  String get prayerAlertsLateNote;
+
+  /// Alert status title on a device that can't show prayer alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts aren\'t available here'**
+  String get prayerAlertsUnsupportedTitle;
+
+  /// Alert status message on a device that can't show prayer alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'This device can\'t show prayer alerts. Every prayer time is still here on this page.'**
+  String get prayerAlertsUnsupportedMessage;
+
+  /// Alert status message: a one-time online step is needed.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda needs to go online once to finish moving your alerts to this device. Connect to the internet, then tap Retry.'**
+  String get prayerAlertsNeedsOnline;
+
+  /// Alert status message while offline; it finishes automatically.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Huda will finish setting up your alerts by itself when you\'re back online.'**
+  String get prayerAlertsNeedsOnlineOffline;
+
+  /// Alert status message: no room left for scheduled alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda\'s other reminders are using every alert this device allows. Turn a few reminders off, then tap Retry.'**
+  String get prayerAlertsNoRoom;
+
+  /// Alert status message: the device's own scheduling failed.
+  ///
+  /// In en, this message translates to:
+  /// **'This device didn\'t accept the alert schedule. Tap Retry. If it keeps happening, restart Huda.'**
+  String get prayerAlertsLocalFailure;
+
+  /// Prayer Times first-run heading asking for a place.
+  ///
+  /// In en, this message translates to:
+  /// **'Where are you?'**
+  String get prayerWhereTitle;
+
+  /// Prayer Times first-run message.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer times depend on where you are. Use this device\'s location, or choose your city.'**
+  String get prayerWhereMessage;
+
+  /// Prayer Times first-run message on devices without location.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer times depend on where you are. Choose your city to see them.'**
+  String get prayerWhereMessageCityOnly;
+
+  /// Button: search for and pick a city.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a city'**
+  String get prayerChooseCity;
+
+  /// Why no place: the user declined location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access wasn\'t allowed. Allow it, or choose your city instead.'**
+  String get prayerProblemDenied;
+
+  /// Why no place: location access is blocked for the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is turned off for Huda. Turn it on in Settings, or choose your city instead.'**
+  String get prayerProblemBlocked;
+
+  /// Why no place: device location services are off.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are off on this device. Turn them on, or choose your city instead.'**
+  String get prayerProblemServicesOff;
+
+  /// Why no place: the device has no location provider.
+  ///
+  /// In en, this message translates to:
+  /// **'This device can\'t share its location. Choose your city instead.'**
+  String get prayerProblemNoDeviceLocation;
+
+  /// Why no place: no location fix arrived in time.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t get your location in time. Try again, perhaps near a window, or choose your city.'**
+  String get prayerProblemNoFix;
+
+  /// Why no place: the time zone couldn't be found.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda found the place but couldn\'t work out its time zone. Check your internet connection and try again, or choose a nearby city.'**
+  String get prayerProblemTimeZone;
+
+  /// Why no place: the coordinates weren't usable.
+  ///
+  /// In en, this message translates to:
+  /// **'That place couldn\'t be used. Try again, or choose a different city.'**
+  String get prayerProblemPlaceInvalid;
+
+  /// Why no place: saving failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The place couldn\'t be saved on this device. Try again.'**
+  String get prayerProblemSaveFailed;
+
+  /// Why no place: calculation failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t calculate prayer times for this place. Try again, or choose a different city.'**
+  String get prayerProblemCalculation;
+
+  /// Why no place: anything else.
+  ///
+  /// In en, this message translates to:
+  /// **'Something stopped Huda from using this place. Try again, or choose your city instead.'**
+  String get prayerProblemUnknown;
+
+  /// Title of the prayer Location sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get prayerLocationTitle;
+
+  /// Location mode: follow the device's location.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get prayerLocationAutomatic;
+
+  /// Location mode: a city the user picked.
+  ///
+  /// In en, this message translates to:
+  /// **'A city I choose'**
+  String get prayerLocationChosen;
+
+  /// Explains the Automatic location mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Times follow this device\'s location.'**
+  String get prayerLocationAutomaticHint;
+
+  /// Explains the chosen-city location mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Times stay on the city you choose, wherever you are.'**
+  String get prayerLocationChosenHint;
+
+  /// Button: read the device's location now.
+  ///
+  /// In en, this message translates to:
+  /// **'Update now'**
+  String get prayerLocationUpdateNow;
+
+  /// Shown while the place or times update.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating…'**
+  String get prayerLocationUpdating;
+
+  /// Button: choose a different city.
+  ///
+  /// In en, this message translates to:
+  /// **'Change city'**
+  String get prayerLocationChangeCity;
+
+  /// Switch: update the place in the background when the user moves.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow me when I travel'**
+  String get prayerLocationTravel;
+
+  /// Explains the travel switch.
+  ///
+  /// In en, this message translates to:
+  /// **'When you arrive somewhere new, Huda updates the times and alerts by itself, even while it\'s closed.'**
+  String get prayerLocationTravelHint;
+
+  /// Travel switch note when only while-in-use permission is granted.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda can only follow you while it\'s open. Allow location all the time to follow you while it\'s closed.'**
+  String get prayerLocationTravelForegroundOnly;
+
+  /// Travel switch note when location permission is missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location so Huda can follow you when you travel.'**
+  String get prayerLocationTravelNeedsPermission;
+
+  /// Screen reader label of the place on the prayer sky card.
+  ///
+  /// In en, this message translates to:
+  /// **'Location: {place}. Tap to change.'**
+  String prayerLocationRowSemantics(String place);
+
+  /// Title above a problem with a found or chosen place (time zone, saving, calculation).
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t use this place'**
+  String get prayerProblemPlaceTitle;
+
+  /// On the prayer time settings card: how many prayer times have a minute offset.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 time adjusted} other{{number} times adjusted}}'**
+  String prayerSettingsAdjusted(int count, String number);
+
+  /// Qiblah dial: the letter for north
+  ///
+  /// In en, this message translates to:
+  /// **'N'**
+  String get qiblahNorthShort;
+
+  /// Qiblah dial: the letter for east
+  ///
+  /// In en, this message translates to:
+  /// **'E'**
+  String get qiblahEastShort;
+
+  /// Qiblah dial: the letter for south
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get qiblahSouthShort;
+
+  /// Qiblah dial: the letter for west
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get qiblahWestShort;
+
+  /// Qiblah: the Qibla's bearing, above the turn instruction. {degrees} comes formatted with its degree sign ("119°", "±4°").
+  ///
+  /// In en, this message translates to:
+  /// **'Qibla {degrees} from north'**
+  String qiblahFromNorth(String degrees);
+
+  /// Qiblah: turn the phone clockwise
+  ///
+  /// In en, this message translates to:
+  /// **'Turn right'**
+  String get qiblahTurnRight;
+
+  /// Qiblah: turn the phone counter-clockwise
+  ///
+  /// In en, this message translates to:
+  /// **'Turn left'**
+  String get qiblahTurnLeft;
+
+  /// Qiblah: the phone faces the Qibla
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re facing the Qibla'**
+  String get qiblahFacing;
+
+  /// Qiblah: under "You're facing the Qibla"
+  ///
+  /// In en, this message translates to:
+  /// **'Hold steady: the Kaaba is straight ahead.'**
+  String get qiblahFacingHint;
+
+  /// Qiblah: while the location and the first heading are on their way
+  ///
+  /// In en, this message translates to:
+  /// **'Finding the Qibla…'**
+  String get qiblahFinding;
+
+  /// Qiblah: the device has no compass sensor
+  ///
+  /// In en, this message translates to:
+  /// **'No compass on this device'**
+  String get qiblahNoCompassTitle;
+
+  /// Qiblah without a compass: how to find it from north. {degrees} comes formatted with its degree sign ("119°", "±4°").
+  ///
+  /// In en, this message translates to:
+  /// **'Face north, then turn {degrees} clockwise. The dial shows the Kaaba with north at the top.'**
+  String qiblahNoCompassMessage(String degrees);
+
+  /// Qiblah: asking for location permission
+  ///
+  /// In en, this message translates to:
+  /// **'Find the Qibla from where you are'**
+  String get qiblahAllowTitle;
+
+  /// Qiblah: why location is needed
+  ///
+  /// In en, this message translates to:
+  /// **'Huda uses your location on this device to work out the direction of the Kaaba.'**
+  String get qiblahAllowMessage;
+
+  /// Qiblah: button that asks for location permission
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location'**
+  String get qiblahAllowLocation;
+
+  /// Qiblah: location services are off on the device
+  ///
+  /// In en, this message translates to:
+  /// **'Location is off'**
+  String get qiblahLocationOffTitle;
+
+  /// Qiblah: why to turn on location services
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location services so Huda can work out the Qibla from where you are.'**
+  String get qiblahLocationOffMessage;
+
+  /// Qiblah: opens the device location settings
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location'**
+  String get qiblahTurnOnLocation;
+
+  /// Qiblah: location permission was permanently denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location is blocked for Huda'**
+  String get qiblahBlockedTitle;
+
+  /// Qiblah: how to allow location again
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location for Huda in Settings, then come back here.'**
+  String get qiblahBlockedMessage;
+
+  /// Qiblah: the location or compass failed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t find the Qibla'**
+  String get qiblahErrorTitle;
+
+  /// Qiblah: what to do after a failure
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t get your location. Check that location is on, then try again.'**
+  String get qiblahErrorMessage;
+
+  /// Qiblah: under the unlit dial while the location and first heading are on their way
+  ///
+  /// In en, this message translates to:
+  /// **'Hold your phone flat while Huda finds the Qibla.'**
+  String get qiblahHoldFlat;
+
+  /// Qiblah: how to use the compass
+  ///
+  /// In en, this message translates to:
+  /// **'Turn until the Kaaba reaches the mark at the top.'**
+  String get qiblahTurnHint;
+
+  /// Qiblah: the magnetic field is far from normal
+  ///
+  /// In en, this message translates to:
+  /// **'Magnetic interference nearby. Move away from metal, magnets and electronics.'**
+  String get qiblahInterference;
+
+  /// Qiblah: the phone is held tilted
+  ///
+  /// In en, this message translates to:
+  /// **'Hold your phone flat'**
+  String get qiblahTilted;
+
+  /// Qiblah: where the bearing is measured from, and the distance to the Kaaba
+  ///
+  /// In en, this message translates to:
+  /// **'{place} · {distance} km to the Kaaba'**
+  String qiblahPlaceDistance(String place, String distance);
+
+  /// Qiblah: the distance to the Kaaba, when the place has no name
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} km to the Kaaba'**
+  String qiblahDistance(String distance);
+
+  /// Qiblah: a fresh location fix is on its way
+  ///
+  /// In en, this message translates to:
+  /// **'Updating your location…'**
+  String get qiblahUpdatingLocation;
+
+  /// Qiblah: a fresh fix failed; an older location is in use
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update your location. If you\'ve moved, the Qibla may be off.'**
+  String get qiblahLocationStale;
+
+  /// Qiblah: tooltip of the button that takes a fresh location fix
+  ///
+  /// In en, this message translates to:
+  /// **'Update location'**
+  String get qiblahUpdateLocation;
+
+  /// Reminders: eyebrow over the next reminder on the day dial
+  ///
+  /// In en, this message translates to:
+  /// **'Next reminder'**
+  String get remindersNextReminder;
+
+  /// Reminders: when the next reminder fires today; time is a localized time of day
+  ///
+  /// In en, this message translates to:
+  /// **'Today at {time}'**
+  String remindersNextToday(String time);
+
+  /// Reminders: when the next reminder fires tomorrow
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow at {time}'**
+  String remindersNextTomorrow(String time);
+
+  /// Reminders: when the next reminder fires on a later weekday (day is the weekday name)
+  ///
+  /// In en, this message translates to:
+  /// **'{day} at {time}'**
+  String remindersNextOnDay(String day, String time);
+
+  /// Reminders: day dial caption when nothing is on
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders are on'**
+  String get remindersNoneOnTitle;
+
+  /// Reminders: day dial hint when nothing is on
+  ///
+  /// In en, this message translates to:
+  /// **'Turn one on below and it takes its place on your day.'**
+  String get remindersNoneOnMessage;
+
+  /// Reminders: screen reader label of the day dial; reminders is a comma-separated list of title and time
+  ///
+  /// In en, this message translates to:
+  /// **'Your reminders today: {reminders}'**
+  String remindersDialLabel(String reminders);
+
+  /// Reminders: screen reader label of the day dial with nothing today
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders today'**
+  String get remindersDialEmptyLabel;
+
+  /// Reminders: section with the Sahur alarm and the daily checklist
+  ///
+  /// In en, this message translates to:
+  /// **'Daily routine'**
+  String get remindersRoutineSection;
+
+  /// Reminders: section with the test notification and desktop delivery status
+  ///
+  /// In en, this message translates to:
+  /// **'Check delivery'**
+  String get remindersDeliverySection;
+
+  /// Reminders: status line while a reminder is being scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling…'**
+  String get remindersScheduling;
+
+  /// Reminders: screen reader label of a reminder's time chip
+  ///
+  /// In en, this message translates to:
+  /// **'Change time, {time}'**
+  String remindersChangeTime(String time);
+
+  /// Qiblah: compass accuracy is high
+  ///
+  /// In en, this message translates to:
+  /// **'Compass accuracy: good'**
+  String get qiblahAccuracyGood;
+
+  /// Qiblah: compass accuracy is medium
+  ///
+  /// In en, this message translates to:
+  /// **'Compass accuracy: fair'**
+  String get qiblahAccuracyFair;
+
+  /// Qiblah: compass accuracy is low
+  ///
+  /// In en, this message translates to:
+  /// **'Compass accuracy: weak'**
+  String get qiblahAccuracyPoor;
+
+  /// Reminders: the page title
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get remindersTitle;
+
+  /// Reminders: the evening Athkar reminder, by itself
+  ///
+  /// In en, this message translates to:
+  /// **'Evening Athkar'**
+  String get eveningAthkar;
+
+  /// Reminders: time until the next reminder
+  ///
+  /// In en, this message translates to:
+  /// **'in {hours} h {minutes} min'**
+  String remindersInHoursMinutes(String hours, String minutes);
+
+  /// Reminders: time until the next reminder (whole hours)
+  ///
+  /// In en, this message translates to:
+  /// **'in {hours} h'**
+  String remindersInHours(String hours);
+
+  /// Reminders: time until the next reminder (under an hour)
+  ///
+  /// In en, this message translates to:
+  /// **'in {minutes} min'**
+  String remindersInMinutes(String minutes);
+
+  /// Reminders, iOS: Sahur can't ring because AlarmKit permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms are off for Huda. Allow them in Settings so the Sahur alarm can ring.'**
+  String get remindersSahurAlarmsDenied;
+
+  /// Reminders, iOS 25 and earlier: Sahur can't sound because notifications are off
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for Huda. Allow them in Settings so the Sahur alarm can sound.'**
+  String get remindersSahurNotificationsOff;
+
+  /// Reminders, iOS 25 and earlier: Sahur can't be heard because notification sounds are off
+  ///
+  /// In en, this message translates to:
+  /// **'Notification sounds are off for Huda. Turn them on in Settings so you can hear the Sahur alarm.'**
+  String get remindersSahurSoundOff;
+
+  /// Reminders: Sahur before Fajr has no prayer times to count from
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes before Fajr needs your prayer times. Set your location in Prayer Times, or use an exact time.'**
+  String get remindersSahurNeedsPrayerTimes;
+
+  /// Reminders: switch the Sahur alarm to an exact time
+  ///
+  /// In en, this message translates to:
+  /// **'Use exact time'**
+  String get remindersUseExactTime;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Which Hijri dates should Huda show?'**
+  String get calendarChooseTitle;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda follows the official Umm al-Qura calendar. If the moon is sighted differently where you live, move the dates by a day or two.'**
+  String get calendarChooseMessage;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Umm al-Qura'**
+  String get calendarUseUmmAlQura;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust days'**
+  String get calendarAdjustDays;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Your events'**
+  String get calendarYourEvents;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Event deleted'**
+  String get calendarEventDeleted;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get calendarEventColor;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 event} other{{count} events}}'**
+  String calendarEventsCount(int count);
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save the change. Try again.'**
+  String get calendarAdjustmentFailed;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s fast'**
+  String get ramadanTodaysFast;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Iftar {when}'**
+  String ramadanIftarIn(String when);
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Imsaak {when}'**
+  String ramadanImsakIn(String when);
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Your fasts'**
+  String get ramadanYourFasts;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan {year}'**
+  String ramadanYearLabel(String year);
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing to make up} =1{1 day to make up} other{{count} days to make up}}'**
+  String ramadanToMakeUp(int count);
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get ramadanClearDay;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Not marked'**
+  String get ramadanNotMarked;
+
+  /// Ramadan page, outside Ramadan with nothing marked yet: what last Ramadan's tracker is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark each day of last Ramadan as fasted or missed, and the days you need to make up are counted for you.'**
+  String get ramadanNightsIntro;
+
+  /// Ramadan page: button that opens last Ramadan's days to mark them.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark your fasts'**
+  String get ramadanMarkFasts;
+
+  /// Ramadan page: tooltip of the button that unfolds last Ramadan's days.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the days'**
+  String get ramadanShowDays;
+
+  /// Ramadan page: tooltip of the button that folds last Ramadan's days.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide the days'**
+  String get ramadanHideDays;
+
+  /// Calendar / Ramadan redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan times need your location. Set it in Prayer Times, then try again.'**
+  String get ramadanLocationError;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages couldn\'t load.'**
+  String get booksLanguagesError;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'No languages match “{query}”.'**
+  String booksNoLanguageMatches(String query);
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
+  String booksPageOf(int page, int total);
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the library. Check your connection and try again.'**
+  String get booksLoadError;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'This book isn\'t available in that language.'**
+  String get booksLanguageUnavailable;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load this book.'**
+  String get booksDetailError;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the original'**
+  String get booksShowOriginal;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet to see this book. Downloaded books open offline.'**
+  String get booksDetailOffline;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download the book.'**
+  String get booksDownloadFailed;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this download?'**
+  String get booksRemoveDownloadTitle;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'The book stays in the library. You can download it again when you\'re online.'**
+  String get booksRemoveDownloadBody;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get booksRemove;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove download'**
+  String get booksRemoveDownload;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Download removed'**
+  String get booksDownloadRemoved;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t share the book.'**
+  String get booksShareFailed;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Author'**
+  String get booksRoleAuthor;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Translator'**
+  String get booksRoleTranslator;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Editor'**
+  String get booksRoleEditor;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Publisher'**
+  String get booksRolePublisher;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get booksRoleSource;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepared by'**
+  String get booksRoleOther;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading… {percent}%'**
+  String booksDownloading(int percent);
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded · opens offline'**
+  String get booksDownloadedNote;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded {date}'**
+  String booksDownloadedOn(String date);
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Other formats'**
+  String get booksOtherFormats;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Also in'**
+  String get booksAlsoIn;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlights'**
+  String get booksHighlights;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight'**
+  String get booksHighlight;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'This book has no contents list. Search or browse its pages instead.'**
+  String get booksContentsHint;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches'**
+  String get booksNoMatches;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'No highlights yet'**
+  String get booksNoHighlights;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Select text on a page, then pick an ink.'**
+  String get booksHighlightsHint;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight removed'**
+  String get booksHighlightRemoved;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get booksZoomIn;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get booksZoomOut;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening the book…'**
+  String get booksOpening;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open this book'**
+  String get booksReaderError;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get booksReaderErrorMessage;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Contents and search'**
+  String get booksReaderPanel;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Scroll down the pages'**
+  String get booksScrollDown;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Scroll across the pages'**
+  String get booksScrollAcross;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get booksInkRed;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get booksInkGreen;
+
+  /// Books redesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get booksInkOrange;
+
+  /// audiobooksChapterCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 chapter} other{{count} chapters}}'**
+  String audiobooksChapterCount(int count);
+
+  /// audiobooksShowingDownloaded
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Showing 1 downloaded recording} other{Showing {count} downloaded recordings}}'**
+  String audiobooksShowingDownloaded(int count);
+
+  /// audiobooksLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the audio library. Check your connection and try again.'**
+  String get audiobooksLoadError;
+
+  /// audiobooksDetailError
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load this recording. Check your connection and try again.'**
+  String get audiobooksDetailError;
+
+  /// audiobooksDetailOffline
+  ///
+  /// In en, this message translates to:
+  /// **'This recording isn\'t downloaded. Connect to the internet to listen to it.'**
+  String get audiobooksDetailOffline;
+
+  /// audiobooksDownloadWhenOnline
+  ///
+  /// In en, this message translates to:
+  /// **'Download recordings while you\'re online to listen to them here.'**
+  String get audiobooksDownloadWhenOnline;
+
+  /// audiobooksRemoveDownloadBody
+  ///
+  /// In en, this message translates to:
+  /// **'The recording stays in the library. You can download it again when you\'re online.'**
+  String get audiobooksRemoveDownloadBody;
+
+  /// audiobooksDownloadFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download the recording.'**
+  String get audiobooksDownloadFailed;
+
+  /// audiobooksDownloadingPercent
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading {percent}%'**
+  String audiobooksDownloadingPercent(String percent);
+
+  /// audiobooksCancelDownload
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel download'**
+  String get audiobooksCancelDownload;
+
+  /// audiobooksBack15
+  ///
+  /// In en, this message translates to:
+  /// **'Back 15 seconds'**
+  String get audiobooksBack15;
+
+  /// audiobooksForward15
+  ///
+  /// In en, this message translates to:
+  /// **'Forward 15 seconds'**
+  String get audiobooksForward15;
+
+  /// audiobooksForward30
+  ///
+  /// In en, this message translates to:
+  /// **'Forward 30 seconds'**
+  String get audiobooksForward30;
+
+  /// audiobooksPreviousChapter
+  ///
+  /// In en, this message translates to:
+  /// **'Previous chapter'**
+  String get audiobooksPreviousChapter;
+
+  /// audiobooksNextChapter
+  ///
+  /// In en, this message translates to:
+  /// **'Next chapter'**
+  String get audiobooksNextChapter;
+
+  /// audiobooksSleepPausesIn
+  ///
+  /// In en, this message translates to:
+  /// **'Pauses in {time}'**
+  String audiobooksSleepPausesIn(String time);
+
+  /// audiobooksSleepEndOfChapter
+  ///
+  /// In en, this message translates to:
+  /// **'Pauses at the end of this chapter'**
+  String get audiobooksSleepEndOfChapter;
+
+  /// audiobooksSleepOff
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off'**
+  String get audiobooksSleepOff;
+
+  /// audiobooksStartFailed
+  ///
+  /// In en, this message translates to:
+  /// **'This recording couldn\'t start. Check your connection, then open it again.'**
+  String get audiobooksStartFailed;
+
+  /// No description provided for @hudaAiYouAsked.
+  ///
+  /// In en, this message translates to:
+  /// **'You asked'**
+  String get hudaAiYouAsked;
+
+  /// No description provided for @hudaAiYouShared.
+  ///
+  /// In en, this message translates to:
+  /// **'You shared'**
+  String get hudaAiYouShared;
+
+  /// No description provided for @hudaAiCounselingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share what\'s on your heart…'**
+  String get hudaAiCounselingHint;
+
+  /// No description provided for @hudaAiShareAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Share answer'**
+  String get hudaAiShareAnswer;
+
+  /// No description provided for @hudaAiSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get hudaAiSend;
+
+  /// No description provided for @hudaAiWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Writing…'**
+  String get hudaAiWriting;
+
+  /// No description provided for @hudaAiCounselHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s on your heart?'**
+  String get hudaAiCounselHeading;
+
+  /// No description provided for @hudaAiSeekCounsel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seek counsel'**
+  String get hudaAiSeekCounsel;
+
+  /// No description provided for @hudaAiAnotherFeeling.
+  ///
+  /// In en, this message translates to:
+  /// **'Share another feeling'**
+  String get hudaAiAnotherFeeling;
+
+  /// No description provided for @checklistDoneOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} done'**
+  String checklistDoneOf(int done, int total);
+
+  /// No description provided for @checklistAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All done'**
+  String get checklistAllDone;
+
+  /// No description provided for @checklistStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day in a row} other{{count} days in a row}}'**
+  String checklistStreak(int count);
+
+  /// No description provided for @checklistStreakStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish every item today to start a streak'**
+  String get checklistStreakStart;
+
+  /// No description provided for @checklistPastNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Past days stay as they were'**
+  String get checklistPastNote;
+
+  /// No description provided for @checklistFutureNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can check this day off when it comes'**
+  String get checklistFutureNote;
+
+  /// No description provided for @checklistGroupPrayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayers'**
+  String get checklistGroupPrayers;
+
+  /// No description provided for @checklistGroupQuran.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran'**
+  String get checklistGroupQuran;
+
+  /// No description provided for @checklistGroupAthkar.
+  ///
+  /// In en, this message translates to:
+  /// **'Athkar'**
+  String get checklistGroupAthkar;
+
+  /// No description provided for @checklistGroupOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get checklistGroupOther;
+
+  /// No description provided for @checklistPreviousDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous day'**
+  String get checklistPreviousDay;
+
+  /// No description provided for @checklistNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Next day'**
+  String get checklistNextDay;
+
+  /// No description provided for @checklistRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed “{title}”'**
+  String checklistRemoved(String title);
+
+  /// No description provided for @checklistLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Your checklist couldn’t be opened'**
+  String get checklistLoadError;
+
+  /// No description provided for @checklistEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is planned for this day.'**
+  String get checklistEmptyMessage;
+
+  /// No description provided for @checklistNewItem.
+  ///
+  /// In en, this message translates to:
+  /// **'New item'**
+  String get checklistNewItem;
+
+  /// No description provided for @checklistItemName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get checklistItemName;
+
+  /// No description provided for @checklistItemNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For example, read Surah Al-Mulk'**
+  String get checklistItemNameHint;
+
+  /// No description provided for @checklistItemGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Goes under'**
+  String get checklistItemGroup;
+
+  /// No description provided for @checklistItemRepeats.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeats'**
+  String get checklistItemRepeats;
+
+  /// No description provided for @checklistAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get checklistAdd;
+
+  /// No description provided for @miqaatGateOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off. Your apps open as usual.'**
+  String get miqaatGateOff;
+
+  /// No description provided for @miqaatGateNeedsAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow access below to turn it on.'**
+  String get miqaatGateNeedsAccess;
+
+  /// No description provided for @miqaatGateNoWindows.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a time window to begin.'**
+  String get miqaatGateNoWindows;
+
+  /// No description provided for @miqaatGateWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Next window: {when}'**
+  String miqaatGateWaiting(String when);
+
+  /// No description provided for @miqaatGateLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend {remaining} more in Huda to open your apps.'**
+  String miqaatGateLocked(String remaining);
+
+  /// No description provided for @miqaatGateDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal met. Your apps are open until the next window.'**
+  String get miqaatGateDone;
+
+  /// No description provided for @miqaatStatusOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get miqaatStatusOff;
+
+  /// No description provided for @miqaatStatusWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get miqaatStatusWaiting;
+
+  /// No description provided for @miqaatStatusLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked now'**
+  String get miqaatStatusLocked;
+
+  /// No description provided for @miqaatStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open again'**
+  String get miqaatStatusOpen;
+
+  /// No description provided for @miqaatMinutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String miqaatMinutesShort(int minutes);
+
+  /// No description provided for @miqaatProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {goal} min'**
+  String miqaatProgress(int done, int goal);
+
+  /// No description provided for @miqaatSlotCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max}'**
+  String miqaatSlotCount(int count, int max);
+
+  /// No description provided for @miqaatRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed {name}'**
+  String miqaatRemoved(String name);
+
+  /// No description provided for @miqaatWindowRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Window removed'**
+  String get miqaatWindowRemoved;
+
+  /// No description provided for @miqaatCheckAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get miqaatCheckAgain;
+
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearance;
+
+  /// No description provided for @settingsGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsGeneral;
+
+  /// No description provided for @settingsPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get settingsPrivacy;
+
+  /// No description provided for @settingsTextSizeRelative.
+  ///
+  /// In en, this message translates to:
+  /// **'Relative to your device\'s text size'**
+  String get settingsTextSizeRelative;
+
+  /// No description provided for @settingsHapticFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Haptic feedback'**
+  String get settingsHapticFeedback;
+
+  /// No description provided for @settingsHapticFeedbackDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle vibrations when you count, switch or finish something'**
+  String get settingsHapticFeedbackDescription;
+
+  /// No description provided for @settingsWidgetsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A verse and prayer times on your home screen'**
+  String get settingsWidgetsSubtitle;
+
+  /// No description provided for @widgetPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get widgetPreview;
+
+  /// No description provided for @widgetResetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget reset to its defaults'**
+  String get widgetResetDone;
+
+  /// No description provided for @widgetResetConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Put this widget\'s theme, text and layout back to the defaults?'**
+  String get widgetResetConfirm;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'This part of Huda stopped working. Restarting the app usually fixes it.'**
+  String get errorScreenMessage;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'Sending a report to the team…'**
+  String get errorReportSending;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'A report was sent to the team.'**
+  String get errorReportSent;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'The report couldn\'t be sent.'**
+  String get errorReportFailed;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'Technical details'**
+  String get errorTechnicalDetails;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'Your note couldn\'t be sent. Try again.'**
+  String get errorFeedbackFailed;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t start'**
+  String get bootFailedTitle;
+
+  /// System screens (error screen / startup failure).
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while getting ready. Try again, or restart the app.'**
+  String get bootFailedMessage;
+
+  /// No description provided for @windowsPrayerShowTray.
+  ///
+  /// In en, this message translates to:
+  /// **'Show tray icon'**
+  String get windowsPrayerShowTray;
+
+  /// Label shown when automatic crash reporting is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get crashReportingEnabledLabel;
+
+  /// Label shown when automatic crash reporting is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get crashReportingDisabledLabel;
+
+  /// Title of the manual location search dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Search Location'**
+  String get searchLocationTitle;
+
+  /// Title for Islamic notifications screen
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Notifications'**
+  String get islamicNotifications;
+
+  /// Widget management screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Home Screen Widget Management'**
+  String get homeScreenWidgetManagement;
+
+  /// Button label for sharing text
+  ///
+  /// In en, this message translates to:
+  /// **'Share Text'**
+  String get shareText;
+
+  /// Refresh location button text
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Location'**
+  String get refreshLocation;
+
+  /// Auto-update setting description
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-update when app is closed'**
+  String get autoUpdateWhenAppClosed;
+
+  /// Background updates status message
+  ///
+  /// In en, this message translates to:
+  /// **'Background updates disabled.'**
+  String get backgroundUpdatesDisabled;
+
+  /// Clear custom verses button text
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Custom Verses'**
+  String get clearAllCustomVerses;
+
+  /// Success message for verse removal
+  ///
+  /// In en, this message translates to:
+  /// **'Verse removed from widget'**
+  String get verseRemovedFromWidget;
+
+  /// Success message for clearing all verses
+  ///
+  /// In en, this message translates to:
+  /// **'All custom verses cleared'**
+  String get allCustomVersesCleared;
+
+  /// Failed to share text error message
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share text'**
+  String get failedToShareText;
+
+  /// Tafsir downloaded success message
+  ///
+  /// In en, this message translates to:
+  /// **'Tafsir downloaded successfully!'**
+  String get tafsirDownloadedSuccessfully;
+
+  /// Translation downloaded success message
+  ///
+  /// In en, this message translates to:
+  /// **'Translation downloaded successfully!'**
+  String get translationDownloadedSuccessfully;
+
+  /// Unknown state error message
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown state'**
+  String get unknownState;
+
+  /// Delete event dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Event'**
+  String get deleteEvent;
+
+  /// Choose color button text
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Color'**
+  String get chooseColor;
+
+  /// Instruction to add events
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the + button to add an event'**
+  String get tapPlusButtonToAddEvent;
+
+  /// First Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'January'**
+  String get january;
+
+  /// Second Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'February'**
+  String get february;
+
+  /// Third Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'March'**
+  String get march;
+
+  /// Fourth Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'April'**
+  String get april;
+
+  /// Sixth Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'June'**
+  String get june;
+
+  /// Seventh Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'July'**
+  String get july;
+
+  /// Eighth Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'August'**
+  String get august;
+
+  /// Ninth Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'September'**
+  String get september;
+
+  /// Tenth Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'October'**
+  String get october;
+
+  /// Eleventh Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'November'**
+  String get november;
+
+  /// Twelfth Gregorian month
+  ///
+  /// In en, this message translates to:
+  /// **'December'**
+  String get december;
+
+  /// Event color label
+  ///
+  /// In en, this message translates to:
+  /// **'Event Color:'**
+  String get eventColor;
+
+  /// Filtered results label
+  ///
+  /// In en, this message translates to:
+  /// **'Filtered'**
+  String get filtered;
+
+  /// Error message title
+  ///
+  /// In en, this message translates to:
+  /// **'Oops! Something went wrong'**
+  String get oopsSomethingWentWrong;
+
+  /// Pick color dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a color'**
+  String get pickColor;
+
+  /// Reset counter confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to reset the counter to 0?'**
+  String get resetCounterConfirmation;
+
+  /// Loading message for qiblah direction
+  ///
+  /// In en, this message translates to:
+  /// **'Finding Qiblah Direction...'**
+  String get findingQiblahDirection;
+
+  /// Location permission dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Location Permission Required'**
+  String get locationPermissionRequired;
+
+  /// Status when aligned with qiblah
+  ///
+  /// In en, this message translates to:
+  /// **'Aligned with Qiblah'**
+  String get alignedWithQiblah;
+
+  /// Status when finding direction
+  ///
+  /// In en, this message translates to:
+  /// **'Finding Direction...'**
+  String get findingDirection;
+
+  /// Message when perfectly aligned with qiblah
+  ///
+  /// In en, this message translates to:
+  /// **'🕋 Perfect! You are facing the Qiblah direction'**
+  String get perfectQiblahAlignment;
+
+  /// Instruction for aligning with qiblah
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate your device until the arrow points toward Mecca'**
+  String get rotateDeviceInstruction;
+
+  /// Athkar collection title
+  ///
+  /// In en, this message translates to:
+  /// **'Athkar Collection'**
+  String get athkarCollection;
+
+  /// Number of selected athkar groups
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected athkar groups'**
+  String selectedAthkarGroups(int count);
+
+  /// Retry button text
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryArabic;
+
+  /// Error message when verse removal fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error removing verse'**
+  String get errorRemovingVerse;
+
+  /// Error message for clearing verses
+  ///
+  /// In en, this message translates to:
+  /// **'Error clearing verses'**
+  String get errorClearingVerses;
+
+  /// Test now button label
+  ///
+  /// In en, this message translates to:
+  /// **'Test Now'**
+  String get testNow;
+
+  /// Quran surahs screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Surahs'**
+  String get quranSurahs;
+
+  /// Current widgets section title
+  ///
+  /// In en, this message translates to:
+  /// **'Current Widgets'**
+  String get currentWidgets;
+
+  /// Available widgets section title
+  ///
+  /// In en, this message translates to:
+  /// **'Available Widgets'**
+  String get availableWidgets;
+
+  /// Athkar counter widget title
+  ///
+  /// In en, this message translates to:
+  /// **'Athkar Counter'**
+  String get athkarCounter;
+
+  /// No prayer times message
+  ///
+  /// In en, this message translates to:
+  /// **'No prayer times available'**
+  String get noPrayerTimesAvailable;
+
+  /// Connection check message
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your connection and try again.'**
+  String get pleaseCheckConnection;
+
+  /// Offline content loading error
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot load {section} while offline.\nPlease check your internet connection.'**
+  String cannotLoadOffline(String section);
+
+  /// No internet and no offline content message
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. No offline content available.'**
+  String get noInternetOfflineUnavailable;
+
+  /// Loading athkar message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Athkar...'**
+  String get loadingAthkar;
+
+  /// Press for details text
+  ///
+  /// In en, this message translates to:
+  /// **'Press for details'**
+  String get pressForDetails;
+
+  /// Connection timeout error message
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timed out. Please check your internet connection and try again.'**
+  String get connectionTimedOut;
+
+  /// Server timeout error message
+  ///
+  /// In en, this message translates to:
+  /// **'Server took too long to respond. Please try again.'**
+  String get serverTimeout;
+
+  /// Response timeout error message
+  ///
+  /// In en, this message translates to:
+  /// **'Response timeout. Please check your connection and try again.'**
+  String get responseTimeout;
+
+  /// SSL certificate error message
+  ///
+  /// In en, this message translates to:
+  /// **'There\'s a problem with the security certificate. Please try again later or contact support.'**
+  String get certificateError;
+
+  /// Network error message
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your internet connection.'**
+  String get networkError;
+
+  /// Bad request error message
+  ///
+  /// In en, this message translates to:
+  /// **'Bad request. Please check your input.'**
+  String get badRequest;
+
+  /// Request timeout error message
+  ///
+  /// In en, this message translates to:
+  /// **'Request timeout. Please try again.'**
+  String get requestTimeout;
+
+  /// Conflict error message
+  ///
+  /// In en, this message translates to:
+  /// **'Conflict occurred. Please resolve and try again.'**
+  String get conflictError;
+
+  /// Validation failed error message
+  ///
+  /// In en, this message translates to:
+  /// **'Validation failed. Please check your input.'**
+  String get validationFailed;
+
+  /// No internet and no cached translation error
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection and no cached translation available'**
+  String get noInternetCachedTranslation;
+
+  /// No internet and no cached data error
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection and no cached data available'**
+  String get noInternetCachedData;
+
+  /// No internet and no cached tafsir error
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection and no cached tafsir available'**
+  String get noInternetCachedTafsir;
+
+  /// Confirmation message for clearing all custom verses
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove all custom verses from your widget? This action cannot be undone.'**
+  String get clearAllCustomVersesConfirmation;
+
+  /// Chat error message
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, I encountered an error. Please try again.'**
+  String get chatError;
+
+  /// Generic error message with details
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String unknownError(String message);
+
+  /// Error message when text sharing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share text'**
+  String get failedShareText;
+
+  /// Error message when image sharing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share image'**
+  String get failedShareImage;
+
+  /// Error message when service fails to start
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start service: {error}'**
+  String failedStartService(String error);
+
+  /// Error message when service fails to stop
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to stop service: {error}'**
+  String failedStopService(String error);
+
+  /// Error message when service fails to restart
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to restart service: {error}'**
+  String failedRestartService(String error);
+
+  /// Section header for Islamic reminders
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Reminders'**
+  String get islamicReminders;
+
+  /// Friday notification subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Every Friday at {time}'**
+  String everyFridayAt(String time);
+
+  /// Daily athkar times subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'{morningTime} & {eveningTime} daily'**
+  String dailyAthkarTimes(String morningTime, String eveningTime);
+
+  /// Daily notification time
+  ///
+  /// In en, this message translates to:
+  /// **'Daily at {time}'**
+  String dailyAt(String time);
+
+  /// Reinitialize button label
+  ///
+  /// In en, this message translates to:
+  /// **'Reinit'**
+  String get reinit;
+
+  /// Test limits button label
+  ///
+  /// In en, this message translates to:
+  /// **'Test Limits'**
+  String get testLimits;
+
+  /// Loading message for coverage check
+  ///
+  /// In en, this message translates to:
+  /// **'Checking coverage...'**
+  String get checkingCoverage;
+
+  /// Refresh coverage button label
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Coverage'**
+  String get refreshCoverage;
+
+  /// Test notification message
+  ///
+  /// In en, this message translates to:
+  /// **'Test notification scheduled for 10 seconds from now!'**
+  String get testNotificationScheduled;
+
+  /// Debug info message
+  ///
+  /// In en, this message translates to:
+  /// **'Check console for debug info'**
+  String get checkConsoleDebugInfo;
+
+  /// Force reinit success message
+  ///
+  /// In en, this message translates to:
+  /// **'Force re-initialized notifications'**
+  String get forceReInitializedNotifications;
+
+  /// Test limits result message
+  ///
+  /// In en, this message translates to:
+  /// **'Check console for limit test results'**
+  String get checkConsoleLimitTestResults;
+
+  /// Coverage display with days and count
+  ///
+  /// In en, this message translates to:
+  /// **'Coverage: ~{days} days ({count} notifications)'**
+  String coverageDaysNotifications(String days, String count);
+
+  /// Status when notifications are disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications Disabled'**
+  String get notificationsDisabled;
+
+  /// Instruction to enable notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to enable notification permissions'**
+  String get tapToEnableNotifications;
+
+  /// Books screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Books'**
+  String get booksScreen;
+
+  /// PDF screen title
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get pdfScreen;
+
+  /// Tooltip for prayer times button
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Times'**
+  String get prayerTimesTooltip;
+
+  /// Tooltip for qiblah direction button
+  ///
+  /// In en, this message translates to:
+  /// **'Qiblah Direction'**
+  String get qiblahTooltip;
+
+  /// Tooltip for tasbih counter button
+  ///
+  /// In en, this message translates to:
+  /// **'Tasbih Counter'**
+  String get tasbihTooltip;
+
+  /// Tooltip for islamic notifications button
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Notifications'**
+  String get islamicNotificationsTooltip;
+
+  /// Tooltip for hadith button
+  ///
+  /// In en, this message translates to:
+  /// **'Hadith'**
+  String get hadithTooltip;
+
+  /// Tooltip for hadith chapters button
+  ///
+  /// In en, this message translates to:
+  /// **'Hadith Chapters'**
+  String get hadithChaptersTooltip;
+
+  /// Tooltip for hadith details button
+  ///
+  /// In en, this message translates to:
+  /// **'Hadith Details'**
+  String get hadithDetailsTooltip;
+
+  /// Tooltip for books button
+  ///
+  /// In en, this message translates to:
+  /// **'Books'**
+  String get booksTooltip;
+
+  /// Tooltip for bookmarks button
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get bookmarksTooltip;
+
+  /// Tooltip for hijri calendar button
+  ///
+  /// In en, this message translates to:
+  /// **'Hijri Calendar'**
+  String get hijriCalendarTooltip;
+
+  /// Tooltip for home screen widget management button
+  ///
+  /// In en, this message translates to:
+  /// **'Home Screen Widget Management'**
+  String get homeScreenWidgetManagementTooltip;
+
+  /// Tooltip for quran surahs button
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Surahs'**
+  String get quranSurahsTooltip;
+
+  /// Tooltip for settings button
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTooltip;
+
+  /// Tooltip for athkar details button
+  ///
+  /// In en, this message translates to:
+  /// **'Athkar Details'**
+  String get athkarDetailsTooltip;
+
+  /// Tooltip for zoom in button
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom In'**
+  String get zoomInTooltip;
+
+  /// Tooltip for zoom out button
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom Out'**
+  String get zoomOutTooltip;
+
+  /// Book name input hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter book name'**
+  String get enterBookNameHint;
+
+  /// Author name input hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter author name'**
+  String get enterAuthorNameHint;
+
+  /// Description input hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter description'**
+  String get enterDescriptionHint;
+
+  /// Notes input hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your notes here...'**
+  String get enterNotesHint;
+
+  /// Search books hint
+  ///
+  /// In en, this message translates to:
+  /// **'Search books...'**
+  String get searchBooksHint;
+
+  /// Search hadith hint
+  ///
+  /// In en, this message translates to:
+  /// **'Search hadith...'**
+  String get searchHadithHint;
+
+  /// Confirm delete dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Delete'**
+  String get confirmDelete;
+
+  /// Delete confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this item?'**
+  String get deleteConfirmation;
+
+  /// Delete bookmark dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Bookmark'**
+  String get deleteBookmark;
+
+  /// Delete bookmark confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this bookmark? This action cannot be undone.'**
+  String get deleteBookmarkConfirmation;
+
+  /// Confirm clear all dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Clear All'**
+  String get confirmClearAll;
+
+  /// Clear all confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to clear all items? This action cannot be undone.'**
+  String get clearAllConfirmation;
+
+  /// Permission dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Required'**
+  String get permissionDialog;
+
+  /// Permission dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'This feature requires permission to access your device. Please grant permission to continue.'**
+  String get permissionMessage;
+
+  /// Loading failed error message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading failed. Please try again.'**
+  String get loadingFailed;
+
+  /// File not found error message
+  ///
+  /// In en, this message translates to:
+  /// **'File not found'**
+  String get fileNotFound;
+
+  /// Author name form label
+  ///
+  /// In en, this message translates to:
+  /// **'Author Name'**
+  String get authorName;
+
+  /// Download started status message
+  ///
+  /// In en, this message translates to:
+  /// **'Download started'**
+  String get downloadStarted;
+
+  /// Download complete status message
+  ///
+  /// In en, this message translates to:
+  /// **'Download complete'**
+  String get downloadComplete;
+
+  /// Operation complete status message
+  ///
+  /// In en, this message translates to:
+  /// **'Operation completed successfully'**
+  String get operationComplete;
+
+  /// Error message when athkar fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading Athkar'**
+  String get athkarLoadingError;
+
+  /// Click for details action text
+  ///
+  /// In en, this message translates to:
+  /// **'Click for details'**
+  String get clickForDetails;
+
+  /// Subtitle for Huda AI
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Assistant'**
+  String get islamicAssistant;
+
+  /// Welcome message for Huda AI
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Huda'**
+  String get welcomeToHudaArabic;
+
+  /// AI Assistant info card title
+  ///
+  /// In en, this message translates to:
+  /// **'AI Assistant'**
+  String get aiAssistantTitle;
+
+  /// AI Assistant disclaimer
+  ///
+  /// In en, this message translates to:
+  /// **'Provides answers based on Islamic teachings but should not be considered a definitive source.'**
+  String get aiAssistantSubtitle;
+
+  /// Verification info card title
+  ///
+  /// In en, this message translates to:
+  /// **'Verify with authentic sources'**
+  String get verifySourcesTitle;
+
+  /// Share message header
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Q&A from Huda AI'**
+  String get islamicQAFromHuda;
+
+  /// Attribution in shared content
+  ///
+  /// In en, this message translates to:
+  /// **'Generated by Huda AI - Islamic Assistant'**
+  String get generatedByHudaAI;
+
+  /// Verification reminder in shared content
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify with authentic Islamic sources.'**
+  String get verifyWithSources;
+
+  /// Header for shared Q&A content
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Q&A from Huda AI'**
+  String get shareQAFromHuda;
+
+  /// Subject line for shared content
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Knowledge from Huda AI'**
+  String get islamicKnowledgeSubject;
+
+  /// Title for bookmark section
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark Ayah'**
+  String get bookmarkAyah;
+
+  /// Reference format for surah and ayah
+  ///
+  /// In en, this message translates to:
+  /// **'Surah {surahName} - Ayah {ayahNumber}'**
+  String surahAyahReference(String surahName, String ayahNumber);
+
+  /// Share and copy section title
+  ///
+  /// In en, this message translates to:
+  /// **'Share & Copy'**
+  String get shareCopy;
+
+  /// Share options title
+  ///
+  /// In en, this message translates to:
+  /// **'Share Options'**
+  String get shareOptions;
+
+  /// Include translation option
+  ///
+  /// In en, this message translates to:
+  /// **'Include Translation'**
+  String get includeTranslation;
+
+  /// Include reference option
+  ///
+  /// In en, this message translates to:
+  /// **'Include Reference'**
+  String get includeReference;
+
+  /// App name for sharing
+  ///
+  /// In en, this message translates to:
+  /// **'Huda - Islamic Companion App'**
+  String get hudaQuranApp;
+
+  /// Translation section label
+  ///
+  /// In en, this message translates to:
+  /// **'Translation:'**
+  String get translationLabel;
+
+  /// Error message for copy failure
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to copy to clipboard'**
+  String get failedToCopy;
+
+  /// Subject line for sharing
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah from {surahName}'**
+  String ayahFromSurah(String surahName);
+
+  /// Fallback subject for sharing
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah from Quran'**
+  String get ayahFromQuran;
+
+  /// Audio loading error message
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load audio for this reader'**
+  String get unableToLoadAudio;
+
+  /// Reader selection title
+  ///
+  /// In en, this message translates to:
+  /// **'Select Reader'**
+  String get selectReader;
+
+  /// No readers available message
+  ///
+  /// In en, this message translates to:
+  /// **'No readers available'**
+  String get noReadersAvailable;
+
+  /// Add to home widget button
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Home Widget'**
+  String get addToHomeWidget;
+
+  /// Widget tab description
+  ///
+  /// In en, this message translates to:
+  /// **'Add this ayah to your home screen widget collection'**
+  String get addToWidgetDescription;
+
+  /// Unable to load audio message
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load audio for this reader'**
+  String get unableLoadAudio;
+
+  /// Already in widget status
+  ///
+  /// In en, this message translates to:
+  /// **'Already in Widget'**
+  String get alreadyInWidget;
+
+  /// Add to widget button
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Widget'**
+  String get addToWidget;
+
+  /// Widget tab info message
+  ///
+  /// In en, this message translates to:
+  /// **'This will add the selected ayah to your home screen widget collection for easy access.'**
+  String get addToWidgetInfo;
+
+  /// Default text for books without titles
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled'**
+  String get untitled;
+
+  /// Default text when book description is missing
+  ///
+  /// In en, this message translates to:
+  /// **'No description available'**
+  String get noDescriptionAvailable;
+
+  /// Default text when attachment description is missing
+  ///
+  /// In en, this message translates to:
+  /// **'No Description'**
+  String get noDescription;
+
+  /// Section title for language selection
+  ///
+  /// In en, this message translates to:
+  /// **'Other Languages'**
+  String get otherLanguages;
+
+  /// Error message for unavailable language
+  ///
+  /// In en, this message translates to:
+  /// **'The selected language is not available'**
+  String get theSelectedLanguageNotAvailable;
+
+  /// Share dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Share Book'**
+  String get shareBook;
+
+  /// Share confirmation question
+  ///
+  /// In en, this message translates to:
+  /// **'Share \"{title}\" with others?'**
+  String shareBookQuestion(String title);
+
+  /// Error message for language loading failure
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading languages: {error}'**
+  String errorLoadingLanguages(String error);
+
+  /// Daily schedule with morning and evening times
+  ///
+  /// In en, this message translates to:
+  /// **'{morningTime} & {eveningTime} daily'**
+  String dailyTimesSchedule(String morningTime, String eveningTime);
+
+  /// Debug section title
+  ///
+  /// In en, this message translates to:
+  /// **'Debug & Testing'**
+  String get debugTesting;
+
+  /// Number of pending notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Pending notifications: {count}'**
+  String pendingNotificationsCount(String count);
+
+  /// Background notifications info
+  ///
+  /// In en, this message translates to:
+  /// **'All notifications work in background and survive app restarts.'**
+  String get notificationsWorkBackground;
+
+  /// Coverage section title
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Coverage'**
+  String get notificationCoverage;
+
+  /// Auto renewal active status
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-renewal: Active'**
+  String get autoRenewalActive;
+
+  /// Auto renewal inactive status
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-renewal: Inactive'**
+  String get autoRenewalInactive;
+
+  /// Customization info
+  ///
+  /// In en, this message translates to:
+  /// **'All notification times are fully customizable. Tap the settings button next to each notification type to set your preferred time.'**
+  String get notificationTimesCustomizable;
+
+  /// Smart scheduling info
+  ///
+  /// In en, this message translates to:
+  /// **'Random Athkar uses smart scheduling: immediate coverage for 12+ hours, then background completion for full 7-day coverage.'**
+  String get randomAthkarSmartScheduling;
+
+  /// Background work info
+  ///
+  /// In en, this message translates to:
+  /// **'All notifications work when the app is closed and survive device reboots.'**
+  String get notificationsWorkClosed;
+
+  /// Layout toggle tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Switch layout'**
+  String get switchLayout;
+
+  /// PDF loading message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading PDF...'**
+  String get loadingPdf;
+
+  /// PDF loading error message
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load PDF'**
+  String get failedToLoadPdf;
+
+  /// Empty markers message
+  ///
+  /// In en, this message translates to:
+  /// **'No markers yet'**
+  String get noMarkersYet;
+
+  /// Markers instruction message
+  ///
+  /// In en, this message translates to:
+  /// **'Select text and use the color buttons to add markers'**
+  String get selectTextForMarkers;
+
+  /// Bookmarks page title
+  ///
+  /// In en, this message translates to:
+  /// **'My Bookmarks'**
+  String get myBookmarks;
+
+  /// Bookmark added success message
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark added'**
+  String get bookmarkAdded;
+
+  /// Bookmark removed success message
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark removed'**
+  String get bookmarkRemoved;
+
+  /// Navigate to verse button text
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Verse'**
+  String get goToVerse;
+
+  /// Navigate to verse confirmation question
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate to this verse in the Quran reader?'**
+  String get navigateToVerseQuestion;
+
+  /// Next prayer countdown format
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {prayerName} in {time}'**
+  String nextPrayerCountdown(String prayerName, String time);
+
+  /// Title for home screen widget section
+  ///
+  /// In en, this message translates to:
+  /// **'Home Screen Widget'**
+  String get homeScreenWidget;
+
+  /// Description of home screen widget functionality
+  ///
+  /// In en, this message translates to:
+  /// **'Display inspiring Islamic verses on your home screen'**
+  String get displayInspiringVerses;
+
+  /// Title for widget control section
+  ///
+  /// In en, this message translates to:
+  /// **'Widget Control'**
+  String get widgetControl;
+
+  /// Description for immediate widget update
+  ///
+  /// In en, this message translates to:
+  /// **'Update your widget content immediately'**
+  String get updateWidgetContentImmediately;
+
+  /// Text shown while widget is being updated
+  ///
+  /// In en, this message translates to:
+  /// **'Updating Widget...'**
+  String get updatingWidget;
+
+  /// Button text to force update widget
+  ///
+  /// In en, this message translates to:
+  /// **'Force Update Widget'**
+  String get forceUpdateWidget;
+
+  /// Success message when widget is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Home screen widget updated successfully!'**
+  String get homeScreenWidgetUpdatedSuccessfully;
+
+  /// Title for custom verses section
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Verses'**
+  String get customVerses;
+
+  /// Tooltip for refresh verses button
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh verses'**
+  String get refreshVerses;
+
+  /// Text showing number of verses added
+  ///
+  /// In en, this message translates to:
+  /// **'{count} verse{count, plural, one{} other{s}} added'**
+  String versesAdded(int count);
+
+  /// Text shown while loading verses
+  ///
+  /// In en, this message translates to:
+  /// **'Loading verses...'**
+  String get loadingVerses;
+
+  /// Title when no custom verses are found
+  ///
+  /// In en, this message translates to:
+  /// **'No Custom Verses Yet'**
+  String get noCustomVersesYet;
+
+  /// Instructions for adding verses to widget
+  ///
+  /// In en, this message translates to:
+  /// **'Visit the Surah screen to add verses to your widget'**
+  String get visitSurahScreenToAddVerses;
+
+  /// Success message when ayah is added to widget
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah added to widget'**
+  String get ayahAddedToWidget;
+
+  /// No description provided for @dawood.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunan Abi Dawud'**
+  String get dawood;
+
+  /// No description provided for @majah.
+  ///
+  /// In en, this message translates to:
+  /// **'Sahih Ibn Majah'**
+  String get majah;
+
+  /// No description provided for @nasa.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunan an-Nasa\'i'**
+  String get nasa;
+
+  /// No description provided for @masabih.
+  ///
+  /// In en, this message translates to:
+  /// **'Mishkat al-Masabih'**
+  String get masabih;
+
+  /// No description provided for @sahiha.
+  ///
+  /// In en, this message translates to:
+  /// **'Silsilah al-Sahihah'**
+  String get sahiha;
+
+  /// No description provided for @hadithBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore authentic sayings and teachings of Prophet Muhammad ﷺ'**
+  String get hadithBanner;
+
+  /// No description provided for @nextPrayerCountDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Prayer'**
+  String get nextPrayerCountDown;
+
+  /// No description provided for @bookmarksYourCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Collection'**
+  String get bookmarksYourCollection;
+
+  /// No description provided for @bookmarksSavedVerses.
+  ///
+  /// In en, this message translates to:
+  /// **'saved verses'**
+  String get bookmarksSavedVerses;
+
+  /// No description provided for @adjustTextSizeForBetterReadability.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust text size for better readability'**
+  String get adjustTextSizeForBetterReadability;
+
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Islamic Companion'**
+  String get homeTitle;
+
+  /// Status shown when there is no saved Quran activity to continue
+  ///
+  /// In en, this message translates to:
+  /// **'No progress'**
+  String get noProgress;
+
+  /// No description provided for @resumeReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume your Quran reading'**
+  String get resumeReading;
+
+  /// No description provided for @noRecentActivityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Start reading the quran to see your progress'**
+  String get noRecentActivityDescription;
+
+  /// No description provided for @bookmarkTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap verses to bookmark them'**
+  String get bookmarkTip;
+
+  /// No description provided for @darkmode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkmode;
+
+  /// No description provided for @lightmode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get lightmode;
+
+  /// No description provided for @supportDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us make the app better'**
+  String get supportDescription;
+
+  /// No description provided for @batteryOptimizationExemptionActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Optimization Disabled'**
+  String get batteryOptimizationExemptionActive;
+
+  /// No description provided for @batteryOptimizationExemptionInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Optimization Active'**
+  String get batteryOptimizationExemptionInactive;
+
+  /// No description provided for @notificationsMayBeDelayedOrMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications may be delayed or missed'**
+  String get notificationsMayBeDelayedOrMissed;
+
+  /// No description provided for @notificationsActive.
+  ///
+  /// In en, this message translates to:
+  /// **'All notifications are working properly'**
+  String get notificationsActive;
+
+  /// No description provided for @addTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Task'**
+  String get addTask;
+
+  /// No description provided for @consecutiveDays.
+  ///
+  /// In en, this message translates to:
+  /// **'consecutive days'**
+  String get consecutiveDays;
+
+  /// No description provided for @deleteTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Task'**
+  String get deleteTask;
+
+  /// No description provided for @deleteTaskConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete'**
+  String get deleteTaskConfirmation;
+
+  /// No description provided for @completedPercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'completed'**
+  String get completedPercentage;
+
+  /// No description provided for @itemTypePrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer'**
+  String get itemTypePrayer;
+
+  /// No description provided for @itemTypeQuran.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran Reading'**
+  String get itemTypeQuran;
+
+  /// No description provided for @itemTypeAthkar.
+  ///
+  /// In en, this message translates to:
+  /// **'Athkar & Dhikr'**
+  String get itemTypeAthkar;
+
+  /// No description provided for @itemTypeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get itemTypeCustom;
+
+  /// No description provided for @nightAthkar.
+  ///
+  /// In en, this message translates to:
+  /// **'Night Athkar'**
+  String get nightAthkar;
+
+  /// No description provided for @itemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Item Title'**
+  String get itemTitle;
+
+  /// No description provided for @enterItemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter item title...'**
+  String get enterItemTitle;
+
+  /// No description provided for @itemType.
+  ///
+  /// In en, this message translates to:
+  /// **'Item Type'**
+  String get itemType;
+
+  /// No description provided for @repetitionFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Repetition Frequency'**
+  String get repetitionFrequency;
+
+  /// No description provided for @addItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Item'**
+  String get addItem;
+
+  /// No description provided for @itemTypePrayerShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer'**
+  String get itemTypePrayerShort;
+
+  /// No description provided for @itemTypeQuranShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran'**
+  String get itemTypeQuranShort;
+
+  /// No description provided for @itemTypeAthkarShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Athkar'**
+  String get itemTypeAthkarShort;
+
+  /// No description provided for @dayStreakSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'-Day Streak!'**
+  String dayStreakSuffix(num count);
+
+  /// No description provided for @optimize.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimize'**
+  String get optimize;
+
+  /// No description provided for @loadingPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading preferences...'**
+  String get loadingPreferences;
+
+  /// Currency settings section title
+  ///
+  /// In en, this message translates to:
+  /// **'Currency Settings'**
+  String get currencySettings;
+
+  /// Metal prices section title
+  ///
+  /// In en, this message translates to:
+  /// **'Metal Prices'**
+  String get metalPrices;
+
+  /// Nisab info card title
+  ///
+  /// In en, this message translates to:
+  /// **'What is Nisab?'**
+  String get whatIsNisab;
+
+  /// Quick summary section title
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Summary'**
+  String get quickSummary;
+
+  /// Zakat due label in summary
+  ///
+  /// In en, this message translates to:
+  /// **'Zakat Due:'**
+  String get zakatDue;
+
+  /// Hint text for amount input fields
+  ///
+  /// In en, this message translates to:
+  /// **'0.00'**
+  String get hintAmount;
+
+  /// No description provided for @feedbackHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We Value Your Opinion'**
+  String get feedbackHeroTitle;
+
+  /// No description provided for @onboardingWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Huda'**
+  String get onboardingWelcomeTitle;
+
+  /// No description provided for @onboardingWelcomeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda - Your all-in-one Islamic app with everything a Muslim needs in a single place.'**
+  String get onboardingWelcomeDescription;
+
+  /// No description provided for @onboardingPrayerTimesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Times'**
+  String get onboardingPrayerTimesTitle;
+
+  /// No description provided for @onboardingPrayerTimesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Never miss a prayer with precise prayer times based on your location. Get notifications and track your daily prayers.'**
+  String get onboardingPrayerTimesDescription;
+
+  /// No description provided for @onboardingQuranTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Holy Quran'**
+  String get onboardingQuranTitle;
+
+  /// No description provided for @onboardingQuranDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Read, listen, and memorize the Holy Quran with beautiful recitations, translations, and tafsir.'**
+  String get onboardingQuranDescription;
+
+  /// No description provided for @onboardingAthkarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Athkar & Duas'**
+  String get onboardingAthkarTitle;
+
+  /// No description provided for @onboardingAthkarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily remembrance and supplications to strengthen your faith.'**
+  String get onboardingAthkarDescription;
+
+  /// No description provided for @onboardingQiblahTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Qiblah Direction'**
+  String get onboardingQiblahTitle;
+
+  /// No description provided for @onboardingQiblahDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the accurate direction of the Holy Kaaba from anywhere in the world.'**
+  String get onboardingQiblahDescription;
+
+  /// No description provided for @onboardingMultilingualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Multilingual Support'**
+  String get onboardingMultilingualTitle;
+
+  /// No description provided for @onboardingMultilingualDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Access the app in multiple languages to make your Islamic journey more personal and easy to understand.'**
+  String get onboardingMultilingualDescription;
+
+  /// No description provided for @onboardingBooksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Books'**
+  String get onboardingBooksTitle;
+
+  /// No description provided for @onboardingBooksDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore a vast library of authentic Islamic books for deep knowledge and spiritual growth.'**
+  String get onboardingBooksDescription;
+
+  /// No description provided for @onboardingHadithTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hadith Collection'**
+  String get onboardingHadithTitle;
+
+  /// No description provided for @onboardingHadithDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Read from trusted sources including Sahih Bukhari, Sahih Muslim, Sunan Abu Dawood, and more.'**
+  String get onboardingHadithDescription;
+
+  /// No description provided for @onboardingAITitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda AI Assistant'**
+  String get onboardingAITitle;
+
+  /// No description provided for @onboardingAIDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Islamic questions and get reliable answers with our AI-powered assistant for Islamic guidance.'**
+  String get onboardingAIDescription;
+
+  /// No description provided for @onboardingHijriTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hijri Calendar'**
+  String get onboardingHijriTitle;
+
+  /// No description provided for @onboardingHijriDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'View the full Islamic calendar with Gregorian date conversion to stay connected with important dates.'**
+  String get onboardingHijriDescription;
+
+  /// No description provided for @onboardingChecklistTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic Daily Checklist'**
+  String get onboardingChecklistTitle;
+
+  /// No description provided for @onboardingChecklistDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your daily prayers, worship, and good deeds with an easy-to-use checklist.'**
+  String get onboardingChecklistDescription;
+
+  /// No description provided for @onboardingJourneyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Your Journey'**
+  String get onboardingJourneyTitle;
+
+  /// No description provided for @onboardingJourneyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything you need for your Islamic journey is here. Start exploring and strengthen your connection with Allah.'**
+  String get onboardingJourneyDescription;
+
+  /// No description provided for @locationServicesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are disabled. Please enable them in your device settings.'**
+  String get locationServicesDisabled;
+
+  /// No description provided for @noHadithsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Hadiths Found'**
+  String get noHadithsFound;
+
+  /// No description provided for @noHadithsFoundChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'This chapter doesn\'t contain any hadiths at the moment.'**
+  String get noHadithsFoundChapter;
+
+  /// Title for counseling mode
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling Mode'**
+  String get counselingMode;
+
+  /// Guidance card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Islamic guidance'**
+  String get guidanceSubtitle;
+
+  /// Quran card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Relevant Quranic wisdom'**
+  String get quranSubtitle;
+
+  /// Duaa card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Heartfelt supplications'**
+  String get duaaSubtitle;
+
+  /// Text prompting users to try example questions
+  ///
+  /// In en, this message translates to:
+  /// **'Try expressing:'**
+  String get tryExpressing;
+
+  /// Instructions for adding widget
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the button below to add the Huda widget directly to your home screen. This displays beautiful Quranic verses that update automatically.'**
+  String get addWidgetInstructions;
+
+  /// Message for non-Android platforms
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is only available on Android'**
+  String get featureOnlyAvailableOnAndroid;
+
+  /// Message when pin widget is not supported
+  ///
+  /// In en, this message translates to:
+  /// **'Pin widget is not supported on this device'**
+  String get pinWidgetNotSupported;
+
+  /// Error message for adding widget
+  ///
+  /// In en, this message translates to:
+  /// **'Error adding widget'**
+  String get errorAddingWidget;
+
+  /// Placeholder for minutes input
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes (e.g., 30)'**
+  String get sahurMinutesPlaceholder;
+
+  /// Subtitle when Sahur alarm is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Not Set'**
+  String get sahurAlarmNotSet;
+
+  /// Button label to snooze the ringing alarm for 5 minutes
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze'**
+  String get snoozeAlarm;
+
+  /// Feature description
+  ///
+  /// In en, this message translates to:
+  /// **'Lock apps during times of worship to minimize distractions.'**
+  String get miqaatLockDescription;
+
+  /// Duration picker title
+  ///
+  /// In en, this message translates to:
+  /// **'Select Duration'**
+  String get selectDuration;
+
+  /// iOS app selection title
+  ///
+  /// In en, this message translates to:
+  /// **'iOS App Selection'**
+  String get iosAppSelectionTitle;
+
+  /// iOS app selection explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Due to iOS privacy restrictions, app selection is managed through Screen Time settings. Enable Screen Time access to manage app restrictions.'**
+  String get iosAppSelectionDescription;
+
+  /// Start session button
+  ///
+  /// In en, this message translates to:
+  /// **'Start Session'**
+  String get startSession;
+
+  /// Active session indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Session Active'**
+  String get sessionActive;
+
+  /// Remaining time label
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Time'**
+  String get remainingTime;
+
+  /// Lock screen title
+  ///
+  /// In en, this message translates to:
+  /// **'App Locked'**
+  String get appLocked;
+
+  /// Lock screen message
+  ///
+  /// In en, this message translates to:
+  /// **'This app is locked during your focus time. Start a session to unlock temporarily.'**
+  String get focusTimeMessage;
+
+  /// Go back button
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back Home'**
+  String get goBackHome;
+
+  /// Ramadan page title
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Qadhaa'**
+  String get ramadanTracker;
+
+  /// Remaining time for iftar
+  ///
+  /// In en, this message translates to:
+  /// **'remaining for Iftar Less than {hours} hours'**
+  String remainingForIftar(int hours);
+
+  /// Remaining time for imsaak
+  ///
+  /// In en, this message translates to:
+  /// **'remaining for Imsaak Less than {hours} hours'**
+  String remainingForImsaak(int hours);
+
+  /// Qadhaa days section title
+  ///
+  /// In en, this message translates to:
+  /// **'Qadhaa Days'**
+  String get qadhaaDays;
+
+  /// Indicates that the app is currently in offline mode
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Mode'**
+  String get offlineMode;
+
+  /// Message shown when a book download fails
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed: {error}'**
+  String downloadFailed(String error);
+
+  /// Instruction to select apps using Screen Time on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'Tap below to select apps using Screen Time'**
+  String get iosTapToSelectApps;
+
+  /// Button text to select apps using Screen Time on iOS
+  ///
+  /// In en, this message translates to:
+  /// **'Select Apps (Screen Time)'**
+  String get iosSelectAppsScreenTime;
+
+  /// Button to check connection
+  ///
+  /// In en, this message translates to:
+  /// **'Check Connection'**
+  String get checkConnection;
+
+  /// Number of files for offline book
+  ///
+  /// In en, this message translates to:
+  /// **'Files ({count})'**
+  String filesCount(int count);
+
+  /// Search surah placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search surah...'**
+  String get searchSurah;
+
+  /// Offline empty state title when no audio is downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'No downloaded content'**
+  String get noDownloadedContent;
+
+  /// Now playing label in radio player bar
+  ///
+  /// In en, this message translates to:
+  /// **'Now Playing'**
+  String get nowPlaying;
+
+  /// One month Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'One Month Khatma (29 days)'**
+  String get khatmaOneMonthProgram;
+
+  /// Subtitle for the one-month Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Daily portion: ~21 pages'**
+  String get khatmaDailyWird21Pages;
+
+  /// Section label for other programs
+  ///
+  /// In en, this message translates to:
+  /// **'Other Programs'**
+  String get khatmaOtherPrograms;
+
+  /// Title for meaning-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma by Meaning'**
+  String get khatmaBySemanticTitle;
+
+  /// Subtitle for meaning-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Portions with complete meaning'**
+  String get khatmaBySemanticSubtitle;
+
+  /// Title for parts-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma by Juz and Rub\''**
+  String get khatmaByPartsTitle;
+
+  /// Subtitle for parts-based Khatma program
+  ///
+  /// In en, this message translates to:
+  /// **'Portions by Juz and Ahzab'**
+  String get khatmaByPartsSubtitle;
+
+  /// Title for the program selection step
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma Program'**
+  String get khatmaProgramTitle;
+
+  /// Two-month Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'Two-Month Khatma (60 days)'**
+  String get khatmaTwoMonthsProgram;
+
+  /// One-week Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'One-Week Khatma (7 days)'**
+  String get khatmaOneWeekProgram;
+
+  /// Section label for monthly Khatma programs
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get khatmaMonthsSection;
+
+  /// 30-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'30-Day Khatma'**
+  String get khatma30DaysTitle;
+
+  /// Section label for other Khatma programs
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get khatmaOtherSection;
+
+  /// 240-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'240-Day Khatma'**
+  String get khatma240DaysTitle;
+
+  /// 120-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'120-Day Khatma'**
+  String get khatma120DaysTitle;
+
+  /// 80-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'80-Day Khatma'**
+  String get khatma80DaysTitle;
+
+  /// 60-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'60-Day Khatma'**
+  String get khatma60DaysTitle;
+
+  /// 40-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'40-Day Khatma'**
+  String get khatma40DaysTitle;
+
+  /// 20-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'20-Day Khatma'**
+  String get khatma20DaysTitle;
+
+  /// 15-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'15-Day Khatma'**
+  String get khatma15DaysTitle;
+
+  /// 10-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'10-Day Khatma'**
+  String get khatma10DaysTitle;
+
+  /// 6-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'6-Day Khatma'**
+  String get khatma6DaysTitle;
+
+  /// 3-day Khatma program title
+  ///
+  /// In en, this message translates to:
+  /// **'3-Day Khatma'**
+  String get khatma3DaysTitle;
+
+  /// Option to start from the beginning of the Quran
+  ///
+  /// In en, this message translates to:
+  /// **'Beginning of the Quran'**
+  String get khatmaFromBeginning;
+
+  /// Option to start from a specific portion
+  ///
+  /// In en, this message translates to:
+  /// **'Specific Portion'**
+  String get khatmaSpecificWird;
+
+  /// Title for the active Khatma statistics page
+  ///
+  /// In en, this message translates to:
+  /// **'Khatma Statistics'**
+  String get khatmaStatsTitle;
+
+  /// Status: wird completed for today
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get khatmaWirdCompleted;
+
+  /// Status: wird in progress for today
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get khatmaWirdInProgress;
+
+  /// Subtitle for the all wirds tile
+  ///
+  /// In en, this message translates to:
+  /// **'View all portions'**
+  String get khatmaViewAllWirds;
+
+  /// AM time indicator used in reminder time display
+  ///
+  /// In en, this message translates to:
+  /// **'AM'**
+  String get khatmaAmIndicator;
+
+  /// PM time indicator used in reminder time display
+  ///
+  /// In en, this message translates to:
+  /// **'PM'**
+  String get khatmaPmIndicator;
+
+  /// Mushaf page header surah label
+  ///
+  /// In en, this message translates to:
+  /// **'Surah {name}'**
+  String mushafSurahHeader(String name);
+
+  /// Settings section header for horizontal layout
+  ///
+  /// In en, this message translates to:
+  /// **'Horizontal Layout'**
+  String get settingsHorizontalLayout;
+
+  /// Scroll to top navigation button label
+  ///
+  /// In en, this message translates to:
+  /// **'To Top'**
+  String get scrollToTop;
+
+  /// Header subtitle for the prayer-widget tab
+  ///
+  /// In en, this message translates to:
+  /// **'Stay on time for every prayer'**
+  String get prayerWidgetTagline;
+
+  /// Title of the section that adds the prayer widget to the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add Prayer Widget'**
+  String get addPrayerWidgetTitle;
+
+  /// Body of the prayer widget add section
+  ///
+  /// In en, this message translates to:
+  /// **'Pin the Huda Prayer widget to your home screen to see the next prayer with a live countdown. Calculations run on-device using your saved location.'**
+  String get addPrayerWidgetDescription;
+
+  /// Button text to open the prayer widget customization page
+  ///
+  /// In en, this message translates to:
+  /// **'Customize'**
+  String get customizePrayerWidget;
+
+  /// Title of the prayer widget customization screen
+  ///
+  /// In en, this message translates to:
+  /// **'Customize prayer widget'**
+  String get prayerWidgetCustomization;
+
+  /// Label above the in-app preview
+  ///
+  /// In en, this message translates to:
+  /// **'Live preview'**
+  String get prayerWidgetPreview;
+
+  /// Toggle for showing background fill
+  ///
+  /// In en, this message translates to:
+  /// **'Show background'**
+  String get enableBackground;
+
+  /// Latin/Arabic-numeral option
+  ///
+  /// In en, this message translates to:
+  /// **'Latin (1, 2, 3)'**
+  String get latinNumerals;
+
+  /// Arabic-numeral option
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic (١, ٢, ٣)'**
+  String get arabicNumerals;
+
+  /// Confirmation prompt for resetting customization
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all prayer widget customization to defaults?'**
+  String get resetWidgetCustomizationConfirm;
+
+  /// Hint shown when no custom color is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Follow app theme'**
+  String get followAppTheme;
+
+  /// Empty-state title shown when no coordinates are saved
+  ///
+  /// In en, this message translates to:
+  /// **'Set your location'**
+  String get prayerWidgetEmptyTitle;
+
+  /// Empty-state body
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda and grant location access so the widget can compute prayer times for you.'**
+  String get prayerWidgetEmptyBody;
+
+  /// Empty-state CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Open Prayer Times'**
+  String get prayerWidgetEmptyAction;
+
+  /// Label above the previous-prayer time
+  ///
+  /// In en, this message translates to:
+  /// **'Previous prayer'**
+  String get previousPrayer;
+
+  /// Label above the countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Time until next prayer'**
+  String get timeUntilNextPrayer;
+
+  /// No description provided for @narratedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Narrated by'**
+  String get narratedBy;
+
+  /// resumeReciter
+  ///
+  /// In en, this message translates to:
+  /// **'Resume {reciterName}'**
+  String resumeReciter(String reciterName);
+
+  /// No description provided for @noReciterActivityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Start listening to Quran audio to see your progress'**
+  String get noReciterActivityDescription;
+
+  /// No description provided for @noRadioActivityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen to Quran radio to see your progress'**
+  String get noRadioActivityDescription;
+
+  /// Label on audio card showing the language of the audio content
+  ///
+  /// In en, this message translates to:
+  /// **'In {language}'**
+  String audioInLanguage(String language);
+
+  /// Button to manually search for a location
+  ///
+  /// In en, this message translates to:
+  /// **'Search Manually'**
+  String get searchManually;
+
+  /// Message shown when location permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied. Please allow location access in your device settings.'**
+  String get locationPermissionDenied;
+
+  /// Message shown when location permission is permanently denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission permanently denied. Please allow location access in your device settings.'**
+  String get locationPermissionPermanentlyDenied;
+
+  /// Fallback error summary when no message is available
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error occurred'**
+  String get unknownErrorOccurred;
+
+  /// Title for the screenshot feedback description field
+  ///
+  /// In en, this message translates to:
+  /// **'What happened?'**
+  String get whatHappened;
+
+  /// No description provided for @primaryCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary cards'**
+  String get primaryCards;
+
+  /// No description provided for @moveToPrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to primary'**
+  String get moveToPrimary;
+
+  /// No description provided for @resetTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset theme'**
+  String get resetTheme;
+
+  /// No description provided for @reorderHomeItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder item'**
+  String get reorderHomeItem;
+
+  /// No description provided for @applyChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get applyChanges;
+
+  /// No description provided for @setUpPrayerTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up prayer times'**
+  String get setUpPrayerTimes;
+
+  /// No description provided for @homeMoreTools.
+  ///
+  /// In en, this message translates to:
+  /// **'More tools'**
+  String get homeMoreTools;
+
+  /// No description provided for @saveHomeChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your home changes?'**
+  String get saveHomeChangesTitle;
+
+  /// No description provided for @homeChangesNotApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'The current layout and theme changes have not been applied.'**
+  String get homeChangesNotApplied;
+
+  /// No description provided for @unsaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved'**
+  String get unsaved;
+
+  /// No description provided for @themeResetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This theme was reset to its default layout.'**
+  String get themeResetMessage;
+
+  /// No description provided for @notificationPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications to receive the reminders you choose, right when they matter.'**
+  String get notificationPermissionDescription;
+
+  /// No description provided for @quranWidgetTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'A new ayah and translation every hour'**
+  String get quranWidgetTagline;
+
+  /// No description provided for @quranWidgetCustomization.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran widget customization'**
+  String get quranWidgetCustomization;
+
+  /// No description provided for @quranWidgetPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Live preview'**
+  String get quranWidgetPreview;
+
+  /// No description provided for @customColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom colors'**
+  String get customColors;
+
+  /// No description provided for @customColorsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Fine-tune the widget while keeping every line readable.'**
+  String get customColorsDescription;
+
+  /// No description provided for @ayahColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah color'**
+  String get ayahColor;
+
+  /// No description provided for @translationColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation color'**
+  String get translationColor;
+
+  /// No description provided for @customizeColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize colors'**
+  String get customizeColors;
+
+  /// No description provided for @customTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get customTheme;
+
+  /// No description provided for @colorContrastTooLow.
+  ///
+  /// In en, this message translates to:
+  /// **'This color does not have enough contrast.'**
+  String get colorContrastTooLow;
+
+  /// No description provided for @prayerTravelUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Update prayer times while traveling'**
+  String get prayerTravelUpdates;
+
+  /// No description provided for @prayerTravelUpdatesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'When enabled, Huda can update prayer times, notifications, and widgets after meaningful travel without opening the app.'**
+  String get prayerTravelUpdatesDescription;
+
+  /// No description provided for @prayerLocationMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Location mode'**
+  String get prayerLocationMode;
+
+  /// No description provided for @backgroundTravelUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Background travel updates'**
+  String get backgroundTravelUpdates;
+
+  /// No description provided for @lastLocationValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last location validation'**
+  String get lastLocationValidation;
+
+  /// No description provided for @lastPrayerScheduleActivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last schedule activation'**
+  String get lastPrayerScheduleActivation;
+
+  /// No description provided for @travelUpdatesEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get travelUpdatesEnabled;
+
+  /// No description provided for @travelForegroundOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Foreground only'**
+  String get travelForegroundOnly;
+
+  /// No description provided for @travelUpdatesUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported'**
+  String get travelUpdatesUnsupported;
+
+  /// No description provided for @travelUpdatesUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get travelUpdatesUnavailable;
+
+  /// No description provided for @travelUpdatesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get travelUpdatesDisabled;
+
+  /// No description provided for @notYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get notYet;
+
+  /// No description provided for @prayerNotificationIssueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications need attention'**
+  String get prayerNotificationIssueTitle;
+
+  /// No description provided for @prayerNotificationRetrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling prayer notifications…'**
+  String get prayerNotificationRetrying;
+
+  /// No description provided for @audioPlayRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Play selection'**
+  String get audioPlayRange;
+
+  /// No description provided for @prayerVerificationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Location verification pending'**
+  String get prayerVerificationPending;
+
+  /// No description provided for @prayerVerificationGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some location details still need verification. Come back when you have internet and retry to improve prayer-time and notification reliability.'**
+  String get prayerVerificationGuidance;
+
+  /// No description provided for @prayerUpdatesIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer updates incomplete'**
+  String get prayerUpdatesIncomplete;
+
+  /// No description provided for @prayerUpdatesGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some updates could not be completed. Come back when you have internet to retry. Local recovery can also be retried offline.'**
+  String get prayerUpdatesGuidance;
+
+  /// No description provided for @prayerDetailsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Location details pending'**
+  String get prayerDetailsPending;
+
+  /// No description provided for @prayerSavingPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving failed. Retry to save these prayer updates.'**
+  String get prayerSavingPending;
+
+  /// No description provided for @prayerWidgetPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer widget update pending'**
+  String get prayerWidgetPending;
+
+  /// No description provided for @prayerLocationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Location update pending. Check location permission and device location services, then retry.'**
+  String get prayerLocationPending;
+
+  /// No description provided for @prayerCalculationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer calculation update pending'**
+  String get prayerCalculationPending;
+
+  /// No description provided for @prayerNativePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Background location update pending'**
+  String get prayerNativePending;
+
+  /// No description provided for @prayerPreviousCoverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previously acknowledged notifications may still follow the previous location; current delivery is not confirmed.'**
+  String get prayerPreviousCoverage;
+
+  /// No description provided for @prayerVerificationRetryGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some location details still need verification. Retry to update prayer times and notifications.'**
+  String get prayerVerificationRetryGuidance;
+
+  /// No description provided for @prayerIssuePlaceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Place name'**
+  String get prayerIssuePlaceName;
+
+  /// No description provided for @prayerIssueSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get prayerIssueSaving;
+
+  /// No description provided for @prayerIssueCalculation.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation'**
+  String get prayerIssueCalculation;
+
+  /// No description provided for @prayerIssueBackgroundLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Background location'**
+  String get prayerIssueBackgroundLocation;
+
+  /// No description provided for @prayerIssueWidget.
+  ///
+  /// In en, this message translates to:
+  /// **'Home widget'**
+  String get prayerIssueWidget;
+
+  /// No description provided for @prayerIssueRetrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Retrying…'**
+  String get prayerIssueRetrying;
+
+  /// No description provided for @prayerUpdatingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating prayer times…'**
+  String get prayerUpdatingTitle;
+
+  /// No description provided for @prayerUpdatingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This only takes a few seconds.'**
+  String get prayerUpdatingMessage;
+
+  /// No description provided for @prayerCalendarChooseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose date'**
+  String get prayerCalendarChooseDate;
+
+  /// No description provided for @prayerCalendarChooseMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose month'**
+  String get prayerCalendarChooseMonth;
+
+  /// No description provided for @prayerCalendarChooseYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose year'**
+  String get prayerCalendarChooseYear;
+
+  /// No description provided for @prayerNotificationsUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications aren\'t available on this device.'**
+  String get prayerNotificationsUnsupported;
+
+  /// No description provided for @prayerUpdatesLocalGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Some updates couldn\'t be completed. Tap Retry to finish them.'**
+  String get prayerUpdatesLocalGuidance;
+
+  /// No description provided for @prayerSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up prayer times'**
+  String get prayerSetupTitle;
+
+  /// No description provided for @prayerSetupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish these steps to see accurate times and get an alert at each prayer.'**
+  String get prayerSetupSubtitle;
+
+  /// No description provided for @prayerSetupLocationDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access was declined. Allow it to calculate times automatically, or search for your city.'**
+  String get prayerSetupLocationDeclined;
+
+  /// No description provided for @prayerSetupLocationBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access is off for Huda. Turn it on in Settings — prayer times load automatically when you come back.'**
+  String get prayerSetupLocationBlocked;
+
+  /// No description provided for @prayerSetupLocationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda couldn\'t find your location. Try again, or search for your city instead.'**
+  String get prayerSetupLocationFailed;
+
+  /// No description provided for @prayerSetupReliableHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Android from delaying prayer alerts.'**
+  String get prayerSetupReliableHint;
+
+  /// No description provided for @prayerAttentionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 thing needs attention} other{{count} things need attention}}'**
+  String prayerAttentionCount(int count);
+
+  /// No description provided for @prayerAttentionMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, other{+{count} more}}'**
+  String prayerAttentionMore(int count);
+
+  /// No description provided for @prayerSetupAlertsSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Off — you can turn them on anytime from this page'**
+  String get prayerSetupAlertsSkipped;
+
+  /// No description provided for @prayerSetupSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get prayerSetupSkip;
+
+  /// No description provided for @prayerSetupSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get prayerSetupSkipped;
+
+  /// No description provided for @prayerSetupLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Times calculated for where you are.'**
+  String get prayerSetupLocationHint;
+
+  /// No description provided for @macPrayerMenuCountdownOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'in {time}'**
+  String macPrayerMenuCountdownOnly(String time);
+
+  /// No description provided for @windowsPrayerEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable prayer reminders'**
+  String get windowsPrayerEnabled;
+
+  /// No description provided for @windowsPrayerAudioPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan is playing'**
+  String get windowsPrayerAudioPlaying;
+
+  /// No description provided for @windowsPrayerFocusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus Mode is active'**
+  String get windowsPrayerFocusActive;
+
+  /// No description provided for @androidAdhanDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get androidAdhanDownload;
+
+  /// No description provided for @prayerAlertLengthCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get prayerAlertLengthCustom;
+
+  /// No description provided for @prayerAlertSoundWhole.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen to the whole adhan'**
+  String get prayerAlertSoundWhole;
+
+  /// No description provided for @prayerAlertTestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a test'**
+  String get prayerAlertTestTitle;
 }
 
 class _AppLocalizationsDelegate

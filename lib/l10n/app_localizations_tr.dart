@@ -64,17 +64,8 @@ class AppLocalizationsTr extends AppLocalizations {
       'Siz izin verene kadar hiçbir şey gönderilmez. Bunu istediğiniz zaman Ayarlar\'dan değiştirebilirsiniz.';
 
   @override
-  String get crashReportingEnabledLabel => 'Açık';
-
-  @override
-  String get crashReportingDisabledLabel => 'Kapalı';
-
-  @override
   String get crashReportingDisabledDescription =>
       'Otomatik kilitlenme raporları devre dışı. Ayarlar\'dan etkinleştirebilirsiniz.';
-
-  @override
-  String get searchLocationTitle => 'Konum Ara';
 
   @override
   String get searchCityHint => 'Şehir ara (örn. New York)...';
@@ -146,9 +137,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tasbih => 'Tesbih';
 
   @override
-  String get islamicNotifications => 'İslami Bildirimler';
-
-  @override
   String get hadith => 'Hadis';
 
   @override
@@ -162,9 +150,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get bookmarks => 'Yer İmleri';
-
-  @override
-  String get homeScreenWidgetManagement => 'Ana Ekran Widget Yönetimi';
 
   @override
   String get loading => 'Yükleniyor...';
@@ -209,51 +194,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get copyText => 'Metni Kopyala';
 
   @override
-  String get shareText => 'Metni Paylaş';
-
-  @override
-  String get refreshLocation => 'Konumu Yenile';
-
-  @override
-  String get autoUpdateWhenAppClosed =>
-      'Uygulama kapatıldığında otomatik güncelle';
-
-  @override
-  String get backgroundUpdatesDisabled =>
-      'Arka plan güncellemeleri devre dışı.';
-
-  @override
-  String get clearAllCustomVerses => 'Tüm Özel Ayetleri Temizle';
-
-  @override
   String get clearAllBookmarks => 'Tüm Yer İmlerini Temizle';
-
-  @override
-  String get verseRemovedFromWidget => 'Ayet widget\'tan kaldırıldı';
-
-  @override
-  String get allCustomVersesCleared => 'Tüm özel ayetler temizlendi';
 
   @override
   String get downloadFeatureComingSoon => 'İndirme özelliği yakında geliyor!';
 
   @override
-  String get failedToShareText => 'Metin paylaşılamadı';
-
-  @override
   String get failedToShareImage => 'Resim paylaşılamadı';
-
-  @override
-  String get tafsirDownloadedSuccessfully => 'Tefsir başarıyla indirildi!';
-
-  @override
-  String get translationDownloadedSuccessfully => 'Çeviri başarıyla indirildi!';
-
-  @override
-  String get unknownState => 'Bilinmeyen durum';
-
-  @override
-  String get deleteEvent => 'Etkinliği Sil';
 
   @override
   String get addEvent => 'Etkinlik Ekle';
@@ -269,9 +216,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get allDayEvent => 'Tüm Gün Etkinliği';
-
-  @override
-  String get chooseColor => 'Renk Seç';
 
   @override
   String get hijriCalendar => 'Hicri Takvim';
@@ -302,10 +246,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noEventsForThisDate => 'Bu tarih için etkinlik yok';
-
-  @override
-  String get tapPlusButtonToAddEvent =>
-      'Etkinlik eklemek için + düğmesine dokunun';
 
   @override
   String get muharram => 'Muharrem';
@@ -344,49 +284,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get dhuAlHijjah => 'Zilhicce';
 
   @override
-  String get january => 'Ocak';
-
-  @override
-  String get february => 'Şubat';
-
-  @override
-  String get march => 'Mart';
-
-  @override
-  String get april => 'Nisan';
-
-  @override
   String get may => 'Mayıs';
-
-  @override
-  String get june => 'Haziran';
-
-  @override
-  String get july => 'Temmuz';
-
-  @override
-  String get august => 'Ağustos';
-
-  @override
-  String get september => 'Eylül';
-
-  @override
-  String get october => 'Ekim';
-
-  @override
-  String get november => 'Kasım';
-
-  @override
-  String get december => 'Aralık';
 
   @override
   String get eventTitle => 'Etkinlik Başlığı';
 
   @override
   String get description => 'Açıklama';
-
-  @override
-  String get eventColor => 'Etkinlik Rengi:';
 
   @override
   String get startTime => 'Başlangıç Saati';
@@ -423,9 +327,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get all => 'Tümü';
 
   @override
-  String get filtered => 'Filtrelenmiş';
-
-  @override
   String get readMore => 'Devamını Oku';
 
   @override
@@ -459,9 +360,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get go => 'Git';
 
   @override
-  String get oopsSomethingWentWrong => 'Hay aksi! Bir şeyler ters gitti';
-
-  @override
   String get chooseLanguage => 'Dil Seç';
 
   @override
@@ -472,9 +370,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get saveChanges => 'Değişiklikleri Kaydet';
-
-  @override
-  String get pickColor => 'Bir renk seç';
 
   @override
   String get select => 'Seç';
@@ -501,10 +396,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get resetCounter => 'Sayacı Sıfırla';
 
   @override
-  String get resetCounterConfirmation =>
-      'Sayacı 0\'a sıfırlamak istediğinizden emin misiniz?';
-
-  @override
   String get note => 'Not';
 
   @override
@@ -529,29 +420,36 @@ class AppLocalizationsTr extends AppLocalizations {
   String get silent => 'Sessiz';
 
   @override
-  String get findingQiblahDirection => 'Kıble yönü bulunuyor...';
+  String get tasbihTapToCount => 'Saymak için herhangi bir yere dokunun';
+
+  @override
+  String get tasbihClickToCount =>
+      'Saymak için tıklayın veya Boşluk tuşuna basın';
+
+  @override
+  String get tasbihYourDhikr => 'Zikirleriniz';
+
+  @override
+  String get tasbihEmptyMessage => 'Saymaya başlamak için bir zikir ekleyin.';
+
+  @override
+  String get tasbihLoadError => 'Zikir listeniz yüklenemedi.';
+
+  @override
+  String get tasbihDhikrRemoved => 'Zikir silindi';
+
+  @override
+  String get undo => 'Geri al';
+
+  @override
+  String get tasbihResetMessage =>
+      'Sayısı 0\'a döner. Diğer zikirlerinin sayıları korunur.';
 
   @override
   String get somethingWentWrong => 'Bir şeyler ters gitti';
 
   @override
-  String get locationPermissionRequired => 'Konum İzni Gerekli';
-
-  @override
   String get openSettings => 'Ayarları Aç';
-
-  @override
-  String get alignedWithQiblah => 'Kıble ile Hizalı';
-
-  @override
-  String get findingDirection => 'Yön bulunuyor...';
-
-  @override
-  String get perfectQiblahAlignment => '🕋 Mükemmel! Kıble yönüne bakıyorsunuz';
-
-  @override
-  String get rotateDeviceInstruction =>
-      'Ok Mekke\'yi gösterene kadar cihazınızı çevirin';
 
   @override
   String get calibrateCompass => 'Pusulanın kalibre edilmesi gerekiyor';
@@ -561,27 +459,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Doğruluğu artırmak için telefonunuzu sekiz şeklinde hareket ettirin';
 
   @override
-  String get athkarCollection => 'Zikir Koleksiyonu';
-
-  @override
-  String selectedAthkarGroups(int count) {
-    return '$count seçili zikir grubu';
-  }
-
-  @override
-  String get retryArabic => 'Yeniden Dene';
-
-  @override
-  String get errorRemovingVerse => 'Ayet kaldırılırken hata';
-
-  @override
   String get clearAll => 'Tümünü Temizle';
-
-  @override
-  String get errorClearingVerses => 'Ayetler temizlenirken hata';
-
-  @override
-  String get testNow => 'Şimdi Test Et';
 
   @override
   String get continueReading => 'Devam Et';
@@ -590,16 +468,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get huda => 'Huda';
 
   @override
-  String get quranSurahs => 'Kuran Sureleri';
-
-  @override
   String get widgetManagement => 'Widget Yönetimi';
-
-  @override
-  String get currentWidgets => 'Mevcut Widget\'lar';
-
-  @override
-  String get availableWidgets => 'Kullanılabilir Widget\'lar';
 
   @override
   String get nextPrayer => 'Sonraki Namaz';
@@ -608,35 +477,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hijriDate => 'Hicri Tarih';
 
   @override
-  String get athkarCounter => 'Zikir Sayacı';
-
-  @override
   String get remove => 'Kaldır';
 
   @override
   String get today => 'Bugün';
 
   @override
-  String get noPrayerTimesAvailable => 'Namaz vakti bilgisi yok';
-
-  @override
   String get sunrise => 'GÜNEŞ DOĞUŞU';
 
   @override
   String get noInternetConnection => 'İnternet Bağlantısı Yok';
-
-  @override
-  String get pleaseCheckConnection =>
-      'Lütfen bağlantınızı kontrol edin ve tekrar deneyin.';
-
-  @override
-  String cannotLoadOffline(String section) {
-    return '$section çevrimdışıyken yüklenemiyor.\nLütfen internet bağlantınızı kontrol edin.';
-  }
-
-  @override
-  String get noInternetOfflineUnavailable =>
-      'İnternet bağlantısı yok. Çevrimdışı içerik mevcut değil.';
 
   @override
   String get offlineAudioUnavailable =>
@@ -651,75 +501,16 @@ class AppLocalizationsTr extends AppLocalizations {
       'İnternet bağlantısı yok. Çevrimdışı meal mevcut değil.';
 
   @override
-  String get loadingAthkar => 'Zikirler yükleniyor...';
-
-  @override
-  String get pressForDetails => 'Detaylar için tıklayın';
-
-  @override
-  String get connectionTimedOut =>
-      'Bağlantı zaman aşımına uğradı. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin.';
-
-  @override
-  String get serverTimeout =>
-      'Sunucu yanıt vermekte çok uzun sürdü. Lütfen tekrar deneyin.';
-
-  @override
-  String get responseTimeout =>
-      'Yanıt zaman aşımı. Lütfen bağlantınızı kontrol edin ve tekrar deneyin.';
-
-  @override
-  String get certificateError =>
-      'Güvenlik sertifikasında bir sorun var. Lütfen daha sonra tekrar deneyin veya desteğe başvurun.';
-
-  @override
   String get noInternetSettings =>
       'İnternet bağlantısı yok. Lütfen ağ ayarlarınızı kontrol edin ve tekrar deneyin.';
-
-  @override
-  String get networkError =>
-      'Ağ hatası. Lütfen internet bağlantınızı kontrol edin.';
 
   @override
   String get unexpectedError =>
       'Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.';
 
   @override
-  String get badRequest => 'Hatalı istek. Lütfen girişinizi kontrol edin.';
-
-  @override
-  String get requestTimeout => 'İstek zaman aşımı. Lütfen tekrar deneyin.';
-
-  @override
-  String get conflictError => 'Çakışma oluştu. Lütfen çözün ve tekrar deneyin.';
-
-  @override
-  String get validationFailed =>
-      'Doğrulama başarısız. Lütfen girişinizi kontrol edin.';
-
-  @override
   String get tooManyRequests =>
       'Çok fazla istek. Lütfen bekleyin ve daha sonra tekrar deneyin.';
-
-  @override
-  String get noInternetCachedTranslation =>
-      'İnternet bağlantısı yok ve önbelleğe alınmış çeviri mevcut değil';
-
-  @override
-  String get noInternetCachedData =>
-      'İnternet bağlantısı yok ve önbelleğe alınmış veri mevcut değil';
-
-  @override
-  String get noInternetCachedTafsir =>
-      'İnternet bağlantısı yok ve önbelleğe alınmış tefsir mevcut değil';
-
-  @override
-  String get clearAllCustomVersesConfirmation =>
-      'Widget\'ınızdan tüm özel ayetleri kaldırmak istediğinizden emin misiniz? Bu işlem geri alınamaz.';
-
-  @override
-  String get chatError =>
-      'Üzgünüm, bir hatayla karşılaştım. Lütfen tekrar deneyin.';
 
   @override
   String get tafsirDownloadSuccess => 'Tefsir başarıyla indirildi!';
@@ -738,49 +529,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String unknownError(String message) {
-    return 'Hata: $message';
-  }
-
-  @override
-  String get failedShareText => 'Metin paylaşılamadı';
-
-  @override
-  String get failedShareImage => 'Resim paylaşılamadı';
-
-  @override
-  String failedStartService(String error) {
-    return 'Hizmet başlatılamadı: $error';
-  }
-
-  @override
-  String failedStopService(String error) {
-    return 'Hizmet durdurulamadı: $error';
-  }
-
-  @override
-  String failedRestartService(String error) {
-    return 'Hizmet yeniden başlatılamadı: $error';
-  }
-
-  @override
-  String get islamicReminders => 'İslami Hatırlatmalar';
-
-  @override
   String get suratAlKahf => 'Kehf Suresi';
 
   @override
-  String everyFridayAt(String time) {
-    return 'Her Cuma $time\'da';
-  }
-
-  @override
   String get morningEveningAthkar => 'Sabah ve Akşam Zikirleri';
-
-  @override
-  String dailyAthkarTimes(String morningTime, String eveningTime) {
-    return 'Günlük $morningTime ve $eveningTime';
-  }
 
   @override
   String get randomAthkar => 'Rastgele Zikirler';
@@ -794,24 +546,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quranReadingReminder => 'Kuran Okuma Hatırlatması';
 
   @override
-  String dailyAt(String time) {
-    return 'Günlük $time\'da';
-  }
-
-  @override
   String get debug => 'Hata Ayıkla';
-
-  @override
-  String get reinit => 'Yeniden Başlat';
-
-  @override
-  String get testLimits => 'Sınırları Test Et';
-
-  @override
-  String get checkingCoverage => 'Kapsam kontrol ediliyor...';
-
-  @override
-  String get refreshCoverage => 'Kapsamı Yenile';
 
   @override
   String get gotIt => 'Anladım';
@@ -824,39 +559,11 @@ class AppLocalizationsTr extends AppLocalizations {
       'Ne sıklıkla rastgele Zikir almak istiyorsunuz?';
 
   @override
-  String get testNotificationScheduled =>
-      'Test bildirimi şu andan 10 saniye sonra için planlandı!';
-
-  @override
-  String get checkConsoleDebugInfo =>
-      'Hata ayıklama bilgisi için konsolu kontrol edin';
-
-  @override
-  String get forceReInitializedNotifications =>
-      'Bildirimler zorla yeniden başlatıldı';
-
-  @override
-  String get checkConsoleLimitTestResults =>
-      'Sınır test sonuçları için konsolu kontrol edin';
-
-  @override
-  String coverageDaysNotifications(String days, String count) {
-    return 'Kapsam: ~$days gün ($count bildirim)';
-  }
-
-  @override
   String get notificationScheduleFailed =>
       'Bu hatırlatıcı planlanamadı. Lütfen tekrar deneyin.';
 
   @override
   String get notificationsEnabled => 'Bildirimler Etkin';
-
-  @override
-  String get notificationsDisabled => 'Bildirimler Devre Dışı';
-
-  @override
-  String get tapToEnableNotifications =>
-      'Bildirim izinlerini etkinleştirmek için dokunun';
 
   @override
   String get notifications => 'Bildirimler';
@@ -865,82 +572,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get home => 'Ana Sayfa';
 
   @override
-  String get booksScreen => 'Kitaplar';
-
-  @override
-  String get pdfScreen => 'PDF';
-
-  @override
-  String get prayerTimesTooltip => 'Namaz Vakitleri';
-
-  @override
-  String get qiblahTooltip => 'Kıble Yönü';
-
-  @override
-  String get tasbihTooltip => 'Tesbih Sayacı';
-
-  @override
-  String get islamicNotificationsTooltip => 'İslami Bildirimler';
-
-  @override
-  String get hadithTooltip => 'Hadis';
-
-  @override
-  String get hadithChaptersTooltip => 'Hadis Bölümleri';
-
-  @override
-  String get hadithDetailsTooltip => 'Hadis Detayları';
-
-  @override
-  String get booksTooltip => 'Kitaplar';
-
-  @override
-  String get bookmarksTooltip => 'Yer İmleri';
-
-  @override
-  String get hijriCalendarTooltip => 'Hicri Takvim';
-
-  @override
-  String get homeScreenWidgetManagementTooltip => 'Ana Ekran Widget Yönetimi';
-
-  @override
-  String get quranSurahsTooltip => 'Kuran Sureleri';
-
-  @override
-  String get settingsTooltip => 'Ayarlar';
-
-  @override
-  String get athkarDetailsTooltip => 'Zikir Detayları';
-
-  @override
-  String get zoomInTooltip => 'Yakınlaştır';
-
-  @override
-  String get zoomOutTooltip => 'Uzaklaştır';
-
-  @override
   String get searchHint => 'Ara...';
 
   @override
-  String get enterBookNameHint => 'Kitap adını girin';
-
-  @override
-  String get enterAuthorNameHint => 'Yazar adını girin';
-
-  @override
-  String get enterDescriptionHint => 'Açıklama girin';
-
-  @override
-  String get enterNotesHint => 'Notlarınızı buraya girin...';
-
-  @override
-  String get searchBooksHint => 'Kitapları ara...';
-
-  @override
   String get searchBookmarksHint => 'Yer imlerini ara...';
-
-  @override
-  String get searchHadithHint => 'Hadis ara...';
 
   @override
   String get typeMessageHint => 'Mesajınızı yazın...';
@@ -949,38 +584,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get searchAthkarHint => 'Zikir ara...';
 
   @override
-  String get confirmDelete => 'Silmeyi Onayla';
-
-  @override
-  String get deleteConfirmation =>
-      'Bu öğeyi silmek istediğinizden emin misiniz?';
-
-  @override
-  String get deleteBookmark => 'Yer İmini Sil';
-
-  @override
-  String get deleteBookmarkConfirmation =>
-      'Bu yer imini silmek istediğinizden emin misiniz?';
-
-  @override
-  String get confirmClearAll => 'Tümünü Temizlemeyi Onayla';
-
-  @override
-  String get clearAllConfirmation =>
-      'Tüm öğeleri temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
-
-  @override
   String get exitDialog => 'Uygulamadan Çık';
 
   @override
   String get exitConfirmation => 'Çıkmak istediğinizden emin misiniz?';
-
-  @override
-  String get permissionDialog => 'İzin Gerekli';
-
-  @override
-  String get permissionMessage =>
-      'Bu özellik cihazınıza erişim izni gerektirir. Devam etmek için lütfen izin verin.';
 
   @override
   String get ok => 'Tamam';
@@ -1010,34 +617,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get connectionError => 'Bağlantı Hatası';
 
   @override
-  String get loadingFailed => 'Yükleme başarısız. Lütfen tekrar deneyin.';
-
-  @override
-  String get fileNotFound => 'Dosya bulunamadı';
-
-  @override
   String get permissionDenied => 'İzin reddedildi';
 
   @override
   String get bookName => 'Kitap Adı';
 
   @override
-  String get authorName => 'Yazar Adı';
-
-  @override
-  String get downloadStarted => 'İndirme başlatıldı';
-
-  @override
-  String get downloadComplete => 'İndirme tamamlandı';
-
-  @override
-  String get operationComplete => 'İşlem başarıyla tamamlandı';
-
-  @override
   String get athkar => 'Zikirler';
-
-  @override
-  String get athkarLoadingError => 'Zikirler yüklenirken hata';
 
   @override
   String searchResultsFound(int count) {
@@ -1051,30 +637,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tryDifferentSearch => 'Farklı arama terimlerini deneyin';
 
   @override
-  String get clickForDetails => 'Detaylar için tıklayın';
-
-  @override
-  String get islamicAssistant => 'İslami Asistan';
-
-  @override
   String get welcomeToHudaAI => 'Huda AI\'ye Hoş Geldiniz';
-
-  @override
-  String get welcomeToHudaArabic => 'Huda\'ya Hoş Geldiniz';
 
   @override
   String get aiIntroMessage =>
       'İslam hakkında herhangi bir soru sorun, Kuran ve sahih Sünnet\'e dayalı cevaplar vereceğim.';
-
-  @override
-  String get aiAssistantTitle => 'AI Asistan';
-
-  @override
-  String get aiAssistantSubtitle =>
-      'İslami öğretilere dayalı cevaplar sağlar ancak kesin kaynak olarak görülmemelidir.';
-
-  @override
-  String get verifySourcesTitle => 'Otantik kaynaklarla doğrulayın';
 
   @override
   String get verifySourcesSubtitle =>
@@ -1109,27 +676,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get messageCopied => 'Mesaj panoya kopyalandı';
 
   @override
-  String get islamicQAFromHuda => 'Huda AI\'den İslami Soru-Cevap';
-
-  @override
-  String get generatedByHudaAI =>
-      'Huda AI - İslami Asistan tarafından üretildi';
-
-  @override
-  String get verifyWithSources =>
-      'Lütfen otantik İslami kaynaklarla doğrulayın.';
-
-  @override
-  String get shareQAFromHuda => 'Huda AI\'den İslami Soru-Cevap';
-
-  @override
-  String get islamicKnowledgeSubject => 'Huda AI\'den İslami Bilgi';
-
-  @override
   String get hudaAI => 'Huda AI';
-
-  @override
-  String get bookmarkAyah => 'Ayeti Yer İmine Ekle';
 
   @override
   String get bookmark => 'Yer İmi';
@@ -1150,11 +697,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get addNote => 'Not Ekle';
 
   @override
-  String surahAyahReference(String surahName, String ayahNumber) {
-    return 'Sure $surahName - Ayet $ayahNumber';
-  }
-
-  @override
   String get noteHint =>
       'Bu ayet hakkında kişisel notunuzu veya düşüncenizi yazın...';
 
@@ -1162,19 +704,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get update => 'Güncelle';
 
   @override
-  String get shareCopy => 'Paylaş ve Kopyala';
-
-  @override
-  String get shareOptions => 'Paylaşım Seçenekleri';
-
-  @override
-  String get includeTranslation => 'Çeviriyi Dahil Et';
-
-  @override
   String get includeTafsir => 'Tefsiri Dahil Et';
-
-  @override
-  String get includeReference => 'Referansı Dahil Et';
 
   @override
   String get generating => 'Oluşturuluyor...';
@@ -1184,9 +714,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get tafsirLabel => 'Tefsir:';
-
-  @override
-  String get hudaQuranApp => 'Huda - İslami Yol Arkadaşınız';
 
   @override
   String get shareImageTagline => 'İslami Yol Arkadaşınız';
@@ -1201,25 +728,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get unknownSurah => 'Bilinmeyen Sure';
 
   @override
-  String get translationLabel => 'Çeviri:';
-
-  @override
   String get sharedViaHuda =>
       'Huda - İslami Yol Arkadaşınız ile paylaşıldı\nHuda\'yı indirin: http://huda.awrs.me/download';
 
   @override
   String get copiedToClipboard => 'Panoya kopyalandı';
-
-  @override
-  String get failedToCopy => 'Panoya kopyalanamadı';
-
-  @override
-  String ayahFromSurah(String surahName) {
-    return '$surahName\'den ayet';
-  }
-
-  @override
-  String get ayahFromQuran => 'Kuran\'dan ayet';
 
   @override
   String get unknown => 'Bilinmeyen';
@@ -1233,19 +746,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get loadingAudio => 'Ses yükleniyor...';
 
   @override
-  String get unableToLoadAudio => 'Bu okuyucu için ses yüklenemiyor';
-
-  @override
-  String get selectReader => 'Okuyucu Seç';
-
-  @override
   String get filterByLanguage => 'Dile göre filtrele';
 
   @override
   String get allLanguages => 'Tüm diller';
-
-  @override
-  String get noReadersAvailable => 'Okuyucu mevcut değil';
 
   @override
   String get unknownReader => 'Bilinmeyen Okuyucu';
@@ -1276,13 +780,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get filterTranslationLanguage => 'Çeviri dilini filtrele';
 
   @override
-  String get addToHomeWidget => 'Ana Ekran Widget\'ına Ekle';
-
-  @override
-  String get addToWidgetDescription =>
-      'Bu ayeti ana ekran widget koleksiyonunuza ekleyin';
-
-  @override
   String get preview => 'Önizleme';
 
   @override
@@ -1302,9 +799,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get audioControls => 'Ses Kontrolleri';
-
-  @override
-  String get unableLoadAudio => 'Bu okuyucu için ses yüklenemiyor';
 
   @override
   String get readerSelection => 'Okuyucu Seçimi';
@@ -1337,16 +831,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get checking => 'Kontrol ediliyor...';
 
   @override
-  String get alreadyInWidget => 'Zaten Widget\'ta';
-
-  @override
-  String get addToWidget => 'Widget\'a Ekle';
-
-  @override
-  String get addToWidgetInfo =>
-      'Bu seçilen ayeti kolay erişim için ana ekran widget koleksiyonunuza ekleyecektir.';
-
-  @override
   String get readPdf => 'PDF Oku';
 
   @override
@@ -1359,33 +843,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get bookDetails => 'Kitap Detayları';
 
   @override
-  String get untitled => 'Başlıksız';
-
-  @override
-  String get noDescriptionAvailable => 'Açıklama mevcut değil';
-
-  @override
   String get attachments => 'Ekler';
 
   @override
-  String get noDescription => 'Açıklama Yok';
-
-  @override
-  String get otherLanguages => 'Diğer Diller';
-
-  @override
   String get youreOffline => 'Çevrimdışısınız';
-
-  @override
-  String get theSelectedLanguageNotAvailable => 'Seçilen dil mevcut değil';
-
-  @override
-  String get shareBook => 'Kitabı Paylaş';
-
-  @override
-  String shareBookQuestion(String title) {
-    return '\"$title\" başkalarıyla paylaşılsın mı?';
-  }
 
   @override
   String get shareAsPdf => 'PDF Olarak Paylaş';
@@ -1412,11 +873,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String errorLoadingLanguages(String error) {
-    return 'Diller yüklenirken hata: $error';
-  }
-
-  @override
   String everyFridayAtTime(String time) {
     return 'Her Cuma $time\'da';
   }
@@ -1427,11 +883,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get morningEveningAthkarTitle => 'Sabah ve Akşam Zikirleri';
-
-  @override
-  String dailyTimesSchedule(String morningTime, String eveningTime) {
-    return 'Günlük $morningTime ve $eveningTime';
-  }
 
   @override
   String get dailyRemindersAthkar =>
@@ -1455,27 +906,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get dailyReminderQuran =>
       'Kutsal Kuran okumak ve üzerinde düşünmek için günlük hatırlatma.';
-
-  @override
-  String get debugTesting => 'Hata Ayıklama ve Test';
-
-  @override
-  String pendingNotificationsCount(String count) {
-    return 'Bekleyen bildirimler: $count';
-  }
-
-  @override
-  String get notificationsWorkBackground =>
-      'Tüm bildirimler arka planda çalışır ve uygulama yeniden başlatmalarından sonra devam eder.';
-
-  @override
-  String get notificationCoverage => 'Bildirim Kapsamı';
-
-  @override
-  String get autoRenewalActive => 'Otomatik yenileme: Aktif';
-
-  @override
-  String get autoRenewalInactive => 'Otomatik yenileme: Pasif';
 
   @override
   String get minutes => 'Dakika';
@@ -1516,22 +946,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get selectEveningAthkarTime => 'Akşam Zikir Saatini Seç';
 
   @override
-  String get notificationTimesCustomizable =>
-      'Tüm bildirim zamanları tamamen özelleştirilebilir. Tercih ettiğiniz zamanı ayarlamak için her bildirim türünün yanındaki ayarlar düğmesine dokunun.';
-
-  @override
-  String get randomAthkarSmartScheduling =>
-      'Rastgele Zikirler akıllı planlama kullanır: 12+ saat için anında kapsama, ardından tam 7 gün kapsamı için arka plan tamamlama.';
-
-  @override
-  String get notificationsWorkClosed =>
-      'Tüm bildirimler uygulama kapalıyken çalışır ve cihaz yeniden başlatmalarından sonra devam eder.';
-
-  @override
   String get pdfViewer => 'PDF Görüntüleyici';
-
-  @override
-  String get switchLayout => 'Düzeni değiştir';
 
   @override
   String get goToPage => 'Sayfaya git';
@@ -1573,29 +988,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get loadingPdf => 'PDF yükleniyor...';
-
-  @override
-  String get failedToLoadPdf => 'PDF yüklenemedi';
-
-  @override
   String get noTableOfContents => 'İçindekiler tablosu yok';
-
-  @override
-  String get noMarkersYet => 'Henüz işaretleyici yok';
-
-  @override
-  String get selectTextForMarkers =>
-      'Metin seçin ve işaretleyici eklemek için renk düğmelerini kullanın';
-
-  @override
-  String get myBookmarks => 'Yer İmlerim';
-
-  @override
-  String get bookmarkAdded => 'Yer imi eklendi';
-
-  @override
-  String get bookmarkRemoved => 'Yer imi kaldırıldı';
 
   @override
   String get bookmarkUpdated => 'Yer imi güncellendi';
@@ -1632,12 +1025,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get browseQuran => 'Kuran\'ı Gözat';
 
   @override
-  String get goToVerse => 'Ayete Git';
-
-  @override
-  String get navigateToVerseQuestion => 'Kuran okuyucuda bu ayete gidilsin mi?';
-
-  @override
   String get total => 'Toplam';
 
   @override
@@ -1648,65 +1035,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get location => 'Konum';
 
   @override
-  String nextPrayerCountdown(String prayerName, String time) {
-    return 'Sonraki: $prayerName $time içinde';
-  }
-
-  @override
   String get stopped => 'Durduruldu';
-
-  @override
-  String get homeScreenWidget => 'Ana Ekran Widget\'ı';
-
-  @override
-  String get displayInspiringVerses =>
-      'Ana ekranınızda ilham verici İslami ayetleri görüntüleyin';
-
-  @override
-  String get widgetControl => 'Widget Kontrolü';
-
-  @override
-  String get updateWidgetContentImmediately =>
-      'Widget içeriğinizi hemen güncelleyin';
-
-  @override
-  String get updatingWidget => 'Widget güncelleniyor...';
-
-  @override
-  String get forceUpdateWidget => 'Widget\'ı Zorla Güncelle';
-
-  @override
-  String get homeScreenWidgetUpdatedSuccessfully =>
-      'Ana ekran widget\'ı başarıyla güncellendi!';
 
   @override
   String errorUpdatingWidget(String error) {
     return 'Widget güncellenirken hata: $error';
   }
-
-  @override
-  String get customVerses => 'Özel Ayetler';
-
-  @override
-  String get refreshVerses => 'Ayetleri yenile';
-
-  @override
-  String versesAdded(int count) {
-    return '$count ayet eklendi';
-  }
-
-  @override
-  String get loadingVerses => 'Ayetler yükleniyor...';
-
-  @override
-  String get noCustomVersesYet => 'Henüz Özel Ayet Yok';
-
-  @override
-  String get visitSurahScreenToAddVerses =>
-      'Widget\'ınıza ayet eklemek için Sure ekranını ziyaret edin';
-
-  @override
-  String get ayahAddedToWidget => 'Ayet widget\'a eklendi';
 
   @override
   String get sahih => 'sahih';
@@ -1727,22 +1061,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tirmidhi => 'Sünen-i Tirmizi';
 
   @override
-  String get dawood => 'Sünen-i Ebu Davud';
-
-  @override
-  String get majah => 'Sünen-i İbn Mace';
-
-  @override
-  String get nasa => 'Sünen-i Nesai';
-
-  @override
-  String get masabih => 'Mişkatü\'l-Mesabih';
-
-  @override
   String get ahmad => 'Müsned-i Ahmed';
-
-  @override
-  String get sahiha => 'Silsiletü\'s-Sahiha';
 
   @override
   String get contains => 'içerir';
@@ -1752,13 +1071,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get hadithCollections => 'Hadis Koleksiyonları';
-
-  @override
-  String get hadithBanner =>
-      'Hz. Muhammed ﷺ\'in otantik sözleri ve öğretilerini keşfedin';
-
-  @override
-  String get nextPrayerCountDown => 'Sonraki Namaz';
 
   @override
   String get success => 'başarı';
@@ -1771,16 +1083,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notification => 'bildirim';
-
-  @override
-  String get bookmarksYourCollection => 'Koleksiyonunuz';
-
-  @override
-  String get bookmarksSavedVerses => 'kayıtlı ayetler';
-
-  @override
-  String get adjustTextSizeForBetterReadability =>
-      'Daha iyi okunabilirlik için metin boyutunu ayarlayın';
 
   @override
   String get sampleTextPreview =>
@@ -1805,9 +1107,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quranKit => 'Kuran Seti';
 
   @override
-  String get homeTitle => 'İslami Yoldaşınız';
-
-  @override
   String get continueHome => 'Okumaya Devam Et';
 
   @override
@@ -1815,25 +1114,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noRecentActivityHome => 'Son Aktivite Yok';
-
-  @override
-  String get noProgress => 'İlerleme yok';
-
-  @override
-  String get resumeReading => 'Kuran okumanızı sürdürün';
-
-  @override
-  String get noRecentActivityDescription =>
-      'İlerlemenizi görmek için Kuran okumaya başlayın';
-
-  @override
-  String get bookmarkTip => 'Ayetleri yer imlerine eklemek için dokunun';
-
-  @override
-  String get darkmode => 'Karanlık Mod';
-
-  @override
-  String get lightmode => 'Açık Mod';
 
   @override
   String get chooseThemeColor => 'Tema Rengini Seç';
@@ -1879,11 +1159,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cream => 'krem';
 
   @override
-  String get supportAndFeedback => 'Destek ve Geri Bildirim';
+  String get goldTheme => 'altın';
 
   @override
-  String get supportDescription =>
-      'Uygulamayı daha iyi hale getirmemize yardım edin';
+  String get settingsPureBlack => 'Saf siyah';
+
+  @override
+  String get settingsPureBlackDescription =>
+      'Koyu modda siyah arka plan, OLED ekranlar için';
+
+  @override
+  String get supportAndFeedback => 'Destek ve Geri Bildirim';
 
   @override
   String get shareYourThoughts => 'Genel geri bildirim';
@@ -1915,22 +1201,8 @@ class AppLocalizationsTr extends AppLocalizations {
       'Pil optimizasyonu muafiyeti reddedildi';
 
   @override
-  String get batteryOptimizationExemptionActive =>
-      'Pil Optimizasyonu Devre Dışı';
-
-  @override
-  String get batteryOptimizationExemptionInactive => 'Pil Optimizasyonu Aktif';
-
-  @override
   String get notificationsWillWorkReliably =>
       'Bildirimler güvenilir şekilde çalışacak';
-
-  @override
-  String get notificationsMayBeDelayedOrMissed =>
-      'Bildirimler gecikebilir veya kaçırılabilir';
-
-  @override
-  String get notificationsActive => 'Tüm bildirimler düzgün çalışıyor';
 
   @override
   String get playing => 'Oynatılıyor';
@@ -1942,25 +1214,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get backToToday => 'Bugüne Dön';
 
   @override
-  String get addTask => 'Görev Ekle';
-
-  @override
   String get dailyProgress => 'Günlük İlerleme';
 
   @override
-  String get consecutiveDays => 'ardışık gün';
-
-  @override
   String get noTasksForDay => 'Bu gün için görev yok';
-
-  @override
-  String get deleteTask => 'Görevi Sil';
-
-  @override
-  String get deleteTaskConfirmation => 'Silmek istediğinizden emin misiniz';
-
-  @override
-  String get completedPercentage => 'tamamlandı';
 
   @override
   String get fajrPrayer => 'Sabah Namazı';
@@ -1987,18 +1244,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get athkarMasaa => 'Akşam Zikirleri';
 
   @override
-  String get itemTypePrayer => 'Namaz';
-
-  @override
-  String get itemTypeQuran => 'Kuran Okuma';
-
-  @override
-  String get itemTypeAthkar => 'Zikir ve Tesbih';
-
-  @override
-  String get itemTypeCustom => 'Özel';
-
-  @override
   String get frequencyDaily => 'Günlük';
 
   @override
@@ -2023,39 +1268,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get morningAthkar => 'Sabah Zikirleri';
 
   @override
-  String get nightAthkar => 'Gece Zikirleri';
-
-  @override
   String get addCustomItem => 'Özel Öğe Ekle';
-
-  @override
-  String get itemTitle => 'Öğe Başlığı';
-
-  @override
-  String get enterItemTitle => 'Öğe başlığını girin...';
-
-  @override
-  String get itemType => 'Öğe Türü';
-
-  @override
-  String get repetitionFrequency => 'Tekrar Sıklığı';
-
-  @override
-  String get addItem => 'Öğe Ekle';
-
-  @override
-  String get itemTypePrayerShort => 'Namaz';
-
-  @override
-  String get itemTypeQuranShort => 'Kuran';
-
-  @override
-  String get itemTypeAthkarShort => 'Zikir';
-
-  @override
-  String dayStreakSuffix(num count) {
-    return '-Gün Serisi!';
-  }
 
   @override
   String get congratsMessage1 => 'Allah sana iyilikle karşılık versin';
@@ -2117,12 +1330,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get status => 'Durum';
-
-  @override
-  String get optimize => 'Optimize Et';
-
-  @override
-  String get loadingPreferences => 'Tercihler yükleniyor...';
 
   @override
   String get enableNotificationsSettings =>
@@ -2226,16 +1433,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get currencySettings => 'Para Birimi Ayarları';
-
-  @override
   String get currency => 'Para Birimi';
 
   @override
   String get nisabSettings => 'Nisab Ayarları';
-
-  @override
-  String get metalPrices => 'Metal Fiyatları';
 
   @override
   String get goldPricePerGram => 'Gram Başına Altın Fiyatı';
@@ -2244,17 +1445,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get silverPricePerGram => 'Gram Başına Gümüş Fiyatı';
 
   @override
-  String get whatIsNisab => 'Nisab Nedir?';
-
-  @override
   String get nisabDescription =>
       'Nisab, zekatı gerekli kılan minimum servet eşiğidir. Altın (87.48g) veya gümüş (612.36g) değerleri temel alınarak hesaplanabilir.';
-
-  @override
-  String get quickSummary => 'Hızlı Özet';
-
-  @override
-  String get zakatDue => 'Gerekli Zekat:';
 
   @override
   String get assetBreakdown => 'Varlık Dökümü';
@@ -2279,7 +1471,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get zakatDescription =>
-      'Zekat İslam\'ın beş rüknünden biridir ve zorunlu bir sadakadır. En az bir kamerî yıl (havl) boyunca elde tutulan nitelikli servetin %2.5\'i olarak hesaplanır.\\n\\nNisab, zekatı gerekli kılan minimum servet eşiğidir. Şu esaslara göre hesaplanabilir:\\n• Altın: 87.48 gram (20 miskal)\\n• Gümüş: 612.36 gram (200 dirhem)\\n\\nBu hesaplayıcı, servetinizin nisab eşiğine ulaşıp ulaşmadığını belirlemenize ve gerekli zekat miktarının tam hesabını yapmanıza yardımcı olur.';
+      'Zekat İslam\'ın beş rüknünden biridir ve zorunlu bir sadakadır. En az bir kamerî yıl (havl) boyunca elde tutulan nitelikli servetin %2.5\'i olarak hesaplanır.\n\nNisab, zekatı gerekli kılan minimum servet eşiğidir. Şu esaslara göre hesaplanabilir:\n• Altın: 87.48 gram (20 miskal)\n• Gümüş: 612.36 gram (200 dirhem)\n\nBu hesaplayıcı, servetinizin nisab eşiğine ulaşıp ulaşmadığını belirlemenize ve gerekli zekat miktarının tam hesabını yapmanıza yardımcı olur.';
 
   @override
   String get cashAndBankBalances => 'Nakit ve Banka Bakiyeleri';
@@ -2331,9 +1523,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Kredi kartı borçları, krediler, yıl içinde ödenecek faturalar';
 
   @override
-  String get hintAmount => '0.00';
-
-  @override
   String get feedbackAppBarTitle => 'Geri Bildirim Gönder';
 
   @override
@@ -2343,9 +1532,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get feedbackSuccessMessage =>
       'Teşekkürler! Geri bildiriminiz gönderildi.';
-
-  @override
-  String get feedbackHeroTitle => 'Görüşlerinize Değer Veriyoruz';
 
   @override
   String get feedbackHeroSubtitle =>
@@ -2389,90 +1575,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Karşılaştığınız sorunları bildirerek bize gelişmemize yardımcı olun';
 
   @override
-  String get onboardingWelcomeTitle => 'Huda\'ya Hoş Geldiniz';
-
-  @override
-  String get onboardingWelcomeDescription =>
-      'Huda - Müslümanların ihtiyaç duyduğu her şeyi tek bir yerde sunan hepsi bir arada İslami uygulama.';
-
-  @override
-  String get onboardingPrayerTimesTitle => 'Namaz Vakitleri';
-
-  @override
-  String get onboardingPrayerTimesDescription =>
-      'Konumunuza göre hassas namaz vakitleriyle hiçbir namazı kaçırmayın. Bildirimler alın ve günlük namazlarınızı takip edin.';
-
-  @override
-  String get onboardingQuranTitle => 'Kur\'an-ı Kerim';
-
-  @override
-  String get onboardingQuranDescription =>
-      'Kur\'an-ı Kerim\'i güzel tilavetler, mealler ve tefsir ile okuyun, dinleyin ve ezberleyin.';
-
-  @override
-  String get onboardingAthkarTitle => 'Ezkâr ve Dualar';
-
-  @override
-  String get onboardingAthkarDescription =>
-      'İmanınızı güçlendirmek için günlük zikirler ve dualar.';
-
-  @override
-  String get onboardingQiblahTitle => 'Kıble Yönü';
-
-  @override
-  String get onboardingQiblahDescription =>
-      'Dünyanın herhangi bir yerinden Kâbe\'nin doğru yönünü bulun.';
-
-  @override
-  String get onboardingMultilingualTitle => 'Çok Dilli Destek';
-
-  @override
-  String get onboardingMultilingualDescription =>
-      'İslami yolculuğunuzu daha kişisel ve anlaşılır kılmak için uygulamaya birden fazla dilde erişin.';
-
-  @override
-  String get onboardingBooksTitle => 'İslami Kitaplar';
-
-  @override
-  String get onboardingBooksDescription =>
-      'Derin bilgi ve manevi gelişim için geniş bir güvenilir İslami kitap kütüphanesini keşfedin.';
-
-  @override
-  String get onboardingHadithTitle => 'Hadis Koleksiyonu';
-
-  @override
-  String get onboardingHadithDescription =>
-      'Sahih Buhari, Sahih Müslim, Sünen Ebu Davud ve diğer güvenilir kaynaklardan okuyun.';
-
-  @override
-  String get onboardingAITitle => 'Huda Yapay Zeka Asistanı';
-
-  @override
-  String get onboardingAIDescription =>
-      'İslami sorular sorun ve yapay zeka destekli asistanımızla güvenilir yanıtlar alın.';
-
-  @override
-  String get onboardingHijriTitle => 'Hicri Takvim';
-
-  @override
-  String get onboardingHijriDescription =>
-      'Önemli tarihlerle bağlantıda kalmak için tam İslami takvimi ve Miladi tarih dönüşümünü görüntüleyin.';
-
-  @override
-  String get onboardingChecklistTitle => 'Günlük İslami Kontrol Listesi';
-
-  @override
-  String get onboardingChecklistDescription =>
-      'Günlük namazlarınızı, ibadetlerinizi ve hayırlı amellerinizi kolayca takip edin.';
-
-  @override
-  String get onboardingJourneyTitle => 'Yolculuğunuza Başlayın';
-
-  @override
-  String get onboardingJourneyDescription =>
-      'İslami yolculuğunuz için ihtiyacınız olan her şey burada. Keşfetmeye başlayın ve Allah ile bağınızı güçlendirin.';
-
-  @override
   String get skip => 'atla';
 
   @override
@@ -2486,10 +1588,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get generatingImage => 'Görüntü oluşturuluyor...';
-
-  @override
-  String get locationServicesDisabled =>
-      'Konum servisleri devre dışı. Lütfen cihaz ayarlarından etkinleştirin.';
 
   @override
   String get rateAppTitle => 'Huda Uygulamasını Değerlendir';
@@ -2525,13 +1623,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get thankYouFeedback =>
       'Geri bildiriminiz için teşekkürler! İyileştirmeler üzerinde çalışacağız.';
-
-  @override
-  String get noHadithsFound => 'Hadis bulunamadı';
-
-  @override
-  String get noHadithsFoundChapter =>
-      'Bu bölüm şu anda herhangi bir hadis içermiyor.';
 
   @override
   String get mawdu => 'Uydurma (Mawdu\')';
@@ -2612,9 +1703,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get chat => 'Sohbet';
 
   @override
-  String get counselingMode => 'Danışmanlık Modu';
-
-  @override
   String get counselingIntro =>
       'Duygularınızı paylaşın ve Huda\'nın İslami bilgelikle size rehberlik etmesine izin verin.';
 
@@ -2622,22 +1710,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get guidanceTitle => 'Rehberlik';
 
   @override
-  String get guidanceSubtitle => 'Kişisel İslami Rehberlik';
-
-  @override
   String get quranTitle => 'Kuran';
 
   @override
-  String get quranSubtitle => 'İlgili Kuran Hikmeti';
-
-  @override
   String get duaaTitle => 'Dua';
-
-  @override
-  String get duaaSubtitle => 'Dokunaklı Dualar';
-
-  @override
-  String get tryExpressing => 'Şunu ifade etmeyi deneyin:';
 
   @override
   String get exampleFeelAnxious => 'Endişeli hissediyorum';
@@ -2664,22 +1740,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get addWidgetToHomeScreen => 'Widget\'ı Ana Ekrana Ekle';
 
   @override
-  String get addWidgetInstructions =>
-      'Huda widget\'ını doğrudan ana ekranınıza eklemek için aşağıdaki düğmeye dokunun. Otomatik olarak güncellenen güzel Kuran ayetlerini görüntüler.';
-
-  @override
   String get addWidget => 'Widget Ekle';
-
-  @override
-  String get featureOnlyAvailableOnAndroid =>
-      'Bu özellik yalnızca Android\'de kullanılabilir';
-
-  @override
-  String get pinWidgetNotSupported =>
-      'Widget sabitleme bu cihazda desteklenmiyor';
-
-  @override
-  String get errorAddingWidget => 'Widget eklenirken hata';
 
   @override
   String get howToAddWidget => 'Widget nasıl eklenir';
@@ -2744,9 +1805,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get minutesBeforeFajr => 'Sabah namazından kaç dakika önce';
 
   @override
-  String get sahurMinutesPlaceholder => 'Dakika (örn. 30)';
-
-  @override
   String atExactTime(String time) {
     return '$time de';
   }
@@ -2755,9 +1813,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String minsBeforeFajr(int minutes) {
     return 'Sabah namazından $minutes dk önce';
   }
-
-  @override
-  String get sahurAlarmNotSet => 'Ayarlanmadı';
 
   @override
   String get sahurAlarmRinging => 'Sahur Alarmı';
@@ -2769,17 +1824,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'Sahur için uyanma vakti';
 
   @override
-  String get snoozeAlarm => 'Ertele';
-
-  @override
   String get miqaatLock => 'Mikat Kilidi';
 
   @override
   String get enableMiqaatLock => 'Mikat Kilidi\'ni Etkinleştir';
-
-  @override
-  String get miqaatLockDescription =>
-      'Dikkatinizin dağılmasını en aza indirmek için ibadet vakitlerinde uygulamaları kilitleyin.';
 
   @override
   String get lockedApps => 'Kilitli Uygulamalar';
@@ -2810,9 +1858,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Uygulamalarınızın kilidini açmak için Huda\'da (ör. Kuran okumak) geçirmeniz gereken süre';
 
   @override
-  String get selectDuration => 'Süre Seç';
-
-  @override
   String get customDuration => 'Özel Süre';
 
   @override
@@ -2829,13 +1874,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noAppsFound => 'Uygulama bulunamadı';
-
-  @override
-  String get iosAppSelectionTitle => 'iOS Uygulama Seçimi';
-
-  @override
-  String get iosAppSelectionDescription =>
-      'iOS gizlilik kısıtlamaları nedeniyle uygulama seçimi Ekran Süresi ayarları üzerinden yönetilir. Uygulama kısıtlamalarını yönetmek için Ekran Süresi erişimini etkinleştirin.';
 
   @override
   String get label => 'Etiket (isteğe bağlı)';
@@ -2908,28 +1946,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get checkPermissions => 'İzinleri Kontrol Et';
 
   @override
-  String get startSession => 'Oturumu Başlat';
-
-  @override
-  String get sessionActive => 'Oturum Aktif';
-
-  @override
-  String get remainingTime => 'Kalan Süre';
-
-  @override
-  String get appLocked => 'Uygulama Kilitli';
-
-  @override
-  String get focusTimeMessage =>
-      'Bu uygulama odaklanma süreniz boyunca kilitlenmiştir. Geçici olarak kilidi açmak için bir oturum başlatın.';
-
-  @override
-  String get goBackHome => 'Ana Sayfaya Dön';
-
-  @override
-  String get ramadanTracker => 'Ramazan Kazası';
-
-  @override
   String daysUntilRamadan(int days) {
     return 'Ramazan\'a $days gün kaldı';
   }
@@ -2950,16 +1966,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String remainingForIftar(int hours) {
-    return 'İftara $hours saatten az kaldı';
-  }
-
-  @override
-  String remainingForImsaak(int hours) {
-    return 'İmsaka $hours saatten az kaldı';
-  }
-
-  @override
   String get imsaakLabel => 'İmsak';
 
   @override
@@ -2970,9 +1976,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get missedStatus => 'kaçırıldı';
-
-  @override
-  String get qadhaaDays => 'Kaza Günleri';
 
   @override
   String get qadhaaInfoTitle =>
@@ -3195,9 +2198,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Uygulama genelinde daha akıcı ve özenli bir deneyim.';
 
   @override
-  String get offlineMode => 'Çevrimdışı Mod';
-
-  @override
   String showingDownloadedBooks(int count) {
     return 'İndirilen $count kitap gösteriliyor';
   }
@@ -3206,24 +2206,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get bookDownloadedSuccessfully => 'Kitap başarıyla indirildi!';
 
   @override
-  String downloadFailed(String error) {
-    return 'İndirme başarısız: $error';
-  }
-
-  @override
-  String get iosTapToSelectApps =>
-      'Ekran Süresi\'ni kullanarak uygulamaları seçmek için aşağıya dokunun';
-
-  @override
   String get iosAppsSelectedSuccessfully => 'Uygulamalar başarıyla seçildi';
 
   @override
   String iosAppSelectionError(String error) {
     return 'Hata: $error';
   }
-
-  @override
-  String get iosSelectAppsScreenTime => 'Uygulamaları Seç (Ekran Süresi)';
 
   @override
   String get iosScreenTimeProtection => 'Ekran Süresi Koruması';
@@ -3251,14 +2239,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Çevrimdışı erişmek için çevrimiçiyken kitapları indirin';
 
   @override
-  String get checkConnection => 'Bağlantıyı Kontrol Et';
-
-  @override
-  String filesCount(int count) {
-    return 'Dosyalar ($count)';
-  }
-
-  @override
   String get accessibilityServiceRequiredDialogTitle =>
       'Erişilebilirlik Hizmeti Gerekli';
 
@@ -3280,13 +2260,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get searchReciters => 'Hafız ara...';
 
   @override
-  String get searchSurah => 'Sure ara...';
-
-  @override
   String get verses => 'ayet';
-
-  @override
-  String get noDownloadedContent => 'İndirilen içerik yok';
 
   @override
   String get connectToDownload =>
@@ -3297,9 +2271,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get searchRadio => 'Radyo istasyonlarını ara...';
-
-  @override
-  String get nowPlaying => 'Şimdi Çalıyor';
 
   @override
   String get khatmaTitle => 'Kuran Hatmi';
@@ -3318,103 +2289,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String get khatmaSuggested => 'Önerilen';
 
   @override
-  String get khatmaOneMonthProgram => 'Bir Aylık Hatim (29 gün)';
-
-  @override
-  String get khatmaDailyWird21Pages => 'Günlük miktar: ~21 sayfa';
-
-  @override
-  String get khatmaOtherPrograms => 'Diğer Programlar';
-
-  @override
-  String get khatmaBySemanticTitle => 'Anlam Bazlı Hatim';
-
-  @override
-  String get khatmaBySemanticSubtitle => 'Anlam bütünlüğü gözetilen bölümler';
-
-  @override
-  String get khatmaByPartsTitle => 'Cüz ve Hizb Bazlı Hatim';
-
-  @override
-  String get khatmaByPartsSubtitle => 'Cüz ve Ahzab\'a göre bölümler';
-
-  @override
-  String get khatmaProgramTitle => 'Hatim Programı';
-
-  @override
-  String get khatmaTwoMonthsProgram => 'İki Aylık Hatim (60 gün)';
-
-  @override
-  String get khatmaOneWeekProgram => 'Bir Haftalık Hatim (7 gün)';
-
-  @override
-  String get khatmaMonthsSection => 'Aylık';
-
-  @override
-  String get khatma30DaysTitle => '30 Günlük Hatim';
-
-  @override
   String get khatmaDailyWirdJuz => 'Günlük miktar: bir cüz';
-
-  @override
-  String get khatmaOtherSection => 'Diğer';
-
-  @override
-  String get khatma240DaysTitle => '240 Günlük Hatim';
 
   @override
   String get khatmaDailyWirdRubu => 'Günlük miktar: bir rub\'';
 
   @override
-  String get khatma120DaysTitle => '120 Günlük Hatim';
-
-  @override
   String get khatmaDailyWirdTwoRubu => 'Günlük miktar: iki rub\'';
-
-  @override
-  String get khatma80DaysTitle => '80 Günlük Hatim';
 
   @override
   String get khatmaDailyWird3Rubu => 'Günlük miktar: 3 rub\'';
 
   @override
-  String get khatma60DaysTitle => '60 Günlük Hatim';
-
-  @override
   String get khatmaDailyWirdHizb => 'Günlük miktar: bir hizb';
-
-  @override
-  String get khatma40DaysTitle => '40 Günlük Hatim';
 
   @override
   String get khatmaDailyWirdHizbAndHalf => 'Günlük miktar: 1,5 hizb';
 
   @override
-  String get khatma20DaysTitle => '20 Günlük Hatim';
-
-  @override
   String get khatmaDailyWirdJuzAndHalf => 'Günlük miktar: 1,5 cüz';
-
-  @override
-  String get khatma15DaysTitle => '15 Günlük Hatim';
 
   @override
   String get khatmaDailyWirdTwoJuz => 'Günlük miktar: iki cüz';
 
   @override
-  String get khatma10DaysTitle => '10 Günlük Hatim';
-
-  @override
   String get khatmaDailyWird3Juz => 'Günlük miktar: 3 cüz';
 
   @override
-  String get khatma6DaysTitle => '6 Günlük Hatim';
-
-  @override
   String get khatmaDailyWird5Juz => 'Günlük miktar: 5 cüz';
-
-  @override
-  String get khatma3DaysTitle => '3 Günlük Hatim';
 
   @override
   String get khatmaDailyWird10Juz => 'Günlük miktar: 10 cüz';
@@ -3423,19 +2325,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get khatmaStartFromTitle => 'Hatme Başlangıç Noktası';
 
   @override
-  String get khatmaFromBeginning => 'Kuran\'ın Başından';
-
-  @override
   String get khatmaFromBeginningSubtitle => 'Fatiha\'dan başla';
 
   @override
-  String get khatmaSpecificWird => 'Belirli Bölüm';
-
-  @override
   String get khatmaSpecificWirdSubtitle => 'Bölümler listesinden bir gün seçin';
-
-  @override
-  String get khatmaStatsTitle => 'Hatim İstatistikleri';
 
   @override
   String khatmaDayOf(int current, int total) {
@@ -3478,12 +2371,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get khatmaLegendKhatma => 'Hatim';
 
   @override
-  String get khatmaWirdCompleted => 'Tamamlandı';
-
-  @override
-  String get khatmaWirdInProgress => 'Devam ediyor';
-
-  @override
   String get khatmaCommitment => 'Bağlılık';
 
   @override
@@ -3523,9 +2410,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get khatmaAllWirds => 'Tüm Bölümler';
 
   @override
-  String get khatmaViewAllWirds => 'Tüm bölümleri görüntüle';
-
-  @override
   String get khatmaDeleteTitle => 'Hatmi Sil';
 
   @override
@@ -3543,12 +2427,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get khatmaDeleteConfirmContent =>
       'Mevcut hatmi silmek ve tüm ilerleme verilerinizi silmek istediğinizden emin misiniz?';
-
-  @override
-  String get khatmaAmIndicator => 'ÖÖ';
-
-  @override
-  String get khatmaPmIndicator => 'ÖS';
 
   @override
   String khatmaDailyWirdPages(int pages) {
@@ -3603,11 +2481,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mushafDisplayZoomed => 'Yakınlaştırılmış';
 
   @override
-  String mushafSurahHeader(String name) {
-    return 'Sure $name';
-  }
-
-  @override
   String mushafJuzHeader(String name) {
     return 'Cüz $name';
   }
@@ -3619,9 +2492,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsReadingMode => 'Okuma Modu';
-
-  @override
-  String get settingsHorizontalLayout => 'Yatay Düzen';
 
   @override
   String get settingsFlipDirection => 'Çevirme Yönü';
@@ -3673,9 +2543,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get previousSurah => 'Önceki Sure';
 
   @override
-  String get scrollToTop => 'Yukarı';
-
-  @override
   String get noSimilarAyahsFound => 'Benzer ayet bulunamadı';
 
   @override
@@ -3705,23 +2572,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerTimesWidget => 'Namaz Vakitleri';
 
   @override
-  String get prayerWidgetTagline => 'Her namaza zamanında yetişin';
-
-  @override
-  String get addPrayerWidgetTitle => 'Namaz Widget\'ı Ekle';
-
-  @override
-  String get addPrayerWidgetDescription =>
-      'Bir sonraki namazı canlı geri sayımla görmek için Huda Namaz widget\'ını ana ekranınıza sabitleyin. Hesaplamalar, kayıtlı konumunuz kullanılarak cihazda yapılır.';
-
-  @override
   String get addPrayerWidget => 'Ana ekrana ekle';
-
-  @override
-  String get customizePrayerWidget => 'Özelleştir';
-
-  @override
-  String get prayerWidgetCustomization => 'Namaz widget\'ını özelleştir';
 
   @override
   String get prayerWidgetTimeFormat => 'Namaz saati biçimi';
@@ -3731,9 +2582,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerWidgetTwentyFourHour => '24 saat';
-
-  @override
-  String get prayerWidgetPreview => 'Canlı önizleme';
 
   @override
   String get design => 'Tasarım';
@@ -3765,9 +2613,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get background => 'Arka plan';
 
   @override
-  String get enableBackground => 'Arka planı göster';
-
-  @override
   String get backgroundColor => 'Arka plan rengi';
 
   @override
@@ -3795,39 +2640,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get automatic => 'Otomatik';
 
   @override
-  String get latinNumerals => 'Latin (1, 2, 3)';
-
-  @override
-  String get arabicNumerals => 'Arapça (١, ٢, ٣)';
-
-  @override
   String get advanced => 'Gelişmiş';
 
   @override
   String get resetWidgetCustomization => 'Varsayılanlara sıfırla';
-
-  @override
-  String get resetWidgetCustomizationConfirm =>
-      'Tüm namaz widget\'ı özelleştirmesi varsayılanlara sıfırlansın mı?';
-
-  @override
-  String get followAppTheme => 'Uygulama temasını izle';
-
-  @override
-  String get prayerWidgetEmptyTitle => 'Konumunuzu ayarlayın';
-
-  @override
-  String get prayerWidgetEmptyBody =>
-      'Widget\'ın sizin için namaz vakitlerini hesaplayabilmesi için Huda\'yı açın ve konum erişimi verin.';
-
-  @override
-  String get prayerWidgetEmptyAction => 'Namaz Vakitlerini Aç';
-
-  @override
-  String get previousPrayer => 'Önceki namaz';
-
-  @override
-  String get timeUntilNextPrayer => 'Sonraki namaza kalan süre';
 
   @override
   String get forcePrayerWidgetUpdate => 'Namaz widget\'ını yenile';
@@ -4148,9 +2964,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get narratedBy => 'Seslendiren';
-
-  @override
   String get continueListening => 'Dinlemeye Devam Et';
 
   @override
@@ -4168,19 +2981,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get continueRadio => 'Radyoya Devam Et';
-
-  @override
-  String resumeReciter(String reciterName) {
-    return '$reciterName ile devam et';
-  }
-
-  @override
-  String get noReciterActivityDescription =>
-      'İlerlemenizi görmek için Kur\'an sesini dinlemeye başlayın';
-
-  @override
-  String get noRadioActivityDescription =>
-      'İlerlemenizi görmek için Kuran radyosunu dinleyin';
 
   @override
   String get playbackSpeed => 'Oynatma Hızı';
@@ -4217,11 +3017,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String audioInLanguage(String language) {
-    return '$language dilinde';
-  }
-
-  @override
   String get chatErrorNoConnection =>
       'İnternet bağlantısı yok. Lütfen ağınızı kontrol edip tekrar deneyin.';
 
@@ -4245,17 +3040,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get emailOptional => 'E-posta (isteğe bağlı — yanıt için)';
 
   @override
-  String get searchManually => 'Manuel Ara';
-
-  @override
-  String get locationPermissionDenied =>
-      'Konum izni reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.';
-
-  @override
-  String get locationPermissionPermanentlyDenied =>
-      'Konum izni kalıcı olarak reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.';
-
-  @override
   String get errorDetailsCopied => 'Hata ayrıntıları panoya kopyalandı';
 
   @override
@@ -4263,9 +3047,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get copyButton => 'Kopyala';
-
-  @override
-  String get unknownErrorOccurred => 'Bilinmeyen bir hata oluştu';
 
   @override
   String get pleaseEnterMessage => 'Göndermeden önce bir mesaj girin';
@@ -4286,9 +3067,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get feedbackThankYouMessage =>
       'Geri bildiriminiz gönderildi. Uygulamayı geliştirmek için kullanacağız.';
-
-  @override
-  String get whatHappened => 'Ne oldu?';
 
   @override
   String get describeIssueHint => 'Sorunu veya geri bildirimi açıklayın...';
@@ -4558,9 +3336,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Önce Kur\'an okuma ve hatim ilerlemesi.';
 
   @override
-  String get primaryCards => 'Ana kartlar';
-
-  @override
   String get onHome => 'Ana Sayfada';
 
   @override
@@ -4570,9 +3345,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get showLess => 'Daha Az';
 
   @override
-  String get moveToPrimary => 'Ana bölüme taşı';
-
-  @override
   String get moveToHome => 'Ana Sayfaya taşı';
 
   @override
@@ -4580,12 +3352,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get homeSections => 'Bölümler';
-
-  @override
-  String get resetTheme => 'Temayı sıfırla';
-
-  @override
-  String get reorderHomeItem => 'Öğeyi yeniden sırala';
 
   @override
   String get moveUp => 'Yukarı taşı';
@@ -4603,9 +3369,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get viewMoreEmpty =>
       'Ana Sayfayı sade tutmak için daha az kullandığınız araçları buraya taşıyın.';
-
-  @override
-  String get applyChanges => 'Uygula';
 
   @override
   String get discardChanges => 'Değişiklikler iptal edilsin mi?';
@@ -4629,9 +3392,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get prayerSetupRequired =>
       'Namaz vakitlerini göstermek için konumunuzu ayarlayın';
-
-  @override
-  String get setUpPrayerTimes => 'Namaz vakitlerini ayarla';
 
   @override
   String get gregorianDate => 'Miladi Tarih';
@@ -4658,23 +3418,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sectionQuranTools => 'Kur\'an araçları';
 
   @override
-  String get homeMoreTools => 'Daha fazla araç';
-
-  @override
-  String get saveHomeChangesTitle => 'Ana sayfa değişiklikleri kaydedilsin mi?';
-
-  @override
-  String get homeChangesNotApplied =>
-      'Geçerli düzen ve tema değişiklikleri henüz uygulanmadı.';
-
-  @override
   String get keepEditing => 'Düzenlemeye devam et';
 
   @override
   String get discardChangesAction => 'Değişiklikleri iptal et';
-
-  @override
-  String get unsaved => 'Kaydedilmedi';
 
   @override
   String get saving => 'Kaydediliyor';
@@ -4682,9 +3429,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get customizeHomeHint =>
       'Yeniden sıralamak için herhangi bir karta basılı tutup sürükleyin. Bir aracı Ana Sayfa ile Daha Fazla arasında taşımak için düğmeyi kullanın.';
-
-  @override
-  String get themeResetMessage => 'Bu tema varsayılan düzenine sıfırlandı.';
 
   @override
   String get homeChangesSaveFailed =>
@@ -4702,10 +3446,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get snackbarNeutral => 'Bildirim';
-
-  @override
-  String get notificationPermissionDescription =>
-      'Seçtiğiniz hatırlatıcıları tam zamanında almak için bildirimleri açın.';
 
   @override
   String get enableNotifications => 'Bildirimleri aç';
@@ -4785,12 +3525,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Huda, namaz vakti uyarılarını ve hatırlatıcıları tam saatinde planlayabilir.';
 
   @override
-  String get quranWidgetTagline => 'Her saat yeni bir ayet ve çeviri';
-
-  @override
-  String get quranWidgetCustomization => 'Kur\'an widget özelleştirmesi';
-
-  @override
   String get quranWidgetTypography => 'Metin stili';
 
   @override
@@ -4812,9 +3546,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get boldTranslation => 'Kalın çeviri';
 
   @override
-  String get quranWidgetPreview => 'Canlı önizleme';
-
-  @override
   String get translationLanguage => 'Çeviri dili';
 
   @override
@@ -4827,23 +3558,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get customColors => 'Özel renkler';
-
-  @override
-  String get customColorsDescription =>
-      'Metni okunaklı tutarak widget renklerini ayarlayın.';
-
-  @override
-  String get ayahColor => 'Ayet rengi';
-
-  @override
-  String get translationColor => 'Çeviri rengi';
-
-  @override
   String get accentColor => 'Vurgu rengi';
-
-  @override
-  String get customizeColors => 'Renkleri özelleştir';
 
   @override
   String get quranWidgetUpdated => 'Kur\'an widget\'ı yenilendi';
@@ -4853,12 +3568,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get quranWidgetUpdating => 'Widget yenileniyor…';
-
-  @override
-  String get customTheme => 'Özel';
-
-  @override
-  String get colorContrastTooLow => 'Bu renk yeterli kontrasta sahip değil.';
 
   @override
   String get arabicTranslationHidden =>
@@ -4914,44 +3623,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Yanıt kesintiye uğradı. Devam etmek için tekrar deneyin.';
 
   @override
-  String get prayerTravelUpdates => 'Seyahatte namaz vakitlerini güncelle';
-
-  @override
-  String get prayerTravelUpdatesDescription =>
-      'Etkinleştirildiğinde Huda, uygulamayı açmadan önemli yolculuklardan sonra vakitleri, bildirimleri ve araç takımlarını güncelleyebilir.';
-
-  @override
-  String get prayerLocationMode => 'Konum modu';
-
-  @override
   String get manual => 'Elle';
 
   @override
-  String get backgroundTravelUpdates => 'Arka planda seyahat güncellemeleri';
-
-  @override
-  String get lastLocationValidation => 'Son konum doğrulaması';
-
-  @override
-  String get lastPrayerScheduleActivation => 'Son program etkinleştirmesi';
-
-  @override
-  String get travelUpdatesEnabled => 'Etkin';
-
-  @override
-  String get travelForegroundOnly => 'Yalnızca ön planda';
-
-  @override
   String get travelPermissionRequired => 'İzin gerekli';
-
-  @override
-  String get travelUpdatesUnsupported => 'Desteklenmiyor';
-
-  @override
-  String get travelUpdatesUnavailable => 'Kullanılamıyor';
-
-  @override
-  String get travelUpdatesDisabled => 'Devre dışı';
 
   @override
   String get travelAllowLocation => 'Konuma izin ver';
@@ -4968,21 +3643,11 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get notYet => 'Henüz değil';
-
-  @override
-  String get prayerNotificationIssueTitle =>
-      'Namaz bildirimleriyle ilgilenmeniz gerekiyor';
-
-  @override
   String get prayerNotificationIssueMessage =>
       'Namaz bildirimlerinin planlaması tamamlanamadı. Namaz vakitlerini görmeye devam edebilirsiniz.';
 
   @override
   String get prayerNotificationRetry => 'Tekrar dene';
-
-  @override
-  String get prayerNotificationRetrying => 'Namaz bildirimleri planlanıyor…';
 
   @override
   String get prayerNotificationsScheduledTitle => 'Namaz bildirimleri hazır';
@@ -5036,9 +3701,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get audioRangeEndHint => 'Son seçilen ayetten sonra oynatma durur.';
 
   @override
-  String get audioPlayRange => 'Seçimi oynat';
-
-  @override
   String get downloadAyah => 'Ayeti indir';
 
   @override
@@ -5054,79 +3716,12 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get prayerVerificationPending => 'Konum doğrulaması bekleniyor';
-
-  @override
-  String get prayerVerificationGuidance =>
-      'Bazı konum bilgileri hâlâ doğrulanmalı. Namaz vakitlerinin ve bildirimlerin güvenilirliğini artırmak için internet olduğunda dönüp yeniden deneyin.';
-
-  @override
-  String get prayerUpdatesIncomplete => 'Namaz güncellemeleri tamamlanmadı';
-
-  @override
-  String get prayerUpdatesGuidance =>
-      'Bazı güncellemeler tamamlanamadı. İnternet olduğunda yeniden deneyin. Yerel kurtarma çevrimdışı da yeniden denenebilir.';
-
-  @override
-  String get prayerDetailsPending => 'Konum ayrıntıları bekleniyor';
-
-  @override
-  String get prayerSavingPending =>
-      'Kaydedilemedi. Bu namaz güncellemelerini kaydetmek için yeniden deneyin.';
-
-  @override
-  String get prayerWidgetPending => 'Namaz widget güncellemesi bekleniyor';
-
-  @override
-  String get prayerLocationPending =>
-      'Konum güncellemesi bekleniyor. Konum iznini ve cihazın konum hizmetlerini kontrol edip yeniden deneyin.';
-
-  @override
-  String get prayerCalculationPending =>
-      'Namaz hesaplama güncellemesi bekleniyor';
-
-  @override
-  String get prayerNativePending => 'Arka plan konum güncellemesi bekleniyor';
-
-  @override
-  String get prayerPreviousCoverage =>
-      'Önceden onaylanan bildirimler hâlâ önceki konumu izliyor olabilir; mevcut teslimat onaylanmadı.';
-
-  @override
-  String get prayerVerificationRetryGuidance =>
-      'Bazı konum bilgileri hâlâ doğrulanmalı. Namaz vakitlerini ve bildirimleri güncellemek için yeniden deneyin.';
-
-  @override
   String prayerNotificationsBridgedUntil(String date) {
     return 'Bildirimler $date tarihine kadar güncellendi. Sonrakiler hâlâ önceki ayarlarınızı veya konumunuzu izliyor olabilir. Güncellemek için internete bağlandığınızda geri dönün.';
   }
 
   @override
   String get prayerIssueLocationAccess => 'Konum erişimi';
-
-  @override
-  String get prayerIssuePlaceName => 'Yer adı';
-
-  @override
-  String get prayerIssueSaving => 'Kaydetme';
-
-  @override
-  String get prayerIssueCalculation => 'Hesaplama';
-
-  @override
-  String get prayerIssueBackgroundLocation => 'Arka plan konumu';
-
-  @override
-  String get prayerIssueWidget => 'Ana ekran widget\'ı';
-
-  @override
-  String get prayerIssueRetrying => 'Yeniden deneniyor…';
-
-  @override
-  String get prayerUpdatingTitle => 'Namaz vakitleri güncelleniyor…';
-
-  @override
-  String get prayerUpdatingMessage => 'Bu yalnızca birkaç saniye sürer.';
 
   @override
   String get prayerCountryQuestion => 'Hangi ülkedesiniz?';
@@ -5149,15 +3744,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerCalendarWholeYear => 'Tüm yıl';
-
-  @override
-  String get prayerCalendarChooseDate => 'Tarih seç';
-
-  @override
-  String get prayerCalendarChooseMonth => 'Ay seç';
-
-  @override
-  String get prayerCalendarChooseYear => 'Yıl seç';
 
   @override
   String get prayerCalendarGenerate => 'Oluştur ve paylaş';
@@ -5227,21 +3813,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Henüz planlanmış namaz bildirimi yok. Planlamak için Yeniden dene\'ye dokunun.';
 
   @override
-  String get prayerNotificationsUnsupported =>
-      'Namaz bildirimleri bu cihazda kullanılamıyor.';
-
-  @override
-  String get prayerUpdatesLocalGuidance =>
-      'Bazı güncellemeler tamamlanamadı. Tamamlamak için Yeniden dene\'ye dokunun.';
-
-  @override
-  String get prayerSetupTitle => 'Namaz vakitlerini ayarla';
-
-  @override
-  String get prayerSetupSubtitle =>
-      'Doğru vakitleri görmek ve her namazda uyarı almak için bu adımları tamamlayın.';
-
-  @override
   String prayerSetupStepLabel(int step, int total) {
     return 'Adım $step/$total';
   }
@@ -5254,20 +3825,8 @@ class AppLocalizationsTr extends AppLocalizations {
       'Huda, bulunduğunuz yerin namaz vakitlerini hesaplamak için konumunuza ihtiyaç duyar.';
 
   @override
-  String get prayerSetupLocationDeclined =>
-      'Konum erişimi reddedildi. Vakitleri otomatik hesaplamak için izin verin veya şehrinizi arayın.';
-
-  @override
-  String get prayerSetupLocationBlocked =>
-      'Huda için konum erişimi kapalı. Ayarlar\'dan açın — geri döndüğünüzde namaz vakitleri otomatik olarak yüklenir.';
-
-  @override
   String get prayerSetupLocationServicesOff =>
       'Bu cihazda konum servisleri kapalı. Açın — geri döndüğünüzde namaz vakitleri otomatik olarak yüklenir.';
-
-  @override
-  String get prayerSetupLocationFailed =>
-      'Huda konumunuzu bulamadı. Tekrar deneyin veya bunun yerine şehrinizi arayın.';
 
   @override
   String get prayerSetupUseMyLocation => 'Konumumu kullan';
@@ -5284,30 +3843,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerSetupReliableTitle => 'Güvenilir hatırlatmalar';
-
-  @override
-  String get prayerSetupReliableHint =>
-      'Android\'in namaz uyarılarını geciktirmesini önleyin.';
-
-  @override
-  String prayerAttentionCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count konu ilgilenmenizi bekliyor',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String prayerAttentionMore(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '+$count daha',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get prayerTimelineNext => 'Sıradaki';
@@ -5347,25 +3882,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerSetupAlertsOn => 'Uyarılar açık';
 
   @override
-  String get prayerSetupAlertsSkipped =>
-      'Kapalı — bu sayfadan istediğiniz zaman açabilirsiniz';
-
-  @override
   String get prayerSetupReliableIntro =>
       'Android, pil tasarrufu için uyarıları geciktirebilir. Her uyarının zamanında gelmesi için Huda\'nın pil kısıtlaması olmadan çalışmasına izin verin.';
 
   @override
   String get prayerSetupReliableOn => 'Uyarılar zamanında gelecek';
-
-  @override
-  String get prayerSetupSkip => 'Şimdilik atla';
-
-  @override
-  String get prayerSetupSkipped => 'Atlandı';
-
-  @override
-  String get prayerSetupLocationHint =>
-      'Bulunduğunuz yere göre hesaplanan vakitler.';
 
   @override
   String get prayerHeroRemaining => 'kaldı';
@@ -5419,11 +3940,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String macPrayerMenuCountdownOnly(String time) {
-    return '$time kaldı';
-  }
-
-  @override
   String get macPrayerMenuIconOnly => 'Yalnızca simge';
 
   @override
@@ -5445,9 +3961,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get windowsPrayerShowTaskbar => 'Görev çubuğunda geri sayımı göster';
-
-  @override
-  String get windowsPrayerShowTray => 'Sistem tepsisi simgesini göster';
 
   @override
   String get windowsPrayerStartup => 'Windows ile başlat';
@@ -5543,9 +4056,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Windows geri sayımı güncellenemedi. Tekrar deneyin.';
 
   @override
-  String get windowsPrayerEnabled => 'Namaz hatırlatıcılarını etkinleştir';
-
-  @override
   String get windowsPrayerFocusMode => 'Odak modu';
 
   @override
@@ -5562,12 +4072,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'İstediğiniz zaman kapatın veya Escape tuşuna basın.';
 
   @override
-  String get windowsPrayerAudioPlaying => 'Ezan çalıyor';
-
-  @override
-  String get windowsPrayerFocusActive => 'Odak modu etkin';
-
-  @override
   String windowsPrayerNextNotification(String prayer, String duration) {
     return 'Sonraki: $prayer, $duration sonra';
   }
@@ -5581,9 +4085,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get windowsPrayerFocusTimeRemaining => 'Kalan süre';
-
-  @override
-  String get androidAdhanDownload => 'İndir';
 
   @override
   String get macPrayerLoginSettings => 'Giriş Öğeleri Ayarlarını Aç';
@@ -6015,9 +4516,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get prayerAlertLengthCustom => 'Özel';
-
-  @override
   String get prayerAlertFadeIn => 'Yavaşça yükselt';
 
   @override
@@ -6073,9 +4571,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerAlertSoundStop => 'Durdur';
-
-  @override
-  String get prayerAlertSoundWhole => 'Ezanın tamamını dinle';
 
   @override
   String get prayerAlertSoundSelectAfter => 'İndirme bitince kullanılacak';
@@ -6136,9 +4631,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerAlertFallback => 'Alarm kurulamazsa';
-
-  @override
-  String get prayerAlertTestTitle => 'Test gönder';
 
   @override
   String get prayerAlertTestHint =>
@@ -6496,4 +4988,3176 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get sahurNotificationOnlyDescription =>
       'iOS 26’dan önce sahur için yaklaşık 30 saniyelik bir bildirim sesi bir kez çalar. Tekrarlanmaz.';
+
+  @override
+  String get stateRetrying => 'Yeniden deneniyor…';
+
+  @override
+  String get stateUpdating => 'Güncelleniyor…';
+
+  @override
+  String get stateOfflineSaved => 'Bu cihazda kayıtlı olanlar gösteriliyor.';
+
+  @override
+  String get athkarSource => 'Hısnü\'l-Müslim';
+
+  @override
+  String get athkarDaily => 'Her gün';
+
+  @override
+  String get athkarOccasions => 'Her durum için';
+
+  @override
+  String athkarProgress(int done, int total) {
+    return '$total zikirden $done tanesi tamam';
+  }
+
+  @override
+  String athkarRepeatTimes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kez',
+      one: 'Bir kez',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String athkarLeft(int count) {
+    return '$count kaldı';
+  }
+
+  @override
+  String get athkarTapToCount => 'Saymak için dokun';
+
+  @override
+  String get athkarAllDone => 'Hepsi tamam';
+
+  @override
+  String get athkarAllDoneMessage => 'Allah kabul etsin.';
+
+  @override
+  String get athkarStartAgain => 'Baştan başla';
+
+  @override
+  String get athkarCountReset => 'Sayım sıfırlandı';
+
+  @override
+  String get athkarLoadError => 'Zikirler yüklenemedi.';
+
+  @override
+  String get athkarAudioError => 'Bu kayıt oynatılamadı.';
+
+  @override
+  String get athkarClearSearch => 'Aramayı temizle';
+
+  @override
+  String get athkarListen => 'Dinle';
+
+  @override
+  String get shareSaveImage => 'Görseli kaydet';
+
+  @override
+  String get shareImageSaved => 'Fotoğraflarına kaydedildi';
+
+  @override
+  String get shareSaveUnavailable =>
+      'Bu cihazda görsel kaydetme henüz kullanılamıyor.';
+
+  @override
+  String get shareImageSavedDownloads => 'İndirilenler\'e kaydedildi';
+
+  @override
+  String get shareSaveFailed => 'Görsel kaydedilemedi. Tekrar deneyin.';
+
+  @override
+  String get shareIncludeTranslation => 'Çeviriyi ekle';
+
+  @override
+  String get hadithSixBooks => 'Kütüb-i Sitte';
+
+  @override
+  String get hadithMoreCollections => 'Diğer koleksiyonlar';
+
+  @override
+  String hadithCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString hadis',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hadithBookCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString kitap',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hadithRange(String start, String end) {
+    return 'Hadis $start–$end';
+  }
+
+  @override
+  String hadithNumber(String number) {
+    return 'Hadis $number';
+  }
+
+  @override
+  String get hadithSearchBooks => 'Kitap ara';
+
+  @override
+  String get hadithChooseBook => 'Okumaya başlamak için bir kitap seçin';
+
+  @override
+  String hadithPageOf(int page, int total) {
+    return 'Sayfa $page / $total';
+  }
+
+  @override
+  String get hadithLoadError => 'Hadisler yüklenemedi.';
+
+  @override
+  String get hadithShare => 'Hadisi paylaş';
+
+  @override
+  String hadithBookNumber(String number) {
+    return 'Kitap $number';
+  }
+
+  @override
+  String get hadithBookEmpty => 'Bu kitapta henüz hadis yok.';
+
+  @override
+  String get hadithBooksLoadError => 'Bu koleksiyonun kitapları yüklenemedi.';
+
+  @override
+  String get hadithAbout => 'Bu koleksiyon hakkında';
+
+  @override
+  String get zakatDueLabel => 'Ödenecek zekât';
+
+  @override
+  String get zakatNisab => 'Nisap';
+
+  @override
+  String zakatRateOf(String amount) {
+    return '$amount tutarının %2.5\'i';
+  }
+
+  @override
+  String zakatAboveNisab(String amount) {
+    return 'Nisabın $amount üzerinde';
+  }
+
+  @override
+  String zakatBelowNisab(String amount) {
+    return 'Nisabın $amount altında';
+  }
+
+  @override
+  String get zakatEmptyTitle => 'Sahip olduklarınızı girin';
+
+  @override
+  String get zakatEmptyMessage =>
+      'Birikimlerinizi, altınınızı ve diğer varlıklarınızı ekleyin; nisaba ulaşıp ulaşmadığını görün.';
+
+  @override
+  String get zakatClearAmounts => 'Tutarları temizle';
+
+  @override
+  String get zakatAmountsCleared => 'Tutarlar temizlendi';
+
+  @override
+  String get zakatShowResult => 'Sonucu göster';
+
+  @override
+  String zakatNisabIs(String weight) {
+    return 'Nisap: $weight';
+  }
+
+  @override
+  String get zakatCalcError => 'Hesaplama tamamlanamadı.';
+
+  @override
+  String zakatPriceMarket(String date) {
+    return 'Piyasa fiyatı · $date';
+  }
+
+  @override
+  String get zakatPriceYours => 'Sizin fiyatınız';
+
+  @override
+  String get zakatPriceUpdating => 'Altın ve gümüş fiyatları güncelleniyor…';
+
+  @override
+  String zakatPriceFailed(String date) {
+    return 'Altın ve gümüş fiyatları güncellenemedi. $date fiyatları kullanılıyor.';
+  }
+
+  @override
+  String get zakatUseMarketPrice => 'Piyasa fiyatını kullan';
+
+  @override
+  String zakatLocalPriceNote(String currency) {
+    return '$currency cinsinden altın fiyatları dünya fiyatlarından farklı olabilir. Yerel fiyatı kontrol edip gerekirse girin.';
+  }
+
+  @override
+  String zakatPerGram(String price) {
+    return 'Gram başına $price';
+  }
+
+  @override
+  String get zakatCurrencySearch => 'Para birimi ara';
+
+  @override
+  String get zakatCurrencySuggested => 'Önerilenler';
+
+  @override
+  String get zakatCurrencyAll => 'Tüm para birimleri';
+
+  @override
+  String zakatCurrencyNoMatch(String query) {
+    return '“$query” ile eşleşen para birimi yok';
+  }
+
+  @override
+  String zakatTypedPricesReplaced(String currency) {
+    return 'Fiyatlarınız $currency cinsinden piyasa fiyatlarıyla değiştirildi.';
+  }
+
+  @override
+  String get setupWelcomeTitle => 'Huda\'ya hoş geldiniz';
+
+  @override
+  String get setupWelcomeMessage =>
+      'Huda\'yı sizin için ayarlayalım. Yaklaşık bir dakika sürer.';
+
+  @override
+  String get setupLookTitle => 'Görünümünüzü seçin';
+
+  @override
+  String get setupLookMessage =>
+      'Açık ya da koyu ve bir renk. İkisini de sonra Ayarlar\'dan değiştirebilirsiniz.';
+
+  @override
+  String get setupThemeLight => 'Açık';
+
+  @override
+  String get setupThemeDark => 'Koyu';
+
+  @override
+  String get setupThemeSystem => 'Cihaza uy';
+
+  @override
+  String get setupFocusTitle => 'Huda\'yı en çok ne için kullanacaksınız?';
+
+  @override
+  String get setupFocusMessage =>
+      'Ana sayfa onu öne çıkarır. Bunu istediğiniz zaman Ana sayfadan değiştirebilirsiniz.';
+
+  @override
+  String get setupFocusPrayer => 'Namaz';
+
+  @override
+  String get setupFocusQuran => 'Kur\'an';
+
+  @override
+  String get setupFocusEverything => 'Hepsi';
+
+  @override
+  String get setupLocating => 'Konum bulunuyor…';
+
+  @override
+  String setupNextPrayer(String prayer, String time) {
+    return 'Sıradaki: $prayer, $time';
+  }
+
+  @override
+  String get setupAsrMessage =>
+      'Mezhepler ikindinin başlangıcında ayrışır. Uyduğunuzu seçin.';
+
+  @override
+  String get setupAsrStandard => 'Standart';
+
+  @override
+  String get setupAsrStandardSchools => 'Şafii, Maliki ve Hanbeli';
+
+  @override
+  String get setupAsrHanafiNote => 'İkindi daha geç başlar';
+
+  @override
+  String get setupSuggested => 'Önerilen';
+
+  @override
+  String get setupAlertsOff => 'Uyarılar kapalı';
+
+  @override
+  String get setupReliableTitle => 'Uyarıları güvenilir yap';
+
+  @override
+  String setupReliableCount(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get setupMushafTitle => 'Kur\'an\'ı nasıl okursunuz?';
+
+  @override
+  String get setupMushafMessage =>
+      'Bir düzen seçin. Okuyucunun ayarlarından istediğiniz zaman değiştirebilirsiniz.';
+
+  @override
+  String get setupScrollListHint => 'Ayet ayet, mealiyle';
+
+  @override
+  String setupMushafSize(String size) {
+    return '$size indirme';
+  }
+
+  @override
+  String get setupMushafReady => 'Bu cihazda';
+
+  @override
+  String get setupDownloadNow => 'Şimdi indir';
+
+  @override
+  String setupDownloadWifi(String size) {
+    return 'Arka planda iner ($size).';
+  }
+
+  @override
+  String get setupDownloadCellular =>
+      'Mobil verideysiniz; Kur\'an\'ı açtığınızda inecek.';
+
+  @override
+  String get setupRemindersTitle => 'Günlük hatırlatıcılar';
+
+  @override
+  String get setupRemindersMessage =>
+      'Her zamanki saatlerde nazik hatırlatıcılar. Siz açana kadar hepsi kapalı kalır.';
+
+  @override
+  String get setupReminderFailed =>
+      'Bu hatırlatıcı açılamadı. Hatırlatıcılar bölümünden tekrar deneyin.';
+
+  @override
+  String setupRemindersOn(int count) {
+    return '3 hatırlatıcıdan $count açık';
+  }
+
+  @override
+  String get setupSummaryTitle => 'Her şey hazır';
+
+  @override
+  String get setupSummaryMessage => 'Değiştirmek için bir adıma dokunun.';
+
+  @override
+  String get setupSkippedLater => 'Atlandı · istediğiniz zaman ayarlayın';
+
+  @override
+  String get setupStart => 'Huda\'yı kullanmaya başla';
+
+  @override
+  String get setupLocationFailedTitle => 'Konumunuz bulunamadı';
+
+  @override
+  String get setupPermissionsTitle => 'Huda\'nın ihtiyaç duydukları';
+
+  @override
+  String get setupPermissionsLabel => 'İzinler';
+
+  @override
+  String get setupPermissionsMessage =>
+      'İki izin, Huda\'nın sizin için çalışmasını sağlar. Bunları istediğiniz zaman cihaz ayarlarından değiştirebilirsiniz.';
+
+  @override
+  String get setupPermissionLocationWhy =>
+      'Bulunduğunuz yer için namaz vakitlerini ve kıbleyi hesaplamak için.';
+
+  @override
+  String get setupPermissionNotificationsWhy =>
+      'Her namaz vaktinde ezanı okumak ve seçtiğiniz hatırlatmaları göndermek için.';
+
+  @override
+  String get setupAllowNotifications => 'Bildirimlere izin ver';
+
+  @override
+  String get setupPermissionAllowed => 'İzin verildi';
+
+  @override
+  String get setupPermissionNotAllowed => 'İzin verilmedi';
+
+  @override
+  String get setupPermissionNotAsked => 'Henüz sorulmadı';
+
+  @override
+  String get setupPermissionAsking => 'Soruluyor…';
+
+  @override
+  String get setupTimesTitle => 'Namaz vakitleriniz';
+
+  @override
+  String get setupTimesToday =>
+      'Bulunduğunuz yere göre hesaplanmış bugünkü namaz vakitleri.';
+
+  @override
+  String get setupAdhanTitle => 'Ezan';
+
+  @override
+  String get setupAdhanMessage =>
+      'Huda her namaz vaktinde, uygulama kapalıyken bile ezanı okur.';
+
+  @override
+  String get setupAsrShadowOnce => 'Gölge, cismin boyuna eşit olunca';
+
+  @override
+  String get setupAsrShadowTwice => 'Gölge, cismin iki katı olunca';
+
+  @override
+  String get setupNow => 'şimdi';
+
+  @override
+  String get setupSkipStep => 'Bu adımı atla';
+
+  @override
+  String get setupSkipAll => 'Tümünü atla';
+
+  @override
+  String get setupCalcTitle => 'Namaz vakitleriniz nasıl hesaplansın?';
+
+  @override
+  String get setupCalcLabel => 'Hesaplama';
+
+  @override
+  String get setupCalcMessage =>
+      'Otomatik, ülkenizin yöntemini kullanır. Başka birini yalnızca caminiz onu izliyorsa seçin.';
+
+  @override
+  String get setupMethodOther => 'Ya da bir yöntem seçin';
+
+  @override
+  String get setupAlertStyleLabel => 'Her namaz vakti sizi nasıl uyarsın';
+
+  @override
+  String get setupAdhanVoiceLater =>
+      'Ezan sesini ve daha fazlasını daha sonra Namaz ayarlarından seçebilirsiniz.';
+
+  @override
+  String get setupAlertSaveFailed => 'Bu seçim kaydedilemedi.';
+
+  @override
+  String get setupSkipAllTitle => 'Kurulumun geri kalanı atlansın mı?';
+
+  @override
+  String get setupSkipAllMessage =>
+      'Huda şimdi açılır. Atlananları daha sonra, gerektiği yerde sorar.';
+
+  @override
+  String get setupKeepSettingUp => 'Kuruluma devam et';
+
+  @override
+  String setupMethodUses(String method) {
+    return '$method kullanılır';
+  }
+
+  @override
+  String get setupMethodSearch => 'Yöntem ara';
+
+  @override
+  String get quranSearchHint => 'Sure veya ayet ara';
+
+  @override
+  String get quranLoadError => 'Sure dizini açılamadı.';
+
+  @override
+  String get quranAyatSection => 'Ayetler';
+
+  @override
+  String get quranDisplay => 'Görünüm';
+
+  @override
+  String get quranMore => 'Daha fazla';
+
+  @override
+  String get quranSimilarTab => 'Benzer';
+
+  @override
+  String get quranSurahLoadError => 'Bu sure açılamadı.';
+
+  @override
+  String get quranBookmarkDeleted => 'Yer imi silindi';
+
+  @override
+  String get quranWirdDone => 'Bugünkü virdimi bitirdim';
+
+  @override
+  String get quranOfflineLoading => 'Bu cihazda kayıtlı olanlar yükleniyor…';
+
+  @override
+  String get quranWirdStartsHere => 'Bugünkü vird burada başlıyor';
+
+  @override
+  String get quranWirdEndsHere => 'Bugünkü vird burada bitiyor';
+
+  @override
+  String get quranRecitersError => 'Kâriler yüklenemedi.';
+
+  @override
+  String get quranZoomHint =>
+      'Sayfalar genişliği doldurur ve kaydırılır; iki sayfa birlikte kayar.';
+
+  @override
+  String get quranPages => 'Sayfalar';
+
+  @override
+  String get quranZoomFillsAlready =>
+      'Tek sayfa bu ekranın genişliğini zaten dolduruyor; yakınlaştırma daha geniş ekranlarda işe yarar.';
+
+  @override
+  String get quranTwoPagesSideways =>
+      'Ekran yatay çevrildiğinde iki sayfa açılır.';
+
+  @override
+  String get khatmaChoosePace => 'Hızınızı seçin';
+
+  @override
+  String get khatmaStartFromDay => 'Başka bir günden başla';
+
+  @override
+  String khatmaPaceUnit(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'gün',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String khatmaPagesADay(int pages) {
+    String _temp0 = intl.Intl.pluralLogic(
+      pages,
+      locale: localeName,
+      other: 'günde $pages sayfa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get khatmaReminderTime => 'Hatırlatma saati';
+
+  @override
+  String khatmaFinishOn(String date) {
+    return '$date tarihinde biter';
+  }
+
+  @override
+  String khatmaStatJuz(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'cüz',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String khatmaStatPages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'sayfa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quranAudioSurahCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sure',
+      one: '1 sure',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quranAudioDownloadedCount(int count) {
+    return '$count indirildi';
+  }
+
+  @override
+  String quranAudioDownloadingCount(int done, int total) {
+    return 'İndiriliyor: $done/$total';
+  }
+
+  @override
+  String get quranAudioPlayFromStart => 'Baştan oynat';
+
+  @override
+  String get quranAudioOfflineNote =>
+      'Çevrimdışısınız. İndirilen tilavetler gösteriliyor.';
+
+  @override
+  String get quranAudioLoadFailed => 'Kâriler yüklenemedi';
+
+  @override
+  String get quranAudioChooseTitle => 'Bir tilavet seçin';
+
+  @override
+  String get quranAudioChooseMessage =>
+      'Surelerini görmek ve dinlemek için bir kârinin tilavetini seçin.';
+
+  @override
+  String quranAudioSurahOfTotal(int index, int total) {
+    return 'Sure $index/$total';
+  }
+
+  @override
+  String get quranAudioShuffle => 'Karıştır';
+
+  @override
+  String get quranAudioRepeatOff => 'Tekrar kapalı';
+
+  @override
+  String get quranAudioRepeatAll => 'Tümünü tekrarla';
+
+  @override
+  String get quranAudioRepeatOne => 'Bu sureyi tekrarla';
+
+  @override
+  String get quranAudioBack10 => '10 saniye geri';
+
+  @override
+  String get quranAudioForward10 => '10 saniye ileri';
+
+  @override
+  String get quranAudioPosition => 'Oynatma konumu';
+
+  @override
+  String get quranAudioOpenPlayer => 'Oynatıcıyı aç';
+
+  @override
+  String get quranAudioPreparing => 'Hazırlanıyor…';
+
+  @override
+  String get quranAudioHidePlayer => 'Oynatıcıyı gizle';
+
+  @override
+  String get quranAudioAllDownloaded => 'Tümü indirildi';
+
+  @override
+  String get radioLive => 'Canlı';
+
+  @override
+  String get radioPaused => 'Duraklatıldı';
+
+  @override
+  String get radioConnecting => 'Bağlanıyor…';
+
+  @override
+  String get radioLoadFailed => 'İstasyonlar yüklenemedi';
+
+  @override
+  String prayerAlertFor(String prayer) {
+    return '$prayer bildirimleri';
+  }
+
+  @override
+  String get prayerFixSavingTitle => 'Son değişiklikleriniz kaydedilmedi';
+
+  @override
+  String get prayerFixSavingMessage =>
+      'Huda namaz ayarlarınızı bu cihaza kaydedemedi. Yeniden kaydetmek için Yeniden Dene\'ye dokunun.';
+
+  @override
+  String get prayerFixCalculationTitle =>
+      'Bugünün vakitleri yeniden hesaplanamadı';
+
+  @override
+  String get prayerFixCalculationMessage =>
+      'Gösterilen vakitler son değişikliğinizi içermiyor olabilir. Yeniden hesaplamak için Yeniden Dene\'ye dokunun.';
+
+  @override
+  String get prayerFixCheckTitle => 'Vakitler birkaç dakika farklı olabilir';
+
+  @override
+  String get prayerFixCheckMessage =>
+      'Huda burada hangi yerel kuralların geçerli olduğunu doğrulayamadı, örneğin bir sınır veya kıyı yakınında. Vakitler hesaplandı, ancak yerel caminizden biraz farklı olabilir.';
+
+  @override
+  String get prayerFixCheckAction => 'Tekrar kontrol et';
+
+  @override
+  String get prayerFixWidgetTitle => 'Ana ekran widget\'ı güncellenmedi';
+
+  @override
+  String get prayerFixWidgetMessage =>
+      'Buradaki vakitler doğru, ancak widget\'ınız hâlâ eski vakitleri gösteriyor olabilir. Güncellemek için Yeniden Dene\'ye dokunun.';
+
+  @override
+  String get prayerRetryingTitle => 'Tekrar deneniyor…';
+
+  @override
+  String get prayerAlertsPreviousPlace =>
+      'Önceden planlanan uyarılar, yenilenene kadar önceki konumunuza göre gelebilir.';
+
+  @override
+  String get prayerAlertsRetryingMessage =>
+      'Namaz uyarılarınız yeniden planlanıyor.';
+
+  @override
+  String get prayerAlertsUpdatingTitle => 'Uyarılarınız güncelleniyor…';
+
+  @override
+  String get prayerAlertsUpdatingMessage =>
+      'Sonraki namaz uyarıları planlanıyor. Vakitleriniz zaten güncel.';
+
+  @override
+  String get prayerAlertsNotScheduledTitle => 'Namaz uyarıları planlanmadı';
+
+  @override
+  String get prayerAlertsLateNote =>
+      'Uyarılar birkaç dakika geç gelebilir. Her birinin zamanında gelmesi için tam zamanlı alarmlara izin verin.';
+
+  @override
+  String get prayerAlertsUnsupportedTitle =>
+      'Namaz uyarıları burada kullanılamıyor';
+
+  @override
+  String get prayerAlertsUnsupportedMessage =>
+      'Bu cihaz namaz uyarılarını gösteremiyor. Tüm namaz vakitleri yine bu sayfada.';
+
+  @override
+  String get prayerAlertsNeedsOnline =>
+      'Uyarılarınızı bu cihaza taşımayı bitirmek için Huda\'nın bir kez internete bağlanması gerekiyor. İnternete bağlanın, ardından Tekrar dene\'ye dokunun.';
+
+  @override
+  String get prayerAlertsNeedsOnlineOffline =>
+      'Çevrimdışısınız. Tekrar bağlandığınızda Huda uyarılarınızı kendiliğinden kurmayı bitirecek.';
+
+  @override
+  String get prayerAlertsNoRoom =>
+      'Huda\'nın diğer hatırlatıcıları bu cihazın izin verdiği tüm uyarıları kullanıyor. Birkaç hatırlatıcıyı kapatın, ardından Tekrar dene\'ye dokunun.';
+
+  @override
+  String get prayerAlertsLocalFailure =>
+      'Bu cihaz uyarı planını kabul etmedi. Tekrar dene\'ye dokunun. Sorun devam ederse Huda\'yı yeniden başlatın.';
+
+  @override
+  String get prayerWhereTitle => 'Neredesiniz?';
+
+  @override
+  String get prayerWhereMessage =>
+      'Namaz vakitleri bulunduğunuz yere bağlıdır. Bu cihazın konumunu kullanın veya şehrinizi seçin.';
+
+  @override
+  String get prayerWhereMessageCityOnly =>
+      'Namaz vakitleri bulunduğunuz yere bağlıdır. Görmek için şehrinizi seçin.';
+
+  @override
+  String get prayerChooseCity => 'Şehir seç';
+
+  @override
+  String get prayerProblemDenied =>
+      'Konum erişimine izin verilmedi. İzin verin veya bunun yerine şehrinizi seçin.';
+
+  @override
+  String get prayerProblemBlocked =>
+      'Huda için konum kapalı. Ayarlar\'dan açın veya bunun yerine şehrinizi seçin.';
+
+  @override
+  String get prayerProblemServicesOff =>
+      'Bu cihazda konum hizmetleri kapalı. Açın veya bunun yerine şehrinizi seçin.';
+
+  @override
+  String get prayerProblemNoDeviceLocation =>
+      'Bu cihaz konumunu paylaşamıyor. Bunun yerine şehrinizi seçin.';
+
+  @override
+  String get prayerProblemNoFix =>
+      'Huda konumunuzu zamanında alamadı. Tekrar deneyin, belki bir pencere yakınında, veya şehrinizi seçin.';
+
+  @override
+  String get prayerProblemTimeZone =>
+      'Huda yeri buldu ancak saat dilimini belirleyemedi. İnternet bağlantınızı kontrol edip tekrar deneyin veya yakın bir şehir seçin.';
+
+  @override
+  String get prayerProblemPlaceInvalid =>
+      'Bu yer kullanılamadı. Tekrar deneyin veya başka bir şehir seçin.';
+
+  @override
+  String get prayerProblemSaveFailed =>
+      'Yer bu cihaza kaydedilemedi. Tekrar deneyin.';
+
+  @override
+  String get prayerProblemCalculation =>
+      'Huda bu yer için namaz vakitlerini hesaplayamadı. Tekrar deneyin veya başka bir şehir seçin.';
+
+  @override
+  String get prayerProblemUnknown =>
+      'Bir şey Huda\'nın bu yeri kullanmasını engelledi. Tekrar deneyin veya bunun yerine şehrinizi seçin.';
+
+  @override
+  String get prayerLocationTitle => 'Konum';
+
+  @override
+  String get prayerLocationAutomatic => 'Otomatik';
+
+  @override
+  String get prayerLocationChosen => 'Seçtiğim şehir';
+
+  @override
+  String get prayerLocationAutomaticHint =>
+      'Vakitler bu cihazın konumunu takip eder.';
+
+  @override
+  String get prayerLocationChosenHint =>
+      'Nerede olursanız olun vakitler seçtiğiniz şehre göre kalır.';
+
+  @override
+  String get prayerLocationUpdateNow => 'Şimdi güncelle';
+
+  @override
+  String get prayerLocationUpdating => 'Güncelleniyor…';
+
+  @override
+  String get prayerLocationChangeCity => 'Şehri değiştir';
+
+  @override
+  String get prayerLocationTravel => 'Seyahatte beni takip et';
+
+  @override
+  String get prayerLocationTravelHint =>
+      'Yeni bir yere vardığınızda Huda, kapalıyken bile vakitleri ve uyarıları kendiliğinden günceller.';
+
+  @override
+  String get prayerLocationTravelForegroundOnly =>
+      'Huda sizi yalnızca açıkken takip edebilir. Kapalıyken de takip etmesi için konuma her zaman izin verin.';
+
+  @override
+  String get prayerLocationTravelNeedsPermission =>
+      'Seyahat ettiğinizde Huda\'nın sizi takip edebilmesi için konuma izin verin.';
+
+  @override
+  String prayerLocationRowSemantics(String place) {
+    return 'Konum: $place. Değiştirmek için dokunun.';
+  }
+
+  @override
+  String get prayerProblemPlaceTitle => 'Bu yer kullanılamadı';
+
+  @override
+  String prayerSettingsAdjusted(int count, String number) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$number vakit ayarlandı',
+      one: '1 vakit ayarlandı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get qiblahNorthShort => 'K';
+
+  @override
+  String get qiblahEastShort => 'D';
+
+  @override
+  String get qiblahSouthShort => 'G';
+
+  @override
+  String get qiblahWestShort => 'B';
+
+  @override
+  String qiblahFromNorth(String degrees) {
+    return 'Kıble kuzeyden $degrees';
+  }
+
+  @override
+  String get qiblahTurnRight => 'Sağa dönün';
+
+  @override
+  String get qiblahTurnLeft => 'Sola dönün';
+
+  @override
+  String get qiblahFacing => 'Kıbleye dönüksünüz';
+
+  @override
+  String get qiblahFacingHint => 'Böyle sabit durun: Kâbe tam karşınızda.';
+
+  @override
+  String get qiblahFinding => 'Kıble bulunuyor…';
+
+  @override
+  String get qiblahNoCompassTitle => 'Bu cihazda pusula yok';
+
+  @override
+  String qiblahNoCompassMessage(String degrees) {
+    return 'Kuzeye dönün, sonra saat yönünde $degrees dönün. Kadranda kuzey üstte, Kâbe işaretli.';
+  }
+
+  @override
+  String get qiblahAllowTitle => 'Bulunduğunuz yerden kıbleyi bulun';
+
+  @override
+  String get qiblahAllowMessage =>
+      'Huda, Kâbe\'nin yönünü hesaplamak için konumunuzu bu cihazda kullanır.';
+
+  @override
+  String get qiblahAllowLocation => 'Konuma izin ver';
+
+  @override
+  String get qiblahLocationOffTitle => 'Konum kapalı';
+
+  @override
+  String get qiblahLocationOffMessage =>
+      'Huda\'nın bulunduğunuz yerden kıbleyi hesaplayabilmesi için konum hizmetlerini açın.';
+
+  @override
+  String get qiblahTurnOnLocation => 'Konumu aç';
+
+  @override
+  String get qiblahBlockedTitle => 'Huda için konum engellendi';
+
+  @override
+  String get qiblahBlockedMessage =>
+      'Ayarlar\'da Huda\'ya konum izni verin, sonra buraya dönün.';
+
+  @override
+  String get qiblahErrorTitle => 'Kıble bulunamadı';
+
+  @override
+  String get qiblahErrorMessage =>
+      'Huda konumunuzu alamadı. Konumun açık olduğunu kontrol edip tekrar deneyin.';
+
+  @override
+  String get qiblahHoldFlat => 'Huda kıbleyi bulurken telefonunuzu düz tutun.';
+
+  @override
+  String get qiblahTurnHint => 'Kâbe üstteki işarete gelene kadar dönün.';
+
+  @override
+  String get qiblahInterference =>
+      'Yakında manyetik parazit var. Metal, mıknatıs ve elektronik cihazlardan uzaklaşın.';
+
+  @override
+  String get qiblahTilted => 'Telefonunuzu düz tutun';
+
+  @override
+  String qiblahPlaceDistance(String place, String distance) {
+    return '$place · Kâbe\'ye $distance km';
+  }
+
+  @override
+  String qiblahDistance(String distance) {
+    return 'Kâbe\'ye $distance km';
+  }
+
+  @override
+  String get qiblahUpdatingLocation => 'Konumunuz güncelleniyor…';
+
+  @override
+  String get qiblahLocationStale =>
+      'Konumunuz güncellenemedi. Yer değiştirdiyseniz kıble yönü kayabilir.';
+
+  @override
+  String get qiblahUpdateLocation => 'Konumu güncelle';
+
+  @override
+  String get remindersNextReminder => 'Sonraki hatırlatıcı';
+
+  @override
+  String remindersNextToday(String time) {
+    return 'Bugün $time';
+  }
+
+  @override
+  String remindersNextTomorrow(String time) {
+    return 'Yarın $time';
+  }
+
+  @override
+  String remindersNextOnDay(String day, String time) {
+    return '$day $time';
+  }
+
+  @override
+  String get remindersNoneOnTitle => 'Açık hatırlatıcı yok';
+
+  @override
+  String get remindersNoneOnMessage =>
+      'Aşağıdan birini açın, gününüzde yerini alsın.';
+
+  @override
+  String remindersDialLabel(String reminders) {
+    return 'Bugünkü hatırlatıcılarınız: $reminders';
+  }
+
+  @override
+  String get remindersDialEmptyLabel => 'Bugün hatırlatıcı yok';
+
+  @override
+  String get remindersRoutineSection => 'Günlük düzen';
+
+  @override
+  String get remindersDeliverySection => 'Teslimatı kontrol et';
+
+  @override
+  String get remindersScheduling => 'Planlanıyor…';
+
+  @override
+  String remindersChangeTime(String time) {
+    return 'Saati değiştir, $time';
+  }
+
+  @override
+  String get qiblahAccuracyGood => 'Pusula doğruluğu: iyi';
+
+  @override
+  String get qiblahAccuracyFair => 'Pusula doğruluğu: orta';
+
+  @override
+  String get qiblahAccuracyPoor => 'Pusula doğruluğu: zayıf';
+
+  @override
+  String get remindersTitle => 'Hatırlatıcılar';
+
+  @override
+  String get eveningAthkar => 'Akşam Zikirleri';
+
+  @override
+  String remindersInHoursMinutes(String hours, String minutes) {
+    return '$hours sa $minutes dk sonra';
+  }
+
+  @override
+  String remindersInHours(String hours) {
+    return '$hours sa sonra';
+  }
+
+  @override
+  String remindersInMinutes(String minutes) {
+    return '$minutes dk sonra';
+  }
+
+  @override
+  String get remindersSahurAlarmsDenied =>
+      'Huda için alarmlar kapalı. Sahur alarmının çalabilmesi için Ayarlar\'dan izin verin.';
+
+  @override
+  String get remindersSahurNotificationsOff =>
+      'Huda için bildirimler kapalı. Sahur alarmının çalabilmesi için Ayarlar\'dan izin verin.';
+
+  @override
+  String get remindersSahurSoundOff =>
+      'Huda için bildirim sesleri kapalı. Sahur alarmını duyabilmek için Ayarlar\'dan açın.';
+
+  @override
+  String get remindersSahurNeedsPrayerTimes =>
+      'Fecirden önce seçeneği namaz vakitlerinize ihtiyaç duyar. Namaz Vakitleri\'nde konumunuzu ayarlayın veya belirli bir saat kullanın.';
+
+  @override
+  String get remindersUseExactTime => 'Belirli saat kullan';
+
+  @override
+  String get calendarChooseTitle => 'Huda hangi Hicri tarihleri göstersin?';
+
+  @override
+  String get calendarChooseMessage =>
+      'Huda resmî Ümmü’l-Kurâ takvimini izler. Yaşadığınız yerde hilal farklı görülüyorsa tarihleri bir iki gün kaydırın.';
+
+  @override
+  String get calendarUseUmmAlQura => 'Ümmü’l-Kurâ’yı kullan';
+
+  @override
+  String get calendarAdjustDays => 'Günleri ayarla';
+
+  @override
+  String get calendarYourEvents => 'Etkinlikleriniz';
+
+  @override
+  String get calendarEventDeleted => 'Etkinlik silindi';
+
+  @override
+  String get calendarEventColor => 'Renk';
+
+  @override
+  String calendarEventsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count etkinlik',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get calendarAdjustmentFailed =>
+      'Değişiklik kaydedilemedi. Tekrar deneyin.';
+
+  @override
+  String get ramadanTodaysFast => 'Bugünün orucu';
+
+  @override
+  String ramadanIftarIn(String when) {
+    return 'İftar $when';
+  }
+
+  @override
+  String ramadanImsakIn(String when) {
+    return 'İmsak $when';
+  }
+
+  @override
+  String get ramadanYourFasts => 'Oruçlarınız';
+
+  @override
+  String ramadanYearLabel(String year) {
+    return 'Ramazan $year';
+  }
+
+  @override
+  String ramadanToMakeUp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kaza edilecek $count gün',
+      zero: 'Kaza borcu yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ramadanClearDay => 'Temizle';
+
+  @override
+  String get ramadanNotMarked => 'İşaretlenmedi';
+
+  @override
+  String get ramadanNightsIntro =>
+      'Geçen Ramazan\'ın her gününü oruç tutuldu ya da kaçırıldı olarak işaretleyin; kaza etmeniz gereken günler sizin için sayılır.';
+
+  @override
+  String get ramadanMarkFasts => 'Oruçlarınızı işaretleyin';
+
+  @override
+  String get ramadanShowDays => 'Günleri göster';
+
+  @override
+  String get ramadanHideDays => 'Günleri gizle';
+
+  @override
+  String get ramadanLocationError =>
+      'Ramazan vakitleri için konumunuz gerekiyor. Namaz Vakitleri’nden ayarlayıp tekrar deneyin.';
+
+  @override
+  String get booksLanguagesError => 'Diller yüklenemedi.';
+
+  @override
+  String booksNoLanguageMatches(String query) {
+    return '“$query” ile eşleşen dil yok.';
+  }
+
+  @override
+  String booksPageOf(int page, int total) {
+    return 'Sayfa $page / $total';
+  }
+
+  @override
+  String get booksLoadError =>
+      'Kütüphane yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.';
+
+  @override
+  String get booksLanguageUnavailable => 'Bu kitap o dilde mevcut değil.';
+
+  @override
+  String get booksDetailError => 'Bu kitap yüklenemedi.';
+
+  @override
+  String get booksShowOriginal => 'Orijinali göster';
+
+  @override
+  String get booksDetailOffline =>
+      'Bu kitabı görmek için internete bağlanın. İndirilen kitaplar çevrimdışı açılır.';
+
+  @override
+  String get booksDownloadFailed => 'Kitap indirilemedi.';
+
+  @override
+  String get booksRemoveDownloadTitle => 'Bu indirme kaldırılsın mı?';
+
+  @override
+  String get booksRemoveDownloadBody =>
+      'Kitap kütüphanede kalır. Çevrimiçiyken yeniden indirebilirsiniz.';
+
+  @override
+  String get booksRemove => 'Kaldır';
+
+  @override
+  String get booksRemoveDownload => 'İndirmeyi kaldır';
+
+  @override
+  String get booksDownloadRemoved => 'İndirme kaldırıldı';
+
+  @override
+  String get booksShareFailed => 'Kitap paylaşılamadı.';
+
+  @override
+  String get booksRoleAuthor => 'Yazar';
+
+  @override
+  String get booksRoleTranslator => 'Çevirmen';
+
+  @override
+  String get booksRoleEditor => 'Editör';
+
+  @override
+  String get booksRolePublisher => 'Yayıncı';
+
+  @override
+  String get booksRoleSource => 'Kaynak';
+
+  @override
+  String get booksRoleOther => 'Hazırlayan';
+
+  @override
+  String booksDownloading(int percent) {
+    return 'İndiriliyor… %$percent';
+  }
+
+  @override
+  String get booksDownloadedNote => 'İndirildi · çevrimdışı açılır';
+
+  @override
+  String booksDownloadedOn(String date) {
+    return '$date tarihinde indirildi';
+  }
+
+  @override
+  String get booksOtherFormats => 'Diğer biçimler';
+
+  @override
+  String get booksAlsoIn => 'Diğer diller';
+
+  @override
+  String get booksHighlights => 'Vurgular';
+
+  @override
+  String get booksHighlight => 'Vurgula';
+
+  @override
+  String get booksContentsHint =>
+      'Bu kitapta içindekiler yok. Arayın ya da sayfalara göz atın.';
+
+  @override
+  String get booksNoMatches => 'Eşleşme yok';
+
+  @override
+  String get booksNoHighlights => 'Henüz vurgu yok';
+
+  @override
+  String get booksHighlightsHint => 'Sayfada bir metin seçip bir renk seçin.';
+
+  @override
+  String get booksHighlightRemoved => 'Vurgu kaldırıldı';
+
+  @override
+  String get booksZoomIn => 'Yakınlaştır';
+
+  @override
+  String get booksZoomOut => 'Uzaklaştır';
+
+  @override
+  String get booksOpening => 'Kitap açılıyor…';
+
+  @override
+  String get booksReaderError => 'Bu kitap açılamadı';
+
+  @override
+  String get booksReaderErrorMessage =>
+      'Bağlantınızı kontrol edip tekrar deneyin.';
+
+  @override
+  String get booksReaderPanel => 'İçindekiler ve arama';
+
+  @override
+  String get booksScrollDown => 'Sayfaları aşağı kaydır';
+
+  @override
+  String get booksScrollAcross => 'Sayfaları yana kaydır';
+
+  @override
+  String get booksInkRed => 'Kırmızı';
+
+  @override
+  String get booksInkGreen => 'Yeşil';
+
+  @override
+  String get booksInkOrange => 'Turuncu';
+
+  @override
+  String audiobooksChapterCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bölüm',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String audiobooksShowingDownloaded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'İndirilmiş $count kayıt gösteriliyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get audiobooksLoadError =>
+      'Ses kitaplığı yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.';
+
+  @override
+  String get audiobooksDetailError =>
+      'Bu kayıt yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.';
+
+  @override
+  String get audiobooksDetailOffline =>
+      'Bu kayıt indirilmemiş. Dinlemek için internete bağlanın.';
+
+  @override
+  String get audiobooksDownloadWhenOnline =>
+      'Burada dinlemek için kayıtları çevrimiçiyken indirin.';
+
+  @override
+  String get audiobooksRemoveDownloadBody =>
+      'Kayıt kitaplıkta kalır. Çevrimiçiyken yeniden indirebilirsiniz.';
+
+  @override
+  String get audiobooksDownloadFailed => 'Kayıt indirilemedi.';
+
+  @override
+  String audiobooksDownloadingPercent(String percent) {
+    return 'İndiriliyor %$percent';
+  }
+
+  @override
+  String get audiobooksCancelDownload => 'İndirmeyi iptal et';
+
+  @override
+  String get audiobooksBack15 => '15 saniye geri';
+
+  @override
+  String get audiobooksForward15 => '15 saniye ileri';
+
+  @override
+  String get audiobooksForward30 => '30 saniye ileri';
+
+  @override
+  String get audiobooksPreviousChapter => 'Önceki bölüm';
+
+  @override
+  String get audiobooksNextChapter => 'Sonraki bölüm';
+
+  @override
+  String audiobooksSleepPausesIn(String time) {
+    return '$time sonra duraklar';
+  }
+
+  @override
+  String get audiobooksSleepEndOfChapter => 'Bu bölümün sonunda duraklar';
+
+  @override
+  String get audiobooksSleepOff => 'Kapat';
+
+  @override
+  String get audiobooksStartFailed =>
+      'Bu kayıt başlatılamadı. Bağlantınızı kontrol edip yeniden açın.';
+
+  @override
+  String get hudaAiYouAsked => 'Sorduğunuz';
+
+  @override
+  String get hudaAiYouShared => 'Paylaştığınız';
+
+  @override
+  String get hudaAiCounselingHint => 'İçinizden geçenleri paylaşın…';
+
+  @override
+  String get hudaAiShareAnswer => 'Cevabı paylaş';
+
+  @override
+  String get hudaAiSend => 'Gönder';
+
+  @override
+  String get hudaAiWriting => 'Yazıyor…';
+
+  @override
+  String get hudaAiCounselHeading => 'İçinizden ne geçiyor?';
+
+  @override
+  String get hudaAiSeekCounsel => 'Öğüt iste';
+
+  @override
+  String get hudaAiAnotherFeeling => 'Başka bir duygu paylaş';
+
+  @override
+  String checklistDoneOf(int done, int total) {
+    return '$total işten $done tamam';
+  }
+
+  @override
+  String get checklistAllDone => 'Hepsi tamam';
+
+  @override
+  String checklistStreak(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Üst üste $count gün',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get checklistStreakStart => 'Seri başlatmak için bugün her işi bitir';
+
+  @override
+  String get checklistPastNote => 'Geçmiş günler olduğu gibi kalır';
+
+  @override
+  String get checklistFutureNote => 'Bu günü geldiğinde işaretleyebilirsin';
+
+  @override
+  String get checklistGroupPrayers => 'Namazlar';
+
+  @override
+  String get checklistGroupQuran => 'Kur’an';
+
+  @override
+  String get checklistGroupAthkar => 'Zikirler';
+
+  @override
+  String get checklistGroupOther => 'Diğer';
+
+  @override
+  String get checklistPreviousDay => 'Önceki gün';
+
+  @override
+  String get checklistNextDay => 'Sonraki gün';
+
+  @override
+  String checklistRemoved(String title) {
+    return '“$title” kaldırıldı';
+  }
+
+  @override
+  String get checklistLoadError => 'Kontrol listen açılamadı';
+
+  @override
+  String get checklistEmptyMessage => 'Bu gün için planlanmış bir şey yok.';
+
+  @override
+  String get checklistNewItem => 'Yeni madde';
+
+  @override
+  String get checklistItemName => 'Ad';
+
+  @override
+  String get checklistItemNameHint => 'Örneğin, Mülk suresini oku';
+
+  @override
+  String get checklistItemGroup => 'Bölüm';
+
+  @override
+  String get checklistItemRepeats => 'Tekrar';
+
+  @override
+  String get checklistAdd => 'Ekle';
+
+  @override
+  String get miqaatGateOff => 'Kapalı. Uygulamaların her zamanki gibi açılır.';
+
+  @override
+  String get miqaatGateNeedsAccess => 'Açmak için aşağıdan erişim izni ver.';
+
+  @override
+  String get miqaatGateNoWindows => 'Başlamak için bir zaman aralığı ekle.';
+
+  @override
+  String miqaatGateWaiting(String when) {
+    return 'Sonraki aralık: $when';
+  }
+
+  @override
+  String miqaatGateLocked(String remaining) {
+    return 'Uygulamalarını açmak için Huda’da $remaining daha geçir.';
+  }
+
+  @override
+  String get miqaatGateDone =>
+      'Hedefe ulaşıldı. Uygulamaların sonraki aralığa kadar açık.';
+
+  @override
+  String get miqaatStatusOff => 'Kapalı';
+
+  @override
+  String get miqaatStatusWaiting => 'Bekliyor';
+
+  @override
+  String get miqaatStatusLocked => 'Şu an kilitli';
+
+  @override
+  String get miqaatStatusOpen => 'Yeniden açık';
+
+  @override
+  String miqaatMinutesShort(int minutes) {
+    return '$minutes dk';
+  }
+
+  @override
+  String miqaatProgress(int done, int goal) {
+    return '$goal dk’nın $done’i';
+  }
+
+  @override
+  String miqaatSlotCount(int count, int max) {
+    return '$count/$max';
+  }
+
+  @override
+  String miqaatRemoved(String name) {
+    return '$name kaldırıldı';
+  }
+
+  @override
+  String get miqaatWindowRemoved => 'Aralık kaldırıldı';
+
+  @override
+  String get miqaatCheckAgain => 'Tekrar kontrol et';
+
+  @override
+  String get settingsAppearance => 'Görünüm';
+
+  @override
+  String get settingsGeneral => 'Genel';
+
+  @override
+  String get settingsPrivacy => 'Gizlilik';
+
+  @override
+  String get settingsTextSizeRelative => 'Cihazınızın metin boyutuna göre';
+
+  @override
+  String get settingsHapticFeedback => 'Dokunsal geri bildirim';
+
+  @override
+  String get settingsHapticFeedbackDescription =>
+      'Sayarken, bir şeyi değiştirirken veya bitirirken hafif titreşimler';
+
+  @override
+  String get settingsWidgetsSubtitle =>
+      'Ana ekranınızda bir ayet ve namaz vakitleri';
+
+  @override
+  String get widgetPreview => 'Önizleme';
+
+  @override
+  String get widgetResetDone => 'Widget varsayılan ayarlarına döndü';
+
+  @override
+  String get widgetResetConfirm =>
+      'Bu widget\'ın teması, metni ve düzeni varsayılanlara döndürülsün mü?';
+
+  @override
+  String get errorScreenMessage =>
+      'Huda\'nın bu bölümü çalışmayı durdurdu. Uygulamayı yeniden başlatmak genellikle sorunu çözer.';
+
+  @override
+  String get errorReportSending => 'Ekibe rapor gönderiliyor…';
+
+  @override
+  String get errorReportSent => 'Ekibe bir rapor gönderildi.';
+
+  @override
+  String get errorReportFailed => 'Rapor gönderilemedi.';
+
+  @override
+  String get errorTechnicalDetails => 'Teknik ayrıntılar';
+
+  @override
+  String get errorFeedbackFailed => 'Notunuz gönderilemedi. Tekrar deneyin.';
+
+  @override
+  String get bootFailedTitle => 'Huda başlatılamadı';
+
+  @override
+  String get bootFailedMessage =>
+      'Hazırlanırken bir sorun oluştu. Tekrar deneyin veya uygulamayı yeniden başlatın.';
+
+  @override
+  String get windowsPrayerShowTray => 'Sistem tepsisi simgesini göster';
+
+  @override
+  String get crashReportingEnabledLabel => 'Açık';
+
+  @override
+  String get crashReportingDisabledLabel => 'Kapalı';
+
+  @override
+  String get searchLocationTitle => 'Konum Ara';
+
+  @override
+  String get islamicNotifications => 'İslami Bildirimler';
+
+  @override
+  String get homeScreenWidgetManagement => 'Ana Ekran Widget Yönetimi';
+
+  @override
+  String get shareText => 'Metni Paylaş';
+
+  @override
+  String get refreshLocation => 'Konumu Yenile';
+
+  @override
+  String get autoUpdateWhenAppClosed =>
+      'Uygulama kapatıldığında otomatik güncelle';
+
+  @override
+  String get backgroundUpdatesDisabled =>
+      'Arka plan güncellemeleri devre dışı.';
+
+  @override
+  String get clearAllCustomVerses => 'Tüm Özel Ayetleri Temizle';
+
+  @override
+  String get verseRemovedFromWidget => 'Ayet widget\'tan kaldırıldı';
+
+  @override
+  String get allCustomVersesCleared => 'Tüm özel ayetler temizlendi';
+
+  @override
+  String get failedToShareText => 'Metin paylaşılamadı';
+
+  @override
+  String get tafsirDownloadedSuccessfully => 'Tefsir başarıyla indirildi!';
+
+  @override
+  String get translationDownloadedSuccessfully => 'Çeviri başarıyla indirildi!';
+
+  @override
+  String get unknownState => 'Bilinmeyen durum';
+
+  @override
+  String get deleteEvent => 'Etkinliği Sil';
+
+  @override
+  String get chooseColor => 'Renk Seç';
+
+  @override
+  String get tapPlusButtonToAddEvent =>
+      'Etkinlik eklemek için + düğmesine dokunun';
+
+  @override
+  String get january => 'Ocak';
+
+  @override
+  String get february => 'Şubat';
+
+  @override
+  String get march => 'Mart';
+
+  @override
+  String get april => 'Nisan';
+
+  @override
+  String get june => 'Haziran';
+
+  @override
+  String get july => 'Temmuz';
+
+  @override
+  String get august => 'Ağustos';
+
+  @override
+  String get september => 'Eylül';
+
+  @override
+  String get october => 'Ekim';
+
+  @override
+  String get november => 'Kasım';
+
+  @override
+  String get december => 'Aralık';
+
+  @override
+  String get eventColor => 'Etkinlik Rengi:';
+
+  @override
+  String get filtered => 'Filtrelenmiş';
+
+  @override
+  String get oopsSomethingWentWrong => 'Hay aksi! Bir şeyler ters gitti';
+
+  @override
+  String get pickColor => 'Bir renk seç';
+
+  @override
+  String get resetCounterConfirmation =>
+      'Sayacı 0\'a sıfırlamak istediğinizden emin misiniz?';
+
+  @override
+  String get findingQiblahDirection => 'Kıble yönü bulunuyor...';
+
+  @override
+  String get locationPermissionRequired => 'Konum İzni Gerekli';
+
+  @override
+  String get alignedWithQiblah => 'Kıble ile Hizalı';
+
+  @override
+  String get findingDirection => 'Yön bulunuyor...';
+
+  @override
+  String get perfectQiblahAlignment => '🕋 Mükemmel! Kıble yönüne bakıyorsunuz';
+
+  @override
+  String get rotateDeviceInstruction =>
+      'Ok Mekke\'yi gösterene kadar cihazınızı çevirin';
+
+  @override
+  String get athkarCollection => 'Zikir Koleksiyonu';
+
+  @override
+  String selectedAthkarGroups(int count) {
+    return '$count seçili zikir grubu';
+  }
+
+  @override
+  String get retryArabic => 'Yeniden Dene';
+
+  @override
+  String get errorRemovingVerse => 'Ayet kaldırılırken hata';
+
+  @override
+  String get errorClearingVerses => 'Ayetler temizlenirken hata';
+
+  @override
+  String get testNow => 'Şimdi Test Et';
+
+  @override
+  String get quranSurahs => 'Kuran Sureleri';
+
+  @override
+  String get currentWidgets => 'Mevcut Widget\'lar';
+
+  @override
+  String get availableWidgets => 'Kullanılabilir Widget\'lar';
+
+  @override
+  String get athkarCounter => 'Zikir Sayacı';
+
+  @override
+  String get noPrayerTimesAvailable => 'Namaz vakti bilgisi yok';
+
+  @override
+  String get pleaseCheckConnection =>
+      'Lütfen bağlantınızı kontrol edin ve tekrar deneyin.';
+
+  @override
+  String cannotLoadOffline(String section) {
+    return '$section çevrimdışıyken yüklenemiyor.\nLütfen internet bağlantınızı kontrol edin.';
+  }
+
+  @override
+  String get noInternetOfflineUnavailable =>
+      'İnternet bağlantısı yok. Çevrimdışı içerik mevcut değil.';
+
+  @override
+  String get loadingAthkar => 'Zikirler yükleniyor...';
+
+  @override
+  String get pressForDetails => 'Detaylar için tıklayın';
+
+  @override
+  String get connectionTimedOut =>
+      'Bağlantı zaman aşımına uğradı. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin.';
+
+  @override
+  String get serverTimeout =>
+      'Sunucu yanıt vermekte çok uzun sürdü. Lütfen tekrar deneyin.';
+
+  @override
+  String get responseTimeout =>
+      'Yanıt zaman aşımı. Lütfen bağlantınızı kontrol edin ve tekrar deneyin.';
+
+  @override
+  String get certificateError =>
+      'Güvenlik sertifikasında bir sorun var. Lütfen daha sonra tekrar deneyin veya desteğe başvurun.';
+
+  @override
+  String get networkError =>
+      'Ağ hatası. Lütfen internet bağlantınızı kontrol edin.';
+
+  @override
+  String get badRequest => 'Hatalı istek. Lütfen girişinizi kontrol edin.';
+
+  @override
+  String get requestTimeout => 'İstek zaman aşımı. Lütfen tekrar deneyin.';
+
+  @override
+  String get conflictError => 'Çakışma oluştu. Lütfen çözün ve tekrar deneyin.';
+
+  @override
+  String get validationFailed =>
+      'Doğrulama başarısız. Lütfen girişinizi kontrol edin.';
+
+  @override
+  String get noInternetCachedTranslation =>
+      'İnternet bağlantısı yok ve önbelleğe alınmış çeviri mevcut değil';
+
+  @override
+  String get noInternetCachedData =>
+      'İnternet bağlantısı yok ve önbelleğe alınmış veri mevcut değil';
+
+  @override
+  String get noInternetCachedTafsir =>
+      'İnternet bağlantısı yok ve önbelleğe alınmış tefsir mevcut değil';
+
+  @override
+  String get clearAllCustomVersesConfirmation =>
+      'Widget\'ınızdan tüm özel ayetleri kaldırmak istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+
+  @override
+  String get chatError =>
+      'Üzgünüm, bir hatayla karşılaştım. Lütfen tekrar deneyin.';
+
+  @override
+  String unknownError(String message) {
+    return 'Hata: $message';
+  }
+
+  @override
+  String get failedShareText => 'Metin paylaşılamadı';
+
+  @override
+  String get failedShareImage => 'Resim paylaşılamadı';
+
+  @override
+  String failedStartService(String error) {
+    return 'Hizmet başlatılamadı: $error';
+  }
+
+  @override
+  String failedStopService(String error) {
+    return 'Hizmet durdurulamadı: $error';
+  }
+
+  @override
+  String failedRestartService(String error) {
+    return 'Hizmet yeniden başlatılamadı: $error';
+  }
+
+  @override
+  String get islamicReminders => 'İslami Hatırlatmalar';
+
+  @override
+  String everyFridayAt(String time) {
+    return 'Her Cuma $time\'da';
+  }
+
+  @override
+  String dailyAthkarTimes(String morningTime, String eveningTime) {
+    return 'Günlük $morningTime ve $eveningTime';
+  }
+
+  @override
+  String dailyAt(String time) {
+    return 'Günlük $time\'da';
+  }
+
+  @override
+  String get reinit => 'Yeniden Başlat';
+
+  @override
+  String get testLimits => 'Sınırları Test Et';
+
+  @override
+  String get checkingCoverage => 'Kapsam kontrol ediliyor...';
+
+  @override
+  String get refreshCoverage => 'Kapsamı Yenile';
+
+  @override
+  String get testNotificationScheduled =>
+      'Test bildirimi şu andan 10 saniye sonra için planlandı!';
+
+  @override
+  String get checkConsoleDebugInfo =>
+      'Hata ayıklama bilgisi için konsolu kontrol edin';
+
+  @override
+  String get forceReInitializedNotifications =>
+      'Bildirimler zorla yeniden başlatıldı';
+
+  @override
+  String get checkConsoleLimitTestResults =>
+      'Sınır test sonuçları için konsolu kontrol edin';
+
+  @override
+  String coverageDaysNotifications(String days, String count) {
+    return 'Kapsam: ~$days gün ($count bildirim)';
+  }
+
+  @override
+  String get notificationsDisabled => 'Bildirimler Devre Dışı';
+
+  @override
+  String get tapToEnableNotifications =>
+      'Bildirim izinlerini etkinleştirmek için dokunun';
+
+  @override
+  String get booksScreen => 'Kitaplar';
+
+  @override
+  String get pdfScreen => 'PDF';
+
+  @override
+  String get prayerTimesTooltip => 'Namaz Vakitleri';
+
+  @override
+  String get qiblahTooltip => 'Kıble Yönü';
+
+  @override
+  String get tasbihTooltip => 'Tesbih Sayacı';
+
+  @override
+  String get islamicNotificationsTooltip => 'İslami Bildirimler';
+
+  @override
+  String get hadithTooltip => 'Hadis';
+
+  @override
+  String get hadithChaptersTooltip => 'Hadis Bölümleri';
+
+  @override
+  String get hadithDetailsTooltip => 'Hadis Detayları';
+
+  @override
+  String get booksTooltip => 'Kitaplar';
+
+  @override
+  String get bookmarksTooltip => 'Yer İmleri';
+
+  @override
+  String get hijriCalendarTooltip => 'Hicri Takvim';
+
+  @override
+  String get homeScreenWidgetManagementTooltip => 'Ana Ekran Widget Yönetimi';
+
+  @override
+  String get quranSurahsTooltip => 'Kuran Sureleri';
+
+  @override
+  String get settingsTooltip => 'Ayarlar';
+
+  @override
+  String get athkarDetailsTooltip => 'Zikir Detayları';
+
+  @override
+  String get zoomInTooltip => 'Yakınlaştır';
+
+  @override
+  String get zoomOutTooltip => 'Uzaklaştır';
+
+  @override
+  String get enterBookNameHint => 'Kitap adını girin';
+
+  @override
+  String get enterAuthorNameHint => 'Yazar adını girin';
+
+  @override
+  String get enterDescriptionHint => 'Açıklama girin';
+
+  @override
+  String get enterNotesHint => 'Notlarınızı buraya girin...';
+
+  @override
+  String get searchBooksHint => 'Kitapları ara...';
+
+  @override
+  String get searchHadithHint => 'Hadis ara...';
+
+  @override
+  String get confirmDelete => 'Silmeyi Onayla';
+
+  @override
+  String get deleteConfirmation =>
+      'Bu öğeyi silmek istediğinizden emin misiniz?';
+
+  @override
+  String get deleteBookmark => 'Yer İmini Sil';
+
+  @override
+  String get deleteBookmarkConfirmation =>
+      'Bu yer imini silmek istediğinizden emin misiniz?';
+
+  @override
+  String get confirmClearAll => 'Tümünü Temizlemeyi Onayla';
+
+  @override
+  String get clearAllConfirmation =>
+      'Tüm öğeleri temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+
+  @override
+  String get permissionDialog => 'İzin Gerekli';
+
+  @override
+  String get permissionMessage =>
+      'Bu özellik cihazınıza erişim izni gerektirir. Devam etmek için lütfen izin verin.';
+
+  @override
+  String get loadingFailed => 'Yükleme başarısız. Lütfen tekrar deneyin.';
+
+  @override
+  String get fileNotFound => 'Dosya bulunamadı';
+
+  @override
+  String get authorName => 'Yazar Adı';
+
+  @override
+  String get downloadStarted => 'İndirme başlatıldı';
+
+  @override
+  String get downloadComplete => 'İndirme tamamlandı';
+
+  @override
+  String get operationComplete => 'İşlem başarıyla tamamlandı';
+
+  @override
+  String get athkarLoadingError => 'Zikirler yüklenirken hata';
+
+  @override
+  String get clickForDetails => 'Detaylar için tıklayın';
+
+  @override
+  String get islamicAssistant => 'İslami Asistan';
+
+  @override
+  String get welcomeToHudaArabic => 'Huda\'ya Hoş Geldiniz';
+
+  @override
+  String get aiAssistantTitle => 'AI Asistan';
+
+  @override
+  String get aiAssistantSubtitle =>
+      'İslami öğretilere dayalı cevaplar sağlar ancak kesin kaynak olarak görülmemelidir.';
+
+  @override
+  String get verifySourcesTitle => 'Otantik kaynaklarla doğrulayın';
+
+  @override
+  String get islamicQAFromHuda => 'Huda AI\'den İslami Soru-Cevap';
+
+  @override
+  String get generatedByHudaAI =>
+      'Huda AI - İslami Asistan tarafından üretildi';
+
+  @override
+  String get verifyWithSources =>
+      'Lütfen otantik İslami kaynaklarla doğrulayın.';
+
+  @override
+  String get shareQAFromHuda => 'Huda AI\'den İslami Soru-Cevap';
+
+  @override
+  String get islamicKnowledgeSubject => 'Huda AI\'den İslami Bilgi';
+
+  @override
+  String get bookmarkAyah => 'Ayeti Yer İmine Ekle';
+
+  @override
+  String surahAyahReference(String surahName, String ayahNumber) {
+    return 'Sure $surahName - Ayet $ayahNumber';
+  }
+
+  @override
+  String get shareCopy => 'Paylaş ve Kopyala';
+
+  @override
+  String get shareOptions => 'Paylaşım Seçenekleri';
+
+  @override
+  String get includeTranslation => 'Çeviriyi Dahil Et';
+
+  @override
+  String get includeReference => 'Referansı Dahil Et';
+
+  @override
+  String get hudaQuranApp => 'Huda - İslami Yol Arkadaşınız';
+
+  @override
+  String get translationLabel => 'Çeviri:';
+
+  @override
+  String get failedToCopy => 'Panoya kopyalanamadı';
+
+  @override
+  String ayahFromSurah(String surahName) {
+    return '$surahName\'den ayet';
+  }
+
+  @override
+  String get ayahFromQuran => 'Kuran\'dan ayet';
+
+  @override
+  String get unableToLoadAudio => 'Bu okuyucu için ses yüklenemiyor';
+
+  @override
+  String get selectReader => 'Okuyucu Seç';
+
+  @override
+  String get noReadersAvailable => 'Okuyucu mevcut değil';
+
+  @override
+  String get addToHomeWidget => 'Ana Ekran Widget\'ına Ekle';
+
+  @override
+  String get addToWidgetDescription =>
+      'Bu ayeti ana ekran widget koleksiyonunuza ekleyin';
+
+  @override
+  String get unableLoadAudio => 'Bu okuyucu için ses yüklenemiyor';
+
+  @override
+  String get alreadyInWidget => 'Zaten Widget\'ta';
+
+  @override
+  String get addToWidget => 'Widget\'a Ekle';
+
+  @override
+  String get addToWidgetInfo =>
+      'Bu seçilen ayeti kolay erişim için ana ekran widget koleksiyonunuza ekleyecektir.';
+
+  @override
+  String get untitled => 'Başlıksız';
+
+  @override
+  String get noDescriptionAvailable => 'Açıklama mevcut değil';
+
+  @override
+  String get noDescription => 'Açıklama Yok';
+
+  @override
+  String get otherLanguages => 'Diğer Diller';
+
+  @override
+  String get theSelectedLanguageNotAvailable => 'Seçilen dil mevcut değil';
+
+  @override
+  String get shareBook => 'Kitabı Paylaş';
+
+  @override
+  String shareBookQuestion(String title) {
+    return '\"$title\" başkalarıyla paylaşılsın mı?';
+  }
+
+  @override
+  String errorLoadingLanguages(String error) {
+    return 'Diller yüklenirken hata: $error';
+  }
+
+  @override
+  String dailyTimesSchedule(String morningTime, String eveningTime) {
+    return 'Günlük $morningTime ve $eveningTime';
+  }
+
+  @override
+  String get debugTesting => 'Hata Ayıklama ve Test';
+
+  @override
+  String pendingNotificationsCount(String count) {
+    return 'Bekleyen bildirimler: $count';
+  }
+
+  @override
+  String get notificationsWorkBackground =>
+      'Tüm bildirimler arka planda çalışır ve uygulama yeniden başlatmalarından sonra devam eder.';
+
+  @override
+  String get notificationCoverage => 'Bildirim Kapsamı';
+
+  @override
+  String get autoRenewalActive => 'Otomatik yenileme: Aktif';
+
+  @override
+  String get autoRenewalInactive => 'Otomatik yenileme: Pasif';
+
+  @override
+  String get notificationTimesCustomizable =>
+      'Tüm bildirim zamanları tamamen özelleştirilebilir. Tercih ettiğiniz zamanı ayarlamak için her bildirim türünün yanındaki ayarlar düğmesine dokunun.';
+
+  @override
+  String get randomAthkarSmartScheduling =>
+      'Rastgele Zikirler akıllı planlama kullanır: 12+ saat için anında kapsama, ardından tam 7 gün kapsamı için arka plan tamamlama.';
+
+  @override
+  String get notificationsWorkClosed =>
+      'Tüm bildirimler uygulama kapalıyken çalışır ve cihaz yeniden başlatmalarından sonra devam eder.';
+
+  @override
+  String get switchLayout => 'Düzeni değiştir';
+
+  @override
+  String get loadingPdf => 'PDF yükleniyor...';
+
+  @override
+  String get failedToLoadPdf => 'PDF yüklenemedi';
+
+  @override
+  String get noMarkersYet => 'Henüz işaretleyici yok';
+
+  @override
+  String get selectTextForMarkers =>
+      'Metin seçin ve işaretleyici eklemek için renk düğmelerini kullanın';
+
+  @override
+  String get myBookmarks => 'Yer İmlerim';
+
+  @override
+  String get bookmarkAdded => 'Yer imi eklendi';
+
+  @override
+  String get bookmarkRemoved => 'Yer imi kaldırıldı';
+
+  @override
+  String get goToVerse => 'Ayete Git';
+
+  @override
+  String get navigateToVerseQuestion => 'Kuran okuyucuda bu ayete gidilsin mi?';
+
+  @override
+  String nextPrayerCountdown(String prayerName, String time) {
+    return 'Sonraki: $prayerName $time içinde';
+  }
+
+  @override
+  String get homeScreenWidget => 'Ana Ekran Widget\'ı';
+
+  @override
+  String get displayInspiringVerses =>
+      'Ana ekranınızda ilham verici İslami ayetleri görüntüleyin';
+
+  @override
+  String get widgetControl => 'Widget Kontrolü';
+
+  @override
+  String get updateWidgetContentImmediately =>
+      'Widget içeriğinizi hemen güncelleyin';
+
+  @override
+  String get updatingWidget => 'Widget güncelleniyor...';
+
+  @override
+  String get forceUpdateWidget => 'Widget\'ı Zorla Güncelle';
+
+  @override
+  String get homeScreenWidgetUpdatedSuccessfully =>
+      'Ana ekran widget\'ı başarıyla güncellendi!';
+
+  @override
+  String get customVerses => 'Özel Ayetler';
+
+  @override
+  String get refreshVerses => 'Ayetleri yenile';
+
+  @override
+  String versesAdded(int count) {
+    return '$count ayet eklendi';
+  }
+
+  @override
+  String get loadingVerses => 'Ayetler yükleniyor...';
+
+  @override
+  String get noCustomVersesYet => 'Henüz Özel Ayet Yok';
+
+  @override
+  String get visitSurahScreenToAddVerses =>
+      'Widget\'ınıza ayet eklemek için Sure ekranını ziyaret edin';
+
+  @override
+  String get ayahAddedToWidget => 'Ayet widget\'a eklendi';
+
+  @override
+  String get dawood => 'Sünen-i Ebu Davud';
+
+  @override
+  String get majah => 'Sünen-i İbn Mace';
+
+  @override
+  String get nasa => 'Sünen-i Nesai';
+
+  @override
+  String get masabih => 'Mişkatü\'l-Mesabih';
+
+  @override
+  String get sahiha => 'Silsiletü\'s-Sahiha';
+
+  @override
+  String get hadithBanner =>
+      'Hz. Muhammed ﷺ\'in otantik sözleri ve öğretilerini keşfedin';
+
+  @override
+  String get nextPrayerCountDown => 'Sonraki Namaz';
+
+  @override
+  String get bookmarksYourCollection => 'Koleksiyonunuz';
+
+  @override
+  String get bookmarksSavedVerses => 'kayıtlı ayetler';
+
+  @override
+  String get adjustTextSizeForBetterReadability =>
+      'Daha iyi okunabilirlik için metin boyutunu ayarlayın';
+
+  @override
+  String get homeTitle => 'İslami Yoldaşınız';
+
+  @override
+  String get noProgress => 'İlerleme yok';
+
+  @override
+  String get resumeReading => 'Kuran okumanızı sürdürün';
+
+  @override
+  String get noRecentActivityDescription =>
+      'İlerlemenizi görmek için Kuran okumaya başlayın';
+
+  @override
+  String get bookmarkTip => 'Ayetleri yer imlerine eklemek için dokunun';
+
+  @override
+  String get darkmode => 'Karanlık Mod';
+
+  @override
+  String get lightmode => 'Açık Mod';
+
+  @override
+  String get supportDescription =>
+      'Uygulamayı daha iyi hale getirmemize yardım edin';
+
+  @override
+  String get batteryOptimizationExemptionActive =>
+      'Pil Optimizasyonu Devre Dışı';
+
+  @override
+  String get batteryOptimizationExemptionInactive => 'Pil Optimizasyonu Aktif';
+
+  @override
+  String get notificationsMayBeDelayedOrMissed =>
+      'Bildirimler gecikebilir veya kaçırılabilir';
+
+  @override
+  String get notificationsActive => 'Tüm bildirimler düzgün çalışıyor';
+
+  @override
+  String get addTask => 'Görev Ekle';
+
+  @override
+  String get consecutiveDays => 'ardışık gün';
+
+  @override
+  String get deleteTask => 'Görevi Sil';
+
+  @override
+  String get deleteTaskConfirmation => 'Silmek istediğinizden emin misiniz';
+
+  @override
+  String get completedPercentage => 'tamamlandı';
+
+  @override
+  String get itemTypePrayer => 'Namaz';
+
+  @override
+  String get itemTypeQuran => 'Kuran Okuma';
+
+  @override
+  String get itemTypeAthkar => 'Zikir ve Tesbih';
+
+  @override
+  String get itemTypeCustom => 'Özel';
+
+  @override
+  String get nightAthkar => 'Gece Zikirleri';
+
+  @override
+  String get itemTitle => 'Öğe Başlığı';
+
+  @override
+  String get enterItemTitle => 'Öğe başlığını girin...';
+
+  @override
+  String get itemType => 'Öğe Türü';
+
+  @override
+  String get repetitionFrequency => 'Tekrar Sıklığı';
+
+  @override
+  String get addItem => 'Öğe Ekle';
+
+  @override
+  String get itemTypePrayerShort => 'Namaz';
+
+  @override
+  String get itemTypeQuranShort => 'Kuran';
+
+  @override
+  String get itemTypeAthkarShort => 'Zikir';
+
+  @override
+  String dayStreakSuffix(num count) {
+    return '-Gün Serisi!';
+  }
+
+  @override
+  String get optimize => 'Optimize Et';
+
+  @override
+  String get loadingPreferences => 'Tercihler yükleniyor...';
+
+  @override
+  String get currencySettings => 'Para Birimi Ayarları';
+
+  @override
+  String get metalPrices => 'Metal Fiyatları';
+
+  @override
+  String get whatIsNisab => 'Nisab Nedir?';
+
+  @override
+  String get quickSummary => 'Hızlı Özet';
+
+  @override
+  String get zakatDue => 'Gerekli Zekat:';
+
+  @override
+  String get hintAmount => '0.00';
+
+  @override
+  String get feedbackHeroTitle => 'Görüşlerinize Değer Veriyoruz';
+
+  @override
+  String get onboardingWelcomeTitle => 'Huda\'ya Hoş Geldiniz';
+
+  @override
+  String get onboardingWelcomeDescription =>
+      'Huda - Müslümanların ihtiyaç duyduğu her şeyi tek bir yerde sunan hepsi bir arada İslami uygulama.';
+
+  @override
+  String get onboardingPrayerTimesTitle => 'Namaz Vakitleri';
+
+  @override
+  String get onboardingPrayerTimesDescription =>
+      'Konumunuza göre hassas namaz vakitleriyle hiçbir namazı kaçırmayın. Bildirimler alın ve günlük namazlarınızı takip edin.';
+
+  @override
+  String get onboardingQuranTitle => 'Kur\'an-ı Kerim';
+
+  @override
+  String get onboardingQuranDescription =>
+      'Kur\'an-ı Kerim\'i güzel tilavetler, mealler ve tefsir ile okuyun, dinleyin ve ezberleyin.';
+
+  @override
+  String get onboardingAthkarTitle => 'Ezkâr ve Dualar';
+
+  @override
+  String get onboardingAthkarDescription =>
+      'İmanınızı güçlendirmek için günlük zikirler ve dualar.';
+
+  @override
+  String get onboardingQiblahTitle => 'Kıble Yönü';
+
+  @override
+  String get onboardingQiblahDescription =>
+      'Dünyanın herhangi bir yerinden Kâbe\'nin doğru yönünü bulun.';
+
+  @override
+  String get onboardingMultilingualTitle => 'Çok Dilli Destek';
+
+  @override
+  String get onboardingMultilingualDescription =>
+      'İslami yolculuğunuzu daha kişisel ve anlaşılır kılmak için uygulamaya birden fazla dilde erişin.';
+
+  @override
+  String get onboardingBooksTitle => 'İslami Kitaplar';
+
+  @override
+  String get onboardingBooksDescription =>
+      'Derin bilgi ve manevi gelişim için geniş bir güvenilir İslami kitap kütüphanesini keşfedin.';
+
+  @override
+  String get onboardingHadithTitle => 'Hadis Koleksiyonu';
+
+  @override
+  String get onboardingHadithDescription =>
+      'Sahih Buhari, Sahih Müslim, Sünen Ebu Davud ve diğer güvenilir kaynaklardan okuyun.';
+
+  @override
+  String get onboardingAITitle => 'Huda Yapay Zeka Asistanı';
+
+  @override
+  String get onboardingAIDescription =>
+      'İslami sorular sorun ve yapay zeka destekli asistanımızla güvenilir yanıtlar alın.';
+
+  @override
+  String get onboardingHijriTitle => 'Hicri Takvim';
+
+  @override
+  String get onboardingHijriDescription =>
+      'Önemli tarihlerle bağlantıda kalmak için tam İslami takvimi ve Miladi tarih dönüşümünü görüntüleyin.';
+
+  @override
+  String get onboardingChecklistTitle => 'Günlük İslami Kontrol Listesi';
+
+  @override
+  String get onboardingChecklistDescription =>
+      'Günlük namazlarınızı, ibadetlerinizi ve hayırlı amellerinizi kolayca takip edin.';
+
+  @override
+  String get onboardingJourneyTitle => 'Yolculuğunuza Başlayın';
+
+  @override
+  String get onboardingJourneyDescription =>
+      'İslami yolculuğunuz için ihtiyacınız olan her şey burada. Keşfetmeye başlayın ve Allah ile bağınızı güçlendirin.';
+
+  @override
+  String get locationServicesDisabled =>
+      'Konum servisleri devre dışı. Lütfen cihaz ayarlarından etkinleştirin.';
+
+  @override
+  String get noHadithsFound => 'Hadis bulunamadı';
+
+  @override
+  String get noHadithsFoundChapter =>
+      'Bu bölüm şu anda herhangi bir hadis içermiyor.';
+
+  @override
+  String get counselingMode => 'Danışmanlık Modu';
+
+  @override
+  String get guidanceSubtitle => 'Kişisel İslami Rehberlik';
+
+  @override
+  String get quranSubtitle => 'İlgili Kuran Hikmeti';
+
+  @override
+  String get duaaSubtitle => 'Dokunaklı Dualar';
+
+  @override
+  String get tryExpressing => 'Şunu ifade etmeyi deneyin:';
+
+  @override
+  String get addWidgetInstructions =>
+      'Huda widget\'ını doğrudan ana ekranınıza eklemek için aşağıdaki düğmeye dokunun. Otomatik olarak güncellenen güzel Kuran ayetlerini görüntüler.';
+
+  @override
+  String get featureOnlyAvailableOnAndroid =>
+      'Bu özellik yalnızca Android\'de kullanılabilir';
+
+  @override
+  String get pinWidgetNotSupported =>
+      'Widget sabitleme bu cihazda desteklenmiyor';
+
+  @override
+  String get errorAddingWidget => 'Widget eklenirken hata';
+
+  @override
+  String get sahurMinutesPlaceholder => 'Dakika (örn. 30)';
+
+  @override
+  String get sahurAlarmNotSet => 'Ayarlanmadı';
+
+  @override
+  String get snoozeAlarm => 'Ertele';
+
+  @override
+  String get miqaatLockDescription =>
+      'Dikkatinizin dağılmasını en aza indirmek için ibadet vakitlerinde uygulamaları kilitleyin.';
+
+  @override
+  String get selectDuration => 'Süre Seç';
+
+  @override
+  String get iosAppSelectionTitle => 'iOS Uygulama Seçimi';
+
+  @override
+  String get iosAppSelectionDescription =>
+      'iOS gizlilik kısıtlamaları nedeniyle uygulama seçimi Ekran Süresi ayarları üzerinden yönetilir. Uygulama kısıtlamalarını yönetmek için Ekran Süresi erişimini etkinleştirin.';
+
+  @override
+  String get startSession => 'Oturumu Başlat';
+
+  @override
+  String get sessionActive => 'Oturum Aktif';
+
+  @override
+  String get remainingTime => 'Kalan Süre';
+
+  @override
+  String get appLocked => 'Uygulama Kilitli';
+
+  @override
+  String get focusTimeMessage =>
+      'Bu uygulama odaklanma süreniz boyunca kilitlenmiştir. Geçici olarak kilidi açmak için bir oturum başlatın.';
+
+  @override
+  String get goBackHome => 'Ana Sayfaya Dön';
+
+  @override
+  String get ramadanTracker => 'Ramazan Kazası';
+
+  @override
+  String remainingForIftar(int hours) {
+    return 'İftara $hours saatten az kaldı';
+  }
+
+  @override
+  String remainingForImsaak(int hours) {
+    return 'İmsaka $hours saatten az kaldı';
+  }
+
+  @override
+  String get qadhaaDays => 'Kaza Günleri';
+
+  @override
+  String get offlineMode => 'Çevrimdışı Mod';
+
+  @override
+  String downloadFailed(String error) {
+    return 'İndirme başarısız: $error';
+  }
+
+  @override
+  String get iosTapToSelectApps =>
+      'Ekran Süresi\'ni kullanarak uygulamaları seçmek için aşağıya dokunun';
+
+  @override
+  String get iosSelectAppsScreenTime => 'Uygulamaları Seç (Ekran Süresi)';
+
+  @override
+  String get checkConnection => 'Bağlantıyı Kontrol Et';
+
+  @override
+  String filesCount(int count) {
+    return 'Dosyalar ($count)';
+  }
+
+  @override
+  String get searchSurah => 'Sure ara...';
+
+  @override
+  String get noDownloadedContent => 'İndirilen içerik yok';
+
+  @override
+  String get nowPlaying => 'Şimdi Çalıyor';
+
+  @override
+  String get khatmaOneMonthProgram => 'Bir Aylık Hatim (29 gün)';
+
+  @override
+  String get khatmaDailyWird21Pages => 'Günlük miktar: ~21 sayfa';
+
+  @override
+  String get khatmaOtherPrograms => 'Diğer Programlar';
+
+  @override
+  String get khatmaBySemanticTitle => 'Anlam Bazlı Hatim';
+
+  @override
+  String get khatmaBySemanticSubtitle => 'Anlam bütünlüğü gözetilen bölümler';
+
+  @override
+  String get khatmaByPartsTitle => 'Cüz ve Hizb Bazlı Hatim';
+
+  @override
+  String get khatmaByPartsSubtitle => 'Cüz ve Ahzab\'a göre bölümler';
+
+  @override
+  String get khatmaProgramTitle => 'Hatim Programı';
+
+  @override
+  String get khatmaTwoMonthsProgram => 'İki Aylık Hatim (60 gün)';
+
+  @override
+  String get khatmaOneWeekProgram => 'Bir Haftalık Hatim (7 gün)';
+
+  @override
+  String get khatmaMonthsSection => 'Aylık';
+
+  @override
+  String get khatma30DaysTitle => '30 Günlük Hatim';
+
+  @override
+  String get khatmaOtherSection => 'Diğer';
+
+  @override
+  String get khatma240DaysTitle => '240 Günlük Hatim';
+
+  @override
+  String get khatma120DaysTitle => '120 Günlük Hatim';
+
+  @override
+  String get khatma80DaysTitle => '80 Günlük Hatim';
+
+  @override
+  String get khatma60DaysTitle => '60 Günlük Hatim';
+
+  @override
+  String get khatma40DaysTitle => '40 Günlük Hatim';
+
+  @override
+  String get khatma20DaysTitle => '20 Günlük Hatim';
+
+  @override
+  String get khatma15DaysTitle => '15 Günlük Hatim';
+
+  @override
+  String get khatma10DaysTitle => '10 Günlük Hatim';
+
+  @override
+  String get khatma6DaysTitle => '6 Günlük Hatim';
+
+  @override
+  String get khatma3DaysTitle => '3 Günlük Hatim';
+
+  @override
+  String get khatmaFromBeginning => 'Kuran\'ın Başından';
+
+  @override
+  String get khatmaSpecificWird => 'Belirli Bölüm';
+
+  @override
+  String get khatmaStatsTitle => 'Hatim İstatistikleri';
+
+  @override
+  String get khatmaWirdCompleted => 'Tamamlandı';
+
+  @override
+  String get khatmaWirdInProgress => 'Devam ediyor';
+
+  @override
+  String get khatmaViewAllWirds => 'Tüm bölümleri görüntüle';
+
+  @override
+  String get khatmaAmIndicator => 'ÖÖ';
+
+  @override
+  String get khatmaPmIndicator => 'ÖS';
+
+  @override
+  String mushafSurahHeader(String name) {
+    return 'Sure $name';
+  }
+
+  @override
+  String get settingsHorizontalLayout => 'Yatay Düzen';
+
+  @override
+  String get scrollToTop => 'Yukarı';
+
+  @override
+  String get prayerWidgetTagline => 'Her namaza zamanında yetişin';
+
+  @override
+  String get addPrayerWidgetTitle => 'Namaz Widget\'ı Ekle';
+
+  @override
+  String get addPrayerWidgetDescription =>
+      'Bir sonraki namazı canlı geri sayımla görmek için Huda Namaz widget\'ını ana ekranınıza sabitleyin. Hesaplamalar, kayıtlı konumunuz kullanılarak cihazda yapılır.';
+
+  @override
+  String get customizePrayerWidget => 'Özelleştir';
+
+  @override
+  String get prayerWidgetCustomization => 'Namaz widget\'ını özelleştir';
+
+  @override
+  String get prayerWidgetPreview => 'Canlı önizleme';
+
+  @override
+  String get enableBackground => 'Arka planı göster';
+
+  @override
+  String get latinNumerals => 'Latin (1, 2, 3)';
+
+  @override
+  String get arabicNumerals => 'Arapça (١, ٢, ٣)';
+
+  @override
+  String get resetWidgetCustomizationConfirm =>
+      'Tüm namaz widget\'ı özelleştirmesi varsayılanlara sıfırlansın mı?';
+
+  @override
+  String get followAppTheme => 'Uygulama temasını izle';
+
+  @override
+  String get prayerWidgetEmptyTitle => 'Konumunuzu ayarlayın';
+
+  @override
+  String get prayerWidgetEmptyBody =>
+      'Widget\'ın sizin için namaz vakitlerini hesaplayabilmesi için Huda\'yı açın ve konum erişimi verin.';
+
+  @override
+  String get prayerWidgetEmptyAction => 'Namaz Vakitlerini Aç';
+
+  @override
+  String get previousPrayer => 'Önceki namaz';
+
+  @override
+  String get timeUntilNextPrayer => 'Sonraki namaza kalan süre';
+
+  @override
+  String get narratedBy => 'Seslendiren';
+
+  @override
+  String resumeReciter(String reciterName) {
+    return '$reciterName ile devam et';
+  }
+
+  @override
+  String get noReciterActivityDescription =>
+      'İlerlemenizi görmek için Kur\'an sesini dinlemeye başlayın';
+
+  @override
+  String get noRadioActivityDescription =>
+      'İlerlemenizi görmek için Kuran radyosunu dinleyin';
+
+  @override
+  String audioInLanguage(String language) {
+    return '$language dilinde';
+  }
+
+  @override
+  String get searchManually => 'Manuel Ara';
+
+  @override
+  String get locationPermissionDenied =>
+      'Konum izni reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.';
+
+  @override
+  String get locationPermissionPermanentlyDenied =>
+      'Konum izni kalıcı olarak reddedildi. Lütfen cihaz ayarlarınızdan konum erişimine izin verin.';
+
+  @override
+  String get unknownErrorOccurred => 'Bilinmeyen bir hata oluştu';
+
+  @override
+  String get whatHappened => 'Ne oldu?';
+
+  @override
+  String get primaryCards => 'Ana kartlar';
+
+  @override
+  String get moveToPrimary => 'Ana bölüme taşı';
+
+  @override
+  String get resetTheme => 'Temayı sıfırla';
+
+  @override
+  String get reorderHomeItem => 'Öğeyi yeniden sırala';
+
+  @override
+  String get applyChanges => 'Uygula';
+
+  @override
+  String get setUpPrayerTimes => 'Namaz vakitlerini ayarla';
+
+  @override
+  String get homeMoreTools => 'Daha fazla araç';
+
+  @override
+  String get saveHomeChangesTitle => 'Ana sayfa değişiklikleri kaydedilsin mi?';
+
+  @override
+  String get homeChangesNotApplied =>
+      'Geçerli düzen ve tema değişiklikleri henüz uygulanmadı.';
+
+  @override
+  String get unsaved => 'Kaydedilmedi';
+
+  @override
+  String get themeResetMessage => 'Bu tema varsayılan düzenine sıfırlandı.';
+
+  @override
+  String get notificationPermissionDescription =>
+      'Seçtiğiniz hatırlatıcıları tam zamanında almak için bildirimleri açın.';
+
+  @override
+  String get quranWidgetTagline => 'Her saat yeni bir ayet ve çeviri';
+
+  @override
+  String get quranWidgetCustomization => 'Kur\'an widget özelleştirmesi';
+
+  @override
+  String get quranWidgetPreview => 'Canlı önizleme';
+
+  @override
+  String get customColors => 'Özel renkler';
+
+  @override
+  String get customColorsDescription =>
+      'Metni okunaklı tutarak widget renklerini ayarlayın.';
+
+  @override
+  String get ayahColor => 'Ayet rengi';
+
+  @override
+  String get translationColor => 'Çeviri rengi';
+
+  @override
+  String get customizeColors => 'Renkleri özelleştir';
+
+  @override
+  String get customTheme => 'Özel';
+
+  @override
+  String get colorContrastTooLow => 'Bu renk yeterli kontrasta sahip değil.';
+
+  @override
+  String get prayerTravelUpdates => 'Seyahatte namaz vakitlerini güncelle';
+
+  @override
+  String get prayerTravelUpdatesDescription =>
+      'Etkinleştirildiğinde Huda, uygulamayı açmadan önemli yolculuklardan sonra vakitleri, bildirimleri ve araç takımlarını güncelleyebilir.';
+
+  @override
+  String get prayerLocationMode => 'Konum modu';
+
+  @override
+  String get backgroundTravelUpdates => 'Arka planda seyahat güncellemeleri';
+
+  @override
+  String get lastLocationValidation => 'Son konum doğrulaması';
+
+  @override
+  String get lastPrayerScheduleActivation => 'Son program etkinleştirmesi';
+
+  @override
+  String get travelUpdatesEnabled => 'Etkin';
+
+  @override
+  String get travelForegroundOnly => 'Yalnızca ön planda';
+
+  @override
+  String get travelUpdatesUnsupported => 'Desteklenmiyor';
+
+  @override
+  String get travelUpdatesUnavailable => 'Kullanılamıyor';
+
+  @override
+  String get travelUpdatesDisabled => 'Devre dışı';
+
+  @override
+  String get notYet => 'Henüz değil';
+
+  @override
+  String get prayerNotificationIssueTitle =>
+      'Namaz bildirimleriyle ilgilenmeniz gerekiyor';
+
+  @override
+  String get prayerNotificationRetrying => 'Namaz bildirimleri planlanıyor…';
+
+  @override
+  String get audioPlayRange => 'Seçimi oynat';
+
+  @override
+  String get prayerVerificationPending => 'Konum doğrulaması bekleniyor';
+
+  @override
+  String get prayerVerificationGuidance =>
+      'Bazı konum bilgileri hâlâ doğrulanmalı. Namaz vakitlerinin ve bildirimlerin güvenilirliğini artırmak için internet olduğunda dönüp yeniden deneyin.';
+
+  @override
+  String get prayerUpdatesIncomplete => 'Namaz güncellemeleri tamamlanmadı';
+
+  @override
+  String get prayerUpdatesGuidance =>
+      'Bazı güncellemeler tamamlanamadı. İnternet olduğunda yeniden deneyin. Yerel kurtarma çevrimdışı da yeniden denenebilir.';
+
+  @override
+  String get prayerDetailsPending => 'Konum ayrıntıları bekleniyor';
+
+  @override
+  String get prayerSavingPending =>
+      'Kaydedilemedi. Bu namaz güncellemelerini kaydetmek için yeniden deneyin.';
+
+  @override
+  String get prayerWidgetPending => 'Namaz widget güncellemesi bekleniyor';
+
+  @override
+  String get prayerLocationPending =>
+      'Konum güncellemesi bekleniyor. Konum iznini ve cihazın konum hizmetlerini kontrol edip yeniden deneyin.';
+
+  @override
+  String get prayerCalculationPending =>
+      'Namaz hesaplama güncellemesi bekleniyor';
+
+  @override
+  String get prayerNativePending => 'Arka plan konum güncellemesi bekleniyor';
+
+  @override
+  String get prayerPreviousCoverage =>
+      'Önceden onaylanan bildirimler hâlâ önceki konumu izliyor olabilir; mevcut teslimat onaylanmadı.';
+
+  @override
+  String get prayerVerificationRetryGuidance =>
+      'Bazı konum bilgileri hâlâ doğrulanmalı. Namaz vakitlerini ve bildirimleri güncellemek için yeniden deneyin.';
+
+  @override
+  String get prayerIssuePlaceName => 'Yer adı';
+
+  @override
+  String get prayerIssueSaving => 'Kaydetme';
+
+  @override
+  String get prayerIssueCalculation => 'Hesaplama';
+
+  @override
+  String get prayerIssueBackgroundLocation => 'Arka plan konumu';
+
+  @override
+  String get prayerIssueWidget => 'Ana ekran widget\'ı';
+
+  @override
+  String get prayerIssueRetrying => 'Yeniden deneniyor…';
+
+  @override
+  String get prayerUpdatingTitle => 'Namaz vakitleri güncelleniyor…';
+
+  @override
+  String get prayerUpdatingMessage => 'Bu yalnızca birkaç saniye sürer.';
+
+  @override
+  String get prayerCalendarChooseDate => 'Tarih seç';
+
+  @override
+  String get prayerCalendarChooseMonth => 'Ay seç';
+
+  @override
+  String get prayerCalendarChooseYear => 'Yıl seç';
+
+  @override
+  String get prayerNotificationsUnsupported =>
+      'Namaz bildirimleri bu cihazda kullanılamıyor.';
+
+  @override
+  String get prayerUpdatesLocalGuidance =>
+      'Bazı güncellemeler tamamlanamadı. Tamamlamak için Yeniden dene\'ye dokunun.';
+
+  @override
+  String get prayerSetupTitle => 'Namaz vakitlerini ayarla';
+
+  @override
+  String get prayerSetupSubtitle =>
+      'Doğru vakitleri görmek ve her namazda uyarı almak için bu adımları tamamlayın.';
+
+  @override
+  String get prayerSetupLocationDeclined =>
+      'Konum erişimi reddedildi. Vakitleri otomatik hesaplamak için izin verin veya şehrinizi arayın.';
+
+  @override
+  String get prayerSetupLocationBlocked =>
+      'Huda için konum erişimi kapalı. Ayarlar\'dan açın — geri döndüğünüzde namaz vakitleri otomatik olarak yüklenir.';
+
+  @override
+  String get prayerSetupLocationFailed =>
+      'Huda konumunuzu bulamadı. Tekrar deneyin veya bunun yerine şehrinizi arayın.';
+
+  @override
+  String get prayerSetupReliableHint =>
+      'Android\'in namaz uyarılarını geciktirmesini önleyin.';
+
+  @override
+  String prayerAttentionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count konu ilgilenmenizi bekliyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerAttentionMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count daha',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get prayerSetupAlertsSkipped =>
+      'Kapalı — bu sayfadan istediğiniz zaman açabilirsiniz';
+
+  @override
+  String get prayerSetupSkip => 'Şimdilik atla';
+
+  @override
+  String get prayerSetupSkipped => 'Atlandı';
+
+  @override
+  String get prayerSetupLocationHint =>
+      'Bulunduğunuz yere göre hesaplanan vakitler.';
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return '$time kaldı';
+  }
+
+  @override
+  String get windowsPrayerEnabled => 'Namaz hatırlatıcılarını etkinleştir';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'Ezan çalıyor';
+
+  @override
+  String get windowsPrayerFocusActive => 'Odak modu etkin';
+
+  @override
+  String get androidAdhanDownload => 'İndir';
+
+  @override
+  String get prayerAlertLengthCustom => 'Özel';
+
+  @override
+  String get prayerAlertSoundWhole => 'Ezanın tamamını dinle';
+
+  @override
+  String get prayerAlertTestTitle => 'Test gönder';
 }
