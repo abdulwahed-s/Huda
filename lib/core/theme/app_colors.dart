@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
+/// The palettes, in hue order (the picker shows them in this order).
+/// Saved by name; `AppColors.fromStorage` moves retired names.
 enum AppColorTheme {
   teal,
-  purple,
   green,
   blue,
-  yellow,
+  indigo,
+  purple,
+  pink,
   red,
   orange,
-  indigo,
-  cream,
-  pink,
+  gold,
   brown,
 }
 
@@ -20,7 +21,7 @@ class AppColors {
 
   static const Map<AppColorTheme, AppColorScheme> _colorSchemes = {
     AppColorTheme.purple: AppColorScheme(
-      primary: Color(0xFF7C3AED),
+      primary: Color(0xFF6B21A8),
       primaryVariant: Color(0xFF9333EA),
       primaryLight: Color(0xFF9D7FD6),
       primaryDark: Color(0xFF4C1D95),
@@ -56,7 +57,7 @@ class AppColors {
       darkTabBackground: Color(0xFF1A2A1F),
     ),
     AppColorTheme.blue: AppColorScheme(
-      primary: Color(0xFF1E3A8A),
+      primary: Color(0xFF1D4E89),
       primaryVariant: Color(0xFF3B82F6),
       primaryLight: Color(0xFF60A5FA),
       primaryDark: Color(0xFF1E1B4B),
@@ -92,7 +93,7 @@ class AppColors {
       darkTabBackground: Color(0xFF2A1A1A),
     ),
     AppColorTheme.orange: AppColorScheme(
-      primary: Color(0xFF9A3412),
+      primary: Color(0xFFA4450E),
       primaryVariant: Color(0xFFF97316),
       primaryLight: Color(0xFFFB923C),
       primaryDark: Color(0xFF7C2D12),
@@ -146,7 +147,7 @@ class AppColors {
       darkTabBackground: Color(0xFF1F1A2A),
     ),
     AppColorTheme.pink: AppColorScheme(
-      primary: Color(0xFF9D174D),
+      primary: Color(0xFF9A1973),
       primaryVariant: Color(0xFFEC4899),
       primaryLight: Color(0xFFF472B6),
       primaryDark: Color(0xFF831843),
@@ -163,26 +164,8 @@ class AppColors {
       lightText: Color(0xFF2C2C2C),
       darkTabBackground: Color(0xFF2A1A26),
     ),
-    AppColorTheme.yellow: AppColorScheme(
-      primary: Color(0xFFA16207),
-      primaryVariant: Color(0xFFFACC15),
-      primaryLight: Color(0xFFFDE047),
-      primaryDark: Color(0xFF713F12),
-      accent: Color(0xFFEAB308),
-      accentDark: Color(0xFFCA8A04),
-      primaryExtraLight: Color(0xFFFEF9C3),
-      primarySurface: Color(0xFFFACC15),
-      darkGradientStart: Color(0xFF1A180A),
-      darkGradientMid: Color(0xFF2D2A1B),
-      darkGradientEnd: Color(0xFF4A462C),
-      darkCardBackground: Color(0xFF1A1A1A),
-      lightSurface: Color(0xFFFFFDF7),
-      darkText: Color(0xFFF8FAFC),
-      lightText: Color(0xFF2C2C2C),
-      darkTabBackground: Color(0xFF2A281A),
-    ),
     AppColorTheme.brown: AppColorScheme(
-      primary: Color(0xFF5D4037),
+      primary: Color(0xFF5D463C),
       primaryVariant: Color(0xFF8D6E63),
       primaryLight: Color(0xFFA1887F),
       primaryDark: Color(0xFF3E2723),
@@ -199,23 +182,24 @@ class AppColors {
       lightText: Color(0xFF2C2C2C),
       darkTabBackground: Color(0xFF2A201A),
     ),
-    AppColorTheme.cream: AppColorScheme(
-      primary: Color(0xFF8A6D3B),
-      primaryVariant: Color(0xFFD8C59A),
-      primaryLight: Color(0xFFE8DDBF),
-      primaryDark: Color(0xFF5C4827),
-      accent: Color(0xFFB08D57),
-      accentDark: Color(0xFF80683F),
-      primaryExtraLight: Color(0xFFFFF8E7),
-      primarySurface: Color(0xFFF5E6C8),
-      darkGradientStart: Color(0xFF1A160D),
-      darkGradientMid: Color(0xFF2D271A),
-      darkGradientEnd: Color(0xFF4A402B),
+    // Yellow and cream merged (2026-11-13): they read as one color.
+    AppColorTheme.gold: AppColorScheme(
+      primary: Color(0xFF9A6B12),
+      primaryVariant: Color(0xFFD4A537),
+      primaryLight: Color(0xFFE8C872),
+      primaryDark: Color(0xFF6B4A0C),
+      accent: Color(0xFFC08A1E),
+      accentDark: Color(0xFF8F6514),
+      primaryExtraLight: Color(0xFFFDF3D7),
+      primarySurface: Color(0xFFF0D58C),
+      darkGradientStart: Color(0xFF1A160B),
+      darkGradientMid: Color(0xFF2D281A),
+      darkGradientEnd: Color(0xFF4A412B),
       darkCardBackground: Color(0xFF1A1A1A),
       lightSurface: Color(0xFFFFFDF7),
       darkText: Color(0xFFF8FAFC),
       lightText: Color(0xFF2C2C2C),
-      darkTabBackground: Color(0xFF2A2418),
+      darkTabBackground: Color(0xFF2A2518),
     ),
   };
 
@@ -227,9 +211,11 @@ class AppColors {
     String? storedTheme, {
     AppColorTheme fallback = defaultTheme,
   }) {
-    if (storedTheme == 'AppColorTheme.gray' || storedTheme == 'gray') {
-      return AppColorTheme.cream;
-    }
+    // Retired palettes: gray became cream, then yellow and cream became
+    // gold.
+    const retired = {'gray', 'yellow', 'cream'};
+    final name = storedTheme?.replaceFirst('AppColorTheme.', '');
+    if (retired.contains(name)) return AppColorTheme.gold;
 
     return AppColorTheme.values.firstWhere(
       (theme) => theme.toString() == storedTheme || theme.name == storedTheme,
@@ -257,12 +243,10 @@ class AppColors {
         return AppLocalizations.of(context)!.indigo;
       case AppColorTheme.pink:
         return AppLocalizations.of(context)!.pink;
-      case AppColorTheme.cream:
-        return AppLocalizations.of(context)!.cream;
+      case AppColorTheme.gold:
+        return AppLocalizations.of(context)!.goldTheme;
       case AppColorTheme.brown:
         return AppLocalizations.of(context)!.brown;
-      case AppColorTheme.yellow:
-        return AppLocalizations.of(context)!.yellow;
     }
   }
 }

@@ -287,7 +287,9 @@ struct WidgetThemeColors {
     
     static func getThemeColors(themeName: String, isDarkMode: Bool) -> ThemeColors {
         let themes = isDarkMode ? darkThemes : lightThemes
-        return themes[themeName] ?? themes["teal"]!
+        // The app merged yellow and cream into gold; widgets keep yellow's colors.
+        let name = themeName == "gold" ? "yellow" : themeName
+        return themes[name] ?? themes["teal"]!
     }
 }
 

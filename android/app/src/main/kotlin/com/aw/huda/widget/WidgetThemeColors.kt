@@ -292,6 +292,8 @@ object WidgetThemeColors {
     
     fun getThemeColors(themeName: String, isDarkMode: Boolean): ThemeColors {
         val themes = if (isDarkMode) darkThemes else lightThemes
-        return themes[themeName] ?: themes["teal"]!!
+        // The app merged yellow and cream into gold; widgets keep yellow's colors.
+        val name = if (themeName == "gold") "yellow" else themeName
+        return themes[name] ?: themes["teal"]!!
     }
 }
