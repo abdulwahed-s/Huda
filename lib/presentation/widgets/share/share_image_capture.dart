@@ -13,12 +13,25 @@ class ShareImageCapture {
   static const double _maxPixelRatio = 3;
   static const double _maxImageSide = 8192;
 
+  /// Replaces the capture in tests, where `toImage` can't complete under
+  /// the fake clock (added in `athkar`).
+  @visibleForTesting
+  static Future<Uint8List> Function(Widget card)? debugCaptureOverride;
+
   static Future<Uint8List> capturePng({
     required BuildContext context,
     required Widget card,
     double width = BrandedShareFrame.width,
     double pixelRatio = _maxPixelRatio,
   }) async {
+    final override = debugCaptureOverride;
+    if (override != null) return override(card);
+    final overlay = Overlay.of(context);
+    // The overlay sits above the route, so it would miss a theme the
+    // screen adds (such as `HudaNight`): carry the screen's themes
+    // over, or a card reading them renders the error box instead (fixed in
+    // `athkar`).
+    final themes = InheritedTheme.capture(from: context, to: overlay.context);
     await precacheImage(const AssetImage(BrandedShareFrame.logoAsset), context);
     if (!context.mounted) {
       throw StateError('Share image context is no longer mounted');
@@ -37,14 +50,14 @@ class ShareImageCapture {
           maxHeight: double.infinity,
           child: RepaintBoundary(
             key: shareKey,
-            child: MediaQuery.withNoTextScaling(child: card),
+            child: themes.wrap(MediaQuery.withNoTextScaling(child: card)),
           ),
         ),
       ),
     );
 
     try {
-      Overlay.of(context).insert(entry);
+      overlay.insert(entry);
       await WidgetsBinding.instance.endOfFrame;
 
       final boundary = shareKey.currentContext?.findRenderObject();
@@ -79,7 +92,23 @@ class ShareImageCapture {
   }) async {
     final pngBytes = await capturePng(context: context, card: card);
     if (!context.mounted) return;
+    await sharePng(
+      context: context,
+      pngBytes: pngBytes,
+      fileName: fileName,
+      text: text,
+      subject: subject,
+    );
+  }
 
+  /// Shares an image already captured with [capturePng].
+  static Future<void> sharePng({
+    required BuildContext context,
+    required Uint8List pngBytes,
+    required String fileName,
+    required String text,
+    String? subject,
+  }) async {
     final screenSize = MediaQuery.of(context).size;
     await SharePlus.instance.share(
       ShareParams(
