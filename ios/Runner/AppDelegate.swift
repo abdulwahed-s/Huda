@@ -6,7 +6,7 @@ import UserNotifications
 import workmanager_apple
 
 @main
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
   private var miqaatLockHandler: MiqaatLockMethodHandler?
   private var prayerPushChannel: FlutterMethodChannel?
   private var prayerLocationChannel: FlutterMethodChannel?
@@ -17,6 +17,7 @@ import workmanager_apple
   private var apnsDeviceToken: String?
   private var iosPrayerBridge: IOSPrayerBridge?
   private var reminderNotificationsChannel: FlutterMethodChannel?
+  private var foldBridge: IOSFoldBridge?
 
   private var apnsEnvironment: String {
     #if DEBUG
@@ -41,107 +42,19 @@ import workmanager_apple
       await self?.prayerTravelMonitor?.recoverNativeCandidate()
     }
 
-    if let controller = window?.rootViewController as? FlutterViewController {
-      iosPrayerBridge = IOSPrayerBridge(messenger: controller.binaryMessenger)
-      reminderNotificationsChannel = ReminderNotificationsChannel.register(
-        messenger: controller.binaryMessenger
-      )
-      miqaatLockHandler = MiqaatLockMethodHandler(messenger: controller.binaryMessenger)
-      let channel = FlutterMethodChannel(
-        name: "com.aw.huda/prayer_push",
-        binaryMessenger: controller.binaryMessenger
-      )
-      channel.setMethodCallHandler { [weak self] call, result in
-        guard call.method == "register" else {
-          result(FlutterMethodNotImplemented)
-          return
-        }
-        DispatchQueue.main.async {
-          application.registerForRemoteNotifications()
-        }
-        result(self?.registrationPayload() ?? ["environment": "development"])
-      }
-      prayerPushChannel = channel
-
-      let locationChannel = FlutterMethodChannel(
-        name: "com.aw.huda/prayer_location",
-        binaryMessenger: controller.binaryMessenger
-      )
-      locationChannel.setMethodCallHandler { call, result in
-        guard call.method == "resolveTimeZone" else {
-          result(FlutterMethodNotImplemented)
-          return
-        }
-        guard
-          let arguments = call.arguments as? [String: Any],
-          let latitude = arguments["latitude"] as? Double,
-          let longitude = arguments["longitude"] as? Double,
-          (-90.0...90.0).contains(latitude),
-          (-180.0...180.0).contains(longitude)
-        else {
-          result(
-            FlutterError(
-              code: "invalid_coordinates",
-              message: "Valid latitude and longitude are required.",
-              details: nil
-            ))
-          return
-        }
-        let location = CLLocation(latitude: latitude, longitude: longitude)
-        self.prayerLocationResolver.resolve(location) { resolved, error in
-          guard let identifier = resolved?.timeZoneId else {
-            result(
-              FlutterError(
-                code: "timezone_unavailable",
-                message: error?.localizedDescription
-                  ?? "No IANA timezone was found for these coordinates.",
-                details: nil
-              ))
-            return
-          }
-          result(identifier)
-        }
-      }
-      prayerLocationChannel = locationChannel
-
-      let monitorChannel = FlutterMethodChannel(
-        name: "com.aw.huda/prayer_location_monitor",
-        binaryMessenger: controller.binaryMessenger
-      )
-      let monitor = prayerTravelMonitor!
-      monitor.attach(channel: monitorChannel)
-      monitorChannel.setMethodCallHandler { call, result in
-        switch call.method {
-        case "sync":
-          let arguments = call.arguments as? [String: Any]
-          result(
-            monitor.sync(
-              enabled: arguments?["enabled"] as? Bool ?? false,
-              locationMode: arguments?["locationMode"] as? String ?? "manual"
-            ))
-        case "consumeCandidate":
-          result(monitor.consumeCandidate(expected: call.arguments as? String))
-        case "status":
-          result(monitor.status())
-        default:
-          result(FlutterMethodNotImplemented)
-        }
-      }
-      prayerLocationMonitorChannel = monitorChannel
-      prayerTravelMonitor = monitor
-
-      let systemChannel = FlutterMethodChannel(
-        name: "com.aw.huda/prayer_system",
-        binaryMessenger: controller.binaryMessenger
-      )
-      prayerSystemChannel = systemChannel
-    }
+    // With the UIScene lifecycle UIKit sends activation to the scene, not
+    // to the app-level callbacks.
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(sceneDidActivate),
+      name: UIScene.didActivateNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(sceneDidEnterBackground),
+      name: UIScene.didEnterBackgroundNotification, object: nil)
 
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     }
 
-    GeneratedPluginRegistrant.register(with: self)
     let launched = super.application(
       application,
       didFinishLaunchingWithOptions: launchOptions
@@ -150,6 +63,110 @@ import workmanager_apple
     IOSPrayerBackgroundRefresh.shared.submit()
     Task { try? await IOSPrayerService.shared.reconcile() }
     return launched
+  }
+
+  /// The Flutter engine is created with the first scene's view controller,
+  /// after launch. Background launches without a scene never get here, so
+  /// native work must not depend on these channels.
+  func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "IOSFoldBridge") {
+      foldBridge = IOSFoldBridge(registrar: registrar)
+    }
+    let messenger = engineBridge.applicationRegistrar.messenger()
+    iosPrayerBridge = IOSPrayerBridge(messenger: messenger)
+    reminderNotificationsChannel = ReminderNotificationsChannel.register(
+      messenger: messenger
+    )
+    miqaatLockHandler = MiqaatLockMethodHandler(messenger: messenger)
+    let channel = FlutterMethodChannel(
+      name: "com.aw.huda/prayer_push",
+      binaryMessenger: messenger
+    )
+    channel.setMethodCallHandler { [weak self] call, result in
+      guard call.method == "register" else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      DispatchQueue.main.async {
+        UIApplication.shared.registerForRemoteNotifications()
+      }
+      result(self?.registrationPayload() ?? ["environment": "development"])
+    }
+    prayerPushChannel = channel
+
+    let locationChannel = FlutterMethodChannel(
+      name: "com.aw.huda/prayer_location",
+      binaryMessenger: messenger
+    )
+    locationChannel.setMethodCallHandler { call, result in
+      guard call.method == "resolveTimeZone" else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      guard
+        let arguments = call.arguments as? [String: Any],
+        let latitude = arguments["latitude"] as? Double,
+        let longitude = arguments["longitude"] as? Double,
+        (-90.0...90.0).contains(latitude),
+        (-180.0...180.0).contains(longitude)
+      else {
+        result(
+          FlutterError(
+            code: "invalid_coordinates",
+            message: "Valid latitude and longitude are required.",
+            details: nil
+          ))
+        return
+      }
+      let location = CLLocation(latitude: latitude, longitude: longitude)
+      self.prayerLocationResolver.resolve(location) { resolved, error in
+        guard let identifier = resolved?.timeZoneId else {
+          result(
+            FlutterError(
+              code: "timezone_unavailable",
+              message: error?.localizedDescription
+                ?? "No IANA timezone was found for these coordinates.",
+              details: nil
+            ))
+          return
+        }
+        result(identifier)
+      }
+    }
+    prayerLocationChannel = locationChannel
+
+    let monitorChannel = FlutterMethodChannel(
+      name: "com.aw.huda/prayer_location_monitor",
+      binaryMessenger: messenger
+    )
+    let monitor = prayerTravelMonitor!
+    monitor.attach(channel: monitorChannel)
+    monitorChannel.setMethodCallHandler { call, result in
+      switch call.method {
+      case "sync":
+        let arguments = call.arguments as? [String: Any]
+        result(
+          monitor.sync(
+            enabled: arguments?["enabled"] as? Bool ?? false,
+            locationMode: arguments?["locationMode"] as? String ?? "manual"
+          ))
+      case "consumeCandidate":
+        result(monitor.consumeCandidate(expected: call.arguments as? String))
+      case "status":
+        result(monitor.status())
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    prayerLocationMonitorChannel = monitorChannel
+    prayerTravelMonitor = monitor
+
+    let systemChannel = FlutterMethodChannel(
+      name: "com.aw.huda/prayer_system",
+      binaryMessenger: messenger
+    )
+    prayerSystemChannel = systemChannel
   }
 
   override func application(
@@ -211,8 +228,7 @@ import workmanager_apple
     )
   }
 
-  override func applicationDidBecomeActive(_ application: UIApplication) {
-    super.applicationDidBecomeActive(application)
+  @objc private func sceneDidActivate() {
     if UserDefaults(suiteName: "group.hudaHomeApp")?.bool(forKey: "iosPrayerOpenTimes") == true {
       iosPrayerBridge?.publishOpenPrayerTimes()
     }
@@ -224,9 +240,8 @@ import workmanager_apple
     }
   }
 
-  override func applicationDidEnterBackground(_ application: UIApplication) {
+  @objc private func sceneDidEnterBackground() {
     IOSPrayerBackgroundRefresh.shared.submit()
-    super.applicationDidEnterBackground(application)
   }
 
   override func userNotificationCenter(
