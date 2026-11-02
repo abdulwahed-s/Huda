@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// The sheen over loading placeholders. New code uses `HudaSkeleton`
+/// (`widgets/design/huda_states.dart`), which builds on this.
 class AppShimmer extends StatefulWidget {
   final Widget child;
   final Color baseColor;
@@ -23,7 +25,19 @@ class _AppShimmerState extends State<AppShimmer>
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: widget.period,
-  )..repeat();
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // A still placeholder when the platform asks to reduce motion.
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.value = 0;
+      _controller.stop();
+    } else if (!_controller.isAnimating) {
+      _controller.repeat();
+    }
+  }
 
   @override
   void dispose() {
