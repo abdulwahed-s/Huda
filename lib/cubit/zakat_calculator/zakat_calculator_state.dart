@@ -18,22 +18,45 @@ final class ZakatCalculatorLoaded extends ZakatCalculatorState {
   final double goldPricePerGram;
   final double silverPricePerGram;
 
+  /// Whether the market prices are current, updating, or failed to update
+  /// (then [priceDate] says how old they are).
+  final ZakatPriceStatus priceStatus;
+
+  /// The day the market prices are from.
+  final DateTime? priceDate;
+
+  /// A price the person typed instead of the market price.
+  final bool goldIsManual;
+  final bool silverIsManual;
+
   const ZakatCalculatorLoaded({
     required this.calculation,
     required this.selectedCurrency,
     required this.nisabType,
     required this.goldPricePerGram,
     required this.silverPricePerGram,
+    this.priceStatus = ZakatPriceStatus.current,
+    this.priceDate,
+    this.goldIsManual = false,
+    this.silverIsManual = false,
   });
+
+  /// Whether the price the nisab is weighed with was typed.
+  bool get nisabPriceIsManual =>
+      nisabType == NisabType.gold ? goldIsManual : silverIsManual;
 
   @override
   List<Object?> get props => [
-        calculation,
-        selectedCurrency,
-        nisabType,
-        goldPricePerGram,
-        silverPricePerGram,
-      ];
+    calculation,
+    selectedCurrency,
+    nisabType,
+    goldPricePerGram,
+    silverPricePerGram,
+    priceStatus,
+    priceDate,
+    goldIsManual,
+    silverIsManual,
+  ];
 
   ZakatCalculatorLoaded copyWith({
     ZakatCalculation? calculation,
@@ -41,6 +64,10 @@ final class ZakatCalculatorLoaded extends ZakatCalculatorState {
     NisabType? nisabType,
     double? goldPricePerGram,
     double? silverPricePerGram,
+    ZakatPriceStatus? priceStatus,
+    DateTime? priceDate,
+    bool? goldIsManual,
+    bool? silverIsManual,
   }) {
     return ZakatCalculatorLoaded(
       calculation: calculation ?? this.calculation,
@@ -48,6 +75,10 @@ final class ZakatCalculatorLoaded extends ZakatCalculatorState {
       nisabType: nisabType ?? this.nisabType,
       goldPricePerGram: goldPricePerGram ?? this.goldPricePerGram,
       silverPricePerGram: silverPricePerGram ?? this.silverPricePerGram,
+      priceStatus: priceStatus ?? this.priceStatus,
+      priceDate: priceDate ?? this.priceDate,
+      goldIsManual: goldIsManual ?? this.goldIsManual,
+      silverIsManual: silverIsManual ?? this.silverIsManual,
     );
   }
 }
@@ -62,6 +93,11 @@ final class ZakatCalculatorError extends ZakatCalculatorState {
 }
 
 enum NisabType { gold, silver }
+
+/// The market prices: [current] after an update this visit; [updating]
+/// while the automatic update runs; [failed] when it didn't (the prices
+/// shown are the last ones known); [retrying] after the person taps Retry.
+enum ZakatPriceStatus { current, updating, failed, retrying }
 
 enum AssetCategory {
   cash,
