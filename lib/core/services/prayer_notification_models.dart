@@ -397,6 +397,16 @@ class PrayerScheduleResult {
 
   static const localBridgeMessage = 'localBridge';
 
+  /// Scheduled, but Android may deliver a few minutes late (no exact alarms).
+  /// Counts as working; the ready card offers exact alarms.
+  static const inexactMessage = 'inexactNotificationOnly';
+
+  /// The device's own scheduling failed (not a server or network problem).
+  static const localFailureMessage = 'localFailure';
+
+  /// iOS: older server-sent alerts still need one online handoff.
+  static const migrationPendingMessage = 'migrationPending';
+
   bool get isSuccess =>
       status == PrayerScheduleStatus.scheduled ||
       status == PrayerScheduleStatus.upToDate ||

@@ -252,7 +252,7 @@ Future<void> _workerMain(_Bootstrap bootstrap) async {
       debugPrint('Windows scheduling worker failed: $error\n$stack');
       result = const PrayerScheduleResult(
         status: PrayerScheduleStatus.failed,
-        message: 'prayer_notification_sync_unavailable',
+        message: PrayerScheduleResult.localFailureMessage,
       );
     } finally {
       if (gateway is VerifiedPrayerNotificationGateway) {

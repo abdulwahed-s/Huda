@@ -99,7 +99,7 @@ class WindowsPrayerSchedulingController {
       debugPrint('Windows prayer scheduling unavailable: $error\n$stack');
       return const PrayerScheduleResult(
         status: PrayerScheduleStatus.failed,
-        message: 'prayer_notification_sync_unavailable',
+        message: PrayerScheduleResult.localFailureMessage,
       );
     }
   }

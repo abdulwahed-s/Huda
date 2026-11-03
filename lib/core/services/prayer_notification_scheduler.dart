@@ -239,7 +239,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         return PrayerScheduleResult(
           status: PrayerScheduleStatus.failed,
           coverageUntil: coverage,
-          message: PrayerPushErrorCode.unavailable,
+          message: PrayerScheduleResult.localFailureMessage,
         );
       }
     });
@@ -1189,15 +1189,15 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       return PrayerScheduleResult(
         status: !capabilities.notifications
             ? PrayerScheduleStatus.permissionDenied
-            : capabilities.exactAlarms
-            ? PrayerScheduleStatus.scheduled
-            : PrayerScheduleStatus.degraded,
+            : PrayerScheduleStatus.scheduled,
         scheduledCount: desired.length,
         pendingCount: desired.length,
         coverageUntil: desired.isEmpty
             ? null
             : desired.last.scheduledInstantUtc,
-        message: capabilities.exactAlarms ? null : 'inexactNotificationOnly',
+        message: capabilities.exactAlarms
+            ? null
+            : PrayerScheduleResult.inexactMessage,
       );
     } on PlatformException catch (error) {
       await _markDegraded(session, error.code);
@@ -1268,7 +1268,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         status: PrayerScheduleStatus.deferred,
         pendingCount: receipt.notificationCount,
         coverageUntil: session.state.acknowledgedCoverageUntilUtc,
-        message: 'migrationPending',
+        message: PrayerScheduleResult.migrationPendingMessage,
       );
     }
     final acceptedConfiguration = receipt.schedule ?? configuration;
