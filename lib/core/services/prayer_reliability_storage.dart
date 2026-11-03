@@ -41,7 +41,12 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
   static const String fileName = 'prayer_reliability_state_v1.json';
   static const int storageSchemaVersion = 1;
   static const Duration defaultLockTimeout = Duration(seconds: 20);
-  static const Duration defaultStaleLockAge = Duration(minutes: 10);
+  // How long a lock file may lack an owner record before it counts as
+  // abandoned. A live owner writes its record right after creating the file
+  // and holds the file lock while it runs, which recovery checks anyway, so
+  // this only covers that instant. A process that dies in it (a native crash
+  // during startup) used to block every launch for 10 minutes.
+  static const Duration defaultStaleLockAge = Duration(seconds: 2);
   static final Map<String, Lock> _processLocks = <String, Lock>{};
   static final Random _secureRandom = Random.secure();
   // Windows enforces byte-range locks on reads through other handles too.
