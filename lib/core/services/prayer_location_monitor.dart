@@ -148,18 +148,20 @@ class PrayerLocationMonitor {
   }) async {
     final effectiveMode = mode ?? _mode;
     final enabled = preferenceEnabled;
+    // Support first: on a desktop the setting can't be turned on at all, so
+    // it can't be left on with no way to turn it off.
+    if (!supportsTravelUpdates) {
+      return PrayerLocationMonitoringStatus(
+        preferenceEnabled: false,
+        locationMode: effectiveMode,
+        state: PrayerBackgroundTravelState.unsupported,
+      );
+    }
     if (effectiveMode != PrayerLocationMode.automatic || !enabled) {
       return PrayerLocationMonitoringStatus(
         preferenceEnabled: enabled,
         locationMode: effectiveMode,
         state: PrayerBackgroundTravelState.disabled,
-      );
-    }
-    if (!_supportsBackgroundTravel) {
-      return PrayerLocationMonitoringStatus(
-        preferenceEnabled: enabled,
-        locationMode: effectiveMode,
-        state: PrayerBackgroundTravelState.unsupported,
       );
     }
     try {
@@ -259,8 +261,12 @@ class PrayerLocationMonitor {
         );
   }
 
-  bool get _supportsBackgroundTravel =>
+  /// Whether the place can follow the device while Huda is closed. Only
+  /// Android and iOS have a native monitor; desktops update when Huda runs.
+  static bool get supportsTravelUpdates =>
       PlatformUtils.isAndroid || PlatformUtils.isIOS;
+
+  bool get _supportsBackgroundTravel => supportsTravelUpdates;
 
   Future<void> dispose() async {
     _foregroundActive = false;
