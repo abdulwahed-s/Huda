@@ -278,9 +278,8 @@ class PrayerLocationCoordinator {
           ).timeout(const Duration(seconds: 5));
       PrayerTimeZoneService.location(timeZoneId);
     } catch (_) {
-      try {
-        await repository.updateIssues(add: {PrayerWorkflowIssue.location});
-      } catch (_) {}
+      // The caller reports it (the saved place stays in use); it isn't kept
+      // as an open issue.
       return const PrayerLocationUpdateResult(
         PrayerLocationUpdateStatus.timeZoneUnavailable,
       );

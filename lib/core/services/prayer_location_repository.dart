@@ -157,6 +157,10 @@ class PrayerLocationRepository {
     Set<PrayerWorkflowIssue> add = const {},
     Set<PrayerWorkflowIssue> remove = const {},
   }) => synchronized((session) async {
+    // A failed location update is never kept as an issue (older versions
+    // saved one); the saved place stays in use.
+    remove = {...remove, PrayerWorkflowIssue.location};
+    add = add.difference(const {PrayerWorkflowIssue.location});
     final issues = {...session.state.workflowIssues}
       ..removeAll(remove)
       ..addAll(add);
