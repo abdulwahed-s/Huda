@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
+import 'package:huda/core/errors/location_failures.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
 
 class HudaAndroidGeolocator extends GeolocatorPlatform {
@@ -45,9 +46,8 @@ class HudaAndroidGeolocator extends GeolocatorPlatform {
     final map = await _channel.invokeMapMethod<String, dynamic>(
       'getCurrentPosition',
     );
-    if (map == null) {
-      throw const LocationServiceDisabledException();
-    }
+    // No fix and no earlier one; services were already checked as on.
+    if (map == null) throw const LocationUnavailableFailure();
     return _positionFromMap(map);
   }
 
