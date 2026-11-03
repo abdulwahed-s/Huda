@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/geolocator.dart';
 
 part 'qiblah_state.dart';
@@ -8,19 +9,29 @@ part 'qiblah_state.dart';
 class QiblahCubit extends Cubit<QiblahState> {
   QiblahCubit() : super(QiblahInitial());
 
-  Future<void> loadQiblah() async {
+  /// Set once Qiblah has shown the system's location prompt.
+  static const askedKey = 'qiblah_location_asked';
+
+  /// Checks location and loads the compass. The system prompt shows on the
+  /// first visit only; after that, only when the person taps "Allow
+  /// location" ([ask]), so opening Qiblah never nags.
+  Future<void> loadQiblah({bool ask = false}) async {
     emit(QiblahLoading());
 
     try {
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        emit(QiblahPermissionDenied("Location service is disabled"));
+        emit(QiblahLocationServiceOff("Location service is disabled"));
         return;
       }
 
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
+        final prefs = CacheHelper.sharedPreferences;
+        if (ask || !(prefs.getBool(askedKey) ?? false)) {
+          await prefs.setBool(askedKey, true);
+          permission = await Geolocator.requestPermission();
+        }
       }
       if (permission == LocationPermission.deniedForever) {
         emit(QiblahPermissionDeniedForever(

@@ -19,6 +19,12 @@ class QiblahPermissionDenied extends QiblahState {
   QiblahPermissionDenied(this.message);
 }
 
+/// Location services are off on the device (not a permission answer).
+/// A [QiblahPermissionDenied], so older checks still match it.
+class QiblahLocationServiceOff extends QiblahPermissionDenied {
+  QiblahLocationServiceOff(super.message);
+}
+
 class QiblahPermissionDeniedForever extends QiblahState {
   final String message;
   QiblahPermissionDeniedForever(this.message);
