@@ -8,12 +8,20 @@ class HadithTextRun {
   final bool narrator;
   final bool quran;
 
+  /// Inside `[prematn]`: the chain of narrators (isnad) before the text.
+  final bool isnad;
+
+  /// Inside `[matn]`: the narration itself. It is also [bold].
+  final bool matn;
+
   const HadithTextRun(
     this.text, {
     this.bold = false,
     this.italic = false,
     this.narrator = false,
     this.quran = false,
+    this.isnad = false,
+    this.matn = false,
   });
 }
 
@@ -97,12 +105,16 @@ class _HadithFormat {
   final bool italic;
   final bool narrator;
   final bool quran;
+  final bool isnad;
+  final bool matn;
 
   const _HadithFormat({
     this.bold = false,
     this.italic = false,
     this.narrator = false,
     this.quran = false,
+    this.isnad = false,
+    this.matn = false,
   });
 
   _HadithFormat withElement(dom.Element element) {
@@ -129,6 +141,8 @@ class _HadithFormat {
           shortcode == 'narrator' ||
           element.classes.contains('narrator'),
       quran: quran || shortcode == 'quran' || element.classes.contains('quran'),
+      isnad: isnad || shortcode == 'prematn',
+      matn: matn || shortcode == 'matn',
     );
   }
 }
@@ -203,6 +217,8 @@ class _HadithRunComposer {
           italic: format.italic,
           narrator: format.narrator,
           quran: format.quran,
+          isnad: format.isnad,
+          matn: format.matn,
         ),
       );
       cursor = match.end;
@@ -226,6 +242,8 @@ class _HadithRunComposer {
       italic: format.italic,
       narrator: format.narrator,
       quran: format.quran,
+      isnad: format.isnad,
+      matn: format.matn,
     );
     _runs.add(run);
   }
@@ -255,6 +273,8 @@ class _HadithRunComposer {
         italic: last.italic,
         narrator: last.narrator,
         quran: last.quran,
+        isnad: last.isnad,
+        matn: last.matn,
       );
     }
     if (_runs.isNotEmpty) _runs.add(HadithTextRun('\n' * count));
@@ -272,6 +292,8 @@ class _HadithRunComposer {
         italic: last.italic,
         narrator: last.narrator,
         quran: last.quran,
+        isnad: last.isnad,
+        matn: last.matn,
       );
     }
     return List.unmodifiable(_runs);

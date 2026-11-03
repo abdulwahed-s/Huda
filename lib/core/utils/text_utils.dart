@@ -24,6 +24,74 @@ class TextUtils {
     return result;
   }
 
+  /// Where [query] matches in [text] the way [removeDiacriticsAndNormalize]
+  /// compares them (marks dropped, letters folded, spaces collapsed, Latin
+  /// case ignored), as ranges of [text] (start inclusive, end exclusive),
+  /// in order and not overlapping. A range takes in the marks that follow
+  /// its last letter, so a highlighted word keeps its harakat.
+  static List<(int, int)> normalizedMatchRanges(String text, String query) {
+    final needle = removeDiacriticsAndNormalize(query.toLowerCase());
+    if (needle.isEmpty) return const [];
+
+    bool dropped(int unit) =>
+        (unit >= 0x0610 && unit <= 0x061A) ||
+        (unit >= 0x064B && unit <= 0x065F) ||
+        (unit >= 0x06D6 && unit <= 0x06ED) ||
+        unit == 0x0640 ||
+        unit == 0x0670;
+    const folded = {
+      'ٱ': 'ا',
+      'أ': 'ا',
+      'إ': 'ا',
+      'آ': 'ا',
+      'ؤ': 'و',
+      'ئ': 'ي',
+      'ى': 'ي',
+      'ة': 'ه',
+      'ی': 'ي',
+    };
+    final space = RegExp(r'\s');
+
+    // The normalized text, and for each of its units the unit of [text]
+    // it came from.
+    final normal = StringBuffer();
+    final origin = <int>[];
+    var lastWasSpace = true; // drops leading spaces, as trim() does
+    final lower = text.toLowerCase();
+    if (lower.length != text.length) return const [];
+    for (var i = 0; i < lower.length; i++) {
+      final unit = lower.codeUnitAt(i);
+      if (dropped(unit)) continue;
+      final char = lower[i];
+      if (space.hasMatch(char)) {
+        if (lastWasSpace) continue;
+        normal.write(' ');
+        origin.add(i);
+        lastWasSpace = true;
+        continue;
+      }
+      normal.write(folded[char] ?? char);
+      origin.add(i);
+      lastWasSpace = false;
+    }
+
+    final haystack = normal.toString();
+    final ranges = <(int, int)>[];
+    var from = 0;
+    while (true) {
+      final at = haystack.indexOf(needle, from);
+      if (at < 0) break;
+      final start = origin[at];
+      var end = origin[at + needle.length - 1] + 1;
+      while (end < text.length && dropped(text.codeUnitAt(end))) {
+        end++;
+      }
+      ranges.add((start, end));
+      from = at + needle.length;
+    }
+    return ranges;
+  }
+
   static int getLevenshteinDistance(String s1, String s2) {
     if (s1 == s2) return 0;
     if (s1.isEmpty) return s2.length;
