@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/data/models/bookmark_model.dart';
 import 'package:huda/cubit/bookmark/bookmarks_cubit.dart';
 import 'package:huda/core/services/bookmark_service.dart';
@@ -56,6 +56,7 @@ class _BookmarkSectionState extends State<BookmarkSection> {
 
   @override
   void dispose() {
+    _noteEditor?.dispose();
     _localBookmarksCubit?.close();
     super.dispose();
   }
@@ -112,341 +113,249 @@ class _BookmarkSectionState extends State<BookmarkSection> {
     }
   }
 
+  /// The note being written, while the editor is open.
+  TextEditingController? _noteEditor;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xFF1A1A1A)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: const Offset(0, 2),
+    final l10n = AppLocalizations.of(context)!;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final editor = _noteEditor;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _option(
+          key: const ValueKey('quran-mark-bookmark'),
+          icon: Icons.bookmark_rounded,
+          label: l10n.bookmark,
+          active: _isBookmarked,
+          color: _selectedColor,
+          onTap: _toggleBookmark,
+        ),
+        if (_isBookmarked) ...[
+          SizedBox(height: space.sm),
+          Padding(
+            padding: EdgeInsetsDirectional.only(start: space.sm),
+            child: Wrap(
+              spacing: space.xs,
+              runSpacing: space.xs,
+              children: [
+                for (final color in BookmarkColors.availableColors)
+                  _swatch(color),
+              ],
+            ),
           ),
         ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Section header
-          Row(
+        SizedBox(height: space.sm),
+        _option(
+          key: const ValueKey('quran-mark-star'),
+          icon: Icons.star_rounded,
+          label: l10n.star,
+          active: _isStarred,
+          color: scheme.tertiary,
+          onTap: _toggleStar,
+        ),
+        SizedBox(height: space.sm),
+        if (editor != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: context.accentColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Icon(
-                  Icons.bookmark_outline,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? context.accentColor
-                      : context.primaryColor,
-                  size: 18,
+              TextField(
+                key: const ValueKey('quran-mark-note-field'),
+                controller: editor,
+                autofocus: true,
+                minLines: 3,
+                maxLines: 8,
+                decoration: InputDecoration(
+                  labelText: l10n.yourNote,
+                  hintText: l10n.noteHint,
                 ),
               ),
-              const SizedBox(width: 10),
-              Text(
-                AppLocalizations.of(context)!.bookmarkAyah,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? context.accentColor
-                      : context.primaryColor,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Bookmark options
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Regular Bookmark
-              _buildBookmarkOption(
-                icon: _isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
-                label: AppLocalizations.of(context)!.bookmark,
-                isActive: _isBookmarked,
-                color: _selectedColor,
-                onTap: () => _toggleBookmark(),
-              ),
-              const SizedBox(width: 10),
-              // Note
-              _buildBookmarkOption(
-                icon: _hasNote ? Icons.note : Icons.note_outlined,
-                label: AppLocalizations.of(context)!.note,
-                isActive: _hasNote,
-                color: Colors.orange,
-                onTap: () => _showNoteDialog(),
-              ),
-              const SizedBox(width: 10),
-              // Star
-              _buildBookmarkOption(
-                icon: _isStarred ? Icons.star : Icons.star_outline,
-                label: AppLocalizations.of(context)!.star,
-                isActive: _isStarred,
-                color: Colors.amber,
-                onTap: () => _toggleStar(),
-              ),
-            ],
-          ),
-
-          // Show color picker for bookmark if bookmarked
-          if (_isBookmarked) ...[
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: _selectedColor.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: _selectedColor.withValues(alpha: 0.2),
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(height: space.sm),
+              Wrap(
+                alignment: WrapAlignment.end,
+                spacing: space.xs,
+                runSpacing: space.xs,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.palette_outlined,
-                        size: 16,
-                        color: _selectedColor,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        AppLocalizations.of(context)!.bookmarkColor,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.grey[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  _buildColorPicker(),
-                ],
-              ),
-            ),
-          ],
-
-          // Show note preview if has note
-          if (_hasNote && _currentNote.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.orange.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.orange.withValues(alpha: 0.2),
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.note_outlined,
-                        size: 16,
-                        color: Colors.orange,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        AppLocalizations.of(context)!.yourNote,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.grey[800],
-                        ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: _showNoteDialog,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.edit,
-                                size: 12,
-                                color: Colors.orange,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                AppLocalizations.of(context)!.edit,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.orange[700],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[850]
-                          : Colors.orange.withValues(alpha: 0.05),
-                      borderRadius: BorderRadius.circular(8),
+                  if (_hasNote)
+                    TextButton.icon(
+                      onPressed: () {
+                        _removeNote();
+                        _closeEditor();
+                      },
+                      icon: const Icon(Icons.delete_outline_rounded),
+                      label: Text(l10n.remove),
                     ),
-                    child: Text(
-                      _currentNote,
-                      style: TextStyle(
-                        fontSize: 13,
-                        height: 1.4,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.grey[300]
-                            : Colors.grey[700],
-                      ),
-                    ),
+                  OutlinedButton(
+                    onPressed: _closeEditor,
+                    child: Text(l10n.cancel),
+                  ),
+                  FilledButton.icon(
+                    key: const ValueKey('quran-mark-note-save'),
+                    onPressed: () {
+                      _saveNote(editor.text);
+                      _closeEditor();
+                    },
+                    icon: const Icon(Icons.check_rounded),
+                    label: Text(_hasNote ? l10n.update : l10n.save),
                   ),
                 ],
               ),
-            ),
-          ],
-        ],
-      ),
+            ],
+          )
+        else if (_hasNote)
+          _option(
+            key: const ValueKey('quran-mark-note'),
+            icon: Icons.sticky_note_2_rounded,
+            label: l10n.yourNote,
+            detail: _currentNote,
+            active: true,
+            color: scheme.primary,
+            onTap: _openEditor,
+            trailing: Icon(Icons.edit_rounded, color: scheme.primary),
+          )
+        else
+          _option(
+            key: const ValueKey('quran-mark-note'),
+            icon: Icons.sticky_note_2_outlined,
+            label: l10n.addNote,
+            active: false,
+            color: scheme.primary,
+            onTap: _openEditor,
+            trailing: Icon(Icons.add_rounded, color: scheme.onSurfaceVariant),
+          ),
+      ],
     );
   }
 
-  Widget _buildBookmarkOption({
+  void _openEditor() =>
+      setState(() => _noteEditor = TextEditingController(text: _currentNote));
+
+  void _closeEditor() {
+    final editor = _noteEditor;
+    setState(() => _noteEditor = null);
+    WidgetsBinding.instance.addPostFrameCallback((_) => editor?.dispose());
+  }
+
+  /// A mark the ayah has or hasn't: a hairline tile, tinted in the mark's
+  /// color with a filled icon when it has it.
+  Widget _option({
+    required Key key,
     required IconData icon,
     required String label,
-    required bool isActive,
+    required bool active,
     required Color color,
     required VoidCallback onTap,
+    String? detail,
+    Widget? trailing,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-          decoration: BoxDecoration(
-            color: isActive
-                ? color.withValues(alpha: 0.12)
-                : (isDark
-                      ? Colors.grey[850]
-                      : Colors.grey.withValues(alpha: 0.05)),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isActive
-                  ? color.withValues(alpha: 0.4)
-                  : (isDark
-                        ? Colors.grey[700]!
-                        : Colors.grey.withValues(alpha: 0.2)),
-              width: isActive ? 1.5 : 1,
-            ),
+    final tokens = context.tokens;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Semantics(
+      key: key,
+      button: true,
+      toggled: trailing == null ? active : null,
+      label: [label, ?detail].join(', '),
+      excludeSemantics: true,
+      child: Material(
+        color: active
+            ? color.withValues(alpha: 0.1)
+            : scheme.surfaceContainerLowest,
+        shape: RoundedRectangleBorder(
+          borderRadius: tokens.radius.control,
+          side: BorderSide(
+            color: active ? color : scheme.outlineVariant,
+            width: active ? tokens.stroke.fine : tokens.stroke.hairline,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: Icon(
-                  icon,
-                  key: ValueKey('$icon-$isActive'),
-                  color: isActive
-                      ? color
-                      : (isDark ? Colors.grey[400] : Colors.grey[600]),
-                  size: 28,
-                ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 52),
+            child: Padding(
+              padding: EdgeInsets.all(tokens.space.sm),
+              child: Row(
+                children: [
+                  Icon(icon, color: active ? color : scheme.onSurfaceVariant),
+                  SizedBox(width: tokens.space.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(label, style: theme.textTheme.labelLarge),
+                        if (detail != null && detail.isNotEmpty)
+                          Text(
+                            detail,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                      ],
+                    ),
+                  ),
+                  trailing ??
+                      Icon(
+                        active
+                            ? Icons.check_box_rounded
+                            : Icons.check_box_outline_blank_rounded,
+                        color: active ? color : scheme.onSurfaceVariant,
+                      ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                  color: isActive
-                      ? color
-                      : (isDark ? Colors.grey[400] : Colors.grey[600]),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildColorPicker() {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 8,
-      children: BookmarkColors.availableColors.map((color) {
-        final isSelected = _selectedColor.toARGB32() == color.toARGB32();
-        return GestureDetector(
-          onTap: () => _changeBookmarkColor(color),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: isSelected ? Colors.white : color.withValues(alpha: 0.3),
-                width: isSelected ? 3 : 1,
+  /// A bookmark color: a disc, ringed and checked when chosen.
+  Widget _swatch(Color color) {
+    final selected = _selectedColor.toARGB32() == color.toARGB32();
+    final scheme = Theme.of(context).colorScheme;
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: BookmarkColors.getColorName(color),
+      excludeSemantics: true,
+      child: InkResponse(
+        onTap: () => _changeBookmarkColor(color),
+        radius: 24,
+        child: SizedBox.square(
+          dimension: 48,
+          child: Center(
+            child: AnimatedContainer(
+              duration: context.tokens.motion.of(
+                context,
+                context.tokens.motion.short,
               ),
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
-                        color: color.withValues(alpha: 0.3),
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ]
-                  : [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        spreadRadius: 0,
-                        blurRadius: 2,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: selected ? scheme.onSurface : scheme.outlineVariant,
+                  width: selected ? 2.5 : 1,
+                ),
+              ),
+              child: selected
+                  ? const Icon(
+                      Icons.check_rounded,
+                      size: 18,
+                      color: Colors.white,
+                    )
+                  : null,
             ),
-            child: isSelected
-                ? const Icon(Icons.check, color: Colors.white, size: 18)
-                : null,
           ),
-        );
-      }).toList(),
+        ),
+      ),
     );
   }
 
@@ -522,203 +431,6 @@ class _BookmarkSectionState extends State<BookmarkSection> {
         ayahPosition: currentPosition,
       );
     }
-  }
-
-  void _showNoteDialog() {
-    final noteController = TextEditingController(text: _currentNote);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => Dialog(
-        backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 8,
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          constraints: const BoxConstraints(maxWidth: 400, maxHeight: 500),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header with icon and title
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.orange.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.edit_note,
-                      color: Colors.orange,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _hasNote
-                              ? AppLocalizations.of(context)!.editNote
-                              : AppLocalizations.of(context)!.addNote,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: isDark
-                                ? Colors.white
-                                : const Color(0xFF2C2C2C),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          AppLocalizations.of(context)!.surahAyahReference(
-                            widget.surahName,
-                            widget.ayahNumber.toString(),
-                          ),
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              // Note input field
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
-                    width: 1.5,
-                  ),
-                  color: isDark ? const Color(0xFF2A2A2A) : Colors.grey[50],
-                ),
-                child: TextField(
-                  controller: noteController,
-                  maxLines: 6,
-                  autofocus: !_hasNote,
-                  style: TextStyle(
-                    fontSize: 16,
-                    height: 1.5,
-                    color: isDark ? Colors.white : Colors.black87,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.noteHint,
-                    hintStyle: TextStyle(
-                      color: isDark ? Colors.grey[500] : Colors.grey[500],
-                      fontSize: 15,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(16),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Action buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // Cancel button
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.cancel,
-                      style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(width: 8),
-
-                  // Remove button (only if note exists)
-                  if (_hasNote) ...[
-                    TextButton.icon(
-                      onPressed: () {
-                        _removeNote();
-                        Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        backgroundColor: Colors.red.withValues(alpha: 0.1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      icon: const Icon(
-                        Icons.delete_outline,
-                        size: 18,
-                        color: Colors.red,
-                      ),
-                      label: Text(
-                        AppLocalizations.of(context)!.remove,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-
-                  // Save button
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      _saveNote(noteController.text);
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 2,
-                    ),
-                    icon: const Icon(Icons.save_outlined, size: 18),
-                    label: Text(
-                      _hasNote
-                          ? AppLocalizations.of(context)!.update
-                          : AppLocalizations.of(context)!.save,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   void _saveNote(String note) {

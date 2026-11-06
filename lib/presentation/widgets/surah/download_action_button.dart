@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class DownloadActionButton extends StatelessWidget {
@@ -25,9 +24,7 @@ class DownloadActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final accent = theme.brightness == Brightness.dark
-        ? context.accentColor
-        : context.primaryColor;
+    final accent = theme.colorScheme.primary;
     return OutlinedButton.icon(
       onPressed: enabled && !downloaded && !downloading ? onPressed : null,
       style: OutlinedButton.styleFrom(

@@ -1,16 +1,22 @@
 import 'dart:async';
-import 'dart:io' show File, Platform;
+import 'dart:io' show File;
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
-import 'package:flutter/foundation.dart' show kIsWeb, mapEquals, setEquals;
+import 'package:flutter/foundation.dart' show mapEquals, setEquals;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
 import 'package:huda/core/quran/mushaf_page_content.dart';
 import 'package:huda/core/quran/mushaf_pagination.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/surah/quran_ayah_flash.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/data/models/bookmark_model.dart';
 import 'package:huda/core/services/khatma_service.dart';
@@ -197,6 +203,72 @@ enum HorizontalPageDisplayMode {
   static String get key => _storageKey;
 }
 
+/// How the Mushaf lays out its pages (owner round 3): one page or two side
+/// by side ([twoPages]; null until the reader chooses: two on wide
+/// windows and open foldables, one on phones), and whether they fill the
+/// width and scroll ([zoomed], off unless chosen; two pages scroll
+/// together). Stored under [HorizontalPageDisplayMode.key] ("normal" one,
+/// "doublePage" two, nothing: by the window) and [zoomKey].
+@immutable
+class MushafLayout {
+  const MushafLayout({this.twoPages, this.zoomed = false});
+
+  final bool? twoPages;
+  final bool zoomed;
+
+  static const zoomKey = 'mushaf_zoomed';
+
+  /// The saved layout. An old "zoomed" mode reads as one page, zoomed.
+  static MushafLayout read(CacheHelper cache) {
+    final pages = cache.getData(key: HorizontalPageDisplayMode.key) as String?;
+    final zoom = cache.getData(key: zoomKey);
+    final legacyZoom = pages == HorizontalPageDisplayMode.zoomed.storageValue;
+    return MushafLayout(
+      twoPages: switch (pages) {
+        null => null,
+        _ when pages == HorizontalPageDisplayMode.doublePage.storageValue =>
+          true,
+        _ => false,
+      },
+      zoomed: zoom is bool ? zoom : legacyZoom,
+    );
+  }
+
+  Future<void> write(CacheHelper cache) async {
+    final pages = twoPages;
+    if (pages == null) {
+      await cache.removeData(key: HorizontalPageDisplayMode.key);
+    } else {
+      await cache.saveData(
+        key: HorizontalPageDisplayMode.key,
+        value:
+            (pages
+                    ? HorizontalPageDisplayMode.doublePage
+                    : HorizontalPageDisplayMode.normal)
+                .storageValue,
+      );
+    }
+    await cache.saveData(key: zoomKey, value: zoomed);
+  }
+
+  MushafLayout copyWith({bool? twoPages, bool? zoomed}) => MushafLayout(
+    twoPages: twoPages ?? this.twoPages,
+    zoomed: zoomed ?? this.zoomed,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      other is MushafLayout &&
+      other.twoPages == twoPages &&
+      other.zoomed == zoomed;
+
+  @override
+  int get hashCode => Object.hash(twoPages, zoomed);
+
+  @override
+  String toString() => 'MushafLayout(${twoPages ?? 'auto'}, zoom: $zoomed)';
+}
+
 class QuranMushafPageView extends StatefulWidget {
   final int initialPageNumber;
 
@@ -222,13 +294,23 @@ class QuranMushafPageView extends StatefulWidget {
 
   final Color? customTextColor;
 
-  final HorizontalPageDisplayMode displayMode;
+  final MushafLayout layout;
   final MushafFlipDirection flipDirection;
+
+  /// (surah, ayah) found by search: its lines light up once its page is
+  /// on screen ([QuranAyahFlash]), brought into view first on a zoomed
+  /// page. Runs once per view.
+  final (int, int)? flashAyah;
+
+  /// Called as the flash starts.
+  final VoidCallback? onFlashShown;
 
   const QuranMushafPageView({
     super.key,
     required this.initialPageNumber,
     required this.mode,
+    this.flashAyah,
+    this.onFlashShown,
     this.playingSurahNumber,
     this.playingAyahNumber,
     this.isMemorizationMode = false,
@@ -239,16 +321,72 @@ class QuranMushafPageView extends StatefulWidget {
     this.onAyahLongPress,
     this.customBgColor,
     this.customTextColor,
-    this.displayMode = HorizontalPageDisplayMode.normal,
+    this.layout = const MushafLayout(),
     this.flipDirection = MushafFlipDirection.horizontal,
   });
+
+  /// The Mushaf's paper: the surface warmed a little toward the gilt by
+  /// day, the surface at night, or a reader's saved page color.
+  static Color paperOf(BuildContext context, [Color? custom]) {
+    if (custom != null) return custom;
+    final scheme = Theme.of(context).colorScheme;
+    return Theme.of(context).brightness == Brightness.dark
+        ? scheme.surface
+        : Color.lerp(scheme.surfaceContainerLowest, scheme.tertiary, 0.07)!;
+  }
+
+  /// Two pages side by side, only where they can stand side by side
+  /// ([allowsSpread]): as the reader chose ([twoPages]), or, until they
+  /// choose, where the window has room: wide and tall enough for two
+  /// readable pages (by space, not device), or across a vertical fold (an
+  /// open Duo or Fold, flat or half open), one page a side like an open
+  /// Mushaf. Phones show one.
+  static bool showsSpread(Size size, FoldInfo fold, {bool? twoPages}) {
+    if (!allowsSpread(size, fold)) return false;
+    if (twoPages != null) return twoPages;
+    if (fold.splitsHorizontally) return true;
+    return size.width >= 840 &&
+        size.width >= size.height * 1.25 &&
+        size.height >= 560;
+  }
+
+  /// Whether two pages may show at all: on a landscape window (a tablet,
+  /// a laptop, a phone turned sideways) or across a vertical fold, a page
+  /// a side. Never on a portrait screen, where two pages would each be
+  /// too small to read (owner round 4).
+  static bool allowsSpread(Size size, FoldInfo fold) =>
+      fold.splitsHorizontally || size.width > size.height;
+
+  /// Whether a single page keeps to one side of a vertical fold with a
+  /// hinge gap (the open Duo) or a bend (a half-open Fold): the right,
+  /// where a Mushaf starts, so no line crosses the hinge. A flat Fold has
+  /// one seamless screen: the page uses it whole.
+  static bool keepsPageOffHinge(FoldInfo fold) =>
+      fold.splitsHorizontally && (fold.isHalfOpened || fold.bounds.width > 0);
 
   @override
   State<QuranMushafPageView> createState() => _QuranMushafPageViewState();
 }
 
 class _QuranMushafPageViewState extends State<QuranMushafPageView>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
+  // Made up front: a lazy one would first be made in dispose() on a page
+  // that never flashed, which looks up a deactivated ancestor.
+  late final AnimationController _flash;
+  bool _flashStarted = false;
+
+  /// The page holding [QuranMushafPageView.flashAyah] has its image on
+  /// screen (and in view): light the ayah once the page has settled.
+  void _onFlashReady() {
+    if (_flashStarted) return;
+    _flashStarted = true;
+    Future.delayed(const Duration(milliseconds: 450), () {
+      if (!mounted) return;
+      widget.onFlashShown?.call();
+      unawaited(_flash.forward(from: 0));
+    });
+  }
+
   late PageController _pageController;
   late int _currentPage;
   bool _currentIsDoubleMode = false;
@@ -281,23 +419,12 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
   }
 
   bool _calculateIsDoubleMode(BuildContext context) {
-    if (widget.displayMode != HorizontalPageDisplayMode.doublePage ||
-        !widget.mode.isMushaf) {
-      return false;
-    }
-
-    bool isDesktop = false;
-    try {
-      if (kIsWeb) {
-        isDesktop = true;
-      } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
-        isDesktop = true;
-      }
-    } catch (_) {}
-
-    if (isDesktop) return true;
-
-    return MediaQuery.orientationOf(context) == Orientation.landscape;
+    if (!widget.mode.isMushaf) return false;
+    return QuranMushafPageView.showsSpread(
+      MediaQuery.sizeOf(context),
+      FoldInfo.of(context),
+      twoPages: widget.layout.twoPages,
+    );
   }
 
   int _toControllerPage(int quranPage, bool isDouble) =>
@@ -316,12 +443,12 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
   @override
   void initState() {
     super.initState();
+    _flash = QuranAyahFlash.controller(this);
     WidgetsBinding.instance.addObserver(this);
     _currentPage = widget.initialPageNumber.clamp(1, _pageCount);
 
-    _currentIsDoubleMode =
-        widget.displayMode == HorizontalPageDisplayMode.doublePage &&
-        widget.mode.isMushaf;
+    // Settled from the window in didChangeDependencies.
+    _currentIsDoubleMode = false;
     _pageController = PageController(
       initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode),
     );
@@ -360,7 +487,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
     final shouldBeDouble = _calculateIsDoubleMode(context);
     if (oldWidget.mode != widget.mode ||
         oldWidget.initialPageNumber != widget.initialPageNumber ||
-        oldWidget.displayMode != widget.displayMode ||
+        oldWidget.layout != widget.layout ||
         oldWidget.flipDirection != widget.flipDirection ||
         _currentIsDoubleMode != shouldBeDouble) {
       final savedPage = oldWidget.initialPageNumber != widget.initialPageNumber
@@ -378,6 +505,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _flash.dispose();
     _contentCache.clear();
     _pageController.dispose();
     super.dispose();
@@ -386,12 +514,12 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
   @override
   Widget build(BuildContext context) {
     final service = _packService;
-    if (service == null) return _buildPageView(context, null);
+    if (service == null) return _insetPages(context, null);
     return StreamBuilder<MushafPackState>(
       stream: service.stateStream,
       initialData: service.currentState,
       builder: (context, _) => service.isReady
-          ? _buildPageView(context, service)
+          ? _insetPages(context, service)
           : _MushafPackRequired(
               service: service,
               customBgColor: widget.customBgColor,
@@ -404,6 +532,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
     MushafPackService? service,
     int pageNumber, {
     bool? rightOfSpread,
+    bool scrolls = true,
   }) => _QuranMushafPage(
     key: ValueKey(pageNumber),
     contentCache: _contentCache,
@@ -412,6 +541,9 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
     rightOfSpread: rightOfSpread,
     playingSurahNumber: widget.playingSurahNumber,
     playingAyahNumber: widget.playingAyahNumber,
+    flashAyah: _flashStarted && _flash.isCompleted ? null : widget.flashAyah,
+    flashLevel: QuranAyahFlash.drive(context, _flash),
+    onFlashReady: _onFlashReady,
     isMemorizationMode: widget.isMemorizationMode,
     hiddenAyahIndices: widget.hiddenAyahIndices,
     memorizedSurahNumber: widget.memorizedSurahNumber,
@@ -419,68 +551,149 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
     onAyahLongPress: widget.onAyahLongPress,
     customBgColor: widget.customBgColor,
     customTextColor: widget.customTextColor,
-    displayMode: widget.displayMode,
+    zoomed: widget.layout.zoomed,
+    scrolls: scrolls,
   );
+
+  /// The pages stay inside the system bars and the Duo's column, while
+  /// the paper behind them (the screen's background) runs to the edges.
+  /// The bottom inset is each page's own: a fitted page keeps above it, a
+  /// page filling the width scrolls to the edge and pads its end.
+  Widget _insetPages(BuildContext context, MushafPackService? service) =>
+      Padding(
+        padding: MediaQuery.paddingOf(context).copyWith(bottom: 0),
+        child: _buildPageView(context, service),
+      );
 
   Widget _buildPageView(BuildContext context, MushafPackService? service) {
     if (_currentIsDoubleMode) {
       final spreadCount = (_pageCount / 2).ceil();
-      return Listener(
-        onPointerSignal: _handlePointerScroll,
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: PageView.builder(
-            allowImplicitScrolling: true,
-            key: ObjectKey(_pageController),
-            scrollDirection: Axis.horizontal,
-            scrollBehavior: ScrollConfiguration.of(context).copyWith(
-              dragDevices: {
-                PointerDeviceKind.touch,
-                PointerDeviceKind.mouse,
-                PointerDeviceKind.trackpad,
+      return _framePages(
+        context,
+        single: false,
+        Listener(
+          onPointerSignal: _handlePointerScroll,
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: PageView.builder(
+              allowImplicitScrolling: true,
+              key: ObjectKey(_pageController),
+              // Spreads turn the way the reader chose, as single pages do.
+              scrollDirection:
+                  widget.flipDirection == MushafFlipDirection.vertical
+                  ? Axis.vertical
+                  : Axis.horizontal,
+              scrollBehavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                  PointerDeviceKind.trackpad,
+                },
+              ),
+              controller: _pageController,
+              itemCount: spreadCount,
+              onPageChanged: (spreadIndex) {
+                final rightPage = (spreadIndex * 2 + 1).clamp(1, _pageCount);
+                setState(() => _currentPage = rightPage);
+                widget.onPageChanged?.call(rightPage);
+              },
+              itemBuilder: (context, spreadIndex) {
+                final rightPage = spreadIndex * 2 + 1;
+                final leftPage = spreadIndex * 2 + 2;
+                // The spine sits on the fold; a half-open band stays empty.
+                final fold = FoldInfo.of(context);
+                final band = fold.splitsHorizontally ? fold.bounds.width : 0.0;
+                // Zoomed: the spread fills the width and both pages scroll
+                // together (owner round 3).
+                if (widget.layout.zoomed) {
+                  return ColoredBox(
+                    color: QuranMushafPageView.paperOf(
+                      context,
+                      widget.customBgColor,
+                    ),
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      padding: EdgeInsets.fromLTRB(
+                        8,
+                        0,
+                        8,
+                        MediaQuery.paddingOf(context).bottom,
+                      ),
+                      child: Stack(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: _page(
+                                  service,
+                                  rightPage.clamp(1, _pageCount),
+                                  rightOfSpread: true,
+                                  scrolls: false,
+                                ),
+                              ),
+                              SizedBox(width: math.max(band, 16)),
+                              Expanded(
+                                child: leftPage <= _pageCount
+                                    ? _page(
+                                        service,
+                                        leftPage,
+                                        rightOfSpread: false,
+                                        scrolls: false,
+                                      )
+                                    : const SizedBox(),
+                              ),
+                            ],
+                          ),
+                          // The spine, as on an unzoomed spread.
+                          if (band <= 0)
+                            Positioned.fill(
+                              child: Center(
+                                child: Container(
+                                  width: 1,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.outlineVariant,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Row(
+                  children: [
+                    Expanded(
+                      child: _page(
+                        service,
+                        rightPage.clamp(1, _pageCount),
+                        rightOfSpread: true,
+                      ),
+                    ),
+                    if (band > 0)
+                      SizedBox(width: band)
+                    else
+                      Container(
+                        width: 1.0,
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                      ),
+                    if (leftPage <= _pageCount)
+                      Expanded(
+                        child: _page(service, leftPage, rightOfSpread: false),
+                      )
+                    else
+                      const Expanded(child: SizedBox()),
+                  ],
+                );
               },
             ),
-            controller: _pageController,
-            itemCount: spreadCount,
-            onPageChanged: (spreadIndex) {
-              final rightPage = (spreadIndex * 2 + 1).clamp(1, _pageCount);
-              setState(() => _currentPage = rightPage);
-              widget.onPageChanged?.call(rightPage);
-            },
-            itemBuilder: (context, spreadIndex) {
-              final rightPage = spreadIndex * 2 + 1;
-              final leftPage = spreadIndex * 2 + 2;
-              final isDark = Theme.of(context).brightness == Brightness.dark;
-              return Row(
-                children: [
-                  Expanded(
-                    child: _page(
-                      service,
-                      rightPage.clamp(1, _pageCount),
-                      rightOfSpread: true,
-                    ),
-                  ),
-                  Container(
-                    width: 1.0,
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.1),
-                  ),
-                  if (leftPage <= _pageCount)
-                    Expanded(
-                      child: _page(service, leftPage, rightOfSpread: false),
-                    )
-                  else
-                    const Expanded(child: SizedBox()),
-                ],
-              );
-            },
           ),
         ),
       );
     }
 
-    return Listener(
+    final pages = Listener(
       onPointerSignal: _handlePointerScroll,
       child: Directionality(
         textDirection: TextDirection.rtl,
@@ -507,6 +720,121 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
         ),
       ),
     );
+    return _framePages(context, pages, single: true);
+  }
+
+  /// Places the page view on the screen's folds: one page keeps off a
+  /// vertical hinge; on a tabletop fold the page or spread stands above
+  /// the band with page turns below it.
+  Widget _framePages(
+    BuildContext context,
+    Widget pages, {
+    required bool single,
+  }) {
+    final fold = FoldInfo.of(context);
+    final bounds = fold.bounds;
+    // One page on an open Duo or a half-open Fold: on the right side of
+    // the hinge, never across it.
+    if (single && QuranMushafPageView.keepsPageOffHinge(fold)) {
+      final media = MediaQuery.of(context);
+      final right = math.max(
+        0.0,
+        media.size.width - fold.end - media.padding.right,
+      );
+      return Row(
+        textDirection: TextDirection.rtl,
+        children: [
+          SizedBox(width: right, child: pages),
+          const Expanded(child: SizedBox()),
+        ],
+      );
+    }
+    // Tabletop: the page above the band, turning it below.
+    if (!fold.isTabletop) return pages;
+    return Column(
+      children: [
+        SizedBox(
+          height: math.max(0, bounds.top - MediaQuery.paddingOf(context).top),
+          child: pages,
+        ),
+        SizedBox(height: bounds.height),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.paddingOf(context).bottom,
+            ),
+            child: _TabletopPageControls(
+              page: _currentPage,
+              pageCount: _pageCount,
+              onPrevious: () => _pageController.previousPage(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOutCubic,
+              ),
+              onNext: () => _pageController.nextPage(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOutCubic,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Below a tabletop fold: the page number and the page turns, within
+/// reach while the page stands above.
+class _TabletopPageControls extends StatelessWidget {
+  const _TabletopPageControls({
+    required this.page,
+    required this.pageCount,
+    required this.onPrevious,
+    required this.onNext,
+  });
+
+  final int page;
+  final int pageCount;
+  final VoidCallback onPrevious;
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    final theme = Theme.of(context);
+    // Mushaf pages turn right to left: the next page is on the left.
+    return Padding(
+      padding: EdgeInsets.all(space.md),
+      child: Row(
+        textDirection: TextDirection.rtl,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton.outlined(
+            tooltip: l10n.previous,
+            onPressed: page > 1 ? onPrevious : null,
+            icon: const Directionality(
+              // Physical arrows: chevrons mirror in RTL locales, but
+              // Mushaf pages always turn right to left.
+              textDirection: TextDirection.ltr,
+              child: Icon(Icons.chevron_right_rounded),
+            ),
+          ),
+          SizedBox(width: space.lg),
+          Text(l10n.mushafPageNumber(page), style: theme.textTheme.titleMedium),
+          SizedBox(width: space.lg),
+          IconButton.outlined(
+            tooltip: l10n.next,
+            onPressed: page < pageCount ? onNext : null,
+            icon: const Directionality(
+              // Physical arrows: chevrons mirror in RTL locales, but
+              // Mushaf pages always turn right to left.
+              textDirection: TextDirection.ltr,
+              child: Icon(Icons.chevron_left_rounded),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -526,97 +854,64 @@ class _MushafPackRequired extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bg =
-        customBgColor ??
-        (isDark ? const Color(0xFF0F0F0F) : const Color(0xFFFFF9E8));
-    final fg =
-        customTextColor ??
-        (isDark ? const Color(0xFFEEEAE0) : const Color(0xFF1A1A1A));
-    final accent = isDark
-        ? context.primaryLightColor
-        : context.primaryDarkColor;
+    final space = context.tokens.space;
+    final theme = Theme.of(context);
     final state = service.currentState;
-
-    final Widget action;
+    final Widget body;
     switch (state.status) {
       case MushafPackStatus.downloading:
       case MushafPackStatus.extracting:
       case MushafPackStatus.loading:
+        // Working: the lamp turns while the pack arrives.
         final downloading = state.status == MushafPackStatus.downloading;
-        action = Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+        body = HudaStateView(
+          title: l.mushafPackTitle,
+          mark: HudaStateMark.lit,
+          icon: Icons.auto_stories_rounded,
+          message: downloading
+              ? '${(state.progress * 100).toInt()}%'
+              : state.status == MushafPackStatus.extracting
+              ? l.fontExtractingLabel
+              : l.fontLoadingLabel,
+          actions: [
             SizedBox(
               width: 220,
-              child: LinearProgressIndicator(
-                value: downloading ? state.progress : null,
-                color: accent,
-                backgroundColor: fg.withValues(alpha: 0.1),
+              child: Row(
+                children: [
+                  const HudaLampSpinner(size: 20),
+                  SizedBox(width: space.sm),
+                  Expanded(
+                    child: LinearProgressIndicator(
+                      value: downloading ? state.progress : null,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              downloading
-                  ? '${(state.progress * 100).toInt()}%'
-                  : state.status == MushafPackStatus.extracting
-                  ? l.fontExtractingLabel
-                  : l.fontLoadingLabel,
-              style: TextStyle(color: fg.withValues(alpha: 0.6)),
             ),
           ],
         );
       case MushafPackStatus.error:
-        action = Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(l.failedToLoad, style: TextStyle(color: fg)),
-            TextButton.icon(
-              onPressed: service.downloadAndInstall,
-              icon: const Icon(Icons.refresh),
-              label: Text(l.retry),
-            ),
-          ],
+        body = HudaErrorState(
+          title: l.mushafPackTitle,
+          message: l.failedToLoad,
+          onRetry: service.downloadAndInstall,
         );
       case MushafPackStatus.idle:
       case MushafPackStatus.ready:
-        action = FilledButton.icon(
-          onPressed: service.downloadAndInstall,
-          icon: const Icon(Icons.download_rounded),
-          label: Text(l.mushafPackDownload(service.pack.sizeLabel)),
+        body = HudaPermissionState(
+          icon: Icons.download_rounded,
+          title: l.mushafPackTitle,
+          explanation: l.mushafPackBody,
+          allowLabel: l.mushafPackDownload(service.pack.sizeLabel),
+          onAllow: service.downloadAndInstall,
         );
     }
-
     return ColoredBox(
-      color: bg,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.auto_stories_outlined, size: 48, color: accent),
-              const SizedBox(height: 16),
-              Text(
-                l.mushafPackTitle,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: fg,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                l.mushafPackBody,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: fg.withValues(alpha: 0.7)),
-              ),
-              const SizedBox(height: 24),
-              action,
-            ],
-          ),
-        ),
+      key: const ValueKey('quran-mushaf-pack'),
+      color: QuranMushafPageView.paperOf(context, customBgColor),
+      child: DefaultTextStyle.merge(
+        style: TextStyle(color: customTextColor ?? theme.colorScheme.onSurface),
+        child: body,
       ),
     );
   }
@@ -628,6 +923,12 @@ class _QuranMushafPage extends StatefulWidget {
   final int pageNumber;
   final int? playingSurahNumber;
   final int? playingAyahNumber;
+
+  /// The ayah found by search, its level and the report that its page
+  /// shows ([QuranMushafPageView.flashAyah]).
+  final (int, int)? flashAyah;
+  final Animation<double>? flashLevel;
+  final VoidCallback? onFlashReady;
   final bool isMemorizationMode;
   final Set<int> hiddenAyahIndices;
   final int memorizedSurahNumber;
@@ -635,7 +936,12 @@ class _QuranMushafPage extends StatefulWidget {
   final void Function(int surahNumber, int verseNumber)? onAyahLongPress;
   final Color? customBgColor;
   final Color? customTextColor;
-  final HorizontalPageDisplayMode displayMode;
+
+  /// The page fills its width (zoomed) instead of fitting.
+  final bool zoomed;
+
+  /// A zoomed page scrolls itself; in a zoomed spread the spread scrolls.
+  final bool scrolls;
 
   /// Side of a double-page spread; null on a single page.
   final bool? rightOfSpread;
@@ -648,6 +954,9 @@ class _QuranMushafPage extends StatefulWidget {
     this.rightOfSpread,
     this.playingSurahNumber,
     this.playingAyahNumber,
+    this.flashAyah,
+    this.flashLevel,
+    this.onFlashReady,
     this.isMemorizationMode = false,
     this.hiddenAyahIndices = const {},
     this.memorizedSurahNumber = 0,
@@ -655,7 +964,8 @@ class _QuranMushafPage extends StatefulWidget {
     this.onAyahLongPress,
     this.customBgColor,
     this.customTextColor,
-    this.displayMode = HorizontalPageDisplayMode.normal,
+    this.zoomed = false,
+    this.scrolls = true,
   });
 
   @override
@@ -731,15 +1041,13 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
   }
 
   Color _accentColor(BuildContext context, bool isDark) =>
-      isDark ? context.primaryLightColor : context.primaryDarkColor;
+      Theme.of(context).colorScheme.primary;
 
   Color _bgColor(bool isDark) =>
-      widget.customBgColor ??
-      (isDark ? const Color(0xFF0F0F0F) : const Color(0xFFFFF9E8));
+      QuranMushafPageView.paperOf(context, widget.customBgColor);
 
   Color _textColor(bool isDark) =>
-      widget.customTextColor ??
-      (isDark ? const Color(0xFFEEEAE0) : const Color(0xFF1A1A1A));
+      widget.customTextColor ?? Theme.of(context).colorScheme.onSurface;
 
   /// Background highlight per ayah, with the same precedence the text reader
   /// used: pressed/playing, then star, note, bookmark, khatma start/end.
@@ -792,19 +1100,18 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
           widget.playingSurahNumber == surahNum &&
           widget.playingAyahNumber == v;
 
+      final scheme = Theme.of(context).colorScheme;
       Color? color;
       if (isPressed || isPlaying) {
         color = accent.withValues(alpha: 0.2);
       } else if (hasStar) {
-        color = Colors.amber.withValues(alpha: 0.28);
+        color = scheme.tertiary.withValues(alpha: 0.24);
       } else if (hasNote) {
-        color = Colors.orange.withValues(alpha: 0.28);
+        color = scheme.secondary.withValues(alpha: 0.22);
       } else if (hasBookmark) {
         color = (bookmarkColor ?? accent).withValues(alpha: 0.28);
-      } else if (isKhatmaStart) {
-        color = const Color(0xFF4CAF50).withValues(alpha: 0.28);
-      } else if (isKhatmaEnd) {
-        color = const Color(0xFFE53935).withValues(alpha: 0.28);
+      } else if (isKhatmaStart || isKhatmaEnd) {
+        color = accent.withValues(alpha: 0.14);
       }
       if (color != null) result[key] = color;
     }
@@ -840,7 +1147,18 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final accent = _accentColor(context, isDark);
     final textColor = _textColor(isDark);
     final pack = service.pack;
+    final flash = widget.flashAyah;
+    final flashHere =
+        flash != null &&
+        pageLayout.ayahs.any((a) => (a.surah, a.ayah) == flash);
     final pageImage = _MushafPageImage(
+      flash: flashHere ? flash : null,
+      flashLevel: widget.flashLevel,
+      // Gold, as the search marks a hit.
+      flashColor: Theme.of(context).colorScheme.tertiary,
+      // A zoomed page scrolls: bring the ayah into view before it lights.
+      revealFlash: widget.zoomed,
+      onFlashReady: widget.onFlashReady,
       file: service.pageFile(pageNumber),
       packLayout: packLayout,
       layout: pageLayout,
@@ -860,8 +1178,11 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final juzNumber = pageContent.juzNumber;
     final hizbText = pageContent.hizbText;
 
-    if (widget.displayMode == HorizontalPageDisplayMode.zoomed) {
-      return _buildZoomedLayout(
+    // Zoomed (the reader's choice, never by default): the page fills its
+    // width and scrolls; in a spread both pages scroll together, so the
+    // spread scrolls and the page doesn't (owner round 3).
+    if (widget.zoomed) {
+      final zoomed = _buildZoomedLayout(
         context,
         pageImage,
         packLayout,
@@ -869,52 +1190,81 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
         juzNumber,
         hizbText,
         isDark,
+        scrolls: widget.scrolls,
+      );
+      if (!widget.scrolls) return zoomed;
+      return ColoredBox(
+        color: _bgColor(isDark),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: _filledMaxWidth),
+            child: zoomed,
+          ),
+        ),
       );
     }
+    return _buildFittedLayout(
+      context,
+      pageImage,
+      packLayout,
+      firstSurah,
+      juzNumber,
+      hizbText,
+      isDark,
+    );
+  }
 
+  /// A single zoomed page is capped here on wide windows, so it stays a
+  /// page.
+  static const double _filledMaxWidth = 900;
+
+  Widget _buildFittedLayout(
+    BuildContext context,
+    Widget pageImage,
+    MushafPackLayout packLayout,
+    int firstSurah,
+    int juzNumber,
+    String? hizbText,
+    bool isDark,
+  ) {
+    // The page as a facsimile: its header, the page image and its footer
+    // in the page's own units, scaled together to fit the window.
     return Container(
       color: _bgColor(isDark),
+      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
       child: MediaQuery(
         data: MediaQuery.of(
           context,
         ).copyWith(textScaler: const TextScaler.linear(1)),
         child: SizedBox.expand(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Positioned.fill(
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: _baselineWidth,
-                    height:
-                        _baselineWidth / packLayout.aspectRatio +
-                        _pageTopSpace +
-                        _pageBottomSpace,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: _pageTopSpace,
-                        bottom: _pageBottomSpace,
-                      ),
-                      child: pageImage,
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: SizedBox(
+              width: _baselineWidth,
+              height:
+                  _baselineWidth / packLayout.aspectRatio +
+                  _pageTopSpace +
+                  _pageBottomSpace,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: _pageTopSpace,
+                    child: _buildHeader(
+                      context,
+                      firstSurah,
+                      juzNumber,
+                      isDark,
+                      scale: 1,
                     ),
                   ),
-                ),
+                  Expanded(child: pageImage),
+                  SizedBox(
+                    height: _pageBottomSpace,
+                    child: _buildFooter(context, hizbText, isDark, scale: 1),
+                  ),
+                ],
               ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: _buildHeader(context, firstSurah, juzNumber, isDark),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: _buildFooter(context, hizbText, isDark),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -928,52 +1278,56 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     int firstSurah,
     int juzNumber,
     String? hizbText,
-    bool isDark,
-  ) {
+    bool isDark, {
+    bool scrolls = true,
+  }) {
+    // The page fills its width and scrolls; its header and footer are part
+    // of the page, in the page's units (half the window on a spread), so
+    // they scroll with it and never sit over the text (owner round 1). In
+    // a zoomed spread the spread scrolls, not the page.
+    final bottomInset = scrolls ? MediaQuery.paddingOf(context).bottom : 0.0;
     return Container(
       color: _bgColor(isDark),
-      child: MediaQuery(
-        data: MediaQuery.of(
-          context,
-        ).copyWith(textScaler: const TextScaler.linear(1)),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: _refH(context, 44)),
-                    AspectRatio(
-                      aspectRatio: packLayout.aspectRatio,
-                      child: pageImage,
-                    ),
-                    SizedBox(
-                      height:
-                          MediaQuery.sizeOf(context).width *
-                              _pageBottomSpace /
-                              _baselineWidth +
-                          _refH(context, 44),
-                    ),
-                  ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final scale = constraints.maxWidth / _baselineWidth;
+          final page = Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: _pageTopSpace * scale,
+                child: _buildHeader(
+                  context,
+                  firstSurah,
+                  juzNumber,
+                  isDark,
+                  scale: scale,
                 ),
               ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: _buildHeader(context, firstSurah, juzNumber, isDark),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: _buildFooter(context, hizbText, isDark),
-            ),
-          ],
-        ),
+              AspectRatio(
+                aspectRatio: packLayout.aspectRatio,
+                child: pageImage,
+              ),
+              SizedBox(
+                height: _pageBottomSpace * scale,
+                child: _buildFooter(context, hizbText, isDark, scale: scale),
+              ),
+              SizedBox(height: bottomInset),
+            ],
+          );
+          return MediaQuery(
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: const TextScaler.linear(1)),
+            child: scrolls
+                ? SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: page,
+                  )
+                : page,
+          );
+        },
       ),
     );
   }
@@ -982,13 +1336,14 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     BuildContext context,
     int surahNumber,
     int juzNumber,
-    bool isDark,
-  ) {
+    bool isDark, {
+    required double scale,
+  }) {
     final accent = _accentColor(context, isDark);
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: _refW(context, 16),
-        vertical: _refH(context, 10),
+        horizontal: 16 * scale,
+        vertical: 10 * scale,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -998,7 +1353,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
             'سورة ${quran.getSurahNameArabic(surahNumber)}',
             style: TextStyle(
               fontFamily: 'Amiri',
-              fontSize: _refW(context, 16),
+              fontSize: 16 * scale,
               color: accent,
               fontWeight: FontWeight.bold,
             ),
@@ -1007,7 +1362,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
             'الجزء ${_getJuzNameArabic(juzNumber)}',
             style: TextStyle(
               fontFamily: 'Amiri',
-              fontSize: _refW(context, 16),
+              fontSize: 16 * scale,
               color: accent,
               fontWeight: FontWeight.bold,
             ),
@@ -1017,40 +1372,60 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     );
   }
 
+  /// A surah's opening on the page: Quran's own headpiece (the ruled gilt
+  /// panel, the cartouche with the name in the surah-name font, a rosette
+  /// in each compartment, a star roundel in each margin), drawn in the
+  /// page's gold over its paper, the same piece that opens a surah in the
+  /// scrolling reader. It replaced a stock banner image (owner round 2).
+  /// Drawn whole: pages turn too often for it to draw itself in.
   Widget _buildSurahBanner(
     BuildContext context,
     int surahNum,
     Color accent,
     Color textColor,
   ) {
-    return SizedBox(
-      height: 60,
+    const size = Size(
+      _MushafPageImageState._bannerWidth,
+      _MushafPageImageState._bannerHeight,
+    );
+    final cartouche = QuranHeadpiecePainter.cartoucheRect(size);
+    return SizedBox.fromSize(
+      size: size,
       child: Stack(
         children: [
-          Center(
-            child: Image.asset(
-              'assets/images/surah_header.png',
-              width: double.infinity,
-              color: accent.withValues(alpha: 0.4),
-              colorBlendMode: BlendMode.color,
-              fit: BoxFit.fill,
+          // The slot is the headpiece's own: paper under it, as the image
+          // it replaced covered the slot.
+          Positioned.fill(
+            child: ColoredBox(
+              color: _bgColor(Theme.of(context).brightness == Brightness.dark),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'surah${surahNum.toString().padLeft(3, '0')}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'arsura',
-                    fontSize: 40,
-                    color: textColor,
-                  ),
+          Positioned.fill(
+            child: CustomPaint(
+              // In the reader's chosen color, as the headpiece is in the
+              // scrolling reader.
+              painter: QuranHeadpiecePainter(
+                color: Theme.of(context).colorScheme.primary,
+                panel: _bgColor(
+                  Theme.of(context).brightness == Brightness.dark,
                 ),
-              ],
+                stroke: 1.3,
+              ),
+            ),
+          ),
+          Positioned.fromRect(
+            rect: cartouche.deflate(cartouche.height * 0.1),
+            child: FittedBox(
+              child: Text(
+                'surah${surahNum.toString().padLeft(3, '0')}',
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  fontFamily: 'arsura',
+                  fontSize: 40,
+                  height: 1.1,
+                  color: textColor,
+                ),
+              ),
             ),
           ),
         ],
@@ -1064,16 +1439,17 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
       alignment: Alignment.center,
       child: Text(
         AppLocalizations.of(context)!.mushafPageNumber(pageNumber),
-        style: TextStyle(
-          fontSize: _refW(context, 16),
-          color: _textColor(isDark),
-          fontFamily: 'Amiri',
-        ),
+        style: context.type.arabicLabel.copyWith(color: _textColor(isDark)),
       ),
     );
   }
 
-  Widget _buildFooter(BuildContext context, String? hizbText, bool isDark) {
+  Widget _buildFooter(
+    BuildContext context,
+    String? hizbText,
+    bool isDark, {
+    required double scale,
+  }) {
     final accent = _accentColor(context, isDark);
     final String pageStr = _convertToArabicNumber(pageNumber.toString());
     final String? arabicHizb = _getHizbTextArabic(hizbText);
@@ -1090,21 +1466,19 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
     final textStyle = TextStyle(
       fontFamily: 'Amiri',
-      fontSize: _refW(context, 13),
+      fontSize: 13 * scale,
       color: textBase.withValues(alpha: 0.85),
       fontWeight: FontWeight.bold,
     );
 
-    final double bannerWidth = hasHizb
-        ? _refW(context, 180)
-        : _refW(context, 90);
-    final double bannerHeight = _refH(context, 28);
+    final double bannerWidth = hasHizb ? 180 * scale : 90 * scale;
+    final double bannerHeight = 28 * scale;
 
     return Padding(
       padding: EdgeInsets.only(
-        bottom: _refH(context, 8),
-        left: _refW(context, 12),
-        right: _refW(context, 12),
+        bottom: 8 * scale,
+        left: 12 * scale,
+        right: 12 * scale,
       ),
       child: Align(
         // In a spread both pills sit by the spine, wherever the hizb falls.
@@ -1123,7 +1497,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
           ),
           child: hasHizb
               ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: _refW(context, 16)),
+                  padding: EdgeInsets.symmetric(horizontal: 16 * scale),
                   child: Row(
                     textDirection: TextDirection.rtl,
                     children: [
@@ -1226,9 +1600,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     return input.split('').map((char) => arabicNumbers[char] ?? char).join();
   }
 
-  static const _refDesignW = 392.72727272727275;
-  static const _refDesignH = 800.7272727272727;
-
   static const double _baselineWidth = 470;
 
   /// Room for the header and footer overlays, in the 470-wide page units.
@@ -1242,20 +1613,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     0, 0, 0.3, 0, 180, //
     0, 0, 0, 1, 0, //
   ]);
-
-  double _refScale(BuildContext context) {
-    final screenW = MediaQuery.sizeOf(context).width;
-    final screenH = MediaQuery.sizeOf(context).height;
-    final scaleW = screenW / _refDesignW;
-    final scaleH = screenH / _refDesignH;
-    return scaleW < scaleH ? scaleW : scaleH;
-  }
-
-  double _refW(BuildContext context, double value) =>
-      value * _refScale(context);
-
-  double _refH(BuildContext context, double value) =>
-      value * _refScale(context);
 }
 
 /// One Mushaf page image with its themed overlays, sized by its parent to the
@@ -1278,7 +1635,23 @@ class _MushafPageImage extends StatefulWidget {
   final void Function(int surah, int ayah) onLongPress;
   final VoidCallback onMissingFile;
 
+  /// The found ayah when it's on this page, with its level and color.
+  final (int, int)? flash;
+  final Animation<double>? flashLevel;
+  final Color flashColor;
+
+  /// Scroll the found ayah into view once the image shows.
+  final bool revealFlash;
+
+  /// The found ayah is drawn on screen.
+  final VoidCallback? onFlashReady;
+
   const _MushafPageImage({
+    this.flash,
+    this.flashLevel,
+    this.flashColor = const Color(0x00000000),
+    this.revealFlash = false,
+    this.onFlashReady,
     required this.file,
     required this.packLayout,
     required this.layout,
@@ -1313,6 +1686,35 @@ class _MushafPageImageState extends State<_MushafPageImage> {
   void didUpdateWidget(_MushafPageImage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.file.path != widget.file.path) _resolve();
+    if (oldWidget.flash != widget.flash) _reportFlash();
+  }
+
+  /// Once the image holding the found ayah is drawn: bring the ayah into
+  /// view (a zoomed page) and tell the view to light it.
+  void _reportFlash() {
+    final flash = widget.flash;
+    if (flash == null || _imageInfo == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || widget.flash != flash) return;
+      final box = context.findRenderObject();
+      if (widget.revealFlash && box is RenderBox && box.hasSize) {
+        final scale = box.size.width / widget.packLayout.imageWidth;
+        Rect? area;
+        for (final segment in widget.layout.ayahs) {
+          if ((segment.surah, segment.ayah) != flash) continue;
+          final rect = _scaleRect(segment.rect, scale);
+          area = area?.expandToInclude(rect) ?? rect;
+        }
+        if (area != null) {
+          box.showOnScreen(
+            rect: area.inflate(48),
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeOutCubic,
+          );
+        }
+      }
+      widget.onFlashReady?.call();
+    });
   }
 
   /// Decodes at (at most) the screen's physical width instead of the full
@@ -1337,11 +1739,13 @@ class _MushafPageImageState extends State<_MushafPageImage> {
   }
 
   void _onImage(ImageInfo info, bool synchronousCall) {
+    final first = _imageInfo == null;
     setState(() {
       _imageInfo?.dispose();
       _imageInfo = info;
       _failed = false;
     });
+    if (first) _reportFlash();
   }
 
   void _onError(Object error, StackTrace? stack) {
@@ -1416,6 +1820,9 @@ class _MushafPageImageState extends State<_MushafPageImage> {
                     highlights: widget.highlights,
                     hidden: widget.hidden,
                     background: widget.background,
+                    flash: widget.flash,
+                    flashLevel: widget.flashLevel,
+                    flashColor: widget.flashColor,
                   ),
                 ),
               ),
@@ -1462,7 +1869,15 @@ class _MushafPagePainter extends CustomPainter {
   final Set<(int, int)> hidden;
   final Color background;
 
+  /// The found ayah, lit by [flashLevel] (repaints with it, no rebuilds).
+  final (int, int)? flash;
+  final Animation<double>? flashLevel;
+  final Color flashColor;
+
   _MushafPagePainter({
+    this.flash,
+    this.flashLevel,
+    this.flashColor = const Color(0x00000000),
     required this.image,
     required this.layout,
     required this.scale,
@@ -1472,7 +1887,7 @@ class _MushafPagePainter extends CustomPainter {
     required this.highlights,
     required this.hidden,
     required this.background,
-  });
+  }) : super(repaint: flashLevel);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1489,6 +1904,41 @@ class _MushafPagePainter extends CustomPainter {
         ),
         Paint()..color = color,
       );
+    }
+
+    // Over any other highlight, under the ink, as the search marks a hit:
+    // one wash over the ayah's lines (a single path, so lines that touch
+    // don't double up) and a fine gilt rule along each line's foot.
+    final flash = this.flash;
+    final level = (flashLevel?.value ?? 0).clamp(0.0, 1.0);
+    if (flash != null && level > 0) {
+      final wash = Path();
+      final feet = <Rect>[];
+      for (final segment in layout.ayahs) {
+        if ((segment.surah, segment.ayah) != flash) continue;
+        final rect = _scaleRect(segment.rect, scale);
+        wash.addRRect(
+          RRect.fromRectAndRadius(rect, Radius.circular(6 * scale)),
+        );
+        feet.add(rect);
+      }
+      canvas.drawPath(
+        wash,
+        Paint()..color = flashColor.withValues(alpha: 0.22 * level),
+      );
+      final rule = Paint()
+        ..strokeWidth = (2 * scale).clamp(1.0, 2.5)
+        ..strokeCap = StrokeCap.round
+        ..color = flashColor.withValues(alpha: 0.8 * level);
+      for (final rect in feet) {
+        final inset = rect.width * 0.04 + 6 * scale;
+        final y = rect.bottom - rule.strokeWidth;
+        canvas.drawLine(
+          Offset(rect.left + inset, y),
+          Offset(rect.right - inset, y),
+          rule,
+        );
+      }
     }
 
     final src = Rect.fromLTWH(
@@ -1537,6 +1987,9 @@ class _MushafPagePainter extends CustomPainter {
       old.markerTint != markerTint ||
       old.filter != filter ||
       old.background != background ||
+      old.flash != flash ||
+      old.flashLevel != flashLevel ||
+      old.flashColor != flashColor ||
       !mapEquals(old.highlights, highlights) ||
       !setEquals(old.hidden, hidden);
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 
+/// What can't be fetched while offline, said quietly over what still works
+/// (saved readers, tafsir, translations).
 class OfflineContentBanner extends StatelessWidget {
   final String message;
 
@@ -8,47 +10,34 @@ class OfflineContentBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+    final tokens = context.tokens;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return DecoratedBox(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5),
-        borderRadius: BorderRadius.circular(14.r),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.07)
-              : Colors.black.withValues(alpha: 0.06),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
-            blurRadius: 12.r,
-            offset: Offset(0, 4.h),
-          ),
-        ],
+        color: scheme.surfaceContainer,
+        borderRadius: tokens.radius.control,
       ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.cloud_off_rounded,
-            size: 18.sp,
-            color: isDark ? Colors.white70 : Colors.black54,
-          ),
-          SizedBox(width: 10.w),
-          Expanded(
-            child: Text(
-              message,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-                color: isDark ? Colors.white70 : Colors.black87,
+      child: Padding(
+        padding: EdgeInsets.all(tokens.space.sm),
+        child: Row(
+          children: [
+            Icon(
+              Icons.cloud_off_rounded,
+              size: 20,
+              color: scheme.onSurfaceVariant,
+            ),
+            SizedBox(width: tokens.space.sm),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

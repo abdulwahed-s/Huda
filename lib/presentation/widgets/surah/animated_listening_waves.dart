@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'dart:math' as math;
 
 import 'package:huda/l10n/app_localizations.dart';
@@ -67,22 +66,18 @@ class _AnimatedListeningWavesState extends State<AnimatedListeningWaves>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final primaryColor = context.primaryColor;
-    final accentColor = context.accentColor;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+    final primaryColor = scheme.primary;
+    final accentColor = scheme.tertiary;
 
     return Container(
-      height: 150.h,
+      height: 120,
       width: double.infinity,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [const Color(0xFF1A1A1A), const Color(0xFF0F0F0F)]
-              : [const Color(0xFFF8F9FA), const Color(0xFFE8EAF0)],
-        ),
-        borderRadius: BorderRadius.circular(12.r),
+        color: scheme.surfaceContainer,
+        borderRadius: context.tokens.radius.control,
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -116,15 +111,10 @@ class _AnimatedListeningWavesState extends State<AnimatedListeningWaves>
                       widget.isListening
                           ? AppLocalizations.of(context)!.listening
                           : AppLocalizations.of(context)!.reciteToReveal,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
+                      style: theme.textTheme.labelLarge?.copyWith(
                         color: widget.isListening
                             ? primaryColor
-                            : (isDark
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade600),
-                        letterSpacing: 0.5,
+                            : scheme.onSurfaceVariant,
                       ),
                     ),
                   );

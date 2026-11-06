@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:huda/data/models/ayah_audio_range.dart';
-import '../../../core/theme/theme_extension.dart';
 import '../../../l10n/app_localizations.dart';
 
 class AudioSettingsWidget extends StatelessWidget {
@@ -29,9 +28,7 @@ class AudioSettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final accent = theme.brightness == Brightness.dark
-        ? context.accentColor
-        : context.primaryColor;
+    final accent = theme.colorScheme.primary;
     final selection = range;
     final rangeEnabled = selection != null;
 

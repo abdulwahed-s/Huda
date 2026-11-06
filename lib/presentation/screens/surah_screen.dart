@@ -1,49 +1,58 @@
-import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/layout/fold.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
-import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/bookmark_service.dart';
-import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/core/services/get_fonts.dart';
 import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/core/services/reading_position_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/surah_screen_settings_service.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_system_ui.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
 import 'package:huda/cubit/bookmark/bookmarks_cubit.dart';
 import 'package:huda/cubit/memorization/memorization_cubit.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:huda/cubit/tafsir/tafsir_cubit.dart';
 import 'package:huda/cubit/translation/translation_cubit.dart';
+import 'package:huda/data/api/audio_services.dart';
+import 'package:huda/data/api/tafsir_services.dart';
+import 'package:huda/data/api/translation_services.dart';
 import 'package:huda/data/models/quran_model.dart';
+import 'package:huda/data/repository/audio_repository.dart';
 import 'package:huda/data/repository/tafsir_repository.dart';
 import 'package:huda/data/repository/translation_repository.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/screens/khatma_page.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
 import 'package:huda/presentation/widgets/surah/mushaf_interactive_wrapper.dart';
 import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 import 'package:huda/presentation/widgets/surah/quran_page_view.dart';
-import 'package:huda/presentation/widgets/surah/surah_loading_state_widget.dart';
-import 'package:huda/presentation/widgets/surah/khatma_tab_content.dart';
-import 'package:huda/presentation/widgets/surah/memorization_stop_fab.dart';
-import 'package:huda/presentation/widgets/surah/memorization_tab_content.dart';
-import 'package:huda/presentation/widgets/surah/settings_tab.dart';
-import 'package:huda/presentation/widgets/surah/sheet_drag_handle.dart';
-import 'package:huda/presentation/widgets/surah/sheet_tab_bar.dart';
-import 'package:huda/presentation/widgets/surah/surah_index_tab.dart';
-import 'package:huda/presentation/widgets/surah/surah_screen_app_bar.dart';
+import 'package:huda/presentation/widgets/surah/quran_reader_menus.dart';
 
+/// The Quran reader: a surah as scrolling text (under its illuminated
+/// headpiece) or as Mushaf pages, by the saved reading mode. Its bar
+/// carries Surahs (an index sheet; a side sheet on wide windows, so the
+/// text keeps the page), Display (reading mode, Mushaf layout, font) and
+/// More (Memorize, Khatma). Another surah opens in place. See
+/// `design/features/quran/brief.md`.
 class SurahScreen extends StatefulWidget {
   final QuranModel surahInfo;
   final int? scrollToAyah;
+
+  /// Light up [scrollToAyah] once it's in view, in either reading mode
+  /// (`QuranAyahFlash`): the reader came from a search hit.
+  final bool flashAyah;
   final double? ayahPosition;
   final bool shouldRestorePosition;
   final bool isBookmarkVisit;
@@ -52,10 +61,46 @@ class SurahScreen extends StatefulWidget {
     super.key,
     required this.surahInfo,
     this.scrollToAyah,
+    this.flashAyah = false,
     this.ayahPosition,
     this.shouldRestorePosition = false,
     this.isBookmarkVisit = false,
   });
+
+  /// The reader as its route builds it: the network-backed cubits it
+  /// reads, and the redesign's theme. Used by `AppRoute.surahScreen` and
+  /// by lists that open a surah from the tapped tile (`pushFromCard`).
+  static Widget route({
+    required QuranModel surahInfo,
+    int? scrollToAyah,
+    bool flashAyah = false,
+    bool shouldRestorePosition = false,
+  }) => MultiBlocProvider(
+    providers: [
+      BlocProvider<AudioCubit>(create: (_) => createAudioCubit()),
+      BlocProvider<TafsirCubit>(create: (_) => createTafsirCubit()),
+      BlocProvider<TranslationCubit>(create: (_) => createTranslationCubit()),
+    ],
+    child: SurahScreen(
+      surahInfo: surahInfo,
+      scrollToAyah: scrollToAyah,
+      flashAyah: flashAyah,
+      shouldRestorePosition: shouldRestorePosition,
+    ),
+  );
+
+  /// Seams for the device matrix, which has no network.
+  @visibleForTesting
+  static AudioCubit Function() createAudioCubit = () =>
+      AudioCubit(AudioRepository(audioServices: AudioServices()));
+  @visibleForTesting
+  static TafsirCubit Function() createTafsirCubit = () =>
+      TafsirCubit(TafsirRepository(tafsirServices: TafsirServices()));
+  @visibleForTesting
+  static TranslationCubit Function() createTranslationCubit = () =>
+      TranslationCubit(
+        TranslationRepository(translationServices: TranslationServices()),
+      );
 
   @override
   State<SurahScreen> createState() => _SurahScreenState();
@@ -63,8 +108,7 @@ class SurahScreen extends StatefulWidget {
 
 class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
   QuranReadingMode _readingMode = QuranReadingMode.scrollList;
-  HorizontalPageDisplayMode _horizontalDisplayMode =
-      HorizontalPageDisplayMode.normal;
+  MushafLayout _mushafLayout = const MushafLayout();
   MushafFlipDirection _mushafFlipDirection = MushafFlipDirection.horizontal;
 
   Color? _customBgColor;
@@ -75,11 +119,28 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
   int _currentMushafPage = 1;
 
   // Mushaf pages span surahs; ayah actions switch the screen to the surah
-  // of the touched ayah so audio, highlight and the ayah sheet agree.
+  // of the touched ayah so audio, highlight and the ayah sheet agree. The
+  // index and previous/next open another surah in place too.
   late int _surahNumber = widget.surahInfo.number ?? 1;
   int? _pendingAyahSheet;
 
   bool get _isOpeningSurah => _surahNumber == widget.surahInfo.number;
+
+  /// The found ayah still waits for its flash: it runs once, in whichever
+  /// mode shows it first, not again after a mode or layout change.
+  late bool _flashPending = widget.flashAyah && widget.scrollToAyah != null;
+
+  /// The ayah to light up in the Mushaf, while it's pending.
+  (int, int)? get _mushafFlash => _flashPending && _isOpeningSurah
+      ? (_surahNumber, widget.scrollToAyah!)
+      : null;
+
+  void _flashShown() => _flashPending = false;
+
+  static const Map<String, String> _fonts = {
+    'Amiri': 'Amiri',
+    'IndoPak': 'IndoPak',
+  };
 
   @override
   void initState() {
@@ -97,6 +158,10 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
       );
     }
 
+    context.read<AudioCubit>().fetchAudioInfo(_surahNumber.toString());
+    context.read<TafsirCubit>().fetchTafsirInfo();
+    context.read<TranslationCubit>().fetchTranslationInfo();
+
     WidgetsBinding.instance.addObserver(this);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     WakelockPlus.enable();
@@ -112,10 +177,8 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: SystemUiOverlay.values,
-    );
+    // Back to edge to edge (`RESPONSIVE.md`), not `manual`.
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     WakelockPlus.disable();
     super.dispose();
   }
@@ -124,8 +187,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     final surahNumber = widget.surahInfo.number ?? 1;
     try {
       if (widget.shouldRestorePosition) {
-        final readingService = getIt<ReadingPositionService>();
-        final lastRead = readingService.getLastReadSummary();
+        final lastRead = getIt<ReadingPositionService>().getLastReadSummary();
         if (lastRead != null &&
             lastRead['surahNumber'] == surahNumber &&
             lastRead['ayahNumber'] != null) {
@@ -142,18 +204,13 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   void _onMushafPageChanged(int page) {
     _currentMushafPage = page;
-
     if (widget.isBookmarkVisit) return;
-
     try {
       final pageData = _readingMode.pagination.sectionsOf(page);
       if (pageData.isNotEmpty) {
-        final surahNum = pageData[0]['surah'] as int;
-        final startAyah = pageData[0]['start'] as int;
-
         getIt<ReadingPositionService>().updatePositionForSurah(
-          surahNumber: surahNum,
-          ayahNumber: startAyah,
+          surahNumber: pageData[0]['surah'] as int,
+          ayahNumber: pageData[0]['start'] as int,
           position: 0.0,
         );
       }
@@ -164,20 +221,15 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   void _loadSavedMode() {
     final cache = getIt<CacheHelper>();
-    final saved = cache.getData(key: QuranReadingMode.key) as String?;
-    final mode = QuranReadingMode.fromStorageValue(saved);
-    final savedDisplay =
-        cache.getData(key: HorizontalPageDisplayMode.key) as String?;
-    final displayMode = HorizontalPageDisplayMode.fromStorageValue(
-      savedDisplay,
+    _readingMode = QuranReadingMode.fromStorageValue(
+      cache.getData(key: QuranReadingMode.key) as String?,
     );
-    final savedFlip = cache.getData(key: MushafFlipDirection.key) as String?;
-    final flipMode = MushafFlipDirection.fromStorageValue(savedFlip);
-    setState(() {
-      _readingMode = mode;
-      _horizontalDisplayMode = displayMode;
-      _mushafFlipDirection = flipMode;
-    });
+    // Until a reader picks, two pages on wide windows and open foldables,
+    // one on phones (`QuranMushafPageView.showsSpread`); zoom is off.
+    _mushafLayout = MushafLayout.read(cache);
+    _mushafFlipDirection = MushafFlipDirection.fromStorageValue(
+      cache.getData(key: MushafFlipDirection.key) as String?,
+    );
   }
 
   void _loadCustomisation() {
@@ -186,6 +238,8 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     _quranFont = getQuranFonts();
   }
 
+  /// A Mushaf ayah of another surah was touched: switch to it and open
+  /// its sheet.
   void _switchSurah(BuildContext context, int surahNumber, int verseNumber) {
     setState(() {
       _surahNumber = surahNumber;
@@ -193,6 +247,25 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     });
     context.read<SurahCubit>().loadSurah(surahNumber);
     context.read<AudioCubit>().fetchAudioInfo(surahNumber.toString());
+  }
+
+  /// Opens [number] in this reader, at its start.
+  void _openSurah(BuildContext context, int number) {
+    if (number == _surahNumber) return;
+    getIt<ReadingPositionService>().saveReadingPosition(
+      surahNumber: number,
+      ayahNumber: 1,
+      position: 0.0,
+    );
+    setState(() {
+      _surahNumber = number;
+      _pendingAyahSheet = null;
+      try {
+        _currentMushafPage = _readingMode.pagination.pageOf(number, 1);
+      } catch (_) {}
+    });
+    context.read<SurahCubit>().loadSurah(number);
+    context.read<AudioCubit>().fetchAudioInfo(number.toString());
   }
 
   void _setMode(QuranReadingMode mode) {
@@ -214,12 +287,9 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     );
   }
 
-  void _setHorizontalDisplayMode(HorizontalPageDisplayMode displayMode) {
-    setState(() => _horizontalDisplayMode = displayMode);
-    getIt<CacheHelper>().saveData(
-      key: HorizontalPageDisplayMode.key,
-      value: displayMode.storageValue,
-    );
+  void _setMushafLayout(MushafLayout layout) {
+    setState(() => _mushafLayout = layout);
+    layout.write(getIt<CacheHelper>());
   }
 
   void _setMushafFlipDirection(MushafFlipDirection direction) {
@@ -230,195 +300,36 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     );
   }
 
-  void _showTabsSheet(BuildContext context, {int initialTab = 0}) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accent = isDark ? context.primaryLightColor : context.primaryColor;
-    final memorizationCubit = context.read<MemorizationCubit>();
-    final l = AppLocalizations.of(context)!;
-
-    final visibleSurahs = _getVisibleSurahs(context);
-    final selectedSurah = visibleSurahs.isNotEmpty
-        ? visibleSurahs.first
-        : _surahNumber;
-    final rowIndex = (selectedSurah - 1) ~/ 3;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final itemWidth = (screenWidth - 32.w - 24.w) / 3;
-    final itemHeight = itemWidth / 2.2;
-    final rowHeight = itemHeight + 12.h;
-    double initialOffset = rowIndex * rowHeight - rowHeight * 1.5;
-    if (initialOffset < 0) initialOffset = 0;
-
-    final gridScrollController = ScrollController(
-      initialScrollOffset: initialOffset,
-    );
-
-    const rtlLanguages = {'ar', 'ur'};
-    final sheetDirection =
-        rtlLanguages.contains(Localizations.localeOf(context).languageCode)
-        ? TextDirection.rtl
-        : TextDirection.ltr;
-
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (sheetCtx) {
-        return BlocProvider.value(
-          value: memorizationCubit,
-          child: Directionality(
-            textDirection: sheetDirection,
-            child: DefaultTabController(
-              length: PlatformUtils.isLinux ? 3 : 4,
-              initialIndex: initialTab,
-              child: StatefulBuilder(
-                builder: (sheetCtx, setSheetState) {
-                  return Container(
-                    height: MediaQuery.of(sheetCtx).size.height * 0.92,
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? const Color(0xFF141414)
-                          : const Color(0xFFF7F1E6),
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(22.r),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 10.h),
-                        SheetDragHandle(isDark: isDark),
-                        SizedBox(height: 10.h),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              SurahIndexTab(
-                                isDark: isDark,
-                                accent: accent,
-                                visibleSurahs: visibleSurahs,
-                                scrollController: gridScrollController,
-                                onSurahSelected: (surahNumber) =>
-                                    _navigateToSurah(surahNumber, sheetCtx),
-                                onCurrentSurahTapped: () =>
-                                    Navigator.pop(sheetCtx),
-                              ),
-                              KhatmaTabContent(
-                                isDark: isDark,
-                                title: l.khatmaLegendKhatma,
-                              ),
-                              SettingsTab(
-                                isDark: isDark,
-                                accent: accent,
-                                readingMode: _readingMode,
-                                horizontalDisplayMode: _horizontalDisplayMode,
-                                mushafFlipDirection: _mushafFlipDirection,
-                                quranFont: _quranFont,
-                                fontOptions: _fontOptions,
-                                hafsPackService: getIt<MushafPackService>(
-                                  instanceName: 'hafs',
-                                ),
-                                tajweedPackService: getIt<MushafPackService>(
-                                  instanceName: 'tajweed',
-                                ),
-                                indopakPackService: getIt<MushafPackService>(
-                                  instanceName: 'indopak',
-                                ),
-                                onReadingModeTap:
-                                    (mode, packService, requiresPack) =>
-                                        _handleReadingModeSelection(
-                                          mode: mode,
-                                          packService: packService,
-                                          requiresPack: requiresPack,
-                                          sheetCtx: sheetCtx,
-                                          setSheetState: setSheetState,
-                                        ),
-                                onHorizontalDisplayModeSelected: (dm) {
-                                  setSheetState(() {});
-                                  _setHorizontalDisplayMode(dm);
-                                },
-                                onMushafFlipDirectionSelected: (fd) {
-                                  setSheetState(() {});
-                                  _setMushafFlipDirection(fd);
-                                },
-                                onFontSelected: (family) {
-                                  setSheetState(() {});
-                                  setState(() => _quranFont = family);
-                                  setQuranFonts(family);
-                                },
-                              ),
-                              if (!PlatformUtils.isLinux)
-                                MemorizationTabContent(
-                                  isDark: isDark,
-                                  accent: accent,
-                                  onStart: () => _startMemorization(sheetCtx),
-                                  onStop: () => _stopMemorization(sheetCtx),
-                                ),
-                            ],
-                          ),
-                        ),
-                        SurahSheetTabBar(
-                          isDark: isDark,
-                          accent: accent,
-                          surahsLabel: l.surahsLabel,
-                          khatmaLabel: l.khatmaLegendKhatma,
-                          settingsLabel: l.settings,
-                          memorizationLabel: l.tabMemorization,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  MushafPackService? _packFor(QuranReadingMode mode) {
+    final pack = mode.pack;
+    if (pack == null) return null;
+    try {
+      return getIt<MushafPackService>(instanceName: pack.name);
+    } catch (_) {
+      return null;
+    }
   }
 
-  void _navigateToSurah(int surahNumber, BuildContext sheetCtx) {
-    getIt<ReadingPositionService>().saveReadingPosition(
-      surahNumber: surahNumber,
-      ayahNumber: 1,
-      position: 0.0,
-    );
-    Navigator.pop(sheetCtx);
-    Navigator.pushReplacementNamed(
-      context,
-      AppRoute.surahScreen,
-      arguments: {
-        'surahInfo': QuranModel(
-          number: surahNumber,
-          name: quran.getSurahNameArabic(surahNumber),
-          englishName: quran.getSurahNameEnglish(surahNumber),
-        ),
-        'shouldRestorePosition': false,
-        'scrollToAyah': 1,
-      },
-    );
-  }
-
-  Future<void> _handleReadingModeSelection({
-    required QuranReadingMode mode,
-    required MushafPackService? packService,
-    required bool requiresPack,
-    required BuildContext sheetCtx,
-    required StateSetter setSheetState,
-  }) async {
-    final packReady = packService?.isReady ?? true;
-    if (!requiresPack || packReady) {
-      Navigator.pop(sheetCtx);
+  /// A mode that reads page images may need its pack first: the tile shows
+  /// the download, and the mode switches (and the sheet closes) once it's
+  /// ready.
+  Future<void> _selectReadingMode(
+    QuranReadingMode mode,
+    BuildContext sheetContext,
+  ) async {
+    final pack = _packFor(mode);
+    if (!mode.isMushaf || (pack?.isReady ?? true)) {
+      Navigator.pop(sheetContext);
       _setMode(mode);
       return;
     }
     try {
-      await packService!.init();
-      if (!mounted || !sheetCtx.mounted) return;
-      if (!packService.isReady) {
-        setSheetState(() {});
-        await packService.downloadAndInstall();
-      }
-      if (!mounted || !packService.isReady) return;
-      if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
-        Navigator.pop(sheetCtx);
+      await pack!.init();
+      if (!mounted || !sheetContext.mounted) return;
+      if (!pack.isReady) await pack.downloadAndInstall();
+      if (!mounted || !pack.isReady) return;
+      if (sheetContext.mounted && Navigator.of(sheetContext).canPop()) {
+        Navigator.pop(sheetContext);
       }
       _setMode(mode);
     } catch (error) {
@@ -426,247 +337,347 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     }
   }
 
-  void _startMemorization(BuildContext sheetCtx) {
-    int activeSurahNumber = _surahNumber;
-    if (_readingMode.isMushaf) {
-      try {
-        final pageData = _readingMode.pagination.sectionsOf(
-          _currentMushafPage,
-        );
-        if (pageData.isNotEmpty) {
-          activeSurahNumber = pageData.first['surah'] as int;
-        }
-      } catch (_) {}
-    }
-
-    final verseCount = quran.getVerseCount(activeSurahNumber);
-    final ayahTexts = List.generate(
-      verseCount,
-      (i) => quran.getVerse(activeSurahNumber, i + 1),
-    );
-    sheetCtx.read<MemorizationCubit>().toggleMemorizationMode(
-      ayahTexts,
-      activeSurahNumber,
-    );
-    Navigator.pop(sheetCtx);
-  }
-
-  void _stopMemorization(BuildContext sheetCtx) {
-    sheetCtx.read<MemorizationCubit>().toggleMemorizationMode([], 0);
-  }
-
-  List<int> _getVisibleSurahs(BuildContext context) {
-    if (!_readingMode.isMushaf) {
-      return [_surahNumber];
-    }
-
-    final surahs = <int>{};
+  /// The surah the reader is on: the open one, or the first on the
+  /// Mushaf's page.
+  int _visibleSurah() {
+    if (!_readingMode.isMushaf) return _surahNumber;
     try {
-      final pagination = _readingMode.pagination;
-      final pageData = pagination.sectionsOf(_currentMushafPage);
-      for (final s in pageData) {
-        surahs.add(s['surah'] as int);
-      }
-
-      bool isDoubleMode = false;
-      if (_horizontalDisplayMode == HorizontalPageDisplayMode.doublePage) {
-        bool isDesktop = false;
-        try {
-          if (kIsWeb) {
-            isDesktop = true;
-          } else if (Platform.isMacOS ||
-              Platform.isWindows ||
-              Platform.isLinux) {
-            isDesktop = true;
-          }
-        } catch (_) {}
-        if (isDesktop ||
-            MediaQuery.orientationOf(context) == Orientation.landscape) {
-          isDoubleMode = true;
-        }
-      }
-
-      if (isDoubleMode) {
-        final leftPage = _currentMushafPage + 1;
-        if (leftPage <= pagination.pageCount) {
-          final leftPageData = pagination.sectionsOf(leftPage);
-          for (final s in leftPageData) {
-            surahs.add(s['surah'] as int);
-          }
-        }
-      }
+      final sections = _readingMode.pagination.sectionsOf(_currentMushafPage);
+      if (sections.isNotEmpty) return sections.first['surah'] as int;
     } catch (_) {}
-    return surahs.toList();
+    return _surahNumber;
   }
 
-  static const List<Map<String, String>> _fontOptions = [
-    {'family': 'Amiri', 'label': 'Amiri'},
-    {'family': 'IndoPak', 'label': 'IndoPak'},
-  ];
+  void _showIndex(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    showHudaSheet<void>(
+      context: context,
+      title: l10n.surahsLabel,
+      sideSheet: true,
+      builder: (sheetContext) => QuranIndexList(
+        current: _visibleSurah(),
+        onSelect: (number) {
+          Navigator.pop(sheetContext);
+          _openSurah(context, number);
+        },
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    final isMushafMode = _readingMode.isMushaf;
+  void _showDisplay(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    showHudaSheet<void>(
+      context: context,
+      title: l10n.quranDisplay,
+      sideSheet: true,
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheetState) {
+          // Rebuilt with the window; the fold is the screen's (a sheet's own
+          // view of it is cut to the sheet).
+          MediaQuery.sizeOf(sheetContext);
+          final size = MediaQuery.sizeOf(context);
+          final fold = FoldInfo.of(context);
+          final twoPages = QuranMushafPageView.showsSpread(
+            size,
+            fold,
+            twoPages: _mushafLayout.twoPages,
+          );
+          return QuranDisplaySettings(
+            readingMode: _readingMode,
+            // What's on the screen now: the reader's choice, or the
+            // window's default until they choose.
+            twoPages: twoPages,
+            twoPagesAvailable: QuranMushafPageView.allowsSpread(size, fold),
+            zoomed: _mushafLayout.zoomed,
+            pageFillsWidth: !twoPages && size.width < size.height,
+            flipDirection: _mushafFlipDirection,
+            font: _quranFont,
+            fonts: _fonts,
+            packFor: _packFor,
+            onReadingMode: (mode) => _selectReadingMode(mode, sheetContext),
+            onTwoPages: (two) {
+              _setMushafLayout(_mushafLayout.copyWith(twoPages: two));
+              setSheetState(() {});
+            },
+            onZoomed: (zoomed) {
+              _setMushafLayout(_mushafLayout.copyWith(zoomed: zoomed));
+              setSheetState(() {});
+            },
+            onFlipDirection: (direction) {
+              _setMushafFlipDirection(direction);
+              setSheetState(() {});
+            },
+            onFont: (family) {
+              setState(() => _quranFont = family);
+              setQuranFonts(family);
+              setSheetState(() {});
+            },
+          );
+        },
+      ),
+    );
+  }
 
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) {},
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => SurahCubit()..loadSurah(widget.surahInfo.number!),
-          ),
-          BlocProvider(
-            create: (_) =>
-                context.read<AudioCubit>()
-                  ..fetchAudioInfo(widget.surahInfo.number.toString()),
-          ),
-          BlocProvider(
-            create: (_) =>
-                TafsirCubit(context.read<TafsirRepository>())
-                  ..fetchTafsirInfo(),
-          ),
-          BlocProvider(
-            create: (_) =>
-                TranslationCubit(context.read<TranslationRepository>())
-                  ..fetchTranslationInfo(),
-          ),
-          BlocProvider(
-            create: (_) =>
-                BookmarksCubit(bookmarkService: getIt<BookmarkService>()),
-          ),
-          BlocProvider(create: (_) => MemorizationCubit()),
-        ],
-        child: Builder(
-          builder: (innerContext) => Scaffold(
-            backgroundColor: isMushafMode
-                ? (_customBgColor ??
-                      (Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF0F0F0F)
-                          : const Color(0xFFFFF9E8)))
-                : null,
-            appBar: isMushafMode
-                ? null
-                : SurahScreenAppBar(
-                    surahName: _isOpeningSurah
-                        ? widget.surahInfo.name ?? ''
-                        : quran.getSurahNameArabic(_surahNumber),
-                    surahNumber: _surahNumber,
-                    englishName: _isOpeningSurah
-                        ? widget.surahInfo.englishName
-                        : quran.getSurahNameEnglish(_surahNumber),
-                    onBack: () => Navigator.pop(context),
-                    onMenu: () => _showTabsSheet(innerContext),
-                  ),
-            body: Stack(
-              children: [
-                if (isMushafMode)
-                  _buildMushafBody(innerContext)
-                else
-                  _buildScrollBody(innerContext),
-              ],
-            ),
-            floatingActionButton: isMushafMode
-                ? null
-                : BlocBuilder<MemorizationCubit, MemorizationState>(
-                    builder: (context, state) {
-                      final isMemorizationMode =
-                          state is MemorizationModeUpdated &&
-                          state.isMemorizationMode;
-
-                      if (!isMemorizationMode) return const SizedBox.shrink();
-
-                      return MemorizationStopFab(
-                        onPressed: () => context
-                            .read<MemorizationCubit>()
-                            .toggleMemorizationMode([], 0),
-                        label: AppLocalizations.of(context)!.stopMemorization,
-                      );
-                    },
-                  ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.startFloat,
-          ),
+  void _showMemorize(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final memorization = context.read<MemorizationCubit>();
+    showHudaSheet<void>(
+      context: context,
+      title: l10n.memorizationMode,
+      builder: (sheetContext) => BlocProvider.value(
+        value: memorization,
+        child: QuranMemorizePanel(
+          onStart: () {
+            _startMemorization(memorization);
+            Navigator.pop(sheetContext);
+          },
+          onStop: () => memorization.toggleMemorizationMode([], 0),
         ),
       ),
     );
   }
 
-  Widget _buildScrollBody(BuildContext context) {
+  // The Khatma sizes its own sheet to the step (see `showKhatmaSheet`).
+  void _showKhatma(BuildContext context) => showKhatmaSheet(context);
+
+  void _startMemorization(MemorizationCubit memorization) {
+    final surah = _visibleSurah();
+    final verseCount = quran.getVerseCount(surah);
+    final ayahTexts = List.generate(
+      verseCount,
+      (i) => quran.getVerse(surah, i + 1),
+    );
+    memorization.toggleMemorizationMode(ayahTexts, surah);
+  }
+
+  /// Surahs, Display, More.
+  List<Widget> _actions(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      IconButton(
+        key: const ValueKey('quran-index-button'),
+        tooltip: l10n.surahsLabel,
+        onPressed: () => _showIndex(context),
+        icon: const Icon(Icons.format_list_bulleted_rounded),
+      ),
+      IconButton(
+        key: const ValueKey('quran-display-button'),
+        tooltip: l10n.quranDisplay,
+        onPressed: () => _showDisplay(context),
+        icon: const Icon(Icons.tune_rounded),
+      ),
+      PopupMenuButton<String>(
+        key: const ValueKey('quran-more-button'),
+        tooltip: l10n.quranMore,
+        icon: const Icon(Icons.more_vert_rounded),
+        onSelected: (item) => switch (item) {
+          'memorize' => _showMemorize(context),
+          _ => _showKhatma(context),
+        },
+        itemBuilder: (_) => [
+          // Speech recognition isn't available on Linux.
+          if (!PlatformUtils.isLinux)
+            PopupMenuItem(
+              value: 'memorize',
+              child: ListTile(
+                leading: const Icon(Icons.psychology_rounded),
+                title: Text(l10n.tabMemorization),
+              ),
+            ),
+          PopupMenuItem(
+            value: 'khatma',
+            child: ListTile(
+              leading: const Icon(Icons.auto_stories_rounded),
+              title: Text(l10n.khatmaLegendKhatma),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => SurahCubit()..loadSurah(widget.surahInfo.number!),
+        ),
+        BlocProvider(
+          create: (_) =>
+              BookmarksCubit(bookmarkService: getIt<BookmarkService>()),
+        ),
+        BlocProvider(create: (_) => MemorizationCubit()),
+      ],
+      child: Builder(
+        builder: (inner) => _readingMode.isMushaf
+            ? _buildMushaf(inner)
+            : _buildScrolling(inner),
+      ),
+    );
+  }
+
+  Widget _buildScrolling(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final language = Localizations.localeOf(context).languageCode;
+    final ref = QuranSurahRef.number(_surahNumber, language);
+    // The surah has the page to itself on every window, the ayat centred
+    // under its headpiece, folds and tabletop included: the index opens
+    // from Surahs when it's wanted (owner rounds 1 and 3).
+    final reader = _scrollBody(context);
+    return HudaScaffold(
+      title: ref.title,
+      actions: _actions(context),
+      floatingActionButton: BlocBuilder<MemorizationCubit, MemorizationState>(
+        builder: (context, state) {
+          final active =
+              state is MemorizationModeUpdated && state.isMemorizationMode;
+          if (!active) return const SizedBox.shrink();
+          return FloatingActionButton.extended(
+            key: const ValueKey('quran-memorize-fab'),
+            onPressed: () =>
+                context.read<MemorizationCubit>().toggleMemorizationMode([], 0),
+            icon: const Icon(Icons.stop_rounded),
+            label: Text(l10n.stopMemorization),
+          );
+        },
+      ),
+      body: reader,
+    );
+  }
+
+  Widget _scrollBody(BuildContext context, {bool showHeader = true}) {
+    final l10n = AppLocalizations.of(context)!;
+    // The screen's context: sheets open for the whole window.
+    final screen = context;
     return BlocBuilder<SurahCubit, SurahState>(
       builder: (context, state) {
-        if (state is SurahLoading) {
-          return const SurahLoadingStateWidget();
-        } else if (state is SurahLoaded) {
+        if (state is SurahLoaded) {
           return QuranPageView(
+            key: ValueKey('quran-surah-$_surahNumber'),
             surah: state.surah,
             surahNumber: _surahNumber,
             scrollToAyah: _isOpeningSurah ? widget.scrollToAyah : null,
+            flashAyah: _isOpeningSurah && _flashPending,
+            onFlashShown: _flashShown,
             ayahPosition: _isOpeningSurah ? widget.ayahPosition : null,
             shouldRestorePosition:
-                widget.shouldRestorePosition || !_isOpeningSurah,
+                _isOpeningSurah && widget.shouldRestorePosition,
             isBookmarkVisit: _isOpeningSurah && widget.isBookmarkVisit,
             customBgColor: _customBgColor,
             customTextColor: _customTextColor,
-          );
-        } else if (state is SurahError) {
-          return Center(
-            child: Text(
-              AppLocalizations.of(context)!.unknownError(state.message),
-            ),
-          );
-        } else {
-          return Center(
-            child: Text(AppLocalizations.of(context)!.unknownState),
+            onOpenSurah: (number) => _openSurah(context, number),
+            overlayContext: screen,
+            showHeader: showHeader,
           );
         }
+        if (state is SurahError) {
+          return HudaErrorState(
+            identity: quranIdentity,
+            message: l10n.quranSurahLoadError,
+            onRetry: () => context.read<SurahCubit>().loadSurah(_surahNumber),
+          );
+        }
+        return const _ReaderSkeleton();
       },
     );
   }
 
-  Widget _buildMushafBody(BuildContext context) {
-    return SafeArea(
-      child: BlocBuilder<SurahCubit, SurahState>(
-        builder: (context, state) {
-          if (state is SurahLoaded && state.surah.number == _surahNumber) {
-            final pendingAyahSheet = _pendingAyahSheet;
-            if (pendingAyahSheet != null) {
-              WidgetsBinding.instance.addPostFrameCallback(
-                (_) => _pendingAyahSheet = null,
+  Widget _buildMushaf(BuildContext context) {
+    final language = Localizations.localeOf(context).languageCode;
+    // Edge to edge over the page, with icons for the paper under them.
+    final page = Theme.of(context).brightness;
+    // On the closed Duo, Back and the actions live in the side column
+    // under the camera, as on the scrolling reader; the page's own bar
+    // stays out of the way there.
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: HudaSystemUi.over(top: page, bottom: page),
+      child: HudaChromeFrame(
+        actions: _actions(context),
+        child: Scaffold(
+          backgroundColor: QuranMushafPageView.paperOf(context, _customBgColor),
+          body: BlocBuilder<SurahCubit, SurahState>(
+            builder: (context, state) {
+              if (state is SurahLoaded && state.surah.number == _surahNumber) {
+                final pendingAyahSheet = _pendingAyahSheet;
+                if (pendingAyahSheet != null) {
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (_) => _pendingAyahSheet = null,
+                  );
+                }
+                return MushafInteractiveWrapper(
+                  key: ValueKey(
+                    '${_readingMode}_${_mushafLayout}_${_mushafFlipDirection}_$_surahNumber',
+                  ),
+                  surah: state.surah,
+                  surahNumber: _surahNumber,
+                  title: QuranSurahRef.number(_visibleSurah(), language).title,
+                  initialAyahSheet: pendingAyahSheet,
+                  flashAyah: _mushafFlash,
+                  onFlashShown: _flashShown,
+                  onOtherSurahAyah: (surahNumber, verseNumber) =>
+                      _switchSurah(context, surahNumber, verseNumber),
+                  initialPageNumber: _currentMushafPage,
+                  mode: _readingMode,
+                  layout: _mushafLayout,
+                  flipDirection: _mushafFlipDirection,
+                  onPageChanged: _onMushafPageChanged,
+                  actions: _actions(context),
+                  customBgColor: _customBgColor,
+                  customTextColor: _customTextColor,
+                );
+              }
+              return QuranMushafPageView(
+                key: ValueKey(
+                  '${_readingMode}_${_mushafLayout}_$_mushafFlipDirection',
+                ),
+                flashAyah: _mushafFlash,
+                onFlashShown: _flashShown,
+                initialPageNumber: _currentMushafPage,
+                mode: _readingMode,
+                layout: _mushafLayout,
+                flipDirection: _mushafFlipDirection,
+                onPageChanged: _onMushafPageChanged,
+                customBgColor: _customBgColor,
+                customTextColor: _customTextColor,
               );
-            }
-            return MushafInteractiveWrapper(
-              key: ValueKey(
-                '${_readingMode}_${_horizontalDisplayMode}_${_mushafFlipDirection}_$_surahNumber',
-              ),
-              surah: state.surah,
-              surahNumber: _surahNumber,
-              initialAyahSheet: pendingAyahSheet,
-              onOtherSurahAyah: (surahNumber, verseNumber) =>
-                  _switchSurah(context, surahNumber, verseNumber),
-              initialPageNumber: _currentMushafPage,
-              mode: _readingMode,
-              displayMode: _horizontalDisplayMode,
-              flipDirection: _mushafFlipDirection,
-              onPageChanged: _onMushafPageChanged,
-              onMenuTapped: () => _showTabsSheet(context),
-              customBgColor: _customBgColor,
-              customTextColor: _customTextColor,
-            );
-          }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-          return QuranMushafPageView(
-            key: ValueKey(
-              '${_readingMode}_${_horizontalDisplayMode}_$_mushafFlipDirection',
+/// The reader while a surah builds: the headpiece's place, then lines.
+class _ReaderSkeleton extends StatelessWidget {
+  const _ReaderSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final space = context.tokens.space;
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: QuranPageView.measure),
+        child: Padding(
+          padding: EdgeInsets.all(
+            space.gutter(MediaQuery.sizeOf(context).width),
+          ),
+          child: HudaSkeleton(
+            announce: true,
+            child: Column(
+              children: [
+                const HudaSkeletonBlock(height: 80),
+                SizedBox(height: space.xl),
+                for (var i = 0; i < 4; i++) ...[
+                  HudaSkeletonLines(lines: 2, style: context.type.ayah),
+                  SizedBox(height: space.lg),
+                ],
+              ],
             ),
-            initialPageNumber: _currentMushafPage,
-            mode: _readingMode,
-            displayMode: _horizontalDisplayMode,
-            flipDirection: _mushafFlipDirection,
-            onPageChanged: _onMushafPageChanged,
-            customBgColor: _customBgColor,
-            customTextColor: _customTextColor,
-          );
-        },
+          ),
+        ),
       ),
     );
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:huda/core/theme/theme_extension.dart';
 
+/// The ayah's recitation in its sheet: where it is (a seek bar with the
+/// times), then previous, play or pause (lit), next.
 class AudioControlsWidget extends StatelessWidget {
   final AudioPlayer audioPlayer;
   final int currentIndex;
@@ -44,149 +45,73 @@ class AudioControlsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final times = theme.textTheme.bodySmall?.copyWith(
+      color: scheme.onSurfaceVariant,
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Progress bar
-        if (totalDuration.inMilliseconds > 0)
-          Column(
-            children: [
-              Slider(
-                value: totalDuration.inMilliseconds > 0
-                    ? (currentPosition.inMilliseconds /
-                              totalDuration.inMilliseconds)
-                          .clamp(0.0, 1.0)
-                    : 0.0,
-                onChanged: (value) {
-                  onUserSeekingChanged(true);
-                  onSeek(value);
-                },
-                onChangeEnd: (value) {
-                  onUserSeekingChanged(false);
-                },
-                activeColor: context.primaryColor,
-                inactiveColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white.withValues(alpha: 0.3)
-                    : const Color(0xFFE0D7E0),
-                thumbColor: context.primaryColor,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _formatDuration(currentPosition),
-                      style: TextStyle(
-                        fontSize: 9.sp,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white.withValues(alpha: 0.7)
-                            : Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      _formatDuration(totalDuration),
-                      style: TextStyle(
-                        fontSize: 9.sp,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white.withValues(alpha: 0.7)
-                            : Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+        if (totalDuration.inMilliseconds > 0) ...[
+          Slider(
+            value:
+                (currentPosition.inMilliseconds / totalDuration.inMilliseconds)
+                    .clamp(0.0, 1.0),
+            onChanged: (value) {
+              onUserSeekingChanged(true);
+              onSeek(value);
+            },
+            onChangeEnd: (_) => onUserSeekingChanged(false),
           ),
-        SizedBox(height: 12.h),
-        // Control buttons
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: space.md),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(_formatDuration(currentPosition), style: times),
+                Text(_formatDuration(totalDuration), style: times),
+              ],
+            ),
+          ),
+          SizedBox(height: space.xs),
+        ],
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Previous button
-            Container(
-              decoration: BoxDecoration(
-                color: currentIndex > 0
-                    ? context.primaryColor.withValues(alpha: 0.1)
-                    : (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.grey.withValues(alpha: 0.1)),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: IconButton(
-                tooltip: l10n.previous,
-                onPressed: currentIndex > 0 ? onPrevious : null,
-                icon: Icon(
-                  isRtl ? Icons.skip_next_rounded : Icons.skip_previous_rounded,
-                  color: currentIndex > 0
-                      ? context.primaryColor
-                      : (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white.withValues(alpha: 0.5)
-                            : Colors.grey),
-                  size: 22.sp,
-                ),
+            IconButton.outlined(
+              tooltip: l10n.previous,
+              onPressed: currentIndex > 0 ? onPrevious : null,
+              icon: Icon(
+                isRtl ? Icons.skip_next_rounded : Icons.skip_previous_rounded,
               ),
             ),
-            // Play/Pause button
-            Container(
-              decoration: BoxDecoration(
-                gradient: isPlayButtonEnabled
-                    ? LinearGradient(
-                        colors: [
-                          context.primaryColor,
-                          context.primaryColor.withValues(alpha: 0.8),
-                        ],
-                      )
-                    : null,
-                color: isPlayButtonEnabled
-                    ? null
-                    : (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white.withValues(alpha: 0.3)
-                          : Colors.grey),
-                shape: BoxShape.circle,
-                boxShadow: isPlayButtonEnabled
-                    ? [
-                        BoxShadow(
-                          color: context.primaryColor.withValues(alpha: 0.3),
-                          blurRadius: 10.r,
-                          offset: Offset(0, 3.h),
-                        ),
-                      ]
-                    : null,
-              ),
-              child: IconButton(
-                tooltip: isPlaying ? l10n.pause : l10n.play,
-                constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
+            SizedBox(width: space.lg),
+            SizedBox.square(
+              dimension: 64,
+              child: FilledButton(
+                key: const ValueKey('quran-ayah-play'),
+                style: FilledButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: const CircleBorder(),
+                ),
                 onPressed: isPlayButtonEnabled ? onPlayPause : null,
-                icon: Icon(
-                  isPlaying ? Icons.pause : Icons.play_arrow,
-                  color: Colors.white,
-                  size: 28.sp,
+                child: Icon(
+                  isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                  size: 32,
+                  semanticLabel: isPlaying ? l10n.pause : l10n.play,
                 ),
               ),
             ),
-            // Next button
-            Container(
-              decoration: BoxDecoration(
-                color: currentIndex < totalAyahs - 1
-                    ? context.primaryColor.withValues(alpha: 0.1)
-                    : (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.grey.withValues(alpha: 0.1)),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: IconButton(
-                tooltip: l10n.next,
-                onPressed: currentIndex < totalAyahs - 1 ? onNext : null,
-                icon: Icon(
-                  isRtl ? Icons.skip_previous_rounded : Icons.skip_next_rounded,
-                  color: currentIndex < totalAyahs - 1
-                      ? context.primaryColor
-                      : (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white.withValues(alpha: 0.5)
-                            : Colors.grey),
-                  size: 22.sp,
-                ),
+            SizedBox(width: space.lg),
+            IconButton.outlined(
+              tooltip: l10n.next,
+              onPressed: currentIndex < totalAyahs - 1 ? onNext : null,
+              icon: Icon(
+                isRtl ? Icons.skip_previous_rounded : Icons.skip_next_rounded,
               ),
             ),
           ],

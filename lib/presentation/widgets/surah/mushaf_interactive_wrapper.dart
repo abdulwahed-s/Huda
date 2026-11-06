@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/services/mushaf_pack_service.dart';
+import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/theme/huda_system_ui.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
+import 'package:huda/presentation/widgets/surah/quran_reader_parts.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:huda/cubit/audio/audio_cubit.dart';
 import 'package:huda/cubit/tafsir/tafsir_cubit.dart';
@@ -12,6 +18,7 @@ import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/surah_audio_model.dart' as audio;
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
 import 'package:huda/presentation/widgets/surah/ayah_bottom_sheet_modal_tabbed.dart';
+import 'package:huda/presentation/widgets/surah/quran_share_sheet.dart';
 import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/core/utils/ui_performance_utils.dart';
@@ -30,10 +37,14 @@ class MushafInteractiveWrapper extends StatefulWidget {
   final int surahNumber;
   final int initialPageNumber;
   final QuranReadingMode mode;
-  final HorizontalPageDisplayMode displayMode;
+  final MushafLayout layout;
   final MushafFlipDirection flipDirection;
   final ValueChanged<int>? onPageChanged;
-  final VoidCallback? onMenuTapped;
+
+  /// The page's surah, for the chrome's title, and the reader's actions
+  /// (Surahs, Display, More), shown with Back when the chrome is.
+  final String title;
+  final List<Widget> actions;
   final Color? customBgColor;
   final Color? customTextColor;
 
@@ -43,20 +54,28 @@ class MushafInteractiveWrapper extends StatefulWidget {
   /// Long-press on an ayah of another surah; the screen switches to it.
   final void Function(int surahNumber, int verseNumber)? onOtherSurahAyah;
 
+  /// (surah, ayah) to light up once its page shows; see
+  /// [QuranMushafPageView.flashAyah].
+  final (int, int)? flashAyah;
+  final VoidCallback? onFlashShown;
+
   const MushafInteractiveWrapper({
     super.key,
     required this.surah,
     required this.surahNumber,
     required this.initialPageNumber,
     required this.mode,
-    this.displayMode = HorizontalPageDisplayMode.normal,
+    this.layout = const MushafLayout(),
     this.flipDirection = MushafFlipDirection.horizontal,
     this.onPageChanged,
-    this.onMenuTapped,
+    this.title = '',
+    this.actions = const [],
     this.customBgColor,
     this.customTextColor,
     this.initialAyahSheet,
     this.onOtherSurahAyah,
+    this.flashAyah,
+    this.onFlashShown,
   });
 
   @override
@@ -197,13 +216,23 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
 
   bool _appBarVisible = false;
 
+  /// The mode's page pack, when it reads page images.
+  MushafPackService? get _pack {
+    final pack = widget.mode.pack;
+    if (pack == null) return null;
+    try {
+      return getIt<MushafPackService>(instanceName: pack.name);
+    } catch (_) {
+      return null;
+    }
+  }
+
   void _toggleAppBar() {
     setState(() => _appBarVisible = !_appBarVisible);
   }
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.appColors;
     return MultiBlocListener(
       listeners: [
         BlocListener<AudioCubit, AudioState>(
@@ -235,12 +264,14 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
 
                 return QuranMushafPageView(
                   key: ValueKey(
-                    '${widget.mode}_${widget.displayMode}_${widget.flipDirection}',
+                    '${widget.mode}_${widget.layout}_${widget.flipDirection}',
                   ),
                   initialPageNumber: widget.initialPageNumber,
                   mode: widget.mode,
-                  displayMode: widget.displayMode,
+                  layout: widget.layout,
                   flipDirection: widget.flipDirection,
+                  flashAyah: widget.flashAyah,
+                  onFlashShown: widget.onFlashShown,
                   playingSurahNumber: widget.surahNumber,
                   playingAyahNumber: playingAyahIndex != null
                       ? playingAyahIndex! + 1
@@ -275,133 +306,27 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
             ),
           ),
           _buildOverlayAppBar(context),
+          // The recitation's controls, with the chrome.
           if (playingAyahIndex != null)
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              left: 12.w,
-              right: 12.w,
-              bottom: _appBarVisible ? 16.h : -(180.h),
-              child: Container(
-                padding: EdgeInsets.all(12.r),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: Theme.of(context).brightness == Brightness.dark
-                        ? [colors.primaryDark, colors.primary]
-                        : [colors.primary, colors.primaryVariant],
-                  ),
-                  borderRadius: BorderRadius.circular(16.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
-                      blurRadius: 16.r,
-                      offset: Offset(0, 6.h),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.music_note,
-                          color: Colors.white,
-                          size: 18.sp,
-                        ),
-                        SizedBox(width: 6.w),
-                        Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.playingAyahOfTotal(
-                              playingAyahIndex! + 1,
-                              widget.surah.ayahs?.length ?? 0,
-                            ),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => _showAyahBottomSheet(playingAyahIndex!),
-                          child: Container(
-                            padding: EdgeInsets.all(6.r),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(6.r),
-                            ),
-                            child: Icon(
-                              Icons.expand_less,
-                              color: Colors.white,
-                              size: 18.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: playingAyahIndex! > 0
-                              ? () => _previousAyah()
-                              : null,
-                          icon: Icon(
-                            Directionality.of(context) == TextDirection.rtl
-                                ? Icons.skip_next
-                                : Icons.skip_previous,
-                            color: playingAyahIndex! > 0
-                                ? Colors.white
-                                : Colors.white.withValues(alpha: 0.5),
-                            size: 20.sp,
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                          child: IconButton(
-                            onPressed: () => _togglePlayPause(),
-                            icon: Icon(
-                              isAudioPlaying ? Icons.pause : Icons.play_arrow,
-                              color: colors.primary,
-                              size: 20.sp,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed:
-                              playingAyahIndex! <
-                                  (widget.surah.ayahs?.length ?? 1) - 1
-                              ? () => _nextAyah()
-                              : null,
-                          icon: Icon(
-                            Directionality.of(context) == TextDirection.rtl
-                                ? Icons.skip_previous
-                                : Icons.skip_next,
-                            color:
-                                playingAyahIndex! <
-                                    (widget.surah.ayahs?.length ?? 1) - 1
-                                ? Colors.white
-                                : Colors.white.withValues(alpha: 0.5),
-                            size: 20.sp,
-                          ),
-                        ),
-                        const Spacer(),
-                        if (totalDuration.inMilliseconds > 0)
-                          Text(
-                            '${_formatDuration(currentPosition)} / ${_formatDuration(totalDuration)}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10.sp,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
+              duration: _chromeDuration(context),
+              curve: context.tokens.motion.standard,
+              left: 0,
+              right: 0,
+              bottom: _appBarVisible ? 0 : -240,
+              child: QuranPlayerBar(
+                ayah: playingAyahIndex! + 1,
+                total: widget.surah.ayahs?.length ?? 0,
+                playing: isAudioPlaying,
+                position: currentPosition,
+                duration: totalDuration,
+                onPrevious: playingAyahIndex! > 0 ? _previousAyah : null,
+                onPlayPause: _togglePlayPause,
+                onNext:
+                    playingAyahIndex! < (widget.surah.ayahs?.length ?? 1) - 1
+                    ? _nextAyah
+                    : null,
+                onOpen: () => _showAyahBottomSheet(playingAyahIndex!),
               ),
             ),
         ],
@@ -409,94 +334,55 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
     );
   }
 
-  Widget _buildOverlayAppBar(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final colors = context.appColors;
+  Duration _chromeDuration(BuildContext context) =>
+      context.tokens.motion.of(context, context.tokens.motion.medium);
 
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-      top: _appBarVisible
-          ? 0
-          : -(kToolbarHeight + MediaQuery.of(context).padding.top + 20),
-      left: 0,
-      right: 0,
-      child: Container(
-        padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top + 8.h,
-          bottom: 10.h,
-          left: 12.w,
-          right: 12.w,
-        ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: isDark
-                ? [
-                    colors.primaryDark.withValues(alpha: 0.95),
-                    colors.primary.withValues(alpha: 0.95),
-                  ]
-                : [
-                    colors.primary.withValues(alpha: 0.95),
-                    colors.primaryVariant.withValues(alpha: 0.95),
-                  ],
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
-                borderRadius: BorderRadius.circular(8.r),
-                child: Container(
-                  padding: EdgeInsets.all(8.r),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    size: 18.sp,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const Spacer(),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: IconButton(
-                onPressed: () => widget.onMenuTapped?.call(),
-                icon: Icon(
-                  Icons.menu_rounded,
-                  color: Colors.white,
-                  size: 16.sp,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+  /// Back, the page's surah and the reader's actions, on the page's
+  /// surface; a tap on the page shows and hides it.
+  Widget _buildOverlayAppBar(BuildContext context) {
+    // The side column already holds Back and the actions (closed Duo).
+    if (HudaChromeFrame.hasSideChrome(context)) return const SizedBox();
+    // While the pages still need downloading, Back and Display stay in
+    // view: there's no page to tap.
+    final pack = _pack;
+    if (pack == null) return _overlayAppBar(context, _appBarVisible);
+    return StreamBuilder<MushafPackState>(
+      stream: pack.stateStream,
+      initialData: pack.currentState,
+      builder: (context, _) =>
+          _overlayAppBar(context, _appBarVisible || !pack.isReady),
     );
   }
 
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$minutes:$seconds';
+  Widget _overlayAppBar(BuildContext context, bool visible) {
+    final scheme = Theme.of(context).colorScheme;
+    final height = kToolbarHeight + MediaQuery.paddingOf(context).top;
+    return AnimatedPositioned(
+      duration: _chromeDuration(context),
+      curve: context.tokens.motion.standard,
+      top: visible ? 0 : -(height + 8),
+      left: 0,
+      right: 0,
+      height: height,
+      // Depth from tone, not a shadow: the page's surface with a hairline.
+      child: Material(
+        color: scheme.surfaceContainer,
+        shape: Border(bottom: BorderSide(color: scheme.outlineVariant)),
+        child: AppBar(
+          key: const ValueKey('quran-mushaf-chrome'),
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          systemOverlayStyle: HudaSystemUi.over(
+            top: Theme.of(context).brightness,
+            bottom: Theme.of(context).brightness,
+          ),
+          title: Text(widget.title),
+          actions: widget.actions,
+        ),
+      ),
+    );
   }
 
   void _togglePlayPause() {
@@ -540,6 +426,14 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
     }
   }
 
+  /// "Al-Baqarah · Ayah 2", the ayah sheet's title.
+  String _ayahSheetTitle(int surah, int ayah) {
+    final l10n = AppLocalizations.of(context)!;
+    final language = Localizations.localeOf(context).languageCode;
+    return '${QuranSurahRef.number(surah, language).title} · '
+        '${l10n.ayahNumber(ayah)}';
+  }
+
   void _showAyahBottomSheet(int index) async {
     final ayah = widget.surah.ayahs![index];
     final audioCubit = context.read<AudioCubit>();
@@ -553,18 +447,13 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
 
     if (!mounted) return;
 
-    showModalBottomSheet(
+    showHudaSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      enableDrag: true,
+      title: _ayahSheetTitle(widget.surahNumber, ayah.numberInSurah ?? index + 1),
+      sideSheet: true,
       builder: (modalContext) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.7,
-          minChildSize: 0.5,
-          maxChildSize: 0.95,
-          expand: false,
-          builder: (draggableContext, scrollController) {
+        return Builder(
+          builder: (draggableContext) {
             return BlocBuilder<AudioCubit, AudioState>(
               bloc: audioCubit,
               builder: (blocContext, audioState) {
@@ -587,9 +476,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                 } else if (audioState is ReaderOffline) {
                   modalIsOfflineMode = true;
                   if (isCacheLoading) {
-                    offlineMessage = 'Loading offline content...';
+                    offlineMessage = AppLocalizations.of(context)!.quranOfflineLoading;
                   } else if (!offlineCacheLoaded) {
-                    offlineMessage = 'Loading offline content...';
+                    offlineMessage = AppLocalizations.of(context)!.quranOfflineLoading;
                   } else if (cachedDownloadedReaders.isEmpty &&
                       cachedDownloadedTafsirSources.isEmpty &&
                       cachedDownloadedTranslationSources.isEmpty) {
@@ -622,15 +511,15 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                         availableTafsirForModal = _availableTafsirSources;
                         availableTranslationForModal =
                             _availableTranslationSources;
-                        if (offlineMessage?.contains('Loading') != true) {
-                          offlineMessage = 'Loading offline content...';
+                        if (offlineMessage != AppLocalizations.of(context)!.quranOfflineLoading) {
+                          offlineMessage = AppLocalizations.of(context)!.quranOfflineLoading;
                         }
                       } else if (offlineCacheLoaded) {
                         availableReadersForModal = cachedDownloadedReaders;
                         availableTafsirForModal = cachedDownloadedTafsirSources;
                         availableTranslationForModal =
                             cachedDownloadedTranslationSources;
-                        if (offlineMessage?.contains('Loading') == true) {
+                        if (offlineMessage == AppLocalizations.of(context)!.quranOfflineLoading) {
                           offlineMessage = null;
                         }
                       } else {
@@ -639,7 +528,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                         availableTafsirForModal = _availableTafsirSources;
                         availableTranslationForModal =
                             _availableTranslationSources;
-                        offlineMessage = 'Loading offline content...';
+                        offlineMessage = AppLocalizations.of(context)!.quranOfflineLoading;
                       }
                     } else {
                       availableReadersForModal = allAvailableReaders;
@@ -654,6 +543,25 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                         BlocProvider.value(value: surahCubit),
                       ],
                       child: AyahBottomSheetModalTabbed(
+                    readersLoading: audioCubit.state is ReaderLoading,
+                    tafsirLoading: tafsirCubit.state is TafsirLoading,
+                    onRetryTafsir: tafsirCubit.fetchTafsirInfo,
+                    translationLoading:
+                        translationCubit.state is TranslationLoading,
+                    onRetryTranslation: translationCubit.fetchTranslationInfo,
+                    onRetryReaders: () =>
+                        audioCubit.fetchAudioInfo('${widget.surahNumber}'),
+                    onShare: (translation, tafsir) {
+                      Navigator.pop(modalContext);
+                      shareAyah(
+                        context,
+                        surah: widget.surahNumber,
+                        ayah: ayah.numberInSurah ?? index + 1,
+                        text: ayah.text ?? '',
+                        translation: translation,
+                        tafsir: tafsir,
+                      );
+                    },
                         ayah: ayah,
                         index: index,
                         surahNumber: widget.surahNumber,
@@ -768,18 +676,13 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
     final surahCubit = context.read<SurahCubit>();
     isBottomSheetOpen = true;
 
-    showModalBottomSheet(
+    showHudaSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      enableDrag: true,
+      title: _ayahSheetTitle(surahNum, verseNum),
+      sideSheet: true,
       builder: (modalContext) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.7,
-          minChildSize: 0.5,
-          maxChildSize: 0.95,
-          expand: false,
-          builder: (draggableContext, scrollController) {
+        return Builder(
+          builder: (draggableContext) {
             return StatefulBuilder(
               builder: (modalContext, setModalState) {
                 modalStateSetter = setModalState;
@@ -789,6 +692,17 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
                     BlocProvider.value(value: surahCubit),
                   ],
                   child: AyahBottomSheetModalTabbed(
+                    onShare: (translation, tafsir) {
+                      Navigator.pop(modalContext);
+                      shareAyah(
+                        context,
+                        surah: surahNum,
+                        ayah: verseNum,
+                        text: ayah.text ?? '',
+                        translation: translation,
+                        tafsir: tafsir,
+                      );
+                    },
                     ayah: ayah,
                     index: verseNum - 1,
                     surahNumber: surahNum,
@@ -974,6 +888,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
   }
 
   void _handleTafsirStateChanges(BuildContext context, TafsirState state) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeModalSetState());
     if (state is TafsirLoaded) {
       setState(() {
         _availableTafsirSources = state.tafsirModel.data ?? [];
@@ -1021,6 +936,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
     BuildContext context,
     TranslationState state,
   ) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeModalSetState());
     if (state is TranslationLoaded) {
       setState(() {
         _availableTranslationSources = state.translationModel.data ?? [];

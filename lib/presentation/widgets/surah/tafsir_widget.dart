@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'download_action_button.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
 import 'package:huda/l10n/app_localizations.dart';
@@ -23,6 +25,11 @@ class TafsirWidget extends StatelessWidget {
 
   final String? offlineMessage;
 
+  /// The sources are being fetched, and whether after a tap on Retry.
+  final bool loadingSources;
+  final bool retrying;
+  final VoidCallback? onRetry;
+
   const TafsirWidget({
     super.key,
     required this.tafsirSources,
@@ -39,185 +46,105 @@ class TafsirWidget extends StatelessWidget {
     required this.checkSurahDownloaded,
     required this.checkAllDownloaded,
     this.offlineMessage,
+    this.loadingSources = false,
+    this.retrying = false,
+    this.onRetry,
   });
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    String? text;
+    final surahs = currentTafsir?.data?.surahs;
+    if (surahs != null && surahs.isNotEmpty) {
+      final ayat = surahs.first.ayahs ?? const [];
+      for (final ayah in ayat) {
+        if (ayah.numberInSurah == ayahNumber) text = ayah.text;
+      }
+      text ??= ayat.isEmpty ? null : ayat.first.text;
+      text ??= l10n.tafsirNotAvailable;
+    }
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (tafsirSources.isNotEmpty)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  context.primaryColor.withValues(alpha: 0.1),
-                  context.primaryColor.withValues(alpha: 0.1),
-                ],
-              ),
-              border: Border.all(
-                color: context.primaryColor.withValues(alpha: 0.3),
-              ),
-              borderRadius: BorderRadius.circular(16),
+          InputDecorator(
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.menu_book_rounded),
+              contentPadding: EdgeInsets.symmetric(horizontal: space.sm),
+              border: OutlineInputBorder(borderRadius: tokens.radius.control),
             ),
-            child: DropdownButton<String?>(
-              value: selectedTafsirId,
-              hint: Text(
-                AppLocalizations.of(context)!.selectTafsirSource,
-                style: TextStyle(
-                  color: context.primaryColor.withValues(alpha: 0.7),
-                  fontSize: 14,
-                ),
-              ),
-              isExpanded: true,
-              underline: const SizedBox.shrink(),
-              dropdownColor: Theme.of(context).brightness == Brightness.dark
-                  ? const Color(0xFF1A1A1A)
-                  : Colors.white,
-              icon: Icon(
-                Icons.keyboard_arrow_down,
-                color: context.primaryColor,
-              ),
-              items: [
-                DropdownMenuItem<String?>(
-                  value: null,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.close,
-                          size: 20,
-                          color: Colors.grey.withValues(alpha: 0.7),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          AppLocalizations.of(context)!.none,
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String?>(
+                key: const ValueKey('quran-tafsir-source'),
+                value: selectedTafsirId,
+                isExpanded: true,
+                hint: Text(l10n.selectTafsirSource),
+                items: [
+                  DropdownMenuItem<String?>(
+                    value: null,
+                    child: Text(l10n.none),
                   ),
-                ),
-                ...tafsirSources.map((source) {
-                  return DropdownMenuItem<String?>(
-                    value: source.identifier,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.menu_book_rounded,
-                            size: 20,
-                            color: context.primaryColor.withValues(alpha: 0.7),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              '${source.name}',
-                              style: const TextStyle(fontSize: 14),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                  for (final source in tafsirSources)
+                    DropdownMenuItem<String?>(
+                      value: source.identifier,
+                      child: Text(
+                        '${source.name}',
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  );
-                }),
-              ],
-              onChanged: (value) {
-                if (value != null) {
-                  onTafsirSelected(value);
-                }
-              },
+                ],
+                onChanged: (value) {
+                  if (value != null) onTafsirSelected(value);
+                },
+              ),
             ),
           )
         else if (offlineMessage != null)
           OfflineContentBanner(message: offlineMessage!)
         else
-          Text(
-            AppLocalizations.of(context)!.noTafsirAvailable,
-            style: const TextStyle(color: Colors.grey),
+          // Honest status: updating on its own, then the failure with
+          // Retry, then "Retrying…" after a tap.
+          HudaStatusBanner(
+            status: loadingSources
+                ? (retrying ? HudaStatus.retrying : HudaStatus.updating)
+                : HudaStatus.failed,
+            message: l10n.noTafsirAvailable,
+            onRetry: onRetry,
           ),
-        const SizedBox(height: 12),
         if (selectedTafsirId != null) ...[
+          SizedBox(height: space.sm),
           if (isLoadingTafsir)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    context.accentColor,
-                  ),
-                ),
-              ),
+            Padding(
+              padding: EdgeInsets.all(space.md),
+              child: const Center(child: HudaLampSpinner(size: 28)),
             )
-          else if (currentTafsir?.data?.surahs != null &&
-              currentTafsir!.data!.surahs!.isNotEmpty)
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
+          else if (text != null)
+            DecoratedBox(
+              key: const ValueKey('quran-tafsir-text'),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8F9FA),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: context.primaryColor.withValues(alpha: 0.1),
-                  width: 1,
-                ),
+                color: scheme.surfaceContainer,
+                borderRadius: tokens.radius.control,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.menu_book_rounded,
-                        size: 14,
-                        color: context.primaryColor.withValues(alpha: 0.7),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        AppLocalizations.of(context)!.tafsir,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: context.primaryColor.withValues(alpha: 0.7),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+              child: Padding(
+                padding: EdgeInsets.all(space.md),
+                child: Text(
+                  text,
+                  textDirection: TextDirection.rtl,
+                  style: context.type.arabicLabel.copyWith(
+                    fontSize: 18,
+                    height: 1.8,
+                    color: scheme.onSurface,
                   ),
-                  const SizedBox(height: 8),
-                  Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Text(
-                      currentTafsir!.data!.surahs!.first.ayahs!
-                              .firstWhere(
-                                (ayah) => ayah.numberInSurah == ayahNumber,
-                                orElse: () => currentTafsir!
-                                    .data!
-                                    .surahs!
-                                    .first
-                                    .ayahs!
-                                    .first,
-                              )
-                              .text ??
-                          AppLocalizations.of(context)!.tafsirNotAvailable,
-                      textAlign: TextAlign.right,
-                      textDirection: TextDirection.rtl,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFF2C3E50),
-                        height: 1.6,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           if (canDownload) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: space.sm),
             DownloadActionsLayout(
               children: [
                 if (onDownloadTafsir != null)

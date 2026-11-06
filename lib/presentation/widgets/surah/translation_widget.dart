@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'download_action_button.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/data/models/edition_model.dart' as edition;
 import 'package:huda/data/models/tafsir_model.dart' as tafsir;
 import 'package:locale_names/locale_names.dart';
@@ -45,276 +46,152 @@ class TranslationWidget extends StatelessWidget {
     required this.checkSurahDownloaded,
     required this.checkAllDownloaded,
     this.offlineMessage,
+    this.loadingSources = false,
+    this.retrying = false,
+    this.onRetry,
   });
 
   final String? offlineMessage;
 
+  /// The sources are being fetched, and whether after a tap on Retry.
+  final bool loadingSources;
+  final bool retrying;
+  final VoidCallback? onRetry;
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
     final filteredSources = selectedTranslationLanguage != null
         ? translationSources
               .where((source) => source.language == selectedTranslationLanguage)
               .toList()
         : translationSources;
+    String languageName(String code) {
+      try {
+        return Locale.fromSubtags(languageCode: code).nativeDisplayLanguage;
+      } catch (_) {
+        return code;
+      }
+    }
+
+    Widget picker<T>({
+      required Key key,
+      required IconData icon,
+      required T value,
+      required String hint,
+      required List<DropdownMenuItem<T>> items,
+      required ValueChanged<T?> onChanged,
+    }) => InputDecorator(
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon),
+        contentPadding: EdgeInsets.symmetric(horizontal: space.sm),
+        border: OutlineInputBorder(borderRadius: tokens.radius.control),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<T>(
+          key: key,
+          value: value,
+          isExpanded: true,
+          hint: Text(hint),
+          items: items,
+          onChanged: onChanged,
+        ),
+      ),
+    );
+
+    String? text;
+    final surahs = currentTranslation?.data?.surahs;
+    if (surahs != null && surahs.isNotEmpty) {
+      final ayat = surahs.first.ayahs ?? const [];
+      for (final ayah in ayat) {
+        if (ayah.numberInSurah == ayahNumber) text = ayah.text;
+      }
+      text ??= ayat.isEmpty ? null : ayat.first.text;
+      text ??= l10n.translationNotAvailable;
+    }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (availableTranslationLanguages.length > 1)
-          Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      context.primaryColor.withValues(alpha: 0.1),
-                      context.primaryColor.withValues(alpha: 0.1),
-                    ],
-                  ),
-                  border: Border.all(
-                    color: context.primaryColor.withValues(alpha: 0.3),
-                  ),
-                  borderRadius: BorderRadius.circular(14.r),
-                ),
-                child: DropdownButton<String?>(
-                  value: selectedTranslationLanguage,
-                  hint: Text(
-                    AppLocalizations.of(context)!.filterTranslationLanguage,
-                    style: TextStyle(
-                      color: context.primaryColor.withValues(alpha: 0.7),
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                  isExpanded: true,
-                  underline: const SizedBox.shrink(),
-                  dropdownColor: Theme.of(context).brightness == Brightness.dark
-                      ? Theme.of(context).cardColor
-                      : Colors.white,
-                  icon: Icon(
-                    Icons.keyboard_arrow_down,
-                    color: context.primaryColor,
-                    size: 18.sp,
-                  ),
-                  items: [
-                    DropdownMenuItem<String?>(
-                      value: null,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.translate,
-                              size: 20,
-                              color: context.primaryColor.withValues(
-                                alpha: 0.7,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              AppLocalizations.of(context)!.allLanguages,
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    ...availableTranslationLanguages.map((language) {
-                      Locale locale = Locale.fromSubtags(
-                        languageCode: language,
-                      );
-                      return DropdownMenuItem<String?>(
-                        value: language,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.translate,
-                                size: 20,
-                                color: context.primaryColor.withValues(
-                                  alpha: 0.7,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                locale.nativeDisplayLanguage,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
-                  onChanged: onTranslationLanguageSelected,
-                ),
+        if (availableTranslationLanguages.length > 1) ...[
+          picker<String?>(
+            key: const ValueKey('quran-translation-language'),
+            icon: Icons.language_rounded,
+            value: selectedTranslationLanguage,
+            hint: l10n.filterTranslationLanguage,
+            items: [
+              DropdownMenuItem<String?>(
+                value: null,
+                child: Text(l10n.allLanguages),
               ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        if (filteredSources.isNotEmpty)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  context.primaryColor.withValues(alpha: 0.1),
-                  context.primaryColor.withValues(alpha: 0.1),
-                ],
-              ),
-              border: Border.all(
-                color: context.primaryColor.withValues(alpha: 0.3),
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: DropdownButton<String?>(
-              value: selectedTranslationId,
-              hint: Text(
-                AppLocalizations.of(context)!.selectTranslationSource,
-                style: TextStyle(
-                  color: context.primaryColor.withValues(alpha: 0.7),
-                  fontSize: 14,
-                ),
-              ),
-              isExpanded: true,
-              underline: const SizedBox.shrink(),
-              dropdownColor: Theme.of(context).brightness == Brightness.dark
-                  ? const Color(0xFF1A1A1A)
-                  : Colors.white,
-              icon: Icon(
-                Icons.keyboard_arrow_down,
-                color: context.primaryColor,
-              ),
-              items: [
+              for (final language in availableTranslationLanguages)
                 DropdownMenuItem<String?>(
-                  value: null,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.close,
-                          size: 20,
-                          color: Colors.grey.withValues(alpha: 0.7),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          AppLocalizations.of(context)!.none,
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+                  value: language,
+                  child: Text(languageName(language)),
+                ),
+            ],
+            onChanged: onTranslationLanguageSelected,
+          ),
+          SizedBox(height: space.sm),
+        ],
+        if (filteredSources.isNotEmpty)
+          picker<String?>(
+            key: const ValueKey('quran-translation-source'),
+            icon: Icons.translate_rounded,
+            value: selectedTranslationId,
+            hint: l10n.selectTranslationSource,
+            items: [
+              DropdownMenuItem<String?>(value: null, child: Text(l10n.none)),
+              for (final source in filteredSources)
+                DropdownMenuItem<String?>(
+                  value: source.identifier,
+                  child: Text(
+                    '${source.name}',
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                ...filteredSources.map((source) {
-                  return DropdownMenuItem<String?>(
-                    value: source.identifier,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.translate_rounded,
-                            size: 20,
-                            color: context.primaryColor.withValues(alpha: 0.7),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              '${source.name}',
-                              style: const TextStyle(fontSize: 14),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              ],
-              onChanged: (value) {
-                if (value != null) {
-                  onTranslationSelected(value);
-                }
-              },
-            ),
+            ],
+            onChanged: (value) {
+              if (value != null) onTranslationSelected(value);
+            },
           )
         else if (offlineMessage != null)
           OfflineContentBanner(message: offlineMessage!)
         else
-          Text(
-            AppLocalizations.of(context)!.noTranslationAvailable,
-            style: const TextStyle(color: Colors.grey),
+          // Honest status: updating on its own, then the failure with
+          // Retry, then "Retrying…" after a tap.
+          HudaStatusBanner(
+            status: loadingSources
+                ? (retrying ? HudaStatus.retrying : HudaStatus.updating)
+                : HudaStatus.failed,
+            message: l10n.noTranslationAvailable,
+            onRetry: onRetry,
           ),
-        const SizedBox(height: 12),
         if (selectedTranslationId != null) ...[
+          SizedBox(height: space.sm),
           if (isLoadingTranslation)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    context.accentColor,
-                  ),
-                ),
-              ),
+            Padding(
+              padding: EdgeInsets.all(space.md),
+              child: const Center(child: HudaLampSpinner(size: 28)),
             )
-          else if (currentTranslation?.data?.surahs != null &&
-              currentTranslation!.data!.surahs!.isNotEmpty)
-            Container(
-              padding: const EdgeInsets.all(12),
+          else if (text != null)
+            DecoratedBox(
+              key: const ValueKey('quran-translation-text'),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? const Color(0xFF1A1A1A)
-                    : Colors.grey[50],
-                border: Border.all(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? context.accentColor.withValues(alpha: 0.2)
-                      : Colors.grey[300]!,
-                ),
-                borderRadius: BorderRadius.circular(8),
+                color: scheme.surfaceContainer,
+                borderRadius: tokens.radius.control,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${AppLocalizations.of(context)!.translation}:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? context.accentColor
-                          : Colors.grey[700],
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    currentTranslation!.data!.surahs!.first.ayahs!
-                            .firstWhere(
-                              (ayah) => ayah.numberInSurah == ayahNumber,
-                              orElse: () => currentTranslation!
-                                  .data!
-                                  .surahs!
-                                  .first
-                                  .ayahs!
-                                  .first,
-                            )
-                            .text ??
-                        AppLocalizations.of(context)!.translationNotAvailable,
-                    style: TextStyle(
-                      fontSize: 14,
-                      height: 1.5,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFFF8FAFC)
-                          : null,
-                    ),
-                  ),
-                ],
+              child: Padding(
+                padding: EdgeInsets.all(space.md),
+                child: Text(text, style: theme.textTheme.bodyLarge),
               ),
             ),
           if (canDownload) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: space.sm),
             DownloadActionsLayout(
               children: [
                 if (onDownloadTranslation != null)
