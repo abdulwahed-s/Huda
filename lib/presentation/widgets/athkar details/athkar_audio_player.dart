@@ -1,138 +1,135 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/service_locator.dart';
-import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
-class AthkarAudioPlayer {
-  final BuildContext context;
-  final VoidCallback onStateChanged;
+/// Plays a chapter's dhikr audio on the app's shared player, through the
+/// [AudioCoordinator] (owner `athkar`). When one dhikr's audio finishes,
+/// the next one's plays; a dhikr without audio ends the run.
+class AthkarAudio extends ChangeNotifier {
+  AthkarAudio({required this.audioAt, required this.onError}) {
+    _coordinator.register(AudioCoordinator.athkar, () {
+      playingIndex = null;
+      isPlaying = false;
+      position = Duration.zero;
+      notifyListeners();
+    });
 
-  final AudioPlayer _audioPlayer = getIt<AudioPlayer>();
+    _playerStateSubscription = _player.playerStateStream.listen((state) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
+      if (state.processingState == ProcessingState.completed) {
+        _playNext();
+      }
+      isPlaying = state.playing;
+      if (state.processingState == ProcessingState.completed ||
+          state.processingState == ProcessingState.idle) {
+        position = Duration.zero;
+      }
+      notifyListeners();
+    });
+
+    _durationSubscription = _player.durationStream.listen((value) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
+      if (value != null) {
+        duration = value;
+        notifyListeners();
+      }
+    });
+
+    _positionSubscription = _player.positionStream.listen((value) {
+      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
+      position = value;
+      notifyListeners();
+    });
+  }
+
+  /// The audio URL of the dhikr at an index, or null past the end.
+  final String? Function(int index) audioAt;
+
+  /// Audio couldn't play (no URL, or the player failed).
+  final VoidCallback onError;
+
+  final AudioPlayer _player = getIt<AudioPlayer>();
   final AudioCoordinator _coordinator = getIt<AudioCoordinator>();
 
   int? playingIndex;
   bool isPlaying = false;
-  Duration audioDuration = Duration.zero;
-  Duration audioPosition = Duration.zero;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+  bool _disposed = false;
 
   StreamSubscription<PlayerState>? _playerStateSubscription;
   StreamSubscription<Duration?>? _durationSubscription;
   StreamSubscription<Duration>? _positionSubscription;
 
-  AthkarAudioPlayer({required this.context, required this.onStateChanged}) {
-    _coordinator.register(AudioCoordinator.athkar, () {
-      playingIndex = null;
-      isPlaying = false;
-      audioPosition = Duration.zero;
-      onStateChanged();
-    });
-
-    _playerStateSubscription = _audioPlayer.playerStateStream.listen((state) {
-      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
-      if (state.processingState == ProcessingState.completed) {
-        _playNextAudio();
-      }
-      isPlaying = state.playing;
-      if (state.processingState == ProcessingState.completed ||
-          state.processingState == ProcessingState.idle) {
-        audioPosition = Duration.zero;
-      }
-      onStateChanged();
-    });
-
-    _durationSubscription = _audioPlayer.durationStream.listen((duration) {
-      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
-      if (duration != null) {
-        audioDuration = duration;
-        onStateChanged();
-      }
-    });
-
-    _positionSubscription = _audioPlayer.positionStream.listen((position) {
-      if (!_coordinator.isOwner(AudioCoordinator.athkar)) return;
-      audioPosition = position;
-      onStateChanged();
-    });
-  }
-
-  void _playNextAudio() {
-    if (playingIndex == null) return;
-
-    final cubit = context.read<AthkarDetailsCubit>();
-    final state = cubit.state;
-    if (state is! AthkarDetailsLoaded) return;
-
-    final nextIndex = playingIndex! + 1;
-    if (nextIndex < state.athkarCategory.details.length) {
-      final nextAudio = state.athkarCategory.details[nextIndex].audio;
-      if (nextAudio != null && nextAudio.isNotEmpty) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          playAudio(nextAudio, nextIndex);
-        });
-      }
+  void _playNext() {
+    final current = playingIndex;
+    if (current == null) return;
+    final next = audioAt(current + 1);
+    if (next != null && next.isNotEmpty) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (!_disposed) play(current + 1);
+      });
     } else {
       playingIndex = null;
       isPlaying = false;
-      audioPosition = Duration.zero;
-      onStateChanged();
+      position = Duration.zero;
+      notifyListeners();
     }
   }
 
-  Future<void> playAudio(String? audioUrl, int index) async {
-    if (audioUrl == null || audioUrl.isEmpty) {
-      _showAudioErrorSnackbar('رابط الصوت غير متوفر');
+  /// Plays the dhikr at [index], or pauses and resumes it if it's the one
+  /// already loaded.
+  Future<void> play(int index) async {
+    var url = audioAt(index);
+    if (url == null || url.isEmpty) {
+      onError();
       return;
     }
-
-    if (audioUrl.startsWith('http://')) {
-      audioUrl = audioUrl.replaceFirst('http://', 'https://');
+    if (url.startsWith('http://')) {
+      url = url.replaceFirst('http://', 'https://');
     }
 
     try {
       if (_coordinator.isOwner(AudioCoordinator.athkar) &&
           playingIndex == index) {
         if (isPlaying) {
-          await _audioPlayer.pause();
+          await _player.pause();
         } else {
-          _audioPlayer.play();
+          _player.play();
         }
       } else {
         _coordinator.requestAudio(AudioCoordinator.athkar);
         await audioServiceReady;
-        await _audioPlayer.setAudioSource(
+        await _player.setAudioSource(
           AudioSource.uri(
-            Uri.parse(audioUrl),
-            tag: MediaItem(id: audioUrl, title: 'Athkar'),
+            Uri.parse(url),
+            tag: MediaItem(id: url, title: 'Athkar'),
           ),
         );
+        if (_disposed) return;
         playingIndex = index;
-        onStateChanged();
-        _audioPlayer.play();
+        notifyListeners();
+        _player.play();
       }
-    } catch (e) {
-      _showAudioErrorSnackbar('فشل في تشغيل الصوت: ${e.toString()}');
+    } catch (_) {
+      if (!_disposed) onError();
     }
   }
 
-  Future<void> seekAudio(Duration position) async {
-    await _audioPlayer.seek(position);
-  }
+  Future<void> seek(Duration value) => _player.seek(value);
 
-  void _showAudioErrorSnackbar(String message) {
-    HudaSnackBar.error(context, message: message);
-  }
-
+  @override
   void dispose() {
+    _disposed = true;
     _coordinator.unregister(AudioCoordinator.athkar);
     _playerStateSubscription?.cancel();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
+    super.dispose();
   }
 }
