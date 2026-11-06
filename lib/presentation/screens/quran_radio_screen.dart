@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/layout/adaptive_layout.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/layout/insets.dart';
+import 'package:huda/core/layout/tabletop_split.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
 import 'package:huda/data/models/radio_station_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/quran_radio/radio_empty_search_results.dart';
-import 'package:huda/presentation/widgets/quran_radio/radio_error_state.dart';
-import 'package:huda/presentation/widgets/quran_radio/radio_header_background.dart';
-import 'package:huda/presentation/widgets/quran_radio/radio_now_playing_bar.dart';
-import 'package:huda/presentation/widgets/quran_radio/radio_search_bar.dart';
-import 'package:huda/presentation/widgets/quran_radio/radio_station_card.dart';
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_search_field.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/design/huda_toast.dart';
+import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
+import 'package:huda/presentation/widgets/design/huda_audio_dock.dart';
+import 'package:huda/presentation/widgets/quran_player/player_bar_widget.dart';
+import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart';
+import 'package:huda/presentation/widgets/quran_radio/radio_parts.dart';
 
+/// Quran Radio: the live stations under the open voiceprint, a list on
+/// phones and a grid on wider windows, with the station that's on pinned
+/// at the bottom.
 class QuranRadioScreen extends StatefulWidget {
   const QuranRadioScreen({super.key});
 
@@ -23,55 +31,44 @@ class QuranRadioScreen extends StatefulWidget {
 }
 
 class _QuranRadioScreenState extends State<QuranRadioScreen>
-    with TickerProviderStateMixin {
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-
-  late AnimationController _pulseController;
-  final ScrollController _scrollController = ScrollController();
-  bool _isCollapsed = false;
+{
+  final TextEditingController _search = TextEditingController();
+  String _query = '';
+  bool _retrying = false;
+  late final QuranRadioCubit _radio;
 
   @override
   void initState() {
     super.initState();
-
-    _pulseController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    )..repeat(reverse: true);
-    _scrollController.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final collapsed =
-        _scrollController.hasClients &&
-        _scrollController.offset > (180.h - kToolbarHeight);
-    if (collapsed != _isCollapsed) setState(() => _isCollapsed = collapsed);
-  }
-
-  void _fetchRadios() {
-    final langCode = Localizations.localeOf(context).languageCode;
-    context.read<QuranRadioCubit>().fetchRadios(langCode);
+    // Kept for dispose, when the context can't be read any more.
+    _radio = context.read<QuranRadioCubit>();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final state = context.read<QuranRadioCubit>().state;
-    if (state is QuranRadioInitial) {
-      _fetchRadios();
-    }
+    if (_radio.state is QuranRadioInitial) _fetch();
   }
 
-  Future<void> _playStation(RadioStation station) async {
+  void _fetch() {
+    final langCode = Localizations.localeOf(context).languageCode;
+    _radio.fetchRadios(langCode);
+  }
+
+  void _retry() {
+    setState(() => _retrying = true);
+    _fetch();
+  }
+
+  Future<void> _play(RadioStation station) async {
     try {
-      HapticFeedback.selectionClick();
-      await context.read<QuranRadioCubit>().playStation(station);
+      await _radio.playStation(station);
     } catch (e) {
       if (mounted) {
-        HudaSnackBar.error(
+        showHudaToast(
           context,
           message: AppLocalizations.of(context)!.unexpectedError,
+          kind: HudaToastKind.failed,
         );
       }
     }
@@ -79,205 +76,225 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
 
   @override
   void dispose() {
-    context.read<QuranRadioCubit>().saveCurrentStation();
-    _searchController.dispose();
-    _pulseController.dispose();
-    _scrollController.dispose();
+    _radio.saveCurrentStation();
+    _search.dispose();
     super.dispose();
+  }
+
+  static RadioStatus? _statusOf(QuranRadioLoaded state, RadioStation station) {
+    if (state.currentlyPlaying?.id != station.id) return null;
+    if (state.isBuffering) return RadioStatus.connecting;
+    return state.isPlaying ? RadioStatus.live : RadioStatus.paused;
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    return Scaffold(
-      backgroundColor: isDark
-          ? context.darkGradientStart
-          : context.lightSurface,
-      body: BlocBuilder<QuranRadioCubit, QuranRadioState>(
-        builder: (context, state) {
-          final currentStation = state is QuranRadioLoaded
-              ? state.currentlyPlaying
-              : null;
-          final isPlaying = state is QuranRadioLoaded ? state.isPlaying : false;
-          final isBuffering = state is QuranRadioLoaded
-              ? state.isBuffering
-              : false;
-
-          return Stack(
-            children: [
-              CustomScrollView(
-                controller: _scrollController,
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  _buildSliverAppBar(theme, l10n, state),
-                  SliverToBoxAdapter(
-                    child: RadioSearchBar(
-                      controller: _searchController,
-                      hintText: l10n.searchRadio,
-                      showClearButton: _searchQuery.isNotEmpty,
-                      onChanged: (q) => setState(() => _searchQuery = q),
-                      onClear: () {
-                        _searchController.clear();
-                        setState(() => _searchQuery = '');
-                      },
-                    ),
+    return BlocConsumer<QuranRadioCubit, QuranRadioState>(
+      listener: (context, state) {
+        if (state is! QuranRadioLoading && _retrying) {
+          setState(() => _retrying = false);
+        }
+      },
+      builder: (context, state) {
+        final loaded = state is QuranRadioLoaded ? state : null;
+        final current = loaded?.currentlyPlaying;
+        return HudaRevealScope(
+          child: HudaAudioDock(
+            visible: current != null,
+            bar: current == null
+                ? const SizedBox.shrink()
+                : RadioBar(
+                    station: current,
+                    status: _statusOf(loaded!, current)!,
+                    onPlayPause: () => _play(current),
+                    onStop: _radio.stopStation,
                   ),
-                  _buildBodySliver(
-                    state,
-                    theme,
-                    l10n,
-                    currentStation,
-                    isPlaying,
-                    isBuffering,
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: currentStation != null ? 110.h : 24.h,
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                left: 16.w,
-                right: 16.w,
-                bottom: 24.h,
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 380),
-                  transitionBuilder: (child, animation) => SlideTransition(
-                    position:
-                        Tween<Offset>(
-                          begin: const Offset(0, 1.5),
-                          end: Offset.zero,
-                        ).animate(
-                          CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeOutCubic,
-                          ),
+            // The vine grows in as the radio opens.
+            child: HudaDrawIn(
+              builder: (context, grow) => TabletopSplit.applies(context)
+                  ? HudaScaffold(
+                      title: l10n.quranRadio,
+                      // The band and the search above the fold, the
+                      // stations below it.
+                      body: QuranAudioTabletop(
+                        head: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            QuranAudioArtPlate(
+                              painter: ArabesqueVinePainter(
+                                style: OrnamentStyle.of(
+                                  context,
+                                  onChrome: true,
+                                ),
+                                open: true,
+                                growth: grow,
+                                textDirection: Directionality.of(context),
+                              ),
+                            ),
+                            if (_showSearch(state)) _searchField(context),
+                          ],
                         ),
-                    child: FadeTransition(opacity: animation, child: child),
-                  ),
-                  child: currentStation != null
-                      ? RadioNowPlayingBar(
-                          key: const ValueKey('now_playing'),
-                          station: currentStation,
-                          isPlaying: isPlaying,
-                          isBuffering: isBuffering,
-                          pulseController: _pulseController,
-                          nowPlayingLabel: l10n.nowPlaying,
-                          onPlayPause: () => _playStation(currentStation),
-                          onStop: () async {
-                            await context.read<QuranRadioCubit>().stopStation();
-                          },
-                        )
-                      : const SizedBox.shrink(key: ValueKey('empty_player')),
-                ),
-              ),
-            ],
-          );
+                        slivers: _slivers(context, state, withSearch: false),
+                      ),
+                    )
+                  : HudaLandingScaffold(
+                      title: l10n.quranRadio,
+                      leading:
+                          ModalRoute.of(context)?.impliesAppBarDismissal ??
+                              false
+                          ? const BackButton()
+                          : null,
+                      art: (style) => ArabesqueVinePainter(
+                        style: style,
+                        coils: 2,
+                        open: true,
+                        growth: grow,
+                        leadingSpace: 0.1,
+                        textDirection: Directionality.of(context),
+                      ),
+                      contentMaxWidth: 1200,
+                      slivers: _slivers(context, state),
+                    ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static bool _showSearch(QuranRadioState state) =>
+      state is QuranRadioLoaded || state is QuranRadioLoading;
+
+  Widget _searchField(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    final field = Padding(
+      padding: EdgeInsets.symmetric(vertical: space.md),
+      child: HudaReveal(
+        child: HudaSearchField(
+          controller: _search,
+          hintText: l10n.searchRadio,
+          onChanged: (q) => setState(() => _query = q),
+        ),
+      ),
+    );
+    // On a half-open book the field keeps to the leading side, like the
+    // first column of stations below it.
+    final fold = FoldInfo.of(context);
+    if (!fold.isBook) return field;
+    final size = MediaQuery.sizeOf(context);
+    final insets = MediaQuery.paddingOf(context);
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    final gutter = space.gutter(size.width);
+    final side = rtl ? size.width - fold.end : fold.start;
+    final width = side - gutter - (rtl ? insets.right : insets.left) - space.sm;
+    return Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: SizedBox(width: width.clamp(0.0, double.infinity), child: field),
+    );
+  }
+
+  List<Widget> _slivers(
+    BuildContext context,
+    QuranRadioState state, {
+    bool withSearch = true,
+  }) {
+    final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    final width = MediaQuery.sizeOf(context).width;
+    final gutter = space.gutter(width);
+    final scale = MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 2.0);
+    final insets = MediaQuery.paddingOf(context);
+
+    Widget capped(Widget sliver) => SliverPadding(
+      padding: EdgeInsets.fromLTRB(
+        gutter + insets.left,
+        0,
+        gutter + insets.right,
+        0,
+      ),
+      sliver: SliverLayoutBuilder(
+        builder: (context, constraints) {
+          final extra = constraints.crossAxisExtent - 1200;
+          return extra <= 0
+              ? sliver
+              : SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: extra / 2),
+                  sliver: sliver,
+                );
         },
       ),
     );
-  }
 
-  SliverAppBar _buildSliverAppBar(
-    ThemeData theme,
-    AppLocalizations l10n,
-    QuranRadioState state,
-  ) {
-    final int? stationCount = state is QuranRadioLoaded
-        ? state.radios.length
-        : null;
-
-    return SliverAppBar(
-      expandedHeight: 180.h,
-      pinned: true,
-      stretch: true,
-      backgroundColor: theme.colorScheme.primary,
-      foregroundColor: theme.colorScheme.onPrimary,
-      title: _isCollapsed
-          ? Text(
-              l10n.quranRadio,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w700,
-                color: theme.colorScheme.onPrimary,
+    final tileWidth = 280 * scale;
+    final Widget body;
+    if (state is QuranRadioError && !_retrying) {
+      final offline = state.message == 'No internet connection';
+      body = SliverFillRemaining(
+        hasScrollBody: true,
+        child: offline
+            ? HudaOfflineState(onRetry: _retry, retrying: _retrying)
+            : HudaErrorState(
+                title: l10n.radioLoadFailed,
+                message: l10n.unexpectedError,
+                identity: quranRadioIdentity,
+                onRetry: _retry,
+                retrying: _retrying,
+              ),
+      );
+    } else if (state is QuranRadioLoaded) {
+      final q = _query.toLowerCase();
+      final radios = [
+        for (final r in state.radios)
+          if (r.name.toString().toLowerCase().contains(q)) r,
+      ];
+      body = radios.isEmpty
+          ? SliverFillRemaining(
+              hasScrollBody: true,
+              child: HudaStateView(
+                identity: quranRadioIdentity,
+                title: l10n.noResultsFound,
               ),
             )
-          : null,
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.parallax,
-        stretchModes: const [StretchMode.zoomBackground],
-        background: RadioHeaderBackground(
-          title: l10n.quranRadio,
-          stationCount: stationCount,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBodySliver(
-    QuranRadioState state,
-    ThemeData theme,
-    AppLocalizations l10n,
-    RadioStation? currentStation,
-    bool isPlaying,
-    bool isBuffering,
-  ) {
-    if (state is QuranRadioLoading) {
-      return SliverFillRemaining(
-        child: Center(
-          child: CircularProgressIndicator(color: theme.colorScheme.primary),
-        ),
-      );
-    }
-
-    if (state is QuranRadioError) {
-      return SliverFillRemaining(
-        child: RadioErrorState(
-          message: state.message,
-          retryLabel: l10n.checkConnection,
-          onRetry: _fetchRadios,
-        ),
-      );
-    }
-
-    if (state is QuranRadioLoaded) {
-      final radios = state.radios
-          .where(
-            (r) => r.name.toString().toLowerCase().contains(
-              _searchQuery.toLowerCase(),
-            ),
-          )
-          .toList();
-
-      if (radios.isEmpty) {
-        return SliverFillRemaining(
-          child: RadioEmptySearchResults(message: l10n.noResultsFound),
-        );
-      }
-
-      return SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-        sliver: SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            final station = radios[index];
-            return RadioStationCard(
-              station: station,
-              isActive: currentStation?.id == station.id,
-              isPlaying: isPlaying,
-              isBuffering: isBuffering,
-              pulseController: _pulseController,
-              onTap: () => _playStation(station),
-              index: index,
+          : capped(
+              SliverAdaptiveGrid(
+                minTileWidth: tileWidth,
+                spacing: space.sm,
+                itemCount: radios.length,
+                itemBuilder: (context, i) {
+                  final station = radios[i];
+                  final tile = RadioStationTile(
+                    station: station,
+                    status: _statusOf(state, station),
+                    onTap: () => _play(station),
+                  );
+                  return i < 5 ? HudaReveal(index: i + 1, child: tile) : tile;
+                },
+              ),
             );
-          }, childCount: radios.length),
+    } else {
+      // Loading, retrying, or not started.
+      body = capped(
+        SliverAdaptiveGrid(
+          minTileWidth: tileWidth,
+          spacing: space.sm,
+          itemCount: 8,
+          itemBuilder: (_, _) => const RadioStationSkeleton(),
         ),
       );
     }
 
-    return const SliverToBoxAdapter(child: SizedBox.shrink());
+    return [
+      if (withSearch && _showSearch(state))
+        capped(SliverToBoxAdapter(child: _searchField(context)))
+      else
+        SliverPadding(padding: EdgeInsets.only(top: space.md)),
+      body,
+      SliverPadding(
+        padding: context.scrollPadding(EdgeInsets.only(bottom: space.xl)),
+      ),
+    ];
   }
 }
