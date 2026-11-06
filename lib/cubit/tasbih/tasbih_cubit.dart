@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
-import 'package:vibration/vibration.dart';
 
 part 'tasbih_state.dart';
 
@@ -40,6 +39,8 @@ class TasbihCubit extends Cubit<TasbihState> {
   int _selectedNoteIndex = 0;
   bool _mode = true;
 
+  /// Counts one. The UI plays the haptic (`HudaHaptics.count`, or the
+  /// milestone haptic on a round's last tap), following [TasbihLoaded.mode].
   void increment() {
     if (_notes.isEmpty) return;
 
@@ -49,15 +50,6 @@ class TasbihCubit extends Cubit<TasbihState> {
 
     if ((note.count + 1) % 5 == 0) {
       saveTasbih();
-    }
-
-    if (_mode) {
-      Future.microtask(() async {
-        final hasVibrator = await Vibration.hasVibrator();
-        if (hasVibrator == true) {
-          Vibration.vibrate(duration: 50);
-        }
-      });
     }
 
     _emitLoaded();
@@ -123,6 +115,20 @@ class TasbihCubit extends Cubit<TasbihState> {
       _selectedNoteIndex = _notes.length - 1;
     } else if (index < _selectedNoteIndex) {
       _selectedNoteIndex -= 1;
+    }
+    saveTasbih();
+    _emitLoaded();
+  }
+
+  /// Puts back a dhikr removed with [removeNote] (undo), at its old place
+  /// and with its count, selected again if it was.
+  void restoreNote(int index, TasbihNote note, {bool select = false}) {
+    final at = index.clamp(0, _notes.length);
+    _notes = List<TasbihNote>.from(_notes)..insert(at, note);
+    if (select) {
+      _selectedNoteIndex = at;
+    } else if (_notes.length > 1 && at <= _selectedNoteIndex) {
+      _selectedNoteIndex += 1;
     }
     saveTasbih();
     _emitLoaded();
