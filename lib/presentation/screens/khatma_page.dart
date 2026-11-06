@@ -1,26 +1,38 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/core/layout/window_class.dart';
 import 'package:huda/core/notifications/notification_orchestrator.dart';
 import 'package:huda/core/notifications/reminder_model.dart';
+import 'package:huda/core/quran/quran.dart' as quran;
+import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/khatma_service.dart';
 import 'package:huda/core/services/service_locator.dart';
-import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/data/models/quran_model.dart';
-import 'package:huda/core/quran/quran.dart' as quran;
-import 'package:huda/presentation/widgets/khatma/khatma_active_view.dart';
-import 'package:huda/presentation/widgets/khatma/khatma_all_wirds_view.dart';
-import 'package:huda/presentation/widgets/khatma/khatma_completed_view.dart';
-import 'package:huda/presentation/widgets/khatma/khatma_empty_view.dart';
-import 'package:huda/presentation/widgets/khatma/khatma_new_view.dart';
-import 'package:huda/presentation/widgets/khatma/khatma_program_meaning_view.dart';
-import 'package:huda/presentation/widgets/khatma/khatma_program_parts_view.dart';
-import 'package:huda/presentation/widgets/khatma/khatma_start_from_view.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/khatma/khatma_identity.dart';
+import 'package:huda/presentation/widgets/khatma/khatma_views.dart';
 import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
 import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
+import 'package:huda/presentation/widgets/design/huda_time_picker.dart';
 
+/// Opens the Khatma in the shared sheet: a bottom sheet on phones, a
+/// dialog from medium width. Its height follows the step. The Quran
+/// reader's More menu opens it.
+Future<void> showKhatmaSheet(BuildContext context) => showHudaSheet<void>(
+  context: context,
+  title: AppLocalizations.of(context)!.khatmaLegendKhatma,
+  // Wide windows get two columns: the road and today beside the rest.
+  maxDialogWidth: context.windowClass.width >= WindowWidthClass.expanded
+      ? 880
+      : 640,
+  builder: (_) => const KhatmaPage(),
+);
+
+/// The Khatma: choose a pace and where to start, then follow the road one
+/// portion a day. Lives inside its sheet (see [showKhatmaSheet]); the
+/// sheet scrolls it.
 class KhatmaPage extends StatefulWidget {
   const KhatmaPage({super.key});
 
@@ -28,25 +40,22 @@ class KhatmaPage extends StatefulWidget {
   State<KhatmaPage> createState() => _KhatmaPageState();
 }
 
-enum _KhatmaStep {
-  empty,
-  newKhatma,
-  programMeaning,
-  programParts,
-  startFrom,
-  active,
-  allWirds,
-  completed,
-}
+enum _Step { setup, chooseDay, active, schedule, completed }
 
 class _KhatmaPageState extends State<KhatmaPage> {
   late final KhatmaService _service;
-  _KhatmaStep _step = _KhatmaStep.empty;
-  int _selectedProgramDays = 29;
-  _KhatmaStep _fromStep = _KhatmaStep.newKhatma;
-  _KhatmaStep _allWirdsPrevStep = _KhatmaStep.startFrom;
+  _Step _step = _Step.setup;
+  int _days = khatmaSuggestedPace;
+
+  /// Setup was reached from a finished khatma (it has a way back).
+  bool _setupFromCompleted = false;
+  _Step _scheduleBack = _Step.active;
   bool _reminderEnabled = false;
   TimeOfDay _reminderTime = const TimeOfDay(hour: 19, minute: 0);
+
+  /// Where the road was last shown, so a view that appears walks on from
+  /// there instead of drawing in again. 0 on open: the road draws in.
+  double _trailShown = 0;
 
   @override
   void initState() {
@@ -58,14 +67,11 @@ class _KhatmaPageState extends State<KhatmaPage> {
   void _load() {
     setState(() {
       if (_service.enabled) {
-        _selectedProgramDays = _service.planDays;
-        if (_service.isCompleted) {
-          _step = _KhatmaStep.completed;
-        } else {
-          _step = _KhatmaStep.active;
-        }
+        _days = _service.planDays;
+        _step = _service.isCompleted ? _Step.completed : _Step.active;
       } else {
-        _step = _KhatmaStep.empty;
+        _step = _Step.setup;
+        _setupFromCompleted = false;
       }
       _reminderEnabled = _service.reminderEnabled;
       _reminderTime = TimeOfDay(
@@ -75,41 +81,148 @@ class _KhatmaPageState extends State<KhatmaPage> {
     });
   }
 
-  String _formatTimeArabic(TimeOfDay t) {
-    final l10n = AppLocalizations.of(context)!;
-    final h = t.hourOfPeriod == 0 ? 12 : t.hourOfPeriod;
-    final m = t.minute.toString().padLeft(2, '0');
-    final period = t.period == DayPeriod.am
-        ? l10n.khatmaAmIndicator
-        : l10n.khatmaPmIndicator;
-    return '$h:$m $period';
+  void _go(_Step step) => setState(() => _step = step);
+
+  /// A new step starts at the top of the sheet.
+  @override
+  void setState(VoidCallback fn) {
+    final before = _step;
+    super.setState(fn);
+    if (_step == before) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final position = Scrollable.maybeOf(context)?.position;
+      if (position == null || position.pixels == 0) return;
+      final motion = context.tokens.motion;
+      final duration = motion.of(context, motion.medium);
+      if (duration == Duration.zero) {
+        position.jumpTo(0);
+      } else {
+        position.animateTo(0, duration: duration, curve: motion.standard);
+      }
+    });
   }
 
+  /// Where the Khatma's own dialogs open: its trailing bottom corner of the
+  /// whole window, so on a half-open fold they share the sheet's half.
+  Offset get _anchor {
+    final view = View.of(context);
+    final size = view.physicalSize / view.devicePixelRatio;
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    return Offset(rtl ? 0 : size.width, size.height);
+  }
+
+  // Plan ------------------------------------------------------------------
+
+  Future<void> _start(int fromDay) async {
+    HudaHaptics.light(context);
+    if (fromDay == 0) {
+      await _service.startPlan(_days);
+    } else {
+      await _service.startPlanFromDay(_days, fromDay);
+    }
+    _trailShown = 0;
+    _load();
+  }
+
+  Future<void> _markDone() async {
+    final before = _service.totalPagesRead;
+    _trailShown = KhatmaJourney.position(before);
+    await _service.markTodayDone();
+    if (!mounted) return;
+    final after = _service.totalPagesRead;
+    // A juz finished or the whole khatma: a milestone. Otherwise a check.
+    if (_service.isCompleted ||
+        KhatmaJourney.juzDone(after) > KhatmaJourney.juzDone(before)) {
+      HudaHaptics.medium(context);
+    } else {
+      HudaHaptics.light(context);
+    }
+    _load();
+  }
+
+  Future<void> _repeat() async {
+    HudaHaptics.light(context);
+    await _service.startPlan(_days);
+    _trailShown = 0;
+    _load();
+  }
+
+  Future<void> _confirmDelete() async {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final confirm = await showDialog<bool>(
+      context: context,
+      anchorPoint: _anchor,
+      builder: (dialog) => AlertDialog(
+        title: Text(l10n.khatmaDeleteTitle),
+        content: Text(l10n.khatmaDeleteConfirmContent),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialog, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            key: const ValueKey('khatma-delete-confirm'),
+            style: TextButton.styleFrom(foregroundColor: scheme.error),
+            onPressed: () => Navigator.pop(dialog, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (confirm != true || !mounted) return;
+    HudaHaptics.light(context);
+    await _service.resetPlan();
+    _trailShown = 0;
+    _days = khatmaSuggestedPace;
+    _load();
+  }
+
+  void _open(int surah, int verse) {
+    final model = QuranModel(
+      number: surah,
+      name: quran.getSurahNameArabic(surah),
+      englishName: quran.getSurahNameEnglish(surah),
+    );
+    Navigator.pop(context);
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoute.surahScreen,
+      arguments: {
+        'surahInfo': model,
+        'shouldRestorePosition': false,
+        'scrollToAyah': verse,
+      },
+    );
+  }
+
+  // Reminder --------------------------------------------------------------
+
   Future<void> _pickReminderTime() async {
-    final picked = await showTimePicker(
+    final picked = await showHudaTimePicker(
       context: context,
       initialTime: _reminderTime,
+      title: AppLocalizations.of(context)!.khatmaReminderTime,
+      daily: true,
     );
-    if (picked != null) {
-      if (!mounted) return;
-      if (_reminderEnabled &&
-          !await PermissionHandlers.requestNotificationPermission(context)) {
-        return;
-      }
-      if (!mounted) return;
-      await _service.setReminder(
-        enabled: _reminderEnabled,
-        hour: picked.hour,
-        minute: picked.minute,
-      );
-      if (_reminderEnabled) {
-        await _syncKhatmaReminder();
-      }
-      setState(() => _reminderTime = picked);
+    if (picked == null || !mounted) return;
+    if (_reminderEnabled &&
+        !await PermissionHandlers.requestNotificationPermission(context)) {
+      return;
     }
+    if (!mounted) return;
+    await _service.setReminder(
+      enabled: _reminderEnabled,
+      hour: picked.hour,
+      minute: picked.minute,
+    );
+    if (_reminderEnabled) await _syncReminder();
+    if (mounted) setState(() => _reminderTime = picked);
   }
 
   Future<void> _toggleReminder(bool value) async {
+    HudaHaptics.selection(context);
     if (value &&
         !await PermissionHandlers.requestNotificationPermission(context)) {
       return;
@@ -120,320 +233,155 @@ class _KhatmaPageState extends State<KhatmaPage> {
       hour: _reminderTime.hour,
       minute: _reminderTime.minute,
     );
-    await _syncKhatmaReminder();
-    setState(() => _reminderEnabled = value);
+    await _syncReminder();
+    if (mounted) setState(() => _reminderEnabled = value);
   }
 
   /// The orchestrator reads the saved reminder setting.
-  Future<void> _syncKhatmaReminder() => NotificationOrchestrator.shared
-      .requestSync('khatma-reminder', categories: {ReminderCategory.reminder});
+  Future<void> _syncReminder() => NotificationOrchestrator.shared.requestSync(
+    'khatma-reminder',
+    categories: {ReminderCategory.reminder},
+  );
 
-  Future<void> _restoreKhatmaReminder() async {
-    if (_reminderEnabled) {
-      await _syncKhatmaReminder();
+  Future<void> _restoreReminder() async {
+    if (_reminderEnabled) await _syncReminder();
+  }
+
+  // Views -----------------------------------------------------------------
+
+  String _relativeDay(AppLocalizations l10n) {
+    final started = _service.startedAt;
+    var diff = 0;
+    if (started != null) {
+      final now = DateTime.now();
+      final start = DateTime(started.year, started.month, started.day);
+      final today = DateTime(now.year, now.month, now.day);
+      diff = start
+          .add(Duration(days: _service.currentDayIndex))
+          .difference(today)
+          .inDays;
     }
-  }
-
-  TextDirection get _localeDirection {
-    const rtlLanguages = {'ar', 'ur'};
-    return rtlLanguages.contains(Localizations.localeOf(context).languageCode)
-        ? TextDirection.rtl
-        : TextDirection.ltr;
-  }
-
-  void _navigateToSurah(int surahNum, int ayahNum) {
-    final surah = QuranModel(
-      number: surahNum,
-      name: quran.getSurahNameArabic(surahNum),
-      englishName: quran.getSurahNameEnglish(surahNum),
-    );
-
-    Navigator.pop(context);
-
-    Navigator.pushReplacementNamed(
-      context,
-      AppRoute.surahScreen,
-      arguments: {
-        'surahInfo': surah,
-        'shouldRestorePosition': false,
-        'scrollToAyah': ayahNum,
-      },
-    );
-  }
-
-  String _formatRelativeDay(int diff) {
-    final l10n = AppLocalizations.of(context)!;
     if (diff == 0) return l10n.today;
     if (diff == 1) return l10n.khatmaTomorrow;
     if (diff == 2) return l10n.khatmaInTwoDays;
     if (diff > 2 && diff <= 10) return l10n.khatmaInDays(diff);
     if (diff > 10) return l10n.khatmaInManyDays(diff);
-
     if (diff == -1) return l10n.khatmaYesterday;
     if (diff == -2) return l10n.khatmaTwoDaysAgo;
-    final absDiff = diff.abs();
-    if (absDiff > 2 && absDiff <= 10) return l10n.khatmaDaysAgo(absDiff);
-    return l10n.khatmaManyDaysAgo(absDiff);
+    final ago = diff.abs();
+    if (ago <= 10) return l10n.khatmaDaysAgo(ago);
+    return l10n.khatmaManyDaysAgo(ago);
+  }
+
+  /// The days the khatma took, from its start to today.
+  int _journeyDays() {
+    final started = _service.startedAt;
+    if (started == null) return _service.planDays;
+    final now = DateTime.now();
+    final start = DateTime(started.year, started.month, started.day);
+    final today = DateTime(now.year, now.month, now.day);
+    return today.difference(start).inDays + 1;
+  }
+
+  Widget _reminder() => KhatmaReminderSection(
+    enabled: _reminderEnabled,
+    time: MaterialLocalizations.of(context).formatTimeOfDay(
+      _reminderTime,
+      alwaysUse24HourFormat: MediaQuery.alwaysUse24HourFormatOf(context),
+    ),
+    requirements: NotificationRequirementsSection(
+      feature: NotificationFeature.khatma,
+      onNotificationEnabled: _restoreReminder,
+      bottomSpacing: context.tokens.space.sm,
+    ),
+    onToggle: _toggleReminder,
+    onPickTime: _pickReminderTime,
+  );
+
+  Widget _plan(_Step from) => KhatmaPlanSection(
+    onSchedule: () {
+      _scheduleBack = from;
+      _go(_Step.schedule);
+    },
+    onDelete: _confirmDelete,
+  );
+
+  Widget _current(AppLocalizations l10n) {
+    final from = _trailShown;
+    switch (_step) {
+      case _Step.setup:
+        _trailShown = 0;
+        return KhatmaSetupView(
+          days: _days,
+          pagesPerDay: _service.pagesPerDay,
+          onDays: (days) {
+            HudaHaptics.selection(context);
+            setState(() => _days = days);
+          },
+          onFromBeginning: () => _start(0),
+          onChooseDay: () => _go(_Step.chooseDay),
+          onBack: _setupFromCompleted
+              ? () {
+                  _days = _service.planDays;
+                  _go(_Step.completed);
+                }
+              : null,
+        );
+      case _Step.chooseDay:
+        return KhatmaScheduleView(
+          key: ValueKey('choose-$_days'),
+          service: _service,
+          days: _days,
+          currentDay: -1,
+          title: l10n.khatmaStartFromTitle,
+          message: l10n.khatmaSpecificWirdSubtitle,
+          onBack: () => _go(_Step.setup),
+          onDay: _start,
+        );
+      case _Step.active:
+        _trailShown = KhatmaJourney.position(_service.totalPagesRead);
+        return KhatmaActiveView(
+          service: _service,
+          trailFrom: from,
+          relativeDay: _relativeDay(l10n),
+          reminder: _reminder(),
+          plan: _plan(_Step.active),
+          onOpen: _open,
+          onMarkDone: _markDone,
+        );
+      case _Step.schedule:
+        return KhatmaScheduleView(
+          service: _service,
+          days: _service.planDays,
+          currentDay: _service.isCompleted ? -1 : _service.currentDayIndex,
+          title: l10n.khatmaAllWirds,
+          onBack: () => _go(_scheduleBack),
+        );
+      case _Step.completed:
+        _trailShown = 30;
+        return KhatmaCompletedView(
+          trailFrom: from,
+          days: _journeyDays(),
+          reminder: _reminder(),
+          plan: _plan(_Step.completed),
+          onRepeat: _repeat,
+          onStartNew: () {
+            _setupFromCompleted = true;
+            _go(_Step.setup);
+          },
+        );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 320),
-      switchInCurve: Curves.easeOutCubic,
-      switchOutCurve: Curves.easeInCubic,
-      transitionBuilder: (child, animation) => FadeTransition(
-        opacity: animation,
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0, 0.04),
-            end: Offset.zero,
-          ).animate(animation),
-          child: child,
-        ),
-      ),
-      child: Container(
-        key: ValueKey(_step),
-        color: Colors.transparent,
-        child: _currentStep(),
-      ),
-    );
-  }
-
-  Widget _currentStep() {
-    switch (_step) {
-      case _KhatmaStep.empty:
-        return _buildEmpty();
-      case _KhatmaStep.newKhatma:
-        return _buildNewKhatma();
-      case _KhatmaStep.programMeaning:
-        return _buildProgramMeaning();
-      case _KhatmaStep.programParts:
-        return _buildProgramParts();
-      case _KhatmaStep.startFrom:
-        return _buildStartFrom();
-      case _KhatmaStep.active:
-        return _buildActive();
-      case _KhatmaStep.allWirds:
-        return _buildAllWirds();
-      case _KhatmaStep.completed:
-        return _buildCompleted();
-    }
-  }
-
-  Widget _buildEmpty() => KhatmaEmptyView(
-    textDirection: _localeDirection,
-    onStartNew: () => setState(() => _step = _KhatmaStep.newKhatma),
-  );
-
-  Widget _buildNewKhatma() => KhatmaNewView(
-    textDirection: _localeDirection,
-    onBack: () => setState(() => _step = _KhatmaStep.empty),
-    onRecommendedTap: () {
-      _selectedProgramDays = 29;
-      _fromStep = _KhatmaStep.newKhatma;
-      setState(() => _step = _KhatmaStep.startFrom);
-    },
-    onProgramMeaning: () => setState(() => _step = _KhatmaStep.programMeaning),
-    onProgramParts: () => setState(() => _step = _KhatmaStep.programParts),
-  );
-
-  Widget _buildProgramMeaning() => KhatmaProgramMeaningView(
-    textDirection: _localeDirection,
-    onBack: () => setState(() => _step = _KhatmaStep.newKhatma),
-    onSelectDays: (days) {
-      _selectedProgramDays = days;
-      _fromStep = _KhatmaStep.programMeaning;
-      setState(() => _step = _KhatmaStep.startFrom);
-    },
-    pagesPerDayFn: _service.pagesPerDay,
-  );
-
-  Widget _buildProgramParts() => KhatmaProgramPartsView(
-    textDirection: _localeDirection,
-    onBack: () => setState(() => _step = _KhatmaStep.newKhatma),
-    onSelectDays: (days) {
-      _selectedProgramDays = days;
-      _fromStep = _KhatmaStep.programParts;
-      setState(() => _step = _KhatmaStep.startFrom);
-    },
-  );
-
-  Widget _buildStartFrom() {
-    final daysLocal = _selectedProgramDays;
-    return KhatmaStartFromView(
-      textDirection: _localeDirection,
-      onBack: () => setState(() => _step = _fromStep),
-      onFromBeginning: () async {
-        await _service.startPlan(daysLocal);
-        _load();
-      },
-      onSpecificWird: () {
-        _allWirdsPrevStep = _KhatmaStep.startFrom;
-        setState(() => _step = _KhatmaStep.allWirds);
-      },
-    );
-  }
-
-  Widget _buildActive() {
     final l10n = AppLocalizations.of(context)!;
-    final dayIndex = _service.currentDayIndex;
-    final planDays = _service.planDays;
-    final todayDetails = _service.rangeDetailsForDay(dayIndex, planDays);
-    final yesterdayLabel = _service.rangeLabelForDay(
-      max(0, dayIndex - 1),
-      planDays,
-    );
-
-    final st = _service.startedAt;
-    int diffDays = 0;
-    if (st != null) {
-      final now = DateTime.now();
-      final start = DateTime(st.year, st.month, st.day);
-      final today = DateTime(now.year, now.month, now.day);
-      final targetDate = start.add(Duration(days: dayIndex));
-      diffDays = targetDate.difference(today).inDays;
-    }
-
-    return KhatmaActiveView(
-      textDirection: _localeDirection,
-      dayIndex: dayIndex,
-      planDays: planDays,
-      percentTotal: _service.percentTotal,
-      percentDaily: _service.percentDaily,
-      percentPacing: _service.percentPacing,
-      daysRemaining: _service.daysRemaining,
-      totalPagesRead: _service.totalPagesRead,
-      pagesRemaining: _service.pagesRemaining,
-      relativeDay: _formatRelativeDay(diffDays),
-      startSurahLabel: l10n.khatmaFromSurah(
-        todayDetails.startSurahName,
-        todayDetails.startVerse,
-      ),
-      endSurahLabel: l10n.khatmaToSurah(
-        todayDetails.endSurahName,
-        todayDetails.endVerse,
-      ),
-      yesterdayLabel: yesterdayLabel,
-      reminderEnabled: _reminderEnabled,
-      formattedReminderTime: _formatTimeArabic(_reminderTime),
-      onMarkDone: () async {
-        await _service.markTodayDone();
-        _load();
-      },
-      onAllWirds: () {
-        _allWirdsPrevStep = _KhatmaStep.active;
-        setState(() => _step = _KhatmaStep.allWirds);
-      },
-      onDelete: () => _confirmResetPlan(context),
-      onNavigateToStart: () =>
-          _navigateToSurah(todayDetails.startSurah, todayDetails.startVerse),
-      onNavigateToEnd: () =>
-          _navigateToSurah(todayDetails.endSurah, todayDetails.endVerse),
-      notificationRequirements: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: NotificationRequirementsSection(
-          feature: NotificationFeature.khatma,
-          onNotificationEnabled: _restoreKhatmaReminder,
-        ),
-      ),
-      onToggleReminder: _toggleReminder,
-      onPickReminderTime: _pickReminderTime,
-    );
-  }
-
-  Widget _buildAllWirds() {
-    final bool isSetupMode = _allWirdsPrevStep == _KhatmaStep.startFrom;
-    final daysLocal = isSetupMode
-        ? _selectedProgramDays
-        : (_service.enabled ? _service.planDays : _selectedProgramDays);
-    final currentDayIndex = isSetupMode
-        ? -1
-        : (_service.enabled ? _service.currentDayIndex : -1);
-
-    return KhatmaAllWirdsView(
-      textDirection: _localeDirection,
-      totalDays: daysLocal,
-      currentDayIndex: currentDayIndex,
-      isSetupMode: isSetupMode,
-      onBack: () => setState(() => _step = _allWirdsPrevStep),
-      rangeLabelForDay: (dayIdx) =>
-          _service.rangeLabelForDay(dayIdx, daysLocal),
-      onDayTap: isSetupMode
-          ? (dayIdx) async {
-              await _service.startPlanFromDay(daysLocal, dayIdx);
-              _load();
-            }
-          : null,
-    );
-  }
-
-  Widget _buildCompleted() => KhatmaCompletedView(
-    textDirection: _localeDirection,
-    reminderEnabled: _reminderEnabled,
-    formattedReminderTime: _formatTimeArabic(_reminderTime),
-    onRepeat: () async {
-      await _service.startPlan(_selectedProgramDays);
-      _load();
-    },
-    onStartNew: () => setState(() => _step = _KhatmaStep.newKhatma),
-    onAllWirds: () {
-      _allWirdsPrevStep = _KhatmaStep.completed;
-      setState(() => _step = _KhatmaStep.allWirds);
-    },
-    onDelete: () => _confirmResetPlan(context),
-    notificationRequirements: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: NotificationRequirementsSection(
-        feature: NotificationFeature.khatma,
-        onNotificationEnabled: _restoreKhatmaReminder,
-      ),
-    ),
-    onToggleReminder: _toggleReminder,
-    onPickReminderTime: _pickReminderTime,
-  );
-
-  Future<void> _confirmResetPlan(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    final bool? confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => Directionality(
-        textDirection: _localeDirection,
-        child: AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.r),
-          ),
-          title: Text(
-            l10n.khatmaDeleteTitle,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          content: Text(l10n.khatmaDeleteConfirmContent),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(
-                l10n.cancel,
-                style: const TextStyle(color: Colors.grey),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(
-                l10n.delete,
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
+    return HudaRevealScope(
+      child: HudaStateSwitcher(
+        stateKey: _step,
+        sequential: true,
+        child: _current(l10n),
       ),
     );
-    if (confirm == true) {
-      await _service.resetPlan();
-      _load();
-    }
   }
 }
