@@ -1,137 +1,187 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/qiblah/qiblah_service.dart';
+import 'package:huda/core/services/geolocator.dart';
+import 'package:huda/core/theme/huda_theme_scope.dart';
 import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/qiblah/error_state.dart';
-import 'package:huda/presentation/widgets/qiblah/loading_state.dart';
-import 'package:huda/presentation/widgets/qiblah/permission_denied_state.dart';
-import 'package:huda/presentation/widgets/qiblah/qiblah_compass.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/qiblah/qiblah_instrument.dart';
+import 'package:huda/presentation/widgets/qiblah/qiblah_states.dart';
 
+/// The Qiblah compass: an immersive night focus screen with the astrolabe
+/// (see `design/features/qiblah/brief.md`). While location is checked the
+/// dial waits unlit; then it turns with the phone and locks when the phone
+/// faces the Qibla. Permission, location-off and failure states each say
+/// what to do, and the screen checks again when Huda returns from the
+/// system settings.
 class QiblahScreen extends StatefulWidget {
-  const QiblahScreen({super.key});
+  const QiblahScreen({super.key, this.readings});
+
+  /// The compass readings; the device's compass when null. A seam for the
+  /// redesign harness, which can't reach the sensors.
+  final Stream<QiblahReading> Function()? readings;
 
   @override
   State<QiblahScreen> createState() => QiblahScreenState();
 }
 
-class QiblahScreenState extends State<QiblahScreen>
-    with TickerProviderStateMixin {
-  bool _hasVibrated = false;
-  bool _isAligned = false;
-  late AnimationController _pulseController;
-  late AnimationController _rotationController;
-  late Animation<double> _pulseAnimation;
-  late Animation<double> _scaleAnimation;
+class QiblahScreenState extends State<QiblahScreen> {
+  /// The readings for the current location check, made when it succeeds.
+  Stream<QiblahReading>? _readings;
+
+  /// The readings failed (no location fix, a sensor error).
+  bool _failed = false;
+
+  /// A retry was tapped and its answer hasn't come yet.
+  bool _retrying = false;
+
+  /// The person went to the system settings; check again on return.
+  bool _awaitingSettings = false;
+
+  late final AppLifecycleListener _lifecycle = AppLifecycleListener(
+    onResume: () {
+      if (!_awaitingSettings || !mounted) return;
+      _awaitingSettings = false;
+      context.read<QiblahCubit>().loadQiblah();
+    },
+  );
 
   @override
   void initState() {
     super.initState();
-    _pulseController = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
-
-    _rotationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-
-    _pulseAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
-      CurvedAnimation(parent: _rotationController, curve: Curves.elasticOut),
-    );
+    _lifecycle;
   }
 
   @override
   void dispose() {
-    _pulseController.dispose();
-    _rotationController.dispose();
+    _lifecycle.dispose();
     super.dispose();
+  }
+
+  void _retry() {
+    setState(() {
+      _retrying = true;
+      _failed = false;
+      _readings = null;
+    });
+    context.read<QiblahCubit>().loadQiblah();
+  }
+
+  void _openLocationSettings() {
+    _awaitingSettings = true;
+    Geolocator.openLocationSettings();
+  }
+
+  void _openAppSettings() {
+    _awaitingSettings = true;
+    Geolocator.openAppSettings();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.qiblahDirection,
-          style: TextStyle(color: isDark ? Colors.white : Colors.black87),
-        ),
-        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black87),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: isDark
-                ? [
-                    context.darkGradientStart,
-                    context.darkGradientMid,
-                    context.darkGradientEnd,
-                  ]
-                : [
-                    context.lightSurface,
-                    context.primaryExtraLightColor,
-                    context.primaryLightColor,
-                  ],
-          ),
-        ),
-        child: SafeArea(
-          child: BlocBuilder<QiblahCubit, QiblahState>(
-            builder: (context, state) {
+    final l10n = AppLocalizations.of(context)!;
+    return HudaNight(
+      child: HudaRevealScope(
+        child: BlocConsumer<QiblahCubit, QiblahState>(
+          listener: (context, state) {
+            setState(() {
               if (state is QiblahLoading) {
-                return LoadingState(isDark: isDark);
-              } else if (state is QiblahError) {
-                return ErrorState(message: state.message, isDark: isDark);
-              } else if (state is QiblahPermissionDenied) {
-                return PermissionDeniedState(
-                  message: state.message,
-                  isDark: isDark,
-                  isPermanent: false,
-                );
-              } else if (state is QiblahPermissionDeniedForever) {
-                return PermissionDeniedState(
-                  message: state.message,
-                  isDark: isDark,
-                  isPermanent: true,
-                );
-              } else if (state is QiblahReady) {
-                return QiblahCompass(
-                  isDark: isDark,
-                  pulseController: _pulseController,
-                  rotationController: _rotationController,
-                  pulseAnimation: _pulseAnimation,
-                  scaleAnimation: _scaleAnimation,
-                  isAligned: _isAligned,
-                  hasVibrated: _hasVibrated,
-                  onAlignmentChanged: (aligned) {
-                    setState(() {
-                      _isAligned = aligned;
-                    });
-                  },
-                  onVibrationChanged: (vibrated) {
-                    setState(() {
-                      _hasVibrated = vibrated;
-                    });
-                  },
-                );
+                _readings = null;
+                _failed = false;
+              } else {
+                _retrying = false;
               }
-              return const SizedBox.shrink();
-            },
-          ),
+            });
+          },
+          builder: (context, state) {
+            final (Object key, Widget body) = switch (state) {
+              QiblahLoading() when _retrying => (
+                QiblahError,
+                QiblahErrorView(onRetry: _retry, retrying: true),
+              ),
+              QiblahError() => (
+                QiblahError,
+                QiblahErrorView(onRetry: _retry, retrying: false),
+              ),
+              QiblahReady() when _failed => (
+                QiblahError,
+                QiblahErrorView(onRetry: _retry, retrying: false),
+              ),
+              QiblahLocationServiceOff() => (
+                QiblahLocationServiceOff,
+                QiblahLocationOffView(
+                  onOpenSettings: _openLocationSettings,
+                  onRetry: _retry,
+                ),
+              ),
+              QiblahPermissionDenied() => (
+                QiblahPermissionDenied,
+                QiblahAllowLocationView(
+                  onAllow: () =>
+                      context.read<QiblahCubit>().loadQiblah(ask: true),
+                ),
+              ),
+              QiblahPermissionDeniedForever() => (
+                QiblahPermissionDeniedForever,
+                QiblahLocationBlockedView(onOpenSettings: _openAppSettings),
+              ),
+              // Checking location, then reading the compass: one instrument
+              // throughout, so nothing jumps as the readings arrive.
+              QiblahReady() => (
+                'instrument',
+                QiblahInstrument(
+                  readings: _readings ??=
+                      (widget.readings ?? QiblahService.qiblahStream)(),
+                  onFailed: (_) {
+                    if (mounted) setState(() => _failed = true);
+                  },
+                  onRefreshLocation: () => setState(
+                    () => _readings =
+                        widget.readings?.call() ??
+                        QiblahService.qiblahStream(refresh: true),
+                  ),
+                ),
+              ),
+              QiblahInitial() || QiblahLoading() => (
+                'instrument',
+                QiblahInstrument(readings: null, onFailed: (_) {}),
+              ),
+            };
+            final isState = key != 'instrument';
+            // No title on screen (the instrument says what it is); screen
+            // readers still hear its name.
+            return Semantics(
+              container: true,
+              explicitChildNodes: true,
+              label: l10n.qiblahDirection,
+              child: HudaImmersiveScaffold(
+                body: HudaStateSwitcher(
+                  stateKey: key,
+                  child: SizedBox.expand(
+                    child: isState ? _BelowBar(child: body) : body,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
   }
+}
+
+/// A full-page state under the transparent immersive bar.
+class _BelowBar extends StatelessWidget {
+  const _BelowBar({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    // The scaffold's top padding already clears the transparent bar.
+    padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
+    child: child,
+  );
 }

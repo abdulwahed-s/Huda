@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+
+/// Location services are off on the device. "Turn on location" opens the
+/// device's settings; the screen checks again when Huda comes back.
+class QiblahLocationOffView extends StatelessWidget {
+  const QiblahLocationOffView({
+    super.key,
+    required this.onOpenSettings,
+    required this.onRetry,
+  });
+
+  final VoidCallback onOpenSettings;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return HudaPermissionState(
+      icon: Icons.location_off_rounded,
+      title: l10n.qiblahLocationOffTitle,
+      explanation: l10n.qiblahLocationOffMessage,
+      allowLabel: l10n.qiblahTurnOnLocation,
+      onAllow: onOpenSettings,
+      secondaryLabel: l10n.retry,
+      onSecondary: onRetry,
+    );
+  }
+}
+
+/// Location permission isn't granted yet: explain, then ask (the system
+/// prompt comes after the tap).
+class QiblahAllowLocationView extends StatelessWidget {
+  const QiblahAllowLocationView({super.key, required this.onAllow});
+
+  final VoidCallback onAllow;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return HudaPermissionState(
+      icon: Icons.near_me_rounded,
+      title: l10n.qiblahAllowTitle,
+      explanation: l10n.qiblahAllowMessage,
+      allowLabel: l10n.qiblahAllowLocation,
+      onAllow: onAllow,
+    );
+  }
+}
+
+/// Location was denied for good: only the app's settings can change it.
+/// The screen checks again when Huda comes back.
+class QiblahLocationBlockedView extends StatelessWidget {
+  const QiblahLocationBlockedView({super.key, required this.onOpenSettings});
+
+  final VoidCallback onOpenSettings;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return HudaPermissionState(
+      icon: Icons.location_disabled_rounded,
+      title: l10n.qiblahBlockedTitle,
+      explanation: l10n.qiblahBlockedMessage,
+      allowLabel: l10n.openSettings,
+      onAllow: onOpenSettings,
+    );
+  }
+}
+
+/// The location or the compass failed. Retry shows "Retrying…" until the
+/// next answer.
+class QiblahErrorView extends StatelessWidget {
+  const QiblahErrorView({
+    super.key,
+    required this.onRetry,
+    required this.retrying,
+  });
+
+  final VoidCallback onRetry;
+  final bool retrying;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return HudaErrorState(
+      title: l10n.qiblahErrorTitle,
+      message: l10n.qiblahErrorMessage,
+      onRetry: onRetry,
+      retrying: retrying,
+    );
+  }
+}
