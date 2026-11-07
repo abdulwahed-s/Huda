@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/book_pdf_source_resolver.dart';
-import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/book_detail/book_detail_cubit.dart';
 import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
 import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
@@ -11,7 +10,7 @@ import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/data/models/offline_book_model.dart';
 import 'package:huda/data/services/offline_books_service.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
+import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
@@ -131,8 +130,9 @@ class BookDetailController {
     try {
       launchUrl(Uri.parse(url));
     } catch (e) {
-      HudaSnackBar.error(
+      showHudaToast(
         context,
+        kind: HudaToastKind.failed,
         message: AppLocalizations.of(context)!.unexpectedError,
       );
     }
@@ -148,10 +148,7 @@ class BookDetailController {
       await _openPdfFromRemote(attachment.originalUrl);
       return;
     }
-    HudaSnackBar.info(
-      context,
-      message: AppLocalizations.of(context)!.comingSoon,
-    );
+    showHudaToast(context, message: AppLocalizations.of(context)!.comingSoon);
   }
 
   Future<void> _openPdfFromRemote(String? remoteUrl) async {
@@ -161,8 +158,9 @@ class BookDetailController {
     );
     if (!context.mounted) return;
     if (source == null) {
-      HudaSnackBar.error(
+      showHudaToast(
         context,
+        kind: HudaToastKind.failed,
         message: AppLocalizations.of(context)!.unexpectedError,
       );
       return;
@@ -181,67 +179,22 @@ class BookDetailController {
     );
   }
 
-  void showShareDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return ShareDialog(
-          title: title,
-          onShareAsPdf: () {
-            Navigator.pop(context);
-            shareAsPdf();
-          },
-          onShareAsMessage: () {
-            Navigator.pop(context);
-            shareAsMessage();
-          },
-        );
-      },
-    );
-  }
-
-  void showDeleteDialog(BuildContext context, int bookId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete Downloaded Book'),
-          content: const Text(
-            'Are you sure you want to delete this downloaded book? This action cannot be undone.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                deleteOfflineBook(bookId);
-              },
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> deleteOfflineBook(int bookId) async {
     try {
       await _offlineBooksService.deleteBook(bookId);
       isBookDownloaded = false;
       refreshUI();
       if (context.mounted) {
-        HudaSnackBar.success(
+        showHudaToast(
           context,
-          message: AppLocalizations.of(context)!.operationComplete,
+          message: AppLocalizations.of(context)!.booksDownloadRemoved,
         );
       }
     } catch (e) {
       if (context.mounted) {
-        HudaSnackBar.error(
+        showHudaToast(
           context,
+          kind: HudaToastKind.failed,
           message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
@@ -250,7 +203,7 @@ class BookDetailController {
 
   Future<void> downloadBook(BookDetailLoaded state) async {
     if (kIsWeb) {
-      HudaSnackBar.info(
+      showHudaToast(
         context,
         message: AppLocalizations.of(context)!.downloadFeatureComingSoon,
       );
@@ -280,8 +233,9 @@ class BookDetailController {
         isDownloading = false;
         downloadProgress = 0.0;
         refreshUI();
-        HudaSnackBar.error(
+        showHudaToast(
           context,
+          kind: HudaToastKind.failed,
           message: AppLocalizations.of(context)!.unexpectedError,
         );
       }
@@ -332,9 +286,10 @@ class BookDetailController {
       }
     } catch (e) {
       if (context.mounted) {
-        HudaSnackBar.error(
+        showHudaToast(
           context,
-          message: AppLocalizations.of(context)!.failedToShareImage,
+          kind: HudaToastKind.failed,
+          message: AppLocalizations.of(context)!.booksShareFailed,
         );
       }
     }
@@ -382,8 +337,9 @@ class BookDetailController {
         await launchUrl(Uri.parse(url));
       } catch (e) {
         if (context.mounted) {
-          HudaSnackBar.error(
+          showHudaToast(
             context,
+            kind: HudaToastKind.failed,
             message: AppLocalizations.of(context)!.unexpectedError,
           );
         }
@@ -391,34 +347,12 @@ class BookDetailController {
       return;
     }
     try {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(height: 16),
-              Text(
-                AppLocalizations.of(context)!.preparingPdfForSharing,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          ),
-        ),
-      );
-
       final dio = Dio();
       final tempDir = await getTemporaryDirectory();
       final fileName = '${title.replaceAll(RegExp(r'[^\w\s]+'), '_')}.pdf';
       final filePath = '${tempDir.path}/$fileName';
 
       await dio.download(url, filePath);
-
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
 
       if (!context.mounted) return;
       final screenSize = MediaQuery.of(context).size;
@@ -443,49 +377,7 @@ class BookDetailController {
         }
       });
     } catch (e) {
-      if (context.mounted && Navigator.of(context).canPop()) {
-        Navigator.of(context).pop();
-      }
       rethrow;
     }
-  }
-}
-
-class ShareDialog extends StatelessWidget {
-  final String title;
-  final VoidCallback onShareAsPdf;
-  final VoidCallback onShareAsMessage;
-
-  const ShareDialog({
-    super.key,
-    required this.title,
-    required this.onShareAsPdf,
-    required this.onShareAsMessage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
-    return AlertDialog(
-      title: Text(localizations.shareBookTitle(title)),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!PlatformUtils.isLinux)
-            ListTile(
-              leading: const Icon(Icons.picture_as_pdf),
-              title: Text(localizations.shareAsPdf),
-              onTap: onShareAsPdf,
-            ),
-          const Divider(height: 1),
-          ListTile(
-            leading: const Icon(Icons.message),
-            title: Text(localizations.shareInMessage),
-            onTap: onShareAsMessage,
-          ),
-        ],
-      ),
-    );
   }
 }

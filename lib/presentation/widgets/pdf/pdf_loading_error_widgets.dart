@@ -1,164 +1,133 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/books/books_identity.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
 
+double? _fraction(int downloaded, int? total) =>
+    total != null && total > 0 ? (downloaded / total).clamp(0.0, 1.0) : null;
+
+/// Opening the book: the lamp, "Opening the book…" and how much has come.
 class PdfLoadingWidget extends StatelessWidget {
-  final int bytesDownloaded;
-  final int? totalBytes;
-  final ColorScheme colorScheme;
-
   const PdfLoadingWidget({
     super.key,
     required this.bytesDownloaded,
     required this.totalBytes,
-    required this.colorScheme,
   });
+
+  final int bytesDownloaded;
+  final int? totalBytes;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final progress = _fraction(bytesDownloaded, totalBytes);
+    return Semantics(
+      liveRegion: true,
+      label: l10n.booksOpening,
+      child: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(space.lg),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 280),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HudaLamp(
+                  size: 56,
+                  child: HudaLampSpinner(size: 28, color: tokens.gilt),
+                ),
+                SizedBox(height: space.md),
+                Text(
+                  l10n.booksOpening,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleMedium,
+                ),
+                SizedBox(height: space.md),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: LinearProgressIndicator(value: progress, minHeight: 4),
+                ),
+                if (progress != null) ...[
+                  SizedBox(height: space.xs),
+                  Text(
+                    '${(progress * 100).round()}%',
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontFeatures: const [FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
+              ],
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 60,
-              height: 60,
-              child: CircularProgressIndicator(
-                value: totalBytes != null
-                    ? bytesDownloaded / totalBytes!
-                    : null,
-                strokeWidth: 4,
-                backgroundColor: colorScheme.outline.withValues(alpha: 0.2),
-                valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              AppLocalizations.of(context)!.loadingPdf,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: colorScheme.onSurface,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "${(bytesDownloaded / (totalBytes ?? 1) * 100).toStringAsFixed(0)}%",
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
+/// The first page is showing while the rest of the file arrives: a small
+/// status pill at the top of the page (the page can't be used yet).
 class PdfPreparingDocumentOverlay extends StatelessWidget {
   const PdfPreparingDocumentOverlay({
     super.key,
     required this.bytesDownloaded,
     required this.totalBytes,
-    required this.colorScheme,
   });
 
   final int bytesDownloaded;
   final int? totalBytes;
-  final ColorScheme colorScheme;
 
   @override
   Widget build(BuildContext context) {
-    final total = totalBytes;
-    final progress = total != null && total > 0
-        ? (bytesDownloaded / total).clamp(0.0, 1.0)
-        : null;
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final progress = _fraction(bytesDownloaded, totalBytes);
+    final label = progress == null
+        ? l10n.booksOpening
+        : '${l10n.booksOpening} ${(progress * 100).round()}%';
     return AbsorbPointer(
-      child: Semantics(
-        label: l10n.loadingPdf,
-        liveRegion: true,
-        child: ColoredBox(
-          color: colorScheme.scrim.withValues(alpha: 0.36),
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 300),
-              margin: const EdgeInsets.all(24),
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: colorScheme.surface.withValues(alpha: 0.98),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 38,
-                    width: 38,
-                    child: CircularProgressIndicator(
-                      value: progress,
-                      strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    l10n.loadingPdf,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(99),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      minHeight: 6,
-                      backgroundColor: colorScheme.outline.withValues(
-                        alpha: 0.18,
-                      ),
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  if (progress != null) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      '${(progress * 100).toStringAsFixed(0)}%',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        color: colorScheme.onSurface.withValues(alpha: 0.68),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: EdgeInsets.all(space.md),
+          child: Semantics(
+            liveRegion: true,
+            label: label,
+            excludeSemantics: true,
+            child: Material(
+              color: tokens.chrome,
+              shape: const StadiumBorder(),
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(
+                  space.sm,
+                  space.xs,
+                  space.md,
+                  space.xs,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HudaLampSpinner(size: 18, color: tokens.gilt),
+                    SizedBox(width: space.sm),
+                    Flexible(
+                      child: Text(
+                        label,
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: tokens.onChrome,
+                          fontFeatures: const [FontFeature.tabularFigures()],
+                        ),
                       ),
                     ),
                   ],
-                ],
+                ),
               ),
             ),
           ),
@@ -168,52 +137,26 @@ class PdfPreparingDocumentOverlay extends StatelessWidget {
   }
 }
 
+/// The book couldn't be opened: say so plainly and offer Retry.
 class PdfErrorWidget extends StatelessWidget {
-  final dynamic error;
-  final ColorScheme colorScheme;
-
   const PdfErrorWidget({
     super.key,
-    required this.error,
-    required this.colorScheme,
+    required this.onRetry,
+    this.retrying = false,
   });
+
+  final VoidCallback? onRetry;
+  final bool retrying;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        margin: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: colorScheme.errorContainer,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: colorScheme.error.withValues(alpha: 0.3)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.error_outline, color: Colors.white, size: 48),
-            const SizedBox(height: 16),
-            Text(
-              AppLocalizations.of(context)!.failedToLoadPdf,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
-                color: colorScheme.onErrorContainer,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              error.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: colorScheme.onErrorContainer.withValues(alpha: 0.8),
-              ),
-            ),
-          ],
-        ),
-      ),
+    final l10n = AppLocalizations.of(context)!;
+    return HudaErrorState(
+      identity: booksIdentity,
+      title: l10n.booksReaderError,
+      message: l10n.booksReaderErrorMessage,
+      onRetry: onRetry,
+      retrying: retrying,
     );
   }
 }

@@ -21,6 +21,7 @@ class PdfViewerContent extends StatefulWidget {
     required this.isDark,
     required this.colorScheme,
     required this.onFullDocumentReady,
+    this.bottomClearance = 0,
   });
 
   final String pdfUrl;
@@ -31,6 +32,15 @@ class PdfViewerContent extends StatefulWidget {
   final bool isDark;
   final ColorScheme colorScheme;
   final ValueChanged<PdfDocument> onFullDocumentReady;
+
+  /// Room the reader's capsule and the bottom inset take at the foot, so
+  /// the page scrubber's track ends above them.
+  final double bottomClearance;
+
+  /// Opens the document directly instead of reading [pdfUrl], for the
+  /// redesign harness (no files or network there).
+  @visibleForTesting
+  static Future<PdfDocument> Function(String url)? debugOpenDocument;
 
   @override
   State<PdfViewerContent> createState() => _PdfViewerContentState();
@@ -75,6 +85,22 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
 
   void _openSource() {
     final generation = ++_loadGeneration;
+    if (PdfViewerContent.debugOpenDocument case final open?) {
+      unawaited(
+        open(widget.pdfUrl).then(
+          (document) {
+            if (!mounted || generation != _loadGeneration) return;
+            setState(() => _fullDocument = document);
+            _reportFullDocument(document);
+          },
+          onError: (Object error) {
+            if (!mounted || generation != _loadGeneration) return;
+            setState(() => _loadError = error);
+          },
+        ),
+      );
+      return;
+    }
     try {
       final rawSource = createPdfByteSource(widget.pdfUrl);
       final source = _isRemoteLocation(widget.pdfUrl)
@@ -170,33 +196,33 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
     return uri != null && (uri.scheme == 'http' || uri.scheme == 'https');
   }
 
+  /// Opens the file again after a failure.
+  void _reload() {
+    _closeSource();
+    setState(() {
+      _previewDocument = null;
+      _fullDocument = null;
+      _reportedFullDocument = null;
+      _loadError = null;
+      _bytesDownloaded = 0;
+      _totalBytes = null;
+    });
+    _openSource();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Pages lie on the reader's backdrop, edge to edge; at night they dim
+    // so white paper doesn't glare.
     return Expanded(
-      child: Container(
-        margin: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+      child: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          widget.isDark
+              ? Colors.black.withValues(alpha: 0.3)
+              : Colors.transparent,
+          BlendMode.darken,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              widget.isDark
-                  ? Colors.black.withValues(alpha: 0.3)
-                  : Colors.transparent,
-              BlendMode.darken,
-            ),
-            child: _buildContent(),
-          ),
-        ),
+        child: _buildContent(),
       ),
     );
   }
@@ -204,13 +230,10 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
   Widget _buildContent() {
     final document = _fullDocument ?? _previewDocument;
     if (document == null) {
-      if (_loadError case final error?) {
-        return PdfErrorWidget(error: error, colorScheme: widget.colorScheme);
-      }
+      if (_loadError != null) return PdfErrorWidget(onRetry: _reload);
       return PdfLoadingWidget(
         bytesDownloaded: _bytesDownloaded,
         totalBytes: _totalBytes,
-        colorScheme: widget.colorScheme,
       );
     }
 
@@ -246,9 +269,7 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
           minZoom: 0.5,
           maxZoom: 8,
           pageSpacing: 12,
-          backgroundColor: widget.isDark
-              ? const Color(0xFF1E1E1E)
-              : Colors.white,
+          backgroundColor: widget.colorScheme.surfaceContainerHigh,
           pageOverlayBuilder: (context, pageIndex, geometry) =>
               _buildPageOverlays(pageIndex, geometry, search),
           scrollIndicatorBuilder: (context, controller, metrics) =>
@@ -257,6 +278,7 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
                 controller: controller,
                 metrics: metrics,
                 colorScheme: widget.colorScheme,
+                bottomClearance: widget.bottomClearance,
               ),
         ),
         if (!isComplete && loadError == null)
@@ -264,16 +286,13 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
             child: PdfPreparingDocumentOverlay(
               bytesDownloaded: _bytesDownloaded,
               totalBytes: _totalBytes,
-              colorScheme: widget.colorScheme,
             ),
           ),
         if (!isComplete && loadError != null)
           Positioned.fill(
-            child: AbsorbPointer(
-              child: PdfErrorWidget(
-                error: loadError,
-                colorScheme: widget.colorScheme,
-              ),
+            child: ColoredBox(
+              color: widget.colorScheme.surface,
+              child: PdfErrorWidget(onRetry: _reload),
             ),
           ),
       ],

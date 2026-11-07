@@ -1,18 +1,30 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:dart_pdf_editor/dart_pdf_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/services/book_progress_service.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/books/books_library_parts.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:huda/presentation/widgets/pdf/huda_pdf_search_controller.dart';
 import 'package:huda/presentation/widgets/pdf/marker.dart';
-import 'package:huda/presentation/widgets/pdf/pdf_app_bar.dart';
-import 'package:huda/presentation/widgets/pdf/pdf_dialogs.dart';
-import 'package:huda/presentation/widgets/pdf/pdf_floating_buttons.dart';
-import 'package:huda/presentation/widgets/pdf/pdf_sidebar.dart';
+import 'package:huda/presentation/widgets/pdf/pdf_reader_capsule.dart';
+import 'package:huda/presentation/widgets/pdf/pdf_reader_panel.dart';
 import 'package:huda/presentation/widgets/pdf/pdf_viewer_content.dart';
 import 'package:pdf_document/pdf_document.dart';
 
+/// The book reader: the PDF's pages edge to edge on the reader's backdrop
+/// under a bar that names the book, a floating capsule at the foot (zoom,
+/// the page, which opens Go to page; highlight inks while text is
+/// selected), and the panel (contents, search, pages, highlights): inline
+/// on the reading start from 840 wide, a sheet below. Immersive tier;
+/// follows light and dark. See `design/features/books/brief.md`.
 class PdfView extends StatefulWidget {
   const PdfView({
     super.key,
@@ -35,7 +47,7 @@ class PdfView extends StatefulWidget {
   State<PdfView> createState() => _PdfViewState();
 }
 
-class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
+class _PdfViewState extends State<PdfView> {
   final PdfViewerController _pdfViewerController = PdfViewerController();
   final ValueNotifier<bool> showLeftPane = ValueNotifier<bool>(false);
   final ValueNotifier<PdfOutline?> outline = ValueNotifier<PdfOutline?>(null);
@@ -44,10 +56,7 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
   );
   final ValueNotifier<HudaPdfSearchController?> textSearcher =
       ValueNotifier<HudaPdfSearchController?>(null);
-  final TextEditingController _goToPageController = TextEditingController();
-
-  late final AnimationController _fabAnimationController;
-  late final Animation<double> _fabAnimation;
+  final ValueNotifier<int> _markersVersion = ValueNotifier<int>(0);
 
   final Map<int, List<Marker>> _markers = {};
   Timer? _progressDebounce;
@@ -65,14 +74,6 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _fabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _fabAnimation = CurvedAnimation(
-      parent: _fabAnimationController,
-      curve: Curves.easeInOut,
-    );
     _pdfViewerController.addListener(_handleViewerControllerChanged);
     _pdfViewerController.viewportChanges.addListener(_handleViewportChanged);
     _progressLifecycle = AppLifecycleListener(
@@ -100,8 +101,7 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
     outline.dispose();
     document.dispose();
     showLeftPane.dispose();
-    _goToPageController.dispose();
-    _fabAnimationController.dispose();
+    _markersVersion.dispose();
     super.dispose();
   }
 
@@ -113,7 +113,6 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
     _pendingReadyDocument = null;
     _initializedDocument = null;
     _markers.clear();
-    _fabAnimationController.reverse();
 
     final previousSearch = textSearcher.value;
     textSearcher.value = null;
@@ -131,11 +130,6 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
     final hasSelection = _pdfViewerController.hasSelection;
     if (hasSelection == _hadSelection) return;
     _hadSelection = hasSelection;
-    if (hasSelection) {
-      _fabAnimationController.forward();
-    } else {
-      _fabAnimationController.reverse();
-    }
     if (mounted) setState(() {});
   }
 
@@ -314,81 +308,226 @@ class _PdfViewState extends State<PdfView> with TickerProviderStateMixin {
           );
     }
     _pdfViewerController.clearSelection();
-    setState(() {});
+    _markersChanged();
+  }
+
+  void _markersChanged() {
+    _markersVersion.value++;
+    if (mounted) setState(() {});
+  }
+
+  void _restoreMarker(Marker marker) {
+    _markers.putIfAbsent(marker.pageIndex, () => []).add(marker);
+    _markersChanged();
+  }
+
+  void _onMarkerRemoved(Marker marker) {
+    final l10n = AppLocalizations.of(context)!;
+    showHudaToast(
+      context,
+      message: l10n.booksHighlightRemoved,
+      actionLabel: l10n.undo,
+      onAction: () => _restoreMarker(marker),
+    );
+  }
+
+  /// The panel inline beside the pages (wide windows) is open.
+  bool _panelOpen = false;
+
+  static const double _panelWidth = 360;
+  static const double _inlinePanelMinWidth = 840;
+
+  PdfReaderPanel _panel({VoidCallback? onNavigate}) => PdfReaderPanel(
+    controller: _pdfViewerController,
+    textSearcher: textSearcher,
+    outline: outline,
+    document: document,
+    markers: _markers,
+    markersVersion: _markersVersion,
+    onMarkersChanged: _markersChanged,
+    onNavigate: onNavigate,
+  );
+
+  void _togglePanel(bool inline) {
+    if (inline) {
+      setState(() => _panelOpen = !_panelOpen);
+      return;
+    }
+    final l10n = AppLocalizations.of(context)!;
+    showHudaSheet<void>(
+      context: context,
+      title: l10n.booksReaderPanel,
+      expand: true,
+      builder: (sheetContext) => PdfReaderPanelUndo(
+        onRemoved: _onMarkerRemoved,
+        child: _panel(onNavigate: () => Navigator.of(sheetContext).pop()),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final width = MediaQuery.sizeOf(context).width;
+    final inline = width >= _inlinePanelMinWidth;
+    final panelShown = inline && _panelOpen && _isFullDocumentReady;
+    final rtl = Directionality.of(context) == TextDirection.rtl;
 
-    return Scaffold(
-      backgroundColor: isDark
-          ? const Color(0xFF1A1A1A)
-          : const Color(0xFFF5F5F5),
-      appBar: PdfAppBar(
-        isDark: isDark,
-        colorScheme: colorScheme,
-        showLeftPane: showLeftPane,
-        isHorizontalLayout: isHorizontalLayout,
-        isDocumentReady: _isFullDocumentReady,
-        changeLayoutType: _changeLayoutType,
-        showGoToPageDialog: _showGoToPageDialog,
-        pdfViewerController: _pdfViewerController,
-      ),
-      body: Stack(
-        children: [
-          Row(
-            children: [
-              ValueListenableBuilder<bool>(
-                valueListenable: showLeftPane,
-                builder: (context, showPane, child) => PdfSidebar(
-                  isDark: isDark,
-                  colorScheme: colorScheme,
-                  showLeftPane: showLeftPane,
-                  textSearcher: textSearcher,
-                  outline: outline,
-                  document: document,
-                  markers: _markers,
-                  pdfViewerController: _pdfViewerController,
-                  onMarkersChanged: () => setState(() {}),
+    return Container(
+      color: colorScheme.surfaceContainerHigh,
+      child: HudaImmersiveScaffold(
+        title: widget.bookTitle?.isNotEmpty == true
+            ? widget.bookTitle
+            : l10n.pdfViewer,
+        actions: [
+          IconButton(
+            tooltip: l10n.booksReaderPanel,
+            isSelected: panelShown,
+            onPressed: _isFullDocumentReady ? () => _togglePanel(inline) : null,
+            icon: const Icon(Icons.toc_rounded),
+          ),
+          IconButton(
+            tooltip: isHorizontalLayout
+                ? l10n.booksScrollDown
+                : l10n.booksScrollAcross,
+            onPressed: _isFullDocumentReady ? _changeLayoutType : null,
+            icon: Icon(
+              isHorizontalLayout
+                  ? Icons.swap_vert_rounded
+                  : Icons.swap_horiz_rounded,
+            ),
+          ),
+        ],
+        body: Builder(
+          builder: (context) {
+            final insets = MediaQuery.paddingOf(context);
+            final capsuleRoom = insets.bottom + space.md + 56;
+            // The capsule centers under the pages, except on a half-open
+            // vertical fold (book): it keeps to the trailing half, never on
+            // the crease.
+            final fold = FoldInfo.of(context);
+            final windowWidth = MediaQuery.sizeOf(context).width;
+            // Absolute sides: the panel is on the reading start.
+            final panelRoom = panelShown ? _panelWidth : 0.0;
+            var capsuleLeft = (rtl ? 0.0 : panelRoom) + space.md;
+            var capsuleRight = (rtl ? panelRoom : 0.0) + space.md;
+            if (fold.avoided && fold.splitsHorizontally) {
+              if (rtl) {
+                final right = windowWidth - fold.start - insets.right;
+                capsuleRight = math.max(capsuleRight, right + space.md);
+              } else {
+                final left = fold.end - insets.left;
+                capsuleLeft = math.max(capsuleLeft, left + space.md);
+              }
+            }
+            // Pages run under the side insets' background; the controls on
+            // them (the scrubber, the capsule) stay inside the insets.
+            return Padding(
+              padding: EdgeInsets.fromLTRB(
+                insets.left,
+                insets.top,
+                insets.right,
+                0,
+              ),
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                removeLeft: true,
+                removeRight: true,
+                child: Stack(
+                  children: [
+                    Row(
+                      children: [
+                        AnimatedContainer(
+                          duration: tokens.motion.of(
+                            context,
+                            tokens.motion.medium,
+                          ),
+                          curve: tokens.motion.emphasized,
+                          width: panelShown ? _panelWidth : 0,
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            color: colorScheme.surface,
+                            border: BorderDirectional(
+                              end: BorderSide(
+                                color: colorScheme.outlineVariant,
+                              ),
+                            ),
+                          ),
+                          child: panelShown
+                              ? OverflowBox(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  minWidth: _panelWidth,
+                                  maxWidth: _panelWidth,
+                                  child: PdfReaderPanelUndo(
+                                    onRemoved: _onMarkerRemoved,
+                                    child: _panel(),
+                                  ),
+                                )
+                              : null,
+                        ),
+                        PdfViewerContent(
+                          pdfUrl: widget.pdfUrl,
+                          pdfViewerController: _pdfViewerController,
+                          isHorizontalLayout: isHorizontalLayout,
+                          textSearcher: textSearcher,
+                          markers: _markers,
+                          isDark: isDark,
+                          colorScheme: colorScheme,
+                          onFullDocumentReady: _handleFullDocumentReady,
+                          bottomClearance: capsuleRoom,
+                        ),
+                      ],
+                    ),
+                    if (_isFullDocumentReady)
+                      Positioned(
+                        left: capsuleLeft,
+                        right: capsuleRight,
+                        bottom: insets.bottom + space.md,
+                        child: Center(
+                          child: PdfReaderCapsule(
+                            controller: _pdfViewerController,
+                            selecting: _hadSelection,
+                            inks: [
+                              (color: _inkRed, label: l10n.booksInkRed),
+                              (color: _inkGreen, label: l10n.booksInkGreen),
+                              (color: _inkOrange, label: l10n.booksInkOrange),
+                            ],
+                            onInk: _addCurrentSelectionToMarkers,
+                            onClearSelection:
+                                _pdfViewerController.clearSelection,
+                            onGoToPage: _goToPage,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-              PdfViewerContent(
-                pdfUrl: widget.pdfUrl,
-                pdfViewerController: _pdfViewerController,
-                isHorizontalLayout: isHorizontalLayout,
-                textSearcher: textSearcher,
-                markers: _markers,
-                isDark: isDark,
-                colorScheme: colorScheme,
-                onFullDocumentReady: _handleFullDocumentReady,
-              ),
-            ],
-          ),
-          if (_isFullDocumentReady)
-            PdfFloatingButtons(
-              fabAnimation: _fabAnimation,
-              addRedMarker: () => _addCurrentSelectionToMarkers(Colors.red),
-              addGreenMarker: () => _addCurrentSelectionToMarkers(Colors.green),
-              addOrangeMarker: () =>
-                  _addCurrentSelectionToMarkers(Colors.orange),
-              pdfViewerController: _pdfViewerController,
-              colorScheme: colorScheme,
-            ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }
 
-  void _showGoToPageDialog() {
-    showDialog<void>(
-      context: context,
-      builder: (context) => PdfGoToPageDialog(
-        pdfViewerController: _pdfViewerController,
-        searchController: _goToPageController,
-      ),
+  // The reader's highlight inks (marker pens, not theme colors).
+  static const Color _inkRed = Colors.red;
+  static const Color _inkGreen = Colors.green;
+  static const Color _inkOrange = Colors.orange;
+
+  Future<void> _goToPage() async {
+    final count = _pdfViewerController.pageCount;
+    if (count < 1) return;
+    final page = await showBooksPageJump(
+      context,
+      current: _pdfViewerController.currentPage + 1,
+      count: count,
     );
+    if (page != null) await _pdfViewerController.jumpToPage(page - 1);
   }
 }
 
