@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:huda/core/services/prayer_alerts/prayer_alerts.dart';
 import 'package:huda/core/services/prayer_moment_resolver.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
-import 'package:huda/core/utils/hijri_date_utils.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
+import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_labels.dart';
 import 'package:intl/intl.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:vector_graphics/vector_graphics.dart';
@@ -21,17 +22,31 @@ String localizedPrayerName(AppLocalizations l10n, Prayer prayer) =>
       Prayer.none => '',
     };
 
+/// Today's six times, each prayer with its alert. A list of rows on narrow
+/// cards; on wide ones a strip of six stations under the sky card, in the
+/// day's order. The next prayer (or the one whose time it is) is lit.
 class PrayerTimelineCard extends StatelessWidget {
   const PrayerTimelineCard({
     super.key,
     required this.state,
     required this.now,
-    required this.onAdjust,
+    this.alerts,
+    this.onOpenAlerts,
+    this.alertsBlocked = false,
   });
+
+  /// Notifications are off for Huda: no prayer will alert, whatever its
+  /// style, so every bell says off.
+  final bool alertsBlocked;
 
   final PrayerTimesLoaded state;
   final DateTime now;
-  final VoidCallback onAdjust;
+
+  /// Each prayer's alert, for its bell; null while loading.
+  final PrayerAlertSettings? alerts;
+
+  /// Opens one prayer's alert settings.
+  final void Function(String prayer)? onOpenAlerts;
 
   static const _rows = <({Prayer prayer, IconData? icon, String? asset})>[
     (prayer: Prayer.fajr, icon: Icons.wb_twilight, asset: null),
@@ -46,14 +61,15 @@ class PrayerTimelineCard extends StatelessWidget {
     (prayer: Prayer.isha, icon: Icons.nights_stay_rounded, asset: null),
   ];
 
+  /// Wide enough for six stations side by side at this text size.
+  static bool fitsStrip(BuildContext context, double width) =>
+      width >= 6 * MediaQuery.textScalerOf(context).scale(100);
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final palette = PrayerPalette.of(context);
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final times = state.prayerTimes;
-    final day = times.fajr ?? times.dhuhr;
     final nowUtc = now.toUtc();
     final moment = PrayerMomentResolver.resolve(
       now: now,
@@ -67,115 +83,101 @@ class PrayerTimelineCard extends StatelessWidget {
       ],
     );
 
-    bool highlighted(int i) => moment?.prayer == _rows[i].prayer;
-    final rows = <Widget>[];
-    for (var i = 0; i < _rows.length; i++) {
-      final row = _rows[i];
-      final time = PrayerTimesCalculator.adjustedTimeFor(
-        times,
-        row.prayer,
-        state.offsets,
-      );
-      final instant = PrayerTimesCalculator.adjustedInstantFor(
-        times,
-        row.prayer,
-        state.offsets,
-      );
-      if (i > 0) {
-        rows.add(
-          highlighted(i) || highlighted(i - 1)
-              ? const SizedBox(height: 2)
-              : Divider(
-                  height: 1,
-                  thickness: 1,
-                  indent: 54,
-                  endIndent: 8,
-                  color: palette.divider,
-                ),
-        );
-      }
-      rows.add(
-        _TimelineRow(
-          name: localizedPrayerName(l10n, row.prayer),
-          time: time == null ? '--:--' : DateFormat.jm(locale).format(time),
-          icon: row.icon,
-          asset: row.asset,
-          marker: row.prayer == Prayer.sunrise,
-          highlight: highlighted(i)
-              ? (moment!.isElapsed
-                    ? l10n.prayerTimelineNow
-                    : l10n.prayerTimelineNext)
-              : null,
-          past: !highlighted(i) && instant != null && instant.isBefore(nowUtc),
-          offset: PrayerTimesCalculator.sanitizeOffset(
+    final entries = [
+      for (final row in _rows)
+        () {
+          final time = PrayerTimesCalculator.adjustedTimeFor(
+            times,
+            row.prayer,
+            state.offsets,
+          );
+          final instant = PrayerTimesCalculator.adjustedInstantFor(
+            times,
+            row.prayer,
+            state.offsets,
+          );
+          final lit = moment?.prayer == row.prayer;
+          final offset = PrayerTimesCalculator.sanitizeOffset(
             state.offsets[PrayerTimesCalculator.keyOf(row.prayer)] ?? 0,
-          ),
-        ),
-      );
-    }
+          );
+          final key = PrayerTimesCalculator.keyOf(row.prayer);
+          final alert = row.prayer == Prayer.sunrise
+              ? null
+              : alerts?.prayers[key];
+          return _Entry(
+            prayer: row.prayer,
+            key: key,
+            name: localizedPrayerName(l10n, row.prayer),
+            time: time == null ? '--:--' : DateFormat.jm(locale).format(time),
+            icon: row.icon,
+            asset: row.asset,
+            marker: row.prayer == Prayer.sunrise,
+            highlight: lit
+                ? (moment!.isElapsed
+                      ? l10n.prayerTimelineNow
+                      : l10n.prayerTimelineNext)
+                : null,
+            past: !lit && instant != null && instant.isBefore(nowUtc),
+            offset: offset == 0
+                ? null
+                : l10n.prayerOffsetBadge(
+                    offset > 0 ? '+$offset' : '−${-offset}',
+                  ),
+            alertStyle: row.prayer == Prayer.sunrise
+                ? null
+                : alertsBlocked
+                ? PrayerAlertStyle.off
+                : (alerts == null
+                      ? null
+                      : (alerts!.enabled
+                            ? (alert?.style ?? alerts!.style)
+                            : PrayerAlertStyle.off)),
+            alertCustom: alert?.custom ?? false,
+          );
+        }(),
+    ];
 
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
-      decoration: palette.cardDecoration(radius: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 0, 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.today,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: palette.ink,
-                        ),
-                      ),
-                      if (day != null)
-                        Text(
-                          _dayLine(l10n, locale, day),
-                          maxLines: 2,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: palette.muted,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final strip = fitsStrip(context, constraints.maxWidth);
+        return Card(
+          key: const ValueKey('prayer-day-times'),
+          child: Padding(
+            padding: EdgeInsets.all(context.tokens.space.xs),
+            child: strip
+                ? IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final entry in entries)
+                          Expanded(
+                            flex: 1,
+                            child: _StationTile(
+                              entry: entry,
+                              onOpenAlerts: onOpenAlerts,
+                            ),
                           ),
-                        ),
+                      ],
+                    ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      for (final entry in entries)
+                        _TimelineRow(entry: entry, onOpenAlerts: onOpenAlerts),
                     ],
                   ),
-                ),
-                IconButton(
-                  onPressed: onAdjust,
-                  tooltip: l10n.prayerTimeAdjustment,
-                  style: IconButton.styleFrom(
-                    backgroundColor: palette.tint,
-                    foregroundColor: palette.primary,
-                  ),
-                  visualDensity: VisualDensity.compact,
-                  icon: const Icon(Icons.tune_rounded, size: 20),
-                ),
-              ],
-            ),
           ),
-          ...rows,
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
-String _dayLine(AppLocalizations l10n, String locale, DateTime day) {
-  final hijri = hijriDateFromDateTime(day);
-  return '${DateFormat.MMMEd(locale).format(day)} · '
-      '${hijri.day} ${hijriMonthName(l10n, hijri.month)} ${hijri.year}';
-}
-
-class _TimelineRow extends StatelessWidget {
-  const _TimelineRow({
+class _Entry {
+  const _Entry({
+    required this.prayer,
+    required this.key,
     required this.name,
     required this.time,
     required this.icon,
@@ -184,150 +186,299 @@ class _TimelineRow extends StatelessWidget {
     required this.highlight,
     required this.past,
     required this.offset,
+    required this.alertStyle,
+    required this.alertCustom,
   });
 
+  final Prayer prayer;
+  final String key;
   final String name;
   final String time;
   final IconData? icon;
   final String? asset;
 
+  /// Sunrise: a time, not a prayer (no alert).
   final bool marker;
-
   final String? highlight;
   final bool past;
-  final int offset;
+  final String? offset;
+  final PrayerAlertStyle? alertStyle;
+  final bool alertCustom;
+
+  bool get lit => highlight != null;
+
+  String semantics(AppLocalizations l10n, Object? _) =>
+      [name, time, ?highlight, ?offset].join(', ');
+}
+
+Color _foreground(BuildContext context, _Entry entry) {
+  final scheme = Theme.of(context).colorScheme;
+  return entry.lit
+      ? scheme.primary
+      : entry.past || entry.marker
+      ? scheme.onSurfaceVariant
+      : scheme.onSurface;
+}
+
+class _Mark extends StatelessWidget {
+  const _Mark({required this.entry});
+
+  final _Entry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final color = entry.lit
+        ? scheme.onPrimary
+        : entry.past
+        ? scheme.onSurfaceVariant
+        : scheme.primary;
+    final size = entry.marker ? 16.0 : 19.0;
+    return AnimatedContainer(
+      duration: context.tokens.motion.of(context, context.tokens.motion.medium),
+      width: 34,
+      height: 34,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: entry.lit ? scheme.primary : null,
+      ),
+      alignment: Alignment.center,
+      child: entry.asset != null
+          ? SvgPicture(
+              AssetBytesLoader(entry.asset!),
+              width: size,
+              height: size,
+              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+            )
+          : Icon(entry.icon, size: size, color: color),
+    );
+  }
+}
+
+class _Badge extends StatelessWidget {
+  const _Badge(this.label, {this.lit = false});
+
+  final String label;
+  final bool lit;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final tokens = context.tokens;
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: tokens.space.xs,
+        vertical: tokens.space.xxs / 2,
+      ),
+      decoration: BoxDecoration(
+        color: lit ? scheme.primary : scheme.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(tokens.radius.sm),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: lit ? scheme.onPrimary : scheme.primary,
+        ),
+      ),
+    );
+  }
+}
+
+/// The bell that opens a prayer's alerts; its icon says how it alerts.
+class _Bell extends StatelessWidget {
+  const _Bell({required this.entry, required this.onOpenAlerts});
+
+  final _Entry entry;
+  final void Function(String prayer)? onOpenAlerts;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = entry.alertStyle;
+    if (entry.marker || onOpenAlerts == null) {
+      return const SizedBox(width: 48, height: 48);
+    }
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final off = style == PrayerAlertStyle.off;
+    return IconButton(
+      key: ValueKey('prayer-alert-bell-${entry.key}'),
+      tooltip: l10n.prayerAlertFor(entry.name),
+      onPressed: () => onOpenAlerts!(entry.key),
+      icon: Icon(
+        style == null
+            ? Icons.notifications_none_rounded
+            : prayerAlertStyleIcon(style),
+        size: 20,
+        color: off
+            ? scheme.onSurfaceVariant
+            : entry.alertCustom || entry.lit
+            ? scheme.primary
+            : scheme.onSurfaceVariant,
+      ),
+    );
+  }
+}
+
+class _TimelineRow extends StatelessWidget {
+  const _TimelineRow({required this.entry, required this.onOpenAlerts});
+
+  final _Entry entry;
+  final void Function(String prayer)? onOpenAlerts;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final palette = PrayerPalette.of(context);
+    final tokens = context.tokens;
     final l10n = AppLocalizations.of(context)!;
-    final active = highlight != null;
-    final foreground = active
-        ? palette.primary
-        : past
-        ? palette.faint
-        : marker
-        ? palette.muted
-        : palette.ink;
-    final iconColor = active
-        ? palette.onPrimary
-        : past
-        ? palette.faint
-        : palette.primary.withValues(alpha: palette.isDark ? 0.9 : 0.75);
-    final base = marker
+    final foreground = _foreground(context, entry);
+    final base = entry.marker
         ? theme.textTheme.bodyMedium
-        : theme.textTheme.titleMedium;
+        : theme.textTheme.bodyLarge;
     final textStyle = base?.copyWith(
       color: foreground,
-      fontWeight: active ? FontWeight.w800 : FontWeight.w600,
+      fontWeight: entry.lit ? FontWeight.w700 : FontWeight.w400,
     );
-    final offsetLabel = offset == 0
-        ? null
-        : l10n.prayerOffsetBadge(offset > 0 ? '+$offset' : '−${-offset}');
 
-    return Semantics(
-      container: true,
-      label: [name, time, ?highlight, ?offsetLabel].join(', '),
-      excludeSemantics: true,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 260),
-        curve: Curves.easeOutCubic,
-        padding: EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: marker ? 8 : (active ? 12 : 11),
-        ),
-        decoration: BoxDecoration(
-          color: active
-              ? palette.tintStrong.withValues(
-                  alpha: palette.isDark ? 0.34 : 0.16,
-                )
-              : null,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 36,
-              child: Center(
-                child: Container(
-                  width: active ? 34 : 28,
-                  height: active ? 34 : 28,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: active ? palette.primary : null,
-                  ),
-                  alignment: Alignment.center,
-                  child: asset != null
-                      ? SvgPicture(
-                          AssetBytesLoader(asset!),
-                          width: marker ? 16 : 19,
-                          height: marker ? 16 : 19,
-                          colorFilter: ColorFilter.mode(
-                            iconColor,
-                            BlendMode.srcIn,
-                          ),
-                        )
-                      : Icon(icon, size: 19, color: iconColor),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 2,
-                crossAxisAlignment: WrapCrossAlignment.center,
+    return AnimatedContainer(
+      duration: tokens.motion.of(context, tokens.motion.medium),
+      curve: tokens.motion.standard,
+      constraints: const BoxConstraints(minHeight: 52),
+      padding: EdgeInsetsDirectional.only(start: tokens.space.xs),
+      decoration: BoxDecoration(
+        color: entry.lit
+            ? theme.colorScheme.primary.withValues(
+                alpha: theme.brightness == Brightness.dark ? 0.16 : 0.07,
+              )
+            : null,
+        borderRadius: BorderRadius.circular(tokens.radius.md),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Semantics(
+              container: true,
+              label: entry.semantics(l10n, null),
+              excludeSemantics: true,
+              child: Row(
                 children: [
-                  Text(name, style: textStyle),
-                  if (active)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: palette.primary,
-                        borderRadius: BorderRadius.circular(99),
-                      ),
-                      child: Text(
-                        highlight!,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: palette.onPrimary,
-                          fontWeight: FontWeight.w800,
-                        ),
+                  _Mark(entry: entry),
+                  SizedBox(width: tokens.space.sm),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: tokens.space.xs),
+                      child: Wrap(
+                        spacing: tokens.space.xs,
+                        runSpacing: tokens.space.xxs,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(entry.name, style: textStyle),
+                          if (entry.highlight != null)
+                            _Badge(entry.highlight!, lit: true),
+                          if (entry.offset != null) _Badge(entry.offset!),
+                        ],
                       ),
                     ),
-                  if (offsetLabel != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 1,
-                      ),
-                      decoration: BoxDecoration(
-                        color: palette.tint,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        offsetLabel,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: palette.primary,
-                          fontWeight: FontWeight.w700,
-                        ),
+                  ),
+                  SizedBox(width: tokens.space.xs),
+                  // Wraps at very large text rather than overflowing.
+                  Flexible(
+                    child: Text(
+                      entry.time,
+                      textAlign: TextAlign.end,
+                      style: textStyle?.copyWith(
+                        fontFeatures: const [FontFeature.tabularFigures()],
                       ),
                     ),
+                  ),
                 ],
               ),
             ),
-            const SizedBox(width: 8),
-            Text(
-              time,
-              style: textStyle?.copyWith(
-                fontFeatures: const [FontFeature.tabularFigures()],
-              ),
+          ),
+          _Bell(entry: entry, onOpenAlerts: onOpenAlerts),
+        ],
+      ),
+    );
+  }
+}
+
+class _StationTile extends StatelessWidget {
+  const _StationTile({required this.entry, required this.onOpenAlerts});
+
+  final _Entry entry;
+  final void Function(String prayer)? onOpenAlerts;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    final l10n = AppLocalizations.of(context)!;
+    final foreground = _foreground(context, entry);
+    return AnimatedContainer(
+      duration: tokens.motion.of(context, tokens.motion.medium),
+      curve: tokens.motion.standard,
+      margin: EdgeInsets.symmetric(horizontal: tokens.space.xxs / 2),
+      padding: EdgeInsets.fromLTRB(
+        tokens.space.xxs,
+        tokens.space.sm,
+        tokens.space.xxs,
+        tokens.space.xxs,
+      ),
+      decoration: BoxDecoration(
+        color: entry.lit
+            ? theme.colorScheme.primary.withValues(
+                alpha: theme.brightness == Brightness.dark ? 0.16 : 0.07,
+              )
+            : null,
+        borderRadius: BorderRadius.circular(tokens.radius.md),
+      ),
+      child: Column(
+        children: [
+          Semantics(
+            container: true,
+            label: entry.semantics(l10n, null),
+            excludeSemantics: true,
+            child: Column(
+              children: [
+                _Mark(entry: entry),
+                SizedBox(height: tokens.space.xxs),
+                Text(
+                  entry.name,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: foreground,
+                    fontWeight: entry.lit ? FontWeight.w700 : FontWeight.w400,
+                  ),
+                ),
+                Text(
+                  entry.time,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: foreground,
+                    fontWeight: entry.marker
+                        ? FontWeight.w400
+                        : FontWeight.w700,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+                if (entry.highlight != null || entry.offset != null) ...[
+                  SizedBox(height: tokens.space.xxs),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: tokens.space.xxs,
+                    runSpacing: tokens.space.xxs,
+                    children: [
+                      if (entry.highlight != null)
+                        _Badge(entry.highlight!, lit: true),
+                      if (entry.offset != null) _Badge(entry.offset!),
+                    ],
+                  ),
+                ],
+              ],
             ),
-          ],
-        ),
+          ),
+          const Spacer(),
+          _Bell(entry: entry, onOpenAlerts: onOpenAlerts),
+        ],
       ),
     );
   }

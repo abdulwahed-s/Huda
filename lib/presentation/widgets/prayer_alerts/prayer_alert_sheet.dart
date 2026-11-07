@@ -8,6 +8,9 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_home_page.d
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_prayer_page.dart';
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 
 /// Opens the adhan and alert settings, on [prayer]'s page when given. Edits
 /// save as they are made; anything still pending is saved on close.
@@ -22,25 +25,17 @@ Future<void> showPrayerAlertSheet(
   final sounds = library ?? PrayerAudioLibrary.shared;
   unawaited(alerts.refresh());
   unawaited(sounds.load(refresh: true));
-  final palette = PrayerPalette.of(context);
-  await showModalBottomSheet<void>(
+  await showHudaSheet<void>(
     context: context,
-    isScrollControlled: true,
-    useSafeArea: true,
-    showDragHandle: true,
-    backgroundColor: palette.page,
-    constraints: const BoxConstraints(maxWidth: 640),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-    ),
-    builder: (_) => FractionallySizedBox(
-      heightFactor: 0.92,
-      child: PrayerAlertSheet(
-        controller: alerts,
-        library: sounds,
-        initialPrayer: prayer,
-        nextPrayer: nextPrayer,
-      ),
+    title: AppLocalizations.of(context)!.prayerAlertTitle,
+    expand: true,
+    sideSheet: true,
+    maxDialogWidth: 600,
+    builder: (_) => PrayerAlertSheet(
+      controller: alerts,
+      library: sounds,
+      initialPrayer: prayer,
+      nextPrayer: nextPrayer,
     ),
   );
   await sounds.stopPreview();
@@ -166,8 +161,10 @@ class PrayerAlertPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final canPop = Navigator.of(context).canPop();
+    final tokens = context.tokens;
+    // The sheet's own surface, so a page sliding in covers the one below.
     return Material(
-      color: palette.page,
+      color: theme.colorScheme.surfaceContainerLow,
       child: ListenableBuilder(
         listenable: Listenable.merge([scope.controller, scope.library]),
         builder: (context, _) {
@@ -176,7 +173,12 @@ class PrayerAlertPage extends StatelessWidget {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 4),
+                padding: EdgeInsetsDirectional.fromSTEB(
+                  tokens.space.xs,
+                  tokens.space.xs,
+                  tokens.space.xs,
+                  tokens.space.xxs,
+                ),
                 child: Row(
                   children: [
                     SizedBox(
@@ -197,8 +199,7 @@ class PrayerAlertPage extends StatelessWidget {
                             textAlign: TextAlign.center,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
+                            style: theme.textTheme.titleLarge?.copyWith(
                               color: palette.ink,
                             ),
                           ),
@@ -225,13 +226,13 @@ class PrayerAlertPage extends StatelessWidget {
               ),
               Expanded(
                 child: settings == null || capabilities == null
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(child: HudaLampSpinner(size: 32))
                     : ListView(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                          16,
-                          8,
-                          16,
-                          32,
+                        padding: EdgeInsets.fromLTRB(
+                          tokens.space.md,
+                          tokens.space.xs,
+                          tokens.space.md,
+                          tokens.space.xxl + MediaQuery.paddingOf(context).bottom,
                         ),
                         children: [
                           PrayerSaveFailureBanner(controller: scope.controller),

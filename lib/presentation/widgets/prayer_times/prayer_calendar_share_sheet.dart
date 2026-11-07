@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/core/services/prayer_calendar_data.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_calendar_exporter.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_calendar_pickers.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
 Future<void> showPrayerCalendarShareSheet(BuildContext context) {
-  return showModalBottomSheet<void>(
+  return showHudaSheet<void>(
     context: context,
-    isScrollControlled: true,
-    enableDrag: false,
-    useSafeArea: true,
-    backgroundColor: Theme.of(context).colorScheme.surface,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-    ),
+    title: AppLocalizations.of(context)!.prayerCalendarShare,
     builder: (_) => BlocProvider.value(
       value: context.read<PrayerTimesCubit>(),
       child: const _PrayerCalendarShareSheet(),
@@ -131,247 +131,140 @@ class _PrayerCalendarShareSheetState extends State<_PrayerCalendarShareSheet> {
             l10n,
             locale,
           );
-    final media = MediaQuery.of(context);
-    final bottomInset = media.viewInsets.bottom > media.viewPadding.bottom
-        ? media.viewInsets.bottom
-        : media.viewPadding.bottom;
     final isImage = _period == PrayerCalendarPeriod.day;
+    final tokens = context.tokens;
+    final space = tokens.space;
 
     return PopScope(
       canPop: !_busy,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, bottomInset + 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: palette.tint,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Icon(
-                    Icons.calendar_month_rounded,
-                    color: palette.primary,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.prayerCalendarShare,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: palette.ink,
-                        ),
-                      ),
-                      if (location != null)
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: 15,
-                              color: palette.muted,
-                            ),
-                            const SizedBox(width: 3),
-                            Flexible(
-                              child: Text(
-                                location,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: palette.muted,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: _close,
-                  tooltip: l10n.cancel,
-                  style: IconButton.styleFrom(
-                    backgroundColor: palette.tint,
-                    foregroundColor: palette.ink,
-                  ),
-                  icon: const Icon(Icons.close_rounded, size: 20),
-                ),
-              ],
-            ),
-            const SizedBox(height: 22),
-            _PeriodSelector(
-              value: _period,
-              enabled: !_busy,
-              onChanged: (period) => setState(() => _period = period),
-            ),
-            const SizedBox(height: 14),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 220),
-              switchInCurve: Curves.easeOutCubic,
-              switchOutCurve: Curves.easeInCubic,
-              layoutBuilder: (current, previous) => Stack(
-                alignment: Alignment.topCenter,
-                children: [...previous, ?current],
-              ),
-              child: KeyedSubtree(
-                key: ValueKey(_period),
-                child: switch (_period) {
-                  PrayerCalendarPeriod.day => PrayerDayPicker(
-                    selected: _selected,
-                    enabled: !_busy,
-                    onChanged: (date) => setState(() => _selected = date),
-                  ),
-                  PrayerCalendarPeriod.month => PrayerMonthPicker(
-                    selected: _selected,
-                    enabled: !_busy,
-                    onChanged: (date) => setState(() => _selected = date),
-                  ),
-                  PrayerCalendarPeriod.year => PrayerYearGrid(
-                    selectedYear: _selected.year,
-                    enabled: !_busy,
-                    onChanged: (year) => setState(
-                      () => _selected = DateTime(year, _selected.month),
-                    ),
-                  ),
-                },
-              ),
-            ),
-            const SizedBox(height: 12),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (location != null) ...[
             Row(
               children: [
                 Icon(
-                  isImage
-                      ? Icons.image_outlined
-                      : Icons.picture_as_pdf_outlined,
-                  size: 17,
+                  Icons.location_on_outlined,
+                  size: 18,
                   color: palette.muted,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: space.xxs),
                 Expanded(
                   child: Text(
-                    '${switch (_period) {
-                      PrayerCalendarPeriod.day => DateFormat.yMMMMEEEEd(locale).format(_selected),
-                      PrayerCalendarPeriod.month => DateFormat.yMMMM(locale).format(_selected),
-                      PrayerCalendarPeriod.year => DateFormat.y(locale).format(_selected),
-                    }} · ${isImage ? l10n.prayerCalendarFormatImage : l10n.prayerCalendarFormatPdf}',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    location,
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: palette.muted,
                     ),
                   ),
                 ),
               ],
             ),
-            AnimatedSize(
-              duration: const Duration(milliseconds: 220),
-              curve: Curves.easeOutCubic,
-              alignment: Alignment.topCenter,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (_error != null)
-                    Container(
-                      margin: const EdgeInsets.only(top: 14),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: palette.error.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: palette.error.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.error_outline_rounded,
-                            size: 19,
-                            color: palette.error,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              _error!,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: palette.ink,
-                                height: 1.4,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  if (_busy)
-                    Container(
-                      margin: const EdgeInsets.only(top: 14),
-                      padding: const EdgeInsets.all(14),
-                      decoration: palette.cardDecoration(radius: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(99),
-                            child: LinearProgressIndicator(
-                              minHeight: 6,
-                              value: _pageCount > 0 ? _page / _pageCount : null,
-                              color: palette.primary,
-                              backgroundColor: palette.tint,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            l10n.prayerCalendarPreparing(_page, _pageCount),
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: palette.muted,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            FilledButton.icon(
-              onPressed: _busy ? null : _generate,
-              icon: _busy
-                  ? SizedBox.square(
-                      dimension: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: palette.onPrimary,
-                      ),
-                    )
-                  : const Icon(Icons.ios_share_rounded, size: 20),
-              label: Text(l10n.prayerCalendarGenerate),
-              style: FilledButton.styleFrom(
-                backgroundColor: palette.primary,
-                foregroundColor: palette.onPrimary,
-                disabledBackgroundColor: palette.primary.withValues(
-                  alpha: 0.55,
-                ),
-                disabledForegroundColor: palette.onPrimary,
-                minimumSize: const Size.fromHeight(52),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                textStyle: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
+            SizedBox(height: space.md),
           ],
-        ),
+          _PeriodSelector(
+            value: _period,
+            enabled: !_busy,
+            onChanged: (period) => setState(() => _period = period),
+          ),
+          SizedBox(height: space.md),
+          HudaStateSwitcher(
+            stateKey: _period,
+            child: switch (_period) {
+              PrayerCalendarPeriod.day => PrayerDayPicker(
+                selected: _selected,
+                enabled: !_busy,
+                onChanged: (date) => setState(() => _selected = date),
+              ),
+              PrayerCalendarPeriod.month => PrayerMonthPicker(
+                selected: _selected,
+                enabled: !_busy,
+                onChanged: (date) => setState(() => _selected = date),
+              ),
+              PrayerCalendarPeriod.year => PrayerYearGrid(
+                selectedYear: _selected.year,
+                enabled: !_busy,
+                onChanged: (year) =>
+                    setState(() => _selected = DateTime(year, _selected.month)),
+              ),
+            },
+          ),
+          SizedBox(height: space.sm),
+          Row(
+            children: [
+              Icon(
+                isImage ? Icons.image_outlined : Icons.picture_as_pdf_outlined,
+                size: 18,
+                color: palette.muted,
+              ),
+              SizedBox(width: space.xs),
+              Expanded(
+                child: Text(
+                  '${switch (_period) {
+                    PrayerCalendarPeriod.day => DateFormat.yMMMMEEEEd(locale).format(_selected),
+                    PrayerCalendarPeriod.month => DateFormat.yMMMM(locale).format(_selected),
+                    PrayerCalendarPeriod.year => DateFormat.y(locale).format(_selected),
+                  }} · ${isImage ? l10n.prayerCalendarFormatImage : l10n.prayerCalendarFormatPdf}',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: palette.muted,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          AnimatedSize(
+            duration: tokens.motion.of(context, tokens.motion.medium),
+            curve: tokens.motion.standard,
+            alignment: Alignment.topCenter,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (_error != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: space.md),
+                    child: PrayerStatusLine(
+                      status: HudaStatus.failed,
+                      message: _error,
+                    ),
+                  ),
+                if (_busy)
+                  Padding(
+                    padding: EdgeInsets.only(top: space.md),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        LinearProgressIndicator(
+                          value: _pageCount > 0 ? _page / _pageCount : null,
+                          borderRadius: BorderRadius.circular(tokens.radius.sm),
+                        ),
+                        SizedBox(height: space.xs),
+                        Text(
+                          l10n.prayerCalendarPreparing(_page, _pageCount),
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: palette.muted,
+                          ),
+                        ),
+                        TextButton(onPressed: _close, child: Text(l10n.cancel)),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          SizedBox(height: space.lg),
+          FilledButton.icon(
+            key: const ValueKey('prayer-calendar-generate'),
+            onPressed: _busy ? null : _generate,
+            icon: _busy
+                ? const HudaLampSpinner(size: 18)
+                : const Icon(Icons.ios_share_rounded, size: 20),
+            label: Text(l10n.prayerCalendarGenerate),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(52),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -390,79 +283,28 @@ class _PeriodSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final palette = PrayerPalette.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final options = [
-      (
-        PrayerCalendarPeriod.day,
-        l10n.prayerCalendarOneDay,
-        Icons.today_rounded,
-      ),
-      (
-        PrayerCalendarPeriod.month,
-        l10n.prayerCalendarOneMonth,
-        Icons.calendar_view_month_rounded,
-      ),
-      (
-        PrayerCalendarPeriod.year,
-        l10n.prayerCalendarWholeYear,
-        Icons.date_range_rounded,
-      ),
-    ];
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: palette.cardDecoration(radius: 18),
-      child: Row(
-        children: [
-          for (final (period, label, icon) in options)
-            Expanded(
-              child: Semantics(
-                button: true,
-                selected: period == value,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: enabled ? () => onChanged(period) : null,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeOutCubic,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: period == value ? palette.primary : null,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(
-                          icon,
-                          size: 20,
-                          color: period == value
-                              ? palette.onPrimary
-                              : palette.muted,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          label,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          style: theme.textTheme.labelMedium?.copyWith(
-                            color: period == value
-                                ? palette.onPrimary
-                                : palette.ink,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
+    return SegmentedButton<PrayerCalendarPeriod>(
+      showSelectedIcon: false,
+      segments: [
+        ButtonSegment(
+          value: PrayerCalendarPeriod.day,
+          icon: const Icon(Icons.today_rounded),
+          label: Text(l10n.prayerCalendarOneDay),
+        ),
+        ButtonSegment(
+          value: PrayerCalendarPeriod.month,
+          icon: const Icon(Icons.calendar_view_month_rounded),
+          label: Text(l10n.prayerCalendarOneMonth),
+        ),
+        ButtonSegment(
+          value: PrayerCalendarPeriod.year,
+          icon: const Icon(Icons.date_range_rounded),
+          label: Text(l10n.prayerCalendarWholeYear),
+        ),
+      ],
+      selected: {value},
+      onSelectionChanged: enabled ? (set) => onChanged(set.first) : null,
     );
   }
 }

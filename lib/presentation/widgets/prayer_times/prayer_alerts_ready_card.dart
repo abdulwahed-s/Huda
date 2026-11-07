@@ -295,6 +295,72 @@ List<PrayerReadinessItem> buildPrayerReadinessItems({
   return items;
 }
 
+/// What readiness listens to: notification access and this platform's
+/// prayer bridge. Shared by the ready card and onboarding's reliability
+/// step, so items vanish in both as soon as they are granted.
+Listenable prayerReadinessSources(NotificationAccessController access) =>
+    Listenable.merge([
+      access,
+      if (PlatformUtils.isIOS) IOSPrayerBridge.status,
+      if (PlatformUtils.isMacOS) MacPrayerBridge.status,
+      if (PlatformUtils.isWindows) WindowsPrayerTaskbarBridge.status,
+      if (PlatformUtils.isLinux) LinuxPrayerTrayBridge.status,
+    ]);
+
+/// The platform state readiness reads right now.
+PrayerReadinessInputs currentPrayerReadinessInputs(NotificationAccess? access) =>
+    PrayerReadinessInputs(
+      access: access,
+      ios: PlatformUtils.isIOS ? IOSPrayerBridge.status.value : null,
+      mac: PlatformUtils.isMacOS ? MacPrayerBridge.status.value : null,
+      windows: PlatformUtils.isWindows
+          ? WindowsPrayerTaskbarBridge.status.value
+          : null,
+      linux: PlatformUtils.isLinux ? LinuxPrayerTrayBridge.status.value : null,
+    );
+
+Future<void> _reconcilePrayerReadiness() async {
+  if (getIt.isRegistered<PrayerNotificationScheduler>()) {
+    await getIt<PrayerNotificationScheduler>().reconcile(
+      reason: 'prayer-readiness',
+      force: true,
+    );
+  }
+}
+
+/// What each readiness item's button does, through the existing access
+/// controller and bridges.
+PrayerReadinessActions prayerReadinessActions(
+  BuildContext context,
+  NotificationAccessController access,
+) => PrayerReadinessActions(
+  requestNotifications: () =>
+      access.requestNotifications(context, explain: false),
+  openNotificationSettings: access.openNotificationSettings,
+  openPrayerChannelSettings: access.openPrayerChannelSettings,
+  requestExactAlarms: () => access.requestExactAlarms(context),
+  requestBatteryOptimization: () => access.requestBatteryOptimization(context),
+  requestAlarms: () async {
+    await IOSPrayerBridge.requestAlarms();
+    await _reconcilePrayerReadiness();
+  },
+  openAppleSettings: () async {
+    await IOSPrayerBridge.openSettings();
+  },
+  openMacNotificationSettings: MacPrayerBridge.openNotificationSettings,
+  openMacLoginSettings: MacPrayerBridge.openLoginSettings,
+  startWithWindows: () async {
+    final preferences = await WindowsPrayerTaskbarBridge.getPreferences();
+    await WindowsPrayerTaskbarBridge.setPreferences(
+      preferences.copyWith(startWithWindows: true),
+    );
+  },
+  openWindowsStartupSettings: WindowsPrayerTaskbarBridge.openStartupSettings,
+  startLinuxAtLogin: () => LinuxPrayerTrayBridge.setPreferences(
+    LinuxPrayerTrayBridge.preferences.value.copyWith(startAtLogin: true),
+  ),
+);
+
 /// One explained step at a time to get prayer alerts working, shown on
 /// Prayer Times after the times. "Not now" hides a step for good; the alert
 /// status keeps saying what is off.
@@ -320,6 +386,10 @@ class PrayerAlertsReadyCard extends StatefulWidget {
             flag('prayer_setup_reliability_answered');
   }
 
+  /// "Not now" for one kind: the card doesn't ask about it again.
+  static Future<void> snooze(CacheHelper cache, PrayerReadinessKind kind) =>
+      cache.saveData(key: '$_snoozePrefix${kind.name}', value: true);
+
   /// Whether the card shows an item of this kind right now.
   static bool showing(
     CacheHelper cache,
@@ -336,14 +406,6 @@ class PrayerAlertsReadyCard extends StatefulWidget {
 class _PrayerAlertsReadyCardState extends State<PrayerAlertsReadyCard> {
   bool _busy = false;
 
-  Listenable get _sources => Listenable.merge([
-    widget.access,
-    if (PlatformUtils.isIOS) IOSPrayerBridge.status,
-    if (PlatformUtils.isMacOS) MacPrayerBridge.status,
-    if (PlatformUtils.isWindows) WindowsPrayerTaskbarBridge.status,
-    if (PlatformUtils.isLinux) LinuxPrayerTrayBridge.status,
-  ]);
-
   Future<void> _run(Future<void> Function() action) async {
     if (_busy) return;
     setState(() => _busy = true);
@@ -358,78 +420,21 @@ class _PrayerAlertsReadyCardState extends State<PrayerAlertsReadyCard> {
   }
 
   Future<void> _snooze(PrayerReadinessKind kind) async {
-    await widget.cache.saveData(
-      key: '${PrayerAlertsReadyCard._snoozePrefix}${kind.name}',
-      value: true,
-    );
+    await PrayerAlertsReadyCard.snooze(widget.cache, kind);
     if (mounted) setState(() {});
   }
-
-  Future<void> _reconcile() async {
-    if (getIt.isRegistered<PrayerNotificationScheduler>()) {
-      await getIt<PrayerNotificationScheduler>().reconcile(
-        reason: 'prayer-readiness',
-        force: true,
-      );
-    }
-  }
-
-  PrayerReadinessActions _actions(BuildContext context) =>
-      PrayerReadinessActions(
-        requestNotifications: () =>
-            widget.access.requestNotifications(context, explain: false),
-        openNotificationSettings: widget.access.openNotificationSettings,
-        openPrayerChannelSettings: widget.access.openPrayerChannelSettings,
-        requestExactAlarms: () => widget.access.requestExactAlarms(context),
-        requestBatteryOptimization: () =>
-            widget.access.requestBatteryOptimization(context),
-        requestAlarms: () async {
-          await IOSPrayerBridge.requestAlarms();
-          await _reconcile();
-        },
-        openAppleSettings: () async {
-          await IOSPrayerBridge.openSettings();
-        },
-        openMacNotificationSettings: MacPrayerBridge.openNotificationSettings,
-        openMacLoginSettings: MacPrayerBridge.openLoginSettings,
-        startWithWindows: () async {
-          final preferences = await WindowsPrayerTaskbarBridge.getPreferences();
-          await WindowsPrayerTaskbarBridge.setPreferences(
-            preferences.copyWith(startWithWindows: true),
-          );
-        },
-        openWindowsStartupSettings:
-            WindowsPrayerTaskbarBridge.openStartupSettings,
-        startLinuxAtLogin: () => LinuxPrayerTrayBridge.setPreferences(
-          LinuxPrayerTrayBridge.preferences.value.copyWith(startAtLogin: true),
-        ),
-      );
 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: _sources,
+      listenable: prayerReadinessSources(widget.access),
       builder: (context, _) {
         final l10n = AppLocalizations.of(context)!;
         final pending =
             buildPrayerReadinessItems(
                   l10n: l10n,
-                  inputs: PrayerReadinessInputs(
-                    access: widget.access.access,
-                    ios: PlatformUtils.isIOS
-                        ? IOSPrayerBridge.status.value
-                        : null,
-                    mac: PlatformUtils.isMacOS
-                        ? MacPrayerBridge.status.value
-                        : null,
-                    windows: PlatformUtils.isWindows
-                        ? WindowsPrayerTaskbarBridge.status.value
-                        : null,
-                    linux: PlatformUtils.isLinux
-                        ? LinuxPrayerTrayBridge.status.value
-                        : null,
-                  ),
-                  actions: _actions(context),
+                  inputs: currentPrayerReadinessInputs(widget.access.access),
+                  actions: prayerReadinessActions(context, widget.access),
                 )
                 .where(
                   (item) =>

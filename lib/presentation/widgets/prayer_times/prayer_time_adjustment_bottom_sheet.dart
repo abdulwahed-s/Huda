@@ -1,19 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:huda/core/services/android_prayer_countdown.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
-import 'package:huda/core/theme/app_colors.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/core/utils/platform_utils.dart';
-import 'package:huda/core/utils/text_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
-import 'package:intl/intl.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_search_field.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
+import 'package:huda/presentation/widgets/design/huda_toast.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:vector_graphics/vector_graphics.dart';
+
+/// Prayer time settings: the calculation method (custom angles for
+/// "Other"), the Asr method, the high-latitude rule and minute offsets per
+/// prayer. Nothing changes until Apply; Reset returns to the defaults.
+/// Opens as a bottom sheet on phones and a dialog from medium width.
+void showPrayerTimeAdjustmentSheet(BuildContext context) {
+  final cubit = context.read<PrayerTimesCubit>();
+  showHudaSheet<void>(
+    context: context,
+    title: AppLocalizations.of(context)!.prayerSettingsTitle,
+    expand: true,
+    maxDialogWidth: 600,
+    builder: (_) => BlocProvider.value(
+      value: cubit,
+      child: const PrayerTimeAdjustmentBottomSheet(),
+    ),
+  );
+}
 
 class PrayerTimeAdjustmentBottomSheet extends StatefulWidget {
   const PrayerTimeAdjustmentBottomSheet({super.key});
@@ -41,6 +60,7 @@ class _PrayerTimeAdjustmentBottomSheetState
   late final TextEditingController _fajrAngleController;
   late final TextEditingController _maghribAngleController;
   late final TextEditingController _ishaAngleController;
+  bool _saving = false;
 
   @override
   void initState() {
@@ -74,128 +94,6 @@ class _PrayerTimeAdjustmentBottomSheetState
 
   AppLocalizations get _l10n => AppLocalizations.of(context)!;
 
-  String _methodLabel(String token) {
-    final l10n = _l10n;
-    switch (token) {
-      case PrayerTimesCalculator.autoMethodToken:
-        return l10n.prayerMethodAuto;
-      case 'ummAlQura':
-        return l10n.prayerMethodUmmAlQura;
-      case 'muslimWorldLeague':
-        return l10n.prayerMethodMuslimWorldLeague;
-      case 'egyptian':
-        return l10n.prayerMethodEgyptian;
-      case 'karachi':
-        return l10n.prayerMethodKarachi;
-      case 'northAmerica':
-        return l10n.prayerMethodNorthAmerica;
-      case 'emirates':
-        return l10n.prayerMethodEmirates;
-      case 'dubai':
-        return l10n.prayerMethodDubai;
-      case 'qatar':
-        return l10n.prayerMethodQatar;
-      case 'kuwait':
-        return l10n.prayerMethodKuwait;
-      case 'oman':
-        return l10n.prayerMethodOman;
-      case 'omanMuscat':
-        return l10n.prayerMethodOmanMuscat;
-      case 'jordan':
-        return l10n.prayerMethodJordan;
-      case 'palestine':
-        return l10n.prayerMethodPalestine;
-      case 'syria':
-        return l10n.prayerMethodSyria;
-      case 'iraq':
-        return l10n.prayerMethodIraq;
-      case 'morocco':
-        return l10n.prayerMethodMorocco;
-      case 'azrou':
-        return l10n.prayerMethodAzrou;
-      case 'algeria':
-        return l10n.prayerMethodAlgeria;
-      case 'tunisia':
-        return l10n.prayerMethodTunisia;
-      case 'libya':
-        return l10n.prayerMethodLibya;
-      case 'sudan':
-        return l10n.prayerMethodSudan;
-      case 'turkey':
-        return l10n.prayerMethodTurkey;
-      case 'malaysia':
-        return l10n.prayerMethodMalaysia;
-      case 'malaysia2':
-        return l10n.prayerMethodMalaysia2;
-      case 'indonesia':
-        return l10n.prayerMethodIndonesia;
-      case 'kazakhstan':
-        return l10n.prayerMethodKazakhstan;
-      case 'tajikistan':
-        return l10n.prayerMethodTajikistan;
-      case 'maldives':
-        return l10n.prayerMethodMaldives;
-      case 'southKorea':
-        return l10n.prayerMethodSouthKorea;
-      case 'uoif':
-        return l10n.prayerMethodUoif;
-      case 'paris':
-        return l10n.prayerMethodParis;
-      case 'toulouse':
-        return l10n.prayerMethodToulouse;
-      case 'lyon':
-        return l10n.prayerMethodLyon;
-      case 'orleans':
-        return l10n.prayerMethodOrleans;
-      case 'moscow':
-        return l10n.prayerMethodMoscow;
-      case 'czech':
-        return l10n.prayerMethodCzech;
-      case 'switzerland':
-        return l10n.prayerMethodSwitzerland;
-      case 'fribourg':
-        return l10n.prayerMethodFribourg;
-      case 'belgium':
-        return l10n.prayerMethodBelgium;
-      case 'luxembourg':
-        return l10n.prayerMethodLuxembourg;
-      case 'austria':
-        return l10n.prayerMethodAustria;
-      case 'london':
-        return l10n.prayerMethodLondon;
-      case 'birmingham':
-        return l10n.prayerMethodBirmingham;
-      case 'blackburn':
-        return l10n.prayerMethodBlackburn;
-      case 'aachen':
-        return l10n.prayerMethodAachen;
-      case 'munchen':
-        return l10n.prayerMethodMunchen;
-      case 'potsdam':
-        return l10n.prayerMethodPotsdam;
-      case 'nurnberg':
-        return l10n.prayerMethodNurnberg;
-      case 'rotterdam':
-        return l10n.prayerMethodRotterdam;
-      case 'dordrecht':
-        return l10n.prayerMethodDordrecht;
-      case 'eindhoven':
-        return l10n.prayerMethodEindhoven;
-      case 'montreal':
-        return l10n.prayerMethodMontreal;
-      case 'windsor':
-        return l10n.prayerMethodWindsor;
-      case 'calgary':
-        return l10n.prayerMethodCalgary;
-      case 'mississauga':
-        return l10n.prayerMethodMississauga;
-      case 'other':
-        return l10n.prayerMethodOther;
-      default:
-        return token;
-    }
-  }
-
   String _highLatLabel(String token) {
     final l10n = _l10n;
     switch (token) {
@@ -213,34 +111,23 @@ class _PrayerTimeAdjustmentBottomSheetState
     }
   }
 
-  String _methodDisplayLabel(String token) {
-    if (token != PrayerTimesCalculator.autoMethodToken) {
-      return _methodLabel(token);
-    }
-
-    final resolvedMethod = PrayerTimesCalculator.resolveMethod(
-      token,
-      _countryCode,
-    );
-    final autoLabel = _methodLabel(PrayerTimesCalculator.autoMethodToken);
-    final prefix = autoLabel.split('(').first.trim();
-    return '$prefix (${_methodLabel(resolvedMethod.name)})';
-  }
+  String _methodDisplayLabel(String token) =>
+      prayerMethodDisplayLabel(_l10n, token, _countryCode);
 
   String _offsetLabel(int offset) {
     if (offset == 0) return '0';
     return offset > 0 ? '+$offset' : '$offset';
   }
 
-  void _increment(String key) {
-    setState(() => _offsets[key] = (_offsets[key] ?? 0) + 1);
-  }
-
-  void _decrement(String key) {
-    setState(() => _offsets[key] = (_offsets[key] ?? 0) - 1);
+  void _step(String key, int delta) {
+    const limit = PrayerTimesCalculator.maxManualOffsetMinutes;
+    final next = ((_offsets[key] ?? 0) + delta).clamp(-limit, limit);
+    HudaHaptics.selection(context);
+    setState(() => _offsets[key] = next);
   }
 
   void _reset() {
+    HudaHaptics.light(context);
     setState(() {
       _methodToken = PrayerTimesCalculator.defaultMethodToken;
       _madhabToken = PrayerTimesCalculator.defaultMadhabToken;
@@ -297,12 +184,15 @@ class _PrayerTimeAdjustmentBottomSheetState
     final minimum = allowsZero ? 0.0 : 0.1;
     final stepped = ((current + delta) * 10).round() / 10;
     final clamped = stepped.clamp(minimum, CustomPrayerAngles.maximum);
+    HudaHaptics.selection(context);
     setState(() => _setAngleText(controller, clamped.toDouble()));
   }
 
   Future<void> _apply() async {
     if (_methodToken == 'other' && !_customAnglesAreValid) return;
+    if (_saving) return;
     final cubit = context.read<PrayerTimesCubit>();
+    setState(() => _saving = true);
     try {
       await cubit.savePrayerSettings(
         methodToken: _methodToken,
@@ -313,7 +203,12 @@ class _PrayerTimeAdjustmentBottomSheetState
       );
     } catch (error) {
       if (!mounted) return;
-      HudaSnackBar.error(context, message: _l10n.errorUpdatingWidget('$error'));
+      setState(() => _saving = false);
+      showHudaToast(
+        context,
+        message: _l10n.errorUpdatingWidget('$error'),
+        kind: HudaToastKind.failed,
+      );
       return;
     }
 
@@ -328,491 +223,17 @@ class _PrayerTimeAdjustmentBottomSheetState
     if (mounted) Navigator.of(context).pop();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Future<void> _openMethodPicker() async {
     final l10n = _l10n;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final colors = context.appColors;
-    final state = context.read<PrayerTimesCubit>().state;
-    final locale = Localizations.localeOf(context).toString();
-
-    final bgColor = isDark ? colors.darkGradientMid : colors.lightSurface;
-
-    return SafeArea(
-      top: false,
-      child: Container(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.92,
-        ),
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(28.r),
-            topRight: Radius.circular(28.r),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.45 : 0.14),
-              blurRadius: 28,
-              offset: const Offset(0, -8),
-            ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildHeader(colors),
-            Flexible(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 18.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSettingsCard(
-                      isDark: isDark,
-                      colors: colors,
-                      children: [
-                        _buildSectionHeader(
-                          l10n.prayerCalculationMethod,
-                          Icons.public_rounded,
-                          isDark,
-                          colors,
-                        ),
-                        SizedBox(height: 8.h),
-                        _buildMethodDropdown(isDark, colors),
-                        if (_methodToken == 'other') ...[
-                          SizedBox(height: 16.h),
-                          _buildCustomAnglesEditor(isDark, colors),
-                        ],
-                        SizedBox(height: 16.h),
-                        _buildSectionHeader(
-                          l10n.prayerAsrMethod,
-                          Icons.balance_rounded,
-                          isDark,
-                          colors,
-                        ),
-                        SizedBox(height: 8.h),
-                        _buildMadhabToggle(isDark, colors),
-                        SizedBox(height: 16.h),
-                        _buildSectionHeader(
-                          l10n.prayerHighLatitudeRule,
-                          Icons.travel_explore_rounded,
-                          isDark,
-                          colors,
-                        ),
-                        SizedBox(height: 8.h),
-                        _buildHighLatDropdown(isDark, colors),
-                      ],
-                    ),
-                    SizedBox(height: 14.h),
-                    _buildSettingsCard(
-                      isDark: isDark,
-                      colors: colors,
-                      padding: EdgeInsets.fromLTRB(14.w, 14.h, 14.w, 8.h),
-                      children: [
-                        _buildSectionHeader(
-                          l10n.prayerTimeAdjustment,
-                          Icons.schedule_rounded,
-                          isDark,
-                          colors,
-                          trailing: _buildAdjustmentSummary(isDark, colors),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          l10n.prayerAdjustmentSubtitle,
-                          style: TextStyle(
-                            fontSize: 11.5.sp,
-                            height: 1.3,
-                            color: isDark ? Colors.white60 : Colors.black54,
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        _buildOffsetList(state, locale, isDark, colors),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            _buildFooter(isDark, colors),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(AppColorScheme colors) {
-    final l10n = _l10n;
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [colors.primaryDark, colors.primary, colors.accent],
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(28.r),
-          topRight: Radius.circular(28.r),
-        ),
-      ),
-      padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 14.h),
-      child: Column(
-        children: [
-          Container(
-            width: 42.w,
-            height: 4.h,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.45),
-              borderRadius: BorderRadius.circular(2.r),
-            ),
-          ),
-          SizedBox(height: 12.h),
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              l10n.prayerSettingsTitle,
-              style: TextStyle(
-                fontSize: 17.sp,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(height: 2.h),
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              l10n.prayerSettingsSubtitle,
-              style: TextStyle(
-                fontSize: 11.5.sp,
-                height: 1.25,
-                color: Colors.white.withValues(alpha: 0.74),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSettingsCard({
-    required bool isDark,
-    required AppColorScheme colors,
-    required List<Widget> children,
-    EdgeInsetsGeometry? padding,
-  }) {
-    return Container(
-      width: double.infinity,
-      padding: padding ?? EdgeInsets.all(14.w),
-      decoration: BoxDecoration(
-        color: isDark
-            ? colors.darkCardBackground.withValues(alpha: 0.74)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.08)
-              : colors.primaryExtraLight.withValues(alpha: 0.8),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.06),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(
-    String title,
-    IconData icon,
-    bool isDark,
-    AppColorScheme colors, {
-    Widget? trailing,
-  }) {
-    return Row(
-      children: [
-        _IconBadge(icon: icon, colors: colors, isDark: isDark),
-        SizedBox(width: 9.w),
-        Expanded(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w800,
-              color: isDark ? colors.darkText : colors.primaryDark,
-            ),
-          ),
-        ),
-        if (trailing != null) trailing,
-      ],
-    );
-  }
-
-  BoxDecoration _fieldDecoration(bool isDark, AppColorScheme colors) {
-    return BoxDecoration(
-      color: isDark
-          ? colors.darkGradientMid.withValues(alpha: 0.6)
-          : colors.primaryExtraLight.withValues(alpha: 0.32),
-      borderRadius: BorderRadius.circular(14.r),
-      border: Border.all(
-        color: isDark
-            ? Colors.white.withValues(alpha: 0.08)
-            : colors.primaryExtraLight,
-        width: 1,
-      ),
-    );
-  }
-
-  Widget _buildAdjustmentSummary(bool isDark, AppColorScheme colors) {
-    final adjustedCount = _offsets.values.where((offset) => offset != 0).length;
-    if (adjustedCount == 0) return const SizedBox.shrink();
-
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 180),
-      padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 5.h),
-      decoration: BoxDecoration(
-        color: colors.accent.withValues(alpha: isDark ? 0.22 : 0.12),
-        borderRadius: BorderRadius.circular(999.r),
-        border: Border.all(
-          color: colors.accent.withValues(alpha: isDark ? 0.34 : 0.22),
-        ),
-      ),
-      child: Text(
-        adjustedCount.toString(),
-        style: TextStyle(
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w800,
-          color: isDark ? colors.primaryLight : colors.primary,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMethodDropdown(bool isDark, AppColorScheme colors) {
-    return _SelectionField(
-      value: _methodDisplayLabel(_methodToken),
-      icon: Icons.public_rounded,
-      colors: colors,
-      isDark: isDark,
-      onTap: () => _openMethodPicker(isDark, colors),
-    );
-  }
-
-  Widget _buildHighLatDropdown(bool isDark, AppColorScheme colors) {
-    final selectedToken = _highLatitudeTokens.contains(_highLatToken)
-        ? _highLatToken
-        : PrayerTimesCalculator.defaultHighLatitudeToken;
-
-    return _SelectionField(
-      value: _highLatLabel(selectedToken),
-      icon: Icons.travel_explore_rounded,
-      colors: colors,
-      isDark: isDark,
-      onTap: () => _openHighLatitudePicker(isDark, colors),
-    );
-  }
-
-  Widget _buildCustomAnglesEditor(bool isDark, AppColorScheme colors) {
-    final l10n = _l10n;
-    return Container(
-      key: const ValueKey('custom-prayer-angles'),
-      padding: EdgeInsets.all(12.w),
-      decoration: _fieldDecoration(isDark, colors),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader(
-            l10n.prayerCustomAnglesTitle,
-            Icons.wb_twilight_rounded,
-            isDark,
-            colors,
-          ),
-          SizedBox(height: 5.h),
-          Text(
-            l10n.prayerCustomAnglesSubtitle,
-            style: TextStyle(
-              fontSize: 11.5.sp,
-              height: 1.3,
-              color: isDark ? Colors.white60 : Colors.black54,
-            ),
-          ),
-          SizedBox(height: 12.h),
-          _buildAngleRow(
-            fieldKey: const ValueKey('custom-fajr-angle'),
-            label: l10n.fajr,
-            controller: _fajrAngleController,
-            allowsZero: false,
-            isDark: isDark,
-            colors: colors,
-          ),
-          SizedBox(height: 10.h),
-          _buildAngleRow(
-            fieldKey: const ValueKey('custom-maghrib-angle'),
-            label: l10n.maghrib,
-            controller: _maghribAngleController,
-            allowsZero: true,
-            isDark: isDark,
-            colors: colors,
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.only(start: 2.w, top: 4.h),
-            child: Text(
-              l10n.prayerMaghribZeroMeansSunset,
-              style: TextStyle(
-                fontSize: 10.5.sp,
-                height: 1.25,
-                color: isDark ? Colors.white54 : Colors.black45,
-              ),
-            ),
-          ),
-          SizedBox(height: 10.h),
-          _buildAngleRow(
-            fieldKey: const ValueKey('custom-isha-angle'),
-            label: l10n.isha,
-            controller: _ishaAngleController,
-            allowsZero: false,
-            isDark: isDark,
-            colors: colors,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAngleRow({
-    required Key fieldKey,
-    required String label,
-    required TextEditingController controller,
-    required bool allowsZero,
-    required bool isDark,
-    required AppColorScheme colors,
-  }) {
-    final value = _angleValue(controller);
-    final valid = allowsZero
-        ? CustomPrayerAngles.isValidMaghribAngle(value)
-        : CustomPrayerAngles.isValidTwilightAngle(value);
-    final error = allowsZero
-        ? _l10n.prayerAngleRangeInclusive
-        : _l10n.prayerAngleRangeExclusive;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w800,
-                  color: isDark ? colors.darkText : colors.lightText,
-                ),
-              ),
-            ),
-            _ThemedButton(
-              icon: Icons.remove_rounded,
-              onTap: () => _stepAngle(controller, -0.1, allowsZero: allowsZero),
-              colors: colors,
-              isDark: isDark,
-            ),
-            SizedBox(width: 7.w),
-            SizedBox(
-              width: 76.w,
-              child: TextField(
-                key: fieldKey,
-                controller: controller,
-                onChanged: (_) => setState(() {}),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                inputFormatters: const [_LocalizedAngleInputFormatter()],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w900,
-                  color: isDark ? colors.darkText : colors.primaryDark,
-                ),
-                decoration: InputDecoration(
-                  isDense: true,
-                  suffixText: '°',
-                  errorText: valid ? null : '',
-                  errorStyle: const TextStyle(height: 0, fontSize: 0),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 8.w,
-                    vertical: 9.h,
-                  ),
-                  filled: true,
-                  fillColor: isDark
-                      ? Colors.white.withValues(alpha: 0.06)
-                      : Colors.white.withValues(alpha: 0.82),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(11.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(11.r),
-                    borderSide: BorderSide(
-                      color: valid
-                          ? colors.primaryExtraLight
-                          : Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(11.r),
-                    borderSide: BorderSide(
-                      color: valid
-                          ? colors.primaryVariant
-                          : Theme.of(context).colorScheme.error,
-                      width: 1.2,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 7.w),
-            _ThemedButton(
-              icon: Icons.add_rounded,
-              onTap: () => _stepAngle(controller, 0.1, allowsZero: allowsZero),
-              colors: colors,
-              isDark: isDark,
-            ),
-          ],
-        ),
-        if (!valid)
-          Padding(
-            padding: EdgeInsetsDirectional.only(start: 2.w, top: 4.h),
-            child: Text(
-              error,
-              style: TextStyle(
-                fontSize: 10.5.sp,
-                color: Theme.of(context).colorScheme.error,
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Future<void> _openMethodPicker(bool isDark, AppColorScheme colors) async {
-    final l10n = _l10n;
-    final picked = await showModalBottomSheet<String>(
+    final picked = await showHudaSheet<String>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _SelectionPickerSheet(
-        title: l10n.prayerCalculationMethod,
-        selectedToken: _methodToken,
+      title: l10n.prayerCalculationMethod,
+      builder: (_) => _PickerList(
+        selected: _methodToken,
+        searchHint: l10n.searchHint,
         options: [
           for (final token in PrayerTimesCalculator.pickerMethodTokens)
-            _SelectionOption(
+            (
               token: token,
               label: _methodDisplayLabel(token),
               icon: token == PrayerTimesCalculator.autoMethodToken
@@ -820,33 +241,23 @@ class _PrayerTimeAdjustmentBottomSheetState
                   : Icons.public_rounded,
             ),
         ],
-        colors: colors,
-        isDark: isDark,
-        searchable: true,
-        searchHint: l10n.searchHint,
       ),
     );
-
     if (!mounted || picked == null) return;
     setState(() => _methodToken = picked);
   }
 
-  Future<void> _openHighLatitudePicker(
-    bool isDark,
-    AppColorScheme colors,
-  ) async {
-    final picked = await showModalBottomSheet<String>(
+  Future<void> _openHighLatitudePicker() async {
+    final picked = await showHudaSheet<String>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _SelectionPickerSheet(
-        title: _l10n.prayerHighLatitudeRule,
-        selectedToken: _highLatitudeTokens.contains(_highLatToken)
+      title: _l10n.prayerHighLatitudeRule,
+      builder: (_) => _PickerList(
+        selected: _highLatitudeTokens.contains(_highLatToken)
             ? _highLatToken
             : PrayerTimesCalculator.defaultHighLatitudeToken,
         options: [
           for (final token in _highLatitudeTokens)
-            _SelectionOption(
+            (
               token: token,
               label: _highLatLabel(token),
               icon: switch (token) {
@@ -859,1060 +270,646 @@ class _PrayerTimeAdjustmentBottomSheetState
               },
             ),
         ],
-        colors: colors,
-        isDark: isDark,
       ),
     );
-
     if (!mounted || picked == null) return;
     setState(() => _highLatToken = picked);
   }
 
-  Widget _buildMadhabToggle(bool isDark, AppColorScheme colors) {
+  @override
+  Widget build(BuildContext context) {
     final l10n = _l10n;
-    Widget segment(String token, String label) {
-      final selected = _madhabToken == token;
-      return Expanded(
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          decoration: BoxDecoration(
-            gradient: selected
-                ? LinearGradient(
-                    colors: [colors.primary, colors.primaryVariant],
-                  )
-                : null,
-            borderRadius: BorderRadius.circular(12.r),
-            boxShadow: selected
-                ? [
-                    BoxShadow(
-                      color: colors.primary.withValues(alpha: 0.24),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                : null,
-          ),
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(12.r),
-            child: InkWell(
-              onTap: () => setState(() => _madhabToken = token),
-              borderRadius: BorderRadius.circular(12.r),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.h),
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w800,
-                    color: selected
-                        ? Colors.white
-                        : (isDark ? Colors.white70 : colors.primaryDark),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: _fieldDecoration(isDark, colors),
-      child: Row(
-        children: [
-          segment('shafi', l10n.prayerMadhabShafi),
-          SizedBox(width: 4.w),
-          segment('hanafi', l10n.prayerMadhabHanafi),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOffsetList(
-    Object state,
-    String locale,
-    bool isDark,
-    AppColorScheme colors,
-  ) {
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final state = context.read<PrayerTimesCubit>().state;
+    final locale = Localizations.localeOf(context).toString();
     final times = state is PrayerTimesLoaded ? state.prayerTimes : null;
+    final adjusted = _offsets.values.where((offset) => offset != 0).length;
+    final canApply = _methodToken != 'other' || _customAnglesAreValid;
+    final highLat = _highLatitudeTokens.contains(_highLatToken)
+        ? _highLatToken
+        : PrayerTimesCalculator.defaultHighLatitudeToken;
 
-    final prayers = <_PrayerEntry>[
-      _PrayerEntry(
-        key: 'fajr',
-        name: _prayerName('fajr'),
-        baseTime: times?.fajr,
-        icon: Icons.wb_twilight_rounded,
+    final entries = [
+      ('fajr', l10n.fajr, times?.fajr, Icons.wb_twilight_rounded, null),
+      (
+        'sunrise',
+        l10n.prayerSunriseLabel,
+        times?.sunrise,
+        null,
+        'assets/images/sunrise.svg.vec',
       ),
-      _PrayerEntry(
-        key: 'sunrise',
-        name: _prayerName('sunrise'),
-        baseTime: times?.sunrise,
-        iconAsset: 'assets/images/sunrise.svg.vec',
+      ('dhuhr', l10n.dhuhr, times?.dhuhr, Icons.wb_sunny_rounded, null),
+      ('asr', l10n.asr, times?.asr, Icons.wb_sunny_outlined, null),
+      (
+        'maghrib',
+        l10n.maghrib,
+        times?.maghrib,
+        null,
+        'assets/images/sunset.svg.vec',
       ),
-      _PrayerEntry(
-        key: 'dhuhr',
-        name: _prayerName('dhuhr'),
-        baseTime: times?.dhuhr,
-        icon: Icons.wb_sunny_rounded,
-      ),
-      _PrayerEntry(
-        key: 'asr',
-        name: _prayerName('asr'),
-        baseTime: times?.asr,
-        icon: Icons.wb_sunny_outlined,
-      ),
-      _PrayerEntry(
-        key: 'maghrib',
-        name: _prayerName('maghrib'),
-        baseTime: times?.maghrib,
-        iconAsset: 'assets/images/sunset.svg.vec',
-      ),
-      _PrayerEntry(
-        key: 'isha',
-        name: _prayerName('isha'),
-        baseTime: times?.isha,
-        icon: Icons.dark_mode_rounded,
-      ),
+      ('isha', l10n.isha, times?.isha, Icons.nights_stay_rounded, null),
     ];
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (int i = 0; i < prayers.length; i++) ...[
-          _buildOffsetRow(prayers[i], locale, isDark, colors),
-          if (i != prayers.length - 1) SizedBox(height: 8.h),
-        ],
+        // Header: the title, what it's for, and Close.
+        Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(
+            space.xl,
+            space.sm,
+            space.xs,
+            space.xs,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Semantics(
+                      header: true,
+                      child: Text(
+                        l10n.prayerSettingsTitle,
+                        style: theme.textTheme.titleLarge,
+                      ),
+                    ),
+                    Text(
+                      l10n.prayerSettingsSubtitle,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                onPressed: () => Navigator.maybePop(context),
+                icon: const Icon(Icons.close_rounded),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.fromLTRB(
+              space.md,
+              space.xs,
+              space.md,
+              space.lg,
+            ),
+            children: [
+              HudaSectionHeader(l10n.prayerCalculationMethod),
+              Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    HudaSettingsRow(
+                      key: const ValueKey('prayer-method'),
+                      icon: Icons.public_rounded,
+                      title: l10n.prayerCalculationMethod,
+                      subtitle: _methodDisplayLabel(_methodToken),
+                      trailing: const _Chevron(),
+                      onTap: _openMethodPicker,
+                    ),
+                    if (_methodToken == 'other') ...[
+                      const Divider(indent: 16, endIndent: 16),
+                      _buildCustomAngles(),
+                    ],
+                    const Divider(indent: 16, endIndent: 16),
+                    _ControlRow(
+                      icon: Icons.balance_rounded,
+                      title: l10n.prayerAsrMethod,
+                      control: SegmentedButton<String>(
+                        key: const ValueKey('prayer-madhab'),
+                        showSelectedIcon: false,
+                        segments: [
+                          ButtonSegment(
+                            value: 'shafi',
+                            label: Text(l10n.prayerMadhabShafi),
+                          ),
+                          ButtonSegment(
+                            value: 'hanafi',
+                            label: Text(l10n.prayerMadhabHanafi),
+                          ),
+                        ],
+                        selected: {_madhabToken},
+                        onSelectionChanged: (value) {
+                          HudaHaptics.selection(context);
+                          setState(() => _madhabToken = value.first);
+                        },
+                      ),
+                    ),
+                    const Divider(indent: 16, endIndent: 16),
+                    HudaSettingsRow(
+                      key: const ValueKey('prayer-high-latitude'),
+                      icon: Icons.travel_explore_rounded,
+                      title: l10n.prayerHighLatitudeRule,
+                      subtitle: _highLatLabel(highLat),
+                      trailing: const _Chevron(),
+                      onTap: _openHighLatitudePicker,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: space.lg),
+              HudaSectionHeader(
+                l10n.prayerTimeAdjustment,
+                trailing: adjusted == 0
+                    ? null
+                    : Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: space.xs,
+                          vertical: space.xxs / 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(tokens.radius.sm),
+                        ),
+                        child: Text(
+                          NumberFormat.decimalPattern(locale).format(adjusted),
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ),
+              ),
+              Card(
+                child: Column(
+                  children: [
+                    for (final (i, entry) in entries.indexed) ...[
+                      if (i > 0) const Divider(indent: 16, endIndent: 16),
+                      _OffsetRow(
+                        prayerKey: entry.$1,
+                        name: entry.$2,
+                        time: entry.$3 == null
+                            ? '--:--'
+                            : DateFormat.jm(locale).format(
+                                entry.$3!.add(
+                                  Duration(minutes: _offsets[entry.$1] ?? 0),
+                                ),
+                              ),
+                        icon: entry.$4,
+                        asset: entry.$5,
+                        offset: _offsets[entry.$1] ?? 0,
+                        label: _offsetLabel(_offsets[entry.$1] ?? 0),
+                        onStep: (delta) => _step(entry.$1, delta),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(
+                  space.xxs,
+                  space.xs,
+                  space.xxs,
+                  0,
+                ),
+                child: Text(
+                  l10n.prayerAdjustmentSubtitle,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Pinned: its surface reaches the edge, its buttons sit above the
+        // navigation bar.
+        DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: theme.colorScheme.outlineVariant),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              space.md + MediaQuery.paddingOf(context).left,
+              space.sm,
+              space.md + MediaQuery.paddingOf(context).right,
+              space.sm + MediaQuery.paddingOf(context).bottom,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    key: const ValueKey('prayer-settings-reset'),
+                    onPressed: _saving ? null : _reset,
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(52),
+                    ),
+                    child: Text(l10n.reset),
+                  ),
+                ),
+                SizedBox(width: space.sm),
+                Expanded(
+                  flex: 2,
+                  child: FilledButton(
+                    key: const ValueKey('prayer-settings-apply'),
+                    onPressed: canApply && !_saving ? _apply : null,
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.fromHeight(52),
+                    ),
+                    child: Text(l10n.prayerSettingsApply),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildOffsetRow(
-    _PrayerEntry entry,
-    String locale,
-    bool isDark,
-    AppColorScheme colors,
-  ) {
-    final offset = _offsets[entry.key] ?? 0;
-    final hasOffset = offset != 0;
-    final base = entry.baseTime;
-    final timeStr = base == null
-        ? '--:--'
-        : DateFormat.jm(locale).format(base.add(Duration(minutes: offset)));
+  Widget _buildCustomAngles() {
+    final l10n = _l10n;
+    final theme = Theme.of(context);
+    final space = context.tokens.space;
+    return Padding(
+      key: const ValueKey('custom-prayer-angles'),
+      padding: EdgeInsets.fromLTRB(space.md, space.sm, space.md, space.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l10n.prayerCustomAnglesTitle, style: theme.textTheme.titleSmall),
+          Text(
+            l10n.prayerCustomAnglesSubtitle,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          SizedBox(height: space.sm),
+          _angleRow(
+            const ValueKey('custom-fajr-angle'),
+            l10n.fajr,
+            _fajrAngleController,
+            allowsZero: false,
+          ),
+          SizedBox(height: space.xs),
+          _angleRow(
+            const ValueKey('custom-maghrib-angle'),
+            l10n.maghrib,
+            _maghribAngleController,
+            allowsZero: true,
+          ),
+          Padding(
+            padding: EdgeInsetsDirectional.only(top: space.xxs),
+            child: Text(
+              l10n.prayerMaghribZeroMeansSunset,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          SizedBox(height: space.xs),
+          _angleRow(
+            const ValueKey('custom-isha-angle'),
+            l10n.isha,
+            _ishaAngleController,
+            allowsZero: false,
+          ),
+        ],
+      ),
+    );
+  }
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 180),
-      padding: EdgeInsets.all(10.w),
-      decoration: BoxDecoration(
-        color: hasOffset
-            ? colors.primary.withValues(alpha: isDark ? 0.18 : 0.08)
-            : (isDark
-                  ? colors.darkGradientMid.withValues(alpha: 0.45)
-                  : colors.lightSurface.withValues(alpha: 0.82)),
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: hasOffset
-              ? colors.primaryVariant.withValues(alpha: isDark ? 0.46 : 0.28)
-              : (isDark
-                    ? Colors.white.withValues(alpha: 0.07)
-                    : colors.primaryExtraLight.withValues(alpha: 0.85)),
+  Widget _angleRow(
+    Key fieldKey,
+    String label,
+    TextEditingController controller, {
+    required bool allowsZero,
+  }) {
+    final theme = Theme.of(context);
+    final space = context.tokens.space;
+    final value = _angleValue(controller);
+    final valid = allowsZero
+        ? CustomPrayerAngles.isValidMaghribAngle(value)
+        : CustomPrayerAngles.isValidTwilightAngle(value);
+    final error = allowsZero
+        ? _l10n.prayerAngleRangeInclusive
+        : _l10n.prayerAngleRangeExclusive;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(child: Text(label, style: theme.textTheme.bodyLarge)),
+            _StepButton(
+              icon: Icons.remove_rounded,
+              tooltip: '$label −',
+              onPressed: () =>
+                  _stepAngle(controller, -0.1, allowsZero: allowsZero),
+            ),
+            SizedBox(width: space.xxs),
+            SizedBox(
+              width: 92,
+              child: TextField(
+                key: fieldKey,
+                controller: controller,
+                onChanged: (_) => setState(() {}),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: const [_LocalizedAngleInputFormatter()],
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+                decoration: InputDecoration(
+                  isDense: true,
+                  suffixText: '°',
+                  errorText: valid ? null : '',
+                  errorStyle: const TextStyle(height: 0, fontSize: 0),
+                ),
+              ),
+            ),
+            SizedBox(width: space.xxs),
+            _StepButton(
+              icon: Icons.add_rounded,
+              tooltip: '$label +',
+              onPressed: () =>
+                  _stepAngle(controller, 0.1, allowsZero: allowsZero),
+            ),
+          ],
         ),
+        if (!valid)
+          Padding(
+            padding: EdgeInsetsDirectional.only(top: space.xxs),
+            child: Text(
+              error,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.error,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _Chevron extends StatelessWidget {
+  const _Chevron();
+
+  @override
+  Widget build(BuildContext context) => Icon(
+    Icons.chevron_right_rounded,
+    color: Theme.of(context).colorScheme.onSurfaceVariant,
+  );
+}
+
+/// A labeled row with a control (a segmented choice) that wraps under the
+/// label when there's no room beside it.
+class _ControlRow extends StatelessWidget {
+  const _ControlRow({
+    required this.icon,
+    required this.title,
+    required this.control,
+  });
+
+  final IconData icon;
+  final String title;
+  final Widget control;
+
+  @override
+  Widget build(BuildContext context) {
+    final space = context.tokens.space;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: space.md, vertical: space.sm),
+      child: Wrap(
+        spacing: space.sm,
+        runSpacing: space.sm,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              HudaIconMark(icon),
+              SizedBox(width: space.md),
+              Flexible(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            ],
+          ),
+          control,
+        ],
+      ),
+    );
+  }
+}
+
+class _StepButton extends StatelessWidget {
+  const _StepButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => IconButton.outlined(
+    tooltip: tooltip,
+    onPressed: onPressed,
+    icon: Icon(icon, size: 20),
+  );
+}
+
+class _OffsetRow extends StatelessWidget {
+  const _OffsetRow({
+    required this.prayerKey,
+    required this.name,
+    required this.time,
+    required this.icon,
+    required this.asset,
+    required this.offset,
+    required this.label,
+    required this.onStep,
+  });
+
+  final String prayerKey;
+  final String name;
+  final String time;
+  final IconData? icon;
+  final String? asset;
+  final int offset;
+  final String label;
+  final void Function(int delta) onStep;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final active = offset != 0;
+    final color = active ? scheme.primary : scheme.onSurfaceVariant;
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(
+        space.md,
+        space.xs,
+        space.xs,
+        space.xs,
       ),
       child: Row(
         children: [
-          Container(
-            width: 38.w,
-            height: 38.w,
-            decoration: BoxDecoration(
-              color: hasOffset
-                  ? colors.primary.withValues(alpha: 0.16)
-                  : colors.primaryExtraLight.withValues(
-                      alpha: isDark ? 0.1 : 0.5,
-                    ),
-              borderRadius: BorderRadius.circular(13.r),
-            ),
-            child: _PrayerEntryIcon(
-              entry: entry,
-              size: 19.sp,
-              color: hasOffset
-                  ? (isDark ? colors.primaryLight : colors.primary)
-                  : (isDark
-                        ? Colors.white54
-                        : colors.primary.withValues(alpha: 0.7)),
-            ),
+          SizedBox(
+            width: 28,
+            child: asset != null
+                ? SvgPicture(
+                    AssetBytesLoader(asset!),
+                    width: 19,
+                    height: 19,
+                    colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                  )
+                : Icon(icon, size: 20, color: color),
           ),
-          SizedBox(width: 11.w),
+          SizedBox(width: space.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(name, style: theme.textTheme.bodyLarge),
                 Text(
-                  entry.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w800,
-                    color: isDark ? colors.darkText : colors.lightText,
-                  ),
-                ),
-                SizedBox(height: 3.h),
-                Text(
-                  timeStr,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w700,
-                    color: hasOffset
-                        ? (isDark ? colors.primaryLight : colors.primary)
-                        : (isDark ? Colors.white54 : Colors.black45),
+                  time,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: color,
+                    fontWeight: active ? FontWeight.w700 : null,
+                    fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(width: 10.w),
-          _ThemedButton(
+          _StepButton(
             icon: Icons.remove_rounded,
-            onTap: () => _decrement(entry.key),
-            colors: colors,
-            isDark: isDark,
+            tooltip: '$name −',
+            onPressed: () => onStep(-1),
           ),
-          SizedBox(width: 7.w),
-          _OffsetValue(
-            label: _offsetLabel(offset),
-            active: hasOffset,
-            colors: colors,
-            isDark: isDark,
-          ),
-          SizedBox(width: 7.w),
-          _ThemedButton(
-            icon: Icons.add_rounded,
-            onTap: () => _increment(entry.key),
-            colors: colors,
-            isDark: isDark,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFooter(bool isDark, AppColorScheme colors) {
-    final l10n = _l10n;
-    final bgColor = isDark ? colors.darkGradientMid : colors.lightSurface;
-    return Container(
-      color: bgColor,
-      padding: EdgeInsets.fromLTRB(
-        16.w,
-        12.h,
-        16.w,
-        12.h + MediaQuery.paddingOf(context).bottom,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _FooterButton(
-              label: l10n.reset,
-              onTap: _reset,
-              colors: colors,
-              isDark: isDark,
-              isPrimary: false,
-            ),
-          ),
-          SizedBox(width: 10.w),
-          Expanded(
-            flex: 2,
-            child: _FooterButton(
-              label: l10n.prayerSettingsApply,
-              onTap: _methodToken != 'other' || _customAnglesAreValid
-                  ? _apply
-                  : null,
-              colors: colors,
-              isDark: isDark,
-              isPrimary: true,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _prayerName(String key) {
-    final l10n = _l10n;
-    switch (key) {
-      case 'fajr':
-        return l10n.fajr;
-      case 'sunrise':
-        return l10n.sunrise;
-      case 'dhuhr':
-        return l10n.dhuhr;
-      case 'asr':
-        return l10n.asr;
-      case 'maghrib':
-        return l10n.maghrib;
-      case 'isha':
-        return l10n.isha;
-      default:
-        return key;
-    }
-  }
-}
-
-class _PrayerEntry {
-  final String key;
-  final String name;
-  final DateTime? baseTime;
-  final IconData? icon;
-  final String? iconAsset;
-
-  const _PrayerEntry({
-    required this.key,
-    required this.name,
-    required this.baseTime,
-    this.icon,
-    this.iconAsset,
-  }) : assert(icon != null || iconAsset != null);
-}
-
-class _PrayerEntryIcon extends StatelessWidget {
-  final _PrayerEntry entry;
-  final double size;
-  final Color color;
-
-  const _PrayerEntryIcon({
-    required this.entry,
-    required this.size,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (entry.iconAsset != null) {
-      return Center(
-        child: SvgPicture(
-          AssetBytesLoader(entry.iconAsset!),
-          width: size,
-          height: size,
-          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-        ),
-      );
-    }
-
-    return Icon(entry.icon, size: size, color: color);
-  }
-}
-
-class _SelectionOption {
-  final String token;
-  final String label;
-  final IconData icon;
-
-  const _SelectionOption({
-    required this.token,
-    required this.label,
-    required this.icon,
-  });
-}
-
-class _SelectionField extends StatelessWidget {
-  final String value;
-  final IconData icon;
-  final AppColorScheme colors;
-  final bool isDark;
-  final VoidCallback onTap;
-
-  const _SelectionField({
-    required this.value,
-    required this.icon,
-    required this.colors,
-    required this.isDark,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(14.r);
-    return Material(
-      color: Colors.transparent,
-      borderRadius: borderRadius,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: borderRadius,
-        child: Ink(
-          padding: EdgeInsets.fromLTRB(12.w, 11.h, 11.w, 11.h),
-          decoration: BoxDecoration(
-            color: isDark
-                ? colors.darkGradientMid.withValues(alpha: 0.6)
-                : colors.primaryExtraLight.withValues(alpha: 0.32),
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : colors.primaryExtraLight,
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 34.w,
-                height: 34.w,
-                decoration: BoxDecoration(
-                  color: colors.primary.withValues(alpha: isDark ? 0.2 : 0.1),
-                  borderRadius: BorderRadius.circular(11.r),
-                ),
-                child: Icon(
-                  icon,
-                  size: 18.sp,
-                  color: isDark ? colors.primaryLight : colors.primary,
-                ),
-              ),
-              SizedBox(width: 11.w),
-              Expanded(
-                child: Text(
-                  value,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    height: 1.25,
-                    fontWeight: FontWeight.w800,
-                    color: isDark ? colors.darkText : colors.lightText,
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 44),
+            child: AnimatedDefaultTextStyle(
+              duration: tokens.motion.of(context, tokens.motion.short),
+              style: (theme.textTheme.titleMedium ?? const TextStyle())
+                  .copyWith(
+                    color: active ? scheme.primary : scheme.onSurface,
+                    fontFeatures: const [FontFeature.tabularFigures()],
                   ),
-                ),
+              child: Text(
+                label,
+                key: ValueKey('prayer-offset-$prayerKey'),
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.ltr,
               ),
-              SizedBox(width: 8.w),
-              Container(
-                width: 28.w,
-                height: 28.w,
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.06)
-                      : Colors.white.withValues(alpha: 0.72),
-                  borderRadius: BorderRadius.circular(9.r),
-                ),
-                child: Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  size: 20.sp,
-                  color: isDark ? colors.primaryLight : colors.primary,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          _StepButton(
+            icon: Icons.add_rounded,
+            tooltip: '$name +',
+            onPressed: () => onStep(1),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _SelectionPickerSheet extends StatefulWidget {
-  final String title;
-  final String selectedToken;
-  final List<_SelectionOption> options;
-  final AppColorScheme colors;
-  final bool isDark;
-  final bool searchable;
-  final String? searchHint;
-
-  const _SelectionPickerSheet({
-    required this.title,
-    required this.selectedToken,
+/// A choice list for a picker sheet: a search field when [searchHint] is
+/// given, the options with the selected one checked; a tap picks.
+class _PickerList extends StatefulWidget {
+  const _PickerList({
     required this.options,
-    required this.colors,
-    required this.isDark,
-    this.searchable = false,
+    required this.selected,
     this.searchHint,
   });
 
+  final List<({String token, String label, IconData icon})> options;
+  final String selected;
+  final String? searchHint;
+
   @override
-  State<_SelectionPickerSheet> createState() => _SelectionPickerSheetState();
+  State<_PickerList> createState() => _PickerListState();
 }
 
-class _SelectionPickerSheetState extends State<_SelectionPickerSheet> {
+class _PickerListState extends State<_PickerList> {
+  final _search = TextEditingController();
   String _query = '';
 
-  String _normalizeSearchText(String value) {
-    return TextUtils.removeDiacriticsAndNormalize(value).toLowerCase();
-  }
-
-  List<_SelectionOption> get _filteredOptions {
-    final normalized = _normalizeSearchText(_query.trim());
-    if (normalized.isEmpty) return widget.options;
-    return widget.options.where((option) {
-      return _normalizeSearchText(option.label).contains(normalized) ||
-          _normalizeSearchText(option.token).contains(normalized);
-    }).toList();
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final colors = widget.colors;
-    final isDark = widget.isDark;
-    final filteredOptions = _filteredOptions;
-    final background = isDark ? colors.darkGradientMid : colors.lightSurface;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final preferredHeight = MediaQuery.sizeOf(context).height * 0.76;
-        final sheetHeight = preferredHeight
-            .clamp(0.0, constraints.maxHeight)
-            .toDouble();
-
-        return SafeArea(
-          top: false,
-          child: Container(
-            height: sheetHeight,
-            decoration: BoxDecoration(
-              color: background,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(26.r),
-                topRight: Radius.circular(26.r),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.46 : 0.16),
-                  blurRadius: 26,
-                  offset: const Offset(0, -8),
-                ),
-              ],
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(18.w, 10.h, 14.w, 12.h),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 42.w,
-                        height: 4.h,
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? Colors.white.withValues(alpha: 0.28)
-                              : Colors.black.withValues(alpha: 0.14),
-                          borderRadius: BorderRadius.circular(2.r),
-                        ),
-                      ),
-                      SizedBox(height: 14.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.w900,
-                                color: isDark
-                                    ? colors.darkText
-                                    : colors.primaryDark,
-                              ),
-                            ),
-                          ),
-                          Material(
-                            color: isDark
-                                ? Colors.white.withValues(alpha: 0.06)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(11.r),
-                            child: InkWell(
-                              onTap: () => Navigator.of(context).pop(),
-                              borderRadius: BorderRadius.circular(11.r),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.w),
-                                child: Icon(
-                                  Icons.close_rounded,
-                                  size: 19.sp,
-                                  color: isDark
-                                      ? Colors.white70
-                                      : colors.primaryDark,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (widget.searchable) ...[
-                        SizedBox(height: 12.h),
-                        _PickerSearchField(
-                          hint: widget.searchHint ?? '',
-                          colors: colors,
-                          isDark: isDark,
-                          onChanged: (value) => setState(() => _query = value),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                Flexible(
-                  child: filteredOptions.isEmpty
-                      ? _PickerEmptyState(colors: colors, isDark: isDark)
-                      : ListView.separated(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.fromLTRB(
-                            14.w,
-                            0,
-                            14.w,
-                            14.h + MediaQuery.paddingOf(context).bottom,
-                          ),
-                          itemCount: filteredOptions.length,
-                          separatorBuilder: (_, _) => SizedBox(height: 8.h),
-                          itemBuilder: (context, index) {
-                            final option = filteredOptions[index];
-                            final selected =
-                                option.token == widget.selectedToken;
-
-                            return _SelectionOptionTile(
-                              option: option,
-                              selected: selected,
-                              colors: colors,
-                              isDark: isDark,
-                              onTap: () =>
-                                  Navigator.of(context).pop(option.token),
-                            );
-                          },
-                        ),
-                ),
-              ],
-            ),
+    final theme = Theme.of(context);
+    final space = context.tokens.space;
+    final query = _query.trim().toLowerCase();
+    final shown = [
+      for (final option in widget.options)
+        if (query.isEmpty || option.label.toLowerCase().contains(query)) option,
+    ];
+    final hint = widget.searchHint;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (hint != null) ...[
+          HudaSearchField(
+            controller: _search,
+            hintText: hint,
+            onChanged: (value) => setState(() => _query = value),
           ),
-        );
-      },
-    );
-  }
-}
-
-class _PickerSearchField extends StatelessWidget {
-  final String hint;
-  final AppColorScheme colors;
-  final bool isDark;
-  final ValueChanged<String> onChanged;
-
-  const _PickerSearchField({
-    required this.hint,
-    required this.colors,
-    required this.isDark,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      autofocus: true,
-      onChanged: onChanged,
-      textInputAction: TextInputAction.search,
-      style: TextStyle(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w700,
-        color: isDark ? colors.darkText : colors.lightText,
-      ),
-      decoration: InputDecoration(
-        isDense: true,
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: isDark ? Colors.white38 : Colors.black38,
-          fontWeight: FontWeight.w600,
-        ),
-        prefixIcon: Icon(
-          Icons.search_rounded,
-          color: isDark ? Colors.white54 : colors.primary,
-          size: 20.sp,
-        ),
-        filled: true,
-        fillColor: isDark
-            ? Colors.white.withValues(alpha: 0.06)
-            : Colors.white.withValues(alpha: 0.82),
-        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14.r),
-          borderSide: BorderSide(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.08)
-                : colors.primaryExtraLight,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14.r),
-          borderSide: BorderSide(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.08)
-                : colors.primaryExtraLight,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14.r),
-          borderSide: BorderSide(color: colors.primaryVariant, width: 1.2),
-        ),
-      ),
-    );
-  }
-}
-
-class _PickerEmptyState extends StatelessWidget {
-  final AppColorScheme colors;
-  final bool isDark;
-
-  const _PickerEmptyState({required this.colors, required this.isDark});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        20.w,
-        28.h,
-        20.w,
-        28.h + MediaQuery.paddingOf(context).bottom,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.search_off_rounded,
-            size: 28.sp,
-            color: isDark
-                ? Colors.white38
-                : colors.primary.withValues(alpha: 0.5),
-          ),
-          SizedBox(height: 10.h),
-          Text(
-            l10n.tryDifferentSearch,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w700,
-              color: isDark ? Colors.white54 : Colors.black54,
-            ),
-          ),
+          SizedBox(height: space.sm),
         ],
-      ),
-    );
-  }
-}
-
-class _SelectionOptionTile extends StatelessWidget {
-  final _SelectionOption option;
-  final bool selected;
-  final AppColorScheme colors;
-  final bool isDark;
-  final VoidCallback onTap;
-
-  const _SelectionOptionTile({
-    required this.option,
-    required this.selected,
-    required this.colors,
-    required this.isDark,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(15.r);
-    return Material(
-      color: Colors.transparent,
-      borderRadius: borderRadius,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: borderRadius,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 160),
-          padding: EdgeInsets.all(11.w),
-          decoration: BoxDecoration(
-            color: selected
-                ? colors.primary.withValues(alpha: isDark ? 0.24 : 0.1)
-                : (isDark
-                      ? colors.darkCardBackground.withValues(alpha: 0.68)
-                      : Colors.white),
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: selected
-                  ? colors.primaryVariant.withValues(alpha: isDark ? 0.5 : 0.3)
-                  : (isDark
-                        ? Colors.white.withValues(alpha: 0.07)
-                        : colors.primaryExtraLight.withValues(alpha: 0.85)),
+        if (shown.isEmpty)
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: space.xl),
+            child: Text(
+              AppLocalizations.of(context)!.tryDifferentSearch,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 36.w,
-                height: 36.w,
-                decoration: BoxDecoration(
-                  color: selected
-                      ? colors.primary.withValues(alpha: isDark ? 0.28 : 0.14)
-                      : colors.primaryExtraLight.withValues(
-                          alpha: isDark ? 0.1 : 0.45,
-                        ),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Icon(
-                  option.icon,
-                  size: 18.sp,
-                  color: selected
-                      ? (isDark ? colors.primaryLight : colors.primary)
-                      : (isDark
-                            ? Colors.white54
-                            : colors.primary.withValues(alpha: 0.68)),
-                ),
-              ),
-              SizedBox(width: 11.w),
-              Expanded(
-                child: Text(
-                  option.label,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    height: 1.25,
-                    fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
-                    color: isDark ? colors.darkText : colors.lightText,
+          )
+        else
+          Card(
+            child: Column(
+              children: [
+                for (final (i, option) in shown.indexed) ...[
+                  if (i > 0) const Divider(indent: 16, endIndent: 16),
+                  HudaSettingsRow(
+                    key: ValueKey('prayer-pick-${option.token}'),
+                    icon: option.icon,
+                    title: option.label,
+                    selected: option.token == widget.selected,
+                    trailing: option.token == widget.selected
+                        ? Icon(
+                            Icons.check_rounded,
+                            color: theme.colorScheme.primary,
+                          )
+                        : null,
+                    onTap: () => Navigator.of(context).pop(option.token),
                   ),
-                ),
-              ),
-              SizedBox(width: 10.w),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 160),
-                width: 28.w,
-                height: 28.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: selected
-                      ? colors.primary
-                      : (isDark
-                            ? Colors.white.withValues(alpha: 0.05)
-                            : colors.primaryExtraLight.withValues(alpha: 0.4)),
-                  border: Border.all(
-                    color: selected
-                        ? colors.primary
-                        : (isDark
-                              ? Colors.white.withValues(alpha: 0.08)
-                              : colors.primaryExtraLight),
-                  ),
-                ),
-                child: selected
-                    ? Icon(
-                        Icons.check_rounded,
-                        color: Colors.white,
-                        size: 18.sp,
-                      )
-                    : null,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ThemedButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-  final AppColorScheme colors;
-  final bool isDark;
-
-  const _ThemedButton({
-    required this.icon,
-    required this.onTap,
-    required this.colors,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      shape: const CircleBorder(),
-      child: InkWell(
-        onTap: onTap,
-        customBorder: const CircleBorder(),
-        child: Ink(
-          width: 32.w,
-          height: 32.w,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                colors.primary.withValues(alpha: isDark ? 0.35 : 0.14),
-                colors.primaryVariant.withValues(alpha: isDark ? 0.24 : 0.1),
+                ],
               ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            border: Border.all(
-              color: colors.primaryVariant.withValues(
-                alpha: isDark ? 0.48 : 0.3,
-              ),
-              width: 1,
             ),
           ),
-          child: Icon(
-            icon,
-            size: 18.sp,
-            color: isDark ? colors.primaryLight : colors.primary,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _IconBadge extends StatelessWidget {
-  final IconData icon;
-  final AppColorScheme colors;
-  final bool isDark;
-
-  const _IconBadge({
-    required this.icon,
-    required this.colors,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 28.w,
-      height: 28.w,
-      decoration: BoxDecoration(
-        color: colors.primary.withValues(alpha: isDark ? 0.2 : 0.1),
-        borderRadius: BorderRadius.circular(9.r),
-      ),
-      child: Icon(
-        icon,
-        size: 15.sp,
-        color: isDark ? colors.primaryLight : colors.primary,
-      ),
-    );
-  }
-}
-
-class _OffsetValue extends StatelessWidget {
-  final String label;
-  final bool active;
-  final AppColorScheme colors;
-  final bool isDark;
-
-  const _OffsetValue({
-    required this.label,
-    required this.active,
-    required this.colors,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 180),
-      width: 44.w,
-      padding: EdgeInsets.symmetric(vertical: 7.h),
-      decoration: BoxDecoration(
-        color: active
-            ? colors.primary.withValues(alpha: isDark ? 0.24 : 0.12)
-            : (isDark
-                  ? Colors.white.withValues(alpha: 0.05)
-                  : Colors.white.withValues(alpha: 0.7)),
-        borderRadius: BorderRadius.circular(11.r),
-        border: Border.all(
-          color: active
-              ? colors.primaryVariant.withValues(alpha: isDark ? 0.48 : 0.28)
-              : (isDark
-                    ? Colors.white.withValues(alpha: 0.06)
-                    : colors.primaryExtraLight.withValues(alpha: 0.9)),
-        ),
-      ),
-      child: Text(
-        label,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 12.5.sp,
-          fontWeight: FontWeight.w900,
-          color: active
-              ? (isDark ? colors.primaryLight : colors.primary)
-              : (isDark
-                    ? Colors.white.withValues(alpha: 0.45)
-                    : Colors.black38),
-        ),
-      ),
-    );
-  }
-}
-
-class _FooterButton extends StatelessWidget {
-  final String label;
-  final VoidCallback? onTap;
-  final AppColorScheme colors;
-  final bool isDark;
-  final bool isPrimary;
-
-  const _FooterButton({
-    required this.label,
-    required this.onTap,
-    required this.colors,
-    required this.isDark,
-    required this.isPrimary,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final enabled = onTap != null;
-    final borderRadius = BorderRadius.circular(15.r);
-    return Material(
-      color: Colors.transparent,
-      borderRadius: borderRadius,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: borderRadius,
-        child: Ink(
-          padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 12.w),
-          decoration: BoxDecoration(
-            gradient: isPrimary && enabled
-                ? LinearGradient(
-                    colors: [colors.accent, colors.primary],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
-                : null,
-            color: isPrimary
-                ? (enabled ? null : Colors.grey.withValues(alpha: 0.35))
-                : (isDark
-                      ? colors.darkGradientEnd.withValues(alpha: 0.58)
-                      : Colors.white),
-            borderRadius: borderRadius,
-            border: isPrimary
-                ? null
-                : Border.all(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.08)
-                        : colors.primaryExtraLight,
-                  ),
-            boxShadow: isPrimary && enabled
-                ? [
-                    BoxShadow(
-                      color: colors.primary.withValues(alpha: 0.32),
-                      blurRadius: 14,
-                      offset: const Offset(0, 6),
-                    ),
-                  ]
-                : null,
-          ),
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14.5.sp,
-              fontWeight: FontWeight.w900,
-              color: isPrimary
-                  ? Colors.white.withValues(alpha: enabled ? 1 : 0.58)
-                  : (isDark
-                        ? colors.darkText.withValues(alpha: 0.78)
-                        : colors.primary),
-            ),
-          ),
-        ),
-      ),
+      ],
     );
   }
 }
@@ -1944,14 +941,272 @@ class _LocalizedAngleInputFormatter extends TextInputFormatter {
   }
 }
 
-void showPrayerTimeAdjustmentSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (_) => BlocProvider.value(
-      value: context.read<PrayerTimesCubit>(),
-      child: const PrayerTimeAdjustmentBottomSheet(),
-    ),
-  );
+/// A method's name for display; "Automatic" names the method it resolves
+/// to for [countryCode] ("Automatic (Umm al-Qura)").
+String prayerMethodDisplayLabel(
+  AppLocalizations l10n,
+  String token,
+  String countryCode,
+) {
+  if (token != PrayerTimesCalculator.autoMethodToken) {
+    return prayerMethodLabel(l10n, token);
+  }
+  final resolved = PrayerTimesCalculator.resolveMethod(token, countryCode);
+  final autoLabel = prayerMethodLabel(l10n, PrayerTimesCalculator.autoMethodToken);
+  final prefix = autoLabel.split('(').first.trim();
+  return '$prefix (${prayerMethodLabel(l10n, resolved.name)})';
+}
+
+/// The page's card for how the times are calculated: the method, the Asr
+/// method and how many times are adjusted; a tap opens the settings. It
+/// replaced the app bar's tune button (owner round 2).
+class PrayerTimeSettingsCard extends StatelessWidget {
+  const PrayerTimeSettingsCard({
+    super.key,
+    required this.cubit,
+    required this.onOpen,
+  });
+
+  final PrayerTimesCubit cubit;
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final space = context.tokens.space;
+    final country = PrayerTimesCalculator.countryCodeFromCache(
+      cubit.cacheHelper,
+    );
+    final method = prayerMethodDisplayLabel(
+      l10n,
+      cubit.calculationMethodToken,
+      country,
+    );
+    final madhab = cubit.madhabToken == 'hanafi'
+        ? l10n.prayerMadhabHanafi
+        : l10n.prayerMadhabShafi;
+    final adjusted = cubit.prayerOffsets.values.where((v) => v != 0).length;
+    final locale = Localizations.localeOf(context).toString();
+    return Card(
+      child: InkWell(
+        key: const ValueKey('prayer-settings'),
+        onTap: onOpen,
+        child: Padding(
+          padding: EdgeInsets.all(space.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  const HudaIconMark(Icons.tune_rounded),
+                  SizedBox(width: space.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.prayerSettingsTitle,
+                          style: theme.textTheme.titleMedium,
+                        ),
+                        Text(
+                          method,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ],
+              ),
+              SizedBox(height: space.sm),
+              Wrap(
+                spacing: space.xs,
+                runSpacing: space.xs,
+                children: [
+                  _Fact(icon: Icons.balance_rounded, label: madhab),
+                  if (adjusted > 0)
+                    _Fact(
+                      icon: Icons.schedule_rounded,
+                      label: l10n.prayerSettingsAdjusted(
+                        adjusted,
+                        NumberFormat.decimalPattern(locale).format(adjusted),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A setting at a glance on the settings card.
+class _Fact extends StatelessWidget {
+  const _Fact({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: tokens.space.xs,
+        vertical: tokens.space.xxs,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(tokens.radius.sm),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: theme.colorScheme.primary),
+          SizedBox(width: tokens.space.xxs),
+          Flexible(
+            child: Text(
+              label,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A calculation method's name, by its token (also used by onboarding's
+/// method choice).
+String prayerMethodLabel(AppLocalizations l10n, String token) {
+  switch (token) {
+    case PrayerTimesCalculator.autoMethodToken:
+      return l10n.prayerMethodAuto;
+    case 'ummAlQura':
+      return l10n.prayerMethodUmmAlQura;
+    case 'muslimWorldLeague':
+      return l10n.prayerMethodMuslimWorldLeague;
+    case 'egyptian':
+      return l10n.prayerMethodEgyptian;
+    case 'karachi':
+      return l10n.prayerMethodKarachi;
+    case 'northAmerica':
+      return l10n.prayerMethodNorthAmerica;
+    case 'emirates':
+      return l10n.prayerMethodEmirates;
+    case 'dubai':
+      return l10n.prayerMethodDubai;
+    case 'qatar':
+      return l10n.prayerMethodQatar;
+    case 'kuwait':
+      return l10n.prayerMethodKuwait;
+    case 'oman':
+      return l10n.prayerMethodOman;
+    case 'omanMuscat':
+      return l10n.prayerMethodOmanMuscat;
+    case 'jordan':
+      return l10n.prayerMethodJordan;
+    case 'palestine':
+      return l10n.prayerMethodPalestine;
+    case 'syria':
+      return l10n.prayerMethodSyria;
+    case 'iraq':
+      return l10n.prayerMethodIraq;
+    case 'morocco':
+      return l10n.prayerMethodMorocco;
+    case 'azrou':
+      return l10n.prayerMethodAzrou;
+    case 'algeria':
+      return l10n.prayerMethodAlgeria;
+    case 'tunisia':
+      return l10n.prayerMethodTunisia;
+    case 'libya':
+      return l10n.prayerMethodLibya;
+    case 'sudan':
+      return l10n.prayerMethodSudan;
+    case 'turkey':
+      return l10n.prayerMethodTurkey;
+    case 'malaysia':
+      return l10n.prayerMethodMalaysia;
+    case 'malaysia2':
+      return l10n.prayerMethodMalaysia2;
+    case 'indonesia':
+      return l10n.prayerMethodIndonesia;
+    case 'kazakhstan':
+      return l10n.prayerMethodKazakhstan;
+    case 'tajikistan':
+      return l10n.prayerMethodTajikistan;
+    case 'maldives':
+      return l10n.prayerMethodMaldives;
+    case 'southKorea':
+      return l10n.prayerMethodSouthKorea;
+    case 'uoif':
+      return l10n.prayerMethodUoif;
+    case 'paris':
+      return l10n.prayerMethodParis;
+    case 'toulouse':
+      return l10n.prayerMethodToulouse;
+    case 'lyon':
+      return l10n.prayerMethodLyon;
+    case 'orleans':
+      return l10n.prayerMethodOrleans;
+    case 'moscow':
+      return l10n.prayerMethodMoscow;
+    case 'czech':
+      return l10n.prayerMethodCzech;
+    case 'switzerland':
+      return l10n.prayerMethodSwitzerland;
+    case 'fribourg':
+      return l10n.prayerMethodFribourg;
+    case 'belgium':
+      return l10n.prayerMethodBelgium;
+    case 'luxembourg':
+      return l10n.prayerMethodLuxembourg;
+    case 'austria':
+      return l10n.prayerMethodAustria;
+    case 'london':
+      return l10n.prayerMethodLondon;
+    case 'birmingham':
+      return l10n.prayerMethodBirmingham;
+    case 'blackburn':
+      return l10n.prayerMethodBlackburn;
+    case 'aachen':
+      return l10n.prayerMethodAachen;
+    case 'munchen':
+      return l10n.prayerMethodMunchen;
+    case 'potsdam':
+      return l10n.prayerMethodPotsdam;
+    case 'nurnberg':
+      return l10n.prayerMethodNurnberg;
+    case 'rotterdam':
+      return l10n.prayerMethodRotterdam;
+    case 'dordrecht':
+      return l10n.prayerMethodDordrecht;
+    case 'eindhoven':
+      return l10n.prayerMethodEindhoven;
+    case 'montreal':
+      return l10n.prayerMethodMontreal;
+    case 'windsor':
+      return l10n.prayerMethodWindsor;
+    case 'calgary':
+      return l10n.prayerMethodCalgary;
+    case 'mississauga':
+      return l10n.prayerMethodMississauga;
+    case 'other':
+      return l10n.prayerMethodOther;
+    default:
+      return token;
+  }
 }

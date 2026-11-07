@@ -291,7 +291,7 @@ class _PickerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 6, 8, 10),
-      decoration: PrayerPalette.of(context).cardDecoration(radius: 20),
+      decoration: PrayerPalette.of(context).cardDecoration(),
       child: child,
     );
   }
@@ -321,7 +321,7 @@ class _PickerHeader extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: theme.textTheme.titleSmall?.copyWith(
         color: palette.ink,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
       ),
     );
     return Row(
@@ -447,7 +447,7 @@ class _Cell extends StatelessWidget {
                     ? palette.faint
                     : palette.ink,
                 fontWeight: selected || outlined
-                    ? FontWeight.w800
+                    ? FontWeight.w700
                     : FontWeight.w500,
               ),
             ),

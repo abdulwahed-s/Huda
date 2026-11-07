@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'package:huda/core/services/prayer_iqamah_settings.dart';
 import 'package:huda/core/services/prayer_iqamah_sync.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -17,7 +18,6 @@ import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
-import 'package:huda/core/services/prayer_push_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/prayer_moment_resolver.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
@@ -36,6 +36,8 @@ import 'package:huda/core/services/prayer_widget_service.dart';
 
 export 'package:huda/core/services/prayer_location_generation.dart'
     show PrayerLocationMode;
+export 'package:huda/core/errors/location_failures.dart'
+    show PrayerLocationProblem;
 
 part 'prayer_times_state.dart';
 
@@ -55,10 +57,41 @@ class NextPrayerInfo {
   });
 }
 
+/// The page's open problems. A failed location update is never one of them:
+/// the times for the saved place stay correct, and the user changes the
+/// place from the Location sheet, which reports its own failures. Older
+/// saved data may still list it, so it's dropped on the way in.
+class _WorkflowIssues extends SetBase<PrayerWorkflowIssue> {
+  final _items = <PrayerWorkflowIssue>{};
+
+  @override
+  bool add(PrayerWorkflowIssue value) =>
+      value != PrayerWorkflowIssue.location && _items.add(value);
+
+  @override
+  bool contains(Object? element) => _items.contains(element);
+
+  @override
+  PrayerWorkflowIssue? lookup(Object? element) => _items.lookup(element);
+
+  @override
+  bool remove(Object? value) => _items.remove(value);
+
+  @override
+  Iterator<PrayerWorkflowIssue> get iterator => _items.iterator;
+
+  @override
+  int get length => _items.length;
+
+  @override
+  Set<PrayerWorkflowIssue> toSet() => {..._items};
+}
+
 class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   final CacheHelper cacheHelper;
   final Future<Position> Function() _currentLocationProvider;
   final Future<Position?> Function() _travelLocationProvider;
+  final Future<bool> Function() _canLocateSilently;
   final PrayerTimeZoneResolver _timeZoneResolver;
   final Future<List<Placemark>> Function(double, double)? _placemarkProvider;
   static const _latKey = PrayerTimesCalculator.latKey;
@@ -103,7 +136,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   bool _automaticLocationRefreshInProgress = false;
   CustomPrayerAngles _customAngles = CustomPrayerAngles.defaults;
   PrayerDisplaySnapshot? _display;
-  final Set<PrayerWorkflowIssue> _issues = {};
+  final Set<PrayerWorkflowIssue> _issues = _WorkflowIssues();
+
+  /// What stopped the last location change the user asked for, if anything.
+  PrayerLocationProblem? _lastProblem;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
   bool? _online;
   bool _workflowRetrying = false;
@@ -220,6 +256,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     PrayerLocationMonitor? locationMonitor,
     Future<Position> Function()? currentLocationProvider,
     Future<Position?> Function()? travelLocationProvider,
+    Future<bool> Function()? silentLocationCheck,
     PrayerTimeZoneResolver? timeZoneResolver,
     Future<List<Placemark>> Function(double, double)? placemarkProvider,
     @visibleForTesting Stream<List<ConnectivityResult>>? connectivityChanges,
@@ -236,6 +273,12 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
        _locationMonitor = locationMonitor,
        _locationService = locationService,
        _currentLocationProvider = currentLocationProvider ?? getCurrentLocation,
+       // An injected provider (tests) answers without a prompt.
+       _canLocateSilently =
+           silentLocationCheck ??
+           (currentLocationProvider == null
+               ? canLocateWithoutAsking
+               : () async => true),
        _travelLocationProvider =
            travelLocationProvider ?? getCurrentLocationForTravelValidation,
        _timeZoneResolver =
@@ -832,7 +875,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       debugPrint('Could not update prayer notifications: $error');
       const result = PrayerScheduleResult(
         status: PrayerScheduleStatus.failed,
-        message: PrayerPushErrorCode.unavailable,
+        message: PrayerScheduleResult.localFailureMessage,
       );
       _publishNotificationSchedule(result);
       await _persistDisplayIssues();
@@ -876,6 +919,12 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
     try {
       var coordinates = PrayerTimesCalculator.coordinatesFromCache(cacheHelper);
+
+      if (coordinates == null && !await _canLocateSilently()) {
+        // The system prompt only follows the user's own "Use my location".
+        emit(PrayerTimesNeedsPlace());
+        return;
+      }
 
       if (coordinates == null && _coordinator != null) {
         final position = await _currentLocationProvider();
@@ -957,7 +1006,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       // Keep actionable failure states intact when the app resumes after a
       // permission or settings dialog. Only the untouched initial state means
       // that location setup has not been attempted yet.
-      if (state is PrayerTimesInitial) emit(PrayerTimesNeedsSetup());
+      if (state is PrayerTimesInitial) emit(PrayerTimesNeedsPlace());
       return;
     }
 
@@ -978,16 +1027,23 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     } catch (error) {
       _issues.add(PrayerWorkflowIssue.calculation);
       unawaited(_persistDisplayIssues());
-      emit(PrayerTimesError(error.toString()));
+      emit(
+        PrayerTimesNeedsPlace(
+          problem: PrayerLocationProblem.calculation,
+          detail: '$error',
+        ),
+      );
     }
   }
 
-  Future<void> setManualLocation(
+  /// Uses a city the user chose (manual mode). Returns what stopped it, or
+  /// null once the times follow the new place.
+  Future<PrayerLocationProblem?> setManualLocation(
     double lat,
     double lon, {
     String? cityName,
     String? countryCode,
-  }) => _whileUpdating(
+  }) => _reportingProblem(
     () => _setManualLocation(
       lat,
       lon,
@@ -996,6 +1052,19 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     ),
   );
 
+  Future<PrayerLocationProblem?> _reportingProblem(
+    Future<void> Function() work,
+  ) async {
+    _lastProblem = null;
+    try {
+      await _whileUpdating(work);
+    } catch (error) {
+      _lastProblem ??= prayerLocationProblemOf(error);
+      debugPrint('Prayer location change failed: $error');
+    }
+    return _lastProblem;
+  }
+
   Future<void> _setManualLocation(
     double lat,
     double lon, {
@@ -1003,7 +1072,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     String? countryCode,
   }) async {
     final epoch = ++_displayEpoch;
-    _issues.remove(PrayerWorkflowIssue.location);
     if (_coordinator != null) {
       final previous = state is PrayerTimesLoaded
           ? state as PrayerTimesLoaded
@@ -1090,8 +1158,11 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
   }
 
-  Future<void> refreshLocationAndPrayerTimes() =>
-      _whileUpdating(_refreshLocationAndPrayerTimes);
+  /// Uses this device's location (automatic mode); this is the only call
+  /// that may show the system's location prompt. Returns what stopped it,
+  /// or null once the times follow the device's place.
+  Future<PrayerLocationProblem?> refreshLocationAndPrayerTimes() =>
+      _reportingProblem(_refreshLocationAndPrayerTimes);
 
   Future<void> _refreshLocationAndPrayerTimes() async {
     final epoch = ++_displayEpoch;
@@ -1102,7 +1173,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
     try {
       final position = await _currentLocationProvider();
-      _issues.remove(PrayerWorkflowIssue.location);
       if (_coordinator != null) {
         final result = await _coordinator!.submit(
           fix: _fixFromPosition(position),
@@ -1149,10 +1219,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     } catch (e) {
       if (previousPrayerTimes != null) {
         // A refresh failure must not discard an already usable manual or
-        // cached schedule. The user can retry precise device location later.
-        _issues.add(PrayerWorkflowIssue.location);
+        // cached schedule. The Location sheet says why it didn't update.
+        _lastProblem = prayerLocationProblemOf(e);
         emit(previousPrayerTimes);
-        await _persistDisplayIssues();
         _renderDisplay();
       } else {
         _emitLocationFailure(e);
@@ -1185,7 +1254,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     try {
       final position = await _travelLocationProvider();
       if (position == null) return;
-      _issues.remove(PrayerWorkflowIssue.location);
 
       if (_coordinator != null) {
         final result = await _coordinator!.submit(
@@ -1266,9 +1334,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       await _syncLoadedPrayerTimes('automatic-travel-location-changed');
       await _recordSuccessfulLocationValidation(checkTime);
     } catch (error) {
-      _issues.add(PrayerWorkflowIssue.location);
-      _renderDisplay();
-      await _persistDisplayIssues();
+      // Quiet: the times for the saved place stay; nothing to fix here.
       debugPrint('Could not refresh automatic prayer location: $error');
     } finally {
       _automaticLocationRefreshInProgress = false;
@@ -1515,20 +1581,27 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final generation = result.generation;
     final canRenderDespiteSchedulingIssue = generation != null;
     if (!result.activated && !canRenderDespiteSchedulingIssue) {
-      _issues.add(PrayerWorkflowIssue.location);
+      final problem = switch (result.status) {
+        PrayerLocationUpdateStatus.timeZoneUnavailable =>
+          PrayerLocationProblem.timeZone,
+        PrayerLocationUpdateStatus.rejectedInvalid =>
+          PrayerLocationProblem.placeInvalid,
+        PrayerLocationUpdateStatus.rejectedStale ||
+        PrayerLocationUpdateStatus.rejectedInaccurate =>
+          PrayerLocationProblem.noFix,
+        PrayerLocationUpdateStatus.failed => PrayerLocationProblem.saveFailed,
+        _ => PrayerLocationProblem.unknown,
+      };
+      _lastProblem = problem;
+      debugPrint(
+        'Prayer location not used: ${result.status.name} '
+        '${result.message ?? ''}',
+      );
       if (previous != null) {
-        _issues.add(PrayerWorkflowIssue.location);
         emit(previous);
-        await _persistDisplayIssues();
         _renderDisplay();
       } else {
-        await _persistDisplayIssues();
-        emit(
-          PrayerTimesError(
-            result.message ??
-                'Prayer location update did not reach a safe activation point.',
-          ),
-        );
+        emit(PrayerTimesNeedsPlace(problem: problem, detail: result.message));
       }
       return;
     }
@@ -1550,7 +1623,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         ? PrayerTimesCalculator.coordinatesFromCache(cacheHelper)
         : Coordinates(generation.latitude, generation.longitude);
     if (coordinates == null) {
-      emit(PrayerTimesNeedsSetup());
+      emit(PrayerTimesNeedsPlace());
       return;
     }
     final placemarks = generation == null
@@ -1580,26 +1653,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   void _emitLocationFailure(Object error) {
-    _issues.add(PrayerWorkflowIssue.location);
-    unawaited(_persistDisplayIssues());
+    final problem = prayerLocationProblemOf(error);
+    _lastProblem = problem;
+    debugPrint('Prayer location failed (${problem.name}): $error');
     if (state is PrayerTimesLoaded) {
       _renderDisplay();
       return;
     }
-    final message = error.toString();
-    if (error is LocationServiceDisabledFailure ||
-        message == 'Exception: Location services are disabled.') {
-      emit(PrayerTimesLocationServiceDisabled());
-    } else if (error is LocationPermissionDeniedFailure ||
-        message == 'Exception: Location permissions are denied.' ||
-        message == 'Exception: Location permissions are denied') {
-      emit(PrayerTimesLocationDenied());
-    } else if (error is LocationPermissionPermanentlyDeniedFailure ||
-        message == 'Exception: Location permissions are permanently denied.') {
-      emit(PrayerTimesLocationPermanentlyDenied());
-    } else {
-      emit(PrayerTimesError(message));
-    }
+    emit(PrayerTimesNeedsPlace(problem: problem, detail: '$error'));
   }
 
   Future<void> _waitForCountdownTick(int revision) {
@@ -1894,7 +1955,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       if (current is PrayerTimesLoaded) {
         emit(current.copyWith(workflowIssues: Set.unmodifiable(_issues)));
       } else {
-        emit(PrayerTimesNeedsSetup());
+        emit(PrayerTimesNeedsPlace(problem: PrayerLocationProblem.calculation));
       }
     }
   }
@@ -2043,7 +2104,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     try {
       await _locationRepository?.updateIssues(
         add: {..._issues},
-        remove: _knownPersistedIssues.difference(_issues),
+        remove: {
+          ..._knownPersistedIssues.difference(_issues),
+          PrayerWorkflowIssue.location,
+        },
       );
       _knownPersistedIssues
         ..clear()
@@ -2089,8 +2153,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     );
   }
 
-  Future<void> chooseCountry(String countryCode) =>
-      _whileUpdating(() => _chooseCountry(countryCode));
+  Future<void> chooseCountry(String countryCode) => _chooseCountry(countryCode);
 
   Future<void> _chooseCountry(String countryCode) async {
     final display = _display;
@@ -2104,6 +2167,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       return;
     }
     _workflowRetrying = true;
+    _userRetrying = true;
     final epoch = ++_displayEpoch;
     _renderDisplay();
     try {
@@ -2146,6 +2210,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       _issues.add(PrayerWorkflowIssue.storage);
     } finally {
       _workflowRetrying = false;
+      _userRetrying = false;
       await _persistDisplayIssues();
       _renderDisplay();
     }
@@ -2166,10 +2231,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     _renderDisplay();
     try {
       final display = _display;
-      if (display == null) {
-        await refreshLocationAndPrayerTimes();
-        return;
-      }
+      if (display == null) return;
       if (_issues.contains(PrayerWorkflowIssue.storage)) {
         await _retryStep('storage', PrayerWorkflowIssue.storage, () async {
           await _locationRepository?.initialize();
@@ -2191,20 +2253,17 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       if (!notificationsRecovered) return;
       final l = display.location;
       final automatic = l.mode == PrayerLocationMode.automatic;
-      if (!automatic) {
-        _issues.remove(PrayerWorkflowIssue.location);
-      }
       Position? fresh;
       if (automatic &&
           (_issues.contains(PrayerWorkflowIssue.verification) ||
-              _issues.contains(PrayerWorkflowIssue.location) ||
               _issues.contains(PrayerWorkflowIssue.nativeCandidate))) {
+        // A newer fix can settle verification; without one the saved place
+        // is kept as it is.
         try {
           fresh = await _travelLocationProvider().timeout(
             const Duration(seconds: 20),
           );
         } catch (_) {}
-        if (fresh != null) _issues.remove(PrayerWorkflowIssue.location);
       }
       final priorRevision = _display?.location.revision;
       final resubmitIssue = _issues.contains(PrayerWorkflowIssue.verification)

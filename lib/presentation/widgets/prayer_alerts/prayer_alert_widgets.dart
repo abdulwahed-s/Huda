@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/core/services/prayer_alerts/prayer_alerts.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_labels.dart';
@@ -33,14 +35,14 @@ class PrayerAlertSection extends StatelessWidget {
               child: Text(
                 title,
                 style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: palette.muted,
                 ),
               ),
             ),
           ),
           DecoratedBox(
-            decoration: palette.cardDecoration(radius: 18),
+            decoration: palette.cardDecoration(),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(18),
               child: Column(
@@ -141,9 +143,7 @@ class PrayerSettingRow extends StatelessWidget {
               if (trailing != null) ...[const SizedBox(width: 8), trailing!],
               if (trailing == null && onTap != null)
                 Icon(
-                  Directionality.of(context) == TextDirection.rtl
-                      ? Icons.chevron_left_rounded
-                      : Icons.chevron_right_rounded,
+                  Icons.chevron_right_rounded,
                   color: palette.faint,
                 ),
             ],
@@ -194,6 +194,11 @@ class PrayerSwitchRow extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
 
+  void _change(BuildContext context, bool next) {
+    HudaHaptics.selection(context);
+    onChanged!(next);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MergeSemantics(
@@ -201,8 +206,11 @@ class PrayerSwitchRow extends StatelessWidget {
         title: title,
         subtitle: subtitle,
         icon: icon,
-        onTap: onChanged == null ? null : () => onChanged!(!value),
-        trailing: Switch.adaptive(value: value, onChanged: onChanged),
+        onTap: onChanged == null ? null : () => _change(context, !value),
+        trailing: Switch(
+          value: value,
+          onChanged: onChanged == null ? null : (next) => _change(context, next),
+        ),
       ),
     );
   }
@@ -381,28 +389,22 @@ class PrayerSegmented<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = PrayerPalette.of(context);
+    final space = context.tokens.space;
+    // Lantern's chips: the selected one is lit.
     return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+      spacing: space.xs,
+      runSpacing: space.xs,
       children: [
         for (final option in options)
           ChoiceChip(
             label: Text(label(option)),
             selected: option == selected,
             showCheckmark: false,
-            onSelected: (_) => onSelected(option),
-            selectedColor: palette.tintStrong,
-            backgroundColor: palette.cardRaised,
-            side: BorderSide(
-              color: option == selected ? palette.primary : palette.border,
-            ),
-            labelStyle: TextStyle(
-              color: option == selected ? palette.primary : palette.ink,
-              fontWeight: option == selected
-                  ? FontWeight.w700
-                  : FontWeight.w500,
-            ),
+            onSelected: (_) {
+              if (option == selected) return;
+              HudaHaptics.selection(context);
+              onSelected(option);
+            },
           ),
       ],
     );

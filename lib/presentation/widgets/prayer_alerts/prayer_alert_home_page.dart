@@ -167,7 +167,7 @@ class PrayerAlertSectionTitle extends StatelessWidget {
         child: Text(
           text,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: palette.muted,
           ),
         ),

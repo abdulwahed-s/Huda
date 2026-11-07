@@ -74,15 +74,12 @@ class PrayerTimesLoaded extends PrayerTimesState {
   }
 }
 
-class PrayerTimesError extends PrayerTimesState {
-  final String message;
-  PrayerTimesError(this.message);
+/// No times yet: Huda has no place to calculate them for. [problem] says
+/// why the last attempt didn't give one (null before any attempt, or when
+/// the user simply hasn't chosen yet). [detail] is for logs only.
+class PrayerTimesNeedsPlace extends PrayerTimesState {
+  PrayerTimesNeedsPlace({this.problem, this.detail});
+
+  final PrayerLocationProblem? problem;
+  final String? detail;
 }
-
-class PrayerTimesLocationDenied extends PrayerTimesState {}
-
-class PrayerTimesLocationPermanentlyDenied extends PrayerTimesState {}
-
-class PrayerTimesLocationServiceDisabled extends PrayerTimesState {}
-
-class PrayerTimesNeedsSetup extends PrayerTimesState {}

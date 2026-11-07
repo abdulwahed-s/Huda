@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/core/services/mac_prayer_menu_bridge.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
@@ -74,7 +76,7 @@ class _MacPrayerMenuCardState extends State<MacPrayerMenuCard> {
     return Container(
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-      decoration: palette.cardDecoration(radius: 22),
+      decoration: palette.cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -169,16 +171,13 @@ class _MacPrayerMenuCardState extends State<MacPrayerMenuCard> {
             ),
           ],
           if (_error != null)
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l10n.macPrayerMenuError,
-                    style: TextStyle(color: colors.error),
-                  ),
-                ),
-                TextButton(onPressed: _load, child: Text(l10n.retry)),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: PrayerStatusLine(
+                status: HudaStatus.failed,
+                message: l10n.macPrayerMenuError,
+                onRetry: _load,
+              ),
             ),
         ],
       ),

@@ -9,9 +9,12 @@ import 'package:huda/presentation/widgets/notifications/notification_access_cont
 
 enum PrayerAttentionTone { error, warning, info }
 
-/// Prayer-time problems only. Notification access lives in one place,
-/// the readiness card (prayer_alerts_ready_card.dart).
-enum PrayerAttentionKind { updating, workflow }
+/// Prayer-time problems the user can feel and fix. Location is not one of
+/// them (the saved place stays in use; the Location sheet changes it), and
+/// notification access lives in the readiness card
+/// (prayer_alerts_ready_card.dart). Routine updating shows on the sky card's
+/// place line, not here.
+enum PrayerAttentionKind { workflow }
 
 @immutable
 class PrayerAttentionAction {
@@ -61,14 +64,9 @@ class PrayerAttentionItem {
 }
 
 class PrayerAttentionCallbacks {
-  const PrayerAttentionCallbacks({
-    required this.retryWorkflow,
-    required this.openWorkflowSettings,
-  });
+  const PrayerAttentionCallbacks({required this.retryWorkflow});
 
   final Future<void> Function() retryWorkflow;
-  final Future<void> Function(Set<PrayerWorkflowIssue> issues)
-  openWorkflowSettings;
 }
 
 List<PrayerAttentionItem> buildPrayerAttentionItems({
@@ -76,32 +74,101 @@ List<PrayerAttentionItem> buildPrayerAttentionItems({
   required PrayerTimesLoaded state,
   required PrayerAttentionCallbacks callbacks,
   bool canChooseCountry = true,
-}) {
-  final updating =
-      state.updating &&
-      !state.workflowRetrying &&
-      !state.notificationScheduleRetrying;
-  final items = <PrayerAttentionItem>[
-    if (updating)
-      PrayerAttentionItem(
-        kind: PrayerAttentionKind.updating,
-        tone: PrayerAttentionTone.info,
-        rank: 6,
-        icon: Icons.sync_rounded,
-        title: l10n.prayerUpdatingTitle,
-        message: l10n.prayerUpdatingMessage,
-        busy: true,
-      )
-    else
-      ?_workflowItem(l10n, state, callbacks, canChooseCountry),
+}) => [?_workflowItem(l10n, state, callbacks, canChooseCountry)];
+
+/// One problem, its words and icon, most severe first.
+typedef _Problem = ({
+  PrayerWorkflowIssue issue,
+  IconData icon,
+  String title,
+  String message,
+});
+
+PrayerAttentionItem? _workflowItem(
+  AppLocalizations l,
+  PrayerTimesLoaded state,
+  PrayerAttentionCallbacks callbacks,
+  bool canChooseCountry,
+) {
+  final issues = state.workflowIssues;
+  final problems = <_Problem>[
+    if (issues.contains(PrayerWorkflowIssue.storage))
+      (
+        issue: PrayerWorkflowIssue.storage,
+        icon: Icons.save_outlined,
+        title: l.prayerFixSavingTitle,
+        message: l.prayerFixSavingMessage,
+      ),
+    if (issues.contains(PrayerWorkflowIssue.calculation))
+      (
+        issue: PrayerWorkflowIssue.calculation,
+        icon: Icons.calculate_outlined,
+        title: l.prayerFixCalculationTitle,
+        message: l.prayerFixCalculationMessage,
+      ),
+    if (issues.contains(PrayerWorkflowIssue.verification))
+      (
+        issue: PrayerWorkflowIssue.verification,
+        icon: Icons.travel_explore_rounded,
+        title: l.prayerFixCheckTitle,
+        message: l.prayerFixCheckMessage,
+      ),
+    if (issues.contains(PrayerWorkflowIssue.widget))
+      (
+        issue: PrayerWorkflowIssue.widget,
+        icon: Icons.widgets_outlined,
+        title: l.prayerFixWidgetTitle,
+        message: l.prayerFixWidgetMessage,
+      ),
   ];
-  final indexed = items.indexed.toList()
-    ..sort(
-      (a, b) => a.$2.rank != b.$2.rank
-          ? a.$2.rank.compareTo(b.$2.rank)
-          : a.$1.compareTo(b.$1),
-    );
-  return [for (final entry in indexed) entry.$2];
+  final countryCandidates = canChooseCountry
+      ? state.countryCandidates
+      : const <String>[];
+  if (problems.isEmpty && countryCandidates.isEmpty) return null;
+
+  final retrying = state.workflowRetrying;
+  final failed = problems.any(
+    (p) =>
+        p.issue == PrayerWorkflowIssue.storage ||
+        p.issue == PrayerWorkflowIssue.calculation,
+  );
+  final lead = problems.isEmpty ? null : problems.first;
+  final onlyCheck =
+      problems.length == 1 && lead!.issue == PrayerWorkflowIssue.verification;
+  // The strip asks the country question itself, under the message.
+  final title = retrying
+      ? l.prayerRetryingTitle
+      : lead?.title ?? l.prayerFixCheckTitle;
+  final message = countryCandidates.isNotEmpty
+      ? l.prayerCountryQuestionHint
+      : lead!.message;
+
+  return PrayerAttentionItem(
+    kind: PrayerAttentionKind.workflow,
+    tone: failed
+        ? PrayerAttentionTone.error
+        : countryCandidates.isNotEmpty
+        ? PrayerAttentionTone.warning
+        : PrayerAttentionTone.info,
+    rank: failed ? 0 : 3,
+    icon: countryCandidates.isNotEmpty ? Icons.flag_outlined : lead!.icon,
+    title: title,
+    message: message,
+    details: [
+      // The rest, by name; the lead one is the card's own words.
+      for (final p in problems.skip(1)) (icon: p.icon, text: p.title),
+    ],
+    // While the user's retry runs, the title says so; no second button.
+    primary: problems.isEmpty || retrying
+        ? null
+        : PrayerAttentionAction(
+            label: onlyCheck ? l.prayerFixCheckAction : l.retry,
+            icon: Icons.refresh_rounded,
+            onPressed: callbacks.retryWorkflow,
+          ),
+    busy: retrying,
+    countryCandidates: countryCandidates,
+  );
 }
 
 enum PrayerAlertTone { ready, info, warning, error }
@@ -128,6 +195,114 @@ class PrayerAlertStatus {
   final bool busy;
 }
 
+/// What a schedule result means to the user, one case per message.
+enum PrayerAlertProblem {
+  /// Scheduled and working.
+  none,
+
+  /// Scheduled, but Android may deliver a few minutes late.
+  late,
+
+  /// Waiting until the place is verified.
+  waitingForPlace,
+
+  /// iOS needs one online handoff of older server-sent alerts.
+  needsOnline,
+
+  /// Set through a date; later alerts need one online update.
+  bridged,
+
+  /// Huda's other reminders use every slot the device allows.
+  noRoom,
+
+  /// Settings changed while scheduling; scheduling again fixes it.
+  settingsChanged,
+
+  /// The server was busy.
+  busy,
+
+  /// The server couldn't be reached.
+  serverUnavailable,
+
+  /// The schedule couldn't be checked.
+  verificationFailed,
+
+  /// The device's own scheduling failed.
+  localFailure,
+
+  /// The schedule ran out.
+  expired,
+
+  /// Nothing scheduled yet.
+  noneScheduled,
+
+  /// The device has no prayer alerts at all.
+  unsupported,
+
+  /// Something else; Retry is still the next step.
+  failed,
+}
+
+const _noRoomMessages = {
+  'zero-local-capacity',
+  'insufficient-safe-capacity',
+  'No prayer alarm capacity is available.',
+};
+
+/// Null while there's nothing to say (no result yet, notifications off,
+/// still being prepared).
+PrayerAlertProblem? prayerAlertProblemOf(
+  PrayerScheduleResult? schedule, {
+  DateTime? now,
+}) {
+  if (schedule == null) return null;
+  final status = schedule.status;
+  final message = schedule.message;
+  final coverage = schedule.coverageUntil;
+  final clock = now ?? DateTime.now();
+  if (status == PrayerScheduleStatus.permissionDenied) return null;
+  if (message == PrayerNotificationScheduler.verificationPendingMessage) {
+    return PrayerAlertProblem.waitingForPlace;
+  }
+  if (status == PrayerScheduleStatus.unsupported) {
+    return PrayerAlertProblem.unsupported;
+  }
+  if (message == PrayerScheduleResult.localBridgeMessage && coverage != null) {
+    return PrayerAlertProblem.bridged;
+  }
+  final expired =
+      coverage != null &&
+      coverage.isBefore(clock.subtract(const Duration(minutes: 1)));
+  final issue =
+      status == PrayerScheduleStatus.failed ||
+      status == PrayerScheduleStatus.degraded ||
+      status == PrayerScheduleStatus.deferred ||
+      status == PrayerScheduleStatus.locationUnavailable;
+  if (issue) {
+    return switch (message) {
+      PrayerScheduleResult.migrationPendingMessage =>
+        PrayerAlertProblem.needsOnline,
+      PrayerScheduleResult.localFailureMessage =>
+        PrayerAlertProblem.localFailure,
+      PrayerPushErrorCode.settingsChanged => PrayerAlertProblem.settingsChanged,
+      PrayerPushErrorCode.busy => PrayerAlertProblem.busy,
+      PrayerPushErrorCode.unavailable => PrayerAlertProblem.serverUnavailable,
+      PrayerPushErrorCode.verificationFailed =>
+        PrayerAlertProblem.verificationFailed,
+      final m when _noRoomMessages.contains(m) => PrayerAlertProblem.noRoom,
+      _ when expired => PrayerAlertProblem.expired,
+      _ => PrayerAlertProblem.failed,
+    };
+  }
+  if (expired) return PrayerAlertProblem.expired;
+  if (coverage == null) {
+    return schedule.pendingCount > 0 ? null : PrayerAlertProblem.noneScheduled;
+  }
+  return message == PrayerScheduleResult.inexactMessage
+      ? PrayerAlertProblem.late
+      : PrayerAlertProblem.none;
+}
+
 PrayerAlertStatus? buildPrayerAlertStatus({
   required AppLocalizations l10n,
   required PrayerTimesLoaded state,
@@ -136,6 +311,7 @@ PrayerAlertStatus? buildPrayerAlertStatus({
   required bool isIOS,
   required Future<void> Function() onEnableNotifications,
   required Future<void> Function() onRetry,
+  Future<void> Function()? onAllowExactAlarms,
   bool notificationsAskedElsewhere = false,
 }) {
   final schedule = state.notificationSchedule;
@@ -161,276 +337,130 @@ PrayerAlertStatus? buildPrayerAlertStatus({
     );
   }
 
+  final problem = prayerAlertProblemOf(schedule);
   final coverage = schedule?.coverageUntil;
+  final offline = state.online == false;
   String withPrevious(String message) =>
       state.previousLocationNotifications && coverage != null
-      ? '$message ${l10n.prayerPreviousCoverage}'
+      ? '$message ${l10n.prayerAlertsPreviousPlace}'
       : message;
+
+  // After the user's tap: its own words, no button.
+  if (retrying) {
+    return PrayerAlertStatus(
+      tone: PrayerAlertTone.info,
+      icon: Icons.notifications_active_outlined,
+      title: l10n.prayerRetryingTitle,
+      message: l10n.prayerAlertsRetryingMessage,
+      busy: true,
+    );
+  }
+
   final retry = PrayerAttentionAction(
     label: l10n.prayerNotificationRetry,
     icon: Icons.refresh_rounded,
     onPressed: onRetry,
   );
-  PrayerAlertStatus status({
-    required PrayerAlertTone tone,
-    required IconData icon,
-    required String title,
-    required String message,
-    String? highlight,
-    PrayerAttentionAction? action,
-  }) => PrayerAlertStatus(
-    tone: tone,
-    icon: icon,
-    title: retrying ? l10n.prayerNotificationRetrying : title,
-    message: message,
-    highlight: highlight,
-    action: retrying ? null : action,
-    busy: retrying,
-  );
-  final updating = state.updating && !retrying;
-  PrayerAlertStatus problem({
-    required IconData icon,
-    required String message,
+  // While automatic work runs, a problem shows as updating, not as failed.
+  final updating = state.updating;
+  PrayerAlertStatus failed(
+    String message, {
+    IconData icon = Icons.notifications_paused_outlined,
+    bool canRetry = true,
   }) => updating
       ? PrayerAlertStatus(
           tone: PrayerAlertTone.info,
           icon: Icons.sync_rounded,
-          title: l10n.prayerNotificationRetrying,
-          message: l10n.prayerUpdatingMessage,
+          title: l10n.prayerAlertsUpdatingTitle,
+          message: l10n.prayerAlertsUpdatingMessage,
           busy: true,
         )
-      : status(
+      : PrayerAlertStatus(
           tone: PrayerAlertTone.error,
           icon: icon,
-          title: l10n.prayerNotificationIssueTitle,
-          message: message,
-          action: retry,
+          title: l10n.prayerAlertsNotScheduledTitle,
+          message: withPrevious(message),
+          action: canRetry ? retry : null,
         );
 
-  switch (_scheduleView(state)) {
-    case _ScheduleView.permissionDenied:
-      return null;
-    case _ScheduleView.hidden:
-      return retrying
-          ? PrayerAlertStatus(
-              tone: PrayerAlertTone.info,
-              icon: Icons.notifications_active_outlined,
-              title: l10n.prayerNotificationRetrying,
-              message: l10n.prayerUpdatingMessage,
-              busy: true,
-            )
-          : null;
-    case _ScheduleView.verificationPending:
-      return status(
-        tone: PrayerAlertTone.info,
-        icon: Icons.hourglass_top_rounded,
-        title: l10n.prayerNotificationsWaitingTitle,
-        message: withPrevious(l10n.prayerNotificationsWaitingMessage),
-      );
-    case _ScheduleView.unsupported:
-      return status(
-        tone: PrayerAlertTone.info,
-        icon: Icons.notifications_none_rounded,
-        title: l10n.prayerNotificationIssueTitle,
-        message: l10n.prayerNotificationsUnsupported,
-      );
-    case _ScheduleView.bridged:
-      return problem(
-        icon: Icons.cloud_off_rounded,
-        message: l10n.prayerNotificationsBridgedUntil(formatDate(coverage!)),
-      );
-    case _ScheduleView.issue:
-      final expired =
-          coverage != null &&
-          coverage.isBefore(
-            DateTime.now().subtract(const Duration(minutes: 1)),
-          );
-      return problem(
-        icon: Icons.notifications_paused_outlined,
-        message: withPrevious(
-          expired
-              ? l10n.prayerNotificationsCoverageExpired
-              : _issueMessage(l10n, schedule?.message),
-        ),
-      );
-    case _ScheduleView.noneScheduled:
-      return problem(
-        icon: Icons.notifications_paused_outlined,
-        message: l10n.prayerNotificationsNoneScheduled,
-      );
-    case _ScheduleView.ready:
-      return status(
+  PrayerAlertStatus ready(String message, {PrayerAttentionAction? action}) =>
+      PrayerAlertStatus(
         tone: PrayerAlertTone.ready,
         icon: Icons.notifications_active_rounded,
         title: l10n.prayerNotificationsScheduledTitle,
-        message: isIOS
-            ? l10n.prayerNotificationsIosReminder
-            : l10n.prayerNotificationsCoverageReminder,
+        message: message,
         highlight: l10n.prayerNotificationsScheduledUntil(
           formatDate(coverage!),
         ),
+        action: action,
       );
-  }
+
+  return switch (problem) {
+    null => null,
+    PrayerAlertProblem.none => ready(
+      isIOS
+          ? l10n.prayerNotificationsIosReminder
+          : l10n.prayerNotificationsCoverageReminder,
+    ),
+    // The note's own fix, right there.
+    PrayerAlertProblem.late => ready(
+      l10n.prayerAlertsLateNote,
+      action: onAllowExactAlarms == null
+          ? null
+          : PrayerAttentionAction(
+              label: l10n.allowExactAlarms,
+              icon: Icons.alarm_on_rounded,
+              onPressed: onAllowExactAlarms,
+            ),
+    ),
+    PrayerAlertProblem.waitingForPlace => PrayerAlertStatus(
+      tone: PrayerAlertTone.info,
+      icon: Icons.hourglass_top_rounded,
+      title: l10n.prayerNotificationsWaitingTitle,
+      message: withPrevious(l10n.prayerNotificationsWaitingMessage),
+    ),
+    PrayerAlertProblem.unsupported => PrayerAlertStatus(
+      tone: PrayerAlertTone.info,
+      icon: Icons.notifications_none_rounded,
+      title: l10n.prayerAlertsUnsupportedTitle,
+      message: l10n.prayerAlertsUnsupportedMessage,
+    ),
+    // Offline, the app finishes it on its own when the connection returns.
+    PrayerAlertProblem.needsOnline => failed(
+      offline
+          ? l10n.prayerAlertsNeedsOnlineOffline
+          : l10n.prayerAlertsNeedsOnline,
+      icon: Icons.cloud_off_rounded,
+      canRetry: !offline,
+    ),
+    PrayerAlertProblem.bridged => failed(
+      offline
+          ? l10n.prayerAlertsNeedsOnlineOffline
+          : l10n.prayerNotificationsBridgedUntil(formatDate(coverage!)),
+      icon: Icons.cloud_off_rounded,
+      canRetry: !offline,
+    ),
+    PrayerAlertProblem.noRoom => failed(l10n.prayerAlertsNoRoom),
+    PrayerAlertProblem.settingsChanged => failed(
+      l10n.prayerNotificationSettingsChanged,
+    ),
+    PrayerAlertProblem.busy => failed(l10n.prayerNotificationSyncBusy),
+    PrayerAlertProblem.serverUnavailable => failed(
+      offline
+          ? l10n.prayerAlertsNeedsOnlineOffline
+          : l10n.prayerNotificationSyncUnavailable,
+      canRetry: !offline,
+    ),
+    PrayerAlertProblem.verificationFailed => failed(
+      l10n.prayerNotificationSyncVerificationFailed,
+    ),
+    PrayerAlertProblem.localFailure => failed(l10n.prayerAlertsLocalFailure),
+    PrayerAlertProblem.expired => failed(
+      l10n.prayerNotificationsCoverageExpired,
+    ),
+    PrayerAlertProblem.noneScheduled => failed(
+      l10n.prayerNotificationsNoneScheduled,
+    ),
+    PrayerAlertProblem.failed => failed(l10n.prayerNotificationIssueMessage),
+  };
 }
-
-PrayerAttentionItem? _workflowItem(
-  AppLocalizations l,
-  PrayerTimesLoaded state,
-  PrayerAttentionCallbacks callbacks,
-  bool canChooseCountry,
-) {
-  final issues = state.workflowIssues.difference(const {
-    PrayerWorkflowIssue.notifications,
-  });
-  if (issues.isEmpty) return null;
-
-  final offline = state.online == false;
-  final retrying = state.workflowRetrying;
-  final verification = issues.contains(PrayerWorkflowIssue.verification);
-  final location = issues.contains(PrayerWorkflowIssue.location);
-  final failed =
-      issues.contains(PrayerWorkflowIssue.storage) ||
-      issues.contains(PrayerWorkflowIssue.calculation);
-  final localityOnly =
-      issues.length == 1 && issues.contains(PrayerWorkflowIssue.locality);
-  final localRecovery = issues.any(
-    (issue) =>
-        issue != PrayerWorkflowIssue.locality &&
-        issue != PrayerWorkflowIssue.verification,
-  );
-  final canRetry = !offline || localRecovery;
-
-  final icon = verification
-      ? Icons.location_searching_rounded
-      : location
-      ? Icons.location_disabled_rounded
-      : failed
-      ? Icons.error_outline_rounded
-      : localityOnly
-      ? Icons.place_outlined
-      : offline
-      ? Icons.cloud_off_rounded
-      : Icons.sync_problem_rounded;
-
-  final countryCandidates = canChooseCountry
-      ? state.countryCandidates
-      : const <String>[];
-  final summary = countryCandidates.isNotEmpty
-      ? l.prayerCountryQuestionHint
-      : verification
-      ? (offline
-            ? l.prayerVerificationGuidance
-            : l.prayerVerificationRetryGuidance)
-      : offline && issues.contains(PrayerWorkflowIssue.locality)
-      ? l.prayerUpdatesGuidance
-      : l.prayerUpdatesLocalGuidance;
-
-  return PrayerAttentionItem(
-    kind: PrayerAttentionKind.workflow,
-    tone: failed
-        ? PrayerAttentionTone.error
-        : localityOnly || (verification && !location)
-        ? PrayerAttentionTone.info
-        : PrayerAttentionTone.warning,
-    rank: failed
-        ? 0
-        : location || countryCandidates.isNotEmpty
-        ? 3
-        : 5,
-    icon: icon,
-    title: verification
-        ? l.prayerVerificationPending
-        : l.prayerUpdatesIncomplete,
-    message: summary,
-    details: [
-      if (location)
-        (icon: Icons.location_disabled_rounded, text: l.prayerLocationPending),
-      if (issues.contains(PrayerWorkflowIssue.locality))
-        (icon: Icons.place_outlined, text: l.prayerDetailsPending),
-      if (issues.contains(PrayerWorkflowIssue.storage))
-        (icon: Icons.save_outlined, text: l.prayerSavingPending),
-      if (issues.contains(PrayerWorkflowIssue.calculation))
-        (icon: Icons.calculate_outlined, text: l.prayerCalculationPending),
-      if (issues.contains(PrayerWorkflowIssue.nativeCandidate))
-        (icon: Icons.travel_explore_rounded, text: l.prayerNativePending),
-      if (issues.contains(PrayerWorkflowIssue.widget))
-        (icon: Icons.widgets_outlined, text: l.prayerWidgetPending),
-    ],
-    primary: canRetry
-        ? PrayerAttentionAction(
-            label: retrying ? l.prayerIssueRetrying : l.retry,
-            icon: retrying
-                ? Icons.hourglass_top_rounded
-                : Icons.refresh_rounded,
-            onPressed: retrying ? null : callbacks.retryWorkflow,
-          )
-        : null,
-    secondary: location
-        ? PrayerAttentionAction(
-            label: l.openSettings,
-            icon: Icons.settings_outlined,
-            onPressed: () => callbacks.openWorkflowSettings(issues),
-          )
-        : null,
-    busy: retrying,
-    offline: offline,
-    countryCandidates: countryCandidates,
-  );
-}
-
-enum _ScheduleView {
-  hidden,
-  permissionDenied,
-  verificationPending,
-  unsupported,
-  bridged,
-  issue,
-  noneScheduled,
-  ready,
-}
-
-_ScheduleView _scheduleView(PrayerTimesLoaded state) {
-  final schedule = state.notificationSchedule;
-  if (schedule == null) return _ScheduleView.hidden;
-  final status = schedule.status;
-  final coverage = schedule.coverageUntil;
-  final coverageExpired =
-      coverage != null &&
-      coverage.isBefore(DateTime.now().subtract(const Duration(minutes: 1)));
-  if (status == PrayerScheduleStatus.permissionDenied) {
-    return _ScheduleView.permissionDenied;
-  }
-  if (schedule.message ==
-      PrayerNotificationScheduler.verificationPendingMessage) {
-    return _ScheduleView.verificationPending;
-  }
-  if (status == PrayerScheduleStatus.unsupported) {
-    return _ScheduleView.unsupported;
-  }
-  if (schedule.message == PrayerScheduleResult.localBridgeMessage &&
-      coverage != null) {
-    return _ScheduleView.bridged;
-  }
-  if (coverageExpired || _isIssue(status)) return _ScheduleView.issue;
-  if (coverage == null) {
-    return schedule.pendingCount > 0
-        ? _ScheduleView.hidden
-        : _ScheduleView.noneScheduled;
-  }
-  return _ScheduleView.ready;
-}
-
-bool _isIssue(PrayerScheduleStatus? status) =>
-    status == PrayerScheduleStatus.failed ||
-    status == PrayerScheduleStatus.degraded ||
-    status == PrayerScheduleStatus.deferred ||
-    status == PrayerScheduleStatus.locationUnavailable;
-
-String _issueMessage(AppLocalizations l10n, String? code) => switch (code) {
-  PrayerPushErrorCode.settingsChanged => l10n.prayerNotificationSettingsChanged,
-  PrayerPushErrorCode.busy => l10n.prayerNotificationSyncBusy,
-  PrayerPushErrorCode.unavailable => l10n.prayerNotificationSyncUnavailable,
-  PrayerPushErrorCode.verificationFailed =>
-    l10n.prayerNotificationSyncVerificationFailed,
-  _ => l10n.prayerNotificationIssueMessage,
-};

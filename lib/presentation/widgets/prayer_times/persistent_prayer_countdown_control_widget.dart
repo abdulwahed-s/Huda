@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/core/services/android_prayer_countdown.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
@@ -97,135 +97,111 @@ class _PersistentPrayerCountdownControlWidgetState
     final enabled = settings?.enabled ?? false;
     final problem = enabled ? _problem(l10n) : null;
 
-    return Container(
-      padding: EdgeInsets.fromLTRB(14.w, 12.h, 10.w, 12.h),
-      decoration: BoxDecoration(
-        color: palette.card,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: palette.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  color: colors.primary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12.r),
+    final theme = Theme.of(context);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 8, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const HudaIconMark(Icons.timer_outlined),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.prayerCountdownTitle,
+                        style: theme.textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        _statusText(l10n, enabled),
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: !enabled
+                              ? palette.muted
+                              : problem != null
+                              ? palette.warning
+                              : colors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Icon(
-                  Icons.timer_outlined,
-                  color: colors.primary,
-                  size: 20.sp,
+                Switch(
+                  value: enabled,
+                  onChanged: settings == null || _busy
+                      ? null
+                      : (value) => _save(settings.copyWith(enabled: value)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.prayerCountdownDescription,
+              style: theme.textTheme.bodyMedium?.copyWith(color: palette.muted),
+            ),
+            if (problem != null) ...[
+              const SizedBox(height: 10),
+              _ProblemBanner(
+                problem: problem,
+                onOpenSettings: problem.target == null
+                    ? null
+                    : () =>
+                          AndroidPrayerCountdown.openSettings(problem.target!),
+              ),
+            ],
+            if (settings != null && enabled) ...[
+              const SizedBox(height: 14),
+              Text(
+                l10n.prayerCountdownStyle,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: palette.muted,
                 ),
               ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.prayerCountdownTitle,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        color: colors.onSurface,
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      _statusText(l10n, enabled),
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w600,
-                        color: !enabled
-                            ? palette.muted
-                            : problem != null
-                            ? palette.warning
-                            : colors.primary,
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  for (final style in PrayerCountdownStyle.values) ...[
+                    if (style != PrayerCountdownStyle.values.first)
+                      const SizedBox(width: 8),
+                    Expanded(
+                      child: _StyleChoice(
+                        style: style,
+                        label: _styleLabel(l10n, style),
+                        selected: settings.style == style,
+                        onTap: _busy || settings.style == style
+                            ? null
+                            : () => _save(settings.copyWith(style: style)),
                       ),
                     ),
                   ],
-                ),
-              ),
-              Switch.adaptive(
-                value: enabled,
-                onChanged: settings == null || _busy
-                    ? null
-                    : (value) => _save(settings.copyWith(enabled: value)),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            l10n.prayerCountdownDescription,
-            style: TextStyle(
-              fontSize: 11.sp,
-              height: 1.35,
-              color: palette.muted,
-            ),
-          ),
-          if (problem != null) ...[
-            SizedBox(height: 10.h),
-            _ProblemBanner(
-              problem: problem,
-              onOpenSettings: problem.target == null
-                  ? null
-                  : () => AndroidPrayerCountdown.openSettings(problem.target!),
-            ),
-          ],
-          if (settings != null && enabled) ...[
-            SizedBox(height: 14.h),
-            Text(
-              l10n.prayerCountdownStyle,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w700,
-                color: palette.muted,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Row(
-              children: [
-                for (final style in PrayerCountdownStyle.values) ...[
-                  if (style != PrayerCountdownStyle.values.first)
-                    SizedBox(width: 8.w),
-                  Expanded(
-                    child: _StyleChoice(
-                      style: style,
-                      label: _styleLabel(l10n, style),
-                      selected: settings.style == style,
-                      onTap: _busy || settings.style == style
-                          ? null
-                          : () => _save(settings.copyWith(style: style)),
-                    ),
-                  ),
                 ],
-              ],
-            ),
-            SizedBox(height: 6.h),
-            _option(
-              l10n.prayerCountdownLockScreen,
-              settings.lockScreen,
-              (value) => _save(settings.copyWith(lockScreen: value)),
-            ),
-            if (settings.style == PrayerCountdownStyle.timetable)
-              _option(
-                l10n.prayerCountdownShowSunrise,
-                settings.showSunrise,
-                (value) => _save(settings.copyWith(showSunrise: value)),
-              )
-            else if (_status?.liveUpdateSupported ?? false)
-              _option(
-                l10n.prayerCountdownLiveUpdate,
-                settings.liveUpdate,
-                (value) => _save(settings.copyWith(liveUpdate: value)),
-                subtitle: l10n.prayerCountdownLiveUpdateHint,
               ),
+              const SizedBox(height: 6),
+              _option(
+                l10n.prayerCountdownLockScreen,
+                settings.lockScreen,
+                (value) => _save(settings.copyWith(lockScreen: value)),
+              ),
+              if (settings.style == PrayerCountdownStyle.timetable)
+                _option(
+                  l10n.prayerCountdownShowSunrise,
+                  settings.showSunrise,
+                  (value) => _save(settings.copyWith(showSunrise: value)),
+                )
+              else if (_status?.liveUpdateSupported ?? false)
+                _option(
+                  l10n.prayerCountdownLiveUpdate,
+                  settings.liveUpdate,
+                  (value) => _save(settings.copyWith(liveUpdate: value)),
+                  subtitle: l10n.prayerCountdownLiveUpdateHint,
+                ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -280,7 +256,7 @@ class _PersistentPrayerCountdownControlWidgetState
     bool value,
     ValueChanged<bool> onChanged, {
     String? subtitle,
-  }) => SwitchListTile.adaptive(
+  }) => SwitchListTile(
     contentPadding: EdgeInsets.zero,
     dense: true,
     title: Text(label, style: Theme.of(context).textTheme.bodyMedium),
@@ -288,8 +264,7 @@ class _PersistentPrayerCountdownControlWidgetState
         ? null
         : Text(
             subtitle,
-            style: TextStyle(
-              fontSize: 11.sp,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: PrayerPalette.of(context).muted,
             ),
           ),
@@ -315,23 +290,21 @@ class _ProblemBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = PrayerPalette.of(context);
     return Container(
-      padding: EdgeInsetsDirectional.fromSTEB(12.w, 8.h, 4.w, 8.h),
+      padding: const EdgeInsetsDirectional.fromSTEB(12, 8, 4, 8),
       decoration: BoxDecoration(
         color: palette.warning.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         children: [
-          Icon(Icons.info_outline_rounded, size: 18.sp, color: palette.warning),
-          SizedBox(width: 8.w),
+          Icon(Icons.info_outline_rounded, size: 18, color: palette.warning),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
               problem.message,
-              style: TextStyle(
-                fontSize: 12.sp,
-                height: 1.3,
-                color: palette.ink,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: palette.ink),
             ),
           ),
           if (onOpenSettings != null)
@@ -370,7 +343,7 @@ class _StyleChoice extends StatelessWidget {
           alignment: AlignmentDirectional.centerStart,
           widthFactor: widthFactor,
           child: Container(
-            height: height.h,
+            height: height,
             decoration: BoxDecoration(
               color: color ?? line,
               borderRadius: BorderRadius.circular(4),
@@ -381,14 +354,14 @@ class _StyleChoice extends StatelessWidget {
     final sketch = switch (style) {
       PrayerCountdownStyle.minimal => [
         bar(0.75, color: palette.ink.withValues(alpha: 0.55)),
-        SizedBox(height: 5.h),
+        const SizedBox(height: 5),
         bar(0.4),
       ],
       PrayerCountdownStyle.progress => [
         bar(0.7, color: palette.ink.withValues(alpha: 0.55)),
-        SizedBox(height: 5.h),
+        const SizedBox(height: 5),
         bar(0.45),
-        SizedBox(height: 7.h),
+        const SizedBox(height: 7),
         Stack(
           children: [
             bar(1, height: 5),
@@ -400,18 +373,18 @@ class _StyleChoice extends StatelessWidget {
         Row(
           children: [
             Expanded(child: bar(0.8, color: colors.primary)),
-            SizedBox(width: 6.w),
+            const SizedBox(width: 6),
             Expanded(child: bar(0.6)),
           ],
         ),
-        SizedBox(height: 7.h),
+        const SizedBox(height: 7),
         Row(
           children: [
             for (var i = 0; i < 5; i++) ...[
-              if (i > 0) SizedBox(width: 3.w),
+              if (i > 0) const SizedBox(width: 3),
               Expanded(
                 child: Container(
-                  height: 12.h,
+                  height: 12,
                   decoration: BoxDecoration(
                     color: i == 1 ? colors.primary : line,
                     borderRadius: BorderRadius.circular(3),
@@ -434,7 +407,7 @@ class _StyleChoice extends StatelessWidget {
             ? colors.primary.withValues(alpha: 0.10)
             : palette.cardRaised,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(14),
           side: BorderSide(
             color: selected ? colors.primary : palette.border,
             width: selected ? 1.6 : 1,
@@ -444,27 +417,26 @@ class _StyleChoice extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(10.w, 10.h, 10.w, 8.h),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(
-                  height: 34.h,
+                  height: 34,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: sketch,
                   ),
                 ),
-                SizedBox(height: 8.h),
+                const SizedBox(height: 8),
                 Text(
                   label,
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
                     color: selected ? colors.primary : palette.ink,
                   ),
                 ),

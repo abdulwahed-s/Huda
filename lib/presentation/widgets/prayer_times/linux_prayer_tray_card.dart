@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/core/services/linux_prayer_tray_bridge.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
@@ -199,19 +201,16 @@ class _LinuxPrayerTrayCardState extends State<LinuxPrayerTrayCard> {
                         ],
                       ),
                       if (_failed || status.error != null)
-                        Text(
-                          l10n.linuxPrayerTrayError,
-                          style: TextStyle(color: palette.error),
+                        PrayerStatusLine(
+                          status: HudaStatus.failed,
+                          message: l10n.linuxPrayerTrayError,
+                          onRetry: _busy
+                              ? null
+                              : LinuxPrayerTrayBridge.refreshStatus,
                         ),
                       Wrap(
                         spacing: 8,
                         children: [
-                          TextButton(
-                            onPressed: _busy
-                                ? null
-                                : LinuxPrayerTrayBridge.refreshStatus,
-                            child: Text(l10n.retry),
-                          ),
                           if (!status.serviceAvailable && preferences.enabled)
                             TextButton(
                               onPressed: _busy

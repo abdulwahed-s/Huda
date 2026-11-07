@@ -1,11 +1,21 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/layout/adaptive_layout.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/layout/insets.dart';
+import 'package:huda/core/layout/tabletop_split.dart';
 import 'package:huda/core/services/geolocator.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
+import 'package:huda/core/services/get_current_location.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_identity.dart';
 import 'package:huda/core/services/desktop_prayer_settings_navigation.dart';
-import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
@@ -24,37 +34,50 @@ import 'package:huda/core/services/prayer_alerts/prayer_alerts.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_attention_items.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_calendar_share_sheet.dart';
-import 'package:huda/presentation/widgets/prayer_times/prayer_hero_card.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_iqamah_bottom_sheet.dart';
-import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_setup_checklist.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_time_adjustment_bottom_sheet.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_timeline_card.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_loading_widget.dart';
-import 'package:huda/presentation/widgets/prayer_times/prayer_travel_settings_card.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_location_sheet.dart';
 
 class PrayerTimes extends StatefulWidget {
-  const PrayerTimes({super.key, this.openSettingsOnLoad = false});
+  const PrayerTimes({
+    super.key,
+    this.openSettingsOnLoad = false,
+    this.debugAccess,
+    this.debugClock,
+  });
 
   final bool openSettingsOnLoad;
+
+  /// Notification access without the platform, for the device matrix.
+  @visibleForTesting
+  final NotificationAccessController Function(
+    NotificationsCubit cubit,
+    Future<void> Function() onAccessGained,
+  )?
+  debugAccess;
+
+  /// A fixed "now" for the device matrix, so shots show a normal day.
+  @visibleForTesting
+  final DateTime Function()? debugClock;
 
   @override
   State<PrayerTimes> createState() => _PrayerTimesState();
 }
 
 class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
-  static const _alertsAnsweredKey = 'prayer_setup_alerts_answered';
-  static const _reliabilityAnsweredKey = 'prayer_setup_reliability_answered';
-
   late PrayerTimesCubit _prayerTimesCubit;
   late final NotificationAccessController _access;
 
   bool _prepared = false;
 
   bool _setupShown = false;
-  bool _setupBusy = false;
 
-  bool _alertsDeclined = false;
+  /// The user's own answer to "Where are you?" is running.
+  bool _locating = false;
+  bool _choosing = false;
 
   bool _pendingMenuSettings = false;
   late final bool Function() _openMenuSettingsAction;
@@ -74,11 +97,19 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     DesktopPrayerSettingsNavigation.register(_openMenuSettingsAction);
     _pendingMenuSettings = widget.openSettingsOnLoad;
     _prayerTimesCubit = context.read<PrayerTimesCubit>();
-    PrayerAlerts.shared.onApplied = _prayerTimesCubit.refreshNotificationSchedule;
-    _access = NotificationAccessController(
-      cubit: context.read<NotificationsCubit>(),
-      onAccessGained: _prayerTimesCubit.refreshNotificationSchedule,
-    )..addListener(_onAccessChanged);
+    PrayerAlerts.shared.onApplied =
+        _prayerTimesCubit.refreshNotificationSchedule;
+    final notifications = context.read<NotificationsCubit>();
+    _access =
+        (widget.debugAccess?.call(
+                notifications,
+                _prayerTimesCubit.refreshNotificationSchedule,
+              ) ??
+              NotificationAccessController(
+                cubit: notifications,
+                onAccessGained: _prayerTimesCubit.refreshNotificationSchedule,
+              ))
+          ..addListener(_onAccessChanged);
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _preparePrayerTimes();
@@ -89,51 +120,6 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     if (mounted) setState(() {});
   }
 
-  bool _flag(String key) =>
-      _prayerTimesCubit.cacheHelper.getData(key: key) == true;
-
-  Future<void> _setFlag(String key) async {
-    await _prayerTimesCubit.cacheHelper.saveData(key: key, value: true);
-    if (mounted) setState(() {});
-  }
-
-  /// Alerts are set up first, before the times, each step explained in the
-  /// checklist. Steps answered here also settle the ready card.
-  PrayerSetupAlerts get _alertsStatus {
-    final access = _access.access;
-    if (access?.notificationsEnabled ?? false) return PrayerSetupAlerts.granted;
-    if (_flag(_alertsAnsweredKey)) return PrayerSetupAlerts.skipped;
-    if (_alertsDeclined || (access?.notificationNeedsSettings ?? false)) {
-      return PrayerSetupAlerts.declined;
-    }
-    return PrayerSetupAlerts.pending;
-  }
-
-  PrayerSetupReliability? get _reliabilityStatus {
-    if (!PlatformUtils.isAndroid) return null;
-    final access = _access.access;
-    if (access?.batteryOptimizationExempted ?? false) {
-      return PrayerSetupReliability.done;
-    }
-    if (_alertsStatus == PrayerSetupAlerts.skipped) {
-      return PrayerSetupReliability.skipped;
-    }
-    if (_flag(_reliabilityAnsweredKey)) {
-      return (access?.exactAlarmsAllowed ?? false)
-          ? PrayerSetupReliability.done
-          : PrayerSetupReliability.skipped;
-    }
-    return PrayerSetupReliability.pending;
-  }
-
-  bool get _alertStepsSettled {
-    final alerts = _alertsStatus;
-    final reliability = _reliabilityStatus;
-    return (alerts == PrayerSetupAlerts.granted ||
-            alerts == PrayerSetupAlerts.skipped) &&
-        reliability != PrayerSetupReliability.pending;
-  }
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && mounted) {
@@ -141,28 +127,19 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
       final current = _prayerTimesCubit.state;
       if (current is PrayerTimesLoaded) {
         unawaited(_prayerTimesCubit.loadPrayerTimes());
-      } else if (current is PrayerTimesLocationDenied ||
-          current is PrayerTimesLocationPermanentlyDenied ||
-          current is PrayerTimesLocationServiceDisabled) {
+      } else if (current is PrayerTimesNeedsPlace &&
+          (current.problem == PrayerLocationProblem.denied ||
+              (current.problem?.needsSettings ?? false))) {
         unawaited(_retryLocationIfAccessRestored());
       }
     }
   }
 
+  /// Back from Settings with location allowed: the times load by
+  /// themselves (the user already chose "Use my location").
   Future<void> _retryLocationIfAccessRestored() async {
-    if (!_alertStepsSettled) return;
-    try {
-      if (!await Geolocator.isLocationServiceEnabled()) return;
-      final permission = await Geolocator.checkPermission();
-      if (permission != LocationPermission.always &&
-          permission != LocationPermission.whileInUse) {
-        return;
-      }
-    } catch (_) {
-      return;
-    }
-    if (!mounted) return;
-    await _prayerTimesCubit.refreshLocationAndPrayerTimes();
+    if (!await canLocateWithoutAsking() || !mounted) return;
+    await _useLocation();
   }
 
   @override
@@ -188,70 +165,39 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
       unawaited(_prayerTimesCubit.refreshNotificationSchedule());
       return;
     }
+    // A problem the user has seen stays until they act; nothing asks again.
     if (state is PrayerTimesLoading ||
-        state is PrayerTimesLocationDenied ||
-        state is PrayerTimesLocationPermanentlyDenied ||
-        state is PrayerTimesLocationServiceDisabled ||
-        state is PrayerTimesError) {
+        (state is PrayerTimesNeedsPlace && state.problem != null)) {
       return;
     }
-
-    if (!_alertStepsSettled) return;
+    // Times first: with location already allowed this finds the place by
+    // itself; otherwise it waits for "Where are you?" (no prompt).
     await _prayerTimesCubit.loadPrayerTimes();
   }
 
-  Future<void> _runSetupAction(Future<void> Function() action) async {
-    if (_setupBusy) return;
-    setState(() => _setupBusy = true);
+  Future<void> _useLocation() async {
+    if (_locating || _choosing) return;
+    setState(() => _locating = true);
     try {
-      await action();
+      await _prayerTimesCubit.refreshLocationAndPrayerTimes();
     } finally {
-      if (mounted) setState(() => _setupBusy = false);
+      if (mounted) setState(() => _locating = false);
     }
   }
 
-  // The checklist card is the explanation, so the system prompt comes next.
-  Future<void> _allowAlerts() => _runSetupAction(() async {
-    await _access.requestNotifications(context, explain: false);
-    if (!mounted) return;
-    if (_access.access?.notificationsEnabled ?? false) {
-      await _setFlag(_alertsAnsweredKey);
-    } else {
-      setState(() => _alertsDeclined = true);
+  Future<void> _chooseCity() async {
+    if (_locating || _choosing) return;
+    try {
+      await pickPrayerCity(
+        context,
+        _prayerTimesCubit,
+        onPicked: () {
+          if (mounted) setState(() => _choosing = true);
+        },
+      );
+    } finally {
+      if (mounted) setState(() => _choosing = false);
     }
-  });
-
-  Future<void> _allowReliability() => _runSetupAction(() async {
-    await _access.requestBatteryOptimization(context);
-    if (_access.access?.batteryOptimizationExempted ?? false) {
-      await _setFlag(_reliabilityAnsweredKey);
-    }
-  });
-
-  Future<void> _useExactAlarms() => _runSetupAction(() async {
-    await _access.requestExactAlarms(context);
-    if (_access.access?.exactAlarmsAllowed ?? false) {
-      await _setFlag(_reliabilityAnsweredKey);
-    }
-  });
-
-  Future<void> _searchManually() async {
-    final result = await showDialog<Map<String, dynamic>>(
-      context: context,
-      builder: (context) => const ManualLocationSearchDialog(),
-    );
-    if (!mounted || result == null) return;
-
-    final lat = result['lat'];
-    final lon = result['lon'];
-    if (lat is! num || lon is! num) return;
-
-    await _prayerTimesCubit.setManualLocation(
-      lat.toDouble(),
-      lon.toDouble(),
-      cityName: result['name'] as String?,
-      countryCode: result['country_code'] as String?,
-    );
   }
 
   @override
@@ -265,68 +211,26 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: Scaffold(
-        backgroundColor: theme.colorScheme.surface,
-        appBar: AppBar(
-          elevation: 0,
-          scrolledUnderElevation: 1,
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: theme.colorScheme.surface,
-          foregroundColor: theme.colorScheme.onSurface,
-          title: Text(
-            AppLocalizations.of(context)!.prayerTimes,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w700,
-            ),
+    final l10n = AppLocalizations.of(context)!;
+    return BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+      builder: (context, state) => HudaScaffold(
+        title: l10n.prayerTimes,
+        body: HudaRevealScope(
+          child: HudaStateSwitcher(
+            stateKey: switch (state) {
+              PrayerTimesLoaded() => 'loaded',
+              _ when _isLoading(state) => 'loading',
+              _ => 'setup',
+            },
+            child: _buildPrayerContent(context, state),
           ),
-          centerTitle: true,
-        ),
-        body: CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
-              sliver: SliverToBoxAdapter(
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 640),
-                    child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
-                      builder: (context, state) => AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 280),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeInCubic,
-                        layoutBuilder: (current, previous) => Stack(
-                          alignment: Alignment.topCenter,
-                          children: [...previous, ?current],
-                        ),
-                        child: KeyedSubtree(
-                          key: ValueKey(switch (state) {
-                            PrayerTimesLoaded() => 'loaded',
-                            PrayerTimesInitial() ||
-                            PrayerTimesLoading() => 'loading',
-                            _ => 'setup',
-                          }),
-                          child: _buildStateContent(context, state),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
   }
 
-  Widget _buildStateContent(BuildContext context, PrayerTimesState state) =>
-      _buildPrayerContent(context, state);
+  bool _isLoading(PrayerTimesState state) =>
+      !_prepared || (state is PrayerTimesLoading && !_setupShown);
 
   Widget _buildPrayerContent(BuildContext context, PrayerTimesState state) {
     if (state is PrayerTimesLoaded) {
@@ -337,43 +241,40 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
         });
       }
       return _PrayerLoadedView(
+        clock: widget.debugClock ?? DateTime.now,
         state: state,
         cubit: _prayerTimesCubit,
         access: _access,
       );
     }
-    final locating = state is PrayerTimesLoading;
-    if (!_prepared || (locating && !_setupShown)) {
-      return const _PrayerStateCard(child: PrayerTimesLoadingWidget());
-    }
+    if (_isLoading(state)) return const PrayerTimesLoadingWidget();
     _setupShown = true;
-    return PrayerSetupChecklist(
-      state: state,
-      alerts: _alertsStatus,
-      alertsNeedSettings: _access.access?.notificationNeedsSettings ?? false,
-      reliability: _reliabilityStatus,
-      canOpenSettings: !PlatformUtils.isLinux,
-      busy: _setupBusy || locating,
-      onAllowAlerts: _allowAlerts,
-      onOpenAlertSettings: _access.openNotificationSettings,
-      onContinueWithoutAlerts: () => _setFlag(_alertsAnsweredKey),
-      onAllowReliability: _allowReliability,
-      onUseExactAlarms: _useExactAlarms,
-      onSkipReliability: () => _setFlag(_reliabilityAnsweredKey),
-      onUseLocation: _prayerTimesCubit.refreshLocationAndPrayerTimes,
-      onSearchCity: _searchManually,
-      onOpenAppSettings: () async {
-        await Geolocator.openAppSettings();
-      },
-      onOpenLocationSettings: () async {
-        await Geolocator.openLocationSettings();
-      },
+    final cityOnly = !deviceLocationSupported;
+    return _PrayerSetupView(
+      cityOnly: cityOnly,
+      step: PrayerPlaceStep(
+        problem: prayerLocationProblemIn(state),
+        canUseDeviceLocation: !cityOnly,
+        canOpenSettings: !PlatformUtils.isLinux,
+        locating:
+            _locating || (state is PrayerTimesLoading && !_choosing),
+        choosing: _choosing,
+        onUseLocation: _useLocation,
+        onChooseCity: _chooseCity,
+        onOpenAppSettings: () async {
+          await Geolocator.openAppSettings();
+        },
+        onOpenLocationSettings: () async {
+          await Geolocator.openLocationSettings();
+        },
+      ),
     );
   }
 }
 
 class _PrayerLoadedView extends StatefulWidget {
   const _PrayerLoadedView({
+    required this.clock,
     required this.state,
     required this.cubit,
     required this.access,
@@ -382,6 +283,7 @@ class _PrayerLoadedView extends StatefulWidget {
   final PrayerTimesLoaded state;
   final PrayerTimesCubit cubit;
   final NotificationAccessController access;
+  final DateTime Function() clock;
 
   @override
   State<_PrayerLoadedView> createState() => _PrayerLoadedViewState();
@@ -390,7 +292,7 @@ class _PrayerLoadedView extends StatefulWidget {
 class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
   StreamSubscription<NextPrayerCountdown>? _countdownSubscription;
   NextPrayerCountdown? _countdown;
-  DateTime _now = DateTime.now();
+  late DateTime _now = widget.clock();
 
   @override
   void initState() {
@@ -399,9 +301,23 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       countdown,
     ) {
       if (!mounted) return;
+      // The countdown ticks by itself (`PrayerCountdown`); the page only
+      // changes when the prayer does, or with the minute (the sun, the
+      // rows, "started N min ago").
+      final now = widget.clock();
+      final previous = _countdown;
+      final changed =
+          previous == null ||
+          previous.prayer != countdown.prayer ||
+          previous.isPastPrayer != countdown.isPastPrayer ||
+          previous.instant != countdown.instant ||
+          previous.secondsPassed ~/ 60 != countdown.secondsPassed ~/ 60 ||
+          now.minute != _now.minute ||
+          now.hour != _now.hour;
+      if (!changed) return;
       setState(() {
         _countdown = countdown;
-        _now = DateTime.now();
+        _now = now;
       });
     });
   }
@@ -412,19 +328,27 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
     super.dispose();
   }
 
-  Future<void> _openWorkflowSettings(Set<PrayerWorkflowIssue> issues) async {
-    try {
-      if (issues.contains(PrayerWorkflowIssue.location) &&
-          !await Geolocator.isLocationServiceEnabled()) {
-        await Geolocator.openLocationSettings();
-      } else {
-        await Geolocator.openAppSettings();
-      }
-    } catch (_) {}
-  }
+  void _openAlerts([String? prayer]) => showPrayerAlertSheet(
+    context,
+    prayer: prayer,
+    nextPrayer: _countdown?.prayer?.name,
+  );
 
+  // The page's moment, for every sky on it (the hero, a problem's lamp).
   @override
   Widget build(BuildContext context) {
+    final zone = widget.cubit.prayerTimeZoneId;
+    DateTime wall(DateTime instant) => zone == null
+        ? instant.toLocal()
+        : PrayerTimeZoneService.wallClockAtInstant(instant, zone);
+    return PrayerSkyScope(
+      times: PrayerSkyTimes.of(widget.state, wall),
+      hour: prayerSkyHour(wall(_now.toUtc())),
+      child: Builder(builder: _buildPage),
+    );
+  }
+
+  Widget _buildPage(BuildContext context) {
     final state = widget.state;
     final cubit = widget.cubit;
     final access = widget.access;
@@ -435,7 +359,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       state: state,
       callbacks: PrayerAttentionCallbacks(
         retryWorkflow: cubit.retryPrayerUpdates,
-        openWorkflowSettings: _openWorkflowSettings,
       ),
     );
     final alertStatus = buildPrayerAlertStatus(
@@ -457,156 +380,295 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
         PrayerReadinessKind.notifications,
       ),
       onRetry: cubit.retryNotificationSchedule,
+      onAllowExactAlarms: () => access.requestExactAlarms(context),
     );
     final canShare = !state.provisional && cubit.verifiedExportSnapshot != null;
+    final space = context.tokens.space;
 
-    return Column(
+    // Errors lead the page; information (verification, the widget, the
+    // country question) waits under the sky, so the times come first.
+    final errorFirst = items.any(
+      (item) => item.tone == PrayerAttentionTone.error,
+    );
+    final attention = AnimatedSize(
+      duration: context.tokens.motion.of(context, context.tokens.motion.medium),
+      curve: context.tokens.motion.standard,
+      alignment: Alignment.topCenter,
+      child: PrayerAttentionStrip(
+        items: items,
+        onChooseCountry: cubit.chooseCountry,
+        onDismissCountry: cubit.dismissCountryQuestion,
+      ),
+    );
+    final sky = PrayerSkyCard(
+      state: state,
+      countdown: _countdown?.prayer == null ? null : _countdown,
+      now: _now,
+      locationMode: cubit.locationMode,
+      timeZoneId: cubit.prayerTimeZoneId,
+      clock: widget.clock,
+      onOpenLocation: () => showPrayerLocationSheet(context),
+    );
+    final times = ListenableBuilder(
+      listenable: PrayerAlerts.shared,
+      builder: (context, _) => PrayerTimelineCard(
+        state: state,
+        now: _now,
+        alerts: PrayerAlerts.shared.settings,
+        alertsBlocked: access.access?.needsNotification ?? false,
+        onOpenAlerts: _openAlerts,
+      ),
+    );
+    final ready = state.provisional
+        ? null
+        : PrayerAlertsReadyCard(access: access, cache: cubit.cacheHelper);
+    final alerts = PrayerAlertSummaryCard(
+      status: alertStatus,
+      onOpen: ([prayer]) => _openAlerts(prayer),
+    );
+    // How the times are calculated: a card like the alerts' (owner round
+    // 2), not an app bar icon.
+    final settings = PrayerTimeSettingsCard(
+      cubit: cubit,
+      onOpen: () => showPrayerTimeAdjustmentSheet(context),
+    );
+    final more = <Widget>[
+      HudaSection(
+        title: l10n.prayerMoreOptions,
+        children: [
+          HudaSettingsRow(
+            key: const ValueKey('prayer-iqamah'),
+            icon: Icons.timer_outlined,
+            title: l10n.prayerIqamahTitle,
+            subtitle: iqamahSummary(cubit.iqamahSettings, l10n),
+            trailing: const _Chevron(),
+            onTap: () => showPrayerIqamahSheet(context),
+          ),
+          if (canShare)
+            HudaSettingsRow(
+              key: const ValueKey('prayer-share-calendar'),
+              icon: Icons.ios_share_rounded,
+              title: l10n.prayerCalendarShare,
+              trailing: const _Chevron(),
+              onTap: () => showPrayerCalendarShareSheet(context),
+            ),
+        ],
+      ),
+      if (PlatformUtils.isMacOS ||
+          PlatformUtils.isLinux ||
+          PlatformUtils.isWindows ||
+          PlatformUtils.isAndroid) ...[
+        HudaSectionHeader(l10n.prayerAlertOnThisDevice),
+        if (PlatformUtils.isMacOS) const MacPrayerMenuCard(),
+        if (PlatformUtils.isLinux) const LinuxPrayerTrayCard(),
+        if (PlatformUtils.isWindows) const WindowsPrayerTaskbarCard(),
+        if (PlatformUtils.isAndroid)
+          const PersistentPrayerCountdownControlWidget(),
+      ],
+    ];
+
+    Widget column(List<Widget?> children) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AnimatedSize(
-          duration: const Duration(milliseconds: 260),
-          curve: Curves.easeOutCubic,
-          alignment: Alignment.topCenter,
-          child: PrayerAttentionStrip(
-            items: items,
-            onChooseCountry: cubit.chooseCountry,
-            onDismissCountry: cubit.dismissCountryQuestion,
-          ),
-        ),
-        PrayerHeroCard(
-          state: state,
-          countdown: _countdown?.prayer == null ? null : _countdown,
-          now: _now,
-          locationMode: cubit.locationMode,
-          timeZoneId: cubit.prayerTimeZoneId,
-          onRefreshLocation: cubit.refreshLocationAndPrayerTimes,
-        ),
-        if (!state.provisional)
-          PrayerAlertsReadyCard(access: access, cache: cubit.cacheHelper),
-        PrayerTimelineCard(
-          state: state,
-          now: _now,
-          onAdjust: () => showPrayerTimeAdjustmentSheet(context),
-        ),
-        PrayerAlertSummaryCard(
-          status: alertStatus,
-          onOpen: ([prayer]) => showPrayerAlertSheet(
-            context,
-            prayer: prayer,
-            nextPrayer: _countdown?.prayer?.name,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(4, 12, 4, 10),
-          child: Text(
-            l10n.prayerMoreOptions,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: PrayerPalette.of(context).muted,
-            ),
-          ),
-        ),
-        if (canShare)
-          _OptionTile(
-            icon: Icons.ios_share_rounded,
-            title: l10n.prayerCalendarShare,
-            onTap: () => showPrayerCalendarShareSheet(context),
-          ),
-        _OptionTile(
-          icon: Icons.timer_outlined,
-          title: l10n.prayerIqamahTitle,
-          subtitle: iqamahSummary(cubit.iqamahSettings, l10n),
-          onTap: () => showPrayerIqamahSheet(context),
-        ),
-        PrayerTravelSettingsCard(locationMode: cubit.locationMode),
-        if (PlatformUtils.isMacOS ||
-            PlatformUtils.isLinux ||
-            PlatformUtils.isWindows ||
-            PlatformUtils.isAndroid) ...[
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(4, 12, 4, 10),
-            child: Text(
-              l10n.prayerAlertOnThisDevice,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: PrayerPalette.of(context).muted,
-              ),
-            ),
-          ),
-          if (PlatformUtils.isMacOS) const MacPrayerMenuCard(),
-          if (PlatformUtils.isLinux) const LinuxPrayerTrayCard(),
-          if (PlatformUtils.isWindows) const WindowsPrayerTaskbarCard(),
-          if (PlatformUtils.isAndroid)
-            const PersistentPrayerCountdownControlWidget(),
+        for (final (i, child) in children.nonNulls.indexed) ...[
+          if (i > 0 && child is! PrayerAttentionStrip)
+            SizedBox(height: space.md),
+          HudaReveal(index: i, child: child),
         ],
       ],
     );
-  }
-}
+    Widget scroll(Widget child, {double maxWidth = ReadableWidth.measure}) =>
+        Builder(
+          builder: (context) {
+            final gutter = space.gutter(MediaQuery.sizeOf(context).width);
+            return SingleChildScrollView(
+              padding: context.scrollPadding(
+                EdgeInsets.fromLTRB(gutter, space.xs, gutter, space.xxl),
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: maxWidth),
+                  child: child,
+                ),
+              ),
+            );
+          },
+        );
 
-class _OptionTile extends StatelessWidget {
-  const _OptionTile({
-    required this.icon,
-    required this.title,
-    this.subtitle,
-    required this.onTap,
-  });
+    final sideItems = <Widget?>[alerts, settings, ...more];
+    final day = errorFirst ? [attention, sky] : [sky, attention];
+    final width = MediaQuery.sizeOf(context).width;
+    final fold = FoldInfo.of(context);
 
-  final IconData icon;
-  final String title;
-  final String? subtitle;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final palette = PrayerPalette.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Material(
-        color: palette.card,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(22),
-          side: BorderSide(color: palette.border),
+    // Tabletop: the sky above the band, everything else below it.
+    if (TabletopSplit.applies(context)) {
+      return TabletopSplit(
+        top: Padding(
+          padding: EdgeInsets.all(space.gutter(width)),
+          child: Center(child: sky),
         ),
-        clipBehavior: Clip.antiAlias,
-        child: ListTile(
-          onTap: onTap,
-          contentPadding: const EdgeInsetsDirectional.fromSTEB(14, 4, 12, 4),
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: palette.tint,
-              borderRadius: BorderRadius.circular(12),
+        bottom: scroll(column([attention, times, ready, ...sideItems])),
+      );
+    }
+
+    // Wide: the day beside the alerts and options.
+    if (AdaptivePanes.showsTwoPanes(width, fold)) {
+      return AdaptivePanes(
+        primaryFraction: 0.62,
+        minPrimaryWidth: 420,
+        maxPrimaryWidth: 1100,
+        primary: scroll(column([...day, times, ready]), maxWidth: 960),
+        secondary: scroll(column(sideItems), maxWidth: 520),
+      );
+    }
+
+    // Medium: one column for the day, then two for the rest.
+    if (width >= 600) {
+      return scroll(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            column([...day, times]),
+            SizedBox(height: space.md),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: column([ready, alerts, settings])),
+                SizedBox(width: space.md),
+                Expanded(child: column(more)),
+              ],
             ),
-            child: Icon(icon, color: palette.primary, size: 20),
-          ),
-          title: Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          subtitle: subtitle == null ? null : Text(subtitle!),
-          trailing: Icon(Icons.chevron_right_rounded, color: palette.muted),
+          ],
         ),
-      ),
+        maxWidth: 840,
+      );
+    }
+
+    // Phones: how the times are calculated right under them.
+    return scroll(
+      column([...day, times, settings, ready, alerts, ...more]),
     );
   }
 }
 
-class _PrayerStateCard extends StatelessWidget {
-  const _PrayerStateCard({required this.child});
+class _Chevron extends StatelessWidget {
+  const _Chevron();
 
-  final Widget child;
+  @override
+  Widget build(BuildContext context) => Icon(
+    Icons.chevron_right_rounded,
+    color: Theme.of(context).colorScheme.onSurfaceVariant,
+  );
+}
+
+/// Setup: an empty sky (no times yet) over the steps; side by side on wide
+/// windows.
+class _PrayerSetupView extends StatelessWidget {
+  const _PrayerSetupView({required this.step, required this.cityOnly});
+
+  final PrayerPlaceStep step;
+  final bool cityOnly;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(18.w),
-      decoration: PrayerPalette.of(context).cardDecoration(),
-      child: child,
+    final space = context.tokens.space;
+    final width = MediaQuery.sizeOf(context).width;
+    final gutter = space.gutter(width);
+    final padding = context.scrollPadding(
+      EdgeInsets.fromLTRB(gutter, space.xs, gutter, space.xxl),
+    );
+
+    // Tabletop: the empty sky above the band, the steps below it.
+    if (TabletopSplit.applies(context)) {
+      return TabletopSplit(
+        top: Padding(
+          padding: EdgeInsets.all(gutter),
+          child: Center(child: PrayerSetupHeader(cityOnly: cityOnly)),
+        ),
+        bottom: SingleChildScrollView(
+          padding: padding,
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: step,
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Wide: one composition, the sky beside the steps, centered and
+    // capped, so a large window isn't two small islands.
+    // A vertical fold: the sky on one side, the steps on the other, split
+    // at the fold (nothing on a half-open band).
+    final fold = FoldInfo.of(context);
+    if (fold.splitsHorizontally && AdaptivePanes.showsTwoPanes(width, fold)) {
+      return AdaptivePanes(
+        primary: SingleChildScrollView(
+          padding: padding,
+          child: PrayerSetupHeader(skyHeight: 140, cityOnly: cityOnly),
+        ),
+        secondary: SingleChildScrollView(
+          padding: padding,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: step,
+            ),
+          ),
+        ),
+      );
+    }
+
+    final short = MediaQuery.sizeOf(context).height < 480;
+    if (width >= 840 || (short && width >= 600)) {
+      return LayoutBuilder(
+        builder: (context, viewport) => SingleChildScrollView(
+          padding: padding,
+          child: ConstrainedBox(
+            // Centered in the window when it fits, scrolling when not.
+            constraints: BoxConstraints(
+              minHeight: math.max(0, viewport.maxHeight - padding.vertical),
+            ),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1040),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: PrayerSetupHeader(
+                        skyHeight: short ? 56 : 140,
+                        cityOnly: cityOnly,
+                      ),
+                    ),
+                    SizedBox(width: space.xl),
+                    Expanded(flex: 6, child: step),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    return SingleChildScrollView(
+      padding: padding,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PrayerSetupHeader(cityOnly: cityOnly),
+              SizedBox(height: space.md),
+              step,
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

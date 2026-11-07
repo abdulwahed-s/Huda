@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 
 @immutable
 class PrayerPalette {
@@ -27,6 +28,8 @@ class PrayerPalette {
       PrayerPalette.fromTheme(Theme.of(context));
 
   factory PrayerPalette.fromTheme(ThemeData theme) {
+    final tokens = theme.extension<HudaTokens>();
+    if (tokens != null) return PrayerPalette._lantern(theme, tokens);
     final scheme = theme.colorScheme;
     final dark = theme.brightness == Brightness.dark;
     final primary = scheme.primary;
@@ -55,6 +58,35 @@ class PrayerPalette {
     );
   }
 
+  /// The Lantern system (`HudaTheme`): cards and outlines from the
+  /// scheme, the hero on the chrome. Themes without Lantern tokens (the
+  /// Linux tray renderer) keep the mapping above.
+  factory PrayerPalette._lantern(ThemeData theme, HudaTokens tokens) {
+    final scheme = theme.colorScheme;
+    final dark = theme.brightness == Brightness.dark;
+    final primary = scheme.primary;
+    return PrayerPalette._(
+      isDark: dark,
+      primary: primary,
+      onPrimary: scheme.onPrimary,
+      page: scheme.surface,
+      card: scheme.surfaceContainerLowest,
+      cardRaised: scheme.surfaceContainerLowest,
+      border: scheme.outlineVariant,
+      divider: scheme.outlineVariant,
+      tint: primary.withValues(alpha: dark ? 0.16 : 0.07),
+      tintStrong: primary.withValues(alpha: dark ? 0.26 : 0.12),
+      ink: scheme.onSurface,
+      muted: scheme.onSurfaceVariant,
+      faint: scheme.onSurfaceVariant.withValues(alpha: 0.72),
+      warning: dark ? const Color(0xFFFBBF24) : const Color(0xFFB45309),
+      error: scheme.error,
+      success: dark ? const Color(0xFF4ADE80) : const Color(0xFF15803D),
+      heroStart: tokens.chrome,
+      heroEnd: tokens.chromeEnd,
+    );
+  }
+
   final bool isDark;
   final Color primary;
   final Color onPrimary;
@@ -77,41 +109,13 @@ class PrayerPalette {
   final Color heroStart;
   final Color heroEnd;
 
-  BoxDecoration cardDecoration({double radius = 22, Color? color}) =>
+  /// Card radius: Lantern's `radius.lg` (16).
+  static const double cardRadius = 16;
+
+  BoxDecoration cardDecoration({double radius = cardRadius, Color? color}) =>
       BoxDecoration(
         color: color ?? card,
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: border),
       );
-}
-
-class PrayerStarPainter extends CustomPainter {
-  const PrayerStarPainter({required this.color, this.strokeWidth = 1.4});
-
-  final Color color;
-  final double strokeWidth;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
-    final center = size.center(Offset.zero);
-    final side = size.shortestSide * 0.62;
-    for (final angle in const [0.0, 0.7853981633974483]) {
-      canvas.save();
-      canvas.translate(center.dx, center.dy);
-      canvas.rotate(angle);
-      canvas.drawRect(
-        Rect.fromCenter(center: Offset.zero, width: side, height: side),
-        paint,
-      );
-      canvas.restore();
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant PrayerStarPainter oldDelegate) =>
-      oldDelegate.color != color || oldDelegate.strokeWidth != strokeWidth;
 }

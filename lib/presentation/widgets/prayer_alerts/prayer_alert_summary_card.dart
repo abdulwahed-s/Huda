@@ -13,7 +13,10 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_labels.dart';
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_attention_items.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
 /// The one prayer alert card on Prayer Times: how prayers alert, each
 /// prayer at a glance, whether alerts are set, and Stop while one plays.
@@ -87,172 +90,86 @@ class _PrayerAlertSummaryCardState extends State<PrayerAlertSummaryCard> {
           ].join(' · ');
     final session = PrayerLiveSession.current();
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: DecoratedBox(
-        decoration: palette.cardDecoration(radius: 22),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            key: const ValueKey('prayer-alert-summary'),
-            borderRadius: BorderRadius.circular(22),
-            onTap: () => widget.onOpen(),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+    final tokens = context.tokens;
+    final space = tokens.space;
+    return Card(
+      child: InkWell(
+        key: const ValueKey('prayer-alert-summary'),
+        onTap: () => widget.onOpen(),
+        child: Padding(
+          padding: EdgeInsets.all(space.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      PrayerAlertIconBadge(
-                        icon: settings == null || !enabled
-                            ? Icons.notifications_off_outlined
-                            : prayerAlertStyleIcon(settings.style),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.prayerAlertTitle,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: palette.ink,
-                              ),
-                            ),
-                            if (summary != null)
-                              Text(
-                                summary,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: palette.muted,
-                                  height: 1.35,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 18,
-                        child: PrayerSaveStatus(controller: controller),
-                      ),
-                      Icon(
-                        Directionality.of(context) == TextDirection.rtl
-                            ? Icons.chevron_left_rounded
-                            : Icons.chevron_right_rounded,
-                        color: palette.faint,
-                      ),
-                    ],
+                  HudaIconMark(
+                    settings == null || !enabled
+                        ? Icons.notifications_off_outlined
+                        : prayerAlertStyleIcon(settings.style),
                   ),
-                  if (settings != null && enabled) ...[
-                    const SizedBox(height: 14),
-                    _PrayerStrip(
-                      settings: settings,
-                      capabilities: controller.capabilities,
-                      onOpen: widget.onOpen,
-                    ),
-                  ],
-                  if (session != null) ...[
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
+                  SizedBox(width: space.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (session.stopAudio != null)
-                          FilledButton.icon(
-                            key: const ValueKey('prayer-alert-stop'),
-                            onPressed: session.stopAudio,
-                            icon: const Icon(Icons.stop_rounded),
-                            label: Text(l10n.prayerAlertStopAdhan),
+                        Text(
+                          l10n.prayerAlertTitle,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: palette.ink,
                           ),
-                        if (session.endFocus != null)
-                          OutlinedButton(
-                            onPressed: session.endFocus,
-                            child: Text(l10n.prayerAlertEndFocus),
+                        ),
+                        if (summary != null)
+                          Text(
+                            summary,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: palette.muted,
+                            ),
                           ),
                       ],
                     ),
-                  ],
-                  if (status != null) ...[
-                    const SizedBox(height: 12),
-                    Divider(height: 1, color: palette.divider),
-                    const SizedBox(height: 12),
-                    _StatusLine(status: status),
-                  ],
+                  ),
+                  SizedBox(
+                    height: 18,
+                    child: PrayerSaveStatus(controller: controller),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: palette.faint,
+                  ),
                 ],
               ),
-            ),
+              if (session != null) ...[
+                SizedBox(height: space.sm),
+                Wrap(
+                  spacing: space.xs,
+                  runSpacing: space.xs,
+                  children: [
+                    if (session.stopAudio != null)
+                      FilledButton.icon(
+                        key: const ValueKey('prayer-alert-stop'),
+                        onPressed: session.stopAudio,
+                        icon: const Icon(Icons.stop_rounded),
+                        label: Text(l10n.prayerAlertStopAdhan),
+                      ),
+                    if (session.endFocus != null)
+                      OutlinedButton(
+                        onPressed: session.endFocus,
+                        child: Text(l10n.prayerAlertEndFocus),
+                      ),
+                  ],
+                ),
+              ],
+              if (status != null) ...[
+                SizedBox(height: space.sm),
+                const Divider(height: 1),
+                SizedBox(height: space.sm),
+                _StatusLine(status: status),
+              ],
+            ],
           ),
         ),
       ),
-    );
-  }
-}
-
-/// Each prayer's style at a glance; a tap opens that prayer.
-class _PrayerStrip extends StatelessWidget {
-  const _PrayerStrip({
-    required this.settings,
-    required this.onOpen,
-    this.capabilities,
-  });
-
-  final PrayerAlertSettings settings;
-  final PrayerAlertCapabilities? capabilities;
-  final void Function([String? prayer]) onOpen;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final palette = PrayerPalette.of(context);
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        for (final entry in settings.prayers.entries)
-          Expanded(
-            child: Semantics(
-              button: true,
-              label:
-                  '${l10n.prayerName(entry.key)}: '
-                  '${l10n.alertStyleSummary(entry.value.style, capabilities, opening: entry.value.openingOnly)}',
-              excludeSemantics: true,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () => onOpen(entry.key),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: Column(
-                    children: [
-                      Icon(
-                        prayerAlertStyleIcon(entry.value.style),
-                        size: 20,
-                        color: entry.value.style == PrayerAlertStyle.off
-                            ? palette.faint
-                            : entry.value.custom
-                            ? palette.primary
-                            : palette.muted,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        l10n.prayerName(entry.key),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: entry.value.style == PrayerAlertStyle.off
-                              ? palette.faint
-                              : palette.ink,
-                          fontWeight: entry.value.custom
-                              ? FontWeight.w800
-                              : FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-      ],
     );
   }
 }
@@ -279,13 +196,24 @@ class _StatusLine extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox.square(
-            dimension: 20,
-            child: status.busy
-                ? CircularProgressIndicator(strokeWidth: 2, color: accent)
-                : Icon(status.icon, size: 20, color: accent),
-          ),
-          const SizedBox(width: 10),
+          // Problems and work speak like the page's notices: a lamp with a
+          // piece of the day path. Ready keeps its plain mark.
+          if (status.tone == PrayerAlertTone.ready && !status.busy)
+            SizedBox.square(
+              dimension: 36,
+              child: Icon(status.icon, size: 22, color: accent),
+            )
+          else
+            PrayerNoticeLamp(
+              size: 36,
+              busy: status.busy,
+              tone: switch (status.tone) {
+                PrayerAlertTone.error => PrayerAttentionTone.error,
+                PrayerAlertTone.warning => PrayerAttentionTone.warning,
+                _ => PrayerAttentionTone.info,
+              },
+            ),
+          SizedBox(width: context.tokens.space.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,15 +244,10 @@ class _StatusLine extends StatelessWidget {
                 if (action != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 6),
-                    child: FilledButton.tonalIcon(
+                    child: OutlinedButton.icon(
                       onPressed: action.onPressed,
                       icon: Icon(action.icon, size: 18),
                       label: Text(action.label),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: accent.withValues(alpha: 0.14),
-                        foregroundColor: accent,
-                        visualDensity: VisualDensity.compact,
-                      ),
                     ),
                   ),
               ],

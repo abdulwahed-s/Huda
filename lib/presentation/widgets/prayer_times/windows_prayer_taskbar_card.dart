@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/core/services/windows_prayer_taskbar_bridge.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
@@ -88,7 +90,7 @@ class _WindowsPrayerTaskbarCardState extends State<WindowsPrayerTaskbarCard>
     return Container(
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.all(14),
-      decoration: palette.cardDecoration(radius: 22),
+      decoration: palette.cardDecoration(),
       child: Material(
         type: MaterialType.transparency,
         child: ValueListenableBuilder<WindowsPrayerTaskbarStatus>(
@@ -171,28 +173,17 @@ class _WindowsPrayerTaskbarCardState extends State<WindowsPrayerTaskbarCard>
                   _message(l10n.windowsPrayerPlacementUnavailable),
               ],
               if (_failed || status.error != null)
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        l10n.windowsPrayerError,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: _busy
-                          ? null
-                          : () async {
-                              if (_preferences != null) {
-                                await _save(_preferences!);
-                              }
-                              await _load();
-                            },
-                      child: Text(l10n.retry),
-                    ),
-                  ],
+                PrayerStatusLine(
+                  status: HudaStatus.failed,
+                  message: l10n.windowsPrayerError,
+                  onRetry: _busy
+                      ? null
+                      : () async {
+                          if (_preferences != null) {
+                            await _save(_preferences!);
+                          }
+                          await _load();
+                        },
                 ),
             ],
           ),

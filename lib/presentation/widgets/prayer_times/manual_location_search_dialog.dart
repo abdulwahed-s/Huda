@@ -1,16 +1,31 @@
 import 'dart:async';
-import 'dart:math' show max, min;
+import 'dart:math' show max;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_theme_scope.dart';
+import 'package:huda/cubit/athan/prayer_times_cubit.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_search_field.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_attention_items.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_setup_checklist.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_sky.dart';
 import 'package:huda/data/models/location_search_error.dart';
 import 'package:huda/data/models/location_search_suggestion.dart';
 import 'package:huda/data/services/location_service.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class ManualLocationSearchDialog extends StatefulWidget {
-  const ManualLocationSearchDialog({super.key});
+  const ManualLocationSearchDialog({super.key, this.service});
+
+  /// The search without the network, for tests and the device matrix.
+  @visibleForTesting
+  final LocationService? service;
 
   @override
   State<ManualLocationSearchDialog> createState() =>
@@ -24,13 +39,16 @@ class _ManualLocationSearchDialogState
 
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
-  final LocationService _locationService = LocationService();
+  late final LocationService _locationService =
+      widget.service ?? LocationService();
 
   List<LocationSearchSuggestion> _searchResults = const [];
   Timer? _debounce;
   LocationSearchErrorType? _errorType;
   bool _isLoading = false;
   bool _isSelecting = false;
+  String? _selectingId;
+  LocationSearchErrorType? _selectionError;
   bool _noResults = false;
   int _searchGeneration = 0;
 
@@ -124,6 +142,8 @@ class _ManualLocationSearchDialogState
 
     setState(() {
       _isSelecting = true;
+      _selectingId = suggestion.placeId;
+      _selectionError = null;
       _errorType = null;
     });
 
@@ -144,22 +164,18 @@ class _ManualLocationSearchDialogState
       if (mounted) _showSelectionError(LocationSearchErrorType.unknown);
     } finally {
       if (mounted && !selected) {
-        setState(() => _isSelecting = false);
+        setState(() {
+          _isSelecting = false;
+          _selectingId = null;
+        });
       }
     }
   }
 
+  // Shown in the sheet, above the results (a snack bar would sit behind
+  // the sheet).
   void _showSelectionError(LocationSearchErrorType type) {
-    final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(_errorMessage(l10n, type))));
-  }
-
-  void _clearSearch() {
-    _searchController.clear();
-    _scheduleSearch('');
-    _searchFocusNode.requestFocus();
+    setState(() => _selectionError = type);
   }
 
   void _retrySearch() {
@@ -180,386 +196,568 @@ class _ManualLocationSearchDialogState
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
-    final screenSize = MediaQuery.sizeOf(context);
-    final availableHeight =
-        screenSize.height - MediaQuery.viewInsetsOf(context).vertical;
-    final dialogHeight = min(max(availableHeight - 48.0, 0.0), 560.0);
-
-    return Dialog(
-      insetPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.r)),
-      clipBehavior: Clip.antiAlias,
-      backgroundColor: theme.colorScheme.surface,
-      surfaceTintColor: Colors.transparent,
-      elevation: 8,
-      child: SizedBox(
-        width: min(screenSize.width - 32.0, 520.0),
-        height: dialogHeight,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 18.h, 20.w, 16.h),
-          child: Column(
-            children: [
-              _buildHeader(context, l10n),
-              SizedBox(height: 18.h),
-              _buildSearchField(context, l10n, isDark),
-              SizedBox(height: 12.h),
-              Expanded(
-                child: Stack(
-                  children: [
-                    Positioned.fill(child: _buildSearchContent(l10n, isDark)),
-                    if (_isSelecting)
-                      Positioned.fill(
-                        child: ColoredBox(
-                          color: Colors.black.withValues(alpha: 0.24),
-                          child: Center(
-                            child: Semantics(
-                              liveRegion: true,
-                              label: l10n.searchLocationTitle,
-                              child: CircularProgressIndicator(
-                                color: context.primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final media = MediaQuery.of(context);
+    // Above the keyboard, or the navigation bar when there's none.
+    final bottom = max(media.viewInsets.bottom, media.padding.bottom);
+    // The night band follows the sheet's or dialog's rounded top.
+    return ClipRRect(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(tokens.radius.xl),
       ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
-    final colors = Theme.of(context).colorScheme;
-
-    return Semantics(
-      namesRoute: true,
-      label: l10n.searchLocationTitle,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            padding: EdgeInsets.all(10.w),
-            decoration: BoxDecoration(
-              color: context.primaryColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(14.r),
-            ),
-            child: Icon(
-              Icons.travel_explore_rounded,
-              color: context.primaryColor,
-              size: 22.sp,
+          _CitySearchHeader(
+            title: l10n.prayerChooseCity,
+            closeEnabled: !_isSelecting,
+            field: HudaSearchField(
+              controller: _searchController,
+              focusNode: _searchFocusNode,
+              autofocus: true,
+              hintText: l10n.searchCityHint,
+              onChanged: (query) {
+                if (_selectionError != null) {
+                  setState(() => _selectionError = null);
+                }
+                _onSearchChanged(query);
+              },
+              onSubmitted: _onSearchSubmitted,
             ),
           ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Text(
-              l10n.searchLocationTitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w700,
-                color: colors.onSurface,
+          if (_selectionError != null)
+            Padding(
+              padding: EdgeInsets.fromLTRB(space.lg, space.md, space.lg, 0),
+              child: PrayerSetupWarningNote(
+                tone: PrayerAttentionTone.error,
+                title: l10n.prayerChooseCity,
+                text: _errorMessage(l10n, _selectionError!),
+                icon: Icons.error_outline_rounded,
               ),
             ),
-          ),
-          IconButton(
-            tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-            style: IconButton.styleFrom(
-              backgroundColor: colors.onSurface.withValues(alpha: 0.06),
-              foregroundColor: colors.onSurfaceVariant,
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: bottom),
+              child: HudaStateSwitcher(
+                stateKey: _contentKey,
+                child: _buildSearchContent(l10n),
+              ),
             ),
-            icon: const Icon(Icons.close_rounded),
-            onPressed: _isSelecting ? null : () => Navigator.of(context).pop(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSearchField(
-    BuildContext context,
-    AppLocalizations l10n,
-    bool isDark,
-  ) {
-    final colors = Theme.of(context).colorScheme;
-    final fieldColor = colors.surfaceContainerHighest.withValues(
-      alpha: isDark ? 0.42 : 0.62,
-    );
-    final outlineColor = colors.outlineVariant.withValues(
-      alpha: isDark ? 0.56 : 0.72,
-    );
+  String get _contentKey => _isLoading
+      ? 'loading'
+      : _errorType != null
+      ? 'error'
+      : _noResults
+      ? 'none'
+      : _searchResults.isEmpty
+      ? 'hint'
+      : 'results';
 
-    return TextField(
-      controller: _searchController,
-      focusNode: _searchFocusNode,
-      autofocus: true,
-      enabled: !_isSelecting,
-      textInputAction: TextInputAction.search,
-      onChanged: _onSearchChanged,
-      onSubmitted: _onSearchSubmitted,
-      style: TextStyle(color: colors.onSurface, fontSize: 16.sp),
-      decoration: InputDecoration(
-        hintText: l10n.searchCityHint,
-        hintStyle: TextStyle(color: colors.onSurfaceVariant, fontSize: 14.sp),
-        prefixIcon: Icon(Icons.search_rounded, color: context.primaryColor),
-        suffixIcon: _isLoading
-            ? Padding(
-                padding: EdgeInsets.all(14.w),
-                child: SizedBox(
-                  height: 18.w,
-                  width: 18.w,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: context.primaryColor,
-                  ),
-                ),
-              )
-            : _searchController.text.isEmpty
-            ? null
-            : IconButton(
-                tooltip: l10n.clear,
-                onPressed: _clearSearch,
-                icon: Icon(
-                  Icons.cancel_rounded,
-                  color: colors.onSurfaceVariant,
-                ),
-              ),
-        filled: true,
-        fillColor: fieldColor,
-        contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
-          borderSide: BorderSide(color: outlineColor),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
-          borderSide: BorderSide(color: outlineColor),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
-          borderSide: BorderSide(color: context.primaryColor, width: 2),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSearchContent(AppLocalizations l10n, bool isDark) {
-    if (_isLoading) {
-      return _buildLoadingState(isDark);
-    }
-
+  Widget _buildSearchContent(AppLocalizations l10n) {
+    final space = context.tokens.space;
+    if (_isLoading) return const _CitySkeleton();
     if (_errorType != null) {
-      return _buildStatus(
-        icon: Icons.cloud_off_rounded,
+      return _status(
+        error: true,
         message: _errorMessage(l10n, _errorType!),
-        isDark: isDark,
-        action: FilledButton.tonalIcon(
+        action: FilledButton.icon(
           onPressed: _retrySearch,
-          icon: const Icon(Icons.refresh_rounded),
+          icon: const Icon(Icons.refresh_rounded, size: 18),
           label: Text(l10n.tryAgain),
         ),
       );
     }
-
-    if (_noResults) {
-      return _buildStatus(
-        icon: Icons.search_off_rounded,
-        message: l10n.noResultsFound,
-        isDark: isDark,
-      );
-    }
-
-    if (_searchResults.isEmpty) {
-      return _buildStatus(
-        icon: Icons.location_city_outlined,
-        message: l10n.typeCityNameHint,
-        isDark: isDark,
-      );
-    }
-
+    if (_noResults) return _status(message: l10n.noResultsFound);
+    if (_searchResults.isEmpty) return _status(message: l10n.typeCityNameHint);
+    final query = _searchController.text.trim();
     return Scrollbar(
       child: ListView.separated(
-        padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
+        padding: EdgeInsets.fromLTRB(space.sm, space.sm, space.sm, space.md),
         itemCount: _searchResults.length,
-        separatorBuilder: (_, _) => SizedBox(height: 8.h),
-        itemBuilder: (context, index) =>
-            _buildSuggestionTile(_searchResults[index], isDark),
+        separatorBuilder: (_, _) => const Divider(indent: 64, endIndent: 16),
+        itemBuilder: (context, index) {
+          final suggestion = _searchResults[index];
+          return HudaReveal(
+            index: index,
+            child: _CityRow(
+              key: ValueKey('city-${suggestion.placeId}'),
+              suggestion: suggestion,
+              query: query,
+              selecting: _selectingId == suggestion.placeId,
+              onTap: _isSelecting ? null : () => _selectSuggestion(suggestion),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildLoadingState(bool isDark) {
-    final colors = Theme.of(context).colorScheme;
+  /// The quiet states (hint, nothing found) under the horizon; an error
+  /// leads with the lamp, as every Prayer problem does.
+  Widget _status({
+    required String message,
+    bool error = false,
+    Widget? action,
+  }) {
+    final theme = Theme.of(context);
+    final space = context.tokens.space;
+    return SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(space.xl, space.xl, space.xl, space.lg),
+      child: Column(
+        children: [
+          if (error) ...[
+            const PrayerNoticeLamp(tone: PrayerAttentionTone.error),
+            SizedBox(height: space.sm),
+          ],
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          if (action != null) ...[SizedBox(height: space.md), action],
+        ],
+      ),
+    );
+  }
+}
 
-    return Center(
-      child: Semantics(
-        liveRegion: true,
-        label: AppLocalizations.of(context)!.searchLocationTitle,
+/// The search's night band: the title and Close over the horizon, where a
+/// gilt pin settles onto the day path, then the search field on the
+/// chrome.
+class _CitySearchHeader extends StatelessWidget {
+  const _CitySearchHeader({
+    required this.title,
+    required this.field,
+    required this.closeEnabled,
+  });
+
+  final String title;
+  final Widget field;
+  final bool closeEnabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    final space = tokens.space;
+    return HudaNight(
+      child: Builder(
+        builder: (context) {
+          final theme = Theme.of(context);
+          return Stack(
+            children: [
+              // The page's living sky (a plain day at the device's time
+              // when the search opens from somewhere without one).
+              Positioned.fill(
+                child: Builder(
+                  builder: (context) {
+                    final scope = PrayerSkyScope.maybeOf(context);
+                    return PrayerSky(
+                      times: scope?.times ?? PrayerSkyTimes.fallback,
+                      hour: scope?.hour ?? prayerSkyHour(DateTime.now()),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(
+                  space.lg,
+                  space.sm,
+                  space.xs,
+                  space.md,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Semantics(
+                            header: true,
+                            child: Text(
+                              title,
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                color: tokens.onChrome,
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          tooltip: MaterialLocalizations.of(
+                            context,
+                          ).closeButtonTooltip,
+                          color: tokens.onChrome,
+                          onPressed: closeEnabled
+                              ? () => Navigator.of(context).maybePop()
+                              : null,
+                          icon: const Icon(Icons.close_rounded),
+                        ),
+                      ],
+                    ),
+                    // Short windows keep the room for the results.
+                    if (MediaQuery.sizeOf(context).height >= 480)
+                      const _PinOnHorizon()
+                    else
+                      SizedBox(height: space.xs),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(end: space.sm),
+                      // The field on the chrome: a raised tint of the band,
+                      // not the night's near-black surface.
+                      child: Theme(
+                        data: theme.copyWith(
+                          colorScheme: theme.colorScheme.copyWith(
+                            surfaceContainerLowest: Color.alphaBlend(
+                              tokens.onChrome.withValues(alpha: 0.1),
+                              tokens.chrome,
+                            ),
+                          ),
+                        ),
+                        child: field,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// The horizon with its hour ticks and a faint day path; a gilt pin drops
+/// onto it once the search has opened (500 ms, once). Reduce motion: in
+/// place.
+class _PinOnHorizon extends StatelessWidget {
+  const _PinOnHorizon();
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    final reduce = MediaQuery.disableAnimationsOf(context);
+    return SizedBox(
+      height: 64,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: reduce ? 1 : 0, end: 1),
+        // Once the sheet has landed (~250 ms), the pin settles (500 ms).
+        duration: reduce ? Duration.zero : const Duration(milliseconds: 750),
+        curve: const Interval(0.33, 1, curve: Curves.easeOutBack),
+        builder: (context, t, _) => Ornament(
+          painter: _PinHorizonPainter(
+            drop: t,
+            gilt: tokens.gilt,
+            onChrome: tokens.onChrome,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PinHorizonPainter extends CustomPainter {
+  _PinHorizonPainter({
+    required this.drop,
+    required this.gilt,
+    required this.onChrome,
+  });
+
+  final double drop;
+  final Color gilt;
+  final Color onChrome;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final ground = size.height * 0.86;
+    final cx = size.width / 2;
+    // Its light on the ground, once it has landed.
+    final landed = drop.clamp(0.0, 1.0);
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset(cx, ground),
+        width: 10 + 26 * landed,
+        height: 4 + 5 * landed,
+      ),
+      Paint()..color = gilt.withValues(alpha: 0.35 * landed),
+    );
+    // The pin: a teardrop whose point rests on the ground.
+    final tip = Offset(cx, ground - (1 - drop) * 26);
+    const r = 9.0;
+    final head = Offset(tip.dx, tip.dy - r * 2.1);
+    final pin = Path()
+      ..moveTo(tip.dx, tip.dy)
+      ..cubicTo(
+        tip.dx - r * 0.6,
+        tip.dy - r * 0.9,
+        head.dx - r,
+        head.dy + r * 0.6,
+        head.dx - r,
+        head.dy,
+      )
+      ..arcToPoint(
+        Offset(head.dx + r, head.dy),
+        radius: const Radius.circular(r),
+      )
+      ..cubicTo(
+        head.dx + r,
+        head.dy + r * 0.6,
+        tip.dx + r * 0.6,
+        tip.dy - r * 0.9,
+        tip.dx,
+        tip.dy,
+      )
+      ..close();
+    canvas.drawPath(pin, Paint()..color = gilt);
+    canvas.drawCircle(
+      head,
+      r * 0.38,
+      Paint()..color = Color.lerp(gilt, onChrome, 0.6)!,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _PinHorizonPainter old) =>
+      old.drop != drop || old.gilt != gilt || old.onChrome != onChrome;
+}
+
+/// A result: a station on its little horizon, the city with the typed part
+/// in the reading color, the country under it; while it's being used, the
+/// lamp turns in its place.
+class _CityRow extends StatelessWidget {
+  const _CityRow({
+    super.key,
+    required this.suggestion,
+    required this.query,
+    required this.selecting,
+    required this.onTap,
+  });
+
+  final LocationSearchSuggestion suggestion;
+  final String query;
+  final bool selecting;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final name = suggestion.primaryText;
+    final start = query.isEmpty
+        ? -1
+        : name.toLowerCase().indexOf(query.toLowerCase());
+    final base = theme.textTheme.titleMedium?.copyWith(
+      color: scheme.onSurface,
+      fontWeight: FontWeight.w400,
+    );
+    final title = start < 0
+        ? TextSpan(text: name)
+        : TextSpan(
+            children: [
+              TextSpan(text: name.substring(0, start)),
+              TextSpan(
+                text: name.substring(start, start + query.length),
+                style: TextStyle(
+                  color: scheme.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              TextSpan(text: name.substring(start + query.length)),
+            ],
+          );
+    return Semantics(
+      button: true,
+      label: suggestion.displayName,
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(tokens.radius.md),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 60),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: space.sm,
+              vertical: space.xs,
+            ),
+            child: Row(
+              children: [
+                Ornament(
+                  size: const Size(36, 36),
+                  painter: _StationMarkPainter(
+                    line: tokens.ornament,
+                    fill: selecting ? scheme.primary : null,
+                  ),
+                ),
+                SizedBox(width: space.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text.rich(title, style: base),
+                      if (suggestion.secondaryText.isNotEmpty)
+                        Text(
+                          suggestion.secondaryText,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: space.xs),
+                SizedBox.square(
+                  dimension: 24,
+                  child: AnimatedSwitcher(
+                    duration: tokens.motion.of(context, tokens.motion.short),
+                    child: selecting
+                        ? HudaLampSpinner(
+                            key: const ValueKey('busy'),
+                            size: 22,
+                            color: scheme.primary,
+                          )
+                        : Icon(
+                            Icons.chevron_right_rounded,
+                            key: const ValueKey('go'),
+                            color: scheme.onSurfaceVariant,
+                          ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A station: a short horizon, a gnomon and its roundel (filled while the
+/// city is being used).
+class _StationMarkPainter extends CustomPainter {
+  _StationMarkPainter({required this.line, this.fill});
+
+  final Color line;
+  final Color? fill;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final horizon = h * 0.78;
+    final stroke = Paint()
+      ..color = line
+      ..strokeWidth = 1.2;
+    canvas.drawLine(
+      Offset(w * 0.12, horizon),
+      Offset(w * 0.88, horizon),
+      stroke,
+    );
+    final top = Offset(w / 2, h * 0.32);
+    canvas.drawLine(Offset(w / 2, horizon), top, stroke..strokeWidth = 1);
+    final fill = this.fill;
+    if (fill != null) canvas.drawCircle(top, 5, Paint()..color = fill);
+    canvas.drawCircle(
+      top,
+      5,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.4
+        ..color = fill ?? line,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _StationMarkPainter old) =>
+      old.line != line || old.fill != fill;
+}
+
+/// Searching: rows shaped like results.
+class _CitySkeleton extends StatelessWidget {
+  const _CitySkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final space = context.tokens.space;
+    return SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(space.lg, space.md, space.lg, space.md),
+      child: HudaSkeleton(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              height: 28.w,
-              width: 28.w,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                color: context.primaryColor,
+            for (var i = 0; i < 4; i++) ...[
+              if (i > 0) SizedBox(height: space.lg),
+              Row(
+                children: [
+                  const HudaSkeletonBlock(width: 28, height: 28, circle: true),
+                  SizedBox(width: space.md),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HudaSkeletonBlock(width: 140, height: 16),
+                        SizedBox(height: 6),
+                        HudaSkeletonBlock(width: 90, height: 12),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 18.h),
-            Container(
-              width: 124.w,
-              height: 8.h,
-              decoration: BoxDecoration(
-                color: colors.onSurface.withValues(alpha: isDark ? 0.12 : 0.08),
-                borderRadius: BorderRadius.circular(99.r),
-              ),
-            ),
+            ],
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildStatus({
-    required IconData icon,
-    required String message,
-    required bool isDark,
-    Widget? action,
-  }) {
-    final colors = Theme.of(context).colorScheme;
+/// What happened after [pickPrayerCity]: whether a city was picked, and if
+/// so what stopped it from being used (null once the times follow it).
+typedef PrayerCityPick = ({bool picked, PrayerLocationProblem? problem});
 
-    return Center(
-      child: Semantics(
-        liveRegion: true,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  color: context.primaryColor.withValues(
-                    alpha: isDark ? 0.16 : 0.10,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, size: 34.sp, color: context.primaryColor),
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                  fontSize: 15.sp,
-                  height: 1.4,
-                ),
-              ),
-              if (action != null) ...[SizedBox(height: 18.h), action],
-            ],
+/// Opens the city search and, when a city is picked, uses it (the
+/// "A city I choose" mode). The one way every screen picks a city.
+///
+/// [onPicked] runs once a city is picked, before it's applied (to show the
+/// caller's own busy state only while the place is being used).
+Future<PrayerCityPick> pickPrayerCity(
+  BuildContext context,
+  PrayerTimesCubit cubit, {
+  VoidCallback? onPicked,
+  // The search without the network (tests and the device matrix).
+  LocationService? service,
+}) async {
+  // The sheet is its own route: it takes the page's sky along.
+  final scope = PrayerSkyScope.maybeOf(context);
+  final result = await showHudaSheet<Map<String, dynamic>>(
+    context: context,
+    title: AppLocalizations.of(context)!.prayerChooseCity,
+    expand: true,
+    builder: (_) => scope == null
+        ? ManualLocationSearchDialog(service: service)
+        : PrayerSkyScope(
+            times: scope.times,
+            hour: scope.hour,
+            child: ManualLocationSearchDialog(service: service),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSuggestionTile(
-    LocationSearchSuggestion suggestion,
-    bool isDark,
-  ) {
-    final colors = Theme.of(context).colorScheme;
-    final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final radius = BorderRadius.circular(16.r);
-
-    return Semantics(
-      button: true,
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: radius,
-        child: Ink(
-          decoration: BoxDecoration(
-            color: colors.surfaceContainerHighest.withValues(
-              alpha: isDark ? 0.38 : 0.52,
-            ),
-            border: Border.all(
-              color: colors.outlineVariant.withValues(
-                alpha: isDark ? 0.42 : 0.56,
-              ),
-            ),
-            borderRadius: radius,
-          ),
-          child: InkWell(
-            borderRadius: radius,
-            onTap: _isSelecting ? null : () => _selectSuggestion(suggestion),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
-              child: Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(9.w),
-                    decoration: BoxDecoration(
-                      color: context.primaryColor.withValues(alpha: 0.12),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.location_city_rounded,
-                      color: context.primaryColor,
-                      size: 20.sp,
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          suggestion.primaryText,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: colors.onSurface,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        if (suggestion.secondaryText.isNotEmpty) ...[
-                          SizedBox(height: 3.h),
-                          Text(
-                            suggestion.secondaryText,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: colors.onSurfaceVariant,
-                              fontSize: 13.sp,
-                              height: 1.3,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Icon(
-                    isRtl
-                        ? Icons.chevron_left_rounded
-                        : Icons.chevron_right_rounded,
-                    color: colors.onSurfaceVariant,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  );
+  final lat = result?['lat'];
+  final lon = result?['lon'];
+  if (lat is! num || lon is! num) return (picked: false, problem: null);
+  onPicked?.call();
+  final problem = await cubit.setManualLocation(
+    lat.toDouble(),
+    lon.toDouble(),
+    cityName: result!['name'] as String?,
+    countryCode: result['country_code'] as String?,
+  );
+  return (picked: true, problem: problem);
 }
