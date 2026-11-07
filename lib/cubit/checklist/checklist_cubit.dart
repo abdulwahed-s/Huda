@@ -180,10 +180,13 @@ class ChecklistCubit extends Cubit<ChecklistState> {
 
     try {
       await _repository.removeChecklistItem(itemId);
+      // The screen commits a pending removal as it closes.
+      if (isClosed) return;
 
       final updatedDailyChecklist =
           await _repository.getDailyChecklist(currentState.currentDate);
       final streakCount = await _repository.getStreakCount();
+      if (isClosed) return;
 
       emit(ChecklistLoaded(
         dailyChecklist: updatedDailyChecklist,
