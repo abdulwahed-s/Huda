@@ -1,242 +1,447 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/cubit/audios/audios_cubit.dart';
+import 'package:huda/core/layout/adaptive_layout.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/layout/window_class.dart';
+import 'package:huda/core/routes/app_route.dart';
+import 'package:huda/core/services/audio_progress_service.dart';
+import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/audios/audio_languages_cubit.dart';
-import 'package:huda/cubit/audiobook_player/audiobook_bar_cubit.dart';
-import 'package:huda/cubit/audiobook_player/audiobook_player_cubit.dart';
-import 'package:huda/cubit/audiobook_player/audiobook_player_state.dart';
+import 'package:huda/cubit/audios/audios_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
-import 'package:huda/presentation/widgets/audio/audio_language_selection_fab.dart';
-import 'package:huda/presentation/widgets/audio/audios_app_bar.dart';
-import 'package:huda/presentation/widgets/audio/audios_error_widget.dart';
-import 'package:huda/presentation/widgets/audio/audios_loaded_widget.dart';
-import 'package:huda/presentation/widgets/audio/audios_loading_widget.dart';
-import 'package:huda/presentation/widgets/audio/audios_offline_widget.dart';
-import 'package:huda/presentation/widgets/audio/audiobook_player_bar.dart';
-import 'package:huda/presentation/widgets/audio/offline_audio_empty_state_widget.dart';
-import 'package:huda/presentation/widgets/books/offline_state_widget.dart';
+import 'package:huda/data/models/audios_response.dart';
+import 'package:huda/data/models/offline_audiobook_model.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/screens/audio_detail.dart';
+import 'package:huda/presentation/widgets/audio/audiobook_bar.dart';
+import 'package:huda/presentation/widgets/audio/audiobook_swatch.dart';
+import 'package:huda/presentation/widgets/audio/audiobooks_identity.dart';
+import 'package:huda/presentation/widgets/audio/audiobooks_library_parts.dart';
+import 'package:huda/presentation/widgets/books/books_library_parts.dart'
+    show BooksPager;
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
 
+/// The audio library: the catalogue's recordings as woven swatches, a
+/// page at a time, in one language or all; the last recording to
+/// continue; the bar of what's playing pinned under it. Landing tier; the
+/// header carries the hanging ribbons. See
+/// `design/features/audiobooks/brief.md`.
 class AudiosScreen extends StatefulWidget {
   const AudiosScreen({super.key});
+
+  static const double maxContentWidth = 1280;
 
   @override
   State<AudiosScreen> createState() => _AudiosScreenState();
 }
 
-class _AudiosScreenState extends State<AudiosScreen>
-    with TickerProviderStateMixin {
-  String? selectedLanguage;
-  final ScrollController _scrollController = ScrollController();
-  late AnimationController _fabAnimationController;
-  late Animation<double> _fabAnimation;
+class _AudiosScreenState extends State<AudiosScreen> {
+  String? _language;
+  final _top = GlobalKey();
+
+  /// After a tap on Retry, until the cubit answers: the failure stays on
+  /// screen with "Retrying…" instead of turning into a skeleton.
+  bool _retrying = false;
+  AudiosState? _failure;
+
+  String get _appLanguage =>
+      context.read<LocalizationCubit>().state.locale.languageCode;
 
   @override
   void initState() {
     super.initState();
-    _loadInitialData();
-    _setupAnimations();
+    _language = _appLanguage;
+    context.read<AudiosCubit>().fetchAudios(_language!, 1, _appLanguage);
+    context.read<AudioLanguagesCubit>().fetchLanguages(_appLanguage);
   }
 
-  void _loadInitialData() {
-    final languageCode = context
-        .read<LocalizationCubit>()
-        .state
-        .locale
-        .languageCode;
-    selectedLanguage = languageCode;
-    context.read<AudiosCubit>().fetchAudios(languageCode, 1, languageCode);
-    context.read<AudioLanguagesCubit>().fetchLanguages(languageCode);
-  }
-
-  void _setupAnimations() {
-    _fabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
+  void _fetch(int page) {
+    context.read<AudiosCubit>().fetchAudios(
+      _language ?? 'showall',
+      page,
+      _appLanguage,
     );
-    _fabAnimation = CurvedAnimation(
-      parent: _fabAnimationController,
-      curve: Curves.easeInOut,
-    );
-    _fabAnimationController.forward();
   }
 
-  @override
-  void dispose() {
-    _fabAnimationController.dispose();
-    _scrollController.dispose();
-    super.dispose();
+  void _changeLanguage(String? language) {
+    setState(() => _language = language);
+    _fetch(1);
   }
+
+  void _changePage(int page) {
+    _fetch(page);
+    final top = _top.currentContext;
+    if (top != null) {
+      final motion = context.tokens.motion;
+      Scrollable.ensureVisible(
+        top,
+        duration: motion.of(context, motion.medium),
+        curve: motion.standard,
+      );
+    }
+  }
+
+  void _retry() {
+    setState(() => _retrying = true);
+    _fetch(1);
+    context.read<AudioLanguagesCubit>().fetchLanguages(_appLanguage);
+  }
+
+  static bool _isLoading(AudiosState state) =>
+      state is AudiosLoading ||
+      state is AudiosOfflineLoading ||
+      state is AudiosInitial;
+
+  static bool _isOffline(AudiosState state) =>
+      state is AudiosOfflineLoaded ||
+      state is AudiosOfflineEmpty ||
+      state is AudiosOffline;
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Scaffold(
-      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
-      body: Stack(
-        children: [
-          BlocConsumer<AudiosCubit, AudiosState>(
-            listener: (context, state) {
-              if (state is AudiosLoaded &&
-                  state.audiosResponse.data.isEmpty &&
-                  selectedLanguage != null) {
-                final languageCode = context
-                    .read<LocalizationCubit>()
-                    .state
-                    .locale
-                    .languageCode;
-                setState(() => selectedLanguage = null);
-                context.read<AudiosCubit>().fetchAudios(
-                  'showall',
-                  1,
-                  languageCode,
-                );
-              }
-            },
-            builder: (context, state) {
-              return CustomScrollView(
-                controller: _scrollController,
+    final l10n = AppLocalizations.of(context)!;
+    final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
+    return AudiobookBar.dock(
+      child: HudaRevealScope(
+        child: BlocConsumer<AudiosCubit, AudiosState>(
+          listener: (context, state) {
+            // A language with no recordings: show every language instead.
+            if (state is AudiosLoaded &&
+                state.audiosResponse.data.isEmpty &&
+                _language != null) {
+              setState(() => _language = null);
+              _fetch(1);
+            }
+            if (!_isLoading(state) && _retrying) {
+              setState(() => _retrying = false);
+            }
+          },
+          builder: (context, state) {
+            if (state is AudiosError || _isOffline(state)) _failure = state;
+            final failure = _failure;
+            final shown = _retrying && _isLoading(state) && failure != null
+                ? failure
+                : state;
+            // The ribbons are let down as the shelf opens.
+            return HudaDrawIn(
+              duration: const Duration(milliseconds: 1000),
+              curve: Curves.linear,
+              builder: (context, draw) => HudaLandingScaffold(
+                leading: canPop ? const BackButton() : null,
+                eyebrow: l10n.audios,
+                title: l10n.audiobooks,
+                art: (style) =>
+                    AudiobookHangingRibbonsPainter(style: style, draw: draw),
+                contentMaxWidth: AudiosScreen.maxContentWidth,
                 slivers: [
-                  AudiosAppBar(isDark: isDark),
-                  ..._buildContentForState(context, state, isDark),
-                  SliverToBoxAdapter(child: SizedBox(height: 152.h)),
-                ],
-              );
-            },
-          ),
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: AudiobookPlayerBar(),
-          ),
-          BlocBuilder<AudiosCubit, AudiosState>(
-            builder: (context, audioState) {
-              final isOffline =
-                  audioState is AudiosOfflineLoaded ||
-                  audioState is AudiosOfflineEmpty ||
-                  audioState is AudiosOffline;
-
-              if (isOffline) return const SizedBox.shrink();
-
-              return BlocBuilder<AudiobookBarCubit, AudiobookBarVisibility>(
-                builder: (context, barState) {
-                  return BlocBuilder<
-                    AudiobookPlayerCubit,
-                    AudiobookPlayerState
-                  >(
-                    builder: (context, playerState) {
-                      final playerVisible =
-                          barState == AudiobookBarVisibility.visible &&
-                          playerState is AudiobookPlayerPlaying;
-
-                      return AnimatedAlign(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeInOut,
-                        alignment: AlignmentDirectional.bottomEnd,
-                        child: AnimatedPadding(
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeInOut,
-                          padding: EdgeInsetsDirectional.only(
-                            end: 16.w,
-                            bottom:
-                                (playerVisible ? 84.h : 16.h) +
-                                MediaQuery.of(context).viewPadding.bottom,
-                          ),
-                          child: AudioLanguageSelectionFab(
-                            animation: _fabAnimation,
-                            selectedLanguage: selectedLanguage,
-                            onLanguageSelected: _handleLanguageChange,
-                          ),
+                  _Page(
+                    children: [
+                      SliverToBoxAdapter(
+                        key: _top,
+                        child: _Top(
+                          state: shown,
+                          language: _language,
+                          onLanguage: _changeLanguage,
                         ),
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          ),
-        ],
+                      ),
+                      SliverHudaStateSwitcher(
+                        stateKey: _stateKey(shown),
+                        sliver: _body(context, shown),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
-  List<Widget> _buildContentForState(
-    BuildContext context,
-    AudiosState state,
-    bool isDark,
-  ) {
-    if (state is AudiosLoading || state is AudiosOfflineLoading) {
-      return [AudiosLoadingWidget(isDark: isDark)];
-    } else if (state is AudiosLoaded) {
-      return [
-        AudiosLoadedWidget(
-          state: state,
-          isDark: isDark,
-          selectedLanguage: selectedLanguage,
-          onLanguageChanged: _handleLanguageChange,
-        ),
-      ];
-    } else if (state is AudiosOfflineLoaded) {
-      return [AudiosOfflineWidget(state: state, isDark: isDark)];
-    } else if (state is AudiosOfflineEmpty) {
-      return [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: OfflineAudioEmptyStateWidget(
-            isDark: isDark,
-            onRetry: _retryLoading,
+  Object _stateKey(AudiosState state) => switch (state) {
+    AudiosLoaded(:final audiosResponse) =>
+      'page-${audiosResponse.links.currentPage}-$_language',
+    AudiosOfflineLoaded() => 'offline',
+    AudiosOfflineEmpty() => 'offline-empty',
+    AudiosOffline() => 'offline-failed',
+    AudiosError() => 'error',
+    _ => 'loading',
+  };
+
+  Widget _body(BuildContext context, AudiosState state) {
+    final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    // A full-page state fills the room left, clear of the bottom inset
+    // (the page's end padding comes after it, off screen).
+    Widget fill(Widget child) => SliverFillRemaining(
+      hasScrollBody: true,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+        child: child,
+      ),
+    );
+    return switch (state) {
+      AudiosLoaded(:final audiosResponse) => SliverMainAxisGroup(
+        slivers: [
+          _Tiles(
+            count: audiosResponse.data.length,
+            tile: (context, i) => _onlineTile(audiosResponse.data[i]),
           ),
-        ),
-      ];
-    } else if (state is AudiosOffline) {
-      return [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: OfflineStateWidget(isDark: isDark, onRetry: _retryLoading),
-        ),
-      ];
-    } else if (state is AudiosError) {
-      return [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: AudiosErrorWidget(
-            message: state.message,
-            isDark: isDark,
-            onRetry: _retryLoading,
+          if (audiosResponse.links.pagesNumber > 1)
+            SliverPadding(
+              padding: EdgeInsets.only(top: space.xl),
+              sliver: SliverToBoxAdapter(
+                child: BooksPager(
+                  page: audiosResponse.links.currentPage,
+                  pages: audiosResponse.links.pagesNumber,
+                  onPage: _changePage,
+                ),
+              ),
+            ),
+        ],
+      ),
+      AudiosOfflineLoaded(:final offlineAudios) => SliverMainAxisGroup(
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.only(bottom: space.lg),
+            sliver: SliverToBoxAdapter(
+              child: AudiobooksOfflineNotice(
+                count: offlineAudios.length,
+                onRetry: _retry,
+                retrying: _retrying,
+              ),
+            ),
           ),
+          _Tiles(
+            count: offlineAudios.length,
+            tile: (context, i) => _offlineTile(offlineAudios[i]),
+          ),
+        ],
+      ),
+      AudiosOfflineEmpty() => fill(
+        HudaStateView(
+          identity: audiobooksIdentity,
+          title: l10n.noOfflineAudiobooks,
+          message: l10n.audiobooksDownloadWhenOnline,
+          actions: [HudaRetryButton(onRetry: _retry, retrying: _retrying)],
         ),
-      ];
+      ),
+      AudiosOffline() => fill(
+        HudaOfflineState(onRetry: _retry, retrying: _retrying),
+      ),
+      AudiosError() => fill(
+        HudaErrorState(
+          identity: audiobooksIdentity,
+          message: l10n.audiobooksLoadError,
+          onRetry: _retry,
+          retrying: _retrying,
+        ),
+      ),
+      _ => _Tiles(
+        count: 12,
+        tile: (context, i) => AudiobookSwatchSkeleton(announce: i == 0),
+        reveal: false,
+      ),
+    };
+  }
+
+  Widget _onlineTile(AudioItem audio) => AudiobookTile(
+    seed: audio.id,
+    title: audio.title,
+    author: _author([for (final p in audio.preparedBy) (p.type, p.title)]),
+    chapters: audio.numAttachments,
+    onTap: (card) => _open(
+      card,
+      id: audio.id,
+      language: audio.translatedLanguage,
+      title: audio.title,
+    ),
+  );
+
+  Widget _offlineTile(OfflineAudiobookModel audio) => AudiobookTile(
+    seed: audio.id,
+    title: audio.title,
+    author: _author([for (final p in audio.preparedBy) (p.type, p.title)]),
+    chapters: audio.tracks.length,
+    downloaded: true,
+    onTap: (card) =>
+        _open(card, id: audio.id, language: audio.language, title: audio.title),
+  );
+
+  /// The author, or whoever prepared the recording first.
+  static String? _author(List<(String, String?)> people) {
+    for (final (type, name) in people) {
+      if (type == 'author' && (name ?? '').isNotEmpty) return name;
     }
-    return [const SliverToBoxAdapter(child: SizedBox.shrink())];
+    for (final (_, name) in people) {
+      if ((name ?? '').isNotEmpty) return name;
+    }
+    return null;
   }
 
-  void _handleLanguageChange(String? language) {
-    setState(() {
-      selectedLanguage = language;
-    });
-    final languageCode = context
-        .read<LocalizationCubit>()
-        .state
-        .locale
-        .languageCode;
-    context.read<AudiosCubit>().fetchAudios(
-      language ?? 'showall',
-      1,
-      languageCode,
+  void _open(
+    BuildContext card, {
+    required int id,
+    required String language,
+    required String title,
+  }) {
+    pushFromCard(
+      card,
+      (_) =>
+          AudioDetailScreen.page(audioId: id, language: language, title: title),
     );
   }
+}
 
-  void _retryLoading() {
-    final languageCode = context
-        .read<LocalizationCubit>()
-        .state
-        .locale
-        .languageCode;
-    context.read<AudiosCubit>().fetchAudios(
-      selectedLanguage ?? 'showall',
-      1,
-      languageCode,
+/// The library's content column: the gutters and side insets, capped and
+/// centered, ending above the bottom inset.
+class _Page extends StatelessWidget {
+  const _Page({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final space = context.tokens.space;
+    return SliverLayoutBuilder(
+      builder: (context, constraints) {
+        final insets = MediaQuery.paddingOf(context);
+        final width = constraints.crossAxisExtent;
+        final gutter = space.gutter(width);
+        final extra = math.max(0.0, (width - AudiosScreen.maxContentWidth) / 2);
+        return SliverPadding(
+          padding: EdgeInsets.fromLTRB(
+            gutter + insets.left + extra,
+            space.md,
+            gutter + insets.right + extra,
+            space.xxl + insets.bottom,
+          ),
+          sliver: SliverMainAxisGroup(slivers: children),
+        );
+      },
     );
-    context.read<AudioLanguagesCubit>().fetchLanguages(languageCode);
+  }
+}
+
+/// The recording to continue, when there is one, and the language chip.
+class _Top extends StatelessWidget {
+  const _Top({
+    required this.state,
+    required this.language,
+    required this.onLanguage,
+  });
+
+  final AudiosState state;
+  final String? language;
+  final ValueChanged<String?> onLanguage;
+
+  /// The content's full width, but on one side of a half-open vertical
+  /// fold (owner round 1: it was capped at 640).
+  static double _cardWidth(BuildContext context) {
+    final fold = FoldInfo.of(context);
+    if (!fold.avoided || !fold.splitsHorizontally) return double.infinity;
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    final width = MediaQuery.sizeOf(context).width;
+    final insets = MediaQuery.paddingOf(context);
+    final gutter = context.tokens.space.gutter(width);
+    final leading = rtl
+        ? width - fold.end - insets.right
+        : fold.start - insets.left;
+    return math.max(240.0, leading - gutter * 2);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final space = context.tokens.space;
+    final offline =
+        state is AudiosOfflineLoaded ||
+        state is AudiosOfflineEmpty ||
+        state is AudiosOffline;
+    final lastPlayed = getIt<AudioProgressService>().getLastPlayed();
+    // Only beside the recordings: a failure or the skeleton keeps the top
+    // for its own message.
+    final showContinue =
+        lastPlayed != null && lastPlayed.title != null && state is AudiosLoaded;
+    return Padding(
+      padding: EdgeInsets.only(bottom: space.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (showContinue) ...[
+            HudaReveal(
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: _cardWidth(context)),
+                  child: AudiobookContinueCard(
+                    progress: lastPlayed,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppRoute.audioDetail,
+                      arguments: {
+                        'audioId': lastPlayed.audiobookId.toString(),
+                        'language': context
+                            .read<LocalizationCubit>()
+                            .state
+                            .locale
+                            .languageCode,
+                        'title': lastPlayed.title,
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: space.lg),
+          ],
+          if (!offline)
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: AudiobooksLanguageChip(
+                selected: language,
+                onSelected: onLanguage,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The swatches in a grid that reflows: two a row on phones, up to eight
+/// on wide windows, even with a fold.
+class _Tiles extends StatelessWidget {
+  const _Tiles({required this.count, required this.tile, this.reveal = true});
+
+  final int count;
+  final Widget Function(BuildContext context, int i) tile;
+  final bool reveal;
+
+  @override
+  Widget build(BuildContext context) {
+    final space = context.tokens.space;
+    final minTileWidth = AdaptiveGrid.tileWidth(
+      context,
+      context.windowClass.isCompactHeight
+          ? 150
+          : context.windowClass.width >= WindowWidthClass.expanded
+          ? 184
+          : 150,
+    );
+    return SliverAdaptiveGrid(
+      minTileWidth: minTileWidth,
+      spacing: space.md,
+      maxColumns: 8,
+      itemCount: count,
+      itemBuilder: (context, i) => reveal
+          ? HudaReveal(index: i, child: tile(context, i))
+          : tile(context, i),
+    );
   }
 }
