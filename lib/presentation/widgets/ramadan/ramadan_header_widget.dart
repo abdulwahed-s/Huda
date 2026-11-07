@@ -1,87 +1,114 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/calendar_format.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/calendar_identity.dart';
+import 'package:huda/presentation/widgets/ramadan/fasting_progress_widget.dart';
 
-class RamadanHeaderWidget extends StatelessWidget {
-  final bool isRamadan;
-  final int currentDay;
-  final int daysUntilRamadan;
-  final bool isDark;
-
-  const RamadanHeaderWidget({
+/// Ramadan's plate on the chrome: the night's moon (the hilal while
+/// Ramadan is awaited), the day of Ramadan or the days until it, and
+/// today's fast.
+class RamadanPlate extends StatelessWidget {
+  const RamadanPlate({
     super.key,
     required this.isRamadan,
     required this.currentDay,
     required this.daysUntilRamadan,
-    required this.isDark,
+    required this.hijriYear,
+    required this.fajrTime,
+    required this.maghribTime,
+    this.clock,
   });
+
+  final bool isRamadan;
+  final int currentDay;
+  final int daysUntilRamadan;
+  final int hijriYear;
+  final DateTime fajrTime;
+  final DateTime maghribTime;
+  final DateTime Function()? clock;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final primary = isDark ? context.primaryLightColor : context.primaryColor;
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final format = CalendarFormat.of(context);
+    final large = MediaQuery.textScalerOf(context).scale(1) > 1.4;
 
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
+    return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [
-                  primary.withValues(alpha: 0.25),
-                  primary.withValues(alpha: 0.10),
-                ]
-              : [
-                  primary.withValues(alpha: 0.12),
-                  primary.withValues(alpha: 0.04),
-                ],
-        ),
-        border: isDark
-            ? null
-            : Border.all(color: primary.withValues(alpha: 0.08), width: 1),
+        gradient: tokens.chromeGradient,
+        borderRadius: tokens.radius.card,
       ),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.all(14.r),
-            decoration: BoxDecoration(
-              color: primary.withValues(alpha: isDark ? 0.2 : 0.12),
-              shape: BoxShape.circle,
-            ),
-            child: Text('🌙', style: TextStyle(fontSize: 28.sp)),
-          ),
-          SizedBox(height: 14.h),
-          Text(
-            isRamadan
-                ? l10n.ramadanDayLabel(currentDay)
-                : l10n.daysUntilRamadan(daysUntilRamadan),
-            style: TextStyle(
-              fontSize: 22.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : Colors.black87,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          if (isRamadan) ...[
-            SizedBox(height: 8.h),
+      child: Padding(
+        padding: EdgeInsets.all(space.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '$currentDay / 30',
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w600,
-                    color: primary,
+                CalendarMoon(
+                  day: isRamadan ? currentDay : 1,
+                  size: large || MediaQuery.sizeOf(context).width < 400
+                      ? 56
+                      : 76,
+                  onChrome: true,
+                ),
+                SizedBox(width: space.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        (isRamadan
+                                ? l10n.ramadanYearLabel(
+                                    format.number(hijriYear),
+                                  )
+                                : l10n.ramadan)
+                            .toUpperCase(),
+                        style: context.type.eyebrow.copyWith(
+                          color: tokens.gilt,
+                        ),
+                      ),
+                      SizedBox(height: space.xxs),
+                      Text(
+                        isRamadan
+                            ? l10n.ramadanDayLabel(currentDay)
+                            : l10n.daysUntilRamadan(daysUntilRamadan),
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: tokens.onChrome,
+                        ),
+                      ),
+                      if (isRamadan)
+                        Text(
+                          '${format.number(currentDay)} / ${format.number(30)}',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: tokens.onChromeMuted,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: space.lg),
+              child: Divider(
+                height: 1,
+                thickness: tokens.stroke.hairline,
+                color: tokens.gilt.withValues(alpha: 0.28),
+              ),
+            ),
+            RamadanFast(
+              isRamadan: isRamadan,
+              fajrTime: fajrTime,
+              maghribTime: maghribTime,
+              clock: clock,
+            ),
           ],
-        ],
+        ),
       ),
     );
   }

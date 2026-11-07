@@ -1,342 +1,214 @@
 import 'dart:async';
-import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_time_picker.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/calendar_format.dart';
 
-class FastingProgressWidget extends StatefulWidget {
-  final DateTime fajrTime;
-  final DateTime maghribTime;
-  final bool isDark;
-
-  const FastingProgressWidget({
+/// Today's fast on the Ramadan plate: Imsaak and Iftar at the ends of a
+/// gilt bar that fills toward the next one, and how long until it.
+/// Between Iftar and the next Imsaak it shows the night the same way.
+class RamadanFast extends StatefulWidget {
+  const RamadanFast({
     super.key,
     required this.fajrTime,
     required this.maghribTime,
-    required this.isDark,
+    this.clock,
+    this.isRamadan = true,
   });
 
+  /// Outside Ramadan the same times are today's, for a voluntary fast.
+  final bool isRamadan;
+  final DateTime fajrTime;
+  final DateTime maghribTime;
+  final DateTime Function()? clock;
+
   @override
-  State<FastingProgressWidget> createState() => _FastingProgressWidgetState();
+  State<RamadanFast> createState() => _RamadanFastState();
 }
 
-class _FastingProgressWidgetState extends State<FastingProgressWidget>
-    with SingleTickerProviderStateMixin {
-  late Timer _timer;
-  late AnimationController _progressAnim;
-  double _targetProgress = 0.0;
-  bool _isFasting = true;
-  Duration _totalDuration = Duration.zero;
-  Duration _remaining = Duration.zero;
+class _RamadanFastState extends State<RamadanFast> {
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _progressAnim = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
-    _updateProgress();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      _updateProgress();
+    // Minutes are what's shown: refresh a few times a minute.
+    _timer = Timer.periodic(const Duration(seconds: 20), (_) {
+      if (mounted) setState(() {});
     });
-  }
-
-  void _updateProgress() {
-    final now = DateTime.now();
-    final fajr = widget.fajrTime;
-    final maghrib = widget.maghribTime;
-
-    if (now.isAfter(fajr) && now.isBefore(maghrib)) {
-      _isFasting = true;
-      _totalDuration = maghrib.difference(fajr);
-      final elapsed = now.difference(fajr);
-      _remaining = maghrib.difference(now);
-      _targetProgress = elapsed.inSeconds / _totalDuration.inSeconds;
-    } else {
-      _isFasting = false;
-      DateTime nextFajr;
-      DateTime currentMaghrib;
-
-      if (now.isAfter(maghrib)) {
-        currentMaghrib = maghrib;
-        nextFajr = fajr.add(const Duration(days: 1));
-      } else {
-        currentMaghrib = maghrib.subtract(const Duration(days: 1));
-        nextFajr = fajr;
-      }
-
-      _totalDuration = nextFajr.difference(currentMaghrib);
-      final elapsed = now.difference(currentMaghrib);
-      _remaining = nextFajr.difference(now);
-      _targetProgress = _totalDuration.inSeconds > 0
-          ? elapsed.inSeconds / _totalDuration.inSeconds
-          : 0.0;
-    }
-
-    _targetProgress = _targetProgress.clamp(0.0, 1.0);
-    _progressAnim.animateTo(
-      _targetProgress,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeOut,
-    );
-    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
-    _timer.cancel();
-    _progressAnim.dispose();
+    _timer?.cancel();
     super.dispose();
-  }
-
-  String _formatTime(DateTime time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final primary = widget.isDark
-        ? context.primaryLightColor
-        : context.primaryColor;
-    final totalHours = _totalDuration.inHours;
-    final totalMinutes = _totalDuration.inMinutes.remainder(60);
-    final remainingHours = _remaining.inHours + 1;
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final format = CalendarFormat.of(context);
+    final now = widget.clock?.call() ?? DateTime.now();
+    final fajr = widget.fajrTime;
+    final maghrib = widget.maghribTime;
 
-    final String durationText;
-    final String leftLabel;
-    final String leftTime;
-    final String rightLabel;
-    final String rightTime;
-    final String remainingText;
-
-    if (_isFasting) {
-      durationText = l10n.durationOfFasting(totalHours, totalMinutes);
-      leftLabel = l10n.imsaakLabel;
-      leftTime = _formatTime(widget.fajrTime);
-      rightLabel = l10n.iftarLabel;
-      rightTime = _formatTime(widget.maghribTime);
-      remainingText = l10n.remainingForIftar(remainingHours);
+    final fasting = now.isAfter(fajr) && now.isBefore(maghrib);
+    final DateTime from;
+    final DateTime to;
+    if (fasting) {
+      from = fajr;
+      to = maghrib;
+    } else if (now.isAfter(maghrib)) {
+      from = maghrib;
+      to = fajr.add(const Duration(days: 1));
     } else {
-      durationText = l10n.durationOfIftar(totalHours, totalMinutes);
-      leftLabel = l10n.iftarLabel;
-      leftTime = _formatTime(widget.maghribTime);
-      rightLabel = l10n.imsaakLabel;
-      rightTime = _formatTime(widget.fajrTime);
-      remainingText = l10n.remainingForImsaak(remainingHours);
+      from = maghrib.subtract(const Duration(days: 1));
+      to = fajr;
     }
+    final total = to.difference(from);
+    final progress = total.inSeconds <= 0
+        ? 0.0
+        : (now.difference(from).inSeconds / total.inSeconds).clamp(0.0, 1.0);
+    final left = (to.difference(now).inSeconds / 60).ceil().clamp(0, 24 * 60);
+    final when = hudaTimeUntil(context, left);
 
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-        color: widget.isDark
-            ? Colors.white.withValues(alpha: 0.05)
-            : Colors.white,
-        border: widget.isDark
-            ? null
-            : Border.all(color: Colors.black.withValues(alpha: 0.06), width: 1),
-        boxShadow: widget.isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Icon(
-                  _isFasting
-                      ? Icons.restaurant_rounded
-                      : Icons.restaurant_menu_rounded,
-                  color: primary,
-                  size: 18.sp,
-                ),
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Text(
-                  durationText,
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                    color: widget.isDark ? Colors.white : Colors.black87,
-                  ),
-                ),
-              ),
-            ],
+    Widget end(String label, DateTime time, {required bool next}) => Column(
+      crossAxisAlignment: next
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: next ? tokens.gilt : tokens.onChromeMuted,
           ),
-          SizedBox(height: 18.h),
-          AnimatedBuilder(
-            animation: _progressAnim,
-            builder: (context, _) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(6.r),
-                child: CustomPaint(
-                  painter: _RoundedProgressPainter(
-                    progress: _progressAnim.value,
-                    activeColor: primary,
-                    trackColor: widget.isDark
-                        ? Colors.white.withValues(alpha: 0.08)
-                        : primary.withValues(alpha: 0.1),
-                    textDirection: Directionality.of(context),
-                  ),
-                  size: Size(double.infinity, 10.h),
-                ),
-              );
-            },
+        ),
+        Text(
+          format.timeOf(time),
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: tokens.onChrome,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
-          SizedBox(height: 14.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    leftLabel,
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w600,
-                      color: widget.isDark ? Colors.white54 : Colors.black45,
-                    ),
-                  ),
-                  SizedBox(height: 2.h),
-                  Text(
-                    leftTime,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: widget.isDark ? Colors.white : Colors.black87,
-                    ),
-                  ),
-                ],
+        ),
+      ],
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          (widget.isRamadan ? l10n.ramadanTodaysFast : l10n.today)
+              .toUpperCase(),
+          style: context.type.eyebrow.copyWith(color: tokens.gilt),
+        ),
+        SizedBox(height: space.sm),
+        // Side by side; stacked when large text leaves no room.
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.end,
+          spacing: space.lg,
+          runSpacing: space.xs,
+          children: [
+            end(
+              fasting ? l10n.imsaakLabel : l10n.iftarLabel,
+              fasting ? fajr : maghrib,
+              next: false,
+            ),
+            end(
+              fasting ? l10n.iftarLabel : l10n.imsaakLabel,
+              fasting ? maghrib : fajr,
+              next: true,
+            ),
+          ],
+        ),
+        SizedBox(height: space.sm),
+        Semantics(
+          value: '${(progress * 100).round()}%',
+          child: TweenAnimationBuilder<double>(
+            tween: Tween(end: progress),
+            duration: tokens.motion.of(context, tokens.motion.long),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, _) => CustomPaint(
+              size: const Size(double.infinity, 8),
+              painter: _FastBar(
+                value: value,
+                track: tokens.onChrome.withValues(alpha: 0.14),
+                fill: tokens.gilt,
+                rtl: Directionality.of(context) == TextDirection.rtl,
               ),
-              Flexible(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8.w),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 4.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: primary.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Text(
-                    remainingText,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w600,
-                      color: primary,
-                    ),
-                  ),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    rightLabel,
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w600,
-                      color: _isFasting
-                          ? primary
-                          : (widget.isDark ? Colors.white54 : Colors.black45),
-                    ),
-                  ),
-                  SizedBox(height: 2.h),
-                  Text(
-                    rightTime,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: _isFasting
-                          ? primary
-                          : (widget.isDark ? Colors.white : Colors.black87),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: space.sm),
+        HudaStateSwitcher(
+          stateKey: fasting,
+          alignment: AlignmentDirectional.centerStart,
+          child: Text(
+            fasting ? l10n.ramadanIftarIn(when) : l10n.ramadanImsakIn(when),
+            style: theme.textTheme.titleSmall?.copyWith(color: tokens.onChrome),
+          ),
+        ),
+        Text(
+          fasting
+              ? l10n.durationOfFasting(total.inHours, total.inMinutes % 60)
+              : l10n.durationOfIftar(total.inHours, total.inMinutes % 60),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: tokens.onChromeMuted,
+          ),
+        ),
+      ],
     );
   }
 }
 
-class _RoundedProgressPainter extends CustomPainter {
-  final double progress;
-  final Color activeColor;
-  final Color trackColor;
-  final TextDirection textDirection;
-
-  _RoundedProgressPainter({
-    required this.progress,
-    required this.activeColor,
-    required this.trackColor,
-    required this.textDirection,
+class _FastBar extends CustomPainter {
+  const _FastBar({
+    required this.value,
+    required this.track,
+    required this.fill,
+    required this.rtl,
   });
+
+  final double value;
+  final Color track;
+  final Color fill;
+  final bool rtl;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final trackPaint = Paint()
-      ..color = trackColor
-      ..style = PaintingStyle.fill;
-
     final radius = Radius.circular(size.height / 2);
-    final isRTL = textDirection == TextDirection.rtl;
-
     canvas.drawRRect(
-      RRect.fromLTRBR(0, 0, size.width, size.height, radius),
-      trackPaint,
+      RRect.fromRectAndRadius(Offset.zero & size, radius),
+      Paint()..color = track,
     );
-
-    if (progress > 0) {
-      final activeWidth = max(size.height, size.width * progress);
-
-      final activeRect = isRTL
-          ? Rect.fromLTRB(size.width - activeWidth, 0, size.width, size.height)
-          : Rect.fromLTRB(0, 0, activeWidth, size.height);
-
-      final activePaint = Paint()
-        ..shader = LinearGradient(
-          colors: isRTL
-              ? [activeColor, activeColor.withValues(alpha: 0.7)]
-              : [activeColor.withValues(alpha: 0.7), activeColor],
-        ).createShader(activeRect)
-        ..style = PaintingStyle.fill;
-
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(activeRect, radius),
-        activePaint,
-      );
-    }
+    if (value <= 0) return;
+    final width = (size.width * value).clamp(size.height, size.width);
+    final rect = rtl
+        ? Rect.fromLTWH(size.width - width, 0, width, size.height)
+        : Rect.fromLTWH(0, 0, width, size.height);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, radius),
+      Paint()..color = fill,
+    );
+    // Where now is: a bright bead at the bar's leading end.
+    final x = rtl ? rect.left + size.height / 2 : rect.right - size.height / 2;
+    canvas.drawCircle(
+      Offset(x, size.height / 2),
+      size.height * 0.9,
+      Paint()..color = fill,
+    );
   }
 
   @override
-  bool shouldRepaint(covariant _RoundedProgressPainter oldDelegate) {
-    return oldDelegate.progress != progress ||
-        oldDelegate.activeColor != activeColor ||
-        oldDelegate.textDirection != textDirection;
-  }
+  bool shouldRepaint(_FastBar old) =>
+      old.value != value ||
+      old.track != track ||
+      old.fill != fill ||
+      old.rtl != rtl;
 }

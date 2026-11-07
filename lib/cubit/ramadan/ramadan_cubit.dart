@@ -48,12 +48,11 @@ class RamadanCubit extends Cubit<RamadanState> {
       final isRamadan = todayHijri.month == _ramadanHijriMonth;
       final currentDay = isRamadan ? todayHijri.day : 0;
 
-      int ramadanHijriYear;
-      if (isRamadan || todayHijri.month > _ramadanHijriMonth) {
-        ramadanHijriYear = todayHijri.year;
-      } else {
-        ramadanHijriYear = todayHijri.year;
-      }
+      // The Ramadan whose fasts are tracked: this one, or the last one
+      // until the next begins (missed fasts are made up before it).
+      final ramadanHijriYear = isRamadan || todayHijri.month > _ramadanHijriMonth
+          ? todayHijri.year
+          : todayHijri.year - 1;
 
       int daysUntilRamadan = 0;
       if (!isRamadan) {
@@ -98,6 +97,7 @@ class RamadanCubit extends Cubit<RamadanState> {
         ramadanDays: daysWithStatus,
         fastedCount: fastedCount,
         missedCount: missedCount,
+        nightsOpen: _loadNightsOpen(ramadanHijriYear),
       ));
     } catch (e) {
       emit(RamadanError(e.toString()));
@@ -142,7 +142,8 @@ class RamadanCubit extends Cubit<RamadanState> {
   DateTime? _findRamadanStart(int hijriYear) {
     final now = DateTime.now();
 
-    for (int i = -200; i <= 200; i++) {
+    // Up to a year back: the last Ramadan began at most ~354 days ago.
+    for (int i = -400; i <= 200; i++) {
       final date = now.add(Duration(days: i));
       final hijri = _toHijri(date);
       if (hijri.year == hijriYear &&
@@ -198,6 +199,23 @@ class RamadanCubit extends Cubit<RamadanState> {
     final encoded =
         json.encode(status.map((k, v) => MapEntry(k.toString(), v)));
     await cacheHelper.saveData(key: key, value: encoded);
+  }
+
+  bool? _loadNightsOpen(int hijriYear) {
+    final open = cacheHelper.getData(key: 'ramadan_nights_open_$hijriYear');
+    return open is bool ? open : null;
+  }
+
+  /// Remembers the person opening or closing the tracked Ramadan's nights
+  /// outside Ramadan (kept per Ramadan, so the next one starts fresh).
+  void setNightsOpen(bool open) {
+    if (state is! RamadanLoaded) return;
+    final loaded = state as RamadanLoaded;
+    emit(loaded.copyWith(nightsOpen: open));
+    cacheHelper.saveData(
+      key: 'ramadan_nights_open_${loaded.hijriYear}',
+      value: open,
+    );
   }
 
   void setDayStatus(int dayNumber, String status) {

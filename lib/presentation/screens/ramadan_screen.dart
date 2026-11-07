@@ -1,212 +1,182 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/layout/adaptive_layout.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/layout/insets.dart';
+import 'package:huda/core/layout/tabletop_split.dart';
+import 'package:huda/core/layout/window_class.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/ramadan/ramadan_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/ramadan/ramadan_header_widget.dart';
-import 'package:huda/presentation/widgets/ramadan/prayer_time_cards_widget.dart';
-import 'package:huda/presentation/widgets/ramadan/fasting_progress_widget.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/calendar_identity.dart';
 import 'package:huda/presentation/widgets/ramadan/qadhaa_tracker_widget.dart';
+import 'package:huda/presentation/widgets/ramadan/ramadan_header_widget.dart';
 import 'package:huda/presentation/widgets/ramadan/ramadan_loading_widget.dart';
 
+/// Ramadan: the plate (the night's moon, the day or the days until it,
+/// today's fast) and the 30 nights to mark fasted or missed. One column
+/// on phones; the nights beside the plate from 840 and on open folds; the
+/// plate above a tabletop fold.
 class RamadanScreen extends StatefulWidget {
-  const RamadanScreen({super.key});
+  const RamadanScreen({super.key, this.debugClock});
+
+  /// The device matrix's fixed "now".
+  final DateTime Function()? debugClock;
 
   @override
   State<RamadanScreen> createState() => _RamadanScreenState();
 }
 
-class _RamadanScreenState extends State<RamadanScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animController;
-  late List<Animation<double>> _sectionAnimations;
+class _RamadanScreenState extends State<RamadanScreen> {
+  bool _retrying = false;
+  RamadanError? _failure;
 
   @override
   void initState() {
     super.initState();
     context.read<RamadanCubit>().loadRamadanData();
-
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
-
-    _sectionAnimations = List.generate(4, (i) {
-      final start = i * 0.15;
-      final end = start + 0.5;
-      return CurvedAnimation(
-        parent: _animController,
-        curve: Interval(start, end.clamp(0.0, 1.0), curve: Curves.easeOutCubic),
-      );
-    });
-
-    _animController.forward();
   }
 
-  @override
-  void dispose() {
-    _animController.dispose();
-    super.dispose();
+  void _retry() {
+    setState(() => _retrying = true);
+    context.read<RamadanCubit>().loadRamadanData();
   }
 
-  Widget _buildAnimatedSection({required int index, required Widget child}) {
-    return AnimatedBuilder(
-      animation: _sectionAnimations[index],
-      builder: (context, _) {
-        final value = _sectionAnimations[index].value;
-        return Opacity(
-          opacity: value,
-          child: Transform.translate(
-            offset: Offset(0, 20 * (1 - value)),
-            child: child,
+  Widget _scroll(List<Widget> children, {double maxWidth = 720}) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final space = context.tokens.space;
+        final width = constraints.maxWidth;
+        final side = math.max(space.gutter(width), (width - maxWidth) / 2);
+        return ListView(
+          padding: context.scrollPadding(
+            EdgeInsets.fromLTRB(side, space.sm, side, space.xxl),
           ),
+          children: children,
         );
       },
     );
   }
 
+  Widget _plate(RamadanState state) => HudaStateSwitcher(
+    stateKey: state is RamadanLoaded,
+    child: state is RamadanLoaded
+        ? HudaReveal(
+            child: RamadanPlate(
+              isRamadan: state.isRamadan,
+              currentDay: state.currentDay,
+              daysUntilRamadan: state.daysUntilRamadan,
+              hijriYear: state.hijriYear,
+              fajrTime: state.fajrTime,
+              maghribTime: state.maghribTime,
+              clock: widget.debugClock,
+            ),
+          )
+        : const RamadanPlateSkeleton(),
+  );
+
+  Widget _nights(RamadanState state) => HudaStateSwitcher(
+    stateKey: state is RamadanLoaded,
+    child: state is RamadanLoaded
+        ? HudaReveal(
+            index: 1,
+            child: state.ramadanDays.isEmpty
+                ? const SizedBox.shrink()
+                : RamadanNightsCard(
+                    ramadanDays: state.ramadanDays,
+                    fastedCount: state.fastedCount,
+                    missedCount: state.missedCount,
+                    currentDay: state.currentDay,
+                    isRamadan: state.isRamadan,
+                    hijriYear: state.hijriYear,
+                    clock: widget.debugClock,
+                    onSetStatus: (day, status) =>
+                        context.read<RamadanCubit>().setDayStatus(day, status),
+                    nightsOpen: state.nightsOpen,
+                    onNightsOpen: context.read<RamadanCubit>().setNightsOpen,
+                  ),
+          )
+        : const RamadanNightsSkeleton(),
+  );
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final primary = isDark ? context.primaryLightColor : context.primaryColor;
+    final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    final width = MediaQuery.sizeOf(context).width;
+    final fold = FoldInfo.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: isDark ? theme.scaffoldBackgroundColor : primary,
-        foregroundColor: isDark ? theme.iconTheme.color : Colors.white,
-        title: Text(
-          AppLocalizations.of(context)!.ramadan,
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: false,
-      ),
-      body: BlocBuilder<RamadanCubit, RamadanState>(
+    return HudaRevealScope(
+      child: BlocConsumer<RamadanCubit, RamadanState>(
+        listener: (context, state) {
+          if (state is! RamadanLoading && _retrying) {
+            setState(() => _retrying = false);
+          }
+        },
         builder: (context, state) {
-          if (state is RamadanLoading) {
-            return RamadanLoadingWidget(isDark: isDark);
+          if (state is RamadanError) _failure = state;
+          if (state is RamadanLoaded) _failure = null;
+          final failure = _failure;
+          // After Retry, the failure stays with "Retrying…" until it ends.
+          if (failure != null && (state is RamadanError || _retrying)) {
+            return HudaScaffold(
+              title: l10n.ramadan,
+              body: HudaErrorState(
+                identity: calendarIdentity,
+                title: l10n.setupLocationFailedTitle,
+                message: l10n.ramadanLocationError,
+                onRetry: _retry,
+                retrying: _retrying,
+              ),
+            );
           }
-          if (state is RamadanError) {
-            return _buildErrorState(state, isDark, primary);
+
+          // Short windows put the nights beside the plate from 600 wide.
+          final short = context.windowClass.isCompactHeight && width >= 600;
+          final twoPaneMinWidth = short ? 600.0 : 840.0;
+          if (AdaptivePanes.showsTwoPanes(
+            width,
+            fold,
+            twoPaneMinWidth: twoPaneMinWidth,
+          )) {
+            return HudaScaffold(
+              title: l10n.ramadan,
+              body: AdaptivePanes(
+                twoPaneMinWidth: twoPaneMinWidth,
+                primaryFraction: 0.42,
+                maxPrimaryWidth: 520,
+                primary: _scroll([_plate(state)]),
+                secondary: _scroll([_nights(state)], maxWidth: 760),
+              ),
+            );
           }
-          if (state is RamadanLoaded) {
-            return _buildLoadedContent(state, isDark, primary, theme);
+          if (TabletopSplit.applies(context)) {
+            return TabletopSplit(
+              top: HudaScaffold(
+                title: l10n.ramadan,
+                body: _scroll([_plate(state)]),
+              ),
+              bottom: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: _scroll([_nights(state)]),
+              ),
+            );
           }
-          return const SizedBox.shrink();
+          return HudaScaffold(
+            title: l10n.ramadan,
+            body: _scroll([
+              _plate(state),
+              SizedBox(height: space.lg),
+              _nights(state),
+            ]),
+          );
         },
       ),
-    );
-  }
-
-  Widget _buildErrorState(RamadanError state, bool isDark, Color primary) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(20.r),
-              decoration: BoxDecoration(
-                color: primary.withValues(alpha: 0.08),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.error_outline,
-                size: 40.sp,
-                color: primary.withValues(alpha: 0.6),
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              state.message,
-              style: TextStyle(
-                color: isDark ? Colors.white54 : Colors.black45,
-                fontSize: 14.sp,
-                height: 1.4,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20.h),
-            ElevatedButton.icon(
-              onPressed: () => context.read<RamadanCubit>().loadRamadanData(),
-              icon: const Icon(Icons.refresh_rounded, size: 18),
-              label: Text(AppLocalizations.of(context)!.retry),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primary,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadedContent(
-    RamadanLoaded state,
-    bool isDark,
-    Color primary,
-    ThemeData theme,
-  ) {
-    return ListView(
-      padding: EdgeInsets.fromLTRB(
-        16.w,
-        8.h,
-        16.w,
-        32.h + MediaQuery.paddingOf(context).bottom,
-      ),
-      children: [
-        _buildAnimatedSection(
-          index: 0,
-          child: RamadanHeaderWidget(
-            isRamadan: state.isRamadan,
-            currentDay: state.currentDay,
-            daysUntilRamadan: state.daysUntilRamadan,
-            isDark: isDark,
-          ),
-        ),
-        SizedBox(height: 16.h),
-        _buildAnimatedSection(
-          index: 1,
-          child: PrayerTimeCardsWidget(
-            fajrTime: state.fajrTime,
-            maghribTime: state.maghribTime,
-            isDark: isDark,
-          ),
-        ),
-        SizedBox(height: 16.h),
-        _buildAnimatedSection(
-          index: 2,
-          child: FastingProgressWidget(
-            fajrTime: state.fajrTime,
-            maghribTime: state.maghribTime,
-            isDark: isDark,
-          ),
-        ),
-        SizedBox(height: 16.h),
-        _buildAnimatedSection(
-          index: 3,
-          child: QadhaaTrackerWidget(
-            ramadanDays: state.ramadanDays,
-            fastedCount: state.fastedCount,
-            missedCount: state.missedCount,
-            currentDay: state.currentDay,
-            isRamadan: state.isRamadan,
-            isDark: isDark,
-            onSetStatus: (dayNumber, status) {
-              context.read<RamadanCubit>().setDayStatus(dayNumber, status);
-            },
-          ),
-        ),
-        SizedBox(height: 24.h),
-      ],
     );
   }
 }

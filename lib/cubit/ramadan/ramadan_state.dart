@@ -41,6 +41,10 @@ class RamadanLoaded extends RamadanState {
   final int fastedCount;
   final int missedCount;
 
+  /// Whether the person opened (true) or closed (false) the nights of the
+  /// tracked Ramadan by hand outside Ramadan; null until they do.
+  final bool? nightsOpen;
+
   RamadanLoaded({
     required this.isRamadan,
     required this.currentDay,
@@ -52,6 +56,7 @@ class RamadanLoaded extends RamadanState {
     required this.ramadanDays,
     required this.fastedCount,
     required this.missedCount,
+    this.nightsOpen,
   });
 
   RamadanLoaded copyWith({
@@ -65,6 +70,7 @@ class RamadanLoaded extends RamadanState {
     List<RamadanDayInfo>? ramadanDays,
     int? fastedCount,
     int? missedCount,
+    bool? nightsOpen,
   }) {
     return RamadanLoaded(
       isRamadan: isRamadan ?? this.isRamadan,
@@ -77,6 +83,7 @@ class RamadanLoaded extends RamadanState {
       ramadanDays: ramadanDays ?? this.ramadanDays,
       fastedCount: fastedCount ?? this.fastedCount,
       missedCount: missedCount ?? this.missedCount,
+      nightsOpen: nightsOpen ?? this.nightsOpen,
     );
   }
 }
