@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:huda/data/models/miqaat_lock/miqaat_lock.dart';
 import 'package:huda/data/repository/miqaat_lock_repository.dart';
+import 'miqaat_lock_platform.dart';
 import 'miqaat_lock_state.dart';
 
 class MiqaatLockCubit extends Cubit<MiqaatLockState>
@@ -317,8 +317,16 @@ class MiqaatLockCubit extends Cubit<MiqaatLockState>
     return authorized;
   }
 
+  /// How many apps and categories are chosen in Screen Time (iOS).
+  Future<({int apps, int categories})> iosSelectionCount() =>
+      _repository.getIOSSelectionCount();
+
+  /// Opens Screen Time's app picker (iOS); true when apps were chosen.
+  Future<bool> chooseIOSApps() => _repository.showFamilyActivityPicker();
+
   Future<MiqaatLockPermissions> _checkPermissions() async {
-    if (Platform.isAndroid) {
+    final platform = MiqaatLockPlatform.current;
+    if (platform == MiqaatLockPlatform.android) {
       final accessibilityEnabled = await _repository.isAccessibilityEnabled();
       final overlayGranted = await _repository.isOverlayPermissionGranted();
       return MiqaatLockPermissions(
@@ -326,7 +334,7 @@ class MiqaatLockCubit extends Cubit<MiqaatLockState>
         overlayPermissionGranted: overlayGranted,
         batteryOptimizationExempt: true,
       );
-    } else if (Platform.isIOS) {
+    } else if (platform == MiqaatLockPlatform.ios) {
       final screenTimeAuthorized = await _repository.isScreenTimeAuthorized();
       return MiqaatLockPermissions(
         screenTimeAuthorized: screenTimeAuthorized,

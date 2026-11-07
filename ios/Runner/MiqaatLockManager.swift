@@ -380,7 +380,11 @@ class MiqaatLockMethodHandler: NSObject {
             
         case "showFamilyActivityPicker":
             DispatchQueue.main.async {
-                guard let rootVC = UIApplication.shared.keyWindow?.rootViewController else {
+                let keyWindow = UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap(\.windows)
+                    .first(where: \.isKeyWindow)
+                guard let rootVC = keyWindow?.rootViewController else {
                     result(FlutterError(code: "NO_VIEW_CONTROLLER", message: "Could not find root view controller", details: nil))
                     return
                 }

@@ -1,25 +1,30 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/layout/adaptive_layout.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/layout/insets.dart';
+import 'package:huda/core/layout/tabletop_split.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
+import 'package:huda/cubit/miqaat_lock/miqaat_lock_platform.dart';
 import 'package:huda/cubit/miqaat_lock/miqaat_lock_state.dart';
-
+import 'package:huda/data/models/miqaat_lock/miqaat_lock.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/app_selection_dialog.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/permission_setup_widget.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/time_slot_picker.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_master_toggle.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_apps_section.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_time_slots_section.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_duration_section.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_error_state.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/animated_section.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/duration_picker_sheet.dart';
-import 'package:huda/presentation/widgets/miqaat_lock/custom_duration_picker_content.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/design/huda_toast.dart';
+import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_gate.dart';
+import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_identity.dart';
+import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_sections.dart';
+import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_sheets.dart';
 
+/// Miqaat Lock: the carved door (what the lock is doing now, and its
+/// switch), then what it needs: access, the apps, the time windows and
+/// the goal. Phones stack them; from 840 wide (and on folds) the door
+/// and the goal sit beside the setup; tabletop puts the door above the
+/// band.
 class MiqaatLockScreen extends StatefulWidget {
   const MiqaatLockScreen({super.key});
 
@@ -28,251 +33,353 @@ class MiqaatLockScreen extends StatefulWidget {
 }
 
 class _MiqaatLockScreenState extends State<MiqaatLockScreen>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  int _iosAppsRefreshKey = 0;
-  late AnimationController _animController;
-  late List<Animation<double>> _sectionAnimations;
+    with WidgetsBindingObserver {
+  late final MiqaatLockCubit _cubit = context.read<MiqaatLockCubit>();
+  bool _retrying = false;
+  ({int apps, int categories})? _iosCount;
+
+  bool get _ios => MiqaatLockPlatform.current == MiqaatLockPlatform.ios;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    context.read<MiqaatLockCubit>().loadSettings();
-    context.read<MiqaatLockCubit>().refreshPermissions();
-
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
-
-    _sectionAnimations = List.generate(4, (i) {
-      final start = i * 0.15;
-      final end = start + 0.5;
-      return CurvedAnimation(
-        parent: _animController,
-        curve: Interval(start, end.clamp(0.0, 1.0), curve: Curves.easeOutCubic),
-      );
-    });
-
-    _animController.forward();
+    _cubit.loadSettings();
+    _cubit.refreshPermissions();
+    _readIOSCount();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _animController.dispose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      context.read<MiqaatLockCubit>().refreshPermissions();
+    if (state == AppLifecycleState.resumed) _cubit.refreshPermissions();
+  }
+
+  Future<void> _readIOSCount() async {
+    if (!_ios) return;
+    final count = await _cubit.iosSelectionCount();
+    if (mounted) setState(() => _iosCount = count);
+  }
+
+  void _retry() {
+    setState(() => _retrying = true);
+    _cubit.loadSettings();
+  }
+
+  void _toggle(bool on) {
+    HudaHaptics.selection(context);
+    _cubit.toggleEnabled(on);
+  }
+
+  Future<void> _addApps(MiqaatLockLoaded state) async {
+    final l10n = AppLocalizations.of(context)!;
+    if (_ios) {
+      try {
+        final chosen = await _cubit.chooseIOSApps();
+        if (!mounted) return;
+        if (chosen) {
+          showHudaToast(context, message: l10n.iosAppsSelectedSuccessfully);
+        }
+        await _readIOSCount();
+      } on PlatformException catch (e) {
+        if (!mounted) return;
+        showHudaToast(
+          context,
+          kind: HudaToastKind.failed,
+          message: l10n.iosAppSelectionError(e.message ?? ''),
+        );
+      }
+      return;
     }
+    final apps = await showMiqaatAppsSheet(
+      context,
+      cubit: _cubit,
+      current: state.settings.lockedApps,
+    );
+    if (apps != null) _cubit.setLockedApps(apps);
+  }
+
+  void _removeApp(MiqaatLockLoaded state, LockedApp app) {
+    final l10n = AppLocalizations.of(context)!;
+    final before = state.settings.lockedApps;
+    HudaHaptics.light(context);
+    _cubit.removeLockedApp(app.packageId);
+    showHudaToast(
+      context,
+      message: l10n.miqaatRemoved(app.appName),
+      actionLabel: l10n.undo,
+      onAction: () => _cubit.setLockedApps(before),
+    );
+  }
+
+  Future<void> _editWindow([TimeSlot? slot]) async {
+    final result = await showMiqaatWindowSheet(context, existing: slot);
+    if (result == null) return;
+    slot == null ? _cubit.addTimeSlot(result) : _cubit.updateTimeSlot(result);
+  }
+
+  void _removeWindow(TimeSlot slot) {
+    final l10n = AppLocalizations.of(context)!;
+    HudaHaptics.light(context);
+    _cubit.removeTimeSlot(slot.id);
+    showHudaToast(
+      context,
+      message: l10n.miqaatWindowRemoved,
+      actionLabel: l10n.undo,
+      onAction: () => _cubit.addTimeSlot(slot),
+    );
+  }
+
+  void _goal(int minutes) {
+    HudaHaptics.selection(context);
+    _cubit.setGoalDuration(minutes);
+  }
+
+  Future<void> _customGoal(int current) async {
+    final minutes = await showMiqaatGoalSheet(context, current: current);
+    if (minutes != null) _cubit.setGoalDuration(minutes);
+  }
+
+  Future<void> _accessibility() async {
+    final agreed = await showMiqaatAccessibilitySheet(context);
+    if (agreed == true) _cubit.openAccessibilitySettings();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final isDark = theme.brightness == Brightness.dark;
-    final primary = context.primaryColor;
+    final state = context.watch<MiqaatLockCubit>().state;
+    final loaded = state is MiqaatLockLoaded ? state : null;
+    final size = MediaQuery.sizeOf(context);
+    final short = size.height < 480;
+    // From 700 the door gets a pane of its own; short windows (phone and
+    // Duo closed landscape) keep one column so the gate stays wide.
+    const twoPaneMin = 700.0;
+    final fold = FoldInfo.of(context);
+    final wide =
+        !short &&
+        AdaptivePanes.showsTwoPanes(
+          size.width,
+          fold,
+          twoPaneMinWidth: twoPaneMin,
+        );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n.miqaatLock,
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+    Widget frame(Widget child) =>
+        BlocListener<MiqaatLockCubit, MiqaatLockState>(
+          listener: (context, state) {
+            if (_retrying && state is! MiqaatLockLoading) {
+              setState(() => _retrying = false);
+            }
+          },
+          child: HudaRevealScope(child: child),
+        );
+
+    if (loaded != null && !wide && TabletopSplit.applies(context)) {
+      return frame(
+        TabletopSplit(
+          top: HudaScaffold(
+            title: l10n.miqaatLock,
+            body: _pane((context) => _gate(loaded)),
+          ),
+          bottom: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: _pane((context) => _setup(loaded, goal: true)),
+          ),
         ),
-        backgroundColor: isDark ? theme.scaffoldBackgroundColor : primary,
-        foregroundColor: isDark ? theme.iconTheme.color : Colors.white,
-        elevation: 0,
-        centerTitle: false,
-      ),
-      body: BlocBuilder<MiqaatLockCubit, MiqaatLockState>(
-        builder: (context, state) {
-          if (state is MiqaatLockLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is MiqaatLockError) {
-            return MiqaatLockErrorState(
-              message: state.message,
-              onRetry: () => context.read<MiqaatLockCubit>().loadSettings(),
-            );
-          }
-
-          if (state is! MiqaatLockLoaded) {
-            return const SizedBox.shrink();
-          }
-
-          final needsPermissions = Platform.isAndroid
-              ? !state.permissions.isAndroidReady
-              : Platform.isIOS
-              ? !state.permissions.isIOSReady
-              : false;
-
-          return ListView(
-            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 32.h),
-            children: [
-              if (needsPermissions) ...[
-                PermissionSetupWidget(
-                  permissions: state.permissions,
-                  onRefresh: () =>
-                      context.read<MiqaatLockCubit>().refreshPermissions(),
-                ),
-                SizedBox(height: 16.h),
-              ],
-              AnimatedSection(
-                animation: _sectionAnimations[0],
-                child: MasterToggleSection(
-                  isEnabled: state.settings.isEnabled,
-                  isLocked: needsPermissions,
-                  onToggle: (v) =>
-                      context.read<MiqaatLockCubit>().toggleEnabled(v),
-                ),
-              ),
-              SizedBox(height: 16.h),
-              AnimatedSection(
-                animation: _sectionAnimations[1],
-                child: LockedAppsSection(
-                  lockedApps: state.settings.lockedApps,
-                  onAddAppsTap: () => _showAppSelectionDialog(context, state),
-                  onRemoveApp: (packageId) => context
-                      .read<MiqaatLockCubit>()
-                      .removeLockedApp(packageId),
-                  iosAppsRefreshKey: _iosAppsRefreshKey,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              AnimatedSection(
-                animation: _sectionAnimations[2],
-                child: TimeSlotsSection(
-                  timeSlots: state.settings.timeSlots,
-                  onAddTimeSlot: () => _showTimeSlotPicker(context),
-                  onRemoveTimeSlot: (id) =>
-                      context.read<MiqaatLockCubit>().removeTimeSlot(id),
-                ),
-              ),
-              SizedBox(height: 16.h),
-              AnimatedSection(
-                animation: _sectionAnimations[3],
-                child: SessionDurationSection(
-                  goalDurationMinutes: state.settings.goalDurationMinutes,
-                  onEditTap: () => _showDurationPicker(
-                    context,
-                    state.settings.goalDurationMinutes,
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.h),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  void _showAppSelectionDialog(BuildContext context, MiqaatLockLoaded state) {
-    final cubit = context.read<MiqaatLockCubit>();
-    if (state.installedApps.isEmpty) {
-      cubit.loadInstalledApps();
+      );
     }
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (dialogContext) => BlocProvider.value(
-        value: cubit,
-        child: AppSelectionDialog(
-          selectedApps: state.settings.lockedApps
-              .map((a) => a.packageId)
-              .toList(),
-        ),
+    final failed =
+        state is MiqaatLockError || (_retrying && state is! MiqaatLockLoaded);
+    final Widget body = switch (state) {
+      _ when failed => HudaErrorState(
+        identity: miqaatLockIdentity,
+        message: l10n.unexpectedError,
+        onRetry: _retry,
+        retrying: _retrying,
       ),
-    ).then((_) {
-      if (Platform.isIOS && mounted) {
-        setState(() => _iosAppsRefreshKey++);
-      }
-    });
-  }
-
-  void _showTimeSlotPicker(BuildContext context) {
-    final cubit = context.read<MiqaatLockCubit>();
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (dialogContext) =>
-          BlocProvider.value(value: cubit, child: const TimeSlotPickerDialog()),
-    );
-  }
-
-  void _showDurationPicker(BuildContext blocContext, int currentDuration) {
-    final cubit = blocContext.read<MiqaatLockCubit>();
-
-    showModalBottomSheet(
-      context: blocContext,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (dialogContext) => DurationPickerSheet(
-        currentDuration: currentDuration,
-        onDurationSelected: (duration) {
-          cubit.setGoalDuration(duration);
-          Navigator.pop(dialogContext);
-        },
-        onCustomDurationTap: () {
-          Navigator.pop(dialogContext);
-          _showCustomDurationPicker(blocContext, currentDuration);
-        },
-      ),
-    );
-  }
-
-  void _showCustomDurationPicker(
-    BuildContext blocContext,
-    int currentDuration,
-  ) {
-    final cubit = blocContext.read<MiqaatLockCubit>();
-    int selectedDuration = currentDuration;
-    final theme = Theme.of(blocContext);
-
-    showDialog(
-      context: blocContext,
-      builder: (dialogContext) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(
-            color:
-                theme.dialogTheme.backgroundColor ?? theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(24.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(24.r),
-            child: StatefulBuilder(
-              builder: (innerContext, setState) {
-                return CustomDurationPickerContent(
-                  selectedDuration: selectedDuration,
-                  onChanged: (value) =>
-                      setState(() => selectedDuration = value),
-                  onCancel: () => Navigator.pop(dialogContext),
-                  onConfirm: () {
-                    cubit.setGoalDuration(selectedDuration);
-                    Navigator.pop(dialogContext);
-                  },
-                );
-              },
+      MiqaatLockLoaded() when wide => _capped(
+        fold,
+        size.width,
+        AdaptivePanes(
+          twoPaneMinWidth: twoPaneMin,
+          primary: _pane(
+            (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                HudaReveal(child: _gate(state, large: true)),
+                SizedBox(height: context.tokens.space.xl),
+                HudaReveal(index: 1, child: _goalSection(state)),
+              ],
             ),
           ),
+          secondary: _pane(
+            (context) => _setup(state, goal: false, revealFrom: 2),
+            key: const PageStorageKey('miqaat-setup'),
+          ),
         ),
+      ),
+      MiqaatLockLoaded() => _pane(
+        (context) => ReadableWidth(
+          maxWidth: 720,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              HudaReveal(child: _gate(state)),
+              SizedBox(height: context.tokens.space.xl),
+              _setup(state, goal: true, revealFrom: 1),
+            ],
+          ),
+        ),
+      ),
+      _ => _pane(
+        (context) => const ReadableWidth(maxWidth: 720, child: _Skeleton()),
+      ),
+    };
+
+    return frame(
+      HudaScaffold(
+        title: l10n.miqaatLock,
+        body: HudaStateSwitcher(
+          stateKey: failed
+              ? 'error'
+              : state is MiqaatLockLoaded
+              ? 'loaded'
+              : 'loading',
+          child: body,
+        ),
+      ),
+    );
+  }
+
+  /// Very wide windows without a fold keep the panes together in the
+  /// middle, so rows don't stretch across a desktop.
+  Widget _capped(FoldInfo fold, double width, Widget panes) {
+    if (width <= 1200 || fold.posture != FoldPosture.none) return panes;
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 1200),
+        child: panes,
+      ),
+    );
+  }
+
+  /// A scroll view built in its pane's own context, so its gutter and
+  /// insets are the pane's.
+  Widget _pane(WidgetBuilder content, {Key? key}) => Builder(
+    builder: (context) {
+      final space = context.tokens.space;
+      final gutter = space.gutter(MediaQuery.sizeOf(context).width);
+      return SizedBox(
+        width: double.infinity,
+        child: SingleChildScrollView(
+          key: key,
+          padding: context.scrollPadding(
+            EdgeInsets.fromLTRB(gutter, space.md, gutter, space.xxl),
+          ),
+          child: content(context),
+        ),
+      );
+    },
+  );
+
+  Widget _gate(MiqaatLockLoaded state, {bool large = false}) => MiqaatLockGate(
+    gate: MiqaatGate.of(state),
+    enabled: state.settings.isEnabled,
+    large: large,
+    // Turning on waits for access; turning off never does.
+    onToggle: state.settings.isEnabled || !miqaatNeedsAccess(state.permissions)
+        ? _toggle
+        : null,
+  );
+
+  Widget _goalSection(MiqaatLockLoaded state) => MiqaatGoalSection(
+    minutes: state.settings.goalDurationMinutes,
+    onSelect: _goal,
+    onCustom: () => _customGoal(state.settings.goalDurationMinutes),
+  );
+
+  Widget _setup(
+    MiqaatLockLoaded state, {
+    required bool goal,
+    int revealFrom = 0,
+  }) => Builder(
+    builder: (context) {
+      final gap = context.tokens.space.xl;
+      var i = revealFrom;
+      final needs = miqaatNeedsAccess(state.permissions);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (needs) ...[
+            HudaReveal(
+              index: i++,
+              child: MiqaatAccessCard(
+                permissions: state.permissions,
+                onAccessibility: _accessibility,
+                onOverlay: _cubit.requestOverlayPermission,
+                onScreenTime: _cubit.requestScreenTimeAuthorization,
+                onCheck: _cubit.refreshPermissions,
+              ),
+            ),
+            SizedBox(height: gap),
+          ],
+          HudaReveal(
+            index: i++,
+            child: MiqaatAppsSection(
+              apps: state.settings.lockedApps,
+              iosCount: _ios ? (_iosCount ?? (apps: 0, categories: 0)) : null,
+              onAdd: () => _addApps(state),
+              onRemove: (app) => _removeApp(state, app),
+            ),
+          ),
+          SizedBox(height: gap),
+          HudaReveal(
+            index: i++,
+            child: MiqaatWindowsSection(
+              slots: state.settings.timeSlots,
+              completed: state.completedTimeSlotIds,
+              onAdd: _editWindow,
+              onEdit: _editWindow,
+              onRemove: _removeWindow,
+            ),
+          ),
+          if (goal) ...[
+            SizedBox(height: gap),
+            HudaReveal(index: i++, child: _goalSection(state)),
+          ],
+        ],
+      );
+    },
+  );
+}
+
+/// The page's shape while settings load.
+class _Skeleton extends StatelessWidget {
+  const _Skeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final space = context.tokens.space;
+    return HudaSkeleton(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const HudaSkeletonBlock(height: 176),
+          SizedBox(height: space.xl),
+          const HudaSkeletonLines(lines: 1),
+          SizedBox(height: space.sm),
+          const HudaSkeletonBlock(height: 160),
+          SizedBox(height: space.xl),
+          const HudaSkeletonLines(lines: 1),
+          SizedBox(height: space.sm),
+          const HudaSkeletonBlock(height: 120),
+        ],
       ),
     );
   }

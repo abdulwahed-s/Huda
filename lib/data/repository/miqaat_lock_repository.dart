@@ -249,4 +249,25 @@ class MiqaatLockRepository {
       return false;
     }
   }
+
+  /// How many apps and categories are chosen in Screen Time (iOS).
+  Future<({int apps, int categories})> getIOSSelectionCount() async {
+    try {
+      final data = await _channel.invokeMethod('getSelectedAppsCount');
+      if (data is Map) {
+        return (
+          apps: data['appCount'] as int? ?? 0,
+          categories: data['categoryCount'] as int? ?? 0,
+        );
+      }
+    } on Exception catch (e) {
+      debugPrint('Failed to read the Screen Time selection: $e');
+    }
+    return (apps: 0, categories: 0);
+  }
+
+  /// Opens Screen Time's app picker (iOS). True when apps were chosen;
+  /// throws a [PlatformException] when the picker fails.
+  Future<bool> showFamilyActivityPicker() async =>
+      await _channel.invokeMethod('showFamilyActivityPicker') == true;
 }
