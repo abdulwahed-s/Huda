@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_sheet.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
+import 'package:huda/presentation/widgets/hijri_calendar/calendar_identity.dart';
 
-class HijriAdjustmentDialog extends StatefulWidget {
-  const HijriAdjustmentDialog({
+/// How Huda shows Hijri dates: Umm al-Qura, or moved by up to two days.
+Future<void> showHijriAdjustmentSheet(
+  BuildContext context, {
+  required HijriAdjustmentChoice? initialChoice,
+  required Future<void> Function(HijriAdjustmentChoice choice) onSave,
+}) {
+  final l10n = AppLocalizations.of(context)!;
+  return showHudaSheet<void>(
+    context: context,
+    title: l10n.hijriAdjustmentTitle,
+    builder: (_) =>
+        HijriAdjustmentSheet(initialChoice: initialChoice, onSave: onSave),
+  );
+}
+
+class HijriAdjustmentSheet extends StatefulWidget {
+  const HijriAdjustmentSheet({
     super.key,
     required this.initialChoice,
-    required this.canDismiss,
     required this.onSave,
   });
 
   final HijriAdjustmentChoice? initialChoice;
-  final bool canDismiss;
   final Future<void> Function(HijriAdjustmentChoice choice) onSave;
 
   @override
-  State<HijriAdjustmentDialog> createState() => _HijriAdjustmentDialogState();
+  State<HijriAdjustmentSheet> createState() => _HijriAdjustmentSheetState();
 }
 
-class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
-  static const _manualChoices = <HijriAdjustmentChoice>[
+class _HijriAdjustmentSheetState extends State<HijriAdjustmentSheet> {
+  static const _manual = <HijriAdjustmentChoice>[
     HijriAdjustmentChoice.minusTwo,
     HijriAdjustmentChoice.minusOne,
     HijriAdjustmentChoice.none,
@@ -29,359 +47,201 @@ class _HijriAdjustmentDialogState extends State<HijriAdjustmentDialog> {
     HijriAdjustmentChoice.plusTwo,
   ];
 
-  HijriAdjustmentChoice? _selectedChoice;
-  bool _isSaving = false;
-  String? _errorMessage;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedChoice = widget.initialChoice;
-  }
+  late HijriAdjustmentChoice? _choice = widget.initialChoice;
+  bool _saving = false;
+  bool _failed = false;
 
   void _select(HijriAdjustmentChoice choice) {
-    if (_isSaving || _selectedChoice == choice) return;
-    HapticFeedback.selectionClick();
+    if (_saving || _choice == choice) return;
+    HudaHaptics.selection(context);
     setState(() {
-      _selectedChoice = choice;
-      _errorMessage = null;
+      _choice = choice;
+      _failed = false;
     });
   }
 
   Future<void> _save() async {
-    final choice = _selectedChoice;
-    if (choice == null || _isSaving) return;
-
+    final choice = _choice;
+    if (choice == null || _saving) return;
     setState(() {
-      _isSaving = true;
-      _errorMessage = null;
+      _saving = true;
+      _failed = false;
     });
     try {
       await widget.onSave(choice);
       if (mounted) Navigator.of(context).pop();
-    } catch (error) {
-      if (!mounted) return;
-      setState(() {
-        _isSaving = false;
-        _errorMessage = error.toString();
-      });
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _saving = false;
+          _failed = true;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-    final colors = Theme.of(context).colorScheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final automatic = _choice == HijriAdjustmentChoice.automatic;
+    final changed = _choice != null && _choice != widget.initialChoice;
 
-    return PopScope(
-      canPop: widget.canDismiss && !_isSaving,
-      child: Dialog(
-        key: const ValueKey('hijri-adjustment-dialog'),
-        insetPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 24),
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 520,
-            maxHeight: MediaQuery.sizeOf(context).height * 0.88,
+    return Column(
+      key: const ValueKey('hijri-adjustment-dialog'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          l10n.hijriAdjustmentDescription,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: scheme.onSurfaceVariant,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildHeader(context, localizations),
-              Flexible(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(22, 22, 22, 18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        localizations.hijriAdjustmentDescription,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colors.onSurfaceVariant,
-                          height: 1.45,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      _AutomaticChoiceCard(
-                        selected:
-                            _selectedChoice == HijriAdjustmentChoice.automatic,
-                        enabled: !_isSaving,
-                        onTap: () => _select(HijriAdjustmentChoice.automatic),
-                      ),
-                      const SizedBox(height: 22),
-                      Text(
-                        localizations.hijriManualAdjustment,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        localizations.hijriManualAdjustmentDescription,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: colors.onSurfaceVariant,
-                          height: 1.35,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          final itemWidth = (constraints.maxWidth - 32) / 5;
-                          return Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              for (final choice in _manualChoices)
-                                SizedBox(
-                                  width: itemWidth,
-                                  child: _ManualChoiceButton(
-                                    choice: choice,
-                                    selected: _selectedChoice == choice,
-                                    enabled: !_isSaving,
-                                    onTap: () => _select(choice),
-                                  ),
-                                ),
-                            ],
-                          );
-                        },
-                      ),
-                      if (_errorMessage != null) ...[
-                        const SizedBox(height: 16),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: colors.errorContainer,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.error_outline_rounded,
-                                size: 20,
-                                color: colors.onErrorContainer,
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  _errorMessage!,
-                                  style: TextStyle(
-                                    color: colors.onErrorContainer,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ],
+        ),
+        SizedBox(height: space.md),
+        _Choice(
+          key: const ValueKey('hijri-adjustment-automatic'),
+          selected: automatic,
+          enabled: !_saving,
+          title: l10n.automatic,
+          subtitle: l10n.hijriAutomaticAdjustmentDescription,
+          onTap: () => _select(HijriAdjustmentChoice.automatic),
+        ),
+        SizedBox(height: space.xl),
+        Text(l10n.hijriManualAdjustment, style: theme.textTheme.titleSmall),
+        SizedBox(height: space.xxs),
+        Text(
+          l10n.hijriManualAdjustmentDescription,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: scheme.onSurfaceVariant,
+          ),
+        ),
+        SizedBox(height: space.sm),
+        Directionality(
+          // Days run as numbers do: −2 at the start.
+          textDirection: TextDirection.ltr,
+          child: SegmentedButton<HijriAdjustmentChoice>(
+            showSelectedIcon: false,
+            emptySelectionAllowed: true,
+            segments: [
+              for (final choice in _manual)
+                ButtonSegment(
+                  value: choice,
+                  label: Text(
+                    choice.label.replaceFirst('-', '−'),
+                    key: ValueKey('hijri-adjustment-${choice.name}'),
                   ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(18, 14, 18, 18),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? colors.surfaceContainerHighest.withValues(alpha: 0.35)
-                      : colors.surfaceContainerLowest,
-                  border: Border(
-                    top: BorderSide(
-                      color: colors.outlineVariant.withValues(alpha: 0.55),
-                    ),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    if (widget.canDismiss) ...[
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: _isSaving
-                              ? null
-                              : () => Navigator.of(context).pop(),
-                          child: Text(localizations.cancel),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                    ],
-                    Expanded(
-                      flex: widget.canDismiss ? 1 : 2,
-                      child: FilledButton(
-                        key: const ValueKey('save-hijri-adjustment'),
-                        onPressed:
-                            _selectedChoice == null ||
-                                _isSaving ||
-                                (widget.canDismiss &&
-                                    _selectedChoice == widget.initialChoice)
-                            ? null
-                            : _save,
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 160),
-                          child: _isSaving
-                              ? SizedBox.square(
-                                  key: const ValueKey(
-                                    'hijri-adjustment-progress',
-                                  ),
-                                  dimension: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: colors.onPrimary,
-                                  ),
-                                )
-                              : Text(
-                                  widget.canDismiss
-                                      ? localizations.save
-                                      : localizations.confirm,
-                                ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
+            selected: {if (_choice != null && !automatic) _choice!},
+            onSelectionChanged: _saving
+                ? null
+                : (value) {
+                    if (value.isNotEmpty) _select(value.first);
+                  },
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context, AppLocalizations localizations) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(22, 20, 14, 20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: AlignmentDirectional.topStart,
-          end: AlignmentDirectional.bottomEnd,
-          colors: [context.primaryColor, context.primaryVariantColor],
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
-            ),
-            child: const Icon(
-              Icons.calendar_month_rounded,
-              color: Colors.white,
-              size: 26,
-            ),
+        if (_failed) ...[
+          SizedBox(height: space.md),
+          HudaStatusBanner(
+            status: HudaStatus.failed,
+            message: l10n.calendarAdjustmentFailed,
           ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Text(
-              localizations.hijriAdjustmentTitle,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-          if (widget.canDismiss)
-            IconButton(
-              tooltip: localizations.cancel,
-              onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.close_rounded, color: Colors.white),
-            ),
         ],
-      ),
+        SizedBox(height: space.xl),
+        Align(
+          alignment: AlignmentDirectional.centerEnd,
+          child: FilledButton(
+            key: const ValueKey('save-hijri-adjustment'),
+            onPressed: changed && !_saving ? _save : null,
+            child: _saving
+                ? HudaLampSpinner(size: 20, color: tokens.onChrome)
+                : Text(l10n.save),
+          ),
+        ),
+      ],
     );
   }
 }
 
-class _AutomaticChoiceCard extends StatelessWidget {
-  const _AutomaticChoiceCard({
+class _Choice extends StatelessWidget {
+  const _Choice({
+    super.key,
     required this.selected,
     required this.enabled,
+    required this.title,
+    required this.subtitle,
     required this.onTap,
   });
 
   final bool selected;
   final bool enabled;
+  final String title;
+  final String subtitle;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-    final colors = Theme.of(context).colorScheme;
-    final primary = context.primaryColor;
-
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final radius = BorderRadius.circular(tokens.radius.md);
     return Semantics(
-      selected: selected,
       button: true,
+      selected: selected,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
+        duration: tokens.motion.of(context, tokens.motion.short),
         decoration: BoxDecoration(
-          color: selected
-              ? primary.withValues(alpha: 0.09)
-              : colors.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(18),
+          color: selected ? scheme.primary.withValues(alpha: 0.08) : null,
+          borderRadius: radius,
           border: Border.all(
-            color: selected
-                ? primary
-                : colors.outlineVariant.withValues(alpha: 0.7),
-            width: selected ? 1.6 : 1,
+            color: selected ? scheme.primary : scheme.outline,
+            width: selected ? tokens.stroke.fine : tokens.stroke.hairline,
           ),
         ),
         child: Material(
-          color: Colors.transparent,
+          type: MaterialType.transparency,
           child: InkWell(
-            key: const ValueKey('hijri-adjustment-automatic'),
+            borderRadius: radius,
             onTap: enabled ? onTap : null,
-            borderRadius: BorderRadius.circular(18),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(space.md),
               child: Row(
                 children: [
-                  Container(
-                    width: 46,
-                    height: 46,
-                    decoration: BoxDecoration(
-                      color: primary.withValues(alpha: selected ? 0.16 : 0.1),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Icon(
-                      Icons.verified_rounded,
-                      color: primary,
-                      size: 25,
+                  SizedBox.square(
+                    dimension: 32,
+                    child: CustomPaint(
+                      painter: CalendarMoonPainter(
+                        phase: 0.14,
+                        lit: scheme.tertiary,
+                        ring: scheme.tertiary,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 14),
+                  SizedBox(width: space.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(title, style: theme.textTheme.titleSmall),
                         Text(
-                          localizations.automatic,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 3),
-                        Text(
-                          localizations.hijriAutomaticAdjustmentDescription,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: colors.onSurfaceVariant,
-                                height: 1.35,
-                              ),
+                          subtitle,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: space.sm),
                   Icon(
                     selected
-                        ? Icons.check_circle_rounded
-                        : Icons.circle_outlined,
-                    color: selected ? primary : colors.outline,
-                    size: 25,
+                        ? Icons.radio_button_checked_rounded
+                        : Icons.radio_button_unchecked_rounded,
+                    color: selected ? scheme.primary : scheme.onSurfaceVariant,
                   ),
                 ],
               ),
@@ -393,63 +253,103 @@ class _AutomaticChoiceCard extends StatelessWidget {
   }
 }
 
-class _ManualChoiceButton extends StatelessWidget {
-  const _ManualChoiceButton({
-    required this.choice,
-    required this.selected,
-    required this.enabled,
-    required this.onTap,
+/// The first visit's question, in the page instead of a dialog: the
+/// calendar shows Umm al-Qura dates until it's answered.
+class HijriAdjustmentPrompt extends StatefulWidget {
+  const HijriAdjustmentPrompt({
+    super.key,
+    required this.onUseAutomatic,
+    required this.onAdjust,
   });
 
-  final HijriAdjustmentChoice choice;
-  final bool selected;
-  final bool enabled;
-  final VoidCallback onTap;
+  final Future<void> Function() onUseAutomatic;
+  final VoidCallback onAdjust;
+
+  @override
+  State<HijriAdjustmentPrompt> createState() => _HijriAdjustmentPromptState();
+}
+
+class _HijriAdjustmentPromptState extends State<HijriAdjustmentPrompt> {
+  bool _saving = false;
+
+  Future<void> _useAutomatic() async {
+    setState(() => _saving = true);
+    try {
+      await widget.onUseAutomatic();
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    final primary = context.primaryColor;
-
-    return Semantics(
-      selected: selected,
-      button: true,
-      label: choice.label,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        height: 52,
-        decoration: BoxDecoration(
-          color: selected ? primary : colors.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: selected ? primary : colors.outlineVariant),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: primary.withValues(alpha: 0.22),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    final space = tokens.space;
+    return HudaCard(
+      key: const ValueKey('hijri-adjustment-prompt'),
+      padding: EdgeInsets.all(space.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HudaLamp(
+                size: 40,
+                child: SizedBox.square(
+                  dimension: 20,
+                  child: CustomPaint(
+                    painter: CalendarMoonPainter(
+                      phase: 0.14,
+                      lit: tokens.gilt,
+                      ring: tokens.gilt,
+                    ),
                   ),
-                ]
-              : null,
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            key: ValueKey('hijri-adjustment-${choice.name}'),
-            onTap: enabled ? onTap : null,
-            borderRadius: BorderRadius.circular(14),
-            child: Center(
-              child: Text(
-                choice.label,
-                textDirection: TextDirection.ltr,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: selected ? colors.onPrimary : colors.onSurface,
-                  fontWeight: FontWeight.w800,
                 ),
               ),
-            ),
+              SizedBox(width: space.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.calendarChooseTitle,
+                      style: theme.textTheme.titleSmall,
+                    ),
+                    SizedBox(height: space.xxs),
+                    Text(
+                      l10n.calendarChooseMessage,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ),
+          SizedBox(height: space.md),
+          Wrap(
+            alignment: WrapAlignment.end,
+            spacing: space.xs,
+            runSpacing: space.xs,
+            children: [
+              OutlinedButton(
+                onPressed: _saving ? null : widget.onAdjust,
+                child: Text(l10n.calendarAdjustDays),
+              ),
+              FilledButton(
+                key: const ValueKey('hijri-use-automatic'),
+                onPressed: _saving ? null : _useAutomatic,
+                child: _saving
+                    ? HudaLampSpinner(size: 20, color: tokens.onChrome)
+                    : Text(l10n.calendarUseUmmAlQura),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
