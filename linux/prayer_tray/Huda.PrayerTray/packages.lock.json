@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "Tmds.DBus.Protocol": {
+        "type": "Direct",
+        "requested": "[0.95.1, )",
+        "resolved": "0.95.1",
+        "contentHash": "IbGhqZAqqgB/DkT70+lAk4MNv95tZtsTMFQ+S3uGy0aTfOkGVeFjeNJsX8dBI/3+CPnO5XW6lRQKGeFEgHElKw=="
+      },
+      "NodaTime": {
+        "type": "Transitive",
+        "resolved": "3.3.5",
+        "contentHash": "0qtGKHOYhQGCeUItP4RN8KJktsKD9j/B4IqmoecUL+ymReq69O71qEpZY6x0aQPZa5KDLXY41aEOOHZ9T6Uqgw=="
+      },
+      "PrayerTimePlus": {
+        "type": "Transitive",
+        "resolved": "0.3.0",
+        "contentHash": "BMKravwp3V9hkEeiPROOQn3V88dAvDHK0o9HeK96MxsJAq2z3WfRdt9lR3DngON/RR88qHooL/tDzVOPtizBzg=="
+      },
+      "huda.prayertray.core": {
+        "type": "Project",
+        "dependencies": {
+          "NodaTime": "[3.3.5, )",
+          "PrayerTimePlus": "[0.3.0, )"
+        }
+      }
+    },
+    "net10.0/linux-x64": {}
+  }
+}
