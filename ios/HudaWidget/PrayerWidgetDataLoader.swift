@@ -46,10 +46,51 @@ enum PrayerWidgetDataLoader {
   }
 
   static func loadSettings() -> PrayerWidgetSettings {
-    loadSettings(from: sharedDefaults)
+    let defaults = sharedDefaults
+    #if os(iOS) || HUDA_PRAYER_STORE
+    let native = IOSPrayerStore.sharedDirectory.flatMap { try? IOSPrayerStore(directory: $0).load() }
+    return loadSettings(from: defaults, native: native)
+    #else
+    return loadSettings(from: defaults)
+    #endif
   }
 
+  // HUDA_PRAYER_STORE: the widget-logic package (Package.swift) compiles the
+  // prayer store on macOS for its tests.
+  #if os(iOS) || HUDA_PRAYER_STORE
+  static func loadSettings(from defaults: UserDefaults?, native: IOSPrayerState? = nil) -> PrayerWidgetSettings {
+    let stored = loadStoredSettings(from: defaults)
+    guard let native, ["native", "retired"].contains(native.configuration.migration),
+      let schedule = native.configuration.schedule,
+      schedule.location.revision >= stored.locationRevision else { return stored }
+    // Background refills and native travel updates can advance without Flutter.
+    // Keep the user's widget appearance and use the accepted native calculator
+    // inputs rather than stale precomputed Dart days.
+    let prayers: [Prayer] = [.fajr, .sunrise, .dhuhr, .asr, .maghrib, .isha]
+    let nativeOffsets = Dictionary(uniqueKeysWithValues: zip(IOSPrayerSchedule.names, prayers).map {
+      ($0.1, schedule.offsets[$0.0] ?? 0)
+    })
+    return PrayerWidgetSettings(coordinates: Coordinates(latitude: schedule.location.latitude, longitude: schedule.location.longitude),
+      offsets: nativeOffsets, countryCode: schedule.location.countryCode ?? "", timeZoneIdentifier: schedule.location.timeZoneId,
+      locationMode: schedule.location.mode, calculationMethod: schedule.methodToken, madhab: schedule.madhabToken,
+      highLatitudeRule: schedule.highLatitudeRuleToken, customFajrAngle: schedule.customAngles.fajr,
+      customMaghribAngle: schedule.customAngles.maghrib, customIshaAngle: schedule.customAngles.isha,
+      themeName: stored.themeName, themeMode: stored.themeMode, locale: schedule.localeCode, design: stored.design,
+      language: stored.language, numerals: stored.numerals, backgroundEnabled: stored.backgroundEnabled,
+      backgroundColor: stored.backgroundColor, glassify: stored.glassify, rounded: stored.rounded,
+      contentColor: stored.contentColor, highlightColor: stored.highlightColor, contentSize: stored.contentSize,
+      timeFormat: stored.timeFormat, locationRevision: Int(schedule.location.revision), scheduleRevision: Int(native.configuration.revision),
+      publicationRevision: stored.publicationRevision,
+      configurationSignature: "\(native.configuration.configurationSignature)|ios:\(native.configuration.revision):\(native.configuration.policyRevision)")
+  }
+  #else
+  // The macOS widget doesn't compile the iOS prayer store.
   static func loadSettings(from defaults: UserDefaults?) -> PrayerWidgetSettings {
+    loadStoredSettings(from: defaults)
+  }
+  #endif
+
+  private static func loadStoredSettings(from defaults: UserDefaults?) -> PrayerWidgetSettings {
     let committed = settingsPayload(defaults)
     let display = settingsPayload(defaults, key: "prayer_widget_display_v1")
     let payload = (readInt(display?["locationRevision"]) ?? -1) >= (readInt(committed?["locationRevision"]) ?? 0) ? display : committed

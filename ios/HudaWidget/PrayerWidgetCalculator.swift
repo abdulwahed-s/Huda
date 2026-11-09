@@ -7,7 +7,14 @@ struct PrayerWidgetDayTimes {
     var precomputed: [String: Double]? = nil
 
     func time(for prayer: Prayer) -> Date? {
-        if let precomputed { return precomputed[String(describing: prayer)].map { Date(timeIntervalSince1970: $0 / 1000) } }
+        if let precomputed {
+            if let milliseconds = precomputed[String(describing: prayer)] {
+                return Date(timeIntervalSince1970: milliseconds / 1000)
+            }
+            // Older display snapshots stored the five obligatory prayers only.
+            // Recover sunrise for layouts that show all six daily times.
+            guard prayer == .sunrise else { return nil }
+        }
         guard let date = base.time(for: prayer) else { return nil }
         var fixedCalendar = Calendar(identifier: .gregorian)
         fixedCalendar.timeZone = TimeZone(

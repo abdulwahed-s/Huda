@@ -211,6 +211,7 @@ struct PrayerWidgetProvider: TimelineProvider {
             PrayerWidgetTransition(prayer: $0.prayer, date: $0.date)
         }
         var timesByDay: [Date: PrayerWidgetDayTimes] = [:]
+        var sunnahByDay: [Date: (middle: Date?, lastThird: Date?)] = [:]
 
         func cachedTimes(for date: Date) -> PrayerWidgetDayTimes? {
             let day = calendar.startOfDay(for: date)
@@ -265,11 +266,18 @@ struct PrayerWidgetProvider: TimelineProvider {
                 return calendar.date(byAdding: .day, value: -1, to: activeFrom)
                     ?? activeFrom
             }()
-            let sunnah = PrayerWidgetCalculator.sunnahTimes(
-                coordinates: coordinates,
-                settings: settings,
-                date: nightAnchor
-            )
+            let anchorDay = calendar.startOfDay(for: nightAnchor)
+            let sunnah: (middle: Date?, lastThird: Date?)
+            if let cached = sunnahByDay[anchorDay] {
+                sunnah = cached
+            } else {
+                sunnah = PrayerWidgetCalculator.sunnahTimes(
+                    coordinates: coordinates,
+                    settings: settings,
+                    date: anchorDay
+                )
+                sunnahByDay[anchorDay] = sunnah
+            }
 
             return PrayerWidgetEntry(
                 date: activeFrom,

@@ -95,15 +95,6 @@ final class IOSPrayerServiceLogicTests: XCTestCase {
     XCTAssertEqual(a.map(\.identifier), b.map(\.identifier))
     XCTAssertNotEqual(a.first?.eventJSON, b.first?.eventJSON)
   }
-  func testInvalidLocationAndUnsupportedPoliciesFailBeforePublication() throws {
-    var wire = try IOSPrayerJSON.object(schedule())
-    var location = wire["location"] as! [String: Any]; location["schemaVersion"] = 2; wire["location"] = location
-    XCTAssertThrowsError(try IOSPrayerJSON.decode(IOSPrayerSchedule.self, wire).validate())
-    var p = IOSPrayerExperience(); p.advanceMinutes = 1
-    XCTAssertThrowsError(try p.validate())
-    p.advanceMinutes = 0; p.overrides["sunrise"] = IOSPrayerOverride(mode: .short, reciterId: nil, advanceMinutes: nil, advanceMode: nil)
-    XCTAssertThrowsError(try p.validate())
-  }
   func testStoreRecoversBackupAndFencesConcurrentWriter() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     defer { try? FileManager.default.removeItem(at: directory) }
@@ -120,5 +111,26 @@ final class IOSPrayerServiceLogicTests: XCTestCase {
     try FileManager.default.removeItem(at: directory.appendingPathComponent("state.json"))
     XCTAssertEqual(try store.load().configuration.revision, 1)
     store.endExclusive(); try second.beginExclusive(); second.endExclusive()
+  }
+  func testInvalidLocationAndUnsupportedPoliciesFailBeforePublication() throws {
+    var wire = try IOSPrayerJSON.object(schedule())
+    var location = wire["location"] as! [String: Any]; location["schemaVersion"] = 2; wire["location"] = location
+    XCTAssertThrowsError(try IOSPrayerJSON.decode(IOSPrayerSchedule.self, wire).validate())
+    var p = IOSPrayerExperience(); p.advanceMinutes = 1
+    XCTAssertThrowsError(try p.validate())
+    p.advanceMinutes = 0; p.overrides["sunrise"] = IOSPrayerOverride(mode: .short, reciterId: nil, advanceMinutes: nil, advanceMode: nil)
+    XCTAssertThrowsError(try p.validate())
+  }
+  func testWidgetReadsAcceptedNativeInputsWhileKeepingAppearance() throws {
+    let defaults = UserDefaults(suiteName: "iosPrayer.fixture.\(UUID().uuidString)")!
+    defaults.set("dark", forKey: "themeMode"); defaults.set("arabic", forKey: "prayerWidgetNumerals")
+    var native = IOSPrayerState(); native.configuration.schedule = try schedule()
+    native.configuration.revision = 5; native.configuration.migration = "native"
+    let widget = PrayerWidgetDataLoader.loadSettings(from: defaults, native: native)
+    XCTAssertEqual(widget.timeZoneIdentifier, "Asia/Muscat"); XCTAssertEqual(widget.scheduleRevision, 5)
+    XCTAssertEqual(widget.themeMode, "dark"); XCTAssertEqual(widget.numerals, .arabic)
+    XCTAssertTrue(widget.precomputedDays.isEmpty)
+    native.configuration.migration = "pending"
+    XCTAssertEqual(PrayerWidgetDataLoader.loadSettings(from: defaults, native: native).scheduleRevision, 0)
   }
 }

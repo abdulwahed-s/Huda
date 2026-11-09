@@ -238,6 +238,35 @@ final class PrayerWidgetLogicTests: XCTestCase {
     )
   }
 
+  func testDisplayPayloadWithoutScheduleUsesSharedInstantsAndPendingStatus() throws {
+    let suite = "PrayerDisplayTests.\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let instant = Date(timeIntervalSince1970: 1_790_286_000)
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "Europe/London")!
+    let parts = calendar.dateComponents([.year, .month, .day], from: instant)
+    let key = String(format: "%04d-%02d-%02d", parts.year!, parts.month!, parts.day!)
+    let payload: [String: Any] = [
+      "version": 4, "revision": 100, "publicationRevision": 100,
+      "locationRevision": 90, "scheduleRevision": 0,
+      "configurationSignature": "display:100", "committedAt": "2026-09-25T00:00:00Z",
+      "coordinates": ["latitude": 51.5074, "longitude": -0.1278],
+      "timeZoneId": "Europe/London", "locationMode": "automatic", "countryCode": "",
+      "statusText": "Verification pending", "provisional": true,
+      "precomputedDays": [key: ["fajr": instant.timeIntervalSince1970 * 1000]],
+    ]
+    try defaults.set(String(data: JSONSerialization.data(withJSONObject: payload), encoding: .utf8), forKey: "prayer_widget_display_v1")
+    defaults.set("SA", forKey: "country_code")
+    let settings = PrayerWidgetDataLoader.loadSettings(from: defaults)
+    XCTAssertEqual(settings.scheduleRevision, 0)
+    XCTAssertEqual(settings.countryCode, "")
+    let times = try XCTUnwrap(PrayerWidgetCalculator.computeTimes(coordinates: try XCTUnwrap(settings.coordinates), date: instant, settings: settings))
+    XCTAssertEqual(times.time(for: .fajr), instant)
+    XCTAssertNotNil(times.time(for: .sunrise))
+    XCTAssertNil(times.time(for: .isha))
+  }
+
   func testVersionedPayloadWinsAndLegacySettingsStillMigrate() throws {
     let suite = "PrayerWidgetLogicTests.\(UUID().uuidString)"
     let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
