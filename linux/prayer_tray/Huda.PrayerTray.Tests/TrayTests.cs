@@ -47,6 +47,59 @@ public sealed class TrayTests
         return Linux(TaskbarConfiguration.Parse(source.RootElement.GetProperty("fixtures")[0]
             .GetProperty("configuration").GetRawText()));
     }
+    [Theory]
+    [MemberData(nameof(Fixtures))]
+    public void MatchesIndependentFlutterFixtures(string name, string json)
+    {
+        using var fixture = JsonDocument.Parse(json);
+        var root = fixture.RootElement;
+        var config = Linux(TaskbarConfiguration.Parse(root.GetProperty("configuration").GetRawText()));
+        config.Validate();
+        var date = LocalDatePattern.Iso.Parse(root.GetProperty("date").GetString()!).Value;
+        var clock = new Clock(LocationClock.Resolve(date.At(new LocalTime(12, 0)), DateTimeZoneProviders.Tzdb[config.Location!.TimeZoneId]));
+        var actual = new DisplayEngine(clock).Snapshot(config);
+        Assert.Equal(date.ToString("yyyy-MM-dd", null), actual.CivilDate);
+        foreach (var row in actual.Rows)
+        {
+            var expected = root.GetProperty("expectedUtc").GetProperty(row.Key);
+            Assert.True(expected.ValueKind == JsonValueKind.Null ? row.UtcMs is null : row.UtcMs == expected.GetInt64(),
+                $"{name}: {row.Key}: {row.UtcMs} != {expected}");
+        }
+        Assert.NotEqual("sunrise", actual.Next?.Key);
+    }
+    [Fact]
+    public void BoundaryAndMidnightDoNotRecalculateEachTick()
+    {
+        var config = Default();
+        var clock = new Clock(Instant.FromUtc(2026, 10, 2, 0, 0));
+        var engine = new DisplayEngine(clock);
+        var first = engine.Snapshot(config);
+        var fajr = first.Rows.Single(row => row.Key == "fajr").UtcMs!.Value;
+        clock.Now = Instant.FromUnixTimeMilliseconds(fajr);
+        Assert.NotEqual("fajr", engine.Snapshot(config).Next?.Key);
+        clock.Now += Duration.FromSeconds(1);
+        engine.Snapshot(config);
+        Assert.Equal(1, engine.CalculationCount);
+        clock.Now = Instant.FromUtc(2026, 10, 2, 20, 0);
+        var tomorrow = engine.Snapshot(config);
+        Assert.Equal("2026-10-03", tomorrow.CivilDate);
+        Assert.Equal("fajr", tomorrow.Next?.Key);
+        Assert.Equal(2, engine.CalculationCount);
+        clock.Now -= Duration.FromDays(1); // isolated clock jump backwards
+        Assert.Equal("2026-10-02", engine.Snapshot(config).CivilDate);
+    }
+    [Fact]
+    public void EmptyProvisionalDisabledAndMissingSolarEventsAreExplicit()
+    {
+        var engine = new DisplayEngine(new Clock(Instant.FromUtc(2026, 6, 20, 12, 0)));
+        Assert.Equal("needsSetup", engine.Snapshot(null).State);
+        var config = Default();
+        Assert.True(engine.Snapshot(config with { Location = config.Location! with { Verified = false } }).Provisional);
+        Assert.Equal("disabled", engine.Snapshot(config with { Preferences = config.Preferences with { Enabled = false } }).State);
+        var polar = config with { Location = config.Location! with { Latitude = 89, TimeZoneId = "Arctic/Longyearbyen" },
+            Calculation = config.Calculation! with { HighLatitudeRule = "none" } };
+        Assert.Equal("calculationUnavailable", engine.Snapshot(polar with { Revision = 2 }).State);
+    }
     [Fact]
     public void StoreRejectsPartialStaleReusedRevisionsAndRecoversAcrossRestart()
     {
