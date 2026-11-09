@@ -38,6 +38,7 @@
 		168989E9E3A43F6F0F213A4F /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F129C2E1E0EA58C39DD417F /* Madhab.swift */; };
 		25ACDF13734678E42DDAEFBF /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDB040B42FDB6BFF290D258 /* SolarTime.swift */; };
 		3109A61DC94CBE5995DEDC62 /* IOSPrayerPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B58E0E600F643EA389422E6 /* IOSPrayerPolicy.swift */; };
+		46F698313CB06845A70250EA /* IOSPrayerBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AED7EEC1BF13EC468A49B93 /* IOSPrayerBridge.swift */; };
 		4F1891C0E25C0946EA6A2B83 /* IOSPrayerNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589DED33B156022891431852 /* IOSPrayerNotificationScheduler.swift */; };
 		55064153A5E6C48097B75400 /* IOSPrayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16684D890660170ABD662369 /* IOSPrayerService.swift */; };
 		68A4731B843B550C63DC0115 /* DegreeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24947388CECF8388D7D13ADA /* DegreeMath.swift */; };
@@ -182,6 +183,7 @@
 		17A628DA45BB723A83652D14 /* IOSPrayerStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerStore.swift; sourceTree = "<group>"; };
 		1F129C2E1E0EA58C39DD417F /* Madhab.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Madhab.swift; path = Model/Madhab.swift; sourceTree = "<group>"; };
 		24947388CECF8388D7D13ADA /* DegreeMath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DegreeMath.swift; path = Math/DegreeMath.swift; sourceTree = "<group>"; };
+		2AED7EEC1BF13EC468A49B93 /* IOSPrayerBridge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerBridge.swift; sourceTree = "<group>"; };
 		2DD1A96EBF42047DE30F71D1 /* Coordinates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coordinates.swift; path = Model/Coordinates.swift; sourceTree = "<group>"; };
 		574D6CE64BB8D64599CD6535 /* Adhan */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = Adhan; sourceTree = "<group>"; };
 		589DED33B156022891431852 /* IOSPrayerNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IOSPrayerNotificationScheduler.swift; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				907DBEE17D60FD455704E55D /* IOSPrayerAlarmScheduler.swift */,
 				821AC1D3296116A220055A95 /* IOSPrayerAudioStore.swift */,
 				9FB930CF4EBAC86E34B5FF6A /* IOSPrayerBackgroundRefresh.swift */,
+				2AED7EEC1BF13EC468A49B93 /* IOSPrayerBridge.swift */,
 				9BAF64DF97F52D707235C570 /* IOSPrayerNotificationRouter.swift */,
 				589DED33B156022891431852 /* IOSPrayerNotificationScheduler.swift */,
 				16684D890660170ABD662369 /* IOSPrayerService.swift */,
@@ -844,6 +847,7 @@
 				D7E2920759DE86851D56B793 /* IOSPrayerAlarmScheduler.swift in Sources */,
 				E05EB1AEC1DA3D504519D51A /* IOSPrayerAudioStore.swift in Sources */,
 				D42B6790514B5DD472056A50 /* IOSPrayerBackgroundRefresh.swift in Sources */,
+				46F698313CB06845A70250EA /* IOSPrayerBridge.swift in Sources */,
 				E51EFDD6EAF182E21412380A /* IOSPrayerNotificationRouter.swift in Sources */,
 				4F1891C0E25C0946EA6A2B83 /* IOSPrayerNotificationScheduler.swift in Sources */,
 				55064153A5E6C48097B75400 /* IOSPrayerService.swift in Sources */,

@@ -16,6 +16,8 @@ import workmanager_apple
   private var prayerTravelMonitor: PrayerTravelMonitor?
   private let prayerLocationResolver = PrayerAppleLocationResolver()
   private var apnsDeviceToken: String?
+  private var iosPrayerBridge: IOSPrayerBridge?
+  private var reminderNotificationsChannel: FlutterMethodChannel?
 
   private var apnsEnvironment: String {
     #if DEBUG
@@ -41,6 +43,10 @@ import workmanager_apple
     }
 
     if let controller = window?.rootViewController as? FlutterViewController {
+      iosPrayerBridge = IOSPrayerBridge(messenger: controller.binaryMessenger)
+      reminderNotificationsChannel = ReminderNotificationsChannel.register(
+        messenger: controller.binaryMessenger
+      )
       miqaatLockHandler = MiqaatLockMethodHandler(messenger: controller.binaryMessenger)
       let channel = FlutterMethodChannel(
         name: "com.aw.huda/prayer_push",
@@ -196,6 +202,10 @@ import workmanager_apple
       completionHandler([.banner, .list, .sound, .badge])
       return
     }
+    if let presentation = ReminderNotificationsChannel.presentation(notification.request.content.userInfo) {
+      completionHandler(presentation)
+      return
+    }
     super.userNotificationCenter(
       center,
       willPresent: notification,
@@ -205,8 +215,12 @@ import workmanager_apple
 
   override func applicationDidBecomeActive(_ application: UIApplication) {
     super.applicationDidBecomeActive(application)
+    if UserDefaults(suiteName: "group.hudaHomeApp")?.bool(forKey: "iosPrayerOpenTimes") == true {
+      iosPrayerBridge?.publishOpenPrayerTimes()
+    }
     Task {
       if let status = try? await IOSPrayerService.shared.reconcile() {
+        iosPrayerBridge?.publish(status)
         IOSPrayerBackgroundRefresh.shared.submit()
       }
     }
@@ -224,6 +238,15 @@ import workmanager_apple
   ) {
     if IOSPrayerNotificationRouter.response(response) {
       UserDefaults(suiteName: "group.hudaHomeApp")?.set(true, forKey: "iosPrayerOpenTimes")
+      iosPrayerBridge?.publishOpenPrayerTimes()
+      completionHandler()
+      return
+    }
+    // Reminders, and anything older releases queued through the plugin.
+    if response.actionIdentifier == UNNotificationDefaultActionIdentifier,
+      let payload = response.notification.request.content.userInfo["payload"] as? String
+    {
+      ReminderNotificationsChannel.tapped(payload)
       completionHandler()
       return
     }
@@ -562,5 +585,162 @@ final class PrayerAppleLocationResolver {
   private static func normalizedCountryCode(_ value: String?) -> String? {
     let normalized = value?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     return normalized.isEmpty ? nil : normalized.uppercased()
+  }
+}
+
+/// Reminders, random Athkar and calendar events for `AppleReminderBackend`.
+/// Requests keep the identifier and userInfo keys flutter_local_notifications
+/// used (the decimal ID, `NotificationId`, `payload`), so requests from older
+/// releases are listed, replaced and cancelled the same way, and taps route by
+/// payload. The macOS runner has the same channel in `MainFlutterWindow.swift`.
+enum ReminderNotificationsChannel {
+  private static weak var channel: FlutterMethodChannel?
+  /// The latest tap, until Flutter takes it; it also covers the tap that
+  /// launched Huda.
+  private static var pendingTap: String?
+
+  static func register(messenger: FlutterBinaryMessenger) -> FlutterMethodChannel {
+    let channel = FlutterMethodChannel(
+      name: "com.aw.huda/reminder_notifications",
+      binaryMessenger: messenger
+    )
+    Self.channel = channel
+    channel.setMethodCallHandler { call, result in
+      let reply: (Any?) -> Void = { value in DispatchQueue.main.async { result(value) } }
+      let center = UNUserNotificationCenter.current()
+      switch call.method {
+      case "schedule", "scheduleOnce":
+        guard
+          let arguments = call.arguments as? [String: Any],
+          let request = request(arguments, repeating: call.method == "schedule")
+        else {
+          result(FlutterError(code: "invalid_reminder", message: "Invalid or past reminder.", details: nil))
+          return
+        }
+        center.add(request) { error in
+          reply(error.map { FlutterError(code: "schedule_failed", message: $0.localizedDescription, details: nil) })
+        }
+      case "pending":
+        center.getPendingNotificationRequests { requests in reply(requests.compactMap(describe)) }
+      case "cancel":
+        guard let ids = (call.arguments as? [String: Any])?["ids"] as? [Int] else {
+          result(FlutterError(code: "invalid_reminder", message: "Cancel needs ids.", details: nil))
+          return
+        }
+        let identifiers = ids.map(String.init)
+        center.removePendingNotificationRequests(withIdentifiers: identifiers)
+        center.removeDeliveredNotifications(withIdentifiers: identifiers)
+        result(nil)
+      case "authorization":
+        center.getNotificationSettings { settings in
+          let status: String =
+            switch settings.authorizationStatus {
+            case .authorized: "authorized"
+            case .denied: "denied"
+            case .provisional: "provisional"
+            default: "notDetermined"
+            }
+          reply(status)
+        }
+      case "requestAuthorization":
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in reply(granted) }
+      case "takeTap":
+        result(pendingTap)
+        pendingTap = nil
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    return channel
+  }
+
+  /// A tapped notification with a payload: Flutter opens its page.
+  static func tapped(_ payload: String) {
+    DispatchQueue.main.async {
+      pendingTap = payload
+      channel?.invokeMethod("tapped", arguments: nil)
+    }
+  }
+
+  /// How a notification with a payload shows while Huda is in front, from the
+  /// `present*` flags flutter_local_notifications stored (absent means shown).
+  static func presentation(_ userInfo: [AnyHashable: Any]) -> UNNotificationPresentationOptions? {
+    guard userInfo["payload"] is String else { return nil }
+    let flag = { (key: String) in userInfo[key] as? Bool ?? true }
+    var options: UNNotificationPresentationOptions = []
+    if flag("presentBanner") { options.insert(.banner) }
+    if flag("presentList") { options.insert(.list) }
+    if flag("presentSound") { options.insert(.sound) }
+    if flag("presentBadge") { options.insert(.badge) }
+    return options
+  }
+
+  /// Repeating: fixed minute, optional hour and Apple weekday (Sunday = 1),
+  /// with no time zone so it follows the device. Once: a fixed instant.
+  static func request(_ arguments: [String: Any], repeating: Bool) -> UNNotificationRequest? {
+    guard
+      let id = arguments["id"] as? Int,
+      let title = arguments["title"] as? String,
+      let body = arguments["body"] as? String,
+      let payload = arguments["payload"] as? String
+    else { return nil }
+    let trigger: UNCalendarNotificationTrigger
+    if repeating {
+      guard let minute = arguments["minute"] as? Int, (0..<60).contains(minute) else { return nil }
+      let hour = arguments["hour"] as? Int
+      let weekday = arguments["weekday"] as? Int
+      if let hour, !(0..<24).contains(hour) { return nil }
+      if let weekday, hour == nil || !(1...7).contains(weekday) { return nil }
+      var components = DateComponents()
+      components.weekday = weekday
+      components.hour = hour
+      components.minute = minute
+      trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+    } else {
+      guard let utcMillis = arguments["utcMillis"] as? Int else { return nil }
+      let date = Date(timeIntervalSince1970: TimeInterval(utcMillis) / 1000)
+      guard date > Date() else { return nil }
+      var calendar = Calendar(identifier: .gregorian)
+      calendar.timeZone = .current
+      let components = calendar.dateComponents(
+        [.year, .month, .day, .hour, .minute, .second, .timeZone], from: date)
+      trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+    }
+    let content = UNMutableNotificationContent()
+    content.title = title
+    content.body = body
+    content.sound = .default
+    if #available(iOS 15.0, *) {
+      content.interruptionLevel =
+        arguments["timeSensitive"] as? Bool == true ? .timeSensitive : .active
+    }
+    content.userInfo = [
+      "NotificationId": id,
+      "title": title,
+      "payload": payload,
+      "presentAlert": true,
+      "presentSound": true,
+      "presentBadge": true,
+      "presentBanner": true,
+      "presentList": true,
+    ]
+    return UNNotificationRequest(identifier: String(id), content: content, trigger: trigger)
+  }
+
+  /// The plugin's shape. The ID comes from the identifier or `NotificationId`,
+  /// so prayers queued by `IOSPrayerNotificationScheduler` are listed too.
+  /// `yearly` marks the yearly calendar triggers Huda 4.3.0 queued.
+  static func describe(_ request: UNNotificationRequest) -> [String: Any]? {
+    guard let id = Int(request.identifier) ?? request.content.userInfo["NotificationId"] as? Int else {
+      return nil
+    }
+    var item: [String: Any] = ["id": id, "title": request.content.title, "body": request.content.body]
+    if let payload = request.content.userInfo["payload"] as? String { item["payload"] = payload }
+    if let trigger = request.trigger as? UNCalendarNotificationTrigger, trigger.repeats,
+      trigger.dateComponents.month != nil, trigger.dateComponents.day != nil
+    {
+      item["yearly"] = true
+    }
+    return item
   }
 }
