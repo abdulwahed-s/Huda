@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>
+  <ItemGroup>
+    <!-- Compile the authoritative portable sources in place. This avoids modifying the
+         Windows project's RID-specific restore state when publishing on Linux. -->
+    <Compile Include="../../../windows/prayer_taskbar/Huda.PrayerTaskbar.Core/*.cs"
+      Exclude="../../../windows/prayer_taskbar/Huda.PrayerTaskbar.Core/._*"
+      Link="Shared/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../../windows/prayer_taskbar/Huda.PrayerTaskbar.Core/Resources/ramadan.json"
+      LogicalName="Huda.PrayerTaskbar.Core.Resources.ramadan.json" />
+    <PackageReference Include="PrayerTimePlus" Version="0.3.0" />
+    <PackageReference Include="NodaTime" Version="3.3.5" />
+  </ItemGroup>
+</Project>
