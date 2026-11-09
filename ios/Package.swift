@@ -25,7 +25,7 @@ let package = Package(
                 "HudaWidget/WidgetDataLoader.swift", "HudaWidget/WidgetThemeColors.swift",
             ],
             sources: [
-                "HudaWidget/PrayerTimePlus", "SharedPrayer/IOSPrayerCore.swift", "SharedPrayer/IOSPrayerPolicy.swift", "SharedPrayer/IOSPrayerStore.swift",
+                "HudaWidget/PrayerTimePlus", "SharedPrayer/IOSPrayerCore.swift", "SharedPrayer/IOSPrayerPolicy.swift", "SharedPrayer/IOSPrayerStore.swift", "SharedPrayer/IOSPrayerBackgroundDiagnostics.swift",
                 "HudaWidget/PrayerWidgetCalculator.swift", "HudaWidget/PrayerWidgetDataLoader.swift",
                 "HudaWidget/PrayerWidgetLocalization.swift", "HudaWidget/PrayerWidgetStateResolver.swift",
             ]

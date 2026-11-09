@@ -32,11 +32,12 @@ import workmanager_apple
     WorkmanagerPlugin.setPluginRegistrantCallback { registry in
       GeneratedPluginRegistrant.register(with: registry)
     }
-    if #available(iOS 13.0, *) {
-      WorkmanagerPlugin.registerPeriodicTask(
-        withIdentifier: "com.aw.huda.prayerNotifications.refresh",
-        frequency: NSNumber(value: 12 * 60 * 60)
-      )
+    IOSPrayerBackgroundRefresh.shared.register()
+    // Native enrollment and travel monitoring also run on a cold background
+    // launch where there is no Flutter view controller.
+    prayerTravelMonitor = PrayerTravelMonitor(channel: nil)
+    IOSPrayerBackgroundRefresh.shared.refreshLocation = { [weak self] in
+      await self?.prayerTravelMonitor?.recoverNativeCandidate()
     }
 
     if let controller = window?.rootViewController as? FlutterViewController {
@@ -102,7 +103,8 @@ import workmanager_apple
         name: "com.aw.huda/prayer_location_monitor",
         binaryMessenger: controller.binaryMessenger
       )
-      let monitor = PrayerTravelMonitor(channel: monitorChannel)
+      let monitor = prayerTravelMonitor!
+      monitor.attach(channel: monitorChannel)
       monitorChannel.setMethodCallHandler { call, result in
         switch call.method {
         case "sync":
@@ -140,8 +142,9 @@ import workmanager_apple
       application,
       didFinishLaunchingWithOptions: launchOptions
     )
-    application.registerForRemoteNotifications()
     prayerTravelMonitor?.restoreEnrollment()
+    IOSPrayerBackgroundRefresh.shared.submit()
+    Task { try? await IOSPrayerService.shared.reconcile() }
     return launched
   }
 
@@ -158,6 +161,7 @@ import workmanager_apple
   }
 
   override func applicationSignificantTimeChange(_ application: UIApplication) {
+    Task { try? await IOSPrayerService.shared.reconcile() }
     prayerSystemChannel?.invokeMethod(
       "systemChanged",
       arguments: "significantTimeChange"
@@ -184,6 +188,10 @@ import workmanager_apple
     willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
+    if let presentation = IOSPrayerNotificationRouter.presentation(notification) {
+      completionHandler(presentation)
+      return
+    }
     if notification.request.content.userInfo["type"] as? String == "prayer_time" {
       completionHandler([.banner, .list, .sound, .badge])
       return
@@ -193,6 +201,33 @@ import workmanager_apple
       willPresent: notification,
       withCompletionHandler: completionHandler
     )
+  }
+
+  override func applicationDidBecomeActive(_ application: UIApplication) {
+    super.applicationDidBecomeActive(application)
+    Task {
+      if let status = try? await IOSPrayerService.shared.reconcile() {
+        IOSPrayerBackgroundRefresh.shared.submit()
+      }
+    }
+  }
+
+  override func applicationDidEnterBackground(_ application: UIApplication) {
+    IOSPrayerBackgroundRefresh.shared.submit()
+    super.applicationDidEnterBackground(application)
+  }
+
+  override func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+  ) {
+    if IOSPrayerNotificationRouter.response(response) {
+      UserDefaults(suiteName: "group.hudaHomeApp")?.set(true, forKey: "iosPrayerOpenTimes")
+      completionHandler()
+      return
+    }
+    super.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
   }
 
   private func registrationPayload() -> [String: String] {
@@ -219,7 +254,7 @@ private final class PrayerTravelMonitor: NSObject, CLLocationManagerDelegate {
   private var requestedEnabled = false
   private var locationMode = "manual"
 
-  init(channel: FlutterMethodChannel) {
+  init(channel: FlutterMethodChannel?) {
     self.channel = channel
     super.init()
     manager.delegate = self
@@ -227,6 +262,8 @@ private final class PrayerTravelMonitor: NSObject, CLLocationManagerDelegate {
     manager.distanceFilter = 5_000
     manager.pausesLocationUpdatesAutomatically = true
   }
+
+  func attach(channel: FlutterMethodChannel) { self.channel = channel }
 
   func restoreEnrollment() {
     requestedEnabled = UserDefaults.standard.bool(forKey: Self.enabledKey)
@@ -332,7 +369,36 @@ private final class PrayerTravelMonitor: NSObject, CLLocationManagerDelegate {
       let timestamp = ISO8601DateFormatter().date(from: captured), timestamp >= fix.timestamp { return }
     defaults.set(encoded, forKey: Self.candidateKey)
     guard defaults.synchronize() else { return }
-    channel?.invokeMethod("candidateAvailable", arguments: nil)
+    Task { await processNativeCandidate(encoded, fix: fix) }
+  }
+
+  private func processNativeCandidate(_ encoded: String, fix: CLLocation) async {
+    let resolved: PrayerResolvedAppleLocation? = await withCheckedContinuation { continuation in
+      locationResolver.resolve(fix) { value, _ in continuation.resume(returning: value) }
+    }
+    guard requestedEnabled, locationMode == "automatic",
+      !Task.isCancelled,
+      UserDefaults.standard.string(forKey: Self.candidateKey) == encoded else { return }
+    do {
+      let adopted = try await IOSPrayerService.shared.adoptTravel(fix, resolved: resolved)
+      if adopted {
+        _ = consumeCandidate(expected: encoded)
+        IOSPrayerBackgroundRefresh.shared.submit()
+        channel?.invokeMethod("nativeScheduleChanged", arguments: nil)
+      } else { channel?.invokeMethod("candidateAvailable", arguments: nil) }
+    } catch { channel?.invokeMethod("candidateAvailable", arguments: nil) }
+  }
+  func recoverNativeCandidate() async {
+    guard requestedEnabled, locationMode == "automatic",
+      let encoded = UserDefaults.standard.string(forKey: Self.candidateKey),
+      let data = encoded.data(using: .utf8), let candidate = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+      let latitude = candidate["latitude"] as? Double, let longitude = candidate["longitude"] as? Double,
+      let accuracy = candidate["accuracyMeters"] as? Double, accuracy >= 0, accuracy <= Self.maximumAccuracy,
+      (-90...90).contains(latitude), (-180...180).contains(longitude),
+      let captured = candidate["capturedAtUtc"] as? String, let date = ISO8601DateFormatter().date(from: captured),
+      Date().timeIntervalSince(date) <= Self.maximumFixAge, date.timeIntervalSinceNow <= Self.futureTolerance else { return }
+    await processNativeCandidate(encoded, fix: CLLocation(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+      altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: -1, timestamp: date))
   }
 
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
