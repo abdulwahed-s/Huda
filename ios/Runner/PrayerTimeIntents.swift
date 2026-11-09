@@ -11,7 +11,7 @@ struct StopHudaPrayerAlarmIntent: LiveActivityIntent {
   init(alarmID: String, occurrenceKey: String) { self.alarmID = alarmID; self.occurrenceKey = occurrenceKey }
   func perform() async throws -> some IntentResult {
     if let id = UUID(uuidString: alarmID) {
-      try AlarmManager.shared.stop(id: id)
+      try await IOSPrayerService.shared.observe(key: occurrenceKey, outcome: "stopped", alarmID: id)
     }
     return .result()
   }
