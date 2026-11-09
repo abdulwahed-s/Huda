@@ -1,6 +1,15 @@
 import SwiftUI
-import UIKit
 import WidgetKit
+#if os(macOS)
+import AppKit
+typealias WidgetTextFont = NSFont
+private extension NSFont {
+    var lineHeight: CGFloat { ceil(ascender - descender + leading) }
+}
+#else
+import UIKit
+typealias WidgetTextFont = UIFont
+#endif
 
 struct HudaWidgetEntry: TimelineEntry {
     let date: Date
@@ -8,16 +17,22 @@ struct HudaWidgetEntry: TimelineEntry {
 }
 
 struct HudaWidgetProvider: TimelineProvider {
+    #if os(macOS)
+    private static let futureEntryCount = 1
+    #else
     private static let futureEntryCount = 8
+    #endif
 
     func placeholder(in context: Context) -> HudaWidgetEntry {
-        HudaWidgetEntry(
+        registerWidgetFonts()
+        return HudaWidgetEntry(
             date: Date(),
             snapshot: WidgetDataLoader.snapshot(size: context.family.quranWidgetSize)
         )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (HudaWidgetEntry) -> Void) {
+        registerWidgetFonts()
         completion(
             HudaWidgetEntry(
                 date: Date(),
@@ -27,6 +42,7 @@ struct HudaWidgetProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<HudaWidgetEntry>) -> Void) {
+        registerWidgetFonts()
         let now = Date()
         let calendar = Calendar(identifier: .gregorian)
         let nextHour =
@@ -50,7 +66,19 @@ struct HudaWidgetProvider: TimelineProvider {
                 )
             )
         }
+        #if os(macOS)
+        // Refresh the palette even if WidgetKit defers an explicit reload from
+        // the app. The next-hour entry still rotates the verse on schedule.
+        completion(Timeline(entries: entries, policy: .after(now.addingTimeInterval(30 * 60))))
+        #else
         completion(Timeline(entries: entries, policy: .atEnd))
+        #endif
+    }
+
+    private func registerWidgetFonts() {
+        #if os(macOS)
+        MacWidgetFonts.register()
+        #endif
     }
 }
 
@@ -221,8 +249,8 @@ struct HudaWidgetEntryView: View {
         func ayahMetrics() -> QuranNoorTextMetrics {
             textMetrics(
                 entry.snapshot.verse.arabic,
-                font: UIFont(name: ayahFontName, size: ayahSize)
-                    ?? UIFont.systemFont(ofSize: ayahSize),
+                font: WidgetTextFont(name: ayahFontName, size: ayahSize)
+                    ?? WidgetTextFont.systemFont(ofSize: ayahSize),
                 width: availableWidth,
                 lineSpacing: layout.arabicLineSpacing
             )
@@ -232,7 +260,7 @@ struct HudaWidgetEntryView: View {
             guard showsTranslation, let translation = entry.snapshot.translation else { return nil }
             return textMetrics(
                 translation,
-                font: UIFont.systemFont(
+                font: WidgetTextFont.systemFont(
                     ofSize: translationSize,
                     weight: entry.snapshot.translationBold ? .bold : .regular
                 ),
@@ -306,7 +334,7 @@ struct HudaWidgetEntryView: View {
 
     private func textMetrics(
         _ text: String,
-        font: UIFont,
+        font: WidgetTextFont,
         width: CGFloat,
         lineSpacing: CGFloat
     ) -> QuranNoorTextMetrics {
@@ -702,10 +730,14 @@ private extension View {
     func quranWidgetContainerBackground(
         @ViewBuilder background: () -> some View
     ) -> some View {
+        #if os(macOS)
+        containerBackground(for: .widget, content: background)
+        #else
         if #available(iOSApplicationExtension 17.0, *) {
             containerBackground(for: .widget, content: background)
         } else {
             self.background(background())
         }
+        #endif
     }
 }

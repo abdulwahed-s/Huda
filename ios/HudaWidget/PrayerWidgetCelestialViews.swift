@@ -1,6 +1,10 @@
 import SwiftUI
-import UIKit
 import WidgetKit
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 
 enum PrayerConceptDesign {
     case spotlight
@@ -1474,6 +1478,16 @@ private struct PrayerHudaMark: View {
     let diameter: CGFloat
     let palette: PrayerConceptPalette
 
+    #if os(macOS)
+    private var logo: NSImage? {
+        if let image = NSImage(named: "HudaLogo") { return image }
+        if let path = Bundle.main.path(forResource: "HudaLogo", ofType: "png") {
+            return NSImage(contentsOfFile: path)
+        }
+        return nil
+    }
+    private func logoImage(_ image: NSImage) -> Image { Image(nsImage: image) }
+    #else
     private var logo: UIImage? {
         if let image = UIImage(named: "HudaLogo") { return image }
         if let path = Bundle.main.path(forResource: "HudaLogo", ofType: "png") {
@@ -1481,13 +1495,15 @@ private struct PrayerHudaMark: View {
         }
         return nil
     }
+    private func logoImage(_ image: UIImage) -> Image { Image(uiImage: image) }
+    #endif
 
     var body: some View {
         ZStack {
             Circle().fill(palette.accent.opacity(0.12))
             Circle().stroke(palette.accent.opacity(0.28), lineWidth: 0.6)
             if let logo {
-                Image(uiImage: logo)
+                logoImage(logo)
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()

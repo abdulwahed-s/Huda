@@ -136,10 +136,15 @@ struct PrayerWidgetEntry: TimelineEntry {
 
 struct PrayerWidgetProvider: TimelineProvider {
     private static let timelineHorizon: TimeInterval = 7 * 24 * 60 * 60
+    #if os(macOS)
+    private static let reloadInterval: TimeInterval = 30 * 60
+    #else
     private static let reloadInterval: TimeInterval = 12 * 60 * 60
+    #endif
     private static let maximumEntryCount = 120
 
     func placeholder(in _: Context) -> PrayerWidgetEntry {
+        registerWidgetFonts()
         let settings = PrayerWidgetDataLoader.loadSettings()
         let theme = WidgetThemeColors.getThemeColors(
             themeName: settings.themeName,
@@ -149,6 +154,7 @@ struct PrayerWidgetProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (PrayerWidgetEntry) -> Void) {
+        registerWidgetFonts()
         if context.isPreview {
             completion(placeholder(in: context))
             return
@@ -160,6 +166,7 @@ struct PrayerWidgetProvider: TimelineProvider {
     }
 
     func getTimeline(in _: Context, completion: @escaping (Timeline<PrayerWidgetEntry>) -> Void) {
+        registerWidgetFonts()
         let now = Date()
         let entries = buildEntries(now: now, maximumEntries: Self.maximumEntryCount)
         if entries.isEmpty || entries.allSatisfy(\.isEmptyState) {
@@ -177,6 +184,12 @@ struct PrayerWidgetProvider: TimelineProvider {
             entries: entries,
             policy: .after(now.addingTimeInterval(Self.reloadInterval))
         ))
+    }
+
+    private func registerWidgetFonts() {
+        #if os(macOS)
+        MacWidgetFonts.register()
+        #endif
     }
 
     private func buildEntries(now: Date, maximumEntries: Int) -> [PrayerWidgetEntry] {
@@ -464,6 +477,7 @@ struct PrayerWidgetEntryView: View {
     }
 }
 
+#if os(iOS)
 struct HudaEarlyPrayerTimesWidget: Widget {
     let kind = "HudaEarlyPrayerTimesWidget"
 
@@ -531,23 +545,29 @@ struct HudaPrayerAlmanacWidget: Widget {
         .supportedFamilies([.accessoryRectangular])
     }
 }
+#endif
 
 private extension View {
     @ViewBuilder
     func prayerWidgetContainerBackground(
         @ViewBuilder background: () -> some View
     ) -> some View {
+        #if os(macOS)
+        containerBackground(for: .widget, content: background)
+        #else
         if #available(iOSApplicationExtension 17.0, *) {
             containerBackground(for: .widget, content: background)
         } else {
             self.background(background())
         }
+        #endif
     }
 }
 
 /// Keeps decorative artwork in WidgetKit's removable background layer. Lock
 /// Screen accessories use `.vibrant`, while tinted/clear widgets use
 /// `.accented`; neither mode should receive a full-size foreground color mask.
+#if os(iOS)
 private struct PrayerAccessoryContainerBackground: View {
     let entry: PrayerWidgetEntry
 
@@ -620,3 +640,4 @@ private struct PrayerAccessoryPanel<Content: View>: View {
             .padding(.horizontal, 2)
     }
 }
+#endif
