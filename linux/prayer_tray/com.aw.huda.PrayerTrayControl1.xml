@@ -1,0 +1,18 @@
+<node name="/com/aw/huda/PrayerTrayControl">
+  <interface name="com.aw.huda.PrayerTrayControl1">
+    <!-- Additive: only the fixed legacy Huda notification unit may be stopped/disabled. -->
+    <method name="WaitForMigrationRequest"><arg name="token" type="t" direction="out"/></method>
+    <method name="AcknowledgeControl">
+      <arg name="token" type="t" direction="in"/>
+      <arg name="startupEnabled" type="b" direction="in"/>
+      <arg name="error" type="s" direction="in"/>
+    </method>
+    <method name="WaitForControlRequest">
+      <arg name="token" type="t" direction="out"/>
+      <arg name="apply" type="b" direction="out"/>
+      <arg name="enabled" type="b" direction="out"/>
+      <arg name="startAtLogin" type="b" direction="out"/>
+      <arg name="updateStartup" type="b" direction="out"/>
+    </method>
+  </interface>
+</node>

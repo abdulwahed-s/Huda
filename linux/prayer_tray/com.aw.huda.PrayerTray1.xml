@@ -1,0 +1,7 @@
+<interface name="com.aw.huda.PrayerTray1">
+  <method name="GetSnapshot"><arg name="json" direction="out" type="s"/></method>
+  <method name="Refresh"><arg name="json" direction="out" type="s"/></method>
+  <method name="WaitForSnapshot"><arg name="afterSerial" direction="in" type="t"/><arg name="json" direction="out" type="s"/></method>
+  <method name="Command"><arg name="action" direction="in" type="s"/><arg name="accepted" direction="out" type="b"/></method>
+  <signal name="SnapshotChanged"><arg name="json" type="s"/></signal>
+</interface>

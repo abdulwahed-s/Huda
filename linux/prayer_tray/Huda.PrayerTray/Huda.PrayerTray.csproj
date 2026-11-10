@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Library</OutputType><TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework>
     <AssemblyName>huda-prayer-tray</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Huda.PrayerTray.Core/Huda.PrayerTray.Core.csproj" />
     <PackageReference Include="Tmds.DBus.Protocol" Version="0.95.1" />
+    <EmbeddedResource Include="../com.aw.huda.PrayerTray1.xml" LogicalName="com.aw.huda.PrayerTray1.xml" />
   </ItemGroup>
 </Project>
