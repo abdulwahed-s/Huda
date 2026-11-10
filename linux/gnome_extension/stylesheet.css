@@ -1,0 +1,16 @@
+.huda-prayer-panel-box { spacing: 9px; }
+/* The logo is a 60x33 logotype: keep its aspect at a status icon's height. */
+.huda-prayer-panel-logo { width: 29px; height: 16px; background-size: contain; background-position: center; }
+.huda-prayer-panel-label { max-width: 260px; font-feature-settings: "tnum"; }
+.huda-prayer-content { spacing: 2px; padding: 4px 2px 2px; }
+.huda-prayer-date { font-size: 0.85em; padding: 0 4px 6px; }
+.huda-prayer-hero { spacing: 12px; padding: 12px 14px; border-radius: 12px; margin-bottom: 6px; }
+.huda-prayer-title { font-size: 1.4em; font-weight: 800; }
+.huda-prayer-countdown { font-feature-settings: "tnum"; }
+.huda-prayer-hero-clock { font-size: 1.4em; font-weight: 700; font-feature-settings: "tnum"; }
+.huda-prayer-row { spacing: 12px; padding: 6px 10px; border-radius: 8px; }
+.huda-prayer-row-icon { icon-size: 16px; }
+.huda-prayer-clock { font-feature-settings: "tnum"; }
+.huda-prayer-meta { font-size: 0.85em; padding: 8px 4px 0; }
+.huda-prayer-message { padding: 4px; }
+.huda-prayer-note { font-size: 0.8em; }

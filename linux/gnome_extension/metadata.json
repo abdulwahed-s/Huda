@@ -1,0 +1,10 @@
+{
+  "uuid": "prayer-tray@huda",
+  "name": "Huda Prayer Panel",
+  "description": "Huda prayer times, live Adhan controls and Prayer Focus in GNOME.",
+  "shell-version": ["46", "50"],
+  "version": 2,
+  "version-name": "4.3.0",
+  "url": "https://github.com/abdulwahed-s/Huda",
+  "session-modes": ["user"]
+}
