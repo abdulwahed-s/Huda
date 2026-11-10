@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:huda/core/notifications/android_reminder_backend.dart';
+import 'package:huda/core/notifications/apple_reminder_backend.dart';
 import 'package:huda/core/notifications/reminder_model.dart';
 
 class ReminderBackendCapabilities {
@@ -39,6 +40,7 @@ abstract interface class ReminderBackend {
     if (kIsWeb) return const UnsupportedReminderBackend();
     return switch (defaultTargetPlatform) {
       TargetPlatform.android => AndroidReminderBackend(),
+      TargetPlatform.iOS || TargetPlatform.macOS => AppleReminderBackend(),
       _ => const UnsupportedReminderBackend(),
     };
   }
