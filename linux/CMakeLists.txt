@@ -134,6 +134,19 @@ install(FILES
   COMPONENT Runtime)
 
 # Install the AOT library on non-Debug builds only.
+set(HUDA_TRAY_BUILD "${CMAKE_CURRENT_SOURCE_DIR}/../build/linux/prayer-tray")
+if(EXISTS "${HUDA_TRAY_BUILD}/companion/huda-prayer-tray")
+  install(DIRECTORY "${HUDA_TRAY_BUILD}/audio/"
+    DESTINATION "${INSTALL_BUNDLE_DATA_DIR}/prayer-audio" COMPONENT Runtime)
+  install(DIRECTORY "${HUDA_TRAY_BUILD}/companion/"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/prayer-tray" USE_SOURCE_PERMISSIONS COMPONENT Runtime
+    PATTERN "._*" EXCLUDE)
+  install(FILES "${HUDA_TRAY_BUILD}/huda-prayer-tray-4.3.0.zip"
+    "${HUDA_TRAY_BUILD}/install-huda-prayer-panel.sh"
+    DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
+else()
+  message(WARNING "Prayer companion missing. Run xv/tool/build_linux_prayer_tray.sh before a release build.")
+endif()
 if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
   install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
     COMPONENT Runtime)
