@@ -1,15 +1,21 @@
 #include "my_application.h"
 
 #include <flutter_linux/flutter_linux.h>
+#include <string.h>
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #endif
 
 #include "flutter/generated_plugin_registrant.h"
+#include "prayer_tray_bridge.h"
 
 struct _MyApplication {
   GtkApplication parent_instance;
   char** dart_entrypoint_arguments;
+  PrayerTrayBridge* tray_bridge;
+  gboolean settings_pending;
+  // The payload of a clicked companion notification, until a window exists.
+  char* tap_pending;
 };
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
@@ -17,6 +23,15 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
   MyApplication* self = MY_APPLICATION(application);
+  GtkWindow* existing = gtk_application_get_active_window(GTK_APPLICATION(application));
+  if (existing) {
+    gtk_window_present(existing);
+    if (self->settings_pending) prayer_tray_bridge_request_settings(self->tray_bridge);
+    self->settings_pending = FALSE;
+    prayer_tray_bridge_notification_tap(self->tray_bridge, self->tap_pending);
+    g_clear_pointer(&self->tap_pending, g_free);
+    return;
+  }
   GtkWindow* window =
       GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
 
@@ -66,27 +81,44 @@ static void my_application_activate(GApplication* application) {
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+  prayer_tray_bridge_free(self->tray_bridge);
+  self->tray_bridge = prayer_tray_bridge_new(view, application);
+  if (self->settings_pending) prayer_tray_bridge_request_settings(self->tray_bridge);
+  self->settings_pending = FALSE;
+  prayer_tray_bridge_notification_tap(self->tray_bridge, self->tap_pending);
+  g_clear_pointer(&self->tap_pending, g_free);
 
   gtk_widget_grab_focus(GTK_WIDGET(view));
 }
 
 // Implements GApplication::local_command_line.
-static gboolean my_application_local_command_line(GApplication* application, gchar*** arguments, int* exit_status) {
+static int my_application_command_line(GApplication* application, GApplicationCommandLine* command) {
   MyApplication* self = MY_APPLICATION(application);
-  // Strip out the first argument as it is the binary name.
-  self->dart_entrypoint_arguments = g_strdupv(*arguments + 1);
-
-  g_autoptr(GError) error = nullptr;
-  if (!g_application_register(application, nullptr, &error)) {
-     g_warning("Failed to register: %s", error->message);
-     *exit_status = 1;
-     return TRUE;
+  int count = 0;
+  g_auto(GStrv) arguments = g_application_command_line_get_arguments(command, &count);
+  for (int index = 1; index < count; index++) {
+    if (g_str_equal(arguments[index], "--quit-huda")) {
+      g_debug("Huda received Quit Huda");
+      GList* windows = gtk_application_get_windows(GTK_APPLICATION(application));
+      while (windows) {
+        gtk_widget_destroy(GTK_WIDGET(windows->data));
+        windows = gtk_application_get_windows(GTK_APPLICATION(application));
+      }
+      g_application_quit(application);
+      return 0;
+    }
+    if (g_str_equal(arguments[index], "--prayer-settings")) {
+      g_debug("Huda received Prayer Settings");
+      self->settings_pending = TRUE;
+    }
+    if (g_str_has_prefix(arguments[index], "--notification-payload=")) {
+      g_free(self->tap_pending);
+      self->tap_pending = g_strdup(arguments[index] + strlen("--notification-payload="));
+    }
   }
-
+  if (!self->dart_entrypoint_arguments) self->dart_entrypoint_arguments = g_strdupv(arguments + 1);
   g_application_activate(application);
-  *exit_status = 0;
-
-  return TRUE;
+  return 0;
 }
 
 // Implements GApplication::startup.
@@ -111,18 +143,31 @@ static void my_application_shutdown(GApplication* application) {
 static void my_application_dispose(GObject* object) {
   MyApplication* self = MY_APPLICATION(object);
   g_clear_pointer(&self->dart_entrypoint_arguments, g_strfreev);
+  g_clear_pointer(&self->tap_pending, g_free);
+  prayer_tray_bridge_free(self->tray_bridge);
+  self->tray_bridge = nullptr;
   G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
 }
 
 static void my_application_class_init(MyApplicationClass* klass) {
   G_APPLICATION_CLASS(klass)->activate = my_application_activate;
-  G_APPLICATION_CLASS(klass)->local_command_line = my_application_local_command_line;
+  G_APPLICATION_CLASS(klass)->command_line = my_application_command_line;
   G_APPLICATION_CLASS(klass)->startup = my_application_startup;
   G_APPLICATION_CLASS(klass)->shutdown = my_application_shutdown;
   G_OBJECT_CLASS(klass)->dispose = my_application_dispose;
 }
 
-static void my_application_init(MyApplication* self) {}
+static int my_application_command_line_signal(GApplication* application,
+    GApplicationCommandLine* command, gpointer) {
+  return my_application_command_line(application, command);
+}
+
+static void my_application_init(MyApplication* self) {
+  // gtk.dart registers a generic command-line signal handler during plugin setup.
+  // GApplication uses the first handler's result, so install our route first.
+  // The class virtual alone is preempted after the first Flutter window is created.
+  g_signal_connect(self, "command-line", G_CALLBACK(my_application_command_line_signal), nullptr);
+}
 
 MyApplication* my_application_new() {
   // Set the program name to the application ID, which helps various systems
@@ -133,6 +178,6 @@ MyApplication* my_application_new() {
 
   return MY_APPLICATION(g_object_new(my_application_get_type(),
                                      "application-id", APPLICATION_ID,
-                                     "flags", G_APPLICATION_NON_UNIQUE,
+                                     "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
                                      nullptr));
 }
