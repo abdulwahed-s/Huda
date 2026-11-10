@@ -7,5 +7,6 @@
     <ProjectReference Include="../Huda.PrayerTray.Core/Huda.PrayerTray.Core.csproj" />
     <PackageReference Include="Tmds.DBus.Protocol" Version="0.95.1" />
     <EmbeddedResource Include="../com.aw.huda.PrayerTray1.xml" LogicalName="com.aw.huda.PrayerTray1.xml" />
+    <EmbeddedResource Include="../com.aw.huda.PrayerExperience1.xml" LogicalName="com.aw.huda.PrayerExperience1.xml" />
   </ItemGroup>
 </Project>

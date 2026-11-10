@@ -34,7 +34,12 @@ internal static class Program
         Console.WriteLine($"Huda prayer display owns {TrayHost.BusName} ({connection.UniqueName}).");
         var host = new TrayHost(connection, store, new DisplayEngine(SystemClock.Instance), marker, shutdown);
         connection.AddMethodHandler(host);
+        await using var experience = new PrayerExperienceHost(connection, store, directory,
+            Path.Combine(data, "prayer-notifications"), shutdown.Token);
+        connection.AddMethodHandler(experience);
         using var reminders = new ReminderHost(connection, store, directory);
+        try { await experience.Initialize(); }
+        catch (OperationCanceledException) when (shutdown.IsCancellationRequested) { return 0; }
         host.Refresh();
         using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(500));
         // Polling is outside Shell. Schedule calculations are cached by configuration and civil date.
@@ -49,6 +54,7 @@ internal static class Program
                 { Console.Error.WriteLine(await disconnected); return 1; }
                 if (!await tick) break;
                 host.Refresh();
+                await experience.Tick();
                 await reminders.Tick();
             }
         }

@@ -1,0 +1,12 @@
+<node>
+  <interface name="com.aw.huda.PrayerExperience1">
+    <!-- JSON v1 contracts are bounded at 256 KiB. Mutations authenticate the app/Shell owner. -->
+    <method name="GetStatus"><arg name="status" type="s" direction="out"/></method>
+    <method name="WaitForExperience"><arg name="afterSerial" type="t" direction="in"/><arg name="status" type="s" direction="out"/></method>
+    <method name="Prepare"><arg name="configuration" type="s" direction="in"/><arg name="receipt" type="s" direction="out"/></method>
+    <method name="Activate"><arg name="configuration" type="s" direction="in"/><arg name="receipt" type="s" direction="out"/></method>
+    <method name="Command"><arg name="command" type="s" direction="in"/><arg name="status" type="s" direction="out"/></method>
+    <method name="ReportEnvironment"><arg name="environment" type="s" direction="in"/><arg name="status" type="s" direction="out"/></method>
+    <method name="AcknowledgeFocus"><arg name="acknowledgment" type="s" direction="in"/><arg name="status" type="s" direction="out"/></method>
+  </interface>
+</node>

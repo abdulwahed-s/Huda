@@ -13,6 +13,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import {LOCALES} from './locale/labels.js';
 import * as Format from './format.js';
 import {ServiceControl} from './service-control.js';
+import {PrayerFocus} from './focus.js';
 
 const BUS = 'com.aw.huda.PrayerTray';
 const PATH = '/com/aw/huda/PrayerTray';
@@ -272,6 +273,18 @@ const PrayerIndicator = GObject.registerClass({GTypeName: 'HudaPrayerTrayIndicat
         if (meta) this._content.add_child(this._label(meta, {style_class: 'huda-prayer-meta', ...muted(tokens)}));
         if (snapshot?.provisional) this._content.add_child(this._label(labels.verifyLocation,
             {style: tokens ? `color: ${tokens.warning};` : ''}));
+        for (const [session, action, key] of [
+            // Dismiss also stops the sound, so offer one of the two.
+            [this._experience?.focusSession && this._experience?.focusCanDismiss ? null
+                : this._experience?.audioSession, 'stopAudio', 'stop'],
+            [this._experience?.focusSession, this._experience?.focusCanDismiss ? 'dismissFocus' : 'emergencyExit',
+                this._experience?.focusCanDismiss ? 'dismiss' : 'emergencyExit'],
+        ]) {
+            if (!session) continue;
+            const item = new PopupMenu.PopupMenuItem(labels[key]);
+            item.connect('activate', () => this._extension._focus.command(action, session).catch(console.error));
+            section.addMenuItem(item);
+        }
         const separator = new PopupMenu.PopupSeparatorMenuItem();
         if (tokens) separator._separator?.set_style(`background-color: ${tokens.border};`);
         section.addMenuItem(separator);
@@ -353,8 +366,17 @@ export default class HudaPrayerExtension extends Extension {
         this._control = new ServiceControl();
         this._indicator = new PrayerIndicator(this);
         Main.panel.addToStatusArea('huda-prayer-tray', this._indicator);
+        this._focus = new PrayerFocus(snapshot => {
+            const prior = this._indicator?._experience;
+            if (!this._indicator) return;
+            this._indicator._experience = snapshot;
+            if (prior?.audioSession !== snapshot.audioSession || prior?.focusSession !== snapshot.focusSession ||
+                prior?.deliveryOwner !== snapshot.deliveryOwner) this._indicator._render();
+        });
     }
     disable() {
+        this._focus?.destroy();
+        this._focus = null;
         this._control?.destroy();
         this._control = null;
         this._indicator?.destroy();
