@@ -1,14 +1,19 @@
 import 'package:huda/core/services/prayer_display_snapshot.dart';
+import 'package:huda/core/services/mac_prayer_notification_gateway.dart';
+import 'package:huda/core/services/ios_prayer_notification_gateway.dart';
 import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart'
-    show PendingNotificationRequest;
+import 'package:huda/core/notifications/pending_notification.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/linux_prayer_notification_scheduler.dart';
+import 'package:huda/core/services/linux_prayer_experience.dart';
+import 'package:huda/core/services/linux_prayer_notification_gateway.dart';
+import 'package:huda/core/services/linux_prayer_tray_bridge.dart';
 import 'package:huda/core/services/notification_capacity_policy.dart';
+import 'package:huda/core/services/notification_ids.dart';
 import 'package:huda/core/services/notification_services.dart';
 import 'package:huda/core/services/prayer_location_coordinator.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
@@ -22,6 +27,11 @@ import 'package:huda/core/services/prayer_schedule_configuration.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
+import 'package:huda/core/services/windows_prayer_scheduling_controller.dart';
+import 'package:huda/core/services/windows_prayer_experience.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:flutter/widgets.dart' show Locale;
+import 'package:flutter/services.dart' show PlatformException;
 import 'package:synchronized/synchronized.dart';
 
 typedef PrayerWidgetPublisher =
@@ -41,6 +51,9 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     PrayerPushSynchronizer? pushSynchronizer,
     PrayerLocationRepository? locationRepository,
     PrayerWidgetPublisher? widgetPublisher,
+    this.deferWidgetPublication = false,
+    this.macGateway,
+    this.iosGateway,
     DateTime Function()? now,
   }) : notifications = notifications ?? NotificationServices(),
        capacityPolicy = capacityPolicy ?? NotificationCapacityPolicy.current,
@@ -85,12 +98,45 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
   final PrayerPushSynchronizer pushSynchronizer;
   final PrayerLocationRepository locationRepository;
   final PrayerWidgetPublisher widgetPublisher;
+  final bool deferWidgetPublication;
+  final MacPrayerNotificationGateway? macGateway;
+  final IOSPrayerNotificationGateway? iosGateway;
+  WindowsPrayerSchedulingController? _windowsController;
   final DateTime Function() _now;
+
+  bool get _useWindowsWorker =>
+      !kIsWeb &&
+      capacityPolicy.platform == HudaNotificationPlatform.windows &&
+      notifications is NotificationServices;
+
+  WindowsPrayerSchedulingController get _windowsWorker =>
+      _windowsController ??= WindowsPrayerSchedulingController(
+        cache: cacheHelper,
+        initializeNotifications: notifications.initialize,
+        resolveDeviceTimeZone: notifications.refreshTimeZone,
+        publishWidget: widgetPublisher,
+      );
+
+  bool get _supportsSafeReplacement =>
+      notifications is VerifiedPrayerNotificationGateway &&
+      (notifications as VerifiedPrayerNotificationGateway)
+          .supportsSafeReplacement;
+
+  bool _matchesPending(
+    PrayerNotificationEvent event,
+    PendingNotification? pending,
+  ) => notifications is VerifiedPrayerNotificationGateway
+      ? (notifications as VerifiedPrayerNotificationGateway)
+            .matchesPendingEvent(event, pending)
+      : event.matchesPendingPayload(pending?.payload);
 
   Future<PrayerScheduleResult> reconcile({
     String reason = 'unspecified',
     bool force = false,
   }) {
+    if (_useWindowsWorker) {
+      return _windowsWorker.reconcile(reason: reason, force: force);
+    }
     final effectiveReason = force ? '$reason-force' : reason;
     return _guarded(() {
       return locationRepository.synchronized((session) async {
@@ -123,6 +169,12 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     required PrayerLocationGeneration candidate,
     required String reason,
   }) {
+    if (_useWindowsWorker) {
+      return _windowsWorker.activateCandidate(
+        candidate: candidate,
+        reason: reason,
+      );
+    }
     return _guarded(() {
       return locationRepository.synchronized((session) async {
         final newest = session.state.pendingCandidate;
@@ -271,10 +323,94 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       );
     }
 
+    if (capacityPolicy.platform == HudaNotificationPlatform.linux) {
+      var applied = LinuxPrayerTrayBridge.experience.value.configured
+          ? LinuxPrayerTrayBridge.experience.value
+          : LinuxPrayerExperience.read(cacheHelper);
+      // Prayers move to the companion by themselves, with the default (Silent)
+      // reminders, once it can take them; the editor only changes them. Until
+      // then the legacy helper keeps delivering.
+      if (!applied.configured &&
+          await LinuxPrayerNotificationGateway.canAdoptDefault()) {
+        await LinuxPrayerTrayBridge.enableStartupOnce();
+        applied = const LinuxPrayerExperience(configured: true);
+      }
+      if (applied.configured) {
+        return _reconcileLinux(
+          session: session,
+          target: target,
+          activatesCandidate: activatesCandidate,
+          configuration: inputConfiguration
+              .forLocation(target)
+              .withLinuxExperience(applied),
+          history: history,
+          reason: reason,
+          now: now,
+        );
+      }
+    }
     await notifications.initialize();
+    if (capacityPolicy.platform == HudaNotificationPlatform.ios &&
+        (notifications is NotificationServices || iosGateway != null)) {
+      return _reconcileIOSNative(
+        session: session,
+        target: target,
+        activatesCandidate: activatesCandidate,
+        configuration: inputConfiguration,
+        history: history,
+        reason: reason,
+        now: now,
+      );
+    }
+    if (capacityPolicy.platform == HudaNotificationPlatform.macos &&
+        (notifications is NotificationServices || macGateway != null)) {
+      return _reconcileMacNative(
+        session: session,
+        target: target,
+        activatesCandidate: activatesCandidate,
+        configuration: inputConfiguration,
+        history: history,
+        reason: reason,
+        now: now,
+      );
+    }
+    final transaction = notifications is TransactionalPrayerGatewayProvider
+        ? await (notifications as TransactionalPrayerGatewayProvider)
+              .transactionalPrayerBackend()
+        : notifications is TransactionalPrayerNotificationGateway &&
+              await (notifications as TransactionalPrayerNotificationGateway)
+                  .isEnabled()
+        ? notifications as TransactionalPrayerNotificationGateway
+        : null;
+    if (transaction != null) {
+      return _reconcileAndroidNative(
+        session: session,
+        target: target,
+        activatesCandidate: activatesCandidate,
+        inputConfiguration: inputConfiguration,
+        gateway: transaction,
+        history: history,
+        reason: reason,
+        now: now,
+      );
+    }
     final deviceTimeZone = await notifications.refreshTimeZone();
+    final windowsExperience =
+        capacityPolicy.platform == HudaNotificationPlatform.windows
+        ? WindowsPrayerExperience.read(cacheHelper)
+        : null;
+    final linuxExperience =
+        capacityPolicy.platform == HudaNotificationPlatform.linux
+        ? LinuxPrayerExperience.read(cacheHelper)
+        : null;
+    final resumableConfiguration = session.state.journal?.configuration;
     final configuration =
-        session.state.journal?.configuration ??
+        (resumableConfiguration?.windowsExperience?.deliverySignature ==
+                    windowsExperience?.deliverySignature &&
+                resumableConfiguration?.linuxExperience?.deliverySignature ==
+                    linuxExperience?.deliverySignature
+            ? resumableConfiguration
+            : null) ??
         PrayerScheduleConfiguration(
           location: target,
           deviceTimeZoneId: deviceTimeZone,
@@ -286,7 +422,12 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
           localeCode: inputConfiguration.localeCode,
           schedulingCapability: await notifications
               .schedulingCapabilitySignature(),
+          windowsExperience: windowsExperience,
+          linuxExperience: linuxExperience,
         );
+    // Resolved once per reconcile; the final capability check degrades the
+    // result if the permission changes while events are being scheduled.
+    final allowExact = await notifications.canScheduleExactNotifications();
 
     if (capacityPolicy.platform == HudaNotificationPlatform.linux) {
       return _reconcileLinux(
@@ -516,6 +657,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         desired: desired,
         pendingById: currentPendingPrayerById,
         pendingCount: currentAllPending.length,
+        allowExact: allowExact,
       );
       if (bridgedThrough != null) {
         return PrayerScheduleResult(
@@ -582,9 +724,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     final pendingIds = currentPendingPrayerById.keys.toSet();
     final staleIds = pendingIds.difference(desiredIds);
     final mismatchedIds = pendingIds.intersection(desiredIds).where((id) {
-      return !desiredById[id]!.matchesPendingPayload(
-        currentPendingPrayerById[id]?.payload,
-      );
+      return !_matchesPending(desiredById[id]!, currentPendingPrayerById[id]);
     }).toSet();
     final newIds = desiredIds.difference(pendingIds);
     final retainedIds = desiredIds
@@ -618,7 +758,8 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
 
     final earlyCancel = <int>{};
     final replacementNeedsSlot =
-        capacityPolicy.platform == HudaNotificationPlatform.windows
+        capacityPolicy.platform == HudaNotificationPlatform.windows &&
+            !_supportsSafeReplacement
         ? mismatchedIds.length
         : 0;
     final freeSlots = math.max(
@@ -639,7 +780,8 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       );
     }
     earlyCancel.addAll(staleIds.take(slotsNeeded));
-    if (capacityPolicy.platform == HudaNotificationPlatform.windows) {
+    if (capacityPolicy.platform == HudaNotificationPlatform.windows &&
+        !_supportsSafeReplacement) {
       earlyCancel.addAll(mismatchedIds);
     }
     if (!await _cancelIds(session, earlyCancel)) {
@@ -683,16 +825,20 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
               'A prayer became due during reconciliation; recovery will suppress replay.',
         );
       }
-      await _recordOperation(session, 'schedule-uncertain:${event.id}');
+      // Recovery diffs the OS pending list against the journaled desired
+      // events, so only uncertain outcomes are persisted, not every step.
       try {
-        if (!await notifications.schedulePrayerEvent(event)) {
-          return _degradedResult(session, 'schedule-failed:${event.id}');
+        if (!await notifications.schedulePrayerEvent(
+          event,
+          allowExact: allowExact,
+        )) {
+          return await _degradedResult(session, 'schedule-failed:${event.id}');
         }
       } catch (_) {
+        await _recordOperation(session, 'schedule-uncertain:${event.id}');
         return _degradedResult(session, 'schedule-uncertain:${event.id}');
       }
       scheduledCount++;
-      await _recordOperation(session, 'schedule-complete:${event.id}');
     }
 
     var verified = await notifications.pendingNotificationRequests();
@@ -702,7 +848,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     };
     final missingOrInvalid = desired
         .where((event) {
-          return !event.matchesPendingPayload(verifiedById[event.id]?.payload);
+          return !_matchesPending(event, verifiedById[event.id]);
         })
         .toList(growable: false);
     if (missingOrInvalid.isNotEmpty) {
@@ -720,7 +866,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     };
     final finalPrayerIds = verifiedById.keys.toSet();
     final finalMatches = desired.every(
-      (event) => event.matchesPendingPayload(verifiedById[event.id]?.payload),
+      (event) => _matchesPending(event, verifiedById[event.id]),
     );
     if (!finalMatches ||
         finalPrayerIds.difference(desiredIds).isNotEmpty ||
@@ -760,6 +906,510 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       scheduledCount: scheduledCount,
       pendingCount: desired.length,
       coverageUntil: notificationCoverageUntil,
+    );
+  }
+
+  Future<PrayerScheduleResult> _reconcileAndroidNative({
+    required PrayerLocationRepositorySession session,
+    required PrayerLocationGeneration target,
+    required bool activatesCandidate,
+    required PrayerScheduleConfiguration inputConfiguration,
+    required TransactionalPrayerNotificationGateway gateway,
+    required List<PrayerOccurrenceRecord> history,
+    required String reason,
+    required DateTime now,
+  }) async {
+    // Import durable native attempts while holding the existing file mutation lock.
+    var cursor = 0;
+    while (true) {
+      final page = await gateway.deliveryHistory(cursor);
+      for (final record in page.records) {
+        history = _upsertHistory(
+          history,
+          PrayerOccurrenceRecord(
+            occurrenceId: record.id,
+            scheduledInstantUtc: DateTime.fromMillisecondsSinceEpoch(
+              record.utcMillis,
+              isUtc: true,
+            ),
+            locationRevision: record.locationRevision,
+            scheduleRevision: record.scheduleRevision,
+            disposition: record.outcome == 'displayed'
+                ? PrayerOccurrenceDisposition.confirmedDelivered
+                : PrayerOccurrenceDisposition.automaticAttempt,
+            recordedAtUtc: DateTime.fromMillisecondsSinceEpoch(
+              record.receivedMillis,
+              isUtc: true,
+            ),
+          ),
+          now,
+        );
+      }
+      cursor = page.nextCursor;
+      if (page.records.length < 1000) break;
+    }
+    await session.save(session.state.copyWith(occurrenceHistory: history));
+    await gateway.acknowledgeHistory(cursor);
+    var state = await gateway.executionSnapshot();
+    var activateTarget = activatesCandidate;
+    final interrupted = session.state.journal;
+    final accepted = state.plan;
+    if (interrupted != null &&
+        accepted != null &&
+        accepted.locationRevision == target.revision &&
+        accepted.scheduleRevision == interrupted.scheduleRevision &&
+        accepted.eventDigest == interrupted.desiredEventDigest &&
+        accepted.configurationDigest ==
+            sha256
+                .convert(utf8.encode(interrupted.configurationSignature))
+                .toString() &&
+        (accepted.state == 'activated' || accepted.state == 'finalized')) {
+      // Native activation is an execution fact even if the Dart commit/reply was interrupted.
+      await _commit(
+        session: session,
+        target: target,
+        activatesCandidate: activateTarget,
+        scheduleRevision: interrupted.scheduleRevision,
+        configurationSignature: interrupted.configurationSignature,
+        digest: interrupted.desiredEventDigest,
+        events: interrupted.desiredEvents,
+        history: history,
+        activatedAt: now,
+        publishWidget: true,
+        fallbackConfiguration: interrupted.configuration,
+      );
+      if (accepted.state != 'finalized' && interrupted.configuration != null) {
+        await gateway.finalizeNativePlan(
+          accepted,
+          interrupted.configuration!,
+          interrupted.desiredEventDigest,
+          _androidPrayerLabels(interrupted.configuration!.localeCode),
+        );
+      }
+      activateTarget = false;
+      state = await gateway.executionSnapshot();
+    }
+    final committed = session.state.committedConfiguration;
+    final committedPlan = state.plan;
+    if (session.state.journal == null &&
+        committed != null &&
+        committedPlan?.state == 'activated' &&
+        committedPlan!.locationRevision ==
+            session.state.activeLocation?.revision &&
+        committedPlan.scheduleRevision == session.state.scheduleRevision &&
+        committedPlan.eventDigest ==
+            session.state.committedDesiredEventDigest &&
+        committedPlan.configurationDigest ==
+            sha256.convert(utf8.encode(committed.signature)).toString()) {
+      // A failed CE write/reply after Dart commit must finish the same operation.
+      await gateway.finalizeNativePlan(
+        committedPlan,
+        committed,
+        session.state.committedDesiredEventDigest!,
+        _androidPrayerLabels(committed.localeCode),
+      );
+      state = await gateway.executionSnapshot();
+    }
+    final policy = await gateway.acknowledgedPolicy();
+    final capability = await gateway.schedulingCapabilitySignature();
+    final configuration = PrayerScheduleConfiguration(
+      location: target,
+      deviceTimeZoneId: await gateway.refreshTimeZone(),
+      methodToken: inputConfiguration.methodToken,
+      madhabToken: inputConfiguration.madhabToken,
+      highLatitudeRuleToken: inputConfiguration.highLatitudeRuleToken,
+      customAngles: inputConfiguration.customAngles,
+      offsets: inputConfiguration.offsets,
+      localeCode: inputConfiguration.localeCode,
+      schedulingCapability: capability,
+      androidEnabledPrayers: policy.enabledPrayers,
+    );
+    final allPending = await notifications.pendingNotificationRequests();
+    // Reminders before prayers have their own native reservation.
+    final standardCount = allPending
+        .where(
+          (request) =>
+              !PrayerNotificationEvent.isPrayerId(request.id) &&
+              !NotificationIds.isPrayerAdvance(request.id),
+        )
+        .length;
+    final budget = await gateway.reserveQuota(standardCount);
+    if (budget == 0 && policy.enabledPrayers.isNotEmpty) {
+      return const PrayerScheduleResult(
+        status: PrayerScheduleStatus.deferred,
+        message: 'No prayer alarm capacity is available.',
+      );
+    }
+    final provisional = PrayerNotificationPlanner(cacheHelper)
+        .buildFromConfiguration(
+          now: now,
+          maxEvents: math.max(budget, 1),
+          horizon: capacityPolicy.prayerHorizon,
+          configuration: configuration,
+        );
+    if (provisional == null) {
+      return const PrayerScheduleResult(
+        status: PrayerScheduleStatus.locationUnavailable,
+      );
+    }
+    final suppressed = history.map((record) => record.occurrenceId).toSet();
+    var desired = provisional.events
+        .where((event) => !suppressed.contains(event.id))
+        .take(budget)
+        .toList();
+    final digest = _digest(target.revision, configuration.signature, desired);
+    final configurationDigest = sha256
+        .convert(utf8.encode(configuration.signature))
+        .toString();
+    final installed = {
+      for (final registration in state.pending)
+        if (PrayerNotificationEvent.isPrayerId(registration.event.id))
+          registration.event.id: registration,
+    };
+    final plan = state.plan;
+    if (plan != null &&
+        plan.state == 'finalized' &&
+        plan.configurationDigest == configurationDigest &&
+        plan.locationRevision == target.revision &&
+        installed.length == desired.length &&
+        desired.every(
+          (event) =>
+              installed[event.id]?.event.utcMillis ==
+                  event.scheduledInstantUtc.millisecondsSinceEpoch &&
+              installed[event.id]?.outcome == 'registered',
+        ) &&
+        !activateTarget) {
+      // Adopt native coverage extensions with their accepted source revision.
+      desired = desired
+          .map(
+            (event) => event.copyWith(scheduleRevision: plan.scheduleRevision),
+          )
+          .toList();
+      await _commit(
+        session: session,
+        target: target,
+        activatesCandidate: false,
+        scheduleRevision: plan.scheduleRevision,
+        configurationSignature: configuration.signature,
+        digest: digest,
+        events: desired,
+        history: history,
+        activatedAt: now,
+        publishWidget: true,
+        fallbackConfiguration: configuration,
+      );
+      await _persistSuccess(configuration.signature, desired, reason);
+      await _publishCommittedWidget(session, target, configuration.signature);
+      return PrayerScheduleResult(
+        status: state.capabilities.notifications
+            ? state.capabilities.exactAlarms
+                  ? PrayerScheduleStatus.upToDate
+                  : PrayerScheduleStatus.degraded
+            : PrayerScheduleStatus.permissionDenied,
+        pendingCount: desired.length,
+        coverageUntil: desired.isEmpty
+            ? null
+            : desired.last.scheduledInstantUtc,
+      );
+    }
+    final existing = session.state.journal;
+    final resumes =
+        existing?.desiredEventDigest == digest &&
+        existing?.configurationSignature == configuration.signature;
+    final revision = resumes
+        ? existing!.scheduleRevision
+        : _nextScheduleRevision(
+            math.max(
+              _highestKnownScheduleRevision(session.state),
+              plan?.scheduleRevision ?? 0,
+            ),
+          );
+    desired = desired
+        .map((event) => event.copyWith(scheduleRevision: revision))
+        .toList();
+    final journal = PrayerScheduleJournal(
+      configuration: configuration,
+      candidateLocationRevision: target.revision,
+      previousLocationRevision: session.state.activeLocation?.revision,
+      scheduleRevision: revision,
+      configurationSignature: configuration.signature,
+      cutoverInstantUtc: now,
+      phase: PrayerReconciliationPhase.preparing,
+      desiredEvents: desired,
+      desiredEventDigest: digest,
+      attemptCount: resumes ? existing!.attemptCount + 1 : 1,
+    );
+    await session.save(
+      session.state.copyWith(journal: journal, occurrenceHistory: history),
+    );
+    final operationId =
+        'dart-${target.revision}-$revision-${digest.substring(0, 24)}';
+    final expectedGeneration = state.plan?.generation ?? 0;
+    try {
+      final prepared = await gateway.prepareNativePlan(
+        operationId: operationId,
+        expectedGeneration: expectedGeneration,
+        policy: policy,
+        configuration: configuration,
+        scheduleRevision: revision,
+        eventDigest: digest,
+        events: desired,
+        history: history,
+        quota: budget,
+      );
+      final acceptedReceipt =
+          prepared.state == 'activated' || prepared.state == 'finalized'
+          ? prepared
+          : await gateway.activateNativePlan(operationId, expectedGeneration);
+      await _commit(
+        session: session,
+        target: target,
+        activatesCandidate: activateTarget,
+        scheduleRevision: revision,
+        configurationSignature: configuration.signature,
+        digest: digest,
+        events: desired,
+        history: history,
+        activatedAt: _now().toUtc(),
+        publishWidget: true,
+        fallbackConfiguration: configuration,
+      );
+      if (acceptedReceipt.state != 'finalized') {
+        await gateway.finalizeNativePlan(
+          acceptedReceipt,
+          configuration,
+          digest,
+          _androidPrayerLabels(configuration.localeCode),
+        );
+      }
+      await _persistSuccess(configuration.signature, desired, reason);
+      await _publishCommittedWidget(session, target, configuration.signature);
+      final capabilities = (await gateway.executionSnapshot()).capabilities;
+      return PrayerScheduleResult(
+        status: !capabilities.notifications
+            ? PrayerScheduleStatus.permissionDenied
+            : capabilities.exactAlarms
+            ? PrayerScheduleStatus.scheduled
+            : PrayerScheduleStatus.degraded,
+        scheduledCount: desired.length,
+        pendingCount: desired.length,
+        coverageUntil: desired.isEmpty
+            ? null
+            : desired.last.scheduledInstantUtc,
+        message: capabilities.exactAlarms ? null : 'inexactNotificationOnly',
+      );
+    } on PlatformException catch (error) {
+      await _markDegraded(session, error.code);
+      return PrayerScheduleResult(
+        status: error.code == 'deadlineProtected'
+            ? PrayerScheduleStatus.deferred
+            : PrayerScheduleStatus.degraded,
+        pendingCount: installed.length,
+        coverageUntil: state.plan?.coverageUtcMillis == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(
+                state.plan!.coverageUtcMillis!,
+                isUtc: true,
+              ),
+        message: error.code,
+      );
+    }
+  }
+
+  Map<String, Object?> _androidPrayerLabels(String localeCode) {
+    AppLocalizations l10n;
+    try {
+      l10n = lookupAppLocalizations(Locale(localeCode));
+    } catch (_) {
+      l10n = lookupAppLocalizations(const Locale('en'));
+    }
+    final names = {
+      'fajr': l10n.fajr,
+      'dhuhr': l10n.dhuhr,
+      'asr': l10n.asr,
+      'maghrib': l10n.maghrib,
+      'isha': l10n.isha,
+    };
+    return {
+      for (final entry in names.entries)
+        entry.key: {
+          'title': l10n.notificationPrayerTimeTitle(entry.value),
+          'body': l10n.notificationPrayerTimeBody(entry.value),
+        },
+    };
+  }
+
+  Future<PrayerScheduleResult> _reconcileIOSNative({
+    required PrayerLocationRepositorySession session,
+    required PrayerLocationGeneration target,
+    required bool activatesCandidate,
+    required PrayerScheduleConfiguration configuration,
+    required List<PrayerOccurrenceRecord> history,
+    required String reason,
+    required DateTime now,
+    bool rebasedNativeCandidate = false,
+  }) async {
+    final gateway =
+        iosGateway ??
+        IOSPrayerNotificationGateway(
+          cache: cacheHelper,
+          retirement: pushSynchronizer is PrayerPushRetirer
+              ? pushSynchronizer as PrayerPushRetirer
+              : PrayerPushService(cacheHelper: cacheHelper),
+        );
+    final receipt = await gateway.apply(
+      configuration,
+      legacyRevision: _highestKnownScheduleRevision(session.state),
+      locationRevisionFloor: session.state.revisionCounter,
+    );
+    if (!receipt.ownsSchedule) {
+      return PrayerScheduleResult(
+        status: PrayerScheduleStatus.deferred,
+        pendingCount: receipt.notificationCount,
+        coverageUntil: session.state.acknowledgedCoverageUntilUtc,
+        message: 'migrationPending',
+      );
+    }
+    final acceptedConfiguration = receipt.schedule ?? configuration;
+    final nativeLocation = acceptedConfiguration.location;
+    var acceptedTarget = target;
+    var acceptsCandidate = activatesCandidate;
+    final adoptNative = nativeLocation.revision > target.revision;
+    if (adoptNative) {
+      if (!await session.stageNativeIOSCandidate(acceptedConfiguration)) {
+        throw StateError('Invalid native iOS location generation.');
+      }
+      acceptedTarget = nativeLocation;
+      acceptsCandidate = true;
+    }
+    final signature =
+        '${receipt.configurationSignature}|ios:${receipt.revision}:${receipt.policyRevision}';
+    final events = gateway
+        .acknowledgedEvents(receipt)
+        .map(
+          (event) => event.copyWith(
+            locationRevision: acceptedTarget.revision,
+            scheduleRevision: receipt.revision,
+            configurationSignature: signature,
+          ),
+        )
+        .toList(growable: false);
+    await _commit(
+      session: session,
+      target: acceptedTarget,
+      activatesCandidate: acceptsCandidate,
+      scheduleRevision: receipt.revision,
+      configurationSignature: signature,
+      digest: _digest(acceptedTarget.revision, signature, events),
+      events: events,
+      history: history,
+      activatedAt: now,
+      publishWidget: true,
+      coverageUntilUtc: receipt.coverageUntil,
+      fallbackConfiguration: acceptedConfiguration,
+    );
+    await _persistSuccess(signature, events, reason);
+    await _publishCommittedWidget(session, acceptedTarget, signature);
+    // A new explicit choice made while the app had an older native snapshot
+    // wins after rebasing above the accepted background generation.
+    if (adoptNative &&
+        activatesCandidate &&
+        !rebasedNativeCandidate &&
+        target.capturedAtUtc.isAfter(nativeLocation.capturedAtUtc)) {
+      final revision = await session.beginIntent(
+        target.mode,
+        allowModeChange: true,
+      );
+      if (revision != null) {
+        final rebased = target.copyWith(revision: revision);
+        if (await session.stageCandidate(rebased)) {
+          return _reconcileIOSNative(
+            session: session,
+            target: rebased,
+            activatesCandidate: true,
+            configuration: configuration.forLocation(rebased),
+            history: history,
+            reason: reason,
+            now: now,
+            rebasedNativeCandidate: true,
+          );
+        }
+      }
+    }
+    final permissionDenied =
+        receipt.experience.enabled &&
+        !receipt.notificationsAllowed &&
+        receipt.policies.values.any((policy) => policy['desired'] != 'off') &&
+        receipt.policies.values.every((policy) => policy['effective'] == 'off');
+    return PrayerScheduleResult(
+      status: permissionDenied
+          ? PrayerScheduleStatus.permissionDenied
+          : receipt.error != null
+          ? PrayerScheduleStatus.degraded
+          : PrayerScheduleStatus.scheduled,
+      scheduledCount: events.length,
+      pendingCount: receipt.notificationCount + receipt.alarmCount,
+      coverageUntil: receipt.coverageUntil,
+      message: receipt.error,
+    );
+  }
+
+  Future<PrayerScheduleResult> _reconcileMacNative({
+    required PrayerLocationRepositorySession session,
+    required PrayerLocationGeneration target,
+    required bool activatesCandidate,
+    required PrayerScheduleConfiguration configuration,
+    required List<PrayerOccurrenceRecord> history,
+    required String reason,
+    required DateTime now,
+  }) async {
+    final gateway = macGateway ?? MacPrayerNotificationGateway();
+    final receipt = await gateway.apply(configuration);
+    final signature = '${configuration.signature}|mac:${receipt.revision}';
+    // Native readback can retain an imminent occurrence's captured policy and
+    // revision across publication. Shared storage acknowledges the current
+    // generation while preserving the actual OS identity and delivery instant.
+    final events = gateway
+        .acknowledgedEvents(receipt)
+        .map(
+          (event) => event.copyWith(
+            locationRevision: target.revision,
+            scheduleRevision: receipt.revision,
+            configurationSignature: signature,
+          ),
+        )
+        .toList(growable: false);
+    // A location is committed only after native publication is acknowledged.
+    // Queue failure remains distinct from valid calculation/service readiness.
+    await _commit(
+      session: session,
+      target: target,
+      activatesCandidate: activatesCandidate,
+      scheduleRevision: receipt.revision,
+      configurationSignature: signature,
+      digest: _digest(target.revision, signature, events),
+      events: events,
+      history: history,
+      activatedAt: now,
+      publishWidget: true,
+      coverageUntilUtc: receipt.coverageUntil,
+      fallbackConfiguration: configuration,
+    );
+    await _persistSuccess(signature, events, reason);
+    await _publishCommittedWidget(session, target, signature);
+    return PrayerScheduleResult(
+      status: receipt.error != null
+          ? PrayerScheduleStatus.degraded
+          : !receipt.experience.enabled
+          ? PrayerScheduleStatus.upToDate
+          : receipt.authorization != 'authorized' &&
+                receipt.authorization != 'provisional'
+          ? PrayerScheduleStatus.permissionDenied
+          : PrayerScheduleStatus.scheduled,
+      scheduledCount: events.length,
+      pendingCount: receipt.pendingCount,
+      coverageUntil: receipt.coverageUntil,
+      message: receipt.error,
     );
   }
 
@@ -812,15 +1462,30 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     await session.save(
       session.state.copyWith(journal: journal, occurrenceHistory: history),
     );
-    final applied = await linuxScheduler.apply(
-      PrayerNotificationPlan(
-        events: events,
-        configurationSignature: configuration.signature,
-        requestedThrough: now.add(capacityPolicy.prayerHorizon),
-        locationRevision: target.revision,
+    bool applied;
+    if (configuration.linuxExperience?.configured == true) {
+      final receipt = await LinuxPrayerNotificationGateway.reconcile(
+        configuration,
         scheduleRevision: revision,
-      ),
-    );
+        cutover: journal.cutoverInstantUtc,
+        handledOccurrences: history.map((record) => record.occurrenceId),
+      );
+      applied =
+          receipt.deliveryOwner == 'native' &&
+          receipt.values['locationRevision'] == target.revision &&
+          receipt.values['scheduleRevision'] == revision &&
+          receipt.values['configurationSignature'] == configuration.signature;
+    } else {
+      applied = await linuxScheduler.apply(
+        PrayerNotificationPlan(
+          events: events,
+          configurationSignature: configuration.signature,
+          requestedThrough: now.add(capacityPolicy.prayerHorizon),
+          locationRevision: target.revision,
+          scheduleRevision: revision,
+        ),
+      );
+    }
     if (!applied) return _degradedResult(session, 'linux-apply-failed');
     await _commit(
       session: session,
@@ -977,7 +1642,10 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         desiredEventDigest: digest,
         events: events,
         occurrenceHistory: history,
-        configuration: current.journal?.configuration ?? fallbackConfiguration,
+        configuration:
+            current.journal?.configurationSignature == configurationSignature
+            ? current.journal?.configuration ?? fallbackConfiguration
+            : fallbackConfiguration,
         coverageUntilUtc:
             coverageUntilUtc ??
             (events.isEmpty ? null : events.last.scheduledInstantUtc),
@@ -991,7 +1659,10 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
         desiredEventDigest: digest,
         events: events,
         occurrenceHistory: history,
-        configuration: current.journal?.configuration ?? fallbackConfiguration,
+        configuration:
+            current.journal?.configurationSignature == configurationSignature
+            ? current.journal?.configuration ?? fallbackConfiguration
+            : fallbackConfiguration,
         coverageUntilUtc:
             coverageUntilUtc ??
             (events.isEmpty ? null : events.last.scheduledInstantUtc),
@@ -1010,6 +1681,7 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     if (!state.widgetPublicationPending) return;
     try {
       await session.repairProjections();
+      if (deferWidgetPublication) return;
       await widgetPublisher(
         generation: state.activeLocation ?? target,
         scheduleRevision: state.scheduleRevision,
@@ -1050,10 +1722,9 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
     for (final id in ids.toSet()) {
       if (!PrayerNotificationEvent.isPrayerId(id)) continue;
       try {
-        await _recordOperation(session, 'cancel-uncertain:$id');
         await notifications.cancelNotifications([id]);
-        await _recordOperation(session, 'cancel-complete:$id');
       } catch (_) {
+        await _recordOperation(session, 'cancel-uncertain:$id');
         await _markDegraded(session, 'cancel-failed:$id');
         return false;
       }
@@ -1099,8 +1770,9 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
   Future<DateTime?> _bridgeLocalAlerts({
     required PrayerLocationRepositorySession session,
     required List<PrayerNotificationEvent> desired,
-    required Map<int, PendingNotificationRequest> pendingById,
+    required Map<int, PendingNotification> pendingById,
     required int pendingCount,
+    required bool allowExact,
   }) async {
     final until = _localOnlyUntil(session.state);
     var freeSlots = math.max(
@@ -1112,18 +1784,22 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       if (until != null && event.scheduledInstantUtc.isAfter(until)) break;
       if (!event.scheduledInstantUtc.isAfter(_now().toUtc())) continue;
       final pending = pendingById[event.id];
-      if (!event.matchesPendingPayload(pending?.payload)) {
+      if (!_matchesPending(event, pending)) {
         if (pending == null) {
           if (freeSlots == 0) break;
           freeSlots--;
         }
-        await _recordOperation(session, 'bridge-uncertain:${event.id}');
         try {
-          if (!await notifications.schedulePrayerEvent(event)) break;
+          if (!await notifications.schedulePrayerEvent(
+            event,
+            allowExact: allowExact,
+          )) {
+            break;
+          }
         } catch (_) {
+          await _recordOperation(session, 'bridge-uncertain:${event.id}');
           break;
         }
-        await _recordOperation(session, 'bridge-complete:${event.id}');
       }
       through = event.scheduledInstantUtc;
     }

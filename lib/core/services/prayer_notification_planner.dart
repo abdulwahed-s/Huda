@@ -93,13 +93,29 @@ class PrayerNotificationPlanner {
     );
     final candidates = <PrayerNotificationEvent>[];
 
-    for (var dayOffset = 0; ; dayOffset++) {
+    // Android renewal also covers input dates whose offsets move an occurrence
+    // across a civil date. Keep existing platform planning contracts unchanged.
+    final sourceMargin = configuration.androidEnabledPrayers == null ? 0 : 7;
+    final lastInputDate = DateTime(
+      zonedRequestedThrough.year,
+      zonedRequestedThrough.month,
+      zonedRequestedThrough.day + sourceMargin,
+    );
+    for (var dayOffset = -sourceMargin; ; dayOffset++) {
+      if (configuration.linuxExperience case final settings?
+          when settings.configured && !settings.enabled) {
+        break;
+      }
+      if (configuration.windowsExperience case final settings?
+          when settings.configured && !settings.enabled) {
+        break;
+      }
       final date = DateTime(
         zonedNow.year,
         zonedNow.month,
         zonedNow.day + dayOffset,
       );
-      if (_isAfterCalendarDate(date, zonedRequestedThrough)) break;
+      if (_isAfterCalendarDate(date, lastInputDate)) break;
       final times = PrayerTimesCalculator.compute(
         coordinates,
         date,
@@ -126,6 +142,20 @@ class PrayerNotificationPlanner {
         Prayer.maghrib,
         Prayer.isha,
       ]) {
+        if (configuration.androidEnabledPrayers != null &&
+            !configuration.androidEnabledPrayers!.contains(prayer.name)) {
+          continue;
+        }
+        if (configuration.linuxExperience case final settings?
+            when settings.configured &&
+                !settings.forPrayer(prayer.name).enabled) {
+          continue;
+        }
+        if (configuration.windowsExperience case final settings?
+            when settings.configured &&
+                !settings.forPrayer(prayer.name).enabled) {
+          continue;
+        }
         final scheduledInstantUtc = adjustedInstants[prayer];
         if (scheduledInstantUtc == null) continue;
         final scheduledTime = PrayerTimeZoneService.wallClockAtInstant(
@@ -134,6 +164,13 @@ class PrayerNotificationPlanner {
         );
 
         final prayerName = _prayerName(prayer, localizations);
+        final windowsSettings = configuration.windowsExperience;
+        var body = localizations.notificationPrayerTimeBody(prayerName);
+        if (windowsSettings?.configured == true) {
+          final clock =
+              '${scheduledTime.hour.toString().padLeft(2, '0')}:${scheduledTime.minute.toString().padLeft(2, '0')}';
+          body = '$body · $clock';
+        }
         final event = PrayerNotificationEvent(
           id: PrayerNotificationEvent.idFor(scheduledTime, prayer),
           prayer: prayer,
@@ -141,7 +178,8 @@ class PrayerNotificationPlanner {
           scheduledInstantUtc: scheduledInstantUtc,
           timeZoneName: scheduleTimeZoneName,
           title: localizations.notificationPrayerTimeTitle(prayerName),
-          body: localizations.notificationPrayerTimeBody(prayerName),
+          body: body,
+          windowsSilent: windowsSettings?.configured == true ? true : null,
           locationRevision: location.revision,
           scheduleRevision: scheduleRevision,
           configurationSignature: configuration.signature,

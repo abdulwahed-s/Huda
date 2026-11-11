@@ -32,12 +32,7 @@ class PrayerNotificationBackgroundScheduler {
       return;
     }
 
-    if (Platform.isIOS) {
-      await Workmanager().registerPeriodicTask(
-        iosIdentifier,
-        iosIdentifier,
-        initialDelay: const Duration(hours: 12),
-      );
-    }
+    // iOS registers/refills natively before launch finishes. Workmanager must
+    // not register the same BGTaskScheduler identifier a second time.
   }
 }
