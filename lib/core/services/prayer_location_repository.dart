@@ -69,6 +69,16 @@ class PrayerLocationRepository {
   Future<PrayerReliabilityState> readState() =>
       synchronized((session) async => session.state);
 
+  /// A display consumer only needs the last atomically committed snapshot.
+  /// It must remain responsive while a scheduler holds mutation ownership.
+  Future<PrayerDisplaySnapshot?> readCommittedDisplay() async {
+    final read = await (await _resolveStorage()).read();
+    if (read.status == PrayerStorageReadStatus.corrupt) {
+      throw const PrayerLocationStorageCorruptException();
+    }
+    return read.state?.displaySnapshot;
+  }
+
   Future<PrayerLocationGeneration?> readActive() =>
       synchronized((session) async => session.state.activeLocation);
 
@@ -423,6 +433,45 @@ class PrayerLocationRepositorySession {
       return false;
     }
     await save(_state.copyWith(pendingCandidate: candidate));
+    return true;
+  }
+
+  /// Adopts a newer generation already accepted by the native iOS owner.
+  /// Staging keeps the usual location/receipt commit atomic and recoverable.
+  Future<bool> stageNativeIOSCandidate(
+    PrayerScheduleConfiguration configuration,
+  ) async {
+    final generation = configuration.location;
+    if (!generation.isValid ||
+        !generation.calculationVerified ||
+        generation.mode != PrayerLocationMode.automatic ||
+        generation.source != PrayerLocationSource.iosSignificantChange ||
+        generation.revision <= (_state.activeLocation?.revision ?? 0)) {
+      return false;
+    }
+    await save(
+      _state.copyWith(
+        revisionCounter: generation.revision > _state.revisionCounter
+            ? generation.revision
+            : _state.revisionCounter,
+        latestIntentRevision: generation.revision,
+        latestIntentMode: generation.mode,
+        latestFixCapturedAtUtc: generation.capturedAtUtc,
+        pendingCandidate: generation,
+        journal: null,
+        displaySnapshot: PrayerDisplaySnapshot(
+          location: generation,
+          method: configuration.methodToken,
+          madhab: configuration.madhabToken,
+          highLatitude: configuration.highLatitudeRuleToken,
+          angles: configuration.customAngles,
+          offsets: configuration.offsets,
+          revision: PrayerDisplaySnapshot.nextRevision(
+            _state.displaySnapshot?.revision ?? 0,
+          ),
+        ),
+      ),
+    );
     return true;
   }
 

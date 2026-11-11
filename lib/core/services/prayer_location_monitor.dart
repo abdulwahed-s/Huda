@@ -79,6 +79,8 @@ class PrayerLocationMonitor {
       _nativeChannel.setMethodCallHandler((call) async {
         if (call.method == 'candidateAvailable') {
           await _onNativeCandidate?.call();
+        } else if (call.method == 'nativeScheduleChanged') {
+          await _onSystemChange?.call('native-prayer-travel');
         }
       });
       _systemChannel.setMethodCallHandler((call) async {

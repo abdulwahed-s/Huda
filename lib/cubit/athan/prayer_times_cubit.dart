@@ -22,6 +22,7 @@ import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:huda/core/services/prayer_location_time_zone_service.dart';
 import 'package:huda/core/services/prayer_location_coordinator.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
+import 'package:huda/core/services/prayer_offline_geography.dart';
 import 'package:huda/core/services/prayer_location_repository.dart';
 import 'package:huda/core/services/prayer_reconciliation_state.dart';
 import 'package:huda/core/services/prayer_location_monitor.dart';
@@ -112,7 +113,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   int _displayEpoch = 0;
   Timer? _dayRollover;
   int? _enrichmentAttemptRevision;
-  bool _legacyVerificationAttempted = false;
+  bool _cachedVerificationAttempted = false;
   int? _countryQuestionDismissedRevision;
   final Stream<List<ConnectivityResult>>? _connectivityChanges;
   final Future<List<ConnectivityResult>> Function()? _connectivityCheck;
@@ -295,13 +296,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           longitude,
           preserveCachedMetadata: false,
         );
-        if (placemarks.isEmpty) return const PrayerLocationMetadata();
-        final place = placemarks.first;
-        return PrayerLocationMetadata(
-          countryCode: place.isoCountryCode,
-          locality: place.locality,
-          countryName: place.country,
-        );
+        return PrayerLocationMetadata.fromPlacemarks(placemarks);
       },
     );
   }
@@ -853,7 +848,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
     if (_display != null) {
       await _acceptDisplay(_display!);
-      await _verifyLegacyManualDisplay();
+      await _reevaluateCachedLocation();
       return;
     }
     if (state is! PrayerTimesLoaded) emit(PrayerTimesLoading());
@@ -931,6 +926,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     unawaited(_checkConnectivity());
     if (_display != null) {
       _renderDisplay();
+      unawaited(_reevaluateCachedLocation());
       return;
     }
     if (state is PrayerTimesLoading) return;
@@ -1787,8 +1783,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
           if (enriched != null && !isClosed && epoch == _displayEpoch) {
             await _acceptDisplay(enriched);
           }
-        } catch (_) {
-        }
+        } catch (_) {}
       }
     } finally {
       _workflowRetrying = false;
@@ -1904,12 +1899,12 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     _renderDisplay();
   }
 
-  Future<void> _verifyLegacyManualDisplay() async {
+  Future<void> _reevaluateCachedLocation() async {
     final display = _display;
     final coordinator = _coordinator;
     if (display == null ||
         coordinator == null ||
-        _legacyVerificationAttempted) {
+        _cachedVerificationAttempted) {
       return;
     }
     final location = display.location;
@@ -1921,8 +1916,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         display.provisional &&
         location.countryCode == null &&
         location.countryCandidates.isEmpty;
-    if (!legacyManual && !needsCandidates) return;
-    _legacyVerificationAttempted = true;
+    final needsCoastalReevaluation =
+        display.provisional &&
+        location.verificationReasons.contains('boundaryUncertain') &&
+        location.countryCode != null &&
+        PrayerOfflineGeography.soleZoneForCountry(location.countryCode!) ==
+            location.timeZoneId;
+    if (!legacyManual && !needsCandidates && !needsCoastalReevaluation) return;
+    _cachedVerificationAttempted = true;
     final epoch = ++_displayEpoch;
     try {
       final result = await coordinator.submit(
@@ -1976,8 +1977,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         isCurrent: current,
       );
       if (updated != null && current()) await _acceptDisplay(updated);
-    } catch (_) {
-    }
+    } catch (_) {}
   }
 
   Future<void> _refreshWidgetStatus() async {

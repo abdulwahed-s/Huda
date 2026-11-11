@@ -4,6 +4,7 @@ import 'package:huda/core/services/prayer_offline_geography.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'dart:math' as math;
 
+import 'package:geocoding/geocoding.dart' show Placemark;
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_location_repository.dart';
@@ -32,11 +33,39 @@ class PrayerLocationMetadata {
     this.countryCode,
     this.locality,
     this.countryName,
+    this.lookupSucceeded = false,
   });
+
+  factory PrayerLocationMetadata.fromPlacemarks(List<Placemark> placemarks) {
+    String? firstText(Iterable<String?> values) {
+      for (final value in values) {
+        final text = value?.trim();
+        if (text != null && text.isNotEmpty) return text;
+      }
+      return null;
+    }
+
+    return PrayerLocationMetadata(
+      countryCode: firstText(placemarks.map((place) => place.isoCountryCode)),
+      locality:
+          firstText(placemarks.map((place) => place.locality)) ??
+          firstText(placemarks.map((place) => place.subLocality)) ??
+          firstText(placemarks.map((place) => place.subAdministrativeArea)) ??
+          firstText(placemarks.map((place) => place.administrativeArea)),
+      countryName: firstText(placemarks.map((place) => place.country)),
+      lookupSucceeded: placemarks.isNotEmpty,
+    );
+  }
 
   final String? countryCode;
   final String? locality;
   final String? countryName;
+
+  // Native geocoding can succeed without any city or district information.
+  final bool lookupSucceeded;
+
+  bool get detailsResolved =>
+      lookupSucceeded || (locality?.trim().isNotEmpty ?? false);
 }
 
 abstract interface class PrayerLocationActivator {
@@ -210,8 +239,7 @@ class PrayerLocationCoordinator {
         manual: mode == PrayerLocationMode.manual,
         zone: zoneResult,
       );
-    } catch (_) {
-    }
+    } catch (_) {}
     var countryCode = countryResult?.verified == true
         ? countryResult!.value
         : null;
@@ -225,6 +253,17 @@ class PrayerLocationCoordinator {
       if (choice != null) {
         countryCode = choice.countryCode;
         chosenZone = PrayerOfflineGeography.soleZoneForCountry(countryCode);
+      }
+    }
+    if (countryResult?.verified == true && zoneResult?.verified != true) {
+      // The land-only timezone map also has coastline edges. A verified
+      // single-zone country can settle those edges without improving the
+      // reported accuracy or guessing a zone across a country border.
+      final countryZone = PrayerOfflineGeography.soleZoneForCountry(
+        countryCode!,
+      );
+      if (countryZone != null && countryZone == zoneResult?.value) {
+        chosenZone = countryZone;
       }
     }
     String timeZoneId;
@@ -256,7 +295,7 @@ class PrayerLocationCoordinator {
         issues.add(PrayerWorkflowIssue.locality);
       }
     }
-    if (_normalize(metadata.locality) == null) {
+    if (!metadata.detailsResolved) {
       issues.add(PrayerWorkflowIssue.locality);
     }
     final reasons = <String>[
@@ -482,10 +521,11 @@ class PrayerLocationCoordinator {
       display.location.longitude,
     ).timeout(const Duration(seconds: 5));
     if (isCurrent != null && !isCurrent()) return display;
-    final locality = _normalize(metadata.locality);
-    if (locality == null) throw StateError('Location details unavailable');
+    if (!metadata.detailsResolved) {
+      throw StateError('Location details unavailable');
+    }
     final location = display.location.copyWith(
-      locality: locality,
+      locality: _normalize(metadata.locality) ?? display.location.locality,
       countryName: _verifiedCountryName(display.location.countryCode, metadata),
     );
     final updated = PrayerDisplaySnapshot(

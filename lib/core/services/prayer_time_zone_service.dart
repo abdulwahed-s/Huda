@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -24,8 +27,41 @@ abstract final class PrayerTimeZoneService {
   static Future<String> refreshLocalTimeZone({
     Future<String> Function()? resolver,
   }) async {
+    if (resolver == null && !kIsWeb && Platform.isLinux) {
+      final active = linuxActiveTimeZone();
+      if (active != null) {
+        try {
+          return configureLocalTimeZone(active);
+        } on Object {
+          // Not in the timezone database: use the plugin's answer below.
+        }
+      }
+    }
     final resolved = await (resolver ?? FlutterTimezone.getLocalTimezone)();
     return configureLocalTimeZone(resolved);
+  }
+
+  /// The zone `/etc/localtime` links to, which is the one Linux uses.
+  ///
+  /// flutter_timezone asks `timedatectl` first, which the Snap's confinement
+  /// denies, and then reads `/etc/timezone`, which Ubuntu doesn't update when
+  /// the zone changes. A stale `/etc/timezone` put a reminder's first
+  /// delivery hours off (notification-rework/linux.md, K1).
+  @visibleForTesting
+  static String? linuxActiveTimeZone({String path = '/etc/localtime'}) {
+    try {
+      final target = Link(path).targetSync();
+      const marker = 'zoneinfo/';
+      final index = target.lastIndexOf(marker);
+      if (index < 0) return null;
+      var name = target.substring(index + marker.length);
+      for (final prefix in ['posix/', 'right/']) {
+        if (name.startsWith(prefix)) name = name.substring(prefix.length);
+      }
+      return name.isEmpty ? null : name;
+    } on FileSystemException {
+      return null;
+    }
   }
 
   static String configureLocalTimeZone(String timeZoneName) {
