@@ -23,7 +23,8 @@ enum PrayerOccurrenceDisposition {
   due,
   suppressed,
   confirmedDelivered,
-  deliveryUncertain;
+  deliveryUncertain,
+  automaticAttempt;
 
   static PrayerOccurrenceDisposition? tryParse(Object? value) {
     if (value is! String) return null;

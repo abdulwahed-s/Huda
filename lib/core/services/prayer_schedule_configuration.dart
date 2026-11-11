@@ -2,6 +2,8 @@ import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
+import 'package:huda/core/services/windows_prayer_experience.dart';
+import 'package:huda/core/services/linux_prayer_experience.dart';
 
 class PrayerScheduleConfiguration {
   PrayerScheduleConfiguration({
@@ -14,6 +16,9 @@ class PrayerScheduleConfiguration {
     required Map<String, int> offsets,
     required this.localeCode,
     this.schedulingCapability = 'default',
+    this.windowsExperience,
+    this.linuxExperience,
+    this.androidEnabledPrayers,
   }) : offsets = Map.unmodifiable(
          PrayerTimesCalculator.sanitizeOffsets(offsets),
        );
@@ -29,6 +34,9 @@ class PrayerScheduleConfiguration {
   final Map<String, int> offsets;
   final String localeCode;
   final String schedulingCapability;
+  final WindowsPrayerExperience? windowsExperience;
+  final LinuxPrayerExperience? linuxExperience;
+  final Set<String>? androidEnabledPrayers;
 
   factory PrayerScheduleConfiguration.fromCache({
     required CacheHelper cache,
@@ -84,6 +92,11 @@ class PrayerScheduleConfiguration {
     'offsets': offsets,
     'localeCode': localeCode,
     'schedulingCapability': schedulingCapability,
+    if (windowsExperience != null)
+      'windowsExperience': windowsExperience!.toMap(),
+    if (linuxExperience != null) 'linuxExperience': linuxExperience!.toMap(),
+    if (androidEnabledPrayers != null)
+      'androidEnabledPrayers': androidEnabledPrayers!.toList()..sort(),
   };
   static PrayerScheduleConfiguration? tryParse(Object? value) {
     if (value is! Map || value['version'] != 1) return null;
@@ -91,6 +104,21 @@ class PrayerScheduleConfiguration {
       final location = PrayerLocationGeneration.tryParse(value['location']);
       if (location == null) return null;
       final angles = value['customAngles'] as Map;
+      final enabled = value['androidEnabledPrayers'] == null
+          ? null
+          : Set<String>.from(value['androidEnabledPrayers'] as List);
+      if (enabled?.any(
+            (prayer) => !const {
+              'fajr',
+              'dhuhr',
+              'asr',
+              'maghrib',
+              'isha',
+            }.contains(prayer),
+          ) ==
+          true) {
+        return null;
+      }
       return PrayerScheduleConfiguration(
         location: location,
         deviceTimeZoneId: value['deviceTimeZoneId'] as String,
@@ -105,6 +133,13 @@ class PrayerScheduleConfiguration {
         offsets: Map<String, int>.from(value['offsets'] as Map),
         localeCode: value['localeCode'] as String,
         schedulingCapability: value['schedulingCapability'] as String,
+        windowsExperience: WindowsPrayerExperience.tryParse(
+          value['windowsExperience'],
+        ),
+        linuxExperience: LinuxPrayerExperience.tryParse(
+          value['linuxExperience'],
+        ),
+        androidEnabledPrayers: enabled,
       );
     } catch (_) {
       return null;
@@ -124,6 +159,9 @@ class PrayerScheduleConfiguration {
       offsets: offsets,
       localeCode: localeCode,
       schedulingCapability: schedulingCapability,
+      windowsExperience: windowsExperience,
+      linuxExperience: linuxExperience,
+      androidEnabledPrayers: androidEnabledPrayers,
     );
   }
 
@@ -146,6 +184,9 @@ class PrayerScheduleConfiguration {
       offsets: offsets,
       localeCode: localeCode,
       schedulingCapability: normalized,
+      windowsExperience: windowsExperience,
+      linuxExperience: linuxExperience,
+      androidEnabledPrayers: androidEnabledPrayers,
     );
   }
 
@@ -166,9 +207,32 @@ class PrayerScheduleConfiguration {
       'custom-isha:${CustomPrayerAngles.canonical(customAngles.isha)}',
       'locale:$localeCode',
       'scheduling-capability:$schedulingCapability',
+      if (windowsExperience?.configured == true)
+        'windows-experience:${windowsExperience!.deliverySignature}',
+      if (linuxExperience?.configured == true)
+        'linux-experience:${linuxExperience!.deliverySignature}',
+      if (androidEnabledPrayers != null)
+        'android-eligibility:${(androidEnabledPrayers!.toList()..sort()).join(',')}',
       for (final key in PrayerTimesCalculator.offsetPrayerKeys)
         '$key:${offsets[key] ?? 0}',
     ];
     return parts.join('|');
   }
+
+  PrayerScheduleConfiguration withLinuxExperience(
+    LinuxPrayerExperience experience,
+  ) => PrayerScheduleConfiguration(
+    location: location,
+    deviceTimeZoneId: deviceTimeZoneId,
+    methodToken: methodToken,
+    madhabToken: madhabToken,
+    highLatitudeRuleToken: highLatitudeRuleToken,
+    customAngles: customAngles,
+    offsets: offsets,
+    localeCode: localeCode,
+    schedulingCapability: schedulingCapability,
+    windowsExperience: windowsExperience,
+    linuxExperience: experience,
+    androidEnabledPrayers: androidEnabledPrayers,
+  );
 }

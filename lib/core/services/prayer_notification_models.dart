@@ -6,6 +6,8 @@ import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class PrayerNotificationEvent {
+  // TZDateTime's UTC identity is isolate-local. Store a plain UTC DateTime so
+  // the instant and its JSON representation survive worker/storage transfers.
   PrayerNotificationEvent({
     required this.id,
     required this.prayer,
@@ -17,7 +19,11 @@ class PrayerNotificationEvent {
     this.locationRevision = 0,
     this.scheduleRevision = 0,
     this.configurationSignature = '',
-  }) : scheduledInstantUtc = scheduledInstantUtc.toUtc();
+    this.windowsSilent,
+  }) : scheduledInstantUtc = DateTime.fromMicrosecondsSinceEpoch(
+         scheduledInstantUtc.microsecondsSinceEpoch,
+         isUtc: true,
+       );
 
   static const int modernIdStart = 300000000;
   static const int modernIdEnd = 400000000;
@@ -37,6 +43,7 @@ class PrayerNotificationEvent {
   final int locationRevision;
   final int scheduleRevision;
   final String configurationSignature;
+  final bool? windowsSilent;
 
   tz.TZDateTime get scheduledDateTime =>
       PrayerTimeZoneService.atInstant(scheduledInstantUtc, timeZoneName);
@@ -52,6 +59,7 @@ class PrayerNotificationEvent {
     'scheduledTime': scheduledTime.toIso8601String(),
     'scheduledUtc': scheduledInstantUtc.toIso8601String(),
     'timeZone': timeZoneName,
+    if (windowsSilent != null) 'windowsSilent': windowsSilent,
   });
 
   PrayerNotificationEvent copyWith({
@@ -71,6 +79,7 @@ class PrayerNotificationEvent {
       scheduleRevision: scheduleRevision ?? this.scheduleRevision,
       configurationSignature:
           configurationSignature ?? this.configurationSignature,
+      windowsSilent: windowsSilent,
     );
   }
 
@@ -85,6 +94,7 @@ class PrayerNotificationEvent {
     'locationRevision': locationRevision,
     'scheduleRevision': scheduleRevision,
     'configurationSignature': configurationSignature,
+    if (windowsSilent != null) 'windowsSilent': windowsSilent,
   };
 
   static PrayerNotificationEvent? tryParse(Object? value) {
@@ -150,6 +160,7 @@ class PrayerNotificationEvent {
       locationRevision: locationRevision,
       scheduleRevision: scheduleRevision,
       configurationSignature: signature,
+      windowsSilent: json['windowsSilent'] as bool?,
     );
   }
 

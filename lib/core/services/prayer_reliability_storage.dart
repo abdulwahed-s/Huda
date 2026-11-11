@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:math';
 
 import 'package:huda/core/services/prayer_reconciliation_state.dart';
+import 'package:huda/core/services/linux_prayer_storage_lock.dart';
+import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'package:flutter/services.dart';
 import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
@@ -41,10 +44,24 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
   static const Duration defaultStaleLockAge = Duration(minutes: 10);
   static final Map<String, Lock> _processLocks = <String, Lock>{};
   static final Random _secureRandom = Random.secure();
+  // Windows enforces byte-range locks on reads through other handles too.
+  // Keep the ownership byte beyond the JSON metadata so a second handle can
+  // still verify that the path refers to this owner's record.
+  static final int _ownershipLockStart = Platform.isWindows ? 1 << 32 : 0;
+  static final int _ownershipLockEnd = Platform.isWindows
+      ? _ownershipLockStart + 1
+      : -1;
 
   final Directory directory;
   final Duration _lockTimeout;
   final Duration _staleLockAge;
+
+  // The Android foreground scheduler also runs on Flutter's UI isolate.
+  // Keep typed validation and time-zone parsing with serialization in the
+  // worker; moving only JSON encoding leaves large state walks on the UI.
+  static bool get _useValidationWorker =>
+      (Platform.isWindows || Platform.isAndroid) &&
+      RootIsolateToken.instance != null;
 
   String get _primaryPath => p.join(directory.path, fileName);
   String get _backupPath => '$_primaryPath.backup';
@@ -88,6 +105,24 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
   Future<T> runExclusive<T>(Future<T> Function() action) {
     final processLock = _processLocks.putIfAbsent(_primaryPath, Lock.new);
     return processLock.synchronized(() async {
+      if (Platform.isLinux) {
+        final ownership = LinuxPrayerStorageLock.open(_lockPath);
+        final elapsed = Stopwatch()..start();
+        try {
+          while (!ownership.tryClaim()) {
+            if (elapsed.elapsed >= _lockTimeout) {
+              throw TimeoutException(
+                'Timed out waiting for prayer scheduling ownership',
+                _lockTimeout,
+              );
+            }
+            await Future<void>.delayed(const Duration(milliseconds: 40));
+          }
+          return await action();
+        } finally {
+          ownership.close();
+        }
+      }
       final lockFile = File(_lockPath);
       final deadline = DateTime.now().add(_lockTimeout);
       while (true) {
@@ -121,7 +156,11 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
           'createdAtUtc': DateTime.now().toUtc().toIso8601String(),
         });
         ownershipHandle = await lockFile.open(mode: FileMode.append);
-        await ownershipHandle.lock(FileLock.exclusive);
+        await ownershipHandle.lock(
+          FileLock.exclusive,
+          _ownershipLockStart,
+          _ownershipLockEnd,
+        );
         await ownershipHandle.truncate(0);
         await ownershipHandle.setPosition(0);
         await ownershipHandle.writeString(ownerRecord);
@@ -141,15 +180,22 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
       } finally {
         if (ownershipHandle != null) {
           try {
-            await ownershipHandle.unlock();
-          } on FileSystemException {}
+            await ownershipHandle.unlock(
+              _ownershipLockStart,
+              _ownershipLockEnd,
+            );
+          } on FileSystemException {
+            // Closing the handle below still releases the ownership lock.
+          }
         }
         await pathVerificationHandle?.close();
         await ownershipHandle?.close();
         if (ownsPath) {
           try {
             await lockFile.delete();
-          } on FileSystemException {}
+          } on FileSystemException {
+            // A competing handle may retain the file; stale recovery retries.
+          }
         }
       }
     });
@@ -179,15 +225,30 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
         return false;
       }
       if (futureDated && !hasCompleteOwnerRecord) return false;
-      if (ownerPid == pid) return false;
+      // Windows locks belong to the file handle, including handles opened by
+      // different isolates in this process. An exited isolate can leave its
+      // record behind, so verify physical ownership before reclaiming it.
+      // Other platforms may use process-scoped locks; retain their PID guard.
+      if (ownerPid == pid && !Platform.isWindows) return false;
 
       verificationHandle = await lockFile.open(mode: FileMode.append);
-      await verificationHandle.lock(FileLock.exclusive);
+      await verificationHandle.lock(
+        FileLock.exclusive,
+        _ownershipLockStart,
+        _ownershipLockEnd,
+      );
       await verificationHandle.setPosition(0);
       final lockedRecord = utf8.decode(
         await verificationHandle.read(await verificationHandle.length()),
       );
       if (lockedRecord != observedRecord) return false;
+      if (Platform.isWindows) {
+        // Dart's Windows handles deny deletion while open. A competing owner
+        // that opens the path before this delete also prevents its removal.
+        await verificationHandle.unlock(_ownershipLockStart, _ownershipLockEnd);
+        await verificationHandle.close();
+        verificationHandle = null;
+      }
       await lockFile.delete();
       return true;
     } catch (_) {
@@ -195,8 +256,13 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
     } finally {
       if (verificationHandle != null) {
         try {
-          await verificationHandle.unlock();
-        } on FileSystemException {}
+          await verificationHandle.unlock(
+            _ownershipLockStart,
+            _ownershipLockEnd,
+          );
+        } on FileSystemException {
+          // Closing the verification handle below also releases its lock.
+        }
         await verificationHandle.close();
       }
     }
@@ -230,49 +296,91 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
 
   Future<PrayerReliabilityState?> _decode(File file) async {
     try {
-      final decoded = jsonDecode(await file.readAsString());
-      Object? stateValue = decoded;
-      if (decoded is Map && decoded.containsKey('storageSchemaVersion')) {
-        if (decoded['storageSchemaVersion'] != storageSchemaVersion ||
-            decoded['state'] is! Map ||
-            decoded['sha256'] is! String) {
-          return null;
-        }
-        final stateJson = decoded['state'];
-        final expected = sha256
-            .convert(utf8.encode(jsonEncode(stateJson)))
-            .toString();
-        if (decoded['sha256'] != expected) return null;
-        stateValue = stateJson;
+      final contents = await file.readAsString();
+      if (_useValidationWorker) {
+        return await Isolate.run(() {
+          PrayerTimeZoneService.initializeDatabase();
+          return PrayerReliabilityState.tryParse(_verifiedStateJson(contents));
+        });
       }
+      // JSON parsing and checksum verification run off the UI isolate. The
+      // typed parse stays here: its time zone validation needs this
+      // isolate's time zone database.
+      final stateValue = await Isolate.run(() => _verifiedStateJson(contents));
       return PrayerReliabilityState.tryParse(stateValue);
     } catch (_) {
       return null;
     }
   }
 
+  /// Returns the raw state JSON when [contents] is a legacy unwrapped state
+  /// or an envelope whose checksum matches; null otherwise.
+  static Object? _verifiedStateJson(String contents) {
+    try {
+      final decoded = jsonDecode(contents);
+      if (decoded is! Map || !decoded.containsKey('storageSchemaVersion')) {
+        return decoded;
+      }
+      if (decoded['storageSchemaVersion'] != storageSchemaVersion ||
+          decoded['state'] is! Map ||
+          decoded['sha256'] is! String) {
+        return null;
+      }
+      final stateJson = decoded['state'];
+      final expected = sha256
+          .convert(utf8.encode(jsonEncode(stateJson)))
+          .toString();
+      return decoded['sha256'] == expected ? stateJson : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Encodes and checksums [stateJson] in a single encode pass. The output is
+  /// byte-identical to `jsonEncode` of the envelope map, which
+  /// [_verifiedStateJson] relies on.
+  static String _encodeEnvelope(Map<String, Object?> stateJson) {
+    final encodedState = jsonEncode(stateJson);
+    final checksum = sha256.convert(utf8.encode(encodedState)).toString();
+    return '{"storageSchemaVersion":$storageSchemaVersion,'
+        '"state":$encodedState,"sha256":"$checksum"}';
+  }
+
   @override
   Future<void> write(PrayerReliabilityState state) async {
-    final validated = PrayerReliabilityState.tryParse(state.toJson());
-    if (validated == null) {
+    final envelope = _useValidationWorker
+        ? await Isolate.run(() {
+            PrayerTimeZoneService.initializeDatabase();
+            return _validateAndEncode(state);
+          })
+        : await _encodeFromCaller(state);
+    await _writeEnvelope(envelope);
+  }
+
+  static String _validateAndEncode(PrayerReliabilityState state) {
+    final stateJson = state.toJson();
+    if (PrayerReliabilityState.tryParse(stateJson) == null) {
       throw StateError('Refusing to persist invalid prayer reliability state');
     }
+    return _encodeEnvelope(stateJson);
+  }
+
+  static Future<String> _encodeFromCaller(PrayerReliabilityState state) async {
+    final stateJson = state.toJson();
+    if (PrayerReliabilityState.tryParse(stateJson) == null) {
+      throw StateError('Refusing to persist invalid prayer reliability state');
+    }
+    return Isolate.run(() => _encodeEnvelope(stateJson));
+  }
+
+  Future<void> _writeEnvelope(String envelope) async {
     await directory.create(recursive: true);
     final primary = File(_primaryPath);
     final backup = File(_backupPath);
     final temporary = File(
       '$_primaryPath.tmp.$pid.${DateTime.now().microsecondsSinceEpoch}',
     );
-    final stateJson = state.toJson();
-    final checksum = sha256
-        .convert(utf8.encode(jsonEncode(stateJson)))
-        .toString();
-    final envelope = <String, Object?>{
-      'storageSchemaVersion': storageSchemaVersion,
-      'state': stateJson,
-      'sha256': checksum,
-    };
-    await temporary.writeAsString(jsonEncode(envelope), flush: true);
+    await temporary.writeAsString(envelope, flush: true);
     try {
       if (await primary.exists()) {
         if (await backup.exists()) await backup.delete();
@@ -290,7 +398,9 @@ class AtomicPrayerReliabilityStorage implements PrayerReliabilityStorage {
       if (await temporary.exists()) {
         try {
           await temporary.delete();
-        } on FileSystemException {}
+        } on FileSystemException {
+          // A later write or stale-file cleanup can remove this temporary file.
+        }
       }
     }
   }
