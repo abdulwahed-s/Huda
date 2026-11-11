@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:huda/core/notifications/android_reminder_backend.dart';
+import 'package:huda/core/notifications/linux_reminder_backend.dart';
 import 'package:huda/core/notifications/apple_reminder_backend.dart';
 import 'package:huda/core/notifications/reminder_model.dart';
 import 'package:huda/core/notifications/windows_reminder_backend.dart';
@@ -43,6 +44,7 @@ abstract interface class ReminderBackend {
       TargetPlatform.windows => WindowsReminderBackend(),
       TargetPlatform.android => AndroidReminderBackend(),
       TargetPlatform.iOS || TargetPlatform.macOS => AppleReminderBackend(),
+      TargetPlatform.linux => LinuxReminderBackend(),
       _ => const UnsupportedReminderBackend(),
     };
   }
