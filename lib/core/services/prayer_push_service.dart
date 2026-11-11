@@ -36,6 +36,13 @@ abstract interface class PrayerPushSynchronizer {
   });
 }
 
+abstract interface class PrayerPushRetirer {
+  Future<PrayerPushSyncResult> retire({
+    required int locationRevision,
+    required int scheduleRevision,
+  });
+}
+
 abstract final class PrayerPushErrorCode {
   static const settingsChanged = 'prayer_notification_settings_changed';
   static const busy = 'prayer_notification_sync_busy';
@@ -66,7 +73,7 @@ class PrayerPushSyncResult {
   bool get acknowledged => status == PrayerPushSyncStatus.acknowledged;
 }
 
-class PrayerPushService implements PrayerPushSynchronizer {
+class PrayerPushService implements PrayerPushSynchronizer, PrayerPushRetirer {
   PrayerPushService({
     required this.cacheHelper,
     PrayerPushCredentialStore? credentialStore,
@@ -88,6 +95,7 @@ class PrayerPushService implements PrayerPushSynchronizer {
       'prayer_push_last_sync_acknowledgement_v1';
   static const _legacyLastSyncSignatureKey = 'prayer_push_last_sync_signature';
   static const _legacyLastSyncAtKey = 'prayer_push_last_sync_at';
+  static const nativeRetirementKey = 'ios_prayer_push_retirement_v1';
 
   static PrayerPushService? _channelOwner;
 
@@ -102,6 +110,79 @@ class PrayerPushService implements PrayerPushSynchronizer {
   bool get _isSupported => !kIsWeb && Platform.isIOS;
 
   @override
+  Future<PrayerPushSyncResult> retire({
+    required int locationRevision,
+    required int scheduleRevision,
+  }) async {
+    if (!_isSupported) {
+      return const PrayerPushSyncResult(PrayerPushSyncStatus.unsupported);
+    }
+    // Cancel unpublished enrollments before the serialized, durable handoff.
+    _pendingSync = null;
+    return _lock.synchronized(() async {
+      try {
+        final savedIdentity = await credentialStore.read();
+        if (savedIdentity == null && hasLegacyEnrollmentEvidence(cacheHelper)) {
+          throw StateError('Existing prayer push credentials are unavailable.');
+        }
+        final identity = savedIdentity ?? await _installationIdentity();
+        final response = await _post({
+          'action': 'retire',
+          'installationId': identity.id,
+          'installationSecret': identity.secret,
+          'locationRevision': scheduleRevision == 0 ? 0 : locationRevision,
+          'scheduleRevision': scheduleRevision,
+        });
+        final acceptedSchedule = _validRevision(
+          response['acceptedScheduleRevision'],
+        );
+        final acceptedLocation = _validRevision(
+          response['acceptedLocationRevision'],
+        );
+        final boundary = _strictUtcDate(response['nativeNotBefore']);
+        if (response['ok'] != true ||
+            response['enabled'] != false ||
+            response['retired'] != true ||
+            acceptedSchedule == null ||
+            acceptedLocation == null ||
+            boundary == null) {
+          throw const FormatException(
+            'Incomplete prayer retirement acknowledgement.',
+          );
+        }
+        final saved = await cacheHelper.saveData(
+          key: nativeRetirementKey,
+          value: jsonEncode(response),
+        );
+        if (!saved) {
+          throw StateError('Prayer retirement could not be persisted.');
+        }
+        await _clearCachedAcknowledgement();
+        return PrayerPushSyncResult(
+          PrayerPushSyncStatus.acknowledged,
+          acceptedScheduleRevision: acceptedSchedule,
+          acceptedLocationRevision: acceptedLocation,
+          ownershipUntilUtc: boundary,
+        );
+      } catch (_) {
+        return const PrayerPushSyncResult(
+          PrayerPushSyncStatus.failed,
+          message: 'migrationPending',
+        );
+      }
+    });
+  }
+
+  @visibleForTesting
+  static bool hasLegacyEnrollmentEvidence(CacheHelper cache) => [
+    _deviceTokenKey,
+    _lastSyncAcknowledgementKey,
+    _legacyLastSyncSignatureKey,
+    PrayerPushCredentialStore.legacyIdKey,
+    PrayerPushCredentialStore.legacySecretKey,
+  ].any((key) => cache.getDataString(key: key)?.isNotEmpty == true);
+
+  @override
   Future<PrayerPushSyncResult> syncFallback({
     required DateTime? localCoverageUntil,
     required String timeZoneName,
@@ -113,6 +194,10 @@ class PrayerPushService implements PrayerPushSynchronizer {
     Set<int> suppressedOccurrenceIds = const <int>{},
   }) async {
     if (!_isSupported) {
+      return const PrayerPushSyncResult(PrayerPushSyncStatus.unsupported);
+    }
+
+    if (cacheHelper.getDataString(key: nativeRetirementKey) != null) {
       return const PrayerPushSyncResult(PrayerPushSyncStatus.unsupported);
     }
 

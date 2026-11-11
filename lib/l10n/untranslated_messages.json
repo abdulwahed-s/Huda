@@ -1,1 +1,57 @@
-{}
+{
+  "bn": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ],
+
+  "de": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ],
+
+  "es": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ],
+
+  "fr": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ],
+
+  "ms": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ],
+
+  "ru": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ],
+
+  "tr": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ],
+
+  "ur": [
+    "iosPrayerAdvanceTitle",
+    "iosPrayerAdvanceBody",
+    "iosPrayerRenewalTitle",
+    "iosPrayerRenewalBody"
+  ]
+}

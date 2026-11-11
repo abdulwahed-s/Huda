@@ -5405,6 +5405,10 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuNeedsSetup =>
+      'Откройте страницу времени молитв в Huda, чтобы указать местоположение.';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Автозапуск отключён в параметрах Windows.';
 
@@ -5417,7 +5421,25 @@ class AppLocalizationsRu extends AppLocalizations {
       'Не удалось обновить обратный отсчёт Windows. Попробуйте ещё раз.';
 
   @override
+  String get windowsPrayerStopAdhan => 'Остановить азан';
+
+  @override
   String get androidAdhanDownload => 'Скачать';
+
+  @override
+  String get iosPrayerAdvanceTitle => 'Prayer reminder';
+
+  @override
+  String iosPrayerAdvanceBody(String prayer, String minutes) {
+    return '$prayer in $minutes minutes.';
+  }
+
+  @override
+  String get iosPrayerRenewalTitle => 'Extend prayer alerts';
+
+  @override
+  String get iosPrayerRenewalBody =>
+      'Open Huda to extend your scheduled prayer alerts.';
 
   @override
   String get linuxPrayerTrayStartAtLogin => 'Запускать при входе';

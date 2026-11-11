@@ -5469,6 +5469,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuNeedsSetup =>
+      'Ouvrez les horaires de prière dans Huda pour définir votre position.';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Le démarrage est désactivé dans les paramètres Windows.';
 
@@ -5481,7 +5485,25 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible de mettre à jour le compte à rebours Windows. Réessayez.';
 
   @override
+  String get windowsPrayerStopAdhan => 'Arrêter l\'adhan';
+
+  @override
   String get androidAdhanDownload => 'Télécharger';
+
+  @override
+  String get iosPrayerAdvanceTitle => 'Prayer reminder';
+
+  @override
+  String iosPrayerAdvanceBody(String prayer, String minutes) {
+    return '$prayer in $minutes minutes.';
+  }
+
+  @override
+  String get iosPrayerRenewalTitle => 'Extend prayer alerts';
+
+  @override
+  String get iosPrayerRenewalBody =>
+      'Open Huda to extend your scheduled prayer alerts.';
 
   @override
   String get linuxPrayerTrayStartAtLogin => 'Démarrer à la connexion';

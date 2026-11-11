@@ -5381,6 +5381,10 @@ class AppLocalizationsMs extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuNeedsSetup =>
+      'Buka halaman Waktu Solat Huda untuk menetapkan lokasi anda.';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Permulaan dilumpuhkan dalam tetapan Windows.';
 
@@ -5393,7 +5397,25 @@ class AppLocalizationsMs extends AppLocalizations {
       'Tidak dapat mengemas kini kiraan detik Windows. Cuba lagi.';
 
   @override
+  String get windowsPrayerStopAdhan => 'Hentikan azan';
+
+  @override
   String get androidAdhanDownload => 'Muat turun';
+
+  @override
+  String get iosPrayerAdvanceTitle => 'Prayer reminder';
+
+  @override
+  String iosPrayerAdvanceBody(String prayer, String minutes) {
+    return '$prayer in $minutes minutes.';
+  }
+
+  @override
+  String get iosPrayerRenewalTitle => 'Extend prayer alerts';
+
+  @override
+  String get iosPrayerRenewalBody =>
+      'Open Huda to extend your scheduled prayer alerts.';
 
   @override
   String get linuxPrayerTrayStartAtLogin => 'Mula semasa log masuk';

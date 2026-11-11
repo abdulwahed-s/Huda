@@ -5549,10 +5549,26 @@
       }
     }
   },
+  "macPrayerMenuNeedsSetup": "Open Huda Prayer Times to set your location.",
   "windowsPrayerStartupDisabled": "Startup is disabled in Windows settings.",
   "windowsPrayerOpenStartupSettings": "Open Windows startup settings",
   "windowsPrayerError": "Could not update the Windows countdown. Try again.",
+  "windowsPrayerStopAdhan": "Stop Adhan",
   "androidAdhanDownload": "Download",
+  "iosPrayerAdvanceTitle": "Prayer reminder",
+  "iosPrayerAdvanceBody": "{prayer} in {minutes} minutes.",
+  "@iosPrayerAdvanceBody": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "iosPrayerRenewalTitle": "Extend prayer alerts",
+  "iosPrayerRenewalBody": "Open Huda to extend your scheduled prayer alerts.",
   "linuxPrayerTrayStartAtLogin": "Start at login",
   "linuxRemindersReady": "Reminders arrive even when Huda is closed",
   "linuxRemindersNeedService": "Reminders arrive only while Huda’s background service runs. Turn on “Start at login” in Prayer Times to keep them after restarting.",

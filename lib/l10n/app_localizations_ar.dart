@@ -5315,6 +5315,10 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuNeedsSetup =>
+      'افتح صفحة مواقيت الصلاة في هدى لتحديد موقعك.';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'التشغيل التلقائي معطل في إعدادات ويندوز.';
 
@@ -5327,7 +5331,24 @@ class AppLocalizationsAr extends AppLocalizations {
       'تعذر تحديث العد التنازلي في ويندوز. حاول مرة أخرى.';
 
   @override
+  String get windowsPrayerStopAdhan => 'إيقاف الأذان';
+
+  @override
   String get androidAdhanDownload => 'تنزيل';
+
+  @override
+  String get iosPrayerAdvanceTitle => 'تذكير بالصلاة';
+
+  @override
+  String iosPrayerAdvanceBody(String prayer, String minutes) {
+    return '$prayer بعد $minutes دقائق.';
+  }
+
+  @override
+  String get iosPrayerRenewalTitle => 'تمديد تنبيهات الصلاة';
+
+  @override
+  String get iosPrayerRenewalBody => 'افتح هدى لتمديد تنبيهات الصلاة المجدولة.';
 
   @override
   String get linuxPrayerTrayStartAtLogin => 'التشغيل عند تسجيل الدخول';

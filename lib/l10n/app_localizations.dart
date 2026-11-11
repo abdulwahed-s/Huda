@@ -9756,6 +9756,12 @@ abstract class AppLocalizations {
   /// **'{minutes, plural, =0{Started just now} =1{Started 1 min ago} other{Started {minutes} min ago}}'**
   String prayerHeroStartedAgo(int minutes);
 
+  /// No description provided for @macPrayerMenuNeedsSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda Prayer Times to set your location.'**
+  String get macPrayerMenuNeedsSetup;
+
   /// No description provided for @windowsPrayerStartupDisabled.
   ///
   /// In en, this message translates to:
@@ -9774,11 +9780,41 @@ abstract class AppLocalizations {
   /// **'Could not update the Windows countdown. Try again.'**
   String get windowsPrayerError;
 
+  /// No description provided for @windowsPrayerStopAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Adhan'**
+  String get windowsPrayerStopAdhan;
+
   /// No description provided for @androidAdhanDownload.
   ///
   /// In en, this message translates to:
   /// **'Download'**
   String get androidAdhanDownload;
+
+  /// No description provided for @iosPrayerAdvanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer reminder'**
+  String get iosPrayerAdvanceTitle;
+
+  /// No description provided for @iosPrayerAdvanceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayer} in {minutes} minutes.'**
+  String iosPrayerAdvanceBody(String prayer, String minutes);
+
+  /// No description provided for @iosPrayerRenewalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Extend prayer alerts'**
+  String get iosPrayerRenewalTitle;
+
+  /// No description provided for @iosPrayerRenewalBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda to extend your scheduled prayer alerts.'**
+  String get iosPrayerRenewalBody;
 
   /// No description provided for @linuxPrayerTrayStartAtLogin.
   ///

@@ -5374,6 +5374,10 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuNeedsSetup =>
+      'অবস্থান সেট করতে হুদার নামাজের সময় পৃষ্ঠা খুলুন।';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'উইন্ডোজ সেটিংসে স্বয়ংক্রিয় চালু বন্ধ আছে।';
 
@@ -5386,7 +5390,25 @@ class AppLocalizationsBn extends AppLocalizations {
       'উইন্ডোজ কাউন্টডাউন আপডেট করা যায়নি। আবার চেষ্টা করুন।';
 
   @override
+  String get windowsPrayerStopAdhan => 'আজান থামান';
+
+  @override
   String get androidAdhanDownload => 'ডাউনলোড';
+
+  @override
+  String get iosPrayerAdvanceTitle => 'Prayer reminder';
+
+  @override
+  String iosPrayerAdvanceBody(String prayer, String minutes) {
+    return '$prayer in $minutes minutes.';
+  }
+
+  @override
+  String get iosPrayerRenewalTitle => 'Extend prayer alerts';
+
+  @override
+  String get iosPrayerRenewalBody =>
+      'Open Huda to extend your scheduled prayer alerts.';
 
   @override
   String get linuxPrayerTrayStartAtLogin => 'লগইনের সময় চালু করুন';
