@@ -235,17 +235,6 @@ class AppLocalizationsUr extends AppLocalizations {
   String get downloadFeatureComingSoon => 'ڈاؤن لوڈ کی سہولت جلد آرہی ہے!';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'نماز کاؤنٹ ڈاؤن سروس شروع ہو گئی';
-
-  @override
-  String get prayerCountdownServiceStopped => 'نماز کاؤنٹ ڈاؤن سروس رک گئی';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'نماز کاؤنٹ ڈاؤن سروس دوبارہ شروع ہو گئی';
-
-  @override
   String get failedToShareText => 'ٹیکسٹ شیئر کرنے میں ناکام';
 
   @override
@@ -758,12 +747,6 @@ class AppLocalizationsUr extends AppLocalizations {
   String get failedShareImage => 'تصویر شیئر کرنے میں ناکام';
 
   @override
-  String get prayerCountdownStarted => 'نماز کاؤنٹ ڈاؤن سروس شروع ہو گئی';
-
-  @override
-  String get prayerCountdownStopped => 'نماز کاؤنٹ ڈاؤن سروس رک گئی';
-
-  @override
   String failedStartService(String error) {
     return 'سروس شروع کرنے میں ناکام: $error';
   }
@@ -772,10 +755,6 @@ class AppLocalizationsUr extends AppLocalizations {
   String failedStopService(String error) {
     return 'سروس رکنے میں ناکام: $error';
   }
-
-  @override
-  String get prayerCountdownRestarted =>
-      'نماز کاؤنٹ ڈاؤن سروس دوبارہ شروع ہو گئی';
 
   @override
   String failedRestartService(String error) {
@@ -861,6 +840,10 @@ class AppLocalizationsUr extends AppLocalizations {
   String coverageDaysNotifications(String days, String count) {
     return 'کوریج: ~$days دن ($count نوٹیفیکیشنز)';
   }
+
+  @override
+  String get notificationScheduleFailed =>
+      'یہ یاد دہانی شیڈول نہیں ہو سکی۔ براہ کرم دوبارہ کوشش کریں۔';
 
   @override
   String get notificationsEnabled => 'نوٹیفیکیشنز فعال';
@@ -1668,50 +1651,7 @@ class AppLocalizationsUr extends AppLocalizations {
   }
 
   @override
-  String get persistentPrayerCountdown => 'مستقل نماز کاؤنٹ ڈاؤن';
-
-  @override
-  String get active => 'فعال';
-
-  @override
   String get stopped => 'رک گیا';
-
-  @override
-  String get persistentNotificationRunning =>
-      'آپ کے سٹیٹس بار میں ایک مستقل نوٹیفیکیشن اگلی نماز کے کاؤنٹ ڈاؤن کے ساتھ دکھائی جا رہی ہے۔ اسے مسترد نہیں کیا جا سکتا اور یہ ہر سیکنڈ اپ ڈیٹ ہوتا ہے۔';
-
-  @override
-  String get persistentNotificationStopped =>
-      'مستقل کاؤنٹ ڈاؤن نوٹیفیکیشن فی الوقت رک گئی ہے۔';
-
-  @override
-  String get persistentNotificationInfo =>
-      'یہ ایک واحد مستقل نوٹیفیکیشن بناتا ہے جو اپنے مواد کو اسپام کے بغیر اپ ڈیٹ کرتا ہے۔ آپ کی نماز کی نوٹیفیکیشنز سے مختلف۔';
-
-  @override
-  String get persistentCountdownStarted => 'مستقل کاؤنٹ ڈاؤن شروع ہو گیا';
-
-  @override
-  String get persistentCountdownStopped => 'مستقل کاؤنٹ ڈاؤن رک گیا';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'مستقل کاؤنٹ ڈاؤن دوبارہ شروع ہو گیا';
-
-  @override
-  String failedToStart(String error) {
-    return 'شروع کرنے میں ناکام: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'رکنے میں ناکام: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'دوبارہ شروع کرنے میں ناکام: $error';
-  }
 
   @override
   String get homeScreenWidget => 'ہوم سکرین ویجٹ';
@@ -1822,23 +1762,6 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get nextPrayerCountDown => 'اگلی نماز';
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'بیک گراؤنڈ نوٹیفیکیشن سروس';
-
-  @override
-  String get persistentPrayerCountdownStopped => 'سروس فی الوقت رک گئی ہے';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'سروس بیک گراؤنڈ میں چل رہی ہے';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'سروس کنٹرول';
-
-  @override
-  String get persistentNotificationInfoTitle => 'اس سروس کے بارے میں';
 
   @override
   String get success => 'کامیابی';
@@ -2262,62 +2185,7 @@ class AppLocalizationsUr extends AppLocalizations {
   }
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix اگلی $prayerName $timeText میں';
-  }
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName $timeText میں';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'فجر کی نماز - اپنے دن کی شروعات نماز کے ساتھ کریں 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext => 'ظہر کی نماز - مبارک وقفہ لیں ☀️';
-
-  @override
-  String get prayerCountdownAsrContext => 'عصر کی نماز - اللہ کو یاد کریں 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'مغرب کی نماز - دن کا اختتام شکر کے ساتھ کریں 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'عشاء کی نماز - اپنے دن کا پرامن اختتام 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext => 'نماز کے وقت کے لیے تیار رہیں 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'نماز کا وقت بہت قریب ہے - اب تیاری کریں!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'جلدی نماز کے لیے تیار ہو جائیں';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'نماز کا وقت آ رہا ہے';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 نماز کی الٹ گنتی';
-
-  @override
   String get prayerCountdownLoadingText => 'نماز کے اوقات لوڈ ہو رہے ہیں...';
-
-  @override
-  String get prayerCountdownErrorText => 'نماز کا وقت نکالنے میں خرابی';
 
   @override
   String get zakatCalculator => 'زکوٰۃ کیلکولیٹر';
@@ -5497,4 +5365,233 @@ class AppLocalizationsUr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get windowsPrayerStartupDisabled =>
+      'ونڈوز کی ترتیبات میں خودکار آغاز بند ہے۔';
+
+  @override
+  String get windowsPrayerOpenStartupSettings =>
+      'ونڈوز کی آغاز کی ترتیبات کھولیں';
+
+  @override
+  String get windowsPrayerError =>
+      'ونڈوز کی الٹی گنتی اپ ڈیٹ نہیں ہو سکی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get androidAdhanDownload => 'ڈاؤن لوڈ کریں';
+
+  @override
+  String get linuxPrayerTrayStartAtLogin => 'لاگ ان پر شروع کریں';
+
+  @override
+  String get linuxRemindersReady => 'ہدیٰ بند ہونے پر بھی یاد دہانیاں آتی ہیں';
+
+  @override
+  String get linuxRemindersNeedService =>
+      'یاد دہانیاں صرف اس وقت آتی ہیں جب ہدیٰ کی پس منظر سروس چل رہی ہو۔ دوبارہ شروع کرنے کے بعد بھی پانے کے لیے نماز کے اوقات میں “لاگ ان پر شروع کریں” آن کریں۔';
+
+  @override
+  String get windowsRemindersReady =>
+      'ہدیٰ بند ہونے پر بھی یاد دہانیاں آتی ہیں';
+
+  @override
+  String windowsRemindersQueuedUntil(String date) {
+    return 'یاد دہانیاں $date تک طے شدہ ہیں';
+  }
+
+  @override
+  String get windowsRemindersNeedStartup =>
+      '“ونڈوز کے ساتھ شروع کریں” آن کریں تاکہ ہدیٰ کھولے بغیر انہیں تازہ کر سکے۔';
+
+  @override
+  String get windowsRemindersOpenHuda =>
+      'انہیں جاری رکھنے کے لیے اس سے پہلے ہدیٰ کھولیں۔';
+
+  @override
+  String get testNotificationTitle => 'آزمائشی اطلاع';
+
+  @override
+  String get testNotificationDescription =>
+      'آپ کی یاد دہانیوں والے راستے سے تقریباً 10 سیکنڈ میں ایک اطلاع بھیجتا ہے۔ انتظار کے دوران آپ ہدیٰ بند کر سکتے ہیں۔';
+
+  @override
+  String get testNotificationSend => 'آزمائش بھیجیں';
+
+  @override
+  String get testNotificationContentTitle => 'ہدیٰ کی آزمائشی اطلاع';
+
+  @override
+  String get testNotificationContentBody => 'ہدیٰ کی اطلاعات کام کر رہی ہیں۔';
+
+  @override
+  String get testNotificationArrivesSoon =>
+      'تقریباً 10 سیکنڈ میں ایک آزمائشی اطلاع آئے گی۔ آپ ہدیٰ بند کر سکتے ہیں۔';
+
+  @override
+  String get testNotificationMayBeLate =>
+      'آزمائشی اطلاع راستے میں ہے۔ درست الارم بند ہیں، اس لیے یہ چند منٹ دیر سے آ سکتی ہے۔';
+
+  @override
+  String get testNotificationNotificationsOff =>
+      'ہدیٰ کے لیے اطلاعات بند ہیں۔ انہیں آن کریں، پھر دوبارہ کوشش کریں۔';
+
+  @override
+  String get testNotificationServiceNotRunning =>
+      'ہدیٰ کی پس منظر سروس نہیں چل رہی، اس لیے اطلاعات نہیں آ سکتیں۔ اسے نماز کے اوقات سے شروع کریں، پھر دوبارہ کوشش کریں۔';
+
+  @override
+  String get testNotificationFailed =>
+      'آزمائشی اطلاع شیڈول نہیں ہو سکی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get permissionExplainerContinue => 'جاری رکھیں';
+
+  @override
+  String get permissionExplainerNotNow => 'ابھی نہیں';
+
+  @override
+  String get permissionExplainerNotificationsTitle => 'اطلاعات کی اجازت دیں';
+
+  @override
+  String get permissionExplainerNotificationsMessage =>
+      'آپ کے منتخب کردہ اوقات پر یاد دلانے کے لیے ہدیٰ کو اطلاعات درکار ہیں۔ اس کے بعد آپ کا آلہ اجازت مانگے گا۔';
+
+  @override
+  String prayerCountdownTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix اگلی $prayerName $timeText میں';
+  }
+
+  @override
+  String get active => 'فعال';
+
+  @override
+  String get prayerCountdownServiceStarted =>
+      'نماز کاؤنٹ ڈاؤن سروس شروع ہو گئی';
+
+  @override
+  String get prayerCountdownServiceStopped => 'نماز کاؤنٹ ڈاؤن سروس رک گئی';
+
+  @override
+  String get prayerCountdownServiceRestarted =>
+      'نماز کاؤنٹ ڈاؤن سروس دوبارہ شروع ہو گئی';
+
+  @override
+  String get prayerCountdownStarted => 'نماز کاؤنٹ ڈاؤن سروس شروع ہو گئی';
+
+  @override
+  String get prayerCountdownStopped => 'نماز کاؤنٹ ڈاؤن سروس رک گئی';
+
+  @override
+  String get prayerCountdownRestarted =>
+      'نماز کاؤنٹ ڈاؤن سروس دوبارہ شروع ہو گئی';
+
+  @override
+  String get persistentPrayerCountdown => 'مستقل نماز کاؤنٹ ڈاؤن';
+
+  @override
+  String get persistentNotificationRunning =>
+      'آپ کے سٹیٹس بار میں ایک مستقل نوٹیفیکیشن اگلی نماز کے کاؤنٹ ڈاؤن کے ساتھ دکھائی جا رہی ہے۔ اسے مسترد نہیں کیا جا سکتا اور یہ ہر سیکنڈ اپ ڈیٹ ہوتا ہے۔';
+
+  @override
+  String get persistentNotificationStopped =>
+      'مستقل کاؤنٹ ڈاؤن نوٹیفیکیشن فی الوقت رک گئی ہے۔';
+
+  @override
+  String get persistentNotificationInfo =>
+      'یہ ایک واحد مستقل نوٹیفیکیشن بناتا ہے جو اپنے مواد کو اسپام کے بغیر اپ ڈیٹ کرتا ہے۔ آپ کی نماز کی نوٹیفیکیشنز سے مختلف۔';
+
+  @override
+  String get persistentCountdownStarted => 'مستقل کاؤنٹ ڈاؤن شروع ہو گیا';
+
+  @override
+  String get persistentCountdownStopped => 'مستقل کاؤنٹ ڈاؤن رک گیا';
+
+  @override
+  String get persistentCountdownRestarted =>
+      'مستقل کاؤنٹ ڈاؤن دوبارہ شروع ہو گیا';
+
+  @override
+  String failedToStart(String error) {
+    return 'شروع کرنے میں ناکام: $error';
+  }
+
+  @override
+  String failedToStop(String error) {
+    return 'رکنے میں ناکام: $error';
+  }
+
+  @override
+  String failedToRestart(String error) {
+    return 'دوبارہ شروع کرنے میں ناکام: $error';
+  }
+
+  @override
+  String get persistentPrayerCountdownDescription =>
+      'بیک گراؤنڈ نوٹیفیکیشن سروس';
+
+  @override
+  String get persistentPrayerCountdownStopped => 'سروس فی الوقت رک گئی ہے';
+
+  @override
+  String get persistentPrayerCountdownRunning =>
+      'سروس بیک گراؤنڈ میں چل رہی ہے';
+
+  @override
+  String get persistentPrayerCountdownServiceControls => 'سروس کنٹرول';
+
+  @override
+  String get persistentNotificationInfoTitle => 'اس سروس کے بارے میں';
+
+  @override
+  String prayerCountdownUrgentTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix $prayerName $timeText میں';
+  }
+
+  @override
+  String get prayerCountdownFajrContext =>
+      'فجر کی نماز - اپنے دن کی شروعات نماز کے ساتھ کریں 🤲';
+
+  @override
+  String get prayerCountdownDhuhrContext => 'ظہر کی نماز - مبارک وقفہ لیں ☀️';
+
+  @override
+  String get prayerCountdownAsrContext => 'عصر کی نماز - اللہ کو یاد کریں 📿';
+
+  @override
+  String get prayerCountdownMaghribContext =>
+      'مغرب کی نماز - دن کا اختتام شکر کے ساتھ کریں 🤲';
+
+  @override
+  String get prayerCountdownIshaContext =>
+      'عشاء کی نماز - اپنے دن کا پرامن اختتام 🌙';
+
+  @override
+  String get prayerCountdownDefaultContext => 'نماز کے وقت کے لیے تیار رہیں 🕌';
+
+  @override
+  String get prayerCountdownCriticalUrgency =>
+      'نماز کا وقت بہت قریب ہے - اب تیاری کریں!';
+
+  @override
+  String get prayerCountdownHighUrgency => 'جلدی نماز کے لیے تیار ہو جائیں';
+
+  @override
+  String get prayerCountdownMediumUrgency => 'نماز کا وقت آ رہا ہے';
+
+  @override
+  String get prayerCountdownLoadingTitle => '🕌 نماز کی الٹ گنتی';
+
+  @override
+  String get prayerCountdownErrorText => 'نماز کا وقت نکالنے میں خرابی';
+
+
 }

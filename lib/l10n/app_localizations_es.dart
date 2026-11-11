@@ -240,18 +240,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get downloadFeatureComingSoon => '¡Función de descarga próximamente!';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Servicio de cuenta regresiva de oración iniciado';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Servicio de cuenta regresiva de oración detenido';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Servicio de cuenta regresiva de oración reiniciado';
-
-  @override
   String get failedToShareText => 'Error al compartir texto';
 
   @override
@@ -769,14 +757,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get failedShareImage => 'Error al compartir imagen';
 
   @override
-  String get prayerCountdownStarted =>
-      'Servicio de cuenta regresiva de oración iniciado';
-
-  @override
-  String get prayerCountdownStopped =>
-      'Servicio de cuenta regresiva de oración detenido';
-
-  @override
   String failedStartService(String error) {
     return 'Error al iniciar servicio: $error';
   }
@@ -785,10 +765,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String failedStopService(String error) {
     return 'Error al detener servicio: $error';
   }
-
-  @override
-  String get prayerCountdownRestarted =>
-      'Servicio de cuenta regresiva de oración reiniciado';
 
   @override
   String failedRestartService(String error) {
@@ -875,6 +851,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String coverageDaysNotifications(String days, String count) {
     return 'Cobertura: ~$days días ($count notificaciones)';
   }
+
+  @override
+  String get notificationScheduleFailed =>
+      'No se pudo programar este recordatorio. Inténtalo de nuevo.';
 
   @override
   String get notificationsEnabled => 'Notificaciones habilitadas';
@@ -1688,53 +1668,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get persistentPrayerCountdown =>
-      'Cuenta regresiva persistente de oración';
-
-  @override
-  String get active => 'Activo';
-
-  @override
   String get stopped => 'Detenido';
-
-  @override
-  String get persistentNotificationRunning =>
-      'Se está mostrando una notificación persistente en tu barra de estado con cuenta regresiva para la próxima oración. No puede ser descartada y se actualiza cada segundo.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'La notificación de cuenta regresiva persistente está actualmente detenida.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'Esto crea una sola notificación persistente que actualiza su contenido sin spam. Diferente de tus notificaciones de horarios de oración.';
-
-  @override
-  String get persistentCountdownStarted =>
-      'Cuenta regresiva persistente iniciada';
-
-  @override
-  String get persistentCountdownStopped =>
-      'Cuenta regresiva persistente detenida';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'Cuenta regresiva persistente reiniciada';
-
-  @override
-  String failedToStart(String error) {
-    return 'Error al iniciar: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Error al detener: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Error al reiniciar: $error';
-  }
 
   @override
   String get homeScreenWidget => 'Widget de pantalla de inicio';
@@ -1852,24 +1786,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get nextPrayerCountDown => 'Próxima oración';
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Servicio de notificación en segundo plano';
-
-  @override
-  String get persistentPrayerCountdownStopped =>
-      'El servicio está actualmente detenido';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'El servicio está ejecutándose en segundo plano';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Control del servicio';
-
-  @override
-  String get persistentNotificationInfoTitle => 'Acerca de este servicio';
 
   @override
   String get success => 'éxito';
@@ -2322,65 +2238,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix Próxima $prayerName en $timeText';
-  }
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName en $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Oración del amanecer - comienza tu día con oración 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Oración del mediodía - toma un descanso bendito ☀️';
-
-  @override
-  String get prayerCountdownAsrContext =>
-      'Oración de la tarde - recuerda a Allah 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Oración del atardecer - termina el día con gratitud 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Oración nocturna - final pacífico de tu día 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'Mantente preparado para la hora de oración 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'La hora de oración está muy cerca - ¡prepárate ahora!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'Prepárate para la oración pronto';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'La hora de oración se acerca';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Cuenta regresiva de oración';
-
-  @override
   String get prayerCountdownLoadingText => 'Cargando horarios de oración...';
-
-  @override
-  String get prayerCountdownErrorText => 'Error calculando la hora de oración';
 
   @override
   String get zakatCalculator => 'Calculadora de Zakat';
@@ -5594,4 +5452,245 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get windowsPrayerStartupDisabled =>
+      'El inicio está desactivado en la configuración de Windows.';
+
+  @override
+  String get windowsPrayerOpenStartupSettings =>
+      'Abrir configuración de inicio de Windows';
+
+  @override
+  String get windowsPrayerError =>
+      'No se pudo actualizar la cuenta atrás de Windows. Inténtalo de nuevo.';
+
+  @override
+  String get androidAdhanDownload => 'Descargar';
+
+  @override
+  String get linuxPrayerTrayStartAtLogin => 'Iniciar al entrar';
+
+  @override
+  String get linuxRemindersReady =>
+      'Los recordatorios llegan aunque Huda esté cerrada';
+
+  @override
+  String get linuxRemindersNeedService =>
+      'Los recordatorios solo llegan mientras el servicio en segundo plano de Huda está activo. Activa «Iniciar al entrar» en los horarios de oración para mantenerlos tras reiniciar.';
+
+  @override
+  String get windowsRemindersReady =>
+      'Los recordatorios llegan aunque Huda esté cerrada';
+
+  @override
+  String windowsRemindersQueuedUntil(String date) {
+    return 'Recordatorios programados hasta el $date';
+  }
+
+  @override
+  String get windowsRemindersNeedStartup =>
+      'Activa «Iniciar con Windows» para que Huda los renueve sin abrirla.';
+
+  @override
+  String get windowsRemindersOpenHuda =>
+      'Abre Huda antes de esa fecha para que continúen.';
+
+  @override
+  String get testNotificationTitle => 'Notificación de prueba';
+
+  @override
+  String get testNotificationDescription =>
+      'Envía una notificación en unos 10 segundos por el mismo camino que tus recordatorios. Puedes cerrar Huda mientras esperas.';
+
+  @override
+  String get testNotificationSend => 'Enviar prueba';
+
+  @override
+  String get testNotificationContentTitle => 'Notificación de prueba de Huda';
+
+  @override
+  String get testNotificationContentBody =>
+      'Las notificaciones de Huda funcionan.';
+
+  @override
+  String get testNotificationArrivesSoon =>
+      'Llegará una notificación de prueba en unos 10 segundos. Puedes cerrar Huda.';
+
+  @override
+  String get testNotificationMayBeLate =>
+      'La notificación de prueba está en camino. Las alarmas exactas están desactivadas, así que puede llegar unos minutos tarde.';
+
+  @override
+  String get testNotificationNotificationsOff =>
+      'Las notificaciones de Huda están desactivadas. Actívalas y vuelve a intentarlo.';
+
+  @override
+  String get testNotificationServiceNotRunning =>
+      'El servicio en segundo plano de Huda no se está ejecutando, así que no pueden llegar notificaciones. Inícialo desde los horarios de oración y vuelve a intentarlo.';
+
+  @override
+  String get testNotificationFailed =>
+      'No se pudo programar la notificación de prueba. Vuelve a intentarlo.';
+
+  @override
+  String get permissionExplainerContinue => 'Continuar';
+
+  @override
+  String get permissionExplainerNotNow => 'Ahora no';
+
+  @override
+  String get permissionExplainerNotificationsTitle => 'Permitir notificaciones';
+
+  @override
+  String get permissionExplainerNotificationsMessage =>
+      'Huda necesita notificaciones para recordarte a las horas que elijas. Tu dispositivo te lo preguntará a continuación.';
+
+  @override
+  String prayerCountdownTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix Próxima $prayerName en $timeText';
+  }
+
+  @override
+  String get active => 'Activo';
+
+  @override
+  String get prayerCountdownServiceStarted =>
+      'Servicio de cuenta regresiva de oración iniciado';
+
+  @override
+  String get prayerCountdownServiceStopped =>
+      'Servicio de cuenta regresiva de oración detenido';
+
+  @override
+  String get prayerCountdownServiceRestarted =>
+      'Servicio de cuenta regresiva de oración reiniciado';
+
+  @override
+  String get prayerCountdownStarted =>
+      'Servicio de cuenta regresiva de oración iniciado';
+
+  @override
+  String get prayerCountdownStopped =>
+      'Servicio de cuenta regresiva de oración detenido';
+
+  @override
+  String get prayerCountdownRestarted =>
+      'Servicio de cuenta regresiva de oración reiniciado';
+
+  @override
+  String get persistentPrayerCountdown =>
+      'Cuenta regresiva persistente de oración';
+
+  @override
+  String get persistentNotificationRunning =>
+      'Se está mostrando una notificación persistente en tu barra de estado con cuenta regresiva para la próxima oración. No puede ser descartada y se actualiza cada segundo.';
+
+  @override
+  String get persistentNotificationStopped =>
+      'La notificación de cuenta regresiva persistente está actualmente detenida.';
+
+  @override
+  String get persistentNotificationInfo =>
+      'Esto crea una sola notificación persistente que actualiza su contenido sin spam. Diferente de tus notificaciones de horarios de oración.';
+
+  @override
+  String get persistentCountdownStarted =>
+      'Cuenta regresiva persistente iniciada';
+
+  @override
+  String get persistentCountdownStopped =>
+      'Cuenta regresiva persistente detenida';
+
+  @override
+  String get persistentCountdownRestarted =>
+      'Cuenta regresiva persistente reiniciada';
+
+  @override
+  String failedToStart(String error) {
+    return 'Error al iniciar: $error';
+  }
+
+  @override
+  String failedToStop(String error) {
+    return 'Error al detener: $error';
+  }
+
+  @override
+  String failedToRestart(String error) {
+    return 'Error al reiniciar: $error';
+  }
+
+  @override
+  String get persistentPrayerCountdownDescription =>
+      'Servicio de notificación en segundo plano';
+
+  @override
+  String get persistentPrayerCountdownStopped =>
+      'El servicio está actualmente detenido';
+
+  @override
+  String get persistentPrayerCountdownRunning =>
+      'El servicio está ejecutándose en segundo plano';
+
+  @override
+  String get persistentPrayerCountdownServiceControls => 'Control del servicio';
+
+  @override
+  String get persistentNotificationInfoTitle => 'Acerca de este servicio';
+
+  @override
+  String prayerCountdownUrgentTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix $prayerName en $timeText';
+  }
+
+  @override
+  String get prayerCountdownFajrContext =>
+      'Oración del amanecer - comienza tu día con oración 🤲';
+
+  @override
+  String get prayerCountdownDhuhrContext =>
+      'Oración del mediodía - toma un descanso bendito ☀️';
+
+  @override
+  String get prayerCountdownAsrContext =>
+      'Oración de la tarde - recuerda a Allah 📿';
+
+  @override
+  String get prayerCountdownMaghribContext =>
+      'Oración del atardecer - termina el día con gratitud 🤲';
+
+  @override
+  String get prayerCountdownIshaContext =>
+      'Oración nocturna - final pacífico de tu día 🌙';
+
+  @override
+  String get prayerCountdownDefaultContext =>
+      'Mantente preparado para la hora de oración 🕌';
+
+  @override
+  String get prayerCountdownCriticalUrgency =>
+      'La hora de oración está muy cerca - ¡prepárate ahora!';
+
+  @override
+  String get prayerCountdownHighUrgency => 'Prepárate para la oración pronto';
+
+  @override
+  String get prayerCountdownMediumUrgency => 'La hora de oración se acerca';
+
+  @override
+  String get prayerCountdownLoadingTitle => '🕌 Cuenta regresiva de oración';
+
+  @override
+  String get prayerCountdownErrorText => 'Error calculando la hora de oración';
+
+
 }

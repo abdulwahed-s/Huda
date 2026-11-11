@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:huda/core/notifications/notification_permissions.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/core/services/notification_services.dart';
+import 'package:huda/core/services/android_prayer_experience.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 @immutable
 class NotificationAccess {
@@ -13,6 +15,9 @@ class NotificationAccess {
     this.notificationNeedsSettings = false,
     this.batteryOptimizationExempted = true,
     this.exactAlarmsAllowed = true,
+    this.prayerChannelsAllowed = true,
+    this.fullScreenAllowed = true,
+    this.flipSensorAvailable = true,
   });
 
   final bool notificationsEnabled;
@@ -20,12 +25,16 @@ class NotificationAccess {
   final bool notificationNeedsSettings;
   final bool batteryOptimizationExempted;
   final bool exactAlarmsAllowed;
+  final bool prayerChannelsAllowed;
+  final bool fullScreenAllowed;
+  final bool flipSensorAvailable;
 
   bool get needsNotification => !notificationsEnabled;
   bool get needsBatteryOptimization => !batteryOptimizationExempted;
   bool get needsExactAlarms => !exactAlarmsAllowed;
   bool get isReady =>
       !needsNotification && !needsBatteryOptimization && !needsExactAlarms;
+  bool get isPrayerReady => isReady && prayerChannelsAllowed;
 }
 
 class NotificationAccessController extends ChangeNotifier
@@ -63,14 +72,32 @@ class NotificationAccessController extends ChangeNotifier
     final batteryOptimizationExempted = PlatformUtils.isAndroid
         ? await cubit.getIsBatteryOptimizationExempted()
         : true;
-
-    var notificationNeedsSettings = false;
-    if (!notificationsEnabled &&
-        (PlatformUtils.isAndroid || PlatformUtils.isIOS)) {
-      final status = await Permission.notification.status;
-      notificationNeedsSettings =
-          status.isPermanentlyDenied || status.isRestricted;
+    var prayerChannelsAllowed = true;
+    var fullScreenAllowed = true;
+    var flipSensorAvailable = true;
+    if (PlatformUtils.isAndroid) {
+      try {
+        final gateway = NotificationServices.androidPrayerGateway;
+        if (await gateway.isEnabled()) {
+          final state = await gateway.executionSnapshot();
+          final policy = AndroidPrayerExperience.fromPolicy(state.policy);
+          prayerChannelsAllowed = policy.enabledPrayers.every(
+            (prayer) => policy.effective(prayer)['mode'] == 'silent'
+                ? state.capabilities.silentChannel
+                : state.capabilities.adhanChannel,
+          );
+          fullScreenAllowed = state.capabilities.fullScreen;
+          flipSensorAvailable = state.capabilities.flipSensor;
+        }
+      } catch (_) {
+        /* Existing notification permissions remain available during native recovery. */
+      }
     }
+
+    final notificationNeedsSettings =
+        !notificationsEnabled &&
+        await NotificationPermissions.state() ==
+            NotificationPermissionState.settingsOnly;
 
     if (_disposed) return;
 
@@ -78,12 +105,16 @@ class NotificationAccessController extends ChangeNotifier
     final shouldReschedule =
         previous != null &&
         ((!previous.notificationsEnabled && notificationsEnabled) ||
-            (!previous.exactAlarmsAllowed && exactAlarmsAllowed));
+            (!previous.exactAlarmsAllowed && exactAlarmsAllowed) ||
+            (!previous.prayerChannelsAllowed && prayerChannelsAllowed));
     _access = NotificationAccess(
       notificationsEnabled: notificationsEnabled,
       notificationNeedsSettings: notificationNeedsSettings,
       batteryOptimizationExempted: batteryOptimizationExempted,
       exactAlarmsAllowed: exactAlarmsAllowed,
+      prayerChannelsAllowed: prayerChannelsAllowed,
+      fullScreenAllowed: fullScreenAllowed,
+      flipSensorAvailable: flipSensorAvailable,
     );
     _isRequestInProgress = false;
     if (!_ready.isCompleted) _ready.complete();
@@ -92,23 +123,33 @@ class NotificationAccessController extends ChangeNotifier
     if (shouldReschedule) await onAccessGained?.call();
   }
 
-  Future<void> requestNotifications(BuildContext context) =>
-      _request(() => PermissionHandlers.requestNotificationPermission(context));
+  /// [explain] false when the caller's own card already says why.
+  Future<void> requestNotifications(
+    BuildContext context, {
+    bool explain = true,
+  }) => _request(
+    () => PermissionHandlers.requestNotificationPermission(
+      context,
+      explain: explain,
+    ),
+  );
 
-  Future<bool> requestNotificationPrompt(BuildContext context) async {
-    if (!PlatformUtils.isAndroid && !PlatformUtils.isIOS) {
-      await requestNotifications(context);
-      return _access?.notificationsEnabled ?? false;
-    }
-    await _request(() => Permission.notification.request());
-    return _access?.notificationsEnabled ?? false;
-  }
+  /// Opens the system page; only from a tap on "Open settings".
+  Future<void> openNotificationSettings() =>
+      _request(NotificationPermissions.openSettings);
 
   Future<void> requestBatteryOptimization(BuildContext context) =>
       _request(() => PermissionHandlers.requestBatteryOptimization(context));
 
   Future<void> requestExactAlarms(BuildContext context) =>
       _request(() => PermissionHandlers.requestExactAlarmsPermission(context));
+  Future<void> openPrayerChannelSettings() => _request(() async {
+    final gateway = NotificationServices.androidPrayerGateway;
+    final state = await gateway.executionSnapshot();
+    await gateway.api.openSettings(
+      state.capabilities.adhanChannel ? 'silentChannel' : 'adhanChannel',
+    );
+  });
 
   Future<void> _request(Future<void> Function() request) async {
     if (_isRequestInProgress) return;

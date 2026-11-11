@@ -76,7 +76,12 @@ class SettingsSection extends StatelessWidget {
         NotificationCard(
           title: AppLocalizations.of(context)!.randomAthkarTitle,
           subtitle: AppLocalizations.of(context)!
-              .everyMinutes(state.randomAthkarFrequency.toString(), ''),
+              .everyMinutes(
+                (state.randomAthkarScheduledFrequency ??
+                        state.randomAthkarFrequency)
+                    .toString(),
+                '',
+              ),
           description: AppLocalizations.of(context)!.periodicRemindersAthkar,
           icon: Icons.repeat_outlined,
           gradient: [Colors.blue.shade400, Colors.blue.shade600],

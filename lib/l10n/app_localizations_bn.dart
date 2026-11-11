@@ -235,18 +235,6 @@ class AppLocalizationsBn extends AppLocalizations {
   String get downloadFeatureComingSoon => 'ডাউনলোড ফিচার শীঘ্রই আসছে!';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'নামাজের কাউন্টডাউন সেবা শুরু হয়েছে';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'নামাজের কাউন্টডাউন সেবা বন্ধ হয়েছে';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'নামাজের কাউন্টডাউন সেবা পুনরায় চালু হয়েছে';
-
-  @override
   String get failedToShareText => 'টেক্সট শেয়ার করতে ব্যর্থ';
 
   @override
@@ -760,12 +748,6 @@ class AppLocalizationsBn extends AppLocalizations {
   String get failedShareImage => 'ছবি শেয়ার করতে ব্যর্থ';
 
   @override
-  String get prayerCountdownStarted => 'নামাজের কাউন্টডাউন সেবা শুরু হয়েছে';
-
-  @override
-  String get prayerCountdownStopped => 'নামাজের কাউন্টডাউন সেবা বন্ধ হয়েছে';
-
-  @override
   String failedStartService(String error) {
     return 'সেবা শুরু করতে ব্যর্থ: $error';
   }
@@ -774,10 +756,6 @@ class AppLocalizationsBn extends AppLocalizations {
   String failedStopService(String error) {
     return 'সেবা বন্ধ করতে ব্যর্থ: $error';
   }
-
-  @override
-  String get prayerCountdownRestarted =>
-      'নামাজের কাউন্টডাউন সেবা পুনরায় চালু হয়েছে';
 
   @override
   String failedRestartService(String error) {
@@ -862,6 +840,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String coverageDaysNotifications(String days, String count) {
     return 'কভারেজ: ~$days দিন ($count বিজ্ঞপ্তি)';
   }
+
+  @override
+  String get notificationScheduleFailed =>
+      'এই রিমাইন্ডারটি নির্ধারণ করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।';
 
   @override
   String get notificationsEnabled => 'বিজ্ঞপ্তি সক্রিয়';
@@ -1671,50 +1653,7 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
-  String get persistentPrayerCountdown => 'স্থায়ী নামাজের কাউন্টডাউন';
-
-  @override
-  String get active => 'সক্রিয়';
-
-  @override
   String get stopped => 'বন্ধ';
-
-  @override
-  String get persistentNotificationRunning =>
-      'আপনার স্ট্যাটাস বারে পরবর্তী নামাজের কাউন্টডাউন সহ একটি স্থায়ী বিজ্ঞপ্তি প্রদর্শিত হচ্ছে। এটি খারিজ করা যায় না এবং প্রতি সেকেন্ডে আপডেট হয়।';
-
-  @override
-  String get persistentNotificationStopped =>
-      'স্থায়ী কাউন্টডাউন বিজ্ঞপ্তি বর্তমানে বন্ধ।';
-
-  @override
-  String get persistentNotificationInfo =>
-      'এটি একটি একক স্থায়ী বিজ্ঞপ্তি তৈরি করে যা স্প্যাম ছাড়াই তার বিষয়বস্তু আপডেট করে। আপনার নামাজের সময়ের বিজ্ঞপ্তি থেকে আলাদা।';
-
-  @override
-  String get persistentCountdownStarted => 'স্থায়ী কাউন্টডাউন শুরু হয়েছে';
-
-  @override
-  String get persistentCountdownStopped => 'স্থায়ী কাউন্টডাউন বন্ধ হয়েছে';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'স্থায়ী কাউন্টডাউন পুনরায় চালু হয়েছে';
-
-  @override
-  String failedToStart(String error) {
-    return 'শুরু করতে ব্যর্থ: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'বন্ধ করতে ব্যর্থ: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'পুনরায় চালু করতে ব্যর্থ: $error';
-  }
 
   @override
   String get homeScreenWidget => 'হোম স্ক্রিন উইজেট';
@@ -1820,22 +1759,6 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get nextPrayerCountDown => 'পরবর্তী নামাজ';
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'ব্যাকগ্রাউন্ড বিজ্ঞপ্তি সেবা';
-
-  @override
-  String get persistentPrayerCountdownStopped => 'সেবা বর্তমানে বন্ধ';
-
-  @override
-  String get persistentPrayerCountdownRunning => 'সেবা ব্যাকগ্রাউন্ডে চলছে';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'সেবা নিয়ন্ত্রণ';
-
-  @override
-  String get persistentNotificationInfoTitle => 'এই সেবা সম্পর্কে';
 
   @override
   String get success => 'সফলতা';
@@ -2270,65 +2193,7 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix পরবর্তী $prayerName $timeText এর মধ্যে';
-  }
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName $timeText এর মধ্যে';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'ফজরের নামাজ - নামাজ দিয়ে আপনার দিন শুরু করুন 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'জোহরের নামাজ - একটি আশীর্বাদপূর্ণ বিরতি নিন ☀️';
-
-  @override
-  String get prayerCountdownAsrContext =>
-      'আসরের নামাজ - আল্লাহকে স্মরণ করুন 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'মাগরিবের নামাজ - কৃতজ্ঞতা সহকারে দিন শেষ করুন 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'এশার নামাজ - আপনার দিনের শান্তিপূর্ণ সমাপ্তি 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'নামাজের সময়ের জন্য প্রস্তুত থাকুন 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'নামাজের সময় খুব কাছে - এখনই প্রস্তুত হন!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'শীঘ্রই নামাজের জন্য প্রস্তুত হন';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'নামাজের সময় এগিয়ে আসছে';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 নামাজের কাউন্টডাউন';
-
-  @override
   String get prayerCountdownLoadingText => 'নামাজের সময় লোড হচ্ছে...';
-
-  @override
-  String get prayerCountdownErrorText => 'নামাজের সময় গণনায় ত্রুটি';
 
   @override
   String get zakatCalculator => 'যাকাত ক্যালকুলেটর';
@@ -5507,4 +5372,234 @@ class AppLocalizationsBn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get windowsPrayerStartupDisabled =>
+      'উইন্ডোজ সেটিংসে স্বয়ংক্রিয় চালু বন্ধ আছে।';
+
+  @override
+  String get windowsPrayerOpenStartupSettings =>
+      'উইন্ডোজ স্টার্টআপ সেটিংস খুলুন';
+
+  @override
+  String get windowsPrayerError =>
+      'উইন্ডোজ কাউন্টডাউন আপডেট করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get androidAdhanDownload => 'ডাউনলোড';
+
+  @override
+  String get linuxPrayerTrayStartAtLogin => 'লগইনের সময় চালু করুন';
+
+  @override
+  String get linuxRemindersReady => 'হুদা বন্ধ থাকলেও রিমাইন্ডার আসে';
+
+  @override
+  String get linuxRemindersNeedService =>
+      'হুদার ব্যাকগ্রাউন্ড সার্ভিস চলাকালীনই শুধু রিমাইন্ডার আসে। রিস্টার্টের পরও পেতে নামাজের সময়ে “লগইনের সময় চালু করুন” চালু করুন।';
+
+  @override
+  String get windowsRemindersReady => 'হুদা বন্ধ থাকলেও রিমাইন্ডার আসে';
+
+  @override
+  String windowsRemindersQueuedUntil(String date) {
+    return '$date পর্যন্ত রিমাইন্ডার নির্ধারিত আছে';
+  }
+
+  @override
+  String get windowsRemindersNeedStartup =>
+      '“উইন্ডোজের সঙ্গে চালু করুন” চালু করুন, যাতে হুদা না খুলেও সেগুলো নবায়ন করতে পারে।';
+
+  @override
+  String get windowsRemindersOpenHuda => 'চালু রাখতে তার আগে হুদা খুলুন।';
+
+  @override
+  String get testNotificationTitle => 'পরীক্ষামূলক বিজ্ঞপ্তি';
+
+  @override
+  String get testNotificationDescription =>
+      'আপনার রিমাইন্ডারের মতো একই পথে প্রায় ১০ সেকেন্ডের মধ্যে একটি বিজ্ঞপ্তি পাঠায়। অপেক্ষার সময় আপনি হুদা বন্ধ করতে পারেন।';
+
+  @override
+  String get testNotificationSend => 'পরীক্ষা পাঠান';
+
+  @override
+  String get testNotificationContentTitle => 'হুদার পরীক্ষামূলক বিজ্ঞপ্তি';
+
+  @override
+  String get testNotificationContentBody => 'হুদার বিজ্ঞপ্তি কাজ করছে।';
+
+  @override
+  String get testNotificationArrivesSoon =>
+      'প্রায় ১০ সেকেন্ডের মধ্যে একটি পরীক্ষামূলক বিজ্ঞপ্তি আসবে। আপনি হুদা বন্ধ করতে পারেন।';
+
+  @override
+  String get testNotificationMayBeLate =>
+      'পরীক্ষামূলক বিজ্ঞপ্তি আসছে। সঠিক সময়ের অ্যালার্ম বন্ধ, তাই কয়েক মিনিট দেরি হতে পারে।';
+
+  @override
+  String get testNotificationNotificationsOff =>
+      'হুদার বিজ্ঞপ্তি বন্ধ আছে। চালু করে আবার চেষ্টা করুন।';
+
+  @override
+  String get testNotificationServiceNotRunning =>
+      'হুদার ব্যাকগ্রাউন্ড সার্ভিস চলছে না, তাই বিজ্ঞপ্তি আসতে পারবে না। নামাজের সময় থেকে এটি চালু করে আবার চেষ্টা করুন।';
+
+  @override
+  String get testNotificationFailed =>
+      'পরীক্ষামূলক বিজ্ঞপ্তি নির্ধারণ করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get permissionExplainerContinue => 'চালিয়ে যান';
+
+  @override
+  String get permissionExplainerNotNow => 'এখন নয়';
+
+  @override
+  String get permissionExplainerNotificationsTitle => 'বিজ্ঞপ্তির অনুমতি দিন';
+
+  @override
+  String get permissionExplainerNotificationsMessage =>
+      'আপনার বেছে নেওয়া সময়ে মনে করিয়ে দিতে হুদার বিজ্ঞপ্তি প্রয়োজন। এরপর আপনার ডিভাইস অনুমতি চাইবে।';
+
+  @override
+  String prayerCountdownTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix পরবর্তী $prayerName $timeText এর মধ্যে';
+  }
+
+  @override
+  String get active => 'সক্রিয়';
+
+  @override
+  String get prayerCountdownServiceStarted =>
+      'নামাজের কাউন্টডাউন সেবা শুরু হয়েছে';
+
+  @override
+  String get prayerCountdownServiceStopped =>
+      'নামাজের কাউন্টডাউন সেবা বন্ধ হয়েছে';
+
+  @override
+  String get prayerCountdownServiceRestarted =>
+      'নামাজের কাউন্টডাউন সেবা পুনরায় চালু হয়েছে';
+
+  @override
+  String get prayerCountdownStarted => 'নামাজের কাউন্টডাউন সেবা শুরু হয়েছে';
+
+  @override
+  String get prayerCountdownStopped => 'নামাজের কাউন্টডাউন সেবা বন্ধ হয়েছে';
+
+  @override
+  String get prayerCountdownRestarted =>
+      'নামাজের কাউন্টডাউন সেবা পুনরায় চালু হয়েছে';
+
+  @override
+  String get persistentPrayerCountdown => 'স্থায়ী নামাজের কাউন্টডাউন';
+
+  @override
+  String get persistentNotificationRunning =>
+      'আপনার স্ট্যাটাস বারে পরবর্তী নামাজের কাউন্টডাউন সহ একটি স্থায়ী বিজ্ঞপ্তি প্রদর্শিত হচ্ছে। এটি খারিজ করা যায় না এবং প্রতি সেকেন্ডে আপডেট হয়।';
+
+  @override
+  String get persistentNotificationStopped =>
+      'স্থায়ী কাউন্টডাউন বিজ্ঞপ্তি বর্তমানে বন্ধ।';
+
+  @override
+  String get persistentNotificationInfo =>
+      'এটি একটি একক স্থায়ী বিজ্ঞপ্তি তৈরি করে যা স্প্যাম ছাড়াই তার বিষয়বস্তু আপডেট করে। আপনার নামাজের সময়ের বিজ্ঞপ্তি থেকে আলাদা।';
+
+  @override
+  String get persistentCountdownStarted => 'স্থায়ী কাউন্টডাউন শুরু হয়েছে';
+
+  @override
+  String get persistentCountdownStopped => 'স্থায়ী কাউন্টডাউন বন্ধ হয়েছে';
+
+  @override
+  String get persistentCountdownRestarted =>
+      'স্থায়ী কাউন্টডাউন পুনরায় চালু হয়েছে';
+
+  @override
+  String failedToStart(String error) {
+    return 'শুরু করতে ব্যর্থ: $error';
+  }
+
+  @override
+  String failedToStop(String error) {
+    return 'বন্ধ করতে ব্যর্থ: $error';
+  }
+
+  @override
+  String failedToRestart(String error) {
+    return 'পুনরায় চালু করতে ব্যর্থ: $error';
+  }
+
+  @override
+  String get persistentPrayerCountdownDescription =>
+      'ব্যাকগ্রাউন্ড বিজ্ঞপ্তি সেবা';
+
+  @override
+  String get persistentPrayerCountdownStopped => 'সেবা বর্তমানে বন্ধ';
+
+  @override
+  String get persistentPrayerCountdownRunning => 'সেবা ব্যাকগ্রাউন্ডে চলছে';
+
+  @override
+  String get persistentPrayerCountdownServiceControls => 'সেবা নিয়ন্ত্রণ';
+
+  @override
+  String get persistentNotificationInfoTitle => 'এই সেবা সম্পর্কে';
+
+  @override
+  String prayerCountdownUrgentTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix $prayerName $timeText এর মধ্যে';
+  }
+
+  @override
+  String get prayerCountdownFajrContext =>
+      'ফজরের নামাজ - নামাজ দিয়ে আপনার দিন শুরু করুন 🤲';
+
+  @override
+  String get prayerCountdownDhuhrContext =>
+      'জোহরের নামাজ - একটি আশীর্বাদপূর্ণ বিরতি নিন ☀️';
+
+  @override
+  String get prayerCountdownAsrContext =>
+      'আসরের নামাজ - আল্লাহকে স্মরণ করুন 📿';
+
+  @override
+  String get prayerCountdownMaghribContext =>
+      'মাগরিবের নামাজ - কৃতজ্ঞতা সহকারে দিন শেষ করুন 🤲';
+
+  @override
+  String get prayerCountdownIshaContext =>
+      'এশার নামাজ - আপনার দিনের শান্তিপূর্ণ সমাপ্তি 🌙';
+
+  @override
+  String get prayerCountdownDefaultContext =>
+      'নামাজের সময়ের জন্য প্রস্তুত থাকুন 🕌';
+
+  @override
+  String get prayerCountdownCriticalUrgency =>
+      'নামাজের সময় খুব কাছে - এখনই প্রস্তুত হন!';
+
+  @override
+  String get prayerCountdownHighUrgency => 'শীঘ্রই নামাজের জন্য প্রস্তুত হন';
+
+  @override
+  String get prayerCountdownMediumUrgency => 'নামাজের সময় এগিয়ে আসছে';
+
+  @override
+  String get prayerCountdownLoadingTitle => '🕌 নামাজের কাউন্টডাউন';
+
+  @override
+  String get prayerCountdownErrorText => 'নামাজের সময় গণনায় ত্রুটি';
+
+
 }

@@ -235,17 +235,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get downloadFeatureComingSoon => 'ميزة التنزيل قادمة قريبًا!';
 
   @override
-  String get prayerCountdownServiceStarted => 'بدأت خدمة العد التنازلي للصلاة';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'تَوقّفت خدمة العد التنازلي للصلاة';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'أُعيد تشغيل خدمة العد التنازلي للصلاة';
-
-  @override
   String get failedToShareText => 'تعذّرت مشاركة النص';
 
   @override
@@ -749,12 +738,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failedShareImage => 'تعذّرت مشاركة الصورة';
 
   @override
-  String get prayerCountdownStarted => 'بدأت خدمة العدّ التنازلي للصلاة';
-
-  @override
-  String get prayerCountdownStopped => 'توقّفت خدمة العدّ التنازلي للصلاة';
-
-  @override
   String failedStartService(String error) {
     return 'تعذّر بدء الخدمة: $error';
   }
@@ -763,10 +746,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String failedStopService(String error) {
     return 'تعذّر إيقاف الخدمة: $error';
   }
-
-  @override
-  String get prayerCountdownRestarted =>
-      'أُعيد تشغيل خدمة العدّ التنازلي للصلاة';
 
   @override
   String failedRestartService(String error) {
@@ -850,6 +829,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String coverageDaysNotifications(String days, String count) {
     return 'التغطية: نحو $days يوم ($count تنبيه)';
   }
+
+  @override
+  String get notificationScheduleFailed =>
+      'تعذّر جدولة هذا التذكير. يُرجى المحاولة مرة أخرى.';
 
   @override
   String get notificationsEnabled => 'التنبيهات مُفعَّلة';
@@ -1650,50 +1633,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get persistentPrayerCountdown => 'العدّ التنازلي المستمر للصلاة';
-
-  @override
-  String get active => 'نشط';
-
-  @override
   String get stopped => 'متوقف';
-
-  @override
-  String get persistentNotificationRunning =>
-      'يظهر إشعار مستمر في شريط الحالة يحمل العدّ التنازلي للصلاة التالية، ولا يمكن إخفاؤه، ويتحدّث كل ثانية.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'إشعار العدّ التنازلي المستمر متوقف حالياً.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'يُنشئ هذا إشعاراً مستمراً واحداً يتحدّث محتواه دون إزعاج، ويختلف عن إشعارات أوقات الصلاة.';
-
-  @override
-  String get persistentCountdownStarted => 'بدأ العدّ التنازلي المستمر';
-
-  @override
-  String get persistentCountdownStopped => 'توقّف العدّ التنازلي المستمر';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'أُعيد تشغيل العدّ التنازلي المستمر';
-
-  @override
-  String failedToStart(String error) {
-    return 'تعذّر البدء: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'تعذّر الإيقاف: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'تعذّرت إعادة التشغيل: $error';
-  }
 
   @override
   String get homeScreenWidget => 'أداة الشاشة الرئيسية';
@@ -1797,21 +1737,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nextPrayerCountDown => 'الصلاة التالية';
-
-  @override
-  String get persistentPrayerCountdownDescription => 'خدمة الإشعار في الخلفية';
-
-  @override
-  String get persistentPrayerCountdownStopped => 'الخدمة متوقفة حالياً';
-
-  @override
-  String get persistentPrayerCountdownRunning => 'الخدمة تعمل في الخلفية';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'التحكم في الخدمة';
-
-  @override
-  String get persistentNotificationInfoTitle => 'حول هذه الخدمة';
 
   @override
   String get success => 'نجاح';
@@ -2228,60 +2153,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix التالية $prayerName بعد $timeText';
-  }
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName بعد $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext => 'صلاة الفجر - ابدأ يومك بالصلاة 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext => 'صلاة الظهر - خذ استراحة مباركة ☀️';
-
-  @override
-  String get prayerCountdownAsrContext => 'صلاة العصر - اذكر الله 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'صلاة المغرب - اختتم يومك بالامتنان 🤲';
-
-  @override
-  String get prayerCountdownIshaContext => 'صلاة العشاء - ختام هادئ ليومك 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext => 'ابقَ مستعداً لوقت الصلاة 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'اقترب وقت الصلاة جداً - استعد الآن!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'استعد للصلاة عمّا قريب';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'يقترب وقت الصلاة';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 العد التنازلي للصلاة';
-
-  @override
   String get prayerCountdownLoadingText => 'جارٍ تحميل أوقات الصلاة...';
-
-  @override
-  String get prayerCountdownErrorText => 'خطأ في حساب وقت الصلاة';
 
   @override
   String get zakatCalculator => 'حاسبة الزكاة';
@@ -5441,4 +5313,227 @@ class AppLocalizationsAr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get windowsPrayerStartupDisabled =>
+      'التشغيل التلقائي معطل في إعدادات ويندوز.';
+
+  @override
+  String get windowsPrayerOpenStartupSettings =>
+      'فتح إعدادات بدء التشغيل في ويندوز';
+
+  @override
+  String get windowsPrayerError =>
+      'تعذر تحديث العد التنازلي في ويندوز. حاول مرة أخرى.';
+
+  @override
+  String get androidAdhanDownload => 'تنزيل';
+
+  @override
+  String get linuxPrayerTrayStartAtLogin => 'التشغيل عند تسجيل الدخول';
+
+  @override
+  String get linuxRemindersReady => 'تصل التذكيرات حتى عند إغلاق هدى';
+
+  @override
+  String get linuxRemindersNeedService =>
+      'تصل التذكيرات فقط أثناء عمل خدمة هدى في الخلفية. فعّل «التشغيل عند تسجيل الدخول» في مواقيت الصلاة لتستمر بعد إعادة التشغيل.';
+
+  @override
+  String get windowsRemindersReady => 'تصل التذكيرات حتى عند إغلاق هدى';
+
+  @override
+  String windowsRemindersQueuedUntil(String date) {
+    return 'التذكيرات مجدولة حتى $date';
+  }
+
+  @override
+  String get windowsRemindersNeedStartup =>
+      'فعّل «التشغيل مع ويندوز» ليجدّدها هدى دون فتحه.';
+
+  @override
+  String get windowsRemindersOpenHuda => 'افتح هدى قبل ذلك لتستمر.';
+
+  @override
+  String get testNotificationTitle => 'إشعار تجريبي';
+
+  @override
+  String get testNotificationDescription =>
+      'يرسل إشعارًا بعد نحو 10 ثوانٍ بالطريقة نفسها التي تصل بها تذكيراتك. يمكنك إغلاق هدى أثناء الانتظار.';
+
+  @override
+  String get testNotificationSend => 'إرسال تجربة';
+
+  @override
+  String get testNotificationContentTitle => 'إشعار تجريبي من هدى';
+
+  @override
+  String get testNotificationContentBody => 'إشعارات هدى تعمل.';
+
+  @override
+  String get testNotificationArrivesSoon =>
+      'سيصل إشعار تجريبي بعد نحو 10 ثوانٍ. يمكنك إغلاق هدى.';
+
+  @override
+  String get testNotificationMayBeLate =>
+      'الإشعار التجريبي في الطريق. المنبهات الدقيقة متوقفة، لذا قد يتأخر بضع دقائق.';
+
+  @override
+  String get testNotificationNotificationsOff =>
+      'الإشعارات متوقفة لهدى. فعّلها ثم حاول مرة أخرى.';
+
+  @override
+  String get testNotificationServiceNotRunning =>
+      'خدمة هدى في الخلفية لا تعمل، لذا لا يمكن أن تصل الإشعارات. شغّلها من مواقيت الصلاة ثم حاول مرة أخرى.';
+
+  @override
+  String get testNotificationFailed =>
+      'تعذّرت جدولة الإشعار التجريبي. حاول مرة أخرى.';
+
+  @override
+  String get permissionExplainerContinue => 'متابعة';
+
+  @override
+  String get permissionExplainerNotNow => 'ليس الآن';
+
+  @override
+  String get permissionExplainerNotificationsTitle => 'السماح بالإشعارات';
+
+  @override
+  String get permissionExplainerNotificationsMessage =>
+      'يحتاج هدى إلى الإشعارات ليذكّرك في الأوقات التي تختارها. سيطلب منك جهازك الإذن بعد ذلك.';
+
+  @override
+  String prayerCountdownTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix التالية $prayerName بعد $timeText';
+  }
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get prayerCountdownServiceStarted => 'بدأت خدمة العد التنازلي للصلاة';
+
+  @override
+  String get prayerCountdownServiceStopped =>
+      'تَوقّفت خدمة العد التنازلي للصلاة';
+
+  @override
+  String get prayerCountdownServiceRestarted =>
+      'أُعيد تشغيل خدمة العد التنازلي للصلاة';
+
+  @override
+  String get prayerCountdownStarted => 'بدأت خدمة العدّ التنازلي للصلاة';
+
+  @override
+  String get prayerCountdownStopped => 'توقّفت خدمة العدّ التنازلي للصلاة';
+
+  @override
+  String get prayerCountdownRestarted =>
+      'أُعيد تشغيل خدمة العدّ التنازلي للصلاة';
+
+  @override
+  String get persistentPrayerCountdown => 'العدّ التنازلي المستمر للصلاة';
+
+  @override
+  String get persistentNotificationRunning =>
+      'يظهر إشعار مستمر في شريط الحالة يحمل العدّ التنازلي للصلاة التالية، ولا يمكن إخفاؤه، ويتحدّث كل ثانية.';
+
+  @override
+  String get persistentNotificationStopped =>
+      'إشعار العدّ التنازلي المستمر متوقف حالياً.';
+
+  @override
+  String get persistentNotificationInfo =>
+      'يُنشئ هذا إشعاراً مستمراً واحداً يتحدّث محتواه دون إزعاج، ويختلف عن إشعارات أوقات الصلاة.';
+
+  @override
+  String get persistentCountdownStarted => 'بدأ العدّ التنازلي المستمر';
+
+  @override
+  String get persistentCountdownStopped => 'توقّف العدّ التنازلي المستمر';
+
+  @override
+  String get persistentCountdownRestarted =>
+      'أُعيد تشغيل العدّ التنازلي المستمر';
+
+  @override
+  String failedToStart(String error) {
+    return 'تعذّر البدء: $error';
+  }
+
+  @override
+  String failedToStop(String error) {
+    return 'تعذّر الإيقاف: $error';
+  }
+
+  @override
+  String failedToRestart(String error) {
+    return 'تعذّرت إعادة التشغيل: $error';
+  }
+
+  @override
+  String get persistentPrayerCountdownDescription => 'خدمة الإشعار في الخلفية';
+
+  @override
+  String get persistentPrayerCountdownStopped => 'الخدمة متوقفة حالياً';
+
+  @override
+  String get persistentPrayerCountdownRunning => 'الخدمة تعمل في الخلفية';
+
+  @override
+  String get persistentPrayerCountdownServiceControls => 'التحكم في الخدمة';
+
+  @override
+  String get persistentNotificationInfoTitle => 'حول هذه الخدمة';
+
+  @override
+  String prayerCountdownUrgentTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix $prayerName بعد $timeText';
+  }
+
+  @override
+  String get prayerCountdownFajrContext => 'صلاة الفجر - ابدأ يومك بالصلاة 🤲';
+
+  @override
+  String get prayerCountdownDhuhrContext => 'صلاة الظهر - خذ استراحة مباركة ☀️';
+
+  @override
+  String get prayerCountdownAsrContext => 'صلاة العصر - اذكر الله 📿';
+
+  @override
+  String get prayerCountdownMaghribContext =>
+      'صلاة المغرب - اختتم يومك بالامتنان 🤲';
+
+  @override
+  String get prayerCountdownIshaContext => 'صلاة العشاء - ختام هادئ ليومك 🌙';
+
+  @override
+  String get prayerCountdownDefaultContext => 'ابقَ مستعداً لوقت الصلاة 🕌';
+
+  @override
+  String get prayerCountdownCriticalUrgency =>
+      'اقترب وقت الصلاة جداً - استعد الآن!';
+
+  @override
+  String get prayerCountdownHighUrgency => 'استعد للصلاة عمّا قريب';
+
+  @override
+  String get prayerCountdownMediumUrgency => 'يقترب وقت الصلاة';
+
+  @override
+  String get prayerCountdownLoadingTitle => '🕌 العد التنازلي للصلاة';
+
+  @override
+  String get prayerCountdownErrorText => 'خطأ في حساب وقت الصلاة';
+
+
 }

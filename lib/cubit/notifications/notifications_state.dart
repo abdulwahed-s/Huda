@@ -15,6 +15,10 @@ class NotificationPreferencesLoaded extends NotificationsState {
   final String checklistReminderTime;
   final int randomAthkarFrequency;
 
+  /// The frequency this device actually repeats Athkar at, when known. iOS
+  /// and macOS repeating triggers can only express some frequencies.
+  final int? randomAthkarScheduledFrequency;
+
   final String kahfFridayTime;
   final String morningAthkarTime;
   final String eveningAthkarTime;
@@ -33,6 +37,7 @@ class NotificationPreferencesLoaded extends NotificationsState {
     required this.quranReminder,
     required this.quranReminderTime,
     required this.randomAthkarFrequency,
+    this.randomAthkarScheduledFrequency,
     this.kahfFridayTime = '09:00',
     this.morningAthkarTime = '07:00',
     this.eveningAthkarTime = '18:00',

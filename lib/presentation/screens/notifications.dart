@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/services/notification_delivery_check.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:huda/presentation/widgets/notifications/frequency_dialog.dart';
 import 'package:huda/presentation/widgets/notifications/loading_state.dart';
 import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
+import 'package:huda/presentation/widgets/notifications/reminder_delivery_section.dart';
 import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
 import 'package:huda/presentation/widgets/notifications/settings_section.dart';
 import 'package:huda/presentation/widgets/notifications/time_pickers.dart';
@@ -13,7 +16,6 @@ import 'package:huda/presentation/widgets/notifications/time_pickers.dart';
 extension NotificationContextExtension on BuildContext {
   Future<void> togglePreference(String key, bool value) async {
     final cubit = read<NotificationsCubit>();
-    cubit.setContext(this);
     await cubit.togglePreference(key, value);
   }
 }
@@ -52,7 +54,6 @@ class _NotificationsState extends State<Notifications>
 
   Future<void> _initializeNotifications() async {
     final cubit = context.read<NotificationsCubit>();
-    cubit.setContext(context);
     await cubit.getIsNotificationEnabled();
     await cubit.loadPreferences();
     await cubit.initializeNotifications();
@@ -64,7 +65,16 @@ class _NotificationsState extends State<Notifications>
       return;
     }
     if (!mounted) return;
-    await context.togglePreference(key, value);
+    try {
+      await context.togglePreference(key, value);
+    } on NotificationNotScheduledException {
+      if (!mounted) return;
+      HudaSnackBar.show(
+        context,
+        message: AppLocalizations.of(context)!.notificationScheduleFailed,
+        kind: HudaSnackBarKind.warning,
+      );
+    }
   }
 
   Future<void> _openReminderSettings(
@@ -121,7 +131,9 @@ class _NotificationsState extends State<Notifications>
                     showConfiguredStatus: true,
                     onNotificationEnabled: _initializeNotifications,
                   ),
-                  SizedBox(height: 24.h),
+                  SizedBox(height: 12.h),
+                  const ReminderDeliverySection(),
+                  SizedBox(height: 18.h),
                   BlocBuilder<NotificationsCubit, NotificationsState>(
                     builder: (context, state) {
                       if (state is NotificationPreferencesLoaded) {

@@ -107,7 +107,11 @@ class _NotificationRequirementsSectionState
               ? Icons.settings_outlined
               : Icons.notifications_active_outlined,
           foregroundColor: theme.colorScheme.onPrimary,
-          onPressed: () => _controller.requestNotifications(context),
+          // This card is the explanation; a tap goes straight to the prompt
+          // or, when only the user can allow it, to the system settings.
+          onPressed: access.notificationNeedsSettings
+              ? _controller.openNotificationSettings
+              : () => _controller.requestNotifications(context, explain: false),
         ),
       if (needsBatteryOptimization)
         _SetupRequirement(

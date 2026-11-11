@@ -237,18 +237,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get downloadFeatureComingSoon => 'Download-Funktion kommt bald!';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Gebetszeit-Countdown-Dienst gestartet';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Gebetszeit-Countdown-Dienst gestoppt';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Gebetszeit-Countdown-Dienst neu gestartet';
-
-  @override
   String get failedToShareText => 'Fehler beim Teilen des Textes';
 
   @override
@@ -767,12 +755,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get failedShareImage => 'Fehler beim Teilen des Bildes';
 
   @override
-  String get prayerCountdownStarted => 'Gebetszeit-Countdown-Dienst gestartet';
-
-  @override
-  String get prayerCountdownStopped => 'Gebetszeit-Countdown-Dienst gestoppt';
-
-  @override
   String failedStartService(String error) {
     return 'Fehler beim Starten des Dienstes: $error';
   }
@@ -781,10 +763,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String failedStopService(String error) {
     return 'Fehler beim Stoppen des Dienstes: $error';
   }
-
-  @override
-  String get prayerCountdownRestarted =>
-      'Gebetszeit-Countdown-Dienst neu gestartet';
 
   @override
   String failedRestartService(String error) {
@@ -871,6 +849,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String coverageDaysNotifications(String days, String count) {
     return 'Abdeckung: ~$days Tage ($count Benachrichtigungen)';
   }
+
+  @override
+  String get notificationScheduleFailed =>
+      'Diese Erinnerung konnte nicht geplant werden. Bitte versuche es erneut.';
 
   @override
   String get notificationsEnabled => 'Benachrichtigungen aktiviert';
@@ -1687,50 +1669,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get persistentPrayerCountdown => 'Persistenter Gebetszeit-Countdown';
-
-  @override
-  String get active => 'Aktiv';
-
-  @override
   String get stopped => 'Gestoppt';
-
-  @override
-  String get persistentNotificationRunning =>
-      'Eine persistente Benachrichtigung wird in Ihrer Statusleiste mit dem Countdown bis zum nächsten Gebet angezeigt. Sie kann nicht verworfen werden und aktualisiert sich jede Sekunde.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'Die persistente Countdown-Benachrichtigung ist derzeit gestoppt.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'Dies erstellt eine einzige persistente Benachrichtigung, die ihren Inhalt ohne Spam aktualisiert. Anders als Ihre Gebetszeit-Benachrichtigungen.';
-
-  @override
-  String get persistentCountdownStarted => 'Persistenter Countdown gestartet';
-
-  @override
-  String get persistentCountdownStopped => 'Persistenter Countdown gestoppt';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'Persistenter Countdown neu gestartet';
-
-  @override
-  String failedToStart(String error) {
-    return 'Fehler beim Starten: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Fehler beim Stoppen: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Fehler beim Neustarten: $error';
-  }
 
   @override
   String get homeScreenWidget => 'Startbildschirm-Widget';
@@ -1842,24 +1781,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get nextPrayerCountDown => 'Nächstes Gebet';
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Hintergrund-Benachrichtigungsdienst';
-
-  @override
-  String get persistentPrayerCountdownStopped =>
-      'Der Dienst ist derzeit gestoppt';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'Der Dienst läuft im Hintergrund';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Dienst-Steuerung';
-
-  @override
-  String get persistentNotificationInfoTitle => 'Über diesen Dienst';
 
   @override
   String get success => 'Erfolg';
@@ -2311,65 +2232,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix Nächstes $prayerName in $timeText';
-  }
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName in $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Morgengebet - beginne deinen Tag mit Gebet 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Mittagsgebet - nimm eine gesegnete Pause ☀️';
-
-  @override
-  String get prayerCountdownAsrContext => 'Nachmittagsgebet - gedenke Allah 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Abendgebet - beende den Tag mit Dankbarkeit 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Nachtgebet - friedliches Ende deines Tages 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'Bleib bereit für die Gebetszeit 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'Die Gebetszeit ist sehr nahe - bereite dich jetzt vor!';
-
-  @override
-  String get prayerCountdownHighUrgency =>
-      'Bereite dich bald auf das Gebet vor';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'Die Gebetszeit naht';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Gebets-Countdown';
-
-  @override
   String get prayerCountdownLoadingText => 'Gebetszeiten werden geladen...';
-
-  @override
-  String get prayerCountdownErrorText => 'Fehler beim Berechnen der Gebetszeit';
 
   @override
   String get zakatCalculator => 'Zakat-Rechner';
@@ -5584,4 +5447,240 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get windowsPrayerStartupDisabled =>
+      'Der Autostart ist in Windows deaktiviert.';
+
+  @override
+  String get windowsPrayerOpenStartupSettings =>
+      'Windows-Autostarteinstellungen öffnen';
+
+  @override
+  String get windowsPrayerError =>
+      'Der Windows-Gebetscountdown konnte nicht aktualisiert werden. Versuchen Sie es erneut.';
+
+  @override
+  String get androidAdhanDownload => 'Herunterladen';
+
+  @override
+  String get linuxPrayerTrayStartAtLogin => 'Bei der Anmeldung starten';
+
+  @override
+  String get linuxRemindersReady =>
+      'Erinnerungen kommen auch, wenn Huda geschlossen ist';
+
+  @override
+  String get linuxRemindersNeedService =>
+      'Erinnerungen kommen nur, solange Hudas Hintergrunddienst läuft. Aktiviere „Bei der Anmeldung starten“ in den Gebetszeiten, damit sie auch nach einem Neustart kommen.';
+
+  @override
+  String get windowsRemindersReady =>
+      'Erinnerungen kommen auch, wenn Huda geschlossen ist';
+
+  @override
+  String windowsRemindersQueuedUntil(String date) {
+    return 'Erinnerungen sind bis $date geplant';
+  }
+
+  @override
+  String get windowsRemindersNeedStartup =>
+      'Aktiviere „Mit Windows starten“, damit Huda sie erneuert, ohne geöffnet zu werden.';
+
+  @override
+  String get windowsRemindersOpenHuda =>
+      'Öffne Huda vorher, damit sie weiterlaufen.';
+
+  @override
+  String get testNotificationTitle => 'Testbenachrichtigung';
+
+  @override
+  String get testNotificationDescription =>
+      'Sendet in etwa 10 Sekunden eine Benachrichtigung auf demselben Weg wie deine Erinnerungen. Du kannst Huda in der Zwischenzeit schließen.';
+
+  @override
+  String get testNotificationSend => 'Test senden';
+
+  @override
+  String get testNotificationContentTitle => 'Huda-Testbenachrichtigung';
+
+  @override
+  String get testNotificationContentBody =>
+      'Benachrichtigungen von Huda funktionieren.';
+
+  @override
+  String get testNotificationArrivesSoon =>
+      'Eine Testbenachrichtigung kommt in etwa 10 Sekunden. Du kannst Huda schließen.';
+
+  @override
+  String get testNotificationMayBeLate =>
+      'Eine Testbenachrichtigung ist unterwegs. Exakte Wecker sind aus, daher kann sie einige Minuten später kommen.';
+
+  @override
+  String get testNotificationNotificationsOff =>
+      'Benachrichtigungen sind für Huda ausgeschaltet. Schalte sie ein und versuche es erneut.';
+
+  @override
+  String get testNotificationServiceNotRunning =>
+      'Hudas Hintergrunddienst läuft nicht, daher können keine Benachrichtigungen ankommen. Starte ihn in den Gebetszeiten und versuche es erneut.';
+
+  @override
+  String get testNotificationFailed =>
+      'Die Testbenachrichtigung konnte nicht geplant werden. Bitte versuche es erneut.';
+
+  @override
+  String get permissionExplainerContinue => 'Weiter';
+
+  @override
+  String get permissionExplainerNotNow => 'Nicht jetzt';
+
+  @override
+  String get permissionExplainerNotificationsTitle => 'Mitteilungen erlauben';
+
+  @override
+  String get permissionExplainerNotificationsMessage =>
+      'Huda braucht Mitteilungen, um dich zu den gewählten Zeiten zu erinnern. Dein Gerät fragt dich gleich danach.';
+
+  @override
+  String prayerCountdownTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix Nächstes $prayerName in $timeText';
+  }
+
+  @override
+  String get active => 'Aktiv';
+
+  @override
+  String get prayerCountdownServiceStarted =>
+      'Gebetszeit-Countdown-Dienst gestartet';
+
+  @override
+  String get prayerCountdownServiceStopped =>
+      'Gebetszeit-Countdown-Dienst gestoppt';
+
+  @override
+  String get prayerCountdownServiceRestarted =>
+      'Gebetszeit-Countdown-Dienst neu gestartet';
+
+  @override
+  String get prayerCountdownStarted => 'Gebetszeit-Countdown-Dienst gestartet';
+
+  @override
+  String get prayerCountdownStopped => 'Gebetszeit-Countdown-Dienst gestoppt';
+
+  @override
+  String get prayerCountdownRestarted =>
+      'Gebetszeit-Countdown-Dienst neu gestartet';
+
+  @override
+  String get persistentPrayerCountdown => 'Persistenter Gebetszeit-Countdown';
+
+  @override
+  String get persistentNotificationRunning =>
+      'Eine persistente Benachrichtigung wird in Ihrer Statusleiste mit dem Countdown bis zum nächsten Gebet angezeigt. Sie kann nicht verworfen werden und aktualisiert sich jede Sekunde.';
+
+  @override
+  String get persistentNotificationStopped =>
+      'Die persistente Countdown-Benachrichtigung ist derzeit gestoppt.';
+
+  @override
+  String get persistentNotificationInfo =>
+      'Dies erstellt eine einzige persistente Benachrichtigung, die ihren Inhalt ohne Spam aktualisiert. Anders als Ihre Gebetszeit-Benachrichtigungen.';
+
+  @override
+  String get persistentCountdownStarted => 'Persistenter Countdown gestartet';
+
+  @override
+  String get persistentCountdownStopped => 'Persistenter Countdown gestoppt';
+
+  @override
+  String get persistentCountdownRestarted =>
+      'Persistenter Countdown neu gestartet';
+
+  @override
+  String failedToStart(String error) {
+    return 'Fehler beim Starten: $error';
+  }
+
+  @override
+  String failedToStop(String error) {
+    return 'Fehler beim Stoppen: $error';
+  }
+
+  @override
+  String failedToRestart(String error) {
+    return 'Fehler beim Neustarten: $error';
+  }
+
+  @override
+  String get persistentPrayerCountdownDescription =>
+      'Hintergrund-Benachrichtigungsdienst';
+
+  @override
+  String get persistentPrayerCountdownStopped =>
+      'Der Dienst ist derzeit gestoppt';
+
+  @override
+  String get persistentPrayerCountdownRunning =>
+      'Der Dienst läuft im Hintergrund';
+
+  @override
+  String get persistentPrayerCountdownServiceControls => 'Dienst-Steuerung';
+
+  @override
+  String get persistentNotificationInfoTitle => 'Über diesen Dienst';
+
+  @override
+  String prayerCountdownUrgentTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  ) {
+    return '$prefix $prayerName in $timeText';
+  }
+
+  @override
+  String get prayerCountdownFajrContext =>
+      'Morgengebet - beginne deinen Tag mit Gebet 🤲';
+
+  @override
+  String get prayerCountdownDhuhrContext =>
+      'Mittagsgebet - nimm eine gesegnete Pause ☀️';
+
+  @override
+  String get prayerCountdownAsrContext => 'Nachmittagsgebet - gedenke Allah 📿';
+
+  @override
+  String get prayerCountdownMaghribContext =>
+      'Abendgebet - beende den Tag mit Dankbarkeit 🤲';
+
+  @override
+  String get prayerCountdownIshaContext =>
+      'Nachtgebet - friedliches Ende deines Tages 🌙';
+
+  @override
+  String get prayerCountdownDefaultContext =>
+      'Bleib bereit für die Gebetszeit 🕌';
+
+  @override
+  String get prayerCountdownCriticalUrgency =>
+      'Die Gebetszeit ist sehr nahe - bereite dich jetzt vor!';
+
+  @override
+  String get prayerCountdownHighUrgency =>
+      'Bereite dich bald auf das Gebet vor';
+
+  @override
+  String get prayerCountdownMediumUrgency => 'Die Gebetszeit naht';
+
+  @override
+  String get prayerCountdownLoadingTitle => '🕌 Gebets-Countdown';
+
+  @override
+  String get prayerCountdownErrorText => 'Fehler beim Berechnen der Gebetszeit';
+
+
 }

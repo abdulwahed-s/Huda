@@ -101,7 +101,6 @@ class FrequencyDialog {
                 final value = int.tryParse(controller.text);
                 if (value != null && value >= 10 && value <= 1440) {
                   final cubit = context.read<NotificationsCubit>();
-                  cubit.setContext(context);
                   cubit.setRandomAthkarFrequency(value);
                   Navigator.pop(dialogContext);
                 } else {

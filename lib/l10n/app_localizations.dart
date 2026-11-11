@@ -552,24 +552,6 @@ abstract class AppLocalizations {
   /// **'Download feature coming soon!'**
   String get downloadFeatureComingSoon;
 
-  /// Prayer countdown service started message
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service started'**
-  String get prayerCountdownServiceStarted;
-
-  /// Prayer countdown service stopped message
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service stopped'**
-  String get prayerCountdownServiceStopped;
-
-  /// Prayer countdown service restarted message
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service restarted'**
-  String get prayerCountdownServiceRestarted;
-
   /// Failed to share text error message
   ///
   /// In en, this message translates to:
@@ -1518,18 +1500,6 @@ abstract class AppLocalizations {
   /// **'Failed to share image'**
   String get failedShareImage;
 
-  /// Success message when prayer countdown service starts
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service started'**
-  String get prayerCountdownStarted;
-
-  /// Success message when prayer countdown service stops
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service stopped'**
-  String get prayerCountdownStopped;
-
   /// Error message when service fails to start
   ///
   /// In en, this message translates to:
@@ -1541,12 +1511,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to stop service: {error}'**
   String failedStopService(String error);
-
-  /// Success message when prayer countdown service restarts
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service restarted'**
-  String get prayerCountdownRestarted;
 
   /// Error message when service fails to restart
   ///
@@ -1685,6 +1649,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Coverage: ~{days} days ({count} notifications)'**
   String coverageDaysNotifications(String days, String count);
+
+  /// Shown when the system did not accept a scheduled reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t schedule this reminder. Please try again.'**
+  String get notificationScheduleFailed;
 
   /// Status when notifications are enabled
   ///
@@ -3168,77 +3138,11 @@ abstract class AppLocalizations {
   /// **'Next: {prayerName} in {time}'**
   String nextPrayerCountdown(String prayerName, String time);
 
-  /// Title for persistent prayer countdown widget
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent Prayer Countdown'**
-  String get persistentPrayerCountdown;
-
-  /// Status when countdown is active
-  ///
-  /// In en, this message translates to:
-  /// **'Active'**
-  String get active;
-
   /// Status when countdown is stopped
   ///
   /// In en, this message translates to:
   /// **'Stopped'**
   String get stopped;
-
-  /// Description when persistent notification is running
-  ///
-  /// In en, this message translates to:
-  /// **'A persistent notification is showing in your status bar with countdown to next prayer. It cannot be dismissed and updates every second.'**
-  String get persistentNotificationRunning;
-
-  /// Description when persistent notification is stopped
-  ///
-  /// In en, this message translates to:
-  /// **'The persistent countdown notification is currently stopped.'**
-  String get persistentNotificationStopped;
-
-  /// Information about persistent notification feature
-  ///
-  /// In en, this message translates to:
-  /// **'This creates a single persistent notification that updates its content without spam. Different from your prayer time notifications.'**
-  String get persistentNotificationInfo;
-
-  /// Success message when countdown starts
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent countdown started'**
-  String get persistentCountdownStarted;
-
-  /// Success message when countdown stops
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent countdown stopped'**
-  String get persistentCountdownStopped;
-
-  /// Success message when countdown restarts
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent countdown restarted'**
-  String get persistentCountdownRestarted;
-
-  /// Error message when failing to start countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to start: {error}'**
-  String failedToStart(String error);
-
-  /// Error message when failing to stop countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to stop: {error}'**
-  String failedToStop(String error);
-
-  /// Error message when failing to restart countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to restart: {error}'**
-  String failedToRestart(String error);
 
   /// Title for home screen widget section
   ///
@@ -3431,36 +3335,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next Prayer'**
   String get nextPrayerCountDown;
-
-  /// No description provided for @persistentPrayerCountdownDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Background Notification Service'**
-  String get persistentPrayerCountdownDescription;
-
-  /// No description provided for @persistentPrayerCountdownStopped.
-  ///
-  /// In en, this message translates to:
-  /// **'Service is currently stopped'**
-  String get persistentPrayerCountdownStopped;
-
-  /// No description provided for @persistentPrayerCountdownRunning.
-  ///
-  /// In en, this message translates to:
-  /// **'Service is running in background'**
-  String get persistentPrayerCountdownRunning;
-
-  /// No description provided for @persistentPrayerCountdownServiceControls.
-  ///
-  /// In en, this message translates to:
-  /// **'Service Control'**
-  String get persistentPrayerCountdownServiceControls;
-
-  /// No description provided for @persistentNotificationInfoTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'About This Service'**
-  String get persistentNotificationInfoTitle;
 
   /// No description provided for @success.
   ///
@@ -4248,97 +4122,11 @@ abstract class AppLocalizations {
   /// **'It\'s time for {prayerName} prayer. May Allah accept your prayers.'**
   String notificationPrayerTimeBody(String prayerName);
 
-  /// Title for prayer countdown notification
-  ///
-  /// In en, this message translates to:
-  /// **'{prefix} Next {prayerName} in {timeText}'**
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  );
-
-  /// Title for urgent prayer countdown notification
-  ///
-  /// In en, this message translates to:
-  /// **'{prefix} {prayerName} in {timeText}'**
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  );
-
-  /// Context message for Fajr prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Dawn prayer - start your day with prayer 🤲'**
-  String get prayerCountdownFajrContext;
-
-  /// Context message for Dhuhr prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Midday prayer - take a blessed break ☀️'**
-  String get prayerCountdownDhuhrContext;
-
-  /// Context message for Asr prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Afternoon prayer - remember Allah 📿'**
-  String get prayerCountdownAsrContext;
-
-  /// Context message for Maghrib prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Sunset prayer - end the day in gratitude 🤲'**
-  String get prayerCountdownMaghribContext;
-
-  /// Context message for Isha prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Night prayer - peaceful end to your day 🌙'**
-  String get prayerCountdownIshaContext;
-
-  /// Default context message for prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Stay prepared for prayer time 🕌'**
-  String get prayerCountdownDefaultContext;
-
-  /// Urgency message for critical prayer countdown (< 5 min)
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer time is very near - prepare now!'**
-  String get prayerCountdownCriticalUrgency;
-
-  /// Urgency message for high prayer countdown (< 15 min)
-  ///
-  /// In en, this message translates to:
-  /// **'Get ready for prayer soon'**
-  String get prayerCountdownHighUrgency;
-
-  /// Urgency message for medium prayer countdown (< 30 min)
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer time approaching'**
-  String get prayerCountdownMediumUrgency;
-
-  /// Title when prayer countdown is loading
-  ///
-  /// In en, this message translates to:
-  /// **'🕌 Prayer Countdown'**
-  String get prayerCountdownLoadingTitle;
-
   /// Text when prayer countdown is loading
   ///
   /// In en, this message translates to:
   /// **'Loading prayer times...'**
   String get prayerCountdownLoadingText;
-
-  /// Text when prayer countdown has an error
-  ///
-  /// In en, this message translates to:
-  /// **'Error calculating prayer time'**
-  String get prayerCountdownErrorText;
 
   /// Zakat Calculator screen title
   ///
@@ -9967,6 +9755,376 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes, plural, =0{Started just now} =1{Started 1 min ago} other{Started {minutes} min ago}}'**
   String prayerHeroStartedAgo(int minutes);
+
+  /// No description provided for @windowsPrayerStartupDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Startup is disabled in Windows settings.'**
+  String get windowsPrayerStartupDisabled;
+
+  /// No description provided for @windowsPrayerOpenStartupSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Windows startup settings'**
+  String get windowsPrayerOpenStartupSettings;
+
+  /// No description provided for @windowsPrayerError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update the Windows countdown. Try again.'**
+  String get windowsPrayerError;
+
+  /// No description provided for @androidAdhanDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get androidAdhanDownload;
+
+  /// No description provided for @linuxPrayerTrayStartAtLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Start at login'**
+  String get linuxPrayerTrayStartAtLogin;
+
+  /// No description provided for @linuxRemindersReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders arrive even when Huda is closed'**
+  String get linuxRemindersReady;
+
+  /// Shown on Linux when reminders depend on the background prayer service that may not start at login.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders arrive only while Huda’s background service runs. Turn on “Start at login” in Prayer Times to keep them after restarting.'**
+  String get linuxRemindersNeedService;
+
+  /// No description provided for @windowsRemindersReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders arrive even when Huda is closed'**
+  String get windowsRemindersReady;
+
+  /// Shown on Windows when reminders will run out unless renewed; date is a formatted day.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are queued until {date}'**
+  String windowsRemindersQueuedUntil(String date);
+
+  /// No description provided for @windowsRemindersNeedStartup.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on “Start with Windows” so Huda renews them without being opened.'**
+  String get windowsRemindersNeedStartup;
+
+  /// No description provided for @windowsRemindersOpenHuda.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda before then to keep them going.'**
+  String get windowsRemindersOpenHuda;
+
+  /// No description provided for @testNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Test notification'**
+  String get testNotificationTitle;
+
+  /// No description provided for @testNotificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Sends a notification in about 10 seconds through the same path as your reminders. You can close Huda while you wait.'**
+  String get testNotificationDescription;
+
+  /// No description provided for @testNotificationSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test'**
+  String get testNotificationSend;
+
+  /// No description provided for @testNotificationContentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda test notification'**
+  String get testNotificationContentTitle;
+
+  /// No description provided for @testNotificationContentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications from Huda are working.'**
+  String get testNotificationContentBody;
+
+  /// No description provided for @testNotificationArrivesSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'A test notification arrives in about 10 seconds. You can close Huda.'**
+  String get testNotificationArrivesSoon;
+
+  /// No description provided for @testNotificationMayBeLate.
+  ///
+  /// In en, this message translates to:
+  /// **'A test notification is on its way. Exact alarms are off, so it may arrive a few minutes late.'**
+  String get testNotificationMayBeLate;
+
+  /// No description provided for @testNotificationNotificationsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for Huda. Turn them on, then try again.'**
+  String get testNotificationNotificationsOff;
+
+  /// No description provided for @testNotificationServiceNotRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda’s background service isn’t running, so notifications can’t arrive. Start it from Prayer Times, then try again.'**
+  String get testNotificationServiceNotRunning;
+
+  /// No description provided for @testNotificationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The test notification couldn’t be scheduled. Please try again.'**
+  String get testNotificationFailed;
+
+  /// Button in a sheet that explains a permission, before the system prompt is shown.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get permissionExplainerContinue;
+
+  /// Declines a permission explanation or hides a prayer readiness step.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get permissionExplainerNotNow;
+
+  /// No description provided for @permissionExplainerNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications'**
+  String get permissionExplainerNotificationsTitle;
+
+  /// No description provided for @permissionExplainerNotificationsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda needs notifications to remind you at the times you choose. Your device will ask you next.'**
+  String get permissionExplainerNotificationsMessage;
+
+  /// Title for prayer countdown notification
+  ///
+  /// In en, this message translates to:
+  /// **'{prefix} Next {prayerName} in {timeText}'**
+  String prayerCountdownTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  );
+
+  /// Status when countdown is active
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// Prayer countdown service started message
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer countdown service started'**
+  String get prayerCountdownServiceStarted;
+
+  /// Prayer countdown service stopped message
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer countdown service stopped'**
+  String get prayerCountdownServiceStopped;
+
+  /// Prayer countdown service restarted message
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer countdown service restarted'**
+  String get prayerCountdownServiceRestarted;
+
+  /// Success message when prayer countdown service starts
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer countdown service started'**
+  String get prayerCountdownStarted;
+
+  /// Success message when prayer countdown service stops
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer countdown service stopped'**
+  String get prayerCountdownStopped;
+
+  /// Success message when prayer countdown service restarts
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer countdown service restarted'**
+  String get prayerCountdownRestarted;
+
+  /// Title for persistent prayer countdown widget
+  ///
+  /// In en, this message translates to:
+  /// **'Persistent Prayer Countdown'**
+  String get persistentPrayerCountdown;
+
+  /// Description when persistent notification is running
+  ///
+  /// In en, this message translates to:
+  /// **'A persistent notification is showing in your status bar with countdown to next prayer. It cannot be dismissed and updates every second.'**
+  String get persistentNotificationRunning;
+
+  /// Description when persistent notification is stopped
+  ///
+  /// In en, this message translates to:
+  /// **'The persistent countdown notification is currently stopped.'**
+  String get persistentNotificationStopped;
+
+  /// Information about persistent notification feature
+  ///
+  /// In en, this message translates to:
+  /// **'This creates a single persistent notification that updates its content without spam. Different from your prayer time notifications.'**
+  String get persistentNotificationInfo;
+
+  /// Success message when countdown starts
+  ///
+  /// In en, this message translates to:
+  /// **'Persistent countdown started'**
+  String get persistentCountdownStarted;
+
+  /// Success message when countdown stops
+  ///
+  /// In en, this message translates to:
+  /// **'Persistent countdown stopped'**
+  String get persistentCountdownStopped;
+
+  /// Success message when countdown restarts
+  ///
+  /// In en, this message translates to:
+  /// **'Persistent countdown restarted'**
+  String get persistentCountdownRestarted;
+
+  /// Error message when failing to start countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start: {error}'**
+  String failedToStart(String error);
+
+  /// Error message when failing to stop countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to stop: {error}'**
+  String failedToStop(String error);
+
+  /// Error message when failing to restart countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to restart: {error}'**
+  String failedToRestart(String error);
+
+  /// No description provided for @persistentPrayerCountdownDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Background Notification Service'**
+  String get persistentPrayerCountdownDescription;
+
+  /// No description provided for @persistentPrayerCountdownStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Service is currently stopped'**
+  String get persistentPrayerCountdownStopped;
+
+  /// No description provided for @persistentPrayerCountdownRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Service is running in background'**
+  String get persistentPrayerCountdownRunning;
+
+  /// No description provided for @persistentPrayerCountdownServiceControls.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Control'**
+  String get persistentPrayerCountdownServiceControls;
+
+  /// No description provided for @persistentNotificationInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About This Service'**
+  String get persistentNotificationInfoTitle;
+
+  /// Title for urgent prayer countdown notification
+  ///
+  /// In en, this message translates to:
+  /// **'{prefix} {prayerName} in {timeText}'**
+  String prayerCountdownUrgentTitle(
+    String prefix,
+    String prayerName,
+    String timeText,
+  );
+
+  /// Context message for Fajr prayer countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Dawn prayer - start your day with prayer 🤲'**
+  String get prayerCountdownFajrContext;
+
+  /// Context message for Dhuhr prayer countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Midday prayer - take a blessed break ☀️'**
+  String get prayerCountdownDhuhrContext;
+
+  /// Context message for Asr prayer countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon prayer - remember Allah 📿'**
+  String get prayerCountdownAsrContext;
+
+  /// Context message for Maghrib prayer countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset prayer - end the day in gratitude 🤲'**
+  String get prayerCountdownMaghribContext;
+
+  /// Context message for Isha prayer countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Night prayer - peaceful end to your day 🌙'**
+  String get prayerCountdownIshaContext;
+
+  /// Default context message for prayer countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Stay prepared for prayer time 🕌'**
+  String get prayerCountdownDefaultContext;
+
+  /// Urgency message for critical prayer countdown (< 5 min)
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer time is very near - prepare now!'**
+  String get prayerCountdownCriticalUrgency;
+
+  /// Urgency message for high prayer countdown (< 15 min)
+  ///
+  /// In en, this message translates to:
+  /// **'Get ready for prayer soon'**
+  String get prayerCountdownHighUrgency;
+
+  /// Urgency message for medium prayer countdown (< 30 min)
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer time approaching'**
+  String get prayerCountdownMediumUrgency;
+
+  /// Title when prayer countdown is loading
+  ///
+  /// In en, this message translates to:
+  /// **'🕌 Prayer Countdown'**
+  String get prayerCountdownLoadingTitle;
+
+  /// Text when prayer countdown has an error
+  ///
+  /// In en, this message translates to:
+  /// **'Error calculating prayer time'**
+  String get prayerCountdownErrorText;
+
+
 }
 
 class _AppLocalizationsDelegate
