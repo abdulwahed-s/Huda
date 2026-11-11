@@ -5464,142 +5464,69 @@ class AppLocalizationsEn extends AppLocalizations {
       'Huda needs notifications to remind you at the times you choose. Your device will ask you next.';
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix Next $prayerName in $timeText';
-  }
+  String get prayerCountdownTitle => 'Prayer countdown';
+
+  @override
+  String get prayerCountdownDescription =>
+      'A quiet notification that counts down to the next prayer. It keeps going after a restart, without opening Huda.';
+
+  @override
+  String get prayerCountdownShowing => 'Showing in your notifications';
+
+  @override
+  String get prayerCountdownNotShowing => 'On, but not showing right now';
+
+  @override
+  String get prayerCountdownOff => 'Off';
+
+  @override
+  String get prayerCountdownStyle => 'Style';
+
+  @override
+  String get prayerCountdownStyleProgress => 'Progress';
+
+  @override
+  String get prayerCountdownStyleTimetable => 'Timetable';
+
+  @override
+  String get prayerCountdownStyleMinimal => 'Minimal';
+
+  @override
+  String get prayerCountdownLockScreen => 'Show on the lock screen';
+
+  @override
+  String get prayerCountdownShowSunrise => 'Include sunrise';
+
+  @override
+  String get prayerCountdownLiveUpdate =>
+      'Show the countdown in the status bar';
+
+  @override
+  String get prayerCountdownNotificationsOff =>
+      'Notifications are off for Huda.';
+
+  @override
+  String get prayerCountdownChannelOff =>
+      'The “Prayer countdown” notification category is turned off.';
+
+  @override
+  String get prayerCountdownLiveUpdateOff =>
+      'Live Updates are turned off for Huda.';
+
+  @override
+  String get prayerCountdownNeedsLocation =>
+      'Set your location to show the countdown.';
+
+  @override
+  String get prayerCountdownSaveFailed =>
+      'The countdown setting couldn’t be saved.';
 
   @override
   String get active => 'Active';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Prayer countdown service started';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Prayer countdown service stopped';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Prayer countdown service restarted';
-
-  @override
-  String get prayerCountdownStarted => 'Prayer countdown service started';
-
-  @override
-  String get prayerCountdownStopped => 'Prayer countdown service stopped';
-
-  @override
-  String get prayerCountdownRestarted => 'Prayer countdown service restarted';
-
-  @override
-  String get persistentPrayerCountdown => 'Persistent Prayer Countdown';
-
-  @override
-  String get persistentNotificationRunning =>
-      'A persistent notification is showing in your status bar with countdown to next prayer. It cannot be dismissed and updates every second.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'The persistent countdown notification is currently stopped.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'This creates a single persistent notification that updates its content without spam. Different from your prayer time notifications.';
-
-  @override
-  String get persistentCountdownStarted => 'Persistent countdown started';
-
-  @override
-  String get persistentCountdownStopped => 'Persistent countdown stopped';
-
-  @override
-  String get persistentCountdownRestarted => 'Persistent countdown restarted';
-
-  @override
-  String failedToStart(String error) {
-    return 'Failed to start: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Failed to stop: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Failed to restart: $error';
-  }
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Background Notification Service';
-
-  @override
-  String get persistentPrayerCountdownStopped => 'Service is currently stopped';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'Service is running in background';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Service Control';
-
-  @override
-  String get persistentNotificationInfoTitle => 'About This Service';
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName in $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Dawn prayer - start your day with prayer 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Midday prayer - take a blessed break ☀️';
-
-  @override
-  String get prayerCountdownAsrContext =>
-      'Afternoon prayer - remember Allah 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Sunset prayer - end the day in gratitude 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Night prayer - peaceful end to your day 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'Stay prepared for prayer time 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'Prayer time is very near - prepare now!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'Get ready for prayer soon';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'Prayer time approaching';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Prayer Countdown';
-
-  @override
-  String get prayerCountdownErrorText => 'Error calculating prayer time';
+  String get prayerCountdownLiveUpdateHint =>
+      'Android Live Update. The timer moves to the top of the notification instead of the text.';
 
 
 }

@@ -5563,151 +5563,71 @@ class AppLocalizationsFr extends AppLocalizations {
       'Huda a besoin des notifications pour vous rappeler aux heures choisies. Votre appareil va vous le demander.';
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix Prochaine $prayerName dans $timeText';
-  }
+  String get prayerCountdownTitle => 'Compte à rebours des prières';
+
+  @override
+  String get prayerCountdownDescription =>
+      'Une notification discrète qui décompte jusqu’à la prochaine prière. Elle continue après un redémarrage, sans ouvrir Huda.';
+
+  @override
+  String get prayerCountdownShowing => 'Affiché dans vos notifications';
+
+  @override
+  String get prayerCountdownNotShowing =>
+      'Activé, mais pas affiché pour le moment';
+
+  @override
+  String get prayerCountdownOff => 'Désactivé';
+
+  @override
+  String get prayerCountdownStyle => 'Style';
+
+  @override
+  String get prayerCountdownStyleProgress => 'Progression';
+
+  @override
+  String get prayerCountdownStyleTimetable => 'Horaires';
+
+  @override
+  String get prayerCountdownStyleMinimal => 'Minimal';
+
+  @override
+  String get prayerCountdownLockScreen =>
+      'Afficher sur l’écran de verrouillage';
+
+  @override
+  String get prayerCountdownShowSunrise => 'Inclure le lever du soleil';
+
+  @override
+  String get prayerCountdownLiveUpdate =>
+      'Afficher le compte à rebours dans la barre d’état';
+
+  @override
+  String get prayerCountdownNotificationsOff =>
+      'Les notifications de Huda sont désactivées.';
+
+  @override
+  String get prayerCountdownChannelOff =>
+      'La catégorie de notifications « Compte à rebours des prières » est désactivée.';
+
+  @override
+  String get prayerCountdownLiveUpdateOff =>
+      'Les Live Updates sont désactivées pour Huda.';
+
+  @override
+  String get prayerCountdownNeedsLocation =>
+      'Définissez votre position pour afficher le compte à rebours.';
+
+  @override
+  String get prayerCountdownSaveFailed =>
+      'Le réglage du compte à rebours n’a pas pu être enregistré.';
 
   @override
   String get active => 'Actif';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Service de compte à rebours de prière démarré';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Service de compte à rebours de prière arrêté';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Service de compte à rebours de prière redémarré';
-
-  @override
-  String get prayerCountdownStarted =>
-      'Service de compte à rebours de prière démarré';
-
-  @override
-  String get prayerCountdownStopped =>
-      'Service de compte à rebours de prière arrêté';
-
-  @override
-  String get prayerCountdownRestarted =>
-      'Service de compte à rebours de prière redémarré';
-
-  @override
-  String get persistentPrayerCountdown =>
-      'Compte à rebours persistant de prière';
-
-  @override
-  String get persistentNotificationRunning =>
-      'Une notification persistante s\'affiche dans votre barre d\'état avec le compte à rebours jusqu\'à la prochaine prière. Elle ne peut pas être ignorée et se met à jour chaque seconde.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'La notification de compte à rebours persistante est actuellement arrêtée.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'Ceci crée une seule notification persistante qui met à jour son contenu sans spam. Différent de vos notifications d\'heures de prière.';
-
-  @override
-  String get persistentCountdownStarted =>
-      'Compte à rebours persistant démarré';
-
-  @override
-  String get persistentCountdownStopped => 'Compte à rebours persistant arrêté';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'Compte à rebours persistant redémarré';
-
-  @override
-  String failedToStart(String error) {
-    return 'Échec du démarrage: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Échec de l\'arrêt: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Échec du redémarrage: $error';
-  }
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Service de notification en arrière-plan';
-
-  @override
-  String get persistentPrayerCountdownStopped =>
-      'Le service est actuellement arrêté';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'Le service fonctionne en arrière-plan';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Contrôle du service';
-
-  @override
-  String get persistentNotificationInfoTitle => 'À propos de ce service';
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName dans $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Prière de l\'aube - commencez votre journée par la prière 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Prière de midi - prenez une pause bénie ☀️';
-
-  @override
-  String get prayerCountdownAsrContext =>
-      'Prière de l\'après-midi - souvenez-vous d\'Allah 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Prière du coucher du soleil - terminez la journée avec gratitude 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Prière de la nuit - fin paisible de votre journée 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'Restez préparé pour l\'heure de la prière 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'L\'heure de la prière est très proche - préparez-vous maintenant!';
-
-  @override
-  String get prayerCountdownHighUrgency =>
-      'Préparez-vous pour la prière bientôt';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'L\'heure de la prière approche';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Compte à rebours des prières';
-
-  @override
-  String get prayerCountdownErrorText =>
-      'Erreur lors du calcul de l\'heure de prière';
+  String get prayerCountdownLiveUpdateHint =>
+      'Live Update d’Android. Le minuteur passe en haut de la notification au lieu du texte.';
 
 
 }

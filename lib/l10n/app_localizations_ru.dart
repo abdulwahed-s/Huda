@@ -5497,148 +5497,68 @@ class AppLocalizationsRu extends AppLocalizations {
       'Huda нужны уведомления, чтобы напоминать вам в выбранное время. Сейчас устройство попросит разрешение.';
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix Следующий $prayerName через $timeText';
-  }
+  String get prayerCountdownTitle => 'Обратный отсчёт до намаза';
+
+  @override
+  String get prayerCountdownDescription =>
+      'Тихое уведомление с отсчётом до следующего намаза. Работает и после перезагрузки, не открывая Huda.';
+
+  @override
+  String get prayerCountdownShowing => 'Отображается в уведомлениях';
+
+  @override
+  String get prayerCountdownNotShowing => 'Включено, но сейчас не отображается';
+
+  @override
+  String get prayerCountdownOff => 'Выключено';
+
+  @override
+  String get prayerCountdownStyle => 'Вид';
+
+  @override
+  String get prayerCountdownStyleProgress => 'Шкала';
+
+  @override
+  String get prayerCountdownStyleTimetable => 'Расписание';
+
+  @override
+  String get prayerCountdownStyleMinimal => 'Кратко';
+
+  @override
+  String get prayerCountdownLockScreen => 'Показывать на экране блокировки';
+
+  @override
+  String get prayerCountdownShowSunrise => 'Показывать восход';
+
+  @override
+  String get prayerCountdownLiveUpdate =>
+      'Показывать отсчёт в строке состояния';
+
+  @override
+  String get prayerCountdownNotificationsOff =>
+      'Уведомления для Huda выключены.';
+
+  @override
+  String get prayerCountdownChannelOff =>
+      'Категория уведомлений «Обратный отсчёт до намаза» выключена.';
+
+  @override
+  String get prayerCountdownLiveUpdateOff => 'Live Updates для Huda выключены.';
+
+  @override
+  String get prayerCountdownNeedsLocation =>
+      'Укажите местоположение, чтобы показать отсчёт.';
+
+  @override
+  String get prayerCountdownSaveFailed =>
+      'Не удалось сохранить настройку отсчёта.';
 
   @override
   String get active => 'Активно';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Служба обратного отсчета намаза запущена';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Служба обратного отсчета намаза остановлена';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Служба обратного отсчета намаза перезапущена';
-
-  @override
-  String get prayerCountdownStarted =>
-      'Служба обратного отсчета намаза запущена';
-
-  @override
-  String get prayerCountdownStopped =>
-      'Служба обратного отсчета намаза остановлена';
-
-  @override
-  String get prayerCountdownRestarted =>
-      'Служба обратного отсчета намаза перезапущена';
-
-  @override
-  String get persistentPrayerCountdown => 'Постоянный обратный отсчет намаза';
-
-  @override
-  String get persistentNotificationRunning =>
-      'Постоянное уведомление отображается в вашей строке состояния с обратным отсчетом до следующего намаза. Его нельзя отклонить, и оно обновляется каждую секунду.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'Постоянное уведомление обратного отсчета в настоящее время остановлено.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'Это создает одно постоянное уведомление, которое обновляет свое содержимое без спама. Отличается от ваших уведомлений времени намаза.';
-
-  @override
-  String get persistentCountdownStarted => 'Постоянный обратный отсчет запущен';
-
-  @override
-  String get persistentCountdownStopped =>
-      'Постоянный обратный отсчет остановлен';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'Постоянный обратный отсчет перезапущен';
-
-  @override
-  String failedToStart(String error) {
-    return 'Не удалось запустить: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Не удалось остановить: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Не удалось перезапустить: $error';
-  }
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Служба фоновых уведомлений';
-
-  @override
-  String get persistentPrayerCountdownStopped =>
-      'Служба в настоящее время остановлена';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'Служба работает в фоновом режиме';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Управление службой';
-
-  @override
-  String get persistentNotificationInfoTitle => 'Об этой службе';
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName через $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Утренний намаз - начните день с молитвы 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Полуденный намаз - сделайте благословенный перерыв ☀️';
-
-  @override
-  String get prayerCountdownAsrContext =>
-      'Послеполуденный намаз - помните Аллаха 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Вечерний намаз - завершите день с благодарностью 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Ночной намаз - мирное окончание дня 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'Будьте готовы ко времени намаза 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'Время намаза очень близко - готовьтесь сейчас!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'Готовьтесь к намазу скоро';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'Время намаза приближается';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Обратный отсчет до намаза';
-
-  @override
-  String get prayerCountdownErrorText => 'Ошибка при расчете времени намаза';
+  String get prayerCountdownLiveUpdateHint =>
+      'Live Update в Android. Таймер переходит в верхнюю часть уведомления вместо текста.';
 
 
 }

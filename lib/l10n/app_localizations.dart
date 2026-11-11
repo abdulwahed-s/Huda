@@ -9906,15 +9906,107 @@ abstract class AppLocalizations {
   /// **'Huda needs notifications to remind you at the times you choose. Your device will ask you next.'**
   String get permissionExplainerNotificationsMessage;
 
-  /// Title for prayer countdown notification
+  /// Title of the Android prayer countdown card and notification
   ///
   /// In en, this message translates to:
-  /// **'{prefix} Next {prayerName} in {timeText}'**
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  );
+  /// **'Prayer countdown'**
+  String get prayerCountdownTitle;
+
+  /// Explains the Android prayer countdown notification
+  ///
+  /// In en, this message translates to:
+  /// **'A quiet notification that counts down to the next prayer. It keeps going after a restart, without opening Huda.'**
+  String get prayerCountdownDescription;
+
+  /// Status: the countdown notification is showing
+  ///
+  /// In en, this message translates to:
+  /// **'Showing in your notifications'**
+  String get prayerCountdownShowing;
+
+  /// Status: the countdown is on but Android is not showing it
+  ///
+  /// In en, this message translates to:
+  /// **'On, but not showing right now'**
+  String get prayerCountdownNotShowing;
+
+  /// Status: the countdown is off
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get prayerCountdownOff;
+
+  /// Label above the countdown style choices
+  ///
+  /// In en, this message translates to:
+  /// **'Style'**
+  String get prayerCountdownStyle;
+
+  /// Countdown style with a progress bar between prayers
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get prayerCountdownStyleProgress;
+
+  /// Countdown style with the day's prayer times
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable'**
+  String get prayerCountdownStyleTimetable;
+
+  /// Countdown style with one line
+  ///
+  /// In en, this message translates to:
+  /// **'Minimal'**
+  String get prayerCountdownStyleMinimal;
+
+  /// Option: show the countdown on the lock screen
+  ///
+  /// In en, this message translates to:
+  /// **'Show on the lock screen'**
+  String get prayerCountdownLockScreen;
+
+  /// Timetable option: include sunrise in the times
+  ///
+  /// In en, this message translates to:
+  /// **'Include sunrise'**
+  String get prayerCountdownShowSunrise;
+
+  /// Android 16 option: Android's template, so the timer shows in the status bar and the notification header
+  ///
+  /// In en, this message translates to:
+  /// **'Show the countdown in the status bar'**
+  String get prayerCountdownLiveUpdate;
+
+  /// Problem: Huda's notifications are off
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for Huda.'**
+  String get prayerCountdownNotificationsOff;
+
+  /// Problem: the countdown notification channel is off
+  ///
+  /// In en, this message translates to:
+  /// **'The “Prayer countdown” notification category is turned off.'**
+  String get prayerCountdownChannelOff;
+
+  /// Problem: Android Live Updates are off for Huda
+  ///
+  /// In en, this message translates to:
+  /// **'Live Updates are turned off for Huda.'**
+  String get prayerCountdownLiveUpdateOff;
+
+  /// Problem: no location, so no prayer times to count down to
+  ///
+  /// In en, this message translates to:
+  /// **'Set your location to show the countdown.'**
+  String get prayerCountdownNeedsLocation;
+
+  /// Error when the countdown settings could not be saved
+  ///
+  /// In en, this message translates to:
+  /// **'The countdown setting couldn’t be saved.'**
+  String get prayerCountdownSaveFailed;
 
   /// Status when countdown is active
   ///
@@ -9922,207 +10014,11 @@ abstract class AppLocalizations {
   /// **'Active'**
   String get active;
 
-  /// Prayer countdown service started message
+  /// Explains what turning on the status-bar countdown changes
   ///
   /// In en, this message translates to:
-  /// **'Prayer countdown service started'**
-  String get prayerCountdownServiceStarted;
-
-  /// Prayer countdown service stopped message
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service stopped'**
-  String get prayerCountdownServiceStopped;
-
-  /// Prayer countdown service restarted message
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service restarted'**
-  String get prayerCountdownServiceRestarted;
-
-  /// Success message when prayer countdown service starts
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service started'**
-  String get prayerCountdownStarted;
-
-  /// Success message when prayer countdown service stops
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service stopped'**
-  String get prayerCountdownStopped;
-
-  /// Success message when prayer countdown service restarts
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer countdown service restarted'**
-  String get prayerCountdownRestarted;
-
-  /// Title for persistent prayer countdown widget
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent Prayer Countdown'**
-  String get persistentPrayerCountdown;
-
-  /// Description when persistent notification is running
-  ///
-  /// In en, this message translates to:
-  /// **'A persistent notification is showing in your status bar with countdown to next prayer. It cannot be dismissed and updates every second.'**
-  String get persistentNotificationRunning;
-
-  /// Description when persistent notification is stopped
-  ///
-  /// In en, this message translates to:
-  /// **'The persistent countdown notification is currently stopped.'**
-  String get persistentNotificationStopped;
-
-  /// Information about persistent notification feature
-  ///
-  /// In en, this message translates to:
-  /// **'This creates a single persistent notification that updates its content without spam. Different from your prayer time notifications.'**
-  String get persistentNotificationInfo;
-
-  /// Success message when countdown starts
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent countdown started'**
-  String get persistentCountdownStarted;
-
-  /// Success message when countdown stops
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent countdown stopped'**
-  String get persistentCountdownStopped;
-
-  /// Success message when countdown restarts
-  ///
-  /// In en, this message translates to:
-  /// **'Persistent countdown restarted'**
-  String get persistentCountdownRestarted;
-
-  /// Error message when failing to start countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to start: {error}'**
-  String failedToStart(String error);
-
-  /// Error message when failing to stop countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to stop: {error}'**
-  String failedToStop(String error);
-
-  /// Error message when failing to restart countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to restart: {error}'**
-  String failedToRestart(String error);
-
-  /// No description provided for @persistentPrayerCountdownDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Background Notification Service'**
-  String get persistentPrayerCountdownDescription;
-
-  /// No description provided for @persistentPrayerCountdownStopped.
-  ///
-  /// In en, this message translates to:
-  /// **'Service is currently stopped'**
-  String get persistentPrayerCountdownStopped;
-
-  /// No description provided for @persistentPrayerCountdownRunning.
-  ///
-  /// In en, this message translates to:
-  /// **'Service is running in background'**
-  String get persistentPrayerCountdownRunning;
-
-  /// No description provided for @persistentPrayerCountdownServiceControls.
-  ///
-  /// In en, this message translates to:
-  /// **'Service Control'**
-  String get persistentPrayerCountdownServiceControls;
-
-  /// No description provided for @persistentNotificationInfoTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'About This Service'**
-  String get persistentNotificationInfoTitle;
-
-  /// Title for urgent prayer countdown notification
-  ///
-  /// In en, this message translates to:
-  /// **'{prefix} {prayerName} in {timeText}'**
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  );
-
-  /// Context message for Fajr prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Dawn prayer - start your day with prayer 🤲'**
-  String get prayerCountdownFajrContext;
-
-  /// Context message for Dhuhr prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Midday prayer - take a blessed break ☀️'**
-  String get prayerCountdownDhuhrContext;
-
-  /// Context message for Asr prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Afternoon prayer - remember Allah 📿'**
-  String get prayerCountdownAsrContext;
-
-  /// Context message for Maghrib prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Sunset prayer - end the day in gratitude 🤲'**
-  String get prayerCountdownMaghribContext;
-
-  /// Context message for Isha prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Night prayer - peaceful end to your day 🌙'**
-  String get prayerCountdownIshaContext;
-
-  /// Default context message for prayer countdown
-  ///
-  /// In en, this message translates to:
-  /// **'Stay prepared for prayer time 🕌'**
-  String get prayerCountdownDefaultContext;
-
-  /// Urgency message for critical prayer countdown (< 5 min)
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer time is very near - prepare now!'**
-  String get prayerCountdownCriticalUrgency;
-
-  /// Urgency message for high prayer countdown (< 15 min)
-  ///
-  /// In en, this message translates to:
-  /// **'Get ready for prayer soon'**
-  String get prayerCountdownHighUrgency;
-
-  /// Urgency message for medium prayer countdown (< 30 min)
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer time approaching'**
-  String get prayerCountdownMediumUrgency;
-
-  /// Title when prayer countdown is loading
-  ///
-  /// In en, this message translates to:
-  /// **'🕌 Prayer Countdown'**
-  String get prayerCountdownLoadingTitle;
-
-  /// Text when prayer countdown has an error
-  ///
-  /// In en, this message translates to:
-  /// **'Error calculating prayer time'**
-  String get prayerCountdownErrorText;
+  /// **'Android Live Update. The timer moves to the top of the notification instead of the text.'**
+  String get prayerCountdownLiveUpdateHint;
 
 
 }

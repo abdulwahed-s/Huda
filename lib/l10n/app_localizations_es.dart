@@ -5547,150 +5547,69 @@ class AppLocalizationsEs extends AppLocalizations {
       'Huda necesita notificaciones para recordarte a las horas que elijas. Tu dispositivo te lo preguntará a continuación.';
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix Próxima $prayerName en $timeText';
-  }
+  String get prayerCountdownTitle => 'Cuenta regresiva de oración';
+
+  @override
+  String get prayerCountdownDescription =>
+      'Una notificación silenciosa con la cuenta regresiva hasta la próxima oración. Sigue tras reiniciar, sin abrir Huda.';
+
+  @override
+  String get prayerCountdownShowing => 'Visible en tus notificaciones';
+
+  @override
+  String get prayerCountdownNotShowing => 'Activado, pero no se muestra ahora';
+
+  @override
+  String get prayerCountdownOff => 'Desactivado';
+
+  @override
+  String get prayerCountdownStyle => 'Estilo';
+
+  @override
+  String get prayerCountdownStyleProgress => 'Progreso';
+
+  @override
+  String get prayerCountdownStyleTimetable => 'Horario';
+
+  @override
+  String get prayerCountdownStyleMinimal => 'Mínimo';
+
+  @override
+  String get prayerCountdownLockScreen => 'Mostrar en la pantalla de bloqueo';
+
+  @override
+  String get prayerCountdownShowSunrise => 'Incluir el amanecer';
+
+  @override
+  String get prayerCountdownLiveUpdate =>
+      'Mostrar la cuenta regresiva en la barra de estado';
+
+  @override
+  String get prayerCountdownNotificationsOff =>
+      'Las notificaciones de Huda están desactivadas.';
+
+  @override
+  String get prayerCountdownChannelOff =>
+      'La categoría de notificación «Cuenta regresiva de oración» está desactivada.';
+
+  @override
+  String get prayerCountdownLiveUpdateOff =>
+      'Las actualizaciones en vivo están desactivadas para Huda.';
+
+  @override
+  String get prayerCountdownNeedsLocation =>
+      'Establece tu ubicación para mostrar la cuenta regresiva.';
+
+  @override
+  String get prayerCountdownSaveFailed =>
+      'No se pudo guardar el ajuste de la cuenta regresiva.';
 
   @override
   String get active => 'Activo';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Servicio de cuenta regresiva de oración iniciado';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Servicio de cuenta regresiva de oración detenido';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Servicio de cuenta regresiva de oración reiniciado';
-
-  @override
-  String get prayerCountdownStarted =>
-      'Servicio de cuenta regresiva de oración iniciado';
-
-  @override
-  String get prayerCountdownStopped =>
-      'Servicio de cuenta regresiva de oración detenido';
-
-  @override
-  String get prayerCountdownRestarted =>
-      'Servicio de cuenta regresiva de oración reiniciado';
-
-  @override
-  String get persistentPrayerCountdown =>
-      'Cuenta regresiva persistente de oración';
-
-  @override
-  String get persistentNotificationRunning =>
-      'Se está mostrando una notificación persistente en tu barra de estado con cuenta regresiva para la próxima oración. No puede ser descartada y se actualiza cada segundo.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'La notificación de cuenta regresiva persistente está actualmente detenida.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'Esto crea una sola notificación persistente que actualiza su contenido sin spam. Diferente de tus notificaciones de horarios de oración.';
-
-  @override
-  String get persistentCountdownStarted =>
-      'Cuenta regresiva persistente iniciada';
-
-  @override
-  String get persistentCountdownStopped =>
-      'Cuenta regresiva persistente detenida';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'Cuenta regresiva persistente reiniciada';
-
-  @override
-  String failedToStart(String error) {
-    return 'Error al iniciar: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Error al detener: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Error al reiniciar: $error';
-  }
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Servicio de notificación en segundo plano';
-
-  @override
-  String get persistentPrayerCountdownStopped =>
-      'El servicio está actualmente detenido';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'El servicio está ejecutándose en segundo plano';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Control del servicio';
-
-  @override
-  String get persistentNotificationInfoTitle => 'Acerca de este servicio';
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName en $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Oración del amanecer - comienza tu día con oración 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Oración del mediodía - toma un descanso bendito ☀️';
-
-  @override
-  String get prayerCountdownAsrContext =>
-      'Oración de la tarde - recuerda a Allah 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Oración del atardecer - termina el día con gratitud 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Oración nocturna - final pacífico de tu día 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'Mantente preparado para la hora de oración 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'La hora de oración está muy cerca - ¡prepárate ahora!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'Prepárate para la oración pronto';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'La hora de oración se acerca';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Cuenta regresiva de oración';
-
-  @override
-  String get prayerCountdownErrorText => 'Error calculando la hora de oración';
+  String get prayerCountdownLiveUpdateHint =>
+      'Actualización en vivo de Android. El temporizador pasa a la parte superior de la notificación en lugar del texto.';
 
 
 }

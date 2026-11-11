@@ -5601,175 +5601,80 @@
   },
   "permissionExplainerNotificationsTitle": "Allow notifications",
   "permissionExplainerNotificationsMessage": "Huda needs notifications to remind you at the times you choose. Your device will ask you next.",
-  "prayerCountdownTitle": "{prefix} Next {prayerName} in {timeText}",
+  "prayerCountdownTitle": "Prayer countdown",
   "@prayerCountdownTitle": {
-    "description": "Title for prayer countdown notification",
-    "placeholders": {
-      "prefix": {
-        "type": "String",
-        "description": "Prayer emoji or urgency prefix"
-      },
-      "prayerName": {
-        "type": "String",
-        "description": "Name of the prayer"
-      },
-      "timeText": {
-        "type": "String",
-        "description": "Formatted time remaining"
-      }
-    }
+    "description": "Title of the Android prayer countdown card and notification"
+  },
+  "prayerCountdownDescription": "A quiet notification that counts down to the next prayer. It keeps going after a restart, without opening Huda.",
+  "@prayerCountdownDescription": {
+    "description": "Explains the Android prayer countdown notification"
+  },
+  "prayerCountdownShowing": "Showing in your notifications",
+  "@prayerCountdownShowing": {
+    "description": "Status: the countdown notification is showing"
+  },
+  "prayerCountdownNotShowing": "On, but not showing right now",
+  "@prayerCountdownNotShowing": {
+    "description": "Status: the countdown is on but Android is not showing it"
+  },
+  "prayerCountdownOff": "Off",
+  "@prayerCountdownOff": {
+    "description": "Status: the countdown is off"
+  },
+  "prayerCountdownStyle": "Style",
+  "@prayerCountdownStyle": {
+    "description": "Label above the countdown style choices"
+  },
+  "prayerCountdownStyleProgress": "Progress",
+  "@prayerCountdownStyleProgress": {
+    "description": "Countdown style with a progress bar between prayers"
+  },
+  "prayerCountdownStyleTimetable": "Timetable",
+  "@prayerCountdownStyleTimetable": {
+    "description": "Countdown style with the day's prayer times"
+  },
+  "prayerCountdownStyleMinimal": "Minimal",
+  "@prayerCountdownStyleMinimal": {
+    "description": "Countdown style with one line"
+  },
+  "prayerCountdownLockScreen": "Show on the lock screen",
+  "@prayerCountdownLockScreen": {
+    "description": "Option: show the countdown on the lock screen"
+  },
+  "prayerCountdownShowSunrise": "Include sunrise",
+  "@prayerCountdownShowSunrise": {
+    "description": "Timetable option: include sunrise in the times"
+  },
+  "prayerCountdownLiveUpdate": "Show the countdown in the status bar",
+  "@prayerCountdownLiveUpdate": {
+    "description": "Android 16 option: Android's template, so the timer shows in the status bar and the notification header"
+  },
+  "prayerCountdownNotificationsOff": "Notifications are off for Huda.",
+  "@prayerCountdownNotificationsOff": {
+    "description": "Problem: Huda's notifications are off"
+  },
+  "prayerCountdownChannelOff": "The “Prayer countdown” notification category is turned off.",
+  "@prayerCountdownChannelOff": {
+    "description": "Problem: the countdown notification channel is off"
+  },
+  "prayerCountdownLiveUpdateOff": "Live Updates are turned off for Huda.",
+  "@prayerCountdownLiveUpdateOff": {
+    "description": "Problem: Android Live Updates are off for Huda"
+  },
+  "prayerCountdownNeedsLocation": "Set your location to show the countdown.",
+  "@prayerCountdownNeedsLocation": {
+    "description": "Problem: no location, so no prayer times to count down to"
+  },
+  "prayerCountdownSaveFailed": "The countdown setting couldn’t be saved.",
+  "@prayerCountdownSaveFailed": {
+    "description": "Error when the countdown settings could not be saved"
   },
   "active": "Active",
   "@active": {
     "description": "Status when countdown is active"
   },
-  "prayerCountdownServiceStarted": "Prayer countdown service started",
-  "@prayerCountdownServiceStarted": {
-    "description": "Prayer countdown service started message"
-  },
-  "prayerCountdownServiceStopped": "Prayer countdown service stopped",
-  "@prayerCountdownServiceStopped": {
-    "description": "Prayer countdown service stopped message"
-  },
-  "prayerCountdownServiceRestarted": "Prayer countdown service restarted",
-  "@prayerCountdownServiceRestarted": {
-    "description": "Prayer countdown service restarted message"
-  },
-  "prayerCountdownStarted": "Prayer countdown service started",
-  "@prayerCountdownStarted": {
-    "description": "Success message when prayer countdown service starts"
-  },
-  "prayerCountdownStopped": "Prayer countdown service stopped",
-  "@prayerCountdownStopped": {
-    "description": "Success message when prayer countdown service stops"
-  },
-  "prayerCountdownRestarted": "Prayer countdown service restarted",
-  "@prayerCountdownRestarted": {
-    "description": "Success message when prayer countdown service restarts"
-  },
-  "persistentPrayerCountdown": "Persistent Prayer Countdown",
-  "@persistentPrayerCountdown": {
-    "description": "Title for persistent prayer countdown widget"
-  },
-  "persistentNotificationRunning": "A persistent notification is showing in your status bar with countdown to next prayer. It cannot be dismissed and updates every second.",
-  "@persistentNotificationRunning": {
-    "description": "Description when persistent notification is running"
-  },
-  "persistentNotificationStopped": "The persistent countdown notification is currently stopped.",
-  "@persistentNotificationStopped": {
-    "description": "Description when persistent notification is stopped"
-  },
-  "persistentNotificationInfo": "This creates a single persistent notification that updates its content without spam. Different from your prayer time notifications.",
-  "@persistentNotificationInfo": {
-    "description": "Information about persistent notification feature"
-  },
-  "persistentCountdownStarted": "Persistent countdown started",
-  "@persistentCountdownStarted": {
-    "description": "Success message when countdown starts"
-  },
-  "persistentCountdownStopped": "Persistent countdown stopped",
-  "@persistentCountdownStopped": {
-    "description": "Success message when countdown stops"
-  },
-  "persistentCountdownRestarted": "Persistent countdown restarted",
-  "@persistentCountdownRestarted": {
-    "description": "Success message when countdown restarts"
-  },
-  "failedToStart": "Failed to start: {error}",
-  "@failedToStart": {
-    "description": "Error message when failing to start countdown",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "description": "Error message"
-      }
-    }
-  },
-  "failedToStop": "Failed to stop: {error}",
-  "@failedToStop": {
-    "description": "Error message when failing to stop countdown",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "description": "Error message"
-      }
-    }
-  },
-  "failedToRestart": "Failed to restart: {error}",
-  "@failedToRestart": {
-    "description": "Error message when failing to restart countdown",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "description": "Error message"
-      }
-    }
-  },
-  "persistentPrayerCountdownDescription": "Background Notification Service",
-  "persistentPrayerCountdownStopped": "Service is currently stopped",
-  "persistentPrayerCountdownRunning": "Service is running in background",
-  "persistentPrayerCountdownServiceControls": "Service Control",
-  "persistentNotificationInfoTitle": "About This Service",
-  "prayerCountdownUrgentTitle": "{prefix} {prayerName} in {timeText}",
-  "@prayerCountdownUrgentTitle": {
-    "description": "Title for urgent prayer countdown notification",
-    "placeholders": {
-      "prefix": {
-        "type": "String",
-        "description": "Urgency prefix (🔥, ⚡, ⚠️)"
-      },
-      "prayerName": {
-        "type": "String",
-        "description": "Name of the prayer"
-      },
-      "timeText": {
-        "type": "String",
-        "description": "Formatted time remaining"
-      }
-    }
-  },
-  "prayerCountdownFajrContext": "Dawn prayer - start your day with prayer 🤲",
-  "@prayerCountdownFajrContext": {
-    "description": "Context message for Fajr prayer countdown"
-  },
-  "prayerCountdownDhuhrContext": "Midday prayer - take a blessed break ☀️",
-  "@prayerCountdownDhuhrContext": {
-    "description": "Context message for Dhuhr prayer countdown"
-  },
-  "prayerCountdownAsrContext": "Afternoon prayer - remember Allah 📿",
-  "@prayerCountdownAsrContext": {
-    "description": "Context message for Asr prayer countdown"
-  },
-  "prayerCountdownMaghribContext": "Sunset prayer - end the day in gratitude 🤲",
-  "@prayerCountdownMaghribContext": {
-    "description": "Context message for Maghrib prayer countdown"
-  },
-  "prayerCountdownIshaContext": "Night prayer - peaceful end to your day 🌙",
-  "@prayerCountdownIshaContext": {
-    "description": "Context message for Isha prayer countdown"
-  },
-  "prayerCountdownDefaultContext": "Stay prepared for prayer time 🕌",
-  "@prayerCountdownDefaultContext": {
-    "description": "Default context message for prayer countdown"
-  },
-  "prayerCountdownCriticalUrgency": "Prayer time is very near - prepare now!",
-  "@prayerCountdownCriticalUrgency": {
-    "description": "Urgency message for critical prayer countdown (< 5 min)"
-  },
-  "prayerCountdownHighUrgency": "Get ready for prayer soon",
-  "@prayerCountdownHighUrgency": {
-    "description": "Urgency message for high prayer countdown (< 15 min)"
-  },
-  "prayerCountdownMediumUrgency": "Prayer time approaching",
-  "@prayerCountdownMediumUrgency": {
-    "description": "Urgency message for medium prayer countdown (< 30 min)"
-  },
-  "prayerCountdownLoadingTitle": "🕌 Prayer Countdown",
-  "@prayerCountdownLoadingTitle": {
-    "description": "Title when prayer countdown is loading"
-  },
-  "prayerCountdownErrorText": "Error calculating prayer time",
-  "@prayerCountdownErrorText": {
-    "description": "Text when prayer countdown has an error"
+  "prayerCountdownLiveUpdateHint": "Android Live Update. The timer moves to the top of the notification instead of the text.",
+  "@prayerCountdownLiveUpdateHint": {
+    "description": "Explains what turning on the status-bar countdown changes"
   }
 }

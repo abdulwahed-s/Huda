@@ -5474,146 +5474,69 @@ class AppLocalizationsMs extends AppLocalizations {
       'Huda memerlukan pemberitahuan untuk mengingatkan anda pada waktu yang anda pilih. Peranti anda akan bertanya seterusnya.';
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName Seterusnya dalam $timeText';
-  }
+  String get prayerCountdownTitle => 'Kira detik solat';
+
+  @override
+  String get prayerCountdownDescription =>
+      'Pemberitahuan senyap yang mengira detik ke solat seterusnya. Ia terus berjalan selepas dimulakan semula, tanpa membuka Huda.';
+
+  @override
+  String get prayerCountdownShowing => 'Dipaparkan dalam pemberitahuan anda';
+
+  @override
+  String get prayerCountdownNotShowing =>
+      'Hidup, tetapi tidak dipaparkan sekarang';
+
+  @override
+  String get prayerCountdownOff => 'Mati';
+
+  @override
+  String get prayerCountdownStyle => 'Gaya';
+
+  @override
+  String get prayerCountdownStyleProgress => 'Kemajuan';
+
+  @override
+  String get prayerCountdownStyleTimetable => 'Jadual';
+
+  @override
+  String get prayerCountdownStyleMinimal => 'Ringkas';
+
+  @override
+  String get prayerCountdownLockScreen => 'Tunjukkan pada skrin kunci';
+
+  @override
+  String get prayerCountdownShowSunrise => 'Sertakan syuruk';
+
+  @override
+  String get prayerCountdownLiveUpdate => 'Tunjukkan kira detik di bar status';
+
+  @override
+  String get prayerCountdownNotificationsOff =>
+      'Pemberitahuan dimatikan untuk Huda.';
+
+  @override
+  String get prayerCountdownChannelOff =>
+      'Kategori pemberitahuan “Kira detik solat” dimatikan.';
+
+  @override
+  String get prayerCountdownLiveUpdateOff =>
+      'Kemas Kini Langsung dimatikan untuk Huda.';
+
+  @override
+  String get prayerCountdownNeedsLocation =>
+      'Tetapkan lokasi anda untuk memaparkan kira detik.';
+
+  @override
+  String get prayerCountdownSaveFailed =>
+      'Tetapan kira detik tidak dapat disimpan.';
 
   @override
   String get active => 'Aktif';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Perkhidmatan kira detik solat dimulakan';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Perkhidmatan kira detik solat dihentikan';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Perkhidmatan kira detik solat dimulakan semula';
-
-  @override
-  String get prayerCountdownStarted =>
-      'Perkhidmatan kira detik solat dimulakan';
-
-  @override
-  String get prayerCountdownStopped =>
-      'Perkhidmatan kira detik solat dihentikan';
-
-  @override
-  String get prayerCountdownRestarted =>
-      'Perkhidmatan kira detik solat dimulakan semula';
-
-  @override
-  String get persistentPrayerCountdown => 'Kira detik solat berterusan';
-
-  @override
-  String get persistentNotificationRunning =>
-      'Pemberitahuan berterusan dipaparkan dalam bar status anda dengan kira detik ke solat seterusnya. Ia tidak boleh dibuang dan dikemas kini setiap saat.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'Pemberitahuan kira detik berterusan kini dihentikan.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'Ini mencipta satu pemberitahuan berterusan yang mengemas kini kandungannya tanpa spam. Berbeza daripada pemberitahuan waktu solat anda.';
-
-  @override
-  String get persistentCountdownStarted => 'Kira detik berterusan dimulakan';
-
-  @override
-  String get persistentCountdownStopped => 'Kira detik berterusan dihentikan';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'Kira detik berterusan dimulakan semula';
-
-  @override
-  String failedToStart(String error) {
-    return 'Gagal memulakan: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Gagal menghentikan: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Gagal memulakan semula: $error';
-  }
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Perkhidmatan pemberitahuan latar belakang';
-
-  @override
-  String get persistentPrayerCountdownStopped => 'Perkhidmatan kini dihentikan';
-
-  @override
-  String get persistentPrayerCountdownRunning =>
-      'Perkhidmatan berjalan di latar belakang';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Kawalan perkhidmatan';
-
-  @override
-  String get persistentNotificationInfoTitle => 'Tentang perkhidmatan ini';
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName dalam $timeText';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Solat Subuh - mulakan hari dengan solat 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Solat Zohor - ambil rehat yang diberkati ☀️';
-
-  @override
-  String get prayerCountdownAsrContext => 'Solat Asar - ingatlah Allah 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Solat Maghrib - akhiri hari dengan bersyukur 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Solat Isyak - pengakhiran hari yang tenang 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext =>
-      'Bersiap sedia untuk waktu solat 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'Waktu solat sudah sangat dekat - bersiap sekarang!';
-
-  @override
-  String get prayerCountdownHighUrgency =>
-      'Bersiap untuk solat tidak lama lagi';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'Waktu solat semakin hampir';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Kira Mundur Solat';
-
-  @override
-  String get prayerCountdownErrorText => 'Ralat mengira waktu solat';
+  String get prayerCountdownLiveUpdateHint =>
+      'Kemas Kini Langsung Android. Pemasa berpindah ke bahagian atas pemberitahuan, bukan dalam teks.';
 
 
 }

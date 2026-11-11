@@ -5461,142 +5461,66 @@ class AppLocalizationsTr extends AppLocalizations {
       'Huda, seçtiğin saatlerde sana hatırlatmak için bildirimlere ihtiyaç duyar. Cihazın şimdi izin isteyecek.';
 
   @override
-  String prayerCountdownTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix Sonraki $prayerName $timeText içinde';
-  }
+  String get prayerCountdownTitle => 'Namaz geri sayımı';
+
+  @override
+  String get prayerCountdownDescription =>
+      'Sonraki namaza kadar geri sayan sessiz bir bildirim. Yeniden başlatmadan sonra Huda açılmadan devam eder.';
+
+  @override
+  String get prayerCountdownShowing => 'Bildirimlerde gösteriliyor';
+
+  @override
+  String get prayerCountdownNotShowing => 'Açık, ancak şu anda gösterilmiyor';
+
+  @override
+  String get prayerCountdownOff => 'Kapalı';
+
+  @override
+  String get prayerCountdownStyle => 'Görünüm';
+
+  @override
+  String get prayerCountdownStyleProgress => 'İlerleme';
+
+  @override
+  String get prayerCountdownStyleTimetable => 'Vakit tablosu';
+
+  @override
+  String get prayerCountdownStyleMinimal => 'Sade';
+
+  @override
+  String get prayerCountdownLockScreen => 'Kilit ekranında göster';
+
+  @override
+  String get prayerCountdownShowSunrise => 'Güneşi göster';
+
+  @override
+  String get prayerCountdownLiveUpdate => 'Geri sayımı durum çubuğunda göster';
+
+  @override
+  String get prayerCountdownNotificationsOff => 'Huda için bildirimler kapalı.';
+
+  @override
+  String get prayerCountdownChannelOff =>
+      '“Namaz geri sayımı” bildirim kategorisi kapalı.';
+
+  @override
+  String get prayerCountdownLiveUpdateOff =>
+      'Huda için Canlı Güncellemeler kapalı.';
+
+  @override
+  String get prayerCountdownNeedsLocation =>
+      'Geri sayımı göstermek için konumunuzu ayarlayın.';
+
+  @override
+  String get prayerCountdownSaveFailed => 'Geri sayım ayarı kaydedilemedi.';
 
   @override
   String get active => 'Aktif';
 
   @override
-  String get prayerCountdownServiceStarted =>
-      'Namaz geri sayım hizmeti başlatıldı';
-
-  @override
-  String get prayerCountdownServiceStopped =>
-      'Namaz geri sayım hizmeti durduruldu';
-
-  @override
-  String get prayerCountdownServiceRestarted =>
-      'Namaz geri sayım hizmeti yeniden başlatıldı';
-
-  @override
-  String get prayerCountdownStarted => 'Namaz geri sayım hizmeti başlatıldı';
-
-  @override
-  String get prayerCountdownStopped => 'Namaz geri sayım hizmeti durduruldu';
-
-  @override
-  String get prayerCountdownRestarted =>
-      'Namaz geri sayım hizmeti yeniden başlatıldı';
-
-  @override
-  String get persistentPrayerCountdown => 'Kalıcı Namaz Geri Sayımı';
-
-  @override
-  String get persistentNotificationRunning =>
-      'Durum çubuğunuzda sonraki namaza geri sayım ile kalıcı bir bildirim gösteriliyor. Kapatılamaz ve her saniye güncellenir.';
-
-  @override
-  String get persistentNotificationStopped =>
-      'Kalıcı geri sayım bildirimi şu anda durdurulmuş.';
-
-  @override
-  String get persistentNotificationInfo =>
-      'Bu, içeriğini spam yapmadan güncelleyen tek bir kalıcı bildirim oluşturur. Namaz vakti bildirimlerinizden farklıdır.';
-
-  @override
-  String get persistentCountdownStarted => 'Kalıcı geri sayım başlatıldı';
-
-  @override
-  String get persistentCountdownStopped => 'Kalıcı geri sayım durduruldu';
-
-  @override
-  String get persistentCountdownRestarted =>
-      'Kalıcı geri sayım yeniden başlatıldı';
-
-  @override
-  String failedToStart(String error) {
-    return 'Başlatılamadı: $error';
-  }
-
-  @override
-  String failedToStop(String error) {
-    return 'Durdurulamadı: $error';
-  }
-
-  @override
-  String failedToRestart(String error) {
-    return 'Yeniden başlatılamadı: $error';
-  }
-
-  @override
-  String get persistentPrayerCountdownDescription =>
-      'Arka Plan Bildirim Servisi';
-
-  @override
-  String get persistentPrayerCountdownStopped => 'Servis şu anda durdurulmuş';
-
-  @override
-  String get persistentPrayerCountdownRunning => 'Servis arka planda çalışıyor';
-
-  @override
-  String get persistentPrayerCountdownServiceControls => 'Servis Kontrolü';
-
-  @override
-  String get persistentNotificationInfoTitle => 'Bu Servis Hakkında';
-
-  @override
-  String prayerCountdownUrgentTitle(
-    String prefix,
-    String prayerName,
-    String timeText,
-  ) {
-    return '$prefix $prayerName $timeText içinde';
-  }
-
-  @override
-  String get prayerCountdownFajrContext =>
-      'Sabah namazı - gününüze namazla başlayın 🤲';
-
-  @override
-  String get prayerCountdownDhuhrContext =>
-      'Öğle namazı - mübarek bir mola verin ☀️';
-
-  @override
-  String get prayerCountdownAsrContext =>
-      'İkindi namazı - Allah\'ı zikredin 📿';
-
-  @override
-  String get prayerCountdownMaghribContext =>
-      'Akşam namazı - günü şükürle bitirin 🤲';
-
-  @override
-  String get prayerCountdownIshaContext =>
-      'Yatsı namazı - gününüzün huzurlu sonu 🌙';
-
-  @override
-  String get prayerCountdownDefaultContext => 'Namaz vakti için hazır olun 🕌';
-
-  @override
-  String get prayerCountdownCriticalUrgency =>
-      'Namaz vakti çok yakın - şimdi hazırlanın!';
-
-  @override
-  String get prayerCountdownHighUrgency => 'Yakında namaz için hazırlanın';
-
-  @override
-  String get prayerCountdownMediumUrgency => 'Namaz vakti yaklaşıyor';
-
-  @override
-  String get prayerCountdownLoadingTitle => '🕌 Namaz Geri Sayımı';
-
-  @override
-  String get prayerCountdownErrorText => 'Namaz vakti hesaplanırken hata';
+  String get prayerCountdownLiveUpdateHint =>
+      'Android Canlı Güncelleme. Zamanlayıcı metin yerine bildirimin üst kısmına taşınır.';
 
 
 }

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
+import 'package:huda/core/services/android_prayer_countdown.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/theme/theme_extension.dart';
@@ -318,9 +318,10 @@ class _PrayerTimeAdjustmentBottomSheetState
     }
 
     if (PlatformUtils.isAndroid) {
-      final service = PersistentPrayerCountdownService();
-      if (service.isRunning) {
-        await service.restart();
+      try {
+        await AndroidPrayerCountdown.refresh();
+      } catch (_) {
+        // The native countdown also refreshes when the widget settings commit.
       }
     }
 
