@@ -6,6 +6,10 @@ class AudioCoordinator {
   static const String surahAyah = 'surahAyah';
   static const String athkar = 'athkar';
   static const String audiobook = 'audiobook';
+  static const String adhan = 'adhan';
+
+  /// Sound previews in the adhan settings.
+  static const String adhanPreview = 'adhanPreview';
 
   String? _currentOwner;
   final Map<String, VoidCallback> _preemptCallbacks = {};
