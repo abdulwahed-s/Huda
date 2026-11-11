@@ -7,6 +7,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/data/models/hijri_event.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_grid_widget.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_header_widget.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/custom_app_bar.dart';
@@ -394,12 +395,18 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
       context: context,
       builder: (dialogContext) => EventDialog(
         isEditMode: false,
-        onSave: (event) {
+        onSave: (event) async {
           final selectedDate = _selectedHijri != null
               ? _getGregorianDateFromHijri(_selectedHijri!)
               : _focusedGregorian;
-          context.read<HijriCalendarCubit>().addEvent(selectedDate, event);
+          final scheduled = context.read<HijriCalendarCubit>().addEvent(
+            selectedDate,
+            event,
+          );
           Navigator.pop(dialogContext);
+          if (!await scheduled && context.mounted) {
+            _showReminderFailed(context);
+          }
         },
       ),
     );
@@ -415,14 +422,25 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew>
       builder: (dialogContext) => EventDialog(
         isEditMode: true,
         oldEvent: oldEvent,
-        onSave: (newEvent) {
-          context.read<HijriCalendarCubit>().editEvent(
+        onSave: (newEvent) async {
+          final scheduled = context.read<HijriCalendarCubit>().editEvent(
             selectedGregorian,
             newEvent,
           );
           Navigator.pop(dialogContext);
+          if (!await scheduled && context.mounted) {
+            _showReminderFailed(context);
+          }
         },
       ),
+    );
+  }
+
+  void _showReminderFailed(BuildContext context) {
+    HudaSnackBar.show(
+      context,
+      message: AppLocalizations.of(context)!.notificationScheduleFailed,
+      kind: HudaSnackBarKind.warning,
     );
   }
 }

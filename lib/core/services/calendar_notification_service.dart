@@ -1,116 +1,85 @@
+import 'dart:convert';
 import 'dart:ui';
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:huda/core/services/prayer_time_zone_service.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter/foundation.dart';
+import 'package:hijri_plus/hijri_plus.dart';
+import 'package:huda/core/services/notification_ids.dart';
+import 'package:huda/data/models/hijri_event.dart';
 
-class CalendarNotificationService {
-  static final CalendarNotificationService _instance =
-      CalendarNotificationService._internal();
+/// One delivery for a calendar event on its stored Hijri date.
+class CalendarReminder {
+  const CalendarReminder({
+    required this.eventId,
+    required this.title,
+    required this.body,
+    required this.at,
+    this.color = const Color(0xFF2196F3),
+  });
 
-  factory CalendarNotificationService() => _instance;
-
-  final FlutterLocalNotificationsPlugin _plugin =
-      FlutterLocalNotificationsPlugin();
-
-  CalendarNotificationService._internal();
-
-  Future<void> init() async {
-    await PrayerTimeZoneService.refreshLocalTimeZone();
-    const android = AndroidInitializationSettings('ic_calendar_notification');
-    const ios = DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-    const macOS = DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-    const windows = WindowsInitializationSettings(
-      appName: 'Huda',
-      appUserModelId: 'awr.Huda-IslamicCompanionApp',
-      guid: 'a8c22b55-049e-422f-b30f-863694de08c8',
-    );
-
-    const linux = LinuxInitializationSettings(
-      defaultActionName: 'Open notification',
-    );
-
-    const settings = InitializationSettings(
-      android: android,
-      iOS: ios,
-      macOS: macOS,
-      windows: windows,
-      linux: linux,
-    );
-
-    await _plugin.initialize(settings: settings);
-  }
-
-  Future<void> scheduleNotification({
-    required int id,
-    required String title,
-    required String body,
-    required DateTime dateTime,
-    required Color color,
-  }) async {
-    final android = _plugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >();
-    final canScheduleExact =
-        await android?.canScheduleExactNotifications() ?? true;
-
-    await _plugin.zonedSchedule(
-      id: id,
-      title: title,
-      body: body,
-      scheduledDate: tz.TZDateTime.from(dateTime, tz.local),
-      notificationDetails: NotificationDetails(
-        android: AndroidNotificationDetails(
-          'event_reminder',
-          'Event Reminder',
-          importance: Importance.max,
-          priority: Priority.high,
-          color: color,
-          icon: 'ic_calendar_notification',
-        ),
-        iOS: const DarwinNotificationDetails(
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),
-        macOS: const DarwinNotificationDetails(
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),
+  /// All-day events remind at 07:00 local time.
+  factory CalendarReminder.forEvent(HijriEvent event, DateTime gregorianDay) {
+    final start = event.isAllDay ? null : event.startTime;
+    return CalendarReminder(
+      eventId: event.id,
+      title: event.title,
+      body: event.description,
+      at: DateTime(
+        gregorianDay.year,
+        gregorianDay.month,
+        gregorianDay.day,
+        start?.hour ?? 7,
+        start?.minute ?? 0,
       ),
-      androidScheduleMode: canScheduleExact
-          ? AndroidScheduleMode.exactAllowWhileIdle
-          : AndroidScheduleMode.inexactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.dateAndTime,
+      color: Color(event.colorValue),
     );
   }
 
-  Future<void> sendImmediateNotification() async {
-    await _plugin.show(
-      id: 0,
-      title: "Immediate Notification",
-      body: "This shows immediately on Windows",
-      notificationDetails: const NotificationDetails(
-        windows: WindowsNotificationDetails(),
-      ),
-    );
-  }
+  final String eventId;
+  final String title;
+  final String body;
+  final DateTime at;
+  final Color color;
 
-  Future<void> cancelNotification(int id) async {
-    await _plugin.cancel(id: id);
-  }
+  int get id => NotificationIds.calendar(eventId);
 
-  Future<void> cancelAll() async {
-    await _plugin.cancelAll();
+  String get payload => jsonEncode({
+    'type': 'calendar_event',
+    'eventId': eventId,
+    'at': at.toUtc().millisecondsSinceEpoch,
+  });
+}
+
+/// Reads calendar events for the notification orchestrator, which plans and
+/// applies their reminders together with every other reminder.
+abstract final class CalendarNotificationService {
+  /// Reminders for the events the calendar page stores under `events`.
+  static List<CalendarReminder> remindersFromStorage(
+    String? stored,
+    DateTime Function(HijriDate) toGregorian,
+  ) {
+    if (stored == null || stored.isEmpty) return const [];
+    final reminders = <CalendarReminder>[];
+    try {
+      final decoded = jsonDecode(stored) as Map<String, dynamic>;
+      for (final MapEntry(:key, :value) in decoded.entries) {
+        final parts = key.split('/').map(int.tryParse).toList();
+        if (parts.length != 3 || parts.contains(null)) continue;
+        final DateTime day;
+        try {
+          day = toGregorian(HijriDate(parts[2]!, parts[1]!, parts[0]!));
+        } catch (_) {
+          continue;
+        }
+        for (final item in value as List) {
+          final event = HijriEvent.fromJson(item as Map<String, dynamic>);
+          if (event.notify) {
+            reminders.add(CalendarReminder.forEvent(event, day));
+          }
+        }
+      }
+    } catch (error) {
+      debugPrint('Stored calendar events are unreadable: $error');
+    }
+    return reminders;
   }
 }

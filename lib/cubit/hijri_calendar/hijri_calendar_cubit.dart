@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:huda/core/cache/cache_helper.dart';
-import 'package:huda/core/services/calendar_notification_service.dart';
+import 'package:huda/core/notifications/notification_orchestrator.dart';
+import 'package:huda/core/notifications/reminder_model.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
+import 'package:huda/core/services/notification_ids.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/data/models/hijri_event.dart';
 
@@ -17,14 +18,17 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
   HijriCalendarCubit({
     CacheHelper? cacheHelper,
     HijriCalendarService? calendarService,
+    NotificationOrchestrator? reminders,
   })  : cacheHelper = cacheHelper ?? getIt<CacheHelper>(),
         calendarService = calendarService ?? getIt<HijriCalendarService>(),
+        _reminders = reminders,
         super(HijriCalendarState()) {
     _loadEvents();
   }
 
   final CacheHelper cacheHelper;
   final HijriCalendarService calendarService;
+  final NotificationOrchestrator? _reminders;
   final now = DateTime.now();
 
   Future<void> _loadEvents() async {
@@ -48,7 +52,8 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
     await cacheHelper.saveData(key: 'events', value: encoded);
   }
 
-  void addEvent(DateTime selectedGregorian, HijriEvent event) {
+  /// Completes with false when the event's reminder could not be scheduled.
+  Future<bool> addEvent(DateTime selectedGregorian, HijriEvent event) async {
     final hijriDate = calendarService.toHijri(selectedGregorian);
     final key = HijriCalendarService.eventKey(hijriDate);
 
@@ -57,11 +62,8 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
     updated.add(event);
     current[key] = updated;
     emit(state.copyWith(events: current));
-    _saveEvents();
-
-    if (event.notify) {
-      _scheduleEventNotification(selectedGregorian, event);
-    }
+    await _saveEvents();
+    return _syncReminders(event.notify ? event.id : null);
   }
 
   void removeEvent(DateTime selectedGregorian, HijriEvent event) {
@@ -80,41 +82,30 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
     );
 
     emit(state.copyWith(events: newEvents));
-    _saveEvents();
-
-    final notifId = event.id.hashCode.abs();
-    CalendarNotificationService().cancelNotification(notifId);
+    _saveEvents().then((_) => _syncReminders(null));
   }
 
-  void updateEvent(
+  Future<bool> updateEvent(
       DateTime selectedGregorian, HijriEvent oldEvent, HijriEvent newEvent) {
     removeEvent(selectedGregorian, oldEvent);
-    addEvent(selectedGregorian, newEvent);
+    return addEvent(selectedGregorian, newEvent);
   }
 
-  void _scheduleEventNotification(DateTime date, HijriEvent event) {
-    if (kIsWeb) return;
-
-    final notifId = event.id.hashCode.abs();
-
-    final dateTime = event.isAllDay
-        ? DateTime(
-            date.year, date.month, date.day, 7, 0) // default morning reminder
-        : DateTime(date.year, date.month, date.day, event.startTime!.hour,
-            event.startTime!.minute);
-
-    if (dateTime.isAfter(now)) {
-      CalendarNotificationService().scheduleNotification(
-        id: notifId,
-        title: event.title,
-        body: event.description,
-        dateTime: dateTime,
-        color: Color(event.colorValue),
-      );
-    }
+  /// Applies the saved events' reminders. False when [eventId]'s reminder
+  /// was not accepted; past events have nothing to accept.
+  Future<bool> _syncReminders(String? eventId) async {
+    if (kIsWeb) return true;
+    final result = await (_reminders ?? NotificationOrchestrator.shared)
+        .requestSync('calendar-changed',
+            categories: {ReminderCategory.calendar});
+    return eventId == null ||
+        result.supported &&
+            !result.failed.contains(NotificationIds.calendar(eventId));
   }
 
-  void editEvent(DateTime selectedGregorian, HijriEvent updatedEvent) {
+  /// Completes with false when the event's reminder could not be scheduled.
+  Future<bool> editEvent(
+      DateTime selectedGregorian, HijriEvent updatedEvent) async {
     final hijriDate = calendarService.toHijri(selectedGregorian);
     final key = HijriCalendarService.eventKey(hijriDate);
 
@@ -126,13 +117,9 @@ class HijriCalendarCubit extends Cubit<HijriCalendarState> {
       list[index] = updatedEvent;
       current[key] = list;
       emit(state.copyWith(events: current));
-      _saveEvents();
-
-      final notifId = updatedEvent.id.hashCode.abs();
-      CalendarNotificationService().cancelNotification(notifId);
-      if (updatedEvent.notify) {
-        _scheduleEventNotification(selectedGregorian, updatedEvent);
-      }
+      await _saveEvents();
+      return _syncReminders(updatedEvent.notify ? updatedEvent.id : null);
     }
+    return true;
   }
 }
