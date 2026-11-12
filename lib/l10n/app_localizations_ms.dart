@@ -5400,7 +5400,31 @@ class AppLocalizationsMs extends AppLocalizations {
   String get windowsPrayerStopAdhan => 'Hentikan azan';
 
   @override
+  String get windowsPrayerDismissFocus => 'Tutup';
+
+  @override
+  String get windowsPrayerFocusMessage =>
+      'Sudah tiba waktu solat. Berehat sebentar.';
+
+  @override
+  String get windowsPrayerFocusLockedHint =>
+      'Fokus tamat apabila pemasa mencapai sifar.';
+
+  @override
+  String get windowsPrayerFocusVerseReference => 'An-Nisa · 4:103';
+
+  @override
+  String get windowsPrayerFocusTimeRemaining => 'Masa berbaki';
+
+  @override
   String get androidAdhanDownload => 'Muat turun';
+
+  @override
+  String get macPrayerEmergencyExit => 'Keluar kecemasan';
+
+  @override
+  String get macPrayerVerse =>
+      '﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾';
 
   @override
   String get iosPrayerAdvanceTitle => 'Prayer reminder';

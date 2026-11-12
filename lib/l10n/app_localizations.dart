@@ -9786,11 +9786,53 @@ abstract class AppLocalizations {
   /// **'Stop Adhan'**
   String get windowsPrayerStopAdhan;
 
+  /// No description provided for @windowsPrayerDismissFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get windowsPrayerDismissFocus;
+
+  /// No description provided for @windowsPrayerFocusMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It is time to pray. Take a break.'**
+  String get windowsPrayerFocusMessage;
+
+  /// No description provided for @windowsPrayerFocusLockedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus ends when the timer reaches zero.'**
+  String get windowsPrayerFocusLockedHint;
+
+  /// No description provided for @windowsPrayerFocusVerseReference.
+  ///
+  /// In en, this message translates to:
+  /// **'An-Nisa · 4:103'**
+  String get windowsPrayerFocusVerseReference;
+
+  /// No description provided for @windowsPrayerFocusTimeRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Time remaining'**
+  String get windowsPrayerFocusTimeRemaining;
+
   /// No description provided for @androidAdhanDownload.
   ///
   /// In en, this message translates to:
   /// **'Download'**
   String get androidAdhanDownload;
+
+  /// No description provided for @macPrayerEmergencyExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency exit'**
+  String get macPrayerEmergencyExit;
+
+  /// No description provided for @macPrayerVerse.
+  ///
+  /// In en, this message translates to:
+  /// **'﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾'**
+  String get macPrayerVerse;
 
   /// No description provided for @iosPrayerAdvanceTitle.
   ///
