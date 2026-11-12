@@ -10152,6 +10152,18 @@ abstract class AppLocalizations {
   /// **'Open Huda to extend your scheduled prayer alerts.'**
   String get iosPrayerRenewalBody;
 
+  /// No description provided for @linuxPrayerTrayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer panel'**
+  String get linuxPrayerTrayTitle;
+
+  /// No description provided for @linuxPrayerTrayDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep prayer times in the GNOME top panel when Huda is closed.'**
+  String get linuxPrayerTrayDescription;
+
   /// No description provided for @linuxPrayerTrayStartAtLogin.
   ///
   /// In en, this message translates to:
@@ -10193,6 +10205,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Huda before then to keep them going.'**
   String get windowsRemindersOpenHuda;
+
+  /// No description provided for @linuxPrayerTrayInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up prayer panel'**
+  String get linuxPrayerTrayInstall;
+
+  /// No description provided for @linuxPrayerTrayInstallHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time setup is needed for the prayer panel.'**
+  String get linuxPrayerTrayInstallHelp;
+
+  /// No description provided for @linuxPrayerTrayExtensionMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel extension is not installed.'**
+  String get linuxPrayerTrayExtensionMissing;
+
+  /// No description provided for @linuxPrayerTrayExtensionDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel extension is disabled.'**
+  String get linuxPrayerTrayExtensionDisabled;
+
+  /// No description provided for @linuxPrayerTrayExtensionIncompatible.
+  ///
+  /// In en, this message translates to:
+  /// **'Update the panel extension for this GNOME version.'**
+  String get linuxPrayerTrayExtensionIncompatible;
+
+  /// No description provided for @linuxPrayerTrayAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer panel is ready.'**
+  String get linuxPrayerTrayAvailable;
+
+  /// No description provided for @linuxPrayerTrayServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer display is unavailable. Open Huda to restart it.'**
+  String get linuxPrayerTrayServiceUnavailable;
+
+  /// No description provided for @linuxPrayerTrayCalculationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer times are unavailable. Check your location and calculation settings.'**
+  String get linuxPrayerTrayCalculationUnavailable;
+
+  /// No description provided for @linuxPrayerTrayQuitExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Quit Huda and the prayer panel for this session. Existing prayer notifications continue.'**
+  String get linuxPrayerTrayQuitExplanation;
+
+  /// No description provided for @linuxPrayerTrayStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer panel is stopped.'**
+  String get linuxPrayerTrayStopped;
+
+  /// No description provided for @linuxPrayerTrayError.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer panel settings could not be applied.'**
+  String get linuxPrayerTrayError;
+
+  /// No description provided for @linuxPrayerTrayRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart prayer panel'**
+  String get linuxPrayerTrayRestart;
+
+  /// No description provided for @linuxPrayerTraySetupIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time setup. The panel extension is included with Huda.'**
+  String get linuxPrayerTraySetupIntro;
+
+  /// No description provided for @linuxPrayerTrayInstallStepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Install the panel'**
+  String get linuxPrayerTrayInstallStepTitle;
+
+  /// No description provided for @linuxPrayerTrayInstallStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the command below. Open Terminal, paste it and press Enter.'**
+  String get linuxPrayerTrayInstallStep;
+
+  /// No description provided for @linuxPrayerTrayCopyCommand.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy command'**
+  String get linuxPrayerTrayCopyCommand;
+
+  /// No description provided for @linuxPrayerTrayCommandCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Command copied. Paste it in Terminal and press Enter.'**
+  String get linuxPrayerTrayCommandCopied;
+
+  /// No description provided for @linuxPrayerTrayEnableStepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on the extension'**
+  String get linuxPrayerTrayEnableStepTitle;
+
+  /// No description provided for @linuxPrayerTrayEnableStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Extensions app and turn on “Huda Prayer Panel”.'**
+  String get linuxPrayerTrayEnableStep;
+
+  /// No description provided for @linuxPrayerTrayLoginHint.
+  ///
+  /// In en, this message translates to:
+  /// **'If it is not listed yet, log out of your desktop and log back in, then open Extensions again.'**
+  String get linuxPrayerTrayLoginHint;
+
+  /// No description provided for @linuxPrayerTrayFinishStepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Huda'**
+  String get linuxPrayerTrayFinishStepTitle;
+
+  /// No description provided for @linuxPrayerTrayFinishStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Come back here and select “Check setup” to turn on your prayer panel.'**
+  String get linuxPrayerTrayFinishStep;
+
+  /// No description provided for @linuxPrayerTrayCheckSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Check setup'**
+  String get linuxPrayerTrayCheckSetup;
+
+  /// No description provided for @linuxPrayerTraySetupNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'The panel is not ready yet. Complete the steps above, then check again.'**
+  String get linuxPrayerTraySetupNotReady;
+
+  /// No description provided for @linuxPrayerTrayDownloadStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the file ending in “gnome-prayer-tray.zip” from Huda’s releases. Open Terminal, paste the command below, add a space, then drag in the ZIP file and press Enter.'**
+  String get linuxPrayerTrayDownloadStep;
+
+  /// No description provided for @linuxPrayerTrayDownloads.
+  ///
+  /// In en, this message translates to:
+  /// **'Open downloads'**
+  String get linuxPrayerTrayDownloads;
+
+  /// No description provided for @linuxPrayerTrayUpdateStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Huda to a release that supports your GNOME version before reinstalling the panel.'**
+  String get linuxPrayerTrayUpdateStep;
+
+  /// No description provided for @linuxPrayerExperienceQuitInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Closing the window keeps background reminders running. Quit Huda stops prayer reminders, Adhan and Focus until you reopen Huda.'**
+  String get linuxPrayerExperienceQuitInfo;
+
+  /// No description provided for @linuxPrayerExperienceCommitmentInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal Dismiss is hidden until the timer ends. Emergency exit, Escape and Quit Huda remain available. Previews always allow immediate exit.'**
+  String get linuxPrayerExperienceCommitmentInfo;
 
   /// No description provided for @testNotificationTitle.
   ///

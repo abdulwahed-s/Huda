@@ -5676,6 +5676,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'Gebetspanel';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'Gebetszeiten im oberen GNOME-Panel anzeigen, auch wenn Huda geschlossen ist.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'Bei der Anmeldung starten';
 
   @override
@@ -5702,6 +5709,112 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'Öffne Huda vorher, damit sie weiterlaufen.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'Gebets-Panel einrichten';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'Das Gebets-Panel muss einmal eingerichtet werden.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing =>
+      'Die Panel-Erweiterung ist nicht installiert.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled =>
+      'Die Panel-Erweiterung ist deaktiviert.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'Aktualisieren Sie die Panel-Erweiterung für diese GNOME-Version.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'Das Gebetspanel ist bereit.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'Die Gebetsanzeige ist nicht verfügbar. Öffnen Sie Huda, um sie neu zu starten.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'Gebetszeiten sind nicht verfügbar. Prüfen Sie Standort und Berechnungseinstellungen.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'Huda und das Gebetspanel für diese Sitzung beenden. Bestehende Gebetsbenachrichtigungen bleiben aktiv.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'Das Gebetspanel ist angehalten.';
+
+  @override
+  String get linuxPrayerTrayError =>
+      'Die Einstellungen des Gebetspanels konnten nicht angewendet werden.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'Gebetspanel neu starten';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'Einmalige Einrichtung. Die Panel-Erweiterung ist in Huda enthalten.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'Panel installieren';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'Kopiere den Befehl unten. Öffne das Terminal, füge ihn ein und drücke Enter.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'Befehl kopieren';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'Befehl kopiert. Füge ihn im Terminal ein und drücke Enter.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'Erweiterung einschalten';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Öffne die App Erweiterungen und schalte „Huda Prayer Panel“ ein.';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'Falls sie noch nicht aufgeführt ist, melde dich vom Desktop ab und wieder an. Öffne danach Erweiterungen erneut.';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'Zu Huda zurückkehren';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'Kehre hierher zurück und wähle „Einrichtung prüfen“, um das Gebets-Panel einzuschalten.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'Einrichtung prüfen';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'Das Panel ist noch nicht bereit. Schließe die Schritte oben ab und prüfe erneut.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'Lade aus Hudas Veröffentlichungen die Datei mit der Endung „gnome-prayer-tray.zip“ herunter. Öffne das Terminal, füge den Befehl unten ein, ergänze ein Leerzeichen, ziehe die ZIP-Datei hinein und drücke Enter.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'Downloads öffnen';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'Aktualisiere Huda auf eine Version, die deine GNOME-Version unterstützt, bevor du das Panel erneut installierst.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'Fenster schließen lässt Hintergrunderinnerungen laufen. Huda beenden stoppt Erinnerungen, Adhan und Fokus bis zum erneuten Öffnen.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'Bis zum Ablauf des Timers ist das normale Schließen ausgeblendet. Notausstieg, Escape und Huda beenden bleiben verfügbar. Vorschauen lassen sich jederzeit sofort schließen.';
 
   @override
   String get testNotificationTitle => 'Testbenachrichtigung';

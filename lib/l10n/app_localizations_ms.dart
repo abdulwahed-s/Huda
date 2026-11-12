@@ -5606,6 +5606,13 @@ class AppLocalizationsMs extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'Panel solat';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'Paparkan waktu solat pada panel atas GNOME apabila Huda ditutup.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'Mula semasa log masuk';
 
   @override
@@ -5632,6 +5639,112 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'Buka Huda sebelum itu untuk meneruskannya.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'Sediakan panel solat';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'Panel solat memerlukan persediaan sekali sahaja.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing =>
+      'Sambungan panel belum dipasang.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled =>
+      'Sambungan panel dinyahaktifkan.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'Kemas kini sambungan untuk versi GNOME ini.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'Panel solat sedia.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'Paparan solat tidak tersedia. Buka Huda untuk memulakannya semula.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'Waktu solat tidak tersedia. Semak lokasi dan tetapan pengiraan.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'Tutup Huda dan panel solat untuk sesi ini. Pemberitahuan solat sedia ada diteruskan.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'Panel solat dihentikan.';
+
+  @override
+  String get linuxPrayerTrayError =>
+      'Tetapan panel solat tidak dapat digunakan.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'Mulakan semula panel solat';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'Persediaan sekali sahaja. Sambungan panel disertakan bersama Huda.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'Pasang panel';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'Salin arahan di bawah. Buka Terminal, tampalkannya dan tekan Enter.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'Salin arahan';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'Arahan disalin. Tampalkannya dalam Terminal dan tekan Enter.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'Aktifkan sambungan';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Buka aplikasi Extensions dan aktifkan “Huda Prayer Panel”.';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'Jika belum disenaraikan, log keluar daripada desktop dan log masuk semula, kemudian buka Extensions sekali lagi.';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'Kembali ke Huda';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'Kembali ke sini dan pilih “Semak persediaan” untuk mengaktifkan panel solat.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'Semak persediaan';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'Panel belum sedia. Lengkapkan langkah di atas, kemudian semak semula.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'Muat turun fail yang namanya berakhir dengan “gnome-prayer-tray.zip” daripada keluaran Huda. Buka Terminal, tampal arahan di bawah, tambah ruang, kemudian seret fail ZIP masuk dan tekan Enter.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'Buka muat turun';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'Kemas kini Huda kepada keluaran yang menyokong versi GNOME anda sebelum memasang semula panel.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'Menutup tetingkap mengekalkan peringatan latar belakang. Keluar Huda menghentikan peringatan, azan dan Fokus sehingga Huda dibuka semula.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'Tutup biasa disembunyikan sehingga pemasa tamat. Keluar kecemasan, Escape dan Keluar Huda masih tersedia. Pratonton sentiasa boleh ditutup serta-merta.';
 
   @override
   String get testNotificationTitle => 'Pemberitahuan ujian';

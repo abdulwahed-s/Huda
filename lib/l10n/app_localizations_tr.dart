@@ -5595,6 +5595,13 @@ class AppLocalizationsTr extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'Namaz paneli';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'Huda kapalıyken namaz vakitlerini GNOME üst panelinde gösterin.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'Oturum açıldığında başlat';
 
   @override
@@ -5619,6 +5626,109 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'Devam etmeleri için Huda’yı o tarihten önce açın.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'Namaz panelini kur';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'Namaz paneli için tek seferlik kurulum gerekiyor.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing => 'Panel uzantısı yüklü değil.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled => 'Panel uzantısı devre dışı.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'Bu GNOME sürümü için panel uzantısını güncelleyin.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'Namaz paneli hazır.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'Namaz görünümü kullanılamıyor. Yeniden başlatmak için Huda’yı açın.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'Namaz vakitleri kullanılamıyor. Konumu ve hesaplama ayarlarını kontrol edin.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'Bu oturum için Huda ve namaz panelinden çıkın. Mevcut namaz bildirimleri devam eder.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'Namaz paneli durduruldu.';
+
+  @override
+  String get linuxPrayerTrayError => 'Namaz paneli ayarları uygulanamadı.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'Namaz panelini yeniden başlat';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'Tek seferlik kurulum. Panel eklentisi Huda ile birlikte gelir.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'Paneli kurun';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'Aşağıdaki komutu kopyalayın. Terminal’i açın, yapıştırın ve Enter’a basın.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'Komutu kopyala';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'Komut kopyalandı. Terminal’e yapıştırın ve Enter’a basın.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'Eklentiyi etkinleştirin';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Eklentiler uygulamasını açın ve “Huda Prayer Panel”i etkinleştirin.';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'Henüz listelenmiyorsa masaüstü oturumundan çıkıp tekrar giriş yapın, ardından Eklentiler’i yeniden açın.';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'Huda’ya dönün';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'Buraya dönüp namaz panelini açmak için “Kurulumu kontrol et”i seçin.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'Kurulumu kontrol et';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'Panel henüz hazır değil. Yukarıdaki adımları tamamlayıp yeniden kontrol edin.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'Huda sürümlerinden adı “gnome-prayer-tray.zip” ile biten dosyayı indirin. Terminal’i açın, aşağıdaki komutu yapıştırın, bir boşluk ekleyin, ZIP dosyasını içine sürükleyin ve Enter’a basın.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'İndirmeleri aç';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'Paneli yeniden kurmadan önce Huda’yı GNOME sürümünüzü destekleyen bir sürüme güncelleyin.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'Pencereyi kapatmak arka plan hatırlatmalarını sürdürür. Huda’dan çıkmak, yeniden açılana kadar hatırlatmaları, ezanı ve odağı durdurur.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'Zamanlayıcı bitene kadar normal kapatma gizlenir. Acil çıkış, Escape ve Huda’dan çıkış kullanılabilir. Önizlemeler her zaman hemen kapatılabilir.';
 
   @override
   String get testNotificationTitle => 'Test bildirimi';

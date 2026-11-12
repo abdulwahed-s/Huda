@@ -5682,6 +5682,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'Panel de oración';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'Mantén los horarios de oración en el panel superior de GNOME al cerrar Huda.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'Iniciar al entrar';
 
   @override
@@ -5708,6 +5715,112 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'Abre Huda antes de esa fecha para que continúen.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'Configurar panel de oración';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'El panel de oración necesita una configuración inicial.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing =>
+      'La extensión del panel no está instalada.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled =>
+      'La extensión del panel está desactivada.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'Actualiza la extensión para esta versión de GNOME.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'El panel de oración está listo.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'La vista de oración no está disponible. Abre Huda para reiniciarla.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'Los horarios no están disponibles. Revisa la ubicación y los ajustes de cálculo.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'Cerrar Huda y el panel de oración durante esta sesión. Las notificaciones actuales continúan.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'El panel de oración está detenido.';
+
+  @override
+  String get linuxPrayerTrayError =>
+      'No se pudieron aplicar los ajustes del panel.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'Reiniciar panel de oración';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'Configuración inicial. La extensión del panel viene incluida con Huda.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'Instala el panel';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'Copia el comando de abajo. Abre Terminal, pégalo y pulsa Enter.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'Copiar comando';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'Comando copiado. Pégalo en Terminal y pulsa Enter.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'Activa la extensión';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Abre la aplicación Extensiones y activa «Huda Prayer Panel».';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'Si aún no aparece, cierra la sesión del escritorio y vuelve a iniciarla. Después abre Extensiones de nuevo.';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'Vuelve a Huda';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'Vuelve aquí y selecciona «Comprobar configuración» para activar el panel de oración.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'Comprobar configuración';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'El panel aún no está listo. Completa los pasos anteriores y vuelve a comprobarlo.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'Descarga el archivo cuyo nombre termina en «gnome-prayer-tray.zip» desde las versiones de Huda. Abre Terminal, pega el comando de abajo, añade un espacio, arrastra el archivo ZIP y pulsa Enter.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'Abrir descargas';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'Actualiza Huda a una versión compatible con tu versión de GNOME antes de reinstalar el panel.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'Cerrar la ventana mantiene los recordatorios en segundo plano. Salir de Huda detiene recordatorios, adhan y Focus hasta volver a abrir Huda.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'Se oculta el cierre normal hasta que termine el temporizador. La salida de emergencia, Escape y Salir de Huda siguen disponibles. Las vistas previas permiten salir de inmediato.';
 
   @override
   String get testNotificationTitle => 'Notificación de prueba';

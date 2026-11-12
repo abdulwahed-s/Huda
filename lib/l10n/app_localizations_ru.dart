@@ -5631,6 +5631,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'Панель молитв';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'Показывать время молитв на верхней панели GNOME, когда Huda закрыта.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'Запускать при входе';
 
   @override
@@ -5657,6 +5664,111 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'Откройте Huda до этой даты, чтобы они продолжились.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'Настроить панель молитв';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'Панель молитв нужно настроить один раз.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing =>
+      'Расширение панели не установлено.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled => 'Расширение панели отключено.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'Обновите расширение для этой версии GNOME.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'Панель молитв готова.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'Отображение молитв недоступно. Откройте Huda для перезапуска.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'Время молитв недоступно. Проверьте местоположение и параметры расчёта.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'Закрыть Huda и панель молитв на этот сеанс. Текущие уведомления о молитвах продолжат работать.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'Панель молитв остановлена.';
+
+  @override
+  String get linuxPrayerTrayError =>
+      'Не удалось применить настройки панели молитв.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'Перезапустить панель молитв';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'Однократная настройка. Расширение панели уже входит в Huda.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'Установите панель';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'Скопируйте команду ниже. Откройте Терминал, вставьте её и нажмите Enter.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'Копировать команду';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'Команда скопирована. Вставьте её в Терминал и нажмите Enter.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'Включите расширение';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Откройте приложение «Расширения» и включите «Huda Prayer Panel».';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'Если его ещё нет в списке, выйдите из сеанса рабочего стола и войдите снова, затем вновь откройте «Расширения».';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'Вернитесь в Huda';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'Вернитесь сюда и выберите «Проверить настройку», чтобы включить панель молитв.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'Проверить настройку';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'Панель ещё не готова. Выполните шаги выше и проверьте снова.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'Скачайте из выпусков Huda файл с окончанием «gnome-prayer-tray.zip». Откройте Терминал, вставьте команду ниже, добавьте пробел, перетащите ZIP-файл и нажмите Enter.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'Открыть загрузки';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'Перед повторной установкой панели обновите Huda до выпуска, поддерживающего вашу версию GNOME.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'Закрытие окна сохраняет фоновые напоминания. Выход из Huda останавливает напоминания, азан и фокус до повторного открытия.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'Обычное закрытие скрыто до окончания таймера. Экстренный выход, Escape и выход из Huda остаются доступны. Предпросмотр всегда можно закрыть сразу.';
 
   @override
   String get testNotificationTitle => 'Тестовое уведомление';

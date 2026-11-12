@@ -5588,6 +5588,13 @@ class AppLocalizationsUr extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'نماز پینل';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'ہدیٰ بند ہونے پر بھی GNOME کے اوپری پینل میں نماز کے اوقات دکھائیں۔';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'لاگ ان پر شروع کریں';
 
   @override
@@ -5613,6 +5620,110 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'انہیں جاری رکھنے کے لیے اس سے پہلے ہدیٰ کھولیں۔';
+
+  @override
+  String get linuxPrayerTrayInstall => 'نماز کا پینل سیٹ اپ کریں';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'نماز کے پینل کو صرف ایک بار سیٹ اپ کرنا ہے۔';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing =>
+      'پینل ایکسٹینشن انسٹال نہیں ہے۔';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled => 'پینل ایکسٹینشن غیر فعال ہے۔';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'اس GNOME ورژن کے لیے پینل ایکسٹینشن اپ ڈیٹ کریں۔';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'نماز پینل تیار ہے۔';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'نماز کا ڈسپلے دستیاب نہیں۔ دوبارہ شروع کرنے کے لیے ہدیٰ کھولیں۔';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'نماز کے اوقات دستیاب نہیں۔ مقام اور حساب کی ترتیبات جانچیں۔';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'اس سیشن کے لیے ہدیٰ اور نماز پینل بند کریں۔ موجودہ نماز کی اطلاعات جاری رہیں گی۔';
+
+  @override
+  String get linuxPrayerTrayStopped => 'نماز پینل بند ہے۔';
+
+  @override
+  String get linuxPrayerTrayError => 'نماز پینل کی ترتیبات لاگو نہیں ہو سکیں۔';
+
+  @override
+  String get linuxPrayerTrayRestart => 'نماز پینل دوبارہ شروع کریں';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'صرف ایک بار سیٹ اپ کرنا ہے۔ پینل کی ایکسٹینشن ہدیٰ کے ساتھ شامل ہے۔';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'پینل انسٹال کریں';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'نیچے دیا گیا کمانڈ کاپی کریں۔ ٹرمینل کھولیں، اسے پیسٹ کریں اور Enter دبائیں۔';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'کمانڈ کاپی کریں';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'کمانڈ کاپی ہو گیا۔ ٹرمینل میں پیسٹ کریں اور Enter دبائیں۔';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'ایکسٹینشن فعال کریں';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Extensions ایپ کھولیں اور “Huda Prayer Panel” فعال کریں۔';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'اگر ابھی فہرست میں نہیں ہے تو ڈیسک ٹاپ سے لاگ آؤٹ کر کے دوبارہ لاگ ان کریں، پھر Extensions دوبارہ کھولیں۔';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'ہدیٰ میں واپس آئیں';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'یہاں واپس آ کر نماز کا پینل فعال کرنے کے لیے “سیٹ اپ چیک کریں” منتخب کریں۔';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'سیٹ اپ چیک کریں';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'پینل ابھی تیار نہیں ہے۔ اوپر کے مراحل مکمل کریں، پھر دوبارہ چیک کریں۔';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'ہدیٰ کی ریلیز سے وہ فائل ڈاؤن لوڈ کریں جس کا نام “gnome-prayer-tray.zip” پر ختم ہوتا ہے۔ ٹرمینل کھولیں، نیچے دیا گیا کمانڈ پیسٹ کریں، ایک اسپیس ڈالیں، پھر ZIP فائل کو اس میں ڈریگ کریں اور Enter دبائیں۔';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'ڈاؤن لوڈز کھولیں';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'پینل دوبارہ انسٹال کرنے سے پہلے ہدیٰ کو ایسے ورژن پر اپ ڈیٹ کریں جو آپ کے GNOME ورژن کو سپورٹ کرتا ہو۔';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'ونڈو بند کرنے سے پس منظر کی یاددہانی جاری رہتی ہے۔ ہدیٰ سے خروج یاددہانی، اذان اور فوکس کو دوبارہ کھولنے تک روکتا ہے۔';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'ٹائمر ختم ہونے تک عام بند کرنے کا بٹن چھپا رہتا ہے۔ ہنگامی اخراج، Escape اور ہدیٰ سے اخراج دستیاب رہتے ہیں۔ پیش منظر سے ہمیشہ فوراً نکل سکتے ہیں۔';
 
   @override
   String get testNotificationTitle => 'آزمائشی اطلاع';

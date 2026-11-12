@@ -5697,6 +5697,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'Panneau de prière';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'Gardez les horaires de prière dans le panneau supérieur de GNOME lorsque Huda est fermé.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'Démarrer à la connexion';
 
   @override
@@ -5723,6 +5730,112 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'Ouvrez Huda avant cette date pour qu’ils continuent.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'Configurer le panneau de prière';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'Le panneau de prière nécessite une configuration initiale.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing =>
+      'L’extension du panneau n’est pas installée.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled =>
+      'L’extension du panneau est désactivée.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'Mettez à jour l’extension pour cette version de GNOME.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'Le panneau de prière est prêt.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'L’affichage des prières est indisponible. Ouvrez Huda pour le redémarrer.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'Les horaires sont indisponibles. Vérifiez le lieu et les paramètres de calcul.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'Quitter Huda et le panneau pour cette session. Les notifications de prière existantes continuent.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'Le panneau de prière est arrêté.';
+
+  @override
+  String get linuxPrayerTrayError =>
+      'Les paramètres du panneau n’ont pas pu être appliqués.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'Redémarrer le panneau de prière';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'Configuration à effectuer une seule fois. L’extension du panneau est incluse avec Huda.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'Installer le panneau';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'Copiez la commande ci-dessous. Ouvrez Terminal, collez-la et appuyez sur Entrée.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'Copier la commande';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'Commande copiée. Collez-la dans Terminal et appuyez sur Entrée.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'Activer l’extension';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Ouvrez l’application Extensions et activez « Huda Prayer Panel ».';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'Si elle n’apparaît pas encore, déconnectez-vous du bureau puis reconnectez-vous. Rouvrez ensuite Extensions.';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'Revenir à Huda';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'Revenez ici et choisissez « Vérifier la configuration » pour activer le panneau de prière.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'Vérifier la configuration';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'Le panneau n’est pas encore prêt. Terminez les étapes ci-dessus, puis vérifiez à nouveau.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'Téléchargez le fichier dont le nom se termine par « gnome-prayer-tray.zip » depuis les versions de Huda. Ouvrez Terminal, collez la commande ci-dessous, ajoutez un espace, faites glisser le fichier ZIP et appuyez sur Entrée.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'Ouvrir les téléchargements';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'Mettez Huda à jour vers une version compatible avec votre version de GNOME avant de réinstaller le panneau.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'Fermer la fenêtre maintient les rappels en arrière-plan. Quitter Huda arrête les rappels, l’adhan et Focus jusqu’à sa réouverture.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'La fermeture normale est masquée jusqu’à la fin du minuteur. La sortie d’urgence, Échap et Quitter Huda restent disponibles. Les aperçus peuvent toujours être fermés immédiatement.';
 
   @override
   String get testNotificationTitle => 'Notification de test';

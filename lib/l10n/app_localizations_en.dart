@@ -5594,6 +5594,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Open Huda to extend your scheduled prayer alerts.';
 
   @override
+  String get linuxPrayerTrayTitle => 'Prayer panel';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'Keep prayer times in the GNOME top panel when Huda is closed.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'Start at login';
 
   @override
@@ -5619,6 +5626,111 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get windowsRemindersOpenHuda =>
       'Open Huda before then to keep them going.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'Set up prayer panel';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'One-time setup is needed for the prayer panel.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing =>
+      'Panel extension is not installed.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled => 'Panel extension is disabled.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'Update the panel extension for this GNOME version.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'Prayer panel is ready.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'Prayer display is unavailable. Open Huda to restart it.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'Prayer times are unavailable. Check your location and calculation settings.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'Quit Huda and the prayer panel for this session. Existing prayer notifications continue.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'Prayer panel is stopped.';
+
+  @override
+  String get linuxPrayerTrayError =>
+      'Prayer panel settings could not be applied.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'Restart prayer panel';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'One-time setup. The panel extension is included with Huda.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'Install the panel';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'Copy the command below. Open Terminal, paste it and press Enter.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'Copy command';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'Command copied. Paste it in Terminal and press Enter.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'Turn on the extension';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'Open the Extensions app and turn on “Huda Prayer Panel”.';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'If it is not listed yet, log out of your desktop and log back in, then open Extensions again.';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'Return to Huda';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'Come back here and select “Check setup” to turn on your prayer panel.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'Check setup';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'The panel is not ready yet. Complete the steps above, then check again.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'Download the file ending in “gnome-prayer-tray.zip” from Huda’s releases. Open Terminal, paste the command below, add a space, then drag in the ZIP file and press Enter.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'Open downloads';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'Update Huda to a release that supports your GNOME version before reinstalling the panel.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'Closing the window keeps background reminders running. Quit Huda stops prayer reminders, Adhan and Focus until you reopen Huda.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'Normal Dismiss is hidden until the timer ends. Emergency exit, Escape and Quit Huda remain available. Previews always allow immediate exit.';
 
   @override
   String get testNotificationTitle => 'Test notification';

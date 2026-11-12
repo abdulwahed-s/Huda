@@ -5536,6 +5536,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get iosPrayerRenewalBody => 'افتح هدى لتمديد تنبيهات الصلاة المجدولة.';
 
   @override
+  String get linuxPrayerTrayTitle => 'لوحة الصلاة';
+
+  @override
+  String get linuxPrayerTrayDescription =>
+      'احتفظ بأوقات الصلاة في لوحة جنوم العلوية عند إغلاق هدى.';
+
+  @override
   String get linuxPrayerTrayStartAtLogin => 'التشغيل عند تسجيل الدخول';
 
   @override
@@ -5559,6 +5566,109 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get windowsRemindersOpenHuda => 'افتح هدى قبل ذلك لتستمر.';
+
+  @override
+  String get linuxPrayerTrayInstall => 'إعداد لوحة الصلاة';
+
+  @override
+  String get linuxPrayerTrayInstallHelp =>
+      'تحتاج لوحة الصلاة إلى إعداد لمرة واحدة.';
+
+  @override
+  String get linuxPrayerTrayExtensionMissing => 'إضافة اللوحة غير مثبتة.';
+
+  @override
+  String get linuxPrayerTrayExtensionDisabled => 'إضافة اللوحة معطّلة.';
+
+  @override
+  String get linuxPrayerTrayExtensionIncompatible =>
+      'حدّث إضافة اللوحة لإصدار جنوم هذا.';
+
+  @override
+  String get linuxPrayerTrayAvailable => 'لوحة الصلاة جاهزة.';
+
+  @override
+  String get linuxPrayerTrayServiceUnavailable =>
+      'عرض الصلاة غير متاح. افتح هدى لإعادة تشغيله.';
+
+  @override
+  String get linuxPrayerTrayCalculationUnavailable =>
+      'أوقات الصلاة غير متاحة. تحقّق من الموقع وإعدادات الحساب.';
+
+  @override
+  String get linuxPrayerTrayQuitExplanation =>
+      'إنهاء هدى ولوحة الصلاة لهذه الجلسة. تستمر إشعارات الصلاة الحالية.';
+
+  @override
+  String get linuxPrayerTrayStopped => 'لوحة الصلاة متوقفة.';
+
+  @override
+  String get linuxPrayerTrayError => 'تعذّر تطبيق إعدادات لوحة الصلاة.';
+
+  @override
+  String get linuxPrayerTrayRestart => 'إعادة تشغيل لوحة الصلاة';
+
+  @override
+  String get linuxPrayerTraySetupIntro =>
+      'إعداد لمرة واحدة. إضافة اللوحة مرفقة مع هدى.';
+
+  @override
+  String get linuxPrayerTrayInstallStepTitle => 'ثبّت اللوحة';
+
+  @override
+  String get linuxPrayerTrayInstallStep =>
+      'انسخ الأمر أدناه. افتح الطرفية، والصقه، ثم اضغط Enter.';
+
+  @override
+  String get linuxPrayerTrayCopyCommand => 'نسخ الأمر';
+
+  @override
+  String get linuxPrayerTrayCommandCopied =>
+      'تم نسخ الأمر. الصقه في الطرفية واضغط Enter.';
+
+  @override
+  String get linuxPrayerTrayEnableStepTitle => 'فعّل الإضافة';
+
+  @override
+  String get linuxPrayerTrayEnableStep =>
+      'افتح تطبيق «الإضافات» وفعّل «Huda Prayer Panel».';
+
+  @override
+  String get linuxPrayerTrayLoginHint =>
+      'إذا لم تظهر في القائمة، سجّل الخروج من سطح المكتب ثم سجّل الدخول وافتح «الإضافات» مجددًا.';
+
+  @override
+  String get linuxPrayerTrayFinishStepTitle => 'ارجع إلى هدى';
+
+  @override
+  String get linuxPrayerTrayFinishStep =>
+      'ارجع إلى هنا واختر «التحقّق من الإعداد» لتشغيل لوحة الصلاة.';
+
+  @override
+  String get linuxPrayerTrayCheckSetup => 'التحقّق من الإعداد';
+
+  @override
+  String get linuxPrayerTraySetupNotReady =>
+      'اللوحة ليست جاهزة بعد. أكمل الخطوات أعلاه ثم تحقّق مجددًا.';
+
+  @override
+  String get linuxPrayerTrayDownloadStep =>
+      'نزّل الملف الذي ينتهي اسمه بـ «gnome-prayer-tray.zip» من إصدارات هدى. افتح الطرفية، والصق الأمر أدناه، وأضف مسافة، ثم اسحب ملف ZIP إلى الطرفية واضغط Enter.';
+
+  @override
+  String get linuxPrayerTrayDownloads => 'فتح التنزيلات';
+
+  @override
+  String get linuxPrayerTrayUpdateStep =>
+      'حدّث هدى إلى إصدار يدعم إصدار جنوم لديك قبل إعادة تثبيت اللوحة.';
+
+  @override
+  String get linuxPrayerExperienceQuitInfo =>
+      'إغلاق النافذة يُبقي تذكيرات الخلفية. إنهاء هدى يوقف التذكيرات والأذان والتركيز حتى تفتح هدى مجددًا.';
+
+  @override
+  String get linuxPrayerExperienceCommitmentInfo =>
+      'يُخفى زر الإغلاق العادي حتى انتهاء المؤقت. يبقى الخروج الطارئ ومفتاح Escape والخروج من هدى متاحًا. يمكن الخروج من المعاينة فورًا دائمًا.';
 
   @override
   String get testNotificationTitle => 'إشعار تجريبي';
