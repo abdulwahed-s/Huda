@@ -5515,6 +5515,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'min';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'Compte à rebours de prière Windows';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'Le compte à rebours continue après la fermeture de Huda. Quittez Huda depuis la zone de notification pour l’arrêter pour cette session.';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'Afficher dans la barre des tâches';
+
+  @override
+  String get windowsPrayerShowTray => 'Afficher l’icône de notification';
+
+  @override
+  String get windowsPrayerStartup => 'Démarrer avec Windows';
+
+  @override
+  String get windowsPrayerSeconds => 'Afficher les secondes';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Le démarrage est désactivé dans les paramètres Windows.';
 
@@ -5523,8 +5542,91 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ouvrir les paramètres de démarrage Windows';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'Le compte à rebours ne peut pas être affiché dans cette barre des tâches. La fenêtre de prière reste accessible depuis l’icône de notification si elle est activée.';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'Le compte à rebours Windows est indisponible. Réparez ou mettez à jour Huda.';
+
+  @override
+  String get windowsPrayerOpenHuda => 'Ouvrir Huda';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'Les données du calendrier de Ramadan ne sont pas disponibles pour cette date.';
+
+  @override
+  String get windowsPrayerNoNextPrayer =>
+      'Aucune prochaine heure de prière disponible.';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled =>
+      'Démarrage Windows : activé';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled =>
+      'Démarrage Windows : désactivé';
+
+  @override
+  String get windowsPrayerStyle => 'Libellé de la barre des tâches';
+
+  @override
+  String get windowsPrayerPreview => 'Aperçu de la barre des tâches';
+
+  @override
+  String get windowsPrayerStyleCountdown =>
+      'Nom de la prière et compte à rebours';
+
+  @override
+  String get windowsPrayerStyleClock => 'Nom et heure de la prière';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'Fond transparent';
+
+  @override
+  String get windowsPrayerShowIcon => 'Afficher le logo Huda';
+
+  @override
+  String get windowsPrayerTextColor => 'Couleur du texte';
+
+  @override
+  String get windowsPrayerTextColorAutomatic =>
+      'Automatique (barre des tâches Windows)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'Clair';
+
+  @override
+  String get windowsPrayerTextColorDark => 'Sombre';
+
+  @override
+  String get windowsPrayerTextColorApp => 'Couleur de l’application';
+
+  @override
+  String get windowsPrayerTextSize => 'Taille du texte';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'Petite';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'Moyenne';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'Grande';
+
+  @override
+  String get windowsPrayerResetAppearance => 'Réinitialiser l’apparence';
+
+  @override
   String get windowsPrayerError =>
       'Impossible de mettre à jour le compte à rebours Windows. Réessayez.';
+
+  @override
+  String get windowsPrayerEnabled => 'Activer les rappels de prière';
+
+  @override
+  String get windowsPrayerFocusMode => 'Mode concentration';
 
   @override
   String get windowsPrayerStopAdhan => 'Arrêter l\'adhan';
@@ -5535,6 +5637,21 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get windowsPrayerFocusMessage =>
       'C\'est l\'heure de prier. Faites une pause.';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'Fermez ou appuyez sur Échap à tout moment.';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'L\'adhan est en cours de lecture';
+
+  @override
+  String get windowsPrayerFocusActive => 'Le mode concentration est actif';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'Prochaine : $prayer dans $duration';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

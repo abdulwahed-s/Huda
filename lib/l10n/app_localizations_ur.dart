@@ -5413,6 +5413,25 @@ class AppLocalizationsUr extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'م';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'ونڈوز نماز کی الٹی گنتی';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'ہدیٰ بند کرنے کے بعد بھی الٹی گنتی جاری رہتی ہے۔ اس نشست میں اسے روکنے کے لیے سسٹم ٹرے سے ہدیٰ بند کریں۔';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'ٹاسک بار پر الٹی گنتی دکھائیں';
+
+  @override
+  String get windowsPrayerShowTray => 'سسٹم ٹرے کا آئیکن دکھائیں';
+
+  @override
+  String get windowsPrayerStartup => 'ونڈوز کے ساتھ شروع کریں';
+
+  @override
+  String get windowsPrayerSeconds => 'سیکنڈ دکھائیں';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'ونڈوز کی ترتیبات میں خودکار آغاز بند ہے۔';
 
@@ -5421,8 +5440,86 @@ class AppLocalizationsUr extends AppLocalizations {
       'ونڈوز کی آغاز کی ترتیبات کھولیں';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'اس ٹاسک بار میں الٹی گنتی دکھائی نہیں جا سکتی۔ ٹرے کا آئیکن فعال ہو تو نماز کی کھڑکی وہاں سے کھولی جا سکتی ہے۔';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'ونڈوز کی الٹی گنتی دستیاب نہیں۔ ہدیٰ کی تنصیب درست کریں یا اسے اپ ڈیٹ کریں۔';
+
+  @override
+  String get windowsPrayerOpenHuda => 'ہدیٰ کھولیں';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'اس تاریخ کے لیے رمضان کے کیلنڈر کا ڈیٹا دستیاب نہیں۔';
+
+  @override
+  String get windowsPrayerNoNextPrayer => 'اگلی نماز کا وقت دستیاب نہیں۔';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled => 'ونڈوز کے ساتھ آغاز: فعال';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled => 'ونڈوز کے ساتھ آغاز: بند';
+
+  @override
+  String get windowsPrayerStyle => 'ٹاسک بار کا لیبل';
+
+  @override
+  String get windowsPrayerPreview => 'ٹاسک بار کا پیش منظر';
+
+  @override
+  String get windowsPrayerStyleCountdown => 'نماز کا نام اور الٹی گنتی';
+
+  @override
+  String get windowsPrayerStyleClock => 'نماز کا نام اور وقت';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'شفاف پس منظر';
+
+  @override
+  String get windowsPrayerShowIcon => 'ہدیٰ کا لوگو دکھائیں';
+
+  @override
+  String get windowsPrayerTextColor => 'متن کا رنگ';
+
+  @override
+  String get windowsPrayerTextColorAutomatic => 'خودکار (ونڈوز ٹاسک بار)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'ہلکا';
+
+  @override
+  String get windowsPrayerTextColorDark => 'گہرا';
+
+  @override
+  String get windowsPrayerTextColorApp => 'ایپ کا رنگ';
+
+  @override
+  String get windowsPrayerTextSize => 'متن کا سائز';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'چھوٹا';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'درمیانہ';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'بڑا';
+
+  @override
+  String get windowsPrayerResetAppearance => 'ظاہری شکل دوبارہ ترتیب دیں';
+
+  @override
   String get windowsPrayerError =>
       'ونڈوز کی الٹی گنتی اپ ڈیٹ نہیں ہو سکی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get windowsPrayerEnabled => 'نماز کی یاد دہانیاں فعال کریں';
+
+  @override
+  String get windowsPrayerFocusMode => 'توجہ کا موڈ';
 
   @override
   String get windowsPrayerStopAdhan => 'اذان روکیں';
@@ -5432,6 +5529,21 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get windowsPrayerFocusMessage => 'نماز کا وقت ہو گیا ہے۔ وقفہ لیں۔';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'کسی بھی وقت بند کریں یا Escape دبائیں۔';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'اذان چل رہی ہے';
+
+  @override
+  String get windowsPrayerFocusActive => 'توجہ کا موڈ فعال ہے';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'اگلی نماز: $prayer، $duration بعد';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

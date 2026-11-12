@@ -5360,6 +5360,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'د';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'العد التنازلي للصلاة في ويندوز';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'يستمر العد التنازلي بعد إغلاق هدى. اختر إنهاء هدى من أيقونة النظام لإيقافه لهذه الجلسة.';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'إظهار العد التنازلي في شريط المهام';
+
+  @override
+  String get windowsPrayerShowTray => 'إظهار أيقونة منطقة الإعلام';
+
+  @override
+  String get windowsPrayerStartup => 'التشغيل مع ويندوز';
+
+  @override
+  String get windowsPrayerSeconds => 'إظهار الثواني';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'التشغيل التلقائي معطل في إعدادات ويندوز.';
 
@@ -5368,8 +5387,88 @@ class AppLocalizationsAr extends AppLocalizations {
       'فتح إعدادات بدء التشغيل في ويندوز';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'تعذّر عرض العدّ التنازلي في شريط المهام. يمكنك فتح نافذة الصلاة من أيقونة منطقة الإعلام عند تفعيلها.';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'ميزة العد التنازلي في ويندوز غير متاحة. أصلح تثبيت هدى أو حدّثه.';
+
+  @override
+  String get windowsPrayerOpenHuda => 'فتح هدى';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'بيانات تقويم رمضان غير متاحة لهذا التاريخ.';
+
+  @override
+  String get windowsPrayerNoNextPrayer => 'لا يتوفر وقت للصلاة القادمة.';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled =>
+      'بدء التشغيل مع ويندوز: مفعّل';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled =>
+      'بدء التشغيل مع ويندوز: معطّل';
+
+  @override
+  String get windowsPrayerStyle => 'تسمية شريط المهام';
+
+  @override
+  String get windowsPrayerPreview => 'معاينة شريط المهام';
+
+  @override
+  String get windowsPrayerStyleCountdown => 'اسم الصلاة والعد التنازلي';
+
+  @override
+  String get windowsPrayerStyleClock => 'اسم الصلاة ووقتها';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'خلفية شفافة';
+
+  @override
+  String get windowsPrayerShowIcon => 'إظهار شعار هدى';
+
+  @override
+  String get windowsPrayerTextColor => 'لون النص';
+
+  @override
+  String get windowsPrayerTextColorAutomatic => 'تلقائي (شريط مهام ويندوز)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'فاتح';
+
+  @override
+  String get windowsPrayerTextColorDark => 'داكن';
+
+  @override
+  String get windowsPrayerTextColorApp => 'لون التطبيق';
+
+  @override
+  String get windowsPrayerTextSize => 'حجم النص';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'صغير';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'متوسط';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'كبير';
+
+  @override
+  String get windowsPrayerResetAppearance => 'إعادة ضبط المظهر';
+
+  @override
   String get windowsPrayerError =>
       'تعذر تحديث العد التنازلي في ويندوز. حاول مرة أخرى.';
+
+  @override
+  String get windowsPrayerEnabled => 'تفعيل تذكيرات الصلاة';
+
+  @override
+  String get windowsPrayerFocusMode => 'وضع التركيز';
 
   @override
   String get windowsPrayerStopAdhan => 'إيقاف الأذان';
@@ -5379,6 +5478,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get windowsPrayerFocusMessage => 'حان وقت الصلاة. خذ استراحة.';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'يمكنك إغلاق التذكير أو الضغط على Escape في أي وقت.';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'الأذان قيد التشغيل';
+
+  @override
+  String get windowsPrayerFocusActive => 'وضع التركيز نشط';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'التالي: $prayer بعد $duration';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

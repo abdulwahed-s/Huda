@@ -5417,6 +5417,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'dk';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'Windows Namaz Geri Sayımı';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'Huda kapatıldıktan sonra geri sayım devam eder. Bu oturumda durdurmak için sistem tepsisinden Huda’dan çıkın.';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'Görev çubuğunda geri sayımı göster';
+
+  @override
+  String get windowsPrayerShowTray => 'Sistem tepsisi simgesini göster';
+
+  @override
+  String get windowsPrayerStartup => 'Windows ile başlat';
+
+  @override
+  String get windowsPrayerSeconds => 'Saniyeleri göster';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Başlangıç Windows ayarlarında devre dışı.';
 
@@ -5425,8 +5444,89 @@ class AppLocalizationsTr extends AppLocalizations {
       'Windows başlangıç ayarlarını aç';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'Geri sayım bu görev çubuğunda gösterilemiyor. Sistem tepsisi simgesi etkinse namaz penceresi buradan açılabilir.';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'Windows geri sayımı kullanılamıyor. Huda kurulumunu onarın veya güncelleyin.';
+
+  @override
+  String get windowsPrayerOpenHuda => 'Huda’yı aç';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'Bu tarih için Ramazan takvim verileri yok.';
+
+  @override
+  String get windowsPrayerNoNextPrayer => 'Yaklaşan namaz vakti bulunamadı.';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled =>
+      'Windows başlangıcı: etkin';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled =>
+      'Windows başlangıcı: devre dışı';
+
+  @override
+  String get windowsPrayerStyle => 'Görev çubuğu etiketi';
+
+  @override
+  String get windowsPrayerPreview => 'Görev çubuğu önizlemesi';
+
+  @override
+  String get windowsPrayerStyleCountdown => 'Namaz adı ve geri sayım';
+
+  @override
+  String get windowsPrayerStyleClock => 'Namaz adı ve vakti';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'Şeffaf arka plan';
+
+  @override
+  String get windowsPrayerShowIcon => 'Huda logosunu göster';
+
+  @override
+  String get windowsPrayerTextColor => 'Metin rengi';
+
+  @override
+  String get windowsPrayerTextColorAutomatic =>
+      'Otomatik (Windows görev çubuğu)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'Açık';
+
+  @override
+  String get windowsPrayerTextColorDark => 'Koyu';
+
+  @override
+  String get windowsPrayerTextColorApp => 'Uygulama rengi';
+
+  @override
+  String get windowsPrayerTextSize => 'Metin boyutu';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'Küçük';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'Orta';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'Büyük';
+
+  @override
+  String get windowsPrayerResetAppearance => 'Görünümü sıfırla';
+
+  @override
   String get windowsPrayerError =>
       'Windows geri sayımı güncellenemedi. Tekrar deneyin.';
+
+  @override
+  String get windowsPrayerEnabled => 'Namaz hatırlatıcılarını etkinleştir';
+
+  @override
+  String get windowsPrayerFocusMode => 'Odak modu';
 
   @override
   String get windowsPrayerStopAdhan => 'Ezanı durdur';
@@ -5436,6 +5536,21 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get windowsPrayerFocusMessage => 'Namaz vakti geldi. Mola verin.';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'İstediğiniz zaman kapatın veya Escape tuşuna basın.';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'Ezan çalıyor';
+
+  @override
+  String get windowsPrayerFocusActive => 'Odak modu etkin';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'Sonraki: $prayer, $duration sonra';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

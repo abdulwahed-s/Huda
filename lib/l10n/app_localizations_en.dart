@@ -5417,6 +5417,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'm';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'Windows Prayer Countdown';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'Keep the prayer countdown running after closing Huda. Quit Huda from the tray to stop it for this session.';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'Show taskbar countdown';
+
+  @override
+  String get windowsPrayerShowTray => 'Show tray icon';
+
+  @override
+  String get windowsPrayerStartup => 'Start with Windows';
+
+  @override
+  String get windowsPrayerSeconds => 'Show seconds';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Startup is disabled in Windows settings.';
 
@@ -5425,8 +5444,88 @@ class AppLocalizationsEn extends AppLocalizations {
       'Open Windows startup settings';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'The countdown cannot be placed on this taskbar. The tray popup is available when its icon is enabled.';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'The Windows countdown companion is unavailable. Repair or update your Huda installation.';
+
+  @override
+  String get windowsPrayerOpenHuda => 'Open Huda';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'Ramadan calendar data is unavailable for this date.';
+
+  @override
+  String get windowsPrayerNoNextPrayer =>
+      'No upcoming prayer time is available.';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled => 'Windows startup: enabled';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled =>
+      'Windows startup: disabled';
+
+  @override
+  String get windowsPrayerStyle => 'Taskbar label';
+
+  @override
+  String get windowsPrayerPreview => 'Taskbar preview';
+
+  @override
+  String get windowsPrayerStyleCountdown => 'Prayer name and countdown';
+
+  @override
+  String get windowsPrayerStyleClock => 'Prayer name and time';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'Transparent background';
+
+  @override
+  String get windowsPrayerShowIcon => 'Show Huda logo';
+
+  @override
+  String get windowsPrayerTextColor => 'Text color';
+
+  @override
+  String get windowsPrayerTextColorAutomatic => 'Automatic (Windows taskbar)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'Light';
+
+  @override
+  String get windowsPrayerTextColorDark => 'Dark';
+
+  @override
+  String get windowsPrayerTextColorApp => 'App color';
+
+  @override
+  String get windowsPrayerTextSize => 'Text size';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'Small';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'Medium';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'Large';
+
+  @override
+  String get windowsPrayerResetAppearance => 'Reset appearance';
+
+  @override
   String get windowsPrayerError =>
       'Could not update the Windows countdown. Try again.';
+
+  @override
+  String get windowsPrayerEnabled => 'Enable prayer reminders';
+
+  @override
+  String get windowsPrayerFocusMode => 'Focus Mode';
 
   @override
   String get windowsPrayerStopAdhan => 'Stop Adhan';
@@ -5436,6 +5535,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get windowsPrayerFocusMessage => 'It is time to pray. Take a break.';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'Dismiss or press Escape at any time.';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'Adhan is playing';
+
+  @override
+  String get windowsPrayerFocusActive => 'Focus Mode is active';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'Next: $prayer in $duration';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

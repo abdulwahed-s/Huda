@@ -5420,6 +5420,25 @@ class AppLocalizationsBn extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'মি';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'উইন্ডোজ নামাজের কাউন্টডাউন';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'হুদা বন্ধ করার পরও কাউন্টডাউন চলবে। এই সেশনে থামাতে সিস্টেম ট্রে থেকে হুদা থেকে বের হন।';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'টাস্কবারে কাউন্টডাউন দেখান';
+
+  @override
+  String get windowsPrayerShowTray => 'ট্রে আইকন দেখান';
+
+  @override
+  String get windowsPrayerStartup => 'উইন্ডোজের সঙ্গে চালু করুন';
+
+  @override
+  String get windowsPrayerSeconds => 'সেকেন্ড দেখান';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'উইন্ডোজ সেটিংসে স্বয়ংক্রিয় চালু বন্ধ আছে।';
 
@@ -5428,8 +5447,87 @@ class AppLocalizationsBn extends AppLocalizations {
       'উইন্ডোজ স্টার্টআপ সেটিংস খুলুন';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'এই টাস্কবারে কাউন্টডাউন দেখানো যাচ্ছে না। ট্রে আইকন চালু থাকলে সেখান থেকে নামাজের উইন্ডো খোলা যাবে।';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'উইন্ডোজ কাউন্টডাউন অনুপলব্ধ। হুদার ইনস্টলেশন মেরামত বা আপডেট করুন।';
+
+  @override
+  String get windowsPrayerOpenHuda => 'হুদা খুলুন';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'এই তারিখের জন্য রমজান ক্যালেন্ডারের তথ্য নেই।';
+
+  @override
+  String get windowsPrayerNoNextPrayer => 'পরবর্তী নামাজের সময় অনুপলব্ধ।';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled => 'উইন্ডোজ স্টার্টআপ: চালু';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled => 'উইন্ডোজ স্টার্টআপ: বন্ধ';
+
+  @override
+  String get windowsPrayerStyle => 'টাস্কবারের লেবেল';
+
+  @override
+  String get windowsPrayerPreview => 'টাস্কবারের প্রিভিউ';
+
+  @override
+  String get windowsPrayerStyleCountdown => 'নামাজের নাম ও কাউন্টডাউন';
+
+  @override
+  String get windowsPrayerStyleClock => 'নামাজের নাম ও সময়';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'স্বচ্ছ পটভূমি';
+
+  @override
+  String get windowsPrayerShowIcon => 'হুদার লোগো দেখান';
+
+  @override
+  String get windowsPrayerTextColor => 'লেখার রং';
+
+  @override
+  String get windowsPrayerTextColorAutomatic =>
+      'স্বয়ংক্রিয় (উইন্ডোজ টাস্কবার)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'হালকা';
+
+  @override
+  String get windowsPrayerTextColorDark => 'গাঢ়';
+
+  @override
+  String get windowsPrayerTextColorApp => 'অ্যাপের রং';
+
+  @override
+  String get windowsPrayerTextSize => 'লেখার আকার';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'ছোট';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'মাঝারি';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'বড়';
+
+  @override
+  String get windowsPrayerResetAppearance => 'চেহারা রিসেট করুন';
+
+  @override
   String get windowsPrayerError =>
       'উইন্ডোজ কাউন্টডাউন আপডেট করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get windowsPrayerEnabled => 'নামাজের অনুস্মারক চালু করুন';
+
+  @override
+  String get windowsPrayerFocusMode => 'ফোকাস মোড';
 
   @override
   String get windowsPrayerStopAdhan => 'আজান থামান';
@@ -5440,6 +5538,21 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get windowsPrayerFocusMessage =>
       'নামাজের সময় হয়েছে। একটু বিরতি নিন।';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'যেকোনো সময় বন্ধ করুন বা Escape চাপুন।';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'আজান চলছে';
+
+  @override
+  String get windowsPrayerFocusActive => 'ফোকাস মোড চালু আছে';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'পরবর্তী: $prayer, $duration পরে';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

@@ -5427,6 +5427,26 @@ class AppLocalizationsMs extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'm';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'Kiraan Detik Solat Windows';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'Kiraan detik diteruskan selepas Huda ditutup. Keluar dari Huda melalui dulang sistem untuk menghentikannya bagi sesi ini.';
+
+  @override
+  String get windowsPrayerShowTaskbar =>
+      'Tunjukkan kiraan detik pada bar tugas';
+
+  @override
+  String get windowsPrayerShowTray => 'Tunjukkan ikon dulang';
+
+  @override
+  String get windowsPrayerStartup => 'Mulakan bersama Windows';
+
+  @override
+  String get windowsPrayerSeconds => 'Tunjukkan saat';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Permulaan dilumpuhkan dalam tetapan Windows.';
 
@@ -5435,8 +5455,88 @@ class AppLocalizationsMs extends AppLocalizations {
       'Buka tetapan permulaan Windows';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'Kiraan detik tidak dapat dipaparkan pada bar tugas ini. Tetingkap solat boleh dibuka melalui ikon dulang jika diaktifkan.';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'Kiraan detik Windows tidak tersedia. Baiki atau kemas kini Huda.';
+
+  @override
+  String get windowsPrayerOpenHuda => 'Buka Huda';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'Data kalendar Ramadan tidak tersedia untuk tarikh ini.';
+
+  @override
+  String get windowsPrayerNoNextPrayer =>
+      'Tiada waktu solat akan datang tersedia.';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled => 'Permulaan Windows: aktif';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled =>
+      'Permulaan Windows: tidak aktif';
+
+  @override
+  String get windowsPrayerStyle => 'Label bar tugas';
+
+  @override
+  String get windowsPrayerPreview => 'Pratonton bar tugas';
+
+  @override
+  String get windowsPrayerStyleCountdown => 'Nama solat dan kira detik';
+
+  @override
+  String get windowsPrayerStyleClock => 'Nama dan waktu solat';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'Latar belakang lutsinar';
+
+  @override
+  String get windowsPrayerShowIcon => 'Tunjukkan logo Huda';
+
+  @override
+  String get windowsPrayerTextColor => 'Warna teks';
+
+  @override
+  String get windowsPrayerTextColorAutomatic => 'Automatik (bar tugas Windows)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'Cerah';
+
+  @override
+  String get windowsPrayerTextColorDark => 'Gelap';
+
+  @override
+  String get windowsPrayerTextColorApp => 'Warna aplikasi';
+
+  @override
+  String get windowsPrayerTextSize => 'Saiz teks';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'Kecil';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'Sederhana';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'Besar';
+
+  @override
+  String get windowsPrayerResetAppearance => 'Tetapkan semula rupa';
+
+  @override
   String get windowsPrayerError =>
       'Tidak dapat mengemas kini kiraan detik Windows. Cuba lagi.';
+
+  @override
+  String get windowsPrayerEnabled => 'Aktifkan peringatan solat';
+
+  @override
+  String get windowsPrayerFocusMode => 'Mod fokus';
 
   @override
   String get windowsPrayerStopAdhan => 'Hentikan azan';
@@ -5447,6 +5547,21 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get windowsPrayerFocusMessage =>
       'Sudah tiba waktu solat. Berehat sebentar.';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'Tutup atau tekan Escape pada bila-bila masa.';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'Azan sedang dimainkan';
+
+  @override
+  String get windowsPrayerFocusActive => 'Mod fokus aktif';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'Seterusnya: $prayer dalam $duration';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

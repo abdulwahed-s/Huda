@@ -5495,6 +5495,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'Min.';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'Windows-Gebetscountdown';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'Der Countdown läuft nach dem Schließen von Huda weiter. Beende Huda über das Infobereichsymbol, um ihn für diese Sitzung zu stoppen.';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'Countdown in der Taskleiste anzeigen';
+
+  @override
+  String get windowsPrayerShowTray => 'Infobereichsymbol anzeigen';
+
+  @override
+  String get windowsPrayerStartup => 'Mit Windows starten';
+
+  @override
+  String get windowsPrayerSeconds => 'Sekunden anzeigen';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Der Autostart ist in Windows deaktiviert.';
 
@@ -5503,8 +5522,90 @@ class AppLocalizationsDe extends AppLocalizations {
       'Windows-Autostarteinstellungen öffnen';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'Der Countdown kann in dieser Taskleiste nicht angezeigt werden. Das Gebetsfenster ist über das aktivierte Infobereichsymbol erreichbar.';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'Der Windows-Countdown ist nicht verfügbar. Repariere oder aktualisiere Huda.';
+
+  @override
+  String get windowsPrayerOpenHuda => 'Huda öffnen';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'Für dieses Datum sind keine Ramadan-Kalenderdaten verfügbar.';
+
+  @override
+  String get windowsPrayerNoNextPrayer =>
+      'Keine kommende Gebetszeit verfügbar.';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled =>
+      'Windows-Autostart: aktiviert';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled =>
+      'Windows-Autostart: deaktiviert';
+
+  @override
+  String get windowsPrayerStyle => 'Beschriftung der Taskleiste';
+
+  @override
+  String get windowsPrayerPreview => 'Taskleisten-Vorschau';
+
+  @override
+  String get windowsPrayerStyleCountdown => 'Gebetsname und Countdown';
+
+  @override
+  String get windowsPrayerStyleClock => 'Gebetsname und Uhrzeit';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'Transparenter Hintergrund';
+
+  @override
+  String get windowsPrayerShowIcon => 'Huda-Logo anzeigen';
+
+  @override
+  String get windowsPrayerTextColor => 'Textfarbe';
+
+  @override
+  String get windowsPrayerTextColorAutomatic =>
+      'Automatisch (Windows-Taskleiste)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'Hell';
+
+  @override
+  String get windowsPrayerTextColorDark => 'Dunkel';
+
+  @override
+  String get windowsPrayerTextColorApp => 'App-Farbe';
+
+  @override
+  String get windowsPrayerTextSize => 'Textgröße';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'Klein';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'Mittel';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'Groß';
+
+  @override
+  String get windowsPrayerResetAppearance => 'Aussehen zurücksetzen';
+
+  @override
   String get windowsPrayerError =>
       'Der Windows-Gebetscountdown konnte nicht aktualisiert werden. Versuchen Sie es erneut.';
+
+  @override
+  String get windowsPrayerEnabled => 'Gebetserinnerungen aktivieren';
+
+  @override
+  String get windowsPrayerFocusMode => 'Fokusmodus';
 
   @override
   String get windowsPrayerStopAdhan => 'Adhan stoppen';
@@ -5515,6 +5616,21 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get windowsPrayerFocusMessage =>
       'Es ist Zeit zum Beten. Machen Sie eine Pause.';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'Jederzeit schließen oder Escape drücken.';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'Adhan wird abgespielt';
+
+  @override
+  String get windowsPrayerFocusActive => 'Fokusmodus ist aktiv';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'Nächstes Gebet: $prayer in $duration';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

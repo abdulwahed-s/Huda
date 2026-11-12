@@ -5451,6 +5451,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get macPrayerMenuMinuteShort => 'мин';
 
   @override
+  String get windowsPrayerTaskbarTitle => 'Обратный отсчёт намаза в Windows';
+
+  @override
+  String get windowsPrayerTaskbarDescription =>
+      'Отсчёт продолжается после закрытия Huda. Выйдите из Huda через значок в трее, чтобы остановить его на этот сеанс.';
+
+  @override
+  String get windowsPrayerShowTaskbar => 'Показывать отсчёт на панели задач';
+
+  @override
+  String get windowsPrayerShowTray => 'Показывать значок в трее';
+
+  @override
+  String get windowsPrayerStartup => 'Запускать с Windows';
+
+  @override
+  String get windowsPrayerSeconds => 'Показывать секунды';
+
+  @override
   String get windowsPrayerStartupDisabled =>
       'Автозапуск отключён в параметрах Windows.';
 
@@ -5459,8 +5478,90 @@ class AppLocalizationsRu extends AppLocalizations {
       'Открыть параметры автозапуска Windows';
 
   @override
+  String get windowsPrayerPlacementUnavailable =>
+      'Не удалось показать обратный отсчёт на этой панели задач. Окно намаза доступно через значок в трее, если он включён.';
+
+  @override
+  String get windowsPrayerHelperUnavailable =>
+      'Отсчёт Windows недоступен. Восстановите или обновите Huda.';
+
+  @override
+  String get windowsPrayerOpenHuda => 'Открыть Huda';
+
+  @override
+  String get windowsPrayerCalendarUnavailable =>
+      'Данные календаря Рамадана недоступны для этой даты.';
+
+  @override
+  String get windowsPrayerNoNextPrayer => 'Следующее время намаза недоступно.';
+
+  @override
+  String get windowsPrayerStartupEffectiveEnabled =>
+      'Автозапуск Windows: включён';
+
+  @override
+  String get windowsPrayerStartupEffectiveDisabled =>
+      'Автозапуск Windows: отключён';
+
+  @override
+  String get windowsPrayerStyle => 'Надпись на панели задач';
+
+  @override
+  String get windowsPrayerPreview => 'Предпросмотр панели задач';
+
+  @override
+  String get windowsPrayerStyleCountdown =>
+      'Название молитвы и обратный отсчёт';
+
+  @override
+  String get windowsPrayerStyleClock => 'Название и время молитвы';
+
+  @override
+  String get windowsPrayerTransparentBackground => 'Прозрачный фон';
+
+  @override
+  String get windowsPrayerShowIcon => 'Показывать логотип Huda';
+
+  @override
+  String get windowsPrayerTextColor => 'Цвет текста';
+
+  @override
+  String get windowsPrayerTextColorAutomatic =>
+      'Автоматически (панель задач Windows)';
+
+  @override
+  String get windowsPrayerTextColorLight => 'Светлый';
+
+  @override
+  String get windowsPrayerTextColorDark => 'Тёмный';
+
+  @override
+  String get windowsPrayerTextColorApp => 'Цвет приложения';
+
+  @override
+  String get windowsPrayerTextSize => 'Размер текста';
+
+  @override
+  String get windowsPrayerTextSizeSmall => 'Маленький';
+
+  @override
+  String get windowsPrayerTextSizeMedium => 'Средний';
+
+  @override
+  String get windowsPrayerTextSizeLarge => 'Большой';
+
+  @override
+  String get windowsPrayerResetAppearance => 'Сбросить оформление';
+
+  @override
   String get windowsPrayerError =>
       'Не удалось обновить обратный отсчёт Windows. Попробуйте ещё раз.';
+
+  @override
+  String get windowsPrayerEnabled => 'Включить напоминания о молитве';
+
+  @override
+  String get windowsPrayerFocusMode => 'Режим концентрации';
 
   @override
   String get windowsPrayerStopAdhan => 'Остановить азан';
@@ -5471,6 +5572,21 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get windowsPrayerFocusMessage =>
       'Пришло время молитвы. Сделайте перерыв.';
+
+  @override
+  String get windowsPrayerFocusExitHint =>
+      'Закройте окно или нажмите Escape в любой момент.';
+
+  @override
+  String get windowsPrayerAudioPlaying => 'Воспроизводится азан';
+
+  @override
+  String get windowsPrayerFocusActive => 'Режим концентрации активен';
+
+  @override
+  String windowsPrayerNextNotification(String prayer, String duration) {
+    return 'Следующая: $prayer через $duration';
+  }
 
   @override
   String get windowsPrayerFocusLockedHint =>

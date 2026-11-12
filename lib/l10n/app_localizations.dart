@@ -9834,6 +9834,42 @@ abstract class AppLocalizations {
   /// **'m'**
   String get macPrayerMenuMinuteShort;
 
+  /// No description provided for @windowsPrayerTaskbarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Windows Prayer Countdown'**
+  String get windowsPrayerTaskbarTitle;
+
+  /// No description provided for @windowsPrayerTaskbarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the prayer countdown running after closing Huda. Quit Huda from the tray to stop it for this session.'**
+  String get windowsPrayerTaskbarDescription;
+
+  /// No description provided for @windowsPrayerShowTaskbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Show taskbar countdown'**
+  String get windowsPrayerShowTaskbar;
+
+  /// No description provided for @windowsPrayerShowTray.
+  ///
+  /// In en, this message translates to:
+  /// **'Show tray icon'**
+  String get windowsPrayerShowTray;
+
+  /// No description provided for @windowsPrayerStartup.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with Windows'**
+  String get windowsPrayerStartup;
+
+  /// No description provided for @windowsPrayerSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Show seconds'**
+  String get windowsPrayerSeconds;
+
   /// No description provided for @windowsPrayerStartupDisabled.
   ///
   /// In en, this message translates to:
@@ -9846,11 +9882,161 @@ abstract class AppLocalizations {
   /// **'Open Windows startup settings'**
   String get windowsPrayerOpenStartupSettings;
 
+  /// No description provided for @windowsPrayerPlacementUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The countdown cannot be placed on this taskbar. The tray popup is available when its icon is enabled.'**
+  String get windowsPrayerPlacementUnavailable;
+
+  /// No description provided for @windowsPrayerHelperUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The Windows countdown companion is unavailable. Repair or update your Huda installation.'**
+  String get windowsPrayerHelperUnavailable;
+
+  /// No description provided for @windowsPrayerOpenHuda.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Huda'**
+  String get windowsPrayerOpenHuda;
+
+  /// No description provided for @windowsPrayerCalendarUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan calendar data is unavailable for this date.'**
+  String get windowsPrayerCalendarUnavailable;
+
+  /// No description provided for @windowsPrayerNoNextPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming prayer time is available.'**
+  String get windowsPrayerNoNextPrayer;
+
+  /// No description provided for @windowsPrayerStartupEffectiveEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Windows startup: enabled'**
+  String get windowsPrayerStartupEffectiveEnabled;
+
+  /// No description provided for @windowsPrayerStartupEffectiveDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Windows startup: disabled'**
+  String get windowsPrayerStartupEffectiveDisabled;
+
+  /// No description provided for @windowsPrayerStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Taskbar label'**
+  String get windowsPrayerStyle;
+
+  /// No description provided for @windowsPrayerPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Taskbar preview'**
+  String get windowsPrayerPreview;
+
+  /// No description provided for @windowsPrayerStyleCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer name and countdown'**
+  String get windowsPrayerStyleCountdown;
+
+  /// No description provided for @windowsPrayerStyleClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer name and time'**
+  String get windowsPrayerStyleClock;
+
+  /// No description provided for @windowsPrayerTransparentBackground.
+  ///
+  /// In en, this message translates to:
+  /// **'Transparent background'**
+  String get windowsPrayerTransparentBackground;
+
+  /// No description provided for @windowsPrayerShowIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Huda logo'**
+  String get windowsPrayerShowIcon;
+
+  /// No description provided for @windowsPrayerTextColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Text color'**
+  String get windowsPrayerTextColor;
+
+  /// No description provided for @windowsPrayerTextColorAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic (Windows taskbar)'**
+  String get windowsPrayerTextColorAutomatic;
+
+  /// No description provided for @windowsPrayerTextColorLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get windowsPrayerTextColorLight;
+
+  /// No description provided for @windowsPrayerTextColorDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get windowsPrayerTextColorDark;
+
+  /// No description provided for @windowsPrayerTextColorApp.
+  ///
+  /// In en, this message translates to:
+  /// **'App color'**
+  String get windowsPrayerTextColorApp;
+
+  /// No description provided for @windowsPrayerTextSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get windowsPrayerTextSize;
+
+  /// No description provided for @windowsPrayerTextSizeSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get windowsPrayerTextSizeSmall;
+
+  /// No description provided for @windowsPrayerTextSizeMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get windowsPrayerTextSizeMedium;
+
+  /// No description provided for @windowsPrayerTextSizeLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get windowsPrayerTextSizeLarge;
+
+  /// No description provided for @windowsPrayerResetAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset appearance'**
+  String get windowsPrayerResetAppearance;
+
   /// No description provided for @windowsPrayerError.
   ///
   /// In en, this message translates to:
   /// **'Could not update the Windows countdown. Try again.'**
   String get windowsPrayerError;
+
+  /// No description provided for @windowsPrayerEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable prayer reminders'**
+  String get windowsPrayerEnabled;
+
+  /// No description provided for @windowsPrayerFocusMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus Mode'**
+  String get windowsPrayerFocusMode;
 
   /// No description provided for @windowsPrayerStopAdhan.
   ///
@@ -9869,6 +10055,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'It is time to pray. Take a break.'**
   String get windowsPrayerFocusMessage;
+
+  /// No description provided for @windowsPrayerFocusExitHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss or press Escape at any time.'**
+  String get windowsPrayerFocusExitHint;
+
+  /// No description provided for @windowsPrayerAudioPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan is playing'**
+  String get windowsPrayerAudioPlaying;
+
+  /// No description provided for @windowsPrayerFocusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus Mode is active'**
+  String get windowsPrayerFocusActive;
+
+  /// No description provided for @windowsPrayerNextNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {prayer} in {duration}'**
+  String windowsPrayerNextNotification(String prayer, String duration);
 
   /// No description provided for @windowsPrayerFocusLockedHint.
   ///
