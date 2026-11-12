@@ -5543,8 +5543,334 @@ class AppLocalizationsRu extends AppLocalizations {
       'Huda нужны уведомления, чтобы напоминать вам в выбранное время. Сейчас устройство попросит разрешение.';
 
   @override
+  String get prayerReadyAlarmTitle => 'Разрешить будильники молитв';
+
+  @override
+  String get prayerReadyAlarmMessage =>
+      'Будильник молитвы воспроизводит азан как будильник, даже в беззвучном режиме. Для этого iPhone нужно ваше разрешение.';
+
+  @override
+  String get prayerAlertTitle => 'Азан и оповещения';
+
+  @override
+  String get prayerAlertMasterTitle => 'Оповещения о молитве';
+
+  @override
+  String get prayerAlertMasterOff => 'Без оповещений во время молитв';
+
+  @override
+  String prayerAlertPrayersOn(int count) {
+    return '$count из 5 молитв';
+  }
+
+  @override
+  String get prayerAlertSaving => 'Сохранение…';
+
+  @override
+  String get prayerAlertSaved => 'Сохранено';
+
+  @override
+  String get prayerAlertNotSaved => 'Не сохранено';
+
+  @override
+  String get prayerAlertRetrying => 'Повторная попытка…';
+
+  @override
+  String get prayerAlertUndo => 'Отменить';
+
+  @override
+  String get prayerAlertFailureCompanion =>
+      'Помощник Huda для Windows не запущен, поэтому азан нельзя настроить. Запустите помощник на панели задач и повторите попытку.';
+
+  @override
+  String get prayerAlertFailureService =>
+      'Фоновая служба Huda не отвечает. Повторите попытку чуть позже.';
+
+  @override
+  String get prayerAlertFailureSchedule =>
+      'Не удалось запланировать новые настройки. Прежние оповещения сохранены.';
+
+  @override
+  String get prayerAlertFailureUnknown => 'Не удалось сохранить изменения.';
+
+  @override
   String get prayerAlertStartupWarning =>
       'Сохранено, но macOS не разрешила запуск Huda при входе. Проверьте объекты входа в Системных настройках.';
+
+  @override
+  String get prayerAlertSectionStyle => 'Как сообщать о молитве';
+
+  @override
+  String get prayerAlertSectionSound => 'Звук';
+
+  @override
+  String get prayerAlertSectionPrayers => 'Каждая молитва';
+
+  @override
+  String get prayerAlertSectionBefore => 'Перед молитвой';
+
+  @override
+  String get prayerAlertSectionFocus => 'Фокус';
+
+  @override
+  String get prayerAlertSectionMore => 'Другие параметры';
+
+  @override
+  String get prayerAlertStyleOff => 'Выкл.';
+
+  @override
+  String get prayerAlertStyleOffHint => 'Без оповещения об этой молитве';
+
+  @override
+  String get prayerAlertStyleSilent => 'Уведомление';
+
+  @override
+  String get prayerAlertStyleSilentHint => 'Уведомление без азана';
+
+  @override
+  String get prayerAlertStyleShort => 'Короткий азан';
+
+  @override
+  String get prayerAlertStyleShortHint => 'Уведомление с началом азана';
+
+  @override
+  String get prayerAlertStyleFull => 'Полный азан';
+
+  @override
+  String get prayerAlertStyleFullHint =>
+      'Звучит азан; его можно остановить в любой момент';
+
+  @override
+  String get prayerAlertStyleAlarm => 'Будильник молитвы';
+
+  @override
+  String get prayerAlertStyleAlarmHint =>
+      'Звонит как будильник, даже в беззвучном режиме';
+
+  @override
+  String get prayerAlertStyleFocus => 'Фокус';
+
+  @override
+  String get prayerAlertStyleFocusHint =>
+      'Спокойная полноэкранная пауза для молитвы';
+
+  @override
+  String get prayerAlertLengthWhole => 'Весь азан';
+
+  @override
+  String prayerAlertLengthSeconds(String seconds) {
+    return '$seconds с';
+  }
+
+  @override
+  String prayerAlertLengthMinutes(String minutes) {
+    return '$minutes мин';
+  }
+
+  @override
+  String get prayerAlertLengthCustom => 'Своё';
+
+  @override
+  String get prayerAlertFadeIn => 'Плавное нарастание';
+
+  @override
+  String get prayerAlertNone => 'Нет';
+
+  @override
+  String get prayerAlertSoundWhole => 'Прослушать азан полностью';
+
+  @override
+  String get prayerAlertDownloadNetwork =>
+      'Нет подключения к интернету. Повторите попытку, когда будете онлайн.';
+
+  @override
+  String get prayerAlertDownloadServer =>
+      'Сервер загрузки сейчас недоступен. Повторите попытку позже.';
+
+  @override
+  String get prayerAlertDownloadIntegrity =>
+      'Загрузка повреждена. Повторите попытку.';
+
+  @override
+  String get prayerAlertDownloadStorage =>
+      'Недостаточно места. Освободите место и повторите попытку.';
+
+  @override
+  String get prayerAlertSameAsAll => 'Как для всех молитв';
+
+  @override
+  String get prayerAlertCustom => 'Своё';
+
+  @override
+  String prayerAlertReset(String prayer) {
+    return 'Сбросить $prayer к общим настройкам';
+  }
+
+  @override
+  String prayerAlertMoreFor(String prayer) {
+    return 'Ещё для $prayer';
+  }
+
+  @override
+  String get prayerAlertDefault => 'По умолчанию';
+
+  @override
+  String get prayerAlertOn => 'Вкл.';
+
+  @override
+  String prayerAlertBeforeMinutes(String minutes) {
+    return 'За $minutes мин';
+  }
+
+  @override
+  String get prayerAlertBeforeHint => 'Мягкое напоминание, чтобы подготовиться';
+
+  @override
+  String get prayerAlertBeforeSound => 'Звук напоминания';
+
+  @override
+  String get prayerAlertBeforeSilent => 'Без звука';
+
+  @override
+  String get prayerAlertBeforeShort => 'Короткий звук';
+
+  @override
+  String get prayerAlertFallback => 'Если будильник недоступен';
+
+  @override
+  String get prayerAlertTestTitle => 'Отправить тест';
+
+  @override
+  String get prayerAlertTestScheduled =>
+      'Тест отправлен. Он должен прийти через несколько секунд.';
+
+  @override
+  String get prayerAlertTestShown => 'Тест показан. Вы его увидели и услышали?';
+
+  @override
+  String get prayerAlertTestNotificationsOff =>
+      'Уведомления Huda выключены, поэтому тест не придёт.';
+
+  @override
+  String get prayerAlertTestExactOff =>
+      'Huda не может ставить точные будильники, оповещения могут опаздывать. Сначала разрешите их.';
+
+  @override
+  String get prayerAlertTestPrayerOff =>
+      'Оповещения об этой молитве выключены.';
+
+  @override
+  String get prayerAlertTestAlarmPermission =>
+      'Сначала разрешите будильники молитв, затем повторите попытку.';
+
+  @override
+  String get prayerAlertTestServiceOff =>
+      'Фоновый помощник Huda не запущен, поэтому тест не воспроизвести.';
+
+  @override
+  String get prayerAlertTestAudioMissing =>
+      'Выбранная запись не воспроизвелась, поэтому использован встроенный азан.';
+
+  @override
+  String get prayerAlertTestFailed =>
+      'Не удалось отправить тест. Повторите попытку.';
+
+  @override
+  String get prayerAlertFocusDuration => 'Длится';
+
+  @override
+  String get prayerAlertFocusAudio => 'Воспроизводить азан во время фокуса';
+
+  @override
+  String get prayerAlertFocusCommitment => 'Нельзя закрыть раньше';
+
+  @override
+  String get prayerAlertFocusCommitmentHint =>
+      'Фокус завершится по истечении времени. В экстренном случае его закроет Esc.';
+
+  @override
+  String get prayerAlertFocusFullScreen => 'На весь экран';
+
+  @override
+  String get prayerAlertSummaryOff => 'Оповещения о молитве выключены';
+
+  @override
+  String get prayerAlertSummaryMixed => 'Для некоторых молитв по-другому';
+
+  @override
+  String get prayerAlertStopAdhan => 'Остановить азан';
+
+  @override
+  String get prayerAlertEndFocus => 'Завершить фокус';
+
+  @override
+  String get prayerAlertBack => 'Назад';
+
+  @override
+  String get prayerAlertClose => 'Закрыть';
+
+  @override
+  String get prayerAlertNeedsCompanion => 'Нужно, чтобы Huda работала в фоне';
+
+  @override
+  String get prayerAlertToggleAlarmScreen => 'Экран будильника';
+
+  @override
+  String get prayerAlertToggleAlarmScreenHint =>
+      'Показывает полноэкранный будильник при начале азана';
+
+  @override
+  String get prayerAlertToggleFlip => 'Перевернуть, чтобы остановить';
+
+  @override
+  String get prayerAlertToggleFlipHint =>
+      'Положите телефон экраном вниз, чтобы остановить азан';
+
+  @override
+  String get prayerAlertToggleVibrate => 'Вибрация';
+
+  @override
+  String get prayerAlertToggleRinger => 'Учитывать беззвучный режим';
+
+  @override
+  String get prayerAlertToggleRingerHint =>
+      'Без звука азана, когда телефон в беззвучном режиме или на вибрации';
+
+  @override
+  String get prayerAlertToggleHeadset =>
+      'Останавливать при отключении наушников';
+
+  @override
+  String get prayerAlertToggleMissed =>
+      'Показывать молитвы, пропущенные при выключенном телефоне';
+
+  @override
+  String get prayerAlertToggleTimeSensitive => 'Срочные';
+
+  @override
+  String get prayerAlertToggleTimeSensitiveHint =>
+      'Оповещения о молитве приходят даже в режимах фокусирования и «Не беспокоить»';
+
+  @override
+  String get prayerAlertToggleLockedAudio =>
+      'Воспроизводить при заблокированном экране';
+
+  @override
+  String get prayerAlertToggleQuiet => 'Приостановить азан и фокус';
+
+  @override
+  String get prayerAlertToggleQuietHint =>
+      'Уведомления по-прежнему приходят, но без звука';
+
+  @override
+  String get prayerAlertToggleBackground => 'Оставлять Huda работать в фоне';
+
+  @override
+  String get prayerAlertToggleBackgroundHint =>
+      'Нужно для азана и фокуса после закрытия окна Huda';
+
+  @override
+  String get prayerAlertToggleStartAtLogin => 'Запуск при входе';
 
   @override
   String get prayerAlertStyleAdhan => 'Азан';
@@ -5552,6 +5878,9 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get prayerAlertStyleAdhanHint =>
       'Звучит азан; длительность выбирается в разделе «Звук»';
+
+  @override
+  String get prayerAlertLengthOpening => 'Только начало';
 
   @override
   String get prayerAlertStyleNotificationAdhan => 'Азан в уведомлении';
@@ -5563,6 +5892,13 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get prayerAlertStyleLiveAdhanHint =>
       'Huda воспроизводит весь азан; держите Huda запущенной в строке меню';
+
+  @override
+  String get prayerAlertStyleFullAlarm => 'Будильник с полным азаном';
+
+  @override
+  String get prayerAlertStyleFullAlarmHint =>
+      'Весь азан как будильник, встроенная запись';
 
   @override
   String get prayerAlertFullAlarmUnavailable => 'Нужна iOS 26.1 или новее';

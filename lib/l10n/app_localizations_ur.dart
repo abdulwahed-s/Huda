@@ -5503,8 +5503,330 @@ class AppLocalizationsUr extends AppLocalizations {
       'آپ کے منتخب کردہ اوقات پر یاد دلانے کے لیے ہدیٰ کو اطلاعات درکار ہیں۔ اس کے بعد آپ کا آلہ اجازت مانگے گا۔';
 
   @override
+  String get prayerReadyAlarmTitle => 'نماز کے الارم کی اجازت دیں';
+
+  @override
+  String get prayerReadyAlarmMessage =>
+      'نماز کا الارم خاموش موڈ میں بھی اذان الارم کی طرح چلاتا ہے۔ اس کے لیے آپ کے iPhone کو آپ کی اجازت درکار ہے۔';
+
+  @override
+  String get prayerAlertTitle => 'اذان اور اطلاعات';
+
+  @override
+  String get prayerAlertMasterTitle => 'نماز کی اطلاعات';
+
+  @override
+  String get prayerAlertMasterOff => 'نماز کے اوقات پر کوئی اطلاع نہیں';
+
+  @override
+  String prayerAlertPrayersOn(int count) {
+    return '5 میں سے $count نمازیں';
+  }
+
+  @override
+  String get prayerAlertSaving => 'محفوظ ہو رہا ہے…';
+
+  @override
+  String get prayerAlertSaved => 'محفوظ ہو گیا';
+
+  @override
+  String get prayerAlertNotSaved => 'محفوظ نہیں ہوا';
+
+  @override
+  String get prayerAlertRetrying => 'دوبارہ کوشش ہو رہی ہے…';
+
+  @override
+  String get prayerAlertUndo => 'واپس کریں';
+
+  @override
+  String get prayerAlertFailureCompanion =>
+      'ہدیٰ کا ونڈوز مددگار نہیں چل رہا، اس لیے اذان سیٹ نہیں ہو سکتی۔ ٹاسک بار مددگار شروع کریں اور دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertFailureService =>
+      'ہدیٰ کی پس منظر سروس جواب نہیں دے رہی۔ تھوڑی دیر بعد دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertFailureSchedule =>
+      'نئی ترتیبات شیڈول نہیں ہو سکیں۔ آپ کی پچھلی اطلاعات اب بھی سیٹ ہیں۔';
+
+  @override
+  String get prayerAlertFailureUnknown => 'آپ کی تبدیلیاں محفوظ نہیں ہو سکیں۔';
+
+  @override
   String get prayerAlertStartupWarning =>
       'محفوظ ہو گیا، لیکن macOS نے ہدیٰ کو لاگ ان پر شروع نہیں ہونے دیا۔ سسٹم سیٹنگز میں لاگ ان آئٹمز دیکھیں۔';
+
+  @override
+  String get prayerAlertSectionStyle => 'نماز کی اطلاع کیسے ملے';
+
+  @override
+  String get prayerAlertSectionSound => 'آواز';
+
+  @override
+  String get prayerAlertSectionPrayers => 'ہر نماز';
+
+  @override
+  String get prayerAlertSectionBefore => 'نماز سے پہلے';
+
+  @override
+  String get prayerAlertSectionFocus => 'فوکس';
+
+  @override
+  String get prayerAlertSectionMore => 'مزید اختیارات';
+
+  @override
+  String get prayerAlertStyleOff => 'بند';
+
+  @override
+  String get prayerAlertStyleOffHint => 'اس نماز کے لیے کوئی اطلاع نہیں';
+
+  @override
+  String get prayerAlertStyleSilent => 'اطلاع';
+
+  @override
+  String get prayerAlertStyleSilentHint => 'اذان کے بغیر اطلاع';
+
+  @override
+  String get prayerAlertStyleShort => 'مختصر اذان';
+
+  @override
+  String get prayerAlertStyleShortHint => 'اذان کے ابتدائی حصے کے ساتھ اطلاع';
+
+  @override
+  String get prayerAlertStyleFull => 'مکمل اذان';
+
+  @override
+  String get prayerAlertStyleFullHint =>
+      'اذان چلتی ہے؛ آپ اسے کسی بھی وقت روک سکتے ہیں';
+
+  @override
+  String get prayerAlertStyleAlarm => 'نماز کا الارم';
+
+  @override
+  String get prayerAlertStyleAlarmHint =>
+      'خاموش موڈ میں بھی الارم کی طرح بجتا ہے';
+
+  @override
+  String get prayerAlertStyleFocus => 'فوکس';
+
+  @override
+  String get prayerAlertStyleFocusHint =>
+      'نماز کے لیے رکنے کا ایک پُرسکون فل اسکرین لمحہ';
+
+  @override
+  String get prayerAlertLengthWhole => 'پوری اذان';
+
+  @override
+  String prayerAlertLengthSeconds(String seconds) {
+    return '$seconds سیکنڈ';
+  }
+
+  @override
+  String prayerAlertLengthMinutes(String minutes) {
+    return '$minutes منٹ';
+  }
+
+  @override
+  String get prayerAlertLengthCustom => 'اپنی مرضی';
+
+  @override
+  String get prayerAlertFadeIn => 'آہستہ آہستہ آواز';
+
+  @override
+  String get prayerAlertNone => 'بند';
+
+  @override
+  String get prayerAlertSoundWhole => 'پوری اذان سنیں';
+
+  @override
+  String get prayerAlertDownloadNetwork =>
+      'انٹرنیٹ کنکشن نہیں ہے۔ آن لائن ہونے پر دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertDownloadServer =>
+      'ڈاؤن لوڈ سرور ابھی دستیاب نہیں۔ بعد میں کوشش کریں۔';
+
+  @override
+  String get prayerAlertDownloadIntegrity =>
+      'ڈاؤن لوڈ خراب ہو گیا۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertDownloadStorage =>
+      'اسٹوریج کافی نہیں۔ کچھ جگہ خالی کریں اور دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertSameAsAll => 'باقی نمازوں جیسا';
+
+  @override
+  String get prayerAlertCustom => 'اپنی مرضی';
+
+  @override
+  String prayerAlertReset(String prayer) {
+    return '$prayer کو ڈیفالٹ پر واپس کریں';
+  }
+
+  @override
+  String prayerAlertMoreFor(String prayer) {
+    return '$prayer کے لیے مزید';
+  }
+
+  @override
+  String get prayerAlertDefault => 'ڈیفالٹ';
+
+  @override
+  String get prayerAlertOn => 'آن';
+
+  @override
+  String prayerAlertBeforeMinutes(String minutes) {
+    return '$minutes منٹ پہلے';
+  }
+
+  @override
+  String get prayerAlertBeforeHint => 'تیاری کے لیے ایک ہلکی یاد دہانی';
+
+  @override
+  String get prayerAlertBeforeSound => 'یاد دہانی کی آواز';
+
+  @override
+  String get prayerAlertBeforeSilent => 'آواز کے بغیر';
+
+  @override
+  String get prayerAlertBeforeShort => 'مختصر آواز';
+
+  @override
+  String get prayerAlertFallback => 'جب الارم سیٹ نہ ہو سکے';
+
+  @override
+  String get prayerAlertTestTitle => 'آزمائشی اطلاع بھیجیں';
+
+  @override
+  String get prayerAlertTestScheduled =>
+      'آزمائشی اطلاع بھیج دی گئی۔ چند سیکنڈ میں آنی چاہیے۔';
+
+  @override
+  String get prayerAlertTestShown =>
+      'آزمائشی اطلاع دکھائی گئی۔ کیا آپ نے اسے دیکھا اور سنا؟';
+
+  @override
+  String get prayerAlertTestNotificationsOff =>
+      'ہدیٰ کی اطلاعات بند ہیں، اس لیے آزمائشی اطلاع نہیں آ سکتی۔';
+
+  @override
+  String get prayerAlertTestExactOff =>
+      'ہدیٰ بروقت الارم سیٹ نہیں کر سکتا، اس لیے اطلاعات دیر سے آ سکتی ہیں۔ پہلے اجازت دیں۔';
+
+  @override
+  String get prayerAlertTestPrayerOff => 'اس نماز کی اطلاعات بند ہیں۔';
+
+  @override
+  String get prayerAlertTestAlarmPermission =>
+      'پہلے نماز کے الارم کی اجازت دیں، پھر دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertTestServiceOff =>
+      'ہدیٰ کا پس منظر مددگار نہیں چل رہا، اس لیے آزمائش نہیں چل سکتی۔';
+
+  @override
+  String get prayerAlertTestAudioMissing =>
+      'منتخب ریکارڈنگ نہیں چل سکی، اس لیے پہلے سے شامل اذان استعمال ہوئی۔';
+
+  @override
+  String get prayerAlertTestFailed =>
+      'آزمائشی اطلاع نہیں بھیجی جا سکی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertFocusDuration => 'دورانیہ';
+
+  @override
+  String get prayerAlertFocusAudio => 'فوکس کے دوران اذان چلائیں';
+
+  @override
+  String get prayerAlertFocusCommitment => 'وقت سے پہلے بند نہیں ہوگا';
+
+  @override
+  String get prayerAlertFocusCommitmentHint =>
+      'وقت پورا ہونے پر فوکس ختم ہوگا۔ ہنگامی صورت میں Esc سے بند ہو سکتا ہے۔';
+
+  @override
+  String get prayerAlertFocusFullScreen => 'پوری اسکرین پر';
+
+  @override
+  String get prayerAlertSummaryOff => 'نماز کی اطلاعات بند ہیں';
+
+  @override
+  String get prayerAlertSummaryMixed => 'کچھ نمازوں کے لیے مختلف';
+
+  @override
+  String get prayerAlertStopAdhan => 'اذان روکیں';
+
+  @override
+  String get prayerAlertEndFocus => 'فوکس ختم کریں';
+
+  @override
+  String get prayerAlertBack => 'واپس';
+
+  @override
+  String get prayerAlertClose => 'بند کریں';
+
+  @override
+  String get prayerAlertNeedsCompanion => 'ہدیٰ کا پس منظر میں چلنا ضروری ہے';
+
+  @override
+  String get prayerAlertToggleAlarmScreen => 'الارم اسکرین';
+
+  @override
+  String get prayerAlertToggleAlarmScreenHint =>
+      'اذان شروع ہونے پر فل اسکرین الارم دکھاتا ہے';
+
+  @override
+  String get prayerAlertToggleFlip => 'الٹا کر کے روکیں';
+
+  @override
+  String get prayerAlertToggleFlipHint => 'اذان روکنے کے لیے فون کو الٹا رکھیں';
+
+  @override
+  String get prayerAlertToggleVibrate => 'وائبریٹ';
+
+  @override
+  String get prayerAlertToggleRinger => 'خاموش موڈ کی پابندی کریں';
+
+  @override
+  String get prayerAlertToggleRingerHint =>
+      'فون خاموش یا وائبریٹ پر ہو تو اذان کی آواز نہیں';
+
+  @override
+  String get prayerAlertToggleHeadset => 'ہیڈ فون ہٹنے پر روکیں';
+
+  @override
+  String get prayerAlertToggleMissed =>
+      'فون بند ہونے کے دوران چھوٹی نمازیں دکھائیں';
+
+  @override
+  String get prayerAlertToggleTimeSensitive => 'وقت کے لحاظ سے اہم';
+
+  @override
+  String get prayerAlertToggleTimeSensitiveHint =>
+      'نماز کی اطلاعات فوکس اور ڈو ناٹ ڈسٹرب میں بھی آئیں گی';
+
+  @override
+  String get prayerAlertToggleLockedAudio => 'اسکرین لاک ہونے پر بھی چلائیں';
+
+  @override
+  String get prayerAlertToggleQuiet => 'اذان اور فوکس کو روک دیں';
+
+  @override
+  String get prayerAlertToggleQuietHint => 'اطلاعات پھر بھی آئیں گی، خاموشی سے';
+
+  @override
+  String get prayerAlertToggleBackground => 'ہدیٰ کو پس منظر میں چلتا رکھیں';
+
+  @override
+  String get prayerAlertToggleBackgroundHint =>
+      'ہدیٰ کی ونڈو بند ہونے کے بعد اذان اور فوکس کے لیے ضروری';
+
+  @override
+  String get prayerAlertToggleStartAtLogin => 'لاگ ان پر شروع کریں';
 
   @override
   String get prayerAlertStyleAdhan => 'اذان';
@@ -5512,6 +5834,9 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get prayerAlertStyleAdhanHint =>
       'اذان چلے گی؛ دورانیہ آواز کے حصے میں منتخب کریں';
+
+  @override
+  String get prayerAlertLengthOpening => 'صرف ابتدائی حصہ';
 
   @override
   String get prayerAlertStyleNotificationAdhan => 'اطلاع میں اذان';
@@ -5523,6 +5848,13 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get prayerAlertStyleLiveAdhanHint =>
       'ہدیٰ پوری اذان چلاتا ہے؛ ہدیٰ کو مینو بار میں چلتا رکھیں';
+
+  @override
+  String get prayerAlertStyleFullAlarm => 'مکمل اذان کا الارم';
+
+  @override
+  String get prayerAlertStyleFullAlarmHint =>
+      'پوری اذان الارم کے طور پر، پہلے سے شامل ریکارڈنگ کے ساتھ';
 
   @override
   String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 یا نیا درکار ہے';

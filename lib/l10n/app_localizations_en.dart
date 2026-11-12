@@ -5509,8 +5509,333 @@ class AppLocalizationsEn extends AppLocalizations {
       'Huda needs notifications to remind you at the times you choose. Your device will ask you next.';
 
   @override
+  String get prayerReadyAlarmTitle => 'Allow prayer alarms';
+
+  @override
+  String get prayerReadyAlarmMessage =>
+      'Prayer Alarm plays the adhan like an alarm, even in silent mode. Your iPhone needs your permission for that.';
+
+  @override
+  String get prayerAlertTitle => 'Adhan & alerts';
+
+  @override
+  String get prayerAlertMasterTitle => 'Prayer alerts';
+
+  @override
+  String get prayerAlertMasterOff => 'No alerts at prayer times';
+
+  @override
+  String prayerAlertPrayersOn(int count) {
+    return '$count of 5 prayers';
+  }
+
+  @override
+  String get prayerAlertSaving => 'Saving…';
+
+  @override
+  String get prayerAlertSaved => 'Saved';
+
+  @override
+  String get prayerAlertNotSaved => 'Not saved';
+
+  @override
+  String get prayerAlertRetrying => 'Retrying…';
+
+  @override
+  String get prayerAlertUndo => 'Undo';
+
+  @override
+  String get prayerAlertFailureCompanion =>
+      'Huda\'s Windows helper isn\'t running, so the adhan can\'t be set. Start Huda\'s taskbar helper, then try again.';
+
+  @override
+  String get prayerAlertFailureService =>
+      'Huda\'s background service isn\'t answering. Try again in a moment.';
+
+  @override
+  String get prayerAlertFailureSchedule =>
+      'The new settings couldn\'t be scheduled. Your previous alerts are still set.';
+
+  @override
+  String get prayerAlertFailureUnknown => 'Your changes couldn\'t be saved.';
+
+  @override
   String get prayerAlertStartupWarning =>
       'Saved, but macOS didn\'t let Huda start at login. Check Login Items in System Settings.';
+
+  @override
+  String get prayerAlertSectionStyle => 'How prayers alert you';
+
+  @override
+  String get prayerAlertSectionSound => 'Sound';
+
+  @override
+  String get prayerAlertSectionPrayers => 'Each prayer';
+
+  @override
+  String get prayerAlertSectionBefore => 'Before the prayer';
+
+  @override
+  String get prayerAlertSectionFocus => 'Focus';
+
+  @override
+  String get prayerAlertSectionMore => 'More options';
+
+  @override
+  String get prayerAlertStyleOff => 'Off';
+
+  @override
+  String get prayerAlertStyleOffHint => 'No alert for this prayer';
+
+  @override
+  String get prayerAlertStyleSilent => 'Notification';
+
+  @override
+  String get prayerAlertStyleSilentHint => 'A notification without the adhan';
+
+  @override
+  String get prayerAlertStyleShort => 'Short adhan';
+
+  @override
+  String get prayerAlertStyleShortHint =>
+      'A notification with the opening of the adhan';
+
+  @override
+  String get prayerAlertStyleFull => 'Full adhan';
+
+  @override
+  String get prayerAlertStyleFullHint =>
+      'The adhan plays; you can stop it any time';
+
+  @override
+  String get prayerAlertStyleAlarm => 'Prayer alarm';
+
+  @override
+  String get prayerAlertStyleAlarmHint =>
+      'Rings like an alarm, even in silent mode';
+
+  @override
+  String get prayerAlertStyleFocus => 'Focus';
+
+  @override
+  String get prayerAlertStyleFocusHint =>
+      'A calm full-screen moment to pause for prayer';
+
+  @override
+  String get prayerAlertLengthWhole => 'Whole adhan';
+
+  @override
+  String prayerAlertLengthSeconds(String seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String prayerAlertLengthMinutes(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get prayerAlertLengthCustom => 'Custom';
+
+  @override
+  String get prayerAlertFadeIn => 'Fade in';
+
+  @override
+  String get prayerAlertNone => 'Off';
+
+  @override
+  String get prayerAlertSoundWhole => 'Listen to the whole adhan';
+
+  @override
+  String get prayerAlertDownloadNetwork =>
+      'No internet connection. Try again when you\'re online.';
+
+  @override
+  String get prayerAlertDownloadServer =>
+      'The download server isn\'t available right now. Try again later.';
+
+  @override
+  String get prayerAlertDownloadIntegrity =>
+      'The download was damaged. Try again.';
+
+  @override
+  String get prayerAlertDownloadStorage =>
+      'Not enough storage. Free up some space and try again.';
+
+  @override
+  String get prayerAlertSameAsAll => 'Same as all prayers';
+
+  @override
+  String get prayerAlertCustom => 'Custom';
+
+  @override
+  String prayerAlertReset(String prayer) {
+    return 'Reset $prayer to the default';
+  }
+
+  @override
+  String prayerAlertMoreFor(String prayer) {
+    return 'More for $prayer';
+  }
+
+  @override
+  String get prayerAlertDefault => 'Default';
+
+  @override
+  String get prayerAlertOn => 'On';
+
+  @override
+  String prayerAlertBeforeMinutes(String minutes) {
+    return '$minutes min before';
+  }
+
+  @override
+  String get prayerAlertBeforeHint => 'A gentle reminder so you can get ready';
+
+  @override
+  String get prayerAlertBeforeSound => 'Reminder sound';
+
+  @override
+  String get prayerAlertBeforeSilent => 'No sound';
+
+  @override
+  String get prayerAlertBeforeShort => 'Short sound';
+
+  @override
+  String get prayerAlertFallback => 'When an alarm can\'t be set';
+
+  @override
+  String get prayerAlertTestTitle => 'Send a test';
+
+  @override
+  String get prayerAlertTestScheduled =>
+      'Test sent. It should arrive in a few seconds.';
+
+  @override
+  String get prayerAlertTestShown => 'Test shown. Did you hear and see it?';
+
+  @override
+  String get prayerAlertTestNotificationsOff =>
+      'Notifications are off for Huda, so the test can\'t arrive.';
+
+  @override
+  String get prayerAlertTestExactOff =>
+      'Huda can\'t set on-time alarms, so alerts may be late. Allow them first.';
+
+  @override
+  String get prayerAlertTestPrayerOff => 'Alerts are off for this prayer.';
+
+  @override
+  String get prayerAlertTestAlarmPermission =>
+      'Allow prayer alarms first, then try again.';
+
+  @override
+  String get prayerAlertTestServiceOff =>
+      'Huda\'s background helper isn\'t running, so the test can\'t play.';
+
+  @override
+  String get prayerAlertTestAudioMissing =>
+      'The chosen recording couldn\'t play, so the built-in adhan was used.';
+
+  @override
+  String get prayerAlertTestFailed => 'The test couldn\'t be sent. Try again.';
+
+  @override
+  String get prayerAlertFocusDuration => 'Lasts';
+
+  @override
+  String get prayerAlertFocusAudio => 'Play the adhan during Focus';
+
+  @override
+  String get prayerAlertFocusCommitment => 'Can\'t be closed early';
+
+  @override
+  String get prayerAlertFocusCommitmentHint =>
+      'Focus ends when its time is up. Esc still closes it in an emergency.';
+
+  @override
+  String get prayerAlertFocusFullScreen => 'Fill the screen';
+
+  @override
+  String get prayerAlertSummaryOff => 'Prayer alerts are off';
+
+  @override
+  String get prayerAlertSummaryMixed => 'Different for some prayers';
+
+  @override
+  String get prayerAlertStopAdhan => 'Stop adhan';
+
+  @override
+  String get prayerAlertEndFocus => 'End Focus';
+
+  @override
+  String get prayerAlertBack => 'Back';
+
+  @override
+  String get prayerAlertClose => 'Close';
+
+  @override
+  String get prayerAlertNeedsCompanion =>
+      'Needs Huda running in the background';
+
+  @override
+  String get prayerAlertToggleAlarmScreen => 'Alarm screen';
+
+  @override
+  String get prayerAlertToggleAlarmScreenHint =>
+      'Shows a full-screen alarm when the adhan starts';
+
+  @override
+  String get prayerAlertToggleFlip => 'Flip to stop';
+
+  @override
+  String get prayerAlertToggleFlipHint =>
+      'Turn the phone face down to stop the adhan';
+
+  @override
+  String get prayerAlertToggleVibrate => 'Vibrate';
+
+  @override
+  String get prayerAlertToggleRinger => 'Follow silent mode';
+
+  @override
+  String get prayerAlertToggleRingerHint =>
+      'No adhan sound while the phone is on silent or vibrate';
+
+  @override
+  String get prayerAlertToggleHeadset => 'Stop when headphones disconnect';
+
+  @override
+  String get prayerAlertToggleMissed =>
+      'Show prayers missed while the phone was off';
+
+  @override
+  String get prayerAlertToggleTimeSensitive => 'Time Sensitive';
+
+  @override
+  String get prayerAlertToggleTimeSensitiveHint =>
+      'Prayer alerts come through Focus and Do Not Disturb';
+
+  @override
+  String get prayerAlertToggleLockedAudio => 'Play while the screen is locked';
+
+  @override
+  String get prayerAlertToggleQuiet => 'Pause the adhan and Focus';
+
+  @override
+  String get prayerAlertToggleQuietHint =>
+      'Notifications still arrive, silently';
+
+  @override
+  String get prayerAlertToggleBackground =>
+      'Keep Huda running in the background';
+
+  @override
+  String get prayerAlertToggleBackgroundHint =>
+      'Needed for the adhan and Focus after Huda\'s window is closed';
+
+  @override
+  String get prayerAlertToggleStartAtLogin => 'Start at login';
 
   @override
   String get prayerAlertStyleAdhan => 'Adhan';
@@ -5518,6 +5843,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get prayerAlertStyleAdhanHint =>
       'The adhan plays; choose how long under Sound';
+
+  @override
+  String get prayerAlertLengthOpening => 'Opening only';
 
   @override
   String get prayerAlertStyleNotificationAdhan => 'Adhan in the notification';
@@ -5529,6 +5857,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get prayerAlertStyleLiveAdhanHint =>
       'Huda plays the whole adhan; keep Huda running in the menu bar';
+
+  @override
+  String get prayerAlertStyleFullAlarm => 'Full adhan alarm';
+
+  @override
+  String get prayerAlertStyleFullAlarmHint =>
+      'The whole adhan as an alarm, with the built-in recording';
 
   @override
   String get prayerAlertFullAlarmUnavailable => 'Needs iOS 26.1 or later';

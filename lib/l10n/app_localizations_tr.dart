@@ -5506,8 +5506,329 @@ class AppLocalizationsTr extends AppLocalizations {
       'Huda, seçtiğin saatlerde sana hatırlatmak için bildirimlere ihtiyaç duyar. Cihazın şimdi izin isteyecek.';
 
   @override
+  String get prayerReadyAlarmTitle => 'Namaz alarmlarına izin ver';
+
+  @override
+  String get prayerReadyAlarmMessage =>
+      'Namaz Alarmı, sessiz moddayken bile ezanı alarm gibi çalar. iPhone\'unun bunun için iznine ihtiyacı var.';
+
+  @override
+  String get prayerAlertTitle => 'Ezan ve bildirimler';
+
+  @override
+  String get prayerAlertMasterTitle => 'Namaz bildirimleri';
+
+  @override
+  String get prayerAlertMasterOff => 'Namaz vakitlerinde bildirim yok';
+
+  @override
+  String prayerAlertPrayersOn(int count) {
+    return '5 namazdan $count';
+  }
+
+  @override
+  String get prayerAlertSaving => 'Kaydediliyor…';
+
+  @override
+  String get prayerAlertSaved => 'Kaydedildi';
+
+  @override
+  String get prayerAlertNotSaved => 'Kaydedilmedi';
+
+  @override
+  String get prayerAlertRetrying => 'Yeniden deneniyor…';
+
+  @override
+  String get prayerAlertUndo => 'Geri al';
+
+  @override
+  String get prayerAlertFailureCompanion =>
+      'Huda\'nın Windows yardımcısı çalışmıyor, bu yüzden ezan ayarlanamıyor. Görev çubuğu yardımcısını başlat ve tekrar dene.';
+
+  @override
+  String get prayerAlertFailureService =>
+      'Huda\'nın arka plan hizmeti yanıt vermiyor. Birazdan tekrar dene.';
+
+  @override
+  String get prayerAlertFailureSchedule =>
+      'Yeni ayarlar planlanamadı. Önceki bildirimlerin hâlâ ayarlı.';
+
+  @override
+  String get prayerAlertFailureUnknown => 'Değişikliklerin kaydedilemedi.';
+
+  @override
   String get prayerAlertStartupWarning =>
       'Kaydedildi, ancak macOS Huda\'nın oturum açılışında başlamasına izin vermedi. Sistem Ayarları\'nda Giriş Öğeleri\'ni kontrol et.';
+
+  @override
+  String get prayerAlertSectionStyle => 'Namazlar seni nasıl uyarsın';
+
+  @override
+  String get prayerAlertSectionSound => 'Ses';
+
+  @override
+  String get prayerAlertSectionPrayers => 'Her namaz';
+
+  @override
+  String get prayerAlertSectionBefore => 'Namazdan önce';
+
+  @override
+  String get prayerAlertSectionFocus => 'Odak';
+
+  @override
+  String get prayerAlertSectionMore => 'Diğer seçenekler';
+
+  @override
+  String get prayerAlertStyleOff => 'Kapalı';
+
+  @override
+  String get prayerAlertStyleOffHint => 'Bu namaz için bildirim yok';
+
+  @override
+  String get prayerAlertStyleSilent => 'Bildirim';
+
+  @override
+  String get prayerAlertStyleSilentHint => 'Ezansız bir bildirim';
+
+  @override
+  String get prayerAlertStyleShort => 'Kısa ezan';
+
+  @override
+  String get prayerAlertStyleShortHint => 'Ezanın başlangıcıyla bir bildirim';
+
+  @override
+  String get prayerAlertStyleFull => 'Tam ezan';
+
+  @override
+  String get prayerAlertStyleFullHint =>
+      'Ezan çalar; istediğin an durdurabilirsin';
+
+  @override
+  String get prayerAlertStyleAlarm => 'Namaz alarmı';
+
+  @override
+  String get prayerAlertStyleAlarmHint => 'Sessiz modda bile alarm gibi çalar';
+
+  @override
+  String get prayerAlertStyleFocus => 'Odak';
+
+  @override
+  String get prayerAlertStyleFocusHint =>
+      'Namaz için durmaya tam ekran sakin bir an';
+
+  @override
+  String get prayerAlertLengthWhole => 'Ezanın tamamı';
+
+  @override
+  String prayerAlertLengthSeconds(String seconds) {
+    return '$seconds sn';
+  }
+
+  @override
+  String prayerAlertLengthMinutes(String minutes) {
+    return '$minutes dk';
+  }
+
+  @override
+  String get prayerAlertLengthCustom => 'Özel';
+
+  @override
+  String get prayerAlertFadeIn => 'Yavaşça yükselt';
+
+  @override
+  String get prayerAlertNone => 'Kapalı';
+
+  @override
+  String get prayerAlertSoundWhole => 'Ezanın tamamını dinle';
+
+  @override
+  String get prayerAlertDownloadNetwork =>
+      'İnternet bağlantısı yok. Çevrimiçi olunca tekrar dene.';
+
+  @override
+  String get prayerAlertDownloadServer =>
+      'İndirme sunucusuna şu an ulaşılamıyor. Daha sonra tekrar dene.';
+
+  @override
+  String get prayerAlertDownloadIntegrity => 'İndirme bozuldu. Tekrar dene.';
+
+  @override
+  String get prayerAlertDownloadStorage =>
+      'Yeterli depolama alanı yok. Biraz yer aç ve tekrar dene.';
+
+  @override
+  String get prayerAlertSameAsAll => 'Tüm namazlarla aynı';
+
+  @override
+  String get prayerAlertCustom => 'Özel';
+
+  @override
+  String prayerAlertReset(String prayer) {
+    return '$prayer varsayılana dönsün';
+  }
+
+  @override
+  String prayerAlertMoreFor(String prayer) {
+    return '$prayer için diğer';
+  }
+
+  @override
+  String get prayerAlertDefault => 'Varsayılan';
+
+  @override
+  String get prayerAlertOn => 'Açık';
+
+  @override
+  String prayerAlertBeforeMinutes(String minutes) {
+    return '$minutes dk önce';
+  }
+
+  @override
+  String get prayerAlertBeforeHint => 'Hazırlanman için nazik bir hatırlatma';
+
+  @override
+  String get prayerAlertBeforeSound => 'Hatırlatma sesi';
+
+  @override
+  String get prayerAlertBeforeSilent => 'Sessiz';
+
+  @override
+  String get prayerAlertBeforeShort => 'Kısa ses';
+
+  @override
+  String get prayerAlertFallback => 'Alarm kurulamazsa';
+
+  @override
+  String get prayerAlertTestTitle => 'Test gönder';
+
+  @override
+  String get prayerAlertTestScheduled =>
+      'Test gönderildi. Birkaç saniye içinde gelmeli.';
+
+  @override
+  String get prayerAlertTestShown => 'Test gösterildi. Gördün ve duydun mu?';
+
+  @override
+  String get prayerAlertTestNotificationsOff =>
+      'Huda bildirimleri kapalı, bu yüzden test gelemez.';
+
+  @override
+  String get prayerAlertTestExactOff =>
+      'Huda tam zamanlı alarm kuramıyor, bildirimler gecikebilir. Önce izin ver.';
+
+  @override
+  String get prayerAlertTestPrayerOff => 'Bu namaz için bildirimler kapalı.';
+
+  @override
+  String get prayerAlertTestAlarmPermission =>
+      'Önce namaz alarmlarına izin ver, sonra tekrar dene.';
+
+  @override
+  String get prayerAlertTestServiceOff =>
+      'Huda\'nın arka plan yardımcısı çalışmıyor, bu yüzden test çalınamıyor.';
+
+  @override
+  String get prayerAlertTestAudioMissing =>
+      'Seçilen kayıt çalınamadı, bu yüzden yerleşik ezan kullanıldı.';
+
+  @override
+  String get prayerAlertTestFailed => 'Test gönderilemedi. Tekrar dene.';
+
+  @override
+  String get prayerAlertFocusDuration => 'Süre';
+
+  @override
+  String get prayerAlertFocusAudio => 'Odak sırasında ezanı çal';
+
+  @override
+  String get prayerAlertFocusCommitment => 'Erken kapatılamaz';
+
+  @override
+  String get prayerAlertFocusCommitmentHint =>
+      'Odak süresi dolunca biter. Acil durumda Esc yine de kapatır.';
+
+  @override
+  String get prayerAlertFocusFullScreen => 'Ekranı kapla';
+
+  @override
+  String get prayerAlertSummaryOff => 'Namaz bildirimleri kapalı';
+
+  @override
+  String get prayerAlertSummaryMixed => 'Bazı namazlarda farklı';
+
+  @override
+  String get prayerAlertStopAdhan => 'Ezanı durdur';
+
+  @override
+  String get prayerAlertEndFocus => 'Odağı bitir';
+
+  @override
+  String get prayerAlertBack => 'Geri';
+
+  @override
+  String get prayerAlertClose => 'Kapat';
+
+  @override
+  String get prayerAlertNeedsCompanion =>
+      'Huda\'nın arka planda çalışması gerekir';
+
+  @override
+  String get prayerAlertToggleAlarmScreen => 'Alarm ekranı';
+
+  @override
+  String get prayerAlertToggleAlarmScreenHint =>
+      'Ezan başlayınca tam ekran alarm gösterir';
+
+  @override
+  String get prayerAlertToggleFlip => 'Çevirerek durdur';
+
+  @override
+  String get prayerAlertToggleFlipHint =>
+      'Ezanı durdurmak için telefonu ters çevir';
+
+  @override
+  String get prayerAlertToggleVibrate => 'Titreşim';
+
+  @override
+  String get prayerAlertToggleRinger => 'Sessiz moda uy';
+
+  @override
+  String get prayerAlertToggleRingerHint =>
+      'Telefon sessiz veya titreşimdeyken ezan sesi yok';
+
+  @override
+  String get prayerAlertToggleHeadset => 'Kulaklık çıkarılınca durdur';
+
+  @override
+  String get prayerAlertToggleMissed =>
+      'Telefon kapalıyken kaçan namazları göster';
+
+  @override
+  String get prayerAlertToggleTimeSensitive => 'Zamana Duyarlı';
+
+  @override
+  String get prayerAlertToggleTimeSensitiveHint =>
+      'Namaz bildirimleri Odak ve Rahatsız Etmeyin modlarında da gelir';
+
+  @override
+  String get prayerAlertToggleLockedAudio => 'Ekran kilitliyken de çal';
+
+  @override
+  String get prayerAlertToggleQuiet => 'Ezanı ve Odağı duraklat';
+
+  @override
+  String get prayerAlertToggleQuietHint => 'Bildirimler yine gelir, sessizce';
+
+  @override
+  String get prayerAlertToggleBackground =>
+      'Huda arka planda çalışmaya devam etsin';
+
+  @override
+  String get prayerAlertToggleBackgroundHint =>
+      'Huda penceresi kapandıktan sonra ezan ve Odak için gerekli';
+
+  @override
+  String get prayerAlertToggleStartAtLogin => 'Oturum açılışında başlat';
 
   @override
   String get prayerAlertStyleAdhan => 'Ezan';
@@ -5515,6 +5836,9 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get prayerAlertStyleAdhanHint =>
       'Ezan çalar; ne kadar süreceğini Ses bölümünden seç';
+
+  @override
+  String get prayerAlertLengthOpening => 'Yalnızca başlangıç';
 
   @override
   String get prayerAlertStyleNotificationAdhan => 'Bildirimde ezan';
@@ -5526,6 +5850,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get prayerAlertStyleLiveAdhanHint =>
       'Huda ezanın tamamını çalar; Huda\'yı menü çubuğunda açık tut';
+
+  @override
+  String get prayerAlertStyleFullAlarm => 'Tam ezanlı alarm';
+
+  @override
+  String get prayerAlertStyleFullAlarmHint =>
+      'Ezanın tamamı alarm olarak, yerleşik kayıtla';
 
   @override
   String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 veya üstü gerekir';

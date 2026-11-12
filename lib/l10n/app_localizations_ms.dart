@@ -5520,8 +5520,334 @@ class AppLocalizationsMs extends AppLocalizations {
       'Huda memerlukan pemberitahuan untuk mengingatkan anda pada waktu yang anda pilih. Peranti anda akan bertanya seterusnya.';
 
   @override
+  String get prayerReadyAlarmTitle => 'Benarkan penggera solat';
+
+  @override
+  String get prayerReadyAlarmMessage =>
+      'Penggera Solat memainkan azan seperti penggera, walaupun dalam mod senyap. iPhone anda memerlukan kebenaran anda untuk itu.';
+
+  @override
+  String get prayerAlertTitle => 'Azan & peringatan';
+
+  @override
+  String get prayerAlertMasterTitle => 'Peringatan solat';
+
+  @override
+  String get prayerAlertMasterOff => 'Tiada peringatan pada waktu solat';
+
+  @override
+  String prayerAlertPrayersOn(int count) {
+    return '$count daripada 5 solat';
+  }
+
+  @override
+  String get prayerAlertSaving => 'Menyimpan…';
+
+  @override
+  String get prayerAlertSaved => 'Disimpan';
+
+  @override
+  String get prayerAlertNotSaved => 'Tidak disimpan';
+
+  @override
+  String get prayerAlertRetrying => 'Mencuba semula…';
+
+  @override
+  String get prayerAlertUndo => 'Buat asal';
+
+  @override
+  String get prayerAlertFailureCompanion =>
+      'Pembantu Windows Huda tidak berjalan, jadi azan tidak dapat ditetapkan. Mulakan pembantu bar tugas, kemudian cuba lagi.';
+
+  @override
+  String get prayerAlertFailureService =>
+      'Perkhidmatan latar belakang Huda tidak menjawab. Cuba lagi sebentar nanti.';
+
+  @override
+  String get prayerAlertFailureSchedule =>
+      'Tetapan baharu tidak dapat dijadualkan. Peringatan anda yang sebelumnya masih ditetapkan.';
+
+  @override
+  String get prayerAlertFailureUnknown =>
+      'Perubahan anda tidak dapat disimpan.';
+
+  @override
   String get prayerAlertStartupWarning =>
       'Disimpan, tetapi macOS tidak membenarkan Huda bermula semasa log masuk. Semak Item Log Masuk dalam Tetapan Sistem.';
+
+  @override
+  String get prayerAlertSectionStyle => 'Cara solat memberitahu anda';
+
+  @override
+  String get prayerAlertSectionSound => 'Bunyi';
+
+  @override
+  String get prayerAlertSectionPrayers => 'Setiap solat';
+
+  @override
+  String get prayerAlertSectionBefore => 'Sebelum solat';
+
+  @override
+  String get prayerAlertSectionFocus => 'Fokus';
+
+  @override
+  String get prayerAlertSectionMore => 'Lagi pilihan';
+
+  @override
+  String get prayerAlertStyleOff => 'Mati';
+
+  @override
+  String get prayerAlertStyleOffHint => 'Tiada peringatan untuk solat ini';
+
+  @override
+  String get prayerAlertStyleSilent => 'Pemberitahuan';
+
+  @override
+  String get prayerAlertStyleSilentHint => 'Pemberitahuan tanpa azan';
+
+  @override
+  String get prayerAlertStyleShort => 'Azan pendek';
+
+  @override
+  String get prayerAlertStyleShortHint => 'Pemberitahuan dengan permulaan azan';
+
+  @override
+  String get prayerAlertStyleFull => 'Azan penuh';
+
+  @override
+  String get prayerAlertStyleFullHint =>
+      'Azan dimainkan; anda boleh menghentikannya bila-bila masa';
+
+  @override
+  String get prayerAlertStyleAlarm => 'Penggera solat';
+
+  @override
+  String get prayerAlertStyleAlarmHint =>
+      'Berbunyi seperti penggera, walaupun dalam mod senyap';
+
+  @override
+  String get prayerAlertStyleFocus => 'Fokus';
+
+  @override
+  String get prayerAlertStyleFocusHint =>
+      'Detik tenang skrin penuh untuk berhenti bersolat';
+
+  @override
+  String get prayerAlertLengthWhole => 'Seluruh azan';
+
+  @override
+  String prayerAlertLengthSeconds(String seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String prayerAlertLengthMinutes(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get prayerAlertLengthCustom => 'Tersuai';
+
+  @override
+  String get prayerAlertFadeIn => 'Kuatkan perlahan-lahan';
+
+  @override
+  String get prayerAlertNone => 'Mati';
+
+  @override
+  String get prayerAlertSoundWhole => 'Dengar seluruh azan';
+
+  @override
+  String get prayerAlertDownloadNetwork =>
+      'Tiada sambungan internet. Cuba lagi apabila dalam talian.';
+
+  @override
+  String get prayerAlertDownloadServer =>
+      'Pelayan muat turun tidak tersedia sekarang. Cuba lagi kemudian.';
+
+  @override
+  String get prayerAlertDownloadIntegrity => 'Muat turun rosak. Cuba lagi.';
+
+  @override
+  String get prayerAlertDownloadStorage =>
+      'Storan tidak mencukupi. Kosongkan sedikit ruang dan cuba lagi.';
+
+  @override
+  String get prayerAlertSameAsAll => 'Sama seperti semua solat';
+
+  @override
+  String get prayerAlertCustom => 'Tersuai';
+
+  @override
+  String prayerAlertReset(String prayer) {
+    return 'Tetapkan semula $prayer kepada lalai';
+  }
+
+  @override
+  String prayerAlertMoreFor(String prayer) {
+    return 'Lagi untuk $prayer';
+  }
+
+  @override
+  String get prayerAlertDefault => 'Lalai';
+
+  @override
+  String get prayerAlertOn => 'Hidup';
+
+  @override
+  String prayerAlertBeforeMinutes(String minutes) {
+    return '$minutes min sebelum';
+  }
+
+  @override
+  String get prayerAlertBeforeHint => 'Peringatan lembut supaya anda bersedia';
+
+  @override
+  String get prayerAlertBeforeSound => 'Bunyi peringatan';
+
+  @override
+  String get prayerAlertBeforeSilent => 'Tiada bunyi';
+
+  @override
+  String get prayerAlertBeforeShort => 'Bunyi pendek';
+
+  @override
+  String get prayerAlertFallback => 'Apabila penggera tidak dapat ditetapkan';
+
+  @override
+  String get prayerAlertTestTitle => 'Hantar ujian';
+
+  @override
+  String get prayerAlertTestScheduled =>
+      'Ujian dihantar. Ia sepatutnya tiba dalam beberapa saat.';
+
+  @override
+  String get prayerAlertTestShown =>
+      'Ujian dipaparkan. Adakah anda mendengar dan melihatnya?';
+
+  @override
+  String get prayerAlertTestNotificationsOff =>
+      'Pemberitahuan Huda dimatikan, jadi ujian tidak dapat tiba.';
+
+  @override
+  String get prayerAlertTestExactOff =>
+      'Huda tidak dapat menetapkan penggera tepat masa, jadi peringatan mungkin lewat. Benarkan dahulu.';
+
+  @override
+  String get prayerAlertTestPrayerOff =>
+      'Peringatan dimatikan untuk solat ini.';
+
+  @override
+  String get prayerAlertTestAlarmPermission =>
+      'Benarkan penggera solat dahulu, kemudian cuba lagi.';
+
+  @override
+  String get prayerAlertTestServiceOff =>
+      'Pembantu latar belakang Huda tidak berjalan, jadi ujian tidak dapat dimainkan.';
+
+  @override
+  String get prayerAlertTestAudioMissing =>
+      'Rakaman yang dipilih tidak dapat dimainkan, jadi azan terbina dalam digunakan.';
+
+  @override
+  String get prayerAlertTestFailed => 'Ujian tidak dapat dihantar. Cuba lagi.';
+
+  @override
+  String get prayerAlertFocusDuration => 'Tempoh';
+
+  @override
+  String get prayerAlertFocusAudio => 'Mainkan azan semasa Fokus';
+
+  @override
+  String get prayerAlertFocusCommitment => 'Tidak boleh ditutup awal';
+
+  @override
+  String get prayerAlertFocusCommitmentHint =>
+      'Fokus tamat apabila masanya habis. Esc masih menutupnya semasa kecemasan.';
+
+  @override
+  String get prayerAlertFocusFullScreen => 'Penuhi skrin';
+
+  @override
+  String get prayerAlertSummaryOff => 'Peringatan solat dimatikan';
+
+  @override
+  String get prayerAlertSummaryMixed => 'Berbeza untuk sesetengah solat';
+
+  @override
+  String get prayerAlertStopAdhan => 'Hentikan azan';
+
+  @override
+  String get prayerAlertEndFocus => 'Tamatkan Fokus';
+
+  @override
+  String get prayerAlertBack => 'Kembali';
+
+  @override
+  String get prayerAlertClose => 'Tutup';
+
+  @override
+  String get prayerAlertNeedsCompanion =>
+      'Memerlukan Huda berjalan di latar belakang';
+
+  @override
+  String get prayerAlertToggleAlarmScreen => 'Skrin penggera';
+
+  @override
+  String get prayerAlertToggleAlarmScreenHint =>
+      'Memaparkan penggera skrin penuh apabila azan bermula';
+
+  @override
+  String get prayerAlertToggleFlip => 'Terbalikkan untuk henti';
+
+  @override
+  String get prayerAlertToggleFlipHint =>
+      'Telangkupkan telefon untuk menghentikan azan';
+
+  @override
+  String get prayerAlertToggleVibrate => 'Getar';
+
+  @override
+  String get prayerAlertToggleRinger => 'Ikut mod senyap';
+
+  @override
+  String get prayerAlertToggleRingerHint =>
+      'Tiada bunyi azan semasa telefon dalam mod senyap atau getar';
+
+  @override
+  String get prayerAlertToggleHeadset => 'Henti apabila fon kepala diputuskan';
+
+  @override
+  String get prayerAlertToggleMissed =>
+      'Tunjukkan solat yang terlepas semasa telefon dimatikan';
+
+  @override
+  String get prayerAlertToggleTimeSensitive => 'Sensitif Masa';
+
+  @override
+  String get prayerAlertToggleTimeSensitiveHint =>
+      'Peringatan solat menembusi Fokus dan Jangan Ganggu';
+
+  @override
+  String get prayerAlertToggleLockedAudio => 'Mainkan semasa skrin dikunci';
+
+  @override
+  String get prayerAlertToggleQuiet => 'Jeda azan dan Fokus';
+
+  @override
+  String get prayerAlertToggleQuietHint =>
+      'Pemberitahuan masih tiba, secara senyap';
+
+  @override
+  String get prayerAlertToggleBackground =>
+      'Biarkan Huda berjalan di latar belakang';
+
+  @override
+  String get prayerAlertToggleBackgroundHint =>
+      'Diperlukan untuk azan dan Fokus selepas tetingkap Huda ditutup';
+
+  @override
+  String get prayerAlertToggleStartAtLogin => 'Mula semasa log masuk';
 
   @override
   String get prayerAlertStyleAdhan => 'Azan';
@@ -5529,6 +5855,9 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get prayerAlertStyleAdhanHint =>
       'Azan dimainkan; pilih tempohnya di bawah Bunyi';
+
+  @override
+  String get prayerAlertLengthOpening => 'Permulaan sahaja';
 
   @override
   String get prayerAlertStyleNotificationAdhan => 'Azan dalam pemberitahuan';
@@ -5540,6 +5869,13 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get prayerAlertStyleLiveAdhanHint =>
       'Huda memainkan seluruh azan; biarkan Huda berjalan dalam bar menu';
+
+  @override
+  String get prayerAlertStyleFullAlarm => 'Penggera azan penuh';
+
+  @override
+  String get prayerAlertStyleFullAlarmHint =>
+      'Seluruh azan sebagai penggera, dengan rakaman terbina dalam';
 
   @override
   String get prayerAlertFullAlarmUnavailable =>

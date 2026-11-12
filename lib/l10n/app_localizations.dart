@@ -9984,11 +9984,581 @@ abstract class AppLocalizations {
   /// **'Huda needs notifications to remind you at the times you choose. Your device will ask you next.'**
   String get permissionExplainerNotificationsMessage;
 
+  /// No description provided for @prayerReadyAlarmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow prayer alarms'**
+  String get prayerReadyAlarmTitle;
+
+  /// No description provided for @prayerReadyAlarmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Alarm plays the adhan like an alarm, even in silent mode. Your iPhone needs your permission for that.'**
+  String get prayerReadyAlarmMessage;
+
+  /// Title of the prayer alert settings sheet and its summary card.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan & alerts'**
+  String get prayerAlertTitle;
+
+  /// No description provided for @prayerAlertMasterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts'**
+  String get prayerAlertMasterTitle;
+
+  /// No description provided for @prayerAlertMasterOff.
+  ///
+  /// In en, this message translates to:
+  /// **'No alerts at prayer times'**
+  String get prayerAlertMasterOff;
+
+  /// No description provided for @prayerAlertPrayersOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 5 prayers'**
+  String prayerAlertPrayersOn(int count);
+
+  /// Shown while changes made in the sheet are being applied.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get prayerAlertSaving;
+
+  /// No description provided for @prayerAlertSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get prayerAlertSaved;
+
+  /// No description provided for @prayerAlertNotSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Not saved'**
+  String get prayerAlertNotSaved;
+
+  /// No description provided for @prayerAlertRetrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Retrying…'**
+  String get prayerAlertRetrying;
+
+  /// No description provided for @prayerAlertUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get prayerAlertUndo;
+
+  /// No description provided for @prayerAlertFailureCompanion.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda\'s Windows helper isn\'t running, so the adhan can\'t be set. Start Huda\'s taskbar helper, then try again.'**
+  String get prayerAlertFailureCompanion;
+
+  /// No description provided for @prayerAlertFailureService.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda\'s background service isn\'t answering. Try again in a moment.'**
+  String get prayerAlertFailureService;
+
+  /// No description provided for @prayerAlertFailureSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'The new settings couldn\'t be scheduled. Your previous alerts are still set.'**
+  String get prayerAlertFailureSchedule;
+
+  /// No description provided for @prayerAlertFailureUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Your changes couldn\'t be saved.'**
+  String get prayerAlertFailureUnknown;
+
   /// No description provided for @prayerAlertStartupWarning.
   ///
   /// In en, this message translates to:
   /// **'Saved, but macOS didn\'t let Huda start at login. Check Login Items in System Settings.'**
   String get prayerAlertStartupWarning;
+
+  /// No description provided for @prayerAlertSectionStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'How prayers alert you'**
+  String get prayerAlertSectionStyle;
+
+  /// No description provided for @prayerAlertSectionSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get prayerAlertSectionSound;
+
+  /// No description provided for @prayerAlertSectionPrayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Each prayer'**
+  String get prayerAlertSectionPrayers;
+
+  /// No description provided for @prayerAlertSectionBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Before the prayer'**
+  String get prayerAlertSectionBefore;
+
+  /// No description provided for @prayerAlertSectionFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get prayerAlertSectionFocus;
+
+  /// No description provided for @prayerAlertSectionMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get prayerAlertSectionMore;
+
+  /// No description provided for @prayerAlertStyleOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get prayerAlertStyleOff;
+
+  /// No description provided for @prayerAlertStyleOffHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No alert for this prayer'**
+  String get prayerAlertStyleOffHint;
+
+  /// No description provided for @prayerAlertStyleSilent.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get prayerAlertStyleSilent;
+
+  /// No description provided for @prayerAlertStyleSilentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A notification without the adhan'**
+  String get prayerAlertStyleSilentHint;
+
+  /// No description provided for @prayerAlertStyleShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Short adhan'**
+  String get prayerAlertStyleShort;
+
+  /// No description provided for @prayerAlertStyleShortHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A notification with the opening of the adhan'**
+  String get prayerAlertStyleShortHint;
+
+  /// No description provided for @prayerAlertStyleFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full adhan'**
+  String get prayerAlertStyleFull;
+
+  /// No description provided for @prayerAlertStyleFullHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The adhan plays; you can stop it any time'**
+  String get prayerAlertStyleFullHint;
+
+  /// No description provided for @prayerAlertStyleAlarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alarm'**
+  String get prayerAlertStyleAlarm;
+
+  /// No description provided for @prayerAlertStyleAlarmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Rings like an alarm, even in silent mode'**
+  String get prayerAlertStyleAlarmHint;
+
+  /// No description provided for @prayerAlertStyleFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get prayerAlertStyleFocus;
+
+  /// No description provided for @prayerAlertStyleFocusHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A calm full-screen moment to pause for prayer'**
+  String get prayerAlertStyleFocusHint;
+
+  /// No description provided for @prayerAlertLengthWhole.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole adhan'**
+  String get prayerAlertLengthWhole;
+
+  /// No description provided for @prayerAlertLengthSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s'**
+  String prayerAlertLengthSeconds(String seconds);
+
+  /// No description provided for @prayerAlertLengthMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String prayerAlertLengthMinutes(String minutes);
+
+  /// No description provided for @prayerAlertLengthCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get prayerAlertLengthCustom;
+
+  /// No description provided for @prayerAlertFadeIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Fade in'**
+  String get prayerAlertFadeIn;
+
+  /// No description provided for @prayerAlertNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get prayerAlertNone;
+
+  /// No description provided for @prayerAlertSoundWhole.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen to the whole adhan'**
+  String get prayerAlertSoundWhole;
+
+  /// No description provided for @prayerAlertDownloadNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Try again when you\'re online.'**
+  String get prayerAlertDownloadNetwork;
+
+  /// No description provided for @prayerAlertDownloadServer.
+  ///
+  /// In en, this message translates to:
+  /// **'The download server isn\'t available right now. Try again later.'**
+  String get prayerAlertDownloadServer;
+
+  /// No description provided for @prayerAlertDownloadIntegrity.
+  ///
+  /// In en, this message translates to:
+  /// **'The download was damaged. Try again.'**
+  String get prayerAlertDownloadIntegrity;
+
+  /// No description provided for @prayerAlertDownloadStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough storage. Free up some space and try again.'**
+  String get prayerAlertDownloadStorage;
+
+  /// No description provided for @prayerAlertSameAsAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as all prayers'**
+  String get prayerAlertSameAsAll;
+
+  /// No description provided for @prayerAlertCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get prayerAlertCustom;
+
+  /// No description provided for @prayerAlertReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset {prayer} to the default'**
+  String prayerAlertReset(String prayer);
+
+  /// No description provided for @prayerAlertMoreFor.
+  ///
+  /// In en, this message translates to:
+  /// **'More for {prayer}'**
+  String prayerAlertMoreFor(String prayer);
+
+  /// No description provided for @prayerAlertDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get prayerAlertDefault;
+
+  /// No description provided for @prayerAlertOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get prayerAlertOn;
+
+  /// No description provided for @prayerAlertBeforeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min before'**
+  String prayerAlertBeforeMinutes(String minutes);
+
+  /// No description provided for @prayerAlertBeforeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle reminder so you can get ready'**
+  String get prayerAlertBeforeHint;
+
+  /// No description provided for @prayerAlertBeforeSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder sound'**
+  String get prayerAlertBeforeSound;
+
+  /// No description provided for @prayerAlertBeforeSilent.
+  ///
+  /// In en, this message translates to:
+  /// **'No sound'**
+  String get prayerAlertBeforeSilent;
+
+  /// No description provided for @prayerAlertBeforeShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Short sound'**
+  String get prayerAlertBeforeShort;
+
+  /// No description provided for @prayerAlertFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'When an alarm can\'t be set'**
+  String get prayerAlertFallback;
+
+  /// No description provided for @prayerAlertTestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a test'**
+  String get prayerAlertTestTitle;
+
+  /// No description provided for @prayerAlertTestScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Test sent. It should arrive in a few seconds.'**
+  String get prayerAlertTestScheduled;
+
+  /// No description provided for @prayerAlertTestShown.
+  ///
+  /// In en, this message translates to:
+  /// **'Test shown. Did you hear and see it?'**
+  String get prayerAlertTestShown;
+
+  /// No description provided for @prayerAlertTestNotificationsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for Huda, so the test can\'t arrive.'**
+  String get prayerAlertTestNotificationsOff;
+
+  /// No description provided for @prayerAlertTestExactOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda can\'t set on-time alarms, so alerts may be late. Allow them first.'**
+  String get prayerAlertTestExactOff;
+
+  /// No description provided for @prayerAlertTestPrayerOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts are off for this prayer.'**
+  String get prayerAlertTestPrayerOff;
+
+  /// No description provided for @prayerAlertTestAlarmPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow prayer alarms first, then try again.'**
+  String get prayerAlertTestAlarmPermission;
+
+  /// No description provided for @prayerAlertTestServiceOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda\'s background helper isn\'t running, so the test can\'t play.'**
+  String get prayerAlertTestServiceOff;
+
+  /// No description provided for @prayerAlertTestAudioMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'The chosen recording couldn\'t play, so the built-in adhan was used.'**
+  String get prayerAlertTestAudioMissing;
+
+  /// No description provided for @prayerAlertTestFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The test couldn\'t be sent. Try again.'**
+  String get prayerAlertTestFailed;
+
+  /// No description provided for @prayerAlertFocusDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Lasts'**
+  String get prayerAlertFocusDuration;
+
+  /// No description provided for @prayerAlertFocusAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the adhan during Focus'**
+  String get prayerAlertFocusAudio;
+
+  /// No description provided for @prayerAlertFocusCommitment.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t be closed early'**
+  String get prayerAlertFocusCommitment;
+
+  /// No description provided for @prayerAlertFocusCommitmentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus ends when its time is up. Esc still closes it in an emergency.'**
+  String get prayerAlertFocusCommitmentHint;
+
+  /// No description provided for @prayerAlertFocusFullScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill the screen'**
+  String get prayerAlertFocusFullScreen;
+
+  /// No description provided for @prayerAlertSummaryOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts are off'**
+  String get prayerAlertSummaryOff;
+
+  /// No description provided for @prayerAlertSummaryMixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Different for some prayers'**
+  String get prayerAlertSummaryMixed;
+
+  /// No description provided for @prayerAlertStopAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop adhan'**
+  String get prayerAlertStopAdhan;
+
+  /// No description provided for @prayerAlertEndFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'End Focus'**
+  String get prayerAlertEndFocus;
+
+  /// No description provided for @prayerAlertBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get prayerAlertBack;
+
+  /// No description provided for @prayerAlertClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get prayerAlertClose;
+
+  /// No description provided for @prayerAlertNeedsCompanion.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Huda running in the background'**
+  String get prayerAlertNeedsCompanion;
+
+  /// No description provided for @prayerAlertToggleAlarmScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm screen'**
+  String get prayerAlertToggleAlarmScreen;
+
+  /// No description provided for @prayerAlertToggleAlarmScreenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows a full-screen alarm when the adhan starts'**
+  String get prayerAlertToggleAlarmScreenHint;
+
+  /// No description provided for @prayerAlertToggleFlip.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip to stop'**
+  String get prayerAlertToggleFlip;
+
+  /// No description provided for @prayerAlertToggleFlipHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the phone face down to stop the adhan'**
+  String get prayerAlertToggleFlipHint;
+
+  /// No description provided for @prayerAlertToggleVibrate.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrate'**
+  String get prayerAlertToggleVibrate;
+
+  /// No description provided for @prayerAlertToggleRinger.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow silent mode'**
+  String get prayerAlertToggleRinger;
+
+  /// No description provided for @prayerAlertToggleRingerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No adhan sound while the phone is on silent or vibrate'**
+  String get prayerAlertToggleRingerHint;
+
+  /// No description provided for @prayerAlertToggleHeadset.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop when headphones disconnect'**
+  String get prayerAlertToggleHeadset;
+
+  /// No description provided for @prayerAlertToggleMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Show prayers missed while the phone was off'**
+  String get prayerAlertToggleMissed;
+
+  /// No description provided for @prayerAlertToggleTimeSensitive.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Sensitive'**
+  String get prayerAlertToggleTimeSensitive;
+
+  /// No description provided for @prayerAlertToggleTimeSensitiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts come through Focus and Do Not Disturb'**
+  String get prayerAlertToggleTimeSensitiveHint;
+
+  /// No description provided for @prayerAlertToggleLockedAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Play while the screen is locked'**
+  String get prayerAlertToggleLockedAudio;
+
+  /// No description provided for @prayerAlertToggleQuiet.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause the adhan and Focus'**
+  String get prayerAlertToggleQuiet;
+
+  /// No description provided for @prayerAlertToggleQuietHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications still arrive, silently'**
+  String get prayerAlertToggleQuietHint;
+
+  /// No description provided for @prayerAlertToggleBackground.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Huda running in the background'**
+  String get prayerAlertToggleBackground;
+
+  /// No description provided for @prayerAlertToggleBackgroundHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Needed for the adhan and Focus after Huda\'s window is closed'**
+  String get prayerAlertToggleBackgroundHint;
+
+  /// No description provided for @prayerAlertToggleStartAtLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Start at login'**
+  String get prayerAlertToggleStartAtLogin;
 
   /// Android: one adhan style; how long it plays is chosen under Sound.
   ///
@@ -10001,6 +10571,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The adhan plays; choose how long under Sound'**
   String get prayerAlertStyleAdhanHint;
+
+  /// No description provided for @prayerAlertLengthOpening.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening only'**
+  String get prayerAlertLengthOpening;
 
   /// macOS: the notification's own sound, up to 30 seconds, works even when Huda is closed.
   ///
@@ -10019,6 +10595,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Huda plays the whole adhan; keep Huda running in the menu bar'**
   String get prayerAlertStyleLiveAdhanHint;
+
+  /// iOS 26.1+: an AlarmKit alarm whose sound is the whole built-in adhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Full adhan alarm'**
+  String get prayerAlertStyleFullAlarm;
+
+  /// No description provided for @prayerAlertStyleFullAlarmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The whole adhan as an alarm, with the built-in recording'**
+  String get prayerAlertStyleFullAlarmHint;
 
   /// No description provided for @prayerAlertFullAlarmUnavailable.
   ///

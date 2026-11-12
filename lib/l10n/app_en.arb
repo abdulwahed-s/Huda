@@ -5624,18 +5624,167 @@
   },
   "permissionExplainerNotificationsTitle": "Allow notifications",
   "permissionExplainerNotificationsMessage": "Huda needs notifications to remind you at the times you choose. Your device will ask you next.",
+  "prayerReadyAlarmTitle": "Allow prayer alarms",
+  "prayerReadyAlarmMessage": "Prayer Alarm plays the adhan like an alarm, even in silent mode. Your iPhone needs your permission for that.",
+  "prayerAlertTitle": "Adhan & alerts",
+  "@prayerAlertTitle": {
+    "description": "Title of the prayer alert settings sheet and its summary card."
+  },
+  "prayerAlertMasterTitle": "Prayer alerts",
+  "prayerAlertMasterOff": "No alerts at prayer times",
+  "prayerAlertPrayersOn": "{count} of 5 prayers",
+  "@prayerAlertPrayersOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prayerAlertSaving": "Saving…",
+  "@prayerAlertSaving": {
+    "description": "Shown while changes made in the sheet are being applied."
+  },
+  "prayerAlertSaved": "Saved",
+  "prayerAlertNotSaved": "Not saved",
+  "prayerAlertRetrying": "Retrying…",
+  "prayerAlertUndo": "Undo",
+  "prayerAlertFailureCompanion": "Huda's Windows helper isn't running, so the adhan can't be set. Start Huda's taskbar helper, then try again.",
+  "prayerAlertFailureService": "Huda's background service isn't answering. Try again in a moment.",
+  "prayerAlertFailureSchedule": "The new settings couldn't be scheduled. Your previous alerts are still set.",
+  "prayerAlertFailureUnknown": "Your changes couldn't be saved.",
   "prayerAlertStartupWarning": "Saved, but macOS didn't let Huda start at login. Check Login Items in System Settings.",
+  "prayerAlertSectionStyle": "How prayers alert you",
+  "prayerAlertSectionSound": "Sound",
+  "prayerAlertSectionPrayers": "Each prayer",
+  "prayerAlertSectionBefore": "Before the prayer",
+  "prayerAlertSectionFocus": "Focus",
+  "prayerAlertSectionMore": "More options",
+  "prayerAlertStyleOff": "Off",
+  "prayerAlertStyleOffHint": "No alert for this prayer",
+  "prayerAlertStyleSilent": "Notification",
+  "prayerAlertStyleSilentHint": "A notification without the adhan",
+  "prayerAlertStyleShort": "Short adhan",
+  "prayerAlertStyleShortHint": "A notification with the opening of the adhan",
+  "prayerAlertStyleFull": "Full adhan",
+  "prayerAlertStyleFullHint": "The adhan plays; you can stop it any time",
+  "prayerAlertStyleAlarm": "Prayer alarm",
+  "prayerAlertStyleAlarmHint": "Rings like an alarm, even in silent mode",
+  "prayerAlertStyleFocus": "Focus",
+  "prayerAlertStyleFocusHint": "A calm full-screen moment to pause for prayer",
+  "prayerAlertLengthWhole": "Whole adhan",
+  "prayerAlertLengthSeconds": "{seconds} s",
+  "@prayerAlertLengthSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertLengthMinutes": "{minutes} min",
+  "@prayerAlertLengthMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertLengthCustom": "Custom",
+  "prayerAlertFadeIn": "Fade in",
+  "prayerAlertNone": "Off",
+  "prayerAlertSoundWhole": "Listen to the whole adhan",
+  "prayerAlertDownloadNetwork": "No internet connection. Try again when you're online.",
+  "prayerAlertDownloadServer": "The download server isn't available right now. Try again later.",
+  "prayerAlertDownloadIntegrity": "The download was damaged. Try again.",
+  "prayerAlertDownloadStorage": "Not enough storage. Free up some space and try again.",
+  "prayerAlertSameAsAll": "Same as all prayers",
+  "prayerAlertCustom": "Custom",
+  "prayerAlertReset": "Reset {prayer} to the default",
+  "@prayerAlertReset": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertMoreFor": "More for {prayer}",
+  "@prayerAlertMoreFor": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertDefault": "Default",
+  "prayerAlertOn": "On",
+  "prayerAlertBeforeMinutes": "{minutes} min before",
+  "@prayerAlertBeforeMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertBeforeHint": "A gentle reminder so you can get ready",
+  "prayerAlertBeforeSound": "Reminder sound",
+  "prayerAlertBeforeSilent": "No sound",
+  "prayerAlertBeforeShort": "Short sound",
+  "prayerAlertFallback": "When an alarm can't be set",
+  "prayerAlertTestTitle": "Send a test",
+  "prayerAlertTestScheduled": "Test sent. It should arrive in a few seconds.",
+  "prayerAlertTestShown": "Test shown. Did you hear and see it?",
+  "prayerAlertTestNotificationsOff": "Notifications are off for Huda, so the test can't arrive.",
+  "prayerAlertTestExactOff": "Huda can't set on-time alarms, so alerts may be late. Allow them first.",
+  "prayerAlertTestPrayerOff": "Alerts are off for this prayer.",
+  "prayerAlertTestAlarmPermission": "Allow prayer alarms first, then try again.",
+  "prayerAlertTestServiceOff": "Huda's background helper isn't running, so the test can't play.",
+  "prayerAlertTestAudioMissing": "The chosen recording couldn't play, so the built-in adhan was used.",
+  "prayerAlertTestFailed": "The test couldn't be sent. Try again.",
+  "prayerAlertFocusDuration": "Lasts",
+  "prayerAlertFocusAudio": "Play the adhan during Focus",
+  "prayerAlertFocusCommitment": "Can't be closed early",
+  "prayerAlertFocusCommitmentHint": "Focus ends when its time is up. Esc still closes it in an emergency.",
+  "prayerAlertFocusFullScreen": "Fill the screen",
+  "prayerAlertSummaryOff": "Prayer alerts are off",
+  "prayerAlertSummaryMixed": "Different for some prayers",
+  "prayerAlertStopAdhan": "Stop adhan",
+  "prayerAlertEndFocus": "End Focus",
+  "prayerAlertBack": "Back",
+  "prayerAlertClose": "Close",
+  "prayerAlertNeedsCompanion": "Needs Huda running in the background",
+  "prayerAlertToggleAlarmScreen": "Alarm screen",
+  "prayerAlertToggleAlarmScreenHint": "Shows a full-screen alarm when the adhan starts",
+  "prayerAlertToggleFlip": "Flip to stop",
+  "prayerAlertToggleFlipHint": "Turn the phone face down to stop the adhan",
+  "prayerAlertToggleVibrate": "Vibrate",
+  "prayerAlertToggleRinger": "Follow silent mode",
+  "prayerAlertToggleRingerHint": "No adhan sound while the phone is on silent or vibrate",
+  "prayerAlertToggleHeadset": "Stop when headphones disconnect",
+  "prayerAlertToggleMissed": "Show prayers missed while the phone was off",
+  "prayerAlertToggleTimeSensitive": "Time Sensitive",
+  "prayerAlertToggleTimeSensitiveHint": "Prayer alerts come through Focus and Do Not Disturb",
+  "prayerAlertToggleLockedAudio": "Play while the screen is locked",
+  "prayerAlertToggleQuiet": "Pause the adhan and Focus",
+  "prayerAlertToggleQuietHint": "Notifications still arrive, silently",
+  "prayerAlertToggleBackground": "Keep Huda running in the background",
+  "prayerAlertToggleBackgroundHint": "Needed for the adhan and Focus after Huda's window is closed",
+  "prayerAlertToggleStartAtLogin": "Start at login",
   "prayerAlertStyleAdhan": "Adhan",
   "@prayerAlertStyleAdhan": {
     "description": "Android: one adhan style; how long it plays is chosen under Sound."
   },
   "prayerAlertStyleAdhanHint": "The adhan plays; choose how long under Sound",
+  "prayerAlertLengthOpening": "Opening only",
   "prayerAlertStyleNotificationAdhan": "Adhan in the notification",
   "@prayerAlertStyleNotificationAdhan": {
     "description": "macOS: the notification's own sound, up to 30 seconds, works even when Huda is closed."
   },
   "prayerAlertStyleNotificationAdhanHint": "Up to 30 seconds with the notification; works even when Huda is closed",
   "prayerAlertStyleLiveAdhanHint": "Huda plays the whole adhan; keep Huda running in the menu bar",
+  "prayerAlertStyleFullAlarm": "Full adhan alarm",
+  "@prayerAlertStyleFullAlarm": {
+    "description": "iOS 26.1+: an AlarmKit alarm whose sound is the whole built-in adhan."
+  },
+  "prayerAlertStyleFullAlarmHint": "The whole adhan as an alarm, with the built-in recording",
   "prayerAlertFullAlarmUnavailable": "Needs iOS 26.1 or later",
   "prayerCountdownTitle": "Prayer countdown",
   "@prayerCountdownTitle": {

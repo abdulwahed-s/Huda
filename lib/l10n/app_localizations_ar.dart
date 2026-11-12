@@ -5448,8 +5448,326 @@ class AppLocalizationsAr extends AppLocalizations {
       'يحتاج هدى إلى الإشعارات ليذكّرك في الأوقات التي تختارها. سيطلب منك جهازك الإذن بعد ذلك.';
 
   @override
+  String get prayerReadyAlarmTitle => 'السماح بمنبّهات الصلاة';
+
+  @override
+  String get prayerReadyAlarmMessage =>
+      'يشغّل منبّه الصلاة الأذان كمنبّه حتى في الوضع الصامت، ويحتاج iPhone إلى إذنك لذلك.';
+
+  @override
+  String get prayerAlertTitle => 'الأذان والتنبيهات';
+
+  @override
+  String get prayerAlertMasterTitle => 'تنبيهات الصلاة';
+
+  @override
+  String get prayerAlertMasterOff => 'لا تنبيهات في أوقات الصلاة';
+
+  @override
+  String prayerAlertPrayersOn(int count) {
+    return '$count من 5 صلوات';
+  }
+
+  @override
+  String get prayerAlertSaving => 'جارٍ الحفظ…';
+
+  @override
+  String get prayerAlertSaved => 'تم الحفظ';
+
+  @override
+  String get prayerAlertNotSaved => 'لم يُحفظ';
+
+  @override
+  String get prayerAlertRetrying => 'جارٍ إعادة المحاولة…';
+
+  @override
+  String get prayerAlertUndo => 'تراجع';
+
+  @override
+  String get prayerAlertFailureCompanion =>
+      'مساعد هدى في Windows لا يعمل، لذا لا يمكن ضبط الأذان. شغّل مساعد شريط المهام ثم حاول مجددًا.';
+
+  @override
+  String get prayerAlertFailureService =>
+      'خدمة هدى في الخلفية لا تستجيب. حاول مجددًا بعد لحظات.';
+
+  @override
+  String get prayerAlertFailureSchedule =>
+      'تعذّرت جدولة الإعدادات الجديدة. تنبيهاتك السابقة ما زالت مضبوطة.';
+
+  @override
+  String get prayerAlertFailureUnknown => 'تعذّر حفظ تغييراتك.';
+
+  @override
   String get prayerAlertStartupWarning =>
       'تم الحفظ، لكن macOS لم يسمح لهدى بالعمل عند تسجيل الدخول. تحقّق من «عناصر تسجيل الدخول» في إعدادات النظام.';
+
+  @override
+  String get prayerAlertSectionStyle => 'طريقة تنبيهك بالصلاة';
+
+  @override
+  String get prayerAlertSectionSound => 'الصوت';
+
+  @override
+  String get prayerAlertSectionPrayers => 'كل صلاة';
+
+  @override
+  String get prayerAlertSectionBefore => 'قبل الصلاة';
+
+  @override
+  String get prayerAlertSectionFocus => 'وضع التركيز';
+
+  @override
+  String get prayerAlertSectionMore => 'خيارات أخرى';
+
+  @override
+  String get prayerAlertStyleOff => 'إيقاف';
+
+  @override
+  String get prayerAlertStyleOffHint => 'لا تنبيه لهذه الصلاة';
+
+  @override
+  String get prayerAlertStyleSilent => 'إشعار';
+
+  @override
+  String get prayerAlertStyleSilentHint => 'إشعار بدون أذان';
+
+  @override
+  String get prayerAlertStyleShort => 'أذان قصير';
+
+  @override
+  String get prayerAlertStyleShortHint => 'إشعار مع مطلع الأذان';
+
+  @override
+  String get prayerAlertStyleFull => 'أذان كامل';
+
+  @override
+  String get prayerAlertStyleFullHint =>
+      'يُشغَّل الأذان، ويمكنك إيقافه متى شئت';
+
+  @override
+  String get prayerAlertStyleAlarm => 'منبّه الصلاة';
+
+  @override
+  String get prayerAlertStyleAlarmHint => 'يرنّ كالمنبّه حتى في الوضع الصامت';
+
+  @override
+  String get prayerAlertStyleFocus => 'تركيز';
+
+  @override
+  String get prayerAlertStyleFocusHint =>
+      'لحظة هادئة بملء الشاشة للتوقف من أجل الصلاة';
+
+  @override
+  String get prayerAlertLengthWhole => 'الأذان كاملًا';
+
+  @override
+  String prayerAlertLengthSeconds(String seconds) {
+    return '$seconds ث';
+  }
+
+  @override
+  String prayerAlertLengthMinutes(String minutes) {
+    return '$minutes د';
+  }
+
+  @override
+  String get prayerAlertLengthCustom => 'مخصّص';
+
+  @override
+  String get prayerAlertFadeIn => 'رفع الصوت تدريجيًا';
+
+  @override
+  String get prayerAlertNone => 'إيقاف';
+
+  @override
+  String get prayerAlertSoundWhole => 'الاستماع إلى الأذان كاملًا';
+
+  @override
+  String get prayerAlertDownloadNetwork =>
+      'لا يوجد اتصال بالإنترنت. حاول مجددًا عند الاتصال.';
+
+  @override
+  String get prayerAlertDownloadServer =>
+      'خادم التنزيل غير متاح حاليًا. حاول لاحقًا.';
+
+  @override
+  String get prayerAlertDownloadIntegrity => 'التنزيل تالف. حاول مجددًا.';
+
+  @override
+  String get prayerAlertDownloadStorage =>
+      'المساحة غير كافية. وفّر بعض المساحة ثم حاول مجددًا.';
+
+  @override
+  String get prayerAlertSameAsAll => 'مثل باقي الصلوات';
+
+  @override
+  String get prayerAlertCustom => 'مخصّص';
+
+  @override
+  String prayerAlertReset(String prayer) {
+    return 'إعادة $prayer إلى الافتراضي';
+  }
+
+  @override
+  String prayerAlertMoreFor(String prayer) {
+    return 'المزيد لصلاة $prayer';
+  }
+
+  @override
+  String get prayerAlertDefault => 'افتراضي';
+
+  @override
+  String get prayerAlertOn => 'تشغيل';
+
+  @override
+  String prayerAlertBeforeMinutes(String minutes) {
+    return 'قبل $minutes د';
+  }
+
+  @override
+  String get prayerAlertBeforeHint => 'تذكير لطيف لتستعدّ';
+
+  @override
+  String get prayerAlertBeforeSound => 'صوت التذكير';
+
+  @override
+  String get prayerAlertBeforeSilent => 'بدون صوت';
+
+  @override
+  String get prayerAlertBeforeShort => 'صوت قصير';
+
+  @override
+  String get prayerAlertFallback => 'عندما يتعذّر ضبط المنبّه';
+
+  @override
+  String get prayerAlertTestTitle => 'إرسال تجربة';
+
+  @override
+  String get prayerAlertTestScheduled =>
+      'أُرسلت التجربة. يُفترض أن تصل خلال ثوانٍ.';
+
+  @override
+  String get prayerAlertTestShown => 'ظهرت التجربة. هل سمعتها ورأيتها؟';
+
+  @override
+  String get prayerAlertTestNotificationsOff =>
+      'الإشعارات متوقفة لهدى، لذا لن تصل التجربة.';
+
+  @override
+  String get prayerAlertTestExactOff =>
+      'لا يستطيع هدى ضبط منبّهات دقيقة، لذا قد تتأخر التنبيهات. اسمح بها أولًا.';
+
+  @override
+  String get prayerAlertTestPrayerOff => 'التنبيهات متوقفة لهذه الصلاة.';
+
+  @override
+  String get prayerAlertTestAlarmPermission =>
+      'اسمح بمنبّهات الصلاة أولًا ثم حاول مجددًا.';
+
+  @override
+  String get prayerAlertTestServiceOff =>
+      'مساعد هدى في الخلفية لا يعمل، لذا لا يمكن تشغيل التجربة.';
+
+  @override
+  String get prayerAlertTestAudioMissing =>
+      'تعذّر تشغيل التسجيل المختار، فاستُخدم الأذان المدمج.';
+
+  @override
+  String get prayerAlertTestFailed => 'تعذّر إرسال التجربة. حاول مجددًا.';
+
+  @override
+  String get prayerAlertFocusDuration => 'المدة';
+
+  @override
+  String get prayerAlertFocusAudio => 'تشغيل الأذان أثناء التركيز';
+
+  @override
+  String get prayerAlertFocusCommitment => 'لا يمكن إغلاقه مبكرًا';
+
+  @override
+  String get prayerAlertFocusCommitmentHint =>
+      'ينتهي التركيز عند انتهاء وقته. يبقى زر Esc للإغلاق في الطوارئ.';
+
+  @override
+  String get prayerAlertFocusFullScreen => 'ملء الشاشة';
+
+  @override
+  String get prayerAlertSummaryOff => 'تنبيهات الصلاة متوقفة';
+
+  @override
+  String get prayerAlertSummaryMixed => 'مختلف لبعض الصلوات';
+
+  @override
+  String get prayerAlertStopAdhan => 'إيقاف الأذان';
+
+  @override
+  String get prayerAlertEndFocus => 'إنهاء التركيز';
+
+  @override
+  String get prayerAlertBack => 'رجوع';
+
+  @override
+  String get prayerAlertClose => 'إغلاق';
+
+  @override
+  String get prayerAlertNeedsCompanion => 'يتطلّب أن يعمل هدى في الخلفية';
+
+  @override
+  String get prayerAlertToggleAlarmScreen => 'شاشة المنبّه';
+
+  @override
+  String get prayerAlertToggleAlarmScreenHint =>
+      'يُظهر منبّهًا بملء الشاشة عند بدء الأذان';
+
+  @override
+  String get prayerAlertToggleFlip => 'اقلب الهاتف للإيقاف';
+
+  @override
+  String get prayerAlertToggleFlipHint => 'اقلب الهاتف على وجهه لإيقاف الأذان';
+
+  @override
+  String get prayerAlertToggleVibrate => 'اهتزاز';
+
+  @override
+  String get prayerAlertToggleRinger => 'اتّباع الوضع الصامت';
+
+  @override
+  String get prayerAlertToggleRingerHint =>
+      'لا صوت للأذان عندما يكون الهاتف صامتًا أو على الاهتزاز';
+
+  @override
+  String get prayerAlertToggleHeadset => 'الإيقاف عند فصل السمّاعات';
+
+  @override
+  String get prayerAlertToggleMissed =>
+      'إظهار الصلوات الفائتة أثناء إغلاق الهاتف';
+
+  @override
+  String get prayerAlertToggleTimeSensitive => 'حسّاس للوقت';
+
+  @override
+  String get prayerAlertToggleTimeSensitiveHint =>
+      'تصل تنبيهات الصلاة رغم وضع التركيز وعدم الإزعاج';
+
+  @override
+  String get prayerAlertToggleLockedAudio => 'التشغيل أثناء قفل الشاشة';
+
+  @override
+  String get prayerAlertToggleQuiet => 'إيقاف الأذان والتركيز مؤقتًا';
+
+  @override
+  String get prayerAlertToggleQuietHint => 'تستمر الإشعارات بالوصول بصمت';
+
+  @override
+  String get prayerAlertToggleBackground => 'إبقاء هدى يعمل في الخلفية';
+
+  @override
+  String get prayerAlertToggleBackgroundHint =>
+      'ضروري للأذان والتركيز بعد إغلاق نافذة هدى';
+
+  @override
+  String get prayerAlertToggleStartAtLogin => 'التشغيل عند تسجيل الدخول';
 
   @override
   String get prayerAlertStyleAdhan => 'الأذان';
@@ -5457,6 +5775,9 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get prayerAlertStyleAdhanHint =>
       'يُشغَّل الأذان؛ اختر مدته من قسم الصوت';
+
+  @override
+  String get prayerAlertLengthOpening => 'المطلع فقط';
 
   @override
   String get prayerAlertStyleNotificationAdhan => 'الأذان مع الإشعار';
@@ -5468,6 +5789,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get prayerAlertStyleLiveAdhanHint =>
       'يشغّل هدى الأذان كاملًا؛ أبقِ هدى يعمل في شريط القوائم';
+
+  @override
+  String get prayerAlertStyleFullAlarm => 'منبّه بالأذان الكامل';
+
+  @override
+  String get prayerAlertStyleFullAlarmHint =>
+      'الأذان كاملًا كمنبّه، بالتسجيل المدمج';
 
   @override
   String get prayerAlertFullAlarmUnavailable => 'يتطلب iOS 26.1 أو أحدث';

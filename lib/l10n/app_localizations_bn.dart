@@ -5509,8 +5509,332 @@ class AppLocalizationsBn extends AppLocalizations {
       'আপনার বেছে নেওয়া সময়ে মনে করিয়ে দিতে হুদার বিজ্ঞপ্তি প্রয়োজন। এরপর আপনার ডিভাইস অনুমতি চাইবে।';
 
   @override
+  String get prayerReadyAlarmTitle => 'নামাজের অ্যালার্মের অনুমতি দিন';
+
+  @override
+  String get prayerReadyAlarmMessage =>
+      'নামাজের অ্যালার্ম সাইলেন্ট মোডেও অ্যালার্মের মতো আজান বাজায়। এর জন্য আপনার iPhone-এর অনুমতি প্রয়োজন।';
+
+  @override
+  String get prayerAlertTitle => 'আজান ও সতর্কতা';
+
+  @override
+  String get prayerAlertMasterTitle => 'নামাজের সতর্কতা';
+
+  @override
+  String get prayerAlertMasterOff => 'নামাজের সময়ে কোনো সতর্কতা নেই';
+
+  @override
+  String prayerAlertPrayersOn(int count) {
+    return '৫টির মধ্যে $countটি নামাজ';
+  }
+
+  @override
+  String get prayerAlertSaving => 'সংরক্ষণ হচ্ছে…';
+
+  @override
+  String get prayerAlertSaved => 'সংরক্ষিত';
+
+  @override
+  String get prayerAlertNotSaved => 'সংরক্ষিত হয়নি';
+
+  @override
+  String get prayerAlertRetrying => 'আবার চেষ্টা হচ্ছে…';
+
+  @override
+  String get prayerAlertUndo => 'পূর্বাবস্থায় ফেরান';
+
+  @override
+  String get prayerAlertFailureCompanion =>
+      'হুদার Windows সহায়ক চলছে না, তাই আজান সেট করা যাচ্ছে না। টাস্কবার সহায়ক চালু করে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertFailureService =>
+      'হুদার ব্যাকগ্রাউন্ড সার্ভিস সাড়া দিচ্ছে না। একটু পরে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertFailureSchedule =>
+      'নতুন সেটিংস নির্ধারণ করা যায়নি। আপনার আগের সতর্কতাগুলো এখনও সেট আছে।';
+
+  @override
+  String get prayerAlertFailureUnknown =>
+      'আপনার পরিবর্তনগুলো সংরক্ষণ করা যায়নি।';
+
+  @override
   String get prayerAlertStartupWarning =>
       'সংরক্ষিত হয়েছে, কিন্তু macOS লগইনের সময় হুদা চালু হতে দেয়নি। সিস্টেম সেটিংসে লগইন আইটেম দেখুন।';
+
+  @override
+  String get prayerAlertSectionStyle => 'নামাজ যেভাবে আপনাকে জানাবে';
+
+  @override
+  String get prayerAlertSectionSound => 'শব্দ';
+
+  @override
+  String get prayerAlertSectionPrayers => 'প্রতিটি নামাজ';
+
+  @override
+  String get prayerAlertSectionBefore => 'নামাজের আগে';
+
+  @override
+  String get prayerAlertSectionFocus => 'ফোকাস';
+
+  @override
+  String get prayerAlertSectionMore => 'আরও বিকল্প';
+
+  @override
+  String get prayerAlertStyleOff => 'বন্ধ';
+
+  @override
+  String get prayerAlertStyleOffHint => 'এই নামাজের জন্য কোনো সতর্কতা নেই';
+
+  @override
+  String get prayerAlertStyleSilent => 'বিজ্ঞপ্তি';
+
+  @override
+  String get prayerAlertStyleSilentHint => 'আজান ছাড়া একটি বিজ্ঞপ্তি';
+
+  @override
+  String get prayerAlertStyleShort => 'সংক্ষিপ্ত আজান';
+
+  @override
+  String get prayerAlertStyleShortHint => 'আজানের শুরুর অংশসহ একটি বিজ্ঞপ্তি';
+
+  @override
+  String get prayerAlertStyleFull => 'সম্পূর্ণ আজান';
+
+  @override
+  String get prayerAlertStyleFullHint =>
+      'আজান বাজবে; যেকোনো সময় থামাতে পারবেন';
+
+  @override
+  String get prayerAlertStyleAlarm => 'নামাজের অ্যালার্ম';
+
+  @override
+  String get prayerAlertStyleAlarmHint => 'সাইলেন্ট মোডেও অ্যালার্মের মতো বাজে';
+
+  @override
+  String get prayerAlertStyleFocus => 'ফোকাস';
+
+  @override
+  String get prayerAlertStyleFocusHint =>
+      'নামাজের জন্য থামতে একটি শান্ত পূর্ণ-স্ক্রিন মুহূর্ত';
+
+  @override
+  String get prayerAlertLengthWhole => 'পুরো আজান';
+
+  @override
+  String prayerAlertLengthSeconds(String seconds) {
+    return '$seconds সে';
+  }
+
+  @override
+  String prayerAlertLengthMinutes(String minutes) {
+    return '$minutes মিনিট';
+  }
+
+  @override
+  String get prayerAlertLengthCustom => 'নিজস্ব';
+
+  @override
+  String get prayerAlertFadeIn => 'ধীরে ধীরে শব্দ বাড়ান';
+
+  @override
+  String get prayerAlertNone => 'বন্ধ';
+
+  @override
+  String get prayerAlertSoundWhole => 'পুরো আজান শুনুন';
+
+  @override
+  String get prayerAlertDownloadNetwork =>
+      'ইন্টারনেট সংযোগ নেই। অনলাইনে এলে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertDownloadServer =>
+      'ডাউনলোড সার্ভার এখন পাওয়া যাচ্ছে না। পরে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertDownloadIntegrity =>
+      'ডাউনলোডটি নষ্ট হয়ে গেছে। আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertDownloadStorage =>
+      'পর্যাপ্ত জায়গা নেই। কিছু জায়গা খালি করে আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertSameAsAll => 'সব নামাজের মতো';
+
+  @override
+  String get prayerAlertCustom => 'নিজস্ব';
+
+  @override
+  String prayerAlertReset(String prayer) {
+    return '$prayer ডিফল্টে ফিরিয়ে আনুন';
+  }
+
+  @override
+  String prayerAlertMoreFor(String prayer) {
+    return '$prayer-এর জন্য আরও';
+  }
+
+  @override
+  String get prayerAlertDefault => 'ডিফল্ট';
+
+  @override
+  String get prayerAlertOn => 'চালু';
+
+  @override
+  String prayerAlertBeforeMinutes(String minutes) {
+    return '$minutes মিনিট আগে';
+  }
+
+  @override
+  String get prayerAlertBeforeHint =>
+      'প্রস্তুত হওয়ার জন্য একটি মৃদু অনুস্মারক';
+
+  @override
+  String get prayerAlertBeforeSound => 'অনুস্মারকের শব্দ';
+
+  @override
+  String get prayerAlertBeforeSilent => 'শব্দ নেই';
+
+  @override
+  String get prayerAlertBeforeShort => 'সংক্ষিপ্ত শব্দ';
+
+  @override
+  String get prayerAlertFallback => 'যখন অ্যালার্ম সেট করা যায় না';
+
+  @override
+  String get prayerAlertTestTitle => 'একটি পরীক্ষা পাঠান';
+
+  @override
+  String get prayerAlertTestScheduled =>
+      'পরীক্ষা পাঠানো হয়েছে। কয়েক সেকেন্ডের মধ্যে আসা উচিত।';
+
+  @override
+  String get prayerAlertTestShown =>
+      'পরীক্ষা দেখানো হয়েছে। আপনি কি শুনেছেন ও দেখেছেন?';
+
+  @override
+  String get prayerAlertTestNotificationsOff =>
+      'হুদার বিজ্ঞপ্তি বন্ধ, তাই পরীক্ষা আসতে পারবে না।';
+
+  @override
+  String get prayerAlertTestExactOff =>
+      'হুদা সময়মতো অ্যালার্ম সেট করতে পারছে না, তাই সতর্কতা দেরিতে আসতে পারে। আগে অনুমতি দিন।';
+
+  @override
+  String get prayerAlertTestPrayerOff => 'এই নামাজের সতর্কতা বন্ধ আছে।';
+
+  @override
+  String get prayerAlertTestAlarmPermission =>
+      'আগে নামাজের অ্যালার্মের অনুমতি দিন, তারপর আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertTestServiceOff =>
+      'হুদার ব্যাকগ্রাউন্ড সহায়ক চলছে না, তাই পরীক্ষা চালানো যাচ্ছে না।';
+
+  @override
+  String get prayerAlertTestAudioMissing =>
+      'বেছে নেওয়া রেকর্ডিং চালানো যায়নি, তাই অন্তর্নির্মিত আজান ব্যবহার হয়েছে।';
+
+  @override
+  String get prayerAlertTestFailed =>
+      'পরীক্ষা পাঠানো যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertFocusDuration => 'স্থায়িত্ব';
+
+  @override
+  String get prayerAlertFocusAudio => 'ফোকাসের সময় আজান বাজান';
+
+  @override
+  String get prayerAlertFocusCommitment => 'আগে বন্ধ করা যাবে না';
+
+  @override
+  String get prayerAlertFocusCommitmentHint =>
+      'সময় শেষ হলে ফোকাস শেষ হবে। জরুরি অবস্থায় Esc চেপে বন্ধ করা যাবে।';
+
+  @override
+  String get prayerAlertFocusFullScreen => 'পুরো স্ক্রিন জুড়ে';
+
+  @override
+  String get prayerAlertSummaryOff => 'নামাজের সতর্কতা বন্ধ';
+
+  @override
+  String get prayerAlertSummaryMixed => 'কিছু নামাজের জন্য আলাদা';
+
+  @override
+  String get prayerAlertStopAdhan => 'আজান থামান';
+
+  @override
+  String get prayerAlertEndFocus => 'ফোকাস শেষ করুন';
+
+  @override
+  String get prayerAlertBack => 'ফিরে যান';
+
+  @override
+  String get prayerAlertClose => 'বন্ধ করুন';
+
+  @override
+  String get prayerAlertNeedsCompanion =>
+      'হুদাকে ব্যাকগ্রাউন্ডে চালু থাকতে হবে';
+
+  @override
+  String get prayerAlertToggleAlarmScreen => 'অ্যালার্ম স্ক্রিন';
+
+  @override
+  String get prayerAlertToggleAlarmScreenHint =>
+      'আজান শুরু হলে পূর্ণ-স্ক্রিন অ্যালার্ম দেখায়';
+
+  @override
+  String get prayerAlertToggleFlip => 'উল্টে থামান';
+
+  @override
+  String get prayerAlertToggleFlipHint => 'আজান থামাতে ফোনটি উপুড় করে রাখুন';
+
+  @override
+  String get prayerAlertToggleVibrate => 'ভাইব্রেট';
+
+  @override
+  String get prayerAlertToggleRinger => 'সাইলেন্ট মোড মেনে চলুন';
+
+  @override
+  String get prayerAlertToggleRingerHint =>
+      'ফোন সাইলেন্ট বা ভাইব্রেটে থাকলে আজানের শব্দ হবে না';
+
+  @override
+  String get prayerAlertToggleHeadset => 'হেডফোন বিচ্ছিন্ন হলে থামান';
+
+  @override
+  String get prayerAlertToggleMissed =>
+      'ফোন বন্ধ থাকাকালীন বাদ পড়া নামাজ দেখান';
+
+  @override
+  String get prayerAlertToggleTimeSensitive => 'সময়-সংবেদনশীল';
+
+  @override
+  String get prayerAlertToggleTimeSensitiveHint =>
+      'ফোকাস ও বিরক্ত করবেন না মোডেও নামাজের সতর্কতা আসবে';
+
+  @override
+  String get prayerAlertToggleLockedAudio => 'স্ক্রিন লক থাকলেও বাজান';
+
+  @override
+  String get prayerAlertToggleQuiet => 'আজান ও ফোকাস সাময়িক বন্ধ রাখুন';
+
+  @override
+  String get prayerAlertToggleQuietHint => 'বিজ্ঞপ্তি তবুও আসবে, নিঃশব্দে';
+
+  @override
+  String get prayerAlertToggleBackground => 'হুদাকে ব্যাকগ্রাউন্ডে চালু রাখুন';
+
+  @override
+  String get prayerAlertToggleBackgroundHint =>
+      'হুদার উইন্ডো বন্ধ করার পরেও আজান ও ফোকাসের জন্য প্রয়োজন';
+
+  @override
+  String get prayerAlertToggleStartAtLogin => 'লগইনের সময় চালু করুন';
 
   @override
   String get prayerAlertStyleAdhan => 'আজান';
@@ -5518,6 +5842,9 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get prayerAlertStyleAdhanHint =>
       'আজান বাজবে; কতক্ষণ বাজবে তা শব্দ অংশে বেছে নিন';
+
+  @override
+  String get prayerAlertLengthOpening => 'শুধু শুরুর অংশ';
 
   @override
   String get prayerAlertStyleNotificationAdhan => 'বিজ্ঞপ্তিতে আজান';
@@ -5529,6 +5856,13 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get prayerAlertStyleLiveAdhanHint =>
       'হুদা পুরো আজান বাজায়; মেনু বারে হুদা চালু রাখুন';
+
+  @override
+  String get prayerAlertStyleFullAlarm => 'সম্পূর্ণ আজানের অ্যালার্ম';
+
+  @override
+  String get prayerAlertStyleFullAlarmHint =>
+      'অন্তর্নির্মিত রেকর্ডিংয়ে পুরো আজান, অ্যালার্ম হিসেবে';
 
   @override
   String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 বা পরবর্তী প্রয়োজন';
