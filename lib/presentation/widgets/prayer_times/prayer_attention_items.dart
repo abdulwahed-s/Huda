@@ -9,12 +9,9 @@ import 'package:huda/presentation/widgets/notifications/notification_access_cont
 
 enum PrayerAttentionTone { error, warning, info }
 
-enum PrayerAttentionKind {
-  updating,
-  workflow,
-  batteryOptimization,
-  exactAlarms,
-}
+/// Prayer-time problems only. Notification access lives in one place,
+/// the readiness card (prayer_alerts_ready_card.dart).
+enum PrayerAttentionKind { updating, workflow }
 
 @immutable
 class PrayerAttentionAction {
@@ -67,25 +64,19 @@ class PrayerAttentionCallbacks {
   const PrayerAttentionCallbacks({
     required this.retryWorkflow,
     required this.openWorkflowSettings,
-    required this.requestBatteryOptimization,
-    required this.requestExactAlarms,
   });
 
   final Future<void> Function() retryWorkflow;
   final Future<void> Function(Set<PrayerWorkflowIssue> issues)
   openWorkflowSettings;
-  final Future<void> Function() requestBatteryOptimization;
-  final Future<void> Function() requestExactAlarms;
 }
 
 List<PrayerAttentionItem> buildPrayerAttentionItems({
   required AppLocalizations l10n,
   required PrayerTimesLoaded state,
-  required NotificationAccess? access,
   required PrayerAttentionCallbacks callbacks,
   bool canChooseCountry = true,
 }) {
-  final alertsOn = access?.notificationsEnabled ?? false;
   final updating =
       state.updating &&
       !state.workflowRetrying &&
@@ -103,43 +94,6 @@ List<PrayerAttentionItem> buildPrayerAttentionItems({
       )
     else
       ?_workflowItem(l10n, state, callbacks, canChooseCountry),
-    if (alertsOn && access!.needsBatteryOptimization)
-      PrayerAttentionItem(
-        kind: PrayerAttentionKind.batteryOptimization,
-        tone: PrayerAttentionTone.warning,
-        rank: 4,
-        icon: Icons.battery_alert_outlined,
-        title: l10n.batteryOptimizationTitle,
-        message: access.needsExactAlarms
-            ? l10n.batteryOptimizationExactAlarmDescription
-            : l10n.batteryOptimizationDescription,
-        primary: PrayerAttentionAction(
-          label: l10n.keepRemindersReliable,
-          icon: Icons.battery_saver_outlined,
-          onPressed: callbacks.requestBatteryOptimization,
-        ),
-        secondary: access.needsExactAlarms
-            ? PrayerAttentionAction(
-                label: l10n.exactAlarmTitle,
-                icon: Icons.alarm_add_outlined,
-                onPressed: callbacks.requestExactAlarms,
-              )
-            : null,
-      )
-    else if (alertsOn && access!.needsExactAlarms)
-      PrayerAttentionItem(
-        kind: PrayerAttentionKind.exactAlarms,
-        tone: PrayerAttentionTone.warning,
-        rank: 4,
-        icon: Icons.alarm_on_outlined,
-        title: l10n.exactAlarmTitle,
-        message: l10n.exactAlarmDescription,
-        primary: PrayerAttentionAction(
-          label: l10n.allowExactAlarms,
-          icon: Icons.alarm_add_outlined,
-          onPressed: callbacks.requestExactAlarms,
-        ),
-      ),
   ];
   final indexed = items.indexed.toList()
     ..sort(
@@ -182,12 +136,14 @@ PrayerAlertStatus? buildPrayerAlertStatus({
   required bool isIOS,
   required Future<void> Function() onEnableNotifications,
   required Future<void> Function() onRetry,
+  bool notificationsAskedElsewhere = false,
 }) {
   final schedule = state.notificationSchedule;
   final retrying = state.notificationScheduleRetrying;
   final notificationsOff =
       access?.needsNotification ??
       schedule?.status == PrayerScheduleStatus.permissionDenied;
+  if (notificationsOff && notificationsAskedElsewhere) return null;
   if (notificationsOff) {
     final settings = access?.notificationNeedsSettings ?? false;
     return PrayerAlertStatus(
@@ -365,7 +321,7 @@ PrayerAttentionItem? _workflowItem(
       ? (offline
             ? l.prayerVerificationGuidance
             : l.prayerVerificationRetryGuidance)
-      : issues.contains(PrayerWorkflowIssue.locality)
+      : offline && issues.contains(PrayerWorkflowIssue.locality)
       ? l.prayerUpdatesGuidance
       : l.prayerUpdatesLocalGuidance;
 

@@ -5353,6 +5353,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get androidAdhanDownload => 'تنزيل';
 
   @override
+  String get macPrayerLoginSettings => 'فتح إعدادات عناصر تسجيل الدخول';
+
+  @override
   String get macPrayerEmergencyExit => 'خروج طارئ';
 
   @override
@@ -5448,11 +5451,78 @@ class AppLocalizationsAr extends AppLocalizations {
       'يحتاج هدى إلى الإشعارات ليذكّرك في الأوقات التي تختارها. سيطلب منك جهازك الإذن بعد ذلك.';
 
   @override
+  String get prayerReadyTitle => 'جهّز تنبيهات الصلاة';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'جهّز تنبيهات الصلاة · $count خطوات';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'إشعارات هدى متوقفة. فعّلها من الإعدادات ثم عُد إلى هنا.';
+
+  @override
+  String get prayerReadyChannelsTitle => 'تنبيهات الصلاة مكتومة';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'الإشعارات مفعّلة، لكن أندرويد يحظر فئة تنبيهات الصلاة في هدى. فعّلها ليصلك تنبيه كل صلاة.';
+
+  @override
+  String get prayerReadyExactTitle => 'تنبيهات في وقتها تمامًا';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'اسمح لهدى بضبط المنبّهات ليصل كل تنبيه صلاة في وقته تمامًا بدل أن يتأخر بضع دقائق.';
+
+  @override
+  String get prayerReadyAllow => 'سماح';
+
+  @override
   String get prayerReadyAlarmTitle => 'السماح بمنبّهات الصلاة';
 
   @override
   String get prayerReadyAlarmMessage =>
       'يشغّل منبّه الصلاة الأذان كمنبّه حتى في الوضع الصامت، ويحتاج iPhone إلى إذنك لذلك.';
+
+  @override
+  String get prayerReadyBannersTitle => 'إظهار إشعارات هدى';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'الإشعارات مسموح بها، لكن macOS مضبوط على عدم إظهارها. اختر «لافتات» أو «تنبيهات» لهدى في إعدادات الإشعارات.';
+
+  @override
+  String get prayerReadyLoginTitle => 'اسمح لهدى بالعمل عند تسجيل الدخول';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'يُشغَّل الأذان من هدى في شريط القوائم. اسمح له بالعمل عند تسجيل الدخول ليستمر بعد إعادة التشغيل.';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'تشغيل هدى مع Windows';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'يشغّل مساعد هدى في الخلفية الأذان ويحافظ على وصول التذكيرات. اسمح له بالعمل مع Windows لتستمر بعد إعادة التشغيل.';
+
+  @override
+  String get prayerReadyLinuxStartupTitle => 'تشغيل هدى عند تسجيل الدخول';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'توصل خدمة هدى في الخلفية تنبيهات الصلاة والتذكيرات. اسمح لها بالعمل عند تسجيل الدخول لتستمر بعد إعادة التشغيل.';
+
+  @override
+  String get prayerReadyTurnOn => 'تشغيل';
+
+  @override
+  String get travelExplainerTitle => 'تحديث المواقيت عند السفر';
+
+  @override
+  String get travelExplainerMessage =>
+      'عند وصولك إلى مدينة جديدة يحدّث هدى مواقيت الصلاة والتنبيهات تلقائيًا. ولكي يلاحظ الانتقال وهو مغلق، سيطلب جهازك السماح بالموقع طوال الوقت.';
 
   @override
   String get prayerAlertTitle => 'الأذان والتنبيهات';

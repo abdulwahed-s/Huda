@@ -9822,6 +9822,12 @@ abstract class AppLocalizations {
   /// **'Download'**
   String get androidAdhanDownload;
 
+  /// No description provided for @macPrayerLoginSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Login Items Settings'**
+  String get macPrayerLoginSettings;
+
   /// No description provided for @macPrayerEmergencyExit.
   ///
   /// In en, this message translates to:
@@ -9984,6 +9990,54 @@ abstract class AppLocalizations {
   /// **'Huda needs notifications to remind you at the times you choose. Your device will ask you next.'**
   String get permissionExplainerNotificationsMessage;
 
+  /// Heading of the card on Prayer Times that walks through what prayer alerts still need.
+  ///
+  /// In en, this message translates to:
+  /// **'Get prayer alerts ready'**
+  String get prayerReadyTitle;
+
+  /// Heading when more than one readiness step is left.
+  ///
+  /// In en, this message translates to:
+  /// **'Get prayer alerts ready · {count} steps'**
+  String prayerReadyStepsLeft(int count);
+
+  /// No description provided for @prayerReadyNotificationsBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications for Huda are turned off. Turn them on in Settings, then come back here.'**
+  String get prayerReadyNotificationsBlocked;
+
+  /// No description provided for @prayerReadyChannelsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alerts are muted'**
+  String get prayerReadyChannelsTitle;
+
+  /// No description provided for @prayerReadyChannelsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are on, but Android is blocking Huda\'s prayer alert category. Turn it on so each prayer can alert you.'**
+  String get prayerReadyChannelsMessage;
+
+  /// No description provided for @prayerReadyExactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts right on time'**
+  String get prayerReadyExactTitle;
+
+  /// No description provided for @prayerReadyExactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Huda to set alarms so each prayer alert arrives exactly on time instead of a few minutes late.'**
+  String get prayerReadyExactMessage;
+
+  /// No description provided for @prayerReadyAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get prayerReadyAllow;
+
   /// No description provided for @prayerReadyAlarmTitle.
   ///
   /// In en, this message translates to:
@@ -9995,6 +10049,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prayer Alarm plays the adhan like an alarm, even in silent mode. Your iPhone needs your permission for that.'**
   String get prayerReadyAlarmMessage;
+
+  /// No description provided for @prayerReadyBannersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Huda\'s notifications'**
+  String get prayerReadyBannersTitle;
+
+  /// No description provided for @prayerReadyBannersMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are allowed, but macOS is set not to show them. Choose Banners or Alerts for Huda in Notification settings.'**
+  String get prayerReadyBannersMessage;
+
+  /// No description provided for @prayerReadyLoginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let Huda start at login'**
+  String get prayerReadyLoginTitle;
+
+  /// No description provided for @prayerReadyLoginMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The adhan plays from Huda in the menu bar. Let it start when you log in so it keeps working after a restart.'**
+  String get prayerReadyLoginMessage;
+
+  /// No description provided for @prayerReadyWindowsStartupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Huda with Windows'**
+  String get prayerReadyWindowsStartupTitle;
+
+  /// No description provided for @prayerReadyWindowsStartupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda\'s background helper plays the adhan and keeps reminders coming. Let it start with Windows so they continue after a restart.'**
+  String get prayerReadyWindowsStartupMessage;
+
+  /// No description provided for @prayerReadyLinuxStartupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Huda at login'**
+  String get prayerReadyLinuxStartupTitle;
+
+  /// No description provided for @prayerReadyLinuxStartupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda\'s background service delivers prayer alerts and reminders. Let it start when you log in so they continue after a restart.'**
+  String get prayerReadyLinuxStartupMessage;
+
+  /// No description provided for @prayerReadyTurnOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get prayerReadyTurnOn;
+
+  /// No description provided for @travelExplainerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update times when you travel'**
+  String get travelExplainerTitle;
+
+  /// No description provided for @travelExplainerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'When you arrive in a new city, Huda updates prayer times and alerts by itself. To notice the move while Huda is closed, your device will ask to allow location all the time.'**
+  String get travelExplainerMessage;
 
   /// Title of the prayer alert settings sheet and its summary card.
   ///

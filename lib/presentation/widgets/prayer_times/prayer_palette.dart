@@ -23,8 +23,10 @@ class PrayerPalette {
     required this.heroEnd,
   });
 
-  factory PrayerPalette.of(BuildContext context) {
-    final theme = Theme.of(context);
+  factory PrayerPalette.of(BuildContext context) =>
+      PrayerPalette.fromTheme(Theme.of(context));
+
+  factory PrayerPalette.fromTheme(ThemeData theme) {
     final scheme = theme.colorScheme;
     final dark = theme.brightness == Brightness.dark;
     final primary = scheme.primary;

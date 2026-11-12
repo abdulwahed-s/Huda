@@ -11,6 +11,8 @@ import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/manual_location_search_dialog.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:huda/presentation/widgets/notifications/permission_explainer_sheet.dart';
 
 class PrayerTravelSettingsCard extends StatefulWidget {
   const PrayerTravelSettingsCard({super.key, required this.locationMode});
@@ -64,6 +66,8 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
   }
 
   Future<void> _toggle(bool enabled) async {
+    if (enabled && !await _explainBackgroundLocation()) return;
+    if (!mounted) return;
     setState(() => _busy = true);
     try {
       await getIt<PrayerLocationMonitor>().setEnabled(enabled);
@@ -72,6 +76,20 @@ class _PrayerTravelSettingsCardState extends State<PrayerTravelSettingsCard>
     } finally {
       if (mounted) setState(() => _busy = false);
     }
+  }
+
+  /// Says why "all the time" location is needed before the system asks.
+  Future<bool> _explainBackgroundLocation() async {
+    if (!PlatformUtils.isAndroid && !PlatformUtils.isIOS) return true;
+    if (await Permission.locationAlways.isGranted) return true;
+    if (!mounted) return false;
+    final l10n = AppLocalizations.of(context)!;
+    return showPermissionExplainer(
+      context,
+      icon: Icons.travel_explore_rounded,
+      title: l10n.travelExplainerTitle,
+      message: l10n.travelExplainerMessage,
+    );
   }
 
   Future<void> _retry() async {

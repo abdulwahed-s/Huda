@@ -5405,6 +5405,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get androidAdhanDownload => 'ڈاؤن لوڈ کریں';
 
   @override
+  String get macPrayerLoginSettings => 'لاگ اِن آئٹمز کی ترتیبات کھولیں';
+
+  @override
   String get macPrayerEmergencyExit => 'ہنگامی خروج';
 
   @override
@@ -5503,11 +5506,78 @@ class AppLocalizationsUr extends AppLocalizations {
       'آپ کے منتخب کردہ اوقات پر یاد دلانے کے لیے ہدیٰ کو اطلاعات درکار ہیں۔ اس کے بعد آپ کا آلہ اجازت مانگے گا۔';
 
   @override
+  String get prayerReadyTitle => 'نماز کی اطلاعات تیار کریں';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'نماز کی اطلاعات تیار کریں · $count مراحل';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'ہدیٰ کی اطلاعات بند ہیں۔ انہیں ترتیبات میں آن کریں، پھر یہاں واپس آئیں۔';
+
+  @override
+  String get prayerReadyChannelsTitle => 'نماز کی اطلاعات خاموش ہیں';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'اطلاعات آن ہیں، لیکن اینڈرائیڈ ہدیٰ کی نماز کی اطلاعات کا زمرہ روک رہا ہے۔ اسے آن کریں تاکہ ہر نماز پر آپ کو اطلاع ملے۔';
+
+  @override
+  String get prayerReadyExactTitle => 'بالکل وقت پر اطلاعات';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'ہدیٰ کو الارم لگانے کی اجازت دیں تاکہ ہر نماز کی اطلاع چند منٹ دیر سے نہیں بلکہ بالکل وقت پر آئے۔';
+
+  @override
+  String get prayerReadyAllow => 'اجازت دیں';
+
+  @override
   String get prayerReadyAlarmTitle => 'نماز کے الارم کی اجازت دیں';
 
   @override
   String get prayerReadyAlarmMessage =>
       'نماز کا الارم خاموش موڈ میں بھی اذان الارم کی طرح چلاتا ہے۔ اس کے لیے آپ کے iPhone کو آپ کی اجازت درکار ہے۔';
+
+  @override
+  String get prayerReadyBannersTitle => 'ہدیٰ کی اطلاعات دکھائیں';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'اطلاعات کی اجازت ہے، لیکن macOS انہیں نہ دکھانے پر سیٹ ہے۔ اطلاعات کی ترتیبات میں ہدیٰ کے لیے بینرز یا الرٹس منتخب کریں۔';
+
+  @override
+  String get prayerReadyLoginTitle => 'لاگ ان پر ہدیٰ کو شروع ہونے دیں';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'اذان مینو بار میں موجود ہدیٰ سے چلتی ہے۔ اسے لاگ ان پر شروع ہونے دیں تاکہ ری اسٹارٹ کے بعد بھی کام کرے۔';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'ونڈوز کے ساتھ ہدیٰ شروع کریں';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'ہدیٰ کا پس منظر مددگار اذان چلاتا ہے اور یاد دہانیاں جاری رکھتا ہے۔ اسے ونڈوز کے ساتھ شروع ہونے دیں تاکہ ری اسٹارٹ کے بعد بھی جاری رہیں۔';
+
+  @override
+  String get prayerReadyLinuxStartupTitle => 'لاگ ان پر ہدیٰ شروع کریں';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'ہدیٰ کی پس منظر سروس نماز کی اطلاعات اور یاد دہانیاں پہنچاتی ہے۔ اسے لاگ ان پر شروع ہونے دیں تاکہ ری اسٹارٹ کے بعد بھی جاری رہیں۔';
+
+  @override
+  String get prayerReadyTurnOn => 'آن کریں';
+
+  @override
+  String get travelExplainerTitle => 'سفر میں اوقات اپ ڈیٹ کریں';
+
+  @override
+  String get travelExplainerMessage =>
+      'جب آپ کسی نئے شہر پہنچتے ہیں تو ہدیٰ نماز کے اوقات اور اطلاعات خود اپ ڈیٹ کرتا ہے۔ ہدیٰ بند ہونے پر بھی جگہ کی تبدیلی جاننے کے لیے آپ کا آلہ ہمیشہ مقام کی اجازت مانگے گا۔';
 
   @override
   String get prayerAlertTitle => 'اذان اور اطلاعات';

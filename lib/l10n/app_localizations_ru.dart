@@ -5444,6 +5444,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get androidAdhanDownload => 'Скачать';
 
   @override
+  String get macPrayerLoginSettings => 'Открыть настройки объектов входа';
+
+  @override
   String get macPrayerEmergencyExit => 'Аварийный выход';
 
   @override
@@ -5543,11 +5546,79 @@ class AppLocalizationsRu extends AppLocalizations {
       'Huda нужны уведомления, чтобы напоминать вам в выбранное время. Сейчас устройство попросит разрешение.';
 
   @override
+  String get prayerReadyTitle => 'Настройте оповещения о молитве';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'Настройте оповещения о молитве · шагов: $count';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'Уведомления Huda выключены. Включите их в настройках и вернитесь сюда.';
+
+  @override
+  String get prayerReadyChannelsTitle => 'Оповещения о молитве отключены';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'Уведомления включены, но Android блокирует категорию оповещений о молитве в Huda. Включите её, чтобы получать оповещение о каждой молитве.';
+
+  @override
+  String get prayerReadyExactTitle => 'Оповещения точно вовремя';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'Разрешите Huda ставить будильники, чтобы каждое оповещение приходило точно вовремя, а не с опозданием на несколько минут.';
+
+  @override
+  String get prayerReadyAllow => 'Разрешить';
+
+  @override
   String get prayerReadyAlarmTitle => 'Разрешить будильники молитв';
 
   @override
   String get prayerReadyAlarmMessage =>
       'Будильник молитвы воспроизводит азан как будильник, даже в беззвучном режиме. Для этого iPhone нужно ваше разрешение.';
+
+  @override
+  String get prayerReadyBannersTitle => 'Показывать уведомления Huda';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'Уведомления разрешены, но macOS настроена не показывать их. Выберите для Huda «Баннеры» или «Напоминания» в настройках уведомлений.';
+
+  @override
+  String get prayerReadyLoginTitle => 'Запускать Huda при входе';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'Азан воспроизводится из Huda в строке меню. Разрешите запуск при входе, чтобы всё работало и после перезагрузки.';
+
+  @override
+  String get prayerReadyWindowsStartupTitle =>
+      'Запускать Huda вместе с Windows';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'Фоновый помощник Huda воспроизводит азан и поддерживает напоминания. Разрешите ему запускаться вместе с Windows, чтобы всё работало после перезагрузки.';
+
+  @override
+  String get prayerReadyLinuxStartupTitle => 'Запускать Huda при входе';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'Фоновая служба Huda доставляет оповещения о молитве и напоминания. Разрешите ей запускаться при входе, чтобы всё работало после перезагрузки.';
+
+  @override
+  String get prayerReadyTurnOn => 'Включить';
+
+  @override
+  String get travelExplainerTitle => 'Обновлять время в поездках';
+
+  @override
+  String get travelExplainerMessage =>
+      'Когда вы приезжаете в новый город, Huda сама обновляет время молитв и оповещения. Чтобы замечать переезд при закрытом приложении, устройство попросит доступ к геопозиции всегда.';
 
   @override
   String get prayerAlertTitle => 'Азан и оповещения';

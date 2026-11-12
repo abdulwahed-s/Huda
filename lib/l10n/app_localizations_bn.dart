@@ -5413,6 +5413,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get androidAdhanDownload => 'ডাউনলোড';
 
   @override
+  String get macPrayerLoginSettings => 'লগইন আইটেমের সেটিংস খুলুন';
+
+  @override
   String get macPrayerEmergencyExit => 'জরুরি প্রস্থান';
 
   @override
@@ -5509,11 +5512,78 @@ class AppLocalizationsBn extends AppLocalizations {
       'আপনার বেছে নেওয়া সময়ে মনে করিয়ে দিতে হুদার বিজ্ঞপ্তি প্রয়োজন। এরপর আপনার ডিভাইস অনুমতি চাইবে।';
 
   @override
+  String get prayerReadyTitle => 'নামাজের সতর্কতা প্রস্তুত করুন';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'নামাজের সতর্কতা প্রস্তুত করুন · $countটি ধাপ';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'হুদার বিজ্ঞপ্তি বন্ধ আছে। সেটিংসে চালু করে এখানে ফিরে আসুন।';
+
+  @override
+  String get prayerReadyChannelsTitle => 'নামাজের সতর্কতা নিঃশব্দ করা আছে';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'বিজ্ঞপ্তি চালু আছে, কিন্তু অ্যান্ড্রয়েড হুদার নামাজের সতর্কতার বিভাগটি আটকে রেখেছে। প্রতিটি নামাজের সতর্কতা পেতে এটি চালু করুন।';
+
+  @override
+  String get prayerReadyExactTitle => 'ঠিক সময়ে সতর্কতা';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'হুদাকে অ্যালার্ম সেট করার অনুমতি দিন, যাতে প্রতিটি নামাজের সতর্কতা কয়েক মিনিট দেরিতে নয়, ঠিক সময়ে আসে।';
+
+  @override
+  String get prayerReadyAllow => 'অনুমতি দিন';
+
+  @override
   String get prayerReadyAlarmTitle => 'নামাজের অ্যালার্মের অনুমতি দিন';
 
   @override
   String get prayerReadyAlarmMessage =>
       'নামাজের অ্যালার্ম সাইলেন্ট মোডেও অ্যালার্মের মতো আজান বাজায়। এর জন্য আপনার iPhone-এর অনুমতি প্রয়োজন।';
+
+  @override
+  String get prayerReadyBannersTitle => 'হুদার বিজ্ঞপ্তি দেখান';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'বিজ্ঞপ্তির অনুমতি আছে, কিন্তু macOS সেগুলো না দেখানোর জন্য সেট করা। বিজ্ঞপ্তি সেটিংসে হুদার জন্য ব্যানার বা অ্যালার্ট বেছে নিন।';
+
+  @override
+  String get prayerReadyLoginTitle => 'লগইনের সময় হুদা চালু হতে দিন';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'মেনু বারে থাকা হুদা থেকে আজান বাজে। লগইনের সময় এটি চালু হতে দিন, যাতে রিস্টার্টের পরেও কাজ করে।';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'Windows-এর সাথে হুদা চালু করুন';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'হুদার ব্যাকগ্রাউন্ড সহায়ক আজান বাজায় এবং অনুস্মারক চালু রাখে। রিস্টার্টের পরেও চালু রাখতে এটিকে Windows-এর সাথে শুরু হতে দিন।';
+
+  @override
+  String get prayerReadyLinuxStartupTitle => 'লগইনের সময় হুদা চালু করুন';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'হুদার ব্যাকগ্রাউন্ড সার্ভিস নামাজের সতর্কতা ও অনুস্মারক পৌঁছে দেয়। রিস্টার্টের পরেও চালু রাখতে লগইনের সময় এটিকে শুরু হতে দিন।';
+
+  @override
+  String get prayerReadyTurnOn => 'চালু করুন';
+
+  @override
+  String get travelExplainerTitle => 'ভ্রমণের সময় নামাজের সময় হালনাগাদ';
+
+  @override
+  String get travelExplainerMessage =>
+      'নতুন শহরে পৌঁছালে হুদা নিজে থেকেই নামাজের সময় ও সতর্কতা হালনাগাদ করে। হুদা বন্ধ থাকা অবস্থায় স্থান পরিবর্তন বুঝতে আপনার ডিভাইস সবসময় অবস্থানের অনুমতি চাইবে।';
 
   @override
   String get prayerAlertTitle => 'আজান ও সতর্কতা';

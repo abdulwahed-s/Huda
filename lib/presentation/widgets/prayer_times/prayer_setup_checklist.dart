@@ -18,16 +18,16 @@ class PrayerSetupChecklist extends StatelessWidget {
   const PrayerSetupChecklist({
     super.key,
     required this.state,
-    required this.alerts,
-    required this.alertsNeedSettings,
-    required this.reliability,
+    this.alerts,
+    this.alertsNeedSettings = false,
+    this.reliability,
     required this.canOpenSettings,
-    required this.onAllowAlerts,
-    required this.onOpenAlertSettings,
-    required this.onContinueWithoutAlerts,
-    required this.onAllowReliability,
-    required this.onUseExactAlarms,
-    required this.onSkipReliability,
+    this.onAllowAlerts = _none,
+    this.onOpenAlertSettings = _none,
+    this.onContinueWithoutAlerts = _none,
+    this.onAllowReliability = _none,
+    this.onUseExactAlarms = _none,
+    this.onSkipReliability = _none,
     required this.onUseLocation,
     required this.onSearchCity,
     required this.onOpenAppSettings,
@@ -35,8 +35,12 @@ class PrayerSetupChecklist extends StatelessWidget {
     this.busy = false,
   });
 
+  static Future<void> _none() async {}
+
   final PrayerTimesState state;
-  final PrayerSetupAlerts alerts;
+
+  /// Null hides the alerts and reliability steps (location only).
+  final PrayerSetupAlerts? alerts;
 
   final bool alertsNeedSettings;
 
@@ -60,17 +64,19 @@ class PrayerSetupChecklist extends StatelessWidget {
       alerts == PrayerSetupAlerts.pending ||
       alerts == PrayerSetupAlerts.declined;
   bool get _reliabilityOpen =>
-      !_alertsOpen && reliability == PrayerSetupReliability.pending;
+      !_alertsOpen &&
+      alerts != null &&
+      reliability == PrayerSetupReliability.pending;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final steps = <_Step>[
-      _alertsStep(l10n),
-      if (reliability != null) _reliabilityStep(l10n),
+    final steps = <PrayerSetupStep>[
+      if (alerts != null) _alertsStep(l10n),
+      if (alerts != null && reliability != null) _reliabilityStep(l10n),
       _locationStep(l10n),
     ];
-    final current = steps.indexWhere((step) => step.status == _Status.active);
+    final current = steps.indexWhere((step) => step.status == PrayerSetupStepStatus.active);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -106,18 +112,18 @@ class PrayerSetupChecklist extends StatelessWidget {
     );
   }
 
-  _Step _alertsStep(AppLocalizations l10n) {
+  PrayerSetupStep _alertsStep(AppLocalizations l10n) {
     final declined = alerts == PrayerSetupAlerts.declined;
-    return _Step(
+    return PrayerSetupStep(
       icon: Icons.notifications_active_rounded,
       title: l10n.prayerSetupAlertsTitle,
-      status: switch (alerts) {
+      status: switch (alerts!) {
         PrayerSetupAlerts.pending ||
-        PrayerSetupAlerts.declined => _Status.active,
-        PrayerSetupAlerts.granted => _Status.done,
-        PrayerSetupAlerts.skipped => _Status.skipped,
+        PrayerSetupAlerts.declined => PrayerSetupStepStatus.active,
+        PrayerSetupAlerts.granted => PrayerSetupStepStatus.done,
+        PrayerSetupAlerts.skipped => PrayerSetupStepStatus.skipped,
       },
-      summary: switch (alerts) {
+      summary: switch (alerts!) {
         PrayerSetupAlerts.granted => l10n.prayerSetupAlertsOn,
         PrayerSetupAlerts.skipped => l10n.prayerSetupAlertsSkipped,
         _ => l10n.prayerSetupAlertsHint,
@@ -131,19 +137,19 @@ class PrayerSetupChecklist extends StatelessWidget {
             )
           : null,
       primary: declined && alertsNeedSettings && canOpenSettings
-          ? _Action(
+          ? PrayerSetupAction(
               l10n.openSettings,
               Icons.settings_outlined,
               onOpenAlertSettings,
             )
-          : _Action(
+          : PrayerSetupAction(
               declined ? l10n.tryAgain : l10n.prayerSetupAlertsAllow,
               Icons.notifications_active_outlined,
               onAllowAlerts,
             ),
       links: [
         if (declined)
-          _Action(
+          PrayerSetupAction(
             l10n.prayerSetupContinueWithoutAlerts,
             Icons.arrow_forward_rounded,
             onContinueWithoutAlerts,
@@ -152,15 +158,15 @@ class PrayerSetupChecklist extends StatelessWidget {
     );
   }
 
-  _Step _reliabilityStep(AppLocalizations l10n) => _Step(
+  PrayerSetupStep _reliabilityStep(AppLocalizations l10n) => PrayerSetupStep(
     icon: Icons.battery_charging_full_rounded,
     title: l10n.prayerSetupReliableTitle,
     status: _alertsOpen
-        ? _Status.upcoming
+        ? PrayerSetupStepStatus.upcoming
         : switch (reliability!) {
-            PrayerSetupReliability.pending => _Status.active,
-            PrayerSetupReliability.done => _Status.done,
-            PrayerSetupReliability.skipped => _Status.skipped,
+            PrayerSetupReliability.pending => PrayerSetupStepStatus.active,
+            PrayerSetupReliability.done => PrayerSetupStepStatus.done,
+            PrayerSetupReliability.skipped => PrayerSetupStepStatus.skipped,
           },
     summary: switch (reliability!) {
       PrayerSetupReliability.done => l10n.prayerSetupReliableOn,
@@ -169,14 +175,14 @@ class PrayerSetupChecklist extends StatelessWidget {
       _ => l10n.prayerSetupReliableHint,
     },
     message: l10n.prayerSetupReliableIntro,
-    primary: _Action(
+    primary: PrayerSetupAction(
       l10n.keepRemindersReliable,
       Icons.battery_saver_outlined,
       onAllowReliability,
     ),
     links: [
-      _Action(l10n.exactAlarmTitle, Icons.alarm_on_outlined, onUseExactAlarms),
-      _Action(
+      PrayerSetupAction(l10n.exactAlarmTitle, Icons.alarm_on_outlined, onUseExactAlarms),
+      PrayerSetupAction(
         l10n.prayerSetupSkip,
         Icons.arrow_forward_rounded,
         onSkipReliability,
@@ -184,19 +190,19 @@ class PrayerSetupChecklist extends StatelessWidget {
     ],
   );
 
-  _Step _locationStep(AppLocalizations l10n) {
+  PrayerSetupStep _locationStep(AppLocalizations l10n) {
     final open = !_alertsOpen && !_reliabilityOpen;
-    final useLocation = _Action(
+    final useLocation = PrayerSetupAction(
       l10n.prayerSetupUseMyLocation,
       Icons.my_location_rounded,
       onUseLocation,
     );
-    final tryAgain = _Action(
+    final tryAgain = PrayerSetupAction(
       l10n.tryAgain,
       Icons.refresh_rounded,
       onUseLocation,
     );
-    final searchCity = _Action(
+    final searchCity = PrayerSetupAction(
       l10n.prayerSetupSearchCity,
       Icons.search_rounded,
       onSearchCity,
@@ -209,13 +215,13 @@ class PrayerSetupChecklist extends StatelessWidget {
 
     final ({
       ({String title, String text, IconData icon})? warning,
-      _Action primary,
-      List<_Action> links,
+      PrayerSetupAction primary,
+      List<PrayerSetupAction> links,
     })
     view = switch (state) {
       PrayerTimesLocationDenied() => (
         warning: problem(l10n.prayerSetupLocationDeclined),
-        primary: _Action(
+        primary: PrayerSetupAction(
           l10n.travelAllowLocation,
           Icons.location_on_outlined,
           onUseLocation,
@@ -224,7 +230,7 @@ class PrayerSetupChecklist extends StatelessWidget {
       ),
       PrayerTimesLocationPermanentlyDenied() when canOpenSettings => (
         warning: problem(l10n.prayerSetupLocationBlocked),
-        primary: _Action(
+        primary: PrayerSetupAction(
           l10n.openSettings,
           Icons.settings_outlined,
           onOpenAppSettings,
@@ -233,7 +239,7 @@ class PrayerSetupChecklist extends StatelessWidget {
       ),
       PrayerTimesLocationServiceDisabled() when canOpenSettings => (
         warning: problem(l10n.prayerSetupLocationServicesOff),
-        primary: _Action(
+        primary: PrayerSetupAction(
           l10n.travelTurnOnLocation,
           Icons.location_on_outlined,
           onOpenLocationSettings,
@@ -254,10 +260,10 @@ class PrayerSetupChecklist extends StatelessWidget {
       _ => (warning: null, primary: useLocation, links: [searchCity]),
     };
 
-    return _Step(
+    return PrayerSetupStep(
       icon: Icons.location_on_rounded,
       title: l10n.prayerSetupLocationTitle,
-      status: open ? _Status.active : _Status.upcoming,
+      status: open ? PrayerSetupStepStatus.active : PrayerSetupStepStatus.upcoming,
       summary: l10n.prayerSetupLocationHint,
       message: l10n.prayerSetupLocationIntro,
       warning: view.warning,
@@ -267,18 +273,18 @@ class PrayerSetupChecklist extends StatelessWidget {
   }
 }
 
-class _Action {
-  const _Action(this.label, this.icon, this.onPressed);
+class PrayerSetupAction {
+  const PrayerSetupAction(this.label, this.icon, this.onPressed);
 
   final String label;
   final IconData icon;
   final Future<void> Function() onPressed;
 }
 
-enum _Status { active, done, skipped, upcoming }
+enum PrayerSetupStepStatus { active, done, skipped, upcoming }
 
-class _Step {
-  const _Step({
+class PrayerSetupStep {
+  const PrayerSetupStep({
     required this.icon,
     required this.title,
     required this.status,
@@ -291,13 +297,13 @@ class _Step {
 
   final IconData icon;
   final String title;
-  final _Status status;
+  final PrayerSetupStepStatus status;
 
   final String summary;
   final String message;
   final ({String title, String text, IconData icon})? warning;
-  final _Action primary;
-  final List<_Action> links;
+  final PrayerSetupAction primary;
+  final List<PrayerSetupAction> links;
 }
 
 class _SetupHeader extends StatelessWidget {
@@ -378,7 +384,7 @@ class _SetupProgress extends StatelessWidget {
   const _SetupProgress({required this.current, required this.steps});
 
   final int current;
-  final List<_Step> steps;
+  final List<PrayerSetupStep> steps;
 
   @override
   Widget build(BuildContext context) {
@@ -398,10 +404,10 @@ class _SetupProgress extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3),
                   color: switch (steps[i].status) {
-                    _Status.done => palette.primary,
-                    _Status.skipped => palette.warning.withValues(alpha: 0.7),
-                    _Status.active => palette.primary.withValues(alpha: 0.45),
-                    _Status.upcoming => palette.tintStrong,
+                    PrayerSetupStepStatus.done => palette.primary,
+                    PrayerSetupStepStatus.skipped => palette.warning.withValues(alpha: 0.7),
+                    PrayerSetupStepStatus.active => palette.primary.withValues(alpha: 0.45),
+                    PrayerSetupStepStatus.upcoming => palette.tintStrong,
                   },
                 ),
               ),
@@ -425,7 +431,7 @@ class _StepCard extends StatelessWidget {
 
   final int number;
   final int total;
-  final _Step step;
+  final PrayerSetupStep step;
   final bool busy;
 
   @override
@@ -434,8 +440,8 @@ class _StepCard extends StatelessWidget {
     return Semantics(
       container: true,
       label: l10n.prayerSetupStepLabel(number, total),
-      child: step.status == _Status.active
-          ? _ActiveStep(number: number, total: total, step: step, busy: busy)
+      child: step.status == PrayerSetupStepStatus.active
+          ? PrayerSetupActiveStep(number: number, total: total, step: step, busy: busy)
           : _CollapsedStep(number: number, step: step),
     );
   }
@@ -445,19 +451,19 @@ class _CollapsedStep extends StatelessWidget {
   const _CollapsedStep({required this.number, required this.step});
 
   final int number;
-  final _Step step;
+  final PrayerSetupStep step;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = PrayerPalette.of(context);
-    final upcoming = step.status == _Status.upcoming;
+    final upcoming = step.status == PrayerSetupStepStatus.upcoming;
     final (badgeColor, badgeFill) = switch (step.status) {
-      _Status.done => (
+      PrayerSetupStepStatus.done => (
         palette.success,
         palette.success.withValues(alpha: 0.14),
       ),
-      _Status.skipped => (
+      PrayerSetupStepStatus.skipped => (
         palette.warning,
         palette.warning.withValues(alpha: 0.14),
       ),
@@ -475,12 +481,12 @@ class _CollapsedStep extends StatelessWidget {
             decoration: BoxDecoration(shape: BoxShape.circle, color: badgeFill),
             alignment: Alignment.center,
             child: switch (step.status) {
-              _Status.done => Icon(
+              PrayerSetupStepStatus.done => Icon(
                 Icons.check_rounded,
                 size: 19,
                 color: badgeColor,
               ),
-              _Status.skipped => Icon(
+              PrayerSetupStepStatus.skipped => Icon(
                 Icons.remove_rounded,
                 size: 19,
                 color: badgeColor,
@@ -510,7 +516,7 @@ class _CollapsedStep extends StatelessWidget {
                 Text(
                   step.summary,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: step.status == _Status.skipped
+                    color: step.status == PrayerSetupStepStatus.skipped
                         ? palette.warning
                         : palette.faint,
                     height: 1.3,
@@ -531,18 +537,23 @@ class _CollapsedStep extends StatelessWidget {
   }
 }
 
-class _ActiveStep extends StatelessWidget {
-  const _ActiveStep({
+class PrayerSetupActiveStep extends StatelessWidget {
+  const PrayerSetupActiveStep({
+    super.key,
     required this.number,
     required this.total,
     required this.step,
     required this.busy,
+    this.heading,
   });
 
   final int number;
   final int total;
-  final _Step step;
+  final PrayerSetupStep step;
   final bool busy;
+
+  /// Replaces "Step n of m" above the title.
+  final String? heading;
 
   @override
   Widget build(BuildContext context) {
@@ -588,7 +599,7 @@ class _ActiveStep extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.prayerSetupStepLabel(number, total),
+                      heading ?? l10n.prayerSetupStepLabel(number, total),
                       style: theme.textTheme.labelMedium?.copyWith(
                         color: palette.primary,
                         fontWeight: FontWeight.w700,
@@ -617,7 +628,7 @@ class _ActiveStep extends StatelessWidget {
           ),
           if (warning != null) ...[
             const SizedBox(height: 12),
-            _WarningNote(
+            PrayerSetupWarningNote(
               title: warning.title,
               text: warning.text,
               icon: warning.icon,
@@ -681,8 +692,9 @@ class _ActiveStep extends StatelessWidget {
   }
 }
 
-class _WarningNote extends StatelessWidget {
-  const _WarningNote({
+class PrayerSetupWarningNote extends StatelessWidget {
+  const PrayerSetupWarningNote({
+    super.key,
     required this.title,
     required this.text,
     required this.icon,

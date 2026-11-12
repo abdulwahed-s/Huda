@@ -5560,6 +5560,7 @@
   "windowsPrayerFocusVerseReference": "An-Nisa · 4:103",
   "windowsPrayerFocusTimeRemaining": "Time remaining",
   "androidAdhanDownload": "Download",
+  "macPrayerLoginSettings": "Open Login Items Settings",
   "macPrayerEmergencyExit": "Emergency exit",
   "macPrayerVerse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
   "iosPrayerAdvanceTitle": "Prayer reminder",
@@ -5624,8 +5625,38 @@
   },
   "permissionExplainerNotificationsTitle": "Allow notifications",
   "permissionExplainerNotificationsMessage": "Huda needs notifications to remind you at the times you choose. Your device will ask you next.",
+  "prayerReadyTitle": "Get prayer alerts ready",
+  "@prayerReadyTitle": {
+    "description": "Heading of the card on Prayer Times that walks through what prayer alerts still need."
+  },
+  "prayerReadyStepsLeft": "Get prayer alerts ready · {count} steps",
+  "@prayerReadyStepsLeft": {
+    "description": "Heading when more than one readiness step is left.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prayerReadyNotificationsBlocked": "Notifications for Huda are turned off. Turn them on in Settings, then come back here.",
+  "prayerReadyChannelsTitle": "Prayer alerts are muted",
+  "prayerReadyChannelsMessage": "Notifications are on, but Android is blocking Huda's prayer alert category. Turn it on so each prayer can alert you.",
+  "prayerReadyExactTitle": "Alerts right on time",
+  "prayerReadyExactMessage": "Allow Huda to set alarms so each prayer alert arrives exactly on time instead of a few minutes late.",
+  "prayerReadyAllow": "Allow",
   "prayerReadyAlarmTitle": "Allow prayer alarms",
   "prayerReadyAlarmMessage": "Prayer Alarm plays the adhan like an alarm, even in silent mode. Your iPhone needs your permission for that.",
+  "prayerReadyBannersTitle": "Show Huda's notifications",
+  "prayerReadyBannersMessage": "Notifications are allowed, but macOS is set not to show them. Choose Banners or Alerts for Huda in Notification settings.",
+  "prayerReadyLoginTitle": "Let Huda start at login",
+  "prayerReadyLoginMessage": "The adhan plays from Huda in the menu bar. Let it start when you log in so it keeps working after a restart.",
+  "prayerReadyWindowsStartupTitle": "Start Huda with Windows",
+  "prayerReadyWindowsStartupMessage": "Huda's background helper plays the adhan and keeps reminders coming. Let it start with Windows so they continue after a restart.",
+  "prayerReadyLinuxStartupTitle": "Start Huda at login",
+  "prayerReadyLinuxStartupMessage": "Huda's background service delivers prayer alerts and reminders. Let it start when you log in so they continue after a restart.",
+  "prayerReadyTurnOn": "Turn on",
+  "travelExplainerTitle": "Update times when you travel",
+  "travelExplainerMessage": "When you arrive in a new city, Huda updates prayer times and alerts by itself. To notice the move while Huda is closed, your device will ask to allow location all the time.",
   "prayerAlertTitle": "Adhan & alerts",
   "@prayerAlertTitle": {
     "description": "Title of the prayer alert settings sheet and its summary card."

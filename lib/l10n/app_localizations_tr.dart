@@ -5409,6 +5409,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get androidAdhanDownload => 'İndir';
 
   @override
+  String get macPrayerLoginSettings => 'Giriş Öğeleri Ayarlarını Aç';
+
+  @override
   String get macPrayerEmergencyExit => 'Acil çıkış';
 
   @override
@@ -5506,11 +5509,79 @@ class AppLocalizationsTr extends AppLocalizations {
       'Huda, seçtiğin saatlerde sana hatırlatmak için bildirimlere ihtiyaç duyar. Cihazın şimdi izin isteyecek.';
 
   @override
+  String get prayerReadyTitle => 'Namaz bildirimlerini hazırla';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'Namaz bildirimlerini hazırla · $count adım';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'Huda bildirimleri kapalı. Ayarlar\'dan aç, sonra buraya geri dön.';
+
+  @override
+  String get prayerReadyChannelsTitle => 'Namaz bildirimleri susturulmuş';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'Bildirimler açık, ancak Android Huda\'nın namaz bildirimi kategorisini engelliyor. Her namazda uyarı alman için bunu aç.';
+
+  @override
+  String get prayerReadyExactTitle => 'Tam vaktinde bildirimler';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'Her namaz bildiriminin birkaç dakika geç değil tam vaktinde gelmesi için Huda\'nın alarm kurmasına izin ver.';
+
+  @override
+  String get prayerReadyAllow => 'İzin ver';
+
+  @override
   String get prayerReadyAlarmTitle => 'Namaz alarmlarına izin ver';
 
   @override
   String get prayerReadyAlarmMessage =>
       'Namaz Alarmı, sessiz moddayken bile ezanı alarm gibi çalar. iPhone\'unun bunun için iznine ihtiyacı var.';
+
+  @override
+  String get prayerReadyBannersTitle => 'Huda bildirimlerini göster';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'Bildirimlere izin verilmiş ancak macOS bunları göstermeyecek şekilde ayarlı. Bildirim ayarlarında Huda için Afişler veya Uyarılar\'ı seç.';
+
+  @override
+  String get prayerReadyLoginTitle => 'Huda oturum açılışında başlasın';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'Ezan, menü çubuğundaki Huda\'dan çalar. Yeniden başlatmadan sonra da çalışması için oturum açılışında başlamasına izin ver.';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'Huda\'yı Windows ile başlat';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'Huda\'nın arka plan yardımcısı ezanı çalar ve hatırlatıcıları sürdürür. Yeniden başlatmadan sonra da devam etmeleri için Windows ile başlamasına izin ver.';
+
+  @override
+  String get prayerReadyLinuxStartupTitle =>
+      'Huda\'yı oturum açılışında başlat';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'Huda\'nın arka plan hizmeti namaz bildirimlerini ve hatırlatıcıları iletir. Yeniden başlatmadan sonra da devam etmeleri için oturum açılışında başlamasına izin ver.';
+
+  @override
+  String get prayerReadyTurnOn => 'Aç';
+
+  @override
+  String get travelExplainerTitle => 'Seyahatte vakitleri güncelle';
+
+  @override
+  String get travelExplainerMessage =>
+      'Yeni bir şehre vardığında Huda namaz vakitlerini ve bildirimleri kendisi günceller. Huda kapalıyken taşındığını fark edebilmesi için cihazın konuma her zaman izin vermeni isteyecek.';
 
   @override
   String get prayerAlertTitle => 'Ezan ve bildirimler';

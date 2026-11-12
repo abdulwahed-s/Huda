@@ -5420,6 +5420,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get androidAdhanDownload => 'Muat turun';
 
   @override
+  String get macPrayerLoginSettings => 'Buka Tetapan Item Log Masuk';
+
+  @override
   String get macPrayerEmergencyExit => 'Keluar kecemasan';
 
   @override
@@ -5520,11 +5523,78 @@ class AppLocalizationsMs extends AppLocalizations {
       'Huda memerlukan pemberitahuan untuk mengingatkan anda pada waktu yang anda pilih. Peranti anda akan bertanya seterusnya.';
 
   @override
+  String get prayerReadyTitle => 'Sediakan peringatan solat';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'Sediakan peringatan solat · $count langkah';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'Pemberitahuan Huda dimatikan. Hidupkannya dalam Tetapan, kemudian kembali ke sini.';
+
+  @override
+  String get prayerReadyChannelsTitle => 'Peringatan solat disenyapkan';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'Pemberitahuan dihidupkan, tetapi Android menyekat kategori peringatan solat Huda. Hidupkannya supaya setiap solat dapat mengingatkan anda.';
+
+  @override
+  String get prayerReadyExactTitle => 'Peringatan tepat pada waktunya';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'Benarkan Huda menetapkan penggera supaya setiap peringatan solat tiba tepat pada waktunya, bukan lewat beberapa minit.';
+
+  @override
+  String get prayerReadyAllow => 'Benarkan';
+
+  @override
   String get prayerReadyAlarmTitle => 'Benarkan penggera solat';
 
   @override
   String get prayerReadyAlarmMessage =>
       'Penggera Solat memainkan azan seperti penggera, walaupun dalam mod senyap. iPhone anda memerlukan kebenaran anda untuk itu.';
+
+  @override
+  String get prayerReadyBannersTitle => 'Paparkan pemberitahuan Huda';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'Pemberitahuan dibenarkan, tetapi macOS ditetapkan untuk tidak memaparkannya. Pilih Sepanduk atau Amaran untuk Huda dalam tetapan Pemberitahuan.';
+
+  @override
+  String get prayerReadyLoginTitle => 'Benarkan Huda bermula semasa log masuk';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'Azan dimainkan daripada Huda dalam bar menu. Benarkan ia bermula semasa log masuk supaya terus berfungsi selepas dimulakan semula.';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'Mulakan Huda bersama Windows';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'Pembantu latar belakang Huda memainkan azan dan memastikan peringatan terus tiba. Benarkan ia bermula bersama Windows supaya ia berterusan selepas dimulakan semula.';
+
+  @override
+  String get prayerReadyLinuxStartupTitle => 'Mulakan Huda semasa log masuk';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'Perkhidmatan latar belakang Huda menghantar peringatan solat dan peringatan lain. Benarkan ia bermula semasa log masuk supaya ia berterusan selepas dimulakan semula.';
+
+  @override
+  String get prayerReadyTurnOn => 'Hidupkan';
+
+  @override
+  String get travelExplainerTitle => 'Kemas kini waktu semasa bermusafir';
+
+  @override
+  String get travelExplainerMessage =>
+      'Apabila anda tiba di bandar baharu, Huda mengemas kini waktu solat dan peringatan dengan sendirinya. Untuk mengesan perpindahan semasa Huda ditutup, peranti anda akan meminta kebenaran lokasi sepanjang masa.';
 
   @override
   String get prayerAlertTitle => 'Azan & peringatan';

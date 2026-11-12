@@ -5508,6 +5508,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get androidAdhanDownload => 'Télécharger';
 
   @override
+  String get macPrayerLoginSettings =>
+      'Ouvrir les réglages des éléments de connexion';
+
+  @override
   String get macPrayerEmergencyExit => 'Sortie d’urgence';
 
   @override
@@ -5609,11 +5613,80 @@ class AppLocalizationsFr extends AppLocalizations {
       'Huda a besoin des notifications pour vous rappeler aux heures choisies. Votre appareil va vous le demander.';
 
   @override
+  String get prayerReadyTitle => 'Préparer les alertes de prière';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'Préparer les alertes de prière · $count étapes';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'Les notifications de Huda sont désactivées. Activez-les dans les réglages, puis revenez ici.';
+
+  @override
+  String get prayerReadyChannelsTitle =>
+      'Les alertes de prière sont désactivées';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'Les notifications sont activées, mais Android bloque la catégorie des alertes de prière de Huda. Activez-la pour être averti à chaque prière.';
+
+  @override
+  String get prayerReadyExactTitle => 'Des alertes à l\'heure exacte';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'Autorisez Huda à régler des alarmes pour que chaque alerte de prière arrive à l\'heure exacte, et non avec quelques minutes de retard.';
+
+  @override
+  String get prayerReadyAllow => 'Autoriser';
+
+  @override
   String get prayerReadyAlarmTitle => 'Autoriser les alarmes de prière';
 
   @override
   String get prayerReadyAlarmMessage =>
       'L\'alarme de prière joue l\'adhan comme une alarme, même en mode silencieux. Votre iPhone a besoin de votre autorisation.';
+
+  @override
+  String get prayerReadyBannersTitle => 'Afficher les notifications de Huda';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'Les notifications sont autorisées, mais macOS est réglé pour ne pas les afficher. Choisissez Bannières ou Alertes pour Huda dans les réglages des notifications.';
+
+  @override
+  String get prayerReadyLoginTitle => 'Lancer Huda à l\'ouverture de session';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'L\'adhan est joué par Huda dans la barre des menus. Laissez-le se lancer à l\'ouverture de session pour qu\'il fonctionne après un redémarrage.';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'Démarrer Huda avec Windows';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'L\'assistant de Huda en arrière-plan joue l\'adhan et maintient les rappels. Laissez-le démarrer avec Windows pour qu\'ils continuent après un redémarrage.';
+
+  @override
+  String get prayerReadyLinuxStartupTitle =>
+      'Démarrer Huda à l\'ouverture de session';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'Le service de Huda en arrière-plan envoie les alertes de prière et les rappels. Laissez-le démarrer à l\'ouverture de session pour qu\'ils continuent après un redémarrage.';
+
+  @override
+  String get prayerReadyTurnOn => 'Activer';
+
+  @override
+  String get travelExplainerTitle => 'Mettre à jour les heures en voyage';
+
+  @override
+  String get travelExplainerMessage =>
+      'Quand vous arrivez dans une nouvelle ville, Huda met à jour seul les heures et les alertes. Pour remarquer le déplacement quand Huda est fermé, votre appareil demandera l\'accès à la position en permanence.';
 
   @override
   String get prayerAlertTitle => 'Adhan et alertes';

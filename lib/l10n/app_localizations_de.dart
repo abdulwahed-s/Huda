@@ -5488,6 +5488,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get androidAdhanDownload => 'Herunterladen';
 
   @override
+  String get macPrayerLoginSettings =>
+      'Einstellungen für Anmeldeobjekte öffnen';
+
+  @override
   String get macPrayerEmergencyExit => 'Notausstieg';
 
   @override
@@ -5588,11 +5592,78 @@ class AppLocalizationsDe extends AppLocalizations {
       'Huda braucht Mitteilungen, um dich zu den gewählten Zeiten zu erinnern. Dein Gerät fragt dich gleich danach.';
 
   @override
+  String get prayerReadyTitle => 'Gebetsmeldungen einrichten';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'Gebetsmeldungen einrichten · $count Schritte';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'Mitteilungen für Huda sind ausgeschaltet. Schalte sie in den Einstellungen ein und komm dann zurück.';
+
+  @override
+  String get prayerReadyChannelsTitle => 'Gebetsmeldungen sind stummgeschaltet';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'Mitteilungen sind an, aber Android blockiert Hudas Kategorie für Gebetsmeldungen. Schalte sie ein, damit dich jedes Gebet erreicht.';
+
+  @override
+  String get prayerReadyExactTitle => 'Meldungen pünktlich';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'Erlaube Huda, Wecker zu stellen, damit jede Gebetsmeldung genau pünktlich statt ein paar Minuten zu spät kommt.';
+
+  @override
+  String get prayerReadyAllow => 'Erlauben';
+
+  @override
   String get prayerReadyAlarmTitle => 'Gebetswecker erlauben';
 
   @override
   String get prayerReadyAlarmMessage =>
       'Der Gebetswecker spielt den Adhan wie einen Wecker, auch im Lautlos-Modus. Dein iPhone braucht dafür deine Erlaubnis.';
+
+  @override
+  String get prayerReadyBannersTitle => 'Hudas Mitteilungen anzeigen';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'Mitteilungen sind erlaubt, aber macOS zeigt sie nicht an. Wähle in den Mitteilungseinstellungen „Banner“ oder „Hinweise“ für Huda.';
+
+  @override
+  String get prayerReadyLoginTitle => 'Huda beim Anmelden starten';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'Der Adhan wird von Huda in der Menüleiste abgespielt. Lass Huda beim Anmelden starten, damit es auch nach einem Neustart funktioniert.';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'Huda mit Windows starten';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'Hudas Hintergrundhelfer spielt den Adhan und hält Erinnerungen am Laufen. Lass ihn mit Windows starten, damit sie nach einem Neustart weiterlaufen.';
+
+  @override
+  String get prayerReadyLinuxStartupTitle => 'Huda beim Anmelden starten';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'Hudas Hintergrunddienst liefert Gebetsmeldungen und Erinnerungen. Lass ihn beim Anmelden starten, damit sie nach einem Neustart weiterlaufen.';
+
+  @override
+  String get prayerReadyTurnOn => 'Einschalten';
+
+  @override
+  String get travelExplainerTitle => 'Zeiten auf Reisen aktualisieren';
+
+  @override
+  String get travelExplainerMessage =>
+      'Wenn du in einer neuen Stadt ankommst, aktualisiert Huda Gebetszeiten und Meldungen selbst. Damit Huda den Ortswechsel auch geschlossen bemerkt, fragt dein Gerät nach dem Standortzugriff „Immer“.';
 
   @override
   String get prayerAlertTitle => 'Adhan & Meldungen';

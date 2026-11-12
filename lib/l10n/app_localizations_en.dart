@@ -5410,6 +5410,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get androidAdhanDownload => 'Download';
 
   @override
+  String get macPrayerLoginSettings => 'Open Login Items Settings';
+
+  @override
   String get macPrayerEmergencyExit => 'Emergency exit';
 
   @override
@@ -5509,11 +5512,78 @@ class AppLocalizationsEn extends AppLocalizations {
       'Huda needs notifications to remind you at the times you choose. Your device will ask you next.';
 
   @override
+  String get prayerReadyTitle => 'Get prayer alerts ready';
+
+  @override
+  String prayerReadyStepsLeft(int count) {
+    return 'Get prayer alerts ready · $count steps';
+  }
+
+  @override
+  String get prayerReadyNotificationsBlocked =>
+      'Notifications for Huda are turned off. Turn them on in Settings, then come back here.';
+
+  @override
+  String get prayerReadyChannelsTitle => 'Prayer alerts are muted';
+
+  @override
+  String get prayerReadyChannelsMessage =>
+      'Notifications are on, but Android is blocking Huda\'s prayer alert category. Turn it on so each prayer can alert you.';
+
+  @override
+  String get prayerReadyExactTitle => 'Alerts right on time';
+
+  @override
+  String get prayerReadyExactMessage =>
+      'Allow Huda to set alarms so each prayer alert arrives exactly on time instead of a few minutes late.';
+
+  @override
+  String get prayerReadyAllow => 'Allow';
+
+  @override
   String get prayerReadyAlarmTitle => 'Allow prayer alarms';
 
   @override
   String get prayerReadyAlarmMessage =>
       'Prayer Alarm plays the adhan like an alarm, even in silent mode. Your iPhone needs your permission for that.';
+
+  @override
+  String get prayerReadyBannersTitle => 'Show Huda\'s notifications';
+
+  @override
+  String get prayerReadyBannersMessage =>
+      'Notifications are allowed, but macOS is set not to show them. Choose Banners or Alerts for Huda in Notification settings.';
+
+  @override
+  String get prayerReadyLoginTitle => 'Let Huda start at login';
+
+  @override
+  String get prayerReadyLoginMessage =>
+      'The adhan plays from Huda in the menu bar. Let it start when you log in so it keeps working after a restart.';
+
+  @override
+  String get prayerReadyWindowsStartupTitle => 'Start Huda with Windows';
+
+  @override
+  String get prayerReadyWindowsStartupMessage =>
+      'Huda\'s background helper plays the adhan and keeps reminders coming. Let it start with Windows so they continue after a restart.';
+
+  @override
+  String get prayerReadyLinuxStartupTitle => 'Start Huda at login';
+
+  @override
+  String get prayerReadyLinuxStartupMessage =>
+      'Huda\'s background service delivers prayer alerts and reminders. Let it start when you log in so they continue after a restart.';
+
+  @override
+  String get prayerReadyTurnOn => 'Turn on';
+
+  @override
+  String get travelExplainerTitle => 'Update times when you travel';
+
+  @override
+  String get travelExplainerMessage =>
+      'When you arrive in a new city, Huda updates prayer times and alerts by itself. To notice the move while Huda is closed, your device will ask to allow location all the time.';
 
   @override
   String get prayerAlertTitle => 'Adhan & alerts';
