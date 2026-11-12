@@ -5374,8 +5374,50 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'মেনু বারে নামাজের সময়';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'হুদার উইন্ডো বন্ধ করার পরেও নামাজের সময় ও কাউন্টডাউন দেখুন।';
+
+  @override
+  String get macPrayerMenuStyle => 'মেনু বারের লেবেল';
+
+  @override
+  String get macPrayerMenuSettings => 'নামাজের সেটিংস…';
+
+  @override
+  String get macPrayerMenuQuit => 'হুদা বন্ধ করুন';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'অবস্থান সেট করতে হুদার নামাজের সময় পৃষ্ঠা খুলুন।';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'হুদায় অবস্থান যাচাই করুন';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return '$prayer আর $time পরে';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return 'আর $time';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'শুধু আইকন';
+
+  @override
+  String get macPrayerMenuError =>
+      'মেনু বার আপডেট করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get macPrayerMenuHourShort => 'ঘ';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'মি';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5417,6 +5459,10 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'জরুরি প্রস্থান';
+
+  @override
+  String get macPrayerApplyError =>
+      'macOS নামাজের সেটিংস প্রয়োগ করা যায়নি। রিফ্রেশ করে আবার চেষ্টা করুন।';
 
   @override
   String get macPrayerVerse =>

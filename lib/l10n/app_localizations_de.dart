@@ -5449,8 +5449,50 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'Gebetszeiten in der Menüleiste';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'Gebetszeiten und Countdown auch nach dem Schließen des Huda-Fensters anzeigen.';
+
+  @override
+  String get macPrayerMenuStyle => 'Menüleistenanzeige';
+
+  @override
+  String get macPrayerMenuSettings => 'Gebetseinstellungen…';
+
+  @override
+  String get macPrayerMenuQuit => 'Huda beenden';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'Öffne die Gebetszeiten in Huda, um deinen Standort festzulegen.';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'Standort in Huda überprüfen';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return '$prayer in $time';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return 'in $time';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'Nur Symbol';
+
+  @override
+  String get macPrayerMenuError =>
+      'Die Menüleiste konnte nicht aktualisiert werden. Versuche es erneut.';
+
+  @override
+  String get macPrayerMenuHourShort => 'Std.';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'Min.';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5493,6 +5535,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'Notausstieg';
+
+  @override
+  String get macPrayerApplyError =>
+      'macOS-Gebetseinstellungen konnten nicht angewendet werden. Aktualisieren und erneut versuchen.';
 
   @override
   String get macPrayerVerse =>

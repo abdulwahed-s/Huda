@@ -5367,8 +5367,50 @@ class AppLocalizationsUr extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'مینو بار میں نماز کے اوقات';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'ہدیٰ کی ونڈو بند ہونے کے بعد بھی نماز کے اوقات اور الٹی گنتی دکھائیں۔';
+
+  @override
+  String get macPrayerMenuStyle => 'مینو بار کا عنوان';
+
+  @override
+  String get macPrayerMenuSettings => 'نماز کی ترتیبات…';
+
+  @override
+  String get macPrayerMenuQuit => 'ہدیٰ بند کریں';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'اپنا مقام مقرر کرنے کے لیے ہدیٰ میں نماز کے اوقات کھولیں۔';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'ہدیٰ میں مقام کی تصدیق کریں';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return '$prayer میں $time';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return '$time میں';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'صرف آئیکن';
+
+  @override
+  String get macPrayerMenuError =>
+      'مینو بار کو اپ ڈیٹ نہیں کیا جا سکا۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get macPrayerMenuHourShort => 'گ';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'م';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5409,6 +5451,10 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'ہنگامی خروج';
+
+  @override
+  String get macPrayerApplyError =>
+      'macOS کی نماز کی ترتیبات لاگو نہیں ہو سکیں۔ تازہ کریں اور دوبارہ کوشش کریں۔';
 
   @override
   String get macPrayerVerse =>

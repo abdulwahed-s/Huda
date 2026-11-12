@@ -9756,11 +9756,83 @@ abstract class AppLocalizations {
   /// **'{minutes, plural, =0{Started just now} =1{Started 1 min ago} other{Started {minutes} min ago}}'**
   String prayerHeroStartedAgo(int minutes);
 
+  /// No description provided for @macPrayerMenuTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu Bar Prayer Times'**
+  String get macPrayerMenuTitle;
+
+  /// No description provided for @macPrayerMenuDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show prayer times and a countdown after closing Huda.'**
+  String get macPrayerMenuDescription;
+
+  /// No description provided for @macPrayerMenuStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu bar label'**
+  String get macPrayerMenuStyle;
+
+  /// No description provided for @macPrayerMenuSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Settings…'**
+  String get macPrayerMenuSettings;
+
+  /// No description provided for @macPrayerMenuQuit.
+  ///
+  /// In en, this message translates to:
+  /// **'Quit Huda'**
+  String get macPrayerMenuQuit;
+
   /// No description provided for @macPrayerMenuNeedsSetup.
   ///
   /// In en, this message translates to:
   /// **'Open Huda Prayer Times to set your location.'**
   String get macPrayerMenuNeedsSetup;
+
+  /// No description provided for @macPrayerMenuVerifyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify location in Huda'**
+  String get macPrayerMenuVerifyLocation;
+
+  /// No description provided for @macPrayerMenuNameCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayer} in {time}'**
+  String macPrayerMenuNameCountdown(String prayer, String time);
+
+  /// No description provided for @macPrayerMenuCountdownOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'in {time}'**
+  String macPrayerMenuCountdownOnly(String time);
+
+  /// No description provided for @macPrayerMenuIconOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Icon only'**
+  String get macPrayerMenuIconOnly;
+
+  /// No description provided for @macPrayerMenuError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update the menu bar. Try again.'**
+  String get macPrayerMenuError;
+
+  /// No description provided for @macPrayerMenuHourShort.
+  ///
+  /// In en, this message translates to:
+  /// **'h'**
+  String get macPrayerMenuHourShort;
+
+  /// No description provided for @macPrayerMenuMinuteShort.
+  ///
+  /// In en, this message translates to:
+  /// **'m'**
+  String get macPrayerMenuMinuteShort;
 
   /// No description provided for @windowsPrayerStartupDisabled.
   ///
@@ -9833,6 +9905,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Emergency exit'**
   String get macPrayerEmergencyExit;
+
+  /// No description provided for @macPrayerApplyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not apply macOS prayer settings. Refresh and try again.'**
+  String get macPrayerApplyError;
 
   /// No description provided for @macPrayerVerse.
   ///

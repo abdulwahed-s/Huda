@@ -5381,8 +5381,50 @@ class AppLocalizationsMs extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'Waktu solat di bar menu';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'Paparkan waktu solat dan kira detik selepas tetingkap Huda ditutup.';
+
+  @override
+  String get macPrayerMenuStyle => 'Label bar menu';
+
+  @override
+  String get macPrayerMenuSettings => 'Tetapan solat…';
+
+  @override
+  String get macPrayerMenuQuit => 'Keluar Huda';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'Buka halaman Waktu Solat Huda untuk menetapkan lokasi anda.';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'Sahkan lokasi dalam Huda';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return '$prayer dalam $time';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return 'dalam $time';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'Ikon sahaja';
+
+  @override
+  String get macPrayerMenuError =>
+      'Bar menu tidak dapat dikemas kini. Cuba lagi.';
+
+  @override
+  String get macPrayerMenuHourShort => 'j';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'm';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5424,6 +5466,10 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'Keluar kecemasan';
+
+  @override
+  String get macPrayerApplyError =>
+      'Tetapan solat macOS tidak dapat digunakan. Muat semula dan cuba lagi.';
 
   @override
   String get macPrayerVerse =>

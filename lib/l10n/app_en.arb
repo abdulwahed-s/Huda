@@ -5549,7 +5549,36 @@
       }
     }
   },
+  "macPrayerMenuTitle": "Menu Bar Prayer Times",
+  "macPrayerMenuDescription": "Show prayer times and a countdown after closing Huda.",
+  "macPrayerMenuStyle": "Menu bar label",
+  "macPrayerMenuSettings": "Prayer Settings…",
+  "macPrayerMenuQuit": "Quit Huda",
   "macPrayerMenuNeedsSetup": "Open Huda Prayer Times to set your location.",
+  "macPrayerMenuVerifyLocation": "Verify location in Huda",
+  "macPrayerMenuNameCountdown": "{prayer} in {time}",
+  "@macPrayerMenuNameCountdown": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "macPrayerMenuCountdownOnly": "in {time}",
+  "@macPrayerMenuCountdownOnly": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "macPrayerMenuIconOnly": "Icon only",
+  "macPrayerMenuError": "Could not update the menu bar. Try again.",
+  "macPrayerMenuHourShort": "h",
+  "macPrayerMenuMinuteShort": "m",
   "windowsPrayerStartupDisabled": "Startup is disabled in Windows settings.",
   "windowsPrayerOpenStartupSettings": "Open Windows startup settings",
   "windowsPrayerError": "Could not update the Windows countdown. Try again.",
@@ -5562,6 +5591,7 @@
   "androidAdhanDownload": "Download",
   "macPrayerLoginSettings": "Open Login Items Settings",
   "macPrayerEmergencyExit": "Emergency exit",
+  "macPrayerApplyError": "Could not apply macOS prayer settings. Refresh and try again.",
   "macPrayerVerse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
   "iosPrayerAdvanceTitle": "Prayer reminder",
   "iosPrayerAdvanceBody": "{prayer} in {minutes} minutes.",

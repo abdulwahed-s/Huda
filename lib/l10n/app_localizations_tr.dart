@@ -5371,8 +5371,50 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'Menü Çubuğunda Namaz Vakitleri';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'Huda penceresini kapattıktan sonra vakitleri ve geri sayımı göster.';
+
+  @override
+  String get macPrayerMenuStyle => 'Menü çubuğu etiketi';
+
+  @override
+  String get macPrayerMenuSettings => 'Namaz Ayarları…';
+
+  @override
+  String get macPrayerMenuQuit => 'Huda’dan Çık';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'Konumunuzu ayarlamak için Huda Namaz Vakitleri sayfasını açın.';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'Huda’da konumu doğrulayın';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return '$prayer · $time kaldı';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return '$time kaldı';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'Yalnızca simge';
+
+  @override
+  String get macPrayerMenuError =>
+      'Menü çubuğu güncellenemedi. Tekrar deneyin.';
+
+  @override
+  String get macPrayerMenuHourShort => 'sa';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'dk';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5413,6 +5455,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'Acil çıkış';
+
+  @override
+  String get macPrayerApplyError =>
+      'macOS namaz ayarları uygulanamadı. Yenileyip tekrar deneyin.';
 
   @override
   String get macPrayerVerse =>

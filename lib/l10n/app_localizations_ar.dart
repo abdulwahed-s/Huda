@@ -5315,8 +5315,49 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'مواقيت الصلاة في شريط القوائم';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'اعرض المواقيت والعد التنازلي بعد إغلاق نافذة هدى.';
+
+  @override
+  String get macPrayerMenuStyle => 'عنوان شريط القوائم';
+
+  @override
+  String get macPrayerMenuSettings => 'إعدادات الصلاة…';
+
+  @override
+  String get macPrayerMenuQuit => 'إنهاء هدى';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'افتح صفحة مواقيت الصلاة في هدى لتحديد موقعك.';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'تحقق من الموقع في هدى';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return 'باقي على $prayer $time';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return 'باقي $time';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'أيقونة فقط';
+
+  @override
+  String get macPrayerMenuError => 'تعذر تحديث شريط القوائم. حاول مرة أخرى.';
+
+  @override
+  String get macPrayerMenuHourShort => 'س';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'د';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5357,6 +5398,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'خروج طارئ';
+
+  @override
+  String get macPrayerApplyError =>
+      'تعذر تطبيق إعدادات الصلاة على macOS. حدّث الحالة وحاول مجددًا.';
 
   @override
   String get macPrayerVerse =>

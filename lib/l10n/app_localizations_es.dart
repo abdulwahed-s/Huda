@@ -5454,8 +5454,50 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'Horarios de oración en la barra de menús';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'Muestra los horarios y la cuenta regresiva después de cerrar la ventana de Huda.';
+
+  @override
+  String get macPrayerMenuStyle => 'Texto de la barra de menús';
+
+  @override
+  String get macPrayerMenuSettings => 'Ajustes de oración…';
+
+  @override
+  String get macPrayerMenuQuit => 'Salir de Huda';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'Abre los horarios de oración de Huda para configurar tu ubicación.';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'Verifica la ubicación en Huda';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return '$prayer en $time';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return 'en $time';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'Solo icono';
+
+  @override
+  String get macPrayerMenuError =>
+      'No se pudo actualizar la barra de menús. Inténtalo de nuevo.';
+
+  @override
+  String get macPrayerMenuHourShort => 'h';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'min';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5497,6 +5539,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'Salida de emergencia';
+
+  @override
+  String get macPrayerApplyError =>
+      'No se pudo aplicar la configuración de macOS. Actualiza e inténtalo de nuevo.';
 
   @override
   String get macPrayerVerse =>

@@ -5405,8 +5405,50 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get macPrayerMenuTitle => 'Время молитв в строке меню';
+
+  @override
+  String get macPrayerMenuDescription =>
+      'Показывать время молитв и обратный отсчёт после закрытия окна Huda.';
+
+  @override
+  String get macPrayerMenuStyle => 'Надпись в строке меню';
+
+  @override
+  String get macPrayerMenuSettings => 'Настройки молитв…';
+
+  @override
+  String get macPrayerMenuQuit => 'Выйти из Huda';
+
+  @override
   String get macPrayerMenuNeedsSetup =>
       'Откройте страницу времени молитв в Huda, чтобы указать местоположение.';
+
+  @override
+  String get macPrayerMenuVerifyLocation => 'Проверьте местоположение в Huda';
+
+  @override
+  String macPrayerMenuNameCountdown(String prayer, String time) {
+    return '$prayer через $time';
+  }
+
+  @override
+  String macPrayerMenuCountdownOnly(String time) {
+    return 'через $time';
+  }
+
+  @override
+  String get macPrayerMenuIconOnly => 'Только значок';
+
+  @override
+  String get macPrayerMenuError =>
+      'Не удалось обновить строку меню. Повторите попытку.';
+
+  @override
+  String get macPrayerMenuHourShort => 'ч';
+
+  @override
+  String get macPrayerMenuMinuteShort => 'мин';
 
   @override
   String get windowsPrayerStartupDisabled =>
@@ -5448,6 +5490,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get macPrayerEmergencyExit => 'Аварийный выход';
+
+  @override
+  String get macPrayerApplyError =>
+      'Не удалось применить настройки молитвы macOS. Обновите и повторите попытку.';
 
   @override
   String get macPrayerVerse =>
