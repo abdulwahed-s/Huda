@@ -34,15 +34,21 @@ class LinuxPrayerNotificationScheduler implements LinuxPrayerScheduleWriter {
             );
       final directory = Directory(dataRoot);
       await directory.create(recursive: true);
+      // A lost Flutter/native acknowledgment must never restart legacy delivery.
+      final owner = File(path.join(dataRoot, 'delivery-owner.json'));
+      if (await owner.exists()) {
+        final decision = jsonDecode(await owner.readAsString()) as Map;
+        if (decision['owner'] == 'native') return false;
+      }
 
       final scheduleFile = File(path.join(dataRoot, 'schedule.tsv'));
       final temporaryFile = File('${scheduleFile.path}.new');
       await temporaryFile.writeAsString(serialize(plan));
       await temporaryFile.rename(scheduleFile.path);
 
-      if (snapData != null && snapData.isNotEmpty) {
-        return _startSnapService(environment);
-      }
+      // snapd starts the Snap's helper at install and login, and it re-reads
+      // the schedule within a minute; a Snap app can't start it (snapctl).
+      if (snapData != null && snapData.isNotEmpty) return true;
 
       final helperFile = File(path.join(dataRoot, 'notify-prayers.sh'));
       final helperData = await rootBundle.loadString(_assetPath);
@@ -81,19 +87,6 @@ class LinuxPrayerNotificationScheduler implements LinuxPrayerScheduleWriter {
               '\t${event.id}\t$title\t$body';
         })
         .join('\n');
-  }
-
-  Future<bool> _startSnapService(Map<String, String> environment) async {
-    final instance = environment['SNAP_INSTANCE_NAME'] ?? 'huda';
-    final result = await Process.run('snapctl', [
-      'start',
-      '--enable',
-      '$instance.prayer-notifications',
-    ]);
-    if (result.exitCode != 0) {
-      debugPrint('Unable to start snap prayer service: ${result.stderr}');
-    }
-    return result.exitCode == 0;
   }
 
   Future<bool> _installSystemdUserService({
