@@ -5509,6 +5509,31 @@ class AppLocalizationsBn extends AppLocalizations {
       'আপনার বেছে নেওয়া সময়ে মনে করিয়ে দিতে হুদার বিজ্ঞপ্তি প্রয়োজন। এরপর আপনার ডিভাইস অনুমতি চাইবে।';
 
   @override
+  String get prayerAlertStartupWarning =>
+      'সংরক্ষিত হয়েছে, কিন্তু macOS লগইনের সময় হুদা চালু হতে দেয়নি। সিস্টেম সেটিংসে লগইন আইটেম দেখুন।';
+
+  @override
+  String get prayerAlertStyleAdhan => 'আজান';
+
+  @override
+  String get prayerAlertStyleAdhanHint =>
+      'আজান বাজবে; কতক্ষণ বাজবে তা শব্দ অংশে বেছে নিন';
+
+  @override
+  String get prayerAlertStyleNotificationAdhan => 'বিজ্ঞপ্তিতে আজান';
+
+  @override
+  String get prayerAlertStyleNotificationAdhanHint =>
+      'বিজ্ঞপ্তির সাথে ৩০ সেকেন্ড পর্যন্ত; হুদা বন্ধ থাকলেও কাজ করে';
+
+  @override
+  String get prayerAlertStyleLiveAdhanHint =>
+      'হুদা পুরো আজান বাজায়; মেনু বারে হুদা চালু রাখুন';
+
+  @override
+  String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 বা পরবর্তী প্রয়োজন';
+
+  @override
   String get prayerCountdownTitle => 'নামাজের কাউন্টডাউন';
 
   @override

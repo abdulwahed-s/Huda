@@ -5506,6 +5506,31 @@ class AppLocalizationsTr extends AppLocalizations {
       'Huda, seçtiğin saatlerde sana hatırlatmak için bildirimlere ihtiyaç duyar. Cihazın şimdi izin isteyecek.';
 
   @override
+  String get prayerAlertStartupWarning =>
+      'Kaydedildi, ancak macOS Huda\'nın oturum açılışında başlamasına izin vermedi. Sistem Ayarları\'nda Giriş Öğeleri\'ni kontrol et.';
+
+  @override
+  String get prayerAlertStyleAdhan => 'Ezan';
+
+  @override
+  String get prayerAlertStyleAdhanHint =>
+      'Ezan çalar; ne kadar süreceğini Ses bölümünden seç';
+
+  @override
+  String get prayerAlertStyleNotificationAdhan => 'Bildirimde ezan';
+
+  @override
+  String get prayerAlertStyleNotificationAdhanHint =>
+      'Bildirimle 30 saniyeye kadar; Huda kapalıyken de çalışır';
+
+  @override
+  String get prayerAlertStyleLiveAdhanHint =>
+      'Huda ezanın tamamını çalar; Huda\'yı menü çubuğunda açık tut';
+
+  @override
+  String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 veya üstü gerekir';
+
+  @override
   String get prayerCountdownTitle => 'Namaz geri sayımı';
 
   @override

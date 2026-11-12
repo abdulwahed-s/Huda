@@ -5520,6 +5520,32 @@ class AppLocalizationsMs extends AppLocalizations {
       'Huda memerlukan pemberitahuan untuk mengingatkan anda pada waktu yang anda pilih. Peranti anda akan bertanya seterusnya.';
 
   @override
+  String get prayerAlertStartupWarning =>
+      'Disimpan, tetapi macOS tidak membenarkan Huda bermula semasa log masuk. Semak Item Log Masuk dalam Tetapan Sistem.';
+
+  @override
+  String get prayerAlertStyleAdhan => 'Azan';
+
+  @override
+  String get prayerAlertStyleAdhanHint =>
+      'Azan dimainkan; pilih tempohnya di bawah Bunyi';
+
+  @override
+  String get prayerAlertStyleNotificationAdhan => 'Azan dalam pemberitahuan';
+
+  @override
+  String get prayerAlertStyleNotificationAdhanHint =>
+      'Sehingga 30 saat bersama pemberitahuan; berfungsi walaupun Huda ditutup';
+
+  @override
+  String get prayerAlertStyleLiveAdhanHint =>
+      'Huda memainkan seluruh azan; biarkan Huda berjalan dalam bar menu';
+
+  @override
+  String get prayerAlertFullAlarmUnavailable =>
+      'Memerlukan iOS 26.1 atau lebih baharu';
+
+  @override
   String get prayerCountdownTitle => 'Kira detik solat';
 
   @override

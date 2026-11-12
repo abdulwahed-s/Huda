@@ -9984,6 +9984,48 @@ abstract class AppLocalizations {
   /// **'Huda needs notifications to remind you at the times you choose. Your device will ask you next.'**
   String get permissionExplainerNotificationsMessage;
 
+  /// No description provided for @prayerAlertStartupWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved, but macOS didn\'t let Huda start at login. Check Login Items in System Settings.'**
+  String get prayerAlertStartupWarning;
+
+  /// Android: one adhan style; how long it plays is chosen under Sound.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan'**
+  String get prayerAlertStyleAdhan;
+
+  /// No description provided for @prayerAlertStyleAdhanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The adhan plays; choose how long under Sound'**
+  String get prayerAlertStyleAdhanHint;
+
+  /// macOS: the notification's own sound, up to 30 seconds, works even when Huda is closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan in the notification'**
+  String get prayerAlertStyleNotificationAdhan;
+
+  /// No description provided for @prayerAlertStyleNotificationAdhanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 30 seconds with the notification; works even when Huda is closed'**
+  String get prayerAlertStyleNotificationAdhanHint;
+
+  /// No description provided for @prayerAlertStyleLiveAdhanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Huda plays the whole adhan; keep Huda running in the menu bar'**
+  String get prayerAlertStyleLiveAdhanHint;
+
+  /// No description provided for @prayerAlertFullAlarmUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs iOS 26.1 or later'**
+  String get prayerAlertFullAlarmUnavailable;
+
   /// Title of the Android prayer countdown card and notification
   ///
   /// In en, this message translates to:

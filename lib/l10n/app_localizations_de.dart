@@ -5588,6 +5588,31 @@ class AppLocalizationsDe extends AppLocalizations {
       'Huda braucht Mitteilungen, um dich zu den gewählten Zeiten zu erinnern. Dein Gerät fragt dich gleich danach.';
 
   @override
+  String get prayerAlertStartupWarning =>
+      'Gespeichert, aber macOS hat Huda nicht beim Anmelden starten lassen. Prüfe die Anmeldeobjekte in den Systemeinstellungen.';
+
+  @override
+  String get prayerAlertStyleAdhan => 'Adhan';
+
+  @override
+  String get prayerAlertStyleAdhanHint =>
+      'Der Adhan wird abgespielt; die Dauer wählst du unter Ton';
+
+  @override
+  String get prayerAlertStyleNotificationAdhan => 'Adhan in der Mitteilung';
+
+  @override
+  String get prayerAlertStyleNotificationAdhanHint =>
+      'Bis zu 30 Sekunden mit der Mitteilung; funktioniert auch, wenn Huda geschlossen ist';
+
+  @override
+  String get prayerAlertStyleLiveAdhanHint =>
+      'Huda spielt den ganzen Adhan; lass Huda in der Menüleiste laufen';
+
+  @override
+  String get prayerAlertFullAlarmUnavailable => 'Erfordert iOS 26.1 oder neuer';
+
+  @override
   String get prayerCountdownTitle => 'Gebets-Countdown';
 
   @override

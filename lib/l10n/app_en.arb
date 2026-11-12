@@ -5624,6 +5624,19 @@
   },
   "permissionExplainerNotificationsTitle": "Allow notifications",
   "permissionExplainerNotificationsMessage": "Huda needs notifications to remind you at the times you choose. Your device will ask you next.",
+  "prayerAlertStartupWarning": "Saved, but macOS didn't let Huda start at login. Check Login Items in System Settings.",
+  "prayerAlertStyleAdhan": "Adhan",
+  "@prayerAlertStyleAdhan": {
+    "description": "Android: one adhan style; how long it plays is chosen under Sound."
+  },
+  "prayerAlertStyleAdhanHint": "The adhan plays; choose how long under Sound",
+  "prayerAlertStyleNotificationAdhan": "Adhan in the notification",
+  "@prayerAlertStyleNotificationAdhan": {
+    "description": "macOS: the notification's own sound, up to 30 seconds, works even when Huda is closed."
+  },
+  "prayerAlertStyleNotificationAdhanHint": "Up to 30 seconds with the notification; works even when Huda is closed",
+  "prayerAlertStyleLiveAdhanHint": "Huda plays the whole adhan; keep Huda running in the menu bar",
+  "prayerAlertFullAlarmUnavailable": "Needs iOS 26.1 or later",
   "prayerCountdownTitle": "Prayer countdown",
   "@prayerCountdownTitle": {
     "description": "Title of the Android prayer countdown card and notification"

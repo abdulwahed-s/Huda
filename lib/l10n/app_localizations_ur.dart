@@ -5503,6 +5503,31 @@ class AppLocalizationsUr extends AppLocalizations {
       'آپ کے منتخب کردہ اوقات پر یاد دلانے کے لیے ہدیٰ کو اطلاعات درکار ہیں۔ اس کے بعد آپ کا آلہ اجازت مانگے گا۔';
 
   @override
+  String get prayerAlertStartupWarning =>
+      'محفوظ ہو گیا، لیکن macOS نے ہدیٰ کو لاگ ان پر شروع نہیں ہونے دیا۔ سسٹم سیٹنگز میں لاگ ان آئٹمز دیکھیں۔';
+
+  @override
+  String get prayerAlertStyleAdhan => 'اذان';
+
+  @override
+  String get prayerAlertStyleAdhanHint =>
+      'اذان چلے گی؛ دورانیہ آواز کے حصے میں منتخب کریں';
+
+  @override
+  String get prayerAlertStyleNotificationAdhan => 'اطلاع میں اذان';
+
+  @override
+  String get prayerAlertStyleNotificationAdhanHint =>
+      'اطلاع کے ساتھ 30 سیکنڈ تک؛ ہدیٰ بند ہونے پر بھی کام کرتی ہے';
+
+  @override
+  String get prayerAlertStyleLiveAdhanHint =>
+      'ہدیٰ پوری اذان چلاتا ہے؛ ہدیٰ کو مینو بار میں چلتا رکھیں';
+
+  @override
+  String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 یا نیا درکار ہے';
+
+  @override
   String get prayerCountdownTitle => 'نماز کی الٹی گنتی';
 
   @override

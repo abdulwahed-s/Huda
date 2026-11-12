@@ -5448,6 +5448,31 @@ class AppLocalizationsAr extends AppLocalizations {
       'يحتاج هدى إلى الإشعارات ليذكّرك في الأوقات التي تختارها. سيطلب منك جهازك الإذن بعد ذلك.';
 
   @override
+  String get prayerAlertStartupWarning =>
+      'تم الحفظ، لكن macOS لم يسمح لهدى بالعمل عند تسجيل الدخول. تحقّق من «عناصر تسجيل الدخول» في إعدادات النظام.';
+
+  @override
+  String get prayerAlertStyleAdhan => 'الأذان';
+
+  @override
+  String get prayerAlertStyleAdhanHint =>
+      'يُشغَّل الأذان؛ اختر مدته من قسم الصوت';
+
+  @override
+  String get prayerAlertStyleNotificationAdhan => 'الأذان مع الإشعار';
+
+  @override
+  String get prayerAlertStyleNotificationAdhanHint =>
+      'حتى 30 ثانية مع الإشعار؛ يعمل حتى عندما يكون هدى مغلقًا';
+
+  @override
+  String get prayerAlertStyleLiveAdhanHint =>
+      'يشغّل هدى الأذان كاملًا؛ أبقِ هدى يعمل في شريط القوائم';
+
+  @override
+  String get prayerAlertFullAlarmUnavailable => 'يتطلب iOS 26.1 أو أحدث';
+
+  @override
   String get prayerCountdownTitle => 'العد التنازلي للصلاة';
 
   @override
