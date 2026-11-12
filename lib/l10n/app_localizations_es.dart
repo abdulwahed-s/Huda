@@ -5706,6 +5706,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'Un momento tranquilo a pantalla completa para parar a rezar';
 
   @override
+  String get prayerAlertRecording => 'Grabación';
+
+  @override
+  String get prayerAlertVolume => 'Volumen';
+
+  @override
+  String get prayerAlertLength => 'Duración';
+
+  @override
   String get prayerAlertLengthWhole => 'Adhan completo';
 
   @override
@@ -5728,7 +5737,63 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prayerAlertNone => 'No';
 
   @override
+  String get prayerAlertSoundTitle => 'Elige una grabación';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'Descargado: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'Integrado';
+
+  @override
+  String get prayerAlertSoundReady => 'Disponible sin conexión';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return '$size para descargar';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'Descargar';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'Descargando $percent %';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'Cancelar descarga';
+
+  @override
+  String get prayerAlertSoundRemove => 'Eliminar descarga';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'La usan: $prayers. Elige antes otra grabación para ellas.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'Se muestra la lista guardada. No se pudo buscar grabaciones nuevas.';
+
+  @override
+  String get prayerAlertSoundListFailed =>
+      'No se pudieron cargar las grabaciones.';
+
+  @override
+  String get prayerAlertSoundPlay => 'Escuchar una muestra';
+
+  @override
+  String get prayerAlertSoundStop => 'Detener';
+
+  @override
   String get prayerAlertSoundWhole => 'Escuchar el adhan completo';
+
+  @override
+  String get prayerAlertSoundSelectAfter =>
+      'Se usará cuando termine la descarga';
 
   @override
   String get prayerAlertDownloadNetwork =>

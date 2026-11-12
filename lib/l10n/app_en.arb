@@ -5671,6 +5671,9 @@
   "prayerAlertStyleAlarmHint": "Rings like an alarm, even in silent mode",
   "prayerAlertStyleFocus": "Focus",
   "prayerAlertStyleFocusHint": "A calm full-screen moment to pause for prayer",
+  "prayerAlertRecording": "Recording",
+  "prayerAlertVolume": "Volume",
+  "prayerAlertLength": "Plays for",
   "prayerAlertLengthWhole": "Whole adhan",
   "prayerAlertLengthSeconds": "{seconds} s",
   "@prayerAlertLengthSeconds": {
@@ -5691,7 +5694,50 @@
   "prayerAlertLengthCustom": "Custom",
   "prayerAlertFadeIn": "Fade in",
   "prayerAlertNone": "Off",
+  "prayerAlertSoundTitle": "Choose a recording",
+  "prayerAlertSoundDownloaded": "Downloaded: {size}",
+  "@prayerAlertSoundDownloaded": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertSoundBuiltIn": "Built in",
+  "prayerAlertSoundReady": "Ready offline",
+  "prayerAlertSoundSize": "{size} to download",
+  "@prayerAlertSoundSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertSoundDownload": "Download",
+  "prayerAlertSoundDownloading": "Downloading {percent}%",
+  "@prayerAlertSoundDownloading": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "prayerAlertSoundCancel": "Cancel download",
+  "prayerAlertSoundRemove": "Remove download",
+  "prayerAlertSoundInUse": "Used by {prayers}. Choose another recording for them first.",
+  "@prayerAlertSoundInUse": {
+    "placeholders": {
+      "prayers": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAlertSoundOutdated": "Showing the saved list. Couldn't check for new recordings.",
+  "prayerAlertSoundListFailed": "Couldn't load the recordings.",
+  "prayerAlertSoundPlay": "Play a sample",
+  "prayerAlertSoundStop": "Stop",
   "prayerAlertSoundWhole": "Listen to the whole adhan",
+  "prayerAlertSoundSelectAfter": "Will be used once downloaded",
   "prayerAlertDownloadNetwork": "No internet connection. Try again when you're online.",
   "prayerAlertDownloadServer": "The download server isn't available right now. Try again later.",
   "prayerAlertDownloadIntegrity": "The download was damaged. Try again.",

@@ -5655,6 +5655,15 @@ class AppLocalizationsRu extends AppLocalizations {
       'Спокойная полноэкранная пауза для молитвы';
 
   @override
+  String get prayerAlertRecording => 'Запись';
+
+  @override
+  String get prayerAlertVolume => 'Громкость';
+
+  @override
+  String get prayerAlertLength => 'Длительность';
+
+  @override
   String get prayerAlertLengthWhole => 'Весь азан';
 
   @override
@@ -5677,7 +5686,61 @@ class AppLocalizationsRu extends AppLocalizations {
   String get prayerAlertNone => 'Нет';
 
   @override
+  String get prayerAlertSoundTitle => 'Выберите запись';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'Загружено: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'Встроенная';
+
+  @override
+  String get prayerAlertSoundReady => 'Доступно офлайн';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return '$size для загрузки';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'Загрузить';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'Загрузка $percent%';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'Отменить загрузку';
+
+  @override
+  String get prayerAlertSoundRemove => 'Удалить загрузку';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'Используется для: $prayers. Сначала выберите для них другую запись.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'Показан сохранённый список. Не удалось проверить новые записи.';
+
+  @override
+  String get prayerAlertSoundListFailed => 'Не удалось загрузить записи.';
+
+  @override
+  String get prayerAlertSoundPlay => 'Прослушать отрывок';
+
+  @override
+  String get prayerAlertSoundStop => 'Остановить';
+
+  @override
   String get prayerAlertSoundWhole => 'Прослушать азан полностью';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'Будет использована после загрузки';
 
   @override
   String get prayerAlertDownloadNetwork =>

@@ -5633,6 +5633,15 @@ class AppLocalizationsMs extends AppLocalizations {
       'Detik tenang skrin penuh untuk berhenti bersolat';
 
   @override
+  String get prayerAlertRecording => 'Rakaman';
+
+  @override
+  String get prayerAlertVolume => 'Kelantangan';
+
+  @override
+  String get prayerAlertLength => 'Dimainkan selama';
+
+  @override
   String get prayerAlertLengthWhole => 'Seluruh azan';
 
   @override
@@ -5655,7 +5664,62 @@ class AppLocalizationsMs extends AppLocalizations {
   String get prayerAlertNone => 'Mati';
 
   @override
+  String get prayerAlertSoundTitle => 'Pilih rakaman';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'Dimuat turun: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'Terbina dalam';
+
+  @override
+  String get prayerAlertSoundReady => 'Sedia luar talian';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return '$size untuk dimuat turun';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'Muat turun';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'Memuat turun $percent%';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'Batalkan muat turun';
+
+  @override
+  String get prayerAlertSoundRemove => 'Buang muat turun';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'Digunakan oleh $prayers. Pilih rakaman lain untuknya dahulu.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'Memaparkan senarai yang disimpan. Tidak dapat menyemak rakaman baharu.';
+
+  @override
+  String get prayerAlertSoundListFailed => 'Tidak dapat memuatkan rakaman.';
+
+  @override
+  String get prayerAlertSoundPlay => 'Mainkan sampel';
+
+  @override
+  String get prayerAlertSoundStop => 'Henti';
+
+  @override
   String get prayerAlertSoundWhole => 'Dengar seluruh azan';
+
+  @override
+  String get prayerAlertSoundSelectAfter =>
+      'Akan digunakan selepas dimuat turun';
 
   @override
   String get prayerAlertDownloadNetwork =>

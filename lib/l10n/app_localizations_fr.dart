@@ -5723,6 +5723,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Un moment calme en plein écran pour s\'arrêter prier';
 
   @override
+  String get prayerAlertRecording => 'Enregistrement';
+
+  @override
+  String get prayerAlertVolume => 'Volume';
+
+  @override
+  String get prayerAlertLength => 'Durée';
+
+  @override
   String get prayerAlertLengthWhole => 'Adhan entier';
 
   @override
@@ -5745,7 +5754,62 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prayerAlertNone => 'Non';
 
   @override
+  String get prayerAlertSoundTitle => 'Choisir un enregistrement';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'Téléchargé : $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'Intégré';
+
+  @override
+  String get prayerAlertSoundReady => 'Disponible hors ligne';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return '$size à télécharger';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'Télécharger';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'Téléchargement $percent %';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'Annuler le téléchargement';
+
+  @override
+  String get prayerAlertSoundRemove => 'Supprimer le téléchargement';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'Utilisé pour $prayers. Choisissez d\'abord un autre enregistrement pour elles.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'Liste enregistrée affichée. Impossible de chercher de nouveaux enregistrements.';
+
+  @override
+  String get prayerAlertSoundListFailed =>
+      'Impossible de charger les enregistrements.';
+
+  @override
+  String get prayerAlertSoundPlay => 'Écouter un extrait';
+
+  @override
+  String get prayerAlertSoundStop => 'Arrêter';
+
+  @override
   String get prayerAlertSoundWhole => 'Écouter l\'adhan en entier';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'Sera utilisé une fois téléchargé';
 
   @override
   String get prayerAlertDownloadNetwork =>

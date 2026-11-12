@@ -10188,6 +10188,24 @@ abstract class AppLocalizations {
   /// **'A calm full-screen moment to pause for prayer'**
   String get prayerAlertStyleFocusHint;
 
+  /// No description provided for @prayerAlertRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording'**
+  String get prayerAlertRecording;
+
+  /// No description provided for @prayerAlertVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get prayerAlertVolume;
+
+  /// No description provided for @prayerAlertLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Plays for'**
+  String get prayerAlertLength;
+
   /// No description provided for @prayerAlertLengthWhole.
   ///
   /// In en, this message translates to:
@@ -10224,11 +10242,101 @@ abstract class AppLocalizations {
   /// **'Off'**
   String get prayerAlertNone;
 
+  /// No description provided for @prayerAlertSoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a recording'**
+  String get prayerAlertSoundTitle;
+
+  /// No description provided for @prayerAlertSoundDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded: {size}'**
+  String prayerAlertSoundDownloaded(String size);
+
+  /// No description provided for @prayerAlertSoundBuiltIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Built in'**
+  String get prayerAlertSoundBuiltIn;
+
+  /// No description provided for @prayerAlertSoundReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready offline'**
+  String get prayerAlertSoundReady;
+
+  /// No description provided for @prayerAlertSoundSize.
+  ///
+  /// In en, this message translates to:
+  /// **'{size} to download'**
+  String prayerAlertSoundSize(String size);
+
+  /// No description provided for @prayerAlertSoundDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get prayerAlertSoundDownload;
+
+  /// No description provided for @prayerAlertSoundDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading {percent}%'**
+  String prayerAlertSoundDownloading(int percent);
+
+  /// No description provided for @prayerAlertSoundCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel download'**
+  String get prayerAlertSoundCancel;
+
+  /// No description provided for @prayerAlertSoundRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove download'**
+  String get prayerAlertSoundRemove;
+
+  /// No description provided for @prayerAlertSoundInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by {prayers}. Choose another recording for them first.'**
+  String prayerAlertSoundInUse(String prayers);
+
+  /// No description provided for @prayerAlertSoundOutdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing the saved list. Couldn\'t check for new recordings.'**
+  String get prayerAlertSoundOutdated;
+
+  /// No description provided for @prayerAlertSoundListFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the recordings.'**
+  String get prayerAlertSoundListFailed;
+
+  /// No description provided for @prayerAlertSoundPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Play a sample'**
+  String get prayerAlertSoundPlay;
+
+  /// No description provided for @prayerAlertSoundStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get prayerAlertSoundStop;
+
   /// No description provided for @prayerAlertSoundWhole.
   ///
   /// In en, this message translates to:
   /// **'Listen to the whole adhan'**
   String get prayerAlertSoundWhole;
+
+  /// No description provided for @prayerAlertSoundSelectAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be used once downloaded'**
+  String get prayerAlertSoundSelectAfter;
 
   /// No description provided for @prayerAlertDownloadNetwork.
   ///

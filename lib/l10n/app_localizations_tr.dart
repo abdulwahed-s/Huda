@@ -5617,6 +5617,15 @@ class AppLocalizationsTr extends AppLocalizations {
       'Namaz için durmaya tam ekran sakin bir an';
 
   @override
+  String get prayerAlertRecording => 'Kayıt';
+
+  @override
+  String get prayerAlertVolume => 'Ses düzeyi';
+
+  @override
+  String get prayerAlertLength => 'Çalma süresi';
+
+  @override
   String get prayerAlertLengthWhole => 'Ezanın tamamı';
 
   @override
@@ -5639,7 +5648,61 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerAlertNone => 'Kapalı';
 
   @override
+  String get prayerAlertSoundTitle => 'Bir kayıt seç';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'İndirilen: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'Yerleşik';
+
+  @override
+  String get prayerAlertSoundReady => 'Çevrimdışı hazır';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return 'İndirilecek: $size';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'İndir';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'İndiriliyor %$percent';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'İndirmeyi iptal et';
+
+  @override
+  String get prayerAlertSoundRemove => 'İndirmeyi kaldır';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'Şunlarda kullanılıyor: $prayers. Önce onlar için başka bir kayıt seç.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'Kaydedilmiş liste gösteriliyor. Yeni kayıtlar kontrol edilemedi.';
+
+  @override
+  String get prayerAlertSoundListFailed => 'Kayıtlar yüklenemedi.';
+
+  @override
+  String get prayerAlertSoundPlay => 'Örnek dinle';
+
+  @override
+  String get prayerAlertSoundStop => 'Durdur';
+
+  @override
   String get prayerAlertSoundWhole => 'Ezanın tamamını dinle';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'İndirme bitince kullanılacak';
 
   @override
   String get prayerAlertDownloadNetwork =>

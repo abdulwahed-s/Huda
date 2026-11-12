@@ -5621,6 +5621,15 @@ class AppLocalizationsBn extends AppLocalizations {
       'নামাজের জন্য থামতে একটি শান্ত পূর্ণ-স্ক্রিন মুহূর্ত';
 
   @override
+  String get prayerAlertRecording => 'রেকর্ডিং';
+
+  @override
+  String get prayerAlertVolume => 'ভলিউম';
+
+  @override
+  String get prayerAlertLength => 'বাজবে';
+
+  @override
   String get prayerAlertLengthWhole => 'পুরো আজান';
 
   @override
@@ -5643,7 +5652,61 @@ class AppLocalizationsBn extends AppLocalizations {
   String get prayerAlertNone => 'বন্ধ';
 
   @override
+  String get prayerAlertSoundTitle => 'একটি রেকর্ডিং বেছে নিন';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'ডাউনলোড করা: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'অন্তর্নির্মিত';
+
+  @override
+  String get prayerAlertSoundReady => 'অফলাইনে প্রস্তুত';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return 'ডাউনলোড করতে $size';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'ডাউনলোড';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'ডাউনলোড হচ্ছে $percent%';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'ডাউনলোড বাতিল করুন';
+
+  @override
+  String get prayerAlertSoundRemove => 'ডাউনলোড সরান';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return '$prayers-এর জন্য ব্যবহৃত। আগে সেগুলোর জন্য অন্য রেকর্ডিং বেছে নিন।';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'সংরক্ষিত তালিকা দেখানো হচ্ছে। নতুন রেকর্ডিং খোঁজা যায়নি।';
+
+  @override
+  String get prayerAlertSoundListFailed => 'রেকর্ডিংগুলো লোড করা যায়নি।';
+
+  @override
+  String get prayerAlertSoundPlay => 'একটি নমুনা শুনুন';
+
+  @override
+  String get prayerAlertSoundStop => 'থামান';
+
+  @override
   String get prayerAlertSoundWhole => 'পুরো আজান শুনুন';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'ডাউনলোড শেষ হলে ব্যবহার হবে';
 
   @override
   String get prayerAlertDownloadNetwork =>

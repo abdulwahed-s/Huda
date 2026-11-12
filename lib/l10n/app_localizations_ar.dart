@@ -5559,6 +5559,15 @@ class AppLocalizationsAr extends AppLocalizations {
       'لحظة هادئة بملء الشاشة للتوقف من أجل الصلاة';
 
   @override
+  String get prayerAlertRecording => 'التسجيل';
+
+  @override
+  String get prayerAlertVolume => 'مستوى الصوت';
+
+  @override
+  String get prayerAlertLength => 'مدة التشغيل';
+
+  @override
   String get prayerAlertLengthWhole => 'الأذان كاملًا';
 
   @override
@@ -5581,7 +5590,61 @@ class AppLocalizationsAr extends AppLocalizations {
   String get prayerAlertNone => 'إيقاف';
 
   @override
+  String get prayerAlertSoundTitle => 'اختر تسجيلًا';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'المُنزَّل: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'مدمج';
+
+  @override
+  String get prayerAlertSoundReady => 'جاهز دون اتصال';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return '$size للتنزيل';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'تنزيل';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'جارٍ التنزيل $percent٪';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'إلغاء التنزيل';
+
+  @override
+  String get prayerAlertSoundRemove => 'حذف التنزيل';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'مستخدم في: $prayers. اختر تسجيلًا آخر لها أولًا.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'تُعرض القائمة المحفوظة. تعذّر البحث عن تسجيلات جديدة.';
+
+  @override
+  String get prayerAlertSoundListFailed => 'تعذّر تحميل التسجيلات.';
+
+  @override
+  String get prayerAlertSoundPlay => 'تشغيل عيّنة';
+
+  @override
+  String get prayerAlertSoundStop => 'إيقاف';
+
+  @override
   String get prayerAlertSoundWhole => 'الاستماع إلى الأذان كاملًا';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'سيُستخدم بعد اكتمال التنزيل';
 
   @override
   String get prayerAlertDownloadNetwork =>

@@ -5615,6 +5615,15 @@ class AppLocalizationsUr extends AppLocalizations {
       'نماز کے لیے رکنے کا ایک پُرسکون فل اسکرین لمحہ';
 
   @override
+  String get prayerAlertRecording => 'ریکارڈنگ';
+
+  @override
+  String get prayerAlertVolume => 'آواز کی سطح';
+
+  @override
+  String get prayerAlertLength => 'چلنے کا دورانیہ';
+
+  @override
   String get prayerAlertLengthWhole => 'پوری اذان';
 
   @override
@@ -5637,7 +5646,61 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerAlertNone => 'بند';
 
   @override
+  String get prayerAlertSoundTitle => 'ریکارڈنگ منتخب کریں';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'ڈاؤن لوڈ شدہ: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'پہلے سے شامل';
+
+  @override
+  String get prayerAlertSoundReady => 'آف لائن تیار';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return 'ڈاؤن لوڈ کے لیے $size';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'ڈاؤن لوڈ';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'ڈاؤن لوڈ ہو رہا ہے $percent%';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'ڈاؤن لوڈ منسوخ کریں';
+
+  @override
+  String get prayerAlertSoundRemove => 'ڈاؤن لوڈ ہٹائیں';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return '$prayers کے لیے استعمال ہو رہی ہے۔ پہلے ان کے لیے کوئی اور ریکارڈنگ منتخب کریں۔';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'محفوظ فہرست دکھائی جا رہی ہے۔ نئی ریکارڈنگز نہیں دیکھی جا سکیں۔';
+
+  @override
+  String get prayerAlertSoundListFailed => 'ریکارڈنگز لوڈ نہیں ہو سکیں۔';
+
+  @override
+  String get prayerAlertSoundPlay => 'نمونہ سنیں';
+
+  @override
+  String get prayerAlertSoundStop => 'روکیں';
+
+  @override
   String get prayerAlertSoundWhole => 'پوری اذان سنیں';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'ڈاؤن لوڈ کے بعد استعمال ہوگی';
 
   @override
   String get prayerAlertDownloadNetwork =>

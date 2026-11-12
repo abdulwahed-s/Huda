@@ -5702,6 +5702,15 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ein ruhiger Vollbildmoment, um fürs Gebet innezuhalten';
 
   @override
+  String get prayerAlertRecording => 'Aufnahme';
+
+  @override
+  String get prayerAlertVolume => 'Lautstärke';
+
+  @override
+  String get prayerAlertLength => 'Spielt';
+
+  @override
   String get prayerAlertLengthWhole => 'Ganzer Adhan';
 
   @override
@@ -5724,7 +5733,62 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prayerAlertNone => 'Aus';
 
   @override
+  String get prayerAlertSoundTitle => 'Aufnahme wählen';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'Heruntergeladen: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'Integriert';
+
+  @override
+  String get prayerAlertSoundReady => 'Offline bereit';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return '$size zum Herunterladen';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'Herunterladen';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'Wird geladen: $percent %';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'Download abbrechen';
+
+  @override
+  String get prayerAlertSoundRemove => 'Download entfernen';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'Wird für $prayers verwendet. Wähle dafür zuerst eine andere Aufnahme.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'Gespeicherte Liste. Neue Aufnahmen konnten nicht geprüft werden.';
+
+  @override
+  String get prayerAlertSoundListFailed =>
+      'Die Aufnahmen konnten nicht geladen werden.';
+
+  @override
+  String get prayerAlertSoundPlay => 'Hörprobe abspielen';
+
+  @override
+  String get prayerAlertSoundStop => 'Stopp';
+
+  @override
   String get prayerAlertSoundWhole => 'Ganzen Adhan anhören';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'Wird nach dem Download verwendet';
 
   @override
   String get prayerAlertDownloadNetwork =>

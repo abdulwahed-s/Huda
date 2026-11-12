@@ -5622,6 +5622,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'A calm full-screen moment to pause for prayer';
 
   @override
+  String get prayerAlertRecording => 'Recording';
+
+  @override
+  String get prayerAlertVolume => 'Volume';
+
+  @override
+  String get prayerAlertLength => 'Plays for';
+
+  @override
   String get prayerAlertLengthWhole => 'Whole adhan';
 
   @override
@@ -5644,7 +5653,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prayerAlertNone => 'Off';
 
   @override
+  String get prayerAlertSoundTitle => 'Choose a recording';
+
+  @override
+  String prayerAlertSoundDownloaded(String size) {
+    return 'Downloaded: $size';
+  }
+
+  @override
+  String get prayerAlertSoundBuiltIn => 'Built in';
+
+  @override
+  String get prayerAlertSoundReady => 'Ready offline';
+
+  @override
+  String prayerAlertSoundSize(String size) {
+    return '$size to download';
+  }
+
+  @override
+  String get prayerAlertSoundDownload => 'Download';
+
+  @override
+  String prayerAlertSoundDownloading(int percent) {
+    return 'Downloading $percent%';
+  }
+
+  @override
+  String get prayerAlertSoundCancel => 'Cancel download';
+
+  @override
+  String get prayerAlertSoundRemove => 'Remove download';
+
+  @override
+  String prayerAlertSoundInUse(String prayers) {
+    return 'Used by $prayers. Choose another recording for them first.';
+  }
+
+  @override
+  String get prayerAlertSoundOutdated =>
+      'Showing the saved list. Couldn\'t check for new recordings.';
+
+  @override
+  String get prayerAlertSoundListFailed => 'Couldn\'t load the recordings.';
+
+  @override
+  String get prayerAlertSoundPlay => 'Play a sample';
+
+  @override
+  String get prayerAlertSoundStop => 'Stop';
+
+  @override
   String get prayerAlertSoundWhole => 'Listen to the whole adhan';
+
+  @override
+  String get prayerAlertSoundSelectAfter => 'Will be used once downloaded';
 
   @override
   String get prayerAlertDownloadNetwork =>
