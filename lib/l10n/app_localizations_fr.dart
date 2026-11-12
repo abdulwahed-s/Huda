@@ -5677,6 +5677,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prayerAlertSectionBefore => 'Avant la prière';
 
   @override
+  String get prayerAlertSectionTest => 'Essayer';
+
+  @override
   String get prayerAlertSectionFocus => 'Concentration';
 
   @override
@@ -5871,6 +5874,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'Envoyer un test';
+
+  @override
+  String get prayerAlertTestHint =>
+      'Arrive dans environ 10 secondes avec les réglages de cette prière. Vous pouvez quitter Huda.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'Arrive dans environ 10 secondes avec les réglages de cette prière. Gardez Huda ouvert d\'ici là.';
+
+  @override
+  String get prayerAlertTestSend => 'Envoyer';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return 'Arrive dans $seconds s';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -6105,5 +6124,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'Live Update d’Android. Le minuteur passe en haut de la notification au lieu du texte.';
 
+  @override
+  String get prayerAlertFlipTry => 'Essayer';
 
+  @override
+  String get prayerAlertFlipHold => 'Tenez votre téléphone comme d\'habitude…';
+
+  @override
+  String get prayerAlertFlipNow => 'Retournez-le maintenant face contre table';
+
+  @override
+  String get prayerAlertFlipDetected =>
+      'Retournement détecté. L\'adhan s\'arrêterait.';
+
+  @override
+  String get prayerAlertFlipMissed => 'Aucun retournement détecté. Réessayez.';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'Ce téléphone ne peut pas détecter un retournement.';
 }

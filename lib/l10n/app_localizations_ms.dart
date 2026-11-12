@@ -5588,6 +5588,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get prayerAlertSectionBefore => 'Sebelum solat';
 
   @override
+  String get prayerAlertSectionTest => 'Cuba';
+
+  @override
   String get prayerAlertSectionFocus => 'Fokus';
 
   @override
@@ -5780,6 +5783,22 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'Hantar ujian';
+
+  @override
+  String get prayerAlertTestHint =>
+      'Tiba dalam kira-kira 10 saat dengan tetapan solat ini. Anda boleh keluar dari Huda.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'Tiba dalam kira-kira 10 saat dengan tetapan solat ini. Biarkan Huda terbuka sehingga itu.';
+
+  @override
+  String get prayerAlertTestSend => 'Hantar';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return 'Tiba dalam $seconds s';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -6010,5 +6029,22 @@ class AppLocalizationsMs extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'Kemas Kini Langsung Android. Pemasa berpindah ke bahagian atas pemberitahuan, bukan dalam teks.';
 
+  @override
+  String get prayerAlertFlipTry => 'Cuba';
 
+  @override
+  String get prayerAlertFlipHold => 'Pegang telefon anda seperti biasa…';
+
+  @override
+  String get prayerAlertFlipNow => 'Sekarang telangkupkannya';
+
+  @override
+  String get prayerAlertFlipDetected => 'Terbalik dikesan. Azan akan berhenti.';
+
+  @override
+  String get prayerAlertFlipMissed => 'Tiada terbalik dikesan. Cuba lagi.';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'Telefon ini tidak dapat mengesan terbalik.';
 }

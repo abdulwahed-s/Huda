@@ -2041,6 +2041,7 @@
   "prayerAlertSectionSound": "آواز",
   "prayerAlertSectionPrayers": "ہر نماز",
   "prayerAlertSectionBefore": "نماز سے پہلے",
+  "prayerAlertSectionTest": "آزمائیں",
   "prayerAlertSectionFocus": "فوکس",
   "prayerAlertSectionMore": "مزید اختیارات",
   "prayerAlertStyleOff": "بند",
@@ -2097,6 +2098,10 @@
   "prayerAlertBeforeShort": "مختصر آواز",
   "prayerAlertFallback": "جب الارم سیٹ نہ ہو سکے",
   "prayerAlertTestTitle": "آزمائشی اطلاع بھیجیں",
+  "prayerAlertTestHint": "اس نماز کی ترتیبات کے ساتھ تقریباً 10 سیکنڈ میں آئے گی۔ آپ ہدیٰ بند کر سکتے ہیں۔",
+  "prayerAlertTestHintDesktop": "اس نماز کی ترتیبات کے ساتھ تقریباً 10 سیکنڈ میں آئے گی۔ تب تک ہدیٰ کھلا رکھیں۔",
+  "prayerAlertTestSend": "بھیجیں",
+  "prayerAlertTestWaiting": "{seconds} سیکنڈ میں آئے گی",
   "prayerAlertTestScheduled": "آزمائشی اطلاع بھیج دی گئی۔ چند سیکنڈ میں آنی چاہیے۔",
   "prayerAlertTestShown": "آزمائشی اطلاع دکھائی گئی۔ کیا آپ نے اسے دیکھا اور سنا؟",
   "prayerAlertTestNotificationsOff": "ہدیٰ کی اطلاعات بند ہیں، اس لیے آزمائشی اطلاع نہیں آ سکتی۔",
@@ -2162,5 +2167,11 @@
   "prayerCountdownNeedsLocation": "الٹی گنتی دکھانے کے لیے اپنا مقام مقرر کریں۔",
   "prayerCountdownSaveFailed": "الٹی گنتی کی ترتیب محفوظ نہیں ہو سکی۔",
   "active": "فعال",
-  "prayerCountdownLiveUpdateHint": "اینڈرائیڈ لائیو اپڈیٹ۔ ٹائمر متن کے بجائے اطلاع کے اوپر چلا جاتا ہے۔"
+  "prayerCountdownLiveUpdateHint": "اینڈرائیڈ لائیو اپڈیٹ۔ ٹائمر متن کے بجائے اطلاع کے اوپر چلا جاتا ہے۔",
+  "prayerAlertFlipTry": "آزمائیں",
+  "prayerAlertFlipHold": "فون کو معمول کے مطابق پکڑیں…",
+  "prayerAlertFlipNow": "اب اسے الٹا کر دیں",
+  "prayerAlertFlipDetected": "الٹنا پہچان لیا گیا۔ اذان رک جاتی۔",
+  "prayerAlertFlipMissed": "کوئی الٹنا نظر نہیں آیا۔ دوبارہ کوشش کریں۔",
+  "prayerAlertFlipUnavailable": "یہ فون الٹنا نہیں پہچان سکتا۔"
 }

@@ -2131,6 +2131,7 @@
   "prayerAlertSectionSound": "শব্দ",
   "prayerAlertSectionPrayers": "প্রতিটি নামাজ",
   "prayerAlertSectionBefore": "নামাজের আগে",
+  "prayerAlertSectionTest": "চেষ্টা করে দেখুন",
   "prayerAlertSectionFocus": "ফোকাস",
   "prayerAlertSectionMore": "আরও বিকল্প",
   "prayerAlertStyleOff": "বন্ধ",
@@ -2187,6 +2188,10 @@
   "prayerAlertBeforeShort": "সংক্ষিপ্ত শব্দ",
   "prayerAlertFallback": "যখন অ্যালার্ম সেট করা যায় না",
   "prayerAlertTestTitle": "একটি পরীক্ষা পাঠান",
+  "prayerAlertTestHint": "এই নামাজের সেটিংসে প্রায় ১০ সেকেন্ডে আসবে। আপনি হুদা বন্ধ করতে পারেন।",
+  "prayerAlertTestHintDesktop": "এই নামাজের সেটিংসে প্রায় ১০ সেকেন্ডে আসবে। ততক্ষণ হুদা খোলা রাখুন।",
+  "prayerAlertTestSend": "পাঠান",
+  "prayerAlertTestWaiting": "{seconds} সেকেন্ডে আসবে",
   "prayerAlertTestScheduled": "পরীক্ষা পাঠানো হয়েছে। কয়েক সেকেন্ডের মধ্যে আসা উচিত।",
   "prayerAlertTestShown": "পরীক্ষা দেখানো হয়েছে। আপনি কি শুনেছেন ও দেখেছেন?",
   "prayerAlertTestNotificationsOff": "হুদার বিজ্ঞপ্তি বন্ধ, তাই পরীক্ষা আসতে পারবে না।",
@@ -2252,5 +2257,11 @@
   "prayerCountdownNeedsLocation": "কাউন্টডাউন দেখাতে আপনার অবস্থান সেট করুন।",
   "prayerCountdownSaveFailed": "কাউন্টডাউন সেটিং সংরক্ষণ করা যায়নি।",
   "active": "সক্রিয়",
-  "prayerCountdownLiveUpdateHint": "অ্যান্ড্রয়েড লাইভ আপডেট। টাইমারটি লেখার বদলে নোটিফিকেশনের উপরে চলে যায়।"
+  "prayerCountdownLiveUpdateHint": "অ্যান্ড্রয়েড লাইভ আপডেট। টাইমারটি লেখার বদলে নোটিফিকেশনের উপরে চলে যায়।",
+  "prayerAlertFlipTry": "চেষ্টা করুন",
+  "prayerAlertFlipHold": "স্বাভাবিকভাবে ফোনটি ধরুন…",
+  "prayerAlertFlipNow": "এবার ফোনটি উপুড় করুন",
+  "prayerAlertFlipDetected": "উল্টানো শনাক্ত হয়েছে। আজান থেমে যেত।",
+  "prayerAlertFlipMissed": "কোনো উল্টানো দেখা যায়নি। আবার চেষ্টা করুন।",
+  "prayerAlertFlipUnavailable": "এই ফোন উল্টানো শনাক্ত করতে পারে না।"
 }

@@ -5515,6 +5515,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get prayerAlertSectionBefore => 'قبل الصلاة';
 
   @override
+  String get prayerAlertSectionTest => 'جرّبه';
+
+  @override
   String get prayerAlertSectionFocus => 'وضع التركيز';
 
   @override
@@ -5705,6 +5708,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'إرسال تجربة';
+
+  @override
+  String get prayerAlertTestHint =>
+      'يصل خلال 10 ثوانٍ تقريبًا بإعدادات هذه الصلاة. يمكنك مغادرة هدى.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'يصل خلال 10 ثوانٍ تقريبًا بإعدادات هذه الصلاة. أبقِ هدى مفتوحًا حتى ذلك الحين.';
+
+  @override
+  String get prayerAlertTestSend => 'إرسال';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return 'يصل خلال $seconds ث';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -5924,5 +5943,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'تحديث مباشر من أندرويد. ينتقل المؤقت إلى أعلى الإشعار بدلاً من النص.';
 
+  @override
+  String get prayerAlertFlipTry => 'جرّبه';
 
+  @override
+  String get prayerAlertFlipHold => 'أمسك هاتفك كعادتك…';
+
+  @override
+  String get prayerAlertFlipNow => 'الآن اقلبه على وجهه';
+
+  @override
+  String get prayerAlertFlipDetected => 'تم التعرّف على القلب. سيتوقف الأذان.';
+
+  @override
+  String get prayerAlertFlipMissed => 'لم يُلاحظ أي قلب. حاول مجددًا.';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'لا يستطيع هذا الهاتف التعرّف على القلب.';
 }

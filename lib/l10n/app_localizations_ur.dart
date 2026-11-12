@@ -5570,6 +5570,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerAlertSectionBefore => 'نماز سے پہلے';
 
   @override
+  String get prayerAlertSectionTest => 'آزمائیں';
+
+  @override
   String get prayerAlertSectionFocus => 'فوکس';
 
   @override
@@ -5762,6 +5765,22 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'آزمائشی اطلاع بھیجیں';
+
+  @override
+  String get prayerAlertTestHint =>
+      'اس نماز کی ترتیبات کے ساتھ تقریباً 10 سیکنڈ میں آئے گی۔ آپ ہدیٰ بند کر سکتے ہیں۔';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'اس نماز کی ترتیبات کے ساتھ تقریباً 10 سیکنڈ میں آئے گی۔ تب تک ہدیٰ کھلا رکھیں۔';
+
+  @override
+  String get prayerAlertTestSend => 'بھیجیں';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return '$seconds سیکنڈ میں آئے گی';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -5985,5 +6004,22 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'اینڈرائیڈ لائیو اپڈیٹ۔ ٹائمر متن کے بجائے اطلاع کے اوپر چلا جاتا ہے۔';
 
+  @override
+  String get prayerAlertFlipTry => 'آزمائیں';
 
+  @override
+  String get prayerAlertFlipHold => 'فون کو معمول کے مطابق پکڑیں…';
+
+  @override
+  String get prayerAlertFlipNow => 'اب اسے الٹا کر دیں';
+
+  @override
+  String get prayerAlertFlipDetected => 'الٹنا پہچان لیا گیا۔ اذان رک جاتی۔';
+
+  @override
+  String get prayerAlertFlipMissed =>
+      'کوئی الٹنا نظر نہیں آیا۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get prayerAlertFlipUnavailable => 'یہ فون الٹنا نہیں پہچان سکتا۔';
 }

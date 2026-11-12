@@ -2115,6 +2115,7 @@
   "prayerAlertSectionSound": "Bunyi",
   "prayerAlertSectionPrayers": "Setiap solat",
   "prayerAlertSectionBefore": "Sebelum solat",
+  "prayerAlertSectionTest": "Cuba",
   "prayerAlertSectionFocus": "Fokus",
   "prayerAlertSectionMore": "Lagi pilihan",
   "prayerAlertStyleOff": "Mati",
@@ -2171,6 +2172,10 @@
   "prayerAlertBeforeShort": "Bunyi pendek",
   "prayerAlertFallback": "Apabila penggera tidak dapat ditetapkan",
   "prayerAlertTestTitle": "Hantar ujian",
+  "prayerAlertTestHint": "Tiba dalam kira-kira 10 saat dengan tetapan solat ini. Anda boleh keluar dari Huda.",
+  "prayerAlertTestHintDesktop": "Tiba dalam kira-kira 10 saat dengan tetapan solat ini. Biarkan Huda terbuka sehingga itu.",
+  "prayerAlertTestSend": "Hantar",
+  "prayerAlertTestWaiting": "Tiba dalam {seconds} s",
   "prayerAlertTestScheduled": "Ujian dihantar. Ia sepatutnya tiba dalam beberapa saat.",
   "prayerAlertTestShown": "Ujian dipaparkan. Adakah anda mendengar dan melihatnya?",
   "prayerAlertTestNotificationsOff": "Pemberitahuan Huda dimatikan, jadi ujian tidak dapat tiba.",
@@ -2236,5 +2241,11 @@
   "prayerCountdownNeedsLocation": "Tetapkan lokasi anda untuk memaparkan kira detik.",
   "prayerCountdownSaveFailed": "Tetapan kira detik tidak dapat disimpan.",
   "active": "Aktif",
-  "prayerCountdownLiveUpdateHint": "Kemas Kini Langsung Android. Pemasa berpindah ke bahagian atas pemberitahuan, bukan dalam teks."
+  "prayerCountdownLiveUpdateHint": "Kemas Kini Langsung Android. Pemasa berpindah ke bahagian atas pemberitahuan, bukan dalam teks.",
+  "prayerAlertFlipTry": "Cuba",
+  "prayerAlertFlipHold": "Pegang telefon anda seperti biasa…",
+  "prayerAlertFlipNow": "Sekarang telangkupkannya",
+  "prayerAlertFlipDetected": "Terbalik dikesan. Azan akan berhenti.",
+  "prayerAlertFlipMissed": "Tiada terbalik dikesan. Cuba lagi.",
+  "prayerAlertFlipUnavailable": "Telefon ini tidak dapat mengesan terbalik."
 }

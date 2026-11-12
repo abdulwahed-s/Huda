@@ -2025,6 +2025,7 @@
   "prayerAlertSectionSound": "Звук",
   "prayerAlertSectionPrayers": "Каждая молитва",
   "prayerAlertSectionBefore": "Перед молитвой",
+  "prayerAlertSectionTest": "Проверить",
   "prayerAlertSectionFocus": "Фокус",
   "prayerAlertSectionMore": "Другие параметры",
   "prayerAlertStyleOff": "Выкл.",
@@ -2081,6 +2082,10 @@
   "prayerAlertBeforeShort": "Короткий звук",
   "prayerAlertFallback": "Если будильник недоступен",
   "prayerAlertTestTitle": "Отправить тест",
+  "prayerAlertTestHint": "Придёт примерно через 10 секунд с настройками этой молитвы. Можно выйти из Huda.",
+  "prayerAlertTestHintDesktop": "Придёт примерно через 10 секунд с настройками этой молитвы. Не закрывайте Huda до этого.",
+  "prayerAlertTestSend": "Отправить",
+  "prayerAlertTestWaiting": "Придёт через {seconds} с",
   "prayerAlertTestScheduled": "Тест отправлен. Он должен прийти через несколько секунд.",
   "prayerAlertTestShown": "Тест показан. Вы его увидели и услышали?",
   "prayerAlertTestNotificationsOff": "Уведомления Huda выключены, поэтому тест не придёт.",
@@ -2146,5 +2151,11 @@
   "prayerCountdownNeedsLocation": "Укажите местоположение, чтобы показать отсчёт.",
   "prayerCountdownSaveFailed": "Не удалось сохранить настройку отсчёта.",
   "active": "Активно",
-  "prayerCountdownLiveUpdateHint": "Live Update в Android. Таймер переходит в верхнюю часть уведомления вместо текста."
+  "prayerCountdownLiveUpdateHint": "Live Update в Android. Таймер переходит в верхнюю часть уведомления вместо текста.",
+  "prayerAlertFlipTry": "Проверить",
+  "prayerAlertFlipHold": "Держите телефон как обычно…",
+  "prayerAlertFlipNow": "Теперь переверните его экраном вниз",
+  "prayerAlertFlipDetected": "Переворот распознан. Азан остановился бы.",
+  "prayerAlertFlipMissed": "Переворот не замечен. Попробуйте ещё раз.",
+  "prayerAlertFlipUnavailable": "Этот телефон не может распознать переворот."
 }

@@ -2535,6 +2535,7 @@
   "prayerAlertSectionSound": "الصوت",
   "prayerAlertSectionPrayers": "كل صلاة",
   "prayerAlertSectionBefore": "قبل الصلاة",
+  "prayerAlertSectionTest": "جرّبه",
   "prayerAlertSectionFocus": "وضع التركيز",
   "prayerAlertSectionMore": "خيارات أخرى",
   "prayerAlertStyleOff": "إيقاف",
@@ -2591,6 +2592,10 @@
   "prayerAlertBeforeShort": "صوت قصير",
   "prayerAlertFallback": "عندما يتعذّر ضبط المنبّه",
   "prayerAlertTestTitle": "إرسال تجربة",
+  "prayerAlertTestHint": "يصل خلال 10 ثوانٍ تقريبًا بإعدادات هذه الصلاة. يمكنك مغادرة هدى.",
+  "prayerAlertTestHintDesktop": "يصل خلال 10 ثوانٍ تقريبًا بإعدادات هذه الصلاة. أبقِ هدى مفتوحًا حتى ذلك الحين.",
+  "prayerAlertTestSend": "إرسال",
+  "prayerAlertTestWaiting": "يصل خلال {seconds} ث",
   "prayerAlertTestScheduled": "أُرسلت التجربة. يُفترض أن تصل خلال ثوانٍ.",
   "prayerAlertTestShown": "ظهرت التجربة. هل سمعتها ورأيتها؟",
   "prayerAlertTestNotificationsOff": "الإشعارات متوقفة لهدى، لذا لن تصل التجربة.",
@@ -2656,5 +2661,11 @@
   "prayerCountdownNeedsLocation": "حدّد موقعك لإظهار العد التنازلي.",
   "prayerCountdownSaveFailed": "تعذّر حفظ إعداد العد التنازلي.",
   "active": "نشط",
-  "prayerCountdownLiveUpdateHint": "تحديث مباشر من أندرويد. ينتقل المؤقت إلى أعلى الإشعار بدلاً من النص."
+  "prayerCountdownLiveUpdateHint": "تحديث مباشر من أندرويد. ينتقل المؤقت إلى أعلى الإشعار بدلاً من النص.",
+  "prayerAlertFlipTry": "جرّبه",
+  "prayerAlertFlipHold": "أمسك هاتفك كعادتك…",
+  "prayerAlertFlipNow": "الآن اقلبه على وجهه",
+  "prayerAlertFlipDetected": "تم التعرّف على القلب. سيتوقف الأذان.",
+  "prayerAlertFlipMissed": "لم يُلاحظ أي قلب. حاول مجددًا.",
+  "prayerAlertFlipUnavailable": "لا يستطيع هذا الهاتف التعرّف على القلب."
 }

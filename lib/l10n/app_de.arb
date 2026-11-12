@@ -2002,6 +2002,7 @@
   "prayerAlertSectionSound": "Ton",
   "prayerAlertSectionPrayers": "Jedes Gebet",
   "prayerAlertSectionBefore": "Vor dem Gebet",
+  "prayerAlertSectionTest": "Ausprobieren",
   "prayerAlertSectionFocus": "Fokus",
   "prayerAlertSectionMore": "Weitere Optionen",
   "prayerAlertStyleOff": "Aus",
@@ -2058,6 +2059,10 @@
   "prayerAlertBeforeShort": "Kurzer Ton",
   "prayerAlertFallback": "Wenn kein Wecker gestellt werden kann",
   "prayerAlertTestTitle": "Test senden",
+  "prayerAlertTestHint": "Kommt in etwa 10 Sekunden mit den Einstellungen dieses Gebets. Du kannst Huda verlassen.",
+  "prayerAlertTestHintDesktop": "Kommt in etwa 10 Sekunden mit den Einstellungen dieses Gebets. Lass Huda so lange geöffnet.",
+  "prayerAlertTestSend": "Senden",
+  "prayerAlertTestWaiting": "Kommt in {seconds} s",
   "prayerAlertTestScheduled": "Test gesendet. Er sollte in wenigen Sekunden ankommen.",
   "prayerAlertTestShown": "Test angezeigt. Hast du ihn gehört und gesehen?",
   "prayerAlertTestNotificationsOff": "Mitteilungen für Huda sind aus, daher kann der Test nicht ankommen.",
@@ -2123,5 +2128,11 @@
   "prayerCountdownNeedsLocation": "Lege deinen Standort fest, um den Countdown zu zeigen.",
   "prayerCountdownSaveFailed": "Die Countdown-Einstellung konnte nicht gespeichert werden.",
   "active": "Aktiv",
-  "prayerCountdownLiveUpdateHint": "Android-Live-Update. Der Timer steht dann oben in der Benachrichtigung statt im Text."
+  "prayerCountdownLiveUpdateHint": "Android-Live-Update. Der Timer steht dann oben in der Benachrichtigung statt im Text.",
+  "prayerAlertFlipTry": "Ausprobieren",
+  "prayerAlertFlipHold": "Halte dein Handy wie gewohnt…",
+  "prayerAlertFlipNow": "Jetzt mit dem Display nach unten drehen",
+  "prayerAlertFlipDetected": "Umdrehen erkannt. Der Adhan würde stoppen.",
+  "prayerAlertFlipMissed": "Kein Umdrehen erkannt. Versuche es erneut.",
+  "prayerAlertFlipUnavailable": "Dieses Handy kann kein Umdrehen erkennen."
 }

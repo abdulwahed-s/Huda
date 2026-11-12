@@ -5660,6 +5660,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prayerAlertSectionBefore => 'Antes de la oración';
 
   @override
+  String get prayerAlertSectionTest => 'Pruébalo';
+
+  @override
   String get prayerAlertSectionFocus => 'Enfoque';
 
   @override
@@ -5856,6 +5859,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'Enviar una prueba';
+
+  @override
+  String get prayerAlertTestHint =>
+      'Llega en unos 10 segundos con los ajustes de esta oración. Puedes salir de Huda.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'Llega en unos 10 segundos con los ajustes de esta oración. Mantén Huda abierto hasta entonces.';
+
+  @override
+  String get prayerAlertTestSend => 'Enviar';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return 'Llega en $seconds s';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -6086,5 +6105,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'Actualización en vivo de Android. El temporizador pasa a la parte superior de la notificación en lugar del texto.';
 
+  @override
+  String get prayerAlertFlipTry => 'Probar';
 
+  @override
+  String get prayerAlertFlipHold => 'Sujeta el teléfono como siempre…';
+
+  @override
+  String get prayerAlertFlipNow => 'Ahora ponlo boca abajo';
+
+  @override
+  String get prayerAlertFlipDetected =>
+      'Giro detectado. El adhan se detendría.';
+
+  @override
+  String get prayerAlertFlipMissed =>
+      'No se detectó ningún giro. Inténtalo de nuevo.';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'Este teléfono no puede detectar un giro.';
 }

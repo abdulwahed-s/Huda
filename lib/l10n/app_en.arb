@@ -5657,6 +5657,7 @@
   "prayerAlertSectionSound": "Sound",
   "prayerAlertSectionPrayers": "Each prayer",
   "prayerAlertSectionBefore": "Before the prayer",
+  "prayerAlertSectionTest": "Try it",
   "prayerAlertSectionFocus": "Focus",
   "prayerAlertSectionMore": "More options",
   "prayerAlertStyleOff": "Off",
@@ -5776,6 +5777,17 @@
   "prayerAlertBeforeShort": "Short sound",
   "prayerAlertFallback": "When an alarm can't be set",
   "prayerAlertTestTitle": "Send a test",
+  "prayerAlertTestHint": "Arrives in about 10 seconds with this prayer's settings. You can leave Huda.",
+  "prayerAlertTestHintDesktop": "Arrives in about 10 seconds with this prayer's settings. Keep Huda open until then.",
+  "prayerAlertTestSend": "Send test",
+  "prayerAlertTestWaiting": "Arrives in {seconds} s",
+  "@prayerAlertTestWaiting": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
   "prayerAlertTestScheduled": "Test sent. It should arrive in a few seconds.",
   "prayerAlertTestShown": "Test shown. Did you hear and see it?",
   "prayerAlertTestNotificationsOff": "Notifications are off for Huda, so the test can't arrive.",
@@ -5907,5 +5919,14 @@
   "prayerCountdownLiveUpdateHint": "Android Live Update. The timer moves to the top of the notification instead of the text.",
   "@prayerCountdownLiveUpdateHint": {
     "description": "Explains what turning on the status-bar countdown changes"
-  }
+  },
+  "prayerAlertFlipTry": "Try it",
+  "@prayerAlertFlipTry": {
+    "description": "Starts a check that the phone recognizes a flip, without playing anything."
+  },
+  "prayerAlertFlipHold": "Hold your phone as you normally do…",
+  "prayerAlertFlipNow": "Now turn it face down",
+  "prayerAlertFlipDetected": "Flip detected. The adhan would stop.",
+  "prayerAlertFlipMissed": "No flip seen. Try again.",
+  "prayerAlertFlipUnavailable": "This phone can't detect a flip."
 }

@@ -5577,6 +5577,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get prayerAlertSectionBefore => 'নামাজের আগে';
 
   @override
+  String get prayerAlertSectionTest => 'চেষ্টা করে দেখুন';
+
+  @override
   String get prayerAlertSectionFocus => 'ফোকাস';
 
   @override
@@ -5769,6 +5772,22 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'একটি পরীক্ষা পাঠান';
+
+  @override
+  String get prayerAlertTestHint =>
+      'এই নামাজের সেটিংসে প্রায় ১০ সেকেন্ডে আসবে। আপনি হুদা বন্ধ করতে পারেন।';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'এই নামাজের সেটিংসে প্রায় ১০ সেকেন্ডে আসবে। ততক্ষণ হুদা খোলা রাখুন।';
+
+  @override
+  String get prayerAlertTestSend => 'পাঠান';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return '$seconds সেকেন্ডে আসবে';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -5992,5 +6011,23 @@ class AppLocalizationsBn extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'অ্যান্ড্রয়েড লাইভ আপডেট। টাইমারটি লেখার বদলে নোটিফিকেশনের উপরে চলে যায়।';
 
+  @override
+  String get prayerAlertFlipTry => 'চেষ্টা করুন';
 
+  @override
+  String get prayerAlertFlipHold => 'স্বাভাবিকভাবে ফোনটি ধরুন…';
+
+  @override
+  String get prayerAlertFlipNow => 'এবার ফোনটি উপুড় করুন';
+
+  @override
+  String get prayerAlertFlipDetected => 'উল্টানো শনাক্ত হয়েছে। আজান থেমে যেত।';
+
+  @override
+  String get prayerAlertFlipMissed =>
+      'কোনো উল্টানো দেখা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'এই ফোন উল্টানো শনাক্ত করতে পারে না।';
 }

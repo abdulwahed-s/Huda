@@ -2029,6 +2029,7 @@
   "prayerAlertSectionSound": "Son",
   "prayerAlertSectionPrayers": "Chaque prière",
   "prayerAlertSectionBefore": "Avant la prière",
+  "prayerAlertSectionTest": "Essayer",
   "prayerAlertSectionFocus": "Concentration",
   "prayerAlertSectionMore": "Plus d'options",
   "prayerAlertStyleOff": "Désactivé",
@@ -2085,6 +2086,10 @@
   "prayerAlertBeforeShort": "Son court",
   "prayerAlertFallback": "Si l'alarme ne peut pas être réglée",
   "prayerAlertTestTitle": "Envoyer un test",
+  "prayerAlertTestHint": "Arrive dans environ 10 secondes avec les réglages de cette prière. Vous pouvez quitter Huda.",
+  "prayerAlertTestHintDesktop": "Arrive dans environ 10 secondes avec les réglages de cette prière. Gardez Huda ouvert d'ici là.",
+  "prayerAlertTestSend": "Envoyer",
+  "prayerAlertTestWaiting": "Arrive dans {seconds} s",
   "prayerAlertTestScheduled": "Test envoyé. Il devrait arriver dans quelques secondes.",
   "prayerAlertTestShown": "Test affiché. L'avez-vous vu et entendu ?",
   "prayerAlertTestNotificationsOff": "Les notifications de Huda sont désactivées, le test ne peut pas arriver.",
@@ -2150,5 +2155,11 @@
   "prayerCountdownNeedsLocation": "Définissez votre position pour afficher le compte à rebours.",
   "prayerCountdownSaveFailed": "Le réglage du compte à rebours n’a pas pu être enregistré.",
   "active": "Actif",
-  "prayerCountdownLiveUpdateHint": "Live Update d’Android. Le minuteur passe en haut de la notification au lieu du texte."
+  "prayerCountdownLiveUpdateHint": "Live Update d’Android. Le minuteur passe en haut de la notification au lieu du texte.",
+  "prayerAlertFlipTry": "Essayer",
+  "prayerAlertFlipHold": "Tenez votre téléphone comme d'habitude…",
+  "prayerAlertFlipNow": "Retournez-le maintenant face contre table",
+  "prayerAlertFlipDetected": "Retournement détecté. L'adhan s'arrêterait.",
+  "prayerAlertFlipMissed": "Aucun retournement détecté. Réessayez.",
+  "prayerAlertFlipUnavailable": "Ce téléphone ne peut pas détecter un retournement."
 }

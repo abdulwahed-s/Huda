@@ -5656,6 +5656,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prayerAlertSectionBefore => 'Vor dem Gebet';
 
   @override
+  String get prayerAlertSectionTest => 'Ausprobieren';
+
+  @override
   String get prayerAlertSectionFocus => 'Fokus';
 
   @override
@@ -5851,6 +5854,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'Test senden';
+
+  @override
+  String get prayerAlertTestHint =>
+      'Kommt in etwa 10 Sekunden mit den Einstellungen dieses Gebets. Du kannst Huda verlassen.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'Kommt in etwa 10 Sekunden mit den Einstellungen dieses Gebets. Lass Huda so lange geöffnet.';
+
+  @override
+  String get prayerAlertTestSend => 'Senden';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return 'Kommt in $seconds s';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -6083,5 +6102,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'Android-Live-Update. Der Timer steht dann oben in der Benachrichtigung statt im Text.';
 
+  @override
+  String get prayerAlertFlipTry => 'Ausprobieren';
 
+  @override
+  String get prayerAlertFlipHold => 'Halte dein Handy wie gewohnt…';
+
+  @override
+  String get prayerAlertFlipNow => 'Jetzt mit dem Display nach unten drehen';
+
+  @override
+  String get prayerAlertFlipDetected =>
+      'Umdrehen erkannt. Der Adhan würde stoppen.';
+
+  @override
+  String get prayerAlertFlipMissed =>
+      'Kein Umdrehen erkannt. Versuche es erneut.';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'Dieses Handy kann kein Umdrehen erkennen.';
 }

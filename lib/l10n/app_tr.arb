@@ -2025,6 +2025,7 @@
   "prayerAlertSectionSound": "Ses",
   "prayerAlertSectionPrayers": "Her namaz",
   "prayerAlertSectionBefore": "Namazdan önce",
+  "prayerAlertSectionTest": "Dene",
   "prayerAlertSectionFocus": "Odak",
   "prayerAlertSectionMore": "Diğer seçenekler",
   "prayerAlertStyleOff": "Kapalı",
@@ -2081,6 +2082,10 @@
   "prayerAlertBeforeShort": "Kısa ses",
   "prayerAlertFallback": "Alarm kurulamazsa",
   "prayerAlertTestTitle": "Test gönder",
+  "prayerAlertTestHint": "Bu namazın ayarlarıyla yaklaşık 10 saniyede gelir. Huda'dan çıkabilirsin.",
+  "prayerAlertTestHintDesktop": "Bu namazın ayarlarıyla yaklaşık 10 saniyede gelir. O zamana kadar Huda'yı açık tut.",
+  "prayerAlertTestSend": "Gönder",
+  "prayerAlertTestWaiting": "{seconds} sn içinde gelir",
   "prayerAlertTestScheduled": "Test gönderildi. Birkaç saniye içinde gelmeli.",
   "prayerAlertTestShown": "Test gösterildi. Gördün ve duydun mu?",
   "prayerAlertTestNotificationsOff": "Huda bildirimleri kapalı, bu yüzden test gelemez.",
@@ -2146,5 +2151,11 @@
   "prayerCountdownNeedsLocation": "Geri sayımı göstermek için konumunuzu ayarlayın.",
   "prayerCountdownSaveFailed": "Geri sayım ayarı kaydedilemedi.",
   "active": "Aktif",
-  "prayerCountdownLiveUpdateHint": "Android Canlı Güncelleme. Zamanlayıcı metin yerine bildirimin üst kısmına taşınır."
+  "prayerCountdownLiveUpdateHint": "Android Canlı Güncelleme. Zamanlayıcı metin yerine bildirimin üst kısmına taşınır.",
+  "prayerAlertFlipTry": "Dene",
+  "prayerAlertFlipHold": "Telefonunu her zamanki gibi tut…",
+  "prayerAlertFlipNow": "Şimdi ekranı aşağı gelecek şekilde çevir",
+  "prayerAlertFlipDetected": "Çevirme algılandı. Ezan dururdu.",
+  "prayerAlertFlipMissed": "Çevirme görülmedi. Tekrar dene.",
+  "prayerAlertFlipUnavailable": "Bu telefon çevirmeyi algılayamıyor."
 }

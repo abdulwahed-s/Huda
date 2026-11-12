@@ -2041,6 +2041,7 @@
   "prayerAlertSectionSound": "Sonido",
   "prayerAlertSectionPrayers": "Cada oración",
   "prayerAlertSectionBefore": "Antes de la oración",
+  "prayerAlertSectionTest": "Pruébalo",
   "prayerAlertSectionFocus": "Enfoque",
   "prayerAlertSectionMore": "Más opciones",
   "prayerAlertStyleOff": "Desactivado",
@@ -2097,6 +2098,10 @@
   "prayerAlertBeforeShort": "Sonido corto",
   "prayerAlertFallback": "Si no se puede poner la alarma",
   "prayerAlertTestTitle": "Enviar una prueba",
+  "prayerAlertTestHint": "Llega en unos 10 segundos con los ajustes de esta oración. Puedes salir de Huda.",
+  "prayerAlertTestHintDesktop": "Llega en unos 10 segundos con los ajustes de esta oración. Mantén Huda abierto hasta entonces.",
+  "prayerAlertTestSend": "Enviar",
+  "prayerAlertTestWaiting": "Llega en {seconds} s",
   "prayerAlertTestScheduled": "Prueba enviada. Debería llegar en unos segundos.",
   "prayerAlertTestShown": "Prueba mostrada. ¿La has visto y oído?",
   "prayerAlertTestNotificationsOff": "Las notificaciones de Huda están desactivadas, así que la prueba no puede llegar.",
@@ -2162,5 +2167,11 @@
   "prayerCountdownNeedsLocation": "Establece tu ubicación para mostrar la cuenta regresiva.",
   "prayerCountdownSaveFailed": "No se pudo guardar el ajuste de la cuenta regresiva.",
   "active": "Activo",
-  "prayerCountdownLiveUpdateHint": "Actualización en vivo de Android. El temporizador pasa a la parte superior de la notificación en lugar del texto."
+  "prayerCountdownLiveUpdateHint": "Actualización en vivo de Android. El temporizador pasa a la parte superior de la notificación en lugar del texto.",
+  "prayerAlertFlipTry": "Probar",
+  "prayerAlertFlipHold": "Sujeta el teléfono como siempre…",
+  "prayerAlertFlipNow": "Ahora ponlo boca abajo",
+  "prayerAlertFlipDetected": "Giro detectado. El adhan se detendría.",
+  "prayerAlertFlipMissed": "No se detectó ningún giro. Inténtalo de nuevo.",
+  "prayerAlertFlipUnavailable": "Este teléfono no puede detectar un giro."
 }

@@ -5573,6 +5573,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerAlertSectionBefore => 'Namazdan önce';
 
   @override
+  String get prayerAlertSectionTest => 'Dene';
+
+  @override
   String get prayerAlertSectionFocus => 'Odak';
 
   @override
@@ -5763,6 +5766,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'Test gönder';
+
+  @override
+  String get prayerAlertTestHint =>
+      'Bu namazın ayarlarıyla yaklaşık 10 saniyede gelir. Huda\'dan çıkabilirsin.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'Bu namazın ayarlarıyla yaklaşık 10 saniyede gelir. O zamana kadar Huda\'yı açık tut.';
+
+  @override
+  String get prayerAlertTestSend => 'Gönder';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return '$seconds sn içinde gelir';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -5986,5 +6005,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'Android Canlı Güncelleme. Zamanlayıcı metin yerine bildirimin üst kısmına taşınır.';
 
+  @override
+  String get prayerAlertFlipTry => 'Dene';
 
+  @override
+  String get prayerAlertFlipHold => 'Telefonunu her zamanki gibi tut…';
+
+  @override
+  String get prayerAlertFlipNow => 'Şimdi ekranı aşağı gelecek şekilde çevir';
+
+  @override
+  String get prayerAlertFlipDetected => 'Çevirme algılandı. Ezan dururdu.';
+
+  @override
+  String get prayerAlertFlipMissed => 'Çevirme görülmedi. Tekrar dene.';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'Bu telefon çevirmeyi algılayamıyor.';
 }

@@ -5576,6 +5576,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prayerAlertSectionBefore => 'Before the prayer';
 
   @override
+  String get prayerAlertSectionTest => 'Try it';
+
+  @override
   String get prayerAlertSectionFocus => 'Focus';
 
   @override
@@ -5769,6 +5772,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'Send a test';
+
+  @override
+  String get prayerAlertTestHint =>
+      'Arrives in about 10 seconds with this prayer\'s settings. You can leave Huda.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'Arrives in about 10 seconds with this prayer\'s settings. Keep Huda open until then.';
+
+  @override
+  String get prayerAlertTestSend => 'Send test';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return 'Arrives in $seconds s';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -5996,5 +6015,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'Android Live Update. The timer moves to the top of the notification instead of the text.';
 
+  @override
+  String get prayerAlertFlipTry => 'Try it';
 
+  @override
+  String get prayerAlertFlipHold => 'Hold your phone as you normally do…';
+
+  @override
+  String get prayerAlertFlipNow => 'Now turn it face down';
+
+  @override
+  String get prayerAlertFlipDetected => 'Flip detected. The adhan would stop.';
+
+  @override
+  String get prayerAlertFlipMissed => 'No flip seen. Try again.';
+
+  @override
+  String get prayerAlertFlipUnavailable => 'This phone can\'t detect a flip.';
 }

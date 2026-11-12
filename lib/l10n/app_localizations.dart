@@ -10104,6 +10104,12 @@ abstract class AppLocalizations {
   /// **'Before the prayer'**
   String get prayerAlertSectionBefore;
 
+  /// No description provided for @prayerAlertSectionTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it'**
+  String get prayerAlertSectionTest;
+
   /// No description provided for @prayerAlertSectionFocus.
   ///
   /// In en, this message translates to:
@@ -10439,6 +10445,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send a test'**
   String get prayerAlertTestTitle;
+
+  /// No description provided for @prayerAlertTestHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrives in about 10 seconds with this prayer\'s settings. You can leave Huda.'**
+  String get prayerAlertTestHint;
+
+  /// No description provided for @prayerAlertTestHintDesktop.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrives in about 10 seconds with this prayer\'s settings. Keep Huda open until then.'**
+  String get prayerAlertTestHintDesktop;
+
+  /// No description provided for @prayerAlertTestSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test'**
+  String get prayerAlertTestSend;
+
+  /// No description provided for @prayerAlertTestWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrives in {seconds} s'**
+  String prayerAlertTestWaiting(String seconds);
 
   /// No description provided for @prayerAlertTestScheduled.
   ///
@@ -10836,7 +10866,41 @@ abstract class AppLocalizations {
   /// **'Android Live Update. The timer moves to the top of the notification instead of the text.'**
   String get prayerCountdownLiveUpdateHint;
 
+  /// Starts a check that the phone recognizes a flip, without playing anything.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it'**
+  String get prayerAlertFlipTry;
 
+  /// No description provided for @prayerAlertFlipHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold your phone as you normally do…'**
+  String get prayerAlertFlipHold;
+
+  /// No description provided for @prayerAlertFlipNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now turn it face down'**
+  String get prayerAlertFlipNow;
+
+  /// No description provided for @prayerAlertFlipDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip detected. The adhan would stop.'**
+  String get prayerAlertFlipDetected;
+
+  /// No description provided for @prayerAlertFlipMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'No flip seen. Try again.'**
+  String get prayerAlertFlipMissed;
+
+  /// No description provided for @prayerAlertFlipUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone can\'t detect a flip.'**
+  String get prayerAlertFlipUnavailable;
 }
 
 class _AppLocalizationsDelegate

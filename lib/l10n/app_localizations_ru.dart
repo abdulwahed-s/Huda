@@ -5610,6 +5610,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get prayerAlertSectionBefore => 'Перед молитвой';
 
   @override
+  String get prayerAlertSectionTest => 'Проверить';
+
+  @override
   String get prayerAlertSectionFocus => 'Фокус';
 
   @override
@@ -5802,6 +5805,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get prayerAlertTestTitle => 'Отправить тест';
+
+  @override
+  String get prayerAlertTestHint =>
+      'Придёт примерно через 10 секунд с настройками этой молитвы. Можно выйти из Huda.';
+
+  @override
+  String get prayerAlertTestHintDesktop =>
+      'Придёт примерно через 10 секунд с настройками этой молитвы. Не закрывайте Huda до этого.';
+
+  @override
+  String get prayerAlertTestSend => 'Отправить';
+
+  @override
+  String prayerAlertTestWaiting(String seconds) {
+    return 'Придёт через $seconds с';
+  }
 
   @override
   String get prayerAlertTestScheduled =>
@@ -6030,5 +6049,24 @@ class AppLocalizationsRu extends AppLocalizations {
   String get prayerCountdownLiveUpdateHint =>
       'Live Update в Android. Таймер переходит в верхнюю часть уведомления вместо текста.';
 
+  @override
+  String get prayerAlertFlipTry => 'Проверить';
 
+  @override
+  String get prayerAlertFlipHold => 'Держите телефон как обычно…';
+
+  @override
+  String get prayerAlertFlipNow => 'Теперь переверните его экраном вниз';
+
+  @override
+  String get prayerAlertFlipDetected =>
+      'Переворот распознан. Азан остановился бы.';
+
+  @override
+  String get prayerAlertFlipMissed =>
+      'Переворот не замечен. Попробуйте ещё раз.';
+
+  @override
+  String get prayerAlertFlipUnavailable =>
+      'Этот телефон не может распознать переворот.';
 }
