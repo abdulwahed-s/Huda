@@ -554,7 +554,25 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
+      - name: Set up Windows companion SDK
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          global-json-file: windows/prayer_taskbar/global.json
+          cache: true
+          cache-dependency-path: windows/prayer_taskbar/**/packages.lock.json
+
       - run: flutter pub get
+
+      - name: Verify Windows prayer contracts
+        shell: pwsh
+        run: |
+          $env:HUDA_VERIFY_GENERATED = '1'
+          flutter test tool/generate_windows_prayer_data.dart test/core/services/windows_prayer_taskbar_bridge_test.dart test/presentation/widgets/prayer_times/windows_prayer_taskbar_card_test.dart
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet restore windows/prayer_taskbar/Huda.PrayerTaskbar.slnx --locked-mode -p:Platform=x64
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet test windows/prayer_taskbar/Huda.PrayerTaskbar.Tests/Huda.PrayerTaskbar.Tests.csproj -c Release -p:Platform=x64 --no-restore
+          exit $LASTEXITCODE
 
       - name: Sync MSIX version from pubspec
         shell: pwsh
