@@ -114,16 +114,15 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  void _preloadFontsForInitialPage(int pageNumber) {
-    if (!_readingMode.isMushaf) return;
-    final instanceName = _readingMode == QuranReadingMode.tajweed
-        ? 'tajweed'
-        : 'qcf4';
+  Future<void> _preloadFontsForInitialPage(int pageNumber) async {
+    final mode = _readingMode;
+    if (!mode.isMushaf) return;
+    final instanceName = mode == QuranReadingMode.tajweed ? 'tajweed' : 'qcf4';
     try {
       final fontService = getIt<QcfFontService>(instanceName: instanceName);
-      if (fontService.areFontsReady) {
-        fontService.ensurePagesLoaded([pageNumber, 1]);
-      }
+      await fontService.init();
+      if (!mounted || _readingMode != mode) return;
+      await fontService.ensurePagesLoaded([pageNumber, 1]);
     } catch (_) {}
   }
 
@@ -380,45 +379,33 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     );
   }
 
-  void _handleReadingModeSelection({
+  Future<void> _handleReadingModeSelection({
     required QuranReadingMode mode,
     required QcfFontService? fontService,
     required bool requiresFonts,
     required BuildContext sheetCtx,
     required StateSetter setSheetState,
-  }) {
+  }) async {
     final fontsReady = fontService?.areFontsReady ?? true;
-    final previouslyDownloaded = fontService?.wasPreviouslyDownloaded ?? false;
-    final currentStatus = fontService?.currentState.status;
-    final fontsBeingProcessed =
-        currentStatus == QcfFontStatus.downloading ||
-        currentStatus == QcfFontStatus.extracting ||
-        currentStatus == QcfFontStatus.loading;
-
     if (!requiresFonts || fontsReady) {
       Navigator.pop(sheetCtx);
       _setMode(mode);
-    } else if (previouslyDownloaded) {
-      fontService!.stateStream
-          .firstWhere((s) => s.status == QcfFontStatus.ready)
-          .then((_) {
-            if (!mounted) return;
-            if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
-              Navigator.pop(sheetCtx);
-            }
-            _setMode(mode);
-          });
-    } else if (!fontsBeingProcessed) {
-      setSheetState(() {});
-      fontService!.downloadAndInstall().then((_) {
-        if (!mounted) return;
-        if (fontService.areFontsReady) {
-          if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
-            Navigator.pop(sheetCtx);
-          }
-          _setMode(mode);
-        }
-      });
+      return;
+    }
+    try {
+      await fontService!.init();
+      if (!mounted || !sheetCtx.mounted) return;
+      if (!fontService.areFontsReady) {
+        setSheetState(() {});
+        await fontService.downloadAndInstall();
+      }
+      if (!mounted || !fontService.areFontsReady) return;
+      if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
+        Navigator.pop(sheetCtx);
+      }
+      _setMode(mode);
+    } catch (error) {
+      debugPrint('Unable to prepare Quran reading mode: $error');
     }
   }
 

@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, listEquals;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
+import 'package:huda/core/quran/mushaf_page_content.dart';
 import 'package:huda/core/theme/theme_extension.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/core/utils/hizb_calculator.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/data/models/bookmark_model.dart';
 import 'package:huda/core/services/khatma_service.dart';
@@ -218,11 +219,14 @@ class QuranMushafPageView extends StatefulWidget {
   State<QuranMushafPageView> createState() => _QuranMushafPageViewState();
 }
 
-class _QuranMushafPageViewState extends State<QuranMushafPageView> {
+class _QuranMushafPageViewState extends State<QuranMushafPageView>
+    with WidgetsBindingObserver {
   late PageController _pageController;
   late int _currentPage;
   bool _currentIsDoubleMode = false;
   DateTime _lastScrollTime = DateTime.now();
+  final _contentCache = MushafPageContentCache();
+  QcfFontService? _activeFontService;
 
   void _handlePointerScroll(PointerSignalEvent event) {
     if (event is PointerScrollEvent) {
@@ -273,6 +277,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _currentPage = widget.initialPageNumber.clamp(1, quran.totalPagesCount);
 
     _currentIsDoubleMode =
@@ -281,7 +286,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
     _pageController = PageController(
       initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode),
     );
-    _requestFontsForPage(_currentPage);
+    unawaited(_requestFontsForPage(_currentPage));
   }
 
   QcfFontService? _getFontService() {
@@ -294,25 +299,52 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
     }
   }
 
-  void _requestFontsForPage(int pageNumber) {
+  Future<void> _requestFontsForPage(int pageNumber) async {
     final fontService = _getFontService();
-    if (fontService == null || !fontService.areFontsReady) return;
+    if (_activeFontService != fontService) {
+      _activeFontService?.clearPreloadWindow();
+      _activeFontService = fontService;
+    }
+    if (fontService == null) return;
+    try {
+      await fontService.loadPageWindow(
+        pageNumber,
+        doublePage: _currentIsDoubleMode,
+      );
+    } on QcfFontRequestCancelled {
+      // A subsequent navigation or memory-pressure event superseded this work.
+    } catch (error) {
+      debugPrint('Unable to load Quran page fonts: $error');
+    }
+  }
 
-    const bufferSize = 3;
-    final pages = <int>[pageNumber, 1];
-    for (int d = 1; d <= bufferSize; d++) {
-      if (pageNumber - d >= 1) pages.add(pageNumber - d);
-      if (pageNumber + d <= quran.totalPagesCount) pages.add(pageNumber + d);
+  bool _onScrollNotification(ScrollNotification notification) {
+    if (notification.depth != 0) return false;
+    if (notification is ScrollStartNotification) {
+      _activeFontService?.setReaderScrolling(true);
+    } else if (notification is ScrollEndNotification) {
+      _activeFontService?.setReaderScrolling(false);
     }
-    if (_currentIsDoubleMode) {
-      final paired = pageNumber % 2 == 1 ? pageNumber + 1 : pageNumber - 1;
-      if (paired >= 1 &&
-          paired <= quran.totalPagesCount &&
-          !pages.contains(paired)) {
-        pages.add(paired);
-      }
+    final metrics = notification.metrics;
+    if (metrics is PageMetrics && metrics.page != null) {
+      final position = metrics.page!;
+      final first = (position + 0.001).floor();
+      final last = (position - 0.001).ceil();
+      _activeFontService?.updateVisiblePages([
+        for (var index = first; index <= last; index++)
+          if (_currentIsDoubleMode) ...[
+            index * 2 + 1,
+            index * 2 + 2,
+          ] else
+            index + 1,
+      ]);
     }
-    fontService.ensurePagesLoaded(pages);
+    return false;
+  }
+
+  @override
+  void didHaveMemoryPressure() {
+    _contentCache.clear();
   }
 
   @override
@@ -320,11 +352,13 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
     super.didChangeDependencies();
     final shouldBeDouble = _calculateIsDoubleMode(context);
     if (_currentIsDoubleMode != shouldBeDouble) {
+      _activeFontService?.setReaderScrolling(false);
       _currentIsDoubleMode = shouldBeDouble;
       _pageController.dispose();
       _pageController = PageController(
         initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode),
       );
+      unawaited(_requestFontsForPage(_currentPage));
     }
   }
 
@@ -333,26 +367,41 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
     super.didUpdateWidget(oldWidget);
     final shouldBeDouble = _calculateIsDoubleMode(context);
     if (oldWidget.mode != widget.mode ||
+        oldWidget.initialPageNumber != widget.initialPageNumber ||
         oldWidget.displayMode != widget.displayMode ||
         oldWidget.flipDirection != widget.flipDirection ||
         _currentIsDoubleMode != shouldBeDouble) {
-      final savedPage = _currentPage;
+      final savedPage = oldWidget.initialPageNumber != widget.initialPageNumber
+          ? widget.initialPageNumber.clamp(1, quran.totalPagesCount)
+          : _currentPage;
+      _activeFontService?.setReaderScrolling(false);
+      _currentPage = savedPage;
       _currentIsDoubleMode = shouldBeDouble;
       _pageController.dispose();
       _pageController = PageController(
         initialPage: _toControllerPage(savedPage, _currentIsDoubleMode),
       );
+      unawaited(_requestFontsForPage(savedPage));
     }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _activeFontService?.clearPreloadWindow();
+    _contentCache.clear();
     _pageController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      NotificationListener<ScrollNotification>(
+        onNotification: _onScrollNotification,
+        child: _buildPageView(context),
+      );
+
+  Widget _buildPageView(BuildContext context) {
     if (_currentIsDoubleMode) {
       final spreadCount = (quran.totalPagesCount / 2).ceil();
       return Listener(
@@ -360,7 +409,8 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: PageView.builder(
-            key: const ValueKey('horizontal_double'),
+            allowImplicitScrolling: true,
+            key: ObjectKey(_pageController),
             scrollDirection: Axis.horizontal,
             scrollBehavior: ScrollConfiguration.of(context).copyWith(
               dragDevices: {
@@ -378,7 +428,7 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
               );
               setState(() => _currentPage = rightPage);
               widget.onPageChanged?.call(rightPage);
-              _requestFontsForPage(rightPage);
+              unawaited(_requestFontsForPage(rightPage));
             },
             itemBuilder: (context, spreadIndex) {
               final rightPage = spreadIndex * 2 + 1;
@@ -388,6 +438,12 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
                 children: [
                   Expanded(
                     child: _QuranMushafPage(
+                      contentCache: _contentCache,
+                      requiredFontPages: [rightPage, leftPage, 1],
+                      fontPriority:
+                          spreadIndex == _toControllerPage(_currentPage, true)
+                          ? QcfFontPriority.visible
+                          : QcfFontPriority.prepared,
                       pageNumber: rightPage.clamp(1, quran.totalPagesCount),
                       playingSurahNumber: widget.playingSurahNumber,
                       playingAyahNumber: widget.playingAyahNumber,
@@ -411,6 +467,12 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
                   if (leftPage <= quran.totalPagesCount)
                     Expanded(
                       child: _QuranMushafPage(
+                        contentCache: _contentCache,
+                        requiredFontPages: [rightPage, leftPage, 1],
+                        fontPriority:
+                            spreadIndex == _toControllerPage(_currentPage, true)
+                            ? QcfFontPriority.visible
+                            : QcfFontPriority.prepared,
                         pageNumber: leftPage,
                         playingSurahNumber: widget.playingSurahNumber,
                         playingAyahNumber: widget.playingAyahNumber,
@@ -440,9 +502,8 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: PageView.builder(
-          key: ValueKey(
-            '${widget.mode}_${widget.displayMode}_${widget.flipDirection}',
-          ),
+          allowImplicitScrolling: true,
+          key: ObjectKey(_pageController),
           scrollDirection: widget.flipDirection == MushafFlipDirection.vertical
               ? Axis.vertical
               : Axis.horizontal,
@@ -458,10 +519,15 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
           onPageChanged: (index) {
             setState(() => _currentPage = index + 1);
             widget.onPageChanged?.call(index + 1);
-            _requestFontsForPage(index + 1);
+            unawaited(_requestFontsForPage(index + 1));
           },
           itemBuilder: (context, index) {
             return _QuranMushafPage(
+              contentCache: _contentCache,
+              requiredFontPages: [index + 1, 1],
+              fontPriority: index + 1 == _currentPage
+                  ? QcfFontPriority.visible
+                  : QcfFontPriority.prepared,
               pageNumber: index + 1,
               playingSurahNumber: widget.playingSurahNumber,
               playingAyahNumber: widget.playingAyahNumber,
@@ -483,6 +549,9 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView> {
 }
 
 class _QuranMushafPage extends StatefulWidget {
+  final MushafPageContentCache contentCache;
+  final List<int> requiredFontPages;
+  final QcfFontPriority fontPriority;
   final int pageNumber;
   final int? playingSurahNumber;
   final int? playingAyahNumber;
@@ -497,6 +566,9 @@ class _QuranMushafPage extends StatefulWidget {
   final bool useTajweedFonts;
 
   const _QuranMushafPage({
+    required this.contentCache,
+    required this.requiredFontPages,
+    required this.fontPriority,
     required this.pageNumber,
     this.playingSurahNumber,
     this.playingAyahNumber,
@@ -526,6 +598,8 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
   StreamSubscription<void>? _khatmaSub;
   StreamSubscription<int>? _fontSub;
   bool _fontLoaded = false;
+  bool _fontFailed = false;
+  int _fontRequestGeneration = 0;
 
   int get pageNumber => widget.pageNumber;
 
@@ -546,24 +620,95 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     } catch (_) {}
   }
 
-  void _checkFont() {
+  void _checkFont({bool notify = false}) {
+    final generation = ++_fontRequestGeneration;
+    _fontSub?.cancel();
+    _fontSub = null;
     final fontService = _getFontService();
-    if (fontService == null || !fontService.areFontsReady) {
-      _fontLoaded = true;
-      return;
+    _fontFailed = false;
+    _fontLoaded =
+        kIsWeb ||
+        (fontService != null &&
+            widget.requiredFontPages.every(fontService.isPageFontLoaded));
+    if (notify) setState(() {});
+    if (!_fontLoaded) {
+      _fontSub = fontService?.pageFontLoadedStream.listen((_) {
+        if (fontService.areFontsReady &&
+            widget.requiredFontPages.every(fontService.isPageFontLoaded)) {
+          _markFontsReady(generation);
+        }
+      });
+      unawaited(_awaitFonts(fontService, generation, retry: notify));
+    } else {
+      _reportReadableFrame(generation);
     }
-    if (fontService.isPageFontLoaded(pageNumber)) {
-      _fontLoaded = true;
-      return;
+  }
+
+  Future<void> _awaitFonts(
+    QcfFontService? fontService,
+    int generation, {
+    bool retry = false,
+  }) async {
+    try {
+      if (fontService == null) {
+        throw StateError('Quran font service unavailable');
+      }
+      final load = retry
+          ? fontService.retryPagesLoaded
+          : fontService.ensurePagesLoaded;
+      await load(widget.requiredFontPages, priority: widget.fontPriority);
+      _markFontsReady(generation);
+    } on QcfFontRequestCancelled {
+      // Prepared pages retry when they become visible.
+    } catch (_) {
+      if (mounted && generation == _fontRequestGeneration) {
+        setState(() => _fontFailed = true);
+      }
     }
-    fontService.ensurePagesLoaded([pageNumber, 1]);
-    _fontSub = fontService.pageFontLoadedStream.listen((loadedPage) {
-      if (loadedPage == pageNumber && mounted) {
-        setState(() => _fontLoaded = true);
-        _fontSub?.cancel();
-        _fontSub = null;
+  }
+
+  void _markFontsReady(int generation) {
+    if (!mounted || generation != _fontRequestGeneration || _fontLoaded) return;
+    setState(() {
+      _fontLoaded = true;
+      _fontFailed = false;
+    });
+    _fontSub?.cancel();
+    _fontSub = null;
+    _reportReadableFrame(generation);
+  }
+
+  void _reportReadableFrame(int generation) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted &&
+          generation == _fontRequestGeneration &&
+          _fontLoaded &&
+          widget.fontPriority == QcfFontPriority.visible) {
+        Timeline.instantSync(
+          'Quran page ready',
+          arguments: {'page': pageNumber, 'tajweed': widget.useTajweedFonts},
+        );
       }
     });
+  }
+
+  @override
+  void didUpdateWidget(_QuranMushafPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.pageNumber != pageNumber) {
+      for (final recognizer in _verseRecognizers.values) {
+        recognizer.dispose();
+      }
+      _verseRecognizers.clear();
+      _pressedSurah = null;
+      _pressedVerse = null;
+    }
+    if (oldWidget.pageNumber != pageNumber ||
+        oldWidget.useTajweedFonts != widget.useTajweedFonts ||
+        !listEquals(oldWidget.requiredFontPages, widget.requiredFontPages) ||
+        oldWidget.fontPriority != widget.fontPriority) {
+      _checkFont();
+    }
   }
 
   QcfFontService? _getFontService() {
@@ -584,6 +729,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
   @override
   void dispose() {
+    _fontRequestGeneration++;
     _fontSub?.cancel();
     _bookmarkSub?.cancel();
     _khatmaSub?.cancel();
@@ -610,24 +756,24 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (!_fontLoaded) {
+      if (_fontFailed) return _buildFontError(context, isDark);
       return _buildFontLoadingPlaceholder(isDark);
     }
 
-    List pageContent;
+    MushafPageContent pageContent;
     try {
-      pageContent = quran.getPageData(pageNumber);
+      pageContent = widget.contentCache.getPage(pageNumber);
     } catch (_) {
       return _buildErrorPage(context, isDark);
     }
 
-    if (pageContent.isEmpty) {
+    if (pageContent.verses.isEmpty) {
       return _buildErrorPage(context, isDark);
     }
 
-    final firstSurah = pageContent[0]['surah'] as int;
-    final firstVerse = pageContent[0]['start'] as int;
-    final juzNumber = quran.getJuzNumber(firstSurah, firstVerse);
-    final hizbText = getHizbTextForPage(pageContent);
+    final firstSurah = pageContent.firstSurah;
+    final juzNumber = pageContent.juzNumber;
+    final hizbText = pageContent.hizbText;
 
     if (widget.displayMode == HorizontalPageDisplayMode.zoomed) {
       return _buildZoomedLayout(
@@ -692,7 +838,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
   Widget _buildZoomedLayout(
     BuildContext context,
-    List pageContent,
+    MushafPageContent pageContent,
     int firstSurah,
     int juzNumber,
     String? hizbText,
@@ -799,7 +945,17 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
   Widget _buildPageContent(
     BuildContext context,
-    List pageContent,
+    MushafPageContent pageContent,
+    bool isDark,
+  ) => Timeline.timeSync(
+    'Quran page spans',
+    () => _buildPageSpans(context, pageContent, isDark),
+    arguments: {'page': pageNumber, 'tajweed': widget.useTajweedFonts},
+  );
+
+  Widget _buildPageSpans(
+    BuildContext context,
+    MushafPageContent pageContent,
     bool isDark,
   ) {
     final textColor = _textColor(isDark);
@@ -837,171 +993,156 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
       ]);
 
     final List<InlineSpan> spans = [];
-
-    for (final section in pageContent) {
-      final surahNum = section['surah'] as int;
-      final startVerse = section['start'] as int;
-      final endVerse = section['end'] as int;
-
-      for (int v = startVerse; v <= endVerse; v++) {
-        if (v == startVerse && v == 1) {
-          spans.add(
-            WidgetSpan(
-              child: _buildSurahBanner(context, surahNum, accent, textColor),
-            ),
-          );
-
-          if (pageNumber != 1 && pageNumber != 187) {
-            final Paint? bismillahPaint = (isDark && widget.useTajweedFonts)
-                ? tajweedAdaptivePaint
-                : null;
-            spans.add(
-              TextSpan(
-                text: " ﱁ  ﱂﱃﱄ\n",
-                style: TextStyle(
-                  fontFamily: '${fontPrefix}001',
-                  fontSize: 24.0,
-                  color: bismillahPaint == null ? textColor : null,
-                  foreground: bismillahPaint,
-                ),
-              ),
-            );
-          }
-        }
-
-        final String verseKey = '${surahNum}_$v';
-        if (!_verseRecognizers.containsKey(verseKey)) {
-          _verseRecognizers[verseKey] =
-              LongPressGestureRecognizer(
-                  duration: const Duration(milliseconds: 400),
-                )
-                ..onLongPressCancel = () {}
-                ..onLongPress = () {
-                  setState(() {
-                    _pressedSurah = surahNum;
-                    _pressedVerse = v;
-                  });
-                  widget.onAyahLongPress?.call(surahNum, v);
-                  Future.delayed(const Duration(milliseconds: 300), () {
-                    if (mounted) {
-                      setState(() {
-                        if (_pressedSurah == surahNum && _pressedVerse == v) {
-                          _pressedSurah = null;
-                          _pressedVerse = null;
-                        }
-                      });
-                    }
-                  });
-                };
-        }
-
-        final recognizer = _verseRecognizers[verseKey]!;
-
-        final rawQcf = quran.getVerseQCF(surahNum, v, verseEndSymbol: false);
-        final isFirstVerseOnPage =
-            v == (pageContent[0]['start'] as int) &&
-            surahNum == (pageContent[0]['surah'] as int);
-        final String qcfText = (isFirstVerseOnPage && rawQcf.length > 1)
-            ? '${rawQcf.substring(0, 1)}\u200A${rawQcf.substring(1)}'
-            : rawQcf;
-
-        bool hasStar = false, hasNote = false, hasBookmark = false;
-        Color? bookmarkColor;
-
-        for (final b in _bookmarks) {
-          if (b.surahNumber == surahNum && b.ayahNumber == v) {
-            if (b.type == BookmarkType.star) {
-              hasStar = true;
-            } else if (b.type == BookmarkType.note) {
-              hasNote = true;
-            } else if (b.type == BookmarkType.bookmark) {
-              hasBookmark = true;
-              bookmarkColor = b.color;
-            }
-          }
-        }
-
-        final khatmaService = getIt<KhatmaService>();
-        final bool isKhatmaActive =
-            khatmaService.enabled && !khatmaService.isCompleted;
-        bool isKhatmaStart = false;
-        bool isKhatmaEnd = false;
-
-        if (isKhatmaActive) {
-          final details = khatmaService.rangeDetailsForDay(
+    final khatmaService = getIt<KhatmaService>();
+    final khatmaRange = khatmaService.enabled && !khatmaService.isCompleted
+        ? khatmaService.rangeDetailsForDay(
             khatmaService.currentDayIndex,
             khatmaService.planDays,
+          )
+        : null;
+
+    for (final verse in pageContent.verses) {
+      final surahNum = verse.surahNumber;
+      final v = verse.verseNumber;
+      if (v == 1) {
+        spans.add(
+          WidgetSpan(
+            child: _buildSurahBanner(context, surahNum, accent, textColor),
+          ),
+        );
+
+        if (pageNumber != 1 && pageNumber != 187) {
+          final Paint? bismillahPaint = (isDark && widget.useTajweedFonts)
+              ? tajweedAdaptivePaint
+              : null;
+          spans.add(
+            TextSpan(
+              text: " ﱁ  ﱂﱃﱄ\n",
+              style: TextStyle(
+                fontFamily: '${fontPrefix}001',
+                fontSize: 24.0,
+                color: bismillahPaint == null ? textColor : null,
+                foreground: bismillahPaint,
+              ),
+            ),
           );
-          if (surahNum == details.startSurah && v == details.startVerse) {
-            isKhatmaStart = true;
-          }
-          if (surahNum == details.endSurah && v == details.endVerse) {
-            isKhatmaEnd = true;
-          }
         }
-
-        Color? bookmarkBgColor;
-        if (hasStar) {
-          bookmarkBgColor = Colors.amber.withValues(alpha: 0.28);
-        } else if (hasNote) {
-          bookmarkBgColor = Colors.orange.withValues(alpha: 0.28);
-        } else if (hasBookmark) {
-          bookmarkBgColor = (bookmarkColor ?? accent).withValues(alpha: 0.28);
-        } else if (isKhatmaStart) {
-          bookmarkBgColor = const Color(0xFF4CAF50).withValues(alpha: 0.28);
-        } else if (isKhatmaEnd) {
-          bookmarkBgColor = const Color(0xFFE53935).withValues(alpha: 0.28);
-        }
-
-        final bool isPressed = _pressedSurah == surahNum && _pressedVerse == v;
-        final bool isPlaying =
-            widget.playingSurahNumber == surahNum &&
-            widget.playingAyahNumber == v;
-
-        final Color? effectiveBgColor = (isPressed || isPlaying)
-            ? accent.withValues(alpha: 0.2)
-            : bookmarkBgColor;
-
-        final int ayahIndex = v - 1;
-        final bool isHidden =
-            widget.isMemorizationMode &&
-            surahNum == widget.memorizedSurahNumber &&
-            widget.hiddenAyahIndices.contains(ayahIndex);
-        final Color verseColor = isHidden
-            ? textColor.withValues(alpha: 0)
-            : textColor;
-
-        final Paint? tajweedDarkPaint =
-            (!isHidden && isDark && widget.useTajweedFonts)
-            ? tajweedAdaptivePaint
-            : null;
-
-        spans.add(
-          TextSpan(
-            text: qcfText,
-            recognizer: recognizer,
-            style: TextStyle(
-              fontFamily: pageFontFamily,
-              fontSize: fontSize,
-              color: tajweedDarkPaint == null ? verseColor : null,
-              foreground: tajweedDarkPaint,
-              height: lineHeight,
-              backgroundColor: isHidden ? null : effectiveBgColor,
-            ),
-          ),
-        );
-
-        spans.add(
-          TextSpan(
-            text: quran.getVerseNumberQCF(surahNum, v),
-            style: TextStyle(
-              fontFamily: pageFontFamily,
-              color: accent,
-              height: 1.35,
-            ),
-          ),
-        );
       }
+
+      final String verseKey = '${surahNum}_$v';
+      if (!_verseRecognizers.containsKey(verseKey)) {
+        _verseRecognizers[verseKey] =
+            LongPressGestureRecognizer(
+                duration: const Duration(milliseconds: 400),
+              )
+              ..onLongPressCancel = () {}
+              ..onLongPress = () {
+                setState(() {
+                  _pressedSurah = surahNum;
+                  _pressedVerse = v;
+                });
+                widget.onAyahLongPress?.call(surahNum, v);
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  if (mounted) {
+                    setState(() {
+                      if (_pressedSurah == surahNum && _pressedVerse == v) {
+                        _pressedSurah = null;
+                        _pressedVerse = null;
+                      }
+                    });
+                  }
+                });
+              };
+      }
+
+      final recognizer = _verseRecognizers[verseKey]!;
+
+      bool hasStar = false, hasNote = false, hasBookmark = false;
+      Color? bookmarkColor;
+
+      for (final b in _bookmarks) {
+        if (b.surahNumber == surahNum && b.ayahNumber == v) {
+          if (b.type == BookmarkType.star) {
+            hasStar = true;
+          } else if (b.type == BookmarkType.note) {
+            hasNote = true;
+          } else if (b.type == BookmarkType.bookmark) {
+            hasBookmark = true;
+            bookmarkColor = b.color;
+          }
+        }
+      }
+
+      final isKhatmaStart =
+          khatmaRange != null &&
+          surahNum == khatmaRange.startSurah &&
+          v == khatmaRange.startVerse;
+      final isKhatmaEnd =
+          khatmaRange != null &&
+          surahNum == khatmaRange.endSurah &&
+          v == khatmaRange.endVerse;
+
+      Color? bookmarkBgColor;
+      if (hasStar) {
+        bookmarkBgColor = Colors.amber.withValues(alpha: 0.28);
+      } else if (hasNote) {
+        bookmarkBgColor = Colors.orange.withValues(alpha: 0.28);
+      } else if (hasBookmark) {
+        bookmarkBgColor = (bookmarkColor ?? accent).withValues(alpha: 0.28);
+      } else if (isKhatmaStart) {
+        bookmarkBgColor = const Color(0xFF4CAF50).withValues(alpha: 0.28);
+      } else if (isKhatmaEnd) {
+        bookmarkBgColor = const Color(0xFFE53935).withValues(alpha: 0.28);
+      }
+
+      final bool isPressed = _pressedSurah == surahNum && _pressedVerse == v;
+      final bool isPlaying =
+          widget.playingSurahNumber == surahNum &&
+          widget.playingAyahNumber == v;
+
+      final Color? effectiveBgColor = (isPressed || isPlaying)
+          ? accent.withValues(alpha: 0.2)
+          : bookmarkBgColor;
+
+      final int ayahIndex = v - 1;
+      final bool isHidden =
+          widget.isMemorizationMode &&
+          surahNum == widget.memorizedSurahNumber &&
+          widget.hiddenAyahIndices.contains(ayahIndex);
+      final Color verseColor = isHidden
+          ? textColor.withValues(alpha: 0)
+          : textColor;
+
+      final Paint? tajweedDarkPaint =
+          (!isHidden && isDark && widget.useTajweedFonts)
+          ? tajweedAdaptivePaint
+          : null;
+
+      spans.add(
+        TextSpan(
+          text: verse.text,
+          recognizer: recognizer,
+          style: TextStyle(
+            fontFamily: pageFontFamily,
+            fontSize: fontSize,
+            color: tajweedDarkPaint == null ? verseColor : null,
+            foreground: tajweedDarkPaint,
+            height: lineHeight,
+            backgroundColor: isHidden ? null : effectiveBgColor,
+          ),
+        ),
+      );
+
+      spans.add(
+        TextSpan(
+          text: verse.numberGlyph,
+          style: TextStyle(
+            fontFamily: pageFontFamily,
+            color: accent,
+            height: 1.35,
+          ),
+        ),
+      );
     }
 
     return ExcludeSemantics(
@@ -1073,6 +1214,29 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
           fontSize: 18,
           color: _textColor(isDark).withValues(alpha: 0.4),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFontError(BuildContext context, bool isDark) {
+    final l = AppLocalizations.of(context)!;
+    return Container(
+      color: _bgColor(isDark),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '${l.mushafPageNumber(pageNumber)} · ${l.failedToLoad}',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: _textColor(isDark)),
+          ),
+          TextButton.icon(
+            onPressed: () => _checkFont(notify: true),
+            icon: const Icon(Icons.refresh),
+            label: Text(l.retry),
+          ),
+        ],
       ),
     );
   }

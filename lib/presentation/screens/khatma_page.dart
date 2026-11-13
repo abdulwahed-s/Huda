@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/core/services/notification_page_helper.dart';
+import 'package:huda/core/notifications/notification_orchestrator.dart';
+import 'package:huda/core/notifications/reminder_model.dart';
 import 'package:huda/core/services/khatma_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/routes/app_route.dart';
@@ -46,13 +47,11 @@ class _KhatmaPageState extends State<KhatmaPage> {
   _KhatmaStep _allWirdsPrevStep = _KhatmaStep.startFrom;
   bool _reminderEnabled = false;
   TimeOfDay _reminderTime = const TimeOfDay(hour: 19, minute: 0);
-  final _notifHelper = NotificationPageHelper();
 
   @override
   void initState() {
     super.initState();
     _service = getIt<KhatmaService>();
-    _notifHelper.init();
     _load();
   }
 
@@ -104,7 +103,7 @@ class _KhatmaPageState extends State<KhatmaPage> {
         minute: picked.minute,
       );
       if (_reminderEnabled) {
-        await _notifHelper.scheduleKhatmaReminder(true, picked);
+        await _syncKhatmaReminder();
       }
       setState(() => _reminderTime = picked);
     }
@@ -121,13 +120,17 @@ class _KhatmaPageState extends State<KhatmaPage> {
       hour: _reminderTime.hour,
       minute: _reminderTime.minute,
     );
-    await _notifHelper.scheduleKhatmaReminder(value, _reminderTime);
+    await _syncKhatmaReminder();
     setState(() => _reminderEnabled = value);
   }
 
+  /// The orchestrator reads the saved reminder setting.
+  Future<void> _syncKhatmaReminder() => NotificationOrchestrator.shared
+      .requestSync('khatma-reminder', categories: {ReminderCategory.reminder});
+
   Future<void> _restoreKhatmaReminder() async {
     if (_reminderEnabled) {
-      await _notifHelper.scheduleKhatmaReminder(true, _reminderTime);
+      await _syncKhatmaReminder();
     }
   }
 
