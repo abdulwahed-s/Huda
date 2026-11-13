@@ -464,6 +464,12 @@ jobs:
           cd ..
           flutter build macos --release
 
+      - name: Verify macOS widget extension
+        run: |
+          python3 xv/macos/scripts/verify_widgets.py \
+            build/macos/Build/Products/Release/huda.app \
+            --verify-signature
+
       - name: Create installer pkg
         env:
           MACOS_INSTALLER_IDENTITY: ${{ secrets.MACOS_INSTALLER_IDENTITY }}
