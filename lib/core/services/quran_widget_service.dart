@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:huda/core/cache/cache_helper.dart';
+import 'package:huda/core/services/mac_widget_bridge.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/utils/platform_utils.dart';
@@ -62,12 +63,14 @@ class QuranWidgetService {
   }
 
   static Future<void> initialize() {
-    if (!PlatformUtils.isMobile) return Future<void>.value();
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) {
+      return Future<void>.value();
+    }
     return _enqueueOperation(() async {
       if (PlatformUtils.isIOS) {
         await HomeWidget.setAppGroupId(_appGroupId);
       }
-      await _migrateLegacyWidgetData();
+      if (PlatformUtils.isMobile) await _migrateLegacyWidgetData();
       await _pushSettingsNow();
     });
   }
@@ -75,24 +78,49 @@ class QuranWidgetService {
   static Future<void> updateCustomization(QuranWidgetSettings next) {
     return _enqueueOperation(() async {
       final cache = getIt<CacheHelper>();
-      await cache.saveData(key: _languageKey, value: next.language.storage);
-      await cache.saveData(key: _themeKey, value: next.visualTheme.storage);
-      await cache.saveData(key: _ayahTextSizeKey, value: next.ayahTextSize);
-      await cache.saveData(
-        key: _translationTextSizeKey,
-        value: next.translationTextSize,
-      );
-      await cache.saveData(key: _ayahAutoFitKey, value: next.ayahAutoFit);
-      await cache.saveData(
-        key: _translationAutoFitKey,
-        value: next.translationAutoFit,
-      );
-      await cache.saveData(key: _ayahBoldKey, value: next.ayahBold);
-      await cache.saveData(
-        key: _translationBoldKey,
-        value: next.translationBold,
-      );
-      await cache.saveData(key: _rotationOffsetKey, value: next.rotationOffset);
+      final previous = PlatformUtils.isMacOS ? readSettings() : null;
+      if (previous == null || previous.language != next.language) {
+        await cache.saveData(key: _languageKey, value: next.language.storage);
+      }
+      if (previous == null || previous.visualTheme != next.visualTheme) {
+        await cache.saveData(key: _themeKey, value: next.visualTheme.storage);
+      }
+      if (previous == null || previous.ayahTextSize != next.ayahTextSize) {
+        await cache.saveData(key: _ayahTextSizeKey, value: next.ayahTextSize);
+      }
+      if (previous == null ||
+          previous.translationTextSize != next.translationTextSize) {
+        await cache.saveData(
+          key: _translationTextSizeKey,
+          value: next.translationTextSize,
+        );
+      }
+      if (previous == null || previous.ayahAutoFit != next.ayahAutoFit) {
+        await cache.saveData(key: _ayahAutoFitKey, value: next.ayahAutoFit);
+      }
+      if (previous == null ||
+          previous.translationAutoFit != next.translationAutoFit) {
+        await cache.saveData(
+          key: _translationAutoFitKey,
+          value: next.translationAutoFit,
+        );
+      }
+      if (previous == null || previous.ayahBold != next.ayahBold) {
+        await cache.saveData(key: _ayahBoldKey, value: next.ayahBold);
+      }
+      if (previous == null ||
+          previous.translationBold != next.translationBold) {
+        await cache.saveData(
+          key: _translationBoldKey,
+          value: next.translationBold,
+        );
+      }
+      if (previous == null || previous.rotationOffset != next.rotationOffset) {
+        await cache.saveData(
+          key: _rotationOffsetKey,
+          value: next.rotationOffset,
+        );
+      }
       await _pushSettingsNow(throwOnFailure: true);
     });
   }
@@ -135,7 +163,9 @@ class QuranWidgetService {
   static Future<void> onLocaleChanged() => pushSettings();
 
   static Future<void> pushSettings({bool triggerNativeUpdate = true}) {
-    if (!PlatformUtils.isMobile) return Future<void>.value();
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) {
+      return Future<void>.value();
+    }
     return _enqueueOperation(
       () => _pushSettingsNow(triggerNativeUpdate: triggerNativeUpdate),
     );
@@ -145,7 +175,7 @@ class QuranWidgetService {
     bool triggerNativeUpdate = true,
     bool throwOnFailure = false,
   }) async {
-    if (!PlatformUtils.isMobile) return;
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) return;
     try {
       final prefs = await SharedPreferences.getInstance();
       if (PlatformUtils.isIOS) {
@@ -154,6 +184,30 @@ class QuranWidgetService {
 
       final settings = readSettings();
       final theme = _resolveAppTheme(prefs);
+      if (PlatformUtils.isMacOS) {
+        if (prefs.getString('themeName') != theme.themeName) {
+          await prefs.setString('themeName', theme.themeName);
+        }
+        if (prefs.getString('themeMode') != theme.themeMode) {
+          await prefs.setString('themeMode', theme.themeMode);
+        }
+        await MacWidgetBridge.publish({
+          'themeName': theme.themeName,
+          'themeMode': theme.themeMode,
+          _localeKey: prefs.getString(_localeKey) ?? 'en',
+          _languageKey: settings.language.storage,
+          _themeKey: settings.visualTheme.storage,
+          _ayahTextSizeKey: settings.ayahTextSize,
+          _translationTextSizeKey: settings.translationTextSize,
+          _ayahAutoFitKey: settings.ayahAutoFit,
+          _translationAutoFitKey: settings.translationAutoFit,
+          _ayahBoldKey: settings.ayahBold,
+          _translationBoldKey: settings.translationBold,
+          _rotationOffsetKey: settings.rotationOffset,
+          for (final key in _legacyColorKeys) key: null,
+        }, kinds: triggerNativeUpdate ? [iOSWidgetName] : []);
+        return;
+      }
       await _writeString(prefs, 'themeName', theme.themeName);
       await _writeString(prefs, 'themeMode', theme.themeMode);
       await _writeString(
@@ -206,7 +260,9 @@ class QuranWidgetService {
         );
       }
 
-      if (triggerNativeUpdate) await _refreshNativeWidget();
+      if (triggerNativeUpdate) {
+        await _refreshNativeWidget();
+      }
     } catch (error, stackTrace) {
       debugPrint('QuranWidgetService.pushSettings failed: $error');
       if (throwOnFailure) {

@@ -7,6 +7,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
+import 'package:huda/core/utils/platform_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalizationState {
@@ -122,9 +123,24 @@ class LocalizationCubit extends Cubit<LocalizationState> {
         reason: reason,
         force: true,
       );
+      if (PlatformUtils.isMacOS) {
+        await _refreshMacPrayerMenuLocale();
+      }
+      return;
+    }
+    if (PlatformUtils.isMacOS) {
+      await _refreshMacPrayerMenuLocale();
       return;
     }
     await _refreshPrayerWidgetLocale();
+  }
+
+  Future<void> _refreshMacPrayerMenuLocale() async {
+    try {
+      await PrayerWidgetService.pushSettings();
+    } catch (error) {
+      debugPrint('Could not refresh macOS prayer menu locale: $error');
+    }
   }
 
   Future<void> _persistSelectedLocale(String languageCode) async {

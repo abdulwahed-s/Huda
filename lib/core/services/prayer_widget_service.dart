@@ -1,4 +1,7 @@
 import 'package:huda/core/services/prayer_display_snapshot.dart';
+import 'package:huda/core/services/mac_widget_bridge.dart';
+import 'package:huda/core/services/windows_prayer_taskbar_bridge.dart';
+import 'package:huda/core/services/linux_prayer_tray_bridge.dart';
 import 'package:huda/core/services/prayer_time_zone_service.dart';
 import 'dart:convert';
 
@@ -6,13 +9,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:prayer_time_plus/prayer_time_plus.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/prayer_location_generation.dart';
 import 'package:huda/core/services/prayer_location_repository.dart';
+import 'package:huda/core/services/prayer_country_names.dart';
 import 'package:huda/core/services/prayer_times_calculator.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/utils/platform_utils.dart';
+import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_calendar_method_label.dart';
 
 class PrayerWidgetService {
   PrayerWidgetService._();
@@ -101,7 +108,15 @@ class PrayerWidgetService {
     PrayerDisplaySnapshot display, {
     required CacheHelper cacheHelper,
   }) async {
-    if (!PlatformUtils.isMobile) return;
+    if (PlatformUtils.isLinux) {
+      await LinuxPrayerTrayBridge.publishDisplay(display);
+      return;
+    }
+    if (PlatformUtils.isWindows) {
+      await WindowsPrayerTaskbarBridge.publishDisplay(display);
+      return;
+    }
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) return;
     final repository = PrayerLocationRepository(cacheHelper: cacheHelper);
     await repository.synchronized((session) async {
       final latest = session.state.displaySnapshot;
@@ -128,10 +143,36 @@ class PrayerWidgetService {
     if (previousLocation > display.location.revision ||
         (previousLocation == display.location.revision &&
             previousRevision > display.revision)) {
+      if (PlatformUtils.isMacOS && prior != null) {
+        // Preserve the newer schedule, but let a theme or widget customization
+        // change update its appearance even when this display is older.
+        final refreshed = displayPayload(display, cacheHelper: cacheHelper);
+        final appearance = refreshed['appearance'];
+        final timeFormat = refreshed['timeFormat'];
+        final methodLabel = refreshed['methodLabel'];
+        if (jsonEncode(prior['appearance']) != jsonEncode(appearance) ||
+            prior['timeFormat'] != timeFormat ||
+            prior['methodLabel'] != methodLabel) {
+          prior['appearance'] = appearance;
+          prior['timeFormat'] = timeFormat;
+          prior['methodLabel'] = methodLabel;
+          await _writeString(prefs, displayPayloadKey, jsonEncode(prior));
+          await MacWidgetBridge.publish(
+            {displayPayloadKey: prefs.getString(displayPayloadKey)},
+            kinds: [iOSWidgetName],
+          );
+        }
+      }
       return;
     }
     final payload = displayPayload(display, cacheHelper: cacheHelper);
     await _writeString(prefs, displayPayloadKey, jsonEncode(payload));
+    if (PlatformUtils.isMacOS) {
+      await MacWidgetBridge.publish(
+        {displayPayloadKey: prefs.getString(displayPayloadKey)},
+        kinds: [iOSWidgetName],
+      );
+    }
     final report = await _refreshNativeWidget(
       expectedRevision: display.revision,
     );
@@ -149,6 +190,8 @@ class PrayerWidgetService {
     required CacheHelper cacheHelper,
   }) {
     final settings = readSettings(cacheHelper: cacheHelper);
+    final appLocale = cacheHelper.getDataString(key: 'locale') ?? 'en';
+    final appLocalizations = lookupAppLocalizations(Locale(appLocale));
     final language = settings.language == PrayerWidgetLanguage.auto
         ? (cacheHelper.getDataString(key: 'locale') ?? 'en')
         : settings.language.code;
@@ -160,10 +203,17 @@ class PrayerWidgetService {
     final days = <String, Object?>{};
     for (var offset = -8; offset <= 16; offset++) {
       final day = DateTime(civil.year, civil.month, civil.day + offset);
+      final computed = display.computeDate(day);
       final values = PrayerTimesCalculator.dailyAdjustedInstants(
-        display.computeDate(day),
+        computed,
         display.offsets,
       );
+      final sunrise = PrayerTimesCalculator.adjustedInstantFor(
+        computed,
+        Prayer.sunrise,
+        display.offsets,
+      );
+      if (sunrise != null) values[Prayer.sunrise] = sunrise;
       days['${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}'] =
           {
             for (final entry in values.entries)
@@ -185,7 +235,18 @@ class PrayerWidgetService {
       'timeZoneId': location.timeZoneId,
       'locationMode': location.mode.name,
       'countryCode': location.countryCode ?? '',
+      'locality': location.locality,
+      'countryName':
+          PrayerCountryNames.localized(location.countryCode, appLocale) ??
+          location.countryName,
       'calculationMethod': display.method,
+      'methodLabel': prayerCalendarMethodLabel(
+        appLocalizations,
+        PrayerTimesCalculator.resolveMethod(
+          display.method,
+          location.countryCode ?? '',
+        ).name,
+      ),
       'madhab': display.madhab,
       'highLatitudeRule': display.highLatitude,
       'customAngles': {
@@ -217,7 +278,7 @@ class PrayerWidgetService {
   }
 
   static Future<void> initialize() async {
-    if (!PlatformUtils.isMobile) return;
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) return;
     if (PlatformUtils.isIOS) {
       await HomeWidget.setAppGroupId(_appGroupId);
     }
@@ -236,7 +297,7 @@ class PrayerWidgetService {
     int? publicationRevision,
     String? configurationSignature,
   }) async {
-    if (!PlatformUtils.isMobile) return null;
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) return null;
 
     final suppliedIdentityCount = <Object?>[
       activeGeneration,
@@ -312,7 +373,7 @@ class PrayerWidgetService {
     int? publicationRevision,
     String? configurationSignature,
   }) async {
-    if (!PlatformUtils.isMobile) return null;
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) return null;
 
     final cache = cacheHelper ?? getIt<CacheHelper>();
     await cache.reload();
@@ -486,6 +547,34 @@ class PrayerWidgetService {
     );
     await _writeString(prefs, _settingsPayloadKey, payload);
 
+    if (PlatformUtils.isMacOS) {
+      // The display snapshot has the computed prayer schedule and is preferred
+      // by WidgetKit while its location is current. Keep its appearance in
+      // sync with newer customization and app theme settings.
+      final display = _decodePayload(prefs.getString(displayPayloadKey));
+      if (display != null) {
+        display['appearance'] = payloadValues['appearance'];
+        display['timeFormat'] = payloadValues['timeFormat'];
+        final token = display['calculationMethod'] as String?;
+        if (token != null) {
+          final appLocale = cache.getDataString(key: 'locale') ?? 'en';
+          display['methodLabel'] = prayerCalendarMethodLabel(
+            lookupAppLocalizations(Locale(appLocale)),
+            PrayerTimesCalculator.resolveMethod(
+              token,
+              display['countryCode'] as String? ?? '',
+            ).name,
+          );
+        }
+        await _writeString(prefs, displayPayloadKey, jsonEncode(display));
+      }
+      await MacWidgetBridge.publish({
+        _settingsPayloadKey: payload,
+        if (display != null)
+          displayPayloadKey: prefs.getString(displayPayloadKey),
+      }, kinds: triggerNativeUpdate ? [iOSWidgetName] : []);
+    }
+
     if (triggerNativeUpdate) {
       final displayRevision = _integer(
         _decodePayload(prefs.getString(displayPayloadKey))?['revision'],
@@ -500,31 +589,116 @@ class PrayerWidgetService {
 
   static Future<void> updateCustomization(PrayerWidgetSettings next) async {
     final cache = getIt<CacheHelper>();
-    await cache.saveData(key: _designKey, value: next.design.storage);
-    await cache.saveData(key: _languageKey, value: next.language.storage);
-    await cache.saveData(key: _numeralsKey, value: next.numerals.storage);
-    await cache.saveData(key: _bgEnabledKey, value: next.backgroundEnabled);
-    if (next.backgroundColor != null) {
-      await cache.saveData(key: _bgColorKey, value: next.backgroundColor);
-    } else {
-      await cache.removeData(key: _bgColorKey);
+    final previous = PlatformUtils.isMacOS
+        ? readSettings(cacheHelper: cache)
+        : null;
+    if (previous == null || previous.design != next.design) {
+      await cache.saveData(key: _designKey, value: next.design.storage);
     }
-    await cache.saveData(key: _bgGlassifyKey, value: next.glassify);
-    await cache.saveData(key: _bgRoundedKey, value: next.rounded);
-    if (next.contentColor != null) {
-      await cache.saveData(key: _contentColorKey, value: next.contentColor);
-    } else {
-      await cache.removeData(key: _contentColorKey);
+    if (previous == null || previous.language != next.language) {
+      await cache.saveData(key: _languageKey, value: next.language.storage);
     }
-    if (next.highlightColor != null) {
-      await cache.saveData(key: _highlightColorKey, value: next.highlightColor);
-    } else {
-      await cache.removeData(key: _highlightColorKey);
+    if (previous == null || previous.numerals != next.numerals) {
+      await cache.saveData(key: _numeralsKey, value: next.numerals.storage);
     }
-    await cache.saveData(key: _contentSizeKey, value: next.contentSize);
-    await cache.saveData(key: _visualThemeKey, value: next.visualTheme.storage);
-    await cache.saveData(key: _timeFormatKey, value: next.timeFormat.storage);
+    if (previous == null ||
+        previous.backgroundEnabled != next.backgroundEnabled) {
+      await cache.saveData(key: _bgEnabledKey, value: next.backgroundEnabled);
+    }
+    if (previous == null || previous.backgroundColor != next.backgroundColor) {
+      if (next.backgroundColor != null) {
+        await cache.saveData(key: _bgColorKey, value: next.backgroundColor);
+      } else {
+        await cache.removeData(key: _bgColorKey);
+      }
+    }
+    if (previous == null || previous.glassify != next.glassify) {
+      await cache.saveData(key: _bgGlassifyKey, value: next.glassify);
+    }
+    if (previous == null || previous.rounded != next.rounded) {
+      await cache.saveData(key: _bgRoundedKey, value: next.rounded);
+    }
+    if (previous == null || previous.contentColor != next.contentColor) {
+      if (next.contentColor != null) {
+        await cache.saveData(key: _contentColorKey, value: next.contentColor);
+      } else {
+        await cache.removeData(key: _contentColorKey);
+      }
+    }
+    if (previous == null || previous.highlightColor != next.highlightColor) {
+      if (next.highlightColor != null) {
+        await cache.saveData(
+          key: _highlightColorKey,
+          value: next.highlightColor,
+        );
+      } else {
+        await cache.removeData(key: _highlightColorKey);
+      }
+    }
+    if (previous == null || previous.contentSize != next.contentSize) {
+      await cache.saveData(key: _contentSizeKey, value: next.contentSize);
+    }
+    if (previous == null || previous.visualTheme != next.visualTheme) {
+      await cache.saveData(
+        key: _visualThemeKey,
+        value: next.visualTheme.storage,
+      );
+    }
+    if (previous == null || previous.timeFormat != next.timeFormat) {
+      await cache.saveData(key: _timeFormatKey, value: next.timeFormat.storage);
+    }
+    if (PlatformUtils.isMacOS && await _publishMacCustomization(next)) return;
     await pushSettings();
+  }
+
+  static Future<bool> _publishMacCustomization(
+    PrayerWidgetSettings settings,
+  ) async {
+    // Appearance changes keep the existing prayer schedule and its revisions.
+    final cache = getIt<CacheHelper>();
+    final repository = PrayerLocationRepository(cacheHelper: cache);
+    return repository.synchronized((_) async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.reload();
+      final committed = _decodePayload(prefs.getString(_settingsPayloadKey));
+      final display = _decodePayload(prefs.getString(displayPayloadKey));
+      if (committed == null && display == null) return false;
+
+      final theme = _resolveTheme(prefs);
+      final locale = settings.language == PrayerWidgetLanguage.auto
+          ? (prefs.getString(_localeKey) ?? 'en')
+          : settings.language.code;
+      final appearance = <String, Object?>{
+        'themeName': theme['themeName'],
+        'themeMode': theme['themeMode'],
+        'locale': locale,
+        'design': settings.design.storage,
+        'language': settings.language.storage,
+        'numerals': settings.numerals.storage,
+        'backgroundEnabled': settings.backgroundEnabled,
+        'backgroundColor': settings.backgroundColor,
+        'glassify': settings.glassify,
+        'rounded': settings.rounded,
+        'contentColor': settings.contentColor,
+        'highlightColor': settings.highlightColor,
+        'contentSize': settings.contentSize,
+      };
+      final values = <String, Object?>{};
+      for (final entry in <String, Map<String, Object?>?>{
+        _settingsPayloadKey: committed,
+        displayPayloadKey: display,
+      }.entries) {
+        final payload = entry.value;
+        if (payload == null) continue;
+        payload['appearance'] = appearance;
+        payload['timeFormat'] = settings.timeFormat.storage;
+        final encoded = jsonEncode(payload);
+        await _writeString(prefs, entry.key, encoded);
+        values[entry.key] = encoded;
+      }
+      await MacWidgetBridge.publish(values, kinds: [iOSWidgetName]);
+      return true;
+    });
   }
 
   static Future<void> resetCustomization() async {

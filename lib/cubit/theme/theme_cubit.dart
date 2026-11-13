@@ -102,8 +102,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     await prefs.setString(_themeKey, useDark ? 'dark' : 'light');
     emit(state.copyWith(themeMode: mode));
 
-    await QuranWidgetService.onThemeChanged();
-    await PrayerWidgetService.onAppThemeChanged();
+    await _updateWidgetTheme();
   }
 
   Future<void> useSystemTheme() async {
@@ -111,8 +110,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     await prefs.remove(_themeKey);
     emit(state.copyWith(themeMode: ThemeMode.system));
 
-    await QuranWidgetService.onThemeChanged();
-    await PrayerWidgetService.onAppThemeChanged();
+    await _updateWidgetTheme();
   }
 
   Future<void> setTextScaleFactor(double scale) async {
@@ -129,6 +127,10 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     emit(state.copyWith(colorTheme: colorTheme));
 
+    await _updateWidgetTheme();
+  }
+
+  Future<void> _updateWidgetTheme() async {
     await QuranWidgetService.onThemeChanged();
     await PrayerWidgetService.onAppThemeChanged();
   }
