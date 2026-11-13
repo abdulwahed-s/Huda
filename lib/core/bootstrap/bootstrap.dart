@@ -106,15 +106,33 @@ Future<void> _runBackgroundInit() async {
     }, const Duration(seconds: 8)),
     _guard('Supabase', _initializeSupabase, const Duration(seconds: 10)),
     _guard(
-        'Notifications', initializeNotifications, const Duration(seconds: 8)),
-    _guard('PrayerWidget', PrayerWidgetService.initialize,
-        const Duration(seconds: 8)),
+      'Notifications',
+      initializeNotifications,
+      const Duration(seconds: 8),
+    ),
+    _guard(
+      'PrayerWidget',
+      PrayerWidgetService.initialize,
+      const Duration(seconds: 8),
+    ),
   ]);
 
   await initializeNonCriticalServicesAsync();
 
-  getIt<QcfFontService>(instanceName: 'qcf4').init();
-  getIt<QcfFontService>(instanceName: 'tajweed').init();
+  unawaited(
+    _guard(
+      'QCF4 fonts',
+      getIt<QcfFontService>(instanceName: 'qcf4').init,
+      const Duration(seconds: 10),
+    ),
+  );
+  unawaited(
+    _guard(
+      'Tajweed fonts',
+      getIt<QcfFontService>(instanceName: 'tajweed').init,
+      const Duration(seconds: 10),
+    ),
+  );
 
   QuickActionsService.initialize();
 }
@@ -132,9 +150,6 @@ Future<void> _guard(
 }
 
 Future<void> _initializeSupabase() async {
-  await Supabase.initialize(
-    url: supabaseUrl,
-    anonKey: supabaseAnonKey,
-  );
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   unawaited(CrashReporter.flushPending());
 }
