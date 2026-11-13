@@ -4,6 +4,20 @@ import 'package:huda/core/quran/surah_data.dart';
 import 'package:huda/core/quran/quran_text.dart';
 import 'package:huda/core/quran/sajdah_verses.dart';
 
+// The records are immutable. Build the index once for all text lookups.
+final Map<(int, int), Map> _versesByReference = {
+  for (final Map verse in quranText)
+    (verse['surah_number'] as int, verse['verse_number'] as int): verse,
+};
+
+Map _verseRecord(int surahNumber, int verseNumber) {
+  final record = _versesByReference[(surahNumber, verseNumber)];
+  if (record == null) {
+    throw "No verse found with given surahNumber and verseNumber.\n\n";
+  }
+  return record;
+}
+
 List getPageData(int pageNumber) {
   if (pageNumber < 1 || pageNumber > 604) {
     throw "Invalid page number. Page number must be between 1 and 604";
@@ -40,8 +54,9 @@ int getVerseCountByPage(int pageNumber) {
   }
   int totalVerseCount = 0;
   for (int i = 0; i < pageData[pageNumber - 1].length; i++) {
-    totalVerseCount +=
-        int.parse(pageData[pageNumber - 1][i]!["end"].toString());
+    totalVerseCount += int.parse(
+      pageData[pageNumber - 1][i]!["end"].toString(),
+    );
   }
   return totalVerseCount;
 }
@@ -108,9 +123,11 @@ int getPageNumber(int surahNumber, int verseNumber) {
   }
 
   for (int pageIndex = 0; pageIndex < pageData.length; pageIndex++) {
-    for (int surahIndexInPage = 0;
-        surahIndexInPage < pageData[pageIndex].length;
-        surahIndexInPage++) {
+    for (
+      int surahIndexInPage = 0;
+      surahIndexInPage < pageData[pageIndex].length;
+      surahIndexInPage++
+    ) {
       final e = pageData[pageIndex][surahIndexInPage];
       if (e['surah'] == surahNumber &&
           e['start'] <= verseNumber &&
@@ -137,15 +154,12 @@ int getVerseCount(int surahNumber) {
   return int.parse(surah[surahNumber - 1]['aya'].toString());
 }
 
-String getVerse(int surahNumber, int verseNumber,
-    {bool verseEndSymbol = false}) {
-  String verse = "";
-  for (var i in quranText) {
-    if (i['surah_number'] == surahNumber && i['verse_number'] == verseNumber) {
-      verse = i['content'].toString();
-      break;
-    }
-  }
+String getVerse(
+  int surahNumber,
+  int verseNumber, {
+  bool verseEndSymbol = false,
+}) {
+  final verse = _verseRecord(surahNumber, verseNumber)['content'].toString();
 
   if (verse == "") {
     throw "No verse found with given surahNumber and verseNumber.\n\n";
@@ -154,24 +168,15 @@ String getVerse(int surahNumber, int verseNumber,
   return verse + (verseEndSymbol ? getVerseEndSymbol(verseNumber) : "");
 }
 
-String getVerseQCF(int surahNumber, int verseNumber,
-    {bool verseEndSymbol = true}) {
-  String verse = "";
-  for (var i in quranText) {
-    if (i['surah_number'] == surahNumber && i['verse_number'] == verseNumber) {
-      final String qcfData = i['qcfData'].toString();
-      if (verseEndSymbol) {
-        verse = qcfData;
-      } else {
-        final bool endsWithNewline = qcfData.endsWith('\n');
-        verse = qcfData.substring(
-          0,
-          qcfData.length - (endsWithNewline ? 2 : 1),
-        );
-      }
-      break;
-    }
-  }
+String getVerseQCF(
+  int surahNumber,
+  int verseNumber, {
+  bool verseEndSymbol = true,
+}) {
+  final qcfData = _verseRecord(surahNumber, verseNumber)['qcfData'].toString();
+  final verse = verseEndSymbol
+      ? qcfData
+      : qcfData.substring(0, qcfData.length - (qcfData.endsWith('\n') ? 2 : 1));
 
   if (verse == "") {
     throw "No verse found with given surahNumber and verseNumber.\n\n";
@@ -181,17 +186,10 @@ String getVerseQCF(int surahNumber, int verseNumber,
 }
 
 String getVerseNumberQCF(int surahNumber, int verseNumber) {
-  String glyph = "";
-  for (var i in quranText) {
-    if (i['surah_number'] == surahNumber && i['verse_number'] == verseNumber) {
-      final String qcfData = i['qcfData'].toString();
-      final bool endsWithNewline = qcfData.endsWith('\n');
-      glyph = endsWithNewline
-          ? qcfData.substring(qcfData.length - 2, qcfData.length - 1)
-          : qcfData.substring(qcfData.length - 1);
-      break;
-    }
-  }
+  final qcfData = _verseRecord(surahNumber, verseNumber)['qcfData'].toString();
+  final glyph = qcfData.endsWith('\n')
+      ? qcfData.substring(qcfData.length - 2, qcfData.length - 1)
+      : qcfData.substring(qcfData.length - 1);
 
   if (glyph == "") {
     throw "No verse found with given surahNumber and verseNumber.\n\n";
@@ -228,7 +226,7 @@ String getVerseEndSymbol(int verseNumber, {bool arabicNumeral = true}) {
     "6": "٦",
     "7": "۷",
     "8": "۸",
-    "9": "۹"
+    "9": "۹",
   };
 
   for (var e in digits) {
@@ -266,10 +264,12 @@ enum SurahSeperator {
   surahNameTurkish,
 }
 
-List<String> getVersesTextByPage(int pageNumber,
-    {bool verseEndSymbol = false,
-    SurahSeperator surahSeperator = SurahSeperator.none,
-    String customSurahSeperator = ""}) {
+List<String> getVersesTextByPage(
+  int pageNumber, {
+  bool verseEndSymbol = false,
+  SurahSeperator surahSeperator = SurahSeperator.none,
+  String customSurahSeperator = "",
+}) {
   if (pageNumber > 604 || pageNumber <= 0) {
     throw "Invalid pageNumber";
   }
@@ -403,8 +403,9 @@ String removeDiacritics(String input) {
     'ٍ': '',
   };
 
-  String diacriticsPattern =
-      diacriticsMap.keys.map((e) => RegExp.escape(e)).join('|');
+  String diacriticsPattern = diacriticsMap.keys
+      .map((e) => RegExp.escape(e))
+      .join('|');
   RegExp exp = RegExp('[$diacriticsPattern]');
 
   String textWithoutDiacritics = input.replaceAll(exp, '');
