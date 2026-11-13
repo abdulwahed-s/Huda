@@ -37,7 +37,9 @@ class _BootstrapperState extends State<Bootstrapper> {
           setCustomErrorWidget();
           setState(() => _initialRoute = route);
         })
-        .catchError((Object e) {
+        .catchError((Object e, StackTrace stack) {
+          debugPrint('Critical bootstrap failed: $e');
+          debugPrintStack(stackTrace: stack);
           if (!mounted) return;
           setState(() => _error = e);
         });
