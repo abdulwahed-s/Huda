@@ -6187,6 +6187,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerAlertEndFocus => 'Odağı bitir';
 
   @override
+  String get prayerAlertOnThisDevice => 'Bu cihazda';
+
+  @override
   String get prayerAlertBack => 'Geri';
 
   @override

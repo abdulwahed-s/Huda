@@ -6195,6 +6195,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get prayerAlertEndFocus => 'ফোকাস শেষ করুন';
 
   @override
+  String get prayerAlertOnThisDevice => 'এই ডিভাইসে';
+
+  @override
   String get prayerAlertBack => 'ফিরে যান';
 
   @override

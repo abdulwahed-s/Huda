@@ -2207,6 +2207,7 @@
   "prayerAlertSummaryMixed": "Différent pour certaines prières",
   "prayerAlertStopAdhan": "Arrêter l'adhan",
   "prayerAlertEndFocus": "Terminer la concentration",
+  "prayerAlertOnThisDevice": "Sur cet appareil",
   "prayerAlertBack": "Retour",
   "prayerAlertClose": "Fermer",
   "prayerAlertNeedsCompanion": "Nécessite que Huda tourne en arrière-plan",

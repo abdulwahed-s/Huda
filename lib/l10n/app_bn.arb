@@ -2309,6 +2309,7 @@
   "prayerAlertSummaryMixed": "কিছু নামাজের জন্য আলাদা",
   "prayerAlertStopAdhan": "আজান থামান",
   "prayerAlertEndFocus": "ফোকাস শেষ করুন",
+  "prayerAlertOnThisDevice": "এই ডিভাইসে",
   "prayerAlertBack": "ফিরে যান",
   "prayerAlertClose": "বন্ধ করুন",
   "prayerAlertNeedsCompanion": "হুদাকে ব্যাকগ্রাউন্ডে চালু থাকতে হবে",

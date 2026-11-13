@@ -6208,6 +6208,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get prayerAlertEndFocus => 'Tamatkan Fokus';
 
   @override
+  String get prayerAlertOnThisDevice => 'Pada peranti ini';
+
+  @override
   String get prayerAlertBack => 'Kembali';
 
   @override

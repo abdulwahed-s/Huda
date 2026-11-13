@@ -4,8 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:huda/core/notifications/notification_taps.dart';
 import 'package:huda/core/routes/page_router.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
+import 'package:huda/core/services/mac_prayer_menu_bridge.dart';
+import 'package:huda/core/services/linux_prayer_tray_bridge.dart';
+import 'package:huda/core/services/linux_prayer_notification_gateway.dart';
+import 'package:huda/core/services/mac_prayer_bridge.dart';
+import 'package:huda/core/services/ios_prayer_bridge.dart';
+import 'package:huda/core/services/audio_coordinator.dart';
+import 'package:huda/core/services/windows_prayer_taskbar_bridge.dart';
+import 'package:huda/core/services/desktop_prayer_settings_navigation.dart';
+import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/prayer_location_repository.dart';
 import 'package:huda/core/services/prayer_location_monitor.dart';
@@ -24,6 +34,8 @@ import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
 import 'package:huda/cubit/audiobook_player/audiobook_player_cubit.dart';
 import 'package:huda/cubit/audiobook_player/audiobook_bar_cubit.dart';
 import 'package:huda/core/services/audio_progress_service.dart';
+import 'package:huda/core/services/android_prayer_notification_state_service.dart';
+import 'package:huda_notifications/huda_notifications.dart';
 import 'package:huda/data/services/offline_audiobooks_service.dart';
 import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
@@ -53,6 +65,77 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     WidgetDeepLinkHandler.start();
+    unawaited(NotificationTaps.install());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && HudaPrayerNotifications.isSupported) {
+        unawaited(
+          getIt<AndroidPrayerNotificationStateService>()
+              .initialize()
+              .catchError((Object error) {
+                debugPrint(
+                  'Android prayer state initialization failed: $error',
+                );
+              }),
+        );
+      }
+    });
+    unawaited(MacPrayerMenuBridge.install(openSettings: _openPrayerSettings));
+    unawaited(LinuxPrayerTrayBridge.install(openSettings: _openPrayerSettings));
+    unawaited(
+      LinuxPrayerNotificationGateway.install(
+        getIt<AudioCoordinator>(),
+      ).catchError((Object error) {
+        debugPrint('Linux prayer experience initialization failed: $error');
+      }),
+    );
+    unawaited(
+      IOSPrayerBridge.install(
+        getIt<AudioCoordinator>(),
+        openPrayerTimes: () => _openPrayerPage(openSettings: false),
+      ).catchError((Object error) {
+        debugPrint('iOS prayer service initialization failed: $error');
+      }),
+    );
+    unawaited(
+      MacPrayerBridge.install(getIt<AudioCoordinator>()).catchError((
+        Object error,
+      ) {
+        debugPrint('macOS prayer service initialization failed: $error');
+      }),
+    );
+    unawaited(
+      WindowsPrayerTaskbarBridge.install(
+        openSettings: _openPrayerSettings,
+        openPrayerPage: () => _openPrayerPage(openSettings: false),
+        openQuran: () => _openDesktopPage(AppRoute.homeQuran),
+        openAthkar: () => _openDesktopPage(AppRoute.athkar),
+        openHuda: () => _openDesktopPage(AppRoute.home),
+      ),
+    );
+  }
+
+  Future<void> _openPrayerSettings() async {
+    if (DesktopPrayerSettingsNavigation.openOnCurrentPage()) return;
+    await _openPrayerPage(openSettings: true);
+  }
+
+  Future<void> _openPrayerPage({required bool openSettings}) async {
+    await _openDesktopPage(AppRoute.prayerTimes, arguments: openSettings);
+  }
+
+  Future<void> _openDesktopPage(String page, {Object? arguments}) async {
+    final navigator = App.navigatorKey.currentState;
+    if (navigator == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(_openDesktopPage(page, arguments: arguments));
+      });
+      return;
+    }
+    navigator.pushNamedAndRemoveUntil(
+      page,
+      (route) => page != AppRoute.home && route.isFirst,
+      arguments: arguments,
+    );
   }
 
   @override
@@ -149,6 +232,91 @@ class _AppState extends State<App> {
                       onGenerateRoute: PageRouter().generateRoute,
                       builder: (context, child) {
                         QuickActionsService.updateLocalizedLabels(context);
+                        final menuL10n = AppLocalizations.of(context);
+                        if (menuL10n != null) {
+                          final numerals = getIt<CacheHelper>().getDataString(
+                            key: 'prayerWidgetNumerals',
+                          );
+                          final clockMode = getIt<CacheHelper>().getDataString(
+                            key: 'prayer_widget_time_format',
+                          );
+                          unawaited(
+                            LinuxPrayerTrayBridge.syncPresentation(
+                              menuL10n,
+                              themeMode: themeState.themeMode,
+                              colorTheme: themeState.colorTheme,
+                              fontFamily: themeState.fontFamily,
+                              textScale: themeState.textScaleFactor,
+                              use24HourClock:
+                                  clockMode == '24h' ||
+                                  (clockMode != '12h' &&
+                                      MediaQuery.of(
+                                        context,
+                                      ).alwaysUse24HourFormat),
+                              numerals:
+                                  numerals == 'arabic' ||
+                                      (numerals == 'auto' &&
+                                          menuL10n.localeName.startsWith('ar'))
+                                  ? 'arabic'
+                                  : 'western',
+                            ),
+                          );
+                          unawaited(
+                            IOSPrayerBridge.syncPresentation(
+                              menuL10n,
+                            ).catchError((Object error) {
+                              debugPrint(
+                                'iOS prayer presentation failed: $error',
+                              );
+                            }),
+                          );
+                          unawaited(
+                            WindowsPrayerTaskbarBridge.syncPresentation(
+                              menuL10n,
+                              primaryColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                              themeMode: themeState.themeMode,
+                              fontFamily: themeState.fontFamily,
+                              use24HourClock: MediaQuery.of(
+                                context,
+                              ).alwaysUse24HourFormat,
+                            ),
+                          );
+                          unawaited(
+                            MacPrayerMenuBridge.syncPresentation(
+                              menuL10n,
+                              primaryColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                            ),
+                          );
+                          unawaited(
+                            MacPrayerBridge.syncPresentation(
+                              menuL10n,
+                              primaryColor: Theme.of(
+                                context,
+                              ).colorScheme.primary.toARGB32(),
+                              themeMode: themeState.themeMode.name,
+                              use24HourClock: MediaQuery.of(
+                                context,
+                              ).alwaysUse24HourFormat,
+                              fontFamily: themeState.fontFamily,
+                              textScale: themeState.textScaleFactor,
+                              numerals:
+                                  getIt<CacheHelper>().getDataString(
+                                        key: 'prayerWidgetNumerals',
+                                      ) ==
+                                      'arabic'
+                                  ? 'eastern'
+                                  : 'western',
+                            ).catchError((Object error) {
+                              debugPrint(
+                                'macOS prayer presentation failed: $error',
+                              );
+                            }),
+                          );
+                        }
                         return MediaQuery(
                           data: MediaQuery.of(context).copyWith(
                             textScaler: TextScaler.linear(

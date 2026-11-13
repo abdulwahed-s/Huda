@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/cache/quran_content_store.dart';
+import 'package:huda/core/services/android_prayer_countdown.dart';
+import 'package:huda/core/notifications/notification_orchestrator.dart';
 import 'package:huda/core/services/app_lifecycle_manager.dart';
 import 'package:huda/core/services/background_task.dart';
-import 'package:huda/core/services/calendar_notification_service.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
-import 'package:huda/core/services/notification_boot_service.dart';
 import 'package:huda/core/services/notification_services.dart';
-import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:huda/core/services/prayer_notification_background_scheduler.dart';
 import 'package:huda/core/services/prayer_location_repository.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
+import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/core/services/service_initialization_tracker.dart';
 import 'package:huda/core/services/service_locator.dart';
@@ -69,24 +69,27 @@ Future<void> initializeNonCriticalServicesAsync() async {
 }
 
 Future<void> _initializeWidgetServices() async {
-  if (!PlatformUtils.isMobile) return;
+  if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) return;
 
   final tracker = ServiceInitializationTracker();
   await QuranWidgetService.initialize();
+  if (PlatformUtils.isMacOS) {
+    await PrayerWidgetService.initialize();
+  }
   tracker.markServiceReady('widgets');
 }
 
 Future<void> _initializeNotificationServices() async {
-  try {
-    await CalendarNotificationService().init();
-  } catch (error) {
-    debugPrint('Calendar notification initialization failed: $error');
+  final reminders = NotificationOrchestrator.shared;
+  Future<void> syncReminders(String reason) async {
+    try {
+      await reminders.syncNow(reason);
+    } catch (error) {
+      debugPrint('Reminder notification sync failed: $error');
+    }
   }
-  try {
-    await NotificationBootService.rescheduleAfterBoot();
-  } catch (error) {
-    debugPrint('Reminder notification restoration failed: $error');
-  }
+
+  await syncReminders('app-startup');
   final result = await getIt<PrayerNotificationScheduler>().reconcile(
     reason: 'app-startup',
   );
@@ -94,13 +97,23 @@ Future<void> _initializeNotificationServices() async {
     'Prayer notification startup status: ${result.status.name}, '
     'coverage: ${result.coverageUntil}',
   );
+  if (PlatformUtils.isMacOS) {
+    // macOS discards reminders while its pending queue is full. The prayer
+    // reconcile above releases capacity, so restore anything it dropped.
+    await syncReminders('app-startup-after-prayers');
+  }
 }
 
 Future<void> _initializePrayerServices() async {
   final tracker = ServiceInitializationTracker();
-  if (PlatformUtils.isMobile) {
-    await getIt<PersistentPrayerCountdownService>().initialize();
-    await getIt<PersistentPrayerCountdownService>().startIfEnabled();
+  if (PlatformUtils.isAndroid) {
+    // Native code keeps the countdown alive by itself; this only repairs it,
+    // for example after Huda was force-stopped and its alarms were dropped.
+    try {
+      await AndroidPrayerCountdown.refresh();
+    } catch (error) {
+      debugPrint('Prayer countdown refresh failed: $error');
+    }
   }
   tracker.markServiceReady('prayer');
 }

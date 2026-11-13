@@ -11172,6 +11172,12 @@ abstract class AppLocalizations {
   /// **'End Focus'**
   String get prayerAlertEndFocus;
 
+  /// No description provided for @prayerAlertOnThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'On this device'**
+  String get prayerAlertOnThisDevice;
+
   /// No description provided for @prayerAlertBack.
   ///
   /// In en, this message translates to:

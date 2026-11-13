@@ -6281,6 +6281,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prayerAlertEndFocus => 'Fokus beenden';
 
   @override
+  String get prayerAlertOnThisDevice => 'Auf diesem Gerät';
+
+  @override
   String get prayerAlertBack => 'Zurück';
 
   @override

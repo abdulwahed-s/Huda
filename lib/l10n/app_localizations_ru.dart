@@ -6231,6 +6231,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get prayerAlertEndFocus => 'Завершить фокус';
 
   @override
+  String get prayerAlertOnThisDevice => 'На этом устройстве';
+
+  @override
   String get prayerAlertBack => 'Назад';
 
   @override

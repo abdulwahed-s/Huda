@@ -116,7 +116,7 @@ class HomeFeatureCatalog {
           svgAsset: 'assets/images/qiblahicon.svg.vec',
           onTap: () => route(AppRoute.qiblah),
         ),
-      if (!kIsWeb && !PlatformUtils.isLinux)
+      if (!kIsWeb)
         HomeFeatureDefinition(
           id: HomeFeatureId.notifications,
           title: l10n.notifications,
@@ -147,7 +147,7 @@ class HomeFeatureCatalog {
         icon: Icons.settings,
         onTap: () => route(AppRoute.settings),
       ),
-      if (PlatformUtils.isMobile)
+      if (PlatformUtils.isMobile || PlatformUtils.isMacOS)
         HomeFeatureDefinition(
           id: HomeFeatureId.widgetManagement,
           title: l10n.widgetManagement,

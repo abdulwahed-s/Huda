@@ -6185,6 +6185,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerAlertEndFocus => 'فوکس ختم کریں';
 
   @override
+  String get prayerAlertOnThisDevice => 'اس آلے پر';
+
+  @override
   String get prayerAlertBack => 'واپس';
 
   @override

@@ -262,7 +262,8 @@ class PageRouter {
       case AppRoute.prayerTimes:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, animation, _) => const PrayerTimes(),
+          pageBuilder: (_, animation, _) =>
+              PrayerTimes(openSettingsOnLoad: settings.arguments == true),
           transitionsBuilder: (_, animation, _, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;

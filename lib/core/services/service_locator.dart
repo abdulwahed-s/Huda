@@ -11,8 +11,6 @@ import 'package:huda/core/services/quran_radio_progress_service.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/data/services/offline_audiobooks_service.dart';
 import 'package:huda/data/services/audiobook_download_service.dart';
-import 'package:huda/core/services/prayer_countdown_service.dart';
-import 'package:huda/core/services/persistent_prayer_countdown_service.dart';
 import 'package:huda/cubit/miqaat_lock/miqaat_lock_cubit.dart';
 import 'package:huda/data/repository/miqaat_lock_repository.dart';
 import 'package:get_it/get_it.dart';
@@ -29,6 +27,9 @@ import 'package:huda/core/services/prayer_location_repository.dart';
 import 'package:huda/core/services/prayer_location_monitor.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/data/repository/chat_history_repository.dart';
+import 'package:huda/core/services/android_prayer_experience_service.dart';
+import 'package:huda/core/services/android_prayer_notification_state_service.dart';
+import 'package:huda_notifications/huda_notifications.dart';
 
 final getIt = GetIt.instance;
 void setupServiceLocator() {
@@ -56,6 +57,26 @@ void setupServiceLocator() {
       locationRepository: getIt<PrayerLocationRepository>(),
     ),
   );
+  getIt.registerLazySingleton<AndroidPrayerExperienceService>(
+    () => AndroidPrayerExperienceService(
+      cache: getIt<CacheHelper>(),
+      api: NotificationServices.androidPrayerGateway.api,
+      onEligibilityChanged: () async {
+        await getIt<PrayerNotificationScheduler>().reconcile(
+          reason: 'android-prayer-eligibility',
+        );
+      },
+    ),
+  );
+  getIt.registerLazySingleton<AndroidPrayerNotificationStateService>(
+    () => AndroidPrayerNotificationStateService(
+      platform: HudaPrayerNotifications(
+        host: NotificationServices.androidPrayerGateway.api,
+      ),
+      settings: getIt<AndroidPrayerExperienceService>(),
+      audioCoordinator: getIt<AudioCoordinator>(),
+    ),
+  );
   getIt.registerSingleton<Dio>(Dio());
   getIt.registerSingleton<DownloadService>(DownloadService());
   getIt.registerSingleton<ReadingPositionService>(ReadingPositionService());
@@ -71,10 +92,6 @@ void setupServiceLocator() {
   getIt.registerSingleton<AudiobookDownloadService>(AudiobookDownloadService());
   getIt.registerSingleton<BookmarkService>(
     BookmarkService(cacheHelper: getIt<CacheHelper>()),
-  );
-  getIt.registerSingleton<PrayerCountdownService>(PrayerCountdownService());
-  getIt.registerSingleton<PersistentPrayerCountdownService>(
-    PersistentPrayerCountdownService(),
   );
 
   getIt.registerSingleton<SpeechService>(SpeechService());

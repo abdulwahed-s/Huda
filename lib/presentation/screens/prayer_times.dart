@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/core/services/geolocator.dart';
+import 'package:huda/core/services/desktop_prayer_settings_navigation.dart';
 import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
@@ -12,8 +13,14 @@ import 'package:huda/data/models/countdown_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/notifications/notification_access_controller.dart';
 import 'package:huda/presentation/widgets/prayer_times/manual_location_search_dialog.dart';
+import 'package:huda/presentation/widgets/prayer_times/mac_prayer_menu_card.dart';
+import 'package:huda/presentation/widgets/prayer_times/linux_prayer_tray_card.dart';
+import 'package:huda/presentation/widgets/prayer_times/windows_prayer_taskbar_card.dart';
 import 'package:huda/presentation/widgets/prayer_times/persistent_prayer_countdown_control_widget.dart';
-import 'package:huda/presentation/widgets/prayer_times/prayer_alert_status_card.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_alerts_ready_card.dart';
+import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_sheet.dart';
+import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_summary_card.dart';
+import 'package:huda/core/services/prayer_alerts/prayer_alerts.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_attention_items.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_calendar_share_sheet.dart';
@@ -24,10 +31,11 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_time_adjustment_bo
 import 'package:huda/presentation/widgets/prayer_times/prayer_timeline_card.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_times_loading_widget.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_travel_settings_card.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class PrayerTimes extends StatefulWidget {
-  const PrayerTimes({super.key});
+  const PrayerTimes({super.key, this.openSettingsOnLoad = false});
+
+  final bool openSettingsOnLoad;
 
   @override
   State<PrayerTimes> createState() => _PrayerTimesState();
@@ -47,10 +55,25 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
 
   bool _alertsDeclined = false;
 
+  bool _pendingMenuSettings = false;
+  late final bool Function() _openMenuSettingsAction;
+
   @override
   void initState() {
     super.initState();
+    _openMenuSettingsAction = () {
+      if (!mounted || ModalRoute.of(context)?.isCurrent != true) return false;
+      if (_prayerTimesCubit.state is PrayerTimesLoaded) {
+        showPrayerTimeAdjustmentSheet(context);
+      } else {
+        _pendingMenuSettings = true;
+      }
+      return true;
+    };
+    DesktopPrayerSettingsNavigation.register(_openMenuSettingsAction);
+    _pendingMenuSettings = widget.openSettingsOnLoad;
     _prayerTimesCubit = context.read<PrayerTimesCubit>();
+    PrayerAlerts.shared.onApplied = _prayerTimesCubit.refreshNotificationSchedule;
     _access = NotificationAccessController(
       cubit: context.read<NotificationsCubit>(),
       onAccessGained: _prayerTimesCubit.refreshNotificationSchedule,
@@ -73,6 +96,8 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     if (mounted) setState(() {});
   }
 
+  /// Alerts are set up first, before the times, each step explained in the
+  /// checklist. Steps answered here also settle the ready card.
   PrayerSetupAlerts get _alertsStatus {
     final access = _access.access;
     if (access?.notificationsEnabled ?? false) return PrayerSetupAlerts.granted;
@@ -141,6 +166,7 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    DesktopPrayerSettingsNavigation.unregister(_openMenuSettingsAction);
     WidgetsBinding.instance.removeObserver(this);
     _access
       ..removeListener(_onAccessChanged)
@@ -159,7 +185,6 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     final state = _prayerTimesCubit.state;
     if (state is PrayerTimesLoaded) {
       unawaited(_prayerTimesCubit.refreshNotificationSchedule());
-      if (!state.provisional) unawaited(_askAlertsOnce());
       return;
     }
     if (state is PrayerTimesLoading ||
@@ -174,16 +199,6 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     await _prayerTimesCubit.loadPrayerTimes();
   }
 
-  Future<void> _askAlertsOnce() async {
-    if (_flag(_alertsAnsweredKey) ||
-        _alertsStatus != PrayerSetupAlerts.pending ||
-        !(PlatformUtils.isAndroid || PlatformUtils.isIOS)) {
-      return;
-    }
-    await _access.requestNotificationPrompt(context);
-    await _setFlag(_alertsAnsweredKey);
-  }
-
   Future<void> _runSetupAction(Future<void> Function() action) async {
     if (_setupBusy) return;
     setState(() => _setupBusy = true);
@@ -194,10 +209,11 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     }
   }
 
+  // The checklist card is the explanation, so the system prompt comes next.
   Future<void> _allowAlerts() => _runSetupAction(() async {
-    final granted = await _access.requestNotificationPrompt(context);
+    await _access.requestNotifications(context, explain: false);
     if (!mounted) return;
-    if (granted) {
+    if (_access.access?.notificationsEnabled ?? false) {
       await _setFlag(_alertsAnsweredKey);
     } else {
       setState(() => _alertsDeclined = true);
@@ -308,8 +324,17 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     );
   }
 
-  Widget _buildStateContent(BuildContext context, PrayerTimesState state) {
+  Widget _buildStateContent(BuildContext context, PrayerTimesState state) =>
+      _buildPrayerContent(context, state);
+
+  Widget _buildPrayerContent(BuildContext context, PrayerTimesState state) {
     if (state is PrayerTimesLoaded) {
+      if (_pendingMenuSettings) {
+        _pendingMenuSettings = false;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) showPrayerTimeAdjustmentSheet(context);
+        });
+      }
       return _PrayerLoadedView(
         state: state,
         cubit: _prayerTimesCubit,
@@ -329,9 +354,7 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
       canOpenSettings: !PlatformUtils.isLinux,
       busy: _setupBusy || locating,
       onAllowAlerts: _allowAlerts,
-      onOpenAlertSettings: () async {
-        await openAppSettings();
-      },
+      onOpenAlertSettings: _access.openNotificationSettings,
       onContinueWithoutAlerts: () => _setFlag(_alertsAnsweredKey),
       onAllowReliability: _allowReliability,
       onUseExactAlarms: _useExactAlarms,
@@ -396,8 +419,7 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       } else {
         await Geolocator.openAppSettings();
       }
-    } catch (_) {
-    }
+    } catch (_) {}
   }
 
   @override
@@ -410,13 +432,9 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
     final items = buildPrayerAttentionItems(
       l10n: l10n,
       state: state,
-      access: access.access,
       callbacks: PrayerAttentionCallbacks(
         retryWorkflow: cubit.retryPrayerUpdates,
         openWorkflowSettings: _openWorkflowSettings,
-        requestBatteryOptimization: () =>
-            access.requestBatteryOptimization(context),
-        requestExactAlarms: () => access.requestExactAlarms(context),
       ),
     );
     final alertStatus = buildPrayerAlertStatus(
@@ -427,6 +445,16 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       formatDate: (value) =>
           materialL10n.formatMediumDate(value.isUtc ? value.toLocal() : value),
       onEnableNotifications: () => access.requestNotifications(context),
+      // The ready card asks for it, with the explanation; don't repeat it.
+      notificationsAskedElsewhere: PrayerAlertsReadyCard.showing(
+        cubit.cacheHelper,
+        buildPrayerReadinessItems(
+          l10n: l10n,
+          inputs: PrayerReadinessInputs(access: access.access),
+          actions: _noReadinessActions,
+        ),
+        PrayerReadinessKind.notifications,
+      ),
       onRetry: cubit.retryNotificationSchedule,
     );
     final canShare = !state.provisional && cubit.verifiedExportSnapshot != null;
@@ -452,18 +480,20 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
           timeZoneId: cubit.prayerTimeZoneId,
           onRefreshLocation: cubit.refreshLocationAndPrayerTimes,
         ),
+        if (!state.provisional)
+          PrayerAlertsReadyCard(access: access, cache: cubit.cacheHelper),
         PrayerTimelineCard(
           state: state,
           now: _now,
           onAdjust: () => showPrayerTimeAdjustmentSheet(context),
         ),
-        AnimatedSize(
-          duration: const Duration(milliseconds: 260),
-          curve: Curves.easeOutCubic,
-          alignment: Alignment.topCenter,
-          child: alertStatus == null
-              ? const SizedBox(width: double.infinity)
-              : PrayerAlertStatusCard(status: alertStatus),
+        PrayerAlertSummaryCard(
+          status: alertStatus,
+          onOpen: ([prayer]) => showPrayerAlertSheet(
+            context,
+            prayer: prayer,
+            nextPrayer: _countdown?.prayer?.name,
+          ),
         ),
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(4, 12, 4, 10),
@@ -482,8 +512,26 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
             onTap: () => showPrayerCalendarShareSheet(context),
           ),
         PrayerTravelSettingsCard(locationMode: cubit.locationMode),
-        if (PlatformUtils.isAndroid)
-          const PersistentPrayerCountdownControlWidget(),
+        if (PlatformUtils.isMacOS ||
+            PlatformUtils.isLinux ||
+            PlatformUtils.isWindows ||
+            PlatformUtils.isAndroid) ...[
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(4, 12, 4, 10),
+            child: Text(
+              l10n.prayerAlertOnThisDevice,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: PrayerPalette.of(context).muted,
+              ),
+            ),
+          ),
+          if (PlatformUtils.isMacOS) const MacPrayerMenuCard(),
+          if (PlatformUtils.isLinux) const LinuxPrayerTrayCard(),
+          if (PlatformUtils.isWindows) const WindowsPrayerTaskbarCard(),
+          if (PlatformUtils.isAndroid)
+            const PersistentPrayerCountdownControlWidget(),
+        ],
       ],
     );
   }
@@ -552,3 +600,21 @@ class _PrayerStateCard extends StatelessWidget {
     );
   }
 }
+
+Future<void> _noAction() async {}
+
+/// Only used to ask whether a readiness step is showing.
+const _noReadinessActions = PrayerReadinessActions(
+  requestNotifications: _noAction,
+  openNotificationSettings: _noAction,
+  openPrayerChannelSettings: _noAction,
+  requestExactAlarms: _noAction,
+  requestBatteryOptimization: _noAction,
+  requestAlarms: _noAction,
+  openAppleSettings: _noAction,
+  openMacNotificationSettings: _noAction,
+  openMacLoginSettings: _noAction,
+  startWithWindows: _noAction,
+  openWindowsStartupSettings: _noAction,
+  startLinuxAtLogin: _noAction,
+);

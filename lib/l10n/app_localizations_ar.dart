@@ -6126,6 +6126,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get prayerAlertEndFocus => 'إنهاء التركيز';
 
   @override
+  String get prayerAlertOnThisDevice => 'على هذا الجهاز';
+
+  @override
   String get prayerAlertBack => 'رجوع';
 
   @override

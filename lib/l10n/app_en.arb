@@ -5943,6 +5943,7 @@
   "prayerAlertSummaryMixed": "Different for some prayers",
   "prayerAlertStopAdhan": "Stop adhan",
   "prayerAlertEndFocus": "End Focus",
+  "prayerAlertOnThisDevice": "On this device",
   "prayerAlertBack": "Back",
   "prayerAlertClose": "Close",
   "prayerAlertNeedsCompanion": "Needs Huda running in the background",

@@ -5,7 +5,8 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:huda/core/cache/cache_helper.dart';
-import 'package:huda/core/services/notification_page_helper.dart';
+import 'package:huda/core/notifications/notification_orchestrator.dart';
+import 'package:huda/core/notifications/reminder_model.dart';
 import 'package:huda/core/services/prayer_notification_background_scheduler.dart';
 import 'package:huda/core/services/prayer_notification_models.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
@@ -184,11 +185,10 @@ Future<bool> _renewAthkar() async {
   final cache = CacheHelper();
   await cache.init();
   if (cache.getData(key: 'randomAthkar') != true) return true;
-
-  final configured = cache.getData(key: 'randomAthkarFrequency');
-  final frequency = configured is int ? configured : 60;
-  final helper = NotificationPageHelper();
-  await helper.init();
-  await helper.scheduleRandomAthkar(true, frequency, fromBackground: true);
+  // An incomplete sync registers its own retry task.
+  await NotificationOrchestrator(cache: cache).syncNow(
+    'athkar-background-renewal',
+    categories: {ReminderCategory.randomAthkar},
+  );
   return true;
 }

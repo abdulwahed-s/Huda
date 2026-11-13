@@ -1,28 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:huda/core/services/notification_page_helper.dart';
+import 'package:huda/core/notifications/notification_orchestrator.dart';
 import 'package:huda/core/services/service_locator.dart';
-import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
-import 'package:huda/core/services/notification_capacity_policy.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
+import 'package:huda/core/services/android_prayer_notification_state_service.dart';
+import 'package:huda_notifications/huda_notifications.dart';
 
 class AppLifecycleManager extends WidgetsBindingObserver {
   static final AppLifecycleManager _instance = AppLifecycleManager._internal();
   factory AppLifecycleManager() => _instance;
   AppLifecycleManager._internal();
 
-  final NotificationPageHelper _notificationHelper = NotificationPageHelper();
+  Future<void>? _resumeCheck;
+  bool _resumeCheckRequested = false;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.resumed) {
-      _checkAndResumeScheduling();
+      _requestResumeCheck();
     }
   }
 
+  /// Desktop windows resume on every focus change. Repeated resumes during a
+  /// check run one more check afterwards instead of queueing one each.
+  void _requestResumeCheck() {
+    if (_resumeCheck != null) {
+      _resumeCheckRequested = true;
+      return;
+    }
+    _resumeCheck = () async {
+      try {
+        do {
+          _resumeCheckRequested = false;
+          await _checkAndResumeScheduling();
+        } while (_resumeCheckRequested);
+      } finally {
+        _resumeCheck = null;
+      }
+    }();
+  }
+
   Future<void> _checkAndResumeScheduling() async {
+    try {
+      if (HudaPrayerNotifications.isSupported &&
+          getIt.isRegistered<AndroidPrayerNotificationStateService>()) {
+        await getIt<AndroidPrayerNotificationStateService>().initialize();
+      }
+    } catch (error) {
+      debugPrint('Android prayer state refresh failed: $error');
+    }
     try {
       await getIt<HijriCalendarService>().refreshAutomaticAdjustmentIfDue();
     } catch (error) {
@@ -30,45 +58,9 @@ class AppLifecycleManager extends WidgetsBindingObserver {
     }
 
     try {
-      debugPrint(
-        '📱 App resumed - checking for interrupted scheduling and coverage',
-      );
-
-      final cacheHelper = getIt<CacheHelper>();
-      final randomAthkarEnabled =
-          cacheHelper.getData(key: 'randomAthkar') ?? false;
-
-      final pending = await _notificationHelper.getPendingNotifications();
-      final randomAthkarPending = pending
-          .where((n) => n.id >= 1100 && n.id < 1550)
-          .length;
-      final randomAthkarLimit =
-          NotificationCapacityPolicy.current.randomAthkarLimit;
-      final renewalThreshold = randomAthkarLimit == 0
-          ? 0
-          : (randomAthkarLimit / 4).ceil().clamp(1, randomAthkarLimit);
-
-      debugPrint(
-        '📊 Random athkar notifications remaining: $randomAthkarPending',
-      );
-
-      if (randomAthkarEnabled &&
-          randomAthkarLimit > 0 &&
-          randomAthkarPending < renewalThreshold) {
-        debugPrint(
-          '⚠️ Low notification coverage detected - triggering renewal',
-        );
-
-        final configured = cacheHelper.getData(key: 'randomAthkarFrequency');
-        final frequency = configured is int ? configured : 60;
-        await _notificationHelper.scheduleRandomAthkar(true, frequency);
-
-        debugPrint('✅ App lifecycle notification renewal completed');
-      } else {
-        debugPrint('✅ Notification coverage sufficient - no renewal needed');
-      }
-    } catch (e) {
-      debugPrint('❌ Error in app lifecycle notification check: $e');
+      await NotificationOrchestrator.shared.requestSync('app-resumed');
+    } catch (error) {
+      debugPrint('Reminder resume sync failed: $error');
     }
 
     try {
