@@ -2776,6 +2776,18 @@ class AppLocalizationsEs extends AppLocalizations {
       'Encuentra el widget \'Huda\' y añádelo a tu pantalla de inicio';
 
   @override
+  String get macWidgetStep1 =>
+      'Haz clic con Control en el escritorio y elige Editar widgets.';
+
+  @override
+  String get macWidgetStep2 =>
+      'Busca Huda y elige Versículo del Corán u Horarios de oración.';
+
+  @override
+  String get macWidgetStep3 =>
+      'Haz clic en un widget para añadirlo o arrástralo al escritorio.';
+
+  @override
   String get sahurAlarmTitle => 'Alarma de Suhur';
 
   @override
@@ -5821,6 +5833,17 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'Se oculta el cierre normal hasta que termine el temporizador. La salida de emergencia, Escape y Salir de Huda siguen disponibles. Las vistas previas permiten salir de inmediato.';
+
+  @override
+  String get samsungLockWidgetsTitle => 'Widgets de bloqueo de Samsung';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'En Samsung One UI 8, mantén pulsada la pantalla de bloqueo, toca Añadir widgets y selecciona Huda. Elige una cuenta atrás de oración o un versículo del Corán y toca Hecho.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'El espacio en la pantalla de bloqueo es limitado. Elige los widgets que prefieras.';
 
   @override
   String get testNotificationTitle => 'Notificación de prueba';

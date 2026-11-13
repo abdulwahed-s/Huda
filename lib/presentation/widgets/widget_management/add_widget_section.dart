@@ -95,7 +95,9 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
               ),
               SizedBox(width: 10.w),
               Text(
-                AppLocalizations.of(context)!.addWidgetToHomeScreen,
+                Platform.isMacOS
+                    ? AppLocalizations.of(context)!.addWidget
+                    : AppLocalizations.of(context)!.addWidgetToHomeScreen,
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
             ],
@@ -123,6 +125,8 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
             _buildAndroidInstructions(context)
           else if (Platform.isIOS)
             _buildIOSInstructions(context)
+          else if (Platform.isMacOS)
+            _buildMacInstructions(context)
           else
             _buildGenericInstructions(context),
         ],
@@ -201,6 +205,16 @@ class _AddWidgetSectionState extends State<AddWidgetSection> {
         AppLocalizations.of(context)!.iosWidgetStep3,
         AppLocalizations.of(context)!.iosWidgetStep4,
       ],
+    );
+  }
+
+  Widget _buildMacInstructions(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return _buildInstructionsCard(
+      context,
+      icon: Icons.desktop_mac_rounded,
+      iconColor: Theme.of(context).colorScheme.primary,
+      steps: [l10n.macWidgetStep1, l10n.macWidgetStep2, l10n.macWidgetStep3],
     );
   }
 

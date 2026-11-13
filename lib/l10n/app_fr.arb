@@ -906,6 +906,9 @@
   "iosWidgetStep4": "Sélectionnez une taille de widget et appuyez sur 'Ajouter le Widget'",
   "genericWidgetStep1": "Appuyez longuement sur votre écran d'accueil et cherchez 'Widgets'",
   "genericWidgetStep2": "Trouvez le widget 'Huda' et ajoutez-le à votre écran d'accueil",
+  "macWidgetStep1": "Cliquez sur le bureau avec la touche Contrôle enfoncée, puis choisissez Modifier les widgets.",
+  "macWidgetStep2": "Recherchez Huda, puis choisissez Verset du Coran ou Heures de prière.",
+  "macWidgetStep3": "Cliquez sur un widget pour l’ajouter, ou faites-le glisser sur le bureau.",
   "sahurAlarmTitle": "Alarme du Souhour",
   "@sahurAlarmTitle": {
     "description": "Title for Sahur Alarm section"
@@ -2075,6 +2078,9 @@
   "linuxPrayerTrayUpdateStep": "Mettez Huda à jour vers une version compatible avec votre version de GNOME avant de réinstaller le panneau.",
   "linuxPrayerExperienceQuitInfo": "Fermer la fenêtre maintient les rappels en arrière-plan. Quitter Huda arrête les rappels, l’adhan et Focus jusqu’à sa réouverture.",
   "linuxPrayerExperienceCommitmentInfo": "La fermeture normale est masquée jusqu’à la fin du minuteur. La sortie d’urgence, Échap et Quitter Huda restent disponibles. Les aperçus peuvent toujours être fermés immédiatement.",
+  "samsungLockWidgetsTitle": "Widgets sur l’écran verrouillé Samsung",
+  "samsungLockWidgetsInstructions": "Avec Samsung One UI 8, appuyez longuement sur l’écran verrouillé, touchez Ajouter des widgets et choisissez Huda. Sélectionnez un compte à rebours de prière ou un verset du Coran, puis touchez Terminé.",
+  "samsungLockWidgetsHint": "L’espace sur l’écran verrouillé est limité. Choisissez les widgets qui vous conviennent.",
   "testNotificationTitle": "Notification de test",
   "testNotificationDescription": "Envoie une notification dans environ 10 secondes par le même chemin que vos rappels. Vous pouvez fermer Huda pendant l’attente.",
   "testNotificationSend": "Envoyer un test",

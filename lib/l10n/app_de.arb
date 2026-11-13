@@ -881,6 +881,9 @@
   "iosWidgetStep4": "Wählen Sie eine Widget-Größe und tippen Sie auf 'Widget hinzufügen'",
   "genericWidgetStep1": "Drücken Sie lange auf Ihren Startbildschirm und suchen Sie nach 'Widgets'",
   "genericWidgetStep2": "Finden Sie das 'Huda'-Widget und fügen Sie es Ihrem Startbildschirm hinzu",
+  "macWidgetStep1": "Klicken Sie mit gedrückter Ctrl-Taste auf den Schreibtisch und wählen Sie „Widgets bearbeiten“.",
+  "macWidgetStep2": "Suchen Sie nach Huda und wählen Sie Koranvers oder Gebetszeiten.",
+  "macWidgetStep3": "Klicken Sie auf ein Widget oder ziehen Sie es auf den Schreibtisch.",
   "sahurAlarmTitle": "Sahur-Wecker",
   "@sahurAlarmTitle": {
     "description": "Title for Sahur Alarm section"
@@ -2048,6 +2051,9 @@
   "linuxPrayerTrayUpdateStep": "Aktualisiere Huda auf eine Version, die deine GNOME-Version unterstützt, bevor du das Panel erneut installierst.",
   "linuxPrayerExperienceQuitInfo": "Fenster schließen lässt Hintergrunderinnerungen laufen. Huda beenden stoppt Erinnerungen, Adhan und Fokus bis zum erneuten Öffnen.",
   "linuxPrayerExperienceCommitmentInfo": "Bis zum Ablauf des Timers ist das normale Schließen ausgeblendet. Notausstieg, Escape und Huda beenden bleiben verfügbar. Vorschauen lassen sich jederzeit sofort schließen.",
+  "samsungLockWidgetsTitle": "Widgets für den Samsung-Sperrbildschirm",
+  "samsungLockWidgetsInstructions": "Halte unter Samsung One UI 8 den Sperrbildschirm gedrückt, tippe auf Widgets hinzufügen und wähle Huda. Wähle einen Gebetscountdown oder Koranvers und tippe dann auf Fertig.",
+  "samsungLockWidgetsHint": "Der Sperrbildschirm bietet wenig Platz. Wähle die Widgets, die zu dir passen.",
   "testNotificationTitle": "Testbenachrichtigung",
   "testNotificationDescription": "Sendet in etwa 10 Sekunden eine Benachrichtigung auf demselben Weg wie deine Erinnerungen. Du kannst Huda in der Zwischenzeit schließen.",
   "testNotificationSend": "Test senden",

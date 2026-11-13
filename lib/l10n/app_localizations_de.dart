@@ -2769,6 +2769,18 @@ class AppLocalizationsDe extends AppLocalizations {
       'Finden Sie das \'Huda\'-Widget und fügen Sie es Ihrem Startbildschirm hinzu';
 
   @override
+  String get macWidgetStep1 =>
+      'Klicken Sie mit gedrückter Ctrl-Taste auf den Schreibtisch und wählen Sie „Widgets bearbeiten“.';
+
+  @override
+  String get macWidgetStep2 =>
+      'Suchen Sie nach Huda und wählen Sie Koranvers oder Gebetszeiten.';
+
+  @override
+  String get macWidgetStep3 =>
+      'Klicken Sie auf ein Widget oder ziehen Sie es auf den Schreibtisch.';
+
+  @override
   String get sahurAlarmTitle => 'Sahur-Wecker';
 
   @override
@@ -5815,6 +5827,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'Bis zum Ablauf des Timers ist das normale Schließen ausgeblendet. Notausstieg, Escape und Huda beenden bleiben verfügbar. Vorschauen lassen sich jederzeit sofort schließen.';
+
+  @override
+  String get samsungLockWidgetsTitle =>
+      'Widgets für den Samsung-Sperrbildschirm';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'Halte unter Samsung One UI 8 den Sperrbildschirm gedrückt, tippe auf Widgets hinzufügen und wähle Huda. Wähle einen Gebetscountdown oder Koranvers und tippe dann auf Fertig.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'Der Sperrbildschirm bietet wenig Platz. Wähle die Widgets, die zu dir passen.';
 
   @override
   String get testNotificationTitle => 'Testbenachrichtigung';

@@ -2721,6 +2721,18 @@ class AppLocalizationsMs extends AppLocalizations {
       'Cari widget \'Huda\' dan tambahkannya ke skrin utama anda';
 
   @override
+  String get macWidgetStep1 =>
+      'Klik desktop sambil menekan Control, kemudian pilih Edit Widgets.';
+
+  @override
+  String get macWidgetStep2 =>
+      'Cari Huda, kemudian pilih Ayat Al-Quran atau Waktu Solat.';
+
+  @override
+  String get macWidgetStep3 =>
+      'Klik widget untuk menambahkannya, atau seret ke desktop.';
+
+  @override
   String get sahurAlarmTitle => 'Penggera Sahur';
 
   @override
@@ -5745,6 +5757,17 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'Tutup biasa disembunyikan sehingga pemasa tamat. Keluar kecemasan, Escape dan Keluar Huda masih tersedia. Pratonton sentiasa boleh ditutup serta-merta.';
+
+  @override
+  String get samsungLockWidgetsTitle => 'Widget skrin kunci Samsung';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'Pada Samsung One UI 8, sentuh dan tahan skrin kunci, ketik Tambah widget dan pilih Huda. Pilih kiraan detik solat atau ayat al-Quran, kemudian ketik Selesai.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'Ruang skrin kunci terhad. Pilih widget yang sesuai untuk anda.';
 
   @override
   String get testNotificationTitle => 'Pemberitahuan ujian';

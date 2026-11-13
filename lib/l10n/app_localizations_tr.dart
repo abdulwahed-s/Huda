@@ -2719,6 +2719,18 @@ class AppLocalizationsTr extends AppLocalizations {
       '\'Huda\' widget\'ını bulun ve ana ekranınıza ekleyin';
 
   @override
+  String get macWidgetStep1 =>
+      'Masaüstüne Control tuşuyla tıklayıp Widget\'ları Düzenle\'yi seçin.';
+
+  @override
+  String get macWidgetStep2 =>
+      'Huda\'yı arayın; Kur\'an Ayeti veya Namaz Vakitleri\'ni seçin.';
+
+  @override
+  String get macWidgetStep3 =>
+      'Eklemek için widget\'a tıklayın veya masaüstüne sürükleyin.';
+
+  @override
   String get sahurAlarmTitle => 'Sahur Alarmı';
 
   @override
@@ -5729,6 +5741,17 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'Zamanlayıcı bitene kadar normal kapatma gizlenir. Acil çıkış, Escape ve Huda’dan çıkış kullanılabilir. Önizlemeler her zaman hemen kapatılabilir.';
+
+  @override
+  String get samsungLockWidgetsTitle => 'Samsung kilit ekranı widgetları';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'Samsung One UI 8’de kilit ekranına basılı tutun, Widget ekle’ye dokunun ve Huda’yı seçin. Namaz geri sayımı veya Kuran ayeti seçip Bitti’ye dokunun.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'Kilit ekranında alan sınırlıdır. Size uygun widgetları seçin.';
 
   @override
   String get testNotificationTitle => 'Test bildirimi';

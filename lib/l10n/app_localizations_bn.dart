@@ -2726,6 +2726,18 @@ class AppLocalizationsBn extends AppLocalizations {
       '\'হুদা\' উইজেট খুঁজুন এবং এটি আপনার হোম স্ক্রিনে যোগ করুন';
 
   @override
+  String get macWidgetStep1 =>
+      'ডেস্কটপে Control চেপে ক্লিক করে Edit Widgets বেছে নিন।';
+
+  @override
+  String get macWidgetStep2 =>
+      'Huda খুঁজে কুরআনের আয়াত বা নামাজের সময় বেছে নিন।';
+
+  @override
+  String get macWidgetStep3 =>
+      'যোগ করতে উইজেটে ক্লিক করুন, অথবা ডেস্কটপে টেনে আনুন।';
+
+  @override
   String get sahurAlarmTitle => 'সাহুর অ্যালার্ম';
 
   @override
@@ -5733,6 +5745,17 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'টাইমার শেষ না হওয়া পর্যন্ত সাধারণ বন্ধ বোতাম লুকানো থাকে। জরুরি প্রস্থান, Escape ও Huda বন্ধ করা চালু থাকে। প্রিভিউ থেকে সবসময় সঙ্গে সঙ্গে বের হওয়া যায়।';
+
+  @override
+  String get samsungLockWidgetsTitle => 'স্যামসাং লক স্ক্রিন উইজেট';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'স্যামসাং One UI 8-এ লক স্ক্রিন চেপে ধরে রাখুন, উইজেট যোগ করুন-এ ট্যাপ করে হুদা বেছে নিন। নামাজের কাউন্টডাউন বা কুরআনের আয়াত বেছে নিয়ে সম্পন্ন-এ ট্যাপ করুন।';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'লক স্ক্রিনে জায়গা সীমিত। আপনার পছন্দের উইজেট বেছে নিন।';
 
   @override
   String get testNotificationTitle => 'পরীক্ষামূলক বিজ্ঞপ্তি';

@@ -994,6 +994,9 @@
   "iosWidgetStep4": "Pilih saiz widget dan ketik 'Tambah Widget'",
   "genericWidgetStep1": "Tekan lama pada skrin utama anda dan cari 'Widget'",
   "genericWidgetStep2": "Cari widget 'Huda' dan tambahkannya ke skrin utama anda",
+  "macWidgetStep1": "Klik desktop sambil menekan Control, kemudian pilih Edit Widgets.",
+  "macWidgetStep2": "Cari Huda, kemudian pilih Ayat Al-Quran atau Waktu Solat.",
+  "macWidgetStep3": "Klik widget untuk menambahkannya, atau seret ke desktop.",
   "sahurAlarmTitle": "Penggera Sahur",
   "@sahurAlarmTitle": {
     "description": "Title for Sahur Alarm section"
@@ -2161,6 +2164,9 @@
   "linuxPrayerTrayUpdateStep": "Kemas kini Huda kepada keluaran yang menyokong versi GNOME anda sebelum memasang semula panel.",
   "linuxPrayerExperienceQuitInfo": "Menutup tetingkap mengekalkan peringatan latar belakang. Keluar Huda menghentikan peringatan, azan dan Fokus sehingga Huda dibuka semula.",
   "linuxPrayerExperienceCommitmentInfo": "Tutup biasa disembunyikan sehingga pemasa tamat. Keluar kecemasan, Escape dan Keluar Huda masih tersedia. Pratonton sentiasa boleh ditutup serta-merta.",
+  "samsungLockWidgetsTitle": "Widget skrin kunci Samsung",
+  "samsungLockWidgetsInstructions": "Pada Samsung One UI 8, sentuh dan tahan skrin kunci, ketik Tambah widget dan pilih Huda. Pilih kiraan detik solat atau ayat al-Quran, kemudian ketik Selesai.",
+  "samsungLockWidgetsHint": "Ruang skrin kunci terhad. Pilih widget yang sesuai untuk anda.",
   "testNotificationTitle": "Pemberitahuan ujian",
   "testNotificationDescription": "Menghantar pemberitahuan dalam kira-kira 10 saat melalui laluan yang sama dengan peringatan anda. Anda boleh menutup Huda semasa menunggu.",
   "testNotificationSend": "Hantar ujian",

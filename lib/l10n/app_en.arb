@@ -2951,6 +2951,18 @@
     "description": "Generic widget step 1"
   },
   "genericWidgetStep2": "Find 'Huda' widget and add it to your home screen",
+  "macWidgetStep1": "Control-click the desktop and choose Edit Widgets.",
+  "macWidgetStep2": "Search for Huda, then choose Quran Verse or Prayer Times.",
+  "macWidgetStep3": "Click a widget to add it, or drag it onto the desktop.",
+  "@macWidgetStep1": {
+    "description": "macOS widget gallery step 1"
+  },
+  "@macWidgetStep2": {
+    "description": "macOS widget gallery step 2"
+  },
+  "@macWidgetStep3": {
+    "description": "macOS widget gallery step 3"
+  },
   "@genericWidgetStep2": {
     "description": "Generic widget step 2"
   },
@@ -5640,16 +5652,7 @@
   "macPrayerVerse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
   "iosPrayerAdvanceTitle": "Prayer reminder",
   "iosPrayerAdvanceBody": "{prayer} in {minutes} minutes.",
-  "@iosPrayerAdvanceBody": {
-    "placeholders": {
-      "prayer": {
-        "type": "String"
-      },
-      "minutes": {
-        "type": "String"
-      }
-    }
-  },
+  "@iosPrayerAdvanceBody": {"placeholders": {"prayer": {"type": "String"}, "minutes": {"type": "String"}}},
   "iosPrayerRenewalTitle": "Extend prayer alerts",
   "iosPrayerRenewalBody": "Open Huda to extend your scheduled prayer alerts.",
   "linuxPrayerTrayTitle": "Prayer panel",
@@ -5657,19 +5660,10 @@
   "linuxPrayerTrayStartAtLogin": "Start at login",
   "linuxRemindersReady": "Reminders arrive even when Huda is closed",
   "linuxRemindersNeedService": "Reminders arrive only while Huda’s background service runs. Turn on “Start at login” in Prayer Times to keep them after restarting.",
-  "@linuxRemindersNeedService": {
-    "description": "Shown on Linux when reminders depend on the background prayer service that may not start at login."
-  },
+  "@linuxRemindersNeedService": {"description": "Shown on Linux when reminders depend on the background prayer service that may not start at login."},
   "windowsRemindersReady": "Reminders arrive even when Huda is closed",
   "windowsRemindersQueuedUntil": "Reminders are queued until {date}",
-  "@windowsRemindersQueuedUntil": {
-    "description": "Shown on Windows when reminders will run out unless renewed; date is a formatted day.",
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
+  "@windowsRemindersQueuedUntil": {"description": "Shown on Windows when reminders will run out unless renewed; date is a formatted day.", "placeholders": {"date": {"type": "String"}}},
   "windowsRemindersNeedStartup": "Turn on “Start with Windows” so Huda renews them without being opened.",
   "windowsRemindersOpenHuda": "Open Huda before then to keep them going.",
   "linuxPrayerTrayInstall": "Set up prayer panel",
@@ -5701,6 +5695,9 @@
   "linuxPrayerTrayUpdateStep": "Update Huda to a release that supports your GNOME version before reinstalling the panel.",
   "linuxPrayerExperienceQuitInfo": "Closing the window keeps background reminders running. Quit Huda stops prayer reminders, Adhan and Focus until you reopen Huda.",
   "linuxPrayerExperienceCommitmentInfo": "Normal Dismiss is hidden until the timer ends. Emergency exit, Escape and Quit Huda remain available. Previews always allow immediate exit.",
+  "samsungLockWidgetsTitle": "Samsung lock screen widgets",
+  "samsungLockWidgetsInstructions": "On Samsung One UI 8, touch and hold your lock screen, tap Add widgets, and select Huda. Choose a prayer countdown or Quran verse, then tap Done.",
+  "samsungLockWidgetsHint": "The lock screen has limited space. Choose the widgets that suit you.",
   "testNotificationTitle": "Test notification",
   "@testNotificationTitle": {},
   "testNotificationDescription": "Sends a notification in about 10 seconds through the same path as your reminders. You can close Huda while you wait.",

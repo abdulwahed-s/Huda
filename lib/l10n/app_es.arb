@@ -918,6 +918,9 @@
   "iosWidgetStep4": "Selecciona un tamaño de widget y toca 'Añadir Widget'",
   "genericWidgetStep1": "Mantén presionada tu pantalla de inicio y busca 'Widgets'",
   "genericWidgetStep2": "Encuentra el widget 'Huda' y añádelo a tu pantalla de inicio",
+  "macWidgetStep1": "Haz clic con Control en el escritorio y elige Editar widgets.",
+  "macWidgetStep2": "Busca Huda y elige Versículo del Corán u Horarios de oración.",
+  "macWidgetStep3": "Haz clic en un widget para añadirlo o arrástralo al escritorio.",
   "sahurAlarmTitle": "Alarma de Suhur",
   "@sahurAlarmTitle": {
     "description": "Title for Sahur Alarm section"
@@ -2087,6 +2090,9 @@
   "linuxPrayerTrayUpdateStep": "Actualiza Huda a una versión compatible con tu versión de GNOME antes de reinstalar el panel.",
   "linuxPrayerExperienceQuitInfo": "Cerrar la ventana mantiene los recordatorios en segundo plano. Salir de Huda detiene recordatorios, adhan y Focus hasta volver a abrir Huda.",
   "linuxPrayerExperienceCommitmentInfo": "Se oculta el cierre normal hasta que termine el temporizador. La salida de emergencia, Escape y Salir de Huda siguen disponibles. Las vistas previas permiten salir de inmediato.",
+  "samsungLockWidgetsTitle": "Widgets de bloqueo de Samsung",
+  "samsungLockWidgetsInstructions": "En Samsung One UI 8, mantén pulsada la pantalla de bloqueo, toca Añadir widgets y selecciona Huda. Elige una cuenta atrás de oración o un versículo del Corán y toca Hecho.",
+  "samsungLockWidgetsHint": "El espacio en la pantalla de bloqueo es limitado. Elige los widgets que prefieras.",
   "testNotificationTitle": "Notificación de prueba",
   "testNotificationDescription": "Envía una notificación en unos 10 segundos por el mismo camino que tus recordatorios. Puedes cerrar Huda mientras esperas.",
   "testNotificationSend": "Enviar prueba",

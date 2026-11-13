@@ -2740,6 +2740,18 @@ class AppLocalizationsRu extends AppLocalizations {
       'Найдите виджет \'Huda\' и добавьте его на главный экран';
 
   @override
+  String get macWidgetStep1 =>
+      'Нажмите на рабочий стол, удерживая Control, и выберите «Изменить виджеты».';
+
+  @override
+  String get macWidgetStep2 =>
+      'Найдите Huda и выберите «Аят Корана» или «Время молитв».';
+
+  @override
+  String get macWidgetStep3 =>
+      'Нажмите на виджет, чтобы добавить его, или перетащите его на рабочий стол.';
+
+  @override
   String get sahurAlarmTitle => 'Будильник на Сухур';
 
   @override
@@ -5769,6 +5781,17 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'Обычное закрытие скрыто до окончания таймера. Экстренный выход, Escape и выход из Huda остаются доступны. Предпросмотр всегда можно закрыть сразу.';
+
+  @override
+  String get samsungLockWidgetsTitle => 'Виджеты экрана блокировки Samsung';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'В Samsung One UI 8 нажмите и удерживайте экран блокировки, нажмите Добавить виджеты и выберите Huda. Добавьте отсчёт до молитвы или аят Корана и нажмите Готово.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'На экране блокировки мало места. Выберите подходящие вам виджеты.';
 
   @override
   String get testNotificationTitle => 'Тестовое уведомление';

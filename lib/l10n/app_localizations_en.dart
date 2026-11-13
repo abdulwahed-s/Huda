@@ -2722,6 +2722,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Find \'Huda\' widget and add it to your home screen';
 
   @override
+  String get macWidgetStep1 =>
+      'Control-click the desktop and choose Edit Widgets.';
+
+  @override
+  String get macWidgetStep2 =>
+      'Search for Huda, then choose Quran Verse or Prayer Times.';
+
+  @override
+  String get macWidgetStep3 =>
+      'Click a widget to add it, or drag it onto the desktop.';
+
+  @override
   String get sahurAlarmTitle => 'Sahur Alarm';
 
   @override
@@ -5731,6 +5743,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'Normal Dismiss is hidden until the timer ends. Emergency exit, Escape and Quit Huda remain available. Previews always allow immediate exit.';
+
+  @override
+  String get samsungLockWidgetsTitle => 'Samsung lock screen widgets';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'On Samsung One UI 8, touch and hold your lock screen, tap Add widgets, and select Huda. Choose a prayer countdown or Quran verse, then tap Done.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'The lock screen has limited space. Choose the widgets that suit you.';
 
   @override
   String get testNotificationTitle => 'Test notification';

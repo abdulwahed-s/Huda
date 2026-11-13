@@ -4,6 +4,7 @@ import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:huda/presentation/widgets/widget_management/add_widget_section.dart';
+import 'package:huda/presentation/widgets/widget_management/samsung_lock_widget_setup.dart';
 
 class QuranVerseWidgetTab extends StatefulWidget {
   const QuranVerseWidgetTab({super.key, required this.isDark});
@@ -179,6 +180,7 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
           _Header(isDark: widget.isDark),
           SizedBox(height: 12.h),
           AddWidgetSection(isDark: widget.isDark),
+          const SamsungLockWidgetSetup(),
           SizedBox(height: 20.h),
           _CustomizationHeading(title: l10n.quranWidgetCustomization),
           SizedBox(height: 12.h),

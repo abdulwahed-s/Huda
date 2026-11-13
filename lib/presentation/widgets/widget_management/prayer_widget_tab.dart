@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:huda/presentation/widgets/widget_management/samsung_lock_widget_setup.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -215,6 +216,10 @@ class _PrayerWidgetTabState extends State<PrayerWidgetTab> {
                   checkingPinSupport: _checkingPinSupport,
                   onRequestPin: _requestPin,
                 ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: const SamsungLockWidgetSetup(),
               ),
               SizedBox(height: 20.h),
               Padding(
@@ -616,6 +621,12 @@ class _AddCard extends StatelessWidget {
                       l10n.iosWidgetStep2,
                       l10n.iosWidgetStep3,
                       l10n.iosWidgetStep4,
+                    ]
+                  : Platform.isMacOS
+                  ? [
+                      l10n.macWidgetStep1,
+                      l10n.macWidgetStep2,
+                      l10n.macWidgetStep3,
                     ]
                   : [
                       l10n.androidWidgetStep1,

@@ -2719,6 +2719,18 @@ class AppLocalizationsUr extends AppLocalizations {
       '\'ہدٰی\' ویجیٹ تلاش کریں اور اسے اپنی ہوم اسکرین پر شامل کریں';
 
   @override
+  String get macWidgetStep1 =>
+      'ڈیسک ٹاپ پر Control دبا کر کلک کریں، پھر Edit Widgets منتخب کریں۔';
+
+  @override
+  String get macWidgetStep2 =>
+      'Huda تلاش کریں، پھر قرآنی آیت یا نماز کے اوقات منتخب کریں۔';
+
+  @override
+  String get macWidgetStep3 =>
+      'شامل کرنے کے لیے ویجیٹ پر کلک کریں یا اسے ڈیسک ٹاپ پر گھسیٹیں۔';
+
+  @override
   String get sahurAlarmTitle => 'سحری کا الارم';
 
   @override
@@ -5724,6 +5736,17 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'ٹائمر ختم ہونے تک عام بند کرنے کا بٹن چھپا رہتا ہے۔ ہنگامی اخراج، Escape اور ہدیٰ سے اخراج دستیاب رہتے ہیں۔ پیش منظر سے ہمیشہ فوراً نکل سکتے ہیں۔';
+
+  @override
+  String get samsungLockWidgetsTitle => 'سام سنگ کی لاک اسکرین کے ویجٹس';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'سام سنگ One UI 8 میں لاک اسکرین کو دبا کر رکھیں، ویجٹس شامل کریں پر ٹیپ کریں اور ہدیٰ منتخب کریں۔ نماز کی الٹی گنتی یا قرآنی آیت چنیں، پھر مکمل پر ٹیپ کریں۔';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'لاک اسکرین پر جگہ محدود ہے۔ اپنی پسند کے ویجٹس منتخب کریں۔';
 
   @override
   String get testNotificationTitle => 'آزمائشی اطلاع';

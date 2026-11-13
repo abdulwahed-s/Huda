@@ -904,6 +904,9 @@
   "iosWidgetStep4": "Bir widget boyutu seçin ve 'Widget Ekle'ye dokunun",
   "genericWidgetStep1": "Ana ekranınıza uzun basın ve 'Widget'lar'ı arayın",
   "genericWidgetStep2": "'Huda' widget'ını bulun ve ana ekranınıza ekleyin",
+  "macWidgetStep1": "Masaüstüne Control tuşuyla tıklayıp Widget'ları Düzenle'yi seçin.",
+  "macWidgetStep2": "Huda'yı arayın; Kur'an Ayeti veya Namaz Vakitleri'ni seçin.",
+  "macWidgetStep3": "Eklemek için widget'a tıklayın veya masaüstüne sürükleyin.",
   "sahurAlarmTitle": "Sahur Alarmı",
   "@sahurAlarmTitle": {
     "description": "Title for Sahur Alarm section"
@@ -2071,6 +2074,9 @@
   "linuxPrayerTrayUpdateStep": "Paneli yeniden kurmadan önce Huda’yı GNOME sürümünüzü destekleyen bir sürüme güncelleyin.",
   "linuxPrayerExperienceQuitInfo": "Pencereyi kapatmak arka plan hatırlatmalarını sürdürür. Huda’dan çıkmak, yeniden açılana kadar hatırlatmaları, ezanı ve odağı durdurur.",
   "linuxPrayerExperienceCommitmentInfo": "Zamanlayıcı bitene kadar normal kapatma gizlenir. Acil çıkış, Escape ve Huda’dan çıkış kullanılabilir. Önizlemeler her zaman hemen kapatılabilir.",
+  "samsungLockWidgetsTitle": "Samsung kilit ekranı widgetları",
+  "samsungLockWidgetsInstructions": "Samsung One UI 8’de kilit ekranına basılı tutun, Widget ekle’ye dokunun ve Huda’yı seçin. Namaz geri sayımı veya Kuran ayeti seçip Bitti’ye dokunun.",
+  "samsungLockWidgetsHint": "Kilit ekranında alan sınırlıdır. Size uygun widgetları seçin.",
   "testNotificationTitle": "Test bildirimi",
   "testNotificationDescription": "Hatırlatıcılarınızla aynı yoldan yaklaşık 10 saniye içinde bir bildirim gönderir. Beklerken Huda’yı kapatabilirsiniz.",
   "testNotificationSend": "Test gönder",

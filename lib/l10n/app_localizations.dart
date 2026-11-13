@@ -5100,6 +5100,24 @@ abstract class AppLocalizations {
   /// **'Find \'Huda\' widget and add it to your home screen'**
   String get genericWidgetStep2;
 
+  /// macOS widget gallery step 1
+  ///
+  /// In en, this message translates to:
+  /// **'Control-click the desktop and choose Edit Widgets.'**
+  String get macWidgetStep1;
+
+  /// macOS widget gallery step 2
+  ///
+  /// In en, this message translates to:
+  /// **'Search for Huda, then choose Quran Verse or Prayer Times.'**
+  String get macWidgetStep2;
+
+  /// macOS widget gallery step 3
+  ///
+  /// In en, this message translates to:
+  /// **'Click a widget to add it, or drag it onto the desktop.'**
+  String get macWidgetStep3;
+
   /// Title for Sahur Alarm section
   ///
   /// In en, this message translates to:
@@ -10379,6 +10397,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Normal Dismiss is hidden until the timer ends. Emergency exit, Escape and Quit Huda remain available. Previews always allow immediate exit.'**
   String get linuxPrayerExperienceCommitmentInfo;
+
+  /// No description provided for @samsungLockWidgetsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Samsung lock screen widgets'**
+  String get samsungLockWidgetsTitle;
+
+  /// No description provided for @samsungLockWidgetsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'On Samsung One UI 8, touch and hold your lock screen, tap Add widgets, and select Huda. Choose a prayer countdown or Quran verse, then tap Done.'**
+  String get samsungLockWidgetsInstructions;
+
+  /// No description provided for @samsungLockWidgetsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The lock screen has limited space. Choose the widgets that suit you.'**
+  String get samsungLockWidgetsHint;
 
   /// No description provided for @testNotificationTitle.
   ///

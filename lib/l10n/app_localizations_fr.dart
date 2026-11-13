@@ -2781,6 +2781,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Trouvez le widget \'Huda\' et ajoutez-le à votre écran d\'accueil';
 
   @override
+  String get macWidgetStep1 =>
+      'Cliquez sur le bureau avec la touche Contrôle enfoncée, puis choisissez Modifier les widgets.';
+
+  @override
+  String get macWidgetStep2 =>
+      'Recherchez Huda, puis choisissez Verset du Coran ou Heures de prière.';
+
+  @override
+  String get macWidgetStep3 =>
+      'Cliquez sur un widget pour l’ajouter, ou faites-le glisser sur le bureau.';
+
+  @override
   String get sahurAlarmTitle => 'Alarme du Souhour';
 
   @override
@@ -5836,6 +5848,18 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'La fermeture normale est masquée jusqu’à la fin du minuteur. La sortie d’urgence, Échap et Quitter Huda restent disponibles. Les aperçus peuvent toujours être fermés immédiatement.';
+
+  @override
+  String get samsungLockWidgetsTitle =>
+      'Widgets sur l’écran verrouillé Samsung';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'Avec Samsung One UI 8, appuyez longuement sur l’écran verrouillé, touchez Ajouter des widgets et choisissez Huda. Sélectionnez un compte à rebours de prière ou un verset du Coran, puis touchez Terminé.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'L’espace sur l’écran verrouillé est limité. Choisissez les widgets qui vous conviennent.';
 
   @override
   String get testNotificationTitle => 'Notification de test';

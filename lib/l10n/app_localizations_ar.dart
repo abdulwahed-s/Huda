@@ -2678,6 +2678,18 @@ class AppLocalizationsAr extends AppLocalizations {
       'ابحث عن أداة \'هُدَى\' وأضفها إلى شاشتك الرئيسية';
 
   @override
+  String get macWidgetStep1 =>
+      'انقر مع الضغط على Control على سطح المكتب، ثم اختر تحرير الأدوات.';
+
+  @override
+  String get macWidgetStep2 =>
+      'ابحث عن هُدى، ثم اختر أداة آية قرآنية أو مواقيت الصلاة.';
+
+  @override
+  String get macWidgetStep3 =>
+      'انقر على الأداة لإضافتها، أو اسحبها إلى سطح المكتب.';
+
+  @override
   String get sahurAlarmTitle => 'منبه السحور';
 
   @override
@@ -5669,6 +5681,17 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get linuxPrayerExperienceCommitmentInfo =>
       'يُخفى زر الإغلاق العادي حتى انتهاء المؤقت. يبقى الخروج الطارئ ومفتاح Escape والخروج من هدى متاحًا. يمكن الخروج من المعاينة فورًا دائمًا.';
+
+  @override
+  String get samsungLockWidgetsTitle => 'ودجات شاشة قفل سامسونج';
+
+  @override
+  String get samsungLockWidgetsInstructions =>
+      'في سامسونج One UI 8، اضغط مطولاً على شاشة القفل، ثم اضغط على إضافة ودجات واختر هُدى. اختر عدّاد الصلاة أو آية قرآنية، ثم اضغط على تم.';
+
+  @override
+  String get samsungLockWidgetsHint =>
+      'مساحة شاشة القفل محدودة. اختر الودجات التي تناسبك.';
 
   @override
   String get testNotificationTitle => 'إشعار تجريبي';
