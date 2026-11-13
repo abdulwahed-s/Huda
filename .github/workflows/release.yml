@@ -589,7 +589,21 @@ jobs:
         run: flutter build windows --release
 
       - name: Create MSIX
-        run: dart run msix:create --store
+        shell: pwsh
+        run: |
+          ./xv/windows/prayer_taskbar/validate_release_bundle.ps1 -ReleaseDirectory build/windows/x64/runner/Release
+          dart run msix:build --store --build-windows false
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # Restore the matching MSVC runtime after msix copies its VC assets.
+          cmake --install build/windows/x64 --config Release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./windows/prayer_taskbar/patch_msix_manifest.ps1 -ManifestPath build/windows/x64/runner/Release/AppxManifest.xml
+          dart run msix:pack --store --output-path build/windows-msix
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # msix cleanup removes root CRT DLLs needed by the Inno bundle.
+          cmake --install build/windows/x64 --config Release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./xv/windows/prayer_taskbar/validate_release_bundle.ps1 -ReleaseDirectory build/windows/x64/runner/Release
 
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
