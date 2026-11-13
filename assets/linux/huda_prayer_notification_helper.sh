@@ -16,7 +16,13 @@ fi
 
 schedule_file="${HUDA_PRAYER_SCHEDULE:-$data_root/schedule.tsv}"
 state_file="$data_root/last-delivered"
+owner_file="$data_root/delivery-owner.json"
 mkdir -p "$data_root"
+
+native_owner() {
+  [ -r "$owner_file" ] && grep -q '"owner"[[:space:]]*:[[:space:]]*"native"' "$owner_file"
+}
+native_owner && exit 0
 
 # The autostart fallback and an already-running user service may overlap when
 # Huda is upgraded. Hold a per-user lock so only one helper can deliver.
@@ -36,6 +42,7 @@ decode_base64() {
 }
 
 while :; do
+  native_owner && exit 0
   if [ ! -r "$schedule_file" ]; then
     sleep 60
     continue
@@ -81,9 +88,17 @@ while :; do
 
   title=$(decode_base64 "$next_title")
   body=$(decode_base64 "$next_body")
+  # Native migration uses the same flock around its owner marker and claims.
+  # Recheck after sleeping: a near-due handover cannot dispatch from both owners.
+  if command -v flock >/dev/null 2>&1; then
+    exec 8>"$data_root/dispatch.lock"
+    flock 8
+  fi
+  native_owner && exit 0
   if command -v notify-send >/dev/null 2>&1; then
     notify-send --app-name='Huda' --urgency=critical "$title" "$body" || true
   fi
   printf '%s\n' "$next_id" > "$state_file"
+  if command -v flock >/dev/null 2>&1; then flock -u 8; fi
   sleep 1
 done
