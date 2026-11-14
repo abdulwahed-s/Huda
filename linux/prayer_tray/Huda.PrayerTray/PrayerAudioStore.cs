@@ -26,8 +26,8 @@ internal sealed class PrayerAudioStore(string cacheRoot)
         var file = Canonical(Path.Combine(directory, "full.mp3"));
         if (!file.StartsWith(root + Path.DirectorySeparatorChar, StringComparison.Ordinal))
             throw new IOException("Audio escaped its trusted root.");
-        long bytes = 3272108;
-        var hash = "ab1ae80b2ccb0cc3397d809822ed5457aaa65441684d693ea5293c22a44df675";
+        long bytes = 1623414;
+        var hash = "4ad5bce259f5af2ed0445afd95957534cc2d653deaec3ee9160dc168246362da";
         if (!bundled)
         {
             var manifest = Canonical(Path.Combine(directory, "manifest.json"));
