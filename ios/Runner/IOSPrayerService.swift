@@ -25,10 +25,15 @@ actor IOSPrayerService {
     c.supportsAlarms = alarms.supportsAlarms
     c.alarms = alarms.authorization == "authorized"
     c.customAlarmSound = alarms.customSoundSupported
-    if c.customAlarmSound { c.fullAlarmSound = IOSPrayerAudioStore.bundledFullSound }
-    if Bundle.main.url(forResource: "adhan", withExtension: "caf") == nil { c.installedShort = [:] }
+    if !audio.prepareDefault(full: c.customAlarmSound) { c.installedShort = [:] }
+    else if c.customAlarmSound {
+      c.installedFull["huda-default"] = IOSPrayerAudioStore.defaultFullName
+      c.installedOpening["huda-default"] = IOSPrayerAudioStore.defaultOpeningName
+    }
     for installed in state.installedAudio.values where installed.version == state.configuration.experience.audioVersion && audio.ready(installed) {
       c.installedShort[installed.reciterId] = installed.shortName
+      if c.customAlarmSound && audio.fullReady(installed) { c.installedFull[installed.reciterId] = installed.fullName }
+      if c.customAlarmSound && audio.openingReady(installed) { c.installedOpening[installed.reciterId] = installed.openingName }
     }
     return (c, settings)
   }
@@ -269,7 +274,8 @@ actor IOSPrayerService {
       "notificationAuthorization": permission, "notificationSound": c.notificationSound,
       "timeSensitiveAllowed": settings.timeSensitiveSetting == .enabled,
       "alarmAuthorization": alarms.authorization, "supportsAlarms": c.supportsAlarms,
-      "fullAlarmAvailable": c.supportsAlarms && c.fullAlarmSound != nil,
+      "fullAlarmAvailable": c.supportsAlarms && !c.installedFull.isEmpty,
+      "customAlarmSound": c.customAlarmSound, "fullAlarmReciters": c.installedFull.keys.filter { c.installedOpening[$0] != nil }.sorted(),
       "supportsSiri": ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 16,
       "backgroundRefresh": await MainActor.run { UIApplication.shared.backgroundRefreshStatus == .available },
       "lowPowerMode": ProcessInfo.processInfo.isLowPowerModeEnabled,
@@ -292,7 +298,14 @@ actor IOSPrayerService {
       let hash = arguments["sha256"] as? String, let duration = arguments["durationMs"] as? Int
     else { throw IOSPrayerError.invalid("audioInvalid") }
     var state = try store.load()
-    let installed = try audio.install(path: path, reciter: reciter, version: version, bytes: bytes, hash: hash, durationMS: duration)
+    var installed = try audio.install(path: path, reciter: reciter, version: version, bytes: bytes, hash: hash, durationMS: duration)
+    if alarms.customSoundSupported {
+      installed.openingName = try audio.installOpening(installed)
+      if let fullPath = arguments["fullPath"] as? String, let fullBytes = arguments["fullBytes"] as? Int,
+        let fullHash = arguments["fullSha256"] as? String {
+        installed.fullName = try audio.installFull(path: fullPath, reciter: reciter, version: version, bytes: fullBytes, hash: fullHash)
+      }
+    }
     state.installedAudio["\(version)/\(reciter)"] = installed
     try store.save(state)
     return await statusLocked(state)

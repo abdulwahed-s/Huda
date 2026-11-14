@@ -51,9 +51,22 @@ final class IOSPrayerServiceLogicTests: XCTestCase {
     // Without the full recording (before iOS 26.1) it is still an alarm, short.
     var result = IOSPrayerEffectivePolicy.resolve(.fullAlarm, reciter: "huda-default", fallback: .short, capabilities: c)
     XCTAssertEqual(result.effective, .alarm); XCTAssertEqual(result.reason, "fullAudioUnavailable")
-    c.fullAlarmSound = "adhan_full.caf"
+    // A reciter without its own alarm file uses the default's whole adhan.
+    c.installedFull["huda-default"] = "adhan_full.caf"
     result = IOSPrayerEffectivePolicy.resolve(.fullAlarm, reciter: "another-reciter", fallback: .short, capabilities: c)
     XCTAssertEqual(result.effective, .fullAlarm); XCTAssertEqual(result.sound, "adhan_full.caf")
+    XCTAssertEqual(result.reason, "fullAudioFallback")
+    c.installedFull["another-reciter"] = "huda-v1-another-reciter-alarm-0123456789abcdef.caf"
+    result = IOSPrayerEffectivePolicy.resolve(.fullAlarm, reciter: "another-reciter", fallback: .short, capabilities: c)
+    XCTAssertEqual(result.sound, "huda-v1-another-reciter-alarm-0123456789abcdef.caf"); XCTAssertNil(result.reason)
+    // The opening-only alarm uses the padded clip so it plays once.
+    c.customAlarmSound = true
+    c.installedShort["another-reciter"] = "huda-v1-another-reciter-clip.wav"
+    result = IOSPrayerEffectivePolicy.resolve(.alarm, reciter: "another-reciter", fallback: .short, capabilities: c)
+    XCTAssertEqual(result.sound, "huda-v1-another-reciter-clip.wav")
+    c.installedOpening["another-reciter"] = "huda-v1-another-reciter-opening-0123456789abcdef.caf"
+    result = IOSPrayerEffectivePolicy.resolve(.alarm, reciter: "another-reciter", fallback: .short, capabilities: c)
+    XCTAssertEqual(result.sound, "huda-v1-another-reciter-opening-0123456789abcdef.caf")
     c.alarms = false
     result = IOSPrayerEffectivePolicy.resolve(.alarm, reciter: "huda-default", fallback: .silent, capabilities: c)
     XCTAssertEqual(result.effective, .silent); XCTAssertEqual(result.reason, "alarmPermission")

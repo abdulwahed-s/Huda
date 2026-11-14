@@ -39,8 +39,6 @@
 		A11B8E93BF418DB4713B945A /* PrayerAdjustments.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9DBC1637DD7804F3747EA0 /* PrayerAdjustments.swift */; };
 		A1L10N0001000000000001 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1L10N0001000000000000 /* InfoPlist.strings */; };
 		A4284F3CED208BDF319C55BE /* ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245133971C96B8916F5AF55F /* ShieldActionExtension.swift */; };
-		ADFEED000000000000000002 /* adhan.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADFEED000000000000000001 /* adhan.caf */; };
-		ADFEED000000000000000004 /* adhan_full.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADFEED000000000000000003 /* adhan_full.caf */; };
 		B4BE427B2ACAED4E1D18C346 /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C282291C2F390CC600DE1448 /* ManagedSettingsUI.framework */; };
 		BDF8EC0A200CE42D1B8D628D /* IOSPrayerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A628DA45BB723A83652D14 /* IOSPrayerStore.swift */; };
 		C24FF2842F08C50400FAB435 /* huda_icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C24FF2832F08C50400FAB435 /* huda_icon.icon */; };
@@ -183,8 +181,6 @@
 		A80045BCB3E56A6F8D43A255 /* PrayerTimeIntents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerTimeIntents.swift; sourceTree = "<group>"; };
 		AB5F75EC26B4B6E3A6578EAE /* Prayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Prayer.swift; path = Model/Prayer.swift; sourceTree = "<group>"; };
 		ACC2A6D7214693ABBF7E0F2D /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
-		ADFEED000000000000000001 /* adhan.caf */ = {isa = PBXFileReference; lastKnownFileType = audio.caf; path = adhan.caf; sourceTree = "<group>"; };
-		ADFEED000000000000000003 /* adhan_full.caf */ = {isa = PBXFileReference; lastKnownFileType = audio.caf; path = adhan_full.caf; sourceTree = "<group>"; };
 		B19096F7D26AE411BF4885BB /* SunnahTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SunnahTimes.swift; sourceTree = "<group>"; };
 		B78399BFD158AB2AE9F8C896 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BD9DF47DA5903473D97AC876 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -409,8 +405,6 @@
 				C3FAMACT12345678901235 /* FamilyActivityPickerView.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				A1L10N0001000000000000 /* InfoPlist.strings */,
-				ADFEED000000000000000001 /* adhan.caf */,
-				ADFEED000000000000000003 /* adhan_full.caf */,
 				907DBEE17D60FD455704E55D /* IOSPrayerAlarmScheduler.swift */,
 				821AC1D3296116A220055A95 /* IOSPrayerAudioStore.swift */,
 				9FB930CF4EBAC86E34B5FF6A /* IOSPrayerBackgroundRefresh.swift */,
@@ -683,8 +677,6 @@
 				C24FF2842F08C50400FAB435 /* huda_icon.icon in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				A1L10N0001000000000001 /* InfoPlist.strings in Resources */,
-				ADFEED000000000000000002 /* adhan.caf in Resources */,
-				ADFEED000000000000000004 /* adhan_full.caf in Resources */,
 				CB6CEAD8ED398FD9A98A8160 /* Adhan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

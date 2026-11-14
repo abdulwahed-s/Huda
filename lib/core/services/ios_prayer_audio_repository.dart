@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:huda/core/services/ios_prayer_bridge.dart';
@@ -20,23 +19,27 @@ class IOSPrayerAudioRepository extends PrayerAudioRepository {
     if (paths == null) throw StateError('iOS Adhan resources unavailable.');
     return IOSPrayerAudioRepository(
       cacheDirectory: Directory(paths['cache'] as String),
+      // The built-in `full.mp3` is the only bundled file; native code makes
+      // its notification clip and alarm file in Library/Sounds.
       bundledDirectory: Directory(paths['bundled'] as String),
-      bundledCatalogLoader: () async {
-        final json =
-            jsonDecode(
-                  await rootBundle.loadString('assets/json/athan_catalog.json'),
-                )
-                as Map<String, dynamic>;
-        final reciter = (json['reciters'] as List)
-            .cast<Map<String, dynamic>>()
-            .firstWhere((r) => r['id'] == 'huda-default');
-        reciter['notification'] = {
-          ...Map<String, dynamic>.from(paths['notification'] as Map),
-          'filename': 'notification.caf',
-        };
-        return jsonEncode(json);
-      },
     );
+  }
+
+  /// Also makes the alarm file for reciters downloaded before it existed.
+  @override
+  Future<bool> isReady(PrayerAudioReciter reciter, String version) async {
+    if (!await super.isReady(reciter, version)) return false;
+    final status = IOSPrayerBridge.status.value;
+    if (!reciter.isBundled &&
+        status.customAlarmSound &&
+        !status.fullAlarmReciters.contains(reciter.id)) {
+      try {
+        await _install(reciter, version);
+      } catch (_) {
+        /* Full adhan alarms use the default recording until it's made. */
+      }
+    }
+    return true;
   }
 
   Future<void> prepare(
@@ -51,22 +54,40 @@ class IOSPrayerAudioRepository extends PrayerAudioRepository {
       onProgress: onProgress,
       token: token,
     );
-    // The bundled clip already lives in the bundle. Downloaded clips must be
-    // verified and installed in Library/Sounds before becoming selectable.
-    if (!reciter.isBundled) {
-      await IOSPrayerBridge.channel.invokeMethod<Object?>('installAudio', {
-        'schemaVersion': 1,
-        'reciterId': reciter.id,
-        'audioVersion': version,
-        'path': p.join(
-          directoryFor(version, reciter.id).path,
-          reciter.short.filename,
-        ),
-        'bytes': reciter.short.bytes,
-        'sha256': reciter.short.sha256Hex,
-        'durationMs': reciter.short.durationMs,
-      });
+    // Downloaded clips must be verified and installed in Library/Sounds
+    // before becoming selectable, with the alarm file made from `full.mp3`.
+    if (!reciter.isBundled) await _install(reciter, version);
+  }
+
+  Future<void> _install(PrayerAudioReciter reciter, String version) async {
+    final directory = directoryFor(version, reciter.id).path;
+    // The native service refuses while it is updating the schedule.
+    for (var attempt = 1; ; attempt++) {
+      try {
+        return await _installOnce(reciter, version, directory);
+      } on PlatformException catch (error) {
+        if (error.code != 'busy' || attempt == 5) rethrow;
+        await Future<void>.delayed(Duration(milliseconds: 400 * attempt));
+      }
     }
+  }
+
+  Future<void> _installOnce(
+    PrayerAudioReciter reciter,
+    String version,
+    String directory,
+  ) async {
+    await IOSPrayerBridge.installAudio({
+      'reciterId': reciter.id,
+      'audioVersion': version,
+      'path': p.join(directory, reciter.short.filename),
+      'bytes': reciter.short.bytes,
+      'sha256': reciter.short.sha256Hex,
+      'durationMs': reciter.short.durationMs,
+      'fullPath': p.join(directory, reciter.full.filename),
+      'fullBytes': reciter.full.bytes,
+      'fullSha256': reciter.full.sha256Hex,
+    });
   }
 
   String previewPath(

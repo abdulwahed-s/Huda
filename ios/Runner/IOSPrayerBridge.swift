@@ -1,7 +1,6 @@
 import Foundation
 import Flutter
 import UIKit
-import CryptoKit
 
 @MainActor
 final class IOSPrayerBridge {
@@ -64,13 +63,9 @@ final class IOSPrayerBridge {
     case "installAudio": return try await service.installAudio(arguments: args)
     case "audioPaths":
       let library = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
-      let bundled = Bundle.main.bundleURL.appendingPathComponent("Adhan")
-      guard let file = Bundle.main.url(forResource: "adhan", withExtension: "caf") else {
-        throw IOSPrayerError.invalid("audioMissing")
-      }
-      let data = try Data(contentsOf: file)
-      return ["cache": library.appendingPathComponent("Caches/PrayerAudio").path, "bundled": bundled.path,
-        "notification": ["bytes": data.count, "sha256": SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined(), "duration_ms": 28180]]
+      guard IOSPrayerAudioStore.bundledFull != nil else { throw IOSPrayerError.invalid("audioMissing") }
+      return ["cache": library.appendingPathComponent("Caches/PrayerAudio").path,
+        "bundled": Bundle.main.bundleURL.appendingPathComponent("Adhan").path]
     case "previewAudio":
       guard let path = args["path"] as? String else { throw IOSPrayerError.invalid("audioInvalid") }
       try IOSPrayerAudioPreview.shared.play(path); return try await service.status()
@@ -100,15 +95,29 @@ final class IOSPrayerBridge {
     guard let mode = args["mode"] as? String, let requested = IOSPrayerMode(rawValue: mode), requested != .off else {
       throw IOSPrayerError.invalid("invalidTestMode")
     }
-    let fullSound = IOSPrayerAlarmScheduler().customSoundSupported ? IOSPrayerAudioStore.bundledFullSound : nil
-    let desired = requested == .fullAlarm && fullSound == nil ? IOSPrayerMode.alarm : requested
     let service = IOSPrayerService.shared
     let state = try IOSPrayerStore(directory: IOSPrayerStore.sharedDirectory!).load()
     let reciter = args["reciterId"] as? String ?? state.configuration.experience.reciterId
     let version = args["audioVersion"] as? String ?? state.configuration.experience.audioVersion
-    var sound: String? = reciter == "huda-default" ? "adhan.caf" : nil
-    if let installed = state.installedAudio["\(version)/\(reciter)"], IOSPrayerAudioStore().ready(installed) { sound = installed.shortName }
-    if desired == .fullAlarm { sound = fullSound }
+    // The same files the prayer itself would use.
+    let store = IOSPrayerAudioStore()
+    let custom = IOSPrayerAlarmScheduler().customSoundSupported
+    let defaultReady = store.prepareDefault(full: custom)
+    var sound: String? = reciter == "huda-default" && defaultReady ? IOSPrayerAudioStore.defaultShortName : nil
+    var capabilities = IOSPrayerCapabilities()
+    if custom && defaultReady {
+      capabilities.installedFull["huda-default"] = IOSPrayerAudioStore.defaultFullName
+      capabilities.installedOpening["huda-default"] = IOSPrayerAudioStore.defaultOpeningName
+    }
+    if let installed = state.installedAudio["\(version)/\(reciter)"], store.ready(installed) {
+      sound = installed.shortName
+      if custom && store.fullReady(installed) { capabilities.installedFull[reciter] = installed.fullName }
+      if custom && store.openingReady(installed) { capabilities.installedOpening[reciter] = installed.openingName }
+    }
+    let full = capabilities.fullSound(reciter)?.sound
+    let desired = requested == .fullAlarm && full == nil ? IOSPrayerMode.alarm : requested
+    if desired == .fullAlarm { sound = full }
+    if desired == .alarm, custom, let opening = capabilities.installedOpening[reciter] { sound = opening }
     if desired == .short && sound == nil { throw IOSPrayerError.invalid("audioMissing") }
     let key = "preview/\(UUID().uuidString)"
     let policy = IOSPrayerEffectivePolicy(desired: desired, effective: desired, reciterId: reciter,

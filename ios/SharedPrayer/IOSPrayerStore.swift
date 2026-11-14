@@ -57,6 +57,8 @@ struct IOSPrayerInstalledAudio: Codable {
   let shortHash: String
   let duration: Double
   var fullName: String?
+  /// The opening-only alarm file (the clip followed by silence).
+  var openingName: String?
 }
 
 /// The host service is the sole writer; widgets and query intents are readers.

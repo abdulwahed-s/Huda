@@ -1,9 +1,9 @@
 import Foundation
 import CryptoKit
 
-/// `fullAlarm` plays the whole built-in adhan as the AlarmKit sound. Apple
-/// documents sounds under 30 seconds; longer alarm sounds play in practice
-/// from iOS 26.1 (tested on device), so it falls back to `alarm` before that.
+/// `fullAlarm` plays the reciter's whole adhan as the AlarmKit sound. Apple
+/// documents sounds under 30 seconds; longer ones from Library/Sounds play to
+/// the end from iOS 26.1 (tested on 26.6.2), so it falls back to `alarm` before.
 enum IOSPrayerMode: String, Codable, CaseIterable { case off, silent, short, alarm, fullAlarm }
 
 struct IOSPrayerOverride: Codable, Equatable {
@@ -64,8 +64,16 @@ struct IOSPrayerCapabilities {
   var supportsAlarms = false
   var customAlarmSound = false
   var installedShort: [String: String] = ["huda-default": "adhan.caf"]
-  /// The bundled full adhan, when custom alarm sounds are supported (26.1+).
-  var fullAlarmSound: String?
+  /// Alarm files of the whole adhan per reciter, when custom alarm sounds are
+  /// supported (26.1+).
+  var installedFull: [String: String] = [:]
+  /// Opening-only alarm files (the clip, then silence) per reciter.
+  var installedOpening: [String: String] = [:]
+  /// The reciter's full alarm file, else the default's.
+  func fullSound(_ reciter: String) -> (sound: String, fallback: Bool)? {
+    if let file = installedFull[reciter] { return (file, false) }
+    return installedFull["huda-default"].map { ($0, true) }
+  }
 }
 
 struct IOSPrayerEffectivePolicy: Codable, Equatable {
@@ -83,7 +91,7 @@ struct IOSPrayerEffectivePolicy: Codable, Equatable {
       if !c.supportsAlarms { reason = "alarmUnsupported"; mode = fallback }
       else if !c.alarms { reason = "alarmPermission"; mode = fallback }
       // Still an alarm, with the short adhan, where the full one can't play.
-      else if mode == .fullAlarm && c.fullAlarmSound == nil { reason = "fullAudioUnavailable"; mode = .alarm }
+      else if mode == .fullAlarm && c.fullSound(reciter) == nil { reason = "fullAudioUnavailable"; mode = .alarm }
     }
     var sound: String?
     if mode == .short {
@@ -91,12 +99,12 @@ struct IOSPrayerEffectivePolicy: Codable, Equatable {
       else { mode = .silent; reason = reason ?? "audioMissing" }
       if !c.notificationSound { reason = reason ?? "notificationSoundDisabled"; mode = .silent; sound = nil }
     } else if mode == .alarm {
-      if c.customAlarmSound { sound = c.installedShort[reciter] }
+      // The padded clip plays once; the plain clip would repeat until Stop.
+      if c.customAlarmSound { sound = c.installedOpening[reciter] ?? c.installedShort[reciter] }
       if sound == nil { reason = reason ?? "systemAlarmSound" }
-    } else if mode == .fullAlarm {
-      // The whole adhan is the built-in recording, whichever reciter is chosen:
-      // AlarmKit doesn't reliably play downloaded files from Library/Sounds.
-      sound = c.fullAlarmSound
+    } else if mode == .fullAlarm, let full = c.fullSound(reciter) {
+      sound = full.sound
+      if full.fallback { reason = reason ?? "fullAudioFallback" }
     }
     if mode != .off && mode != .alarm && mode != .fullAlarm && !c.notifications {
       mode = .off; reason = "notificationPermission"

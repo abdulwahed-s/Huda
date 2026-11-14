@@ -22,6 +22,8 @@ class IOSPrayerStatus {
     this.supportsAlarms = false,
     this.supportsSiri = false,
     this.fullAlarmAvailable = false,
+    this.customAlarmSound = false,
+    this.fullAlarmReciters = const {},
     this.backgroundRefresh = false,
     this.lowPowerMode = false,
     this.notificationCount = 0,
@@ -50,6 +52,7 @@ class IOSPrayerStatus {
       supportsAlarms,
       supportsSiri,
       fullAlarmAvailable,
+      customAlarmSound,
       backgroundRefresh,
       lowPowerMode,
       travelPending;
@@ -63,6 +66,9 @@ class IOSPrayerStatus {
   final IOSPrayerExperience experience;
   final Map<String, Map<Object?, Object?>> policies;
   final List<Map<Object?, Object?>> events;
+
+  /// Reciters whose whole adhan is ready as an alarm sound.
+  final Set<String> fullAlarmReciters;
   bool get ownsSchedule => migration == 'native' || migration == 'retired';
   bool get notificationsAllowed => [
     'authorized',
@@ -92,6 +98,10 @@ class IOSPrayerStatus {
       supportsAlarms: value['supportsAlarms'] == true,
       supportsSiri: value['supportsSiri'] == true,
       fullAlarmAvailable: value['fullAlarmAvailable'] == true,
+      customAlarmSound: value['customAlarmSound'] == true,
+      fullAlarmReciters: {
+        ...(value['fullAlarmReciters'] as List? ?? const []).cast<String>(),
+      },
       backgroundRefresh: value['backgroundRefresh'] == true,
       lowPowerMode: value['lowPowerMode'] == true,
       notificationCount: value['notificationCount']! as int,
@@ -238,6 +248,10 @@ class IOSPrayerBridge {
     'body': body,
   });
   static Future<IOSPrayerStatus> cancelTests() => _call('cancelTests');
+
+  /// Installs a downloaded reciter's clip and makes its alarm file.
+  static Future<IOSPrayerStatus> installAudio(Map<String, Object?> audio) =>
+      _call('installAudio', audio);
   static Future<void> preview(String path) async {
     _audio?.requestAudio(AudioCoordinator.adhan);
     try {
