@@ -46,6 +46,43 @@ Deno.serve(async (req) => {
       return json({ error: "invalid_installation" }, 403);
     }
 
+    if (payload.action === "retire") {
+      if (
+        await isPrayerPushRateLimited(req, installationId, existing !== null)
+      ) {
+        return json({ error: "rate_limited" }, 429);
+      }
+      const revisions = validatePrayerPushRevisions(
+        payload.locationRevision,
+        payload.scheduleRevision,
+      );
+      const { data, error } = await admin.rpc(
+        "retire_prayer_push_installation",
+        {
+          p_installation_id: installationId,
+          p_installation_secret_hash: secretHash,
+          p_location_revision: revisions.locationRevision,
+          p_schedule_revision: revisions.scheduleRevision,
+        },
+      );
+      if (error) throw error;
+      const result = firstRpcRow(data);
+      if (result.status === "invalid_installation") {
+        return json({ error: result.status }, 403);
+      }
+      if (result.status !== "retired") {
+        return json({ error: result.status || "retirement_rejected" }, 400);
+      }
+      return json({
+        ok: true,
+        enabled: false,
+        retired: true,
+        acceptedScheduleRevision: result.accepted_schedule_revision,
+        acceptedLocationRevision: result.accepted_location_revision,
+        nativeNotBefore: result.native_not_before,
+      });
+    }
+
     if (payload.action === "disable") {
       const revisions = validatePrayerPushRevisions(
         payload.locationRevision,
@@ -98,6 +135,21 @@ Deno.serve(async (req) => {
       return json({ error: "invalid_action" }, 400);
     }
 
+    const { data: retired, error: retirementError } = await admin
+      .from("prayer_push_retirements").select("installation_secret_hash")
+      .eq("installation_id", installationId).maybeSingle();
+    if (retirementError) throw retirementError;
+    if (retired) {
+      if (!constantTimeEqual(retired.installation_secret_hash, secretHash)) {
+        return json({ error: "invalid_installation" }, 403);
+      }
+      return json({
+        error: "installation_retired",
+        retired: true,
+        enabled: false,
+      }, 410);
+    }
+
     if (await isPrayerPushRateLimited(req, installationId, existing !== null)) {
       return json({ error: "rate_limited" }, 429);
     }
@@ -120,12 +172,12 @@ Deno.serve(async (req) => {
     }
 
     const requestedLocale = optionalString(payload.locale, 20);
-    const locale =
-      requestedLocale === null ? null : normalizeLocale(requestedLocale);
-    const content =
-      locale === null
-        ? canonicalizeLegacyPrayerContent(payload.content)
-        : canonicalPrayerContent(locale);
+    const locale = requestedLocale === null
+      ? null
+      : normalizeLocale(requestedLocale);
+    const content = locale === null
+      ? canonicalizeLegacyPrayerContent(payload.content)
+      : canonicalPrayerContent(locale);
     const events = validatePrayerEvents(payload.events);
     if (events.length === 0) return json({ error: "empty_schedule" }, 400);
     const revisions = validatePrayerPushRevisions(
@@ -140,10 +192,9 @@ Deno.serve(async (req) => {
       localCoverage ? Math.floor(localCoverage.getTime() / 1000) : 0,
     );
     const nextIndex = events.findIndex((event) => event[0] > threshold);
-    const nextNotificationAt =
-      nextIndex < 0
-        ? null
-        : new Date(events[nextIndex][0] * 1000).toISOString();
+    const nextNotificationAt = nextIndex < 0
+      ? null
+      : new Date(events[nextIndex][0] * 1000).toISOString();
     const scheduleThrough = new Date(
       events[events.length - 1][0] * 1000,
     ).toISOString();
