@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "audio_version": "v1",
-  "generated_at": "2026-10-08T00:15:47.693240+00:00",
+  "audio_version": "v2",
+  "generated_at": "2026-10-26T09:31:57+00:00",
   "bucket": "athan",
   "base_url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan",
   "full_playback_platforms": [
@@ -23,19 +23,19 @@
       "source": "bundled",
       "name_en": "Default Adhan",
       "name_ar": "الأذان الافتراضي",
-      "source_asset": "android/app/src/main/res/raw/azan_sound.ogg",
+      "source_asset": "build/athan-preparation/sources/huda-default.ogg",
       "source_sha256": "4e2fba3996f216b650888f1f556ac5f77a1f56e8c303510aed9070f5d5b2810b",
       "full": {
         "path": "v1/huda-default/full.mp3",
-        "bytes": 3272108,
-        "sha256": "ab1ae80b2ccb0cc3397d809822ed5457aaa65441684d693ea5293c22a44df675",
-        "duration_ms": 204439
+        "bytes": 1623414,
+        "sha256": "4ad5bce259f5af2ed0445afd95957534cc2d653deaec3ee9160dc168246362da",
+        "duration_ms": 202893
       },
       "notification": {
         "path": "v1/huda-default/full.mp3",
-        "bytes": 3272108,
-        "sha256": "ab1ae80b2ccb0cc3397d809822ed5457aaa65441684d693ea5293c22a44df675",
-        "duration_ms": 204439
+        "bytes": 1623414,
+        "sha256": "4ad5bce259f5af2ed0445afd95957534cc2d653deaec3ee9160dc168246362da",
+        "duration_ms": 202893
       }
     },
     {
@@ -49,30 +49,30 @@
         "source_provider": "AlAdhan / Dubai One TV"
       },
       "full": {
-        "path": "v1/mishary-rashid-alafasy/full.mp3",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/mishary-rashid-alafasy/full.mp3",
+        "path": "v2/mishary-rashid-alafasy/full.mp3",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/mishary-rashid-alafasy/full.mp3",
         "content_type": "audio/mpeg",
-        "bytes": 2583418,
-        "sha256": "04ff730eee6b52ad2cd8298849a88a36c9e597bf6a49f3d28f1cf267998124e9",
+        "bytes": 1704507,
+        "sha256": "5b32eb5f6617f64bb7de7ea7ca37b8d3027f4060ed61b8a1cc1795d4b9a17ec7",
         "container": "mp3",
         "codec": "mp3",
         "sample_rate_hz": 44100,
         "channels": 1,
-        "bitrate_bps": 96000,
-        "duration_ms": 215249
+        "bitrate_bps": 64000,
+        "duration_ms": 213029
       },
       "notification": {
-        "path": "v1/mishary-rashid-alafasy/notification.wav",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/mishary-rashid-alafasy/notification.wav",
+        "path": "v2/mishary-rashid-alafasy/notification.wav",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/mishary-rashid-alafasy/notification.wav",
         "content_type": "audio/wav",
-        "bytes": 724716,
-        "sha256": "fb0abd70425148687bc7971193578a43cfe94be13a8306f97460f7149d35a634",
+        "bytes": 715340,
+        "sha256": "5d64aac7188446ed6096b77adb6c79b85fa9dcbbb5aae0ceac44aeee6fbf1b7d",
         "container": "wav",
         "codec": "pcm_s16le",
         "sample_rate_hz": 16000,
         "channels": 1,
         "bits_per_sample": 16,
-        "duration_ms": 22646,
+        "duration_ms": 22353,
         "clip_start_ms": 0,
         "ends_at_pause": true
       }
@@ -88,30 +88,30 @@
         "source_provider": "Kiwifu/adhan-mp3"
       },
       "full": {
-        "path": "v1/ahmad-al-nafees/full.mp3",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/ahmad-al-nafees/full.mp3",
+        "path": "v2/ahmad-al-nafees/full.mp3",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/ahmad-al-nafees/full.mp3",
         "content_type": "audio/mpeg",
-        "bytes": 2554572,
-        "sha256": "ba69b611d1e2651251c3b2535fa78d8474d980f2fe239d7c00e90b30ebee30d7",
+        "bytes": 1648912,
+        "sha256": "c04bb97f1687b77145bbca193170bdcdd9ab646d6586e0af0c0a8ce705f89382",
         "container": "mp3",
         "codec": "mp3",
         "sample_rate_hz": 44100,
         "channels": 1,
-        "bitrate_bps": 96000,
-        "duration_ms": 212846
+        "bitrate_bps": 64000,
+        "duration_ms": 206080
       },
       "notification": {
-        "path": "v1/ahmad-al-nafees/notification.wav",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/ahmad-al-nafees/notification.wav",
+        "path": "v2/ahmad-al-nafees/notification.wav",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/ahmad-al-nafees/notification.wav",
         "content_type": "audio/wav",
-        "bytes": 576844,
-        "sha256": "4fb836680ded6b279974d7f5ff41a0562eaee6a0951d4e1391b05a1db1f8c509",
+        "bytes": 563788,
+        "sha256": "7f981e2de39b0354e4bf5ce7dc81fc120180fbf793a04b4438475b8ee616556b",
         "container": "wav",
         "codec": "pcm_s16le",
         "sample_rate_hz": 16000,
         "channels": 1,
         "bits_per_sample": 16,
-        "duration_ms": 18025,
+        "duration_ms": 17617,
         "clip_start_ms": 0,
         "ends_at_pause": true
       }
@@ -127,30 +127,30 @@
         "source_provider": "Kiwifu/adhan-mp3"
       },
       "full": {
-        "path": "v1/ali-hassan-abd-al-khaliq/full.mp3",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/ali-hassan-abd-al-khaliq/full.mp3",
+        "path": "v2/ali-hassan-abd-al-khaliq/full.mp3",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/ali-hassan-abd-al-khaliq/full.mp3",
         "content_type": "audio/mpeg",
-        "bytes": 1613859,
-        "sha256": "1ec89f7197f686701e289abb977be3d51c0e8258192cb36ee756b8bc1a6dc25e",
+        "bytes": 1064823,
+        "sha256": "810c5f382a80eacee1c92ef069e79daca21cabf1b331ecd46455bedf417cf91c",
         "container": "mp3",
         "codec": "mp3",
         "sample_rate_hz": 44100,
         "channels": 1,
-        "bitrate_bps": 96000,
-        "duration_ms": 134452
+        "bitrate_bps": 64000,
+        "duration_ms": 133068
       },
       "notification": {
-        "path": "v1/ali-hassan-abd-al-khaliq/notification.wav",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/ali-hassan-abd-al-khaliq/notification.wav",
+        "path": "v2/ali-hassan-abd-al-khaliq/notification.wav",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/ali-hassan-abd-al-khaliq/notification.wav",
         "content_type": "audio/wav",
-        "bytes": 867788,
-        "sha256": "86fe2cb32feed182a6ccadcfecda5ba6fccb17dbb572b527384eb6c74bf4560e",
+        "bytes": 842540,
+        "sha256": "bd9a8b81b8fe28151460b99eb4c919b09d97bed2283fee519abb0c3fe9a3b60b",
         "container": "wav",
         "codec": "pcm_s16le",
         "sample_rate_hz": 16000,
         "channels": 1,
         "bits_per_sample": 16,
-        "duration_ms": 27117,
+        "duration_ms": 26328,
         "clip_start_ms": 0,
         "ends_at_pause": true
       }
@@ -166,24 +166,24 @@
         "source_format": "AAC-LC / ADTS, audio-only HLS format 234"
       },
       "full": {
-        "path": "v1/nasser-al-qatami/full.mp3",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/nasser-al-qatami/full.mp3",
+        "path": "v2/nasser-al-qatami/full.mp3",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/nasser-al-qatami/full.mp3",
         "content_type": "audio/mpeg",
-        "bytes": 1528901,
-        "sha256": "e43b49b11bcffa152e6e7bef0f669d434688bd06d9052a3df3343ca9f65d385d",
+        "bytes": 1018839,
+        "sha256": "8cc8d6c3590b8ea3713c1a4ba510fe733a10c7592a3bf2dd6c73b366cecc0242",
         "container": "mp3",
         "codec": "mp3",
         "sample_rate_hz": 44100,
         "channels": 1,
-        "bitrate_bps": 96000,
-        "duration_ms": 127373
+        "bitrate_bps": 64000,
+        "duration_ms": 127321
       },
       "notification": {
-        "path": "v1/nasser-al-qatami/notification.wav",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/nasser-al-qatami/notification.wav",
+        "path": "v2/nasser-al-qatami/notification.wav",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/nasser-al-qatami/notification.wav",
         "content_type": "audio/wav",
         "bytes": 928044,
-        "sha256": "5573355a0d79dd9c3ada80cba39e17a5c0bbb8bfd1da8a5cd9307568d91627e1",
+        "sha256": "8ad8e22ef3a76f4f467d8cfafebc8c90f3ef65cbb377b5822bd1e12114d10e61",
         "container": "wav",
         "codec": "pcm_s16le",
         "sample_rate_hz": 16000,
@@ -205,24 +205,24 @@
         "source_provider": "Kiwifu/adhan-mp3"
       },
       "full": {
-        "path": "v1/muhammad-siddiq-al-minshawi/full.mp3",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/muhammad-siddiq-al-minshawi/full.mp3",
+        "path": "v2/muhammad-siddiq-al-minshawi/full.mp3",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/muhammad-siddiq-al-minshawi/full.mp3",
         "content_type": "audio/mpeg",
-        "bytes": 2963975,
-        "sha256": "02090ee0d2dcfce46835ac94ab7932bd933e7587983d6f02d5594dd011978f34",
+        "bytes": 1975977,
+        "sha256": "16127a9d24a41e9cbb1090d065c3cc80122828441bceddd7fd6d22e8c338b478",
         "container": "mp3",
         "codec": "mp3",
         "sample_rate_hz": 44100,
         "channels": 1,
-        "bitrate_bps": 96000,
+        "bitrate_bps": 64000,
         "duration_ms": 246962
       },
       "notification": {
-        "path": "v1/muhammad-siddiq-al-minshawi/notification.wav",
-        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v1/muhammad-siddiq-al-minshawi/notification.wav",
+        "path": "v2/muhammad-siddiq-al-minshawi/notification.wav",
+        "url": "https://aiheljvapaxaztcehufr.supabase.co/storage/v1/object/public/athan/v2/muhammad-siddiq-al-minshawi/notification.wav",
         "content_type": "audio/wav",
         "bytes": 928044,
-        "sha256": "a9870b18adf439b2c3796900bf4f2efd3b335807cb7c54ba6e3116d8f67996a7",
+        "sha256": "e797ae0c2f1dbbec3c84a9cfe8ec0a71dd859fc5dad02dd81fd437788e942e66",
         "container": "wav",
         "codec": "pcm_s16le",
         "sample_rate_hz": 16000,
