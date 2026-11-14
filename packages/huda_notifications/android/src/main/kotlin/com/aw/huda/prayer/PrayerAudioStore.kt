@@ -14,7 +14,7 @@ internal class PrayerAudioStore(private val runtime: PrayerNotificationRuntime) 
     val root: File = File(runtime.context.createDeviceProtectedStorageContext().filesDir, "PrayerAudio")
     val staging: File = File(root, "staging")
     private val bundled = AudioAssetData("huda-default", "v1", "full", "android-resource:azan_sound",
-        1346905, "4e2fba3996f216b650888f1f556ac5f77a1f56e8c303510aed9070f5d5b2810b", 204446)
+        1328173, "feee769abf90bb687c5c9a9a55d129d68b824f86ab6880ab53afe6385fd3daee", 202868)
     fun storage(): AudioStorageData {
         root.mkdirs(); staging.mkdirs()
         return AudioStorageData(root.path, staging.path, bundled)
