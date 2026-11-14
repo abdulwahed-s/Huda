@@ -44,6 +44,8 @@ OutputBaseFilename=Huda-{#MyAppVersion}-windows-setup
 SetupIconFile=..\windows\runner\resources\app_icon.ico
 SolidCompression=yes
 WizardStyle=modern
+CloseApplications=yes
+RestartApplications=no
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -64,9 +66,58 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "{#BuildDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
+[InstallDelete]
+; PrepareToInstall has stopped the old helper; discard obsolete private runtime
+; files during upgrades. Preferences live in LocalAppData, outside this folder.
+Type: filesandordirs; Name: "{app}\prayer_taskbar"
+; Huda 5.0.0 no longer ships flutter_local_notifications; remove 4.x's plugin.
+Type: files; Name: "{app}\flutter_local_notifications_windows.dll"
+
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; AppUserModelID: "awr.Huda-IslamicCompanionApp"; AppUserModelToastActivatorCLSID: "a8c22b55-049e-422f-b30f-863694de08c8"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; AppUserModelID: "awr.Huda-IslamicCompanionApp"; AppUserModelToastActivatorCLSID: "a8c22b55-049e-422f-b30f-863694de08c8"
+
+[Registry]
+; The toast activator's COM server, so clicking a toast opens Huda even before
+; it first runs after an install or update (older releases never registered
+; it). Huda also registers it per user when it runs; that entry takes precedence.
+Root: HKLM; Subkey: "Software\Classes\CLSID\{{a8c22b55-049e-422f-b30f-863694de08c8}"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "Software\Classes\CLSID\{{a8c22b55-049e-422f-b30f-863694de08c8}\LocalServer32"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" --notification-activated"
+Root: HKLM; Subkey: "Software\Classes\CLSID\{{a8c22b55-049e-422f-b30f-863694de08c8}\LocalServer32"; ValueType: string; ValueName: "ServerExecutable"; ValueData: "{app}\{#MyAppExeName}"
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[UninstallRun]
+Filename: "{app}\prayer_taskbar\Huda.PrayerTaskbar.exe"; Parameters: "--uninstall"; Flags: runhidden skipifdoesntexist
+
+[Code]
+var
+  ResumePrayerCompanion: Boolean;
+
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  Companion: String;
+  ResultCode: Integer;
+begin
+  Result := '';
+  ResumePrayerCompanion := False;
+  Companion := ExpandConstant('{app}\prayer_taskbar\Huda.PrayerTaskbar.exe');
+  if FileExists(Companion) then
+  begin
+    if not ExecAsOriginalUser(Companion, '--shutdown', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+      Result := 'Close Huda before continuing the upgrade.'
+    else if (ResultCode <> 0) and (ResultCode <> 3) then
+      Result := 'The prayer countdown could not be stopped. Close Huda before continuing the upgrade.'
+    else
+      ResumePrayerCompanion := ResultCode = 0;
+  end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  ResultCode: Integer;
+begin
+  if (CurStep = ssPostInstall) and ResumePrayerCompanion then
+    ExecAsOriginalUser(ExpandConstant('{app}\prayer_taskbar\Huda.PrayerTaskbar.exe'), '', '', SW_HIDE, ewNoWait, ResultCode);
+end;
