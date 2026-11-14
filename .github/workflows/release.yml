@@ -761,6 +761,17 @@ jobs:
       - uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1
         id: snapcraft
 
+      - name: Extract GNOME prayer extension
+        run: |
+          unsquashfs -d tray-extension-artifact "${{ steps.snapcraft.outputs.snap }}" data/huda-prayer-tray-4.3.0.zip
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: linux-prayer-extension
+          path: tray-extension-artifact/data/huda-prayer-tray-4.3.0.zip
+          if-no-files-found: error
+          overwrite: true
+
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: linux-snap
@@ -925,6 +936,9 @@ jobs:
 
           find release-artifacts/linux-snap -name "*.snap" -exec \
             cp {} "release-assets/Huda-${VERSION}-linux.snap" \; 2>/dev/null || true
+
+          find release-artifacts/linux-prayer-extension -name "*.zip" -exec \
+            cp {} "release-assets/Huda-${VERSION}-gnome-prayer-tray.zip" \; 2>/dev/null || true
 
           find release-artifacts/ios-ipa -name "*.ipa" -exec \
             cp {} "release-assets/Huda-${VERSION}-ios.ipa" \; 2>/dev/null || true
