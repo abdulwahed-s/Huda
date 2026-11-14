@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:huda/core/services/mac_prayer_bridge.dart';
 import 'package:huda/core/services/mac_prayer_experience.dart';
 import 'package:huda/core/services/prayer_audio_repository.dart';
@@ -23,22 +21,9 @@ class MacPrayerAudioRepository extends PrayerAudioRepository {
     }
     return MacPrayerAudioRepository(
       cacheDirectory: Directory(paths['cache'] as String),
+      // The default's notification clip is signed into the app bundle,
+      // cut from this `full.mp3`.
       bundledDirectory: Directory(paths['bundled'] as String),
-      bundledCatalogLoader: () async {
-        final json =
-            jsonDecode(
-                  await rootBundle.loadString('assets/json/athan_catalog.json'),
-                )
-                as Map<String, dynamic>;
-        final reciter = (json['reciters'] as List)
-            .cast<Map<String, dynamic>>()
-            .firstWhere((r) => r['id'] == 'huda-default');
-        reciter['notification'] = {
-          ...Map<String, dynamic>.from(paths['notification'] as Map),
-          'filename': 'notification.caf',
-        };
-        return jsonEncode(json);
-      },
     );
   }
 

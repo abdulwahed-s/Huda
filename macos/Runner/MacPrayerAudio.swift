@@ -53,7 +53,7 @@ final class MacPrayerAudio: NSObject, AVAudioPlayerDelegate {
       let size = metadata["bytes"] as? Int, (1...8_388_608).contains(size),
       let digest = metadata["sha256"] as? String, MacPrayerExperience.matches(digest, "^[a-f0-9]{64}$")
     else { throw MacPrayerError.invalid("Adhan metadata is invalid.") }
-    let filename = full ? "full.mp3" : policy.reciterId == "huda-default" ? "notification.caf" : "notification.wav"
+    let filename = full ? "full.mp3" : "notification.wav"
     let url = folder.appendingPathComponent(filename).resolvingSymlinksInPath()
     guard url.path.hasPrefix(folder.path + "/"),
       (try url.resourceValues(forKeys: [.fileSizeKey])).fileSize == size
@@ -73,17 +73,15 @@ final class MacPrayerAudio: NSObject, AVAudioPlayerDelegate {
     return url
   }
   func isReady(_ policy: MacPrayerExperience) -> Bool {
-    guard (try? checked(policy, full: true)) != nil,
-      let source = try? checked(policy, full: false) else { return false }
-    return (try? bundledNotificationSound(source)) != nil
+    (try? checked(policy, full: true)) != nil && (try? bundledNotificationSound(policy)) != nil
   }
   func paths() throws -> [String: Any] {
     try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
     let bundled = directory(MacPrayerExperience())
     let raw = try Data(contentsOf: bundled.appendingPathComponent("manifest.json"))
     let manifest = try JSONSerialization.jsonObject(with: raw) as! [String: Any]
-    let reciter = manifest["reciter"] as! [String: Any]
-    return ["cache": cacheDirectory.path, "bundled": bundledDirectory.path, "notification": reciter["notification"]!]
+    guard manifest["reciter"] is [String: Any] else { throw MacPrayerError.invalid("Adhan metadata is invalid.") }
+    return ["cache": cacheDirectory.path, "bundled": bundledDirectory.path]
   }
   private func resolved(_ policy: MacPrayerExperience, full: Bool) throws -> URL {
     do { return try checked(policy, full: full) }
@@ -96,24 +94,30 @@ final class MacPrayerAudio: NSObject, AVAudioPlayerDelegate {
   func notificationSound(_ policy: MacPrayerExperience) throws -> String {
     error = nil
     do {
-      return try bundledNotificationSound(checked(policy, full: false))
+      return try bundledNotificationSound(policy)
     } catch {
       self.error = error.localizedDescription
       guard policy.reciterId != "huda-default" else { throw error }
-      return try bundledNotificationSound(checked(MacPrayerExperience(), full: false))
+      return try bundledNotificationSound(MacPrayerExperience())
     }
   }
-  private func bundledNotificationSound(_ source: URL) throws -> String {
+  /// The signed clip for [policy]. The default uses its approved normalized
+  /// clip; a downloaded reciter's is found by its notification.wav hash.
+  private func bundledNotificationSound(_ policy: MacPrayerExperience) throws -> String {
+    try policy.validate()
+    let builtIn = policy.reciterId == "huda-default" && policy.audioVersion == "v1"
+    let sourceHash = builtIn ? nil
+      : SHA256.hash(data: try Data(contentsOf: checked(policy, full: false))).map { String(format: "%02x", $0) }.joined()
     let manifestURL = notificationDirectory.appendingPathComponent("huda_notification_sounds.json")
     guard ((try manifestURL.resourceValues(forKeys: [.fileSizeKey])).fileSize ?? Int.max) <= 65536 else {
       throw MacPrayerError.invalid("Bundled notification audio metadata is too large.")
     }
-    let sourceHash = SHA256.hash(data: try Data(contentsOf: source)).map { String(format: "%02x", $0) }.joined()
     let data = try Data(contentsOf: manifestURL)
     guard let manifest = try JSONSerialization.jsonObject(with: data) as? [String: Any],
       manifest["schema_version"] as? Int == 1,
       let entries = manifest["sounds"] as? [[String: Any]], entries.count <= 64,
-      let metadata = entries.first(where: { $0["source_sha256"] as? String == sourceHash }),
+      let metadata = entries.first(where: { sourceHash == nil
+        ? $0["reciter_id"] as? String == policy.reciterId : $0["source_sha256"] as? String == sourceHash }),
       let digest = metadata["sha256"] as? String, MacPrayerExperience.matches(digest, "^[a-f0-9]{64}$"),
       let filename = metadata["filename"] as? String, filename == "huda-short-\(digest.prefix(16)).wav",
       let size = metadata["bytes"] as? Int, (1...8_388_608).contains(size)
@@ -131,6 +135,7 @@ final class MacPrayerAudio: NSObject, AVAudioPlayerDelegate {
     let file = try AVAudioFile(forReading: url)
     let format = file.fileFormat.streamDescription.pointee
     let duration = Double(file.length) / file.fileFormat.sampleRate
+    // Notification Center rejects IMA4 here, unlike iOS.
     guard format.mFormatID == kAudioFormatLinearPCM, format.mBitsPerChannel == 16,
       (1...2).contains(format.mChannelsPerFrame), duration.isFinite, duration > 0, duration < 30 else {
       throw MacPrayerError.invalid("Bundled notification audio format or duration is invalid.")

@@ -3,14 +3,9 @@
   "reciter": {
     "id": "huda-default",
     "full": {
-      "bytes": 3272108,
-      "sha256": "ab1ae80b2ccb0cc3397d809822ed5457aaa65441684d693ea5293c22a44df675",
-      "duration_ms": 204439
-    },
-    "notification": {
-      "bytes": 2489572,
-      "sha256": "168b31f27dac656ebc247ee0cf727c71fb51006fa59368abfc8b3cb7849649d2",
-      "duration_ms": 28000
+      "bytes": 1623414,
+      "sha256": "4ad5bce259f5af2ed0445afd95957534cc2d653deaec3ee9160dc168246362da",
+      "duration_ms": 202893
     }
   }
 }

@@ -1,6 +1,7 @@
 import Cocoa
 import AVFoundation
 import Carbon
+import CryptoKit
 import FlutterMacOS
 import UserNotifications
 import XCTest
@@ -404,48 +405,81 @@ final class MacPrayerServiceTests: XCTestCase {
   }
   func testBundledFullAndShortAssetsAreIndependentAndVerified() throws {
     let audio = MacPrayerAudio(directory: directory)
-    let paths = try audio.paths()
+    _ = try audio.paths()
     XCTAssertTrue(audio.isReady(MacPrayerExperience()))
-    XCTAssertGreaterThan((paths["notification"] as? [String: Any])?["bytes"] as? Int ?? 0, 0)
+    // The independently normalized clip is packaged as a signed root-bundle WAV.
+    XCTAssertFalse(FileManager.default.fileExists(atPath: audio.bundledDirectory.appendingPathComponent("v1/huda-default/notification.caf").path))
     let sound = try audio.notificationSound(MacPrayerExperience())
-    XCTAssertTrue(sound.hasPrefix("huda-short-"))
-    XCTAssertTrue(sound.hasSuffix(".wav"))
-    let bundled = audio.notificationDirectory.appendingPathComponent(sound)
-    let source = try AVAudioFile(forReading: audio.bundledDirectory.appendingPathComponent("v1/huda-default/notification.caf"))
-    let packaged = try AVAudioFile(forReading: bundled)
-    XCTAssertEqual(source.processingFormat, packaged.processingFormat)
-    let sourceBuffer = try XCTUnwrap(AVAudioPCMBuffer(pcmFormat: source.processingFormat, frameCapacity: AVAudioFrameCount(source.length)))
-    let packagedBuffer = try XCTUnwrap(AVAudioPCMBuffer(pcmFormat: packaged.processingFormat, frameCapacity: AVAudioFrameCount(packaged.length)))
-    try source.read(into: sourceBuffer); try packaged.read(into: packagedBuffer)
-    XCTAssertGreaterThanOrEqual(packagedBuffer.frameLength, sourceBuffer.frameLength)
-    XCTAssertLessThan(Double(packagedBuffer.frameLength - sourceBuffer.frameLength) / source.processingFormat.sampleRate, 0.02)
-    let sourceSamples = try XCTUnwrap(sourceBuffer.floatChannelData)[0]
-    let packagedSamples = try XCTUnwrap(packagedBuffer.floatChannelData)[0]
-    XCTAssertEqual(Array(UnsafeBufferPointer(start: sourceSamples, count: Int(sourceBuffer.frameLength))),
-      Array(UnsafeBufferPointer(start: packagedSamples, count: Int(sourceBuffer.frameLength))))
+    XCTAssertTrue(sound.hasPrefix("huda-short-")); XCTAssertTrue(sound.hasSuffix(".wav"))
+    let packaged = try AVAudioFile(forReading: audio.notificationDirectory.appendingPathComponent(sound))
+    XCTAssertEqual(packaged.fileFormat.streamDescription.pointee.mFormatID, kAudioFormatLinearPCM)
+    XCTAssertEqual(Double(packaged.length) / packaged.fileFormat.sampleRate, 18.131, accuracy: 0.05)
   }
-  func testAllSharedCatalogRecitersResolveToVerifiedBundledShortSounds() throws {
+  func testAllSharedCatalogRecitersHaveVerifiedBundledShortSounds() throws {
     let audio = MacPrayerAudio(directory: directory)
     let manifest = try JSONSerialization.jsonObject(with: Data(contentsOf: audio.notificationDirectory.appendingPathComponent("huda_notification_sounds.json"))) as! [String: Any]
     let entries = manifest["sounds"] as! [[String: Any]]
     XCTAssertEqual(entries.count, 6)
-    let defaultSound = try audio.notificationSound(MacPrayerExperience())
-    for entry in entries where entry["reciter_id"] as? String != "huda-default" {
-      var policy = MacPrayerExperience(); policy.reciterId = entry["reciter_id"] as! String
-      let folder = audio.cacheDirectory.appendingPathComponent("v1").appendingPathComponent(policy.reciterId)
-      try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-      try FileManager.default.copyItem(at: audio.notificationDirectory.appendingPathComponent(entry["filename"] as! String),
-        to: folder.appendingPathComponent("notification.wav"))
-      let local: [String: Any] = ["audio_version": "v1", "reciter": ["id": policy.reciterId,
-        "notification": ["bytes": entry["bytes"]!, "sha256": entry["source_sha256"]!]]]
-      try JSONSerialization.data(withJSONObject: local).write(to: folder.appendingPathComponent("manifest.json"))
-      XCTAssertEqual(try audio.notificationSound(policy), entry["filename"] as? String)
-      XCTAssertNil(audio.error)
-      // A corrupt downloaded source cannot bypass verification by matching ID.
-      try Data([0]).write(to: folder.appendingPathComponent("notification.wav"))
-      XCTAssertEqual(try audio.notificationSound(policy), defaultSound)
-      XCTAssertNotNil(audio.error)
+    for entry in entries {
+      let url = audio.notificationDirectory.appendingPathComponent(entry["filename"] as! String)
+      let data = try Data(contentsOf: url)
+      XCTAssertEqual(data.count, entry["bytes"] as? Int)
+      let digest = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+      XCTAssertEqual(digest, entry["sha256"] as? String)
+      XCTAssertEqual(entry["filename"] as? String, "huda-short-\(digest.prefix(16)).wav")
+      let file = try AVAudioFile(forReading: url)
+      XCTAssertEqual(file.fileFormat.streamDescription.pointee.mFormatID, kAudioFormatLinearPCM)
+      XCTAssertLessThan(Double(file.length) / file.fileFormat.sampleRate, 30)
     }
+  }
+  func testDownloadedClipResolvesToItsBundledSoundByHash() throws {
+    // A small bundle: the real default plus one clip made from a known source.
+    let bundleURL = directory.appendingPathComponent("Fake.bundle", isDirectory: true)
+    let adhan = bundleURL.appendingPathComponent("Adhan/v1/huda-default", isDirectory: true)
+    try FileManager.default.createDirectory(at: adhan, withIntermediateDirectories: true)
+    let real = MacPrayerAudio(directory: directory)
+    for name in ["manifest.json", "full.mp3"] {
+      try FileManager.default.copyItem(at: real.bundledDirectory.appendingPathComponent("v1/huda-default/\(name)"),
+        to: adhan.appendingPathComponent(name))
+    }
+    let defaultEntry = (try JSONSerialization.jsonObject(with: Data(contentsOf: real.notificationDirectory
+      .appendingPathComponent("huda_notification_sounds.json"))) as! [String: Any])["sounds"] as! [[String: Any]]
+    let builtIn = defaultEntry.first { $0["reciter_id"] as? String == "huda-default" }!
+    try FileManager.default.copyItem(at: real.notificationDirectory.appendingPathComponent(builtIn["filename"] as! String),
+      to: bundleURL.appendingPathComponent(builtIn["filename"] as! String))
+    let format = try XCTUnwrap(AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 16_000, channels: 1, interleaved: false))
+    let buffer = try XCTUnwrap(AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 16_000))
+    buffer.frameLength = 16_000
+    for i in 0..<16_000 { buffer.floatChannelData![0][i] = sin(Float(i) * 0.1) * 0.5 }
+    let source = directory.appendingPathComponent("source.wav")
+    do {
+      let wav = try AVAudioFile(forWriting: source, settings: [AVFormatIDKey: kAudioFormatLinearPCM, AVSampleRateKey: 16_000,
+        AVNumberOfChannelsKey: 1, AVLinearPCMBitDepthKey: 16], commonFormat: .pcmFormatFloat32, interleaved: false)
+      try wav.write(from: buffer)
+    }
+    // Downloaded clips are bundled as downloaded.
+    func sha(_ url: URL) throws -> String { SHA256.hash(data: try Data(contentsOf: url)).map { String(format: "%02x", $0) }.joined() }
+    let clipHash = try sha(source), sourceHash = clipHash
+    let clipName = "huda-short-\(clipHash.prefix(16)).wav"
+    try FileManager.default.copyItem(at: source, to: bundleURL.appendingPathComponent(clipName))
+    let clipBytes = try Data(contentsOf: bundleURL.appendingPathComponent(clipName)).count
+    try JSONSerialization.data(withJSONObject: ["schema_version": 1, "audio_version": "v1", "sounds": [builtIn,
+      ["reciter_id": "nasser-al-qatami", "source_sha256": sourceHash, "filename": clipName, "sha256": clipHash, "bytes": clipBytes]]])
+      .write(to: bundleURL.appendingPathComponent("huda_notification_sounds.json"))
+    let audio = MacPrayerAudio(directory: directory, bundle: try XCTUnwrap(Bundle(url: bundleURL)))
+    var policy = MacPrayerExperience(); policy.reciterId = "nasser-al-qatami"
+    let folder = audio.cacheDirectory.appendingPathComponent("v1/nasser-al-qatami")
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+    try FileManager.default.copyItem(at: source, to: folder.appendingPathComponent("notification.wav"))
+    let bytes = try Data(contentsOf: source).count
+    try JSONSerialization.data(withJSONObject: ["audio_version": "v1", "reciter": ["id": policy.reciterId,
+      "notification": ["bytes": bytes, "sha256": sourceHash]]]).write(to: folder.appendingPathComponent("manifest.json"))
+    XCTAssertEqual(try audio.notificationSound(policy), clipName)
+    XCTAssertNil(audio.error)
+    // A corrupt downloaded source cannot bypass verification by matching ID.
+    try Data([0]).write(to: folder.appendingPathComponent("notification.wav"))
+    XCTAssertEqual(try audio.notificationSound(policy), builtIn["filename"] as? String)
+    XCTAssertNotNil(audio.error)
   }
   func testMissingSelectedShortSoundFallsBackWithoutReportingReady() throws {
     let audio = MacPrayerAudio(directory: directory)

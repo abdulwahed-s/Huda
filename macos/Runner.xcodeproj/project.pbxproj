@@ -72,7 +72,6 @@
 		9A80F1E3C554084A3CB72DC4 /* PrayerWidgetStateResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CFD0B1AB2B2931C6D46B11 /* PrayerWidgetStateResolver.swift */; };
 		9B1F4C6CF75B4D505C854594 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68047E8E0D48EC388C462F3 /* Prayer.swift */; };
 		A853B973C0642748794900AC /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918E7B1444A6594F9A96506B /* Pods_RunnerTests.framework */; };
-		ADFEED100000000000000002 /* adhan.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADFEED100000000000000001 /* adhan.caf */; };
 		B043364F08BCE5B34FE36B95 /* PrayerWidgetDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A79CC8DAA662C10B1897B0 /* PrayerWidgetDataLoader.swift */; };
 		B58A5B555B39ED1C53E9FCC0 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */; };
 		B72E4F1BFF129D2000000001 /* PrayerMenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72E4F1BFF129D2000000002 /* PrayerMenuBarController.swift */; };
@@ -88,12 +87,12 @@
 		ED7CEB09A608B721879D8B07 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8ECB11C8C04ECC62D14A35 /* Coordinates.swift */; };
 		F28AD719EFC3909D348B22A8 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91324C2EA2373CB712EE5242 /* CalculationParameters.swift */; };
 		F34B9D34F899EE31B864902E /* GeneratedMethodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3E484B0932A6BE9377E30 /* GeneratedMethodData.swift */; };
-		514E35EA280C852CF7056F4D /* huda-short-1b75aaee82b858c7.wav in Resources */ = {isa = PBXBuildFile; fileRef = 857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */; };
-		57E587C82CC28895B034FB05 /* huda-short-4fb836680ded6b27.wav in Resources */ = {isa = PBXBuildFile; fileRef = 75CD7F391FBA2598E7305671 /* huda-short-4fb836680ded6b27.wav */; };
-		3E581FC6D47CCEE0575D89BE /* huda-short-5573355a0d79dd9c.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */; };
-		92C2B6ABA07B51E2716CE6EF /* huda-short-86fe2cb32feed182.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */; };
-		B1ADCEB0368529781C3D5752 /* huda-short-a9870b18adf439b2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */; };
-		82AFDB4827F0F01B33957A99 /* huda-short-fb0abd7042514868.wav in Resources */ = {isa = PBXBuildFile; fileRef = D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */; };
+		514E35EA280C852CF7056F4D /* huda-short-f834b1152935ed9a.wav in Resources */ = {isa = PBXBuildFile; fileRef = 857B6B873936E4F8596DE2CB /* huda-short-f834b1152935ed9a.wav */; };
+		57E587C82CC28895B034FB05 /* huda-short-7f981e2de39b0354.wav in Resources */ = {isa = PBXBuildFile; fileRef = 75CD7F391FBA2598E7305671 /* huda-short-7f981e2de39b0354.wav */; };
+		3E581FC6D47CCEE0575D89BE /* huda-short-8ad8e22ef3a76f4f.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7B6944DE6FF7A1CE963A7312 /* huda-short-8ad8e22ef3a76f4f.wav */; };
+		92C2B6ABA07B51E2716CE6EF /* huda-short-bd9a8b81b8fe2815.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1A5722F92EE2B730D916D6ED /* huda-short-bd9a8b81b8fe2815.wav */; };
+		B1ADCEB0368529781C3D5752 /* huda-short-e797ae0c2f1dbbec.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9A057D173F7ECA1230A824A1 /* huda-short-e797ae0c2f1dbbec.wav */; };
+		82AFDB4827F0F01B33957A99 /* huda-short-5d64aac7188446ed.wav in Resources */ = {isa = PBXBuildFile; fileRef = D15BCC38CF5653781E86C2E3 /* huda-short-5d64aac7188446ed.wav */; };
 		F14977736CB11CD780FFACBA /* huda_notification_sounds.json in Resources */ = {isa = PBXBuildFile; fileRef = FEAC91F62BF7AEEFD5230755 /* huda_notification_sounds.json */; };
 /* End PBXBuildFile section */
 
@@ -198,7 +197,6 @@
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		A49817FEA0B9638A7632636F /* PrayerWidgetLocalization.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrayerWidgetLocalization.swift; sourceTree = "<group>"; };
 		A9CD6860C050F45EA93F21DD /* HudaWidgetBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HudaWidgetBundle.swift; sourceTree = "<group>"; };
-		ADFEED100000000000000001 /* adhan.caf */ = {isa = PBXFileReference; lastKnownFileType = audio.caf; path = ../ios/Runner/adhan.caf; sourceTree = "<group>"; };
 		B21223A58E72D3DDD9C1A325 /* MacPrayerNotificationRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerNotificationRouter.swift; sourceTree = "<group>"; };
 		B376BC5A97299C3C2015D7C2 /* WidgetDataLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetDataLoader.swift; sourceTree = "<group>"; };
 		B67BDBA4EF1622F12ED87EDB /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -219,12 +217,12 @@
 		F51247FAF91BD0D19B3D3F20 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F81B5001F94B3D391CA50341 /* PrayerTimes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerTimes.swift; path = PrayerTimePlus/PrayerTimes.swift; sourceTree = "<group>"; };
 		FA4A5234BED1BB3A5F8782EE /* PrayerAdjustments.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrayerAdjustments.swift; path = PrayerTimePlus/Model/PrayerAdjustments.swift; sourceTree = "<group>"; };
-		857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-1b75aaee82b858c7.wav; sourceTree = "<group>"; };
-		75CD7F391FBA2598E7305671 /* huda-short-4fb836680ded6b27.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-4fb836680ded6b27.wav; sourceTree = "<group>"; };
-		7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-5573355a0d79dd9c.wav; sourceTree = "<group>"; };
-		1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-86fe2cb32feed182.wav; sourceTree = "<group>"; };
-		9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-a9870b18adf439b2.wav; sourceTree = "<group>"; };
-		D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-fb0abd7042514868.wav; sourceTree = "<group>"; };
+		857B6B873936E4F8596DE2CB /* huda-short-f834b1152935ed9a.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-f834b1152935ed9a.wav; sourceTree = "<group>"; };
+		75CD7F391FBA2598E7305671 /* huda-short-7f981e2de39b0354.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-7f981e2de39b0354.wav; sourceTree = "<group>"; };
+		7B6944DE6FF7A1CE963A7312 /* huda-short-8ad8e22ef3a76f4f.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-8ad8e22ef3a76f4f.wav; sourceTree = "<group>"; };
+		1A5722F92EE2B730D916D6ED /* huda-short-bd9a8b81b8fe2815.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-bd9a8b81b8fe2815.wav; sourceTree = "<group>"; };
+		9A057D173F7ECA1230A824A1 /* huda-short-e797ae0c2f1dbbec.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-e797ae0c2f1dbbec.wav; sourceTree = "<group>"; };
+		D15BCC38CF5653781E86C2E3 /* huda-short-5d64aac7188446ed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = huda-short-5d64aac7188446ed.wav; sourceTree = "<group>"; };
 		FEAC91F62BF7AEEFD5230755 /* huda_notification_sounds.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = huda_notification_sounds.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -356,7 +354,6 @@
 				C2DE99EA2F09B8A00043A5D8 /* huda_icon.icon */,
 				33CC10F42044A3C60003C045 /* MainMenu.xib */,
 				33CC10F72044A3C60003C045 /* Info.plist */,
-				ADFEED100000000000000001 /* adhan.caf */,
 			);
 			name = Resources;
 			path = ..;
@@ -429,12 +426,12 @@
 		F8F1C624516404506C56CB9E /* NotificationSounds */ = {
 			isa = PBXGroup;
 			children = (
-				857B6B873936E4F8596DE2CB /* huda-short-1b75aaee82b858c7.wav */,
-				75CD7F391FBA2598E7305671 /* huda-short-4fb836680ded6b27.wav */,
-				7B6944DE6FF7A1CE963A7312 /* huda-short-5573355a0d79dd9c.wav */,
-				1A5722F92EE2B730D916D6ED /* huda-short-86fe2cb32feed182.wav */,
-				9A057D173F7ECA1230A824A1 /* huda-short-a9870b18adf439b2.wav */,
-				D15BCC38CF5653781E86C2E3 /* huda-short-fb0abd7042514868.wav */,
+				857B6B873936E4F8596DE2CB /* huda-short-f834b1152935ed9a.wav */,
+				75CD7F391FBA2598E7305671 /* huda-short-7f981e2de39b0354.wav */,
+				7B6944DE6FF7A1CE963A7312 /* huda-short-8ad8e22ef3a76f4f.wav */,
+				1A5722F92EE2B730D916D6ED /* huda-short-bd9a8b81b8fe2815.wav */,
+				9A057D173F7ECA1230A824A1 /* huda-short-e797ae0c2f1dbbec.wav */,
+				D15BCC38CF5653781E86C2E3 /* huda-short-5d64aac7188446ed.wav */,
 				FEAC91F62BF7AEEFD5230755 /* huda_notification_sounds.json */,
 			);
 			path = NotificationSounds;
@@ -588,14 +585,13 @@
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				C2DE99EB2F09B8A00043A5D8 /* huda_icon.icon in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
-				ADFEED100000000000000002 /* adhan.caf in Resources */,
 				D599BBC5B69C71E9F50C899D /* Adhan in Resources */,
-				514E35EA280C852CF7056F4D /* huda-short-1b75aaee82b858c7.wav in Resources */,
-				57E587C82CC28895B034FB05 /* huda-short-4fb836680ded6b27.wav in Resources */,
-				3E581FC6D47CCEE0575D89BE /* huda-short-5573355a0d79dd9c.wav in Resources */,
-				92C2B6ABA07B51E2716CE6EF /* huda-short-86fe2cb32feed182.wav in Resources */,
-				B1ADCEB0368529781C3D5752 /* huda-short-a9870b18adf439b2.wav in Resources */,
-				82AFDB4827F0F01B33957A99 /* huda-short-fb0abd7042514868.wav in Resources */,
+				514E35EA280C852CF7056F4D /* huda-short-f834b1152935ed9a.wav in Resources */,
+				57E587C82CC28895B034FB05 /* huda-short-7f981e2de39b0354.wav in Resources */,
+				3E581FC6D47CCEE0575D89BE /* huda-short-8ad8e22ef3a76f4f.wav in Resources */,
+				92C2B6ABA07B51E2716CE6EF /* huda-short-bd9a8b81b8fe2815.wav in Resources */,
+				B1ADCEB0368529781C3D5752 /* huda-short-e797ae0c2f1dbbec.wav in Resources */,
+				82AFDB4827F0F01B33957A99 /* huda-short-5d64aac7188446ed.wav in Resources */,
 				F14977736CB11CD780FFACBA /* huda_notification_sounds.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
