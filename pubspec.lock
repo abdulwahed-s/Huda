@@ -374,14 +374,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.1"
-  flutter_foreground_task:
-    dependency: "direct main"
-    description:
-      name: flutter_foreground_task
-      sha256: "9f1b25a81db95d7119d2c5cffc654048cbdd49d4056183e1beadc1a6a38f3e29"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.1.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -398,59 +390,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
-  flutter_local_notifications:
-    dependency: "direct main"
-    description:
-      name: flutter_local_notifications
-      sha256: "357be7ff996dc272e2037c69c1bdd5d1bd21172219d55f8bd2e11aeea602e6d3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "22.3.1"
-  flutter_local_notifications_linux:
-    dependency: transitive
-    description:
-      name: flutter_local_notifications_linux
-      sha256: "9ca97e63776f29ab1b955725c09999fc2c150523269db150c39274f2a43c5a8b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.0.1"
-  flutter_local_notifications_platform_interface:
-    dependency: transitive
-    description:
-      name: flutter_local_notifications_platform_interface
-      sha256: "43c3761d916c9bd3d5c7ebbc44d82f4990329840c0c5d62ad5260cc1b5d399bd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "12.2.0"
-  flutter_local_notifications_web:
-    dependency: transitive
-    description:
-      name: flutter_local_notifications_web
-      sha256: "516afaf97a2d1e67a036c6617321b00d205d72f7a67b6eccf936cd565f985878"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
-  flutter_local_notifications_windows:
-    dependency: transitive
-    description:
-      name: flutter_local_notifications_windows
-      sha256: "6f43bdd03b171b7a90f22647506fea33e2bb12294b7c7c7a3d690e960a382945"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_macos_permissions:
-    dependency: "direct main"
-    description:
-      name: flutter_macos_permissions
-      sha256: "21b84145b3e9404ea0ec2854c684f95a76a8fe04578c4629d4e474c8eb678255"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.7"
   flutter_markdown_plus:
     dependency: "direct main"
     description:
@@ -709,6 +653,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
+  huda_notifications:
+    dependency: "direct main"
+    description:
+      path: "packages/huda_notifications"
+      relative: true
+    source: path
+    version: "0.1.0"
   image:
     dependency: transitive
     description:
