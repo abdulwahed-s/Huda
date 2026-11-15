@@ -2373,5 +2373,6 @@
   "readingModeIndopak": "ইন্দো-পাক মুসহাফ",
   "mushafPackTitle": "মুসহাফের পৃষ্ঠা",
   "mushafPackBody": "মসৃণভাবে পৃষ্ঠা ওল্টানোর জন্য মুসহাফ এখন পৃষ্ঠার ছবি ব্যবহার করে। এই বিন্যাসে পড়া চালিয়ে যেতে একবার ডাউনলোড করুন।",
-  "mushafPackDownload": "ডাউনলোড ({size})"
+  "mushafPackDownload": "ডাউনলোড ({size})",
+  "macPrayerMenuNameElapsed": "{prayer} {time}"
 }

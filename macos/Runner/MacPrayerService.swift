@@ -465,7 +465,7 @@ final class MacPrayerService {
     }
     let location = [schedule.location.locality, schedule.location.countryName].compactMap { $0 }.joined(separator: ", ")
     return PrayerMenuSnapshot(timeZone: schedule.location.zone, location: location.isEmpty ? schedule.location.timeZoneId : location,
-      method: configuration.strings["method:\(schedule.methodToken)"] ?? "", provisional: false, days: days)
+      method: configuration.strings["method:\(schedule.methodToken)"] ?? "", provisional: false, days: days, iqamahMinutes: PrayerMenuSnapshot.storedIqamahMinutes())
   }
   private func emit() { onChanged?(); channel?.invokeMethod("statusChanged", arguments: status()) }
 

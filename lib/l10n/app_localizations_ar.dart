@@ -6341,4 +6341,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String mushafPackDownload(String size) {
     return 'تنزيل ($size)';
   }
+
+  @override
+  String macPrayerMenuNameElapsed(String prayer, String time) {
+    return '$prayer $time';
+  }
 }

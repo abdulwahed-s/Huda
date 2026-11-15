@@ -2777,5 +2777,6 @@
   "readingModeIndopak": "المصحف الهندي",
   "mushafPackTitle": "صفحات المصحف",
   "mushafPackBody": "أصبح المصحف يعتمد على صور الصفحات ليكون تقليب الصفحات أكثر سلاسة. نزّلها مرة واحدة لمتابعة القراءة بهذا العرض.",
-  "mushafPackDownload": "تنزيل ({size})"
+  "mushafPackDownload": "تنزيل ({size})",
+  "macPrayerMenuNameElapsed": "{prayer} {time}"
 }

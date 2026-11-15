@@ -2271,5 +2271,6 @@
   "readingModeIndopak": "Mushaf IndoPak",
   "mushafPackTitle": "Pages du Mushaf",
   "mushafPackBody": "Le Mushaf utilise désormais des images de pages pour tourner les pages plus fluidement. Téléchargez-les une fois pour continuer à lire dans cette mise en page.",
-  "mushafPackDownload": "Télécharger ({size})"
+  "mushafPackDownload": "Télécharger ({size})",
+  "macPrayerMenuNameElapsed": "{prayer} {time}"
 }

@@ -103,11 +103,14 @@ class MacPrayerMenuBridge {
     _publishedPresentation = presentationKey;
     final strings = <String, String>{
       'prayerTimes': l10n.prayerTimes,
+      'nextPrayer': l10n.nextPrayer,
       'prayerSettings': l10n.macPrayerMenuSettings,
       'quitHuda': l10n.macPrayerMenuQuit,
       'needsSetup': l10n.macPrayerMenuNeedsSetup,
       'verifyLocation': l10n.macPrayerMenuVerifyLocation,
       'nameCountdown': l10n.macPrayerMenuNameCountdown('{prayer}', '{time}'),
+      'nameElapsed': l10n.macPrayerMenuNameElapsed('{prayer}', '{time}'),
+      'current': l10n.prayerHeroStarted,
       'hourUnit': l10n.macPrayerMenuHourShort,
       'minuteUnit': l10n.macPrayerMenuMinuteShort,
       'fajr': l10n.fajr,

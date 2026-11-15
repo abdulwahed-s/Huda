@@ -2267,5 +2267,6 @@
   "readingModeIndopak": "IndoPak Mushafı",
   "mushafPackTitle": "Mushaf sayfaları",
   "mushafPackBody": "Mushaf artık daha akıcı sayfa çevirme için sayfa görselleri kullanıyor. Bu düzende okumaya devam etmek için bunları bir kez indirin.",
-  "mushafPackDownload": "İndir ({size})"
+  "mushafPackDownload": "İndir ({size})",
+  "macPrayerMenuNameElapsed": "{prayer} {time}"
 }

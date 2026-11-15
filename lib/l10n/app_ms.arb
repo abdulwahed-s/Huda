@@ -2357,5 +2357,6 @@
   "readingModeIndopak": "Mushaf IndoPak",
   "mushafPackTitle": "Halaman Mushaf",
   "mushafPackBody": "Mushaf kini menggunakan imej halaman untuk selakan halaman yang lebih lancar. Muat turun sekali untuk terus membaca dalam susun atur ini.",
-  "mushafPackDownload": "Muat turun ({size})"
+  "mushafPackDownload": "Muat turun ({size})",
+  "macPrayerMenuNameElapsed": "{prayer} {time}"
 }

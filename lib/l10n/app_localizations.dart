@@ -11561,6 +11561,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download ({size})'**
   String mushafPackDownload(String size);
+
+  /// No description provided for @macPrayerMenuNameElapsed.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayer} {time}'**
+  String macPrayerMenuNameElapsed(String prayer, String time);
 }
 
 class _AppLocalizationsDelegate

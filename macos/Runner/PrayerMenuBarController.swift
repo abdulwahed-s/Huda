@@ -1,4 +1,5 @@
 import Cocoa
+import CoreFoundation
 import FlutterMacOS
 import SwiftUI
 
@@ -17,6 +18,27 @@ private enum PrayerMenuStyle: String, CaseIterable {
 }
 
 struct PrayerMenuSnapshot {
+  static let iqamahDefaults = ["fajr": 25, "dhuhr": 20, "asr": 20, "maghrib": 5, "isha": 20]
+
+  static func iqamahMinutes(_ raw: Any?) -> [String: Int] {
+    let values = raw as? [String: Any] ?? [:]
+    return iqamahDefaults.merging(values.compactMapValues { value -> Int? in
+      guard let number = value as? NSNumber, CFGetTypeID(number) != CFBooleanGetTypeID(),
+        number.doubleValue.isFinite else { return nil }
+      return Int(min(60, max(0, number.doubleValue)))
+    }.filter { iqamahDefaults[$0.key] != nil }) { _, value in value }
+  }
+
+  static func storedIqamahMinutes() -> [String: Int] {
+    let defaults = UserDefaults(suiteName: "group.hudaHomeApp")
+    for key in ["prayer_widget_display_v1", "prayer_widget_settings_v2"] {
+      if let raw = defaults?.string(forKey: key), let data = raw.data(using: .utf8),
+        let value = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+        return iqamahMinutes(value["iqamahMinutes"])
+      }
+    }
+    return iqamahDefaults
+  }
   static let displayPrayers = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"]
   static let obligatoryPrayers = ["fajr", "dhuhr", "asr", "maghrib", "isha"]
 
@@ -25,6 +47,7 @@ struct PrayerMenuSnapshot {
   let method: String
   let provisional: Bool
   let days: [String: [String: Date]]
+  var iqamahMinutes = iqamahDefaults
 
   static func parse(_ raw: String) -> PrayerMenuSnapshot? {
     guard let data = raw.data(using: .utf8),
@@ -63,7 +86,8 @@ struct PrayerMenuSnapshot {
       location: place.isEmpty ? zoneId : place,
       method: method,
       provisional: (value["provisional"] as? Bool) ?? false,
-      days: days
+      days: days,
+      iqamahMinutes: iqamahMinutes(value["iqamahMinutes"])
     )
   }
 
@@ -84,6 +108,25 @@ struct PrayerMenuSnapshot {
         return (name, time)
       }
     }.min { $0.time < $1.time }
+  }
+
+  func moment(at now: Date) -> (name: String, time: Date, isElapsed: Bool, stateEnd: Date)? {
+    guard today(at: now) != nil else { return nil }
+    if let previous = previousPrayer(before: now) {
+      let end = previous.time.addingTimeInterval(TimeInterval(iqamahMinutes[previous.name] ?? 0) * 60)
+      if now < end { return (previous.name, previous.time, true, end) }
+    }
+    guard let next = nextPrayer(after: now) else { return nil }
+    return (next.name, next.time, false, next.time)
+  }
+
+  func previousPrayer(before now: Date) -> (name: String, time: Date)? {
+    days.values.flatMap { day in
+      Self.obligatoryPrayers.compactMap { name -> (name: String, time: Date)? in
+        guard let time = day[name], time <= now else { return nil }
+        return (name, time)
+      }
+    }.max { $0.time < $1.time }
   }
 }
 
@@ -279,12 +322,19 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
     now = Date()
     if !enabled && panel?.isVisible != true { return }
     updateStatusItem()
+    updateTimer()
   }
 
   private func updateTimer() {
     timer?.invalidate(); timer = nil
     guard enabled else { return }
-    timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in self?.tick() }
+    let minute = floor(now.timeIntervalSince1970 / 60) * 60 + 60
+    let boundary = min(snapshot?.moment(at: now)?.stateEnd.timeIntervalSince1970 ?? minute,
+                       snapshot?.nextPrayer(after: now)?.time.timeIntervalSince1970 ?? minute)
+    timer = Timer(timeInterval: max(0.05, min(minute, boundary) - now.timeIntervalSince1970), repeats: false) {
+      [weak self] _ in self?.tick()
+    }
+    if let timer { RunLoop.main.add(timer, forMode: .common) }
   }
 
   func refreshServiceState() {
@@ -312,7 +362,7 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
       statusItem?.button?.sendAction(on: [.leftMouseUp])
     }
     guard let button = statusItem?.button else { return }
-    let next = snapshot?.nextPrayer(after: now)
+    let next = snapshot?.moment(at: now)
     if button.image == nil {
       let image = NSImage(named: NSImage.Name("HudaMenuIcon"))?.copy() as? NSImage
       image?.isTemplate = true
@@ -332,9 +382,14 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
     case .iconOnly:
       button.title = ""
     case .iconNameCountdown:
-      let pattern = strings["nameCountdown"] ?? "{prayer} in {time}"
+      let pattern = next.isElapsed
+        ? (strings["nameElapsed"] ?? "{prayer} {time}")
+        : (strings["nameCountdown"] ?? "{prayer} in {time}")
+      let counter = next.isElapsed
+        ? elapsedText(now.timeIntervalSince(next.time))
+        : countdownText(next.time.timeIntervalSince(now))
       button.title = pattern.replacingOccurrences(of: "{prayer}", with: name)
-        .replacingOccurrences(of: "{time}", with: countdownText(next.time.timeIntervalSince(now))) + "  "
+        .replacingOccurrences(of: "{time}", with: "\u{2068}\(counter)\u{2069}") + "  "
     case .iconNameClock:
       button.title = "\(name) \(clockText(next.time))  "
     }
@@ -359,6 +414,10 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
     formatter.timeZone = snapshot?.timeZone ?? .current
     formatter.dateStyle = .full
     return formatter.string(from: date)
+  }
+
+  func elapsedText(_ interval: TimeInterval) -> String {
+    "+" + countdownText(floor(max(0, interval) / 60) * 60)
   }
 
   func countdownText(_ interval: TimeInterval) -> String {

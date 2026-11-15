@@ -6085,5 +6085,7 @@
         "description": "Approximate download size, e.g. ~87 MB"
       }
     }
-  }
+  },
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "@macPrayerMenuNameElapsed": {"placeholders": {"prayer": {"type": "String"}, "time": {"type": "String"}}}
 }

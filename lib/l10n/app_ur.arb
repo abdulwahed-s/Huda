@@ -2283,5 +2283,6 @@
   "readingModeIndopak": "انڈو پاک مصحف",
   "mushafPackTitle": "مصحف کے صفحات",
   "mushafPackBody": "اب مصحف میں ہموار صفحہ پلٹنے کے لیے صفحات کی تصاویر استعمال ہوتی ہیں۔ اس انداز میں پڑھنا جاری رکھنے کے لیے انہیں ایک بار ڈاؤن لوڈ کریں۔",
-  "mushafPackDownload": "ڈاؤن لوڈ ({size})"
+  "mushafPackDownload": "ڈاؤن لوڈ ({size})",
+  "macPrayerMenuNameElapsed": "{prayer} {time}"
 }
