@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:huda/core/services/prayer_iqamah_settings.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/services/prayer_country_names.dart';
@@ -123,6 +124,23 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   final Set<PrayerWorkflowIssue> _knownPersistedIssues = {};
   PrayerScheduleResult? _notificationScheduleResult;
   bool _notificationScheduleRetrying = false;
+
+  final _countdownWaiters = <Completer<void>>{};
+  int _iqamahRevision = 0;
+  PrayerIqamahSettings get iqamahSettings =>
+      PrayerIqamahSettings.fromCache(cacheHelper);
+
+  Future<void> saveIqamahSettings(PrayerIqamahSettings settings) async {
+    await settings.save(cacheHelper);
+    final current = state;
+    if (!isClosed && current is PrayerTimesLoaded) {
+      emit(current.copyWith(iqamahSettings: settings));
+    }
+    _iqamahRevision++;
+    for (final waiter in _countdownWaiters.toList()) {
+      if (!waiter.isCompleted) waiter.complete();
+    }
+  }
 
   Set<PrayerWorkflowIssue> get workflowIssues => Set.unmodifiable(_issues);
   Map<String, int> get prayerOffsets => Map.unmodifiable(_prayerOffsets);
@@ -323,6 +341,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       prayerTimes,
       placemarks,
       offsets: _prayerOffsets,
+      iqamahSettings: iqamahSettings,
       notificationSchedule: _notificationScheduleResult,
       notificationScheduleRetrying: _notificationScheduleRetrying,
       workflowIssues: Set.unmodifiable(_issues),
@@ -1581,8 +1600,22 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     }
   }
 
+  Future<void> _waitForCountdownTick(int revision) {
+    if (revision != _iqamahRevision || isClosed) return Future<void>.value();
+    final changed = Completer<void>();
+    _countdownWaiters.add(changed);
+    final timer = Timer(const Duration(seconds: 1), () {
+      if (!changed.isCompleted) changed.complete();
+    });
+    return changed.future.whenComplete(() {
+      timer.cancel();
+      _countdownWaiters.remove(changed);
+    });
+  }
+
   Stream<NextPrayerCountdown> getNextPrayerCountdown() async* {
-    while (true) {
+    while (!isClosed) {
+      final revision = _iqamahRevision;
       if (state is! PrayerTimesLoaded) {
         yield const NextPrayerCountdown(
           prayerName: '...',
@@ -1628,7 +1661,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         );
       }
 
-      await Future.delayed(const Duration(seconds: 1));
+      await _waitForCountdownTick(revision);
     }
   }
 
@@ -1674,6 +1707,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final moment = PrayerMomentResolver.resolve(
       now: now,
       transitions: transitions,
+      iqamah: iqamahSettings,
     );
     if (moment == null) {
       throw Exception('No upcoming prayer time available in the next 7 days');

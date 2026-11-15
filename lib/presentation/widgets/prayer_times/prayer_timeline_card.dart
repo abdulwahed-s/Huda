@@ -57,6 +57,7 @@ class PrayerTimelineCard extends StatelessWidget {
     final nowUtc = now.toUtc();
     final moment = PrayerMomentResolver.resolve(
       now: now,
+      iqamah: state.iqamahSettings,
       transitions: [
         for (final entry in PrayerTimesCalculator.dailyAdjustedInstants(
           times,

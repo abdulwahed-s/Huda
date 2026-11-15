@@ -269,11 +269,7 @@ class _Countdown extends StatelessWidget {
             dimension: 112,
             child: CustomPaint(
               painter: _RingPainter(
-                progress: elapsed
-                    ? 1
-                    : ready
-                    ? _progress(countdown!)
-                    : 0,
+                progress: ready ? _progress(countdown!) : 0,
                 showDot: !elapsed,
                 track: _white.withValues(alpha: 0.16),
                 fill: _white,
@@ -340,9 +336,10 @@ class _Countdown extends StatelessWidget {
 
   double _progress(NextPrayerCountdown countdown) {
     if (countdown.isPastPrayer) {
-      return (countdown.secondsPassed /
-              PrayerMomentResolver.gracePeriod.inSeconds)
-          .clamp(0.0, 1.0);
+      final window = countdown.prayer == null
+          ? 0
+          : state.iqamahSettings.windowFor(countdown.prayer!).inSeconds;
+      return window <= 0 ? 0 : (countdown.secondsPassed / window).clamp(0.0, 1.0);
     }
     final target = countdown.instant!.toUtc();
     final today = PrayerTimesCalculator.dailyAdjustedInstants(

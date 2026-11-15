@@ -7,6 +7,7 @@ class PrayerTimesInitial extends PrayerTimesState {}
 class PrayerTimesLoading extends PrayerTimesState {}
 
 class PrayerTimesLoaded extends PrayerTimesState {
+  final PrayerIqamahSettings iqamahSettings;
   final Set<PrayerWorkflowIssue> workflowIssues;
   final bool workflowRetrying;
 
@@ -25,6 +26,7 @@ class PrayerTimesLoaded extends PrayerTimesState {
   PrayerTimesLoaded(
     this.prayerTimes,
     this.placemarks, {
+    this.iqamahSettings = const PrayerIqamahSettings(),
     this.workflowIssues = const {},
     this.workflowRetrying = false,
     this.updating = false,
@@ -40,6 +42,7 @@ class PrayerTimesLoaded extends PrayerTimesState {
   static const _onlineUnchanged = Object();
 
   PrayerTimesLoaded copyWith({
+    PrayerIqamahSettings? iqamahSettings,
     Set<PrayerWorkflowIssue>? workflowIssues,
     bool? workflowRetrying,
     bool? updating,
@@ -53,6 +56,7 @@ class PrayerTimesLoaded extends PrayerTimesState {
     return PrayerTimesLoaded(
       prayerTimes ?? this.prayerTimes,
       placemarks ?? this.placemarks,
+      iqamahSettings: iqamahSettings ?? this.iqamahSettings,
       workflowIssues: workflowIssues ?? this.workflowIssues,
       workflowRetrying: workflowRetrying ?? this.workflowRetrying,
       updating: updating ?? this.updating,
