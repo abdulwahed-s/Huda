@@ -1,3 +1,4 @@
+import 'package:huda/core/services/prayer_iqamah_settings.dart';
 import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/services/mac_widget_bridge.dart';
 import 'package:huda/core/services/windows_prayer_taskbar_bridge.dart';
@@ -256,6 +257,7 @@ class PrayerWidgetService {
       },
       'offsets': display.offsets,
       'timeFormat': settings.timeFormat.storage,
+      'iqamahMinutes': PrayerIqamahSettings.fromCache(cacheHelper).toMap(),
       'provisional': display.provisional,
       'verificationReasons': location.verificationReasons,
       'precomputedDays': days,
@@ -275,6 +277,35 @@ class PrayerWidgetService {
         'contentSize': settings.contentSize,
       },
     };
+  }
+
+  static Future<void> publishIqamah(PrayerIqamahSettings settings) async {
+    if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) return;
+    final cache = getIt<CacheHelper>();
+    final repository = getIt.isRegistered<PrayerLocationRepository>()
+        ? getIt<PrayerLocationRepository>()
+        : PrayerLocationRepository(cacheHelper: cache);
+    await repository.synchronized((_) async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.reload();
+      if (PlatformUtils.isIOS) await HomeWidget.setAppGroupId(_appGroupId);
+      final values = <String, Object?>{};
+      int revision = 0;
+      for (final key in [_settingsPayloadKey, displayPayloadKey]) {
+        final payload = _decodePayload(prefs.getString(key));
+        if (payload == null) continue;
+        payload['iqamahMinutes'] = settings.toMap();
+        final encoded = jsonEncode(payload);
+        await _writeString(prefs, key, encoded);
+        values[key] = encoded;
+        revision = _integer(payload['revision']) ?? revision;
+      }
+      if (PlatformUtils.isMacOS) {
+        await MacWidgetBridge.publish(values, kinds: _iOSWidgetNames);
+      } else {
+        await _refreshNativeWidget(expectedRevision: revision);
+      }
+    });
   }
 
   static Future<void> initialize() async {
@@ -514,6 +545,7 @@ class PrayerWidgetService {
       'customAngles': customAngleValues,
       'offsets': offsets,
       'timeFormat': settings.timeFormat.storage,
+      'iqamahMinutes': PrayerIqamahSettings.fromCache(cache).toMap(),
       'appearance': <String, Object?>{
         'themeName': theme['themeName'],
         'themeMode': theme['themeMode'],
@@ -555,6 +587,7 @@ class PrayerWidgetService {
       if (display != null) {
         display['appearance'] = payloadValues['appearance'];
         display['timeFormat'] = payloadValues['timeFormat'];
+        display['iqamahMinutes'] = payloadValues['iqamahMinutes'];
         final token = display['calculationMethod'] as String?;
         if (token != null) {
           final appLocale = cache.getDataString(key: 'locale') ?? 'en';

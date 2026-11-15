@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:huda/core/services/prayer_iqamah_settings.dart';
+import 'package:huda/core/services/prayer_iqamah_sync.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:huda/core/services/prayer_display_snapshot.dart';
 import 'package:huda/core/services/prayer_country_names.dart';
@@ -140,6 +141,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     for (final waiter in _countdownWaiters.toList()) {
       if (!waiter.isCompleted) waiter.complete();
     }
+    await PrayerIqamahSync.publish(settings);
   }
 
   Set<PrayerWorkflowIssue> get workflowIssues => Set.unmodifiable(_issues);

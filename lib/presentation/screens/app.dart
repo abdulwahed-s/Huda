@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:huda/core/services/prayer_iqamah_settings.dart';
+import 'package:huda/core/services/prayer_iqamah_sync.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,7 +82,10 @@ class _AppState extends State<App> {
       }
     });
     unawaited(MacPrayerMenuBridge.install(openSettings: _openPrayerSettings));
-    unawaited(LinuxPrayerTrayBridge.install(openSettings: _openPrayerSettings));
+    final linuxTray = LinuxPrayerTrayBridge.install(
+      openSettings: _openPrayerSettings,
+    );
+    unawaited(linuxTray);
     unawaited(
       LinuxPrayerNotificationGateway.install(
         getIt<AudioCoordinator>(),
@@ -103,14 +108,22 @@ class _AppState extends State<App> {
         debugPrint('macOS prayer service initialization failed: $error');
       }),
     );
+    final windowsTaskbar = WindowsPrayerTaskbarBridge.install(
+      openSettings: _openPrayerSettings,
+      openPrayerPage: () => _openPrayerPage(openSettings: false),
+      openQuran: () => _openDesktopPage(AppRoute.homeQuran),
+      openAthkar: () => _openDesktopPage(AppRoute.athkar),
+      openHuda: () => _openDesktopPage(AppRoute.home),
+    );
+    unawaited(windowsTaskbar);
     unawaited(
-      WindowsPrayerTaskbarBridge.install(
-        openSettings: _openPrayerSettings,
-        openPrayerPage: () => _openPrayerPage(openSettings: false),
-        openQuran: () => _openDesktopPage(AppRoute.homeQuran),
-        openAthkar: () => _openDesktopPage(AppRoute.athkar),
-        openHuda: () => _openDesktopPage(AppRoute.home),
-      ),
+      Future.wait([linuxTray, windowsTaskbar]).then((_) {
+        return PrayerIqamahSync.publish(
+          PrayerIqamahSettings.fromCache(getIt<CacheHelper>()),
+        );
+      }).catchError((Object error) {
+        debugPrint('Iqamah display sync failed: $error');
+      }),
     );
   }
 

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:huda/core/services/prayer_iqamah_settings.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:huda/core/cache/cache_helper.dart';
@@ -27,6 +29,7 @@ enum WindowsPrayerTaskbarTextSize { small, medium, large }
 @immutable
 class WindowsPrayerTaskbarPreferences {
   const WindowsPrayerTaskbarPreferences({
+    this.iqamahMinutes = PrayerIqamahSettings.defaults,
     this.showTaskbarCountdown = true,
     this.startWithWindows = false,
     this.style = WindowsPrayerTaskbarStyle.iconNameCountdown,
@@ -37,6 +40,7 @@ class WindowsPrayerTaskbarPreferences {
     this.showIcon = true,
   });
 
+  final Map<String, int> iqamahMinutes;
   final bool showTaskbarCountdown, startWithWindows;
   final WindowsPrayerTaskbarStyle style;
   final bool showSeconds;
@@ -49,6 +53,7 @@ class WindowsPrayerTaskbarPreferences {
   bool get showTrayIcon => true;
 
   WindowsPrayerTaskbarPreferences copyWith({
+    Map<String, int>? iqamahMinutes,
     bool? showTaskbarCountdown,
     bool? startWithWindows,
     WindowsPrayerTaskbarStyle? style,
@@ -58,6 +63,7 @@ class WindowsPrayerTaskbarPreferences {
     WindowsPrayerTaskbarTextSize? textSize,
     bool? showIcon,
   }) => WindowsPrayerTaskbarPreferences(
+    iqamahMinutes: iqamahMinutes ?? this.iqamahMinutes,
     showTaskbarCountdown: showTaskbarCountdown ?? this.showTaskbarCountdown,
     startWithWindows: startWithWindows ?? this.startWithWindows,
     style: style ?? this.style,
@@ -69,6 +75,7 @@ class WindowsPrayerTaskbarPreferences {
   );
 
   Map<String, Object> toMap() => {
+    'iqamahMinutes': iqamahMinutes,
     'enabled': enabled,
     'showTaskbarCountdown': showTaskbarCountdown,
     'showTrayIcon': showTrayIcon,
@@ -83,6 +90,7 @@ class WindowsPrayerTaskbarPreferences {
 
   factory WindowsPrayerTaskbarPreferences.fromMap(Map<Object?, Object?> map) =>
       WindowsPrayerTaskbarPreferences(
+        iqamahMinutes: PrayerIqamahSettings.sanitize(map['iqamahMinutes']).toMap(),
         showTaskbarCountdown: map['showTaskbarCountdown'] != false,
         startWithWindows: map['startWithWindows'] == true,
         style: WindowsPrayerTaskbarStyle.values.firstWhere(
@@ -339,6 +347,14 @@ abstract final class WindowsPrayerTaskbarBridge {
     } catch (error) {
       _recordError(error);
     }
+    if (cache.getDataString(key: PrayerIqamahSettings.cacheKey) == null) {
+      await PrayerIqamahSettings.sanitize(
+        _preferences.iqamahMinutes,
+      ).save(cache);
+    }
+    _preferences = _preferences.copyWith(
+      iqamahMinutes: PrayerIqamahSettings.fromCache(cache).toMap(),
+    );
     // Navigation remains available even if one persisted input needs repair.
     try {
       await channel.invokeMethod<void>('ready');
@@ -366,6 +382,9 @@ abstract final class WindowsPrayerTaskbarBridge {
     WindowsPrayerTaskbarPreferences next,
   ) async {
     await _installation;
+    next = next.copyWith(
+      iqamahMinutes: PrayerIqamahSettings.fromCache(_cache ?? getIt<CacheHelper>()).toMap(),
+    );
     await _lock.synchronized(() async {
       final saved = await (_cache ?? getIt<CacheHelper>()).saveData(
         key: preferencesKey,
@@ -381,6 +400,15 @@ abstract final class WindowsPrayerTaskbarBridge {
         _recordError(error);
         rethrow;
       }
+    });
+  }
+
+  static Future<void> publishIqamah(PrayerIqamahSettings settings) async {
+    if (!PlatformUtils.isWindows) return;
+    await _installation;
+    await _lock.synchronized(() async {
+      _preferences = _preferences.copyWith(iqamahMinutes: settings.toMap());
+      await _publish(force: true);
     });
   }
 

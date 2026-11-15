@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:huda/core/services/prayer_iqamah_settings.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:huda/core/cache/cache_helper.dart';
@@ -25,28 +27,34 @@ enum LinuxPrayerTrayStyle { iconOnly, iconNameCountdown, iconNameClock }
 
 class LinuxPrayerTrayPreferences {
   const LinuxPrayerTrayPreferences({
+    this.iqamahMinutes = PrayerIqamahSettings.defaults,
     this.enabled = true,
     this.startAtLogin = false,
     this.style = LinuxPrayerTrayStyle.iconNameCountdown,
   });
+  final Map<String, int> iqamahMinutes;
   final bool enabled, startAtLogin;
   final LinuxPrayerTrayStyle style;
   LinuxPrayerTrayPreferences copyWith({
+    Map<String, int>? iqamahMinutes,
     bool? enabled,
     bool? startAtLogin,
     LinuxPrayerTrayStyle? style,
   }) => LinuxPrayerTrayPreferences(
+    iqamahMinutes: iqamahMinutes ?? this.iqamahMinutes,
     enabled: enabled ?? this.enabled,
     startAtLogin: startAtLogin ?? this.startAtLogin,
     style: style ?? this.style,
   );
   Map<String, Object> toMap() => {
+    'iqamahMinutes': iqamahMinutes,
     'enabled': enabled,
     'startAtLogin': startAtLogin,
     'style': style.name,
   };
   factory LinuxPrayerTrayPreferences.fromMap(Map<dynamic, dynamic>? map) =>
       LinuxPrayerTrayPreferences(
+        iqamahMinutes: PrayerIqamahSettings.sanitize(map?['iqamahMinutes']).toMap(),
         enabled: map?['enabled'] != false,
         startAtLogin: map?['startAtLogin'] == true,
         style: LinuxPrayerTrayStyle.values.firstWhere(
@@ -186,6 +194,14 @@ abstract final class LinuxPrayerTrayBridge {
           );
         }
       }
+      if (cache.getDataString(key: PrayerIqamahSettings.cacheKey) == null) {
+        await PrayerIqamahSettings.sanitize(
+          preferences.value.iqamahMinutes,
+        ).save(cache);
+      }
+      preferences.value = preferences.value.copyWith(
+        iqamahMinutes: PrayerIqamahSettings.fromCache(cache).toMap(),
+      );
       try {
         _display =
             await (loadDisplay?.call() ??
@@ -290,6 +306,9 @@ abstract final class LinuxPrayerTrayBridge {
   static Future<void> setPreferences(LinuxPrayerTrayPreferences next) async {
     if (!PlatformUtils.isLinux) return;
     await _installation;
+    next = next.copyWith(
+      iqamahMinutes: PrayerIqamahSettings.fromCache(_cache ?? getIt<CacheHelper>()).toMap(),
+    );
     if (next.startAtLogin &&
         experience.value.configured &&
         !experience.value.backgroundEnabled) {
@@ -340,6 +359,15 @@ abstract final class LinuxPrayerTrayBridge {
         _recordError(error);
         return false;
       }
+    });
+  }
+
+  static Future<void> publishIqamah(PrayerIqamahSettings settings) async {
+    if (!PlatformUtils.isLinux) return;
+    await _installation;
+    await _lock.synchronized(() async {
+      preferences.value = preferences.value.copyWith(iqamahMinutes: settings.toMap());
+      await _publish(force: true);
     });
   }
 
@@ -453,6 +481,9 @@ abstract final class LinuxPrayerTrayBridge {
         'serviceUnavailable': l10n.linuxPrayerTrayServiceUnavailable,
         'calculationUnavailable': l10n.linuxPrayerTrayCalculationUnavailable,
         'nameCountdown': l10n.macPrayerMenuNameCountdown('{prayer}', '{time}'),
+        'nameElapsed': l10n.macPrayerMenuNameElapsed('{prayer}', '{time}'),
+        'current': l10n.prayerHeroStarted,
+        'nextPrayer': l10n.nextPrayer,
         'prayerAdvanceBody': l10n.iosPrayerAdvanceBody('{prayer}', '{minutes}'),
         'hourUnit': l10n.macPrayerMenuHourShort,
         'minuteUnit': l10n.macPrayerMenuMinuteShort,
