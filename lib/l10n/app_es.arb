@@ -2279,5 +2279,9 @@
   "prayerAlertFlipNow": "Ahora ponlo boca abajo",
   "prayerAlertFlipDetected": "Giro detectado. El adhan se detendría.",
   "prayerAlertFlipMissed": "No se detectó ningún giro. Inténtalo de nuevo.",
-  "prayerAlertFlipUnavailable": "Este teléfono no puede detectar un giro."
+  "prayerAlertFlipUnavailable": "Este teléfono no puede detectar un giro.",
+  "readingModeIndopak": "Mushaf IndoPak",
+  "mushafPackTitle": "Páginas del Mushaf",
+  "mushafPackBody": "El Mushaf ahora usa imágenes de página para pasar las páginas con más fluidez. Descárgalas una vez para seguir leyendo en este formato.",
+  "mushafPackDownload": "Descargar ({size})"
 }

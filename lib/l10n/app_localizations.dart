@@ -11537,6 +11537,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This phone can\'t detect a flip.'**
   String get prayerAlertFlipUnavailable;
+
+  /// Reading mode: IndoPak 15-line (Qudratullah) Mushaf pages
+  ///
+  /// In en, this message translates to:
+  /// **'IndoPak Mushaf'**
+  String get readingModeIndopak;
+
+  /// Title shown in the Mushaf reader when its page images need to be downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'Mushaf pages'**
+  String get mushafPackTitle;
+
+  /// Explains why the Mushaf page images must be downloaded, including after the update from page fonts
+  ///
+  /// In en, this message translates to:
+  /// **'The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.'**
+  String get mushafPackBody;
+
+  /// Button that downloads the Mushaf page images
+  ///
+  /// In en, this message translates to:
+  /// **'Download ({size})'**
+  String mushafPackDownload(String size);
 }
 
 class _AppLocalizationsDelegate

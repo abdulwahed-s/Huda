@@ -2240,5 +2240,9 @@
   "prayerAlertFlipNow": "Jetzt mit dem Display nach unten drehen",
   "prayerAlertFlipDetected": "Umdrehen erkannt. Der Adhan würde stoppen.",
   "prayerAlertFlipMissed": "Kein Umdrehen erkannt. Versuche es erneut.",
-  "prayerAlertFlipUnavailable": "Dieses Handy kann kein Umdrehen erkennen."
+  "prayerAlertFlipUnavailable": "Dieses Handy kann kein Umdrehen erkennen.",
+  "readingModeIndopak": "IndoPak-Mushaf",
+  "mushafPackTitle": "Mushaf-Seiten",
+  "mushafPackBody": "Der Mushaf verwendet jetzt Seitenbilder für flüssigeres Umblättern. Lade sie einmal herunter, um in dieser Ansicht weiterzulesen.",
+  "mushafPackDownload": "Herunterladen ({size})"
 }

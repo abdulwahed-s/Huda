@@ -6398,4 +6398,19 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get prayerAlertFlipUnavailable =>
       'এই ফোন উল্টানো শনাক্ত করতে পারে না।';
+
+  @override
+  String get readingModeIndopak => 'ইন্দো-পাক মুসহাফ';
+
+  @override
+  String get mushafPackTitle => 'মুসহাফের পৃষ্ঠা';
+
+  @override
+  String get mushafPackBody =>
+      'মসৃণভাবে পৃষ্ঠা ওল্টানোর জন্য মুসহাফ এখন পৃষ্ঠার ছবি ব্যবহার করে। এই বিন্যাসে পড়া চালিয়ে যেতে একবার ডাউনলোড করুন।';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'ডাউনলোড ($size)';
+  }
 }

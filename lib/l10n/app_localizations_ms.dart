@@ -6417,4 +6417,19 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get prayerAlertFlipUnavailable =>
       'Telefon ini tidak dapat mengesan terbalik.';
+
+  @override
+  String get readingModeIndopak => 'Mushaf IndoPak';
+
+  @override
+  String get mushafPackTitle => 'Halaman Mushaf';
+
+  @override
+  String get mushafPackBody =>
+      'Mushaf kini menggunakan imej halaman untuk selakan halaman yang lebih lancar. Muat turun sekali untuk terus membaca dalam susun atur ini.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Muat turun ($size)';
+  }
 }

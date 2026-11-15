@@ -14,7 +14,7 @@ import 'package:huda/core/config/service_initializer.dart';
 import 'package:huda/core/keys/hadith_key.dart';
 import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
-import 'package:huda/core/services/qcf_font_service.dart';
+import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
 import 'package:huda/core/services/sahur_alarm_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
@@ -119,17 +119,25 @@ Future<void> _runBackgroundInit() async {
 
   await initializeNonCriticalServicesAsync();
 
+  // Also removes the page fonts that earlier versions downloaded.
   unawaited(
     _guard(
-      'QCF4 fonts',
-      getIt<QcfFontService>(instanceName: 'qcf4').init,
+      'Mushaf pack',
+      getIt<MushafPackService>(instanceName: 'hafs').init,
       const Duration(seconds: 10),
     ),
   );
   unawaited(
     _guard(
-      'Tajweed fonts',
-      getIt<QcfFontService>(instanceName: 'tajweed').init,
+      'Tajweed Mushaf pack',
+      getIt<MushafPackService>(instanceName: 'tajweed').init,
+      const Duration(seconds: 10),
+    ),
+  );
+  unawaited(
+    _guard(
+      'IndoPak Mushaf pack',
+      getIt<MushafPackService>(instanceName: 'indopak').init,
       const Duration(seconds: 10),
     ),
   );

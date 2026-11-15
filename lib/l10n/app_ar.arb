@@ -2773,5 +2773,9 @@
   "prayerAlertFlipNow": "الآن اقلبه على وجهه",
   "prayerAlertFlipDetected": "تم التعرّف على القلب. سيتوقف الأذان.",
   "prayerAlertFlipMissed": "لم يُلاحظ أي قلب. حاول مجددًا.",
-  "prayerAlertFlipUnavailable": "لا يستطيع هذا الهاتف التعرّف على القلب."
+  "prayerAlertFlipUnavailable": "لا يستطيع هذا الهاتف التعرّف على القلب.",
+  "readingModeIndopak": "المصحف الهندي",
+  "mushafPackTitle": "صفحات المصحف",
+  "mushafPackBody": "أصبح المصحف يعتمد على صور الصفحات ليكون تقليب الصفحات أكثر سلاسة. نزّلها مرة واحدة لمتابعة القراءة بهذا العرض.",
+  "mushafPackDownload": "تنزيل ({size})"
 }

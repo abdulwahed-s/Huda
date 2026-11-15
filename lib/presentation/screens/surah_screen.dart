@@ -13,7 +13,7 @@ import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/core/services/get_fonts.dart';
-import 'package:huda/core/services/qcf_font_service.dart';
+import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/core/services/reading_position_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/surah_screen_settings_service.dart';
@@ -81,7 +81,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     _loadSavedMode();
     _loadCustomisation();
     _currentMushafPage = _initialMushafPage();
-    _preloadFontsForInitialPage(_currentMushafPage);
 
     if (!widget.isBookmarkVisit && !widget.shouldRestorePosition) {
       getIt<ReadingPositionService>().saveReadingPosition(
@@ -114,18 +113,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  Future<void> _preloadFontsForInitialPage(int pageNumber) async {
-    final mode = _readingMode;
-    if (!mode.isMushaf) return;
-    final instanceName = mode == QuranReadingMode.tajweed ? 'tajweed' : 'qcf4';
-    try {
-      final fontService = getIt<QcfFontService>(instanceName: instanceName);
-      await fontService.init();
-      if (!mounted || _readingMode != mode) return;
-      await fontService.ensurePagesLoaded([pageNumber, 1]);
-    } catch (_) {}
-  }
-
   int _initialMushafPage() {
     final surahNumber = widget.surahInfo.number ?? 1;
     try {
@@ -136,11 +123,11 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
             lastRead['surahNumber'] == surahNumber &&
             lastRead['ayahNumber'] != null) {
           final savedAyah = lastRead['ayahNumber'] as int;
-          return quran.getPageNumber(surahNumber, savedAyah);
+          return _readingMode.pagination.pageOf(surahNumber, savedAyah);
         }
       }
       final ayah = widget.scrollToAyah ?? 1;
-      return quran.getPageNumber(surahNumber, ayah);
+      return _readingMode.pagination.pageOf(surahNumber, ayah);
     } catch (_) {
       return 1;
     }
@@ -152,7 +139,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     if (widget.isBookmarkVisit) return;
 
     try {
-      final pageData = quran.getPageData(page);
+      final pageData = _readingMode.pagination.sectionsOf(page);
       if (pageData.isNotEmpty) {
         final surahNum = pageData[0]['surah'] as int;
         final startAyah = pageData[0]['start'] as int;
@@ -193,7 +180,18 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
   }
 
   void _setMode(QuranReadingMode mode) {
-    setState(() => _readingMode = mode);
+    setState(() {
+      // IndoPak and Madani pages differ: stay on the same ayah.
+      try {
+        _currentMushafPage = _readingMode.pagination.convertPage(
+          _currentMushafPage,
+          mode.pagination,
+        );
+      } catch (_) {
+        _currentMushafPage = 1;
+      }
+      _readingMode = mode;
+    });
     getIt<CacheHelper>().saveData(
       key: QuranReadingMode.key,
       value: mode.storageValue,
@@ -298,18 +296,21 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
                                 mushafFlipDirection: _mushafFlipDirection,
                                 quranFont: _quranFont,
                                 fontOptions: _fontOptions,
-                                qcf4FontService: getIt<QcfFontService>(
-                                  instanceName: 'qcf4',
+                                hafsPackService: getIt<MushafPackService>(
+                                  instanceName: 'hafs',
                                 ),
-                                tajweedFontService: getIt<QcfFontService>(
+                                tajweedPackService: getIt<MushafPackService>(
                                   instanceName: 'tajweed',
                                 ),
+                                indopakPackService: getIt<MushafPackService>(
+                                  instanceName: 'indopak',
+                                ),
                                 onReadingModeTap:
-                                    (mode, fontService, requiresFonts) =>
+                                    (mode, packService, requiresPack) =>
                                         _handleReadingModeSelection(
                                           mode: mode,
-                                          fontService: fontService,
-                                          requiresFonts: requiresFonts,
+                                          packService: packService,
+                                          requiresPack: requiresPack,
                                           sheetCtx: sheetCtx,
                                           setSheetState: setSheetState,
                                         ),
@@ -381,25 +382,25 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   Future<void> _handleReadingModeSelection({
     required QuranReadingMode mode,
-    required QcfFontService? fontService,
-    required bool requiresFonts,
+    required MushafPackService? packService,
+    required bool requiresPack,
     required BuildContext sheetCtx,
     required StateSetter setSheetState,
   }) async {
-    final fontsReady = fontService?.areFontsReady ?? true;
-    if (!requiresFonts || fontsReady) {
+    final packReady = packService?.isReady ?? true;
+    if (!requiresPack || packReady) {
       Navigator.pop(sheetCtx);
       _setMode(mode);
       return;
     }
     try {
-      await fontService!.init();
+      await packService!.init();
       if (!mounted || !sheetCtx.mounted) return;
-      if (!fontService.areFontsReady) {
+      if (!packService.isReady) {
         setSheetState(() {});
-        await fontService.downloadAndInstall();
+        await packService.downloadAndInstall();
       }
-      if (!mounted || !fontService.areFontsReady) return;
+      if (!mounted || !packService.isReady) return;
       if (sheetCtx.mounted && Navigator.of(sheetCtx).canPop()) {
         Navigator.pop(sheetCtx);
       }
@@ -413,7 +414,9 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     int activeSurahNumber = widget.surahInfo.number ?? 1;
     if (_readingMode.isMushaf) {
       try {
-        final pageData = quran.getPageData(_currentMushafPage);
+        final pageData = _readingMode.pagination.sectionsOf(
+          _currentMushafPage,
+        );
         if (pageData.isNotEmpty) {
           activeSurahNumber = pageData.first['surah'] as int;
         }
@@ -443,7 +446,8 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
     final surahs = <int>{};
     try {
-      final pageData = quran.getPageData(_currentMushafPage);
+      final pagination = _readingMode.pagination;
+      final pageData = pagination.sectionsOf(_currentMushafPage);
       for (final s in pageData) {
         surahs.add(s['surah'] as int);
       }
@@ -468,8 +472,8 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
       if (isDoubleMode) {
         final leftPage = _currentMushafPage + 1;
-        if (leftPage <= quran.totalPagesCount) {
-          final leftPageData = quran.getPageData(leftPage);
+        if (leftPage <= pagination.pageCount) {
+          final leftPageData = pagination.sectionsOf(leftPage);
           for (final s in leftPageData) {
             surahs.add(s['surah'] as int);
           }

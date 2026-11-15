@@ -6519,4 +6519,19 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get prayerAlertFlipUnavailable =>
       'Ce téléphone ne peut pas détecter un retournement.';
+
+  @override
+  String get readingModeIndopak => 'Mushaf IndoPak';
+
+  @override
+  String get mushafPackTitle => 'Pages du Mushaf';
+
+  @override
+  String get mushafPackBody =>
+      'Le Mushaf utilise désormais des images de pages pour tourner les pages plus fluidement. Téléchargez-les une fois pour continuer à lire dans cette mise en page.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Télécharger ($size)';
+  }
 }

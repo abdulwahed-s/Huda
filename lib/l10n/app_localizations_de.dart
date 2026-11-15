@@ -6495,4 +6495,19 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get prayerAlertFlipUnavailable =>
       'Dieses Handy kann kein Umdrehen erkennen.';
+
+  @override
+  String get readingModeIndopak => 'IndoPak-Mushaf';
+
+  @override
+  String get mushafPackTitle => 'Mushaf-Seiten';
+
+  @override
+  String get mushafPackBody =>
+      'Der Mushaf verwendet jetzt Seitenbilder für flüssigeres Umblättern. Lade sie einmal herunter, um in dieser Ansicht weiterzulesen.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Herunterladen ($size)';
+  }
 }

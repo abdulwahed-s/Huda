@@ -6440,4 +6440,19 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get prayerAlertFlipUnavailable =>
       'Этот телефон не может распознать переворот.';
+
+  @override
+  String get readingModeIndopak => 'Мусхаф ИндоПак';
+
+  @override
+  String get mushafPackTitle => 'Страницы Мусхафа';
+
+  @override
+  String get mushafPackBody =>
+      'Теперь Мусхаф использует изображения страниц для более плавного листания. Загрузите их один раз, чтобы продолжить чтение в этом виде.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Загрузить ($size)';
+  }
 }

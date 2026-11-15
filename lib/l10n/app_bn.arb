@@ -2369,5 +2369,9 @@
   "prayerAlertFlipNow": "এবার ফোনটি উপুড় করুন",
   "prayerAlertFlipDetected": "উল্টানো শনাক্ত হয়েছে। আজান থেমে যেত।",
   "prayerAlertFlipMissed": "কোনো উল্টানো দেখা যায়নি। আবার চেষ্টা করুন।",
-  "prayerAlertFlipUnavailable": "এই ফোন উল্টানো শনাক্ত করতে পারে না।"
+  "prayerAlertFlipUnavailable": "এই ফোন উল্টানো শনাক্ত করতে পারে না।",
+  "readingModeIndopak": "ইন্দো-পাক মুসহাফ",
+  "mushafPackTitle": "মুসহাফের পৃষ্ঠা",
+  "mushafPackBody": "মসৃণভাবে পৃষ্ঠা ওল্টানোর জন্য মুসহাফ এখন পৃষ্ঠার ছবি ব্যবহার করে। এই বিন্যাসে পড়া চালিয়ে যেতে একবার ডাউনলোড করুন।",
+  "mushafPackDownload": "ডাউনলোড ({size})"
 }

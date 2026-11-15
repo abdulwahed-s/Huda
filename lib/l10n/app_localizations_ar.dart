@@ -6326,4 +6326,19 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get prayerAlertFlipUnavailable =>
       'لا يستطيع هذا الهاتف التعرّف على القلب.';
+
+  @override
+  String get readingModeIndopak => 'المصحف الهندي';
+
+  @override
+  String get mushafPackTitle => 'صفحات المصحف';
+
+  @override
+  String get mushafPackBody =>
+      'أصبح المصحف يعتمد على صور الصفحات ليكون تقليب الصفحات أكثر سلاسة. نزّلها مرة واحدة لمتابعة القراءة بهذا العرض.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'تنزيل ($size)';
+  }
 }

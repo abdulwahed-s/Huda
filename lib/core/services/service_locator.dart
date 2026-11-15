@@ -19,7 +19,7 @@ import 'package:huda/core/services/speech_service.dart';
 import 'package:huda/core/services/surah_screen_settings_service.dart';
 import 'package:huda/core/services/khatma_service.dart';
 import 'package:huda/core/services/islamic_event_service.dart';
-import 'package:huda/core/services/qcf_font_service.dart';
+import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/core/services/home_preferences_service.dart';
 import 'package:huda/core/services/hijri_calendar_service.dart';
 import 'package:huda/core/services/notification_services.dart';
@@ -115,20 +115,25 @@ void setupServiceLocator() {
     HomePreferencesService(cache: getIt<CacheHelper>()),
   );
 
-  getIt.registerLazySingleton<QcfFontService>(
-    () => QcfFontService(
-      cache: getIt<CacheHelper>(),
-      packType: FontPackType.qcf4,
-    ),
-    instanceName: 'qcf4',
+  getIt.registerLazySingleton<MushafPackService>(
+    () => MushafPackService(cache: getIt<CacheHelper>(), pack: MushafPack.hafs),
+    instanceName: 'hafs',
   );
 
-  getIt.registerLazySingleton<QcfFontService>(
-    () => QcfFontService(
+  getIt.registerLazySingleton<MushafPackService>(
+    () => MushafPackService(
       cache: getIt<CacheHelper>(),
-      packType: FontPackType.tajweed,
+      pack: MushafPack.tajweed,
     ),
     instanceName: 'tajweed',
+  );
+
+  getIt.registerLazySingleton<MushafPackService>(
+    () => MushafPackService(
+      cache: getIt<CacheHelper>(),
+      pack: MushafPack.indopak,
+    ),
+    instanceName: 'indopak',
   );
 
   getIt.registerSingletonAsync<MiqaatLockRepository>(

@@ -6063,5 +6063,27 @@
   "prayerAlertFlipNow": "Now turn it face down",
   "prayerAlertFlipDetected": "Flip detected. The adhan would stop.",
   "prayerAlertFlipMissed": "No flip seen. Try again.",
-  "prayerAlertFlipUnavailable": "This phone can't detect a flip."
+  "prayerAlertFlipUnavailable": "This phone can't detect a flip.",
+  "readingModeIndopak": "IndoPak Mushaf",
+  "@readingModeIndopak": {
+    "description": "Reading mode: IndoPak 15-line (Qudratullah) Mushaf pages"
+  },
+  "mushafPackTitle": "Mushaf pages",
+  "@mushafPackTitle": {
+    "description": "Title shown in the Mushaf reader when its page images need to be downloaded"
+  },
+  "mushafPackBody": "The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.",
+  "@mushafPackBody": {
+    "description": "Explains why the Mushaf page images must be downloaded, including after the update from page fonts"
+  },
+  "mushafPackDownload": "Download ({size})",
+  "@mushafPackDownload": {
+    "description": "Button that downloads the Mushaf page images",
+    "placeholders": {
+      "size": {
+        "type": "String",
+        "description": "Approximate download size, e.g. ~87 MB"
+      }
+    }
+  }
 }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/services/qcf_font_service.dart';
+import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 class ReadingModeOptionCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final bool isSelected;
-  final bool requiresFonts;
+  final bool requiresPack;
   final bool isDark;
   final Color accent;
-  final QcfFontService? fontService;
+  final MushafPackService? packService;
   final VoidCallback onTap;
 
   const ReadingModeOptionCard({
@@ -18,19 +18,19 @@ class ReadingModeOptionCard extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.isSelected,
-    required this.requiresFonts,
+    required this.requiresPack,
     required this.isDark,
     required this.accent,
     required this.onTap,
-    this.fontService,
+    this.packService,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (fontService != null) {
-      return StreamBuilder<QcfFontDownloadState>(
-        stream: fontService!.stateStream,
-        initialData: fontService!.currentState,
+    if (packService != null) {
+      return StreamBuilder<MushafPackState>(
+        stream: packService!.stateStream,
+        initialData: packService!.currentState,
         builder: (context, _) => _buildCard(context),
       );
     }
@@ -38,34 +38,34 @@ class ReadingModeOptionCard extends StatelessWidget {
   }
 
   Widget _buildCard(BuildContext context) {
-    final fontsReady = fontService?.areFontsReady ?? true;
-    final previouslyDownloaded = fontService?.wasPreviouslyDownloaded ?? false;
-    final currentStatus = fontService?.currentState.status;
-    final fontsBeingProcessed =
-        currentStatus == QcfFontStatus.downloading ||
-        currentStatus == QcfFontStatus.extracting ||
-        currentStatus == QcfFontStatus.loading;
+    final packReady = packService?.isReady ?? true;
+    final previouslyInstalled = packService?.wasPreviouslyInstalled ?? false;
+    final currentStatus = packService?.currentState.status;
+    final packBeingProcessed =
+        currentStatus == MushafPackStatus.downloading ||
+        currentStatus == MushafPackStatus.extracting ||
+        currentStatus == MushafPackStatus.loading;
 
     final needsDownload =
-        requiresFonts &&
-        !fontsReady &&
-        !previouslyDownloaded &&
-        !fontsBeingProcessed;
+        requiresPack &&
+        !packReady &&
+        !previouslyInstalled &&
+        !packBeingProcessed;
 
     final showDownloadProgress =
-        requiresFonts &&
-        !fontsReady &&
-        fontsBeingProcessed &&
-        !previouslyDownloaded &&
-        fontService != null;
+        requiresPack &&
+        !packReady &&
+        packBeingProcessed &&
+        !previouslyInstalled &&
+        packService != null;
 
     final isInitLoading =
-        requiresFonts &&
-        !fontsReady &&
-        previouslyDownloaded &&
-        fontsBeingProcessed;
+        requiresPack &&
+        !packReady &&
+        previouslyInstalled &&
+        packBeingProcessed;
 
-    final sizeLabel = fontService?.packType.sizeLabel ?? '~50 MB';
+    final sizeLabel = packService?.pack.sizeLabel ?? MushafPack.hafs.sizeLabel;
 
     return GestureDetector(
       onTap: onTap,
@@ -200,13 +200,12 @@ class ReadingModeOptionCard extends StatelessWidget {
             ],
             if (showDownloadProgress) ...[
               SizedBox(height: 8.h),
-              StreamBuilder<QcfFontDownloadState>(
-                stream: fontService!.stateStream,
-                initialData: fontService!.currentState,
+              StreamBuilder<MushafPackState>(
+                stream: packService!.stateStream,
+                initialData: packService!.currentState,
                 builder: (context, snapshot) {
-                  final state =
-                      snapshot.data ?? const QcfFontDownloadState.idle();
-                  if (state.status == QcfFontStatus.idle) {
+                  final state = snapshot.data ?? const MushafPackState.idle();
+                  if (state.status == MushafPackStatus.idle) {
                     return const SizedBox.shrink();
                   }
                   return Column(
@@ -214,7 +213,7 @@ class ReadingModeOptionCard extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(4.r),
                         child: LinearProgressIndicator(
-                          value: state.status == QcfFontStatus.downloading
+                          value: state.status == MushafPackStatus.downloading
                               ? state.progress
                               : null,
                           minHeight: 3.h,
@@ -226,9 +225,9 @@ class ReadingModeOptionCard extends StatelessWidget {
                       ),
                       SizedBox(height: 3.h),
                       Text(
-                        state.status == QcfFontStatus.downloading
+                        state.status == MushafPackStatus.downloading
                             ? '${(state.progress * 100).toInt()}%'
-                            : state.status == QcfFontStatus.extracting
+                            : state.status == MushafPackStatus.extracting
                             ? AppLocalizations.of(context)!.fontExtractingLabel
                             : AppLocalizations.of(context)!.fontLoadingLabel,
                         style: TextStyle(

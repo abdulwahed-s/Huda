@@ -245,7 +245,9 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
 
                     if (isMemorizationMode) {
                       try {
-                        final pageData = quran.getPageData(page);
+                        final pageData = widget.mode.pagination.sectionsOf(
+                          page,
+                        );
                         final hasMemoSurah = pageData.any(
                           (s) => (s['surah'] as int) == memSurahNumber,
                         );
@@ -745,7 +747,7 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
       text: verseText,
       numberInSurah: verseNum,
       juz: quran.getJuzNumber(surahNum, verseNum),
-      page: quran.getPageNumber(surahNum, verseNum),
+      page: widget.mode.pagination.pageOf(surahNum, verseNum),
     );
 
     final memorizationCubit = context.read<MemorizationCubit>();

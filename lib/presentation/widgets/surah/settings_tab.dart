@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/services/qcf_font_service.dart';
+import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 import 'package:huda/presentation/widgets/surah/quran_font_option_tile.dart';
@@ -17,13 +17,14 @@ class SettingsTab extends StatelessWidget {
   final String quranFont;
   final List<Map<String, String>> fontOptions;
 
-  final QcfFontService? qcf4FontService;
-  final QcfFontService? tajweedFontService;
+  final MushafPackService? hafsPackService;
+  final MushafPackService? tajweedPackService;
+  final MushafPackService? indopakPackService;
 
   final void Function(
     QuranReadingMode mode,
-    QcfFontService? fontService,
-    bool requiresFonts,
+    MushafPackService? packService,
+    bool requiresPack,
   )
   onReadingModeTap;
 
@@ -44,9 +45,37 @@ class SettingsTab extends StatelessWidget {
     required this.onHorizontalDisplayModeSelected,
     required this.onMushafFlipDirectionSelected,
     required this.onFontSelected,
-    this.qcf4FontService,
-    this.tajweedFontService,
+    this.hafsPackService,
+    this.tajweedPackService,
+    this.indopakPackService,
   });
+
+  MushafPackService? _packServiceFor(QuranReadingMode mode) {
+    switch (mode) {
+      case QuranReadingMode.scrollList:
+        return null;
+      case QuranReadingMode.horizontalPages:
+        return hafsPackService;
+      case QuranReadingMode.tajweed:
+        return tajweedPackService;
+      case QuranReadingMode.indopak:
+        return indopakPackService;
+    }
+  }
+
+  Widget _modeCard(BuildContext context, QuranReadingMode mode) {
+    final packService = _packServiceFor(mode);
+    return ReadingModeOptionCard(
+      icon: mode.icon,
+      label: mode.localizedLabel(context),
+      isSelected: readingMode == mode,
+      requiresPack: mode.isMushaf,
+      isDark: isDark,
+      accent: accent,
+      packService: packService,
+      onTap: () => onReadingModeTap(mode, packService, mode.isMushaf),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,64 +93,23 @@ class SettingsTab extends StatelessWidget {
             accent: accent,
           ),
           SizedBox(height: 12.h),
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: ReadingModeOptionCard(
-                    icon: QuranReadingMode.scrollList.icon,
-                    label: QuranReadingMode.scrollList.localizedLabel(context),
-                    isSelected: readingMode == QuranReadingMode.scrollList,
-                    requiresFonts: false,
-                    isDark: isDark,
-                    accent: accent,
-                    onTap: () => onReadingModeTap(
-                      QuranReadingMode.scrollList,
-                      null,
-                      false,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: ReadingModeOptionCard(
-                    icon: QuranReadingMode.horizontalPages.icon,
-                    label: QuranReadingMode.horizontalPages.localizedLabel(
-                      context,
-                    ),
-                    isSelected: readingMode == QuranReadingMode.horizontalPages,
-                    requiresFonts: true,
-                    isDark: isDark,
-                    accent: accent,
-                    fontService: qcf4FontService,
-                    onTap: () => onReadingModeTap(
-                      QuranReadingMode.horizontalPages,
-                      qcf4FontService,
-                      true,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: ReadingModeOptionCard(
-                    icon: QuranReadingMode.tajweed.icon,
-                    label: QuranReadingMode.tajweed.localizedLabel(context),
-                    isSelected: readingMode == QuranReadingMode.tajweed,
-                    requiresFonts: true,
-                    isDark: isDark,
-                    accent: accent,
-                    fontService: tajweedFontService,
-                    onTap: () => onReadingModeTap(
-                      QuranReadingMode.tajweed,
-                      tajweedFontService,
-                      true,
-                    ),
-                  ),
-                ),
-              ],
+          for (final row in const [
+            [QuranReadingMode.scrollList, QuranReadingMode.horizontalPages],
+            [QuranReadingMode.tajweed, QuranReadingMode.indopak],
+          ]) ...[
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(child: _modeCard(context, row[0])),
+                  SizedBox(width: 10.w),
+                  Expanded(child: _modeCard(context, row[1])),
+                ],
+              ),
             ),
-          ),
+            if (row.first == QuranReadingMode.scrollList)
+              SizedBox(height: 10.h),
+          ],
           if (readingMode.isMushaf) ...[
             SettingsSectionHeader(
               title: l.settingsHorizontalLayout,

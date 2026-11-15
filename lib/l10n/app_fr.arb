@@ -2267,5 +2267,9 @@
   "prayerAlertFlipNow": "Retournez-le maintenant face contre table",
   "prayerAlertFlipDetected": "Retournement détecté. L'adhan s'arrêterait.",
   "prayerAlertFlipMissed": "Aucun retournement détecté. Réessayez.",
-  "prayerAlertFlipUnavailable": "Ce téléphone ne peut pas détecter un retournement."
+  "prayerAlertFlipUnavailable": "Ce téléphone ne peut pas détecter un retournement.",
+  "readingModeIndopak": "Mushaf IndoPak",
+  "mushafPackTitle": "Pages du Mushaf",
+  "mushafPackBody": "Le Mushaf utilise désormais des images de pages pour tourner les pages plus fluidement. Téléchargez-les une fois pour continuer à lire dans cette mise en page.",
+  "mushafPackDownload": "Télécharger ({size})"
 }

@@ -6387,4 +6387,19 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get prayerAlertFlipUnavailable => 'یہ فون الٹنا نہیں پہچان سکتا۔';
+
+  @override
+  String get readingModeIndopak => 'انڈو پاک مصحف';
+
+  @override
+  String get mushafPackTitle => 'مصحف کے صفحات';
+
+  @override
+  String get mushafPackBody =>
+      'اب مصحف میں ہموار صفحہ پلٹنے کے لیے صفحات کی تصاویر استعمال ہوتی ہیں۔ اس انداز میں پڑھنا جاری رکھنے کے لیے انہیں ایک بار ڈاؤن لوڈ کریں۔';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'ڈاؤن لوڈ ($size)';
+  }
 }

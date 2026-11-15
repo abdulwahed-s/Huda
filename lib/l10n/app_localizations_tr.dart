@@ -6391,4 +6391,19 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get prayerAlertFlipUnavailable =>
       'Bu telefon çevirmeyi algılayamıyor.';
+
+  @override
+  String get readingModeIndopak => 'IndoPak Mushafı';
+
+  @override
+  String get mushafPackTitle => 'Mushaf sayfaları';
+
+  @override
+  String get mushafPackBody =>
+      'Mushaf artık daha akıcı sayfa çevirme için sayfa görselleri kullanıyor. Bu düzende okumaya devam etmek için bunları bir kez indirin.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'İndir ($size)';
+  }
 }

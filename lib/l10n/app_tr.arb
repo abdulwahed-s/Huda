@@ -2263,5 +2263,9 @@
   "prayerAlertFlipNow": "Şimdi ekranı aşağı gelecek şekilde çevir",
   "prayerAlertFlipDetected": "Çevirme algılandı. Ezan dururdu.",
   "prayerAlertFlipMissed": "Çevirme görülmedi. Tekrar dene.",
-  "prayerAlertFlipUnavailable": "Bu telefon çevirmeyi algılayamıyor."
+  "prayerAlertFlipUnavailable": "Bu telefon çevirmeyi algılayamıyor.",
+  "readingModeIndopak": "IndoPak Mushafı",
+  "mushafPackTitle": "Mushaf sayfaları",
+  "mushafPackBody": "Mushaf artık daha akıcı sayfa çevirme için sayfa görselleri kullanıyor. Bu düzende okumaya devam etmek için bunları bir kez indirin.",
+  "mushafPackDownload": "İndir ({size})"
 }

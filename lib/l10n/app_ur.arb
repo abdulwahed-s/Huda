@@ -2279,5 +2279,9 @@
   "prayerAlertFlipNow": "اب اسے الٹا کر دیں",
   "prayerAlertFlipDetected": "الٹنا پہچان لیا گیا۔ اذان رک جاتی۔",
   "prayerAlertFlipMissed": "کوئی الٹنا نظر نہیں آیا۔ دوبارہ کوشش کریں۔",
-  "prayerAlertFlipUnavailable": "یہ فون الٹنا نہیں پہچان سکتا۔"
+  "prayerAlertFlipUnavailable": "یہ فون الٹنا نہیں پہچان سکتا۔",
+  "readingModeIndopak": "انڈو پاک مصحف",
+  "mushafPackTitle": "مصحف کے صفحات",
+  "mushafPackBody": "اب مصحف میں ہموار صفحہ پلٹنے کے لیے صفحات کی تصاویر استعمال ہوتی ہیں۔ اس انداز میں پڑھنا جاری رکھنے کے لیے انہیں ایک بار ڈاؤن لوڈ کریں۔",
+  "mushafPackDownload": "ڈاؤن لوڈ ({size})"
 }
