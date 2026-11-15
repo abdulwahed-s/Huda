@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:huda/core/quran/mushaf_pagination.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
 import 'package:huda/core/utils/hizb_calculator.dart';
 
@@ -30,8 +31,11 @@ class MushafPageContent {
     required this.verses,
   });
 
-  factory MushafPageContent.fromPage(int pageNumber) {
-    final sections = quran.getPageData(pageNumber);
+  factory MushafPageContent.fromPage(
+    int pageNumber, {
+    MushafPagination pagination = MushafPagination.madani,
+  }) {
+    final sections = pagination.sectionsOf(pageNumber);
     final firstSurah = sections.first['surah'] as int;
     final firstVerse = sections.first['start'] as int;
     final verses = <MushafVerseContent>[];
@@ -69,9 +73,13 @@ class MushafPageContent {
 /// highlights are rebuilt from current settings, so they cannot become stale.
 class MushafPageContentCache {
   final int maxPages;
+  final MushafPagination pagination;
   final _pages = <int, MushafPageContent>{};
 
-  MushafPageContentCache({this.maxPages = 12}) : assert(maxPages > 0);
+  MushafPageContentCache({
+    this.maxPages = 12,
+    this.pagination = MushafPagination.madani,
+  }) : assert(maxPages > 0);
 
   MushafPageContent getPage(int pageNumber) {
     final cached = _pages.remove(pageNumber);
@@ -79,7 +87,7 @@ class MushafPageContentCache {
         cached ??
         Timeline.timeSync<MushafPageContent>(
           'Quran page content',
-          () => MushafPageContent.fromPage(pageNumber),
+          () => MushafPageContent.fromPage(pageNumber, pagination: pagination),
           arguments: {'page': pageNumber},
         );
     _pages[pageNumber] = content;
