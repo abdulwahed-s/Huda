@@ -4,6 +4,13 @@
     "revision": 1,
     "publishedAtUtc": "2000-01-01T00:00:00.000Z",
     "preferences": {
+      "iqamahMinutes": {
+        "fajr": 25,
+        "dhuhr": 20,
+        "asr": 20,
+        "maghrib": 5,
+        "isha": 20
+      },
       "enabled": true,
       "showTaskbarCountdown": true,
       "showTrayIcon": true,
@@ -50,6 +57,7 @@
         "prayerFocusLockedHint": "Focus ends when the timer reaches zero.",
         "prayerNotificationTitle": "🕌 {prayer} Prayer Time",
         "prayerNotificationBody": "It's time for {prayer} prayer. May Allah accept your prayers.",
+        "prayerAdvanceBody": "{prayer} in {minutes} minutes.",
         "prayerNextNotification": "Next: {prayer} in {duration}"
       }
     },
@@ -91,6 +99,13 @@
     "revision": 1,
     "publishedAtUtc": "2000-01-01T00:00:00.000Z",
     "preferences": {
+      "iqamahMinutes": {
+        "fajr": 25,
+        "dhuhr": 20,
+        "asr": 20,
+        "maghrib": 5,
+        "isha": 20
+      },
       "enabled": true,
       "showTaskbarCountdown": true,
       "showTrayIcon": true,
@@ -137,6 +152,7 @@
         "prayerFocusLockedHint": "ينتهي وضع التركيز عندما يصل المؤقت إلى الصفر.",
         "prayerNotificationTitle": "🕌 حان وقت صلاة {prayer}",
         "prayerNotificationBody": "حان وقت صلاة {prayer}، تقبّل الله صلاتكم.",
+        "prayerAdvanceBody": "{prayer} بعد {minutes} دقائق.",
         "prayerNextNotification": "التالي: {prayer} بعد {duration}"
       }
     },

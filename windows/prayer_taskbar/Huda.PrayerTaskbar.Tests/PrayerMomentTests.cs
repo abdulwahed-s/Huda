@@ -28,7 +28,9 @@ public sealed class PrayerMomentTests
         }).ToArray();
         var snapshot = new ScheduleSnapshot(now.InUtc().Date,
             new DailySchedule(now.InUtc().Date, new Dictionary<string, Instant?>()), events, null);
-        var moment = snapshot.Moment(now);
+        var minutes = sample.TryGetProperty("iqamahMinutes", out var rawMinutes)
+            ? JsonSerializer.Deserialize<Dictionary<string, int>>(rawMinutes.GetRawText()) : null;
+        var moment = snapshot.Moment(now, minutes);
         Assert.NotNull(moment);
         Assert.True(sample.GetProperty("expectedPrayer").GetString() == moment.Prayer.Key,
             $"{name}: native selected {moment.Prayer.Key}.");
@@ -39,6 +41,7 @@ public sealed class PrayerMomentTests
         Assert.Equal(sample.GetProperty("expectedSeconds").GetInt32(),
             components[0] * 3600 + components[1] * 60 + components[2]);
         var config = ContractsTests.Sample();
+        if (minutes is not null) config = config with { Preferences = config.Preferences with { IqamahMinutes = minutes } };
         Assert.Contains(config.Presentation.Label(moment.Prayer.Key), CountdownFormatter.Text(config, snapshot, now));
         Assert.Contains(counter, CountdownFormatter.Text(config, snapshot, now));
     }

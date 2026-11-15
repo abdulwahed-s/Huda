@@ -132,6 +132,26 @@ public sealed class ContractsTests
     }
 
     [Fact]
+    public void IqamahIsAnOptionalDisplayPreferenceWithSafeDefaultsAndClampedValues()
+    {
+        var legacy = JsonNode.Parse(JsonSerializer.Serialize(Sample(), TaskbarConfiguration.JsonOptions))!;
+        legacy["preferences"]!.AsObject().Remove("iqamahMinutes");
+        Assert.Equal(PrayerIqamahWindows.Defaults, TaskbarConfiguration.Parse(legacy.ToJsonString()).Preferences.IqamahMinutes);
+        foreach (var invalid in new[] { "null", "false", "[]", "\"invalid\"" })
+        {
+            legacy["preferences"]!["iqamahMinutes"] = JsonNode.Parse(invalid);
+            Assert.Equal(PrayerIqamahWindows.Defaults, TaskbarConfiguration.Parse(legacy.ToJsonString()).Preferences.IqamahMinutes);
+        }
+        legacy["preferences"]!["iqamahMinutes"] = JsonNode.Parse("""
+            {"fajr":99,"dhuhr":-1,"asr":"bad","maghrib":0,"isha":true,"sunrise":10}
+            """);
+        var minutes = TaskbarConfiguration.Parse(legacy.ToJsonString()).Preferences.IqamahMinutes;
+        Assert.Equal(60, minutes["fajr"]); Assert.Equal(0, minutes["dhuhr"]);
+        Assert.Equal(20, minutes["asr"]); Assert.Equal(0, minutes["maghrib"]); Assert.Equal(20, minutes["isha"]);
+        Assert.False(minutes.ContainsKey("sunrise"));
+    }
+
+    [Fact]
     public void InvalidPartialUnsupportedAndStaleRevisionsRetainTheLastGoodConfiguration()
     {
         var store = new ConfigurationStore("unused");

@@ -4,21 +4,20 @@ using PrayerTimePlus;
 namespace Huda.PrayerTaskbar.Core;
 
 public sealed record PrayerEvent(string Key, LocalDate CivilDate, Instant Time);
-public sealed record PrayerMoment(PrayerEvent Prayer, bool IsElapsed);
+public sealed record PrayerMoment(PrayerEvent Prayer, bool IsElapsed, Instant StateEnd);
 public sealed record DailySchedule(LocalDate Date, IReadOnlyDictionary<string, Instant?> Times);
 public sealed record ScheduleSnapshot(LocalDate Today, DailySchedule Daily,
     IReadOnlyList<PrayerEvent> Events, string? Error)
 {
-    public PrayerEvent? Next(Instant now) => Events.FirstOrDefault(item => item.Time > now);
+    public PrayerEvent? Next(Instant now) => Events.FirstOrDefault(item => item.Key != "sunrise" && item.Time > now);
 
-    // Match the Prayer Times page's PrayerMomentResolver, including its
-    // 25-minute elapsed state after a prayer and at exact prayer boundaries.
-    public PrayerMoment? Moment(Instant now)
+    // Match the Prayer Times page's per-prayer Iqamah windows at exact boundaries.
+    public PrayerMoment? Moment(Instant now, IReadOnlyDictionary<string, int>? iqamahMinutes = null)
     {
-        var started = Events.LastOrDefault(item => item.Time <= now);
-        if (started is not null && now < started.Time + Duration.FromMinutes(25))
-            return new PrayerMoment(started, true);
-        return Next(now) is { } next ? new PrayerMoment(next, false) : null;
+        var started = Events.LastOrDefault(item => item.Key != "sunrise" && item.Time <= now);
+        if (started is not null && now < started.Time + PrayerIqamahWindows.Window(started.Key, iqamahMinutes))
+            return new PrayerMoment(started, true, started.Time + PrayerIqamahWindows.Window(started.Key, iqamahMinutes));
+        return Next(now) is { } next ? new PrayerMoment(next, false, next.Time) : null;
     }
 }
 

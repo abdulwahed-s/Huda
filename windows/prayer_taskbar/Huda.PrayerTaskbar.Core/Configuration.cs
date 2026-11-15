@@ -96,6 +96,8 @@ public sealed record TaskbarConfiguration
 
 public sealed record TaskbarPreferences
 {
+    [System.Text.Json.Serialization.JsonConverter(typeof(PrayerIqamahMinutesConverter))]
+    public IReadOnlyDictionary<string, int> IqamahMinutes { get; init; } = PrayerIqamahWindows.Defaults;
     public required bool Enabled { get; init; }
     public required bool ShowTaskbarCountdown { get; init; }
     public required bool ShowTrayIcon { get; init; }

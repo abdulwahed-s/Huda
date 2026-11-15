@@ -32,7 +32,7 @@ public static class CountdownFormatter
         var p = config.Presentation;
         if (config.Location is null) return p.Label("needsSetup");
         if (snapshot?.Error is { } error) return p.Label(error);
-        if (snapshot?.Moment(now) is not { } moment) return p.Label("noNextPrayer");
+        if (snapshot?.Moment(now, config.Preferences.IqamahMinutes) is not { } moment) return p.Label("noNextPrayer");
         var time = config.Preferences.Style == "iconNameClock"
             ? Clock(moment.Prayer.Time, config.Location.TimeZoneId, p)
             : Digits(Counter(moment, now, config.Preferences.ShowSeconds), p.Numerals);

@@ -172,7 +172,7 @@ internal sealed class PrayerPopup
         var highContrast = _accessibility.HighContrast;
         var accent = highContrast ? _heading.Foreground : new SolidColorBrush(ReadableAccent(primary,
             _root.RequestedTheme == ElementTheme.Dark));
-        var moment = config.Location is not null && schedule?.Error is null ? schedule?.Moment(now) : null;
+        var moment = config.Location is not null && schedule?.Error is null ? schedule?.Moment(now, config.Preferences.IqamahMinutes) : null;
         Set(_nextPrayer, moment is { } current ? p.Label(current.Prayer.Key)
             : CountdownFormatter.Text(config, schedule, now));
         Set(_countdown, moment is { } target ? CountdownFormatter.Digits(
