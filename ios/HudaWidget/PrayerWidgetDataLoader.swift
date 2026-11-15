@@ -81,7 +81,8 @@ enum PrayerWidgetDataLoader {
       contentColor: stored.contentColor, highlightColor: stored.highlightColor, contentSize: stored.contentSize,
       timeFormat: stored.timeFormat, locationRevision: Int(schedule.location.revision), scheduleRevision: Int(native.configuration.revision),
       publicationRevision: stored.publicationRevision,
-      configurationSignature: "\(native.configuration.configurationSignature)|ios:\(native.configuration.revision):\(native.configuration.policyRevision)")
+      configurationSignature: "\(native.configuration.configurationSignature)|ios:\(native.configuration.revision):\(native.configuration.policyRevision)",
+      iqamah: stored.iqamah)
   }
   #else
   // The macOS widget doesn't compile the iOS prayer store.
@@ -266,7 +267,8 @@ enum PrayerWidgetDataLoader {
         ?? readInt(payload?["revision"]) ?? 0,
       configurationSignature: readString(payload?["configurationSignature"])
         ?? "legacy-v2",
-      precomputedDays: payload?["precomputedDays"] as? [String: [String: Double]] ?? [:]
+      precomputedDays: payload?["precomputedDays"] as? [String: [String: Double]] ?? [:],
+      iqamah: PrayerIqamahWindows(payload?["iqamahMinutes"])
     )
   }
 
@@ -463,6 +465,7 @@ struct PrayerWidgetSettings {
   let publicationRevision: Int
   let configurationSignature: String
   var precomputedDays: [String: [String: Double]] = [:]
+  var iqamah = PrayerIqamahWindows()
 
   var effectiveLanguage: String {
     if language == "auto" || language.isEmpty {

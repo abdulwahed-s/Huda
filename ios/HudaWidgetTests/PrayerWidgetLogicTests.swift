@@ -179,8 +179,27 @@ final class PrayerWidgetLogicTests: XCTestCase {
         now,
         compactStart,
         prayer,
-        prayer.addingTimeInterval(25 * 60),
+        prayer.addingTimeInterval(20 * 60),
       ])
+  }
+
+  func testIqamahDefaultsSanitizeOffAndSunrise() {
+    let windows = PrayerIqamahWindows(["fajr": 99, "dhuhr": -4, "asr": "invalid", "isha": true, "sunrise": 10])
+    XCTAssertEqual(windows.window(for: .fajr), 60 * 60)
+    XCTAssertEqual(windows.window(for: .dhuhr), 0)
+    XCTAssertEqual(windows.window(for: .asr), 20 * 60)
+    XCTAssertEqual(windows.window(for: .isha), 20 * 60)
+    XCTAssertEqual(windows.window(for: .sunrise), 0)
+    let start = date(18, 0)
+    let transitions = [PrayerWidgetTransition(prayer: .maghrib, date: start),
+      PrayerWidgetTransition(prayer: .isha, date: date(19, 0))]
+    XCTAssertEqual(PrayerWidgetStateResolver.resolve(now: start.addingTimeInterval(299), transitions: transitions)?.mode, .elapsed)
+    XCTAssertEqual(PrayerWidgetStateResolver.resolve(now: start.addingTimeInterval(300), transitions: transitions)?.mode, .countdown)
+    XCTAssertEqual(PrayerWidgetStateResolver.resolve(now: start, transitions: transitions,
+      iqamah: PrayerIqamahWindows(["maghrib": 0]))?.prayer, .isha)
+    let offPoints = PrayerWidgetStateResolver.activationPoints(now: start, through: date(20, 0),
+      transitions: transitions, iqamah: PrayerIqamahWindows(["maghrib": 0]))
+    XCTAssertFalse(offPoints.contains(start.addingTimeInterval(300)))
   }
 
   func testUmmAlQuraIshaIntervalsInAndOutsideRamadan() throws {
@@ -292,6 +311,16 @@ final class PrayerWidgetLogicTests: XCTestCase {
     XCTAssertEqual(current.timeZoneIdentifier, "Asia/Muscat")
     XCTAssertEqual(current.locationMode, "manual")
     XCTAssertEqual(current.timeFormat, .twentyFourHour)
+    XCTAssertEqual(current.iqamah.window(for: .maghrib), 5 * 60)
+    var customIqamah = payload
+    customIqamah["iqamahMinutes"] = ["maghrib": 0, "fajr": 90, "asr": "invalid"]
+    try defaults.set(String(data: JSONSerialization.data(withJSONObject: customIqamah), encoding: .utf8),
+      forKey: "prayer_widget_settings_v2")
+    let customSettings = PrayerWidgetDataLoader.loadSettings(from: defaults)
+    XCTAssertEqual(customSettings.iqamah.window(for: .maghrib), 0)
+    XCTAssertEqual(customSettings.iqamah.window(for: .fajr), 60 * 60)
+    XCTAssertEqual(customSettings.iqamah.window(for: .asr), 20 * 60)
+
 
     var payloadWithoutFormat = payload
     payloadWithoutFormat.removeValue(forKey: "timeFormat")

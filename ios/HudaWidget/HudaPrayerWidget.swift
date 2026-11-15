@@ -245,7 +245,8 @@ struct PrayerWidgetProvider: TimelineProvider {
         func makeEntry(at activeFrom: Date) -> PrayerWidgetEntry? {
             guard let moment = PrayerWidgetStateResolver.resolve(
                 now: activeFrom,
-                transitions: resolverTransitions
+                transitions: resolverTransitions,
+                iqamah: settings.iqamah
             ) else { return nil }
             let currentTransition = moment.latestStartedIndex.map {
                 resolverTransitions[$0]
@@ -317,7 +318,8 @@ struct PrayerWidgetProvider: TimelineProvider {
         let uniquePoints = PrayerWidgetStateResolver.activationPoints(
             now: now,
             through: horizon,
-            transitions: resolverTransitions
+            transitions: resolverTransitions,
+            iqamah: settings.iqamah
         )
 
         for at in uniquePoints.prefix(max(1, maximumEntries)) {
