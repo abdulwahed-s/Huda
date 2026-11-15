@@ -29,7 +29,10 @@ export const LOCALES = {
     "sunrise": "الشروق",
     "verifyLocation": "تحقق من الموقع في هدى",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "النساء · ١٠٣"
+    "verseReference": "النساء · ١٠٣",
+    "nameElapsed": "{prayer} {time}",
+    "current": "دخل وقت الصلاة",
+    "nextPrayer": "الصلاة القادمة"
   },
   "bn": {
     "asr": "আসর",
@@ -60,7 +63,10 @@ export const LOCALES = {
     "sunrise": "সূর্যোদয়",
     "verifyLocation": "হুদায় অবস্থান যাচাই করুন",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "আন-নিসা · ৪:১০৩"
+    "verseReference": "আন-নিসা · ৪:১০৩",
+    "nameElapsed": "{prayer} {time}",
+    "current": "নামাজের সময় শুরু হয়েছে",
+    "nextPrayer": "পরবর্তী নামাজ"
   },
   "de": {
     "asr": "Asr",
@@ -91,7 +97,10 @@ export const LOCALES = {
     "sunrise": "Sonnenaufgang",
     "verifyLocation": "Standort in Huda überprüfen",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "An-Nisa · 4:103"
+    "verseReference": "An-Nisa · 4:103",
+    "nameElapsed": "{prayer} {time}",
+    "current": "Gebetszeit hat begonnen",
+    "nextPrayer": "Nächstes Gebet"
   },
   "en": {
     "asr": "Asr",
@@ -122,7 +131,10 @@ export const LOCALES = {
     "sunrise": "Sunrise",
     "verifyLocation": "Verify location in Huda",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "An-Nisa · 4:103"
+    "verseReference": "An-Nisa · 4:103",
+    "nameElapsed": "{prayer} {time}",
+    "current": "Prayer time started",
+    "nextPrayer": "Next prayer"
   },
   "es": {
     "asr": "Asr",
@@ -153,7 +165,10 @@ export const LOCALES = {
     "sunrise": "Amanecer",
     "verifyLocation": "Verifica la ubicación en Huda",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "An-Nisa · 4:103"
+    "verseReference": "An-Nisa · 4:103",
+    "nameElapsed": "{prayer} {time}",
+    "current": "Ha comenzado la oración",
+    "nextPrayer": "Próxima oración"
   },
   "fr": {
     "asr": "Asr",
@@ -184,7 +199,10 @@ export const LOCALES = {
     "sunrise": "Lever du soleil",
     "verifyLocation": "Vérifiez la position dans Huda",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "An-Nisa · 4:103"
+    "verseReference": "An-Nisa · 4:103",
+    "nameElapsed": "{prayer} {time}",
+    "current": "L'heure de prière a commencé",
+    "nextPrayer": "Prochaine prière"
   },
   "ms": {
     "asr": "Asar",
@@ -215,7 +233,10 @@ export const LOCALES = {
     "sunrise": "Syuruk",
     "verifyLocation": "Sahkan lokasi dalam Huda",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "An-Nisa · 4:103"
+    "verseReference": "An-Nisa · 4:103",
+    "nameElapsed": "{prayer} {time}",
+    "current": "Waktu solat telah masuk",
+    "nextPrayer": "Solat seterusnya"
   },
   "ru": {
     "asr": "Аср",
@@ -246,7 +267,10 @@ export const LOCALES = {
     "sunrise": "Восход",
     "verifyLocation": "Проверьте местоположение в Huda",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "Ан-Ниса · 4:103"
+    "verseReference": "Ан-Ниса · 4:103",
+    "nameElapsed": "{prayer} {time}",
+    "current": "Время намаза наступило",
+    "nextPrayer": "Следующий намаз"
   },
   "tr": {
     "asr": "İkindi",
@@ -277,7 +301,10 @@ export const LOCALES = {
     "sunrise": "Güneş",
     "verifyLocation": "Huda’da konumu doğrulayın",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "Nisâ · 4:103"
+    "verseReference": "Nisâ · 4:103",
+    "nameElapsed": "{prayer} {time}",
+    "current": "Namaz vakti girdi",
+    "nextPrayer": "Sonraki Namaz"
   },
   "ur": {
     "asr": "عصر",
@@ -308,6 +335,9 @@ export const LOCALES = {
     "sunrise": "طلوع آفتاب",
     "verifyLocation": "ہدیٰ میں مقام کی تصدیق کریں",
     "verse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
-    "verseReference": "سورۃ النساء · ۱۰۳"
+    "verseReference": "سورۃ النساء · ۱۰۳",
+    "nameElapsed": "{prayer} {time}",
+    "current": "نماز کا وقت شروع ہو گیا",
+    "nextPrayer": "اگلی نماز"
   }
 };

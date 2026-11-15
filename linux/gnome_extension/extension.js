@@ -248,6 +248,8 @@ const PrayerIndicator = GObject.registerClass({GTypeName: 'HudaPrayerTrayIndicat
         this._hero = new St.BoxLayout({style_class: 'huda-prayer-hero',
             style: tokens ? `background-color: ${tokens.highlight};` : ''});
         const heroText = verticalBox({x_expand: true, y_align: Clutter.ActorAlign.CENTER});
+        this._eyebrow = this._label('', {style_class: 'huda-prayer-note', ...muted(tokens)});
+        heroText.add_child(this._eyebrow);
         this._nextName = this._label('', {style_class: 'huda-prayer-title'});
         this._remaining = this._label('', {style_class: 'huda-prayer-countdown', ...muted(tokens)});
         heroText.add_child(this._nextName); heroText.add_child(this._remaining);
@@ -323,18 +325,22 @@ const PrayerIndicator = GObject.registerClass({GTypeName: 'HudaPrayerTrayIndicat
             : snapshot.state === 'calculationUnavailable' ? 'calculationUnavailable' : snapshot.error ? 'serviceUnavailable' : null;
         this._panelLabel.text = Format.indicator(valid ? snapshot : null, now, labels);
         this._panelLabel.visible = snapshot?.preferences?.style !== 'iconOnly';
-        this.accessible_name = `Huda · ${labels.prayerTimes}${usable && snapshot.next ? ` · ${labels[snapshot.next.key]} ${Format.countdown(snapshot.next.utcMs, now, this._presentation, labels)}` : ''}`;
+        const prayer = usable ? Format.moment(snapshot, now) : null;
+        const current = Boolean(prayer && prayer === snapshot.current);
+        const counter = prayer ? (current ? Format.elapsed : Format.countdown)(prayer.utcMs, now, this._presentation, labels) : '';
+        this.accessible_name = `Huda · ${labels.prayerTimes}${prayer ? ` · ${labels[prayer.key]} ${counter}` : ''}`;
         this._date.text = Format.date(now, snapshot?.timeZoneId, this._presentation);
-        this._hero.visible = usable && Boolean(snapshot.next);
-        this._nextName.text = usable && snapshot.next ? labels[snapshot.next.key] : '';
-        this._remaining.text = usable && snapshot.next ? Format.countdown(snapshot.next.utcMs, now, this._presentation, labels) : '';
-        this._nextClock.text = usable && snapshot.next ? Format.clock(snapshot.next.utcMs, snapshot.timeZoneId, this._presentation) : '';
+        this._hero.visible = Boolean(prayer);
+        this._eyebrow.text = current ? labels.current : labels.nextPrayer;
+        this._nextName.text = prayer ? labels[prayer.key] : '';
+        this._remaining.text = counter;
+        this._nextClock.text = prayer ? Format.clock(prayer.utcMs, snapshot.timeZoneId, this._presentation) : '';
         this._message.visible = Boolean(errorKey);
         this._message.text = errorKey ? labels[errorKey] : '';
         for (const {key, row, clock} of this._rows) {
             // After Isha the next prayer is tomorrow's Fajr: its row shows that time.
-            const next = usable && snapshot.next?.key === key;
-            const time = !usable ? null : next ? snapshot.next.utcMs : snapshot.rows.find(item => item.key === key)?.utcMs;
+            const next = prayer?.key === key;
+            const time = !usable ? null : next ? prayer.utcMs : snapshot.rows.find(item => item.key === key)?.utcMs;
             clock.text = Format.clock(time, snapshot?.timeZoneId, this._presentation);
             const passed = !next && Number.isFinite(time) && time <= now;
             row.opacity = passed && !this._tokens ? 140 : 255;

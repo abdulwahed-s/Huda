@@ -13,6 +13,16 @@ export function countdown(utcMs, now, presentation, labels) {
     return isolate(digits(`${hours ? `${hours}${labels.hourUnit} ` : ''}${minutes % 60}${labels.minuteUnit}`, presentation));
 }
 
+export function elapsed(utcMs, now, presentation, labels) {
+    const minutes = Math.max(0, Math.floor((now - utcMs) / 60000));
+    const hours = Math.floor(minutes / 60);
+    return isolate(digits(`+${hours ? `${hours}${labels.hourUnit} ` : ''}${minutes % 60}${labels.minuteUnit}`, presentation));
+}
+
+export function moment(snapshot, now) {
+    return snapshot?.current && now < snapshot.currentUntilUtcMs ? snapshot.current : snapshot?.next;
+}
+
 export function clock(utcMs, zone, presentation) {
     if (!Number.isFinite(utcMs) || !zone) return isolate('--:--');
     const value = new Intl.DateTimeFormat(`${presentation.locale}-u-nu-latn`, {
@@ -30,12 +40,15 @@ export function date(now, zone, presentation) {
 export function indicator(snapshot, now, labels) {
     const style = snapshot?.preferences?.style ?? 'iconNameCountdown';
     if (style === 'iconOnly') return '';
-    if (!snapshot?.next || snapshot.validUntilUtcMs <= now) return labels.prayerTimes;
-    const name = labels[snapshot.next.key];
+    const prayer = moment(snapshot, now);
+    if (!prayer || snapshot.validUntilUtcMs <= now) return labels.prayerTimes;
+    const name = labels[prayer.key];
+    const current = prayer === snapshot.current;
     const value = style === 'iconNameClock'
-        ? clock(snapshot.next.utcMs, snapshot.timeZoneId, snapshot.presentation)
-        : countdown(snapshot.next.utcMs, now, snapshot.presentation, labels);
-    return labels.nameCountdown.replace('{prayer}', name).replace('{time}', value);
+        ? clock(prayer.utcMs, snapshot.timeZoneId, snapshot.presentation)
+        : current ? elapsed(prayer.utcMs, now, snapshot.presentation, labels)
+            : countdown(prayer.utcMs, now, snapshot.presentation, labels);
+    return (current || style === 'iconNameClock' ? labels.nameElapsed : labels.nameCountdown).replace('{prayer}', name).replace('{time}', value);
 }
 
 export function validateSnapshot(snapshot) {
