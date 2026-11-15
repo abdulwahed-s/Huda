@@ -2284,5 +2284,11 @@
   "mushafPackTitle": "Páginas del Mushaf",
   "mushafPackBody": "El Mushaf ahora usa imágenes de página para pasar las páginas con más fluidez. Descárgalas una vez para seguir leyendo en este formato.",
   "mushafPackDownload": "Descargar ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "Hora de iqama",
+  "prayerIqamahExplanation": "Después del adhan, el contador muestra el tiempo transcurrido desde el inicio de la oración durante este período.",
+  "prayerIqamahMinutes": "+{minutes} min",
+  "prayerIqamahReset": "Restablecer valores predeterminados",
+  "prayerIqamahOff": "Desactivado",
+  "prayerIqamahSaveError": "No se pudieron guardar o sincronizar los ajustes de iqama. Inténtalo de nuevo."
 }

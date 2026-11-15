@@ -6087,5 +6087,18 @@
     }
   },
   "macPrayerMenuNameElapsed": "{prayer} {time}",
-  "@macPrayerMenuNameElapsed": {"placeholders": {"prayer": {"type": "String"}, "time": {"type": "String"}}}
+  "@macPrayerMenuNameElapsed": {"placeholders": {"prayer": {"type": "String"}, "time": {"type": "String"}}},
+  "prayerIqamahTitle": "Iqamah time",
+  "prayerIqamahExplanation": "After the adhan, the countdown shows time since the prayer started for this long.",
+  "prayerIqamahMinutes": "+{minutes} min",
+  "prayerIqamahReset": "Reset to defaults",
+  "prayerIqamahOff": "Off",
+  "prayerIqamahSaveError": "Could not save or sync Iqamah settings. Please try again.",
+  "@prayerIqamahMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  }
 }

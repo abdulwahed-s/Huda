@@ -6418,4 +6418,26 @@ class AppLocalizationsBn extends AppLocalizations {
   String macPrayerMenuNameElapsed(String prayer, String time) {
     return '$prayer $time';
   }
+
+  @override
+  String get prayerIqamahTitle => 'ইকামতের সময়';
+
+  @override
+  String get prayerIqamahExplanation =>
+      'আজানের পর এতক্ষণ কাউন্টারে নামাজের সময় শুরু হওয়ার পর থেকে অতিবাহিত সময় দেখানো হবে।';
+
+  @override
+  String prayerIqamahMinutes(String minutes) {
+    return '+$minutes মি';
+  }
+
+  @override
+  String get prayerIqamahReset => 'ডিফল্টে ফিরিয়ে নিন';
+
+  @override
+  String get prayerIqamahOff => 'বন্ধ';
+
+  @override
+  String get prayerIqamahSaveError =>
+      'ইকামতের সেটিংস সংরক্ষণ বা সিঙ্ক করা যায়নি। আবার চেষ্টা করুন।';
 }

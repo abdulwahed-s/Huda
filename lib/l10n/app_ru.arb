@@ -2268,5 +2268,11 @@
   "mushafPackTitle": "Страницы Мусхафа",
   "mushafPackBody": "Теперь Мусхаф использует изображения страниц для более плавного листания. Загрузите их один раз, чтобы продолжить чтение в этом виде.",
   "mushafPackDownload": "Загрузить ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "Время икамата",
+  "prayerIqamahExplanation": "После азана счётчик показывает время, прошедшее с начала молитвы, в течение этого периода.",
+  "prayerIqamahMinutes": "+{minutes} мин",
+  "prayerIqamahReset": "Восстановить значения по умолчанию",
+  "prayerIqamahOff": "Выкл.",
+  "prayerIqamahSaveError": "Не удалось сохранить или синхронизировать настройки икамата. Попробуйте ещё раз."
 }

@@ -2358,5 +2358,11 @@
   "mushafPackTitle": "Halaman Mushaf",
   "mushafPackBody": "Mushaf kini menggunakan imej halaman untuk selakan halaman yang lebih lancar. Muat turun sekali untuk terus membaca dalam susun atur ini.",
   "mushafPackDownload": "Muat turun ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "Waktu iqamah",
+  "prayerIqamahExplanation": "Selepas azan, pemasa memaparkan masa yang berlalu sejak masuk waktu solat sepanjang tempoh ini.",
+  "prayerIqamahMinutes": "+{minutes} min",
+  "prayerIqamahReset": "Tetapkan semula kepada lalai",
+  "prayerIqamahOff": "Dimatikan",
+  "prayerIqamahSaveError": "Tetapan iqamah tidak dapat disimpan atau disegerakkan. Sila cuba lagi."
 }

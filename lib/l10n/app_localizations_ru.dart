@@ -6460,4 +6460,26 @@ class AppLocalizationsRu extends AppLocalizations {
   String macPrayerMenuNameElapsed(String prayer, String time) {
     return '$prayer $time';
   }
+
+  @override
+  String get prayerIqamahTitle => 'Время икамата';
+
+  @override
+  String get prayerIqamahExplanation =>
+      'После азана счётчик показывает время, прошедшее с начала молитвы, в течение этого периода.';
+
+  @override
+  String prayerIqamahMinutes(String minutes) {
+    return '+$minutes мин';
+  }
+
+  @override
+  String get prayerIqamahReset => 'Восстановить значения по умолчанию';
+
+  @override
+  String get prayerIqamahOff => 'Выкл.';
+
+  @override
+  String get prayerIqamahSaveError =>
+      'Не удалось сохранить или синхронизировать настройки икамата. Попробуйте ещё раз.';
 }

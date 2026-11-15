@@ -2272,5 +2272,11 @@
   "mushafPackTitle": "Pages du Mushaf",
   "mushafPackBody": "Le Mushaf utilise désormais des images de pages pour tourner les pages plus fluidement. Téléchargez-les une fois pour continuer à lire dans cette mise en page.",
   "mushafPackDownload": "Télécharger ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "Heure de l’iqama",
+  "prayerIqamahExplanation": "Après l’adhan, le compteur affiche le temps écoulé depuis le début de la prière pendant cette durée.",
+  "prayerIqamahMinutes": "+{minutes} min",
+  "prayerIqamahReset": "Rétablir les valeurs par défaut",
+  "prayerIqamahOff": "Désactivé",
+  "prayerIqamahSaveError": "Impossible d’enregistrer ou de synchroniser les réglages de l’iqama. Veuillez réessayer."
 }

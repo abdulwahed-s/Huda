@@ -2284,5 +2284,11 @@
   "mushafPackTitle": "مصحف کے صفحات",
   "mushafPackBody": "اب مصحف میں ہموار صفحہ پلٹنے کے لیے صفحات کی تصاویر استعمال ہوتی ہیں۔ اس انداز میں پڑھنا جاری رکھنے کے لیے انہیں ایک بار ڈاؤن لوڈ کریں۔",
   "mushafPackDownload": "ڈاؤن لوڈ ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "اقامت کا وقت",
+  "prayerIqamahExplanation": "اذان کے بعد اتنی دیر تک کاؤنٹر نماز کا وقت شروع ہونے کے بعد گزرا ہوا وقت دکھاتا ہے۔",
+  "prayerIqamahMinutes": "+{minutes} منٹ",
+  "prayerIqamahReset": "پہلے سے طے شدہ ترتیبات بحال کریں",
+  "prayerIqamahOff": "بند",
+  "prayerIqamahSaveError": "اقامت کی ترتیبات محفوظ یا ہم آہنگ نہیں ہو سکیں۔ دوبارہ کوشش کریں۔"
 }

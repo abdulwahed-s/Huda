@@ -6407,4 +6407,26 @@ class AppLocalizationsUr extends AppLocalizations {
   String macPrayerMenuNameElapsed(String prayer, String time) {
     return '$prayer $time';
   }
+
+  @override
+  String get prayerIqamahTitle => 'اقامت کا وقت';
+
+  @override
+  String get prayerIqamahExplanation =>
+      'اذان کے بعد اتنی دیر تک کاؤنٹر نماز کا وقت شروع ہونے کے بعد گزرا ہوا وقت دکھاتا ہے۔';
+
+  @override
+  String prayerIqamahMinutes(String minutes) {
+    return '+$minutes منٹ';
+  }
+
+  @override
+  String get prayerIqamahReset => 'پہلے سے طے شدہ ترتیبات بحال کریں';
+
+  @override
+  String get prayerIqamahOff => 'بند';
+
+  @override
+  String get prayerIqamahSaveError =>
+      'اقامت کی ترتیبات محفوظ یا ہم آہنگ نہیں ہو سکیں۔ دوبارہ کوشش کریں۔';
 }

@@ -6539,4 +6539,26 @@ class AppLocalizationsFr extends AppLocalizations {
   String macPrayerMenuNameElapsed(String prayer, String time) {
     return '$prayer $time';
   }
+
+  @override
+  String get prayerIqamahTitle => 'Heure de l’iqama';
+
+  @override
+  String get prayerIqamahExplanation =>
+      'Après l’adhan, le compteur affiche le temps écoulé depuis le début de la prière pendant cette durée.';
+
+  @override
+  String prayerIqamahMinutes(String minutes) {
+    return '+$minutes min';
+  }
+
+  @override
+  String get prayerIqamahReset => 'Rétablir les valeurs par défaut';
+
+  @override
+  String get prayerIqamahOff => 'Désactivé';
+
+  @override
+  String get prayerIqamahSaveError =>
+      'Impossible d’enregistrer ou de synchroniser les réglages de l’iqama. Veuillez réessayer.';
 }

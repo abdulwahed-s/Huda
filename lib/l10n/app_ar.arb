@@ -2778,5 +2778,11 @@
   "mushafPackTitle": "صفحات المصحف",
   "mushafPackBody": "أصبح المصحف يعتمد على صور الصفحات ليكون تقليب الصفحات أكثر سلاسة. نزّلها مرة واحدة لمتابعة القراءة بهذا العرض.",
   "mushafPackDownload": "تنزيل ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "وقت الإقامة",
+  "prayerIqamahExplanation": "بعد الأذان، يعرض العداد الوقت المنقضي منذ دخول وقت الصلاة لهذه المدة.",
+  "prayerIqamahMinutes": "+{minutes} د",
+  "prayerIqamahReset": "استعادة الإعدادات الافتراضية",
+  "prayerIqamahOff": "متوقف",
+  "prayerIqamahSaveError": "تعذّر حفظ إعدادات الإقامة أو مزامنتها. حاول مرة أخرى."
 }

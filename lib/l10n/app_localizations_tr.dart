@@ -6411,4 +6411,26 @@ class AppLocalizationsTr extends AppLocalizations {
   String macPrayerMenuNameElapsed(String prayer, String time) {
     return '$prayer $time';
   }
+
+  @override
+  String get prayerIqamahTitle => 'İkamet vakti';
+
+  @override
+  String get prayerIqamahExplanation =>
+      'Ezandan sonra sayaç, bu süre boyunca namaz vaktinin başlangıcından itibaren geçen zamanı gösterir.';
+
+  @override
+  String prayerIqamahMinutes(String minutes) {
+    return '+$minutes dk';
+  }
+
+  @override
+  String get prayerIqamahReset => 'Varsayılanlara sıfırla';
+
+  @override
+  String get prayerIqamahOff => 'Kapalı';
+
+  @override
+  String get prayerIqamahSaveError =>
+      'İkamet ayarları kaydedilemedi veya eşitlenemedi. Lütfen tekrar deneyin.';
 }

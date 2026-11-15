@@ -2245,5 +2245,11 @@
   "mushafPackTitle": "Mushaf-Seiten",
   "mushafPackBody": "Der Mushaf verwendet jetzt Seitenbilder für flüssigeres Umblättern. Lade sie einmal herunter, um in dieser Ansicht weiterzulesen.",
   "mushafPackDownload": "Herunterladen ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "Iqamah-Zeit",
+  "prayerIqamahExplanation": "Nach dem Adhan zeigt der Zähler so lange die seit Gebetsbeginn vergangene Zeit.",
+  "prayerIqamahMinutes": "+{minutes} Min.",
+  "prayerIqamahReset": "Auf Standardwerte zurücksetzen",
+  "prayerIqamahOff": "Aus",
+  "prayerIqamahSaveError": "Die Iqamah-Einstellungen konnten nicht gespeichert oder synchronisiert werden. Bitte erneut versuchen."
 }

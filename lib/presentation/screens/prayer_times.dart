@@ -25,6 +25,7 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_attention_items.da
 import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_calendar_share_sheet.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_hero_card.dart';
+import 'package:huda/presentation/widgets/prayer_times/prayer_iqamah_bottom_sheet.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_setup_checklist.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_time_adjustment_bottom_sheet.dart';
@@ -511,6 +512,12 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
             title: l10n.prayerCalendarShare,
             onTap: () => showPrayerCalendarShareSheet(context),
           ),
+        _OptionTile(
+          icon: Icons.timer_outlined,
+          title: l10n.prayerIqamahTitle,
+          subtitle: iqamahSummary(cubit.iqamahSettings, l10n),
+          onTap: () => showPrayerIqamahSheet(context),
+        ),
         PrayerTravelSettingsCard(locationMode: cubit.locationMode),
         if (PlatformUtils.isMacOS ||
             PlatformUtils.isLinux ||
@@ -541,11 +548,13 @@ class _OptionTile extends StatelessWidget {
   const _OptionTile({
     required this.icon,
     required this.title,
+    this.subtitle,
     required this.onTap,
   });
 
   final IconData icon;
   final String title;
+  final String? subtitle;
   final VoidCallback onTap;
 
   @override
@@ -578,6 +587,7 @@ class _OptionTile extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
+          subtitle: subtitle == null ? null : Text(subtitle!),
           trailing: Icon(Icons.chevron_right_rounded, color: palette.muted),
         ),
       ),

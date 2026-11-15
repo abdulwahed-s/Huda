@@ -2268,5 +2268,11 @@
   "mushafPackTitle": "Mushaf sayfaları",
   "mushafPackBody": "Mushaf artık daha akıcı sayfa çevirme için sayfa görselleri kullanıyor. Bu düzende okumaya devam etmek için bunları bir kez indirin.",
   "mushafPackDownload": "İndir ({size})",
-  "macPrayerMenuNameElapsed": "{prayer} {time}"
+  "macPrayerMenuNameElapsed": "{prayer} {time}",
+  "prayerIqamahTitle": "İkamet vakti",
+  "prayerIqamahExplanation": "Ezandan sonra sayaç, bu süre boyunca namaz vaktinin başlangıcından itibaren geçen zamanı gösterir.",
+  "prayerIqamahMinutes": "+{minutes} dk",
+  "prayerIqamahReset": "Varsayılanlara sıfırla",
+  "prayerIqamahOff": "Kapalı",
+  "prayerIqamahSaveError": "İkamet ayarları kaydedilemedi veya eşitlenemedi. Lütfen tekrar deneyin."
 }

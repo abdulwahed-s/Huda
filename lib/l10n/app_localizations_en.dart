@@ -6419,4 +6419,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String macPrayerMenuNameElapsed(String prayer, String time) {
     return '$prayer $time';
   }
+
+  @override
+  String get prayerIqamahTitle => 'Iqamah time';
+
+  @override
+  String get prayerIqamahExplanation =>
+      'After the adhan, the countdown shows time since the prayer started for this long.';
+
+  @override
+  String prayerIqamahMinutes(String minutes) {
+    return '+$minutes min';
+  }
+
+  @override
+  String get prayerIqamahReset => 'Reset to defaults';
+
+  @override
+  String get prayerIqamahOff => 'Off';
+
+  @override
+  String get prayerIqamahSaveError =>
+      'Could not save or sync Iqamah settings. Please try again.';
 }

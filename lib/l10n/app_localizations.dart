@@ -11567,6 +11567,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{prayer} {time}'**
   String macPrayerMenuNameElapsed(String prayer, String time);
+
+  /// No description provided for @prayerIqamahTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Iqamah time'**
+  String get prayerIqamahTitle;
+
+  /// No description provided for @prayerIqamahExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'After the adhan, the countdown shows time since the prayer started for this long.'**
+  String get prayerIqamahExplanation;
+
+  /// No description provided for @prayerIqamahMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'+{minutes} min'**
+  String prayerIqamahMinutes(String minutes);
+
+  /// No description provided for @prayerIqamahReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to defaults'**
+  String get prayerIqamahReset;
+
+  /// No description provided for @prayerIqamahOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get prayerIqamahOff;
+
+  /// No description provided for @prayerIqamahSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save or sync Iqamah settings. Please try again.'**
+  String get prayerIqamahSaveError;
 }
 
 class _AppLocalizationsDelegate

@@ -6346,4 +6346,26 @@ class AppLocalizationsAr extends AppLocalizations {
   String macPrayerMenuNameElapsed(String prayer, String time) {
     return '$prayer $time';
   }
+
+  @override
+  String get prayerIqamahTitle => 'وقت الإقامة';
+
+  @override
+  String get prayerIqamahExplanation =>
+      'بعد الأذان، يعرض العداد الوقت المنقضي منذ دخول وقت الصلاة لهذه المدة.';
+
+  @override
+  String prayerIqamahMinutes(String minutes) {
+    return '+$minutes د';
+  }
+
+  @override
+  String get prayerIqamahReset => 'استعادة الإعدادات الافتراضية';
+
+  @override
+  String get prayerIqamahOff => 'متوقف';
+
+  @override
+  String get prayerIqamahSaveError =>
+      'تعذّر حفظ إعدادات الإقامة أو مزامنتها. حاول مرة أخرى.';
 }
