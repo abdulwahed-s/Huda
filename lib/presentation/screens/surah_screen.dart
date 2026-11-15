@@ -74,6 +74,13 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   int _currentMushafPage = 1;
 
+  // Mushaf pages span surahs; ayah actions switch the screen to the surah
+  // of the touched ayah so audio, highlight and the ayah sheet agree.
+  late int _surahNumber = widget.surahInfo.number ?? 1;
+  int? _pendingAyahSheet;
+
+  bool get _isOpeningSurah => _surahNumber == widget.surahInfo.number;
+
   @override
   void initState() {
     super.initState();
@@ -179,6 +186,15 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     _quranFont = getQuranFonts();
   }
 
+  void _switchSurah(BuildContext context, int surahNumber, int verseNumber) {
+    setState(() {
+      _surahNumber = surahNumber;
+      _pendingAyahSheet = verseNumber;
+    });
+    context.read<SurahCubit>().loadSurah(surahNumber);
+    context.read<AudioCubit>().fetchAudioInfo(surahNumber.toString());
+  }
+
   void _setMode(QuranReadingMode mode) {
     setState(() {
       // IndoPak and Madani pages differ: stay on the same ayah.
@@ -223,7 +239,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     final visibleSurahs = _getVisibleSurahs(context);
     final selectedSurah = visibleSurahs.isNotEmpty
         ? visibleSurahs.first
-        : (widget.surahInfo.number ?? 1);
+        : _surahNumber;
     final rowIndex = (selectedSurah - 1) ~/ 3;
     final screenWidth = MediaQuery.of(context).size.width;
     final itemWidth = (screenWidth - 32.w - 24.w) / 3;
@@ -411,7 +427,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
   }
 
   void _startMemorization(BuildContext sheetCtx) {
-    int activeSurahNumber = widget.surahInfo.number ?? 1;
+    int activeSurahNumber = _surahNumber;
     if (_readingMode.isMushaf) {
       try {
         final pageData = _readingMode.pagination.sectionsOf(
@@ -441,7 +457,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   List<int> _getVisibleSurahs(BuildContext context) {
     if (!_readingMode.isMushaf) {
-      return [widget.surahInfo.number ?? 1];
+      return [_surahNumber];
     }
 
     final surahs = <int>{};
@@ -531,9 +547,13 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
             appBar: isMushafMode
                 ? null
                 : SurahScreenAppBar(
-                    surahName: widget.surahInfo.name ?? '',
-                    surahNumber: widget.surahInfo.number ?? 0,
-                    englishName: widget.surahInfo.englishName,
+                    surahName: _isOpeningSurah
+                        ? widget.surahInfo.name ?? ''
+                        : quran.getSurahNameArabic(_surahNumber),
+                    surahNumber: _surahNumber,
+                    englishName: _isOpeningSurah
+                        ? widget.surahInfo.englishName
+                        : quran.getSurahNameEnglish(_surahNumber),
                     onBack: () => Navigator.pop(context),
                     onMenu: () => _showTabsSheet(innerContext),
                   ),
@@ -579,11 +599,12 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
         } else if (state is SurahLoaded) {
           return QuranPageView(
             surah: state.surah,
-            surahNumber: widget.surahInfo.number!,
-            scrollToAyah: widget.scrollToAyah,
-            ayahPosition: widget.ayahPosition,
-            shouldRestorePosition: widget.shouldRestorePosition,
-            isBookmarkVisit: widget.isBookmarkVisit,
+            surahNumber: _surahNumber,
+            scrollToAyah: _isOpeningSurah ? widget.scrollToAyah : null,
+            ayahPosition: _isOpeningSurah ? widget.ayahPosition : null,
+            shouldRestorePosition:
+                widget.shouldRestorePosition || !_isOpeningSurah,
+            isBookmarkVisit: _isOpeningSurah && widget.isBookmarkVisit,
             customBgColor: _customBgColor,
             customTextColor: _customTextColor,
           );
@@ -606,13 +627,22 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     return SafeArea(
       child: BlocBuilder<SurahCubit, SurahState>(
         builder: (context, state) {
-          if (state is SurahLoaded) {
+          if (state is SurahLoaded && state.surah.number == _surahNumber) {
+            final pendingAyahSheet = _pendingAyahSheet;
+            if (pendingAyahSheet != null) {
+              WidgetsBinding.instance.addPostFrameCallback(
+                (_) => _pendingAyahSheet = null,
+              );
+            }
             return MushafInteractiveWrapper(
               key: ValueKey(
-                '${_readingMode}_${_horizontalDisplayMode}_$_mushafFlipDirection',
+                '${_readingMode}_${_horizontalDisplayMode}_${_mushafFlipDirection}_$_surahNumber',
               ),
               surah: state.surah,
-              surahNumber: widget.surahInfo.number!,
+              surahNumber: _surahNumber,
+              initialAyahSheet: pendingAyahSheet,
+              onOtherSurahAyah: (surahNumber, verseNumber) =>
+                  _switchSurah(context, surahNumber, verseNumber),
               initialPageNumber: _currentMushafPage,
               mode: _readingMode,
               displayMode: _horizontalDisplayMode,

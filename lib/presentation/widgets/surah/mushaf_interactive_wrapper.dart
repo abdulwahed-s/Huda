@@ -37,6 +37,12 @@ class MushafInteractiveWrapper extends StatefulWidget {
   final Color? customBgColor;
   final Color? customTextColor;
 
+  /// Verse of [surahNumber] whose ayah sheet opens once this is shown.
+  final int? initialAyahSheet;
+
+  /// Long-press on an ayah of another surah; the screen switches to it.
+  final void Function(int surahNumber, int verseNumber)? onOtherSurahAyah;
+
   const MushafInteractiveWrapper({
     super.key,
     required this.surah,
@@ -49,6 +55,8 @@ class MushafInteractiveWrapper extends StatefulWidget {
     this.onMenuTapped,
     this.customBgColor,
     this.customTextColor,
+    this.initialAyahSheet,
+    this.onOtherSurahAyah,
   });
 
   @override
@@ -159,6 +167,8 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initSourcesFromCurrentCubitState();
+      final verse = widget.initialAyahSheet;
+      if (mounted && verse != null) _onMushafAyahTap(widget.surahNumber, verse);
     });
   }
 
@@ -521,6 +531,10 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
         ayahIndex >= 0 &&
         ayahIndex < widget.surah.ayahs!.length) {
       _showAyahBottomSheet(ayahIndex);
+    } else if (widget.onOtherSurahAyah != null) {
+      // Audio and highlight follow this widget's surah; switch first.
+      stopAudioIfPlaying();
+      widget.onOtherSurahAyah!(surahNumber, verseNumber);
     } else {
       _showAyahBottomSheetForVerse(surahNumber, verseNumber);
     }
