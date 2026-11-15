@@ -10,6 +10,8 @@ public sealed record DisplaySnapshot(int SchemaVersion, long AppliedRevision, st
     IReadOnlyList<DisplayRow> Rows, DisplayNext? Next, TrayPreferences? Preferences,
     TrayPresentation? Presentation, string LocationLabel, bool Provisional, string? Error)
 {
+    public DisplayNext? Current { get; init; }
+    public long? CurrentUntilUtcMs { get; init; }
     public ulong ChangeSerial { get; init; }
 }
 
@@ -44,12 +46,15 @@ public sealed class DisplayEngine(IClock clock)
         }
         else _schedule = null;
         var next = _schedule?.Next(now);
+        var moment = _schedule?.Moment(now, config?.Preferences.IqamahMinutes);
+        var current = moment is { IsElapsed: true } ? moment.Prayer : null;
+        Instant? currentUntil = current is null ? null : moment!.StateEnd;
         var midnight = config?.Location is { } loc
             ? LocationClock.Resolve(now.InZone(DateTimeZoneProviders.Tzdb[loc.TimeZoneId]).Date
                 .PlusDays(1).AtMidnight(), DateTimeZoneProviders.Tzdb[loc.TimeZoneId])
             : now + Duration.FromHours(1);
         // A disconnected extension expires its display; cached schedules never remain authoritative forever.
-        var expiry = new[] { midnight, next?.Time ?? midnight, now + Duration.FromMinutes(2) }.Min();
+        var expiry = new[] { midnight, next?.Time ?? midnight, currentUntil ?? midnight, now + Duration.FromMinutes(2) }.Min();
         return new DisplaySnapshot(1, config?.Revision ?? 0, state, now.ToUnixTimeMilliseconds(),
             expiry.ToUnixTimeMilliseconds(), _schedule?.Today.ToString("yyyy-MM-dd", null),
             config?.Location?.TimeZoneId,
@@ -59,6 +64,11 @@ public sealed class DisplayEngine(IClock clock)
                 next.Time.ToUnixTimeMilliseconds()), config?.Preferences, config?.Presentation,
             string.Join(" · ", new[] { config?.Location?.Locality, config?.Location?.CountryName }
                 .Where(part => !string.IsNullOrWhiteSpace(part))), config?.Location?.Verified == false,
-            error ?? _schedule?.Error);
+            error ?? _schedule?.Error)
+        {
+            Current = current is null ? null : new DisplayNext(current.Key,
+                current.CivilDate.ToString("yyyy-MM-dd", null), current.Time.ToUnixTimeMilliseconds()),
+            CurrentUntilUtcMs = currentUntil?.ToUnixTimeMilliseconds(),
+        };
     }
 }

@@ -72,6 +72,7 @@ public sealed record TrayConfiguration
         Location = Location, Calculation = Calculation,
         Preferences = new TaskbarPreferences
         {
+            IqamahMinutes = Preferences.IqamahMinutes,
             Enabled = Preferences.Enabled, ShowTaskbarCountdown = true, ShowTrayIcon = true,
             StartWithWindows = false, Style = Preferences.Style, ShowSeconds = false,
         },
@@ -86,6 +87,8 @@ public sealed record TrayConfiguration
 
 public sealed record TrayPreferences
 {
+    [System.Text.Json.Serialization.JsonConverter(typeof(PrayerIqamahMinutesConverter))]
+    public IReadOnlyDictionary<string, int> IqamahMinutes { get; init; } = PrayerIqamahWindows.Defaults;
     public required bool Enabled { get; init; }
     public required bool StartAtLogin { get; init; }
     public required string Style { get; init; }

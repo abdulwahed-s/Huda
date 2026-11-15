@@ -115,7 +115,7 @@ internal sealed class TrayHost(DBusConnection connection, ConfigurationStore sto
             if (_stopping) return;
             store.Reload();
             var snapshot = engine.Snapshot(store.Current, store.Current is null ? null : store.Error);
-            var identity = $"{snapshot.AppliedRevision}:{snapshot.State}:{snapshot.CivilDate}:{snapshot.Next?.UtcMs}:{snapshot.Error}";
+            var identity = $"{snapshot.AppliedRevision}:{snapshot.State}:{snapshot.CivilDate}:{snapshot.Next?.UtcMs}:{snapshot.Current?.UtcMs}:{snapshot.CurrentUntilUtcMs}:{snapshot.Error}";
             var changed = _identity != identity || snapshot.GeneratedAtUtcMs - _lastSignalMs >= 30000 ||
                 snapshot.GeneratedAtUtcMs < _lastSignalMs;
             if (changed) _serial++;

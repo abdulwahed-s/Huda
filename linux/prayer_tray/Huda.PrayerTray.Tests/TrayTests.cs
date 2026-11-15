@@ -89,6 +89,48 @@ public sealed class TrayTests
         Assert.Equal("2026-10-02", engine.Snapshot(config).CivilDate);
     }
     [Fact]
+    public void CurrentPrayerExpiresAtWindowEndAndSerializesWithoutContractChanges()
+    {
+        var config = Default();
+        var clock = new Clock(Instant.FromUtc(2026, 10, 2, 0, 0));
+        var engine = new DisplayEngine(clock);
+        var fajr = engine.Snapshot(config).Rows.Single(row => row.Key == "fajr").UtcMs!.Value;
+        clock.Now = Instant.FromUnixTimeMilliseconds(fajr);
+        var start = engine.Snapshot(config);
+        Assert.Equal("fajr", start.Current?.Key);
+        Assert.Equal(fajr + 25 * 60 * 1000, start.CurrentUntilUtcMs);
+        Assert.NotEqual("fajr", start.Next?.Key);
+        clock.Now += Duration.FromMinutes(24) + Duration.FromSeconds(59);
+        var end = engine.Snapshot(config);
+        Assert.Equal(start.CurrentUntilUtcMs, end.ValidUntilUtcMs);
+        using var json = JsonDocument.Parse(JsonSerializer.Serialize(end, TrayConfiguration.JsonOptions));
+        Assert.Equal("fajr", json.RootElement.GetProperty("current").GetProperty("key").GetString());
+        clock.Now += Duration.FromSeconds(1);
+        Assert.Null(engine.Snapshot(config).Current);
+    }
+    [Fact]
+    public void MaghribUsesFiveMinutesAndOffSkipsTheStartBoundary()
+    {
+        var config = Default();
+        var clock = new Clock(Instant.FromUtc(2026, 10, 2, 0, 0));
+        var engine = new DisplayEngine(clock);
+        var maghrib = engine.Snapshot(config).Rows.Single(row => row.Key == "maghrib").UtcMs!.Value;
+        clock.Now = Instant.FromUnixTimeMilliseconds(maghrib) + Duration.FromSeconds(299);
+        Assert.Equal("maghrib", engine.Snapshot(config).Current?.Key);
+        Assert.Equal(maghrib + 300000, engine.Snapshot(config).ValidUntilUtcMs);
+        clock.Now += Duration.FromSeconds(1);
+        Assert.Null(engine.Snapshot(config).Current);
+        clock.Now = Instant.FromUnixTimeMilliseconds(maghrib);
+        var off = config with { Preferences = config.Preferences with {
+            IqamahMinutes = new Dictionary<string, int> { ["maghrib"] = 0 } } };
+        Assert.Null(engine.Snapshot(off).Current);
+        Assert.Equal("isha", engine.Snapshot(off).Next?.Key);
+        var json = JsonSerializer.Serialize(config, TrayConfiguration.JsonOptions);
+        var parsed = TrayConfiguration.Parse(json);
+        Assert.Equal(5, parsed.Preferences.IqamahMinutes["maghrib"]);
+    }
+
+    [Fact]
     public void EmptyProvisionalDisabledAndMissingSolarEventsAreExplicit()
     {
         var engine = new DisplayEngine(new Clock(Instant.FromUtc(2026, 6, 20, 12, 0)));
