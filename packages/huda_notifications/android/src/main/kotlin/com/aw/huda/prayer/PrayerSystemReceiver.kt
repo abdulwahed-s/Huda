@@ -12,6 +12,7 @@ class PrayerSystemReceiver : BroadcastReceiver() {
         runtime.maintenance.execute {
             try {
                 runtime.initialize()
+                runtime.sahur.migrate()
                 runtime.plans.repair(android.os.SystemClock.elapsedRealtime() + 7500)
                 runtime.reminders.repair()
                 // Re-arm stored plugin alarms after system changes.

@@ -196,6 +196,7 @@ internal class PrayerPlanCoordinator(private val runtime: PrayerNotificationRunt
         }
         obsolete.forEach { scheduler.cancel(it); dao.putEvent(it.copy(registration = "cancelled")) }
         runCatching { runtime.syncAdvance() }
+        runCatching { runtime.sahur.sync() }
         runtime.emit("migrationChanged")
         return accepted
     }
@@ -221,6 +222,7 @@ internal class PrayerPlanCoordinator(private val runtime: PrayerNotificationRunt
         }
         if (parity) runtime.enqueueRenewal()
         runCatching { runtime.syncAdvance() }
+        runCatching { runtime.sahur.sync() }
         runtime.emit("planChanged")
         return finalized
     }
@@ -299,6 +301,7 @@ internal class PrayerPlanCoordinator(private val runtime: PrayerNotificationRunt
             .forEach { dao.deleteState(it.key) }
         // Reminders follow the repaired prayers (and roll their 14-day window).
         runCatching { runtime.syncAdvance() }
+        runCatching { runtime.sahur.sync() }
         runtime.emit("planChanged")
     }
 }

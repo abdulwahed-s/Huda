@@ -139,8 +139,8 @@ From the application root:
 flutter test test/core/services/android_prayer_experience_test.dart \
   test/core/services/android_prayer_scheduler_transaction_test.dart \
   test/presentation/widgets/prayer_times/android_prayer_experience_card_test.dart
-python3 tool/athan/validate_android_audio_catalog.py
-python3 tool/athan/inspect_android_adhan_release.py --flavor all
+python3 xv/tool/athan/validate_android_audio_catalog.py
+python3 xv/tool/athan/inspect_android_adhan_release.py --flavor all
 ```
 
 Use Java 17 for Gradle. In `android/`, run:
@@ -158,3 +158,18 @@ claims across two database clients/reopen. JVM tests use Robolectric API 28;
 those results do not establish Doze, FGS, audible output, screen-off sensors,
 locked-boot or API 35–37 policy behavior. Keep release/R8 field and WorkManager
 class-name rules when changing the versioned persistent schema.
+
+
+## Native Sahur alarms
+
+`com.aw.huda/sahur_alarm` (`configure`, schema 1) publishes Sahur settings.
+`SahurScheduler` uses the existing 30 reserved slots, IDs 114–143, and native
+`purpose = "sahur"` rows. The coverage worker renews daily exact-time rows and
+rows derived from owned Fajr times. Playback shares the adhan service and Stop
+controls, looping the system alarm tone. Disabling prayers does not mute an
+already scheduled Sahur. The receiver under
+`com.gdelataillade.alarm.alarm.AlarmReceiver` imports/cancels old package alarms
+and hands due occurrences to native delivery; retain it through at least
+October 2027. The third-party `alarm` package must stay removed to avoid a class
+name collision. See `notification-rework/sahur-and-athkar.md` for migration and
+device checks.

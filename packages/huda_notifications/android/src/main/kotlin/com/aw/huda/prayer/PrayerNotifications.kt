@@ -58,8 +58,8 @@ internal class PrayerNotifications(private val runtime: PrayerNotificationRuntim
             .setContentTitle(title).setContentText(body).setCategory(NotificationCompat.CATEGORY_ALARM)
             .setPriority(NotificationCompat.PRIORITY_MAX).setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setSilent(true).setOnlyAlertOnce(true).setOngoing(true).setContentIntent(overview(session))
-            .addAction(0, strings.stop, action(session, "STOP"))
-        val policy = PrayerPolicy.effective(runtime.livePolicy, session.prayer)
+            .addAction(0, if (session.prayer == "sahur") runtime.sahur.settings.stop else strings.stop, action(session, "STOP"))
+        val policy = runtime.effective(session.prayer)
         if (session.automatic && policy.screen && PrayerCapabilities.read(context).fullScreen) {
             // setSilent also suppresses visual interruptions and can block the
             // full-screen intent. The adhan channel already has no sound

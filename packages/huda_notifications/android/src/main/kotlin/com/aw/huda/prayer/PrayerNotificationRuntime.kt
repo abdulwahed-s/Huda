@@ -25,6 +25,8 @@ internal class PrayerNotificationRuntime private constructor(val context: Contex
     val notifications = PrayerNotifications(this)
     val playback = AdhanSessionCoordinator(this)
     val reminders = ReminderScheduler(this)
+    val sahur = SahurScheduler(this)
+    fun effective(prayer: String) = if (prayer == "sahur") sahur.policy() else PrayerPolicy.effective(livePolicy, prayer)
     private val subscribers = CopyOnWriteArraySet<(Map<String, Any?>) -> Unit>()
     private val runtimeInstance = UUID.randomUUID().toString()
     private val sequence = AtomicLong(0)
@@ -50,6 +52,7 @@ internal class PrayerNotificationRuntime private constructor(val context: Contex
         }
         livePolicy = PrayerPolicy.validate(policy())
         epochValue = store.text("epoch")
+        sahur.load()
         recoverInterruptedSession()
         notifications.createChannels()
         initialized = true
@@ -114,7 +117,7 @@ internal class PrayerNotificationRuntime private constructor(val context: Contex
             val key = "standard:$id"
             if (store.dao.state(key) == null) {
                 val q = store.read("quota", QuotaData::class.java) ?: QuotaData(0, 30, 8, 4, 1)
-                val nativeCount = store.dao.events().filter { it.utcMillis > nowMillis() && it.registration == "registered" }
+                val nativeCount = store.dao.events().filter { it.purpose != "sahur" && it.utcMillis > nowMillis() && it.registration == "registered" }
                     .distinctBy { "${it.purpose}:${it.id}" }.size
                 val legacyCount = store.dao.states("legacyAlarm:%").size
                 require(store.dao.states("standard:%").size + store.dao.states("${ReminderScheduler.KEY}%").size +
@@ -153,7 +156,11 @@ internal class PrayerNotificationRuntime private constructor(val context: Contex
         if (row.purpose != "prayer") {
             // A reminder before a prayer is claimed by its occurrence, so a
             // re-created row (new token) can never show it twice.
-            val key = if (row.purpose == "advance") "auxclaim:advance:${row.id}" else "auxclaim:${row.token}"
+            val key = when (row.purpose) {
+                "advance" -> "auxclaim:advance:${row.id}"
+                "sahur" -> "auxclaim:sahur:${row.localDate}"
+                else -> "auxclaim:${row.token}"
+            }
             if (store.dao.state(key) != null) return@transaction false
             store.putText(key, nowMillis().toString())
             diagnostic(row.id, outcome, reason, mapOf("purpose" to row.purpose, "precision" to row.precision))
@@ -296,6 +303,7 @@ internal class PrayerNotificationRuntime private constructor(val context: Contex
         }
         // Callers reset the whole app, so app-owned reminders go too.
         reminders.clear()
+        sahur.apply(SahurSettings())
         notifications.clearPrayerSummaries()
         emit("planChanged")
     }

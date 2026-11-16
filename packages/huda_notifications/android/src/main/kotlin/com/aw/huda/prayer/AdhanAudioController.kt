@@ -39,6 +39,13 @@ internal class AdhanAudioController(
         }
     }
     fun start() {
+        if (session.prayer == "sahur") {
+            val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            prepare(AudioAssetData("system-alarm", "v1", "full", uri.toString(), 0, "", PrayerRules.MAX_DURATION_MS))
+            callbacks.postDelayed({ if (startedAt == null) finish("preparationTimeout") }, 30_000)
+            return
+        }
         runtime.delivery.execute {
             val selected = runtime.audio.asset(policy.reciterId, policy.version, if (policy.mode == "short") "short" else "full")
             val usable = selected?.takeIf { it.path.startsWith("android-resource:") || File(it.path).isFile }
@@ -76,7 +83,7 @@ internal class AdhanAudioController(
             val media = MediaPlayer()
             player = media
             media.setAudioAttributes(attributes)
-            media.isLooping = false
+            media.isLooping = session.prayer == "sahur"
             media.setVolume(0f, 0f)
             media.setOnCompletionListener { finish("completed") }
             media.setOnErrorListener { _, _, _ -> preparationFailure(); true }
@@ -111,19 +118,19 @@ internal class AdhanAudioController(
                 val resource = runtime.context.resources.getIdentifier("azan_sound", "raw", runtime.context.packageName)
                 require(resource != 0) { "assetUnavailable" }
                 runtime.context.resources.openRawResourceFd(resource).use { fd -> media.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length) }
-            } else media.setDataSource(asset.path)
+            } else if (session.prayer == "sahur") media.setDataSource(runtime.context, android.net.Uri.parse(asset.path))
+            else media.setDataSource(asset.path)
             media.prepareAsync()
             callbacks.postDelayed({ finish("watchdogTimeout") }, (asset.durationMillis + 30_000).coerceAtMost(PrayerRules.MAX_DURATION_MS))
         } catch (_: Exception) { preparationFailure() }
     }
     private fun preparationFailure() {
-        if (!fallbackUsed && startedAt == null && SystemClock.elapsedRealtime() - requestedAt < 30_000) {
+        if (session.prayer != "sahur" && !fallbackUsed && startedAt == null && SystemClock.elapsedRealtime() - requestedAt < 30_000) {
             releasePlayer()
             prepare(runtime.audio.asset("huda-default", "v1", "full")!!)
         } else finish("playerError")
     }
     private fun tick() {
-        if (ended) return
         val elapsed = SystemClock.elapsedRealtime() - (startedAt ?: return)
         if (elapsed >= limit) { finish("cutoff"); return }
         val fade = if (policy.fadeSeconds == 0) 1.0 else (elapsed / (policy.fadeSeconds * 1000.0)).coerceIn(0.0, 1.0)
@@ -152,7 +159,6 @@ internal class AdhanAudioController(
         runCatching { wakeLock?.let { if (it.isHeld) it.release() } }; wakeLock = null
     }
     fun finish(reason: String) {
-        if (ended) return
         ended = true
         callbacks.removeCallbacksAndMessages(null)
         runCatching { flip?.close() }; flip = null

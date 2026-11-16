@@ -15,7 +15,7 @@ internal class AdhanSessionCoordinator(private val runtime: PrayerNotificationRu
     private var dismissing = false
 
     fun automatic(row: AlarmRow, sessionId: String) {
-        val policy = PrayerPolicy.effective(runtime.policy(), row.prayer)
+        val policy = runtime.effective(row.prayer)
         val session = SessionData(sessionId, row.id, row.prayer, "dispatching", policy.mode,
             policy.reciterId, policy.gain, true, row.utcMillis, 0, null, null)
         dispatches[sessionId] = Dispatch(row, session)
@@ -41,7 +41,7 @@ internal class AdhanSessionCoordinator(private val runtime: PrayerNotificationRu
     }
     fun attachService(id: String, playbackService: AdhanPlaybackService) {
         val dispatch = dispatches.remove(id) ?: return playbackService.finishSession()
-        val latest = PrayerPolicy.effective(runtime.livePolicy, dispatch.row.prayer)
+        val latest = runtime.effective(dispatch.row.prayer)
         if (latest.mode in listOf("off", "silent")) {
             runtime.delivery.execute { runtime.outcome(dispatch.row.id, "suppressed", "policyDisabled") }
             if (latest.mode == "silent") runtime.notifications.summary(dispatch.row)
@@ -85,7 +85,7 @@ internal class AdhanSessionCoordinator(private val runtime: PrayerNotificationRu
         currentRow = row
         dismissing = false
         runtime.liveSession = session
-        val policy = override ?: PrayerPolicy.effective(runtime.livePolicy, row.prayer)
+        val policy = override ?: runtime.effective(row.prayer)
         runtime.delivery.execute { runtime.store.write("session", session) }
         controller = AdhanAudioController(runtime, session, policy, { elapsed, limit, asset, fallback ->
             if (runtime.liveSession?.id == session.id) {
@@ -119,7 +119,7 @@ internal class AdhanSessionCoordinator(private val runtime: PrayerNotificationRu
     }
     fun policyChanged(policy: PolicyData) {
         val session = runtime.liveSession ?: return
-        val effective = PrayerPolicy.effective(policy, session.prayer)
+        val effective = if (session.prayer == "sahur") runtime.sahur.policy() else PrayerPolicy.effective(policy, session.prayer)
         if (session.automatic && effective.mode in listOf("off", "silent")) { stop(session.id, "policyDisabled"); return }
         setGain(session.id, effective.gain)
         controller?.shortenCutoff(effective.cutoffSeconds)

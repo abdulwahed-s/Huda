@@ -25,7 +25,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 val now = runtime.nowMillis()
                 if (now < row.utcMillis) { runtime.store.dao.putEvent(runtime.alarms.register(row)); return }
                 if (row.purpose == "followup") { runtime.store.dao.putEvent(row.copy(registration = "consumed")); return }
-                val policy = PrayerPolicy.effective(runtime.policy(), row.prayer)
+                val policy = runtime.effective(row.prayer)
                 if (row.purpose == "advance") {
                     // A reminder before a prayer: one plain notification, never audio,
                     // the alarm screen or a missed summary.
@@ -37,7 +37,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                     if (!late && wanted) runtime.notifications.summary(row)
                     return
                 }
-                if (row.purpose == "prayer" && policy.mode == "off") {
+                if (row.purpose in listOf("prayer", "sahur") && policy.mode == "off") {
                     if (runtime.claim(row, "native", "suppressed", "policyOff", null)) {
                         runtime.store.dao.putEvent(row.copy(registration = "consumed"))
                         runtime.emit("deliveryRecorded", mapOf("occurrenceId" to row.id))

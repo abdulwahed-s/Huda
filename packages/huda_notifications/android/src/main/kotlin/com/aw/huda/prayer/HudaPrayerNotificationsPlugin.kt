@@ -19,6 +19,7 @@ class HudaPrayerNotificationsPlugin : FlutterPlugin, ActivityAware, PrayerHostAp
     private var activity: Activity? = null
     private var messenger: BinaryMessenger? = null
     private var eventChannel: EventChannel? = null
+    private var sahurChannel: MethodChannel? = null
     private var sink: EventChannel.EventSink? = null
     private var activityBinding: ActivityPluginBinding? = null
     private val intentListener = PluginRegistry.NewIntentListener { intent -> acceptNavigation(intent); false }
@@ -27,6 +28,26 @@ class HudaPrayerNotificationsPlugin : FlutterPlugin, ActivityAware, PrayerHostAp
         runtime = PrayerNotificationRuntime.get(binding.applicationContext)
         messenger = binding.binaryMessenger
         PrayerHostApi.setUp(binding.binaryMessenger, this)
+        sahurChannel = MethodChannel(binding.binaryMessenger, "com.aw.huda/sahur_alarm").also { channel ->
+            channel.setMethodCallHandler { call, result ->
+                if (call.method != "configure") { result.notImplemented(); return@setMethodCallHandler }
+                val args = call.arguments as? Map<*, *>
+                runtime.maintenance.execute {
+                    try {
+                        runtime.initialize()
+                        require(args?.get("schemaVersion") == 1) { "invalidSahur" }
+                        val value = SahurSettings(args["enabled"] == true, (args["type"] as Number).toInt(),
+                            (args["hour"] as Number).toInt(), (args["minute"] as Number).toInt(),
+                            (args["minutesBeforeFajr"] as Number).toInt(), args["locale"] as String,
+                            args["title"] as String, args["body"] as String, args["stop"] as String)
+                        val accepted = runtime.sahur.apply(value)
+                        runtime.main.post { result.success(mapOf("accepted" to accepted, "supportsAlarms" to true)) }
+                    } catch (error: Exception) {
+                        runtime.main.post { result.error("sahurUnavailable", error.message, null) }
+                    }
+                }
+            }
+        }
         eventChannel = EventChannel(binding.binaryMessenger, "com.aw.huda/prayer_notifications/events").also {
             it.setStreamHandler(object : EventChannel.StreamHandler {
                 override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
@@ -41,6 +62,7 @@ class HudaPrayerNotificationsPlugin : FlutterPlugin, ActivityAware, PrayerHostAp
         detach()
         runtime.unsubscribe(listener); sink = null
         eventChannel?.setStreamHandler(null); eventChannel = null
+        sahurChannel?.setMethodCallHandler(null); sahurChannel = null
         messenger?.let { PrayerHostApi.setUp(it, null) }; messenger = null
     }
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -141,6 +163,7 @@ class HudaPrayerNotificationsPlugin : FlutterPlugin, ActivityAware, PrayerHostAp
             runtime.alarms.cancel(it); runtime.store.dao.deleteEvent(it.key); runtime.notifications.dismiss(it.id)
         }
         runCatching { runtime.syncAdvance() }
+        runCatching { runtime.sahur.sync() }
     }
     override fun resetPrayerBackend(clearHistory: Boolean, callback: (Result<Unit>) -> Unit) = run(callback, runtime.maintenance) { runtime.reset(clearHistory) }
     override fun getAudioStorage(callback: (Result<AudioStorageData>) -> Unit) = run(callback) { runtime.audio.storage() }

@@ -18,6 +18,7 @@ class PrayerCoverageRenewalWorker(context: Context, parameters: WorkerParameters
             runtime.maintenance.submit {
                 runtime.initialize()
                 if (inputData.getBoolean("repair", true)) runtime.plans.repair(preserveDispatchWindow = true)
+                runtime.sahur.sync()
                 NativePrayerRenewal(runtime).extend(inputData.getInt("maxAppend", 300))
             }.get(5, TimeUnit.MINUTES)
             Result.success()
@@ -148,6 +149,7 @@ internal class NativePrayerRenewal(private val runtime: PrayerNotificationRuntim
             }
         }
         runCatching { runtime.syncAdvance() }
+        runCatching { runtime.sahur.sync() }
         runtime.emit("planChanged")
     }
 }
