@@ -9,6 +9,7 @@ struct IOSPrayerConfiguration: Codable, Equatable {
   var schedule: IOSPrayerSchedule?
   var configurationSignature = ""
   var experience = IOSPrayerExperience()
+  var sahur: IOSSahurSettings?
   var strings: [String: String] = [:]
   var migration = "uninitialized"
   var legacyOwnershipUntil: Date?
@@ -21,7 +22,7 @@ struct IOSPrayerConfiguration: Codable, Equatable {
       ["uninitialized", "pending", "retired", "native"].contains(migration),
       strings.count <= 80, strings.allSatisfy({ $0.key.count <= 64 && $0.value.count <= 4096 })
     else { throw IOSPrayerError.invalid("invalidConfiguration") }
-    try schedule?.validate(); try experience.validate()
+    try schedule?.validate(); try experience.validate(); try sahur?.validate()
   }
 }
 

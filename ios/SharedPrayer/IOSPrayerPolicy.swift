@@ -127,11 +127,68 @@ struct IOSPrayerOccurrence: Codable, Equatable {
   let locationRevision: Int64
   let signature: String
   var eventDictionary: [String: Any] { (try? JSONSerialization.jsonObject(with: eventJSON)) as? [String: Any] ?? [:] }
-  var integerID: Int { kind == "main" ? (eventDictionary["id"] as? Int ?? 0) : 410_000_000 + Int(Self.digest(key).prefix(6), radix: 16)! }
+  var integerID: Int { kind == "main" || kind == "sahur" ? (eventDictionary["id"] as? Int ?? 0) : 410_000_000 + Int(Self.digest(key).prefix(6), radix: 16)! }
   static func digest(_ value: String) -> String { SHA256.hash(data: Data(value.utf8)).map { String(format: "%02x", $0) }.joined() }
   static func uuid(_ key: String) -> UUID {
     let bytes = Array(SHA256.hash(data: Data(key.utf8)).prefix(16))
     return UUID(uuid: (bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7], bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]))
+  }
+}
+
+struct IOSSahurSettings: Codable, Equatable {
+  var enabled = false
+  var type = 0
+  var hour = 4
+  var minute = 0
+  var minutesBeforeFajr = 30
+  var locale = "en"
+  var title = "Sahur alarm"
+  var body = "Time to wake up for Sahur"
+  var stop = "Stop"
+  func validate() throws {
+    guard (0...1).contains(type), (0...23).contains(hour), (0...59).contains(minute),
+      (10...150).contains(minutesBeforeFajr), (2...16).contains(locale.count),
+      [title, body, stop].allSatisfy({ !$0.isEmpty && $0.count <= 4096 }) else { throw IOSPrayerError.invalid("invalidSahur") }
+  }
+  func occurrences(schedule: IOSPrayerSchedule?, capabilities: IOSPrayerCapabilities, now: Date,
+    revision: Int64, strings: [String: String]) -> [IOSPrayerOccurrence] {
+    guard enabled else { return [] }
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = .current
+    let zone = type == 1 ? schedule?.location.timeZoneId ?? calendar.timeZone.identifier : calendar.timeZone.identifier
+    let candidates: [(String, Date)]
+    if type == 1 {
+      candidates = schedule?.events(from: now, days: 31, revision: revision, signature: "sahur")
+        .filter { $0.prayer == "fajr" }.map { ($0.civilDay, $0.instant.addingTimeInterval(-Double(minutesBeforeFajr * 60))) } ?? []
+    } else {
+      candidates = (0...30).compactMap { offset in
+        guard let day = calendar.date(byAdding: .day, value: offset, to: now),
+          let at = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: day) else { return nil }
+        let parts = calendar.dateComponents([.year, .month, .day], from: day)
+        return (String(format: "%04d-%02d-%02d", parts.year!, parts.month!, parts.day!), at)
+      }
+    }
+    // Alarm permission is shared with prayers. On 26+ a denied permission
+    // doesn't silently turn a wake-up alarm into a short notification.
+    let mode: IOSPrayerMode = capabilities.supportsAlarms ? (capabilities.alarms ? .alarm : .off)
+      : (capabilities.notifications && capabilities.notificationSound ? .short : .off)
+    let policy = IOSPrayerEffectivePolicy(desired: .alarm, effective: mode, reciterId: "system-alarm",
+      sound: mode == .short ? "huda-sahur.caf" : nil, reason: capabilities.supportsAlarms ? nil : "alarmUnsupported")
+    return candidates.filter { $0.1 > now }.prefix(30).map { candidate in
+      let (day, at) = candidate
+      let key = "sahur/\(zone)/\(day)"
+      var utc = Calendar(identifier: .gregorian); utc.timeZone = TimeZone(secondsFromGMT: 0)!
+      let parts = day.split(separator: "-").compactMap { Int($0) }
+      let civil = utc.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2]))!
+      let slot = (Int(civil.timeIntervalSince1970 / 86400) % 30 + 30) % 30
+      var event = IOSPrayerPlanner.alarmPresentation(strings)
+      event.merge(["id": 114 + slot, "title": title, "body": body, "stop": stop,
+        "type": "sahur", "timeZone": zone]) { _, new in new }
+      return IOSPrayerOccurrence(key: key, identifier: "huda.prayer.sahur.\(IOSPrayerOccurrence.digest(key).prefix(32))",
+        alarmID: IOSPrayerOccurrence.uuid(key), prayer: "sahur", kind: "sahur", instant: at,
+        eventJSON: try! JSONSerialization.data(withJSONObject: event, options: .sortedKeys), policy: policy,
+        timeSensitive: true, revision: revision, locationRevision: schedule?.location.revision ?? 0, signature: "sahur")
+    }
   }
 }
 
@@ -167,6 +224,14 @@ enum IOSPrayerPlanner {
     }
     return result.sorted { $0.instant == $1.instant ? $0.key < $1.key : $0.instant < $1.instant }
   }
+  /// The app's color and "Open Huda" text for the alarm screen. Part of the
+  /// event, so a theme or language change reschedules the alarms.
+  static func alarmPresentation(_ strings: [String: String]) -> [String: Any] {
+    var result: [String: Any] = [:]
+    if let tint = strings["alarmTint"], tint.range(of: "^[0-9a-f]{6}$", options: .regularExpression) != nil { result["tint"] = tint }
+    if let open = strings["openApp"], !open.isEmpty { result["openApp"] = open }
+    return result
+  }
   static func allocate(_ all: [IOSPrayerOccurrence], otherNotifications: Int, reservedNotifications: Int = 1,
     alarmLimit: Int = 50, alarmHorizon: Date) -> [IOSPrayerOccurrence] {
     var notificationSlots = max(0, min(50, 60 - max(0, otherNotifications) - max(0, reservedNotifications)))
@@ -178,9 +243,12 @@ enum IOSPrayerPlanner {
     // starve every advance reminder in a fourteen-day calculation horizon.
     let optional = all.contains { $0.kind == "advance" && $0.policy.effective != .off }
     let primaryEnd = (all.first { $0.kind == "main" }?.instant ?? .distantPast).addingTimeInterval(8 * 86400)
-    let ordered = optional ? all.filter { $0.kind == "main" && ($0.policy.backend == "alarm" || $0.instant < primaryEnd) } +
+    let prayers = optional ? all.filter { $0.kind == "main" && ($0.policy.backend == "alarm" || $0.instant < primaryEnd) } +
       all.filter { $0.kind == "advance" } + all.filter { $0.kind == "main" && $0.policy.backend != "alarm" && $0.instant >= primaryEnd }
       : all.filter { $0.kind == "main" }
+    // Share the same OS budgets. Reserve ten daily wake-ups before allocating
+    // prayers, rather than spending every alarm/notification slot on prayers.
+    let ordered = Array(all.filter { $0.kind == "sahur" }.prefix(10)) + prayers
     for event in ordered where event.policy.effective != .off {
         if event.policy.backend == "alarm" {
           guard alarmSlots > 0, event.instant < alarmHorizon else { continue }

@@ -39,7 +39,8 @@ actor IOSPrayerService {
   }
   func configure(expectedRevision: Int64, schedule: IOSPrayerSchedule?, signature: String?,
     experience: IOSPrayerExperience?, strings: [String: String]?, migration: String?,
-    ownershipUntil: Date? = nil, nativeNotBefore: Date? = nil, locationRevisionFloor: Int64? = nil) async throws -> [String: Any] {
+    ownershipUntil: Date? = nil, nativeNotBefore: Date? = nil, locationRevisionFloor: Int64? = nil,
+    sahur: IOSSahurSettings? = nil) async throws -> [String: Any] {
     guard groupAvailable else { throw IOSPrayerError.invalid("appGroupUnavailable") }
     guard !running else { throw IOSPrayerError.invalid("busy") }
     running = true; defer { running = false }
@@ -59,6 +60,7 @@ actor IOSPrayerService {
     if let signature { proposed.configurationSignature = signature }
     if let locationRevisionFloor { proposed.locationRevisionFloor = max(proposed.locationRevisionFloor ?? 0, locationRevisionFloor) }
     if let experience { try experience.validate(); proposed.experience = experience }
+    if let sahur { try sahur.validate(); proposed.sahur = sahur }
     if let strings { proposed.strings = strings }
     if let migration {
       guard !["native", "retired"].contains(proposed.migration) || ["native", "retired"].contains(migration) else { throw IOSPrayerError.invalid("migrationRegression") }
@@ -128,13 +130,15 @@ actor IOSPrayerService {
     return true
   }
   private func reconcileLocked(_ state: inout IOSPrayerState) async throws {
+    await notifications.removeLegacySahur()
     let now = Date()
     state.lastAttempt = now
     let proposed = state.operation?.configuration ?? state.configuration
     if !groupAvailable { throw IOSPrayerError.invalid("appGroupUnavailable") }
     // Pending legacy enrollment retains its existing local/server boundary.
     // Preparing a native configuration never creates overlapping ownership.
-    if proposed.migration == "pending" || proposed.migration == "uninitialized" || proposed.schedule == nil {
+    let prayersReady = !["pending", "uninitialized"].contains(proposed.migration) && proposed.schedule != nil
+    if !prayersReady && proposed.sahur?.enabled != true && !state.accepted.values.contains(where: { $0.kind == "sahur" }) {
       state.configuration = proposed; state.operation = nil
       state.error = proposed.migration == "pending" ? "migrationPending" : nil
       try store.save(state); return
@@ -143,22 +147,31 @@ actor IOSPrayerService {
     let interrupted = state.operation?.desired ?? []
     // Retirement and its boundary are durable before removing legacy requests.
     // Retained imminent legacy alerts still count against the OS queue budget.
-    await notifications.removeLegacy(preserveThrough: proposed.experience.enabled ? proposed.nativeNotBefore : nil)
+    if prayersReady { await notifications.removeLegacy(preserveThrough: proposed.experience.enabled ? proposed.nativeNotBefore : nil) }
     let (c, _) = await capabilities(state)
     var snapshot = await notifications.snapshot()
     var alarmSnapshot = try alarms.snapshot()
-    let schedule = proposed.schedule!
-    let all = IOSPrayerPlanner.occurrences(schedule: schedule, experience: proposed.experience, capabilities: c,
-      now: now, revision: proposed.revision, signature: proposed.configurationSignature, strings: proposed.strings)
+    var all = prayersReady ? IOSPrayerPlanner.occurrences(schedule: proposed.schedule!, experience: proposed.experience, capabilities: c,
+      now: now, revision: proposed.revision, signature: proposed.configurationSignature, strings: proposed.strings) : []
+    var sahurAudioUnavailable = false
+    if let sahur = proposed.sahur {
+      var sahurCapabilities = c
+      if !c.supportsAlarms && sahur.enabled {
+        do { try audio.prepareSahurSound() }
+        catch { sahurCapabilities.notificationSound = false; sahurAudioUnavailable = true }
+      }
+      all += sahur.occurrences(schedule: proposed.schedule, capabilities: sahurCapabilities, now: now,
+        revision: proposed.revision, strings: proposed.strings)
+    }
     let expected = all.filter { event in
       guard state.outcomes[event.key] == nil else { return false }
-      return proposed.nativeNotBefore == nil || event.instant >= proposed.nativeNotBefore!
+      return event.kind == "sahur" || proposed.nativeNotBefore == nil || event.instant >= proposed.nativeNotBefore!
     }
     let previews = snapshot.requests.values.filter { $0.identifier.hasPrefix(IOSPrayerNotificationScheduler.previewPrefix) }.count
     let desired = IOSPrayerPlanner.allocate(expected, otherNotifications: snapshot.otherCount,
       reservedNotifications: 1 + previews, alarmHorizon: now.addingTimeInterval(10 * 86400))
     state.operation = IOSPrayerOperation(configuration: proposed, desired: desired, started: state.operation?.started ?? now)
-    state.error = nil
+    state.error = sahurAudioUnavailable ? "sahurAudioUnavailable" : nil
     try store.save(state)
     // The mapping is durable before any OS mutation, including new alarm UUIDs.
     var previous = Dictionary(uniqueKeysWithValues: interrupted.map { ($0.key, $0) })
@@ -174,7 +187,8 @@ actor IOSPrayerService {
       let active = alarmSnapshot[old.alarmID]?.active == true
       let near = old.instant > now && old.instant.timeIntervalSince(now) <= 120
       let actual = old.policy.backend == "alarm" ? alarmSnapshot[old.alarmID] != nil : snapshot.requests[old.identifier] != nil
-      if active || near && actual && proposed.experience.policy(for: old.prayer).mode != .off { preserved[old.key] = old; continue }
+      let enabled = old.kind == "sahur" ? proposed.sahur?.enabled == true : proposed.experience.policy(for: old.prayer).mode != .off
+      if active || near && actual && enabled { preserved[old.key] = old; continue }
       if wanted[old.key] == nil {
         if old.policy.backend == "alarm", alarmSnapshot[old.alarmID] != nil { try alarms.cancel(old.alarmID) }
         notifications.remove([old.identifier])
@@ -281,6 +295,7 @@ actor IOSPrayerService {
       "lowPowerMode": ProcessInfo.processInfo.isLowPowerModeEnabled,
       "notificationCount": snapshot.requests.count, "otherNotificationCount": snapshot.otherCount,
       "alarmCount": actual.filter { $0.policy.backend == "alarm" }.count,
+      "sahurScheduled": actual.contains { $0.kind == "sahur" && $0.instant > Date() && $0.policy.effective != .off },
       "coverageMillis": millis(coverage), "optionalCoverageMillis": millis(state.optionalCoverage),
       "perPrayerCoverage": state.perPrayerCoverage.mapValues { $0.timeIntervalSince1970 * 1000 },
       "nextAlertMillis": millis(actual.first(where: { $0.kind == "main" && $0.instant > Date() })?.instant),

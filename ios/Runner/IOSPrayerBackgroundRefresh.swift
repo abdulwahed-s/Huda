@@ -23,7 +23,7 @@ final class IOSPrayerBackgroundRefresh {
     let lowCoverage = coverage.map { $0.timeIntervalSinceNow < 3 * 86400 } ?? false
     request.earliestBeginDate = Date().addingTimeInterval(lowCoverage ? 3600 : 6 * 3600)
     do {
-      // Replace this service's request only. Sahur/plugin work is independent.
+      // The same service renews prayer and Sahur occurrences.
       BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.identifier)
       try BGTaskScheduler.shared.submit(request)
       diagnostics.record("submitted", runID: runID, label: label, earliestBegin: request.earliestBeginDate, success: true)

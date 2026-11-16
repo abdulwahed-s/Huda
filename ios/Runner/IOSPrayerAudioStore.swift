@@ -20,6 +20,33 @@ struct IOSPrayerAudioStore {
   init() {
     sounds = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0].appendingPathComponent("Sounds", isDirectory: true)
   }
+  /// A 29-second alarm chime for pre-AlarmKit notifications. The OS plays it
+  /// once, including when Huda is terminated; no silent background audio.
+  func prepareSahurSound() throws {
+    let target = sounds.appendingPathComponent("huda-sahur.caf")
+    guard !FileManager.default.fileExists(atPath: target.path) else { return }
+    try FileManager.default.createDirectory(at: sounds, withIntermediateDirectories: true)
+    let rate = 22_050.0
+    guard let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: rate, channels: 1, interleaved: false),
+      let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(rate * 29)) else {
+      throw IOSPrayerError.invalid("audioDecode")
+    }
+    buffer.frameLength = buffer.frameCapacity
+    for index in 0..<Int(buffer.frameLength) {
+      let time = Double(index) / rate
+      let beat = time.truncatingRemainder(dividingBy: 1)
+      let envelope = beat < 0.6 ? min(1, beat / 0.015) * exp(-beat * 5) : 0
+      buffer.floatChannelData![0][index] = Float(0.5 * envelope * sin(2 * .pi * (beat < 0.3 ? 880 : 1100) * time))
+    }
+    let temporary = sounds.appendingPathComponent(".sahur-\(UUID().uuidString).caf")
+    defer { try? FileManager.default.removeItem(at: temporary) }
+    do {
+      let output = try AVAudioFile(forWriting: temporary, settings: [AVFormatIDKey: kAudioFormatAppleIMA4,
+        AVSampleRateKey: rate, AVNumberOfChannelsKey: 1])
+      try output.write(from: buffer)
+    }
+    try FileManager.default.moveItem(at: temporary, to: target)
+  }
   /// Makes the default's clip, and its alarm files (whole and opening) when
   /// [full], once per bundled recording. False when the clip can't be made; prayers then use
   /// the system sound.

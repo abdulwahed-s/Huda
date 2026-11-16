@@ -40,15 +40,16 @@ final class IOSPrayerBridge {
       let status = try await service.reconcile(); publish(status)
       IOSPrayerBackgroundRefresh.shared.submit(coverage: date(status["coverageMillis"]))
       return status
-    case "configure", "setExperience", "setMigration", "setPresentation":
+    case "configure", "setExperience", "setMigration", "setPresentation", "setSahur":
       guard let revision = args["expectedRevision"] as? Int64 else { throw IOSPrayerError.invalid("revisionRequired") }
       let schedule = try args["schedule"].map { try IOSPrayerJSON.decode(IOSPrayerSchedule.self, $0) }
       let experience = try args["experience"].map { try IOSPrayerJSON.decode(IOSPrayerExperience.self, $0) }
+      let sahur = try args["sahur"].map { try IOSPrayerJSON.decode(IOSSahurSettings.self, $0) }
       let status = try await service.configure(expectedRevision: revision, schedule: schedule,
         signature: args["configurationSignature"] as? String, experience: experience,
         strings: args["strings"] as? [String: String], migration: args["migration"] as? String,
         ownershipUntil: date(args["ownershipUntilMillis"]), nativeNotBefore: date(args["nativeNotBeforeMillis"]),
-        locationRevisionFloor: (args["locationRevisionFloor"] as? NSNumber)?.int64Value)
+        locationRevisionFloor: (args["locationRevisionFloor"] as? NSNumber)?.int64Value, sahur: sahur)
       publish(status); IOSPrayerBackgroundRefresh.shared.submit(coverage: date(status["coverageMillis"]))
       return status
     case "requestNotifications":
