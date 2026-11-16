@@ -268,10 +268,12 @@ class PrayerAudioRepository {
           'full': {
             'bytes': reciter.full.bytes,
             'sha256': reciter.full.sha256Hex,
+            'duration_ms': reciter.full.durationMs,
           },
           'notification': {
             'bytes': reciter.short.bytes,
             'sha256': reciter.short.sha256Hex,
+            'duration_ms': reciter.short.durationMs,
           },
         },
       }),
