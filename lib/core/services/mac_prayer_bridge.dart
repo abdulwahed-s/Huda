@@ -230,6 +230,8 @@ class MacPrayerBridge {
         'remaining': l10n.windowsPrayerFocusTimeRemaining,
         'lockedHint': l10n.windowsPrayerFocusLockedHint,
         'setup': l10n.macPrayerMenuNeedsSetup,
+        'renewalTitle': l10n.iosPrayerRenewalTitle,
+        'renewalBody': l10n.iosPrayerRenewalBody,
         for (final name in names.entries) ...{
           '${name.key}Title': l10n.notificationPrayerTimeTitle(name.value),
           '${name.key}Body': l10n.notificationPrayerTimeBody(name.value),

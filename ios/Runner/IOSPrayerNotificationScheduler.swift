@@ -94,7 +94,9 @@ struct IOSPrayerNotificationScheduler {
     guard enabled, let coverage else { return }
     let pending = await center.pendingNotificationRequests()
     guard pending.count < 60 else { return }
-    let fire = max(Date().addingTimeInterval(60), coverage.addingTimeInterval(-86400))
+    // A day before coverage ends, 15 minutes after that day's prayer so the
+    // two alerts don't arrive together.
+    let fire = max(Date().addingTimeInterval(60), coverage.addingTimeInterval(-86400 + 900))
     guard fire < coverage else { return }
     let content = UNMutableNotificationContent()
     content.title = strings["renewalTitle"] ?? "Extend prayer alerts"

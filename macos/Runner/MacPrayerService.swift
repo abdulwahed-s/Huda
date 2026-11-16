@@ -45,6 +45,7 @@ final class MacPrayerService {
   private var previewSession: String?
   // A numeric identifier keeps the existing plugin's pending/tap parsers valid.
   private let previewNotificationId = "299999999"
+  static let renewalIdentifier = "huda.prayer.renewal"
   private var previewExpiry: Timer?
   private var deferredCommands: [(FlutterMethodCall, FlutterResult)] = []
   weak var channel: FlutterMethodChannel?
@@ -336,7 +337,9 @@ final class MacPrayerService {
     // Refresh the rolling horizon without moving captured near-due policies.
     rebuildDue(preserveNearDue: true)
     let native = pending.filter(Self.isPrayerRequest)
-    let others = pending.count - native.count
+    // The renewal notice sits outside the prayer budget (60 of macOS's 64).
+    let renewal = pending.contains { $0.identifier == Self.renewalIdentifier } ? 1 : 0
+    let others = pending.count - native.count - renewal
     let budget = MacPrayerDuePolicy.capacity(otherCount: others)
     var soundNames: [String: String] = [:]
     var attemptedSounds = Set<String>()
@@ -367,7 +370,7 @@ final class MacPrayerService {
       ($0.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate() ?? .distantFuture >
         ($1.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate() ?? .distantFuture
     }
-    var count = pending.count
+    var count = pending.count - renewal
     func add(_ index: Int) {
       guard self.started else { self.finishReconcile(completion); return }
       if index == requests.count {
@@ -422,6 +425,30 @@ final class MacPrayerService {
       (gap || coverage == nil || coverage!.timeIntervalSinceNow < 3 * 86400) {
       queueError = queueError ?? "Prayer notification coverage is below three days."
     }
+    scheduleRenewal(existing: byId[Self.renewalIdentifier])
+  }
+  /// "Extend prayer alerts", a day before the queue runs out and 15 minutes
+  /// after that day's prayer. Each refill moves it later, so it only shows
+  /// once Huda has stopped running (quit, or not opened at login).
+  private func scheduleRenewal(existing: UNNotificationRequest?) {
+    let fire = coverage.map { max(Date().addingTimeInterval(60), $0.addingTimeInterval(-86400 + 900)) }
+    guard configuration.experience.enabled, let coverage, let fire, fire < coverage else {
+      if existing != nil { center.removePendingNotificationRequests(withIdentifiers: [Self.renewalIdentifier]) }
+      return
+    }
+    let content = UNMutableNotificationContent()
+    content.title = configuration.strings["renewalTitle"] ?? "Extend prayer alerts"
+    content.body = configuration.strings["renewalBody"] ?? "Open Huda to extend your scheduled prayer alerts."
+    content.sound = nil
+    content.userInfo = ["payload": "{\"type\":\"prayer_renewal\"}",
+      "presentAlert": true, "presentBanner": true, "presentList": true, "presentBadge": false, "presentSound": false]
+    var calendar = Calendar(identifier: .gregorian); calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+    var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: fire)
+    components.timeZone = calendar.timeZone
+    if let existing, existing.content.title == content.title, existing.content.body == content.body,
+      (existing.trigger as? UNCalendarNotificationTrigger)?.dateComponents == components { return }
+    center.add(UNNotificationRequest(identifier: Self.renewalIdentifier, content: content,
+      trigger: UNCalendarNotificationTrigger(dateMatching: components, repeats: false)), withCompletionHandler: nil)
   }
   private func finishReconcile(_ completion: (() -> Void)?) {
     reconciling = false; emit(); completion?()

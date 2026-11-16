@@ -179,7 +179,7 @@ final class MacPrayerServiceTests: XCTestCase {
     service.start(); defer { service.stop() }
     let status = try configure(service)
     XCTAssertEqual(status["pendingCount"] as? Int, 45)
-    XCTAssertEqual(fake.pending.count, 60)
+    XCTAssertEqual(fake.pending.count, 61) // + the renewal notice, outside the budget
     XCTAssertNotNil(status["coverageMillis"] as? Double)
     XCTAssertTrue(fake.removals.allSatisfy { $0 == "299999999" || (Int($0).map { $0 >= 300_000_000 } ?? false) })
     for request in fake.pending.values.filter(MacPrayerService.isPrayerRequest) {
@@ -190,6 +190,21 @@ final class MacPrayerServiceTests: XCTestCase {
       XCTAssertEqual(request.content.userInfo["presentSound"] as? Bool, false)
       XCTAssertNotEqual((request.content.userInfo["hudaEvent"] as? [String: Any])?["prayer"] as? String, "sunrise")
     }
+  }
+  func testRenewalNoticeFollowsCoverageOutsideThePrayerBudget() throws {
+    let fake = FakePrayerNotifications()
+    let service = MacPrayerService(directory: directory, notifications: fake)
+    service.start(); defer { service.stop() }
+    let status = try configure(service)
+    let renewal = try XCTUnwrap(fake.pending[MacPrayerService.renewalIdentifier])
+    XCTAssertFalse(MacPrayerService.isPrayerRequest(renewal))
+    XCTAssertNil(renewal.content.sound)
+    let coverage = Date(timeIntervalSince1970: try XCTUnwrap(status["coverageMillis"] as? Double) / 1000)
+    let fire = try XCTUnwrap((renewal.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate())
+    XCTAssertEqual(fire.timeIntervalSince(coverage), -86400 + 900, accuracy: 1)
+    // A full prayer queue beside it: the notice doesn't take a prayer's slot.
+    XCTAssertEqual(status["pendingCount"] as? Int, 50)
+    XCTAssertEqual(try configure(service)["pendingCount"] as? Int, 50)
   }
   func testReadbackDoesNotClaimCoverageForDiscardedRequests() throws {
     let fake = FakePrayerNotifications(); fake.discardAccepted = true
@@ -265,7 +280,7 @@ final class MacPrayerServiceTests: XCTestCase {
     XCTAssertNotNil(fake.pending["299999999"])
     _ = apply(service, method: "stopPreview", values: ["sessionId": "preview:unit-test"])
     XCTAssertNil(fake.pending["299999999"])
-    XCTAssertEqual(fake.pending.count, 50)
+    XCTAssertEqual(fake.pending.count, 51) // + the renewal notice
   }
   func testRequestIdentityUsesSourcePrayerDayAcrossDateOffsets() throws {
     let location = try MacPrayerJSON.decode(MacPrayerSchedule.self, schedule()).location
@@ -355,7 +370,8 @@ final class MacPrayerServiceTests: XCTestCase {
     XCTAssertNotNil(status["error"] as? String)
     XCTAssertNotNil(fake.pending[identifier])
     XCTAssertEqual(fake.pending[identifier]?.content.title, before[identifier]?.content.title)
-    XCTAssertEqual(fake.pending.count, before.count)
+    let renewal = MacPrayerService.renewalIdentifier
+    XCTAssertEqual(fake.pending.keys.filter { $0 != renewal }.count, before.keys.filter { $0 != renewal }.count)
   }
   func testDisableStopsNativeRequestsButLeavesOtherReminders() throws {
     let fake = FakePrayerNotifications()
