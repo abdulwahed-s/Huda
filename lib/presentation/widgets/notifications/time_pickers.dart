@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huda/presentation/widgets/notifications/alarm_option_card.dart';
 import 'package:huda/presentation/widgets/notifications/radio_dot.dart';
 import 'package:huda/presentation/widgets/notifications/time_selection_row.dart';
+import 'package:huda/core/services/notification_delivery_check.dart';
+import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
 class TimePickers {
   static Future<void> pickQuranTime(
@@ -240,6 +242,25 @@ class TimePickers {
       context: context,
       builder: (dialogContext) => StatefulBuilder(
         builder: (context, setState) {
+          Future<void> saveSahur(Future<void> Function() save) async {
+            try {
+              await save();
+            } on NotificationNotScheduledException {
+              if (!dialogContext.mounted) return;
+              HudaSnackBar.show(dialogContext,
+                message: AppLocalizations.of(dialogContext)!.notificationScheduleFailed,
+                kind: HudaSnackBarKind.warning);
+            }
+            if (!dialogContext.mounted) return;
+            final saved = cubit.state;
+            if (saved is NotificationPreferencesLoaded) {
+              setState(() {
+                alarmType = saved.sahurAlarmType;
+                exactTime = saved.sahurExactTime;
+                minutesBefore = saved.sahurMinutesBeforeFajr.clamp(10, 150);
+              });
+            }
+          }
           return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.r),
@@ -277,7 +298,7 @@ class TimePickers {
                     accentColor: primaryColor,
                     onTap: () {
                       setState(() => alarmType = 0);
-                      cubit.setSahurAlarmType(0);
+                      saveSahur(() => cubit.setSahurAlarmType(0));
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +333,7 @@ class TimePickers {
                                     final formatted =
                                         '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
                                     setState(() => exactTime = formatted);
-                                    cubit.setSahurExactTime(formatted);
+                                    await saveSahur(() => cubit.setSahurExactTime(formatted));
                                   }
                                 },
                                 child: Container(
@@ -354,7 +375,7 @@ class TimePickers {
                     accentColor: primaryColor,
                     onTap: () {
                       setState(() => alarmType = 1);
-                      cubit.setSahurAlarmType(1);
+                      saveSahur(() => cubit.setSahurAlarmType(1));
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -427,8 +448,8 @@ class TimePickers {
                                     divisions: 140,
                                     onChanged: (v) => setState(
                                         () => minutesBefore = v.toInt()),
-                                    onChangeEnd: (v) => cubit
-                                        .setSahurMinutesBeforeFajr(v.toInt()),
+                                    onChangeEnd: (v) => saveSahur(() => cubit
+                                        .setSahurMinutesBeforeFajr(v.toInt())),
                                   ),
                                 ),
                               ),

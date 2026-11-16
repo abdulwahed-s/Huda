@@ -2819,13 +2819,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'Zeit zum Aufwachen für Sahur';
 
   @override
-  String get alarmKilledTitle => 'Ihre Alarme klingeln möglicherweise nicht';
-
-  @override
-  String get alarmKilledBody =>
-      'Sie haben die App geschlossen. Bitte öffnen Sie sie erneut, damit Ihre Alarme neu geplant werden können.';
-
-  @override
   String get snoozeAlarm => 'Schlummern';
 
   @override
@@ -6537,4 +6530,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'Die Iqamah-Einstellungen konnten nicht gespeichert oder synchronisiert werden. Bitte erneut versuchen.';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'Unter iOS vor Version 26 ertönt für Sahur einmalig ein Benachrichtigungston von etwa 30 Sekunden. Er wird nicht wiederholt.';
 }

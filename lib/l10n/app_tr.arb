@@ -952,8 +952,6 @@
   "sahurAlarmRinging": "Sahur Alarmı",
   "stopAlarm": "Durdur",
   "sahurAlarmNotificationBody": "Sahur için uyanma vakti",
-  "alarmKilledTitle": "Alarmlarınız çalmayabilir",
-  "alarmKilledBody": "Uygulamayı kapattınız. Alarmlarınızın yeniden planlanabilmesi için lütfen tekrar açın.",
   "snoozeAlarm": "Ertele",
   "miqaatLock": "Mikat Kilidi",
   "@miqaatLock": {
@@ -2274,5 +2272,6 @@
   "prayerIqamahMinutes": "+{minutes} dk",
   "prayerIqamahReset": "Varsayılanlara sıfırla",
   "prayerIqamahOff": "Kapalı",
-  "prayerIqamahSaveError": "İkamet ayarları kaydedilemedi veya eşitlenemedi. Lütfen tekrar deneyin."
+  "prayerIqamahSaveError": "İkamet ayarları kaydedilemedi veya eşitlenemedi. Lütfen tekrar deneyin.",
+  "sahurNotificationOnlyDescription": "iOS 26’dan önce sahur için yaklaşık 30 saniyelik bir bildirim sesi bir kez çalar. Tekrarlanmaz."
 }

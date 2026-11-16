@@ -3,7 +3,6 @@ import Flutter
 import MapKit
 import UIKit
 import UserNotifications
-import alarm
 import workmanager_apple
 
 @main
@@ -141,7 +140,6 @@ import workmanager_apple
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     }
-    SwiftAlarmPlugin.registerBackgroundTasks()
 
     GeneratedPluginRegistrant.register(with: self)
     let launched = super.application(

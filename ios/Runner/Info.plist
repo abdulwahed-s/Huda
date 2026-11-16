@@ -51,7 +51,6 @@
 	<true/>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.gdelataillade.fetch</string>
 		<string>com.aw.huda.prayerNotifications.refresh</string>
 	</array>
 	<key>UIBackgroundModes</key>

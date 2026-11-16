@@ -40,10 +40,14 @@ class ReminderNotificationContent {
       );
 
   /// Uses the app language saved by the localization cubit.
-  static Future<ReminderNotificationContent> load() async {
+  static Future<ReminderNotificationContent> load() async =>
+      ReminderNotificationContent.of(await loadLocalizations());
+
+  static Future<AppLocalizations> loadLocalizations() async {
     String? code;
     try {
       final preferences = await SharedPreferences.getInstance();
+      await preferences.reload();
       code =
           preferences.getString('app_locale') ??
           preferences.getString('locale');
@@ -53,9 +57,7 @@ class ReminderNotificationContent {
     final supported = AppLocalizations.supportedLocales.any(
       (locale) => locale.languageCode == code,
     );
-    return ReminderNotificationContent.of(
-      lookupAppLocalizations(Locale(supported ? code! : 'en')),
-    );
+    return lookupAppLocalizations(Locale(supported ? code! : 'en'));
   }
 
   final String kahfTitle;

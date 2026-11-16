@@ -2776,13 +2776,6 @@ class AppLocalizationsBn extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'সাহুরের জন্য ঘুম থেকে ওঠার সময়';
 
   @override
-  String get alarmKilledTitle => 'আপনার অ্যালার্ম নাও বাজতে পারে';
-
-  @override
-  String get alarmKilledBody =>
-      'আপনি অ্যাপটি বন্ধ করেছেন। আপনার অ্যালার্মগুলি পুনরায় নির্ধারণ করার জন্য অনুগ্রহ করে এটি আবার খুলুন।';
-
-  @override
   String get snoozeAlarm => 'স্নুজ';
 
   @override
@@ -6440,4 +6433,8 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'ইকামতের সেটিংস সংরক্ষণ বা সিঙ্ক করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'iOS 26-এর আগের সংস্করণে সাহরির বিজ্ঞপ্তির শব্দ প্রায় ৩০ সেকেন্ড ধরে একবার বাজে। এটি বারবার বাজে না।';
 }

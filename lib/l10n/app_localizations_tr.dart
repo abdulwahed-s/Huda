@@ -2769,13 +2769,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'Sahur için uyanma vakti';
 
   @override
-  String get alarmKilledTitle => 'Alarmlarınız çalmayabilir';
-
-  @override
-  String get alarmKilledBody =>
-      'Uygulamayı kapattınız. Alarmlarınızın yeniden planlanabilmesi için lütfen tekrar açın.';
-
-  @override
   String get snoozeAlarm => 'Ertele';
 
   @override
@@ -6433,4 +6426,8 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'İkamet ayarları kaydedilemedi veya eşitlenemedi. Lütfen tekrar deneyin.';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'iOS 26’dan önce sahur için yaklaşık 30 saniyelik bir bildirim sesi bir kez çalar. Tekrarlanmaz.';
 }

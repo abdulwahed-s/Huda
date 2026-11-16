@@ -2771,13 +2771,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'Masa untuk bangun bersahur';
 
   @override
-  String get alarmKilledTitle => 'Penggera anda mungkin tidak berbunyi';
-
-  @override
-  String get alarmKilledBody =>
-      'Anda telah mematikan aplikasi. Sila buka semula supaya penggera anda boleh dijadualkan semula.';
-
-  @override
   String get snoozeAlarm => 'Tunda';
 
   @override
@@ -6459,4 +6452,8 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'Tetapan iqamah tidak dapat disimpan atau disegerakkan. Sila cuba lagi.';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'Pada iOS sebelum versi 26, bunyi pemberitahuan sahur dimainkan sekali selama kira-kira 30 saat. Ia tidak berulang.';
 }

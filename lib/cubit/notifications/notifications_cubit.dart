@@ -11,19 +11,33 @@ import 'package:huda/core/services/notification_ids.dart';
 import 'package:huda/core/services/notification_page_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:huda/core/utils/platform_utils.dart';
-import 'package:huda/core/services/sahur_alarm_helper.dart';
+import 'package:huda/core/services/sahur_alarm_gateway.dart';
 
 part 'notifications_state.dart';
 
 class NotificationsCubit extends Cubit<NotificationsState> {
-  NotificationsCubit({NotificationOrchestrator? reminders})
+  NotificationsCubit({NotificationOrchestrator? reminders, SahurAlarmGateway? sahur})
       : _reminders = reminders,
+        _sahur = sahur ?? const NativeSahurAlarmGateway(),
         super(NotificationsInitial());
 
   final CacheHelper cacheHelper = getIt<CacheHelper>();
   final NotificationPageHelper _notificationHelper = NotificationPageHelper();
   final NotificationOrchestrator? _reminders;
+  final SahurAlarmGateway _sahur;
+  bool _sahurNotificationOnly = false;
+  final _sahurSettingsLock = Lock();
+
+  Future<void> _syncSahur({bool requestPermission = false}) async {
+    final settings = SahurAlarmSettings.fromCache(cacheHelper);
+    final receipt = await _sahur.configure(
+      settings, requestPermission: requestPermission,
+    );
+    _sahurNotificationOnly = receipt.notificationOnly;
+    if (!receipt.accepted) throw const NotificationNotScheduledException(114);
+  }
 
   NotificationOrchestrator get _orchestrator =>
       _reminders ?? NotificationOrchestrator.shared;
@@ -118,6 +132,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       sahurExactTime: cacheHelper.getData(key: 'sahurExactTime') ?? '04:00',
       sahurMinutesBeforeFajr:
           cacheHelper.getData(key: 'sahurMinutesBeforeFajr') ?? 30,
+      sahurNotificationOnly: _sahurNotificationOnly,
       loadingKeys: loadingKeys,
     );
   }
@@ -149,18 +164,18 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
     try {
       if (key == 'sahurAlarmEnabled') {
-        if (value) {
-          await SahurAlarmHelper.updateSahurAlarmSchedule();
-        } else {
-          await SahurAlarmHelper.stopAlarm();
-        }
+        await _syncSahur(requestPermission: value);
       } else {
         await _syncReminders(key, enabled: value);
       }
     } on NotificationNotScheduledException {
       // Keep the switch honest and remove anything partly scheduled.
       await cacheHelper.saveData(key: key, value: false);
-      unawaited(_orchestrator.requestSync('setting-rejected:$key'));
+      if (key == 'sahurAlarmEnabled') {
+        await _syncSahur();
+      } else {
+        unawaited(_orchestrator.requestSync('setting-rejected:$key'));
+      }
       rethrow;
     } finally {
       final latest = state;
@@ -171,29 +186,35 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
   }
 
-  Future<void> setSahurAlarmType(int type) async {
-    await cacheHelper.saveData(key: 'sahurAlarmType', value: type);
-    await loadPreferences();
-    if (cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false) {
-      await SahurAlarmHelper.updateSahurAlarmSchedule();
-    }
-  }
+  Future<void> setSahurAlarmType(int type) =>
+      _setSahurSetting('sahurAlarmType', type);
 
-  Future<void> setSahurExactTime(String time) async {
-    await cacheHelper.saveData(key: 'sahurExactTime', value: time);
-    await loadPreferences();
-    if (cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false) {
-      await SahurAlarmHelper.updateSahurAlarmSchedule();
-    }
-  }
+  Future<void> setSahurExactTime(String time) =>
+      _setSahurSetting('sahurExactTime', time);
 
-  Future<void> setSahurMinutesBeforeFajr(int minutes) async {
-    await cacheHelper.saveData(key: 'sahurMinutesBeforeFajr', value: minutes);
-    await loadPreferences();
-    if (cacheHelper.getData(key: 'sahurAlarmEnabled') ?? false) {
-      await SahurAlarmHelper.updateSahurAlarmSchedule();
+  Future<void> setSahurMinutesBeforeFajr(int minutes) =>
+      _setSahurSetting('sahurMinutesBeforeFajr', minutes);
+
+  Future<void> _setSahurSetting(String key, Object value) =>
+      _sahurSettingsLock.synchronized(() async {
+    final previous = cacheHelper.getData(key: key);
+    await cacheHelper.saveData(key: key, value: value);
+    try {
+      if (cacheHelper.getData(key: 'sahurAlarmEnabled') == true) {
+        await _syncSahur();
+      }
+    } on NotificationNotScheduledException {
+      if (previous == null) {
+        await cacheHelper.removeData(key: key);
+      } else {
+        await cacheHelper.saveData(key: key, value: previous);
+      }
+      await _syncSahur();
+      rethrow;
+    } finally {
+      await loadPreferences();
     }
-  }
+  });
 
   Future<void> setQuranReminderTime(String time) =>
       _setReminderSetting('quranReminderTime', time, 'quranReminder');
@@ -249,6 +270,11 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> initializeNotifications() async {
     await _notificationHelper.init();
+    try {
+      await _syncSahur(requestPermission: true);
+    } on NotificationNotScheduledException {
+      // Retain enabled settings when an OS permission was revoked externally.
+    }
     await loadPreferences();
     if (await getIsNotificationEnabled()) {
       final result =

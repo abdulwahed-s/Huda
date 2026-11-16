@@ -40,6 +40,7 @@ class IOSPrayerStatus {
     this.schedule,
     this.policies = const {},
     this.events = const [],
+    this.sahurScheduled = false,
   });
   final int revision,
       policyRevision,
@@ -69,6 +70,7 @@ class IOSPrayerStatus {
 
   /// Reciters whose whole adhan is ready as an alarm sound.
   final Set<String> fullAlarmReciters;
+  final bool sahurScheduled;
   bool get ownsSchedule => migration == 'native' || migration == 'retired';
   bool get notificationsAllowed => [
     'authorized',
@@ -89,6 +91,7 @@ class IOSPrayerStatus {
       revision: value['revision']! as int,
       policyRevision: value['policyRevision']! as int,
       ready: value['ready'] == true,
+      sahurScheduled: value['sahurScheduled'] == true,
       configurationSignature: value['configurationSignature']! as String,
       experience: IOSPrayerExperience.fromMap(value['experience']! as Map),
       notificationAuthorization: value['notificationAuthorization']! as String,
@@ -224,6 +227,21 @@ class IOSPrayerBridge {
   static Future<IOSPrayerStatus> requestNotifications() =>
       _call('requestNotifications');
   static Future<IOSPrayerStatus> requestAlarms() => _call('requestAlarms');
+  static Future<IOSPrayerStatus> configureSahur(
+    Map<String, Object> settings, {
+    bool requestPermission = false,
+  }) => _mutations.synchronized(() async {
+    var before = await refresh();
+    if (settings['enabled'] == true &&
+        requestPermission && before.supportsAlarms &&
+        before.alarmAuthorization != 'authorized') {
+      before = await requestAlarms();
+    }
+    return _call('setSahur', {
+      'expectedRevision': before.revision,
+      'sahur': settings,
+    });
+  });
   static Future<IOSPrayerStatus> openSettings() => _call('openSettings');
   static Future<IOSPrayerStatus> cancel({
     Iterable<int>? ids,

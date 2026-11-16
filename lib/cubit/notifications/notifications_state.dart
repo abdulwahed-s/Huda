@@ -27,6 +27,7 @@ class NotificationPreferencesLoaded extends NotificationsState {
   final int sahurAlarmType;
   final String sahurExactTime;
   final int sahurMinutesBeforeFajr;
+  final bool sahurNotificationOnly;
 
   final Set<String> loadingKeys;
 
@@ -47,6 +48,7 @@ class NotificationPreferencesLoaded extends NotificationsState {
     this.sahurAlarmType = 0,
     this.sahurExactTime = '04:00',
     this.sahurMinutesBeforeFajr = 30,
+    this.sahurNotificationOnly = false,
     this.loadingKeys = const {},
   });
 }

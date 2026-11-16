@@ -5184,18 +5184,6 @@ abstract class AppLocalizations {
   /// **'Time to wake up for Sahur'**
   String get sahurAlarmNotificationBody;
 
-  /// Title for the system notification shown when the app is killed.
-  ///
-  /// In en, this message translates to:
-  /// **'Your alarms may not ring'**
-  String get alarmKilledTitle;
-
-  /// Body for the system notification shown when the app is killed.
-  ///
-  /// In en, this message translates to:
-  /// **'You killed the app. Please reopen so your alarms can be rescheduled.'**
-  String get alarmKilledBody;
-
   /// Button label to snooze the ringing alarm for 5 minutes
   ///
   /// In en, this message translates to:
@@ -11603,6 +11591,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not save or sync Iqamah settings. Please try again.'**
   String get prayerIqamahSaveError;
+
+  /// No description provided for @sahurNotificationOnlyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'On iOS before 26, Sahur plays a notification sound for about 30 seconds, once. It does not loop.'**
+  String get sahurNotificationOnlyDescription;
 }
 
 class _AppLocalizationsDelegate

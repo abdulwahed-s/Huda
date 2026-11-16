@@ -2727,13 +2727,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'حان وقت الاستيقاظ للسحور';
 
   @override
-  String get alarmKilledTitle => 'قد لا ترن منبهاتك';
-
-  @override
-  String get alarmKilledBody =>
-      'لقد أغلقت التطبيق. أعد فتحه لنتمكن من إعادة جدولة منبهاتك.';
-
-  @override
   String get snoozeAlarm => 'تأجيل';
 
   @override
@@ -6368,4 +6361,8 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'تعذّر حفظ إعدادات الإقامة أو مزامنتها. حاول مرة أخرى.';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'على إصدارات iOS الأقدم من 26، يُشغَّل صوت إشعار السحور مرة واحدة لمدة نحو 30 ثانية، ولا يتكرر.';
 }

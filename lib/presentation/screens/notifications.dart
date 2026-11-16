@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/services/notification_delivery_check.dart';
+import 'package:huda/core/services/sahur_alarm_gateway.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,7 +61,10 @@ class _NotificationsState extends State<Notifications>
   }
 
   Future<void> _togglePreference(String key, bool value) async {
-    if (value &&
+    final needsNotifications = value && (key != 'sahurAlarmEnabled' ||
+        await NativeSahurAlarmGateway.requiresNotificationPermission());
+    if (!mounted) return;
+    if (needsNotifications &&
         !await PermissionHandlers.requestNotificationPermission(context)) {
       return;
     }
@@ -79,9 +83,13 @@ class _NotificationsState extends State<Notifications>
 
   Future<void> _openReminderSettings(
     bool reminderEnabled,
-    VoidCallback openSettings,
-  ) async {
-    if (reminderEnabled &&
+    VoidCallback openSettings, {
+    bool sahur = false,
+  }) async {
+    final needsNotifications = reminderEnabled && (!sahur ||
+        await NativeSahurAlarmGateway.requiresNotificationPermission());
+    if (!mounted) return;
+    if (needsNotifications &&
         !await PermissionHandlers.requestNotificationPermission(context)) {
       return;
     }
@@ -188,6 +196,7 @@ class _NotificationsState extends State<Notifications>
                               state,
                               context.read<NotificationsCubit>(),
                             ),
+                            sahur: true,
                           ),
                           onPreferenceChanged: _togglePreference,
                         );

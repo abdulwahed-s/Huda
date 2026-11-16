@@ -1056,8 +1056,6 @@
   "sahurAlarmRinging": "সাহুর অ্যালার্ম",
   "stopAlarm": "বন্ধ করুন",
   "sahurAlarmNotificationBody": "সাহুরের জন্য ঘুম থেকে ওঠার সময়",
-  "alarmKilledTitle": "আপনার অ্যালার্ম নাও বাজতে পারে",
-  "alarmKilledBody": "আপনি অ্যাপটি বন্ধ করেছেন। আপনার অ্যালার্মগুলি পুনরায় নির্ধারণ করার জন্য অনুগ্রহ করে এটি আবার খুলুন।",
   "snoozeAlarm": "স্নুজ",
   "miqaatLock": "মিক্বাত লক",
   "@miqaatLock": {
@@ -2380,5 +2378,6 @@
   "prayerIqamahMinutes": "+{minutes} মি",
   "prayerIqamahReset": "ডিফল্টে ফিরিয়ে নিন",
   "prayerIqamahOff": "বন্ধ",
-  "prayerIqamahSaveError": "ইকামতের সেটিংস সংরক্ষণ বা সিঙ্ক করা যায়নি। আবার চেষ্টা করুন।"
+  "prayerIqamahSaveError": "ইকামতের সেটিংস সংরক্ষণ বা সিঙ্ক করা যায়নি। আবার চেষ্টা করুন।",
+  "sahurNotificationOnlyDescription": "iOS 26-এর আগের সংস্করণে সাহরির বিজ্ঞপ্তির শব্দ প্রায় ৩০ সেকেন্ড ধরে একবার বাজে। এটি বারবার বাজে না।"
 }

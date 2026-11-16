@@ -16,6 +16,7 @@ import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/core/services/service_initialization_tracker.dart';
 import 'package:huda/core/services/service_locator.dart';
+import 'package:huda/core/services/sahur_alarm_gateway.dart';
 import 'package:huda/core/utils/performance_utils.dart';
 import 'package:huda/cubit/surah/surah_cubit.dart';
 import 'package:huda/core/utils/platform_utils.dart';
@@ -97,6 +98,13 @@ Future<void> _initializeNotificationServices() async {
     'Prayer notification startup status: ${result.status.name}, '
     'coverage: ${result.coverageUntil}',
   );
+  if (PlatformUtils.isMobile) {
+    try {
+      await NativeSahurAlarmGateway.sync(getIt<CacheHelper>(), requestPermission: true);
+    } catch (error) {
+      debugPrint('Sahur alarm sync failed: $error');
+    }
+  }
   if (PlatformUtils.isMacOS) {
     // macOS discards reminders while its pending queue is full. The prayer
     // reconcile above releases capacity, so restore anything it dropped.

@@ -116,7 +116,9 @@ class SettingsSection extends StatelessWidget {
                     : (AppLocalizations.of(context)!
                         .minsBeforeFajr(state.sahurMinutesBeforeFajr)))
                 : (AppLocalizations.of(context)!.sahurAlarmNotSet),
-            description: AppLocalizations.of(context)!.sahurAlarmDescription,
+            description: state.sahurNotificationOnly
+                ? AppLocalizations.of(context)!.sahurNotificationOnlyDescription
+                : AppLocalizations.of(context)!.sahurAlarmDescription,
             icon: Icons.alarm,
             gradient: [Colors.indigo.shade400, Colors.indigo.shade600],
             value: state.sahurAlarmEnabled,

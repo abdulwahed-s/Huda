@@ -3,7 +3,7 @@ import 'dart:convert';
 /// Every notification ID range Huda schedules. Reconcilers cancel by range,
 /// so ranges must never overlap:
 ///
-/// - 114–143: Sahur alarms (`alarm` package).
+/// - 114–143: native Sahur alarms (also used by the legacy compatibility receiver).
 /// - 1001–1006: Islamic reminders; 1099: the test notification;
 ///   1101–1550: random Athkar.
 /// - 2000–2599 and 300000000–399999999: prayers ([PrayerNotificationEvent]).
@@ -18,6 +18,10 @@ import 'dart:convert';
 ///   macOS queues them as `advance-<day>/<prayer>`; iOS uses its own native
 ///   IDs.
 abstract final class NotificationIds {
+  static const sahurBase = 114;
+  static const sahurLimit = 30;
+  static bool isSahur(int id) => id >= sahurBase && id < sahurBase + sahurLimit;
+
   static const kahfFriday = 1001;
   static const morningAthkar = 1002;
   static const eveningAthkar = 1003;

@@ -952,8 +952,6 @@
   "sahurAlarmRinging": "Будильник на Сухур",
   "stopAlarm": "Остановить",
   "sahurAlarmNotificationBody": "Пора просыпаться на Сухур",
-  "alarmKilledTitle": "Ваши будильники могут не сработать",
-  "alarmKilledBody": "Вы закрыли приложение. Пожалуйста, откройте его снова, чтобы ваши будильники могли быть перенесены.",
   "snoozeAlarm": "Отложить",
   "miqaatLock": "Блокировка Микаат",
   "@miqaatLock": {
@@ -2274,5 +2272,6 @@
   "prayerIqamahMinutes": "+{minutes} мин",
   "prayerIqamahReset": "Восстановить значения по умолчанию",
   "prayerIqamahOff": "Выкл.",
-  "prayerIqamahSaveError": "Не удалось сохранить или синхронизировать настройки икамата. Попробуйте ещё раз."
+  "prayerIqamahSaveError": "Не удалось сохранить или синхронизировать настройки икамата. Попробуйте ещё раз.",
+  "sahurNotificationOnlyDescription": "В iOS до версии 26 уведомление о сухуре звучит один раз около 30 секунд и не повторяется."
 }

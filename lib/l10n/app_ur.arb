@@ -968,8 +968,6 @@
   "sahurAlarmRinging": "سحری کا الارم",
   "stopAlarm": "بند کریں",
   "sahurAlarmNotificationBody": "سحری کے لیے اٹھنے کا وقت",
-  "alarmKilledTitle": "آپ کے الارم شاید نہ بجیں",
-  "alarmKilledBody": "آپ نے ایپ بند کر دی ہے۔ براہ کرم اسے دوبارہ کھولیں تاکہ آپ کے الارم دوبارہ شیڈول کیے جاسکیں۔",
   "snoozeAlarm": "بعد میں",
   "miqaatLock": "میقات لاک",
   "@miqaatLock": {
@@ -2290,5 +2288,6 @@
   "prayerIqamahMinutes": "+{minutes} منٹ",
   "prayerIqamahReset": "پہلے سے طے شدہ ترتیبات بحال کریں",
   "prayerIqamahOff": "بند",
-  "prayerIqamahSaveError": "اقامت کی ترتیبات محفوظ یا ہم آہنگ نہیں ہو سکیں۔ دوبارہ کوشش کریں۔"
+  "prayerIqamahSaveError": "اقامت کی ترتیبات محفوظ یا ہم آہنگ نہیں ہو سکیں۔ دوبارہ کوشش کریں۔",
+  "sahurNotificationOnlyDescription": "iOS 26 سے پہلے سحری کے لیے اطلاع کی آواز تقریباً 30 سیکنڈ تک صرف ایک بار بجتی ہے، بار بار نہیں بجتی۔"
 }

@@ -929,8 +929,6 @@
   "sahurAlarmRinging": "Sahur-Wecker",
   "stopAlarm": "Stoppen",
   "sahurAlarmNotificationBody": "Zeit zum Aufwachen für Sahur",
-  "alarmKilledTitle": "Ihre Alarme klingeln möglicherweise nicht",
-  "alarmKilledBody": "Sie haben die App geschlossen. Bitte öffnen Sie sie erneut, damit Ihre Alarme neu geplant werden können.",
   "snoozeAlarm": "Schlummern",
   "miqaatLock": "Miqaat-Sperre",
   "@miqaatLock": {
@@ -2251,5 +2249,6 @@
   "prayerIqamahMinutes": "+{minutes} Min.",
   "prayerIqamahReset": "Auf Standardwerte zurücksetzen",
   "prayerIqamahOff": "Aus",
-  "prayerIqamahSaveError": "Die Iqamah-Einstellungen konnten nicht gespeichert oder synchronisiert werden. Bitte erneut versuchen."
+  "prayerIqamahSaveError": "Die Iqamah-Einstellungen konnten nicht gespeichert oder synchronisiert werden. Bitte erneut versuchen.",
+  "sahurNotificationOnlyDescription": "Unter iOS vor Version 26 ertönt für Sahur einmalig ein Benachrichtigungston von etwa 30 Sekunden. Er wird nicht wiederholt."
 }

@@ -1463,8 +1463,6 @@
   "sahurAlarmRinging": "منبه السحور",
   "stopAlarm": "إيقاف",
   "sahurAlarmNotificationBody": "حان وقت الاستيقاظ للسحور",
-  "alarmKilledTitle": "قد لا ترن منبهاتك",
-  "alarmKilledBody": "لقد أغلقت التطبيق. أعد فتحه لنتمكن من إعادة جدولة منبهاتك.",
   "snoozeAlarm": "تأجيل",
   "miqaatLock": "قفل الميقات",
   "@miqaatLock": {
@@ -2784,5 +2782,6 @@
   "prayerIqamahMinutes": "+{minutes} د",
   "prayerIqamahReset": "استعادة الإعدادات الافتراضية",
   "prayerIqamahOff": "متوقف",
-  "prayerIqamahSaveError": "تعذّر حفظ إعدادات الإقامة أو مزامنتها. حاول مرة أخرى."
+  "prayerIqamahSaveError": "تعذّر حفظ إعدادات الإقامة أو مزامنتها. حاول مرة أخرى.",
+  "sahurNotificationOnlyDescription": "على إصدارات iOS الأقدم من 26، يُشغَّل صوت إشعار السحور مرة واحدة لمدة نحو 30 ثانية، ولا يتكرر."
 }

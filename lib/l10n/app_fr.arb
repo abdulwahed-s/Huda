@@ -954,8 +954,6 @@
   "sahurAlarmRinging": "Alarme du Souhour",
   "stopAlarm": "Arrêter",
   "sahurAlarmNotificationBody": "Il est temps de se réveiller pour le Souhour",
-  "alarmKilledTitle": "Vos alarmes pourraient ne pas sonner",
-  "alarmKilledBody": "Vous avez fermé l'application. Veuillez la rouvrir pour que vos alarmes puissent être reprogrammées.",
   "snoozeAlarm": "Reporter",
   "miqaatLock": "Verrouillage Miqaat",
   "@miqaatLock": {
@@ -2278,5 +2276,6 @@
   "prayerIqamahMinutes": "+{minutes} min",
   "prayerIqamahReset": "Rétablir les valeurs par défaut",
   "prayerIqamahOff": "Désactivé",
-  "prayerIqamahSaveError": "Impossible d’enregistrer ou de synchroniser les réglages de l’iqama. Veuillez réessayer."
+  "prayerIqamahSaveError": "Impossible d’enregistrer ou de synchroniser les réglages de l’iqama. Veuillez réessayer.",
+  "sahurNotificationOnlyDescription": "Avant iOS 26, le rappel du sahur émet un son de notification d’environ 30 secondes, une seule fois, sans répétition."
 }

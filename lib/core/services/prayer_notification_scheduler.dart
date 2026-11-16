@@ -1025,11 +1025,12 @@ class PrayerNotificationScheduler implements PrayerLocationActivator {
       androidEnabledPrayers: policy.enabledPrayers,
     );
     final allPending = await notifications.pendingNotificationRequests();
-    // Reminders before prayers have their own native reservation.
+    // Sahur and reminders before prayers have their own native reservations.
     final standardCount = allPending
         .where(
           (request) =>
               !PrayerNotificationEvent.isPrayerId(request.id) &&
+              !NotificationIds.isSahur(request.id) &&
               !NotificationIds.isPrayerAdvance(request.id),
         )
         .length;

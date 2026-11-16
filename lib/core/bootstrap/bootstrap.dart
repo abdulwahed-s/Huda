@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:alarm/alarm.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
@@ -16,7 +15,6 @@ import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
 import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/core/services/quick_actions_service.dart';
-import 'package:huda/core/services/sahur_alarm_helper.dart';
 import 'package:huda/core/services/service_locator.dart';
 
 String? _findLinuxLibmpv() {
@@ -100,10 +98,6 @@ Future<void> _runBackgroundInit() async {
   );
 
   await Future.wait([
-    _guard('Alarm', () async {
-      await Alarm.init();
-      SahurAlarmHelper.initListeners();
-    }, const Duration(seconds: 8)),
     _guard('Supabase', _initializeSupabase, const Duration(seconds: 10)),
     _guard(
       'Notifications',

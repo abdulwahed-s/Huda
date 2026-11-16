@@ -2768,13 +2768,6 @@ class AppLocalizationsUr extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'سحری کے لیے اٹھنے کا وقت';
 
   @override
-  String get alarmKilledTitle => 'آپ کے الارم شاید نہ بجیں';
-
-  @override
-  String get alarmKilledBody =>
-      'آپ نے ایپ بند کر دی ہے۔ براہ کرم اسے دوبارہ کھولیں تاکہ آپ کے الارم دوبارہ شیڈول کیے جاسکیں۔';
-
-  @override
   String get snoozeAlarm => 'بعد میں';
 
   @override
@@ -6429,4 +6422,8 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'اقامت کی ترتیبات محفوظ یا ہم آہنگ نہیں ہو سکیں۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'iOS 26 سے پہلے سحری کے لیے اطلاع کی آواز تقریباً 30 سیکنڈ تک صرف ایک بار بجتی ہے، بار بار نہیں بجتی۔';
 }

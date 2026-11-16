@@ -2789,13 +2789,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'Пора просыпаться на Сухур';
 
   @override
-  String get alarmKilledTitle => 'Ваши будильники могут не сработать';
-
-  @override
-  String get alarmKilledBody =>
-      'Вы закрыли приложение. Пожалуйста, откройте его снова, чтобы ваши будильники могли быть перенесены.';
-
-  @override
   String get snoozeAlarm => 'Отложить';
 
   @override
@@ -6482,4 +6475,8 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'Не удалось сохранить или синхронизировать настройки икамата. Попробуйте ещё раз.';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'В iOS до версии 26 уведомление о сухуре звучит один раз около 30 секунд и не повторяется.';
 }

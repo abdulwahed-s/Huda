@@ -3020,14 +3020,6 @@
   "@sahurAlarmNotificationBody": {
     "description": "Body text of the notification when the Sahur alarm rings"
   },
-  "alarmKilledTitle": "Your alarms may not ring",
-  "@alarmKilledTitle": {
-    "description": "Title for the system notification shown when the app is killed."
-  },
-  "alarmKilledBody": "You killed the app. Please reopen so your alarms can be rescheduled.",
-  "@alarmKilledBody": {
-    "description": "Body for the system notification shown when the app is killed."
-  },
   "snoozeAlarm": "Snooze",
   "@snoozeAlarm": {
     "description": "Button label to snooze the ringing alarm for 5 minutes"
@@ -6100,5 +6092,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "sahurNotificationOnlyDescription": "On iOS before 26, Sahur plays a notification sound for about 30 seconds, once. It does not loop."
 }

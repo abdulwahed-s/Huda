@@ -2771,13 +2771,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sahurAlarmNotificationBody => 'Time to wake up for Sahur';
 
   @override
-  String get alarmKilledTitle => 'Your alarms may not ring';
-
-  @override
-  String get alarmKilledBody =>
-      'You killed the app. Please reopen so your alarms can be rescheduled.';
-
-  @override
   String get snoozeAlarm => 'Snooze';
 
   @override
@@ -6441,4 +6434,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get prayerIqamahSaveError =>
       'Could not save or sync Iqamah settings. Please try again.';
+
+  @override
+  String get sahurNotificationOnlyDescription =>
+      'On iOS before 26, Sahur plays a notification sound for about 30 seconds, once. It does not loop.';
 }

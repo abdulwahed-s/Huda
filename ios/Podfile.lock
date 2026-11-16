@@ -1,6 +1,4 @@
 PODS:
-  - alarm (0.0.1):
-    - Flutter
   - app_links (7.0.0):
     - Flutter
   - audio_service (0.0.1):
@@ -16,10 +14,6 @@ PODS:
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - flutter_fgbg (0.0.1):
-    - Flutter
-  - flutter_foreground_task (0.0.1):
-    - Flutter
   - flutter_secure_storage_darwin (10.0.0):
     - Flutter
     - FlutterMacOS
@@ -70,15 +64,12 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - alarm (from `.symlinks/plugins/alarm/ios`)
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - audio_service (from `.symlinks/plugins/audio_service/darwin`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
-  - flutter_fgbg (from `.symlinks/plugins/flutter_fgbg/ios`)
-  - flutter_foreground_task (from `.symlinks/plugins/flutter_foreground_task/ios`)
   - flutter_secure_storage_darwin (from `.symlinks/plugins/flutter_secure_storage_darwin/darwin`)
   - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
@@ -106,8 +97,6 @@ SPEC REPOS:
     - CwlCatchExceptionSupport
 
 EXTERNAL SOURCES:
-  alarm:
-    :path: ".symlinks/plugins/alarm/ios"
   app_links:
     :path: ".symlinks/plugins/app_links/ios"
   audio_service:
@@ -120,10 +109,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
-  flutter_fgbg:
-    :path: ".symlinks/plugins/flutter_fgbg/ios"
-  flutter_foreground_task:
-    :path: ".symlinks/plugins/flutter_foreground_task/ios"
   flutter_secure_storage_darwin:
     :path: ".symlinks/plugins/flutter_secure_storage_darwin/darwin"
   flutter_timezone:
@@ -166,7 +151,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/workmanager_apple/ios"
 
 SPEC CHECKSUMS:
-  alarm: 8a8ed4893eb9bd09e7c5a96bf8ab8104f380f65f
   app_links: a754cbec3c255bd4bbb4d236ecc06f28cd9a7ce8
   audio_service: aa99a6ba2ae7565996015322b0bb024e1d25c6fd
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
@@ -175,8 +159,6 @@ SPEC CHECKSUMS:
   CwlCatchExceptionSupport: 54ccab8d8c78907b57f99717fb19d4cc3bce02dc
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_fgbg: d3da78df78454b1808f0829a5da9cd17dfe16444
-  flutter_foreground_task: a159d2c2173b33699ddb3e6c2a067045d7cebb89
   flutter_secure_storage_darwin: 46e401699982ee74142909676535e0f6a7321e58
   flutter_timezone: 7c838e17ffd4645d261e87037e5bebf6d38fe544
   geocoding_ios: 33776c9ebb98d037b5e025bb0e7537f6dd19646e
