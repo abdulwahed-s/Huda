@@ -1464,8 +1464,14 @@ struct PrayerAccessoryAlmanacView: View {
                         ))
                         .font(.system(size: 12, weight: .semibold, design: .rounded))
                         .monospacedDigit()
+                        // Timer text claims its widest possible width; the
+                        // prayer time must keep its own and the timer scales.
+                        .fixedSize()
+                        .layoutPriority(1)
 
                         Text("·")
+                            .fixedSize()
+                            .layoutPriority(1)
 
                         if let countdownTarget = entry.countdownTargetDate,
                            let start = entry.countdownStartDate,
