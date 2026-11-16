@@ -2,6 +2,8 @@ package com.aw.huda.prayer
 
 import android.content.*
 import android.media.*
+import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import android.os.*
 import java.io.File
 import kotlin.math.min
@@ -21,6 +23,7 @@ internal class AdhanAudioController(
     private var focusRequest: AudioFocusRequest? = null
     private var wakeLock: PowerManager.WakeLock? = null
     private var flip: FlipToStopController? = null
+    private var mediaSession: MediaSession? = null
     private var noisyRegistered = false
     private var ended = false
     private var startedAt: Long? = null
@@ -112,6 +115,7 @@ internal class AdhanAudioController(
                     finish("stoppedByFlip")
                 }.also { it.start() }
                 if (policy.vibrate) vibrate()
+                mediaButtons()
                 onStarted(startedAt!!, limit, asset, asset.reciterId != policy.reciterId)
                 tick()
                 } catch (_: Exception) { finish("playerError") }
@@ -142,6 +146,32 @@ internal class AdhanAudioController(
         player?.setVolume(actual, actual)
         callbacks.postDelayed({ tick() }, min(100L, limit - elapsed))
     }
+    /**
+     * Pause or Stop on a Bluetooth headset, car or watch stops the adhan; without
+     * a session of its own those buttons reach another player. The volume keys
+     * meanwhile adjust the alarm stream that is actually sounding.
+     */
+    private fun mediaButtons() {
+        mediaSession = runCatching {
+            MediaSession(runtime.context, "HudaAdhan").apply {
+                setCallback(object : MediaSession.Callback() {
+                    override fun onPause() = finish("stoppedByMediaButton")
+                    override fun onStop() = finish("stoppedByMediaButton")
+                }, callbacks)
+                setPlaybackToLocal(attributes)
+                setMetadata(MediaMetadata.Builder()
+                    .putString(MediaMetadata.METADATA_KEY_TITLE, if (session.prayer == "sahur") runtime.sahur.settings.title else NativePrayerStrings.prayerName(
+                        runtime.livePolicy.values["localeCode"] as? String ?: "en", session.prayer))
+                    .putString(MediaMetadata.METADATA_KEY_ARTIST, runtime.context.applicationInfo
+                        .loadLabel(runtime.context.packageManager).toString())
+                    .build())
+                setPlaybackState(PlaybackState.Builder()
+                    .setActions(PlaybackState.ACTION_PAUSE or PlaybackState.ACTION_STOP or PlaybackState.ACTION_PLAY_PAUSE)
+                    .setState(PlaybackState.STATE_PLAYING, 0, 1f).build())
+                isActive = true
+            }
+        }.getOrNull()
+    }
     fun setGain(value: Double) { require(value.isFinite() && value in 0.0..1.0); gain = value }
     fun shortenCutoff(seconds: Int?) {
         if (seconds != null) limit = min(limit, seconds * 1000L)
@@ -167,6 +197,7 @@ internal class AdhanAudioController(
         ended = true
         callbacks.removeCallbacksAndMessages(null)
         runCatching { flip?.close() }; flip = null
+        runCatching { mediaSession?.release() }; mediaSession = null
         if (noisyRegistered) { runCatching { runtime.context.unregisterReceiver(noisy) }; noisyRegistered = false }
         runCatching { @Suppress("DEPRECATION") (runtime.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).cancel() }
         releasePlayer()
