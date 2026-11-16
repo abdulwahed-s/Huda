@@ -216,6 +216,7 @@ enum IOSPrayerPlanner {
             .replacingOccurrences(of: "{prayer}", with: strings[event.prayer] ?? event.prayer.capitalized)
             .replacingOccurrences(of: "{minutes}", with: String(policy.advanceMinutes))
         }
+        if effective.backend == "alarm" { dictionary.merge(alarmPresentation(strings)) { _, new in new } }
         result.append(IOSPrayerOccurrence(key: key, identifier: "huda.prayer.\(kind).\(IOSPrayerOccurrence.digest(key).prefix(32))",
           alarmID: IOSPrayerOccurrence.uuid(key), prayer: event.prayer, kind: kind, instant: instant,
           eventJSON: try! JSONSerialization.data(withJSONObject: dictionary, options: .sortedKeys), policy: effective,

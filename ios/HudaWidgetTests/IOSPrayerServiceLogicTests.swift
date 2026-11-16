@@ -146,4 +146,20 @@ final class IOSPrayerServiceLogicTests: XCTestCase {
     native.configuration.migration = "pending"
     XCTAssertEqual(PrayerWidgetDataLoader.loadSettings(from: defaults, native: native).scheduleRevision, 0)
   }
+  func testAlarmsCarryTheThemeColorAndOpenButton() throws {
+    var p = IOSPrayerExperience()
+    p.overrides["fajr"] = IOSPrayerOverride(mode: .alarm, reciterId: nil, advanceMinutes: nil, advanceMode: nil)
+    let strings = ["alarmTint": "0f766e", "openApp": "افتح هدى"]
+    let all = IOSPrayerPlanner.occurrences(schedule: try schedule(), experience: p, capabilities: authorized,
+      now: now, revision: 1, signature: "fixture", strings: strings)
+    let alarm = try XCTUnwrap(all.first { $0.policy.backend == "alarm" })
+    XCTAssertEqual(alarm.eventDictionary["tint"] as? String, "0f766e")
+    XCTAssertEqual(alarm.eventDictionary["openApp"] as? String, "افتح هدى")
+    XCTAssertNil(try XCTUnwrap(all.first { $0.policy.backend != "alarm" }).eventDictionary["tint"])
+    // A theme change alters the event, so the alarm is submitted again.
+    let other = IOSPrayerPlanner.occurrences(schedule: try schedule(), experience: p, capabilities: authorized,
+      now: now, revision: 1, signature: "fixture", strings: strings.merging(["alarmTint": "991b1b"]) { _, new in new })
+    XCTAssertNotEqual(other.first { $0.key == alarm.key }?.eventJSON, alarm.eventJSON)
+    XCTAssertNil(IOSPrayerPlanner.alarmPresentation(["alarmTint": "#FFF; x"])["tint"])
+  }
 }

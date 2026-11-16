@@ -125,8 +125,9 @@ final class IOSPrayerBridge {
       sound: desired == .silent ? nil : sound, reason: nil)
     let event = IOSPrayerOccurrence(key: key, identifier: "huda.prayer.preview.\(UUID().uuidString)", alarmID: UUID(),
       prayer: "fajr", kind: "preview", instant: Date().addingTimeInterval(10),
-      eventJSON: try JSONSerialization.data(withJSONObject: ["id": 1902,
-        "title": args["title"] as? String ?? "Huda prayer test", "body": args["body"] as? String ?? "Test prayer alert"]),
+      eventJSON: try JSONSerialization.data(withJSONObject: IOSPrayerPlanner.alarmPresentation(state.configuration.strings)
+        .merging(["id": 1902, "title": args["title"] as? String ?? "Huda prayer test",
+          "body": args["body"] as? String ?? "Test prayer alert"]) { _, new in new }),
       policy: policy, timeSensitive: state.configuration.experience.timeSensitive, revision: state.configuration.revision,
       locationRevision: 0, signature: "preview")
     if desired == .alarm || desired == .fullAlarm {

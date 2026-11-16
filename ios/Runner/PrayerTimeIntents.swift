@@ -162,3 +162,21 @@ struct StopHudaPrayerAlarmIntent: LiveActivityIntent {
     return .result()
   }
 }
+
+/// The alarm's "Open Huda" button: stops the adhan and opens prayer times.
+@available(iOS 26.0, *)
+struct OpenHudaPrayerAlarmIntent: LiveActivityIntent {
+  static var title: LocalizedStringResource = "Open Huda"
+  static var openAppWhenRun = true
+  @Parameter(title: "Alarm") var alarmID: String
+  @Parameter(title: "Occurrence") var occurrenceKey: String
+  init() {}
+  init(alarmID: String, occurrenceKey: String) { self.alarmID = alarmID; self.occurrenceKey = occurrenceKey }
+  func perform() async throws -> some IntentResult {
+    UserDefaults(suiteName: "group.hudaHomeApp")?.set(true, forKey: "iosPrayerOpenTimes")
+    if let id = UUID(uuidString: alarmID) {
+      try? await IOSPrayerService.shared.observe(key: occurrenceKey, outcome: "stopped", alarmID: id)
+    }
+    return .result()
+  }
+}
