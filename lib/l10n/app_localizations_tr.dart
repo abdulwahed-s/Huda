@@ -6295,16 +6295,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Huda ezanın tamamını çalar; Huda\'yı menü çubuğunda açık tut';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'Tam ezanlı alarm';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'Ezanın tamamı alarm olarak, yerleşik kayıtla';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 veya üstü gerekir';
-
-  @override
   String get prayerCountdownTitle => 'Namaz geri sayımı';
 
   @override

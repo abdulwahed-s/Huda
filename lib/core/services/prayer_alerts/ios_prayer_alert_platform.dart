@@ -22,15 +22,31 @@ class IOSPrayerAlertPlatform extends PrayerAlertPlatform<IOSPrayerExperience> {
     }
   }
 
+  /// One Prayer alarm style: `fullAlarm` plays the whole adhan, `alarm`
+  /// only its opening ("Plays for").
   static const _styles = {
     IOSPrayerMode.off: PrayerAlertStyle.off,
     IOSPrayerMode.silent: PrayerAlertStyle.silent,
     IOSPrayerMode.short: PrayerAlertStyle.short,
     IOSPrayerMode.alarm: PrayerAlertStyle.alarm,
-    IOSPrayerMode.fullAlarm: PrayerAlertStyle.fullAlarm,
+    IOSPrayerMode.fullAlarm: PrayerAlertStyle.alarm,
   };
-  static IOSPrayerMode _mode(PrayerAlertStyle style) =>
-      _styles.entries.firstWhere((entry) => entry.value == style).key;
+  static bool _isAlarm(IOSPrayerMode? mode) =>
+      mode == IOSPrayerMode.alarm || mode == IOSPrayerMode.fullAlarm;
+
+  /// [current] when it already alarms (keeping its length), else the whole
+  /// adhan where iOS can play it.
+  static IOSPrayerMode _alarm(IOSPrayerMode? current) => _isAlarm(current)
+      ? current!
+      : IOSPrayerBridge.status.value.fullAlarmAvailable
+      ? IOSPrayerMode.fullAlarm
+      : IOSPrayerMode.alarm;
+  static IOSPrayerMode _mode(
+    PrayerAlertStyle style, [
+    IOSPrayerMode? current,
+  ]) => style == PrayerAlertStyle.alarm
+      ? _alarm(current)
+      : _styles.entries.firstWhere((entry) => entry.value == style).key;
 
   @override
   ValueListenable<IOSPrayerExperience?> get applied => _applied;
@@ -53,14 +69,13 @@ class IOSPrayerAlertPlatform extends PrayerAlertPlatform<IOSPrayerExperience> {
         PrayerAlertStyle.silent,
         PrayerAlertStyle.short,
         if (status.supportsAlarms) PrayerAlertStyle.alarm,
-        if (status.supportsAlarms) PrayerAlertStyle.fullAlarm,
       ],
       // The whole adhan as the alarm sound plays from iOS 26.1 (custom alarm
-      // sounds); before that iOS uses the short Prayer alarm instead.
-      unavailable: {
-        if (status.supportsAlarms && !status.fullAlarmAvailable)
-          PrayerAlertStyle.fullAlarm: 'prayerAlertFullAlarmUnavailable',
-      },
+      // sounds); before that a Prayer alarm plays only the opening.
+      length: status.fullAlarmAvailable,
+      lengthOpening: true,
+      lengths: const [null],
+      perPrayerLength: true,
       perPrayer: true,
       perPrayerReciter: true,
       beforeMinutes: iosPrayerAdvanceMinutes.where((m) => m > 0).toList(),
@@ -74,6 +89,7 @@ class IOSPrayerAlertPlatform extends PrayerAlertPlatform<IOSPrayerExperience> {
   PrayerAlertSettings view(IOSPrayerExperience settings) => PrayerAlertSettings(
     enabled: settings.enabled,
     style: _styles[settings.mode]!,
+    openingOnly: settings.mode == IOSPrayerMode.alarm,
     reciterId: settings.reciterId,
     audioVersion: settings.audioVersion,
     beforeMinutes: settings.advanceMinutes,
@@ -89,6 +105,13 @@ class IOSPrayerAlertPlatform extends PrayerAlertPlatform<IOSPrayerExperience> {
           ownStyle: settings.overrides[prayer]?.mode != null,
           ownReciter: settings.overrides[prayer]?.reciterId != null,
           ownBefore: settings.overrides[prayer]?.advanceMinutes != null,
+          openingOnly: settings.policyFor(prayer).mode == IOSPrayerMode.alarm,
+          // A prayer's own alarm length is its own mode.
+          tuning: switch (settings.overrides[prayer]?.mode) {
+            IOSPrayerMode.alarm => const {'opening': true},
+            IOSPrayerMode.fullAlarm => const {'stopAfterSeconds': null},
+            _ => const {},
+          },
         ),
     },
   );
@@ -122,7 +145,9 @@ class IOSPrayerAlertPlatform extends PrayerAlertPlatform<IOSPrayerExperience> {
           settings,
           prayer,
           (own) => IOSPrayerOverride(
-            mode: style == null ? null : _mode(style),
+            mode: style == null
+                ? null
+                : _mode(style, settings.policyFor(prayer).mode),
             reciterId: own.reciterId,
             advanceMinutes: own.advanceMinutes,
             advanceMode: own.advanceMode,
@@ -148,6 +173,25 @@ class IOSPrayerAlertPlatform extends PrayerAlertPlatform<IOSPrayerExperience> {
             advanceMode: own.advanceMode,
           ),
         ),
+        SetPrayerAlertLength(:final opening, :final inherit)
+            when _isAlarm(settings.policyFor(prayer).mode) =>
+          _override(
+            settings,
+            prayer,
+            (own) => IOSPrayerOverride(
+              // The default length is the rest's when they alarm too.
+              mode: inherit && _isAlarm(settings.mode)
+                  ? null
+                  : inherit
+                  ? _alarm(null)
+                  : opening
+                  ? IOSPrayerMode.alarm
+                  : IOSPrayerMode.fullAlarm,
+              reciterId: own.reciterId,
+              advanceMinutes: own.advanceMinutes,
+              advanceMode: own.advanceMode,
+            ),
+          ),
         ResetPrayerAlert() => settings.copyWith(
           overrides: {...settings.overrides}..remove(prayer),
         ),
@@ -159,8 +203,12 @@ class IOSPrayerAlertPlatform extends PrayerAlertPlatform<IOSPrayerExperience> {
         enabled: enabled,
       ),
       SetPrayerAlertStyle(:final style) => settings.copyWith(
-        mode: _mode(style!),
+        mode: _mode(style!, settings.mode),
       ),
+      SetPrayerAlertLength(:final opening) when _isAlarm(settings.mode) =>
+        settings.copyWith(
+          mode: opening ? IOSPrayerMode.alarm : IOSPrayerMode.fullAlarm,
+        ),
       SetPrayerAlertReciter(:final reciterId, :final audioVersion) =>
         settings.copyWith(reciterId: reciterId, audioVersion: audioVersion),
       SetPrayerAlertBefore(:final minutes) => settings.copyWith(

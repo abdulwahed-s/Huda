@@ -6301,16 +6301,6 @@ class AppLocalizationsBn extends AppLocalizations {
       'হুদা পুরো আজান বাজায়; মেনু বারে হুদা চালু রাখুন';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'সম্পূর্ণ আজানের অ্যালার্ম';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'অন্তর্নির্মিত রেকর্ডিংয়ে পুরো আজান, অ্যালার্ম হিসেবে';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 বা পরবর্তী প্রয়োজন';
-
-  @override
   String get prayerCountdownTitle => 'নামাজের কাউন্টডাউন';
 
   @override

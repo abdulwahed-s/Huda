@@ -24,6 +24,7 @@ import 'package:huda/core/services/prayer_location_monitor.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/widget_deep_link_handler.dart';
 import 'package:huda/core/services/gemini_service.dart';
+import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/theme/app_theme.dart';
 import 'package:huda/cubit/theme/theme_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
@@ -277,6 +278,9 @@ class _AppState extends State<App> {
                           unawaited(
                             IOSPrayerBridge.syncPresentation(
                               menuL10n,
+                              alarmTint: AppColors.getColorScheme(
+                                themeState.colorTheme,
+                              ).primary.toARGB32(),
                             ).catchError((Object error) {
                               debugPrint(
                                 'iOS prayer presentation failed: $error',

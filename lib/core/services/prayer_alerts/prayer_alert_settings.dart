@@ -17,11 +17,9 @@ enum PrayerAlertStyle {
   /// The adhan, played in full (or until the chosen length).
   full,
 
-  /// iOS: an alarm that rings even in silent mode, with the short adhan.
+  /// iOS: an alarm that rings even in silent mode, with the whole adhan
+  /// (iOS 26.1+) or only its opening ([PrayerAlertPrayer.openingOnly]).
   alarm,
-
-  /// iOS 26.1+: an alarm with the whole built-in adhan.
-  fullAlarm,
 
   /// Desktop: a quiet full-screen moment for the prayer.
   focus,
@@ -112,7 +110,6 @@ class PrayerAlertSettings {
         PrayerAlertStyle.short,
         PrayerAlertStyle.full,
         PrayerAlertStyle.alarm,
-        PrayerAlertStyle.fullAlarm,
       }.contains(style) ||
       style == PrayerAlertStyle.focus && focusAudio;
 
@@ -170,7 +167,8 @@ class SetPrayerAlertLength extends PrayerAlertChange {
   });
   final int? seconds;
 
-  /// Android: only the opening of the adhan (the short recording).
+  /// Only the opening of the adhan (Android's short recording, iOS's
+  /// opening-only Prayer alarm).
   final bool opening;
 
   /// For a prayer: follow the default length again.
@@ -251,12 +249,29 @@ class PrayerAlertCapabilities {
     this.toggles = const [],
     this.needsCompanion = false,
     this.lengthOpening = false,
+    this.lengths = const [null, 30, 60, 120, 180, 300],
+    bool? perPrayerLength,
     this.styleNames = const {},
     this.styleHints = const {},
-  });
+  }) : perPrayerLength = perPrayerLength ?? perPrayerTuning;
 
   /// "Plays for" offers "Opening only" (Android's short recording).
   final bool lengthOpening;
+
+  /// Seconds "Plays for" offers; null is the whole adhan.
+  final List<int?> lengths;
+
+  /// Each prayer can have its own "Plays for".
+  final bool perPrayerLength;
+
+  /// Whether "Plays for" applies: the style plays the adhan for a length.
+  static bool playsForLength(
+    PrayerAlertStyle style, {
+    bool focusAudio = false,
+  }) =>
+      style == PrayerAlertStyle.full ||
+      style == PrayerAlertStyle.alarm ||
+      style == PrayerAlertStyle.focus && focusAudio;
 
   /// l10n keys naming a style differently on this platform.
   final Map<PrayerAlertStyle, String> styleNames, styleHints;

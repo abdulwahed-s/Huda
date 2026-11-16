@@ -6392,16 +6392,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Huda spielt den ganzen Adhan; lass Huda in der Menüleiste laufen';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'Wecker mit vollem Adhan';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'Der ganze Adhan als Wecker, mit der integrierten Aufnahme';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable => 'Erfordert iOS 26.1 oder neuer';
-
-  @override
   String get prayerCountdownTitle => 'Gebets-Countdown';
 
   @override

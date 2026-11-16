@@ -6317,17 +6317,6 @@ class AppLocalizationsMs extends AppLocalizations {
       'Huda memainkan seluruh azan; biarkan Huda berjalan dalam bar menu';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'Penggera azan penuh';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'Seluruh azan sebagai penggera, dengan rakaman terbina dalam';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable =>
-      'Memerlukan iOS 26.1 atau lebih baharu';
-
-  @override
   String get prayerCountdownTitle => 'Kira detik solat';
 
   @override

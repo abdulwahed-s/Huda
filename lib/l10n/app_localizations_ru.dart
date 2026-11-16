@@ -6340,16 +6340,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Huda воспроизводит весь азан; держите Huda запущенной в строке меню';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'Будильник с полным азаном';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'Весь азан как будильник, встроенная запись';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable => 'Нужна iOS 26.1 или новее';
-
-  @override
   String get prayerCountdownTitle => 'Обратный отсчёт до намаза';
 
   @override

@@ -5965,12 +5965,6 @@
   },
   "prayerAlertStyleNotificationAdhanHint": "Up to 30 seconds with the notification; works even when Huda is closed",
   "prayerAlertStyleLiveAdhanHint": "Huda plays the whole adhan; keep Huda running in the menu bar",
-  "prayerAlertStyleFullAlarm": "Full adhan alarm",
-  "@prayerAlertStyleFullAlarm": {
-    "description": "iOS 26.1+: an AlarmKit alarm whose sound is the whole built-in adhan."
-  },
-  "prayerAlertStyleFullAlarmHint": "The whole adhan as an alarm, with the built-in recording",
-  "prayerAlertFullAlarmUnavailable": "Needs iOS 26.1 or later",
   "prayerCountdownTitle": "Prayer countdown",
   "@prayerCountdownTitle": {
     "description": "Title of the Android prayer countdown card and notification"

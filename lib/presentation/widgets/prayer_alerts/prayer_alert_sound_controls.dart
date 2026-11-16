@@ -8,8 +8,6 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_sound_page.
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-const _lengths = <int?>[null, 30, 60, 120, 180, 300];
-
 /// Recording, volume and length, for every prayer or one ([prayer]).
 class PrayerSoundSection extends StatelessWidget {
   const PrayerSoundSection({
@@ -43,6 +41,15 @@ class PrayerSoundSection extends StatelessWidget {
         ? (tuning['stopAfterSeconds'] as num?)?.toInt()
         : settings.stopAfterSeconds;
     final tuningHere = prayer == null || capabilities.perPrayerTuning;
+    // A notification's sound has its own length; only adhans Huda (or an
+    // alarm) plays can be cut.
+    final lengthHere =
+        capabilities.length &&
+        (prayer == null || capabilities.perPrayerLength) &&
+        PrayerAlertCapabilities.playsForLength(
+          own?.style ?? settings.style,
+          focusAudio: settings.focusAudio,
+        );
     String number(int value) => prayerAlertNumber(context, value);
     return PrayerAlertSection(
       title: l10n.prayerAlertSectionSound,
@@ -75,7 +82,7 @@ class PrayerSoundSection extends StatelessWidget {
                     SetPrayerAlertVolume(null, prayer: prayer),
                   ),
           ),
-        if (capabilities.length && tuningHere)
+        if (lengthHere)
           PrayerControlRow(
             title: l10n.prayerAlertLength,
             child: PrayerSegmented<Object?>(
@@ -83,8 +90,8 @@ class PrayerSoundSection extends StatelessWidget {
               options: [
                 if (prayer != null) const _Inherit(),
                 if (capabilities.lengthOpening) const _Opening(),
-                ..._lengths,
-                if (!_lengths.contains(length) &&
+                ...capabilities.lengths,
+                if (!capabilities.lengths.contains(length) &&
                     length != null &&
                     length < 3600)
                   length,

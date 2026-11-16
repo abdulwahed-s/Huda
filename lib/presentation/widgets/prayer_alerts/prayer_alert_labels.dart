@@ -19,7 +19,6 @@ extension PrayerAlertLabels on AppLocalizations {
     PrayerAlertStyle.short => prayerAlertStyleShort,
     PrayerAlertStyle.full => prayerAlertStyleFull,
     PrayerAlertStyle.alarm => prayerAlertStyleAlarm,
-    PrayerAlertStyle.fullAlarm => prayerAlertStyleFullAlarm,
     PrayerAlertStyle.focus => prayerAlertStyleFocus,
   };
 
@@ -42,14 +41,17 @@ extension PrayerAlertLabels on AppLocalizations {
     _ => null,
   };
 
-  /// "Adhan · Opening only" on Android, otherwise the style's name.
+  /// "Adhan · Opening only" (Android) or "Prayer alarm · Opening only"
+  /// (iOS), otherwise the style's name.
   String alertStyleSummary(
     PrayerAlertStyle style,
     PrayerAlertCapabilities? on, {
     bool opening = false,
   }) => [
     alertStyleOn(style, on),
-    if (opening && style == PrayerAlertStyle.full) prayerAlertLengthOpening,
+    if (opening &&
+        (style == PrayerAlertStyle.full || style == PrayerAlertStyle.alarm))
+      prayerAlertLengthOpening,
   ].join(' · ');
 
   String alertStyleHint(PrayerAlertStyle style) => switch (style) {
@@ -58,7 +60,6 @@ extension PrayerAlertLabels on AppLocalizations {
     PrayerAlertStyle.short => prayerAlertStyleShortHint,
     PrayerAlertStyle.full => prayerAlertStyleFullHint,
     PrayerAlertStyle.alarm => prayerAlertStyleAlarmHint,
-    PrayerAlertStyle.fullAlarm => prayerAlertStyleFullAlarmHint,
     PrayerAlertStyle.focus => prayerAlertStyleFocusHint,
   };
 
@@ -130,7 +131,6 @@ extension PrayerAlertLabels on AppLocalizations {
   /// A named warning key from the platform layer.
   String alertWarning(String key) => switch (key) {
     'prayerAlertStartupWarning' => prayerAlertStartupWarning,
-    'prayerAlertFullAlarmUnavailable' => prayerAlertFullAlarmUnavailable,
     _ => key,
   };
 }
@@ -141,7 +141,6 @@ IconData prayerAlertStyleIcon(PrayerAlertStyle style) => switch (style) {
   PrayerAlertStyle.short => Icons.music_note_rounded,
   PrayerAlertStyle.full => Icons.volume_up_rounded,
   PrayerAlertStyle.alarm => Icons.alarm_rounded,
-  PrayerAlertStyle.fullAlarm => Icons.alarm_on_rounded,
   PrayerAlertStyle.focus => Icons.self_improvement_rounded,
 };
 

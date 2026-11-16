@@ -6290,16 +6290,6 @@ class AppLocalizationsUr extends AppLocalizations {
       'ہدیٰ پوری اذان چلاتا ہے؛ ہدیٰ کو مینو بار میں چلتا رکھیں';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'مکمل اذان کا الارم';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'پوری اذان الارم کے طور پر، پہلے سے شامل ریکارڈنگ کے ساتھ';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable => 'iOS 26.1 یا نیا درکار ہے';
-
-  @override
   String get prayerCountdownTitle => 'نماز کی الٹی گنتی';
 
   @override

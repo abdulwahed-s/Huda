@@ -97,8 +97,7 @@ Future<bool> prayerAlertStyleAllowed(
   BuildContext context,
   PrayerAlertStyle style,
 ) async {
-  if (!PlatformUtils.isIOS ||
-      style != PrayerAlertStyle.alarm && style != PrayerAlertStyle.fullAlarm) {
+  if (!PlatformUtils.isIOS || style != PrayerAlertStyle.alarm) {
     return true;
   }
   final status = IOSPrayerBridge.status.value;

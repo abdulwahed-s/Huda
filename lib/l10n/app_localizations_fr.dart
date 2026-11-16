@@ -6416,17 +6416,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Huda joue tout l\'adhan ; gardez Huda actif dans la barre des menus';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'Alarme avec l\'adhan complet';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'Tout l\'adhan comme alarme, avec l\'enregistrement intégré';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable =>
-      'Nécessite iOS 26.1 ou ultérieur';
-
-  @override
   String get prayerCountdownTitle => 'Compte à rebours des prières';
 
   @override

@@ -289,34 +289,42 @@ class IOSPrayerBridge {
   }
 
   static String? _presentationKey;
-  static Future<void> syncPresentation(AppLocalizations l10n) =>
-      _mutations.synchronized(() async {
-        if (!PlatformUtils.isIOS || _presentationKey == l10n.localeName) return;
-        final before = await refresh();
-        final names = {
-          'fajr': l10n.fajr,
-          'sunrise': l10n.prayerSunriseLabel,
-          'dhuhr': l10n.dhuhr,
-          'asr': l10n.asr,
-          'maghrib': l10n.maghrib,
-          'isha': l10n.isha,
-        };
-        await _call('setPresentation', {
-          'expectedRevision': before.revision,
-          'strings': {
-            ...names,
-            'setup': l10n.macPrayerMenuNeedsSetup,
-            'stop': l10n.windowsPrayerStopAdhan,
-            'renewalTitle': l10n.iosPrayerRenewalTitle,
-            'renewalBody': l10n.iosPrayerRenewalBody,
-            'advanceTitle': l10n.iosPrayerAdvanceTitle,
-            'advanceBody': l10n.iosPrayerAdvanceBody('{prayer}', '{minutes}'),
-            for (final name in names.entries) ...{
-              '${name.key}Title': l10n.notificationPrayerTimeTitle(name.value),
-              '${name.key}Body': l10n.notificationPrayerTimeBody(name.value),
-            },
-          },
-        });
-        _presentationKey = l10n.localeName;
-      });
+
+  /// [alarmTint] is the app theme's color (RGB) for the alarm screen.
+  static Future<void> syncPresentation(
+    AppLocalizations l10n, {
+    required int alarmTint,
+  }) => _mutations.synchronized(() async {
+    final tint = (alarmTint & 0xFFFFFF).toRadixString(16).padLeft(6, '0');
+    final key = '${l10n.localeName}/$tint';
+    if (!PlatformUtils.isIOS || _presentationKey == key) return;
+    final before = await refresh();
+    final names = {
+      'fajr': l10n.fajr,
+      'sunrise': l10n.prayerSunriseLabel,
+      'dhuhr': l10n.dhuhr,
+      'asr': l10n.asr,
+      'maghrib': l10n.maghrib,
+      'isha': l10n.isha,
+    };
+    await _call('setPresentation', {
+      'expectedRevision': before.revision,
+      'strings': {
+        ...names,
+        'setup': l10n.macPrayerMenuNeedsSetup,
+        'stop': l10n.windowsPrayerStopAdhan,
+        'openApp': l10n.windowsPrayerOpenHuda,
+        'alarmTint': tint,
+        'renewalTitle': l10n.iosPrayerRenewalTitle,
+        'renewalBody': l10n.iosPrayerRenewalBody,
+        'advanceTitle': l10n.iosPrayerAdvanceTitle,
+        'advanceBody': l10n.iosPrayerAdvanceBody('{prayer}', '{minutes}'),
+        for (final name in names.entries) ...{
+          '${name.key}Title': l10n.notificationPrayerTimeTitle(name.value),
+          '${name.key}Body': l10n.notificationPrayerTimeBody(name.value),
+        },
+      },
+    });
+    _presentationKey = key;
+  });
 }

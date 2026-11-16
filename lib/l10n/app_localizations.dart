@@ -11358,24 +11358,6 @@ abstract class AppLocalizations {
   /// **'Huda plays the whole adhan; keep Huda running in the menu bar'**
   String get prayerAlertStyleLiveAdhanHint;
 
-  /// iOS 26.1+: an AlarmKit alarm whose sound is the whole built-in adhan.
-  ///
-  /// In en, this message translates to:
-  /// **'Full adhan alarm'**
-  String get prayerAlertStyleFullAlarm;
-
-  /// No description provided for @prayerAlertStyleFullAlarmHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The whole adhan as an alarm, with the built-in recording'**
-  String get prayerAlertStyleFullAlarmHint;
-
-  /// No description provided for @prayerAlertFullAlarmUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Needs iOS 26.1 or later'**
-  String get prayerAlertFullAlarmUnavailable;
-
   /// Title of the Android prayer countdown card and notification
   ///
   /// In en, this message translates to:

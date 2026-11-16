@@ -6231,16 +6231,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'يشغّل هدى الأذان كاملًا؛ أبقِ هدى يعمل في شريط القوائم';
 
   @override
-  String get prayerAlertStyleFullAlarm => 'منبّه بالأذان الكامل';
-
-  @override
-  String get prayerAlertStyleFullAlarmHint =>
-      'الأذان كاملًا كمنبّه، بالتسجيل المدمج';
-
-  @override
-  String get prayerAlertFullAlarmUnavailable => 'يتطلب iOS 26.1 أو أحدث';
-
-  @override
   String get prayerCountdownTitle => 'العد التنازلي للصلاة';
 
   @override
