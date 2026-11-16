@@ -60,6 +60,8 @@ internal class AdhanAudioController(
         callbacks.postDelayed({ if (startedAt == null) finish("preparationTimeout") }, 30_000)
     }
     private fun prepare(asset: AudioAssetData) {
+        // A Stop that landed while the asset was resolved or the first player failed wins.
+        if (ended) return
         val bundled = asset.path.startsWith("android-resource:")
         val assetBound = if (policy.mode == "short" && bundled) PrayerRules.SHORT_FALLBACK_MS else asset.durationMillis
         limit = min(limit, assetBound)
@@ -125,12 +127,14 @@ internal class AdhanAudioController(
         } catch (_: Exception) { preparationFailure() }
     }
     private fun preparationFailure() {
+        if (ended) return
         if (session.prayer != "sahur" && !fallbackUsed && startedAt == null && SystemClock.elapsedRealtime() - requestedAt < 30_000) {
             releasePlayer()
             prepare(runtime.audio.asset("huda-default", "v1", "full")!!)
         } else finish("playerError")
     }
     private fun tick() {
+        if (ended) return
         val elapsed = SystemClock.elapsedRealtime() - (startedAt ?: return)
         if (elapsed >= limit) { finish("cutoff"); return }
         val fade = if (policy.fadeSeconds == 0) 1.0 else (elapsed / (policy.fadeSeconds * 1000.0)).coerceIn(0.0, 1.0)
@@ -159,6 +163,7 @@ internal class AdhanAudioController(
         runCatching { wakeLock?.let { if (it.isHeld) it.release() } }; wakeLock = null
     }
     fun finish(reason: String) {
+        if (ended) return
         ended = true
         callbacks.removeCallbacksAndMessages(null)
         runCatching { flip?.close() }; flip = null
