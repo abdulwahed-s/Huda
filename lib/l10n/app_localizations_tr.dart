@@ -6418,6 +6418,78 @@ class AppLocalizationsTr extends AppLocalizations {
       'İkamet ayarları kaydedilemedi veya eşitlenemedi. Lütfen tekrar deneyin.';
 
   @override
+  String get notificationAthkarMeaning01 => 'Allah’ı hamd ile tesbih ederim';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'Güç ve kuvvet ancak Allah’ın yardımıyladır';
+
+  @override
+  String get notificationAthkarMeaning03 => 'Yüce Allah’tan bağışlanma dilerim';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'Hamd, âlemlerin Rabbi Allah’a mahsustur';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'Allah’tan başka ilah yoktur. O tektir, ortağı yoktur';
+
+  @override
+  String get notificationAthkarMeaning06 => 'Yüce Allah’ı tesbih ederim';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'Allah’ım, Muhammed’e ve Muhammed’in ailesine salât eyle';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'Rabbimiz, bize dünyada ve ahirette iyilik ver ve bizi ateş azabından koru';
+
+  @override
+  String get notificationAthkarMeaning09 => 'Allah’ı tesbih ederim';
+
+  @override
+  String get notificationAthkarMeaning10 => 'Hamd Allah’a mahsustur';
+
+  @override
+  String get notificationAthkarMeaning11 => 'Allah’tan başka ilah yoktur';
+
+  @override
+  String get notificationAthkarMeaning12 => 'Allah en büyüktür';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'Allah’ı tesbih ederim, hamd Allah’a mahsustur, Allah’tan başka ilah yoktur ve Allah en büyüktür';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'Allah’ı hamd ile tesbih ederim; yüce Allah’ı tesbih ederim';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'Rabbim, beni bağışla ve tövbemi kabul et. Şüphesiz Sen tövbeleri kabul eden, merhamet edensin';
+
+  @override
+  String get notificationAthkarMeaning16 => 'Rabbim, ilmimi artır';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'Senden başka ilah yoktur. Seni tesbih ederim. Şüphesiz ben zalimlerden oldum';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'Rabbim, bana indireceğin her hayra muhtacım';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'Allah’ım, Senden hidayet, takva, iffet ve gönül zenginliği isterim';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'Allah’ım, Sen affedicisin, affetmeyi seversin; beni affet';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'iOS 26’dan önce sahur için yaklaşık 30 saniyelik bir bildirim sesi bir kez çalar. Tekrarlanmaz.';
 }

@@ -11574,6 +11574,126 @@ abstract class AppLocalizations {
   /// **'Could not save or sync Iqamah settings. Please try again.'**
   String get prayerIqamahSaveError;
 
+  /// No description provided for @notificationAthkarMeaning01.
+  ///
+  /// In en, this message translates to:
+  /// **'Glory be to Allah and praise be to Him'**
+  String get notificationAthkarMeaning01;
+
+  /// No description provided for @notificationAthkarMeaning02.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no power or strength except through Allah'**
+  String get notificationAthkarMeaning02;
+
+  /// No description provided for @notificationAthkarMeaning03.
+  ///
+  /// In en, this message translates to:
+  /// **'I seek forgiveness from Allah, the Almighty'**
+  String get notificationAthkarMeaning03;
+
+  /// No description provided for @notificationAthkarMeaning04.
+  ///
+  /// In en, this message translates to:
+  /// **'All praise is for Allah, Lord of all worlds'**
+  String get notificationAthkarMeaning04;
+
+  /// No description provided for @notificationAthkarMeaning05.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no god but Allah alone, with no partner'**
+  String get notificationAthkarMeaning05;
+
+  /// No description provided for @notificationAthkarMeaning06.
+  ///
+  /// In en, this message translates to:
+  /// **'Glory be to Allah, the Magnificent'**
+  String get notificationAthkarMeaning06;
+
+  /// No description provided for @notificationAthkarMeaning07.
+  ///
+  /// In en, this message translates to:
+  /// **'O Allah, bless Muhammad and the family of Muhammad'**
+  String get notificationAthkarMeaning07;
+
+  /// No description provided for @notificationAthkarMeaning08.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Lord, grant us good in this world and in the Hereafter, and protect us from the punishment of the Fire'**
+  String get notificationAthkarMeaning08;
+
+  /// No description provided for @notificationAthkarMeaning09.
+  ///
+  /// In en, this message translates to:
+  /// **'Glory be to Allah'**
+  String get notificationAthkarMeaning09;
+
+  /// No description provided for @notificationAthkarMeaning10.
+  ///
+  /// In en, this message translates to:
+  /// **'All praise is for Allah'**
+  String get notificationAthkarMeaning10;
+
+  /// No description provided for @notificationAthkarMeaning11.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no god but Allah'**
+  String get notificationAthkarMeaning11;
+
+  /// No description provided for @notificationAthkarMeaning12.
+  ///
+  /// In en, this message translates to:
+  /// **'Allah is the Greatest'**
+  String get notificationAthkarMeaning12;
+
+  /// No description provided for @notificationAthkarMeaning13.
+  ///
+  /// In en, this message translates to:
+  /// **'Glory be to Allah, all praise is for Allah, there is no god but Allah, and Allah is the Greatest'**
+  String get notificationAthkarMeaning13;
+
+  /// No description provided for @notificationAthkarMeaning14.
+  ///
+  /// In en, this message translates to:
+  /// **'Glory be to Allah and praise be to Him; glory be to Allah, the Magnificent'**
+  String get notificationAthkarMeaning14;
+
+  /// No description provided for @notificationAthkarMeaning15.
+  ///
+  /// In en, this message translates to:
+  /// **'My Lord, forgive me and accept my repentance. You are the Accepter of repentance, the Merciful'**
+  String get notificationAthkarMeaning15;
+
+  /// No description provided for @notificationAthkarMeaning16.
+  ///
+  /// In en, this message translates to:
+  /// **'My Lord, increase me in knowledge'**
+  String get notificationAthkarMeaning16;
+
+  /// No description provided for @notificationAthkarMeaning17.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no god but You. Glory be to You. I have indeed been among the wrongdoers'**
+  String get notificationAthkarMeaning17;
+
+  /// No description provided for @notificationAthkarMeaning18.
+  ///
+  /// In en, this message translates to:
+  /// **'My Lord, I am in need of whatever good You send down to me'**
+  String get notificationAthkarMeaning18;
+
+  /// No description provided for @notificationAthkarMeaning19.
+  ///
+  /// In en, this message translates to:
+  /// **'O Allah, I ask You for guidance, piety, chastity, and contentment'**
+  String get notificationAthkarMeaning19;
+
+  /// No description provided for @notificationAthkarMeaning20.
+  ///
+  /// In en, this message translates to:
+  /// **'O Allah, You are Pardoning and love to pardon, so pardon me'**
+  String get notificationAthkarMeaning20;
+
   /// No description provided for @sahurNotificationOnlyDescription.
   ///
   /// In en, this message translates to:

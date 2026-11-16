@@ -6522,6 +6522,80 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Iqamah-Einstellungen konnten nicht gespeichert oder synchronisiert werden. Bitte erneut versuchen.';
 
   @override
+  String get notificationAthkarMeaning01 =>
+      'Gepriesen sei Allah und Ihm gebührt alles Lob';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'Es gibt keine Macht und keine Kraft außer durch Allah';
+
+  @override
+  String get notificationAthkarMeaning03 =>
+      'Ich bitte Allah, den Allmächtigen, um Vergebung';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'Alles Lob gebührt Allah, dem Herrn aller Welten';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'Es gibt keinen Gott außer Allah allein, der keinen Teilhaber hat';
+
+  @override
+  String get notificationAthkarMeaning06 => 'Gepriesen sei Allah, der Erhabene';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'O Allah, segne Muhammad und die Familie Muhammads';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'Unser Herr, schenke uns Gutes im Diesseits und im Jenseits und bewahre uns vor der Strafe des Feuers';
+
+  @override
+  String get notificationAthkarMeaning09 => 'Gepriesen sei Allah';
+
+  @override
+  String get notificationAthkarMeaning10 => 'Alles Lob gebührt Allah';
+
+  @override
+  String get notificationAthkarMeaning11 => 'Es gibt keinen Gott außer Allah';
+
+  @override
+  String get notificationAthkarMeaning12 => 'Allah ist der Größte';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'Gepriesen sei Allah, alles Lob gebührt Allah, es gibt keinen Gott außer Allah und Allah ist der Größte';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'Gepriesen sei Allah und Ihm gebührt alles Lob; gepriesen sei Allah, der Erhabene';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'Mein Herr, vergib mir und nimm meine Reue an. Du bist der Reue-Annehmende, der Barmherzige';
+
+  @override
+  String get notificationAthkarMeaning16 => 'Mein Herr, mehre mein Wissen';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'Es gibt keinen Gott außer Dir. Gepriesen seist Du. Ich gehörte wahrlich zu den Ungerechten';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'Mein Herr, ich bin auf alles Gute angewiesen, das Du mir herabsendest';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'O Allah, ich bitte Dich um Rechtleitung, Gottesfurcht, Keuschheit und Genügsamkeit';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'O Allah, Du vergibst und liebst es zu vergeben, so vergib mir';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'Unter iOS vor Version 26 ertönt für Sahur einmalig ein Benachrichtigungston von etwa 30 Sekunden. Er wird nicht wiederholt.';
 }

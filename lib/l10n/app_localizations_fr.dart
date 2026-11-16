@@ -6545,6 +6545,79 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible d’enregistrer ou de synchroniser les réglages de l’iqama. Veuillez réessayer.';
 
   @override
+  String get notificationAthkarMeaning01 => 'Gloire à Allah et louange à Lui';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'Il n’y a de force ni de puissance que par Allah';
+
+  @override
+  String get notificationAthkarMeaning03 =>
+      'Je demande pardon à Allah, le Tout-Puissant';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'Toute louange appartient à Allah, Seigneur des mondes';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'Il n’y a de divinité qu’Allah, Seul et sans associé';
+
+  @override
+  String get notificationAthkarMeaning06 => 'Gloire à Allah, l’Immense';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'Ô Allah, bénis Muhammad et la famille de Muhammad';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'Notre Seigneur, accorde-nous le bien ici-bas et dans l’au-delà et protège-nous du châtiment du Feu';
+
+  @override
+  String get notificationAthkarMeaning09 => 'Gloire à Allah';
+
+  @override
+  String get notificationAthkarMeaning10 => 'Toute louange appartient à Allah';
+
+  @override
+  String get notificationAthkarMeaning11 => 'Il n’y a de divinité qu’Allah';
+
+  @override
+  String get notificationAthkarMeaning12 => 'Allah est le plus Grand';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'Gloire à Allah, toute louange appartient à Allah, il n’y a de divinité qu’Allah et Allah est le plus Grand';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'Gloire à Allah et louange à Lui ; gloire à Allah, l’Immense';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'Mon Seigneur, pardonne-moi et accepte mon repentir. Tu es Celui qui accueille le repentir, le Miséricordieux';
+
+  @override
+  String get notificationAthkarMeaning16 => 'Mon Seigneur, accrois mon savoir';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'Il n’y a de divinité que Toi. Gloire à Toi. J’ai certes été du nombre des injustes';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'Mon Seigneur, j’ai besoin de tout bien que Tu feras descendre vers moi';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'Ô Allah, je Te demande la guidée, la piété, la chasteté et le contentement';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'Ô Allah, Tu es Celui qui pardonne et Tu aimes pardonner, alors pardonne-moi';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'Avant iOS 26, le rappel du sahur émet un son de notification d’environ 30 secondes, une seule fois, sans répétition.';
 }

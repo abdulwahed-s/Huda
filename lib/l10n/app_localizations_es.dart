@@ -6526,6 +6526,82 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudieron guardar o sincronizar los ajustes de iqama. Inténtalo de nuevo.';
 
   @override
+  String get notificationAthkarMeaning01 =>
+      'Glorificado sea Allah y alabado sea';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'No hay poder ni fuerza sino por Allah';
+
+  @override
+  String get notificationAthkarMeaning03 =>
+      'Pido perdón a Allah, el Todopoderoso';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'Toda alabanza pertenece a Allah, Señor de todos los mundos';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'No hay más dios que Allah, Único y sin asociados';
+
+  @override
+  String get notificationAthkarMeaning06 =>
+      'Glorificado sea Allah, el Magnífico';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'Oh Allah, bendice a Muhammad y a la familia de Muhammad';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'Señor nuestro, danos el bien en esta vida y en la otra y protégenos del castigo del Fuego';
+
+  @override
+  String get notificationAthkarMeaning09 => 'Glorificado sea Allah';
+
+  @override
+  String get notificationAthkarMeaning10 => 'Toda alabanza pertenece a Allah';
+
+  @override
+  String get notificationAthkarMeaning11 => 'No hay más dios que Allah';
+
+  @override
+  String get notificationAthkarMeaning12 => 'Allah es el Más Grande';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'Glorificado sea Allah, toda alabanza pertenece a Allah, no hay más dios que Allah y Allah es el Más Grande';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'Glorificado y alabado sea Allah; glorificado sea Allah, el Magnífico';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'Señor mío, perdóname y acepta mi arrepentimiento. Tú aceptas el arrepentimiento y eres el Misericordioso';
+
+  @override
+  String get notificationAthkarMeaning16 =>
+      'Señor mío, aumenta mi conocimiento';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'No hay más dios que Tú. Glorificado seas. Ciertamente he sido de los injustos';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'Señor mío, necesito cualquier bien que me concedas';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'Oh Allah, te pido guía, piedad, castidad y satisfacción';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'Oh Allah, Tú eres Indulgente y amas perdonar, así que perdóname';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'En iOS anterior a 26, el aviso de sahur suena una sola vez durante unos 30 segundos. No se repite.';
 }

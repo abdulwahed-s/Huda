@@ -6425,6 +6425,80 @@ class AppLocalizationsBn extends AppLocalizations {
       'ইকামতের সেটিংস সংরক্ষণ বা সিঙ্ক করা যায়নি। আবার চেষ্টা করুন।';
 
   @override
+  String get notificationAthkarMeaning01 =>
+      'আল্লাহ পবিত্র, আর সমস্ত প্রশংসা তাঁরই';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'আল্লাহর সাহায্য ছাড়া কোনো শক্তি ও সামর্থ্য নেই';
+
+  @override
+  String get notificationAthkarMeaning03 => 'আমি মহান আল্লাহর কাছে ক্ষমা চাই';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'সমস্ত প্রশংসা আল্লাহর, যিনি সকল জগতের প্রতিপালক';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'আল্লাহ ছাড়া কোনো উপাস্য নেই, তিনি এক, তাঁর কোনো শরিক নেই';
+
+  @override
+  String get notificationAthkarMeaning06 => 'মহান আল্লাহ পবিত্র';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'হে আল্লাহ, মুহাম্মদ ও তাঁর পরিবারের ওপর রহমত বর্ষণ করুন';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'হে আমাদের রব, আমাদের দুনিয়া ও আখিরাতে কল্যাণ দিন এবং আগুনের শাস্তি থেকে রক্ষা করুন';
+
+  @override
+  String get notificationAthkarMeaning09 => 'আল্লাহ পবিত্র';
+
+  @override
+  String get notificationAthkarMeaning10 => 'সমস্ত প্রশংসা আল্লাহর';
+
+  @override
+  String get notificationAthkarMeaning11 => 'আল্লাহ ছাড়া কোনো উপাস্য নেই';
+
+  @override
+  String get notificationAthkarMeaning12 => 'আল্লাহ সর্বশ্রেষ্ঠ';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'আল্লাহ পবিত্র, সমস্ত প্রশংসা আল্লাহর, আল্লাহ ছাড়া কোনো উপাস্য নেই এবং আল্লাহ সর্বশ্রেষ্ঠ';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'আল্লাহ পবিত্র, আর সমস্ত প্রশংসা তাঁরই; মহান আল্লাহ পবিত্র';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'হে আমার রব, আমাকে ক্ষমা করুন ও আমার তওবা কবুল করুন। নিশ্চয়ই আপনি তওবা কবুলকারী, পরম দয়ালু';
+
+  @override
+  String get notificationAthkarMeaning16 =>
+      'হে আমার রব, আমার জ্ঞান বাড়িয়ে দিন';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'আপনি ছাড়া কোনো উপাস্য নেই, আপনি পবিত্র। নিশ্চয়ই আমি জালিমদের অন্তর্ভুক্ত ছিলাম';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'হে আমার রব, আপনি আমার প্রতি যে কল্যাণই পাঠান, আমি তার মুখাপেক্ষী';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'হে আল্লাহ, আমি আপনার কাছে হিদায়াত, তাকওয়া, পবিত্রতা ও অমুখাপেক্ষিতা চাই';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'হে আল্লাহ, আপনি ক্ষমাশীল, ক্ষমা করতে ভালোবাসেন, তাই আমাকে ক্ষমা করুন';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'iOS 26-এর আগের সংস্করণে সাহরির বিজ্ঞপ্তির শব্দ প্রায় ৩০ সেকেন্ড ধরে একবার বাজে। এটি বারবার বাজে না।';
 }

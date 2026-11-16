@@ -6443,6 +6443,81 @@ class AppLocalizationsMs extends AppLocalizations {
       'Tetapan iqamah tidak dapat disimpan atau disegerakkan. Sila cuba lagi.';
 
   @override
+  String get notificationAthkarMeaning01 =>
+      'Maha Suci Allah dan segala puji bagi-Nya';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'Tiada daya dan kekuatan melainkan dengan pertolongan Allah';
+
+  @override
+  String get notificationAthkarMeaning03 =>
+      'Aku memohon keampunan daripada Allah Yang Maha Agung';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'Segala puji bagi Allah, Tuhan sekalian alam';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'Tiada Tuhan selain Allah Yang Esa, tiada sekutu bagi-Nya';
+
+  @override
+  String get notificationAthkarMeaning06 => 'Maha Suci Allah Yang Maha Agung';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'Ya Allah, limpahkanlah selawat kepada Muhammad dan keluarga Muhammad';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'Wahai Tuhan kami, berilah kami kebaikan di dunia dan di akhirat serta peliharalah kami daripada azab neraka';
+
+  @override
+  String get notificationAthkarMeaning09 => 'Maha Suci Allah';
+
+  @override
+  String get notificationAthkarMeaning10 => 'Segala puji bagi Allah';
+
+  @override
+  String get notificationAthkarMeaning11 => 'Tiada Tuhan selain Allah';
+
+  @override
+  String get notificationAthkarMeaning12 => 'Allah Maha Besar';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'Maha Suci Allah, segala puji bagi Allah, tiada Tuhan selain Allah dan Allah Maha Besar';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'Maha Suci Allah dan segala puji bagi-Nya; Maha Suci Allah Yang Maha Agung';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'Wahai Tuhanku, ampunilah aku dan terimalah taubatku. Sesungguhnya Engkau Maha Penerima Taubat lagi Maha Penyayang';
+
+  @override
+  String get notificationAthkarMeaning16 =>
+      'Wahai Tuhanku, tambahkanlah ilmuku';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'Tiada Tuhan selain Engkau. Maha Suci Engkau. Sesungguhnya aku termasuk orang yang zalim';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'Wahai Tuhanku, sesungguhnya aku memerlukan apa jua kebaikan yang Engkau turunkan kepadaku';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'Ya Allah, aku memohon petunjuk, ketakwaan, kesucian diri dan kecukupan daripada-Mu';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'Ya Allah, sesungguhnya Engkau Maha Pemaaf dan suka memaafkan, maka maafkanlah aku';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'Pada iOS sebelum versi 26, bunyi pemberitahuan sahur dimainkan sekali selama kira-kira 30 saat. Ia tidak berulang.';
 }

@@ -6467,6 +6467,77 @@ class AppLocalizationsRu extends AppLocalizations {
       'Не удалось сохранить или синхронизировать настройки икамата. Попробуйте ещё раз.';
 
   @override
+  String get notificationAthkarMeaning01 => 'Пречист Аллах, и хвала Ему';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'Нет силы и могущества ни у кого, кроме Аллаха';
+
+  @override
+  String get notificationAthkarMeaning03 => 'Прошу прощения у Аллаха Великого';
+
+  @override
+  String get notificationAthkarMeaning04 => 'Хвала Аллаху, Господу миров';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'Нет божества, кроме одного Аллаха, у Которого нет сотоварища';
+
+  @override
+  String get notificationAthkarMeaning06 => 'Пречист Аллах Великий';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'О Аллах, благослови Мухаммада и семью Мухаммада';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'Господь наш, даруй нам добро в этом мире и в Последней жизни и защити нас от мучений Огня';
+
+  @override
+  String get notificationAthkarMeaning09 => 'Пречист Аллах';
+
+  @override
+  String get notificationAthkarMeaning10 => 'Хвала Аллаху';
+
+  @override
+  String get notificationAthkarMeaning11 => 'Нет божества, кроме Аллаха';
+
+  @override
+  String get notificationAthkarMeaning12 => 'Аллах превыше всего';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'Пречист Аллах, хвала Аллаху, нет божества, кроме Аллаха, и Аллах превыше всего';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'Пречист Аллах, и хвала Ему; пречист Аллах Великий';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'Господи, прости меня и прими моё покаяние. Поистине, Ты — Принимающий покаяние, Милосердный';
+
+  @override
+  String get notificationAthkarMeaning16 => 'Господи, приумножь мои знания';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'Нет божества, кроме Тебя. Пречист Ты. Поистине, я был одним из несправедливых';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'Господи, я нуждаюсь в любом благе, которое Ты ниспошлёшь мне';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'О Аллах, прошу Тебя о верном пути, богобоязненности, целомудрии и довольстве';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'О Аллах, Ты — Прощающий и любишь прощать, так прости меня';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'В iOS до версии 26 уведомление о сухуре звучит один раз около 30 секунд и не повторяется.';
 }

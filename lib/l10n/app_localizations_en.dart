@@ -6426,6 +6426,81 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not save or sync Iqamah settings. Please try again.';
 
   @override
+  String get notificationAthkarMeaning01 =>
+      'Glory be to Allah and praise be to Him';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'There is no power or strength except through Allah';
+
+  @override
+  String get notificationAthkarMeaning03 =>
+      'I seek forgiveness from Allah, the Almighty';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'All praise is for Allah, Lord of all worlds';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'There is no god but Allah alone, with no partner';
+
+  @override
+  String get notificationAthkarMeaning06 =>
+      'Glory be to Allah, the Magnificent';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'O Allah, bless Muhammad and the family of Muhammad';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'Our Lord, grant us good in this world and in the Hereafter, and protect us from the punishment of the Fire';
+
+  @override
+  String get notificationAthkarMeaning09 => 'Glory be to Allah';
+
+  @override
+  String get notificationAthkarMeaning10 => 'All praise is for Allah';
+
+  @override
+  String get notificationAthkarMeaning11 => 'There is no god but Allah';
+
+  @override
+  String get notificationAthkarMeaning12 => 'Allah is the Greatest';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'Glory be to Allah, all praise is for Allah, there is no god but Allah, and Allah is the Greatest';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'Glory be to Allah and praise be to Him; glory be to Allah, the Magnificent';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'My Lord, forgive me and accept my repentance. You are the Accepter of repentance, the Merciful';
+
+  @override
+  String get notificationAthkarMeaning16 => 'My Lord, increase me in knowledge';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'There is no god but You. Glory be to You. I have indeed been among the wrongdoers';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'My Lord, I am in need of whatever good You send down to me';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'O Allah, I ask You for guidance, piety, chastity, and contentment';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'O Allah, You are Pardoning and love to pardon, so pardon me';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'On iOS before 26, Sahur plays a notification sound for about 30 seconds, once. It does not loop.';
 }

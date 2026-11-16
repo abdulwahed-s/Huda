@@ -6414,6 +6414,81 @@ class AppLocalizationsUr extends AppLocalizations {
       'اقامت کی ترتیبات محفوظ یا ہم آہنگ نہیں ہو سکیں۔ دوبارہ کوشش کریں۔';
 
   @override
+  String get notificationAthkarMeaning01 =>
+      'اللہ پاک ہے اور اسی کے لیے تمام تعریفیں ہیں';
+
+  @override
+  String get notificationAthkarMeaning02 =>
+      'اللہ کی مدد کے بغیر نہ کوئی طاقت ہے نہ قوت';
+
+  @override
+  String get notificationAthkarMeaning03 =>
+      'میں عظمت والے اللہ سے بخشش مانگتا ہوں';
+
+  @override
+  String get notificationAthkarMeaning04 =>
+      'تمام تعریفیں اللہ کے لیے ہیں جو تمام جہانوں کا رب ہے';
+
+  @override
+  String get notificationAthkarMeaning05 =>
+      'اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک نہیں';
+
+  @override
+  String get notificationAthkarMeaning06 => 'عظمت والا اللہ پاک ہے';
+
+  @override
+  String get notificationAthkarMeaning07 =>
+      'اے اللہ، محمد اور محمد کی آل پر رحمت نازل فرما';
+
+  @override
+  String get notificationAthkarMeaning08 =>
+      'اے ہمارے رب، ہمیں دنیا اور آخرت میں بھلائی عطا فرما اور ہمیں آگ کے عذاب سے بچا';
+
+  @override
+  String get notificationAthkarMeaning09 => 'اللہ پاک ہے';
+
+  @override
+  String get notificationAthkarMeaning10 => 'تمام تعریفیں اللہ کے لیے ہیں';
+
+  @override
+  String get notificationAthkarMeaning11 => 'اللہ کے سوا کوئی معبود نہیں';
+
+  @override
+  String get notificationAthkarMeaning12 => 'اللہ سب سے بڑا ہے';
+
+  @override
+  String get notificationAthkarMeaning13 =>
+      'اللہ پاک ہے، تمام تعریفیں اللہ کے لیے ہیں، اللہ کے سوا کوئی معبود نہیں اور اللہ سب سے بڑا ہے';
+
+  @override
+  String get notificationAthkarMeaning14 =>
+      'اللہ پاک ہے اور اسی کے لیے تمام تعریفیں ہیں؛ عظمت والا اللہ پاک ہے';
+
+  @override
+  String get notificationAthkarMeaning15 =>
+      'اے میرے رب، مجھے بخش دے اور میری توبہ قبول فرما۔ بے شک تو بہت توبہ قبول کرنے والا، رحم فرمانے والا ہے';
+
+  @override
+  String get notificationAthkarMeaning16 =>
+      'اے میرے رب، میرے علم میں اضافہ فرما';
+
+  @override
+  String get notificationAthkarMeaning17 =>
+      'تیرے سوا کوئی معبود نہیں، تو پاک ہے۔ بے شک میں ہی ظالموں میں سے تھا';
+
+  @override
+  String get notificationAthkarMeaning18 =>
+      'اے میرے رب، تو جو بھلائی بھی میری طرف نازل فرمائے، میں اس کا محتاج ہوں';
+
+  @override
+  String get notificationAthkarMeaning19 =>
+      'اے اللہ، میں تجھ سے ہدایت، تقویٰ، پاک دامنی اور بے نیازی مانگتا ہوں';
+
+  @override
+  String get notificationAthkarMeaning20 =>
+      'اے اللہ، تو بہت معاف کرنے والا ہے، معاف کرنا پسند کرتا ہے، پس مجھے معاف فرما';
+
+  @override
   String get sahurNotificationOnlyDescription =>
       'iOS 26 سے پہلے سحری کے لیے اطلاع کی آواز تقریباً 30 سیکنڈ تک صرف ایک بار بجتی ہے، بار بار نہیں بجتی۔';
 }

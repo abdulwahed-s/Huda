@@ -7,6 +7,9 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/prayer_notification_scheduler.dart';
 import 'package:huda/core/services/quran_widget_service.dart';
 import 'package:huda/core/services/prayer_widget_service.dart';
+import 'package:huda/core/notifications/notification_orchestrator.dart';
+import 'package:huda/core/notifications/reminder_model.dart';
+import 'package:huda/core/services/sahur_alarm_gateway.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,6 +101,16 @@ class LocalizationCubit extends Cubit<LocalizationState> {
       await QuranWidgetService.onLocaleChanged();
 
       await _reconcilePrayerPresentation('locale-changed');
+      try {
+        await NotificationOrchestrator.shared.requestSync('locale-changed', categories: {
+          ReminderCategory.reminder, ReminderCategory.randomAthkar,
+        });
+        if (PlatformUtils.isMobile) {
+          await NativeSahurAlarmGateway.sync(getIt<CacheHelper>());
+        }
+      } catch (error) {
+        debugPrint('Could not refresh notification language: $error');
+      }
     }
   }
 

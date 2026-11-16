@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:crypto/crypto.dart';
 import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/notifications/reminder_model.dart';
 import 'package:huda/core/services/calendar_notification_service.dart';
@@ -194,17 +195,6 @@ class ReminderPlanner {
   static const athkarPayloadVersion = 'huda-athkar-v1';
   static const repeatingAthkarPayloadVersion = 'huda-athkar-repeat-v1';
   static const liveAthkarPayloadVersion = 'huda-athkar-live-v1';
-
-  static const athkarTexts = [
-    'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
-    'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',
-    'أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ',
-    'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
-    'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ',
-    'سُبْحَانَ اللَّهِ الْعَظِيمِ',
-    'الْلَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ',
-    'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
-  ];
 
   final NotificationCapacityPolicy policy;
 
@@ -406,11 +396,17 @@ class ReminderPlanner {
     style: ReminderStyle.athkar,
     title: content.randomAthkarTitle,
     body: '',
-    payload: jsonEncode([liveAthkarPayloadVersion, minutes]),
+    // Native backends treat this payload as opaque. Include the catalog so
+    // upgrades and language edits replace the rule even if its title is unchanged.
+    payload: jsonEncode([
+      liveAthkarPayloadVersion,
+      minutes,
+      sha256.convert(utf8.encode(jsonEncode(content.randomAthkarTexts))).toString(),
+    ]),
     at: now.add(Duration(minutes: minutes)),
     repeat: NotificationRepeat.interval,
     intervalMinutes: minutes,
-    texts: athkarTexts,
+    texts: content.randomAthkarTexts,
   );
 
   /// Random Athkar as repeating triggers, which keep firing without Huda.
@@ -427,7 +423,7 @@ class ReminderPlanner {
     final window = max(pattern.minutes, 60);
     final rotation =
         now.millisecondsSinceEpoch ~/ Duration.millisecondsPerMinute ~/ window;
-    final texts = List.of(athkarTexts)..shuffle(Random(rotation));
+    final texts = List.of(content.randomAthkarTexts)..shuffle(Random(rotation));
     final desired = <PlannedNotification>[];
     for (var slot = 0; slot < pattern.slots; slot++) {
       final offset = slot * pattern.minutes;
