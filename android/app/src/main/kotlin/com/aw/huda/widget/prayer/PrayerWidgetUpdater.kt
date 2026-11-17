@@ -667,7 +667,7 @@ internal object PrayerWidgetUpdater {
         )
     }
 
-    private fun prayerIconRes(kind: PrayerKind): Int = when (kind) {
+    internal fun prayerIconRes(kind: PrayerKind): Int = when (kind) {
         PrayerKind.FAJR -> R.drawable.ic_prayer_fajr
         PrayerKind.SUNRISE -> R.drawable.ic_prayer_sunrise
         PrayerKind.DHUHR -> R.drawable.ic_prayer_dhuhr

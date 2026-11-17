@@ -18,6 +18,7 @@ import com.aw.huda.widget.prayer.PrayerTimeFormatter
 import com.aw.huda.widget.prayer.PrayerWidgetCalculator
 import com.aw.huda.widget.prayer.PrayerWidgetLocalization
 import com.aw.huda.widget.prayer.PrayerWidgetSnapshot
+import com.aw.huda.widget.prayer.PrayerWidgetUpdater
 import com.aw.huda.widget.prayer.SingleWidgetUpdateResult
 import com.aw.huda.widget.prayer.useArabicNumeralsForWidget
 import java.util.Date
@@ -92,15 +93,21 @@ internal object SamsungPrayerWidgetUpdater {
         fun fallback() = staticState(context, views, expanded, viewport, "$name\n$rounded",
             "${PrayerWidgetLocalization.string(labelKey, language)}: $name • $clock • $rounded", name)
         val clockSize = if (expanded) LockWidgetTextMetrics.fitLine(context, clock,
-            width * 0.55f, 10f * scale, 8.5f, clockFont) ?: return fallback() else 0f
+            width * 0.45f, 10f * scale, 8.5f, clockFont) ?: return fallback() else 0f
         val clockWidth = if (expanded) LockWidgetTextMetrics.paint(context, clockSize, clockFont)
             .measureText(clock) + 4 * density else 0f
-        val nameSize = LockWidgetTextMetrics.fitLine(context, name, width - clockWidth,
-            (if (expanded) 11f else 10f) * scale, 9f, titleFont) ?: return fallback()
+        val iconWidth = (if (expanded) 15 else 13) * density
+        val maxNameSize = (if (expanded) 11f else 10f) * scale
+        // The icon is decorative: drop it before the prayer name stops fitting.
+        val iconNameSize = LockWidgetTextMetrics.fitLine(context, name, width - iconWidth, maxNameSize, 9f, titleFont)
+        val showIcon = iconNameSize != null
+        val nameSize = iconNameSize
+            ?: LockWidgetTextMetrics.fitLine(context, name, width, maxNameSize, 9f, titleFont) ?: return fallback()
         views.setTextViewText(R.id.samsung_prayer_name, name)
         views.setViewVisibility(R.id.samsung_prayer_name, View.VISIBLE)
         views.setTextViewTextSize(R.id.samsung_prayer_name, TypedValue.COMPLEX_UNIT_SP, nameSize)
-        if (!expanded) views.setViewVisibility(R.id.samsung_prayer_rule, View.VISIBLE)
+        views.setImageViewResource(R.id.samsung_prayer_icon, PrayerWidgetUpdater.prayerIconRes(target.kind))
+        views.setViewVisibility(R.id.samsung_prayer_icon, if (showIcon) View.VISIBLE else View.GONE)
         if (expanded) {
             views.setTextViewText(R.id.samsung_prayer_time, clock)
             views.setViewVisibility(R.id.samsung_prayer_time, View.VISIBLE)
@@ -110,24 +117,27 @@ internal object SamsungPrayerWidgetUpdater {
         val sample = (if (elapsed) "+" else "") +
             (if (hours > 0) "${"8".repeat(hours.toString().length)}:88:88" else "88:88")
         val arabicSample = sample.map { if (it in '0'..'9') ('٠'.code + it.digitToInt()).toChar() else it }.joinToString("")
-        val latinSize = LockWidgetTextMetrics.fitLine(context, sample, width,
+        // The expanded prayer time shares the countdown row.
+        val counterWidth = width - clockWidth
+        val latinSize = LockWidgetTextMetrics.fitLine(context, sample, counterWidth,
             (if (expanded) 21f else 17f) * scale, 11f, counterFont)
-        val arabicSize = LockWidgetTextMetrics.fitLine(context, arabicSample, width,
+        val arabicSize = LockWidgetTextMetrics.fitLine(context, arabicSample, counterWidth,
             (if (expanded) 21f else 17f) * scale, 11f, counterFont)
         var counterSize = if (latinSize != null && arabicSize != null) minOf(latinSize, arabicSize) else null
         val headerHeight = maxOf(LockWidgetTextMetrics.layout(context, name,
-            (width - clockWidth).toInt(), nameSize, titleFont).height,
-            if (expanded) LockWidgetTextMetrics.layout(context, clock, clockWidth.toInt(), clockSize, clockFont).height else 0)
-        fun counterHeight(size: Float) = maxOf(
-            LockWidgetTextMetrics.layout(context, sample, width.toInt(), size, counterFont).height,
-            LockWidgetTextMetrics.layout(context, arabicSample, width.toInt(), size, counterFont).height)
-        while (counterSize != null && counterSize > 11f && headerHeight +
-            counterHeight(counterSize) + (if (expanded) 1 else 5) * density > height) {
+            (width - if (showIcon) iconWidth else 0f).toInt(), nameSize, titleFont).height,
+            if (showIcon) (iconWidth - (if (expanded) 3 else 2) * density).toInt() else 0)
+        val clockHeight = if (expanded) LockWidgetTextMetrics.layout(context, clock,
+            clockWidth.toInt(), clockSize, clockFont).height else 0
+        fun counterHeight(size: Float) = maxOf(clockHeight,
+            LockWidgetTextMetrics.layout(context, sample, counterWidth.toInt(), size, counterFont).height,
+            LockWidgetTextMetrics.layout(context, arabicSample, counterWidth.toInt(), size, counterFont).height)
+        while (counterSize != null && counterSize > 11f &&
+            headerHeight + counterHeight(counterSize) + density > height) {
             counterSize = (counterSize - 0.5f).coerceAtLeast(11f)
         }
         val live = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && counterSize != null &&
-            headerHeight + counterHeight(counterSize) +
-            (if (expanded) 1 else 5) * density <= height
+            headerHeight + counterHeight(counterSize) + density <= height
         if (live) {
             views.setTextViewTextSize(R.id.samsung_prayer_countdown, TypedValue.COMPLEX_UNIT_SP, counterSize!!)
             views.setChronometerCountDown(R.id.samsung_prayer_countdown, !elapsed)
@@ -159,7 +169,7 @@ internal object SamsungPrayerWidgetUpdater {
         views.setViewVisibility(R.id.samsung_prayer_countdown, View.GONE)
         views.setViewVisibility(R.id.samsung_prayer_name, View.GONE)
         views.setViewVisibility(R.id.samsung_prayer_time, View.GONE)
-        if (!expanded) views.setViewVisibility(R.id.samsung_prayer_rule, View.GONE)
+        views.setViewVisibility(R.id.samsung_prayer_icon, View.GONE)
         views.setTextViewText(R.id.samsung_prayer_static_counter, text)
         views.setTextViewTextSize(R.id.samsung_prayer_static_counter, TypedValue.COMPLEX_UNIT_SP, size)
         views.setViewVisibility(R.id.samsung_prayer_static_counter, View.VISIBLE)

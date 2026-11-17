@@ -163,6 +163,7 @@ class SamsungLockRemoteViewsTest {
             measure(root, width, 56)
             assertTextFits(root.findViewById(
                 if (live) R.id.samsung_prayer_countdown else R.id.samsung_prayer_static_counter))
+            save(root, "prayer-${if (expanded) "expanded" else "compact"}-long")
         }
     }
 
