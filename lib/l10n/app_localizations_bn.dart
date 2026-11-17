@@ -3589,6 +3589,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get readingModeTajweed => 'মুসহাফ আত-তাজবিদ লেআউট';
 
   @override
+  String get readingModeIndopak => 'ইন্দো-পাক মুসহাফ';
+
+  @override
   String get mushafFlipHorizontal => 'অনুভূমিক ফ্লিপ';
 
   @override
@@ -3653,6 +3656,18 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'লোড হচ্ছে…';
+
+  @override
+  String get mushafPackTitle => 'মুসহাফের পৃষ্ঠা';
+
+  @override
+  String get mushafPackBody =>
+      'মসৃণভাবে পৃষ্ঠা ওল্টানোর জন্য মুসহাফ এখন পৃষ্ঠার ছবি ব্যবহার করে। এই বিন্যাসে পড়া চালিয়ে যেতে একবার ডাউনলোড করুন।';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'ডাউনলোড ($size)';
+  }
 
   @override
   String get nextSurah => 'পরবর্তী সূরা';
@@ -6297,10 +6312,6 @@ class AppLocalizationsBn extends AppLocalizations {
       'বিজ্ঞপ্তির সাথে ৩০ সেকেন্ড পর্যন্ত; হুদা বন্ধ থাকলেও কাজ করে';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'হুদা পুরো আজান বাজায়; মেনু বারে হুদা চালু রাখুন';
-
-  @override
   String get prayerCountdownTitle => 'নামাজের কাউন্টডাউন';
 
   @override
@@ -6383,19 +6394,12 @@ class AppLocalizationsBn extends AppLocalizations {
       'এই ফোন উল্টানো শনাক্ত করতে পারে না।';
 
   @override
-  String get readingModeIndopak => 'ইন্দো-পাক মুসহাফ';
+  String get prayerAlertStyleMacFullHint =>
+      'হুদা পুরো আজান বাজায়; এটি মেনু বারে চালু থাকে এবং লগইনের সময় শুরু হয়';
 
   @override
-  String get mushafPackTitle => 'মুসহাফের পৃষ্ঠা';
-
-  @override
-  String get mushafPackBody =>
-      'মসৃণভাবে পৃষ্ঠা ওল্টানোর জন্য মুসহাফ এখন পৃষ্ঠার ছবি ব্যবহার করে। এই বিন্যাসে পড়া চালিয়ে যেতে একবার ডাউনলোড করুন।';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'ডাউনলোড ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'নামাজের জন্য শান্ত পূর্ণ-স্ক্রিন মুহূর্ত; হুদা মেনু বারে চালু থাকে এবং লগইনের সময় শুরু হয়';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

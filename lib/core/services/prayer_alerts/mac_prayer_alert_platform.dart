@@ -45,7 +45,8 @@ class MacPrayerAlertPlatform extends PrayerAlertPlatform<MacPrayerExperience> {
         },
         styleHints: const {
           PrayerAlertStyle.short: 'prayerAlertStyleNotificationAdhanHint',
-          PrayerAlertStyle.full: 'prayerAlertStyleLiveAdhanHint',
+          PrayerAlertStyle.full: 'prayerAlertStyleMacFullHint',
+          PrayerAlertStyle.focus: 'prayerAlertStyleMacFocusHint',
         },
         styles: const [
           PrayerAlertStyle.silent,
@@ -199,7 +200,7 @@ class MacPrayerAlertPlatform extends PrayerAlertPlatform<MacPrayerExperience> {
     PrayerAlertChange change,
   ) {
     if (change.prayer case final prayer?) {
-      return _changePrayer(settings, prayer, change);
+      return _keepRunning(_changePrayer(settings, prayer, change), change);
     }
     final next = switch (change) {
       SetPrayerAlertsEnabled(:final enabled) => settings.copyWith(
@@ -260,7 +261,7 @@ class MacPrayerAlertPlatform extends PrayerAlertPlatform<MacPrayerExperience> {
       },
       _ => settings,
     };
-    return next.copyWith(configured: true);
+    return _keepRunning(next.copyWith(configured: true), change);
   }
 
   @override
@@ -329,5 +330,27 @@ class MacPrayerAlertPlatform extends PrayerAlertPlatform<MacPrayerExperience> {
     try {
       await MacPrayerBridge.command('stopPreview', sessionId: session);
     } catch (_) {}
+  }
+
+  /// The full adhan and Focus are played by Huda, so choosing one turns on
+  /// running in the menu bar and starting at login, as their tiles say.
+  /// Turning those off later (More options) is kept until such a style is
+  /// chosen again.
+  static MacPrayerExperience _keepRunning(
+    MacPrayerExperience next,
+    PrayerAlertChange change,
+  ) {
+    if (change is! SetPrayerAlertStyle || next.backgroundEnabled) return next;
+    final live = macPrayerKeys
+        .map(next.forPrayer)
+        .any(
+          (prayer) =>
+              prayer.enabled &&
+              (prayer.mode == MacPrayerReminderMode.focus ||
+                  prayer.playerAudio),
+        );
+    return live
+        ? next.copyWith(backgroundEnabled: true, startAtLogin: true)
+        : next;
   }
 }

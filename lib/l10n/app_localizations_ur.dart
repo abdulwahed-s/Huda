@@ -3582,6 +3582,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get readingModeTajweed => 'مصحف التجوید ترتیب';
 
   @override
+  String get readingModeIndopak => 'انڈو پاک مصحف';
+
+  @override
   String get mushafFlipHorizontal => 'افقی پلٹاؤ';
 
   @override
@@ -3647,6 +3650,18 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'لوڈ ہو رہا ہے...';
+
+  @override
+  String get mushafPackTitle => 'مصحف کے صفحات';
+
+  @override
+  String get mushafPackBody =>
+      'اب مصحف میں ہموار صفحہ پلٹنے کے لیے صفحات کی تصاویر استعمال ہوتی ہیں۔ اس انداز میں پڑھنا جاری رکھنے کے لیے انہیں ایک بار ڈاؤن لوڈ کریں۔';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'ڈاؤن لوڈ ($size)';
+  }
 
   @override
   String get nextSurah => 'اگلی سورت';
@@ -6286,10 +6301,6 @@ class AppLocalizationsUr extends AppLocalizations {
       'اطلاع کے ساتھ 30 سیکنڈ تک؛ ہدیٰ بند ہونے پر بھی کام کرتی ہے';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'ہدیٰ پوری اذان چلاتا ہے؛ ہدیٰ کو مینو بار میں چلتا رکھیں';
-
-  @override
   String get prayerCountdownTitle => 'نماز کی الٹی گنتی';
 
   @override
@@ -6372,19 +6383,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerAlertFlipUnavailable => 'یہ فون الٹنا نہیں پہچان سکتا۔';
 
   @override
-  String get readingModeIndopak => 'انڈو پاک مصحف';
+  String get prayerAlertStyleMacFullHint =>
+      'ہدیٰ پوری اذان چلاتا ہے؛ یہ مینو بار میں چلتا رہتا ہے اور لاگ ان پر شروع ہوتا ہے';
 
   @override
-  String get mushafPackTitle => 'مصحف کے صفحات';
-
-  @override
-  String get mushafPackBody =>
-      'اب مصحف میں ہموار صفحہ پلٹنے کے لیے صفحات کی تصاویر استعمال ہوتی ہیں۔ اس انداز میں پڑھنا جاری رکھنے کے لیے انہیں ایک بار ڈاؤن لوڈ کریں۔';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'ڈاؤن لوڈ ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'نماز کے لیے پُرسکون فل اسکرین لمحہ؛ ہدیٰ مینو بار میں چلتا رہتا ہے اور لاگ ان پر شروع ہوتا ہے';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

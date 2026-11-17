@@ -3606,6 +3606,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get readingModeTajweed => 'Макет Мусхафа Таджвид';
 
   @override
+  String get readingModeIndopak => 'Мусхаф ИндоПак';
+
+  @override
   String get mushafFlipHorizontal => 'Горизонтальный переворот';
 
   @override
@@ -3671,6 +3674,18 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'Загрузка…';
+
+  @override
+  String get mushafPackTitle => 'Страницы Мусхафа';
+
+  @override
+  String get mushafPackBody =>
+      'Теперь Мусхаф использует изображения страниц для более плавного листания. Загрузите их один раз, чтобы продолжить чтение в этом виде.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Загрузить ($size)';
+  }
 
   @override
   String get nextSurah => 'Следующая сура';
@@ -6336,10 +6351,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'До 30 секунд вместе с уведомлением; работает, даже когда Huda закрыта';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'Huda воспроизводит весь азан; держите Huda запущенной в строке меню';
-
-  @override
   String get prayerCountdownTitle => 'Обратный отсчёт до намаза';
 
   @override
@@ -6425,19 +6436,12 @@ class AppLocalizationsRu extends AppLocalizations {
       'Этот телефон не может распознать переворот.';
 
   @override
-  String get readingModeIndopak => 'Мусхаф ИндоПак';
+  String get prayerAlertStyleMacFullHint =>
+      'Huda воспроизводит весь азан; приложение остаётся в строке меню и запускается при входе';
 
   @override
-  String get mushafPackTitle => 'Страницы Мусхафа';
-
-  @override
-  String get mushafPackBody =>
-      'Теперь Мусхаф использует изображения страниц для более плавного листания. Загрузите их один раз, чтобы продолжить чтение в этом виде.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'Загрузить ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'Спокойная полноэкранная пауза для молитвы; Huda остаётся в строке меню и запускается при входе';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

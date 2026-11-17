@@ -3585,6 +3585,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get readingModeTajweed => 'Tecvid Mushafı Düzeni';
 
   @override
+  String get readingModeIndopak => 'IndoPak Mushafı';
+
+  @override
   String get mushafFlipHorizontal => 'Yatay Çevirme';
 
   @override
@@ -3650,6 +3653,18 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'Yükleniyor…';
+
+  @override
+  String get mushafPackTitle => 'Mushaf sayfaları';
+
+  @override
+  String get mushafPackBody =>
+      'Mushaf artık daha akıcı sayfa çevirme için sayfa görselleri kullanıyor. Bu düzende okumaya devam etmek için bunları bir kez indirin.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'İndir ($size)';
+  }
 
   @override
   String get nextSurah => 'Sonraki Sure';
@@ -6291,10 +6306,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bildirimle 30 saniyeye kadar; Huda kapalıyken de çalışır';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'Huda ezanın tamamını çalar; Huda\'yı menü çubuğunda açık tut';
-
-  @override
   String get prayerCountdownTitle => 'Namaz geri sayımı';
 
   @override
@@ -6376,19 +6387,12 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu telefon çevirmeyi algılayamıyor.';
 
   @override
-  String get readingModeIndopak => 'IndoPak Mushafı';
+  String get prayerAlertStyleMacFullHint =>
+      'Huda ezanın tamamını çalar; menü çubuğunda çalışmaya devam eder ve oturum açılışında başlar';
 
   @override
-  String get mushafPackTitle => 'Mushaf sayfaları';
-
-  @override
-  String get mushafPackBody =>
-      'Mushaf artık daha akıcı sayfa çevirme için sayfa görselleri kullanıyor. Bu düzende okumaya devam etmek için bunları bir kez indirin.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'İndir ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'Namaz için tam ekran sakin bir an; Huda menü çubuğunda çalışmaya devam eder ve oturum açılışında başlar';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

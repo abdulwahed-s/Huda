@@ -3536,6 +3536,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get readingModeTajweed => 'مصحف التجويد';
 
   @override
+  String get readingModeIndopak => 'المصحف الهندي';
+
+  @override
   String get mushafFlipHorizontal => 'تقليب أفقي';
 
   @override
@@ -3599,6 +3602,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'جارٍ التحميل...';
+
+  @override
+  String get mushafPackTitle => 'صفحات المصحف';
+
+  @override
+  String get mushafPackBody =>
+      'أصبح المصحف يعتمد على صور الصفحات ليكون تقليب الصفحات أكثر سلاسة. نزّلها مرة واحدة لمتابعة القراءة بهذا العرض.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'تنزيل ($size)';
+  }
 
   @override
   String get nextSurah => 'السورة التالية';
@@ -6227,10 +6242,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'حتى 30 ثانية مع الإشعار؛ يعمل حتى عندما يكون هدى مغلقًا';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'يشغّل هدى الأذان كاملًا؛ أبقِ هدى يعمل في شريط القوائم';
-
-  @override
   String get prayerCountdownTitle => 'العد التنازلي للصلاة';
 
   @override
@@ -6311,19 +6322,12 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا يستطيع هذا الهاتف التعرّف على القلب.';
 
   @override
-  String get readingModeIndopak => 'المصحف الهندي';
+  String get prayerAlertStyleMacFullHint =>
+      'يشغّل هدى الأذان كاملًا؛ ويبقى يعمل في شريط القوائم ويبدأ عند تسجيل الدخول';
 
   @override
-  String get mushafPackTitle => 'صفحات المصحف';
-
-  @override
-  String get mushafPackBody =>
-      'أصبح المصحف يعتمد على صور الصفحات ليكون تقليب الصفحات أكثر سلاسة. نزّلها مرة واحدة لمتابعة القراءة بهذا العرض.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'تنزيل ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'لحظة هادئة بملء الشاشة للصلاة؛ ويبقى هدى يعمل في شريط القوائم ويبدأ عند تسجيل الدخول';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

@@ -3588,6 +3588,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get readingModeTajweed => 'Tataletak Mushaf Al-Tajwid';
 
   @override
+  String get readingModeIndopak => 'Mushaf IndoPak';
+
+  @override
   String get mushafFlipHorizontal => 'Leret Mendatar';
 
   @override
@@ -3653,6 +3656,18 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'Memuatkan…';
+
+  @override
+  String get mushafPackTitle => 'Halaman Mushaf';
+
+  @override
+  String get mushafPackBody =>
+      'Mushaf kini menggunakan imej halaman untuk selakan halaman yang lebih lancar. Muat turun sekali untuk terus membaca dalam susun atur ini.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Muat turun ($size)';
+  }
 
   @override
   String get nextSurah => 'Surah Berikutnya';
@@ -6313,10 +6328,6 @@ class AppLocalizationsMs extends AppLocalizations {
       'Sehingga 30 saat bersama pemberitahuan; berfungsi walaupun Huda ditutup';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'Huda memainkan seluruh azan; biarkan Huda berjalan dalam bar menu';
-
-  @override
   String get prayerCountdownTitle => 'Kira detik solat';
 
   @override
@@ -6401,19 +6412,12 @@ class AppLocalizationsMs extends AppLocalizations {
       'Telefon ini tidak dapat mengesan terbalik.';
 
   @override
-  String get readingModeIndopak => 'Mushaf IndoPak';
+  String get prayerAlertStyleMacFullHint =>
+      'Huda memainkan seluruh azan; ia terus berjalan dalam bar menu dan bermula semasa log masuk';
 
   @override
-  String get mushafPackTitle => 'Halaman Mushaf';
-
-  @override
-  String get mushafPackBody =>
-      'Mushaf kini menggunakan imej halaman untuk selakan halaman yang lebih lancar. Muat turun sekali untuk terus membaca dalam susun atur ini.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'Muat turun ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'Detik tenang skrin penuh untuk solat; Huda terus berjalan dalam bar menu dan bermula semasa log masuk';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

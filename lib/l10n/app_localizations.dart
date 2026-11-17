@@ -6606,6 +6606,12 @@ abstract class AppLocalizations {
   /// **'Mushaf Al-Tajweed layout'**
   String get readingModeTajweed;
 
+  /// Reading mode: IndoPak 15-line (Qudratullah) Mushaf pages
+  ///
+  /// In en, this message translates to:
+  /// **'IndoPak Mushaf'**
+  String get readingModeIndopak;
+
   /// Mushaf flip direction: horizontal
   ///
   /// In en, this message translates to:
@@ -6719,6 +6725,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading…'**
   String get fontLoadingLabel;
+
+  /// Title shown in the Mushaf reader when its page images need to be downloaded
+  ///
+  /// In en, this message translates to:
+  /// **'Mushaf pages'**
+  String get mushafPackTitle;
+
+  /// Explains why the Mushaf page images must be downloaded, including after the update from page fonts
+  ///
+  /// In en, this message translates to:
+  /// **'The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.'**
+  String get mushafPackBody;
+
+  /// Button that downloads the Mushaf page images
+  ///
+  /// In en, this message translates to:
+  /// **'Download ({size})'**
+  String mushafPackDownload(String size);
 
   /// Next surah navigation button label
   ///
@@ -11352,12 +11376,6 @@ abstract class AppLocalizations {
   /// **'Up to 30 seconds with the notification; works even when Huda is closed'**
   String get prayerAlertStyleNotificationAdhanHint;
 
-  /// No description provided for @prayerAlertStyleLiveAdhanHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Huda plays the whole adhan; keep Huda running in the menu bar'**
-  String get prayerAlertStyleLiveAdhanHint;
-
   /// Title of the Android prayer countdown card and notification
   ///
   /// In en, this message translates to:
@@ -11508,29 +11526,17 @@ abstract class AppLocalizations {
   /// **'This phone can\'t detect a flip.'**
   String get prayerAlertFlipUnavailable;
 
-  /// Reading mode: IndoPak 15-line (Qudratullah) Mushaf pages
+  /// macOS Full adhan tile: choosing it turns on running in the menu bar and starting at login.
   ///
   /// In en, this message translates to:
-  /// **'IndoPak Mushaf'**
-  String get readingModeIndopak;
+  /// **'Huda plays the whole adhan; it keeps running in the menu bar and starts at login'**
+  String get prayerAlertStyleMacFullHint;
 
-  /// Title shown in the Mushaf reader when its page images need to be downloaded
+  /// No description provided for @prayerAlertStyleMacFocusHint.
   ///
   /// In en, this message translates to:
-  /// **'Mushaf pages'**
-  String get mushafPackTitle;
-
-  /// Explains why the Mushaf page images must be downloaded, including after the update from page fonts
-  ///
-  /// In en, this message translates to:
-  /// **'The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.'**
-  String get mushafPackBody;
-
-  /// Button that downloads the Mushaf page images
-  ///
-  /// In en, this message translates to:
-  /// **'Download ({size})'**
-  String mushafPackDownload(String size);
+  /// **'A calm full-screen moment for prayer; Huda keeps running in the menu bar and starts at login'**
+  String get prayerAlertStyleMacFocusHint;
 
   /// No description provided for @macPrayerMenuNameElapsed.
   ///

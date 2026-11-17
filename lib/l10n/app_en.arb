@@ -4099,6 +4099,10 @@
   "@readingModeTajweed": {
     "description": "Reading mode: tajweed mushaf"
   },
+  "readingModeIndopak": "IndoPak Mushaf",
+  "@readingModeIndopak": {
+    "description": "Reading mode: IndoPak 15-line (Qudratullah) Mushaf pages"
+  },
   "mushafFlipHorizontal": "Horizontal Flip",
   "@mushafFlipHorizontal": {
     "description": "Mushaf flip direction: horizontal"
@@ -4198,6 +4202,24 @@
   "fontLoadingLabel": "Loading…",
   "@fontLoadingLabel": {
     "description": "Font download progress: loading state"
+  },
+  "mushafPackTitle": "Mushaf pages",
+  "@mushafPackTitle": {
+    "description": "Title shown in the Mushaf reader when its page images need to be downloaded"
+  },
+  "mushafPackBody": "The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.",
+  "@mushafPackBody": {
+    "description": "Explains why the Mushaf page images must be downloaded, including after the update from page fonts"
+  },
+  "mushafPackDownload": "Download ({size})",
+  "@mushafPackDownload": {
+    "description": "Button that downloads the Mushaf page images",
+    "placeholders": {
+      "size": {
+        "type": "String",
+        "description": "Approximate download size, e.g. ~87 MB"
+      }
+    }
   },
   "nextSurah": "Next Surah",
   "@nextSurah": {
@@ -5644,7 +5666,16 @@
   "macPrayerVerse": "﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَٰبًا مَّوْقُوتًا ﴾",
   "iosPrayerAdvanceTitle": "Prayer reminder",
   "iosPrayerAdvanceBody": "{prayer} in {minutes} minutes.",
-  "@iosPrayerAdvanceBody": {"placeholders": {"prayer": {"type": "String"}, "minutes": {"type": "String"}}},
+  "@iosPrayerAdvanceBody": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
   "iosPrayerRenewalTitle": "Extend prayer alerts",
   "iosPrayerRenewalBody": "Open Huda to extend your scheduled prayer alerts.",
   "linuxPrayerTrayTitle": "Prayer panel",
@@ -5652,10 +5683,19 @@
   "linuxPrayerTrayStartAtLogin": "Start at login",
   "linuxRemindersReady": "Reminders arrive even when Huda is closed",
   "linuxRemindersNeedService": "Reminders arrive only while Huda’s background service runs. Turn on “Start at login” in Prayer Times to keep them after restarting.",
-  "@linuxRemindersNeedService": {"description": "Shown on Linux when reminders depend on the background prayer service that may not start at login."},
+  "@linuxRemindersNeedService": {
+    "description": "Shown on Linux when reminders depend on the background prayer service that may not start at login."
+  },
   "windowsRemindersReady": "Reminders arrive even when Huda is closed",
   "windowsRemindersQueuedUntil": "Reminders are queued until {date}",
-  "@windowsRemindersQueuedUntil": {"description": "Shown on Windows when reminders will run out unless renewed; date is a formatted day.", "placeholders": {"date": {"type": "String"}}},
+  "@windowsRemindersQueuedUntil": {
+    "description": "Shown on Windows when reminders will run out unless renewed; date is a formatted day.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "windowsRemindersNeedStartup": "Turn on “Start with Windows” so Huda renews them without being opened.",
   "windowsRemindersOpenHuda": "Open Huda before then to keep them going.",
   "linuxPrayerTrayInstall": "Set up prayer panel",
@@ -5964,7 +6004,6 @@
     "description": "macOS: the notification's own sound, up to 30 seconds, works even when Huda is closed."
   },
   "prayerAlertStyleNotificationAdhanHint": "Up to 30 seconds with the notification; works even when Huda is closed",
-  "prayerAlertStyleLiveAdhanHint": "Huda plays the whole adhan; keep Huda running in the menu bar",
   "prayerCountdownTitle": "Prayer countdown",
   "@prayerCountdownTitle": {
     "description": "Title of the Android prayer countdown card and notification"
@@ -6050,28 +6089,11 @@
   "prayerAlertFlipDetected": "Flip detected. The adhan would stop.",
   "prayerAlertFlipMissed": "No flip seen. Try again.",
   "prayerAlertFlipUnavailable": "This phone can't detect a flip.",
-  "readingModeIndopak": "IndoPak Mushaf",
-  "@readingModeIndopak": {
-    "description": "Reading mode: IndoPak 15-line (Qudratullah) Mushaf pages"
+  "prayerAlertStyleMacFullHint": "Huda plays the whole adhan; it keeps running in the menu bar and starts at login",
+  "@prayerAlertStyleMacFullHint": {
+    "description": "macOS Full adhan tile: choosing it turns on running in the menu bar and starting at login."
   },
-  "mushafPackTitle": "Mushaf pages",
-  "@mushafPackTitle": {
-    "description": "Title shown in the Mushaf reader when its page images need to be downloaded"
-  },
-  "mushafPackBody": "The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.",
-  "@mushafPackBody": {
-    "description": "Explains why the Mushaf page images must be downloaded, including after the update from page fonts"
-  },
-  "mushafPackDownload": "Download ({size})",
-  "@mushafPackDownload": {
-    "description": "Button that downloads the Mushaf page images",
-    "placeholders": {
-      "size": {
-        "type": "String",
-        "description": "Approximate download size, e.g. ~87 MB"
-      }
-    }
-  },
+  "prayerAlertStyleMacFocusHint": "A calm full-screen moment for prayer; Huda keeps running in the menu bar and starts at login",
   "macPrayerMenuNameElapsed": "{prayer} {time}",
   "@macPrayerMenuNameElapsed": {"placeholders": {"prayer": {"type": "String"}, "time": {"type": "String"}}},
   "prayerIqamahTitle": "Iqamah time",

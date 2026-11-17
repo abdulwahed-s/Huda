@@ -3584,6 +3584,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get readingModeTajweed => 'Mushaf Al-Tajweed layout';
 
   @override
+  String get readingModeIndopak => 'IndoPak Mushaf';
+
+  @override
   String get mushafFlipHorizontal => 'Horizontal Flip';
 
   @override
@@ -3648,6 +3651,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'Loading…';
+
+  @override
+  String get mushafPackTitle => 'Mushaf pages';
+
+  @override
+  String get mushafPackBody =>
+      'The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Download ($size)';
+  }
 
   @override
   String get nextSurah => 'Next Surah';
@@ -6297,10 +6312,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Up to 30 seconds with the notification; works even when Huda is closed';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'Huda plays the whole adhan; keep Huda running in the menu bar';
-
-  @override
   String get prayerCountdownTitle => 'Prayer countdown';
 
   @override
@@ -6384,19 +6395,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prayerAlertFlipUnavailable => 'This phone can\'t detect a flip.';
 
   @override
-  String get readingModeIndopak => 'IndoPak Mushaf';
+  String get prayerAlertStyleMacFullHint =>
+      'Huda plays the whole adhan; it keeps running in the menu bar and starts at login';
 
   @override
-  String get mushafPackTitle => 'Mushaf pages';
-
-  @override
-  String get mushafPackBody =>
-      'The Mushaf now uses page images for smoother page turning. Download them once to keep reading in this layout.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'Download ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'A calm full-screen moment for prayer; Huda keeps running in the menu bar and starts at login';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

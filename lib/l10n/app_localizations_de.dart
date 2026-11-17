@@ -3640,6 +3640,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get readingModeTajweed => 'Mushaf Al-Tajweed-Layout';
 
   @override
+  String get readingModeIndopak => 'IndoPak-Mushaf';
+
+  @override
   String get mushafFlipHorizontal => 'Horizontales Blättern';
 
   @override
@@ -3704,6 +3707,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'Wird geladen…';
+
+  @override
+  String get mushafPackTitle => 'Mushaf-Seiten';
+
+  @override
+  String get mushafPackBody =>
+      'Der Mushaf verwendet jetzt Seitenbilder für flüssigeres Umblättern. Lade sie einmal herunter, um in dieser Ansicht weiterzulesen.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Herunterladen ($size)';
+  }
 
   @override
   String get nextSurah => 'Nächste Sure';
@@ -6388,10 +6403,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Bis zu 30 Sekunden mit der Mitteilung; funktioniert auch, wenn Huda geschlossen ist';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'Huda spielt den ganzen Adhan; lass Huda in der Menüleiste laufen';
-
-  @override
   String get prayerCountdownTitle => 'Gebets-Countdown';
 
   @override
@@ -6480,19 +6491,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dieses Handy kann kein Umdrehen erkennen.';
 
   @override
-  String get readingModeIndopak => 'IndoPak-Mushaf';
+  String get prayerAlertStyleMacFullHint =>
+      'Huda spielt den ganzen Adhan; es läuft in der Menüleiste weiter und startet beim Anmelden';
 
   @override
-  String get mushafPackTitle => 'Mushaf-Seiten';
-
-  @override
-  String get mushafPackBody =>
-      'Der Mushaf verwendet jetzt Seitenbilder für flüssigeres Umblättern. Lade sie einmal herunter, um in dieser Ansicht weiterzulesen.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'Herunterladen ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'Ein ruhiger Vollbildmoment fürs Gebet; Huda läuft in der Menüleiste weiter und startet beim Anmelden';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

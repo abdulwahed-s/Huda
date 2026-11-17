@@ -3655,6 +3655,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get readingModeTajweed => 'Disposition Mushaf Al-Tajweed';
 
   @override
+  String get readingModeIndopak => 'Mushaf IndoPak';
+
+  @override
   String get mushafFlipHorizontal => 'Défilement horizontal';
 
   @override
@@ -3720,6 +3723,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'Chargement…';
+
+  @override
+  String get mushafPackTitle => 'Pages du Mushaf';
+
+  @override
+  String get mushafPackBody =>
+      'Le Mushaf utilise désormais des images de pages pour tourner les pages plus fluidement. Téléchargez-les une fois pour continuer à lire dans cette mise en page.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Télécharger ($size)';
+  }
 
   @override
   String get nextSurah => 'Sourate suivante';
@@ -6412,10 +6427,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Jusqu\'à 30 secondes avec la notification ; fonctionne même Huda fermé';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'Huda joue tout l\'adhan ; gardez Huda actif dans la barre des menus';
-
-  @override
   String get prayerCountdownTitle => 'Compte à rebours des prières';
 
   @override
@@ -6503,19 +6514,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ce téléphone ne peut pas détecter un retournement.';
 
   @override
-  String get readingModeIndopak => 'Mushaf IndoPak';
+  String get prayerAlertStyleMacFullHint =>
+      'Huda joue tout l\'adhan ; il reste actif dans la barre des menus et se lance à l\'ouverture de session';
 
   @override
-  String get mushafPackTitle => 'Pages du Mushaf';
-
-  @override
-  String get mushafPackBody =>
-      'Le Mushaf utilise désormais des images de pages pour tourner les pages plus fluidement. Téléchargez-les une fois pour continuer à lire dans cette mise en page.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'Télécharger ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'Un moment calme en plein écran pour prier ; Huda reste actif dans la barre des menus et se lance à l\'ouverture de session';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

@@ -3647,6 +3647,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get readingModeTajweed => 'Diseño Mushaf Al-Tajweed';
 
   @override
+  String get readingModeIndopak => 'Mushaf IndoPak';
+
+  @override
   String get mushafFlipHorizontal => 'Giro horizontal';
 
   @override
@@ -3712,6 +3715,18 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get fontLoadingLabel => 'Cargando…';
+
+  @override
+  String get mushafPackTitle => 'Páginas del Mushaf';
+
+  @override
+  String get mushafPackBody =>
+      'El Mushaf ahora usa imágenes de página para pasar las páginas con más fluidez. Descárgalas una vez para seguir leyendo en este formato.';
+
+  @override
+  String mushafPackDownload(String size) {
+    return 'Descargar ($size)';
+  }
 
   @override
   String get nextSurah => 'Siguiente Sura';
@@ -6394,10 +6409,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Hasta 30 segundos con la notificación; funciona aunque Huda esté cerrado';
 
   @override
-  String get prayerAlertStyleLiveAdhanHint =>
-      'Huda reproduce el adhan completo; mantén Huda abierto en la barra de menús';
-
-  @override
   String get prayerCountdownTitle => 'Cuenta regresiva de oración';
 
   @override
@@ -6484,19 +6495,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este teléfono no puede detectar un giro.';
 
   @override
-  String get readingModeIndopak => 'Mushaf IndoPak';
+  String get prayerAlertStyleMacFullHint =>
+      'Huda reproduce el adhan completo; sigue abierto en la barra de menús y se inicia al iniciar sesión';
 
   @override
-  String get mushafPackTitle => 'Páginas del Mushaf';
-
-  @override
-  String get mushafPackBody =>
-      'El Mushaf ahora usa imágenes de página para pasar las páginas con más fluidez. Descárgalas una vez para seguir leyendo en este formato.';
-
-  @override
-  String mushafPackDownload(String size) {
-    return 'Descargar ($size)';
-  }
+  String get prayerAlertStyleMacFocusHint =>
+      'Un momento tranquilo a pantalla completa para rezar; Huda sigue abierto en la barra de menús y se inicia al iniciar sesión';
 
   @override
   String macPrayerMenuNameElapsed(String prayer, String time) {

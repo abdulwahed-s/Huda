@@ -37,7 +37,8 @@ extension PrayerAlertLabels on AppLocalizations {
     'prayerAlertStyleNotificationAdhan' => prayerAlertStyleNotificationAdhan,
     'prayerAlertStyleNotificationAdhanHint' =>
       prayerAlertStyleNotificationAdhanHint,
-    'prayerAlertStyleLiveAdhanHint' => prayerAlertStyleLiveAdhanHint,
+    'prayerAlertStyleMacFullHint' => prayerAlertStyleMacFullHint,
+    'prayerAlertStyleMacFocusHint' => prayerAlertStyleMacFocusHint,
     _ => null,
   };
 
