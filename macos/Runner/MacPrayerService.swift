@@ -590,10 +590,12 @@ final class MacPrayerService {
         try previewConfig.experience.validate()
         guard !locked, !suspended else { throw MacPrayerError.invalid("Unlock the Mac to preview a prayer reminder.") }
         clearPreview(); previewSession = session
+        // The prayer being tested; older callers didn't send one.
+        let prayer = (args["prayer"] as? String).flatMap { ["fajr", "dhuhr", "asr", "maghrib", "isha"].contains($0) ? $0 : nil } ?? "fajr"
         if call.method == "previewNotification" {
           let content = UNMutableNotificationContent()
-          content.title = configuration.strings["fajrTitle"] ?? "Time for Fajr"
-          content.body = configuration.strings["fajrBody"] ?? "It is time to pray."
+          content.title = configuration.strings["\(prayer)Title"] ?? "Time for \(prayer.capitalized)"
+          content.body = configuration.strings["\(prayer)Body"] ?? "It is time to pray."
           if previewConfig.experience.mode == .adhan && previewConfig.experience.delivery == .short {
             content.sound = UNNotificationSound(named: UNNotificationSoundName(try audio.notificationSound(previewConfig.experience)))
           }
@@ -605,7 +607,7 @@ final class MacPrayerService {
           if previewConfig.experience.playerAudio && !previewConfig.experience.quiet { audio.play(previewConfig.experience, session: session) }
           startPreviewExpiry(session); return
         } else if call.method == "previewFocus" {
-          panels.show(session: session, prayer: "fajr", time: Date(), zone: configuration.schedule?.location.zone ?? .current,
+          panels.show(session: session, prayer: prayer, time: Date(), zone: configuration.schedule?.location.zone ?? .current,
             configuration: previewConfig, preview: true)
           if previewConfig.experience.focusAudio { audio.play(previewConfig.experience, session: session) }
         } else { audio.play(previewConfig.experience, session: session) }

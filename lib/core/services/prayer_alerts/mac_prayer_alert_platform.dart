@@ -310,6 +310,7 @@ class MacPrayerAlertPlatform extends PrayerAlertPlatform<MacPrayerExperience> {
         'previewNotification',
         sessionId: session,
         settings: effective.copyWith(configured: true),
+        prayer: prayer,
       );
       return result.audioError != null && effective.needsAudio
           ? PrayerTestOutcome.audioMissing

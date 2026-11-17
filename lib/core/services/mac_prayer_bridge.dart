@@ -174,9 +174,11 @@ class MacPrayerBridge {
     String command, {
     String? sessionId,
     MacPrayerExperience? settings,
+    String? prayer,
   }) => _call(command, {
     if (sessionId != null) 'sessionId': sessionId,
     if (settings != null) 'experience': settings.toMap(),
+    if (prayer != null) 'prayer': prayer,
   });
   static Future<void> openLoginSettings() =>
       channel.invokeMethod<void>('openLoginSettings', {'schemaVersion': 1});
