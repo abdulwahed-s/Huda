@@ -152,7 +152,7 @@
 		18FC3D87D21F3C831CEC3AA0 /* MacPrayerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacPrayerService.swift; sourceTree = "<group>"; };
 		1C555BB3C09857856CC5AD41 /* GeneratedAutoData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeneratedAutoData.swift; path = PrayerTimePlus/Data/GeneratedAutoData.swift; sourceTree = "<group>"; };
 		27DD1033BE7F47027CF4D7CD /* Adhan */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = Adhan; sourceTree = "<group>"; };
-		29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacPrayerDeviceVerification.swift; path = ../../xv/macos/Runner/MacPrayerDeviceVerification.swift; sourceTree = "<group>"; };
+		29129092C5343E3B4FE2784E /* MacPrayerDeviceVerification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacPrayerDeviceVerification.swift; path = MacPrayerDeviceVerification.swift; sourceTree = "<group>"; };
 		2BA64EC945C1F13EB59EECA4 /* Amiri-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "Amiri-Regular.ttf"; sourceTree = "<group>"; };
 		2F59B639F3FDF119435BC395 /* HudaWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HudaWidget.swift; sourceTree = "<group>"; };
 		30F9B57F15BC9C1D1682A2BE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
