@@ -88,6 +88,18 @@ class PrayerCountdownModelTest {
     }
 
     @Test
+    fun customMaghribAndOffWindowsControlRefreshWithoutSunriseTransitions() {
+        val custom = PrayerCountdownModel.build(at(18, 6), timeline, true, mapOf("maghrib" to 7))!!
+        assertTrue(custom.elapsed)
+        assertEquals(at(18, 7), custom.nextRefresh)
+        val off = PrayerCountdownModel.build(at(18, 0), timeline, true, mapOf("maghrib" to 0))!!
+        assertFalse(off.elapsed)
+        assertEquals(PrayerKind.ISHA, off.focus.kind)
+        assertFalse(build(at(18, 5)).elapsed)
+        assertTrue(build(at(5, 24)).elapsed)
+    }
+
+    @Test
     fun nothingToShowWithoutPrayerTimes() {
         assertNull(PrayerCountdownModel.build(at(13, 0), emptyList(), true))
     }

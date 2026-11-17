@@ -16,7 +16,7 @@ import java.util.Date
 /**
  * Keeps the ongoing countdown in step with the user's settings without a
  * running service: Android's Chronometer ticks it, and an exact alarm reposts
- * it only when its state changes (a prayer starts, the 25 minutes after the
+ * it only when its state changes (a prayer starts, the Iqamah window after the
  * adhan end, or the day changes).
  */
 internal object PrayerCountdownController {

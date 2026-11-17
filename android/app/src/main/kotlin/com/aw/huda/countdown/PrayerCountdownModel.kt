@@ -1,5 +1,6 @@
 package com.aw.huda.countdown
 
+import com.aw.huda.widget.prayer.PrayerIqamahWindows
 import com.aw.huda.widget.prayer.PrayerKind
 import com.aw.huda.widget.prayer.PrayerWidgetCalculator
 import com.aw.huda.widget.prayer.PrayerWidgetCalculator.PrayerEvent
@@ -21,7 +22,7 @@ internal data class PrayerCountdownRow(
  * seconds, so the notification only changes at [nextRefresh].
  */
 internal data class PrayerCountdownContent(
-    /** The adhan of [focus] was less than 25 minutes ago; the timer counts up. */
+    /** The adhan of [focus] was within its Iqamah window; the timer counts up. */
     val elapsed: Boolean,
     /** The prayer the title is about: the one just called, or the next one. */
     val focus: PrayerEvent,
@@ -55,6 +56,7 @@ internal object PrayerCountdownModel {
             now = now,
             timeline = PrayerWidgetCalculator.eventTimeline(snapshot, now),
             showSunrise = settings.showSunrise,
+            iqamahMinutes = snapshot.iqamahMinutes,
         )
     }
 
@@ -62,8 +64,9 @@ internal object PrayerCountdownModel {
         now: Date,
         timeline: List<PrayerEvent>,
         showSunrise: Boolean,
+        iqamahMinutes: Map<String, Int> = PrayerIqamahWindows.defaults,
     ): PrayerCountdownContent? {
-        val moment = PrayerWidgetMomentResolver.resolve(now, timeline) ?: return null
+        val moment = PrayerWidgetMomentResolver.resolve(now, timeline, iqamahMinutes) ?: return null
         val next = timeline.firstOrNull { it.time.after(now) } ?: return null
         val previous = timeline.lastOrNull { !it.time.after(now) }
         val elapsed = moment is PrayerWidgetMoment.Elapsed
@@ -83,7 +86,7 @@ internal object PrayerCountdownModel {
             progressStart = start,
             progressEnd = moment.stateEnd,
             rows = rows,
-            nextRefresh = moment.stateEnd,
+            nextRefresh = minOf(moment.stateEnd, next.time),
         )
     }
 }
