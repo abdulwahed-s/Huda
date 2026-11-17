@@ -8,3 +8,9 @@ Terminal=false
 Type=Application
 Categories=Education;
 StartupNotify=true
+
+Actions=prayer-settings;
+
+[Desktop Action prayer-settings]
+Name=Prayer Settings
+Exec=huda --prayer-settings
