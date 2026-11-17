@@ -100,7 +100,7 @@ internal object PrayerWidgetUpdater {
         val events = PrayerWidgetCalculator.eventTimeline(snapshot, Date())
         val results = instances.home.map { update(context, manager, it, snapshot) }.toMutableList()
         var nativeNow = Date()
-        var target = SamsungPrayerWidgetUpdater.futurePrayer(events, nativeNow)
+        var target = SamsungPrayerWidgetUpdater.currentOrNextPrayer(events, nativeNow, snapshot.iqamahMinutes)
         fun renderNative(): List<SingleWidgetUpdateResult> =
             instances.compact.map { SamsungPrayerWidgetUpdater.update(context, manager, it,
                 false, snapshot, target, nativeNow) } +
@@ -108,9 +108,9 @@ internal object PrayerWidgetUpdater {
                 true, snapshot, target, nativeNow) }
         var nativeResults = renderNative()
         // A batch straddling a prayer boundary must not leave an expired target behind.
-        if (target != null && target!!.time.time <= System.currentTimeMillis()) {
+        if (target != null && (target!!.elapsedUntil ?: target!!.time).time <= System.currentTimeMillis()) {
             nativeNow = Date()
-            target = SamsungPrayerWidgetUpdater.futurePrayer(events, nativeNow)
+            target = SamsungPrayerWidgetUpdater.currentOrNextPrayer(events, nativeNow, snapshot.iqamahMinutes)
             nativeResults = renderNative()
         }
         results += nativeResults

@@ -10,15 +10,15 @@ class SamsungPrayerPolicyTest {
     private val snapshot = lockPrayerSnapshot()
     private fun now(clock: String) = Date.from(Instant.parse("2026-10-13T${clock}Z"))
 
-    @Test fun exactBoundarySelectsFutureSalahWithoutTheHomeGracePhase() {
+    @Test fun exactBoundaryUsesTheSameIqamahWindowAsHomeWidgets() {
         val time = now("05:00:00")
         val timeline = PrayerWidgetCalculator.eventTimeline(snapshot, time)
-        val next = requireNotNull(SamsungPrayerWidgetUpdater.futurePrayer(timeline, time))
-        assertEquals(PrayerKind.DHUHR, next.kind)
-        assertEquals(now("12:00:00"), next.time)
-        assertEquals(next.time.time, PrayerWidgetScheduler.computeTargetTimeMillis(
+        val next = requireNotNull(SamsungPrayerWidgetUpdater.currentOrNextPrayer(timeline, time))
+        assertEquals(PrayerKind.FAJR, next.kind)
+        assertEquals(time, next.time)
+        assertEquals(time.time + PrayerIqamahWindows.millis(PrayerKind.FAJR), PrayerWidgetScheduler.computeTargetTimeMillis(
             snapshot, time, PrayerWidgetPresence(compact = 1), timeline))
-        assertEquals(time.time + PRAYER_GRACE_MILLIS, PrayerWidgetScheduler.computeTargetTimeMillis(
+        assertEquals(time.time + PrayerIqamahWindows.millis(PrayerKind.FAJR), PrayerWidgetScheduler.computeTargetTimeMillis(
             snapshot, time, PrayerWidgetPresence(home = 1), timeline))
     }
 
@@ -26,12 +26,12 @@ class SamsungPrayerPolicyTest {
         val time = now("05:59:59")
         val timeline = PrayerWidgetCalculator.eventTimeline(snapshot, time)
         assertFalse(timeline.any { it.kind == PrayerKind.SUNRISE })
-        assertEquals(PrayerKind.DHUHR, SamsungPrayerWidgetUpdater.futurePrayer(timeline, time)?.kind)
+        assertEquals(PrayerKind.DHUHR, SamsungPrayerWidgetUpdater.currentOrNextPrayer(timeline, time)?.kind)
     }
 
     @Test fun afterIshaUsesTomorrowFajr() {
-        val time = now("19:00:00")
-        val next = requireNotNull(SamsungPrayerWidgetUpdater.futurePrayer(
+        val time = now("19:20:00")
+        val next = requireNotNull(SamsungPrayerWidgetUpdater.currentOrNextPrayer(
             PrayerWidgetCalculator.eventTimeline(snapshot, time), time))
         assertEquals(PrayerKind.FAJR, next.kind)
         assertEquals(Date.from(Instant.parse("2026-10-14T05:00:00Z")), next.time)
@@ -40,7 +40,7 @@ class SamsungPrayerPolicyTest {
     @Test fun mixedSurfacesChooseEarliestRequiredTransition() {
         val time = now("05:00:00")
         val timeline = PrayerWidgetCalculator.eventTimeline(snapshot, time)
-        assertEquals(time.time + PRAYER_GRACE_MILLIS, PrayerWidgetScheduler.computeTargetTimeMillis(
+        assertEquals(time.time + PrayerIqamahWindows.millis(PrayerKind.FAJR), PrayerWidgetScheduler.computeTargetTimeMillis(
             snapshot, time, PrayerWidgetPresence(home = 1, expanded = 2), timeline))
         val close = snapshot.copy(precomputedDays = snapshot.precomputedDays.mapValues { (date, times) ->
             if (date == "2026-10-13") times + ("dhuhr" to now("05:01:00").time) else times
@@ -52,7 +52,7 @@ class SamsungPrayerPolicyTest {
     @Test fun removingOneProviderKeepsTheOtherProvidersTransitions() {
         val time = now("05:00:00")
         for (presence in listOf(PrayerWidgetPresence(compact = 1), PrayerWidgetPresence(expanded = 1))) {
-            assertEquals(now("12:00:00").time, PrayerWidgetScheduler.computeTargetTimeMillis(snapshot, time, presence))
+            assertEquals(time.time + PrayerIqamahWindows.millis(PrayerKind.FAJR), PrayerWidgetScheduler.computeTargetTimeMillis(snapshot, time, presence))
         }
         assertNull(PrayerWidgetScheduler.computeTargetTimeMillis(snapshot, time, PrayerWidgetPresence()))
         assertNull(PrayerWidgetScheduler.computeTargetTimeMillis(

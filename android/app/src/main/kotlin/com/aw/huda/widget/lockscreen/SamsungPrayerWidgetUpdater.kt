@@ -10,6 +10,9 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import com.aw.huda.R
+import com.aw.huda.widget.prayer.PrayerIqamahWindows
+import com.aw.huda.widget.prayer.PrayerWidgetMoment
+import com.aw.huda.widget.prayer.PrayerWidgetMomentResolver
 import com.aw.huda.widget.prayer.NextPrayer
 import com.aw.huda.widget.prayer.PrayerTimeFormatter
 import com.aw.huda.widget.prayer.PrayerWidgetCalculator
@@ -24,8 +27,12 @@ internal object SamsungPrayerWidgetUpdater {
     private val titleFont by lazy { Typeface.create("sans-serif-medium", Typeface.NORMAL) }
     private val clockFont by lazy { Typeface.create("sans-serif-condensed", Typeface.NORMAL) }
 
-    fun futurePrayer(events: List<PrayerWidgetCalculator.PrayerEvent>, now: Date): NextPrayer? =
-        events.firstOrNull { it.time.after(now) }?.let { NextPrayer(it.kind, it.time, it.day) }
+    fun currentOrNextPrayer(events: List<PrayerWidgetCalculator.PrayerEvent>, now: Date,
+        iqamahMinutes: Map<String, Int> = PrayerIqamahWindows.defaults): NextPrayer? =
+        PrayerWidgetMomentResolver.resolve(now, events, iqamahMinutes)?.let {
+            NextPrayer(it.event.kind, it.event.time, it.event.day,
+                if (it is PrayerWidgetMoment.Elapsed) it.stateEnd else null)
+        }
 
     fun update(
         context: Context,
@@ -61,8 +68,10 @@ internal object SamsungPrayerWidgetUpdater {
         val rtl = PrayerWidgetLocalization.isRTL(language)
         SamsungLockWidgetLayouts.bindDirection(views, rtl)
         SamsungLockWidgetLayouts.bindTap(context, views, "huda://prayer_times")
-        val remaining = target?.time?.time?.minus(maxOf(now.time, System.currentTimeMillis())) ?: 0L
-        if (!snapshot.hasCoordinates || target == null || remaining <= 0L) {
+        val currentTime = maxOf(now.time, System.currentTimeMillis())
+        val elapsed = target?.elapsedUntil?.time?.let { currentTime < it } == true
+        val remaining = target?.time?.time?.let { if (elapsed) currentTime - it else it - currentTime } ?: 0L
+        if (!snapshot.hasCoordinates || target == null || remaining < 0L || (!elapsed && remaining == 0L)) {
             val message = SamsungLockWidgetLayouts.text(context,
                 if (!snapshot.hasCoordinates) R.string.samsung_lock_setup else R.string.samsung_lock_open_prayer,
                 language)
@@ -76,9 +85,12 @@ internal object SamsungPrayerWidgetUpdater {
         val width = (viewport.widthDp - if (expanded) 12f else 8f).coerceAtLeast(1f) * density
         val height = (viewport.heightDp - 8f).coerceAtLeast(1f) * density
         val scale = snapshot.contentSize.coerceIn(60, 140) / 100f
-        val rounded = PrayerTimeFormatter.formatHHMMRoundedUp(now, target.time, snapshot.useArabicNumeralsForWidget())
+        val rounded = if (elapsed) PrayerTimeFormatter.formatSignedCounter(target.time, Date(currentTime),
+            true, snapshot.useArabicNumeralsForWidget())
+        else PrayerTimeFormatter.formatHHMMRoundedUp(now, target.time, snapshot.useArabicNumeralsForWidget())
+        val labelKey = if (elapsed) "current" else "next_prayer"
         fun fallback() = staticState(context, views, expanded, viewport, "$name\n$rounded",
-            "${PrayerWidgetLocalization.string("next_prayer", language)}: $name • $clock • $rounded", name)
+            "${PrayerWidgetLocalization.string(labelKey, language)}: $name • $clock • $rounded", name)
         val clockSize = if (expanded) LockWidgetTextMetrics.fitLine(context, clock,
             width * 0.55f, 10f * scale, 8.5f, clockFont) ?: return fallback() else 0f
         val clockWidth = if (expanded) LockWidgetTextMetrics.paint(context, clockSize, clockFont)
@@ -95,7 +107,8 @@ internal object SamsungPrayerWidgetUpdater {
             views.setTextViewTextSize(R.id.samsung_prayer_time, TypedValue.COMPLEX_UNIT_SP, clockSize)
         }
         val hours = (remaining + 999L) / 3_600_000L
-        val sample = if (hours > 0) "${"8".repeat(hours.toString().length)}:88:88" else "88:88"
+        val sample = (if (elapsed) "+" else "") +
+            (if (hours > 0) "${"8".repeat(hours.toString().length)}:88:88" else "88:88")
         val arabicSample = sample.map { if (it in '0'..'9') ('٠'.code + it.digitToInt()).toChar() else it }.joinToString("")
         val latinSize = LockWidgetTextMetrics.fitLine(context, sample, width,
             (if (expanded) 21f else 17f) * scale, 11f, counterFont)
@@ -117,17 +130,17 @@ internal object SamsungPrayerWidgetUpdater {
             (if (expanded) 1 else 5) * density <= height
         if (live) {
             views.setTextViewTextSize(R.id.samsung_prayer_countdown, TypedValue.COMPLEX_UNIT_SP, counterSize!!)
-            views.setChronometerCountDown(R.id.samsung_prayer_countdown, true)
+            views.setChronometerCountDown(R.id.samsung_prayer_countdown, !elapsed)
             // The duration is mapped on each update; this base is never persisted.
             views.setChronometer(R.id.samsung_prayer_countdown,
-                SystemClock.elapsedRealtime() + (target.time.time - System.currentTimeMillis()), "%s", true)
+                SystemClock.elapsedRealtime() + (target.time.time - System.currentTimeMillis()), if (elapsed) "+%s" else "%s", true)
             views.setViewVisibility(R.id.samsung_prayer_countdown, View.VISIBLE)
             views.setViewVisibility(R.id.samsung_prayer_static_counter, View.GONE)
         } else {
             return fallback()
         }
         views.setContentDescription(R.id.samsung_prayer_name,
-            "${PrayerWidgetLocalization.string("next_prayer", language)}: $name")
+            "${PrayerWidgetLocalization.string(labelKey, language)}: $name")
         return views to live
     }
 

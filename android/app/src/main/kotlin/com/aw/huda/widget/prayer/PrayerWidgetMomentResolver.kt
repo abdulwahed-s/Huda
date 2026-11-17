@@ -3,8 +3,6 @@ package com.aw.huda.widget.prayer
 import java.util.Date
 import com.google.gson.JsonElement
 
-internal const val PRAYER_GRACE_MILLIS = 25L * 60L * 1_000L
-
 internal object PrayerIqamahWindows {
     val defaults = mapOf("fajr" to 25, "dhuhr" to 20, "asr" to 20, "maghrib" to 5, "isha" to 20)
 
