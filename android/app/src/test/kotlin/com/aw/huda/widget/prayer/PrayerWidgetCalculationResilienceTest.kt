@@ -132,14 +132,14 @@ class PrayerWidgetCalculationResilienceTest {
             ),
         )
         assertEquals(
-            fajr.time + PRAYER_GRACE_MILLIS,
+            fajr.time + PrayerIqamahWindows.millis(PrayerKind.FAJR),
             PrayerWidgetScheduler.computeTargetTimeMillis(snapshot, fajr),
         )
         assertEquals(
             dhuhr.time,
             PrayerWidgetScheduler.computeTargetTimeMillis(
                 snapshot,
-                Date(fajr.time + PRAYER_GRACE_MILLIS),
+                Date(fajr.time + PrayerIqamahWindows.millis(PrayerKind.FAJR)),
             ),
         )
     }

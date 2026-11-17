@@ -47,6 +47,7 @@ internal object PrayerWidgetCanvasRenderer {
         val rtl: Boolean,
         val counterMode: PrayerWidgetCounterMode,
         val anchorEpochMillis: Long,
+        val stateEndEpochMillis: Long,
     )
 
     data class Rendered(
@@ -1891,6 +1892,7 @@ internal object PrayerWidgetCanvasRenderer {
                     rtl = state.rtl,
                     counterMode = counter.mode,
                     anchorEpochMillis = counter.anchorEpochMillis,
+                    stateEndEpochMillis = state.stateTransitionAt!!.time,
                 )
             }
         }

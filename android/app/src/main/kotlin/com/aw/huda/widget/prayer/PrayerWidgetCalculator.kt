@@ -204,6 +204,7 @@ internal data class NextPrayer(
     val kind: PrayerKind,
     val time: Date,
     val day: PrayerWidgetCalculator.DayTimes,
+    val elapsedUntil: Date? = null,
 )
 
 internal data class PreviousPrayer(val kind: PrayerKind, val time: Date)

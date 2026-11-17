@@ -101,7 +101,7 @@ internal object PrayerWidgetScheduler {
         if (presence.count == 0) return null
         val timeline = events ?: PrayerWidgetCalculator.eventTimeline(snapshot, now)
         val homeTransition = if (presence.hasHome)
-            PrayerWidgetMomentResolver.resolve(now, timeline)?.stateEnd?.time else null
+            PrayerWidgetMomentResolver.resolve(now, timeline, snapshot.iqamahMinutes)?.stateEnd?.time else null
         val lockTransition = if (presence.hasLock)
             timeline.firstOrNull { it.time.after(now) }?.time?.time else null
         return listOfNotNull(homeTransition, lockTransition).filter { it > now.time }.minOrNull()

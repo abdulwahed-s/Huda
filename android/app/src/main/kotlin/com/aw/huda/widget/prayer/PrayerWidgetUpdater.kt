@@ -270,7 +270,8 @@ internal object PrayerWidgetUpdater {
 
                 else -> buildEmpty(context, snapshot)
             }
-        val next = NextPrayer(moment.event.kind, moment.event.time, moment.event.day)
+        val next = NextPrayer(moment.event.kind, moment.event.time, moment.event.day,
+            if (moment is PrayerWidgetMoment.Elapsed) moment.stateEnd else null)
         val theme = PrayerWidgetTheme.resolve(context, snapshot)
 
         return when (family) {
@@ -1583,6 +1584,7 @@ internal object PrayerWidgetUpdater {
                     rtl = state.rtl,
                     counterMode = it.mode,
                     anchorEpochMillis = it.anchorEpochMillis,
+                    stateEndEpochMillis = state.stateTransitionAt!!.time,
                 )
             }
             buildBitmapViews(
@@ -1647,7 +1649,7 @@ internal object PrayerWidgetUpdater {
         }
         if (durationMillis < 0L ||
             overlay.counterMode == PrayerWidgetCounterMode.ELAPSED &&
-            durationMillis >= PRAYER_GRACE_MILLIS
+            nowMillis >= overlay.stateEndEpochMillis
         ) {
             return
         }
@@ -1723,7 +1725,7 @@ internal object PrayerWidgetUpdater {
     )
 
     private fun isElapsedMoment(next: NextPrayer, now: Date): Boolean =
-        now.time >= next.time.time && now.time < next.time.time + PRAYER_GRACE_MILLIS
+        now.time >= next.time.time && now.time < (next.elapsedUntil?.time ?: next.time.time)
 
     private fun primaryLabelKey(next: NextPrayer, now: Date): String =
         if (isElapsedMoment(next, now)) "current" else "next_prayer"

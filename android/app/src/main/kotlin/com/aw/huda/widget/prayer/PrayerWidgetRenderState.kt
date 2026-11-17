@@ -63,7 +63,7 @@ internal data class PrayerWidgetRenderState(
             }
 
             val events = PrayerWidgetCalculator.eventTimeline(snapshot, now)
-            val moment = PrayerWidgetMomentResolver.resolve(now, events)
+            val moment = PrayerWidgetMomentResolver.resolve(now, events, snapshot.iqamahMinutes)
                 ?: return empty(snapshot, now, locale, rtl, arabicNumerals, emptyLabel)
             val event = moment.event
             val timeZone = snapshot.displayTimeZone
