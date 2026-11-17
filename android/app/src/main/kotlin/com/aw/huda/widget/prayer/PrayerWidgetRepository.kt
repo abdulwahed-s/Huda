@@ -320,10 +320,12 @@ internal object PrayerWidgetRepository {
         val contentColor: String?,
         val highlightColor: String?,
         val contentSize: Int,
+        val iqamahMinutes: Map<String, Int> = PrayerIqamahWindows.defaults,
         val precomputedDays: Map<String, Map<String, Long>> = emptyMap(),
     ) {
         fun toSnapshot() = PrayerWidgetSnapshot(
             precomputedDays = precomputedDays,
+            iqamahMinutes = iqamahMinutes,
             latitude = latitude,
             longitude = longitude,
             countryCode = countryCode,
@@ -387,6 +389,7 @@ internal object PrayerWidgetRepository {
                 addProperty("custom_isha_angle", customIshaAngle)
             })
             add("offsets", gson.toJsonTree(offsets))
+            add("iqamahMinutes", gson.toJsonTree(iqamahMinutes))
             addProperty("timeFormat", timeFormat.storage)
             add("appearance", JsonObject().apply {
                 addProperty("themeName", themeName)
@@ -461,6 +464,7 @@ internal object PrayerWidgetRepository {
                 val appearance = root.requiredObject("appearance")
 
                 PrayerWidgetSettingsPayload(
+                    iqamahMinutes = PrayerIqamahWindows.parse(root.get("iqamahMinutes")),
                     precomputedDays = root.getAsJsonObject("precomputedDays")?.entrySet()?.associate { day ->
                         day.key to day.value.asJsonObject.entrySet().associate { prayer -> prayer.key to prayer.value.asLong }
                     } ?: emptyMap(),
@@ -532,6 +536,7 @@ internal object PrayerWidgetRepository {
                     customFajrAngle = snapshot.customFajrAngle,
                     customMaghribAngle = snapshot.customMaghribAngle,
                     customIshaAngle = snapshot.customIshaAngle,
+                    iqamahMinutes = snapshot.iqamahMinutes,
                     offsets = snapshot.offsets,
                     timeFormat = snapshot.timeFormat,
                     themeName = snapshot.themeName,
@@ -658,6 +663,7 @@ internal data class PrayerWidgetSnapshot(
     val configurationSignature: String = "legacy",
     val committedAt: String? = null,
     val precomputedDays: Map<String, Map<String, Long>> = emptyMap(),
+    val iqamahMinutes: Map<String, Int> = PrayerIqamahWindows.defaults,
     val source: PrayerWidgetSettingsSource = PrayerWidgetSettingsSource.LEGACY,
 ) {
     val hasCoordinates: Boolean get() = latitude != null && longitude != null

@@ -24,7 +24,7 @@ class PrayerWidgetMomentResolverTest {
     )
 
     @Test
-    fun everyPrayerUsesExactTwentyFiveMinuteGraceBoundary() {
+    fun everyPrayerUsesItsOwnIqamahBoundary() {
         val prayers = listOf(
             PrayerKind.FAJR to at(5, 0),
             PrayerKind.DHUHR to at(12, 10),
@@ -35,13 +35,14 @@ class PrayerWidgetMomentResolverTest {
         ).map { PrayerWidgetCalculator.PrayerEvent(it.first, it.second, day) }
 
         for (event in prayers.dropLast(1)) {
+            val window = PrayerIqamahWindows.millis(event.kind)
             val before = requireNotNull(
                 PrayerWidgetMomentResolver.resolve(Date(event.time.time - 1_000), prayers),
             )
             assertTrue(before is PrayerWidgetMoment.Countdown)
             assertEquals(event.time, before.event.time)
 
-            for (delta in listOf(0L, 1_000L, PRAYER_GRACE_MILLIS - 1_000L)) {
+            for (delta in listOf(0L, 1_000L, window - 1_000L)) {
                 val elapsed = requireNotNull(
                     PrayerWidgetMomentResolver.resolve(Date(event.time.time + delta), prayers),
                 )
@@ -51,7 +52,7 @@ class PrayerWidgetMomentResolverTest {
 
             val switched = requireNotNull(
                 PrayerWidgetMomentResolver.resolve(
-                    Date(event.time.time + PRAYER_GRACE_MILLIS),
+                    Date(event.time.time + window),
                     prayers,
                 ),
             )
@@ -81,16 +82,27 @@ class PrayerWidgetMomentResolverTest {
         val events = listOf(isha, fajr)
 
         assertTrue(
-            PrayerWidgetMomentResolver.resolve(at(20, 24, 59), events) is
+            PrayerWidgetMomentResolver.resolve(at(20, 19, 59), events) is
                     PrayerWidgetMoment.Elapsed
         )
         val afterGrace = requireNotNull(
-            PrayerWidgetMomentResolver.resolve(at(20, 25), events),
+            PrayerWidgetMomentResolver.resolve(at(20, 20), events),
         )
         assertTrue(afterGrace is PrayerWidgetMoment.Countdown)
         assertEquals(fajr.time, afterGrace.event.time)
         assertEquals(fajr.time, PrayerWidgetMomentResolver.resolve(at(23, 59), events)?.event?.time)
         assertEquals(fajr.time, PrayerWidgetMomentResolver.resolve(at(24, 0), events)?.event?.time)
+    }
+
+    @Test
+    fun offSkipsExactStartAndDoesNotFallBackToAnOlderOverlappingWindow() {
+        val first = PrayerWidgetCalculator.PrayerEvent(PrayerKind.FAJR, at(5, 0), day)
+        val second = PrayerWidgetCalculator.PrayerEvent(PrayerKind.DHUHR, at(5, 10), day)
+        val third = PrayerWidgetCalculator.PrayerEvent(PrayerKind.ASR, at(6, 0), day)
+        val minutes = PrayerIqamahWindows.defaults + ("dhuhr" to 0)
+        val moment = requireNotNull(PrayerWidgetMomentResolver.resolve(second.time, listOf(first, second, third), minutes))
+        assertTrue(moment is PrayerWidgetMoment.Countdown)
+        assertEquals(PrayerKind.ASR, moment.event.kind)
     }
 
     @Test
@@ -192,6 +204,15 @@ class PrayerWidgetMomentResolverTest {
         val payload = PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(json)
         assertNotNull(payload)
         val snapshot = requireNotNull(payload).toSnapshot()
+        assertEquals(PrayerIqamahWindows.defaults, snapshot.iqamahMinutes)
+        val custom = json.replace("\"version\":2", "\"iqamahMinutes\":{\"fajr\":80,\"dhuhr\":-1,\"maghrib\":0,\"isha\":true},\"version\":2")
+        val parsed = requireNotNull(PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(custom))
+        assertEquals(mapOf("fajr" to 60, "dhuhr" to 0, "asr" to 20, "maghrib" to 0, "isha" to 20), parsed.toSnapshot().iqamahMinutes)
+        assertEquals(parsed.iqamahMinutes, PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(parsed.encode())?.iqamahMinutes)
+        for (invalid in listOf("null", "false", "[]", "\"bad\"")) {
+            val invalidMap = json.replace("\"version\":2", "\"iqamahMinutes\":$invalid,\"version\":2")
+            assertEquals(PrayerIqamahWindows.defaults, PrayerWidgetRepository.PrayerWidgetSettingsPayload.decode(invalidMap)?.iqamahMinutes)
+        }
         assertEquals(42L, snapshot.revision)
         assertEquals(19.0760, snapshot.latitude!!, 0.0)
         assertEquals("Asia/Kolkata", snapshot.displayTimeZone.id)

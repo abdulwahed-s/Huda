@@ -34,7 +34,7 @@ class PrayerCountdownModelTest {
     }
 
     @Test
-    fun countsUpForTwentyFiveMinutesAfterTheAdhan() {
+    fun countsUpForThePrayersIqamahWindow() {
         val now = at(15, 40)
         val content = build(now)
 
@@ -42,11 +42,11 @@ class PrayerCountdownModelTest {
         assertEquals(PrayerKind.ASR, content.focus.kind)
         assertEquals(PrayerKind.MAGHRIB, content.next.kind)
         assertEquals(at(15, 30), content.progressStart)
-        assertEquals(at(15, 55), content.progressEnd)
-        assertEquals(at(15, 55), content.nextRefresh)
-        assertEquals(400, content.progress(now))
+        assertEquals(at(15, 50), content.progressEnd)
+        assertEquals(at(15, 50), content.nextRefresh)
+        assertEquals(500, content.progress(now))
 
-        val after = build(at(15, 55))
+        val after = build(at(15, 50))
         assertFalse(after.elapsed)
         assertEquals(PrayerKind.MAGHRIB, after.focus.kind)
     }
@@ -60,7 +60,7 @@ class PrayerCountdownModelTest {
         assertEquals(6, content.rows.size)
         assertEquals(listOf(PrayerKind.DHUHR), highlighted(content))
 
-        // During the 25 minutes after the adhan, the prayer that just started.
+        // During the Iqamah window after the adhan, the prayer that just started.
         assertEquals(listOf(PrayerKind.ASR), highlighted(build(at(15, 40))))
     }
 
