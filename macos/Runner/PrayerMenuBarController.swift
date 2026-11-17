@@ -142,7 +142,7 @@ private struct PrayerMenuBackground: NSViewRepresentable {
     view.blendingMode = .behindWindow
     view.state = .active
     view.wantsLayer = true
-    view.layer?.cornerRadius = 12
+    view.layer?.cornerRadius = PrayerMenuBarController.cornerRadius
     view.layer?.masksToBounds = true
     return view
   }
@@ -154,6 +154,8 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
   static let appGroupId = "group.hudaHomeApp"
   private static let preferencesKey = "prayer_menu_bar_preferences_v1"
   private static let presentationKey = "prayer_menu_bar_presentation_v1"
+  static let panelWidth: CGFloat = 320
+  static let cornerRadius: CGFloat = 14
 
   static func usesRightToLeftLayout(for localeCode: String) -> Bool {
     let language = Locale(identifier: localeCode).languageCode ?? localeCode
@@ -194,9 +196,28 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
     )
   }
 
+  /// Accent scaled toward black (< 1) or white (> 1), for the hero gradient.
+  func accentShade(_ factor: Double) -> Color {
+    func channel(_ shift: UInt32) -> Double {
+      let value = Double((primaryColorARGB >> shift) & 0xFF) / 255
+      return factor < 1 ? value * factor : value + (1 - value) * (factor - 1)
+    }
+    return Color(.sRGB, red: channel(16), green: channel(8), blue: channel(0), opacity: 1)
+  }
+
+  /// Readable text color on top of a solid accent fill.
+  var accentForeground: Color {
+    let red = Double((primaryColorARGB >> 16) & 0xFF) / 255
+    let green = Double((primaryColorARGB >> 8) & 0xFF) / 255
+    let blue = Double(primaryColorARGB & 0xFF) / 255
+    let luminance = 0.299 * red + 0.587 * green + 0.114 * blue
+    return luminance > 0.65 ? Color.black.opacity(0.85) : .white
+  }
+
   private let defaults = UserDefaults(suiteName: appGroupId) ?? .standard
   private var statusItem: NSStatusItem?
   private var panel: PrayerMenuPanel?
+  private var host: NSHostingController<AnyView>?
   private var previousActivationPolicy: NSApplication.ActivationPolicy?
   private var globalClickMonitor: Any?
   private var localEventMonitor: Any?
@@ -220,7 +241,7 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
     strings = presentation["strings"] as? [String: String] ?? [:]
     primaryColorARGB = Self.parsedPrimaryColor(presentation["primaryColor"]) ?? primaryColorARGB
     let menuPanel = PrayerMenuPanel(
-      contentRect: NSRect(x: 0, y: 0, width: 322, height: 180),
+      contentRect: NSRect(x: 0, y: 0, width: Self.panelWidth, height: 180),
       styleMask: [.borderless, .nonactivatingPanel],
       backing: .buffered,
       defer: false
@@ -237,9 +258,13 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
     menuPanel.backgroundColor = .clear
     menuPanel.hasShadow = true
     menuPanel.isReleasedWhenClosed = false
-    menuPanel.contentViewController = NSHostingController(
-      rootView: PrayerMenuPopover(controller: self).background(PrayerMenuBackground())
+    let host = NSHostingController(
+      rootView: AnyView(PrayerMenuPopover(controller: self).background(PrayerMenuBackground()))
     )
+    // Height is fitted manually so the panel stays anchored under the status item.
+    if #available(macOS 13.0, *) { host.sizingOptions = [] }
+    menuPanel.contentViewController = host
+    self.host = host
     panel = menuPanel
     reloadSnapshot()
     updateStatusItem()
@@ -310,12 +335,26 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
     }
     let raw = defaults.string(forKey: "prayer_widget_display_v1")
     snapshot = (NSApp.delegate as? AppDelegate)?.prayerService.menuSnapshot() ?? raw.flatMap(PrayerMenuSnapshot.parse)
-    let hasToday = snapshot?.today(at: Date()) != nil
-    panel?.setContentSize(NSSize(width: 322, height: hasToday ? 560 : 250))
-    if panel?.isVisible == true, let button = statusItem?.button {
+    tick()
+    fitPanelToContent()
+    // SwiftUI applies published changes on the next pass; refit once it has.
+    DispatchQueue.main.async { [weak self] in self?.fitPanelToContent() }
+  }
+
+  private func fitPanelToContent() {
+    guard let panel, let host else { return }
+    let fitted = host.sizeThatFits(
+      in: NSSize(width: Self.panelWidth, height: CGFloat.greatestFiniteMagnitude)
+    )
+    let size = NSSize(width: Self.panelWidth, height: ceil(fitted.height))
+    guard size.height.isFinite, size.height > 0 else { return }
+    if panel.frame.size != size {
+      panel.setContentSize(size)
+      panel.invalidateShadow()
+    }
+    if panel.isVisible, let button = statusItem?.button {
       positionPanel(below: button)
     }
-    tick()
   }
 
   private func tick() {
@@ -495,6 +534,13 @@ final class PrayerMenuBarController: NSObject, ObservableObject {
           self.closePanel()
           return nil
         }
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
+          switch event.charactersIgnoringModifiers {
+          case ",": self.requestSettings(); return nil
+          case "q": self.quit(); return nil
+          default: break
+          }
+        }
       } else if !self.isInsideMenuOrStatusItem(at: NSEvent.mouseLocation) {
         self.closePanel()
       }
@@ -541,121 +587,310 @@ private struct PrayerMenuPopover: View {
   private var accent: Color { controller.accentColor }
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
+    VStack(alignment: .leading, spacing: 0) {
       if let snapshot = controller.snapshot,
         let today = snapshot.today(at: controller.now),
-        let next = snapshot.nextPrayer(after: controller.now) {
-        header(date: controller.dateText(controller.now))
-        HStack(spacing: 10) {
-          VStack(alignment: .leading, spacing: 2) {
-            Text(controller.localized(next.name, fallback: next.name.capitalized))
-              .font(.title2).fontWeight(.bold)
-            Text(controller.countdownText(next.time.timeIntervalSince(controller.now)))
-              .font(.callout).foregroundColor(.secondary)
-          }
-          Spacer()
-          Text(controller.clockText(next.time))
-            .font(.title3).fontWeight(.semibold).foregroundColor(accent)
-        }
-        Divider()
-        ForEach(PrayerMenuSnapshot.displayPrayers, id: \.self) { prayer in
-          let time = today[prayer]
-          prayerRow(prayer, time: time, isNext: next.name == prayer && next.time == time)
-        }
-        Divider()
-        VStack(alignment: .leading, spacing: 3) {
-          Label(snapshot.location, systemImage: "location")
-          if !snapshot.method.isEmpty {
-            Label(snapshot.method, systemImage: "moon.circle")
-          }
-          if snapshot.provisional {
-            Label(controller.localized("verifyLocation", fallback: "Verify location in Huda"),
-                  systemImage: "exclamationmark.triangle")
-              .foregroundColor(.orange)
+        let next = snapshot.moment(at: controller.now) {
+        header(title: controller.dateText(controller.now), subtitle: snapshot.location)
+        alerts
+        hero(next: next, previous: snapshot.previousPrayer(before: controller.now))
+          .padding(.top, 12)
+        VStack(spacing: 2) {
+          ForEach(PrayerMenuSnapshot.displayPrayers, id: \.self) { prayer in
+            let time = today[prayer]
+            prayerRow(prayer, time: time, isNext: next.name == prayer && next.time == time)
           }
         }
-        .font(.caption).foregroundColor(.secondary)
+        .padding(.top, 10)
+        details(snapshot)
       } else {
-        header()
-        VStack(alignment: .leading, spacing: 8) {
-          Text(controller.localized("prayerTimes", fallback: "Prayer Times"))
-            .font(.headline)
-          Text(controller.localized("needsSetup", fallback: "Open Huda Prayer Times to set your location."))
-            .font(.caption).foregroundColor(.secondary)
+        header(title: controller.localized("prayerTimes", fallback: "Prayer Times"), subtitle: nil)
+        alerts
+        setupCard.padding(.top, 12)
+      }
+      separator
+      VStack(spacing: 1) {
+        Button(action: controller.requestSettings) {
+          menuLabel(controller.localized("prayerSettings", fallback: "Prayer Settings…"),
+                    icon: "slider.horizontal.3", shortcut: "⌘,")
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        Button(action: controller.quit) {
+          menuLabel(controller.localized("quitHuda", fallback: "Quit Huda"),
+                    icon: "power", shortcut: "⌘Q")
+        }
       }
-      Divider()
-      if controller.prayerAudioSession != nil {
-        Button(action: controller.stopAdhan) {
-          Label(controller.localized("stopAdhan", fallback: "Stop Adhan"), systemImage: "stop.circle")
-        }.buttonStyle(.plain)
-      }
-      if controller.prayerFocusSession != nil && controller.prayerFocusCanDismiss {
-        Button(controller.localized("dismissFocus", fallback: "Dismiss"), action: controller.dismissFocus).buttonStyle(.plain)
-      }
-      if controller.prayerServiceError != nil {
-        Text(controller.localized("serviceError", fallback: "Prayer reminders need attention. Open Prayer Settings."))
-          .font(.caption).foregroundColor(.orange).lineLimit(3)
-      }
-      Button(action: controller.requestSettings) {
-        Label(controller.localized("prayerSettings", fallback: "Prayer Settings…"),
-              systemImage: "slider.horizontal.3")
-          .frame(maxWidth: .infinity, alignment: .leading)
-      }.buttonStyle(.plain)
-      Button(action: controller.quit) {
-        Label(controller.localized("quitHuda", fallback: "Quit Huda"), systemImage: "power")
-          .frame(maxWidth: .infinity, alignment: .leading)
-      }.buttonStyle(.plain)
+      .buttonStyle(PrayerMenuRowButtonStyle())
     }
-    .padding(14)
-    .frame(width: 322, height: controller.snapshot?.today(at: controller.now) == nil ? 250 : 560,
-           alignment: .topLeading)
+    .padding(12)
+    .frame(width: PrayerMenuBarController.panelWidth, alignment: .topLeading)
+    .fixedSize(horizontal: false, vertical: true)
+    .overlay(
+      RoundedRectangle(cornerRadius: PrayerMenuBarController.cornerRadius)
+        .strokeBorder(Color.primary.opacity(0.08), lineWidth: 1)
+    )
     .environment(\.locale, Locale(identifier: controller.localeCode))
     .environment(\.layoutDirection,
                  PrayerMenuBarController.usesRightToLeftLayout(for: controller.localeCode)
                    ? .rightToLeft : .leftToRight)
   }
 
-  private func header(date: String? = nil) -> some View {
-    HStack {
-      if let date {
-        Text(date.uppercased())
-          .font(.caption2).fontWeight(.semibold).foregroundColor(.secondary)
-      }
-      Spacer(minLength: 20)
+  private var separator: some View {
+    Divider().padding(.vertical, 8).padding(.horizontal, 4)
+  }
+
+  private func header(title: String, subtitle: String?) -> some View {
+    HStack(spacing: 10) {
       Image("HudaMenuIcon").resizable().renderingMode(.template)
-        .frame(width: 30, height: 17).foregroundColor(accent)
+        .aspectRatio(contentMode: .fit)
+        .frame(width: 20, height: 12)
+        .foregroundColor(accent)
+        .frame(width: 34, height: 34)
+        .background(Circle().fill(accent.opacity(0.14)))
+      VStack(alignment: .leading, spacing: 1) {
+        Text(title)
+          .font(.system(size: 13, weight: .semibold))
+          .lineLimit(1)
+        if let subtitle {
+          HStack(spacing: 3) {
+            Image(systemName: "location.fill").font(.system(size: 9))
+            Text(subtitle).lineLimit(1).truncationMode(.tail)
+          }
+          .font(.system(size: 11))
+          .foregroundColor(.secondary)
+        }
+      }
+      Spacer(minLength: 0)
     }
+    .padding(.horizontal, 4)
+  }
+
+  @ViewBuilder private var alerts: some View {
+    let playing = controller.prayerAudioSession != nil
+    let focus = controller.prayerFocusSession != nil && controller.prayerFocusCanDismiss
+    if playing || focus {
+      HStack(spacing: 8) {
+        if playing {
+          Button(action: controller.stopAdhan) {
+            Label(controller.localized("stopAdhan", fallback: "Stop Adhan"), systemImage: "stop.fill")
+          }
+          .buttonStyle(PrayerMenuPillButtonStyle(fill: accent, foreground: controller.accentForeground))
+        }
+        if focus {
+          Button(action: controller.dismissFocus) {
+            Label(controller.localized("dismissFocus", fallback: "Dismiss"), systemImage: "xmark")
+          }
+          .buttonStyle(PrayerMenuPillButtonStyle(fill: Color.primary.opacity(0.1), foreground: .primary))
+        }
+      }
+      .padding(.top, 12)
+    }
+    if controller.prayerServiceError != nil {
+      Button(action: controller.requestSettings) {
+        HStack(alignment: .top, spacing: 8) {
+          Image(systemName: "exclamationmark.triangle.fill").foregroundColor(.orange)
+          Text(controller.localized("serviceError",
+                                    fallback: "Prayer reminders need attention. Open Prayer Settings."))
+            .font(.system(size: 11))
+            .foregroundColor(.primary)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(10)
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.orange.opacity(0.14)))
+        .contentShape(Rectangle())
+      }
+      .buttonStyle(.plain)
+      .padding(.top, 12)
+    }
+  }
+
+  private func hero(next: (name: String, time: Date, isElapsed: Bool, stateEnd: Date), previous: (name: String, time: Date)?) -> some View {
+    let foreground = controller.accentForeground
+    let remaining = next.time.timeIntervalSince(controller.now)
+    let progress: Double? = next.isElapsed
+      ? min(max(controller.now.timeIntervalSince(next.time) / next.stateEnd.timeIntervalSince(next.time), 0), 1)
+      : previous.map { previous in
+      let span = next.time.timeIntervalSince(previous.time)
+      guard span > 0 else { return 1 }
+      return min(max(controller.now.timeIntervalSince(previous.time) / span, 0), 1)
+    }
+    return VStack(alignment: .leading, spacing: 0) {
+      Text((next.isElapsed ? controller.localized("current", fallback: "Current")
+        : controller.localized("nextPrayer", fallback: "Next prayer")).uppercased())
+        .font(.system(size: 10, weight: .semibold))
+        .opacity(0.75)
+      HStack(alignment: .firstTextBaseline) {
+        Text(controller.localized(next.name, fallback: next.name.capitalized))
+          .font(.system(size: 26, weight: .bold, design: .rounded))
+          .lineLimit(1)
+          .minimumScaleFactor(0.7)
+        Spacer(minLength: 8)
+        Text(controller.clockText(next.time))
+          .font(.system(size: 17, weight: .semibold, design: .rounded).monospacedDigit())
+      }
+      .padding(.top, 2)
+      HStack(spacing: 4) {
+        Image(systemName: "hourglass").font(.system(size: 10, weight: .semibold))
+        Text(next.isElapsed ? controller.elapsedText(-remaining) : controller.countdownText(remaining))
+          .font(.system(size: 12, weight: .medium).monospacedDigit())
+      }
+      .opacity(0.85)
+      .padding(.top, 2)
+      if let progress {
+        ZStack(alignment: .leading) {
+          Capsule().fill(foreground.opacity(0.22))
+          GeometryReader { proxy in
+            Capsule().fill(foreground)
+              .frame(width: max(4, proxy.size.width * CGFloat(progress)))
+          }
+        }
+        .frame(height: 4)
+        .padding(.top, 12)
+      }
+    }
+    .foregroundColor(foreground)
+    .padding(14)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(
+      ZStack(alignment: .topTrailing) {
+        LinearGradient(
+          gradient: Gradient(colors: [controller.accentShade(1.12), controller.accentShade(0.78)]),
+          startPoint: .topLeading, endPoint: .bottomTrailing
+        )
+        Image(systemName: icon(for: next.name))
+          .font(.system(size: 64, weight: .light))
+          .foregroundColor(foreground.opacity(0.12))
+          .offset(x: 10, y: -8)
+      }
+    )
+    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+    .shadow(color: accent.opacity(0.28), radius: 8, x: 0, y: 4)
   }
 
   private func prayerRow(_ prayer: String, time: Date?, isNext: Bool) -> some View {
     let isPast = time.map { $0 < controller.now && !isNext } ?? false
+    let isSunrise = prayer == "sunrise"
     return HStack(spacing: 10) {
-      Image(systemName: icon(for: prayer)).frame(width: 18).foregroundColor(isNext ? accent : .secondary)
+      Image(systemName: icon(for: prayer))
+        .font(.system(size: 11, weight: .medium))
+        .foregroundColor(isNext ? controller.accentForeground : (isPast ? .secondary : accent))
+        .frame(width: 24, height: 24)
+        .background(Circle().fill(isNext ? accent : accent.opacity(isPast ? 0.06 : 0.12)))
       Text(controller.localized(prayer, fallback: prayer.capitalized))
-        .fontWeight(isNext ? .semibold : .regular)
-      Spacer()
-      if isNext, let time {
-        Text(controller.countdownText(time.timeIntervalSince(controller.now)))
-          .font(.caption).foregroundColor(accent)
-      }
-      Text(time.map(controller.clockText) ?? "--:--").fontWeight(isNext ? .semibold : .regular)
+        .font(.system(size: 13, weight: isNext ? .semibold : .regular))
+        .foregroundColor(isNext ? accent : (isSunrise ? .secondary : .primary))
+      Spacer(minLength: 8)
+      Text(time.map(controller.clockText) ?? "--:--")
+        .font(.system(size: 13, weight: isNext ? .semibold : .regular).monospacedDigit())
+        .foregroundColor(isNext ? accent : (isSunrise ? .secondary : .primary))
     }
-    .font(.callout)
-    .padding(.horizontal, 8).padding(.vertical, 5)
-    .background(RoundedRectangle(cornerRadius: 8).fill(isNext ? accent.opacity(0.13) : Color.clear))
+    .padding(.horizontal, 6).padding(.vertical, 4)
+    .background(
+      RoundedRectangle(cornerRadius: 9, style: .continuous)
+        .fill(isNext ? accent.opacity(0.12) : Color.clear)
+    )
     .opacity(isPast ? 0.5 : 1)
+  }
+
+  @ViewBuilder private func details(_ snapshot: PrayerMenuSnapshot) -> some View {
+    if !snapshot.method.isEmpty || snapshot.provisional {
+      VStack(alignment: .leading, spacing: 4) {
+        if !snapshot.method.isEmpty {
+          Label(snapshot.method, systemImage: "moon.circle")
+            .foregroundColor(.secondary)
+            .lineLimit(1)
+        }
+        if snapshot.provisional {
+          Button(action: controller.requestSettings) {
+            Label(controller.localized("verifyLocation", fallback: "Verify location in Huda"),
+                  systemImage: "exclamationmark.triangle.fill")
+              .foregroundColor(.orange)
+          }
+          .buttonStyle(.plain)
+        }
+      }
+      .font(.system(size: 11))
+      .padding(.horizontal, 6)
+      .padding(.top, 10)
+    }
+  }
+
+  private var setupCard: some View {
+    VStack(spacing: 10) {
+      Image(systemName: "location.circle.fill")
+        .font(.system(size: 34))
+        .foregroundColor(accent)
+      Text(controller.localized("needsSetup", fallback: "Open Huda Prayer Times to set your location."))
+        .font(.system(size: 12))
+        .foregroundColor(.secondary)
+        .multilineTextAlignment(.center)
+        .fixedSize(horizontal: false, vertical: true)
+      Button(action: controller.requestSettings) {
+        Text(controller.localized("prayerSettings", fallback: "Prayer Settings…"))
+      }
+      .buttonStyle(PrayerMenuPillButtonStyle(fill: accent, foreground: controller.accentForeground))
+    }
+    .padding(16)
+    .frame(maxWidth: .infinity)
+    .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(accent.opacity(0.08)))
+  }
+
+  private func menuLabel(_ title: String, icon: String, shortcut: String) -> some View {
+    HStack(spacing: 8) {
+      Image(systemName: icon).frame(width: 16).foregroundColor(.secondary)
+      Text(title)
+      Spacer(minLength: 8)
+      Text(shortcut).foregroundColor(.secondary)
+        .environment(\.layoutDirection, .leftToRight)
+    }
+    .font(.system(size: 13))
   }
 
   private func icon(for prayer: String) -> String {
     switch prayer {
-    case "fajr": return "moon.stars"
-    case "sunrise": return "sunrise"
-    case "dhuhr": return "sun.max"
-    case "asr": return "sun.haze"
-    case "maghrib": return "sunset"
-    default: return "moon"
+    case "fajr": return "moon.stars.fill"
+    case "sunrise": return "sunrise.fill"
+    case "dhuhr": return "sun.max.fill"
+    case "asr": return "sun.haze.fill"
+    case "maghrib": return "sunset.fill"
+    default: return "moon.fill"
     }
+  }
+}
+
+/// Native-menu style row: full-width, highlights on hover.
+private struct PrayerMenuRowButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View { Row(configuration: configuration) }
+
+  private struct Row: View {
+    let configuration: ButtonStyleConfiguration
+    @State private var hovering = false
+
+    var body: some View {
+      configuration.label
+        .padding(.horizontal, 8).padding(.vertical, 5)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+          RoundedRectangle(cornerRadius: 6, style: .continuous)
+            .fill(Color.primary.opacity(configuration.isPressed ? 0.14 : hovering ? 0.08 : 0))
+        )
+        .contentShape(Rectangle())
+        .onHover { hovering = $0 }
+    }
+  }
+}
+
+private struct PrayerMenuPillButtonStyle: ButtonStyle {
+  let fill: Color
+  let foreground: Color
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .font(.system(size: 12, weight: .semibold))
+      .foregroundColor(foreground)
+      .padding(.horizontal, 12).padding(.vertical, 6)
+      .background(Capsule().fill(fill))
+      .opacity(configuration.isPressed ? 0.75 : 1)
+      .contentShape(Capsule())
   }
 }
