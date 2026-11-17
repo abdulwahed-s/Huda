@@ -28,6 +28,10 @@ slots:
   mpris:
     interface: mpris
     name: huda
+  dbus-prayer-tray:
+    interface: dbus
+    bus: session
+    name: com.aw.huda.PrayerTray
 
 apps:
   huda:
@@ -41,12 +45,38 @@ apps:
     slots:
       - dbus-huda
       - mpris
+      - dbus-prayer-tray
   prayer-notifications:
     command: bin/huda-prayer-notification-helper
     daemon: simple
     daemon-scope: user
     plugs:
       - desktop
+  # Started on demand when Huda calls com.aw.huda.PrayerTray (D-Bus activation),
+  # and at login by prayer-tray-login below. Huda can't start a daemon itself.
+  prayer-tray:
+    command: prayer-tray/huda-prayer-tray
+    extensions: [gnome]
+    daemon: simple
+    daemon-scope: user
+    install-mode: disable
+    restart-condition: on-failure
+    activates-on: [dbus-prayer-tray]
+    # Stop only the companion: a Huda window it opened from a notification keeps running.
+    stop-mode: sigterm
+    environment:
+      DOTNET_EnableDiagnostics: '0'
+    plugs: [network, network-status, audio-playback, home, login-session-observe]
+    slots: [dbus-prayer-tray, dbus-huda, mpris]
+  # "Start at login": Huda writes huda-prayer-tray.desktop into the Snap's own
+  # ~/.config/autostart, and snapd runs this at login on every desktop.
+  prayer-tray-login:
+    command: prayer-tray/huda-prayer-tray --activate
+    extensions: [gnome]
+    autostart: huda-prayer-tray.desktop
+    environment:
+      DOTNET_EnableDiagnostics: '0'
+    slots: [dbus-prayer-tray]
 
 parts:
   huda:
@@ -56,10 +86,24 @@ parts:
     stage-packages:
       - libmpv2
       - libnotify-bin
+      - libicu74
+      - libssl3t64
+    build-packages: [curl, python3]
     override-build: |
+      curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/huda-dotnet-install.sh
+      bash /tmp/huda-dotnet-install.sh --version 10.0.401 --install-dir "$CRAFT_PART_BUILD/.dotnet" --no-path
+      export HUDA_DOTNET="$CRAFT_PART_BUILD/.dotnet/dotnet"
+      cd "$CRAFT_PART_SRC"
+      xv/tool/build_linux_prayer_tray.sh --native-only
       craftctl default
       install -Dm755 "$CRAFT_PART_SRC/assets/linux/huda_prayer_notification_helper.sh" \
         "$CRAFT_PART_INSTALL/bin/huda-prayer-notification-helper"
+      cp -a "$CRAFT_PART_SRC/build/linux/prayer-tray/companion" "$CRAFT_PART_INSTALL/prayer-tray"
+      cp -a "$CRAFT_PART_SRC/build/linux/prayer-tray/audio" "$CRAFT_PART_INSTALL/data/prayer-audio"
+      install -Dm644 "$CRAFT_PART_SRC/build/linux/prayer-tray/huda-prayer-tray-4.3.0.zip" \
+        "$CRAFT_PART_INSTALL/data/huda-prayer-tray-4.3.0.zip"
+      install -Dm644 "$CRAFT_PART_SRC/build/linux/prayer-tray/install-huda-prayer-panel.sh" \
+        "$CRAFT_PART_INSTALL/data/install-huda-prayer-panel.sh"
     override-prime: |
       craftctl default
       # Debian's update-alternatives is not available inside the snap,
