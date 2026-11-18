@@ -5,28 +5,15 @@ import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/services/bookmark_service.dart';
 import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/cubit/athkar/athkar_cubit.dart';
-import 'package:huda/cubit/athkar_details/athkar_details_cubit.dart';
-import 'package:huda/cubit/audio/audio_cubit.dart';
-import 'package:huda/cubit/book_detail/book_detail_cubit.dart';
-import 'package:huda/cubit/book_languages/book_languages_cubit.dart';
 import 'package:huda/cubit/bookmark/bookmarks_cubit.dart';
 import 'package:huda/cubit/books/books_cubit.dart';
 import 'package:huda/cubit/books/languages_cubit.dart';
 import 'package:huda/cubit/audios/audios_cubit.dart';
 import 'package:huda/cubit/audios/audio_languages_cubit.dart';
-import 'package:huda/cubit/audio_detail/audio_detail_cubit.dart';
-import 'package:huda/cubit/audiobook_download/audiobook_download_cubit.dart';
-import 'package:huda/cubit/audiobook_player/audiobook_player_cubit.dart';
-import 'package:huda/cubit/audiobook_player/audiobook_bar_cubit.dart';
-import 'package:huda/data/services/audiobook_download_service.dart';
-import 'package:huda/data/services/offline_audiobooks_service.dart';
 import 'package:huda/presentation/screens/audios.dart';
 import 'package:huda/presentation/screens/audio_detail.dart';
-import 'package:huda/cubit/chapters/chapters_cubit.dart';
 import 'package:huda/cubit/checklist/checklist_cubit.dart';
-import 'package:huda/cubit/download_manager/download_manager_cubit.dart';
 import 'package:huda/cubit/hadith/hadith_cubit.dart';
-import 'package:huda/cubit/hadith_details/hadith_details_cubit.dart';
 import 'package:huda/cubit/hijri_calendar/hijri_calendar_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/cubit/home_customization/home_customization_cubit.dart';
@@ -38,17 +25,11 @@ import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/cubit/qiblah/qiblah_cubit.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
 import 'package:huda/cubit/settings/settings_cubit.dart';
-import 'package:huda/cubit/tafsir/tafsir_cubit.dart';
 import 'package:huda/cubit/tasbih/tasbih_cubit.dart';
 import 'package:huda/cubit/rating/rating_cubit.dart';
-import 'package:huda/cubit/translation/translation_cubit.dart';
 import 'package:huda/cubit/zakat_calculator/zakat_calculator_cubit.dart';
-import 'package:huda/data/api/audio_services.dart';
-import 'package:huda/data/api/tafsir_services.dart';
-import 'package:huda/data/api/translation_services.dart';
-import 'package:huda/data/repository/audio_repository.dart';
-import 'package:huda/data/repository/tafsir_repository.dart';
-import 'package:huda/data/repository/translation_repository.dart';
+import 'package:huda/cubit/onboarding/onboarding_cubit.dart';
+import 'package:huda/cubit/onboarding/onboarding_environment.dart';
 import 'package:huda/presentation/screens/athkar.dart';
 import 'package:huda/presentation/screens/athkar_details.dart';
 import 'package:huda/presentation/screens/book_detail.dart';
@@ -58,6 +39,7 @@ import 'package:huda/presentation/screens/checklist.dart';
 import 'package:huda/presentation/screens/hadith.dart';
 import 'package:huda/presentation/screens/hadith_chapters.dart';
 import 'package:huda/presentation/screens/hadith_details.dart';
+import 'package:huda/presentation/widgets/hadith/hadith_refs.dart';
 import 'package:huda/presentation/screens/hijri_calendar.dart';
 import 'package:huda/presentation/screens/home.dart';
 import 'package:huda/presentation/screens/home_quran.dart';
@@ -67,6 +49,7 @@ import 'package:huda/presentation/screens/pdf_view.dart';
 import 'package:huda/presentation/screens/prayer_times.dart';
 import 'package:huda/presentation/screens/qiblah.dart';
 import 'package:huda/presentation/screens/settings.dart';
+import 'package:huda/presentation/screens/home_customization.dart';
 import 'package:huda/presentation/screens/surah_screen.dart';
 import 'package:huda/presentation/screens/tasbih.dart';
 import 'package:huda/presentation/screens/onboarding_screen.dart';
@@ -87,7 +70,13 @@ class PageRouter {
   Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoute.onboarding:
-        return MaterialPageRoute(builder: (_) => const OnboardingScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider<OnboardingCubit>(
+            create: (_) =>
+                OnboardingCubit(environment: OnboardingEnvironment.live()),
+            child: const OnboardingScreen(),
+          ),
+        );
       case AppRoute.home:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -102,423 +91,174 @@ class PageRouter {
                     IslamicEventCubit(service: getIt<IslamicEventService>()),
               ),
             ],
+            // Redesigned: the Huda theme, and the theme's page transition.
             child: const Home(),
           ),
         );
       case AppRoute.homeQuran:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<QuranCubit>(
-            create: (context) => (QuranCubit()),
+          builder: (_) => BlocProvider<QuranCubit>(
+            create: (_) => QuranCubit(),
             child: const HomeQuran(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
         );
       case AppRoute.surahScreen:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) {
+          builder: (_) {
             final args = settings.arguments as Map<String, dynamic>;
-            return MultiRepositoryProvider(
-              providers: [
-                RepositoryProvider<AudioRepository>(
-                  create: (_) =>
-                      AudioRepository(audioServices: AudioServices()),
-                ),
-                RepositoryProvider<TafsirRepository>(
-                  create: (_) =>
-                      TafsirRepository(tafsirServices: TafsirServices()),
-                ),
-                RepositoryProvider<TranslationRepository>(
-                  create: (_) => TranslationRepository(
-                    translationServices: TranslationServices(),
-                  ),
-                ),
-              ],
-              child: MultiBlocProvider(
-                providers: [
-                  BlocProvider<AudioCubit>(
-                    create: (context) =>
-                        AudioCubit(context.read<AudioRepository>()),
-                  ),
-                  BlocProvider<TafsirCubit>(
-                    create: (context) =>
-                        TafsirCubit(context.read<TafsirRepository>()),
-                  ),
-                  BlocProvider<TranslationCubit>(
-                    create: (context) =>
-                        TranslationCubit(context.read<TranslationRepository>()),
-                  ),
-                ],
-                child: SurahScreen(
-                  surahInfo: args['surahInfo'],
-                  scrollToAyah: args['scrollToAyah'],
-                  shouldRestorePosition: args['shouldRestorePosition'],
-                ),
-              ),
-            );
-          },
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
+            return SurahScreen.route(
+              surahInfo: args['surahInfo'],
+              scrollToAyah: args['scrollToAyah'],
+              shouldRestorePosition: args['shouldRestorePosition'] ?? false,
             );
           },
         );
       case AppRoute.settings:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<SettingsCubit>(
+          builder: (_) => BlocProvider<SettingsCubit>(
             create: (context) => SettingsCubit(),
             child: const Settings(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
+        );
+      case AppRoute.homeCustomization:
+        // Home's editor, opened from Settings. Home reads the saved layout
+        // again when it's back on top.
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider<HomeCustomizationCubit>(
+            create: (_) =>
+                HomeCustomizationCubit(getIt<HomePreferencesService>()),
+            child: const HomeCustomizationScreen(),
+          ),
         );
       case AppRoute.bookmarks:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<BookmarksCubit>(
+          builder: (_) => BlocProvider<BookmarksCubit>(
             create: (context) =>
                 BookmarksCubit(bookmarkService: getIt<BookmarkService>()),
             child: const BookmarksPage(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
         );
       case AppRoute.widgetManagement:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => const WidgetManagementScreen(),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
+          builder: (_) => const WidgetManagementScreen(),
         );
       case AppRoute.prayerTimes:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) =>
+          builder: (_) =>
               PrayerTimes(openSettingsOnLoad: settings.arguments == true),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
 
       case AppRoute.notification:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<NotificationsCubit>(
+          builder: (_) => BlocProvider<NotificationsCubit>(
             create: (context) => NotificationsCubit(),
             child: const Notifications(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.athkar:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition
+        // (mirrors in RTL).
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<AthkarCubit>(
+          builder: (_) => BlocProvider<AthkarCubit>(
             create: (context) => AthkarCubit(),
             child: const AthkarScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.athkarDetail:
-        return PageRouteBuilder(
+        // Redesigned. The list opens chapters growing out of their tile;
+        // this route is the same page for other callers.
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) {
-            final args = settings.arguments as Map<String, String>;
-            return BlocProvider<AthkarDetailsCubit>(
-              create: (context) => AthkarDetailsCubit(),
-              child: AthkarDetails(
-                athkarId: args['athkarId']!,
-                title: args['title']!,
-                titleEn: args['titleEn']!,
-              ),
-            );
-          },
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
+          builder: (_) => AthkarDetails.page(
+            athkarId: args['athkarId']!,
+            title: args['title']!,
+            titleEn: args['titleEn']!,
+          ),
         );
       case AppRoute.hadith:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition
+        // (mirrors in RTL). Collections grow out of their tiles.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<HadithCubit>(
+          builder: (_) => BlocProvider<HadithCubit>(
             create: (context) => HadithCubit()..fetchHadithBooks(),
             child: const Hadith(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.hadithChapters:
-        return PageRouteBuilder(
+        // Redesigned. A collection opens its books inside itself; this
+        // route is the same screen for other callers.
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) {
-            final args = settings.arguments as Map<String, String>;
-            return BlocProvider<ChaptersCubit>(
-              create: (context) =>
-                  ChaptersCubit()..fetchChaptersByBook(args['bookName']!),
-              child: HadithChapters(
-                fullBookName: args['fullBookName']!,
-                bookName: args['bookName']!,
-              ),
-            );
-          },
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
+          builder: (_) => HadithChapters.page(
+            collection: HadithCollectionRef(
+              slug: args['bookName']!,
+              title: args['fullBookName']!,
+            ),
+          ),
         );
       case AppRoute.hadithDetails:
-        return PageRouteBuilder(
+        // Redesigned. `collectionTitle` is optional.
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) {
-            final args = settings.arguments as Map<String, String>;
-            return BlocProvider<HadithDetailsCubit>(
-              create: (context) => HadithDetailsCubit()
-                ..fetchHadithDetails(
-                  args['chapterNumber']!,
-                  args['bookName']!,
-                  1,
-                ),
-              child: HadithDetails(
-                chapterNumber: args['chapterNumber']!,
-                bookName: args['bookName']!,
-                chapterName: args['chapterName']!,
-              ),
-            );
-          },
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
+          builder: (_) => HadithDetails.page(
+            chapterNumber: args['chapterNumber']!,
+            bookName: args['bookName']!,
+            chapterName: args['chapterName']!,
+            collectionTitle: args['collectionTitle'],
+          ),
         );
       case AppRoute.qiblah:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition
+        // (mirrors in RTL).
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<QiblahCubit>(
+          builder: (_) => BlocProvider<QiblahCubit>(
             create: (context) => QiblahCubit()..loadQiblah(),
             child: const QiblahScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
 
       case AppRoute.tasbih:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition
+        // (mirrors in RTL).
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<TasbihCubit>(
+          builder: (_) => BlocProvider<TasbihCubit>(
             create: (context) => TasbihCubit()..loadTasbih(),
             child: const Tasbih(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.hijriCalendar:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<HijriCalendarCubit>(
+          builder: (_) => BlocProvider<HijriCalendarCubit>(
             create: (context) => HijriCalendarCubit(),
             child: const HijriCalendarScreenNew(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.books:
-        return PageRouteBuilder(
+        // Redesigned (`books`): Lantern theme, the theme's page transitions.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => MultiBlocProvider(
+          builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<BooksCubit>(create: (context) => BooksCubit()),
               BlocProvider<LanguagesCubit>(
@@ -527,296 +267,106 @@ class PageRouter {
             ],
             child: const BooksScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.bookDetail:
-        return PageRouteBuilder(
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) {
-            final args = settings.arguments as Map<String, String>;
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider<BookDetailCubit>(
-                  create: (context) => BookDetailCubit(),
-                ),
-                BlocProvider<BookLanguagesCubit>(
-                  create: (context) => BookLanguagesCubit(),
-                ),
-                BlocProvider<DownloadManagerCubit>(
-                  create: (context) => DownloadManagerCubit(),
-                ),
-              ],
-              child: BookDetailScreen(
-                bookId: int.parse(args['bookId']!),
-                language: args['language']!,
-                title: args['title']!,
-              ),
-            );
-          },
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-        );
-      case AppRoute.audios:
-        return PageRouteBuilder(
-          settings: settings,
-          pageBuilder: (context, animation, _) => MultiBlocProvider(
-            providers: [
-              BlocProvider<AudiosCubit>(create: (_) => AudiosCubit()),
-              BlocProvider<AudioLanguagesCubit>(
-                create: (_) => AudioLanguagesCubit(),
-              ),
-              BlocProvider.value(value: context.read<AudiobookPlayerCubit>()),
-              BlocProvider.value(value: context.read<AudiobookBarCubit>()),
-            ],
-            child: const AudiosScreen(),
+          builder: (_) => BookDetailScreen.page(
+            bookId: int.parse(args['bookId']!),
+            language: args['language']!,
+            title: args['title']!,
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-        );
-      case AppRoute.audioDetail:
-        return PageRouteBuilder(
-          settings: settings,
-          pageBuilder: (context, animation, _) {
-            final args = settings.arguments as Map<String, dynamic>;
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider<AudioDetailCubit>(
-                  create: (_) => AudioDetailCubit(),
-                ),
-                BlocProvider<AudiobookDownloadCubit>(
-                  create: (_) => AudiobookDownloadCubit(
-                    downloadService: getIt<AudiobookDownloadService>(),
-                    offlineService: getIt<OfflineAudiobooksService>(),
-                  ),
-                ),
-                BlocProvider.value(value: context.read<AudiobookPlayerCubit>()),
-                BlocProvider.value(value: context.read<AudiobookBarCubit>()),
-              ],
-              child: AudioDetailScreen(
-                audioId: int.parse(args['audioId'].toString()),
-                language: args['language'].toString(),
-                title: args['title'].toString(),
-              ),
-            );
-          },
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.pdfView:
         final args = settings.arguments as Map<String, dynamic>;
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => PdfView(
+          builder: (_) => PdfView(
             pdfUrl: args['url'] as String,
             bookId: args['bookId'] as int?,
             bookTitle: args['bookTitle'] as String?,
             language: args['language'] as String?,
             fallbackPdfUrl: args['fallbackPdfUrl'] as String?,
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
+        );
+      case AppRoute.audios:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<AudiosCubit>(create: (_) => AudiosCubit()),
+              BlocProvider<AudioLanguagesCubit>(
+                create: (_) => AudioLanguagesCubit(),
+              ),
+            ],
+            child: const AudiosScreen(),
+          ),
+        );
+      case AppRoute.audioDetail:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => AudioDetailScreen.page(
+            audioId: int.parse(args['audioId'].toString()),
+            language: args['language'].toString(),
+            title: args['title'].toString(),
+          ),
         );
       case AppRoute.hudaAI:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => const ChatScreen(),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
+          builder: (_) => const ChatScreen(),
         );
       case AppRoute.islamicChecklist:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<ChecklistCubit>(
+          builder: (_) => BlocProvider<ChecklistCubit>(
             create: (context) => ChecklistCubit(),
             child: const IslamicChecklistScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.feedback:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<RatingCubit>(
+          builder: (_) => BlocProvider<RatingCubit>(
             create: (context) => RatingCubit(),
             child: const FeedbackScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.zakatCalculator:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition
+        // (mirrors in RTL).
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<ZakatCalculatorCubit>(
+          builder: (_) => BlocProvider<ZakatCalculatorCubit>(
             create: (context) => ZakatCalculatorCubit(),
             child: const ZakatCalculator(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.miqaatLock:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => const MiqaatLockScreen(),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
+          builder: (_) => const MiqaatLockScreen(),
         );
       case AppRoute.ramadan:
-        return PageRouteBuilder(
+        // Redesigned: the Huda theme, and the theme's page transition.
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (_, animation, _) => BlocProvider<RamadanCubit>(
+          builder: (_) => BlocProvider<RamadanCubit>(
             create: (context) => RamadanCubit(
               getIt<CacheHelper>(),
               hijriCalendarService: getIt<HijriCalendarService>(),
             ),
             child: const RamadanScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
         );
       case AppRoute.quranAudio:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (context, animation, _) => MultiBlocProvider(
+          builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: context.read<DownloadProgressCubit>()),
               BlocProvider.value(value: context.read<QuranPlayerCubit>()),
@@ -824,46 +374,14 @@ class PageRouter {
             ],
             child: const RecitersScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
         );
       case AppRoute.quranRadio:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
           settings: settings,
-          pageBuilder: (context, animation, _) => BlocProvider.value(
+          builder: (context) => BlocProvider.value(
             value: context.read<QuranRadioCubit>(),
             child: const QuranRadioScreen(),
           ),
-          transitionsBuilder: (_, animation, _, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 400),
         );
     }
     return null;

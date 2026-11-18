@@ -4,7 +4,6 @@ import 'package:huda/core/services/prayer_iqamah_settings.dart';
 import 'package:huda/core/services/prayer_iqamah_sync.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:huda/core/notifications/notification_taps.dart';
 import 'package:huda/core/routes/page_router.dart';
@@ -13,6 +12,8 @@ import 'package:huda/core/services/mac_prayer_menu_bridge.dart';
 import 'package:huda/core/services/linux_prayer_tray_bridge.dart';
 import 'package:huda/core/services/linux_prayer_notification_gateway.dart';
 import 'package:huda/core/services/mac_prayer_bridge.dart';
+import 'package:huda/core/services/ios_fold_bridge.dart';
+import 'package:huda/core/theme/huda_text_scale.dart';
 import 'package:huda/core/services/ios_prayer_bridge.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/windows_prayer_taskbar_bridge.dart';
@@ -25,7 +26,7 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/core/services/widget_deep_link_handler.dart';
 import 'package:huda/core/services/gemini_service.dart';
 import 'package:huda/core/theme/app_colors.dart';
-import 'package:huda/core/theme/app_theme.dart';
+import 'package:huda/core/theme/huda_theme.dart';
 import 'package:huda/cubit/theme/theme_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
@@ -48,8 +49,6 @@ import 'package:huda/data/api/radio_services.dart';
 import 'package:huda/data/repository/radio_repository.dart';
 import 'package:huda/data/repository/chat_history_repository.dart';
 import 'package:huda/l10n/app_localizations.dart';
-
-import 'package:huda/core/utils/responsive_utils.dart';
 
 class App extends StatefulWidget {
   const App({super.key, required this.initialRoute});
@@ -206,150 +205,156 @@ class _AppState extends State<App> {
           builder: (context, themeState) {
             return BlocBuilder<LocalizationCubit, LocalizationState>(
               builder: (context, localizationState) {
-                final screenUtilChild = ScreenUtilInit(
-                  designSize: ResponsiveUtils.getResponsiveDesignSize(context),
-                  minTextAdapt: true,
-                  splitScreenMode: true,
-                  builder: (_, _) {
-                    return MaterialApp(
-                      navigatorKey: App.navigatorKey,
-                      debugShowCheckedModeBanner: false,
-                      initialRoute: widget.initialRoute,
-                      themeMode: themeState.themeMode,
-                      theme: AppThemeHelper.getLightTheme(
-                        themeState.colorTheme,
-                        themeState.fontFamily,
-                      ),
-                      darkTheme: AppThemeHelper.getDarkTheme(
-                        themeState.colorTheme,
-                        themeState.fontFamily,
-                      ),
-                      locale: localizationState.locale,
-                      localizationsDelegates: const [
-                        AppLocalizations.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                      ],
-                      supportedLocales: LocalizationCubit.supportedLocales,
-                      localeResolutionCallback: (locale, supportedLocales) {
-                        if (locale != null) {
-                          for (var supportedLocale in supportedLocales) {
-                            if (supportedLocale.languageCode ==
-                                locale.languageCode) {
-                              return supportedLocale;
-                            }
-                          }
+                return MaterialApp(
+                  navigatorKey: App.navigatorKey,
+                  debugShowCheckedModeBanner: false,
+                  initialRoute: widget.initialRoute,
+                  themeMode: themeState.themeMode,
+                  // Lantern for every screen, sheet and route transition
+                  // (design/LANGUAGE.md, "Decided in foundation").
+                  theme: HudaTheme.build(
+                    colorTheme: themeState.colorTheme,
+                    brightness: Brightness.light,
+                    fontFamily: themeState.fontFamily,
+                  ),
+                  darkTheme: HudaTheme.build(
+                    colorTheme: themeState.colorTheme,
+                    brightness: Brightness.dark,
+                    fontFamily: themeState.fontFamily,
+                    pureBlack: themeState.pureBlack,
+                  ),
+                  themeAnimationStyle: HudaTheme.changeAnimation(context),
+                  locale: localizationState.locale,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: LocalizationCubit.supportedLocales,
+                  localeResolutionCallback: (locale, supportedLocales) {
+                    if (locale != null) {
+                      for (var supportedLocale in supportedLocales) {
+                        if (supportedLocale.languageCode ==
+                            locale.languageCode) {
+                          return supportedLocale;
                         }
-                        return const Locale('en', '');
-                      },
-                      onGenerateRoute: PageRouter().generateRoute,
-                      builder: (context, child) {
-                        QuickActionsService.updateLocalizedLabels(context);
-                        final menuL10n = AppLocalizations.of(context);
-                        if (menuL10n != null) {
-                          final numerals = getIt<CacheHelper>().getDataString(
-                            key: 'prayerWidgetNumerals',
+                      }
+                    }
+                    return const Locale('en', '');
+                  },
+                  onGenerateRoute: PageRouter().generateRoute,
+                  builder: (context, child) {
+                    QuickActionsService.updateLocalizedLabels(context);
+                    // Native tray and menu-bar cards draw their own text:
+                    // hand them the effective scale, as before.
+                    final effectiveTextScale =
+                        MediaQuery.textScalerOf(context).scale(14) /
+                        14 *
+                        themeState.textScaleFactor;
+                    // Native cards keep the palette's own tint, as under
+                    // the old root theme: primary by day, accent at night.
+                    final palette = AppColors.getColorScheme(
+                      themeState.colorTheme,
+                    );
+                    final nativeTint =
+                        Theme.of(context).brightness == Brightness.dark
+                        ? palette.accent
+                        : palette.primary;
+                    final menuL10n = AppLocalizations.of(context);
+                    if (menuL10n != null) {
+                      final numerals = getIt<CacheHelper>().getDataString(
+                        key: 'prayerWidgetNumerals',
+                      );
+                      final clockMode = getIt<CacheHelper>().getDataString(
+                        key: 'prayer_widget_time_format',
+                      );
+                      unawaited(
+                        LinuxPrayerTrayBridge.syncPresentation(
+                          menuL10n,
+                          themeMode: themeState.themeMode,
+                          colorTheme: themeState.colorTheme,
+                          fontFamily: themeState.fontFamily,
+                          textScale: effectiveTextScale,
+                          use24HourClock:
+                              clockMode == '24h' ||
+                              (clockMode != '12h' &&
+                                  MediaQuery.of(context).alwaysUse24HourFormat),
+                          numerals:
+                              numerals == 'arabic' ||
+                                  (numerals == 'auto' &&
+                                      menuL10n.localeName.startsWith('ar'))
+                              ? 'arabic'
+                              : 'western',
+                        ),
+                      );
+                      unawaited(
+                        IOSPrayerBridge.syncPresentation(
+                          menuL10n,
+                          alarmTint: palette.primary.toARGB32(),
+                        ).catchError((Object error) {
+                          debugPrint('iOS prayer presentation failed: $error');
+                        }),
+                      );
+                      unawaited(
+                        WindowsPrayerTaskbarBridge.syncPresentation(
+                          menuL10n,
+                          primaryColor: nativeTint,
+                          themeMode: themeState.themeMode,
+                          fontFamily: themeState.fontFamily,
+                          use24HourClock: MediaQuery.of(
+                            context,
+                          ).alwaysUse24HourFormat,
+                        ),
+                      );
+                      unawaited(
+                        MacPrayerMenuBridge.syncPresentation(
+                          menuL10n,
+                          primaryColor: nativeTint,
+                        ),
+                      );
+                      unawaited(
+                        MacPrayerBridge.syncPresentation(
+                          menuL10n,
+                          primaryColor: nativeTint.toARGB32(),
+                          themeMode: themeState.themeMode.name,
+                          use24HourClock: MediaQuery.of(
+                            context,
+                          ).alwaysUse24HourFormat,
+                          fontFamily: themeState.fontFamily,
+                          textScale: effectiveTextScale,
+                          numerals:
+                              getIt<CacheHelper>().getDataString(
+                                    key: 'prayerWidgetNumerals',
+                                  ) ==
+                                  'arabic'
+                              ? 'eastern'
+                              : 'western',
+                        ).catchError((Object error) {
+                          debugPrint(
+                            'macOS prayer presentation failed: $error',
                           );
-                          final clockMode = getIt<CacheHelper>().getDataString(
-                            key: 'prayer_widget_time_format',
-                          );
-                          unawaited(
-                            LinuxPrayerTrayBridge.syncPresentation(
-                              menuL10n,
-                              themeMode: themeState.themeMode,
-                              colorTheme: themeState.colorTheme,
-                              fontFamily: themeState.fontFamily,
-                              textScale: themeState.textScaleFactor,
-                              use24HourClock:
-                                  clockMode == '24h' ||
-                                  (clockMode != '12h' &&
-                                      MediaQuery.of(
-                                        context,
-                                      ).alwaysUse24HourFormat),
-                              numerals:
-                                  numerals == 'arabic' ||
-                                      (numerals == 'auto' &&
-                                          menuL10n.localeName.startsWith('ar'))
-                                  ? 'arabic'
-                                  : 'western',
-                            ),
-                          );
-                          unawaited(
-                            IOSPrayerBridge.syncPresentation(
-                              menuL10n,
-                              alarmTint: AppColors.getColorScheme(
-                                themeState.colorTheme,
-                              ).primary.toARGB32(),
-                            ).catchError((Object error) {
-                              debugPrint(
-                                'iOS prayer presentation failed: $error',
-                              );
-                            }),
-                          );
-                          unawaited(
-                            WindowsPrayerTaskbarBridge.syncPresentation(
-                              menuL10n,
-                              primaryColor: Theme.of(
-                                context,
-                              ).colorScheme.primary,
-                              themeMode: themeState.themeMode,
-                              fontFamily: themeState.fontFamily,
-                              use24HourClock: MediaQuery.of(
-                                context,
-                              ).alwaysUse24HourFormat,
-                            ),
-                          );
-                          unawaited(
-                            MacPrayerMenuBridge.syncPresentation(
-                              menuL10n,
-                              primaryColor: Theme.of(
-                                context,
-                              ).colorScheme.primary,
-                            ),
-                          );
-                          unawaited(
-                            MacPrayerBridge.syncPresentation(
-                              menuL10n,
-                              primaryColor: Theme.of(
-                                context,
-                              ).colorScheme.primary.toARGB32(),
-                              themeMode: themeState.themeMode.name,
-                              use24HourClock: MediaQuery.of(
-                                context,
-                              ).alwaysUse24HourFormat,
-                              fontFamily: themeState.fontFamily,
-                              textScale: themeState.textScaleFactor,
-                              numerals:
-                                  getIt<CacheHelper>().getDataString(
-                                        key: 'prayerWidgetNumerals',
-                                      ) ==
-                                      'arabic'
-                                  ? 'eastern'
-                                  : 'western',
-                            ).catchError((Object error) {
-                              debugPrint(
-                                'macOS prayer presentation failed: $error',
-                              );
-                            }),
-                          );
-                        }
-                        return MediaQuery(
-                          data: MediaQuery.of(context).copyWith(
-                            textScaler: TextScaler.linear(
-                              themeState.textScaleFactor.isFinite
-                                  ? themeState.textScaleFactor.clamp(0.5, 2.0)
-                                  : 1.0,
-                            ),
-                          ),
-                          child: child ?? const SizedBox.shrink(),
-                        );
-                      },
+                        }),
+                      );
+                    }
+                    // The device's text size × the in-app adjustment,
+                    // UI capped at 2× (design/RESPONSIVE.md, "Text
+                    // scale").
+                    return MediaQuery(
+                      data: MediaQuery.of(context).copyWith(
+                        textScaler: CombinedTextScaler(
+                          device: MediaQuery.textScalerOf(context),
+                          factor: themeState.textScaleFactor.isFinite
+                              ? themeState.textScaleFactor.clamp(0.5, 2.0)
+                              : 1.0,
+                        ),
+                      ),
+                      child: IOSFoldDisplayFeatures(
+                        child: child ?? const SizedBox.shrink(),
+                      ),
                     );
                   },
                 );
-
-                return screenUtilChild;
               },
             );
           },

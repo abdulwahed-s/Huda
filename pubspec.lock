@@ -217,14 +217,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   dart_jsonwebtoken:
     dependency: transitive
     description:
@@ -395,14 +387,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.8"
-  flutter_screenutil:
-    dependency: "direct main"
-    description:
-      name: flutter_screenutil
-      sha256: "8239210dd68bee6b0577aa4a090890342d04a136ce1c81f98ee513fc0ce891de"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.9.3"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -477,14 +461,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  forge2d:
-    dependency: transitive
-    description:
-      name: forge2d
-      sha256: "6aac85f1cb9f7e3720bff5d6884ff2e1bcb74402e6fe271599b7b1f65574f5e2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.13.1"
   functions_client:
     dependency: transitive
     description:
@@ -668,14 +644,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
-  jiffy:
-    dependency: "direct main"
-    description:
-      name: jiffy
-      sha256: "9bafbfe6d97587048bf449165e050029e716a12438f54a3d39e7e3a256decdac"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.4.3"
   js:
     dependency: transitive
     description:
@@ -788,14 +756,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
-  lottie:
-    dependency: "direct main"
-    description:
-      name: lottie
-      sha256: c5fa04a80a620066c15cf19cc44773e19e9b38e989ff23ea32e5903ef1015950
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.1"
   markdown:
     dependency: transitive
     description:
@@ -876,14 +836,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  newton_particles:
-    dependency: "direct main"
-    description:
-      name: newton_particles
-      sha256: "0f30be6a316b01434c665dc839aca6e0c774ea0a677d852ebc1564efa7b39579"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.2"
   nm:
     dependency: transitive
     description:
@@ -1172,14 +1124,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      sha256: ea0b925899e64ecdfbf9c7becb60d5b50e706ade44a85b2363be2a22d88117d2
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.2"
   realtime_client:
     dependency: transitive
     description:
