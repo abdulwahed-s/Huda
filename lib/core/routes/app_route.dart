@@ -5,6 +5,7 @@ class AppRoute {
   static const String surahScreen = '/surahScreen';
   static const String lastReadSurah = '/lastReadSurah';
   static const String settings = '/settings';
+  static const String homeCustomization = '/homeCustomization';
   static const String bookmarks = '/bookmarks';
   static const String widgetManagement = '/widgetManagement';
   static const String prayerTimes = '/prayerTimes';
