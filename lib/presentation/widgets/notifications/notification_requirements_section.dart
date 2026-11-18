@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/cubit/notifications/notifications_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/notifications/notification_access_controller.dart';
 
-enum NotificationFeature {
-  prayerTimes,
-  hijriCalendar,
-  reminders,
-  khatma,
-}
+enum NotificationFeature { prayerTimes, hijriCalendar, reminders, khatma }
 
 /// Shows the actions needed before a notification-based feature can work.
 ///
 /// Contextual pages hide this section once they are correctly configured. The
 /// notification settings page passes [showConfiguredStatus] so it can continue
 /// to show the current setup status after everything is enabled.
+///
+/// Drawn in Lantern: a card led by a lit lamp (an invitation) with the lit
+/// button for the first thing to allow, and quiet rows for the rest.
 class NotificationRequirementsSection extends StatefulWidget {
   const NotificationRequirementsSection({
     super.key,
@@ -25,12 +25,17 @@ class NotificationRequirementsSection extends StatefulWidget {
     this.showConfiguredStatus = false,
     this.onNotificationEnabled,
     this.bottomSpacing = 0,
+    this.controller,
   });
 
   final NotificationFeature feature;
   final bool showConfiguredStatus;
   final Future<void> Function()? onNotificationEnabled;
   final double bottomSpacing;
+
+  /// A controller the page already owns (it keeps it and disposes it);
+  /// otherwise the section makes its own.
+  final NotificationAccessController? controller;
 
   @override
   State<NotificationRequirementsSection> createState() =>
@@ -40,27 +45,30 @@ class NotificationRequirementsSection extends StatefulWidget {
 class _NotificationRequirementsSectionState
     extends State<NotificationRequirementsSection> {
   late final NotificationAccessController _controller;
+  late final bool _owned = widget.controller == null;
 
   @override
   void initState() {
     super.initState();
-    _controller = NotificationAccessController(
-      cubit: context.read<NotificationsCubit>(),
-      onAccessGained: widget.onNotificationEnabled,
-    )..addListener(_onAccessChanged);
+    _controller =
+        widget.controller ??
+        NotificationAccessController(
+          cubit: context.read<NotificationsCubit>(),
+          onAccessGained: widget.onNotificationEnabled,
+        );
+    _controller.addListener(_onAccessChanged);
   }
 
   @override
   void didUpdateWidget(covariant NotificationRequirementsSection oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _controller.onAccessGained = widget.onNotificationEnabled;
+    if (_owned) _controller.onAccessGained = widget.onNotificationEnabled;
   }
 
   @override
   void dispose() {
-    _controller
-      ..removeListener(_onAccessChanged)
-      ..dispose();
+    _controller.removeListener(_onAccessChanged);
+    if (_owned) _controller.dispose();
     super.dispose();
   }
 
@@ -72,83 +80,63 @@ class _NotificationRequirementsSectionState
   Widget build(BuildContext context) {
     final access = _controller.access;
     if (access == null) return const SizedBox.shrink();
-
-    final needsNotification = access.needsNotification;
-    final needsExactAlarms = access.needsExactAlarms;
-    final needsBatteryOptimization = access.needsBatteryOptimization;
-
-    if (access.isReady) {
-      if (!widget.showConfiguredStatus) return const SizedBox.shrink();
-      return _StatusSection(
-        child: _ConfiguredNotificationStatus(
-          showExactAlarmStatus: PlatformUtils.isAndroid,
-          showBatteryStatus: PlatformUtils.isAndroid,
-        ),
-      );
+    if (access.isReady && !widget.showConfiguredStatus) {
+      return const SizedBox.shrink();
     }
+    return _withBottomSpacing(
+      access.isReady
+          ? NotificationsReadyStatus(detailed: PlatformUtils.isAndroid)
+          : _panel(context, access),
+    );
+  }
 
+  Widget _panel(BuildContext context, NotificationAccess access) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
-    final feature = _featureContentFor(l10n, theme, widget.feature);
-    final exactAlarmAccent = theme.colorScheme.primary;
-    final batteryAccent = theme.colorScheme.secondary;
-
+    final feature = _featureContentFor(l10n, widget.feature);
     final requirements = <_SetupRequirement>[
-      if (needsNotification)
+      if (access.needsNotification)
         _SetupRequirement(
           title: feature.title,
           description: feature.description,
           icon: feature.icon,
-          accent: feature.accent,
           actionLabel: access.notificationNeedsSettings
               ? l10n.openSettings
               : l10n.enableNotifications,
           actionIcon: access.notificationNeedsSettings
               ? Icons.settings_outlined
               : Icons.notifications_active_outlined,
-          foregroundColor: theme.colorScheme.onPrimary,
           // This card is the explanation; a tap goes straight to the prompt
           // or, when only the user can allow it, to the system settings.
           onPressed: access.notificationNeedsSettings
               ? _controller.openNotificationSettings
               : () => _controller.requestNotifications(context, explain: false),
         ),
-      if (needsBatteryOptimization)
+      if (access.needsBatteryOptimization)
         _SetupRequirement(
           title: l10n.batteryOptimizationTitle,
-          description: needsExactAlarms
+          description: access.needsExactAlarms
               ? l10n.batteryOptimizationExactAlarmDescription
               : l10n.batteryOptimizationDescription,
           icon: Icons.battery_alert_outlined,
-          accent: batteryAccent,
           actionLabel: l10n.keepRemindersReliable,
           actionIcon: Icons.battery_saver_outlined,
-          foregroundColor: theme.colorScheme.onSecondary,
           onPressed: () => _controller.requestBatteryOptimization(context),
         ),
-      if (needsExactAlarms)
+      if (access.needsExactAlarms)
         _SetupRequirement(
           title: l10n.exactAlarmTitle,
           description: l10n.exactAlarmDescription,
           icon: Icons.alarm_on_outlined,
-          accent: exactAlarmAccent,
           actionLabel: l10n.allowExactAlarms,
           actionIcon: Icons.alarm_add_outlined,
-          foregroundColor: theme.colorScheme.onPrimary,
           onPressed: () => _controller.requestExactAlarms(context),
         ),
     ];
-
-    final panel = _NotificationSetupPanel(
-      primaryRequirement: requirements.first,
-      additionalRequirements: requirements.skip(1).toList(),
-      isLoading: _controller.isRequestInProgress,
+    return _NotificationSetupPanel(
+      primary: requirements.first,
+      more: requirements.skip(1).toList(),
+      busy: _controller.isRequestInProgress,
     );
-
-    if (!widget.showConfiguredStatus) {
-      return _withBottomSpacing(panel);
-    }
-    return _StatusSection(child: panel);
   }
 
   Widget _withBottomSpacing(Widget child) {
@@ -162,77 +150,40 @@ class _NotificationRequirementsSectionState
 
 _NotificationFeatureContent _featureContentFor(
   AppLocalizations l10n,
-  ThemeData theme,
   NotificationFeature feature,
-) {
-  switch (feature) {
-    case NotificationFeature.prayerTimes:
-      return _NotificationFeatureContent(
-        title: l10n.prayerTimesPermissionTitle,
-        description: l10n.prayerTimesPermissionDescription,
-        icon: Icons.mosque_outlined,
-        accent: theme.colorScheme.primary,
-      );
-    case NotificationFeature.hijriCalendar:
-      return _NotificationFeatureContent(
-        title: l10n.calendarPermissionTitle,
-        description: l10n.calendarPermissionDescription,
-        icon: Icons.event_available_outlined,
-        accent: theme.colorScheme.secondary,
-      );
-    case NotificationFeature.reminders:
-      return _NotificationFeatureContent(
-        title: l10n.remindersPermissionTitle,
-        description: l10n.remindersPermissionDescription,
-        icon: Icons.notifications_active_outlined,
-        accent: theme.colorScheme.primary,
-      );
-    case NotificationFeature.khatma:
-      return _NotificationFeatureContent(
-        title: l10n.khatmaPermissionTitle,
-        description: l10n.khatmaPermissionDescription,
-        icon: Icons.auto_stories_outlined,
-        accent: theme.colorScheme.primary,
-      );
-  }
-}
+) => switch (feature) {
+  NotificationFeature.prayerTimes => _NotificationFeatureContent(
+    title: l10n.prayerTimesPermissionTitle,
+    description: l10n.prayerTimesPermissionDescription,
+    icon: Icons.mosque_outlined,
+  ),
+  NotificationFeature.hijriCalendar => _NotificationFeatureContent(
+    title: l10n.calendarPermissionTitle,
+    description: l10n.calendarPermissionDescription,
+    icon: Icons.event_available_outlined,
+  ),
+  NotificationFeature.reminders => _NotificationFeatureContent(
+    title: l10n.remindersPermissionTitle,
+    description: l10n.remindersPermissionDescription,
+    icon: Icons.notifications_active_outlined,
+  ),
+  NotificationFeature.khatma => _NotificationFeatureContent(
+    title: l10n.khatmaPermissionTitle,
+    description: l10n.khatmaPermissionDescription,
+    icon: Icons.auto_stories_outlined,
+  ),
+};
 
 class _NotificationFeatureContent {
   const _NotificationFeatureContent({
     required this.title,
     required this.description,
     required this.icon,
-    required this.accent,
   });
 
   final String title;
   final String description;
   final IconData icon;
-  final Color accent;
-}
-
-class _StatusSection extends StatelessWidget {
-  const _StatusSection({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.status,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        SizedBox(height: 10.h),
-        child,
-      ],
-    );
-  }
 }
 
 class _SetupRequirement {
@@ -240,86 +191,105 @@ class _SetupRequirement {
     required this.title,
     required this.description,
     required this.icon,
-    required this.accent,
     required this.actionLabel,
     required this.actionIcon,
-    required this.foregroundColor,
     required this.onPressed,
   });
 
   final String title;
   final String description;
   final IconData icon;
-  final Color accent;
   final String actionLabel;
   final IconData actionIcon;
-  final Color foregroundColor;
   final VoidCallback onPressed;
 }
 
 class _NotificationSetupPanel extends StatelessWidget {
   const _NotificationSetupPanel({
-    required this.primaryRequirement,
-    required this.additionalRequirements,
-    required this.isLoading,
+    required this.primary,
+    required this.more,
+    required this.busy,
   });
 
-  final _SetupRequirement primaryRequirement;
-  final List<_SetupRequirement> additionalRequirements;
-  final bool isLoading;
+  final _SetupRequirement primary;
+  final List<_SetupRequirement> more;
+  final bool busy;
 
   @override
   Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    final space = tokens.space;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final onSurface = theme.colorScheme.onSurface;
-
+    final scheme = theme.colorScheme;
+    Widget spinner(Color color) => HudaLampSpinner(size: 18, color: color);
     return Semantics(
       container: true,
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color:
-              primaryRequirement.accent.withValues(alpha: isDark ? 0.18 : 0.08),
-          borderRadius: BorderRadius.circular(18.r),
-          border: Border.all(
-            color: primaryRequirement.accent
-                .withValues(alpha: isDark ? 0.42 : 0.24),
-          ),
-        ),
+      child: HudaCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _RequirementHeader(
-              requirement: primaryRequirement,
-              isPrimary: true,
-            ),
-            SizedBox(height: 16.h),
-            _SetupActionButton(
-              label: primaryRequirement.actionLabel,
-              icon: primaryRequirement.actionIcon,
-              color: primaryRequirement.accent,
-              foregroundColor: primaryRequirement.foregroundColor,
-              onPressed: primaryRequirement.onPressed,
-              isLoading: isLoading,
-            ),
-            for (final requirement in additionalRequirements) ...[
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                child: Divider(
-                  height: 1,
-                  color: onSurface.withValues(alpha: isDark ? 0.2 : 0.12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Lit: an invitation, not a fault.
+                HudaLamp(
+                  size: 40,
+                  child: Icon(primary.icon, size: 20, color: tokens.gilt),
                 ),
+                SizedBox(width: space.sm),
+                Expanded(
+                  child: _Text(
+                    title: primary.title,
+                    description: primary.description,
+                    titleStyle: theme.textTheme.titleMedium,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: space.md),
+            FilledButton.icon(
+              onPressed: busy ? null : primary.onPressed,
+              icon: busy
+                  ? spinner(scheme.onPrimary)
+                  : Icon(primary.actionIcon, size: 20),
+              label: Text(primary.actionLabel, textAlign: TextAlign.center),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
               ),
-              _RequirementHeader(requirement: requirement),
-              SizedBox(height: 12.h),
-              _SetupActionButton(
-                label: requirement.actionLabel,
-                icon: requirement.actionIcon,
-                color: requirement.accent,
-                foregroundColor: requirement.foregroundColor,
-                onPressed: requirement.onPressed,
-                isLoading: isLoading,
+            ),
+            for (final requirement in more) ...[
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: space.md),
+                child: const Divider(height: 1),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HudaIconMark(requirement.icon),
+                  SizedBox(width: space.sm),
+                  Expanded(
+                    child: _Text(
+                      title: requirement.title,
+                      description: requirement.description,
+                      titleStyle: theme.textTheme.titleSmall,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: space.sm),
+              OutlinedButton.icon(
+                onPressed: busy ? null : requirement.onPressed,
+                icon: busy
+                    ? spinner(scheme.primary)
+                    : Icon(requirement.actionIcon, size: 20),
+                label: Text(
+                  requirement.actionLabel,
+                  textAlign: TextAlign.center,
+                ),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(48),
+                ),
               ),
             ],
           ],
@@ -329,61 +299,30 @@ class _NotificationSetupPanel extends StatelessWidget {
   }
 }
 
-class _RequirementHeader extends StatelessWidget {
-  const _RequirementHeader({
-    required this.requirement,
-    this.isPrimary = false,
+class _Text extends StatelessWidget {
+  const _Text({
+    required this.title,
+    required this.description,
+    required this.titleStyle,
   });
 
-  final _SetupRequirement requirement;
-  final bool isPrimary;
+  final String title;
+  final String description;
+  final TextStyle? titleStyle;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final onSurface = theme.colorScheme.onSurface;
-
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: isPrimary ? 44.r : 38.r,
-          height: isPrimary ? 44.r : 38.r,
-          decoration: BoxDecoration(
-            color:
-                requirement.accent.withValues(alpha: isPrimary ? 0.16 : 0.12),
-            borderRadius: BorderRadius.circular(isPrimary ? 14.r : 12.r),
-          ),
-          child: Icon(
-            requirement.icon,
-            color: requirement.accent,
-            size: isPrimary ? 23.sp : 20.sp,
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                requirement.title,
-                style: (isPrimary
-                        ? theme.textTheme.titleSmall
-                        : theme.textTheme.labelLarge)
-                    ?.copyWith(
-                  color: onSurface,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              SizedBox(height: isPrimary ? 4.h : 2.h),
-              Text(
-                requirement.description,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: onSurface.withValues(alpha: isPrimary ? 0.75 : 0.72),
-                  height: 1.35,
-                ),
-              ),
-            ],
+        Text(title, style: titleStyle),
+        SizedBox(height: context.tokens.space.xxs),
+        Text(
+          description,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ],
@@ -391,195 +330,75 @@ class _RequirementHeader extends StatelessWidget {
   }
 }
 
-class _SetupActionButton extends StatelessWidget {
-  const _SetupActionButton({
-    required this.label,
-    required this.icon,
-    required this.color,
-    required this.foregroundColor,
-    required this.onPressed,
-    required this.isLoading,
-  });
+/// Everything needed is allowed: one lamp-led line, lit. [detailed] adds
+/// Android's exact alarms and battery lines under it.
+class NotificationsReadyStatus extends StatelessWidget {
+  const NotificationsReadyStatus({super.key, this.detailed = false});
 
-  final String label;
-  final IconData icon;
-  final Color color;
-  final Color foregroundColor;
-  final VoidCallback? onPressed;
-  final bool isLoading;
+  final bool detailed;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: FilledButton.icon(
-        onPressed: isLoading ? null : onPressed,
-        icon: isLoading
-            ? SizedBox(
-                width: 18.r,
-                height: 18.r,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: foregroundColor,
-                ),
-              )
-            : Icon(icon, size: 19.sp),
-        label: Text(
-          label,
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        style: FilledButton.styleFrom(
-          backgroundColor: color,
-          foregroundColor: foregroundColor,
-          minimumSize: Size.fromHeight(48.h),
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          textStyle: themeTextStyle(context),
-        ),
-      ),
-    );
-  }
-
-  TextStyle themeTextStyle(BuildContext context) {
-    return (Theme.of(context).textTheme.labelLarge ?? const TextStyle())
-        .copyWith(fontWeight: FontWeight.w700);
-  }
-}
-
-class _ConfiguredNotificationStatus extends StatelessWidget {
-  const _ConfiguredNotificationStatus({
-    required this.showExactAlarmStatus,
-    required this.showBatteryStatus,
-  });
-
-  final bool showExactAlarmStatus;
-  final bool showBatteryStatus;
-
-  @override
-  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final tokens = context.tokens;
+    final space = tokens.space;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final success = Colors.green;
-
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: success.withValues(alpha: isDark ? 0.16 : 0.07),
-        borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(
-          color: success.withValues(alpha: isDark ? 0.38 : 0.2),
-        ),
-      ),
-      child: Column(
+    final scheme = theme.colorScheme;
+    Widget line(String title, String description) => Text.rich(
+      TextSpan(
         children: [
-          _ConfiguredStatusRow(
-            icon: Icons.notifications_active_outlined,
-            title: AppLocalizations.of(context)!.notificationsReadyTitle,
-            description:
-                AppLocalizations.of(context)!.notificationsReadyDescription,
-            color: success,
+          TextSpan(text: title, style: theme.textTheme.titleSmall),
+          const TextSpan(text: '\n'),
+          TextSpan(
+            text: description,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: scheme.onSurfaceVariant,
+            ),
           ),
-          if (showExactAlarmStatus) ...[
-            _StatusDivider(theme: theme, isDark: isDark),
-            _ConfiguredStatusRow(
-              icon: Icons.alarm_on_outlined,
-              title: AppLocalizations.of(context)!.exactAlarmsReadyTitle,
-              description:
-                  AppLocalizations.of(context)!.exactAlarmsReadyDescription,
-              color: success,
-            ),
-          ],
-          if (showBatteryStatus) ...[
-            _StatusDivider(theme: theme, isDark: isDark),
-            _ConfiguredStatusRow(
-              icon: Icons.battery_charging_full_outlined,
-              title:
-                  AppLocalizations.of(context)!.batteryOptimizationReadyTitle,
-              description: AppLocalizations.of(context)!
-                  .batteryOptimizationReadyDescription,
-              color: success,
-            ),
-          ],
         ],
       ),
     );
-  }
-}
-
-class _StatusDivider extends StatelessWidget {
-  const _StatusDivider({required this.theme, required this.isDark});
-
-  final ThemeData theme;
-  final bool isDark;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 14.h),
-      child: Divider(
-        height: 1,
-        color:
-            theme.colorScheme.onSurface.withValues(alpha: isDark ? 0.2 : 0.12),
+    return Semantics(
+      container: true,
+      liveRegion: true,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          HudaLamp(
+            size: 36,
+            child: Icon(
+              Icons.notifications_active_rounded,
+              size: 18,
+              color: tokens.gilt,
+            ),
+          ),
+          SizedBox(width: space.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                line(
+                  l10n.notificationsReadyTitle,
+                  l10n.notificationsReadyDescription,
+                ),
+                if (detailed) ...[
+                  SizedBox(height: space.xs),
+                  line(
+                    l10n.exactAlarmsReadyTitle,
+                    l10n.exactAlarmsReadyDescription,
+                  ),
+                  SizedBox(height: space.xs),
+                  line(
+                    l10n.batteryOptimizationReadyTitle,
+                    l10n.batteryOptimizationReadyDescription,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
-    );
-  }
-}
-
-class _ConfiguredStatusRow extends StatelessWidget {
-  const _ConfiguredStatusRow({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.color,
-  });
-
-  final IconData icon;
-  final String title;
-  final String description;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 38.r,
-          height: 38.r,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.16),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Icon(icon, color: color, size: 20.sp),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              SizedBox(height: 3.h),
-              Text(
-                description,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.72),
-                  height: 1.35,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

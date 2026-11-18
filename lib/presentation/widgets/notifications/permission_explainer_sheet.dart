@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 
 /// Explains why Huda needs an access before the system asks for it.
 /// Returns true when the user chose to continue to the system prompt.
@@ -44,6 +46,8 @@ class _PermissionExplainer extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final tokens = theme.extension<HudaTokens>();
+    final lantern = tokens != null;
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 20),
       child: Column(
@@ -51,23 +55,31 @@ class _PermissionExplainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(
-            child: Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: scheme.primary.withValues(alpha: 0.12),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, size: 32, color: scheme.primary),
-            ),
+            // Lantern screens: a lit lamp (an invitation).
+            child: lantern
+                ? HudaLamp(
+                    size: 64,
+                    child: Icon(icon, size: 30, color: tokens.gilt),
+                  )
+                : Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: scheme.primary.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(icon, size: 32, color: scheme.primary),
+                  ),
           ),
           const SizedBox(height: 16),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: lantern
+                ? theme.textTheme.titleLarge
+                : theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -75,19 +87,22 @@ class _PermissionExplainer extends StatelessWidget {
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: scheme.onSurfaceVariant,
-              height: 1.5,
+              height: lantern ? null : 1.5,
             ),
           ),
           const SizedBox(height: 24),
           FilledButton(
             key: const ValueKey('permission-explainer-continue'),
             onPressed: () => Navigator.of(context).pop(true),
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(52),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
+            // Lantern keeps the theme's lit shape and its engraving.
+            style: lantern
+                ? FilledButton.styleFrom(minimumSize: const Size.fromHeight(52))
+                : FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
             child: Text(continueLabel ?? l10n.permissionExplainerContinue),
           ),
           const SizedBox(height: 4),
