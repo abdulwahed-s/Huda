@@ -1,23 +1,35 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/layout/adaptive_layout.dart';
+import 'package:huda/core/layout/fold.dart';
+import 'package:huda/core/layout/insets.dart';
+import 'package:huda/core/layout/window_class.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/home_customization/home_customization_cubit.dart';
 import 'package:huda/cubit/home_customization/home_customization_state.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
+import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/home/catalog/home_feature_catalog.dart';
 import 'package:huda/presentation/widgets/home_customization/animated_reorder_layout.dart';
 import 'package:huda/presentation/widgets/home_customization/customization_cards.dart';
-import 'package:huda/presentation/widgets/home_customization/customization_chrome.dart';
-import 'package:huda/presentation/widgets/home_customization/customization_theme_banner.dart';
 import 'package:huda/presentation/widgets/home_customization/home_customization_labels.dart';
-import 'package:huda/presentation/widgets/home_customization/home_customization_sheets.dart';
+import 'package:huda/presentation/widgets/home_customization/home_theme_preview.dart';
 import 'package:huda/presentation/widgets/home_customization/unsaved_changes_confirmation.dart';
 
+/// The Home editor ("Edit Home"), standard tier: the three styles side by
+/// side (one tap picks one), then, for the chosen style, its sections
+/// (Quran Journey), the tools on Home and in View More (drag to reorder,
+/// one button moves a tool to the other group) and Restore default layout.
+/// (Path of Prayer places Prayer Times and the Quran Kit itself.)
+/// Close asks before throwing changes away; Save is pinned at the foot,
+/// where a failed save says so with Retry.
 class HomeCustomizationScreen extends StatefulWidget {
   const HomeCustomizationScreen({super.key});
 
@@ -33,6 +45,9 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
   bool _sessionStarted = false;
   bool _allowPop = false;
   bool _closing = false;
+
+  /// The save in flight was a tap on Retry after a failure.
+  bool _retrying = false;
 
   @override
   void initState() {
@@ -65,42 +80,51 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<HomeCustomizationCubit, HomeCustomizationState>(
       builder: (context, customization) {
+        final Widget body;
         if (customization is HomeCustomizationError) {
-          return _ErrorView(
-            message: customization.message,
+          body = HudaErrorState(
+            message: l10n.unexpectedError,
             onRetry: _customizationCubit.load,
           );
-        }
-        if (customization is! HomeCustomizationReady) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+        } else if (customization is! HomeCustomizationReady) {
+          body = const Center(child: HudaLampSpinner(size: 28));
+        } else {
+          body = Column(
+            children: [
+              Expanded(
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeBottom: true,
+                  child: _buildScrollableEditor(customization),
+                ),
+              ),
+              _SaveBar(
+                state: customization,
+                retrying: _retrying,
+                onSave: _saveAndClose,
+              ),
+            ],
           );
         }
-
         return PopScope(
-          canPop: _allowPop,
+          canPop: _allowPop || customization is! HomeCustomizationReady,
           onPopInvokedWithResult: (didPop, _) {
             if (!didPop) _requestCancel();
           },
-          child: Scaffold(
-            body: Stack(
-              children: [
-                const Positioned.fill(child: _EditorBackground()),
-                Positioned.fill(child: _buildScrollableEditor(customization)),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: CustomizationEditorTopBar(
-                    hasChanges: customization.hasChanges,
-                    isSaving: customization.isSaving,
-                    onCancel: _requestCancel,
-                    onSave: _saveAndClose,
-                  ),
-                ),
-              ],
+          child: HudaScaffold(
+            title: l10n.editHome,
+            leading: IconButton(
+              key: const ValueKey('customization-cancel'),
+              tooltip: l10n.cancel,
+              icon: const Icon(Icons.close_rounded),
+              onPressed: _requestCancel,
+            ),
+            body: HudaStateSwitcher(
+              stateKey: customization.runtimeType,
+              child: body,
             ),
           ),
         );
@@ -109,34 +133,23 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
   }
 
   Widget _buildScrollableEditor(HomeCustomizationReady state) {
-    final mediaQuery = MediaQuery.of(context);
-    final width = mediaQuery.size.width;
-    final textScale = mediaQuery.textScaler.scale(1);
-    final compactTopBar = width < 380 || textScale > 1.35;
-    final topPadding = mediaQuery.padding.top + (compactTopBar ? 112 : 88);
-    final bottomPadding = mediaQuery.viewPadding.bottom + 36;
-
+    final width = MediaQuery.sizeOf(context).width;
+    final space = context.tokens.space;
+    final gutter = space.gutter(width);
     return CustomScrollView(
       controller: _scrollController,
-      physics: const BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
       slivers: [
         SliverPadding(
-          padding: EdgeInsetsDirectional.fromSTEB(
-            16,
-            topPadding,
-            16,
-            bottomPadding,
+          padding: context.scrollPadding(
+            EdgeInsets.fromLTRB(gutter, space.xs, gutter, space.xxl),
           ),
           sliver: SliverToBoxAdapter(
             child: Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1120),
+                constraints: const BoxConstraints(maxWidth: 1200),
                 child: _CustomizationCanvas(
                   state: state,
                   onDragUpdate: _autoScroll,
-                  onRetrySave: _saveAndClose,
                   onRestoreDefault: _restoreDefaultLayout,
                 ),
               ),
@@ -155,7 +168,7 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
     final size = renderObject.size;
     final topEdge = MediaQuery.paddingOf(context).top + 92;
     final bottomEdge =
-        size.height - MediaQuery.viewPaddingOf(context).bottom - 32;
+        size.height - MediaQuery.viewPaddingOf(context).bottom - 96;
     var delta = 0.0;
     if (local.dy < topEdge) {
       delta = -math.min(18.0, (topEdge - local.dy) / 3);
@@ -174,7 +187,11 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
   Future<void> _requestCancel() async {
     if (_closing) return;
     final state = _customizationCubit.state;
-    if (state is! HomeCustomizationReady || state.isSaving) return;
+    if (state is! HomeCustomizationReady) {
+      await _popEditor();
+      return;
+    }
+    if (state.isSaving) return;
     if (!state.hasChanges) {
       _closing = true;
       _customizationCubit.cancelEditing();
@@ -202,28 +219,22 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
       return;
     }
     _closing = true;
+    setState(() => _retrying = state.saveError != null);
     final success = await _customizationCubit.applyDraft();
     if (!mounted) return;
     if (!success) {
       _closing = false;
-      final l10n = AppLocalizations.of(context)!;
-      HudaSnackBar.error(
-        context,
-        message: l10n.homeChangesSaveFailed,
-        action: HudaSnackBarAction(label: l10n.retry, onPressed: _saveAndClose),
-        dismissible: true,
-        replaceCurrent: false,
-      );
+      setState(() => _retrying = false);
       return;
     }
-    HapticFeedback.mediumImpact();
+    HudaHaptics.light(context);
     await _popEditor(result: true);
   }
 
   Future<void> _restoreDefaultLayout() async {
     final confirmed = await showRestoreDefaultLayoutConfirmation(context);
     if (!mounted || !confirmed) return;
-    HapticFeedback.mediumImpact();
+    HudaHaptics.light(context);
     _customizationCubit.resetCurrentTheme();
   }
 
@@ -235,22 +246,95 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
   }
 }
 
+/// Save, pinned at the foot (its surface runs to the edge, its button
+/// above the inset): lit when there's something to save, "Saving…" while
+/// it saves; after a failure, the failure with Retry, then "Retrying…".
+class _SaveBar extends StatelessWidget {
+  const _SaveBar({
+    required this.state,
+    required this.retrying,
+    required this.onSave,
+  });
+
+  final HomeCustomizationReady state;
+  final bool retrying;
+  final VoidCallback onSave;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final width = MediaQuery.sizeOf(context).width;
+    final gutter = space.gutter(width);
+    final insets = MediaQuery.paddingOf(context);
+    final failed = state.saveError != null && !state.isSaving;
+    final Widget content;
+    if (failed || (state.isSaving && retrying)) {
+      content = HudaStatusBanner(
+        key: const ValueKey('home-customization-save-error'),
+        status: failed ? HudaStatus.failed : HudaStatus.retrying,
+        message: l10n.homeChangesSaveFailed,
+        onRetry: failed ? onSave : null,
+      );
+    } else {
+      content = SizedBox(
+        width: double.infinity,
+        child: FilledButton.icon(
+          key: const ValueKey('customization-save'),
+          onPressed: state.hasChanges && !state.isSaving ? onSave : null,
+          icon: state.isSaving
+              ? const HudaLampSpinner(size: 18)
+              : const Icon(Icons.check_rounded),
+          label: Text(state.isSaving ? '${l10n.saving}…' : l10n.save),
+        ),
+      );
+    }
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: theme.scaffoldBackgroundColor,
+        border: Border(
+          top: BorderSide(color: theme.colorScheme.outlineVariant),
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          gutter + insets.left,
+          space.sm,
+          gutter + insets.right,
+          space.sm + insets.bottom,
+        ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: HudaStateSwitcher(
+              stateKey: content.key ?? 'save',
+              child: content,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CustomizationCanvas extends StatelessWidget {
   const _CustomizationCanvas({
     required this.state,
     required this.onDragUpdate,
-    required this.onRetrySave,
     required this.onRestoreDefault,
   });
 
   final HomeCustomizationReady state;
   final ValueChanged<DragUpdateDetails> onDragUpdate;
-  final VoidCallback onRetrySave;
   final VoidCallback onRestoreDefault;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    final theme = Theme.of(context);
     final draft = state.draft;
     final configuration = draft.configurationFor(draft.selectedTheme);
     final features = HomeFeatureCatalog.available(
@@ -266,49 +350,56 @@ class _CustomizationCanvas extends StatelessWidget {
         .where(available.contains)
         .toList(growable: false);
     final sections = configuration.orderedSections;
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (state.saveError != null) ...[
-          _SaveErrorNotice(onRetry: onRetrySave),
-          const SizedBox(height: 14),
-        ],
-        AnimatedSwitcher(
-          duration: reduceMotion
-              ? Duration.zero
-              : const Duration(milliseconds: 300),
-          switchInCurve: Curves.easeOutCubic,
-          switchOutCurve: Curves.easeInCubic,
-          transitionBuilder: (child, animation) => FadeTransition(
-            opacity: animation,
-            child: ScaleTransition(
-              scale: Tween(begin: 0.975, end: 1.0).animate(animation),
-              child: child,
+        HudaSectionHeader(l10n.homeStyle),
+        SizedBox(height: space.xs),
+        _StyleChoices(selected: draft.selectedTheme),
+        SizedBox(height: space.lg),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.touch_app_outlined,
+              size: 20,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
-          ),
-          child: CustomizationThemeBanner(
-            key: ValueKey(draft.selectedTheme),
-            theme: draft.selectedTheme,
-            onEdit: () => showHomeThemePicker(context),
-          ),
+            SizedBox(width: space.xs),
+            Expanded(
+              child: Text(
+                l10n.customizeHomeHint,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 16),
-        const _EditorInstruction(),
-        if (sections.isNotEmpty) ...[
-          const SizedBox(height: 30),
-          CustomizationSectionHeading(title: l10n.homeSections),
-          const SizedBox(height: 12),
-          _SectionReorderGrid(sections: sections, onDragUpdate: onDragUpdate),
-        ],
-        const SizedBox(height: 30),
-        CustomizationSectionHeading(title: l10n.onHome),
-        const SizedBox(height: 12),
-        _AnimatedGroupBody(
+        HudaAnimatedSize(
+          alignment: Alignment.topCenter,
+          child: sections.isEmpty
+              ? const SizedBox(width: double.infinity)
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: space.xl),
+                    HudaSectionHeader(l10n.homeSections),
+                    SizedBox(height: space.xs),
+                    _SectionReorderGrid(
+                      sections: sections,
+                      onDragUpdate: onDragUpdate,
+                    ),
+                  ],
+                ),
+        ),
+        SizedBox(height: space.xl),
+        HudaSectionHeader(l10n.onHome),
+        SizedBox(height: space.xs),
+        _GroupBody(
           empty: primary.isEmpty,
           emptyKey: 'home-empty',
-          emptyIcon: Icons.home_outlined,
           child: _FeatureReorderGrid(
             key: const ValueKey('home-feature-grid'),
             ids: primary,
@@ -317,13 +408,12 @@ class _CustomizationCanvas extends StatelessWidget {
             onDragUpdate: onDragUpdate,
           ),
         ),
-        const SizedBox(height: 30),
-        CustomizationSectionHeading(title: l10n.viewMore),
-        const SizedBox(height: 12),
-        _AnimatedGroupBody(
+        SizedBox(height: space.xl),
+        HudaSectionHeader(l10n.viewMore),
+        SizedBox(height: space.xs),
+        _GroupBody(
           empty: more.isEmpty,
           emptyKey: 'view-more-empty',
-          emptyIcon: Icons.keyboard_double_arrow_down_rounded,
           emptyMessage: l10n.viewMoreEmpty,
           child: _FeatureReorderGrid(
             key: const ValueKey('view-more-feature-grid'),
@@ -333,21 +423,188 @@ class _CustomizationCanvas extends StatelessWidget {
             onDragUpdate: onDragUpdate,
           ),
         ),
-        const SizedBox(height: 24),
-        SizedBox(
-          width: double.infinity,
+        SizedBox(height: space.xl),
+        Align(
+          alignment: AlignmentDirectional.centerStart,
           child: OutlinedButton.icon(
             key: const ValueKey('restore-default-layout'),
             onPressed: state.isSaving ? null : onRestoreDefault,
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(0, 52),
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-            ),
             icon: const Icon(Icons.restart_alt_rounded),
             label: Text(l10n.restoreDefaultLayout),
           ),
         ),
       ],
+    );
+  }
+}
+
+/// The three styles, each its own preview, name and line; one tap picks
+/// one. Three across where they fit, else a list of choice rows.
+class _StyleChoices extends StatelessWidget {
+  const _StyleChoices({required this.selected});
+
+  final HomeThemeId selected;
+
+  static const _order = [
+    HomeThemeId.classic,
+    HomeThemeId.prayerToday,
+    HomeThemeId.quranJourney,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<HomeCustomizationCubit>();
+    final space = context.tokens.space;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final scale = MediaQuery.textScalerOf(context).scale(1);
+        // Short windows (phone landscape) get the compact list: three tall
+        // previews would fill the screen.
+        final across =
+            !context.windowClass.isCompactHeight &&
+            constraints.maxWidth >= 3 * 112 * scale + 2 * space.sm;
+        if (!across) {
+          return Column(
+            children: [
+              for (final theme in _order) ...[
+                if (theme != _order.first) SizedBox(height: space.xs),
+                HudaChoiceRow(
+                  key: ValueKey('home-style-${theme.name}'),
+                  title: homeThemeName(context, theme),
+                  subtitle: homeThemeDescription(context, theme),
+                  selected: selected == theme,
+                  leading: SizedBox(
+                    width: 42,
+                    height: 56,
+                    child: HomeThemePreview(theme: theme),
+                  ),
+                  onTap: () => cubit.selectTheme(theme),
+                ),
+              ],
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (final theme in _order) ...[
+              if (theme != _order.first) SizedBox(width: space.sm),
+              Expanded(
+                child: _StyleTile(
+                  key: ValueKey('home-style-${theme.name}'),
+                  theme: theme,
+                  selected: selected == theme,
+                  onTap: () => cubit.selectTheme(theme),
+                ),
+              ),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _StyleTile extends StatelessWidget {
+  const _StyleTile({
+    super.key,
+    required this.theme,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final HomeThemeId theme;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    final space = tokens.space;
+    final textTheme = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final duration = tokens.motion.of(context, tokens.motion.short);
+    return Semantics(
+      inMutuallyExclusiveGroup: true,
+      checked: selected,
+      button: true,
+      label:
+          '${homeThemeName(context, theme)}. '
+          '${homeThemeDescription(context, theme)}',
+      excludeSemantics: true,
+      child: HudaPressable(
+        child: AnimatedContainer(
+          duration: duration,
+          curve: tokens.motion.standard,
+          decoration: BoxDecoration(
+            color: selected
+                ? scheme.primary.withValues(alpha: 0.06)
+                : scheme.surfaceContainerLowest,
+            borderRadius: tokens.radius.card,
+            border: Border.all(
+              color: selected ? scheme.primary : scheme.outlineVariant,
+              width: selected ? tokens.stroke.fine : tokens.stroke.hairline,
+            ),
+          ),
+          child: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: tokens.radius.card,
+              child: Padding(
+                padding: EdgeInsets.all(space.sm),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 150),
+                        child: AspectRatio(
+                          aspectRatio: 3 / 4,
+                          child: HomeThemePreview(theme: theme),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: space.sm),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            homeThemeName(context, theme),
+                            style: textTheme.titleSmall,
+                          ),
+                        ),
+                        AnimatedSwitcher(
+                          duration: duration,
+                          child: selected
+                              ? Icon(
+                                  Icons.check_circle_rounded,
+                                  key: const ValueKey('on'),
+                                  size: 20,
+                                  color: scheme.primary,
+                                )
+                              : const SizedBox(
+                                  key: ValueKey('off'),
+                                  width: 20,
+                                  height: 20,
+                                ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: space.xxs),
+                    Text(
+                      homeThemeDescription(context, theme),
+                      style: textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -368,13 +625,11 @@ class _SectionReorderGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final columns = constraints.maxWidth >= 720 ? 2 : 1;
-        final textScale = MediaQuery.textScalerOf(context).scale(1);
-        final itemExtent = 70.0 + (textScale - 1).clamp(0.0, 1.0) * 28.0;
         return AnimatedReorderLayout<HomeSectionId>(
           items: sections,
           columns: columns,
-          itemExtent: itemExtent,
-          spacing: 11,
+          itemExtent: EditableHomeSectionCard.extentFor(context),
+          spacing: context.tokens.space.sm,
           moveUpLabel: l10n.moveUp,
           moveDownLabel: l10n.moveDown,
           semanticLabelBuilder: (section) => homeSectionName(context, section),
@@ -383,7 +638,6 @@ class _SectionReorderGrid extends StatelessWidget {
             final fromIndex = sections.indexOf(dragged);
             final toIndex = sections.indexOf(target);
             if (fromIndex < 0 || toIndex < 0 || fromIndex == toIndex) return;
-            HapticFeedback.selectionClick();
             cubit.reorderSections(fromIndex: fromIndex, toIndex: toIndex);
           },
           itemBuilder: (context, section, lifted) => EditableHomeSectionCard(
@@ -415,20 +669,21 @@ class _FeatureReorderGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<HomeCustomizationCubit>();
+    final spacing = context.tokens.space.sm;
+    final fold = FoldInfo.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        final textScale = MediaQuery.textScalerOf(context).scale(1);
-        final columns = _columnsFor(constraints.maxWidth, textScale);
-        final spacing = constraints.maxWidth < 500 ? 10.0 : 13.0;
-        final itemWidth =
-            (constraints.maxWidth - spacing * (columns - 1)) / columns;
-        final itemExtent = textScale > 1.35
-            ? math.max(198.0, math.min(itemWidth, 230.0))
-            : math.max(164.0, itemWidth);
+        final columns = AdaptiveGrid.columns(
+          width: constraints.maxWidth,
+          minTileWidth: AdaptiveGrid.tileWidth(context, 140),
+          spacing: spacing,
+          maxColumns: 6,
+          preferEven: fold.hasFold,
+        );
         return AnimatedReorderLayout<HomeFeatureId>(
           items: ids,
           columns: columns,
-          itemExtent: itemExtent,
+          itemExtent: EditableHomeFeatureCard.extentFor(context),
           spacing: spacing,
           moveUpLabel: l10n.moveUp,
           moveDownLabel: l10n.moveDown,
@@ -438,7 +693,6 @@ class _FeatureReorderGrid extends StatelessWidget {
             final fromIndex = ids.indexOf(dragged);
             final toIndex = ids.indexOf(target);
             if (fromIndex < 0 || toIndex < 0 || fromIndex == toIndex) return;
-            HapticFeedback.selectionClick();
             cubit.reorderFeature(
               primary: primary,
               fromIndex: fromIndex,
@@ -455,7 +709,7 @@ class _FeatureReorderGrid extends StatelessWidget {
               primary: primary,
               lifted: lifted,
               onMove: () {
-                HapticFeedback.selectionClick();
+                HudaHaptics.selection(context);
                 cubit.moveFeature(id, toPrimary: !primary);
               },
             );
@@ -464,259 +718,53 @@ class _FeatureReorderGrid extends StatelessWidget {
       },
     );
   }
-
-  int _columnsFor(double width, double textScale) {
-    if (textScale > 1.35) {
-      if (width >= 800) return 3;
-      if (width >= 520) return 2;
-      return 1;
-    }
-    if (width >= 980) return 6;
-    if (width >= 800) return 5;
-    if (width >= 620) return 4;
-    if (width >= 450) return 3;
-    return 2;
-  }
 }
 
-class _AnimatedGroupBody extends StatelessWidget {
-  const _AnimatedGroupBody({
+/// A group's tools, or (empty) a quiet dashed place that says what it's
+/// for; the change cross-fades and eases its size.
+class _GroupBody extends StatelessWidget {
+  const _GroupBody({
     required this.empty,
     required this.emptyKey,
-    required this.emptyIcon,
     required this.child,
     this.emptyMessage,
   });
 
   final bool empty;
   final String emptyKey;
-  final IconData emptyIcon;
   final String? emptyMessage;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    return AnimatedSize(
-      duration: reduceMotion
-          ? Duration.zero
-          : const Duration(milliseconds: 260),
-      curve: Curves.easeOutCubic,
+    final tokens = context.tokens;
+    final scheme = Theme.of(context).colorScheme;
+    final message = emptyMessage;
+    return HudaStateSwitcher(
+      stateKey: empty,
       alignment: Alignment.topCenter,
-      child: AnimatedSwitcher(
-        duration: reduceMotion
-            ? Duration.zero
-            : const Duration(milliseconds: 220),
-        switchInCurve: Curves.easeOutCubic,
-        switchOutCurve: Curves.easeInCubic,
-        transitionBuilder: (child, animation) => FadeTransition(
-          opacity: animation,
-          child: ScaleTransition(
-            scale: Tween(begin: 0.97, end: 1.0).animate(animation),
-            child: child,
-          ),
-        ),
-        child: empty
-            ? _EmptyGroupArea(
-                key: ValueKey(emptyKey),
-                icon: emptyIcon,
-                message: emptyMessage,
-              )
-            : child,
-      ),
-    );
-  }
-}
-
-class _EditorInstruction extends StatelessWidget {
-  const _EditorInstruction();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final scheme = Theme.of(context).colorScheme;
-    return Semantics(
-      container: true,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: scheme.surfaceContainerLow.withValues(alpha: 0.78),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: scheme.outlineVariant),
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(14, 12, 14, 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.touch_app_rounded,
-                size: 22,
-                color: scheme.onSurfaceVariant,
+      child: empty
+          ? Container(
+              key: ValueKey(emptyKey),
+              constraints: const BoxConstraints(minHeight: 72),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: scheme.surfaceContainerLow,
+                borderRadius: tokens.radius.card,
+                border: Border.all(color: scheme.outlineVariant),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  l10n.customizeHomeHint,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                    height: 1.35,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _EmptyGroupArea extends StatelessWidget {
-  const _EmptyGroupArea({super.key, required this.icon, this.message});
-
-  final IconData icon;
-  final String? message;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      constraints: const BoxConstraints(minHeight: 88),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerLow.withValues(alpha: 0.74),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: scheme.onSurfaceVariant.withValues(alpha: 0.58)),
-            if (message != null) ...[
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  message!,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SaveErrorNotice extends StatelessWidget {
-  const _SaveErrorNotice({required this.onRetry});
-
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final scheme = Theme.of(context).colorScheme;
-    return Material(
-      key: const ValueKey('home-customization-save-error'),
-      color: scheme.errorContainer,
-      borderRadius: BorderRadius.circular(16),
-      child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(14, 10, 8, 10),
-        child: Row(
-          children: [
-            Icon(Icons.error_outline_rounded, color: scheme.onErrorContainer),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                l10n.homeChangesSaveFailed,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: scheme.onErrorContainer,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: onRetry,
-              style: TextButton.styleFrom(
-                foregroundColor: scheme.onErrorContainer,
-              ),
-              child: Text(l10n.retry),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _EditorBackground extends StatelessWidget {
-  const _EditorBackground();
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final tinted = Color.alphaBlend(
-      context.primaryColor.withValues(alpha: isDark ? 0.075 : 0.045),
-      scheme.surface,
-    );
-    return AnimatedContainer(
-      duration: MediaQuery.disableAnimationsOf(context)
-          ? Duration.zero
-          : const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [tinted, scheme.surface, scheme.surfaceContainerLowest],
-          stops: const [0, 0.46, 1],
-        ),
-      ),
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.message, required this.onRetry});
-
-  final String message;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 420),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.error_outline_rounded,
-                  size: 44,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-                const SizedBox(height: 14),
-                Text(message, textAlign: TextAlign.center),
-                const SizedBox(height: 18),
-                FilledButton.icon(
-                  onPressed: onRetry,
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: Text(l10n.retry),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              padding: EdgeInsets.all(tokens.space.md),
+              child: message == null
+                  ? Icon(Icons.home_outlined, color: scheme.onSurfaceVariant)
+                  : Text(
+                      message,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+            )
+          : KeyedSubtree(key: const ValueKey('items'), child: child),
     );
   }
 }

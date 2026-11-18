@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter/services.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
 
 typedef ReorderLayoutItemBuilder<T extends Object> =
     Widget Function(BuildContext context, T item, bool lifted);
@@ -117,7 +117,7 @@ class _AnimatedReorderLayoutState<T extends Object>
       key: ValueKey<T>(item),
       duration: reduceMotion
           ? Duration.zero
-          : const Duration(milliseconds: 240),
+          : const Duration(milliseconds: 250),
       curve: Curves.easeOutCubic,
       start: column * (width + widget.spacing),
       top: row * (widget.itemExtent + widget.spacing),
@@ -151,7 +151,7 @@ class _AnimatedReorderLayoutState<T extends Object>
               duration: reduceMotion
                   ? Duration.zero
                   : const Duration(milliseconds: 150),
-              curve: Curves.easeOutBack,
+              curve: Curves.easeOutCubic,
               scale: targeted ? 1.035 : 1,
               child: _buildDraggable(context, item, width, index),
             );
@@ -237,7 +237,6 @@ class _AnimatedReorderLayoutState<T extends Object>
   }
 
   void _startDrag(T item) {
-    HapticFeedback.mediumImpact();
     setState(() {
       _dragging = item;
       _lastTarget = null;
@@ -271,6 +270,8 @@ class _AnimatedReorderLayoutState<T extends Object>
 
   void _finishDrag() {
     if (!mounted) return;
+    // The tool drops into its place.
+    HudaHaptics.selection(context);
     setState(() {
       _dragging = null;
       _lastTarget = null;

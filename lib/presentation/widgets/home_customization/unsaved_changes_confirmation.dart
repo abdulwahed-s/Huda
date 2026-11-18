@@ -28,6 +28,7 @@ class _DiscardChangesDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
+      scrollable: true,
       icon: const Icon(Icons.edit_off_outlined),
       title: Text(l10n.discardChanges),
       content: Text(l10n.discardChangesMessage),
@@ -56,6 +57,7 @@ class _RestoreDefaultLayoutDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
+      scrollable: true,
       icon: const Icon(Icons.restart_alt_rounded),
       title: Text(l10n.restoreDefaultLayout),
       content: Text(l10n.restoreDefaultLayoutMessage),

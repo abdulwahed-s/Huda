@@ -1,1589 +1,442 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
-import 'package:huda/presentation/widgets/home/shared/andalusian_ornament_geometry.dart';
-import 'package:huda/presentation/widgets/home/shared/andalusian_star_cross_pattern.dart';
 
-enum HomeThemePreviewDetail { compact, expanded }
-
+/// A small picture of a Home style as it now looks, drawn for a 3:4 box
+/// (onboarding's Focus step scales a 120×160 one into its tiles; the
+/// editor's style choices show it as it is). Classic: the landing band
+/// with the logo, then the plates. Path of Prayer: the chrome hero with
+/// the prayer dial and the five times, the medallions. Quran Journey: the
+/// bookmark on the chrome, Today's Ayah on paper, the Khatma's ribbon, the
+/// medallions. No text, in the person's colors.
 class HomeThemePreview extends StatelessWidget {
-  const HomeThemePreview({
-    super.key,
+  const HomeThemePreview({super.key, required this.theme});
+
+  final HomeThemeId theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    final scheme = Theme.of(context).colorScheme;
+    return ExcludeSemantics(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(tokens.radius.sm),
+        child: RepaintBoundary(
+          child: CustomPaint(
+            key: ValueKey('home-preview-${theme.name}'),
+            painter: _PreviewPainter(
+              theme: theme,
+              page: Theme.of(context).scaffoldBackgroundColor,
+              surface: scheme.surfaceContainerLow,
+              outline: scheme.outlineVariant,
+              line: scheme.onSurfaceVariant.withValues(alpha: 0.35),
+              onSurface: scheme.onSurface.withValues(alpha: 0.7),
+              chrome: tokens.chrome,
+              chromeEnd: tokens.chromeEnd,
+              gilt: tokens.gilt,
+              onChrome: tokens.onChrome,
+              ornament: tokens.ornament,
+              warm: Color.lerp(tokens.chromeEnd, tokens.gilt, 0.55)!,
+            ),
+            child: const SizedBox.expand(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PreviewPainter extends CustomPainter {
+  const _PreviewPainter({
     required this.theme,
-    this.detail = HomeThemePreviewDetail.compact,
-    this.configuration,
+    required this.page,
+    required this.surface,
+    required this.outline,
+    required this.line,
+    required this.onSurface,
+    required this.chrome,
+    required this.chromeEnd,
+    required this.gilt,
+    required this.onChrome,
+    required this.ornament,
+    required this.warm,
   });
 
   final HomeThemeId theme;
-  final HomeThemePreviewDetail detail;
-  final HomeThemeConfiguration? configuration;
-
-  @override
-  Widget build(BuildContext context) {
-    final resolved = configuration ?? HomeThemeDefaults.configuration(theme);
-    final scheme = Theme.of(context).colorScheme;
-    final radius = detail == HomeThemePreviewDetail.expanded ? 22.0 : 14.0;
-
-    return ExcludeSemantics(
-      child: RepaintBoundary(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: scheme.surface,
-            borderRadius: BorderRadius.circular(radius),
-            border: Border.all(
-              color: scheme.outlineVariant.withValues(alpha: 0.82),
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(radius - 1),
-            child: KeyedSubtree(
-              key: ValueKey('home-theme-preview-${theme.name}-${detail.name}'),
-              child: switch (theme) {
-                HomeThemeId.classic => _ClassicPreview(
-                  configuration: resolved,
-                  detail: detail,
-                ),
-                HomeThemeId.prayerToday => _PrayerTodayPreview(
-                  configuration: resolved,
-                  detail: detail,
-                ),
-                HomeThemeId.quranJourney => _QuranJourneyPreview(
-                  configuration: resolved,
-                  detail: detail,
-                ),
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ClassicPreview extends StatelessWidget {
-  const _ClassicPreview({required this.configuration, required this.detail});
-
-  final HomeThemeConfiguration configuration;
-  final HomeThemePreviewDetail detail;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final primary = context.primaryColor;
-    final accent = context.accentColor;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final visiblePrimary = configuration.primaryFeatures;
-    final visibleMore = configuration.viewMoreFeatures;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final height = constraints.maxHeight;
-        final unit = math.min(width, height);
-        final headerHeight = height * 0.22;
-        return Stack(
-          children: [
-            Positioned.fill(
-              child: DecoratedBox(
-                key: const ValueKey('classic-preview-background'),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color.alphaBlend(
-                        primary.withValues(alpha: isDark ? 0.13 : 0.065),
-                        scheme.surface,
-                      ),
-                      Color.alphaBlend(
-                        accent.withValues(alpha: isDark ? 0.045 : 0.025),
-                        scheme.surface,
-                      ),
-                      scheme.surface,
-                    ],
-                    stops: const [0, 0.42, 1],
-                  ),
-                ),
-              ),
-            ),
-            Positioned.fill(
-              child: CustomPaint(
-                key: const ValueKey('classic-preview-geometry'),
-                painter: AndalusianStarCrossPatternPainter(
-                  primary: primary,
-                  accent: accent,
-                  isDark: isDark,
-                  bandHeight: math.min(64, height * 0.20),
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.055,
-              end: width * 0.055,
-              top: height * 0.045,
-              height: headerHeight,
-              child: KeyedSubtree(
-                key: const ValueKey('classic-preview-header'),
-                child: Row(
-                  children: [
-                    _PreviewAppMark(
-                      color: primary,
-                      size: headerHeight * 0.66,
-                      layered: false,
-                    ),
-                    SizedBox(width: width * 0.035),
-                    Expanded(
-                      child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: _InkLine(
-                          width: width * 0.17,
-                          height: math.max(2, unit * 0.025),
-                          color: scheme.onSurface,
-                          radius: 99,
-                        ),
-                      ),
-                    ),
-                    _TuneMark(
-                      color: primary,
-                      width:
-                          width *
-                          (detail == HomeThemePreviewDetail.expanded
-                              ? 0.18
-                              : 0.16),
-                      height: headerHeight * 0.58,
-                      showLine: detail == HomeThemePreviewDetail.expanded,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.06,
-              end: width * 0.06,
-              top: height * 0.31,
-              bottom: height * 0.075,
-              child: _ClassicFeatureGrid(
-                primary: primary,
-                surface: scheme.surface,
-                onSurface: scheme.onSurface,
-                visiblePrimary: visiblePrimary,
-                visibleMore: visibleMore,
-                detail: detail,
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _ClassicFeatureGrid extends StatelessWidget {
-  const _ClassicFeatureGrid({
-    required this.primary,
-    required this.surface,
-    required this.onSurface,
-    required this.visiblePrimary,
-    required this.visibleMore,
-    required this.detail,
-  });
-
-  final Color primary;
+  final Color page;
   final Color surface;
+  final Color outline;
+  final Color line;
   final Color onSurface;
-  final List<HomeFeatureId> visiblePrimary;
-  final List<HomeFeatureId> visibleMore;
-  final HomeThemePreviewDetail detail;
+  final Color chrome;
+  final Color chromeEnd;
+  final Color gilt;
+  final Color onChrome;
+  final Color ornament;
+  final Color warm;
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final columns = detail == HomeThemePreviewDetail.expanded ? 5 : 4;
-        const rows = 2;
-        final hasMore = visibleMore.isNotEmpty;
-        final capacity = columns * rows;
-        final primaryCapacity = capacity - (hasMore ? 1 : 0);
-        final shownPrimary = visiblePrimary.take(primaryCapacity).toList();
-        final cells = <Widget>[
-          for (final id in shownPrimary)
-            _ClassicFeatureCell(
-              key: id == HomeFeatureId.quranKit
-                  ? const ValueKey('classic-preview-quran-stack')
-                  : ValueKey('classic-preview-feature-${id.name}'),
-              primary: primary,
-              surface: surface,
-              onSurface: onSurface,
-              quranStack: id == HomeFeatureId.quranKit,
-            ),
-          if (hasMore)
-            _ClassicViewMoreCell(
-              key: const ValueKey('classic-preview-view-more-stack'),
-              primary: primary,
-              surface: surface,
-            ),
-        ];
-        final gap = math.max(3.0, constraints.maxWidth * 0.018);
-        return GridView.count(
-          key: const ValueKey('classic-preview-grid'),
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          crossAxisCount: columns,
-          crossAxisSpacing: gap,
-          mainAxisSpacing: gap,
-          childAspectRatio:
-              (constraints.maxWidth - gap * (columns - 1)) /
-              columns /
-              ((constraints.maxHeight - gap) / rows),
-          children: cells,
+  void paint(Canvas canvas, Size size) {
+    // Drawn on a 120 × 160 grid, scaled to the box.
+    final sx = size.width / 120;
+    final sy = size.height / 160;
+    canvas.save();
+    canvas.scale(sx, sy);
+    canvas.drawRect(const Rect.fromLTWH(0, 0, 120, 160), Paint()..color = page);
+    switch (theme) {
+      case HomeThemeId.classic:
+        _header(canvas);
+        _plates(canvas, top: 46, rows: 4);
+      case HomeThemeId.prayerToday:
+        _dial(canvas);
+        _medallions(canvas, top: 118);
+      case HomeThemeId.quranJourney:
+        _logo(canvas, const Rect.fromLTWH(54, 7, 12, 7), ornament);
+        _bookmark(canvas);
+        _ayah(canvas);
+        _ribbon(canvas);
+        _medallions(canvas, top: 126);
+    }
+    canvas.restore();
+  }
+
+  /// Huda's logo, in brief: its bracket with the letters' notch.
+  void _logo(Canvas canvas, Rect rect, Color color) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = rect.height * 0.22;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, Radius.circular(rect.height * 0.3)),
+      paint,
+    );
+    canvas.drawLine(
+      Offset(rect.left + rect.width * 0.4, rect.bottom),
+      Offset(rect.left + rect.width * 0.4, rect.top + rect.height * 0.45),
+      paint,
+    );
+  }
+
+  void _header(Canvas canvas) {
+    const band = Rect.fromLTWH(0, 0, 120, 38);
+    canvas.drawRect(
+      band,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [chrome, chromeEnd],
+        ).createShader(band),
+    );
+    // The logo in gilt as the name.
+    canvas.drawCircle(
+      const Offset(20, 26),
+      12,
+      Paint()..color = gilt.withValues(alpha: 0.12),
+    );
+    _logo(canvas, const Rect.fromLTWH(8, 20, 24, 13), gilt);
+  }
+
+  void _plates(Canvas canvas, {required double top, required int rows}) {
+    const columns = 4;
+    const gap = 6.0;
+    const side = (120 - 16 - gap * (columns - 1)) / columns;
+    var n = 0;
+    for (var row = 0; row < rows; row++) {
+      for (var column = 0; column < columns; column++) {
+        final x = 8 + column * (side + gap);
+        final y = top + row * (side + 10);
+        if (y + side > 158) return;
+        _plate(canvas, Rect.fromLTWH(x, y, side, side), n++);
+        _bar(
+          canvas,
+          Rect.fromLTWH(x + side * 0.18, y + side + 3, side * 0.64, 2.2),
+          line,
         );
-      },
-    );
+      }
+    }
   }
-}
 
-class _ClassicFeatureCell extends StatelessWidget {
-  const _ClassicFeatureCell({
-    super.key,
-    required this.primary,
-    required this.surface,
-    required this.onSurface,
-    required this.quranStack,
-  });
-
-  final Color primary;
-  final Color surface;
-  final Color onSurface;
-  final bool quranStack;
-
-  @override
-  Widget build(BuildContext context) {
-    final tile = DecoratedBox(
-      decoration: BoxDecoration(
-        color: Color.alphaBlend(primary.withValues(alpha: 0.035), surface),
-        borderRadius: BorderRadius.circular(7),
-        border: Border.all(color: primary.withValues(alpha: 0.13)),
-      ),
-      child: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.34,
-          heightFactor: 0.34,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: primary.withValues(alpha: 0.17),
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-        ),
-      ),
+  /// A tool's plate with a small mark in it: a ring, a crescent, a star.
+  void _plate(Canvas canvas, Rect rect, int n) {
+    final side = rect.width;
+    final plate = RRect.fromRectAndRadius(rect, Radius.circular(side * 0.16));
+    canvas.drawRRect(
+      plate,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [chrome, chromeEnd],
+        ).createShader(rect),
     );
-    if (!quranStack) return tile;
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        PositionedDirectional(
-          start: 3,
-          end: -2,
-          top: -3,
-          bottom: 3,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(7),
-            ),
-          ),
-        ),
-        Positioned.fill(child: tile),
-        Align(
-          alignment: AlignmentDirectional.bottomEnd,
-          child: FractionallySizedBox(
-            widthFactor: 0.42,
-            heightFactor: 0.12,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: onSurface.withValues(alpha: 0.18),
-                borderRadius: BorderRadius.circular(99),
-              ),
-            ),
-          ),
-        ),
-      ],
+    canvas.drawRRect(
+      plate,
+      Paint()
+        ..color = gilt.withValues(alpha: 0.35)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.6,
     );
-  }
-}
-
-class _ClassicViewMoreCell extends StatelessWidget {
-  const _ClassicViewMoreCell({
-    super.key,
-    required this.primary,
-    required this.surface,
-  });
-
-  final Color primary;
-  final Color surface;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        for (var offset = 2; offset >= 1; offset--)
-          PositionedDirectional(
-            start: offset * 2.0,
-            end: -offset * 2.0,
-            top: -offset * 3.0,
-            bottom: offset * 2.0,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Color.alphaBlend(
-                  primary.withValues(alpha: 0.07 + offset * 0.02),
-                  surface,
-                ),
-                borderRadius: BorderRadius.circular(7),
-                border: Border.all(color: primary.withValues(alpha: 0.10)),
-              ),
-            ),
-          ),
-        Positioned.fill(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color.alphaBlend(primary.withValues(alpha: 0.11), surface),
-              borderRadius: BorderRadius.circular(7),
-              border: Border.all(color: primary.withValues(alpha: 0.24)),
-            ),
-            child: Icon(
-              Icons.keyboard_arrow_down_rounded,
-              color: primary,
-              size: 15,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _PrayerTodayPreview extends StatelessWidget {
-  const _PrayerTodayPreview({
-    required this.configuration,
-    required this.detail,
-  });
-
-  final HomeThemeConfiguration configuration;
-  final HomeThemePreviewDetail detail;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final primary = context.primaryColor;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final visiblePrimary = configuration.primaryFeatures.length;
-    final visibleMore = configuration.viewMoreFeatures.length;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final height = constraints.maxHeight;
-        final unit = math.min(width, height);
-        final canvasBottom = height * 0.79;
-        return Stack(
-          children: [
-            Positioned.fill(child: ColoredBox(color: scheme.surface)),
-            Positioned.fill(
-              child: CustomPaint(
-                key: const ValueKey('prayer-preview-atmosphere'),
-                painter: _PrayerAtmospherePreviewPainter(
-                  primary: primary,
-                  primaryDark: context.primaryDarkColor,
-                  isDark: isDark,
-                  surface: scheme.surface,
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.055,
-              end: width * 0.055,
-              top: height * 0.035,
-              height: height * 0.16,
-              child: KeyedSubtree(
-                key: const ValueKey('prayer-preview-header'),
-                child: Row(
-                  children: [
-                    _PreviewAppMark(
-                      color: Colors.white,
-                      size: height * 0.105,
-                      layered: false,
-                      onDark: true,
-                    ),
-                    SizedBox(width: width * 0.025),
-                    _InkLine(
-                      width: width * 0.13,
-                      height: math.max(2, unit * 0.02),
-                      color: Colors.white,
-                      radius: 99,
-                    ),
-                    const Spacer(),
-                    _TuneMark(
-                      color: Colors.white,
-                      width: height * 0.105,
-                      height: height * 0.105,
-                      showLine: false,
-                      onDark: true,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.14,
-              end: width * 0.14,
-              top: height * 0.20,
-              height: height * 0.055,
-              child: KeyedSubtree(
-                key: const ValueKey('prayer-preview-date-context'),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _ContextDash(width: width * 0.16),
-                    SizedBox(width: width * 0.035),
-                    _ContextDash(width: width * 0.13),
-                    if (detail == HomeThemePreviewDetail.expanded) ...[
-                      SizedBox(width: width * 0.035),
-                      _ContextDash(width: width * 0.11),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.065,
-              top: height * 0.29,
-              width: width * 0.44,
-              height: height * 0.42,
-              child: Center(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: CustomPaint(
-                    key: const ValueKey('prayer-preview-countdown'),
-                    painter: _CountdownPreviewPainter(),
-                    child: Center(
-                      child: FractionallySizedBox(
-                        widthFactor: 0.46,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _InkLine(
-                              width: double.infinity,
-                              height: math.max(2, unit * 0.026),
-                              color: Colors.white,
-                              radius: 99,
-                            ),
-                            SizedBox(height: height * 0.028),
-                            _InkLine(
-                              width: double.infinity,
-                              height: math.max(1.5, unit * 0.016),
-                              color: Colors.white,
-                              opacity: 0.45,
-                              radius: 99,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.54,
-              end: width * 0.06,
-              top: height * 0.31,
-              height: height * 0.37,
-              child: _PrayerSchedulePreview(
-                key: const ValueKey('prayer-preview-schedule'),
-                primary: primary,
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: canvasBottom - height * 0.08,
-              height: height * 0.18,
-              child: CustomPaint(
-                key: const ValueKey('prayer-preview-handoff'),
-                painter: _PrayerHandoffPreviewPainter(
-                  color: scheme.surface,
-                  line: primary.withValues(alpha: isDark ? 0.24 : 0.15),
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.075,
-              end: width * 0.075,
-              bottom: height * 0.055,
-              height: height * 0.12,
-              child: _ToolCueRow(
-                key: const ValueKey('prayer-preview-tools'),
-                count: visiblePrimary.clamp(0, 4),
-                hasMore: visibleMore > 0,
-                color: primary,
-                surface: scheme.surface,
-                squared: false,
-              ),
-            ),
-          ],
+    final mark = Paint()
+      ..color = gilt
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.9;
+    final c = rect.center;
+    switch (n % 4) {
+      case 0:
+        canvas.drawCircle(c, side * 0.24, mark);
+      case 1:
+        canvas.drawArc(
+          Rect.fromCircle(center: c, radius: side * 0.24),
+          -1.2,
+          3.6,
+          false,
+          mark,
         );
-      },
-    );
-  }
-}
-
-class _PrayerSchedulePreview extends StatelessWidget {
-  const _PrayerSchedulePreview({super.key, required this.primary});
-
-  final Color primary;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        for (var index = 0; index < 5; index++)
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 1.5),
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 6),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(
-                  alpha: index == 2 ? 0.17 : 0.065,
-                ),
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: Colors.white.withValues(
-                    alpha: index == 2 ? 0.24 : 0.07,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 4,
-                    height: 4,
-                    decoration: const BoxDecoration(
-                      color: Colors.white70,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: _InkLine(
-                      width: double.infinity,
-                      height: 2,
-                      color: Colors.white,
-                      opacity: index == 2 ? 0.75 : 0.42,
-                      radius: 99,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  _InkLine(
-                    width: 13,
-                    height: 2,
-                    color: index == 2 ? primary : Colors.white,
-                    opacity: index == 2 ? 0.95 : 0.46,
-                    radius: 99,
-                  ),
-                ],
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _QuranJourneyPreview extends StatelessWidget {
-  const _QuranJourneyPreview({
-    required this.configuration,
-    required this.detail,
-  });
-
-  final HomeThemeConfiguration configuration;
-  final HomeThemePreviewDetail detail;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final primary = context.primaryColor;
-    final illumination = Color.lerp(
-      context.accentColor,
-      const Color(0xFFC59A46),
-      Theme.of(context).brightness == Brightness.dark ? 0.36 : 0.48,
-    )!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final dailyVisible = configuration.orderedSections.contains(
-      HomeSectionId.dailyAyah,
-    );
-    final khatmaVisible = configuration.orderedSections.contains(
-      HomeSectionId.khatmaProgress,
-    );
-    final primaryCount = configuration.primaryFeatures.length;
-    final moreCount = configuration.viewMoreFeatures.length;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final height = constraints.maxHeight;
-        final unit = math.min(width, height);
-        final headerBottom = height * 0.20;
-        final ayahTop = height * 0.23;
-        final ayahHeight = dailyVisible ? height * 0.22 : 0.0;
-        final readingTop = dailyVisible ? height * 0.49 : height * 0.28;
-        final readingHeight = dailyVisible ? height * 0.24 : height * 0.43;
-        return Stack(
-          children: [
-            Positioned.fill(
-              child: DecoratedBox(
-                key: const ValueKey('quran-preview-paper'),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color.alphaBlend(
-                        primary.withValues(alpha: isDark ? 0.10 : 0.035),
-                        scheme.surface,
-                      ),
-                      Color.alphaBlend(
-                        illumination.withValues(alpha: isDark ? 0.055 : 0.028),
-                        scheme.surface,
-                      ),
-                      scheme.surface,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Positioned.fill(
-              child: CustomPaint(
-                key: const ValueKey('quran-preview-manuscript-details'),
-                painter: _ManuscriptPreviewPainter(
-                  ink: primary,
-                  illumination: illumination,
-                  isDark: isDark,
-                  textDirection: Directionality.of(context),
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.055,
-              end: width * 0.055,
-              top: height * 0.035,
-              height: height * 0.14,
-              child: KeyedSubtree(
-                key: const ValueKey('quran-preview-header'),
-                child: Row(
-                  children: [
-                    _PreviewAppMark(
-                      color: primary,
-                      size: height * 0.10,
-                      layered: true,
-                    ),
-                    SizedBox(width: width * 0.03),
-                    _InkLine(
-                      width: width * 0.14,
-                      height: math.max(2, unit * 0.021),
-                      color: scheme.onSurface,
-                      radius: 99,
-                    ),
-                    const Spacer(),
-                    _TuneMark(
-                      color: primary,
-                      width: height * 0.10,
-                      height: height * 0.10,
-                      showLine: false,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.06,
-              end: width * 0.06,
-              top: headerBottom,
-              height: 1,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      primary.withValues(alpha: 0.75),
-                      illumination.withValues(alpha: 0.48),
-                      illumination.withValues(alpha: 0),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            if (dailyVisible)
-              PositionedDirectional(
-                start: width * 0.07,
-                end: width * 0.07,
-                top: ayahTop,
-                height: ayahHeight,
-                child: _AyahPreviewRegion(
-                  key: const ValueKey('quran-preview-ayah'),
-                  primary: primary,
-                  illumination: illumination,
-                  surface: scheme.surface,
-                ),
-              ),
-            PositionedDirectional(
-              start: width * 0.07,
-              end: width * 0.07,
-              top: readingTop,
-              height: readingHeight,
-              child: _ReadingPreviewRegion(
-                key: const ValueKey('quran-preview-reading'),
-                primary: primary,
-                illumination: illumination,
-                surface: scheme.surface,
-                onSurface: scheme.onSurface,
-                khatmaVisible: khatmaVisible,
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.09,
-              end: width * 0.09,
-              top: height * 0.76,
-              height: height * 0.09,
-              child: _QuranShortcutRail(
-                key: const ValueKey('quran-preview-shortcuts'),
-                primary: primary,
-                surface: scheme.surface,
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: height * 0.84,
-              height: height * 0.06,
-              child: CustomPaint(
-                key: const ValueKey('quran-preview-handoff'),
-                painter: _QuranHandoffPreviewPainter(
-                  color: primary,
-                  illumination: illumination,
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              start: width * 0.08,
-              end: width * 0.08,
-              bottom: height * 0.035,
-              height: height * 0.07,
-              child: _ToolCueRow(
-                key: const ValueKey('quran-preview-supporting-tools'),
-                count: primaryCount.clamp(0, 5),
-                hasMore: moreCount > 0,
-                color: primary,
-                surface: scheme.surface,
-                squared: true,
-              ),
-            ),
-          ],
+      case 2:
+        canvas.drawPath(_star(c, side * 0.26), mark);
+      default:
+        canvas.drawRect(
+          Rect.fromCenter(center: c, width: side * 0.42, height: side * 0.32),
+          mark,
         );
-      },
-    );
+    }
   }
-}
 
-class _AyahPreviewRegion extends StatelessWidget {
-  const _AyahPreviewRegion({
-    super.key,
-    required this.primary,
-    required this.illumination,
-    required this.surface,
-  });
-
-  final Color primary;
-  final Color illumination;
-  final Color surface;
-
-  @override
-  Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.fill,
-      child: SizedBox(
-        width: 240,
-        height: 56,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Color.alphaBlend(
-              illumination.withValues(alpha: 0.045),
-              surface,
-            ),
-            border: Border.all(color: primary.withValues(alpha: 0.20)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(3),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(color: illumination.withValues(alpha: 0.24)),
-              ),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(7, 5, 7, 5),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 9,
-                      height: 9,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: illumination),
-                      ),
-                    ),
-                    const SizedBox(width: 7),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _InkLine(
-                            width: double.infinity,
-                            height: 2.5,
-                            color: primary,
-                            opacity: 0.70,
-                            radius: 0,
-                          ),
-                          const SizedBox(height: 5),
-                          FractionallySizedBox(
-                            widthFactor: 0.72,
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: _InkLine(
-                              width: double.infinity,
-                              height: 2,
-                              color: primary,
-                              opacity: 0.42,
-                              radius: 0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+  /// Path of Prayer's hero: the chrome from the top with the logo, the
+  /// dial (the day's arc over the horizon, the lamps, the sun at now, the
+  /// next prayer inside), the five times under it.
+  void _dial(Canvas canvas) {
+    const hero = Rect.fromLTWH(0, 0, 120, 108);
+    canvas.drawRect(
+      hero,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [chrome, chromeEnd],
+        ).createShader(hero),
     );
-  }
-}
-
-class _ReadingPreviewRegion extends StatelessWidget {
-  const _ReadingPreviewRegion({
-    super.key,
-    required this.primary,
-    required this.illumination,
-    required this.surface,
-    required this.onSurface,
-    required this.khatmaVisible,
-  });
-
-  final Color primary;
-  final Color illumination;
-  final Color surface;
-  final Color onSurface;
-  final bool khatmaVisible;
-
-  @override
-  Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.fill,
-      child: SizedBox(
-        width: 240,
-        height: 72,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: primary.withValues(alpha: 0.018),
-            border: Border.all(color: primary.withValues(alpha: 0.22)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(3),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(color: illumination.withValues(alpha: 0.20)),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: khatmaVisible ? 5 : 1,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(8, 6, 8, 6),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _InkLine(
-                            width: 28,
-                            height: 2,
-                            color: primary,
-                            opacity: 0.60,
-                            radius: 0,
-                          ),
-                          const SizedBox(height: 6),
-                          _InkLine(
-                            width: 45,
-                            height: 4,
-                            color: onSurface,
-                            opacity: 0.72,
-                            radius: 0,
-                          ),
-                          const Spacer(),
-                          FractionallySizedBox(
-                            widthFactor: 0.62,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: primary,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(2),
-                                ),
-                              ),
-                              child: const SizedBox(height: 9),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  if (khatmaVisible) ...[
-                    Container(
-                      width: 1,
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                      color: primary.withValues(alpha: 0.18),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: KeyedSubtree(
-                        key: const ValueKey('quran-preview-khatma'),
-                        child: Padding(
-                          padding: const EdgeInsets.all(7),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.route_rounded,
-                                size: 10,
-                                color: illumination,
-                              ),
-                              const SizedBox(height: 5),
-                              _InkLine(
-                                width: double.infinity,
-                                height: 2,
-                                color: primary,
-                                opacity: 0.48,
-                                radius: 0,
-                              ),
-                              const SizedBox(height: 6),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(99),
-                                child: LinearProgressIndicator(
-                                  minHeight: 3,
-                                  value: 0.64,
-                                  backgroundColor: primary.withValues(
-                                    alpha: 0.10,
-                                  ),
-                                  valueColor: AlwaysStoppedAnimation(
-                                    illumination,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+    _logo(canvas, const Rect.fromLTWH(54, 6, 12, 7), gilt);
+    const c = Offset(60, 58);
+    const r = 30.0;
+    final ring = Paint()
+      ..color = gilt.withValues(alpha: 0.25)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.6;
+    canvas.drawCircle(c, r + 5, ring);
+    canvas.drawLine(
+      const Offset(24, 58),
+      const Offset(96, 58),
+      ring..color = gilt.withValues(alpha: 0.5),
     );
-  }
-}
-
-class _QuranShortcutRail extends StatelessWidget {
-  const _QuranShortcutRail({
-    super.key,
-    required this.primary,
-    required this.surface,
-  });
-
-  final Color primary;
-  final Color surface;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        for (var index = 0; index < 4; index++) ...[
-          Expanded(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: index == 0
-                    ? primary.withValues(alpha: 0.12)
-                    : surface.withValues(alpha: 0.72),
-                border: Border.all(
-                  color: primary.withValues(alpha: index == 0 ? 0.26 : 0.13),
-                ),
-              ),
-              child: Center(
-                child: Container(
-                  width: 5,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: primary.withValues(alpha: index == 0 ? 0.8 : 0.42),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          if (index != 3) const SizedBox(width: 3),
-        ],
-      ],
+    // The walked arc and the rest of the day.
+    final rect = Rect.fromCircle(center: c, radius: r);
+    canvas.drawArc(
+      rect,
+      math.pi * 0.8,
+      math.pi * 0.95,
+      false,
+      Paint()
+        ..color = gilt
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.4
+        ..strokeCap = StrokeCap.round,
     );
-  }
-}
-
-class _ToolCueRow extends StatelessWidget {
-  const _ToolCueRow({
-    super.key,
-    required this.count,
-    required this.hasMore,
-    required this.color,
-    required this.surface,
-    required this.squared,
-  });
-
-  final int count;
-  final bool hasMore;
-  final Color color;
-  final Color surface;
-  final bool squared;
-
-  @override
-  Widget build(BuildContext context) {
-    final shown = count.clamp(0, 5);
-    if (shown == 0 && !hasMore) {
-      return DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border.all(color: color.withValues(alpha: 0.10)),
-          borderRadius: squared ? null : BorderRadius.circular(6),
-        ),
+    canvas.drawArc(
+      rect,
+      math.pi * 1.75,
+      math.pi * 0.45,
+      false,
+      Paint()
+        ..color = gilt.withValues(alpha: 0.4)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.7,
+    );
+    Offset at(double a) => c + Offset(math.cos(a), math.sin(a)) * r;
+    for (final a in const [0.8, 1.5]) {
+      canvas.drawCircle(at(math.pi * a), 1.6, Paint()..color = gilt);
+    }
+    canvas.drawCircle(at(math.pi * 1.86), 2.6, Paint()..color = chrome);
+    canvas.drawCircle(
+      at(math.pi * 1.86),
+      2.6,
+      Paint()
+        ..color = gilt
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.9,
+    );
+    canvas.drawCircle(at(math.pi * 1.75), 3.4, Paint()..color = onChrome);
+    // The next prayer and the time left, inside.
+    _bar(canvas, const Rect.fromLTWH(52, 38, 16, 1.8), gilt);
+    _bar(canvas, const Rect.fromLTWH(48, 43, 24, 6), onChrome);
+    _bar(canvas, const Rect.fromLTWH(51, 51, 18, 2.6), gilt);
+    _bar(
+      canvas,
+      const Rect.fromLTWH(50, 63, 20, 3.4),
+      onChrome.withValues(alpha: 0.8),
+    );
+    // The five times.
+    for (var i = 0; i < 5; i++) {
+      final x = 12 + i * 20.0;
+      _bar(
+        canvas,
+        Rect.fromLTWH(x, 96, 16, 2.6),
+        i == 2 ? gilt : onChrome.withValues(alpha: 0.75),
       );
     }
-    return Row(
-      children: [
-        for (var index = 0; index < shown; index++) ...[
-          Expanded(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Color.alphaBlend(
-                  color.withValues(alpha: index == 0 ? 0.075 : 0.035),
-                  surface,
-                ),
-                border: Border.all(color: color.withValues(alpha: 0.12)),
-                borderRadius: squared ? null : BorderRadius.circular(5),
-              ),
-              child: Center(
-                child: Container(
-                  width: 4,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.48),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 3),
-        ],
-        if (hasMore)
-          Expanded(
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                PositionedDirectional(
-                  start: 2,
-                  end: -1,
-                  top: -2,
-                  bottom: 2,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.055),
-                      borderRadius: squared ? null : BorderRadius.circular(5),
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Color.alphaBlend(
-                        color.withValues(alpha: 0.10),
-                        surface,
-                      ),
-                      border: Border.all(color: color.withValues(alpha: 0.20)),
-                      borderRadius: squared ? null : BorderRadius.circular(5),
-                    ),
-                    child: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 10,
-                      color: color,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _PreviewAppMark extends StatelessWidget {
-  const _PreviewAppMark({
-    required this.color,
-    required this.size,
-    required this.layered,
-    this.onDark = false,
-  });
-
-  final Color color;
-  final double size;
-  final bool layered;
-  final bool onDark;
-
-  @override
-  Widget build(BuildContext context) {
-    final mark = DecoratedBox(
-      decoration: BoxDecoration(
-        color: onDark
-            ? Colors.white.withValues(alpha: 0.10)
-            : Theme.of(context).colorScheme.surface.withValues(alpha: 0.88),
-        borderRadius: BorderRadius.circular(size * 0.27),
-        border: Border.all(color: color.withValues(alpha: 0.20)),
-      ),
-      child: Center(
-        child: Icon(
-          Icons.brightness_5_rounded,
-          size: size * 0.52,
-          color: color.withValues(alpha: onDark ? 0.92 : 0.78),
-        ),
-      ),
-    );
-    if (!layered) return SizedBox.square(dimension: size, child: mark);
-    return SizedBox(
-      width: size * 1.16,
-      height: size * 1.10,
-      child: Stack(
-        children: [
-          PositionedDirectional(
-            start: size * 0.16,
-            top: size * 0.12,
-            child: Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(size * 0.27),
-                border: Border.all(color: color.withValues(alpha: 0.12)),
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            start: 0,
-            top: 0,
-            child: SizedBox.square(dimension: size, child: mark),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _TuneMark extends StatelessWidget {
-  const _TuneMark({
-    required this.color,
-    required this.width,
-    required this.height,
-    required this.showLine,
-    this.onDark = false,
-  });
-
-  final Color color;
-  final double width;
-  final double height;
-  final bool showLine;
-  final bool onDark;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      padding: showLine
-          ? EdgeInsets.symmetric(horizontal: math.min(5, width * 0.08))
-          : EdgeInsets.zero,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: onDark ? 0.10 : 0.075),
-        borderRadius: BorderRadius.circular(99),
-        border: Border.all(color: color.withValues(alpha: 0.15)),
-      ),
-      child: showLine
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.tune_rounded, color: color, size: height * 0.48),
-                const SizedBox(width: 4),
-                Flexible(
-                  child: _InkLine(
-                    width: double.infinity,
-                    height: 2,
-                    color: color,
-                    opacity: 0.55,
-                    radius: 99,
-                  ),
-                ),
-              ],
-            )
-          : Center(
-              child: Icon(
-                Icons.tune_rounded,
-                color: color,
-                size: height * 0.48,
-              ),
-            ),
-    );
-  }
-}
-
-class _ContextDash extends StatelessWidget {
-  const _ContextDash({required this.width});
-
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 7,
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.07),
-        borderRadius: BorderRadius.circular(99),
-      ),
-      child: Center(
-        child: Container(
-          height: 1.5,
-          color: Colors.white.withValues(alpha: 0.48),
-        ),
-      ),
-    );
-  }
-}
-
-class _InkLine extends StatelessWidget {
-  const _InkLine({
-    required this.width,
-    required this.height,
-    required this.color,
-    required this.radius,
-    this.opacity = 0.72,
-  });
-
-  final double width;
-  final double height;
-  final Color color;
-  final double radius;
-  final double opacity;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: opacity),
-        borderRadius: BorderRadius.circular(radius),
-      ),
-    );
-  }
-}
-
-class _PrayerAtmospherePreviewPainter extends CustomPainter {
-  const _PrayerAtmospherePreviewPainter({
-    required this.primary,
-    required this.primaryDark,
-    required this.isDark,
-    required this.surface,
-  });
-
-  final Color primary;
-  final Color primaryDark;
-  final bool isDark;
-  final Color surface;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final canvasRect = Rect.fromLTWH(0, 0, size.width, size.height * 0.82);
-    final colors = isDark
-        ? [
-            Color.lerp(primaryDark, const Color(0xFF06131B), 0.42)!,
-            Color.lerp(primary, const Color(0xFF102B34), 0.54)!,
-          ]
-        : [primaryDark, Color.lerp(primary, primaryDark, 0.35)!];
-    final background = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: colors,
-      ).createShader(canvasRect);
-    canvas.drawRect(canvasRect, background);
-
-    final ink = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = math.max(0.6, size.shortestSide * 0.0038)
-      ..color = Colors.white.withValues(alpha: 0.075);
-    AndalusianOrnamentGeometry.drawVegetalFrieze(
-      canvas,
-      Rect.fromLTWH(0, size.height * 0.16, size.width, 14),
-      vine: Paint()
-        ..color = Colors.white.withValues(alpha: 0.045)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = ink.strokeWidth,
-      leaf: Paint()
-        ..color = const Color(0xFFF3D58A).withValues(alpha: 0.055)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = ink.strokeWidth,
-    );
-    final archBay = Rect.fromCenter(
-      center: Offset(size.width * 0.5, size.height * 0.48),
-      width: size.width * 0.42,
-      height: size.height * 0.54,
-    );
-    final arch = AndalusianOrnamentGeometry.horseshoeArch(archBay);
-    canvas
-      ..save()
-      ..clipPath(Path.from(arch)..close());
-    AndalusianOrnamentGeometry.drawStarAndCrossField(
-      canvas,
-      Rect.fromLTRB(
-        archBay.left + 12,
-        archBay.top + archBay.height * 0.42,
-        archBay.right - 12,
-        archBay.bottom - 8,
-      ),
-      module: math.max(64, size.shortestSide * 0.24),
-      starStroke: Paint()
-        ..color = Colors.white.withValues(alpha: 0.045)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = ink.strokeWidth,
-      crossStroke: Paint()
-        ..color = const Color(0xFFF3D58A).withValues(alpha: 0.055)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = ink.strokeWidth,
-    );
-    canvas
-      ..restore()
-      ..drawPath(arch, ink);
+    _bar(canvas, const Rect.fromLTWH(56, 100.5, 8, 1.2), gilt);
   }
 
-  @override
-  bool shouldRepaint(covariant _PrayerAtmospherePreviewPainter oldDelegate) =>
-      primary != oldDelegate.primary ||
-      primaryDark != oldDelegate.primaryDark ||
-      isDark != oldDelegate.isDark ||
-      surface != oldDelegate.surface;
-}
+  /// The tools as round medallions, three to a row.
+  void _medallions(Canvas canvas, {required double top}) {
+    for (var row = 0; row < 2; row++) {
+      for (var i = 0; i < 3; i++) {
+        final c = Offset(24 + i * 36.0, top + 7 + row * 22);
+        canvas.drawCircle(
+          c,
+          7.5,
+          Paint()
+            ..shader = RadialGradient(
+              colors: [chromeEnd, chrome],
+            ).createShader(Rect.fromCircle(center: c, radius: 7.5)),
+        );
+        canvas.drawCircle(
+          c,
+          7.5,
+          Paint()
+            ..color = gilt.withValues(alpha: 0.55)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 0.6,
+        );
+        canvas.drawCircle(
+          c,
+          2.6,
+          Paint()
+            ..color = gilt
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 0.8,
+        );
+        _bar(canvas, Rect.fromLTWH(c.dx - 7, c.dy + 10, 14, 1.8), line);
+      }
+    }
+  }
 
-class _CountdownPreviewPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = size.center(Offset.zero);
-    final radius = size.shortestSide * 0.43;
-    final track = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = math.max(2, size.shortestSide * 0.055)
-      ..color = Colors.white.withValues(alpha: 0.16);
-    final progress = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = track.strokeWidth
-      ..color = const Color(0xFFF3D58A).withValues(alpha: 0.92);
-    final rect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, track);
-    canvas.drawArc(rect, -math.pi / 2, math.pi * 1.32, false, progress);
-    canvas.drawCircle(
-      center,
-      radius * 0.76,
+  /// Quran Journey's bookmark on the chrome: the gilt ribbon from its top
+  /// edge, two lines, the go disc, the place line along its foot.
+  void _bookmark(Canvas canvas) {
+    final card = RRect.fromLTRBR(8, 22, 112, 48, const Radius.circular(4));
+    canvas.drawRRect(
+      card,
       Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1
-        ..color = Colors.white.withValues(alpha: 0.08),
+        ..shader = LinearGradient(
+          colors: [chrome, chromeEnd],
+        ).createShader(card.outerRect),
     );
-  }
-
-  @override
-  bool shouldRepaint(covariant _CountdownPreviewPainter oldDelegate) => false;
-}
-
-class _PrayerHandoffPreviewPainter extends CustomPainter {
-  const _PrayerHandoffPreviewPainter({required this.color, required this.line});
-
-  final Color color;
-  final Color line;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final path = Path()
-      ..moveTo(0, size.height * 0.40)
-      ..cubicTo(
-        size.width * 0.18,
-        size.height * 0.05,
-        size.width * 0.34,
-        size.height * 0.74,
-        size.width * 0.52,
-        size.height * 0.42,
-      )
-      ..cubicTo(
-        size.width * 0.70,
-        size.height * 0.10,
-        size.width * 0.84,
-        size.height * 0.63,
-        size.width,
-        size.height * 0.30,
-      )
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
-      ..close();
-    canvas.drawPath(path, Paint()..color = color);
     canvas.drawPath(
-      path,
+      Path()
+        ..moveTo(14, 22)
+        ..lineTo(19, 22)
+        ..lineTo(19, 34)
+        ..lineTo(16.5, 31.5)
+        ..lineTo(14, 34)
+        ..close(),
+      Paint()..color = gilt,
+    );
+    _bar(canvas, const Rect.fromLTWH(25, 27, 18, 1.8), gilt);
+    _bar(canvas, const Rect.fromLTWH(25, 31, 34, 3.4), onChrome);
+    _bar(
+      canvas,
+      const Rect.fromLTWH(25, 36.5, 26, 1.8),
+      onChrome.withValues(alpha: 0.5),
+    );
+    canvas.drawCircle(const Offset(102, 32), 5, Paint()..color = onChrome);
+    _bar(
+      canvas,
+      const Rect.fromLTWH(25, 42.5, 80, 0.8),
+      onChrome.withValues(alpha: 0.3),
+    );
+    _bar(canvas, const Rect.fromLTWH(25, 42.5, 38, 0.9), gilt);
+  }
+
+  /// Today's Ayah on paper: its eyebrow, two lines of the verse ending in
+  /// the rosette.
+  void _ayah(Canvas canvas) {
+    final card = RRect.fromLTRBR(8, 54, 112, 88, const Radius.circular(4));
+    canvas.drawRRect(card, Paint()..color = surface);
+    canvas.drawRRect(
+      card,
       Paint()
-        ..color = line
+        ..color = ornament.withValues(alpha: 0.45)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1,
+        ..strokeWidth = 0.6,
+    );
+    _bar(canvas, const Rect.fromLTWH(14, 59, 20, 1.8), ornament);
+    _bar(canvas, const Rect.fromLTWH(86, 59, 20, 1.8), line);
+    _bar(canvas, const Rect.fromLTWH(18, 67, 84, 3), onSurface);
+    _bar(canvas, const Rect.fromLTWH(34, 76, 46, 3), onSurface);
+    canvas.drawCircle(
+      const Offset(28, 77.5),
+      2.6,
+      Paint()
+        ..color = ornament
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.7,
     );
   }
 
-  @override
-  bool shouldRepaint(covariant _PrayerHandoffPreviewPainter oldDelegate) =>
-      color != oldDelegate.color || line != oldDelegate.line;
-}
-
-class _ManuscriptPreviewPainter extends CustomPainter {
-  const _ManuscriptPreviewPainter({
-    required this.ink,
-    required this.illumination,
-    required this.isDark,
-    required this.textDirection,
-  });
-
-  final Color ink;
-  final Color illumination;
-  final bool isDark;
-  final TextDirection textDirection;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final outer = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
-      ..color = ink.withValues(alpha: isDark ? 0.18 : 0.10);
-    final inner = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.65
-      ..color = illumination.withValues(alpha: isDark ? 0.22 : 0.16);
-    canvas.drawRect(
-      Rect.fromLTWH(3, 3, size.width - 6, size.height - 6),
-      outer,
+  /// The Khatma's ribbon on the page: the days read in gilt, today's
+  /// taller.
+  void _ribbon(Canvas canvas) {
+    final card = RRect.fromLTRBR(8, 94, 112, 118, const Radius.circular(4));
+    canvas.drawRRect(card, Paint()..color = surface);
+    canvas.drawRRect(
+      card,
+      Paint()
+        ..color = outline
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.6,
     );
-    canvas.drawRect(
-      Rect.fromLTWH(6, 6, size.width - 12, size.height - 12),
-      inner,
-    );
-    final rootX = textDirection == TextDirection.rtl ? size.width - 8.0 : 8.0;
-    AndalusianOrnamentGeometry.drawAtauriqueSpray(
-      canvas,
-      Offset(rootX, size.height * 0.80),
-      width: size.width * 0.24,
-      height: size.height * 0.42,
-      vine: outer,
-      leaf: inner,
-    );
-    AndalusianOrnamentGeometry.drawEightfoldRosette(
-      canvas,
-      Offset(size.width / 2, size.height * 0.10),
-      size.shortestSide * 0.035,
-      primary: outer,
-      secondary: inner,
-    );
+    _bar(canvas, const Rect.fromLTWH(14, 98.5, 20, 1.8), ornament);
+    _bar(canvas, const Rect.fromLTWH(14, 102.5, 30, 2.8), onSurface);
+    _bar(canvas, const Rect.fromLTWH(96, 99, 10, 5), ornament);
+    for (var i = 0; i < 15; i++) {
+      final x = 14 + i * 6.4;
+      final today = i == 6;
+      _bar(
+        canvas,
+        Rect.fromLTWH(x, today ? 109 : 110, 4.6, today ? 4.4 : 2.4),
+        i <= 6 ? ornament : line,
+      );
+    }
   }
 
-  @override
-  bool shouldRepaint(covariant _ManuscriptPreviewPainter oldDelegate) =>
-      ink != oldDelegate.ink ||
-      illumination != oldDelegate.illumination ||
-      isDark != oldDelegate.isDark ||
-      textDirection != oldDelegate.textDirection;
-}
-
-class _QuranHandoffPreviewPainter extends CustomPainter {
-  const _QuranHandoffPreviewPainter({
-    required this.color,
-    required this.illumination,
-  });
-
-  final Color color;
-  final Color illumination;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final strong = Paint()
-      ..color = color.withValues(alpha: 0.24)
-      ..strokeWidth = 1;
-    final light = Paint()
-      ..color = illumination.withValues(alpha: 0.20)
-      ..strokeWidth = 0.75;
-    strong.style = PaintingStyle.stroke;
-    light.style = PaintingStyle.stroke;
-    AndalusianOrnamentGeometry.drawInterlacedPolygonChain(
-      canvas,
-      Rect.fromLTWH(
-        size.width * 0.08,
-        size.height * 0.12,
-        size.width * 0.84,
-        size.height * 0.40,
-      ),
-      primary: strong,
-      secondary: light,
-    );
-    AndalusianOrnamentGeometry.drawEightfoldRosette(
-      canvas,
-      Offset(size.width / 2, size.height * 0.72),
-      size.shortestSide * 0.055,
-      primary: strong,
-      secondary: light,
-    );
+  Path _star(Offset c, double r) {
+    final path = Path();
+    for (var i = 0; i < 14; i++) {
+      final a = -1.5708 + i * 3.14159 / 7;
+      final d = i.isEven ? r : r * 0.48;
+      final p = c + Offset(d * _cos(a), d * _sin(a));
+      i == 0 ? path.moveTo(p.dx, p.dy) : path.lineTo(p.dx, p.dy);
+    }
+    return path..close();
   }
 
+  static double _cos(double a) => Offset.fromDirection(a).dx;
+  static double _sin(double a) => Offset.fromDirection(a).dy;
+
+  void _bar(Canvas canvas, Rect rect, Color color) => canvas.drawRRect(
+    RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 2)),
+    Paint()..color = color,
+  );
+
   @override
-  bool shouldRepaint(covariant _QuranHandoffPreviewPainter oldDelegate) =>
-      color != oldDelegate.color || illumination != oldDelegate.illumination;
+  bool shouldRepaint(_PreviewPainter old) =>
+      old.theme != theme ||
+      old.page != page ||
+      old.chrome != chrome ||
+      old.gilt != gilt ||
+      old.surface != surface;
 }
