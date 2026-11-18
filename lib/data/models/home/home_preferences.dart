@@ -245,16 +245,20 @@ class HomeThemeDefaults {
         ],
         viewMoreFeatures: [],
       ),
+      // Path of Prayer's dial is Prayer Times, and its Quran Kit always
+      // comes first: both are placed by the page, not the person.
       HomeThemeId.prayerToday => _withPrimary(
         sections: const [],
         primary: const [
-          HomeFeatureId.prayerTimes,
-          HomeFeatureId.quranKit,
           HomeFeatureId.athkar,
           HomeFeatureId.hadith,
           HomeFeatureId.tasbih,
         ],
-        reserved: const {HomeFeatureId.quran},
+        reserved: const {
+          HomeFeatureId.quran,
+          HomeFeatureId.prayerTimes,
+          HomeFeatureId.quranKit,
+        },
       ),
       HomeThemeId.quranJourney => _withPrimary(
         sections: const [HomeSectionId.dailyAyah, HomeSectionId.khatmaProgress],
@@ -302,7 +306,11 @@ class HomeThemePolicy {
   static Set<HomeFeatureId> reservedFeatures(HomeThemeId theme) =>
       switch (theme) {
         HomeThemeId.classic => const {},
-        HomeThemeId.prayerToday => const {HomeFeatureId.quran},
+        HomeThemeId.prayerToday => const {
+          HomeFeatureId.quran,
+          HomeFeatureId.prayerTimes,
+          HomeFeatureId.quranKit,
+        },
         HomeThemeId.quranJourney => const {
           HomeFeatureId.quran,
           HomeFeatureId.quranKit,

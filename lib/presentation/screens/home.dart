@@ -4,116 +4,81 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/routes/app_route.dart';
-import 'package:huda/core/services/update_service.dart';
 import 'package:huda/core/services/quran_audio_progress_service.dart';
 import 'package:huda/core/services/quran_radio_progress_service.dart';
+import 'package:huda/core/services/rating_service.dart';
+import 'package:huda/core/services/update_service.dart';
+import 'package:huda/core/services/whats_new_service.dart';
+import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/home/home_cubit.dart';
 import 'package:huda/cubit/home_customization/home_customization_cubit.dart';
-import 'package:huda/cubit/home_customization/home_customization_state.dart';
 import 'package:huda/cubit/islamic_event/islamic_event_cubit.dart';
-import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/quran/quran_cubit.dart';
-import 'package:huda/cubit/quran_player/quran_player_cubit.dart';
-import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
 import 'package:huda/cubit/quran_player/download_progress_cubit.dart';
+import 'package:huda/cubit/quran_player/player_bar_cubit.dart';
+import 'package:huda/cubit/quran_player/quran_player_cubit.dart';
 import 'package:huda/cubit/quran_radio/quran_radio_cubit.dart';
-import 'package:huda/core/services/rating_service.dart';
-import 'package:huda/data/models/reciter_model.dart';
 import 'package:huda/data/models/radio_station_model.dart';
-import 'package:huda/data/models/home/home_preferences.dart';
+import 'package:huda/data/models/reciter_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/screens/reciter_surahs_screen.dart';
-import 'package:huda/presentation/widgets/home/home_background.dart';
-import 'package:huda/presentation/widgets/home/home_content.dart';
-import 'package:huda/presentation/widgets/home/themes/classic_home_header.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:huda/presentation/widgets/home/exit_confirmation_dialog.dart';
+import 'package:huda/presentation/widgets/home/home_actions.dart';
+import 'package:huda/presentation/widgets/home/home_content.dart';
+import 'package:huda/presentation/widgets/home/home_identity.dart';
 import 'package:huda/presentation/widgets/privacy/foss_crash_reporting_consent_prompt.dart';
-import 'package:huda/core/services/whats_new_service.dart';
-import 'package:huda/presentation/screens/home_customization.dart';
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 
+/// Home: the hall of lamps (see `home_identity.dart`) in the person's
+/// chosen style. Owns where Home's pieces go, refreshes Home's data when a
+/// page it opened closes and on resume, picks up a layout saved in
+/// Settings (Home's editor lives there) when it's back on top, runs the
+/// startup dialogs, and asks before Android's Back leaves the app.
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({super.key, this.startupDialogs = true});
+
+  /// Whether Home runs its startup dialogs (crash-report consent, update,
+  /// what's new, rating). Off only in tests: they read the platform and
+  /// the network.
+  final bool startupDialogs;
 
   @override
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home>
-    with WidgetsBindingObserver, TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
-  bool _entranceStarted = false;
-  bool _entranceScheduled = false;
+class _HomeState extends State<Home> with WidgetsBindingObserver {
   bool _isStartupDialogSequenceRunning = false;
   bool _isRatingCheckScheduled = false;
+  bool _wasCurrent = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: const Interval(0.0, 0.8, curve: Curves.easeOut),
-      ),
-    );
-
-    _slideAnimation =
-        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
-          ),
-        );
-
     context.read<HomeCubit>().loadHomeData();
     context.read<PrayerTimesCubit>().loadCachedPrayerTimes();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _runStartupDialogs();
-    });
+    if (widget.startupDialogs) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _runStartupDialogs();
+      });
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context)) {
-      _animationController
-        ..stop()
-        ..value = 1;
-      _entranceStarted = true;
-    } else if (!_entranceStarted && TickerMode.valuesOf(context).enabled) {
-      _scheduleEntrance();
-    }
     final localizations = AppLocalizations.of(context);
     if (localizations != null) {
       context.read<PrayerTimesCubit>().setLocalizations(localizations);
     }
-  }
-
-  void _scheduleEntrance() {
-    if (_entranceStarted || _entranceScheduled) return;
-    _entranceScheduled = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _entranceScheduled = false;
-      if (!mounted || _entranceStarted) return;
-      if (MediaQuery.disableAnimationsOf(context)) {
-        _animationController.value = 1;
-        _entranceStarted = true;
-        return;
-      }
-      if (!TickerMode.valuesOf(context).enabled) return;
-      _entranceStarted = true;
-      _animationController.forward(from: 0);
-    });
+    // Back on top (Settings closed, perhaps with a new layout saved in
+    // Home's editor): read the layout again.
+    final current = ModalRoute.isCurrentOf(context) ?? true;
+    if (current && !_wasCurrent) {
+      context.read<HomeCustomizationCubit>().load();
+    }
+    _wasCurrent = current;
   }
 
   Future<void> _runStartupDialogs() async {
@@ -157,7 +122,6 @@ class _HomeState extends State<Home>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _animationController.dispose();
     super.dispose();
   }
 
@@ -167,27 +131,22 @@ class _HomeState extends State<Home>
       context.read<HomeCubit>().loadHomeData();
       context.read<PrayerTimesCubit>().loadCachedPrayerTimes();
       context.read<IslamicEventCubit>().loadActiveEvent();
-      debugPrint('🏠 Home screen: Refreshing data on app resume');
-
-      _scheduleRatingCheckAfterResume();
+      if (widget.startupDialogs) _scheduleRatingCheckAfterResume();
     }
   }
 
   void _refreshHomeData() {
     context.read<HomeCubit>().loadHomeData();
     context.read<IslamicEventCubit>().loadActiveEvent();
-    debugPrint('🏠 Home screen: Manual refresh triggered');
   }
 
-  Future<bool> _showExitConfirmationDialog() async {
-    return await showDialog<bool>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return const ExitConfirmationDialog();
-          },
-        ) ??
-        false;
+  void _failed() {
+    if (!mounted) return;
+    showHudaToast(
+      context,
+      message: AppLocalizations.of(context)!.unexpectedError,
+      kind: HudaToastKind.failed,
+    );
   }
 
   Future<void> _openLastReciterAudio(QuranAudioProgress progress) async {
@@ -209,41 +168,29 @@ class _HomeState extends State<Home>
 
     try {
       final jsonData = jsonDecode(progress.jsonData) as List;
-
-      if (mounted) {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: context.read<QuranPlayerCubit>()),
-                BlocProvider.value(value: context.read<PlayerBarCubit>()),
-                BlocProvider.value(
-                  value: context.read<DownloadProgressCubit>(),
-                ),
-              ],
-              child: ReciterSurahsScreen(
-                reciter: reciter,
-                moshaf: reciter.moshaf.first,
-                jsonData: jsonData,
-                initialSurahIndex: progress.surahIndex,
-                initialPositionMs: progress.positionMs,
-              ),
+      if (!mounted) return;
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: context.read<QuranPlayerCubit>()),
+              BlocProvider.value(value: context.read<PlayerBarCubit>()),
+              BlocProvider.value(value: context.read<DownloadProgressCubit>()),
+            ],
+            child: ReciterSurahsScreen(
+              reciter: reciter,
+              moshaf: reciter.moshaf.first,
+              jsonData: jsonData,
+              initialSurahIndex: progress.surahIndex,
+              initialPositionMs: progress.positionMs,
             ),
           ),
-        );
-
-        if (mounted) {
-          _refreshHomeData();
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        HudaSnackBar.error(
-          context,
-          message: AppLocalizations.of(context)!.unexpectedError,
-        );
-      }
+        ),
+      );
+      if (mounted) _refreshHomeData();
+    } catch (_) {
+      _failed();
     }
   }
 
@@ -255,60 +202,20 @@ class _HomeState extends State<Home>
         url: progress.stationUrl,
         recentDate: DateTime.now().toIso8601String(),
       );
-
+      if (!mounted) return;
+      QuranRadioCubit.pendingAutoPlay = station;
+      await Navigator.pushNamed(context, AppRoute.quranRadio);
       if (mounted) {
-        QuranRadioCubit.pendingAutoPlay = station;
-        await Navigator.pushNamed(context, AppRoute.quranRadio);
-
-        if (mounted) {
-          await context.read<QuranRadioCubit>().saveCurrentStation();
-          _refreshHomeData();
-        }
+        await context.read<QuranRadioCubit>().saveCurrentStation();
+        _refreshHomeData();
       }
-    } catch (e) {
-      if (mounted) {
-        HudaSnackBar.error(
-          context,
-          message: AppLocalizations.of(context)!.unexpectedError,
-        );
-      }
+    } catch (_) {
+      _failed();
     }
   }
 
-  Future<void> _openLastReadSurah(Map<String, dynamic> lastReadSummary) async {
-    final surahNumber = lastReadSummary['surahNumber'] as int;
-
-    try {
-      final quranCubit = QuranCubit();
-      await quranCubit.loadQuran();
-
-      final surah = quranCubit.surahs.firstWhere(
-        (s) => s.number == surahNumber,
-        orElse: () => throw Exception('Surah not found'),
-      );
-
-      if (mounted) {
-        await Navigator.pushNamed(
-          context,
-          AppRoute.surahScreen,
-          arguments: {'surahInfo': surah, 'shouldRestorePosition': true},
-        );
-
-        if (mounted) {
-          _refreshHomeData();
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        HudaSnackBar.error(
-          context,
-          message: AppLocalizations.of(context)!.unexpectedError,
-        );
-      }
-    }
-  }
-
-  Future<void> _openSurahAt(int surahNumber, int ayahNumber) async {
+  /// Opens a surah: at [ayahNumber], or (null) where the reading stopped.
+  Future<void> _openSurah(int surahNumber, int? ayahNumber) async {
     try {
       final quranCubit = QuranCubit();
       await quranCubit.loadQuran();
@@ -320,143 +227,72 @@ class _HomeState extends State<Home>
       await Navigator.pushNamed(
         context,
         AppRoute.surahScreen,
-        arguments: {
-          'surahInfo': surah,
-          'shouldRestorePosition': false,
-          'scrollToAyah': ayahNumber,
-        },
+        arguments: ayahNumber == null
+            ? {'surahInfo': surah, 'shouldRestorePosition': true}
+            : {
+                'surahInfo': surah,
+                'shouldRestorePosition': false,
+                'scrollToAyah': ayahNumber,
+              },
       );
       if (mounted) _refreshHomeData();
-    } catch (error) {
-      if (!mounted) return;
-      HudaSnackBar.error(
-        context,
-        message: AppLocalizations.of(context)!.unexpectedError,
-      );
+    } catch (_) {
+      _failed();
     }
   }
 
-  Future<void> _openCustomization() async {
-    final customization = context.read<HomeCustomizationCubit>();
-    final home = context.read<HomeCubit>();
-    final events = context.read<IslamicEventCubit>();
-    final prayer = context.read<PrayerTimesCubit>();
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    await Navigator.push(
-      context,
-      PageRouteBuilder<void>(
-        transitionDuration: reduceMotion
-            ? Duration.zero
-            : const Duration(milliseconds: 420),
-        reverseTransitionDuration: reduceMotion
-            ? Duration.zero
-            : const Duration(milliseconds: 300),
-        pageBuilder: (_, animation, secondaryAnimation) => MultiBlocProvider(
-          providers: [
-            BlocProvider.value(value: customization),
-            BlocProvider.value(value: home),
-            BlocProvider.value(value: events),
-            BlocProvider.value(value: prayer),
-          ],
-          child: const HomeCustomizationScreen(),
-        ),
-        transitionsBuilder: (_, animation, secondaryAnimation, child) {
-          final curved = CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeOutCubic,
-            reverseCurve: Curves.easeInCubic,
-          );
-          return FadeTransition(
-            opacity: curved,
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.035),
-                end: Offset.zero,
-              ).animate(curved),
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.975, end: 1).animate(curved),
-                child: child,
-              ),
-            ),
-          );
-        },
-      ),
-    );
+  Future<void> _openRadio() async {
+    await Navigator.pushNamed(context, AppRoute.quranRadio);
+    if (!mounted) return;
+    await context.read<QuranRadioCubit>().saveCurrentStation();
+    _refreshHomeData();
+  }
+
+  Future<void> _openQuran() async {
+    await Navigator.pushNamed(context, AppRoute.homeQuran);
+    if (mounted) _refreshHomeData();
+  }
+
+  // On a half-open fold the dialog goes to the trailing half, where it
+  // will be when the device closes.
+  Future<bool> _confirmExit() async {
+    final size = MediaQuery.sizeOf(context);
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    return await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          anchorPoint: Offset(rtl ? 0 : size.width, size.height / 2),
+          builder: (_) => const ExitConfirmationDialog(),
+        ) ??
+        false;
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    final actions = HomeActions(
+      openQuran: _openQuran,
+      openPrayerTimes: () => Navigator.pushNamed(context, AppRoute.prayerTimes),
+      openAudio: () => Navigator.pushNamed(context, AppRoute.quranAudio),
+      openRadio: _openRadio,
+      openBookmarks: () => Navigator.pushNamed(context, AppRoute.bookmarks),
+      openSurah: (surah, ayah) => _openSurah(surah, ayah),
+      openLastRead: (summary) =>
+          _openSurah(summary['surahNumber'] as int, null),
+      openLastReciter: (progress) =>
+          _openLastReciterAudio(progress as QuranAudioProgress),
+      openLastStation: (progress) =>
+          _openLastRadioStation(progress as RadioStationProgress),
+      retry: _refreshHomeData,
+    );
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
+      onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
-
-        final shouldExit = await _showExitConfirmationDialog();
-        if (shouldExit && context.mounted) {
-          SystemNavigator.pop();
-        }
+        final shouldExit = await _confirmExit();
+        if (shouldExit && context.mounted) SystemNavigator.pop();
       },
-      child: Scaffold(
-        body: HomeBackground(
-          isDarkMode: isDarkMode,
-          child: BlocBuilder<HomeCustomizationCubit, HomeCustomizationState>(
-            buildWhen: (previous, current) {
-              final previousTheme = previous is HomeCustomizationReady
-                  ? previous.preferences.selectedTheme
-                  : null;
-              final currentTheme = current is HomeCustomizationReady
-                  ? current.preferences.selectedTheme
-                  : null;
-              return previousTheme != currentTheme;
-            },
-            builder: (context, customization) {
-              final selectedTheme = customization is HomeCustomizationReady
-                  ? customization.preferences.selectedTheme
-                  : HomeThemeId.classic;
-              final scrollView = CustomScrollView(
-                physics: selectedTheme != HomeThemeId.classic
-                    ? const AlwaysScrollableScrollPhysics(
-                        parent: ClampingScrollPhysics(),
-                      )
-                    : const AlwaysScrollableScrollPhysics(),
-                slivers: [
-                  if (selectedTheme == HomeThemeId.classic)
-                    ClassicHomeHeaderSliver(
-                      entranceAnimation: _animationController,
-                      onCustomize: _openCustomization,
-                    ),
-                  SliverSafeArea(
-                    top: false,
-                    left: false,
-                    right: false,
-                    sliver: HomeContent(
-                      animationController: _animationController,
-                      fadeAnimation: _fadeAnimation,
-                      slideAnimation: _slideAnimation,
-                      refreshHomeData: _refreshHomeData,
-                      openLastReadSurah: _openLastReadSurah,
-                      openLastReciterAudio: (progress) =>
-                          _openLastReciterAudio(progress as QuranAudioProgress),
-                      openLastRadioStation: (progress) => _openLastRadioStation(
-                        progress as RadioStationProgress,
-                      ),
-                      openSurah: _openSurahAt,
-                      onCustomize: _openCustomization,
-                      isDarkMode: isDarkMode,
-                    ),
-                  ),
-                ],
-              );
-              if (selectedTheme != HomeThemeId.classic) return scrollView;
-              return ClassicHomeSystemOverlay(
-                isDark: isDarkMode,
-                child: scrollView,
-              );
-            },
-          ),
-        ),
+      child: HudaRevealScope(
+        child: HomeLamplighter(child: HomeView(actions: actions)),
       ),
     );
   }

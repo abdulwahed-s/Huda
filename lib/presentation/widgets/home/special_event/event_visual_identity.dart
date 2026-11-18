@@ -9,29 +9,27 @@ enum IslamicEventKind {
   daysOfTashreeq('days_of_tashreeq'),
   whiteDaysFasting('white_days_fasting'),
   mondayThursdayFasting('monday_thursday_fasting'),
-  whiteDaysMondayThursdayFasting(
-    'white_days_monday_thursday_fasting',
-  );
+  whiteDaysMondayThursdayFasting('white_days_monday_thursday_fasting');
 
   const IslamicEventKind(this.key);
 
   final String key;
 
   static IslamicEventKind? tryParse(String key) => switch (key) {
-        'ramadan' => IslamicEventKind.ramadan,
-        'last_ten_ramadan' => IslamicEventKind.lastTenRamadan,
-        'eid_al_fitr' => IslamicEventKind.eidAlFitr,
-        'eid_al_adha' => IslamicEventKind.eidAlAdha,
-        'day_of_arafah' => IslamicEventKind.dayOfArafah,
-        'first_ten_dhul_hijjah' => IslamicEventKind.firstTenDhulHijjah,
-        'ashura' => IslamicEventKind.ashura,
-        'days_of_tashreeq' => IslamicEventKind.daysOfTashreeq,
-        'white_days_fasting' => IslamicEventKind.whiteDaysFasting,
-        'monday_thursday_fasting' => IslamicEventKind.mondayThursdayFasting,
-        'white_days_monday_thursday_fasting' =>
-          IslamicEventKind.whiteDaysMondayThursdayFasting,
-        _ => null,
-      };
+    'ramadan' => IslamicEventKind.ramadan,
+    'last_ten_ramadan' => IslamicEventKind.lastTenRamadan,
+    'eid_al_fitr' => IslamicEventKind.eidAlFitr,
+    'eid_al_adha' => IslamicEventKind.eidAlAdha,
+    'day_of_arafah' => IslamicEventKind.dayOfArafah,
+    'first_ten_dhul_hijjah' => IslamicEventKind.firstTenDhulHijjah,
+    'ashura' => IslamicEventKind.ashura,
+    'days_of_tashreeq' => IslamicEventKind.daysOfTashreeq,
+    'white_days_fasting' => IslamicEventKind.whiteDaysFasting,
+    'monday_thursday_fasting' => IslamicEventKind.mondayThursdayFasting,
+    'white_days_monday_thursday_fasting' =>
+      IslamicEventKind.whiteDaysMondayThursdayFasting,
+    _ => null,
+  };
 }
 
 enum EventVisualFamily {

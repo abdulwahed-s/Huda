@@ -1,117 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:huda/data/models/home/home_preferences.dart';
-import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/catalog/home_feature_catalog.dart';
-import 'package:huda/presentation/widgets/home/feature_grid.dart';
-import 'package:huda/presentation/widgets/home/quran_feature_stack_card.dart';
-import 'package:huda/presentation/widgets/home/shared/home_section_widgets.dart';
-import 'package:huda/presentation/widgets/home/themes/classic_view_more_collection.dart';
+import 'package:huda/presentation/widgets/home/home_actions.dart';
+import 'package:huda/presentation/widgets/home/home_content.dart';
+import 'package:huda/presentation/widgets/home/home_event.dart';
+import 'package:huda/presentation/widgets/home/home_gallery.dart';
 
-class ClassicHome extends StatefulWidget {
+/// Classic: every tool in the gallery under the landing band, the day's
+/// event above it. On a tabletop the first two rows sit above the band
+/// with the event, the rest below.
+class ClassicHome extends StatelessWidget {
   const ClassicHome({
     super.key,
-    required this.configuration,
-    required this.features,
+    required this.tools,
+    required this.more,
     required this.actions,
-    required this.isDark,
-    required this.openLastReadSurah,
-    required this.openLastReciterAudio,
-    required this.openLastRadioStation,
   });
 
-  final HomeThemeConfiguration configuration;
-  final List<HomeFeatureDefinition> features;
-  final HomeDashboardActions actions;
-  final bool isDark;
-  final Function(Map<String, dynamic>) openLastReadSurah;
-  final Function(dynamic) openLastReciterAudio;
-  final Function(dynamic) openLastRadioStation;
+  final List<HomeFeatureDefinition> tools;
+  final List<HomeFeatureDefinition> more;
+  final HomeActions actions;
 
-  @override
-  State<ClassicHome> createState() => _ClassicHomeState();
-}
-
-class _ClassicHomeState extends State<ClassicHome> {
   @override
   Widget build(BuildContext context) {
-    final visiblePrimary = _visible(widget.configuration.primaryFeatures);
-    final visibleMore = _definitions(
-      _visible(widget.configuration.viewMoreFeatures),
+    final gap = homeBlockGap(context);
+    final event = HomeEventCard(padding: EdgeInsets.only(bottom: gap));
+    HomeGallery gallery({int skip = 0, int? take}) => HomeGallery(
+      tools: tools,
+      more: more,
+      actions: actions,
+      skip: skip,
+      take: take,
     );
-    final featureGrid = visibleMore.isEmpty
-        ? _buildGrid(visiblePrimary)
-        : ClassicViewMoreCollection(
-            features: visibleMore,
-            isDarkMode: widget.isDark,
-            primaryItemCount: visiblePrimary.length,
-            gridBuilder: (trailingCard) =>
-                _buildGrid(visiblePrimary, trailingCard: trailingCard),
-          );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        HomeSpecialEventSection(isDark: widget.isDark),
-        featureGrid,
-      ],
-    );
-  }
-
-  List<HomeFeatureDefinition> _definitions(List<HomeFeatureId> ids) {
-    final byId = {for (final feature in widget.features) feature.id: feature};
-    return ids
-        .map((id) => byId[id])
-        .whereType<HomeFeatureDefinition>()
-        .toList();
-  }
-
-  List<HomeFeatureId> _visible(List<HomeFeatureId> source) {
-    final available = widget.features.map((feature) => feature.id).toSet();
-    return source.where(available.contains).toList();
-  }
-
-  Widget _buildGrid(List<HomeFeatureId> ids, {Widget? trailingCard}) {
-    final l10n = AppLocalizations.of(context)!;
-    final byId = {for (final feature in widget.features) feature.id: feature};
-    final quranIndex = ids.indexOf(HomeFeatureId.quranKit);
-    final cards = ids
-        .where((id) => id != HomeFeatureId.quranKit)
-        .map((id) => byId[id])
-        .whereType<HomeFeatureDefinition>()
-        .map(
-          (feature) => FeatureItem(
-            title: feature.title,
-            svgAsset: feature.svgAsset,
-            icon: feature.icon,
-            onTap: feature.onTap,
+    int rows(BuildContext context, double width) =>
+        HomeGrid.columnsFor(context, width, spansFold: false) * 2;
+    return HomeLanding(
+      body: Column(
+        key: const ValueKey('classic-home'),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [event, gallery()],
+      ),
+      tabletop: (
+        top: LayoutBuilder(
+          builder: (context, constraints) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              event,
+              gallery(take: rows(context, constraints.maxWidth)),
+            ],
           ),
-        )
-        .toList();
-
-    return FeatureGrid(
-      isDarkMode: widget.isDark,
-      features: cards,
-      trailingCard: trailingCard,
-      quranStackIndex: quranIndex < 0 ? 0 : quranIndex,
-      quranStackCard: quranIndex < 0
-          ? null
-          : QuranFeatureStackCard(
-              isDarkMode: widget.isDark,
-              index: quranIndex,
-              stackLabel: l10n.quranKit,
-              quranLabel: l10n.quran,
-              audioLabel: l10n.quranAudio,
-              radioLabel: l10n.quranRadio,
-              bookmarkLabel: l10n.bookmarks,
-              onQuranTap: widget.actions.openQuran,
-              onAudioTap: widget.actions.openAudio,
-              onRadioTap: widget.actions.openRadio,
-              onBookmarkTap: widget.actions.openBookmarks,
-              openLastReciterAudio: widget.openLastReciterAudio,
-              openLastRadioStation: widget.openLastRadioStation,
-            ),
-      openLastReadSurah: widget.openLastReadSurah,
-      openLastReciterAudio: widget.openLastReciterAudio,
-      openLastRadioStation: widget.openLastRadioStation,
+        ),
+        bottom: LayoutBuilder(
+          builder: (context, constraints) =>
+              gallery(skip: rows(context, constraints.maxWidth)),
+        ),
+      ),
     );
   }
 }
