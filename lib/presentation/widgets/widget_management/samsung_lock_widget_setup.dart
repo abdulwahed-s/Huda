@@ -1,9 +1,12 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
+/// Lock-screen widget guidance on Samsung phones with One UI 9 (Android
+/// 16, SDK 36) and later. Nothing elsewhere.
 class SamsungLockWidgetSetup extends StatefulWidget {
   const SamsungLockWidgetSetup({super.key});
 
@@ -32,47 +35,38 @@ class _SamsungLockWidgetSetupState extends State<SamsungLockWidgetSetup> {
     builder: (context, snapshot) {
       if (snapshot.data != true) return const SizedBox.shrink();
       final l10n = AppLocalizations.of(context)!;
-      final colors = Theme.of(context).colorScheme;
+      final space = context.tokens.space;
+      final theme = Theme.of(context);
+      final scheme = theme.colorScheme;
       return Padding(
-        padding: EdgeInsets.only(top: 12.h),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: colors.surfaceContainer,
-            borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(color: colors.outlineVariant),
-          ),
+        padding: EdgeInsets.only(top: space.sm),
+        child: HudaCard(
+          padding: EdgeInsets.all(space.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Icon(Icons.lock_outline_rounded, color: colors.primary),
-                  SizedBox(width: 10.w),
+                  Icon(Icons.lock_outline_rounded, color: scheme.primary),
+                  SizedBox(width: space.sm),
                   Expanded(
                     child: Text(
                       l10n.samsungLockWidgetsTitle,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.sp,
-                      ),
+                      style: theme.textTheme.titleSmall,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: space.sm),
               Text(
                 l10n.samsungLockWidgetsInstructions,
-                style: TextStyle(fontSize: 13.sp, height: 1.5),
+                style: theme.textTheme.bodyMedium,
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: space.xs),
               Text(
                 l10n.samsungLockWidgetsHint,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  height: 1.4,
-                  color: colors.onSurfaceVariant,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
                 ),
               ),
             ],
