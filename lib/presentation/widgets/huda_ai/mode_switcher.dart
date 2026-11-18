@@ -1,220 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
+import 'package:huda/data/models/chat_session_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/huda_ai/mode_button.dart';
 
-class ModeSwitcher extends StatefulWidget {
-  final bool isCounselingMode;
-  final bool isDark;
-  final VoidCallback onModeChanged;
+/// The icon for each mode, wherever a mode is shown (the segment, history
+/// rows): one meaning per icon.
+IconData hudaAiModeIcon(ChatSessionMode mode) => switch (mode) {
+  ChatSessionMode.chat => Icons.chat_bubble_outline_rounded,
+  ChatSessionMode.counseling => Icons.volunteer_activism_outlined,
+};
 
-  const ModeSwitcher({
-    super.key,
-    required this.isCounselingMode,
-    required this.isDark,
-    required this.onModeChanged,
-  });
+/// Chat or Counseling: a two-part lit segment, sized to its labels and
+/// centered in a pinned strip under the bar.
+class ModeSwitcher extends StatelessWidget {
+  const ModeSwitcher({super.key, required this.mode, required this.onChanged});
 
-  @override
-  State<ModeSwitcher> createState() => _ModeSwitcherState();
-}
-
-class _ModeSwitcherState extends State<ModeSwitcher>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _slideAnimation;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 350),
-      vsync: this,
-    );
-    _slideAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOutCubic,
-    );
-    _scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
-    );
-    if (!widget.isCounselingMode) {
-      _animationController.value = 1.0;
-    }
-  }
-
-  @override
-  void didUpdateWidget(ModeSwitcher oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.isCounselingMode != widget.isCounselingMode) {
-      if (widget.isCounselingMode) {
-        _animationController.reverse();
-      } else {
-        _animationController.forward();
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  final ChatSessionMode mode;
+  final ValueChanged<ChatSessionMode> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = context.primaryColor;
-
-    // Enhanced color scheme for light/dark modes
-    final containerBgColor = widget.isDark
-        ? const Color(0xFF1A1A1A).withValues(alpha: 0.8)
-        : Colors.white;
-
-    final containerBorderColor = widget.isDark
-        ? Colors.white.withValues(alpha: 0.08)
-        : Colors.black.withValues(alpha: 0.06);
-
-    final shadowColor = widget.isDark
-        ? Colors.black.withValues(alpha: 0.5)
-        : Colors.black.withValues(alpha: 0.08);
-
-    return Container(
-      height: 58,
-      decoration: BoxDecoration(
-        color: containerBgColor,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: containerBorderColor, width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor,
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-          if (widget.isDark)
-            BoxShadow(
-              color: Colors.white.withValues(alpha: 0.02),
-              blurRadius: 1,
-              offset: const Offset(0, 1),
-            ),
-        ],
+    final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
+    final insets = MediaQuery.paddingOf(context);
+    // Large text: the labels keep the room.
+    final icons = MediaQuery.textScalerOf(context).scale(1) < 1.5;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        insets.left + space.md,
+        space.xxs,
+        insets.right + space.md,
+        space.xs,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: Stack(
-          children: [
-            // Animated sliding background indicator with enhanced styling
-            AnimatedBuilder(
-              animation: _slideAnimation,
-              builder: (context, child) {
-                final isRtl = Directionality.of(context) == TextDirection.rtl;
-                final slideValue = _slideAnimation.value;
-                final halfWidth = (MediaQuery.of(context).size.width - 40) / 2;
-
-                final leftValue = isRtl
-                    ? slideValue * halfWidth
-                    : (1 - slideValue) * halfWidth;
-                final rightValue = isRtl
-                    ? (1 - slideValue) * halfWidth
-                    : slideValue * halfWidth;
-
-                return Positioned(
-                  left: leftValue,
-                  right: rightValue,
-                  top: 0,
-                  bottom: 0,
-                  child: Transform.scale(
-                    scale: _scaleAnimation.value,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: widget.isDark
-                              ? [
-                                  primaryColor.withValues(alpha: 0.9),
-                                  primaryColor,
-                                  primaryColor.withValues(alpha: 0.85),
-                                ]
-                              : [
-                                  primaryColor.withValues(alpha: 0.85),
-                                  primaryColor,
-                                  primaryColor.withValues(alpha: 0.9),
-                                ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: primaryColor.withValues(
-                              alpha: widget.isDark ? 0.4 : 0.35,
-                            ),
-                            blurRadius: 12,
-                            offset: const Offset(0, 3),
-                            spreadRadius: 0,
-                          ),
-                          BoxShadow(
-                            color: primaryColor.withValues(
-                              alpha: widget.isDark ? 0.2 : 0.15,
-                            ),
-                            blurRadius: 20,
-                            offset: const Offset(0, 6),
-                            spreadRadius: -2,
-                          ),
-                        ],
-                      ),
-                      // Inner glow effect
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.white.withValues(
-                                alpha: widget.isDark ? 0.15 : 0.25,
-                              ),
-                              Colors.transparent,
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            stops: const [0.0, 0.5],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            // Buttons overlay
-            Row(
-              children: [
-                Expanded(
-                  child: ModeButton(
-                    icon: Icons.chat_bubble_outline,
-                    label: AppLocalizations.of(context)!.chat,
-                    isSelected: !widget.isCounselingMode,
-                    isDark: widget.isDark,
-                    primaryColor: primaryColor,
-                    onTap: widget.isCounselingMode
-                        ? widget.onModeChanged
-                        : null,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420),
+          child: SegmentedButton<ChatSessionMode>(
+            key: const ValueKey('huda_ai_mode'),
+            showSelectedIcon: false,
+            expandedInsets: EdgeInsets.zero,
+            segments: [
+              for (final value in ChatSessionMode.values)
+                ButtonSegment(
+                  value: value,
+                  icon: icons ? Icon(hudaAiModeIcon(value)) : null,
+                  label: Text(
+                    value == ChatSessionMode.chat ? l10n.chat : l10n.counseling,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Expanded(
-                  child: ModeButton(
-                    svgPath: 'assets/images/consulting.svg.vec',
-                    label: AppLocalizations.of(context)!.counseling,
-                    isSelected: widget.isCounselingMode,
-                    isDark: widget.isDark,
-                    primaryColor: primaryColor,
-                    onTap: !widget.isCounselingMode
-                        ? widget.onModeChanged
-                        : null,
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+            selected: {mode},
+            onSelectionChanged: (selection) => onChanged(selection.first),
+          ),
         ),
       ),
     );
