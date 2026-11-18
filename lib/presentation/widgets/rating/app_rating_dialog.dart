@@ -1,109 +1,104 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:huda/core/theme/theme_extension.dart';
-import 'package:huda/presentation/widgets/rating/star_rating_input.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/rating/rating_cubit.dart';
 import 'package:huda/l10n/app_localizations.dart';
-import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
+import 'package:huda/presentation/widgets/design/huda_motion.dart';
+import 'package:huda/presentation/widgets/design/huda_states.dart';
+import 'package:huda/presentation/widgets/design/huda_toast.dart';
+import 'package:huda/presentation/widgets/feedback/feedback_form_card.dart';
+import 'package:huda/presentation/widgets/rating/star_rating_input.dart';
 
-class AppRatingDialog extends StatefulWidget {
+/// "Enjoying Huda?": five stars; under four, a short note and an optional
+/// email open below them. Led by the lit lamp (an invitation). From Home
+/// it offers "Maybe later" and "Don't ask again"; from Settings, Cancel.
+class AppRatingDialog extends StatelessWidget {
   final bool showDismissActions;
 
   const AppRatingDialog({super.key, this.showDismissActions = true});
 
   @override
-  State<AppRatingDialog> createState() => _AppRatingDialogState();
+  Widget build(BuildContext context) {
+    return _AppRatingDialog(showDismissActions: showDismissActions);
+  }
 }
 
-class _AppRatingDialogState extends State<AppRatingDialog>
+class _AppRatingDialog extends StatefulWidget {
+  const _AppRatingDialog({required this.showDismissActions});
+
+  final bool showDismissActions;
+
+  @override
+  State<_AppRatingDialog> createState() => _AppRatingDialogState();
+}
+
+class _AppRatingDialogState extends State<_AppRatingDialog>
     with TickerProviderStateMixin {
   double _rating = 0;
   final TextEditingController _feedbackController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  bool _showFeedbackField = false;
-  late AnimationController _animationController;
-  late AnimationController _starAnimationController;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _starScaleAnimation;
+  bool _missingRating = false;
+  bool _missingNote = false;
+  bool _failed = false;
+
+  late final AnimationController _entrance = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 250),
+  );
+  late final AnimationController _starPulse = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 150),
+  );
+
+  bool get _wantsNote => _rating > 0 && _rating < 4;
 
   @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 400),
-      vsync: this,
-    );
-
-    _starAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 450),
-      vsync: this,
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
-    );
-
-    _fadeAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    );
-
-    _starScaleAnimation = Tween<double>(begin: 1.0, end: 1.15).animate(
-      CurvedAnimation(
-        parent: _starAnimationController,
-        curve: Curves.easeOutBack,
-      ),
-    );
-
-    _animationController.forward();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final tokens = context.tokens;
+    _entrance.duration = tokens.motion.of(context, tokens.motion.medium);
+    _starPulse.duration = tokens.motion.of(context, tokens.motion.short);
+    if (!_entrance.isAnimating && _entrance.value == 0) {
+      _entrance.duration == Duration.zero
+          ? _entrance.value = 1
+          : _entrance.forward();
+    }
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
-    _starAnimationController.dispose();
+    _entrance.dispose();
+    _starPulse.dispose();
     _feedbackController.dispose();
     _emailController.dispose();
     super.dispose();
   }
 
   void _onRatingChanged(double rating) {
+    if (rating != _rating) HudaHaptics.selection(context);
     setState(() {
       _rating = rating;
-      _showFeedbackField = rating < 4;
+      _missingRating = false;
+      _failed = false;
     });
-
-    HapticFeedback.selectionClick();
-
-    _starAnimationController.forward(from: 0).then((_) {
-      if (mounted) _starAnimationController.reverse();
-    });
+    if (_starPulse.duration != Duration.zero) {
+      _starPulse.forward(from: 0).then((_) {
+        if (mounted) _starPulse.reverse();
+      });
+    }
   }
 
   void _submitRating() {
     if (_rating == 0) {
-      HapticFeedback.selectionClick();
-      HudaSnackBar.warning(
-        context,
-        message: AppLocalizations.of(context)!.pleaseSelectRating,
-      );
+      setState(() => _missingRating = true);
       return;
     }
-
-    if (_showFeedbackField && _feedbackController.text.trim().isEmpty) {
-      HapticFeedback.selectionClick();
-      HudaSnackBar.warning(
-        context,
-        message: AppLocalizations.of(context)!.provideFeedback,
-      );
+    if (_wantsNote && _feedbackController.text.trim().isEmpty) {
+      setState(() => _missingNote = true);
       return;
     }
-
-    HapticFeedback.mediumImpact();
+    setState(() => _failed = false);
     final email = _emailController.text.trim();
     context.read<RatingCubit>().handleRating(
       _rating.toInt(),
@@ -113,367 +108,248 @@ class _AppRatingDialogState extends State<AppRatingDialog>
   }
 
   void _dismiss() {
-    HapticFeedback.lightImpact();
     context.read<RatingCubit>().callLater();
     Navigator.of(context).pop();
   }
 
   void _neverAskAgain() {
-    HapticFeedback.lightImpact();
     context.read<RatingCubit>().callNever();
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final tokens = context.tokens;
+    final space = tokens.space;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final scheme = theme.colorScheme;
+    final short = MediaQuery.sizeOf(context).height < 700;
+    final curve = CurvedAnimation(
+      parent: _entrance,
+      curve: tokens.motion.emphasized,
+    );
 
     return BlocListener<RatingCubit, RatingState>(
       listener: (context, state) {
         if (state is RatingSubmitted) {
-          HapticFeedback.heavyImpact();
+          HudaHaptics.light(context);
+          final message = _rating >= 4
+              ? l10n.thankYouRedirect
+              : l10n.thankYouFeedback;
           Navigator.of(context).pop();
-
-          String message = _rating >= 4
-              ? AppLocalizations.of(context)!.thankYouRedirect
-              : AppLocalizations.of(context)!.thankYouFeedback;
-
-          HudaSnackBar.success(context, message: message);
+          showHudaToast(context, message: message);
         } else if (state is RatingFailure) {
-          HapticFeedback.heavyImpact();
-          HudaSnackBar.error(context, message: state.message);
+          setState(() => _failed = true);
         }
       },
       child: FadeTransition(
-        opacity: _fadeAnimation,
+        opacity: curve,
         child: ScaleTransition(
-          scale: _scaleAnimation,
-          child: AlertDialog(
-            backgroundColor: isDark ? context.darkCardBackground : Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            contentPadding: EdgeInsets.all(24.w),
-            content: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.8,
-                maxWidth: MediaQuery.of(context).size.width * 0.9,
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 60.w,
-                      height: 60.w,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [context.primaryColor, context.accentColor],
-                        ),
-                        borderRadius: BorderRadius.circular(30.r),
+          scale: Tween<double>(begin: 0.96, end: 1).animate(curve),
+          child: Dialog(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              // The actions stay pinned; the stars and note scroll above
+              // them on short screens.
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Flexible(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.fromLTRB(
+                        space.lg,
+                        space.lg,
+                        space.lg,
+                        space.md,
                       ),
-                      child: Icon(
-                        Icons.star_rounded,
-                        color: Colors.white,
-                        size: 30.sp,
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                    Text(
-                      AppLocalizations.of(context)!.rateAppTitle,
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isDark
-                            ? context.darkText
-                            : const Color(0xFF1E293B),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      AppLocalizations.of(context)!.rateExperienceQuestion,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: isDark
-                            ? Colors.grey.shade400
-                            : const Color(0xFF64748B),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 24.h),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: ScaleTransition(
-                        scale: _starScaleAnimation,
-                        child: StarRatingInput(
-                          initialRating: _rating,
-                          minRating: 1,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemSize: 40.sp,
-                          spacing: 8.w,
-                          color: context.primaryColor,
-                          unratedColor: isDark
-                              ? Colors.grey.shade700
-                              : Colors.grey.shade300,
-                          onRatingUpdate: _onRatingChanged,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 350),
-                      switchInCurve: Curves.easeOutCubic,
-                      switchOutCurve: Curves.easeInCubic,
-                      transitionBuilder: (child, animation) => FadeTransition(
-                        opacity: animation,
-                        child: SizeTransition(
-                          sizeFactor: animation,
-                          alignment: Alignment.topCenter,
-                          child: child,
-                        ),
-                      ),
-                      child: _showFeedbackField
-                          ? Container(
-                              key: const ValueKey('feedback'),
-                              width: double.infinity,
-                              padding: EdgeInsets.only(top: 8.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.helpUsImprove,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: isDark
-                                          ? context.darkText
-                                          : const Color(0xFF1E293B),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Short windows (landscape phones) give the note
+                          // the room: no lamp, a smaller title.
+                          if (!short) ...[
+                            const Center(
+                              child: HudaLamp(
+                                size: 56,
+                                child: Icon(Icons.star_rounded),
+                              ),
+                            ),
+                            SizedBox(height: space.md),
+                          ],
+                          Text(
+                            l10n.rateAppTitle,
+                            textAlign: TextAlign.center,
+                            style: short
+                                ? theme.textTheme.titleLarge
+                                : theme.textTheme.headlineSmall,
+                          ),
+                          SizedBox(height: space.xs),
+                          Text(
+                            l10n.rateExperienceQuestion,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: scheme.onSurfaceVariant,
+                            ),
+                          ),
+                          SizedBox(height: short ? space.sm : space.lg),
+                          Center(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: ScaleTransition(
+                                scale: Tween<double>(
+                                  begin: 1,
+                                  end: 1.08,
+                                ).animate(_starPulse),
+                                child: StarRatingInput(
+                                  key: const ValueKey('rating-stars'),
+                                  initialRating: _rating,
+                                  minRating: 1,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemSize: 40,
+                                  spacing: space.xs,
+                                  color: scheme.primary,
+                                  unratedColor: scheme.onSurfaceVariant,
+                                  unratedIcon: Icons.star_outline_rounded,
+                                  onRatingUpdate: _onRatingChanged,
+                                ),
+                              ),
+                            ),
+                          ),
+                          HudaAnimatedSize(
+                            alignment: Alignment.topCenter,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (_missingRating)
+                                  Padding(
+                                    padding: EdgeInsets.only(top: space.xs),
+                                    child: Text(
+                                      l10n.pleaseSelectRating,
+                                      textAlign: TextAlign.center,
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(color: scheme.error),
                                     ),
                                   ),
-                                  SizedBox(height: 8.h),
+                                if (_wantsNote) ...[
+                                  SizedBox(height: short ? space.sm : space.lg),
                                   TextField(
+                                    key: const ValueKey('rating-note'),
                                     controller: _feedbackController,
-                                    maxLines: 2,
+                                    minLines: short ? 1 : 2,
+                                    maxLines: 4,
                                     maxLength: 200,
-                                    decoration: InputDecoration(
-                                      hintText: AppLocalizations.of(
-                                        context,
-                                      )!.feedbackHint,
-                                      hintStyle: TextStyle(
-                                        color: isDark
-                                            ? Colors.grey.shade500
-                                            : Colors.grey.shade600,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          12.r,
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: isDark
-                                              ? Colors.grey.shade700
-                                              : Colors.grey.shade300,
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          12.r,
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: context.primaryColor,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      filled: true,
-                                      fillColor: isDark
-                                          ? Colors.grey.shade900
-                                          : Colors.grey.shade50,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 12.w,
-                                        vertical: 8.h,
-                                      ),
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
+                                    onChanged: (_) {
+                                      if (_missingNote) {
+                                        setState(() => _missingNote = false);
+                                      }
+                                    },
+                                    decoration: feedbackFieldDecoration(
+                                      context,
+                                      label: l10n.helpUsImprove,
+                                      hint: l10n.feedbackHint,
+                                      error: _missingNote
+                                          ? l10n.provideFeedback
+                                          : null,
                                     ),
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: isDark
-                                          ? context.darkText
-                                          : const Color(0xFF1E293B),
-                                    ),
+                                    style: theme.textTheme.bodyMedium,
                                   ),
-                                  SizedBox(height: 8.h),
+                                  SizedBox(height: space.xs),
                                   TextField(
                                     controller: _emailController,
                                     keyboardType: TextInputType.emailAddress,
-                                    decoration: InputDecoration(
-                                      hintText: AppLocalizations.of(
-                                        context,
-                                      )!.emailOptional,
-                                      hintStyle: TextStyle(
-                                        color: isDark
-                                            ? Colors.grey.shade500
-                                            : Colors.grey.shade600,
-                                      ),
-                                      prefixIcon: Icon(
-                                        Icons.mail_outline_rounded,
-                                        color: isDark
-                                            ? Colors.grey.shade500
-                                            : Colors.grey.shade600,
-                                        size: 18.sp,
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          12.r,
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: isDark
-                                              ? Colors.grey.shade700
-                                              : Colors.grey.shade300,
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          12.r,
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: context.primaryColor,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      filled: true,
-                                      fillColor: isDark
-                                          ? Colors.grey.shade900
-                                          : Colors.grey.shade50,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 12.w,
-                                        vertical: 8.h,
+                                    autocorrect: false,
+                                    decoration: feedbackFieldDecoration(
+                                      context,
+                                      label: l10n.emailOptional,
+                                      prefixIcon: const Icon(
+                                        Icons.alternate_email_rounded,
                                       ),
                                     ),
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: isDark
-                                          ? context.darkText
-                                          : const Color(0xFF1E293B),
-                                    ),
+                                    style: theme.textTheme.bodyMedium,
                                   ),
                                 ],
-                              ),
-                            )
-                          : const SizedBox(
-                              key: ValueKey('empty'),
-                              width: double.infinity,
+                                if (_failed)
+                                  Padding(
+                                    padding: EdgeInsets.only(top: space.md),
+                                    child: HudaStatusBanner(
+                                      status: HudaStatus.failed,
+                                      message: l10n.unexpectedError,
+                                    ),
+                                  ),
+                              ],
                             ),
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 24.h),
-                    BlocBuilder<RatingCubit, RatingState>(
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      space.lg,
+                      0,
+                      space.lg,
+                      space.md,
+                    ),
+                    child: BlocBuilder<RatingCubit, RatingState>(
                       builder: (context, state) {
-                        final isLoading = state is RatingSubmitting;
-
+                        final busy = state is RatingSubmitting;
                         return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(
-                              width: double.infinity,
-                              height: 48.h,
-                              child: ElevatedButton(
-                                onPressed: isLoading ? null : _submitRating,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: context.primaryColor,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                  ),
-                                  elevation: 2,
-                                ),
-                                child: isLoading
-                                    ? SizedBox(
-                                        width: 20.w,
-                                        height: 20.w,
-                                        child: const CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                Colors.white,
-                                              ),
-                                        ),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(minHeight: 48),
+                              child: FilledButton(
+                                key: const ValueKey('rating-submit'),
+                                onPressed: busy ? () {} : _submitRating,
+                                child: busy
+                                    ? HudaLampSpinner(
+                                        size: 20,
+                                        color: theme
+                                            .filledButtonTheme
+                                            .style
+                                            ?.foregroundColor
+                                            ?.resolve(const {}),
                                       )
-                                    : Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.rateButton,
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
+                                    : Text(l10n.rateButton),
                               ),
                             ),
-                            if (widget.showDismissActions) ...[
-                              SizedBox(height: 12.h),
-                              Row(
+                            SizedBox(height: space.xs),
+                            if (widget.showDismissActions)
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: space.xs,
                                 children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: isLoading ? null : _dismiss,
-                                      child: Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.maybeLater,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: isDark
-                                              ? Colors.grey.shade400
-                                              : Colors.grey.shade600,
-                                        ),
-                                      ),
-                                    ),
+                                  TextButton(
+                                    onPressed: busy ? null : _dismiss,
+                                    child: Text(l10n.maybeLater),
                                   ),
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: isLoading
-                                          ? null
-                                          : _neverAskAgain,
-                                      child: Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.dontAskAgain,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: isDark
-                                              ? Colors.grey.shade400
-                                              : Colors.grey.shade600,
-                                        ),
-                                      ),
-                                    ),
+                                  TextButton(
+                                    onPressed: busy ? null : _neverAskAgain,
+                                    child: Text(l10n.dontAskAgain),
                                   ),
                                 ],
+                              )
+                            else
+                              TextButton(
+                                onPressed: busy
+                                    ? null
+                                    : () => Navigator.of(context).pop(),
+                                child: Text(l10n.cancel),
                               ),
-                            ] else ...[
-                              SizedBox(height: 12.h),
-                              SizedBox(
-                                width: double.infinity,
-                                child: TextButton(
-                                  onPressed: isLoading
-                                      ? null
-                                      : () => Navigator.of(context).pop(),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.cancel,
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: isDark
-                                          ? Colors.grey.shade400
-                                          : Colors.grey.shade600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
                           ],
                         );
                       },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

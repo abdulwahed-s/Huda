@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:huda/core/services/crash_reporter.dart';
 import 'package:huda/core/services/crash_reporting_consent.dart';
-import 'package:huda/core/theme/theme_extension.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
+import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 
 abstract final class FossCrashReportingConsentPrompt {
   static Future<bool> showIfNeeded(BuildContext context) async {
@@ -15,7 +16,7 @@ abstract final class FossCrashReportingConsentPrompt {
     final allowed = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => const _CrashReportingConsentDialog(),
+      builder: (dialogContext) => const CrashReportingConsentDialog(),
     );
 
     await CrashReporter.setFossConsent(allowed == true);
@@ -23,113 +24,121 @@ abstract final class FossCrashReportingConsentPrompt {
   }
 }
 
-class _CrashReportingConsentDialog extends StatelessWidget {
-  const _CrashReportingConsentDialog();
+/// The FOSS build's first-launch question: share crash reports or not.
+/// Led by the lit lamp (an invitation); what is shared, and that nothing
+/// leaves the device until allowed; Allow is lit, Don't allow quiet.
+class CrashReportingConsentDialog extends StatelessWidget {
+  const CrashReportingConsentDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = context.tokens;
+    final space = tokens.space;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final primary = context.primaryColor;
-    final surface = isDark
-        ? context.darkCardBackground
-        : theme.colorScheme.surface;
-    final outline = theme.colorScheme.outlineVariant.withValues(
-      alpha: isDark ? 0.45 : 0.7,
-    );
+    final scheme = theme.colorScheme;
 
     return PopScope(
       canPop: false,
       child: Dialog(
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-        backgroundColor: surface,
-        surfaceTintColor: Colors.transparent,
-        elevation: 12,
-        shadowColor: Colors.black.withValues(alpha: isDark ? 0.5 : 0.18),
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-          side: BorderSide(color: outline),
-        ),
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 420,
-            maxHeight: MediaQuery.sizeOf(context).height * 0.9,
-          ),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(24, 28, 24, 22),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Align(
-                  child: Container(
-                    width: 58,
-                    height: 58,
-                    decoration: BoxDecoration(
-                      color: primary.withValues(alpha: isDark ? 0.18 : 0.09),
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                        color: primary.withValues(alpha: 0.14),
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.bug_report_outlined,
-                      size: 28,
-                      color: primary,
-                    ),
+          constraints: const BoxConstraints(maxWidth: 440),
+          // The answer is required (no dismiss), so the two actions stay
+          // pinned under the explanation, which scrolls on short screens.
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(
+                    space.lg,
+                    space.lg,
+                    space.lg,
+                    space.md,
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  l10n.crashReportingConsentTitle,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.2,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  l10n.crashReportingConsentDescription,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    height: 1.45,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 22),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: primary.withValues(alpha: isDark ? 0.1 : 0.045),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: primary.withValues(alpha: isDark ? 0.2 : 0.1),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Icon(Icons.data_object_rounded, size: 20, color: primary),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
+                      const Center(
+                        child: HudaLamp(
+                          size: 56,
+                          child: Icon(Icons.shield_outlined),
+                        ),
+                      ),
+                      SizedBox(height: space.md),
+                      Text(
+                        l10n.crashReportingConsentTitle,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.headlineSmall,
+                      ),
+                      SizedBox(height: space.xs),
+                      Text(
+                        l10n.crashReportingConsentDescription,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                      SizedBox(height: space.lg),
+                      Container(
+                        padding: EdgeInsets.all(space.md),
+                        decoration: BoxDecoration(
+                          color: scheme.surfaceContainerLow,
+                          borderRadius: BorderRadius.circular(tokens.radius.md),
+                          border: Border.all(color: scheme.outlineVariant),
+                        ),
+                        child: MergeSemantics(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.data_object_rounded,
+                                size: 20,
+                                color: scheme.primary,
+                              ),
+                              SizedBox(width: space.sm),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      l10n.crashReportingSharedDataTitle,
+                                      style: theme.textTheme.titleSmall,
+                                    ),
+                                    SizedBox(height: space.xxs),
+                                    Text(
+                                      l10n.crashReportingSharedDataDescription,
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(
+                                            color: scheme.onSurfaceVariant,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: space.md),
+                      MergeSemantics(
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              l10n.crashReportingSharedDataTitle,
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
+                            Icon(
+                              Icons.lock_outline_rounded,
+                              size: 20,
+                              color: scheme.onSurfaceVariant,
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              l10n.crashReportingSharedDataDescription,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                height: 1.4,
-                                color: theme.colorScheme.onSurfaceVariant,
+                            SizedBox(width: space.sm),
+                            Expanded(
+                              child: Text(
+                                l10n.crashReportingPrivacyNote,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: scheme.onSurfaceVariant,
+                                ),
                               ),
                             ),
                           ],
@@ -138,73 +147,40 @@ class _CrashReportingConsentDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(space.lg, 0, space.lg, space.lg),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1),
-                      child: Icon(
-                        Icons.lock_outline_rounded,
-                        size: 17,
-                        color: theme.colorScheme.onSurfaceVariant,
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 52),
+                      child: FilledButton(
+                        key: const ValueKey('consent-allow'),
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(
+                          l10n.crashReportingConsentAllow,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        l10n.crashReportingPrivacyNote,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          height: 1.4,
-                          color: theme.colorScheme.onSurfaceVariant,
+                    SizedBox(height: space.xs),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 48),
+                      child: OutlinedButton(
+                        key: const ValueKey('consent-decline'),
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(
+                          l10n.crashReportingConsentDecline,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 22),
-                FilledButton.icon(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  icon: const Icon(Icons.check_rounded),
-                  label: Text(
-                    l10n.crashReportingConsentAllow,
-                    textAlign: TextAlign.center,
-                  ),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: primary,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size.fromHeight(52),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 14,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: theme.colorScheme.onSurface,
-                    minimumSize: const Size.fromHeight(50),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 13,
-                    ),
-                    side: BorderSide(color: outline),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                  child: Text(
-                    l10n.crashReportingConsentDecline,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

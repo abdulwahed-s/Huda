@@ -13,6 +13,12 @@ class ErrorLoaded extends ErrorState {
   ErrorLoaded({required this.docId});
 }
 
+/// Sending the person's note failed; the report is still there, so the
+/// note can be sent again.
+class ErrorFeedbackFailure extends ErrorLoaded {
+  ErrorFeedbackFailure({required super.docId});
+}
+
 class ErrorSubmitting extends ErrorState {}
 
 class ErrorSubmitted extends ErrorState {}

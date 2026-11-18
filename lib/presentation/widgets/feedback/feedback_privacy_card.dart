@@ -1,72 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-class FeedbackPrivacyCard extends StatelessWidget {
-  const FeedbackPrivacyCard({super.key, required this.l10n});
-
-  final AppLocalizations l10n;
+/// What happens to a message: a quiet note with a lock, under the fields.
+class FeedbackPrivacyNote extends StatelessWidget {
+  const FeedbackPrivacyNote({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final space = context.tokens.space;
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
-
-    return Semantics(
-      container: true,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
-        decoration: BoxDecoration(
-          color: colorScheme.primary.withValues(alpha: isDark ? 0.09 : 0.045),
-          borderRadius: BorderRadius.circular(18.r),
-          border: Border.all(
-            color: colorScheme.primary.withValues(alpha: isDark ? 0.2 : 0.13),
+    final scheme = theme.colorScheme;
+    return MergeSemantics(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Icon(
+              Icons.lock_outline_rounded,
+              size: 20,
+              color: scheme.onSurfaceVariant,
+            ),
           ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 38.w,
-              height: 38.w,
-              decoration: BoxDecoration(
-                color: colorScheme.primary.withValues(
-                  alpha: isDark ? 0.17 : 0.1,
+          SizedBox(width: space.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.feedbackPrivacyTitle, style: theme.textTheme.titleSmall),
+                SizedBox(height: space.xxs),
+                Text(
+                  l10n.feedbackPrivacyDescription,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
                 ),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.lock_outline_rounded,
-                color: colorScheme.primary,
-                size: 19.sp,
-              ),
+              ],
             ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.feedbackPrivacyTitle,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  SizedBox(height: 3.h),
-                  Text(
-                    l10n.feedbackPrivacyDescription,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      height: 1.45,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

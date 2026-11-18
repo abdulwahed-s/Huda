@@ -80,7 +80,7 @@ class ErrorCubit extends Cubit<ErrorState> {
         }).eq('id', currentState.docId);
         emit(ErrorSubmitted());
       } catch (e) {
-        emit(ErrorFailure(message: 'Failed to submit feedback'));
+        emit(ErrorFeedbackFailure(docId: currentState.docId));
       }
     }
   }

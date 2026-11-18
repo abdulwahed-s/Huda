@@ -7,6 +7,9 @@ class StarRatingInput extends StatefulWidget {
   final double spacing;
   final Color color;
   final Color unratedColor;
+
+  /// The empty star (an outline keeps 3:1 without a heavy shape).
+  final IconData unratedIcon;
   final bool allowHalfRating;
   final double minRating;
   final ValueChanged<double> onRatingUpdate;
@@ -19,6 +22,7 @@ class StarRatingInput extends StatefulWidget {
     this.spacing = 8,
     required this.color,
     required this.unratedColor,
+    this.unratedIcon = Icons.star_rounded,
     this.allowHalfRating = true,
     this.minRating = 1,
     required this.onRatingUpdate,
@@ -90,7 +94,7 @@ class _StarRatingInputState extends State<StarRatingInput> {
   Widget _star(double fill, bool isRtl) {
     final size = widget.itemSize;
     if (fill <= 0.0) {
-      return Icon(Icons.star_rounded, size: size, color: widget.unratedColor);
+      return Icon(widget.unratedIcon, size: size, color: widget.unratedColor);
     }
 
     final filledStar = Icon(
@@ -106,7 +110,7 @@ class _StarRatingInputState extends State<StarRatingInput> {
 
     return Stack(
       children: [
-        Icon(Icons.star_rounded, size: size, color: widget.unratedColor),
+        Icon(widget.unratedIcon, size: size, color: widget.unratedColor),
         ClipRect(
           clipper: _FractionClipper(fill, fromRight: isRtl),
           child: filledStar,
