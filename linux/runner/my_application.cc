@@ -7,12 +7,14 @@
 #endif
 
 #include "flutter/generated_plugin_registrant.h"
+#include "gallery_image_saver.h"
 #include "prayer_tray_bridge.h"
 
 struct _MyApplication {
   GtkApplication parent_instance;
   char** dart_entrypoint_arguments;
   PrayerTrayBridge* tray_bridge;
+  FlMethodChannel* gallery_channel;
   gboolean settings_pending;
   // The payload of a clicked companion notification, until a window exists.
   char* tap_pending;
@@ -83,6 +85,8 @@ static void my_application_activate(GApplication* application) {
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
   prayer_tray_bridge_free(self->tray_bridge);
   self->tray_bridge = prayer_tray_bridge_new(view, application);
+  g_clear_object(&self->gallery_channel);
+  self->gallery_channel = gallery_image_saver_new(view);
   if (self->settings_pending) prayer_tray_bridge_request_settings(self->tray_bridge);
   self->settings_pending = FALSE;
   prayer_tray_bridge_notification_tap(self->tray_bridge, self->tap_pending);
@@ -146,6 +150,7 @@ static void my_application_dispose(GObject* object) {
   g_clear_pointer(&self->tap_pending, g_free);
   prayer_tray_bridge_free(self->tray_bridge);
   self->tray_bridge = nullptr;
+  g_clear_object(&self->gallery_channel);
   G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
 }
 
