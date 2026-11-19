@@ -1,6 +1,7 @@
 import CoreLocation
 import Flutter
 import MapKit
+import Photos
 import UIKit
 import UserNotifications
 import workmanager_apple
@@ -18,6 +19,7 @@ import workmanager_apple
   private var iosPrayerBridge: IOSPrayerBridge?
   private var reminderNotificationsChannel: FlutterMethodChannel?
   private var foldBridge: IOSFoldBridge?
+  private var galleryChannel: FlutterMethodChannel?
 
   private var apnsEnvironment: String {
     #if DEBUG
@@ -79,6 +81,7 @@ import workmanager_apple
       messenger: messenger
     )
     miqaatLockHandler = MiqaatLockMethodHandler(messenger: messenger)
+    galleryChannel = GalleryImageChannel.register(messenger: messenger)
     let channel = FlutterMethodChannel(
       name: "com.aw.huda/prayer_push",
       binaryMessenger: messenger
@@ -755,5 +758,52 @@ enum ReminderNotificationsChannel {
       item["yearly"] = true
     }
     return item
+  }
+}
+
+/// The "Save image" action of the share sheets (`ShareImageSaver` in Dart):
+/// `saveImage` with `{bytes: PNG, name: String}` adds the image to Photos and
+/// returns `true`. Add-only access, so Huda never sees the library; a refusal
+/// is a `permission_denied` error.
+enum GalleryImageChannel {
+  static func register(messenger: FlutterBinaryMessenger) -> FlutterMethodChannel {
+    let channel = FlutterMethodChannel(name: "com.aw.huda/gallery", binaryMessenger: messenger)
+    channel.setMethodCallHandler { call, result in
+      guard call.method == "saveImage" else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      guard
+        let arguments = call.arguments as? [String: Any],
+        let bytes = arguments["bytes"] as? FlutterStandardTypedData,
+        !bytes.data.isEmpty
+      else {
+        result(FlutterError(code: "invalid_arguments", message: "saveImage needs PNG bytes.", details: nil))
+        return
+      }
+      let name = (arguments["name"] as? String).map { "\($0).png" }
+      let reply: (Any?) -> Void = { value in DispatchQueue.main.async { result(value) } }
+      PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+        guard status == .authorized || status == .limited else {
+          reply(FlutterError(code: "permission_denied", message: "Photos access was refused.", details: nil))
+          return
+        }
+        PHPhotoLibrary.shared().performChanges({
+          let options = PHAssetResourceCreationOptions()
+          options.originalFilename = name
+          options.uniformTypeIdentifier = "public.png"
+          PHAssetCreationRequest.forAsset().addResource(with: .photo, data: bytes.data, options: options)
+        }) { success, error in
+          reply(
+            success
+              ? true
+              : FlutterError(
+                code: "save_failed",
+                message: error?.localizedDescription ?? "Photos didn't save the image.",
+                details: nil))
+        }
+      }
+    }
+    return channel
   }
 }
