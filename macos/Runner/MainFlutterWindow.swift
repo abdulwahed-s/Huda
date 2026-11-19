@@ -32,6 +32,7 @@ class MainFlutterWindow: NSWindow {
   private var widgetChannel: FlutterMethodChannel?
   private var prayerMenuChannel: FlutterMethodChannel?
   private var notificationsChannel: FlutterMethodChannel?
+  private var galleryChannel: FlutterMethodChannel?
   private var prayerSystemObservers: [NSObjectProtocol] = []
 
   override func awakeFromNib() {
@@ -134,6 +135,9 @@ class MainFlutterWindow: NSWindow {
     (NSApp.delegate as? AppDelegate)?.prayerMenuBar.start(channel: menuChannel)
 
     notificationsChannel = ReminderNotificationsChannel.register(
+      messenger: flutterViewController.engine.binaryMessenger
+    )
+    galleryChannel = GalleryImageChannel.register(
       messenger: flutterViewController.engine.binaryMessenger
     )
 
@@ -506,5 +510,62 @@ enum ReminderNotificationsChannel {
       item["yearly"] = true
     }
     return item
+  }
+}
+
+/// The "Save image" action of the share sheets (`ShareImageSaver` in Dart):
+/// `saveImage` with `{bytes: PNG, name: String}` writes `name.png` to
+/// Downloads (`name 2.png` and so on beside an existing one, as Finder names
+/// copies) and returns `true`. The sandbox needs
+/// `com.apple.security.files.downloads.read-write`.
+enum GalleryImageChannel {
+  static func register(messenger: FlutterBinaryMessenger) -> FlutterMethodChannel {
+    let channel = FlutterMethodChannel(name: "com.aw.huda/gallery", binaryMessenger: messenger)
+    channel.setMethodCallHandler { call, result in
+      guard call.method == "saveImage" else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      guard
+        let arguments = call.arguments as? [String: Any],
+        let bytes = arguments["bytes"] as? FlutterStandardTypedData,
+        !bytes.data.isEmpty,
+        let name = (arguments["name"] as? String).map(sanitize),
+        !name.isEmpty
+      else {
+        result(FlutterError(code: "invalid_arguments", message: "saveImage needs bytes and a name.", details: nil))
+        return
+      }
+      DispatchQueue.global(qos: .userInitiated).async {
+        let reply: (Any?) -> Void = { value in DispatchQueue.main.async { result(value) } }
+        do {
+          let downloads = try FileManager.default.url(
+            for: .downloadsDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+          // .withoutOverwriting: a file that appears meanwhile fails the
+          // write instead of being replaced.
+          try bytes.data.write(to: uniqueURL(in: downloads, name: name), options: .withoutOverwriting)
+          reply(true)
+        } catch {
+          reply(FlutterError(code: "save_failed", message: error.localizedDescription, details: nil))
+        }
+      }
+    }
+    return channel
+  }
+
+  private static func uniqueURL(in directory: URL, name: String) -> URL {
+    var url = directory.appendingPathComponent("\(name).png")
+    var index = 2
+    while FileManager.default.fileExists(atPath: url.path) {
+      url = directory.appendingPathComponent("\(name) \(index).png")
+      index += 1
+    }
+    return url
+  }
+
+  private static func sanitize(_ name: String) -> String {
+    let invalid = CharacterSet(charactersIn: "/:\\").union(.controlCharacters)
+    return String(name.unicodeScalars.map { invalid.contains($0) ? "_" : Character($0) })
+      .trimmingCharacters(in: .whitespaces)
   }
 }
