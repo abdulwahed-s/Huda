@@ -10,6 +10,7 @@ import com.aw.huda.widget.QuranWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerWidgetUpdater
 import com.aw.huda.widget.prayer.PrayerLocationTimeZoneResolver
 import com.aw.huda.miqaat.MiqaatLockMethodHandler
+import com.aw.huda.share.GalleryImageSaver
 import com.aw.huda.location.LocationSource
 import com.aw.huda.location.LocationSupport
 import com.aw.huda.location.PrayerTravelReliabilityManager
@@ -26,6 +27,7 @@ class MainActivity : AudioServiceActivity() {
     private val PRAYER_LOCATION_MONITOR_CHANNEL =
         "com.aw.huda/prayer_location_monitor"
     private val PRAYER_COUNTDOWN_CHANNEL = "com.aw.huda/prayer_countdown"
+    private var galleryImageSaver: GalleryImageSaver? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -236,6 +238,23 @@ class MainActivity : AudioServiceActivity() {
             MiqaatLockMethodHandler.CHANNEL_NAME
         ).setMethodCallHandler(MiqaatLockMethodHandler(this))
 
+        // Share sheets: "Save image" to Pictures/Huda.
+        val gallery = GalleryImageSaver(this)
+        galleryImageSaver = gallery
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            GalleryImageSaver.CHANNEL_NAME,
+        ).setMethodCallHandler(gallery)
+
         PrayerTravelReliabilityManager.sync(applicationContext)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        if (galleryImageSaver?.onPermissionResult(requestCode, grantResults) == true) return
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
