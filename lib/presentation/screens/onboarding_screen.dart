@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huda/core/routes/app_route.dart';
-import 'package:huda/core/services/geolocator.dart';
+import 'package:huda/core/services/get_current_location.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:huda/cubit/localization/localization_cubit.dart';
@@ -110,7 +110,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed || !mounted) return;
-    if (_cubit.state.current != OnboardingStep.location) return;
+    if (_cubit.state.current != OnboardingStep.permissions &&
+        _cubit.state.current != OnboardingStep.location) {
+      return;
+    }
+    if (_prayer.state is PrayerTimesLoading) return;
     final issue = prayerLocationIssueOf(
       _prayer.state,
       canOpenSettings: _cubit.environment.canOpenSettings,
@@ -123,17 +127,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   }
 
   Future<void> _retryLocationIfAccessRestored() async {
-    try {
-      if (!await Geolocator.isLocationServiceEnabled()) return;
-      final permission = await Geolocator.checkPermission();
-      if (permission != LocationPermission.always &&
-          permission != LocationPermission.whileInUse) {
-        return;
-      }
-    } catch (_) {
-      return;
-    }
-    if (!mounted) return;
+    if (!await canLocateWithoutAsking() || !mounted) return;
+    if (_prayer.state is PrayerTimesLoading) return;
     await _prayer.refreshLocationAndPrayerTimes();
   }
 
